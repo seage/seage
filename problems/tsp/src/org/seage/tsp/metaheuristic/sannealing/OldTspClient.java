@@ -1,8 +1,9 @@
 
-package org.seage.metaheuristic.sannealing;
+package org.seage.tsp.metaheuristic.sannealing;
 
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealing;
-import org.seage.metaheuristic.sannealing.SimulateAnnealing;
+import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
+import org.seage.tsp.data.City;
 //import org.seage.tsp.data.City;
 
 /**
@@ -14,12 +15,12 @@ public abstract class OldTspClient implements ISimulatedAnnealing {
     /**
    * The cities to be visited.
    */
-  //private City cities[];
+  private City cities[];
 
   /**
    * The simulated annealing worker class.
    */
-  private SimulateAnnealing simulateAnnealing;
+  private SimulatedAnnealing simulateAnnealing;
 
   private double maximalTemperature = 100;
 
@@ -29,10 +30,10 @@ public abstract class OldTspClient implements ISimulatedAnnealing {
 
   private String message;
 
-//  public TspClient(City cities[])
-//  {
-//    this.cities = cities;
-//  }
+  public OldTspClient(City cities[])
+  {
+    this.cities = cities;
+  }
 
   /**
    * Returns the starting temperature for the
@@ -74,18 +75,18 @@ public abstract class OldTspClient implements ISimulatedAnnealing {
    * @param j The second city index.
    * @return The distance between the two cities.
    */
-//  public double getDistance(int i, int j)
-//  {
-//    int c1 = this.simulateAnnealing.order[i % cities.length];
-//    int c2 = this.simulateAnnealing.order[j % cities.length];
-//
-//    return getEuclideanDistance (
-//                cities[c1].X,
-//                cities[c1].Y,
-//                cities[c2].X,
-//                cities[c2].Y
-//            );
-//  }
+  public double getDistance(int i, int j)
+  {
+    int c1 = this.simulateAnnealing.order[i % cities.length];
+    int c2 = this.simulateAnnealing.order[j % cities.length];
+
+    return getEuclideanDistance (
+                cities[c1].X,
+                cities[c1].Y,
+                cities[c2].X,
+                cities[c2].Y
+            );
+  }
 
   private double getEuclideanDistance(double x, double y, double x1, double y1)
   {
@@ -99,8 +100,8 @@ public abstract class OldTspClient implements ISimulatedAnnealing {
 
   public void run()
   {
-    this.simulateAnnealing = new SimulateAnnealing( this );
-    this.simulateAnnealing.run();
+    this.simulateAnnealing = null;//new SimulatedAnnealing( this );
+    //this.simulateAnnealing.run();
   }
 
   public void update()
