@@ -7,19 +7,8 @@ import org.seage.metaheuristic.sannealing.Solution;
  *
  * @author Jan Zmátlík
  */
-public class TspSolution implements Solution {
-
-    double value = 0.0;
-
-    public double getObjectiveValue()
-    {
-        return value;
-    }
-
-    public void setObjectiveValue(double objValue)
-    {
-        value = objValue;
-    }
-
+public class TspSolution extends Solution
+{
+    public Integer[] _tour;
 
 }

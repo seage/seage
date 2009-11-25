@@ -14,7 +14,7 @@ public interface ISimulatedAnnealing {
         double getAnnealingCoefficient();
         void setAnnealingCoefficient(double alpha);
 
-        double getSolution();
-        void start();
-        void stop();
+        Solution getSolution();
+        void startSearching(Solution solution);
+        void stopSearching();
 }

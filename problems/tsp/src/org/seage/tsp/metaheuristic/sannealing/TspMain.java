@@ -32,12 +32,12 @@ public class TspMain implements ISimulatedAnnealingListener{
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + cities.length);
 
-        SimulatedAnnealing sa = new SimulatedAnnealing( new TspSolution() );
+        SimulatedAnnealing sa = new SimulatedAnnealing(new TspObjectiveFunction(), new TspMoveManager() );
         sa.setMaximalTemperature( 100 );
         sa.setMinimalTemperature( 1.778 );
         sa.setAnnealingCoefficient( 0.88 );
         sa.addSimulatedAnnealingListener( this );
-        sa.start();
+        sa.startSearching(new TspSolution());
 
     }
 

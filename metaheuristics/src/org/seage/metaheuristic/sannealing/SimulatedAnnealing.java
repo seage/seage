@@ -54,9 +54,13 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
   private boolean _fireSimulatedAnnealingStarted = false;
 
-  private Solution _solution;
+  private Solution _currentSolution;
 
+  private Solution _bestSolution;
 
+  private IMoveManager _moveManager;
+
+  private IObjectiveFunction _objectiveFunction;
 
   /**
    * The current solution
@@ -83,11 +87,13 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
    *
    * @param owner of this object.
    */
-  public SimulatedAnnealing(Solution solution)
+  public SimulatedAnnealing(IObjectiveFunction objectiveFunction, IMoveManager moveManager)
   {
-    _solution = solution;
+    //_solution = solution;
     //order = new int[owner.getCount()];
     //minimalorder = new int[owner.getCount()];
+      _objectiveFunction = objectiveFunction;
+      _moveManager = moveManager;
   }  
 
   /**
@@ -96,16 +102,16 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
    * @param distance The distance.
    * @return True if annealing should take place.
    */
-  public boolean anneal(double distance)
+  public boolean anneal(double delta)
   {   
-    return (Math.random() < Math.exp(distance / _currentTemperature)) ? true : false;
+    return (Math.random() < Math.exp(delta / _currentTemperature)) ? true : false;
   }
 
   /**
    * This method is called to
    * perform the simulated annealing.
    */
-  public void start()
+  public void startSearching(Solution solution)
   {
     // pocet iteraci, jenom kvuli vypisu
     int iterationCount = 1;
@@ -126,12 +132,12 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     //*** pocatecni reseni
     //***bestSolution = currentSolution = owner.getSolution();
 
-    Solution bestSolution = _solution;
-      System.out.println("Solut " + _solution.getObjectiveValue());
-    bestSolution.setObjectiveValue(123);
-
-      System.out.println("Best " + bestSolution.getObjectiveValue());
-      System.out.println("Solut " + _solution.getObjectiveValue() );
+//    Solution bestSolution = _solution;
+//      System.out.println("Solut " + _solution.getObjectiveValue());
+//    bestSolution.setObjectiveValue(123);
+//
+//      System.out.println("Best " + bestSolution.getObjectiveValue());
+//      System.out.println("Solut " + _solution.getObjectiveValue() );
 
     //this.owner.setMessage("Maximum path length: " + currentSolution);
 
@@ -208,15 +214,23 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   {
         //##################################
         // move randomly to new locations
+      Solution newSol = _moveManager.getModifiedSolution(_currentSolution);
 
         //##################################
         // calculate objective function F
+      _objectiveFunction.setObjectiveValue(newSol);
+      double q = newSol.getObjectiveValue();
 
         //##################################
         // accept new solution if better
-
+      if(_bestSolution.getObjectiveValue() > q)
+          _bestSolution = newSol;
         //##################################
         //
+      if(anneal(q-_currentSolution.getObjectiveValue()))
+      {
+        _currentSolution = newSol;
+      }
   }
 
   public final void addSimulatedAnnealingListener( ISimulatedAnnealingListener listener )
@@ -281,11 +295,11 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     return this._annealCoefficient;
   }
 
-  public double getSolution() {
+  public Solution getSolution() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void stop() {
+    public void stopSearching() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

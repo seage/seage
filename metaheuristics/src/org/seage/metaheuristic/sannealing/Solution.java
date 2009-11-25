@@ -5,9 +5,18 @@ package org.seage.metaheuristic.sannealing;
  *
  * @author Jan Zmátlík
  */
-public interface Solution {
+public class Solution {
 
- public double getObjectiveValue();
- public abstract void setObjectiveValue( double objValue );
+    double value = Double.MAX_VALUE;
+
+    public double getObjectiveValue()
+    {
+        return value;
+    }
+
+    public void setObjectiveValue(double objValue)
+    {
+        value = objValue;
+    }
 
 }
