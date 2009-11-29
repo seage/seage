@@ -5,7 +5,7 @@ package org.seage.metaheuristic.sannealing;
  *
  * @author Jan Zmátlík
  */
-public class Solution {
+public class Solution implements java.lang.Cloneable {
 
     double value = Double.MAX_VALUE;
 

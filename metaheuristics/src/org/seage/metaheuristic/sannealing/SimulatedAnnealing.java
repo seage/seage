@@ -44,15 +44,6 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
    * Provide firing Events, registering listeners
    */
   private SimulatedAnnealingListenerProvider _listenerProvider = new SimulatedAnnealingListenerProvider();
-  
-  
-  private boolean _fireNewBestSolutionFound = false;
-
-  private boolean _fireNewCurrentSolutionFound = false;
-
-  private boolean _fireSimulatedAnnealingStopped = false;
-
-  private boolean _fireSimulatedAnnealingStarted = false;
 
   private Solution _currentSolution;
 
@@ -65,31 +56,31 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   /**
    * The current solution
    */
-  protected double currentSolution;
+  //protected double currentSolution;
 
   /**
    * The best solution.
    */
-  protected double bestSolution;
+  //protected double bestSolution;
 
   /**
    * The current order of cities.
    */
-  public int order[];
+  //public int order[];
 
   /**
    * The best order of cities.
    */
-  public int minimalorder[];
+  //public int minimalorder[];
 
   /**
    * Constructor
    *
-   * @param owner of this object.
+   * @param objectiveFunction is objective function.
+   * @param moveManager is performing modification solution.
    */
   public SimulatedAnnealing(IObjectiveFunction objectiveFunction, IMoveManager moveManager)
   {
-    //_solution = solution;
     //order = new int[owner.getCount()];
     //minimalorder = new int[owner.getCount()];
       _objectiveFunction = objectiveFunction;
@@ -99,12 +90,12 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   /**
    * Called to determine if annealing should take place.
    *
-   * @param distance The distance.
+   * @param Delta is value from objective function.
    * @return True if annealing should take place.
    */
   public boolean anneal(double delta)
   {   
-    return (Math.random() < Math.exp(delta / _currentTemperature)) ? true : false;
+    return ( Math.random() < Math.exp( delta / _currentTemperature ) ) ? true : false;
   }
 
   /**
@@ -118,10 +109,10 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
     _currentTemperature = _maximalTemperature;
 
-      System.out.println("Maximal and current temperature " + _currentTemperature);
+    _bestSolution = _currentSolution = solution;
+    System.out.println("Maximal and current temperature " + _currentTemperature);
 
-      _fireSimulatedAnnealingStarted = true;
-    //this.owner.setMessage("Adjusted maximal temperature");
+    _listenerProvider.fireSimulatedAnnealingStarted();
 
     // vytvori serazenou poslopnost pro aktualni pozice mest
     //***initorder(order);
@@ -132,18 +123,9 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     //*** pocatecni reseni
     //***bestSolution = currentSolution = owner.getSolution();
 
-//    Solution bestSolution = _solution;
-//      System.out.println("Solut " + _solution.getObjectiveValue());
-//    bestSolution.setObjectiveValue(123);
-//
-//      System.out.println("Best " + bestSolution.getObjectiveValue());
-//      System.out.println("Solut " + _solution.getObjectiveValue() );
-
-    //this.owner.setMessage("Maximum path length: " + currentSolution);
-
     while (_currentTemperature >= _minimalTemperature)
     {
-        System.out.println(iterationCount);
+        System.out.println("Iteration:" +  iterationCount);
         System.out.println("Temp " + _currentTemperature);
 
         performOneIteration();        
@@ -156,17 +138,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
         int i1 = (int)Math.floor((double)owner.getCount() * Math.random());
         int j1 = (int)Math.floor((double)owner.getCount() * Math.random());*/
 
-        //this.owner.setMessage("i1: " + i1);
-        //this.owner.setMessage("j1: " + j1);
-
         //***double distance = owner.getDistance(i1, i1 + 1) + owner.getDistance(j1, j1 + 1) - owner.getDistance(i1, j1) - owner.getDistance(i1 + 1, j1 + 1);
-
-        //this.owner.setMessage("+ owner.getDistance(i1, i1 + 1): " + owner.getDistance(i1, i1 + 1));
-        //this.owner.setMessage("+ owner.getDistance(j1, j1 + 1): " + owner.getDistance(j1, j1 + 1));
-        //this.owner.setMessage("- owner.getDistance(i1, j1): " + owner.getDistance(i1, j1));
-        //this.owner.setMessage("- owner.getDistance(i1 + 1, j1 + 1): " + owner.getDistance(i1 + 1, j1 + 1));
-
-        //this.owner.setMessage("Distance: " + distance);
 
         /*if (anneal(distance))
         {
@@ -187,6 +159,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
       }*/
 
       // See if this improved anything
+        // solution = length
       //***currentSolution = owner.getSolution();
       //***this.owner.setMessage("NEW path length: " + currentSolution);
 
@@ -198,72 +171,51 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
           minimalorder[k2] = order[k2];
       }*/
 
-
-      //***this.owner.setMessage("MINIMAL path length: " + bestSolution);
       _currentTemperature = _annealCoefficient * _currentTemperature;
       
-      //***this.owner.setMessage("Actual temperature: " + _currentTemperature);
-      fireEvents();
       iterationCount++;
+      System.out.println();
     }
-      _fireSimulatedAnnealingStopped = true;
-      fireEvents();
+      _listenerProvider.fireSimulatedAnnealingStopped();
   }
 
   private void performOneIteration()
   {
+      // porad stejny current solution
+      System.out.println("CurrentLength: " + _currentSolution.getObjectiveValue());
         //##################################
         // move randomly to new locations
-      Solution newSol = _moveManager.getModifiedSolution(_currentSolution);
+      Solution modifiedSolution = _moveManager.getModifiedSolution( _currentSolution );
+      System.out.println("ModifiedLength: " + modifiedSolution.getObjectiveValue());
+
 
         //##################################
         // calculate objective function F
-      _objectiveFunction.setObjectiveValue(newSol);
-      double q = newSol.getObjectiveValue();
+      _objectiveFunction.setObjectiveValue( modifiedSolution );
+      System.out.println("NewModifiedLength: " + modifiedSolution.getObjectiveValue());
+      double modifiedObjectiveValue = modifiedSolution.getObjectiveValue();
 
         //##################################
         // accept new solution if better
-      if(_bestSolution.getObjectiveValue() > q)
-          _bestSolution = newSol;
-        //##################################
-        //
-      if(anneal(q-_currentSolution.getObjectiveValue()))
+      if(modifiedObjectiveValue < _bestSolution.getObjectiveValue())
       {
-        _currentSolution = newSol;
+          _bestSolution = modifiedSolution;
+          _listenerProvider.fireNewBestSolutionFound();
       }
+
+      if( anneal( modifiedObjectiveValue - _currentSolution.getObjectiveValue() ) )
+      {
+        _currentSolution = modifiedSolution;
+          System.out.println("OOOOOOOOOKKKKKKKKKKKKKKKK");
+      }
+
+      System.out.println("BestSolution: " + _bestSolution.getObjectiveValue());
   }
 
   public final void addSimulatedAnnealingListener( ISimulatedAnnealingListener listener )
   {
     _listenerProvider.addSimulatedAnnealingListener( listener );
-  }
-
-  private void fireEvents()
-  {
-    if( _fireSimulatedAnnealingStarted )
-    {
-        _listenerProvider.fireSimulatedAnnealingStarted();
-        _fireSimulatedAnnealingStarted = false;
-    }
-
-    if( _fireSimulatedAnnealingStopped )
-    {
-        _listenerProvider.fireSimulatedAnnealingStopped();
-        _fireSimulatedAnnealingStopped = false;
-    }
-
-    if( _fireNewBestSolutionFound )
-    {
-        _listenerProvider.fireNewBestSolutionFound();
-        _fireNewBestSolutionFound = false;
-    }
-    
-    if( _fireNewCurrentSolutionFound )
-    {
-        _listenerProvider.fireNewCurrentSolutionFound();
-        _fireNewCurrentSolutionFound = false;
-    }
-  }
+  } 
 
   public double getMaximalTemperature()
   {
@@ -296,7 +248,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   }
 
   public Solution getSolution() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return _bestSolution;
     }
 
     public void stopSearching() {

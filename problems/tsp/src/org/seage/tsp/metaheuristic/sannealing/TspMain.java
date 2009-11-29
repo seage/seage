@@ -4,6 +4,7 @@ package org.seage.tsp.metaheuristic.sannealing;
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealingListener;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
+import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.tsp.data.*;
 
 /**
@@ -28,17 +29,16 @@ public class TspMain implements ISimulatedAnnealingListener{
 
     public void run(String path) throws Exception
     {
-        City[] cities = CityProvider.readCities(path);
+        City[] cities = CityProvider.readCities( path );
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + cities.length);
 
-        SimulatedAnnealing sa = new SimulatedAnnealing(new TspObjectiveFunction(), new TspMoveManager() );
-        sa.setMaximalTemperature( 100 );
-        sa.setMinimalTemperature( 1.778 );
+        SimulatedAnnealing sa = new SimulatedAnnealing( new TspObjectiveFunction() , new TspMoveManager() );
+        sa.setMaximalTemperature( 1.0 );
+        sa.setMinimalTemperature( 1E-10 );
         sa.setAnnealingCoefficient( 0.88 );
         sa.addSimulatedAnnealingListener( this );
-        sa.startSearching(new TspSolution());
-
+        sa.startSearching( (Solution) new TspSolution( cities ) );
     }
 
     public void simulatedAnnealingStarted(SimulatedAnnealingEvent e) {
@@ -50,7 +50,7 @@ public class TspMain implements ISimulatedAnnealingListener{
     }
 
     public void newBestSolutionFound(SimulatedAnnealingEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //System.out.println("BestSolution is : " + e.getSimulatedAnnealing().getSolution().getObjectiveValue());
     }
 
     public void newCurrentSolutionFound(SimulatedAnnealingEvent e) {

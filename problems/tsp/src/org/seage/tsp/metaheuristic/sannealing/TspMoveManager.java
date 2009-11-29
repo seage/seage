@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package org.seage.tsp.metaheuristic.sannealing;
 
@@ -11,25 +7,27 @@ import org.seage.metaheuristic.sannealing.Solution;
 
 /**
  *
- * @author rick
+ * @author Jan Zmátlík
  */
 public class TspMoveManager implements IMoveManager
 {
 
     public Solution getModifiedSolution(Solution solution) {
-        // TODO: A - implement Solution.clone()
-        TspSolution sol = (TspSolution)solution;
+        
+        TspSolution tspSolution = ((TspSolution)solution).clone();
+        System.out.println("OldHash: " + solution.hashCode());
+        System.out.println("NewHash: " + tspSolution.hashCode());
 
         Random rnd = new Random();
+        int tspSolutionLength = tspSolution.getTour().length;
+        int a = rnd.nextInt( tspSolutionLength );
+        int b = rnd.nextInt( tspSolutionLength );
 
-        int a = rnd.nextInt(sol._tour.length);
-        int b = rnd.nextInt(sol._tour.length);
+        int t = tspSolution.getTour()[a];
+        tspSolution.getTour()[a] = tspSolution.getTour()[b];
+        tspSolution.getTour()[b] = tspSolution.getTour()[t];
 
-        int t = sol._tour[a];
-        sol._tour[a] = sol._tour[b];
-        sol._tour[b] = sol._tour[a];
-
-        return sol;
+        return (Solution)tspSolution;
     }
 
 }
