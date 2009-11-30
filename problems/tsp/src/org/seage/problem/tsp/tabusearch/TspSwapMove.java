@@ -1,4 +1,4 @@
-package org.seage.tsp.metaheuristic.tabusearch;
+package org.seage.problem.tsp.tabusearch;
 
 import org.seage.metaheuristic.tabusearch.*;
 

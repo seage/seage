@@ -1,11 +1,11 @@
 
-package org.seage.tsp.metaheuristic.sannealing;
+package org.seage.problem.tsp.sannealing;
 
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealingListener;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
+import org.seage.problem.tsp.data.*;
 import org.seage.metaheuristic.sannealing.Solution;
-import org.seage.tsp.data.*;
 
 /**
  *

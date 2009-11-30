@@ -1,4 +1,4 @@
-package org.seage.tsp.metaheuristic.genetics;
+package org.seage.problem.tsp.genetics;
 
 import org.seage.metaheuristic.genetics.*;
 import java.util.HashMap;

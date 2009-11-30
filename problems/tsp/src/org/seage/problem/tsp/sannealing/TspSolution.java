@@ -1,10 +1,10 @@
 
-package org.seage.tsp.metaheuristic.sannealing;
+package org.seage.problem.tsp.sannealing;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.seage.metaheuristic.sannealing.Solution;
-import org.seage.tsp.data.City;
+import org.seage.problem.tsp.data.City;
 
 /**
  *

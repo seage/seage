@@ -1,4 +1,4 @@
-package org.seage.tsp.data;
+package org.seage.problem.tsp.data;
 
 import java.io.Serializable;
 

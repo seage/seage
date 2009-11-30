@@ -1,6 +1,6 @@
-package org.seage.tsp.metaheuristic.tabusearch;
+package org.seage.problem.tsp.tabusearch;
 
-import org.seage.tsp.data.City;
+import org.seage.problem.tsp.data.City;
 
 /**
  *

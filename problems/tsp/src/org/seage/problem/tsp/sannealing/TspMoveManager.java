@@ -1,5 +1,5 @@
 
-package org.seage.tsp.metaheuristic.sannealing;
+package org.seage.problem.tsp.sannealing;
 
 import java.util.Random;
 import org.seage.metaheuristic.sannealing.IMoveManager;

@@ -1,9 +1,9 @@
 
-package org.seage.tsp.metaheuristic.sannealing;
+package org.seage.problem.tsp.sannealing;
 
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
-import org.seage.tsp.data.City;
+import org.seage.problem.tsp.data.City;
 //import org.seage.tsp.data.City;
 
 /**

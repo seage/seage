@@ -1,8 +1,8 @@
-package org.seage.tsp.metaheuristic.antcolony;
+package org.seage.problem.tsp.antcolony;
 
 import org.seage.metaheuristic.antcolony.*;
-import org.seage.tsp.data.City;
-import org.seage.tsp.data.CityProvider;
+import org.seage.problem.tsp.data.City;
+import org.seage.problem.tsp.data.CityProvider;
 
 /**
  * AntColony.java Jun 20, 2009

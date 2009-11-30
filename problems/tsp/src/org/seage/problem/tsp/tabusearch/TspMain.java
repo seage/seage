@@ -1,11 +1,11 @@
-package org.seage.tsp.metaheuristic.tabusearch;
+package org.seage.problem.tsp.tabusearch;
 
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
 import org.seage.metaheuristic.tabusearch.SimpleTabuList;
 import org.seage.metaheuristic.tabusearch.TabuSearch;
 import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
 import org.seage.metaheuristic.tabusearch.TabuSearchListener;
-import org.seage.tsp.data.*;
+import org.seage.problem.tsp.data.*;
 
 /**
  *

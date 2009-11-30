@@ -3,11 +3,11 @@
  * and open the template in the editor.
  */
 
-package org.seage.tsp.metaheuristic.genetics;
+package org.seage.problem.tsp.genetics;
 
 import org.seage.metaheuristic.genetics.Evaluator;
 import org.seage.metaheuristic.genetics.Subject;
-import org.seage.tsp.data.City;
+import org.seage.problem.tsp.data.City;
 
 /**
  *

@@ -1,5 +1,5 @@
 
-package org.seage.tsp.metaheuristic.sannealing;
+package org.seage.problem.tsp.sannealing;
 
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
 import org.seage.metaheuristic.sannealing.Solution;

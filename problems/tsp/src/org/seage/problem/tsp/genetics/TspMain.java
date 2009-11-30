@@ -1,4 +1,4 @@
-package org.seage.tsp.metaheuristic.genetics;
+package org.seage.problem.tsp.genetics;
 
 import java.util.Random;
 import org.seage.metaheuristic.genetics.GeneticSearch;
@@ -6,8 +6,8 @@ import org.seage.metaheuristic.genetics.GeneticSearchEvent;
 import org.seage.metaheuristic.genetics.GeneticSearchListener;
 import org.seage.metaheuristic.genetics.Genome;
 import org.seage.metaheuristic.genetics.Subject;
-import org.seage.tsp.data.City;
-import org.seage.tsp.data.CityProvider;
+import org.seage.problem.tsp.data.City;
+import org.seage.problem.tsp.data.CityProvider;
 
 /**
  *
