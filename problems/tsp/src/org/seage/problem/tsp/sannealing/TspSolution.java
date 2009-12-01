@@ -1,4 +1,14 @@
-
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Jan Zmatlik
+ *     - Initial implementation
+ */
 package org.seage.problem.tsp.sannealing;
 
 import java.util.logging.Level;
@@ -8,11 +18,18 @@ import org.seage.problem.tsp.data.City;
 
 /**
  *
- * @author Jan Zmátlík
+ * @author Jan Zmatlik
  */
 public class TspSolution extends Solution
 {
+    /**
+     * Represent order of cities
+     */
     private Integer[] _tour;
+
+    /**
+     * Array of cities
+     */
     private City[] _cities;
 
     public TspSolution(City[] cities)
@@ -23,12 +40,15 @@ public class TspSolution extends Solution
         initTourOrder();
     }
 
+    /**
+     * Sort and fill the tour
+     */
     private void initTourOrder()
     {
         int tourLength = _tour.length;
         for(int i = 0; i < tourLength; i++) _tour[i] = i;
     }
-
+    
     public Integer[] getTour()
     {
         return _tour;

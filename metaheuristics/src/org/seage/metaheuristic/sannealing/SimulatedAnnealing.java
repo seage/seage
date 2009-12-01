@@ -11,28 +11,18 @@
  */
 package org.seage.metaheuristic.sannealing;
 
-
-  /**
-   * Set the specified array to have a list of the cities in
-   * order.
-   *
-   * @param an An array to hold the cities.
-   */
-//  public void initorder(int an[])
-//  {
-//    for (int i = 0; i < owner.getCount(); i++)
-//      an[i] = i;
-//  }
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * @author Jan Zmátlík
+ * @author Jan Zmatlik
  */
 
 public class SimulatedAnnealing implements ISimulatedAnnealing
 {
 
   /**
-   * The maximal temperature.
+   * The current temperature.
    */
   private double _currentTemperature;
 
@@ -54,35 +44,27 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   /**
    * Provide firing Events, registering listeners
    */
-  private SimulatedAnnealingListenerProvider _listenerProvider = new SimulatedAnnealingListenerProvider();
+  private SimulatedAnnealingListenerProvider _listenerProvider = new SimulatedAnnealingListenerProvider( this );
 
+  /**
+   * The Solution which is actual
+   */
   private Solution _currentSolution;
 
+  /**
+   * The Solution which is best
+   */
   private Solution _bestSolution;
 
+  /**
+   * Modifying current solution
+   */
   private IMoveManager _moveManager;
 
+  /**
+   * Calculate and set objective value of solution
+   */
   private IObjectiveFunction _objectiveFunction;
-
-  /**
-   * The current solution
-   */
-  //protected double currentSolution;
-
-  /**
-   * The best solution.
-   */
-  //protected double bestSolution;
-
-  /**
-   * The current order of cities.
-   */
-  //public int order[];
-
-  /**
-   * The best order of cities.
-   */
-  //public int minimalorder[];
 
   /**
    * Constructor
@@ -92,8 +74,6 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
    */
   public SimulatedAnnealing(IObjectiveFunction objectiveFunction, IMoveManager moveManager)
   {
-    //order = new int[owner.getCount()];
-    //minimalorder = new int[owner.getCount()];
       _objectiveFunction = objectiveFunction;
       _moveManager = moveManager;
   }  
@@ -115,99 +95,51 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
    */
   public void startSearching(Solution solution)
   {
-    // pocet iteraci, jenom kvuli vypisu
+    // Number of iteration
     int iterationCount = 1;
 
+    // At first current temperature is same such as maximal temperature
     _currentTemperature = _maximalTemperature;
 
+    // The best solution is same as current solution
     _bestSolution = _currentSolution = solution;
-    System.out.println("Maximal and current temperature " + _currentTemperature);
+    Logger.getLogger("maximal-temperature").log(Level.OFF, String.valueOf(_maximalTemperature));
+    Logger.getLogger("minimal-temperature").log(Level.OFF, String.valueOf(_minimalTemperature));
 
+    // Fire event to listeners about that algorithm has started
     _listenerProvider.fireSimulatedAnnealingStarted();
 
-    // vytvori serazenou poslopnost pro aktualni pozice mest
-    //***initorder(order);
-    // a pro minimalni pozice mest
-    //***initorder(minimalorder);
-
-    // zjisti se delka cesty mezi mesty a ze zacatku ji prohlasime jako nejkratsi
-    //*** pocatecni reseni
-    //***bestSolution = currentSolution = owner.getSolution();
-
+    // Iterates until current temperature is equal or greather than minimal temperature
     while (_currentTemperature >= _minimalTemperature)
     {
-        System.out.println("Iteration:" +  iterationCount);
-        System.out.println("Temp " + _currentTemperature);
+        Logger.getLogger("iterations").log(Level.OFF, String.valueOf(iterationCount));
 
+        // Perform actions
         performOneIteration();        
 
+        // Anneal temperature
+        _currentTemperature = _annealCoefficient * _currentTemperature;
 
-        //***double count = Math.pow(owner.getCount() , 2);
-      // make adjustments to city order(annealing)
-     /* for (int j2 = 0; j2 < count; j2++)
-      {
-        int i1 = (int)Math.floor((double)owner.getCount() * Math.random());
-        int j1 = (int)Math.floor((double)owner.getCount() * Math.random());*/
-
-        //***double distance = owner.getDistance(i1, i1 + 1) + owner.getDistance(j1, j1 + 1) - owner.getDistance(i1, j1) - owner.getDistance(i1 + 1, j1 + 1);
-
-        /*if (anneal(distance))
-        {
-          if (j1 < i1)
-          {
-            int k1 = i1;
-            i1 = j1;
-            j1 = k1;
-          }
-          
-          for (; j1 > i1; j1--) {
-            int i2 = order[i1 + 1];
-            order[i1 + 1] = order[j1];
-            order[j1] = i2;
-            i1++;
-          }
-        }
-      }*/
-
-      // See if this improved anything
-        // solution = length
-      //***currentSolution = owner.getSolution();
-      //***this.owner.setMessage("NEW path length: " + currentSolution);
-
-      // pokud je aktualni cesta mensi nez nejmensi cesta
-      /*if (currentSolution < bestSolution) {
-        // tak ji uloz, a uloz poradi uzlu
-        bestSolution = currentSolution;
-        for (int k2 = 0; k2 < owner.getCount(); k2++)
-          minimalorder[k2] = order[k2];
-      }*/
-
-      _currentTemperature = _annealCoefficient * _currentTemperature;
-      
-      iterationCount++;
-      System.out.println();
+        iterationCount++;
     }
+      // Fire event to listeners about that algorithm was stopped
       _listenerProvider.fireSimulatedAnnealingStopped();
+      Logger.getLogger("total-iterations").log(Level.OFF, String.valueOf(iterationCount));
+      Logger.getLogger("best-solution").log(Level.OFF, String.valueOf(_bestSolution.getObjectiveValue()));
   }
 
   private void performOneIteration()
   {
-      // porad stejny current solution
-      System.out.println("CurrentLength: " + _currentSolution.getObjectiveValue());
-        //##################################
-        // move randomly to new locations
+      // Move randomly to new locations
       Solution modifiedSolution = _moveManager.getModifiedSolution( _currentSolution );
-      System.out.println("ModifiedLength: " + modifiedSolution.getObjectiveValue());
 
-
-        //##################################
-        // calculate objective function F
+      // Calculate objective function and set value to modified solution
       _objectiveFunction.setObjectiveValue( modifiedSolution );
-      System.out.println("NewModifiedLength: " + modifiedSolution.getObjectiveValue());
+
+      // Get modified objective value
       double modifiedObjectiveValue = modifiedSolution.getObjectiveValue();
 
-        //##################################
-        // accept new solution if better
+      // Accept new solution if better
       if(modifiedObjectiveValue < _bestSolution.getObjectiveValue())
       {
           _bestSolution = modifiedSolution;
@@ -217,10 +149,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
       while(!anneal( modifiedObjectiveValue - _currentSolution.getObjectiveValue() ) )
       {
         _currentSolution = modifiedSolution;
-          System.out.println("OOOOOOOOOKKKKKKKKKKKKKKKK");
       }
-
-      System.out.println("BestSolution: " + _bestSolution.getObjectiveValue());
   }
 
   public final void addSimulatedAnnealingListener( ISimulatedAnnealingListener listener )
@@ -258,13 +187,14 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     return this._annealCoefficient;
   }
 
-  public Solution getSolution() {
-        return _bestSolution;
-    }
+  public Solution getBestSolution()
+  {
+    return _bestSolution;
+  }
 
-    public void stopSearching() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+  public void stopSearching() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 
 
 }

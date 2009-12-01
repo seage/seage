@@ -1,15 +1,30 @@
-
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Jan Zmatlik
+ *     - Initial implementation
+ */
 package org.seage.metaheuristic.sannealing;
 
 /**
  *
- * @author Jan Zmátlík
+ * @author Jan Zmatlik
  */
 public class SimulatedAnnealingListenerProvider  {
 
   private ISimulatedAnnealingListener[] _simulatedAnnealingListenerList = {};
 
-  private final SimulatedAnnealingEvent _simulatedAnnealingEvent = new SimulatedAnnealingEvent( this );
+  private final SimulatedAnnealingEvent _simulatedAnnealingEvent;
+
+  public SimulatedAnnealingListenerProvider(ISimulatedAnnealing simulatedAnnealing)
+  {
+        _simulatedAnnealingEvent = new SimulatedAnnealingEvent( simulatedAnnealing );
+  }
 
   public final void addSimulatedAnnealingListener( ISimulatedAnnealingListener listener )
   {

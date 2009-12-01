@@ -1,4 +1,14 @@
-
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Jan Zmatlik
+ *     - Initial implementation
+ */
 package org.seage.problem.tsp.sannealing;
 
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
@@ -6,7 +16,7 @@ import org.seage.metaheuristic.sannealing.Solution;
 
 /**
  *
- * @author Jan Zmátlík
+ * @author Jan Zmatlik
  */
 public class TspObjectiveFunction implements IObjectiveFunction
 {
@@ -16,8 +26,7 @@ public class TspObjectiveFunction implements IObjectiveFunction
     {
         _currrentTspSolution = (TspSolution)solution;
 
-        System.out.println("TSPOBJECTFUNCTION: " + solution.getObjectiveValue());
-        double distance = 0.0;//Double.MAX_VALUE
+        double distance = 0.0;
         int tourLength = _currrentTspSolution.getTour().length - 1;
 
         for (int i = 1; i <= tourLength; i++)
@@ -45,6 +54,7 @@ public class TspObjectiveFunction implements IObjectiveFunction
                 _currrentTspSolution.getCities()[b].Y
             );
   }
+  
   /**
    * Returns the Euclidean distance between two points (every point is represented by x-axis and y-axis).
    *

@@ -1,4 +1,14 @@
-
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Jan Zmatlik
+ *     - Initial implementation
+ */
 package org.seage.problem.tsp.sannealing;
 
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealingListener;
@@ -9,7 +19,7 @@ import org.seage.metaheuristic.sannealing.Solution;
 
 /**
  *
- * @author Jan Zmátlík
+ * @author Jan Zmatlik
  */
 public class TspMain implements ISimulatedAnnealingListener{
 
@@ -18,7 +28,7 @@ public class TspMain implements ISimulatedAnnealingListener{
     {
         try
         {
-            new TspMain().run("data/eil51.tsp");//args[0]
+            new TspMain().run("data/eil51.tsp");//args[0]eil101
         }
         catch(Exception ex)
         {
@@ -34,9 +44,9 @@ public class TspMain implements ISimulatedAnnealingListener{
         System.out.println("Number of cities: " + cities.length);
 
         SimulatedAnnealing sa = new SimulatedAnnealing( new TspObjectiveFunction() , new TspMoveManager() );
-        sa.setMaximalTemperature( 1.0 );
-        sa.setMinimalTemperature( 1E-10 );
-        sa.setAnnealingCoefficient( 0.88 );
+        sa.setMaximalTemperature( 100.0 );
+        sa.setMinimalTemperature( 1E-15 );
+        sa.setAnnealingCoefficient( 0.99 );
         sa.addSimulatedAnnealingListener( this );
         sa.startSearching( (Solution) new TspSolution( cities ) );
     }
@@ -47,6 +57,10 @@ public class TspMain implements ISimulatedAnnealingListener{
 
     public void simulatedAnnealingStopped(SimulatedAnnealingEvent e) {
         System.out.println("Stop");
+        TspSolution tspSolution = (TspSolution) e.getSimulatedAnnealing().getBestSolution();
+        Integer[] tour = tspSolution.getTour();
+        System.out.println("Len: " + tour.length);
+        for(int i = 0; i < tour.length; i++) System.out.println(tour[i]);
     }
 
     public void newBestSolutionFound(SimulatedAnnealingEvent e) {
