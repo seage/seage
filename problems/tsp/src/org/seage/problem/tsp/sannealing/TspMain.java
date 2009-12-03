@@ -21,8 +21,9 @@ import org.seage.metaheuristic.sannealing.Solution;
  *
  * @author Jan Zmatlik
  */
-public class TspMain implements ISimulatedAnnealingListener{
-
+public class TspMain implements ISimulatedAnnealingListener
+{
+    private City[] _cities;
 
     public static void main(String[] args)
     {
@@ -39,16 +40,18 @@ public class TspMain implements ISimulatedAnnealingListener{
 
     public void run(String path) throws Exception
     {
-        City[] cities = CityProvider.readCities( path );
+        _cities = CityProvider.readCities( path );
         System.out.println("Loading cities from path: " + path);
-        System.out.println("Number of cities: " + cities.length);
+        System.out.println("Number of cities: " + _cities.length);
 
         SimulatedAnnealing sa = new SimulatedAnnealing( new TspObjectiveFunction() , new TspMoveManager() );
+
         sa.setMaximalTemperature( 100.0 );
         sa.setMinimalTemperature( 1E-15 );
         sa.setAnnealingCoefficient( 0.99 );
+
         sa.addSimulatedAnnealingListener( this );
-        sa.startSearching( (Solution) new TspSolution( cities ) );
+        sa.startSearching( (Solution) new TspSolution( _cities ) );
     }
 
     public void simulatedAnnealingStarted(SimulatedAnnealingEvent e) {
@@ -59,12 +62,15 @@ public class TspMain implements ISimulatedAnnealingListener{
         System.out.println("Stop");
         TspSolution tspSolution = (TspSolution) e.getSimulatedAnnealing().getBestSolution();
         Integer[] tour = tspSolution.getTour();
-        System.out.println("Len: " + tour.length);
-        for(int i = 0; i < tour.length; i++) System.out.println(tour[i]);
+        System.out.println("Tour length: " + tour.length);
+        for(int i = 0; i < tour.length; i++) System.out.print(tour[i]+" ");
+        System.out.println();
+
+        Visualizer.instance().createGraph(_cities, tour, "path_to_picture");
     }
 
     public void newBestSolutionFound(SimulatedAnnealingEvent e) {
-        //System.out.println("BestSolution is : " + e.getSimulatedAnnealing().getSolution().getObjectiveValue());
+        System.out.println("BestSolution is : " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
     }
 
     public void newCurrentSolutionFound(SimulatedAnnealingEvent e) {
