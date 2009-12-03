@@ -112,7 +112,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     // Iterates until current temperature is equal or greather than minimal temperature
     while (_currentTemperature >= _minimalTemperature)
     {
-        Logger.getLogger("iterations").log(Level.OFF, String.valueOf(iterationCount));
+//        Logger.getLogger("iterations").log(Level.OFF, String.valueOf(iterationCount));
 
         // Perform actions
         performOneIteration();        
@@ -124,8 +124,8 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     }
       // Fire event to listeners about that algorithm was stopped
       _listenerProvider.fireSimulatedAnnealingStopped();
-      Logger.getLogger("total-iterations").log(Level.OFF, String.valueOf(iterationCount));
-      Logger.getLogger("best-solution").log(Level.OFF, String.valueOf(_bestSolution.getObjectiveValue()));
+//      Logger.getLogger("total-iterations").log(Level.OFF, String.valueOf(iterationCount));
+//      Logger.getLogger("best-solution").log(Level.OFF, String.valueOf(_bestSolution.getObjectiveValue()));
   }
 
   private void performOneIteration()
