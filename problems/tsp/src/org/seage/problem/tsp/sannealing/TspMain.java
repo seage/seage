@@ -46,7 +46,7 @@ public class TspMain implements ISimulatedAnnealingListener
 
         SimulatedAnnealing sa = new SimulatedAnnealing( new TspObjectiveFunction() , new TspMoveManager() );
 
-        sa.setMaximalTemperature( 100.0 );
+        sa.setMaximalTemperature( 100 );
         sa.setMinimalTemperature( 1E-15 );
         sa.setAnnealingCoefficient( 0.99 );
 
@@ -66,11 +66,24 @@ public class TspMain implements ISimulatedAnnealingListener
         for(int i = 0; i < tour.length; i++) System.out.print(tour[i]+" ");
         System.out.println();
 
+        Visualizer.instance().setVisible(true);
         Visualizer.instance().createGraph(_cities, tour, "path_to_picture");
+        Visualizer.instance().pack();
+        //Visualizer.instance().setVisible(true);
     }
-
+static boolean k = false;
     public void newBestSolutionFound(SimulatedAnnealingEvent e) {
         System.out.println("BestSolution is : " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
+
+        /*TspSolution tspSolution = (TspSolution) e.getSimulatedAnnealing().getBestSolution();
+        Integer[] tour = tspSolution.getTour();
+
+        if(!k)
+        {
+            Visualizer.instance().init();
+            k = !k;
+        }
+        Visualizer.instance().createGraph(_cities, tour, "path_to_picture");*/
     }
 
     public void newCurrentSolutionFound(SimulatedAnnealingEvent e) {
