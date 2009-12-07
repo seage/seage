@@ -12,7 +12,13 @@ public class CityProvider
         ArrayList<City> result = new ArrayList<City>();
         Scanner scanner = new Scanner(new File(path));
         try {
-            for(int i=0;i<6;i++) scanner.nextLine();
+            
+            while ( scanner.hasNextLine() )
+            {
+                String line = scanner.nextLine();
+                if(line.equals("EOF") || line.trim().startsWith("NODE_COORD_SECTION"))
+                    break;
+            }
 
             while ( scanner.hasNextLine() )
             {
