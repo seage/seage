@@ -62,31 +62,16 @@ public class TspMain implements ISimulatedAnnealingListener
         System.out.println("Stop");
         TspSolution tspSolution = (TspSolution) e.getSimulatedAnnealing().getBestSolution();
         Integer[] tour = tspSolution.getTour();
-        System.out.println("Tour length: " + tour.length);
+        System.out.println("Tour length: " + tspSolution.getObjectiveValue());
         for(int i = 0; i < tour.length; i++) System.out.print(tour[i]+" ");
         System.out.println();
 
-        Visualizer.instance().setVisible(true);
-        Visualizer.instance().createGraph(_cities, tour, "path_to_picture");
-        Visualizer.instance().pack();
-        //Visualizer.instance().setVisible(true);
+        Visualizer.instance().createGraph(_cities, tour, "path_to_picture", 400, 300);
     }
-static boolean k = false;
+
     public void newBestSolutionFound(SimulatedAnnealingEvent e) {
-        System.out.println("BestSolution is : " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
-
-        /*TspSolution tspSolution = (TspSolution) e.getSimulatedAnnealing().getBestSolution();
-        Integer[] tour = tspSolution.getTour();
-
-        if(!k)
-        {
-            Visualizer.instance().init();
-            k = !k;
-        }
-        Visualizer.instance().createGraph(_cities, tour, "path_to_picture");*/
     }
 
     public void newCurrentSolutionFound(SimulatedAnnealingEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
