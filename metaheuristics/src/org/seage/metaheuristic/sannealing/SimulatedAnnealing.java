@@ -130,7 +130,6 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
             else
                 probability = Math.exp( - ( modifiedSolution.getObjectiveValue() - _currentSolution.getObjectiveValue() ) / _currentTemperature );
 
-            System.out.println("prob " + probability);
             if( Math.random() < probability )
             {
                 successIterationCount++;
