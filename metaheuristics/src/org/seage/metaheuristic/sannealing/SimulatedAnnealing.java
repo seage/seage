@@ -11,9 +11,6 @@
  */
 package org.seage.metaheuristic.sannealing;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * @author Jan Zmatlik
  */
@@ -67,6 +64,16 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   private IObjectiveFunction _objectiveFunction;
 
   /**
+   * Maximal count of iterations
+   */
+  private long _maximalIterationCount;
+
+  /**
+   * Maximal count of success iterations
+   */
+  private long _maximalSuccessIterationCount;
+
+  /**
    * Constructor
    *
    * @param objectiveFunction is objective function.
@@ -79,77 +86,67 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   }  
 
   /**
-   * Called to determine if annealing should take place.
-   *
-   * @param Delta is value from objective function.
-   * @return True if annealing should take place.
-   */
-  public boolean anneal(double delta)
-  {   
-    return ( Math.random() < Math.exp( delta / _currentTemperature ) ) ? true : false;
-  }
-
-  /**
    * This method is called to
    * perform the simulated annealing.
    */
   public void startSearching(Solution solution)
   {
-    // Number of iteration
-    int iterationCount = 1;
+    // Initial number of iteration
+    long iterationCount = 1;
+
+    // Initial number of successful iteration
+    long successIterationCount = 1;
+
+    // Initial probability
+    double probability = 0;
 
     // At first current temperature is same such as maximal temperature
     _currentTemperature = _maximalTemperature;
 
     // The best solution is same as current solution
     _bestSolution = _currentSolution = solution;
-    Logger.getLogger("maximal-temperature").log(Level.OFF, String.valueOf(_maximalTemperature));
-    Logger.getLogger("minimal-temperature").log(Level.OFF, String.valueOf(_minimalTemperature));
 
     // Fire event to listeners about that algorithm has started
     _listenerProvider.fireSimulatedAnnealingStarted();
 
     // Iterates until current temperature is equal or greather than minimal temperature
-    while (_currentTemperature >= _minimalTemperature)
+    // and successful iteration count is less than zero
+    while (( _currentTemperature >= _minimalTemperature ) && ( successIterationCount > 0 ))
     {
-//        Logger.getLogger("iterations").log(Level.OFF, String.valueOf(iterationCount));
+        iterationCount = successIterationCount = 0;
 
-        // Perform actions
-        performOneIteration();        
+        while(( iterationCount < _maximalIterationCount ) && ( successIterationCount < _maximalSuccessIterationCount ))
+        {
+            iterationCount++;
+                
+            // Move randomly to new locations
+            Solution modifiedSolution = _moveManager.getModifiedSolution( _currentSolution );
 
+            // Calculate objective function and set value to modified solution
+            _objectiveFunction.setObjectiveValue( modifiedSolution );
+
+            if(modifiedSolution.getObjectiveValue() <= _currentSolution.getObjectiveValue())
+                probability = 1;
+            else
+                probability = Math.exp( - ( modifiedSolution.getObjectiveValue() - _currentSolution.getObjectiveValue() ) / _currentTemperature );
+
+            System.out.println("prob " + probability);
+            if( Math.random() < probability )
+            {
+                successIterationCount++;
+                _currentSolution = modifiedSolution;
+                if(_currentSolution.getObjectiveValue() < _bestSolution.getObjectiveValue())
+                {
+                    _bestSolution = modifiedSolution;
+                    _listenerProvider.fireNewBestSolutionFound();
+                }
+            }
+        }
         // Anneal temperature
         _currentTemperature = _annealCoefficient * _currentTemperature;
-
-        iterationCount++;
     }
-      // Fire event to listeners about that algorithm was stopped
-      _listenerProvider.fireSimulatedAnnealingStopped();
-//      Logger.getLogger("total-iterations").log(Level.OFF, String.valueOf(iterationCount));
-//      Logger.getLogger("best-solution").log(Level.OFF, String.valueOf(_bestSolution.getObjectiveValue()));
-  }
-
-  private void performOneIteration()
-  {
-      // Move randomly to new locations
-      Solution modifiedSolution = _moveManager.getModifiedSolution( _currentSolution );
-
-      // Calculate objective function and set value to modified solution
-      _objectiveFunction.setObjectiveValue( modifiedSolution );
-
-      // Get modified objective value
-      double modifiedObjectiveValue = modifiedSolution.getObjectiveValue();
-
-      // Accept new solution if better
-      if(modifiedObjectiveValue < _bestSolution.getObjectiveValue())
-      {
-          _bestSolution = modifiedSolution;
-          _listenerProvider.fireNewBestSolutionFound();
-      }
-
-      while(!anneal( modifiedObjectiveValue - _currentSolution.getObjectiveValue() ) )
-      {
-        _currentSolution = modifiedSolution;
-      }
+    // Fire event to listeners about that algorithm was stopped
+    _listenerProvider.fireSimulatedAnnealingStopped();
   }
 
   public final void addSimulatedAnnealingListener( ISimulatedAnnealingListener listener )
@@ -192,9 +189,25 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     return _bestSolution;
   }
 
-  public void stopSearching() {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public void stopSearching() throws SecurityException {
+    Thread.currentThread().interrupt();
   }
+
+    public long getMaximalIterationCount() {
+        return _maximalIterationCount;
+    }
+
+    public void setMaximalIterationCount(long _maximalIterationCount) {
+        this._maximalIterationCount = _maximalIterationCount;
+    }
+
+    public long getMaximalSuccessIterationCount() {
+        return _maximalSuccessIterationCount;
+    }
+
+    public void setMaximalSuccessIterationCount(long _maximalSuccessIterationCount) {
+        this._maximalSuccessIterationCount = _maximalSuccessIterationCount;
+    }
 
 
 }

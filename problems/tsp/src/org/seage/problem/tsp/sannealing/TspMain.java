@@ -29,7 +29,7 @@ public class TspMain implements ISimulatedAnnealingListener
     {
         try
         {
-            new TspMain().run("data/eil51.tsp");//args[0]eil101
+            new TspMain().run("data/eil101.tsp");//args[0]eil101
         }
         catch(Exception ex)
         {
@@ -49,6 +49,8 @@ public class TspMain implements ISimulatedAnnealingListener
         sa.setMaximalTemperature( 100 );
         sa.setMinimalTemperature( 1E-15 );
         sa.setAnnealingCoefficient( 0.99 );
+        sa.setMaximalIterationCount(100);
+        sa.setMaximalSuccessIterationCount(100);
 
         sa.addSimulatedAnnealingListener( this );
         sa.startSearching( (Solution) new TspSolution( _cities ) );
@@ -66,7 +68,7 @@ public class TspMain implements ISimulatedAnnealingListener
         for(int i = 0; i < tour.length; i++) System.out.print(tour[i]+" ");
         System.out.println();
 
-        Visualizer.instance().createGraph(_cities, tour, "path_to_picture", 400, 300);
+        Visualizer.instance().createGraph(_cities, tour, "../tspsagraph.png", 800, 800);
     }
 
     public void newBestSolutionFound(SimulatedAnnealingEvent e) {

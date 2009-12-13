@@ -24,6 +24,12 @@ public interface ISimulatedAnnealing {
         double getAnnealingCoefficient();
         void setAnnealingCoefficient(double alpha);
 
+        public long getMaximalIterationCount();
+        public void setMaximalIterationCount(long _maximalIterationCount);
+
+        public long getMaximalSuccessIterationCount();
+        public void setMaximalSuccessIterationCount(long _maximalSuccessIterationCount);
+
         Solution getBestSolution();
         void startSearching(Solution solution);
         void stopSearching();
