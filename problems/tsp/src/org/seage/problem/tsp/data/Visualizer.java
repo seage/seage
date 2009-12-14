@@ -64,24 +64,37 @@ public class Visualizer
         graph = new JGraph( model );
         graph.setAntiAliased( true );
         graph.setEditable( false );
+        
         // Show the graph
         frame = new JFrame("Travelling salesman problem visualiser");
-        frame.setPreferredSize( new Dimension( width , height ) );
+        frame.setPreferredSize( new Dimension( (int)(width*1.5) , (int)(height*1.5) ) );
         frame.getContentPane().add( new JScrollPane( graph ) );
         frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         frame.pack();
         frame.setVisible(true);
 
-        // The cell for the lemma to visualise
-        // TODO: A - Normalize coordinates to default picture size
-        DefaultGraphCell firstNode = createCell(tour[0].toString(), cities[tour[0]].X, cities[tour[0]].Y);
+        // getting current width ang height
+        double minX=Double.MAX_VALUE, minY=Double.MAX_VALUE;
+        double maxX=Double.MIN_VALUE, maxY=Double.MIN_VALUE;
+        for(int i=0;i<cities.length;i++)
+        {
+            if(cities[tour[i]].X < minX) minX = cities[tour[i]].X;
+            if(cities[tour[i]].X > maxX) maxX = cities[tour[i]].X;
+            if(cities[tour[i]].Y < minY) minY = cities[tour[i]].Y;
+            if(cities[tour[i]].Y > maxY) maxY = cities[tour[i]].Y;
+        }
+        double currWidth = maxX-minX;
+        double currHeight = maxY-minY;
+        //
+
+        DefaultGraphCell firstNode = createCell(tour[0].toString(), width*cities[tour[0]].X/currWidth, width*cities[tour[0]].Y/currHeight);
         cells.add(firstNode);
 
         DefaultGraphCell currentNode = firstNode;
         DefaultGraphCell lastNode = firstNode;
         for (int i = 1; i < tour.length; i++)
-        {
-            lastNode = createCell(tour[i].toString(), cities[tour[i]].X*10, cities[tour[i]].Y*10);
+        {            
+            lastNode = createCell(tour[i].toString(), width*cities[tour[i]].X/currWidth, height*cities[tour[i]].Y/currHeight);
             DefaultGraphCell currentLink = createEdge(currentNode, lastNode);
             cells.add(lastNode);
             cells.add(currentLink);
@@ -94,8 +107,6 @@ public class Visualizer
         graph.getGraphLayoutCache().insert(cells.toArray());
         frame.pack();
         frame.setVisible(true);
-        //graph.setScale(2.0);
-        //System.out.println("SCALE> " + graph.getScale());
         try
         {
             BufferedOutputStream out = new BufferedOutputStream( new FileOutputStream( path ) );
