@@ -1,0 +1,53 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Jan Zmatlik
+ *     - Initial implementation
+ */
+package org.seage.problem.tsp.hillclimber;
+
+import org.seage.metaheuristic.hillclimber.HillClimber;
+import org.seage.metaheuristic.hillclimber.Solution;
+import org.seage.problem.tsp.data.*;
+
+/**
+ *
+ * @author Jan Zmatlik
+ */
+public class TspMain
+{
+    private City[] _cities;
+
+    public static void main(String[] args)
+    {
+        try
+        {
+            new TspMain().run(args[0]);//args[0]eil101
+        }
+        catch(Exception ex)
+        {
+            System.out.println( ex.getMessage() );
+            ex.printStackTrace();
+        }
+    }
+
+    public void run(String path) throws Exception
+    {
+        _cities = CityProvider.readCities( path );
+        System.out.println("Loading cities from path: " + path);
+        System.out.println("Number of cities: " + _cities.length);
+
+        HillClimber hc = new HillClimber( new TspObjectiveFunction(_cities) , new TspMoveManager() );
+
+        hc.setIterationCount( 200 );        
+        
+        hc.startSearching( new TspSolution( _cities ) );
+    }
+
+    
+}
