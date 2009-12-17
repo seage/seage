@@ -27,7 +27,7 @@ public class TspMain
     {
         try
         {
-            new TspMain().run(args[0]);//args[0]eil101
+            new TspMain().run(args[0]);
         }
         catch(Exception ex)
         {
@@ -43,9 +43,7 @@ public class TspMain
         System.out.println("Number of cities: " + _cities.length);
 
         HillClimber hc = new HillClimber( new TspObjectiveFunction(_cities) , new TspMoveManager() );
-
-        hc.setIterationCount( 200 );        
-        
+        hc.setIterationCount( 200 );
         hc.startSearching( new TspSolution( _cities ) );
     }
 
