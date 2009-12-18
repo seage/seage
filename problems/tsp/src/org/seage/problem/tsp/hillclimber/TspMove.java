@@ -4,11 +4,15 @@
  */
 package org.seage.problem.tsp.hillclimber;
 
+import org.seage.metaheuristic.hillclimber.IMove;
+import org.seage.metaheuristic.hillclimber.Solution;
+
 /**
  *
  * @author rick
  */
-public class TspMove {
+public class TspMove implements IMove
+{
 
     int _ix1;
     int _ix2;
@@ -25,4 +29,10 @@ public class TspMove {
     public int getIx2() {
         return _ix2;
     }
+
+    public Solution apply(Solution s) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+
 }
