@@ -2,25 +2,27 @@
 
 <config  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
    xmlns='http://xml.seage.org/schema'
-   xsi:schemaLocation='http://xml.seage.org/schema config.xsd'
-   runAlgorithm="algGeneticAlgorithm">
+   xsi:schemaLocation='http://xml.seage.org/schema config.xsd'>
 
-    <instance name="aaa" path="aaa"></instance>
-    <visualizer outPath="aaa" width="800" height="600"/>
+    <problem problemName="tsp" runAlgorithm="algTabuSearch">
+        <instance name="eil51" path="data/eil51.tsp"></instance>
+        <visualizer outPath="eil51.png" width="800" height="600"/>
+    </problem>
 
     <algGeneticAlgorithm
-        numSolution="1"
-        iterationCount="1"
-        crossLengthPct="1"
-        eliteSubjectPct="1"
-        mutateSubjectPct="1"
-        mutateLengthPct="1"
-        randomSubjectPct="1"/>
+        numSolution="100"
+        iterationCount="100"
+        crossLengthPct="40"
+        eliteSubjectPct="10"
+        mutateSubjectPct="5"
+        mutateLengthPct="20"
+        randomSubjectPct="5"/>
 
     <algTabuSearch
-        numIteration="1"
-        tabuListLength="1"
-        numSolution="1"/>
+        numIteration="1000"
+        tabuListLength="130"
+        numSolution="1"
+	numIterDivers="1"/>
 
     <algSimulatedAnnealing 
         maxTemperature="1"
