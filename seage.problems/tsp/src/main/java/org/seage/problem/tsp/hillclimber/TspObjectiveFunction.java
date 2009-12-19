@@ -1,13 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2009 Richard Malek and SEAGE contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://seage.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Richard Malek
- *     - Initial implementation
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
 package org.seage.problem.tsp.hillclimber;
 
@@ -18,7 +11,7 @@ import org.seage.problem.tsp.data.City;
 
 /**
  *
- * @author Richard Malek
+ * @author rick
  */
 public class TspObjectiveFunction implements IObjectiveFunction {
 
@@ -32,29 +25,29 @@ public class TspObjectiveFunction implements IObjectiveFunction {
         TspSolution sol = (TspSolution) s;
         TspMove move = (TspMove) m;
 
-        int[] tour = sol.getTour();
+        Integer[] tour = sol.getTour();
 
         int ix1 = move.getIx1();
         int ix2 = move.getIx2();
 
-        int[] tour2 = modify(tour, ix1, ix2);
+        Integer[] tour2 = modify(tour, ix1, ix2);
 
         return length(tour2);
     }
 
-    private int[] modify(int[] tour, int ix1, int ix2) {
+    private Integer[] modify(Integer[] tour, int ix1, int ix2) {
         int pom = tour[ix1];
         tour[ix1] = tour[ix2];
         tour[ix2] = pom;
         return tour;
     }
 
-    private double length(int[] tour) {
-        double lenght = 0, x, y;
-        for (int i = 0; i < tour.length; i++) {
-            x = _cities[tour[i]].X;
-            y = _cities[tour[i]].Y;
-            lenght += Math.sqrt(x * x + y * y);
+    private double length(Integer[] tour) {
+        double lenght = 0, dx, dy;
+        for (int i = 0; i < tour.length-1; i++) {
+            dx = _cities[tour[i]].X - _cities[tour[i+1]].X;
+            dy = _cities[tour[i]].Y - _cities[tour[i+1]].Y;
+            lenght += Math.sqrt(dx * dx + dy * dy);
         }
         return lenght;
     }
