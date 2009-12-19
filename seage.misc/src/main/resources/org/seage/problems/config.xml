@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+   xmlns='http://xml.seage.org/schema'
+   xsi:schemaLocation='http://xml.seage.org/schema config.xsd'
+   runAlgorithm="algGeneticAlgorithm">
+
+    <instance name="aaa" path="aaa"></instance>
+    <visualizer outPath="aaa" width="800" height="600"/>
+
+    <algGeneticAlgorithm
+        numSolution="1"
+        iterationCount="1"
+        crossLengthPct="1"
+        eliteSubjectPct="1"
+        mutateSubjectPct="1"
+        mutateLengthPct="1"
+        randomSubjectPct="1"/>
+
+    <algTabuSearch
+        numIteration="1"
+        tabuListLength="1"
+        numSolution="1"/>
+
+    <algSimulatedAnnealing 
+        maxTemperature="1"
+        minTemperature="1"
+        annealCoeficient="1"
+        maxInnerIterations="1"
+        numInnerSuccesses="1"/>
+</config>
