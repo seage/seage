@@ -38,7 +38,14 @@ public class TspMove implements IMove
     }
 
     public Solution apply(Solution s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        TspSolution newSol = (TspSolution) s;
+        Integer[] newTour = newSol.getTour();
+        int pom = newTour[_ix1];
+        newTour[_ix1] = newTour[_ix2];
+        newTour[_ix2] = pom;
+        newSol.setTour(newTour);
+        return (Solution) newSol;
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
 
