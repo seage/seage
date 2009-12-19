@@ -2,11 +2,12 @@
 
 <config  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
    xmlns='http://xml.seage.org/schema'
-   xsi:schemaLocation='http://xml.seage.org/schema config.xsd'
-   runAlgorithm="algGeneticAlgorithm">
+   xsi:schemaLocation='http://xml.seage.org/schema config.xsd'>
 
-    <instance name="aaa" path="aaa"></instance>
-    <visualizer outPath="aaa" width="800" height="600"/>
+    <problem problemName="tsp" runAlgorithm="algGeneticAlgorithm">
+        <instance name="aaa" path="aaa"></instance>
+        <visualizer outPath="aaa" width="800" height="600"/>
+    </problem>
 
     <algGeneticAlgorithm
         numSolution="1"

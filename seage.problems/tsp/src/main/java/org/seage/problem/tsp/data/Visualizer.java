@@ -8,6 +8,8 @@
  * Contributors:
  *     Jan Zmatlik
  *     - Initial implementation
+ *     Richard Malek
+ *     - Redesign
  */
 package org.seage.problem.tsp.data;
 
@@ -33,7 +35,7 @@ import org.jgraph.graph.GraphModel;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class Visualizer
 {

@@ -9,37 +9,26 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.problem.tsp.hillclimber;
+package org.seage.problem.tsp.sannealing;
 
-import org.seage.metaheuristic.hillclimber.IMove;
-import org.seage.metaheuristic.hillclimber.Solution;
+import org.seage.aal.IAlgorithmAdapter;
+import org.seage.aal.IAlgorithmFactory;
+import org.seage.data.DataNode;
+import org.seage.problem.tsp.data.City;
 
 /**
  *
  * @author Richard Malek
  */
-public class TspMove implements IMove
+public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 {
+    public TspSimulatedAnnealingFactory(DataNode params, City[] cities)
+    {
 
-    int _ix1;
-    int _ix2;
-
-    public TspMove(int _ix1, int _ix2) {
-        this._ix1 = _ix1;
-        this._ix2 = _ix2;
     }
 
-    public int getIx1() {
-        return _ix1;
-    }
-
-    public int getIx2() {
-        return _ix2;
-    }
-
-    public Solution apply(Solution s) {
+    public IAlgorithmAdapter createAlgorithm() throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 
 }

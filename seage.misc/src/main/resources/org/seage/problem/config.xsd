@@ -7,26 +7,33 @@
     <xsd:element name="config">
         <xsd:complexType>
             <xsd:sequence>
-                <xsd:element name="instance">
+                <xsd:element name="problem">
                     <xsd:complexType>
-                        <xsd:sequence/>
-                        <xsd:attribute name="name" type="tns:nonEmptyString"/>
-                        <xsd:attribute name="path" type="tns:nonEmptyString"/>
-                    </xsd:complexType>
-                </xsd:element>
-                <xsd:element name="visualizer">
-                    <xsd:complexType>
-                        <xsd:sequence/>
-                        <xsd:attribute name="outPath" type="tns:nonEmptyString"/>
-                        <xsd:attribute name="width" type="xsd:unsignedInt"/>
-                        <xsd:attribute name="height" type="xsd:string"/>
+                        <xsd:sequence>
+                            <xsd:element name="instance">
+                                <xsd:complexType>
+                                        <xsd:sequence/>
+                                            <xsd:attribute name="name" type="tns:nonEmptyString"/>
+                                            <xsd:attribute name="path" type="tns:nonEmptyString"/>
+                                    </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="visualizer">
+                                <xsd:complexType>
+                                        <xsd:sequence/>
+                                            <xsd:attribute name="outPath" type="tns:nonEmptyString"/>
+                                            <xsd:attribute name="width" type="xsd:unsignedInt"/>
+                                            <xsd:attribute name="height" type="xsd:string"/>
+                                    </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                        <xsd:attribute name="problemName" type="tns:nonEmptyString"/>
+                        <xsd:attribute name="runAlgorithm" type="tns:nonEmptyString"/>
                     </xsd:complexType>
                 </xsd:element>
                 <xsd:element ref="tns:algGeneticAlgorithm"/>
                 <xsd:element ref="tns:algTabuSearch"/>
                 <xsd:element ref="tns:algSimulatedAnnealing"/>
             </xsd:sequence>
-            <xsd:attribute name="runAlgorithm" type="tns:nonEmptyString"/>
         </xsd:complexType>
     </xsd:element>
     <xsd:simpleType name="nonEmptyString">
@@ -58,6 +65,7 @@
                 <xsd:attribute name="numIteration" type="xsd:unsignedInt"/>
                 <xsd:attribute name="tabuListLength" type="xsd:unsignedInt"/>
                 <xsd:attribute name="numSolution" type="xsd:unsignedInt"/>
+                <xsd:attribute name="numIterDivers" type="xsd:unsignedInt"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -76,6 +84,8 @@
     <xsd:element name="algTabuSearch" type="tns:algTabuSearchType"></xsd:element>
     <xsd:element name="algSimulatedAnnealing" type="tns:algSimulatedAnnealingType"></xsd:element>
 </xsd:schema>
+
+
 
 
 

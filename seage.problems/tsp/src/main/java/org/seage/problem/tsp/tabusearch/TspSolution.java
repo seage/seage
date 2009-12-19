@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Richard Malek
+ *     - Initial implementation
+ */
 package org.seage.problem.tsp.tabusearch;
 
 import org.seage.metaheuristic.tabusearch.*;
@@ -9,7 +20,7 @@ import org.seage.problem.tsp.data.City;
  */
 public class TspSolution extends SolutionAdapter 
 {
-	protected int[] _tour;
+    protected int[] _tour;
     
     public TspSolution(){} // Appease clone()
 
@@ -29,15 +40,15 @@ public class TspSolution extends SolutionAdapter
         return copy;
     }   // end clone
 
-	public int[] getTour()
-	{
-		return _tour;
-	}
+    public int[] getTour()
+    {
+            return _tour;
+    }
 
-	public void setTour(int[] tour)
-	{
-		_tour = tour;
-	}
+    public void setTour(int[] tour)
+    {
+            _tour = tour;
+    }
     
     public String toString()
     {
