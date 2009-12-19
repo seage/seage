@@ -1,13 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2009 Richard Malek and SEAGE contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://seage.sourceforge.net/license/cpl-v10.html
- *
- * Contributors:
- *     Richard Malek
- *     - Initial implementation
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
 package org.seage.problem.tsp.hillclimber;
 
@@ -18,18 +11,18 @@ import org.seage.metaheuristic.hillclimber.Solution;
 
 /**
  *
- * @author Richard Malek
+ * @author rick
  */
 public class TspMoveManager implements IMoveManager {
 
     public IMove[] getAllMoves(Solution solution) {
         TspSolution sol = (TspSolution) solution;
-        TspMove[] moves = new TspMove[sol._tour.length];
+        TspMove[] moves = new TspMove[sol.getTour().length];
 
         Random rnd = new Random();
 
-        for (int i = 0; i < sol._tour.length; i++) {
-            moves[i] = new TspMove(rnd.nextInt(sol._tour.length), rnd.nextInt(sol._tour.length));
+        for (int i = 0; i < sol.getTour().length; i++) {
+            moves[i] = new TspMove(rnd.nextInt(sol.getTour().length), rnd.nextInt(sol.getTour().length));
         }
 
         return (IMove[]) moves;
