@@ -44,8 +44,11 @@ public class TspMain
 
         HillClimber hc = new HillClimber( new TspObjectiveFunction(_cities) , new TspMoveManager() );
         hc.setIterationCount( 200 );
-        hc.startSearching( new TspSolution( _cities ) );
+        TspSolution tspSolution = new TspSolution( _cities );
+        hc.startSearching( tspSolution );
+
+        Visualizer.instance().createGraph(_cities, tspSolution.getTour(), "../tspsagraph.png", 600, 400);
     }
 
-    
+
 }
