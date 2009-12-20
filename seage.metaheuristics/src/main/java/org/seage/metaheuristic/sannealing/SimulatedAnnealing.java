@@ -73,6 +73,8 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
    */
   private long _maximalSuccessIterationCount;
 
+  private boolean _stopSearching = false;
+
   /**
    * Constructor
    *
@@ -91,6 +93,9 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
    */
   public void startSearching(Solution solution)
   {
+    // Searching is starting
+    _stopSearching = false;
+
     // Initial number of iteration
     long iterationCount = 1;
 
@@ -117,6 +122,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
         while(( iterationCount < _maximalIterationCount ) && ( successIterationCount < _maximalSuccessIterationCount ))
         {
+            if( _stopSearching ) return;
             iterationCount++;
                 
             // Move randomly to new locations
@@ -189,7 +195,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   }
 
   public void stopSearching() throws SecurityException {
-    Thread.currentThread().interrupt();
+    _stopSearching = true;
   }
 
     public long getMaximalIterationCount() {

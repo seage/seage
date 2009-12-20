@@ -6,29 +6,47 @@
  * http://seage.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Richard Malek
+ *     Jan Zmatlik
  *     - Initial implementation
  */
 package org.seage.problem.tsp.sannealing;
 
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
+import org.seage.aal.sannealing.SimulatedAnnealingAdapter;
 import org.seage.data.DataNode;
+import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.tsp.City;
 
 /**
  *
- * @author Richard Malek
+ * @author Jan Zmatlik
  */
 public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 {
+    //private DataNode _algParams;
+    private City[] _cities;
+
     public TspSimulatedAnnealingFactory(DataNode params, City[] cities)
     {
-
+        //_algParams = params;
+        _cities = cities;
     }
 
-    public IAlgorithmAdapter createAlgorithm() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public IAlgorithmAdapter createAlgorithm() throws Exception
+    {
+        IAlgorithmAdapter algorithm;
+
+        algorithm = new SimulatedAnnealingAdapter( 
+                (Solution) new TspSolution( _cities ),
+                new TspObjectiveFunction(),
+                new TspMoveManager(),
+                false,
+                "");
+
+        //Object[][] solutions = TspProblemSolver.generateInitialSolutions(_cities.length, _algParams.getValueInt("numSolution"));
+        //algorithm.solutionsFromPhenotype(solutions);
+        return algorithm;
     }
 
 }
