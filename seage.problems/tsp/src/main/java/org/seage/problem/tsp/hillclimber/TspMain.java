@@ -46,8 +46,8 @@ public class TspMain
         System.out.println("Number of cities: " + _cities.length);
 
         HillClimber hc = new HillClimber( new TspObjectiveFunction(_cities) , new TspMoveManager() );
-        hc.setIterationCount( 1000 );
-        TspSolution tspSolution = new TspSolution( _cities );
+        hc.setIterationCount( 0 );
+        TspSolution tspSolution = new TspSolution( _cities);
         hc.startSearching( tspSolution );
 
         Visualizer.instance().createGraph(_cities, tspSolution.getTour(), "tsphcgraph.png", 600, 400);
