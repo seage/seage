@@ -13,7 +13,6 @@
  */
 package org.seage.problem.tsp;
 
-import org.seage.problem.tsp.City;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
@@ -73,8 +72,7 @@ public class Visualizer
         frame.setPreferredSize( new Dimension( (int)(width*1.5) , (int)(height*1.5) ) );
         frame.getContentPane().add( new JScrollPane( graph ) );
         frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        frame.pack();
-        frame.setVisible(true);
+        
 
         // getting current width ang height
         double minX=Double.MAX_VALUE, minY=Double.MAX_VALUE;
@@ -88,7 +86,6 @@ public class Visualizer
         }
         double currWidth = maxX-minX;
         double currHeight = maxY-minY;
-        //
 
         DefaultGraphCell firstNode = createCell(tour[0].toString(), width*cities[tour[0]].X/currWidth, width*cities[tour[0]].Y/currHeight);
         cells.add(firstNode);
@@ -107,20 +104,19 @@ public class Visualizer
         DefaultGraphCell lastLink = createEdge(firstNode, lastNode);
         cells.add(lastLink);
         
-        graph.getGraphLayoutCache().insert(cells.toArray());
         frame.pack();
         frame.setVisible(true);
+        graph.getGraphLayoutCache().insert(cells.toArray());
         try
         {
             BufferedOutputStream out = new BufferedOutputStream( new FileOutputStream( path ) );
             BufferedImage image = graph.getImage(graph.getBackground(), 0);
-            //Image i = image.getScaledInstance(200, 200, hints);
             ImageIO.write(image, "png", out);
             out.close();
         } catch (Exception e) {
             System.out.println("Chyba");
+            e.printStackTrace();
         }
-
 
     }
 
@@ -129,7 +125,9 @@ public class Visualizer
         DefaultGraphCell cell = new DefaultGraphCell(name);
         GraphConstants.setBounds(cell.getAttributes(), new Rectangle2D.Double(x, y, 2, 2));
         GraphConstants.setBorder(cell.getAttributes(), BorderFactory.createLineBorder(Color.BLACK));
+        GraphConstants.setSelectable(cell.getAttributes(), false);
         cell.addPort(new Point2D.Double(0, 0));
+        
         return cell;
     }
 
@@ -140,6 +138,7 @@ public class Visualizer
         target.addPort();
         edge.setTarget(target.getChildAt(target.getChildCount() -1));
         GraphConstants.setLabelAlongEdge(edge.getAttributes(), false);
+        GraphConstants.setSelectable(edge.getAttributes(), false);
         return edge;
     }
 }

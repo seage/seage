@@ -11,6 +11,7 @@
  */
 package org.seage.problem.tsp.sannealing;
 
+import java.io.File;
 import org.seage.problem.tsp.Visualizer;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.City;
@@ -27,12 +28,14 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class TspMain implements ISimulatedAnnealingListener
 {
     private City[] _cities;
+    private String _imagePath = "C:\\Documents and Settings\\Zis\\Dokumenty\\";
+    private static String _dataPath = "data/eil101.tsp";
 
     public static void main(String[] args)
     {
         try
         {
-            new TspMain().run(args[0]);//args[0]eil101
+            new TspMain().run( _dataPath );//args[0]eil101
         }
         catch(Exception ex)
         {
@@ -50,9 +53,9 @@ public class TspMain implements ISimulatedAnnealingListener
         SimulatedAnnealing sa = new SimulatedAnnealing( new TspObjectiveFunction() , new TspMoveManager() );
 
         sa.setMaximalTemperature( 200 );
-        sa.setMinimalTemperature( 1E-15 );
+        sa.setMinimalTemperature( 0.1 );
         sa.setAnnealingCoefficient( 0.99 );
-        sa.setMaximalIterationCount(1500);
+        sa.setMaximalIterationCount(500);
         sa.setMaximalSuccessIterationCount(800);
 
         sa.addSimulatedAnnealingListener( this );
@@ -71,10 +74,11 @@ public class TspMain implements ISimulatedAnnealingListener
         for(int i = 0; i < tour.length; i++) System.out.print(tour[i]+" ");
         System.out.println();
 
-        Visualizer.instance().createGraph(_cities, tour, "tspsagraph.png", 600, 400);
+        Visualizer.instance().createGraph(_cities, tour, _imagePath + new File(_dataPath).getName() + ".png", 800, 200);
     }
 
     public void newBestSolutionFound(SimulatedAnnealingEvent e) {
+        System.out.println("Best: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
     }
 
     public void newCurrentSolutionFound(SimulatedAnnealingEvent e) {
