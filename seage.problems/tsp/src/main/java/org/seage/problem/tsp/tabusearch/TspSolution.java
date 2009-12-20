@@ -12,7 +12,7 @@
 package org.seage.problem.tsp.tabusearch;
 
 import org.seage.metaheuristic.tabusearch.*;
-import org.seage.problem.tsp.data.City;
+import org.seage.problem.tsp.City;
 
 /**
  *

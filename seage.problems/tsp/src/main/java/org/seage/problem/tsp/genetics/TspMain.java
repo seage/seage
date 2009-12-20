@@ -17,12 +17,13 @@ import org.seage.metaheuristic.genetics.GeneticSearchEvent;
 import org.seage.metaheuristic.genetics.GeneticSearchListener;
 import org.seage.metaheuristic.genetics.Genome;
 import org.seage.metaheuristic.genetics.Subject;
-import org.seage.problem.tsp.data.City;
-import org.seage.problem.tsp.data.CityProvider;
+import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.CityProvider;
 
 /**
  *
  * @author Richard Malek
+ * @deprecated Replaced by TspProblemSolver
  */
 public class TspMain implements GeneticSearchListener
 {

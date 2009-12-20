@@ -9,8 +9,9 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.problem.tsp.data;
+package org.seage.problem.tsp;
 
+import org.seage.problem.tsp.City;
 import java.util.*;
 import java.io.*;
 /**

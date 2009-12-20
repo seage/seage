@@ -12,13 +12,9 @@
 package org.seage.problem.tsp;
 
 import java.util.Random;
-import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.data.DataNode;
-import org.seage.problem.IProblemSolver;
-import org.seage.problem.tsp.data.City;
-import org.seage.problem.tsp.data.CityProvider;
-import org.seage.problem.tsp.data.Visualizer;
+import org.seage.problem.ProblemSolver;
 import org.seage.problem.tsp.genetics.TspGeneticAlgorithmFactory;
 import org.seage.problem.tsp.sannealing.TspSimulatedAnnealingFactory;
 import org.seage.problem.tsp.tabusearch.TspTabuSearchFactory;
@@ -27,43 +23,35 @@ import org.seage.problem.tsp.tabusearch.TspTabuSearchFactory;
  *
  * @author Richard Malek
  */
-public class TspProblemSolver implements IProblemSolver
+public class TspProblemSolver extends ProblemSolver
 {
     private City[] _cities;
-    private IAlgorithmAdapter _algorithm;
-    private DataNode _problemParams;
-    private DataNode _algorithmParams;
+   
 
-    public TspProblemSolver(DataNode config) throws Exception
+    public static void main(String[] args)
     {
-        _problemParams = config.getDataNode("problem");
+        try
+        {
+            new TspProblemSolver(args).run();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    public TspProblemSolver(String[] args) throws Exception
+    {
+        super(args);        
+    }
+
+    @Override
+    protected void initProblem(DataNode config) throws Exception {
         _cities = CityProvider.readCities(
-                 config.getDataNode("problem").getDataNode("instance").getValueStr("path"));
-        _algorithm = createFactory(config).createAlgorithm();
+                 _problemParams.getDataNode("instance").getValueStr("path"));
     }
 
-    public void runAlgorithm() throws Exception
-    {
-        _algorithm.startSearching(_algorithmParams);
-    }
-
-    public void reportBest() throws Exception
-    {
-        System.out.println("Best: "+_algorithm.getReport().getDataNode("statistics").getValueStr("bestObjVal"));
-    }
-
-    public void visualize() throws Exception
-    {
-        Integer[] tour = (Integer[])_algorithm.solutionsToPhenotype()[0];
-
-        String outPath = _problemParams.getDataNode("visualizer").getValueStr("outPath");
-        int width = _problemParams.getDataNode("visualizer").getValueInt("width");
-        int height = _problemParams.getDataNode("visualizer").getValueInt("height");
-
-        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
-    }
-
-    private IAlgorithmFactory createFactory(DataNode config) throws Exception
+    protected IAlgorithmFactory createAlgorithmFactory(DataNode config) throws Exception
     {
         _algorithmParams = config.getDataNode(config.getDataNode("problem").getValueStr("runAlgorithm"));
         String algName = _algorithmParams.getName();
@@ -76,6 +64,17 @@ public class TspProblemSolver implements IProblemSolver
             return new TspSimulatedAnnealingFactory(_algorithmParams, _cities);
 
         throw new Exception("No algorithm factory for name: " + algName);
+    }
+
+    protected void visualize() throws Exception
+    {
+        Integer[] tour = (Integer[])_algorithm.solutionsToPhenotype()[0];
+
+        String outPath = _problemParams.getDataNode("visualizer").getValueStr("outPath");
+        int width = _problemParams.getDataNode("visualizer").getValueInt("width");
+        int height = _problemParams.getDataNode("visualizer").getValueInt("height");
+
+        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
     }
 
     public static Integer[][] generateInitialSolutions(int length, int count )

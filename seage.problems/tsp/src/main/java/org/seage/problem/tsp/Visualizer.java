@@ -11,8 +11,9 @@
  *     Richard Malek
  *     - Redesign
  */
-package org.seage.problem.tsp.data;
+package org.seage.problem.tsp;
 
+import org.seage.problem.tsp.City;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.Point2D;

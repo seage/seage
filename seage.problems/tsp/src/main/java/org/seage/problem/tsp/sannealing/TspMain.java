@@ -11,15 +11,18 @@
  */
 package org.seage.problem.tsp.sannealing;
 
+import org.seage.problem.tsp.Visualizer;
+import org.seage.problem.tsp.CityProvider;
+import org.seage.problem.tsp.City;
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealingListener;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
-import org.seage.problem.tsp.data.*;
 import org.seage.metaheuristic.sannealing.Solution;
 
 /**
  *
  * @author Jan Zmatlik
+ * @deprecated Replaced by TspProblemSolver
  */
 public class TspMain implements ISimulatedAnnealingListener
 {

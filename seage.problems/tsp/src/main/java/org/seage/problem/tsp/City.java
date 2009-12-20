@@ -9,7 +9,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.problem.tsp.data;
+package org.seage.problem.tsp;
 
 import java.io.Serializable;
 

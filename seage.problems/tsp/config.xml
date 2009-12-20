@@ -4,7 +4,7 @@
    xmlns='http://xml.seage.org/schema'
    xsi:schemaLocation='http://xml.seage.org/schema config.xsd'>
 
-    <problem problemName="tsp" runAlgorithm="algTabuSearch">
+    <problem problemName="tsp" runAlgorithm="algGeneticAlgorithm">
         <instance name="eil51" path="data/eil51.tsp"></instance>
         <visualizer outPath="eil51.png" width="800" height="600"/>
     </problem>

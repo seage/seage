@@ -14,7 +14,7 @@ package org.seage.problem.tsp.sannealing;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.data.DataNode;
-import org.seage.problem.tsp.data.City;
+import org.seage.problem.tsp.City;
 
 /**
  *

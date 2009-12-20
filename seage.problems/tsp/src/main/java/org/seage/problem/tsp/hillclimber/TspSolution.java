@@ -5,7 +5,7 @@
 package org.seage.problem.tsp.hillclimber;
 
 import org.seage.metaheuristic.hillclimber.Solution;
-import org.seage.problem.tsp.data.City;
+import org.seage.problem.tsp.City;
 
 /**
  *
