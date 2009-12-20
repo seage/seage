@@ -50,7 +50,7 @@ public class TspMain
         TspSolution tspSolution = new TspSolution( _cities );
         hc.startSearching( tspSolution );
 
-        Visualizer.instance().createGraph(_cities, tspSolution.getTour(), "../tspsagraph.png", 600, 400);
+        Visualizer.instance().createGraph(_cities, tspSolution.getTour(), "tsphcgraph.png", 600, 400);
     }
 
 
