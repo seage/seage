@@ -20,20 +20,35 @@ public class TspSolution extends Solution {
     private Random rnd = new Random();
 
     public TspSolution(City[] cities) {
-        initHungerTour(cities);
+        findBestHunger(cities);
     }
 
-    private void initHungerTour(City[] c) {
+    private void findBestHunger(City[] cities) {
+        double smaller = initHungerTour(cities, 0);
+        double act = 0;
+        int indexSmaller = 0;
+        for (int i = 1; i < cities.length; i++) {
+            act = initHungerTour(cities, i);
+            if(act < smaller){
+                smaller = act;
+                indexSmaller = i;
+            }
+        }
+        initHungerTour(cities, indexSmaller);
+        System.out.println("smaller: "+smaller);
+    }
+
+    private double initHungerTour(City[] c, int listIndex) {
         List<City> openList = new ArrayList();
         for (int i = 0; i < c.length; i++) {
             openList.add(c[i]);
         }
 
         List<City> hungerTour = new ArrayList();
-        int listIndex = rnd.nextInt(openList.size() - 1);
         City actCity = openList.get(listIndex);
         hungerTour.add(actCity);
         openList.remove(listIndex);
+        double totalDist = 0;
 
         while (openList.size() != 0) {
             double distance = Double.MAX_VALUE, aktDistance;
@@ -47,12 +62,17 @@ public class TspSolution extends Solution {
             actCity = openList.get(listIndex);
             hungerTour.add(actCity);
             openList.remove(listIndex);
+            totalDist += distance;
         }
+        totalDist += euklDist(hungerTour.get(0), hungerTour.get(hungerTour.size() - 1));
 
         this._tour = new Integer[c.length];
         for (int i = 0; i < c.length; i++) {
             this._tour[i] = hungerTour.get(i).ID - 1;
         }
+
+        System.out.println("total distance: " + totalDist);
+        return totalDist;
     }
 
     private double euklDist(City c1, City c2) {
