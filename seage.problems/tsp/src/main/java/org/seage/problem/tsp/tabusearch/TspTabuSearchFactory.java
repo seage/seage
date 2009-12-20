@@ -17,7 +17,7 @@ import org.seage.aal.tabusearch.TabuSearchAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.tsp.TspProblemSolver;
-import org.seage.problem.tsp.data.City;
+import org.seage.problem.tsp.City;
 
 /**
  *

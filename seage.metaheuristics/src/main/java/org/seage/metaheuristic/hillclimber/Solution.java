@@ -6,16 +6,14 @@
  * http://seage.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Jan Zmatlik
+ *     Martin Zaloga
  *     - Initial implementation
  */
 package org.seage.metaheuristic.hillclimber;
 
-import org.seage.metaheuristic.sannealing.*;
-
 /**
  *
- * @author Jan Zmatlik
+ * @author Martin Zaloga
  */
 public class Solution implements java.lang.Cloneable {
 

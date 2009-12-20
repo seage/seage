@@ -14,7 +14,7 @@ package org.seage.problem.tsp.genetics;
 
 import org.seage.metaheuristic.genetics.Evaluator;
 import org.seage.metaheuristic.genetics.Subject;
-import org.seage.problem.tsp.data.City;
+import org.seage.problem.tsp.City;
 
 /**
  *

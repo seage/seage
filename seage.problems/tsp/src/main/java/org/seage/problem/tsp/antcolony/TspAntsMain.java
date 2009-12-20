@@ -12,12 +12,13 @@
 package org.seage.problem.tsp.antcolony;
 
 import org.seage.metaheuristic.antcolony.*;
-import org.seage.problem.tsp.data.City;
-import org.seage.problem.tsp.data.CityProvider;
+import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.CityProvider;
 
 /**
  * 
  * @author Richard Malek
+ * @deprecated Replaced by TspProblemSolver
  */
 public class TspAntsMain
 {

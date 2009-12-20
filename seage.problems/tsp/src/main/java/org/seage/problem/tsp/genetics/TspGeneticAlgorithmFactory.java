@@ -17,7 +17,7 @@ import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.genetics.GeneticAlgorithmAdapter;
 import org.seage.data.DataNode;
 import org.seage.problem.tsp.TspProblemSolver;
-import org.seage.problem.tsp.data.City;
+import org.seage.problem.tsp.City;
 
 
 /**

@@ -6,16 +6,15 @@
  * http://seage.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Jan Zmatlik
+ *     Martin Zaloga
  *     - Initial implementation
  */
-
 package org.seage.metaheuristic.hillclimber;
 
 
 /**
  *
- * @author Jan Zmatlik
+ * @author Martin Zaloga
  */
 public interface IObjectiveFunction {
     double evaluateMove(Solution s, IMove move);

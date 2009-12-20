@@ -11,16 +11,18 @@
  */
 package org.seage.problem.tsp.tabusearch;
 
+import org.seage.problem.tsp.CityProvider;
+import org.seage.problem.tsp.City;
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
 import org.seage.metaheuristic.tabusearch.SimpleTabuList;
 import org.seage.metaheuristic.tabusearch.TabuSearch;
 import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
 import org.seage.metaheuristic.tabusearch.TabuSearchListener;
-import org.seage.problem.tsp.data.*;
 
 /**
  *
  * @author Richard Malek
+ * @deprecated Replaced by TspProblemSolver
  */
 public class TspMain implements TabuSearchListener
 {

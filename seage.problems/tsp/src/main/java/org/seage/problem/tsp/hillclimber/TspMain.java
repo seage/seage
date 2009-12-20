@@ -6,18 +6,21 @@
  * http://seage.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Jan Zmatlik
+ *     Martin Zaloga
  *     - Initial implementation
  */
 package org.seage.problem.tsp.hillclimber;
 
+import org.seage.problem.tsp.CityProvider;
+import org.seage.problem.tsp.City;
 import org.seage.metaheuristic.hillclimber.HillClimber;
 import org.seage.metaheuristic.hillclimber.Solution;
-import org.seage.problem.tsp.data.*;
+import org.seage.problem.tsp.Visualizer;
 
 /**
  *
- * @author Jan Zmatlik
+ * @author Martin Zaloga
+ * @deprecated Replaced by TspProblemSolver
  */
 public class TspMain
 {
