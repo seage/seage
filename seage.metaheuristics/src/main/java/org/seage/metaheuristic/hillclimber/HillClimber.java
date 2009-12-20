@@ -27,7 +27,6 @@ public class HillClimber implements IHillClimber {
         this._objectiveFunction = objectiveFunction;
     }
 
-    //TODO: A - review the code bellow
     public void startSearching(Solution solution) {
         this._currentSolution = solution;
 
@@ -37,10 +36,8 @@ public class HillClimber implements IHillClimber {
             IMove[] moves = this._moveManager.getAllMoves(this._currentSolution);
 
             IMove best = null;
-            //double bestVal = Double.MAX_VALUE;
             for (IMove m : moves) {
                 double val = this._objectiveFunction.evaluateMove(this._currentSolution, m);
-
                 if (val < bestVal) {
                     best = m;
                     bestVal = val;
