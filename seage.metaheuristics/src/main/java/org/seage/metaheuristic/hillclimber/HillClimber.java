@@ -25,11 +25,12 @@ public class HillClimber implements IHillClimber {
         this._currentSolution = solution;
 
         int iter = 0;
+        double bestVal = Double.MAX_VALUE;
         while (iter < this._numIter) {
             IMove[] moves = this._moveManager.getAllMoves(this._currentSolution);
 
             IMove best = null;
-            double bestVal = Double.MAX_VALUE;
+            //double bestVal = Double.MAX_VALUE;
             for (IMove m : moves) {
                 double val = this._objectiveFunction.evaluateMove(this._currentSolution, m);
 
@@ -39,7 +40,10 @@ public class HillClimber implements IHillClimber {
                 }
             }
 
-            this._currentSolution = best.apply(this._currentSolution);
+            if (best != null) {
+                System.out.println(""+bestVal);
+                this._currentSolution = best.apply(this._currentSolution);
+            }
             iter++;
         }
     }
