@@ -18,8 +18,7 @@ import org.seage.metaheuristic.hillclimber.Solution;
  *
  * @author Richard Malek
  */
-public class TspMove implements IMove
-{
+public class TspMove implements IMove {
 
     int _ix1;
     int _ix2;
@@ -45,8 +44,5 @@ public class TspMove implements IMove
         newTour[_ix2] = pom;
         newSol.setTour(newTour);
         return (Solution) newSol;
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
-
-
 }
