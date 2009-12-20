@@ -49,6 +49,9 @@ public class TspObjectiveFunction implements IObjectiveFunction {
             dy = _cities[tour[i]].Y - _cities[tour[i+1]].Y;
             lenght += Math.sqrt(dx * dx + dy * dy);
         }
+        dx = _cities[tour[0]].X - _cities[tour[tour.length-1]].X;
+        dy = _cities[tour[0]].Y - _cities[tour[tour.length-1]].Y;
+        lenght += Math.sqrt(dx * dx + dy * dy);
         return lenght;
     }
 }
