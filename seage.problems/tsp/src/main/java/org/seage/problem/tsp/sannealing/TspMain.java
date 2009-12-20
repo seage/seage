@@ -71,7 +71,7 @@ public class TspMain implements ISimulatedAnnealingListener
         for(int i = 0; i < tour.length; i++) System.out.print(tour[i]+" ");
         System.out.println();
 
-        Visualizer.instance().createGraph(_cities, tour, "../tspsagraph.png", 600, 400);
+        Visualizer.instance().createGraph(_cities, tour, "tspsagraph.png", 600, 400);
     }
 
     public void newBestSolutionFound(SimulatedAnnealingEvent e) {
