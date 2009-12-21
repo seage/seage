@@ -37,15 +37,24 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
     {
         IAlgorithmAdapter algorithm;
 
-        algorithm = new SimulatedAnnealingAdapter( 
-                (Solution) new TspSolution( _cities ),
+        algorithm = new SimulatedAnnealingAdapter((Solution) new TspSolution( _cities ),
                 new TspObjectiveFunction(),
-                new TspMoveManager(),
-                false,
-                "");
+                new TspMoveManager(), false, "")
+        {
+            public void solutionsFromPhenotype(Object[][] source) throws Exception 
+            {
+                // TODO: A - implement conversion from source to _initialsolution
+                // source[0] -> _initialSolution
+            }
 
-        //Object[][] solutions = TspProblemSolver.generateInitialSolutions(_cities.length, _algParams.getValueInt("numSolution"));
-        //algorithm.solutionsFromPhenotype(solutions);
+            public Object[][] solutionsToPhenotype() throws Exception
+            {
+                // TODO: A - implement conversion from  _initialsolution to Object[][]
+                // _initialSolution -> Object[][]
+                return null;
+            }
+        };
+
         return algorithm;
     }
 

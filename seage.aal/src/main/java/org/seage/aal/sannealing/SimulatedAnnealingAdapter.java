@@ -25,7 +25,7 @@ import org.seage.metaheuristic.sannealing.Solution;
  *
  * @author Jan Zmatlik
  */
-public class SimulatedAnnealingAdapter implements IAlgorithmAdapter, ISimulatedAnnealingListener
+public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, ISimulatedAnnealingListener
 {
     private SimulatedAnnealing _simulatedAnnealing;
     private AlgorithmReporter _reporter;
@@ -37,10 +37,12 @@ public class SimulatedAnnealingAdapter implements IAlgorithmAdapter, ISimulatedA
                                 IObjectiveFunction  objectiveFunction,
                                 IMoveManager moveManager,
                                 boolean maximizing,
-                                String searchID)
+                                String searchID) throws Exception
     {
         _initialSolution = initialSolution;
         _simulatedAnnealing = new SimulatedAnnealing( objectiveFunction , moveManager );
+
+        _reporter = new AlgorithmReporter(searchID);
     }
 
     public void startSearching(DataNode params) throws Exception {
@@ -63,16 +65,12 @@ public class SimulatedAnnealingAdapter implements IAlgorithmAdapter, ISimulatedA
 //        _reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);
 //
 //        return _reporter.getReport();
-        return null;
+        _reporter.putStatistics(0, 0, 0, 0, 0, 0);
+
+        return _reporter.getReport();
     }
 
-    public void solutionsFromPhenotype(Object[][] source) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public Object[][] solutionsToPhenotype() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+ 
 
     private void setParameters(DataNode param) throws Exception
     {
