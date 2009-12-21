@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * Copyright (c) 2001 Robert Harder
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Victor Wiley
+ *     - Initial implementation
+ *     Robert Harder
+ *     - ???
+ *     Richard Malek
+ *     - Merge with SEAGE
+ */
 package org.seage.metaheuristic.tabusearch;
 
 /**
@@ -16,12 +32,9 @@ package org.seage.metaheuristic.tabusearch;
  * @since 1.0.2
  * @author Victor Wiley
  * @author Robert Harder
- * @author Richard Malek
  */
 public class BestEverAspirationCriteria implements AspirationCriteria
-{
-
-    
+{    
     /**
      * Determine if the proposed tabu move should in fact be allowed
      * because it results in a value better than the current

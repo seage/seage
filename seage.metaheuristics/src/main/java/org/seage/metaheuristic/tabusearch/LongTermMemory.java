@@ -1,18 +1,20 @@
+/*******************************************************************************
+ * Copyright (c) 2001 Robert Harder
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Richard Malek
+ *     - Initial implementation
+ */
 package org.seage.metaheuristic.tabusearch;
 
 /**
  * LongTermMemory interface.
  * 
- * <p><em>This code is licensed for public use under the Common Public License version 0.5.</em><br/>
- * The Common Public License, developed by IBM and modeled after their industry-friendly IBM Public License,
- * differs from other common open source licenses in several important ways:
- * <ul>
- *  <li>You may include this software with other software that uses a different (even non-open source) license.</li>
- *  <li>You may use this software to make for-profit software.</li>
- *  <li>Your patent rights, should you generate patents, are protected.</li>
- * </ul>
- * </p>
- *
  * @author Richard Malek
  */
 public interface LongTermMemory
