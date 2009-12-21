@@ -20,25 +20,27 @@ public class TspSolution extends Solution {
     private Random rnd = new Random();
 
     public TspSolution(City[] cities) {
-        findBestHunger(cities);
+        //findBestHunger(cities);
+            initRandTour(cities);
+
     }
 
     private void findBestHunger(City[] cities) {
-        double smaller = initHungerTour(cities, 0);
+        double smaller = initGreedyTour(cities, 0);
         double act = 0;
         int indexSmaller = 0;
         for (int i = 1; i < cities.length; i++) {
-            act = initHungerTour(cities, i);
+            act = initGreedyTour(cities, i);
             if(act < smaller){
                 smaller = act;
                 indexSmaller = i;
             }
         }
-        initHungerTour(cities, indexSmaller);
+        initGreedyTour(cities, indexSmaller);
         System.out.println("smaller: "+smaller);
     }
 
-    private double initHungerTour(City[] c, int listIndex) {
+    private double initGreedyTour(City[] c, int listIndex) {
         List<City> openList = new ArrayList();
         for (int i = 0; i < c.length; i++) {
             openList.add(c[i]);

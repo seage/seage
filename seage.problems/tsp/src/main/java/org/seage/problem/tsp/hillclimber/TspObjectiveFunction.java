@@ -25,14 +25,17 @@ public class TspObjectiveFunction implements IObjectiveFunction {
         TspSolution sol = (TspSolution) s;
         TspMove move = (TspMove) m;
 
-        Integer[] tour = sol.getTour();
+        Integer[] tour = sol.getTour().clone();
 
-        int ix1 = move.getIx1();
-        int ix2 = move.getIx2();
+        if(m!=null)
+        {   
+            int ix1 = move.getIx1();
+            int ix2 = move.getIx2();
+            
+            tour = modify(tour, ix1, ix2);
+        }
 
-        Integer[] tour2 = modify(tour, ix1, ix2);
-
-        return length(tour2);
+        return length(tour);
     }
 
     private Integer[] modify(Integer[] tour, int ix1, int ix2) {
