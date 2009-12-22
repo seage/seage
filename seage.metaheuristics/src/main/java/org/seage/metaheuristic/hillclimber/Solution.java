@@ -21,6 +21,7 @@ public class Solution implements java.lang.Cloneable {
      * The value is value of Solution
      */
     double value = Double.MAX_VALUE;
+    public String switcher;
 
     /**
      * Returns the value of Solution

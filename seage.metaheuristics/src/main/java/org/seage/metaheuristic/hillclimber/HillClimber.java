@@ -23,21 +23,21 @@ public class HillClimber implements IHillClimber {
     private IObjectiveFunction _objectiveFunction;
 
     public HillClimber(IObjectiveFunction objectiveFunction, IMoveManager moveManager) {
-        this._moveManager = moveManager;
-        this._objectiveFunction = objectiveFunction;
+        _moveManager = moveManager;
+        _objectiveFunction = objectiveFunction;
     }
 
     public void startSearching(Solution solution) {
-        this._currentSolution = solution;
+       _currentSolution = solution;
 
         int iter = 0;
-        double bestVal = _objectiveFunction.evaluateMove(this._currentSolution, null);
-        while (iter < this._numIter) {
-            IMove[] moves = this._moveManager.getAllMoves(this._currentSolution);
+        double bestVal = _objectiveFunction.evaluateMove(_currentSolution, null);
+        while (iter < _numIter) {
+            IMove[] moves = _moveManager.getAllMoves(_currentSolution);
 
             IMove best = null;
             for (IMove m : moves) {
-                double val = this._objectiveFunction.evaluateMove(this._currentSolution, m);
+                double val = _objectiveFunction.evaluateMove(_currentSolution, m);
                 if (val < bestVal) {
                     best = m;
                     bestVal = val;
@@ -46,7 +46,7 @@ public class HillClimber implements IHillClimber {
 
             if (best != null) {
                 //System.out.println(""+bestVal);
-                this._currentSolution = best.apply(this._currentSolution);
+                _currentSolution = best.apply(_currentSolution);
                 _currentSolution.setObjectiveValue(bestVal);
             }
             iter++;
@@ -54,10 +54,10 @@ public class HillClimber implements IHillClimber {
     }
 
     public void setIterationCount(int count) {
-        this._numIter = count;
+        _numIter = count;
     }
 
     public Solution getBestSolution() {
-        return this._currentSolution;
+        return _currentSolution;
     }
 }
