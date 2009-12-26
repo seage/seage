@@ -22,10 +22,18 @@ public class TspObjectiveFunction implements IObjectiveFunction {
     }
 
     public double evaluateMove(Solution s, IMove m) {
-        TspSolution sol = (TspSolution) s;
-        TspMove move = (TspMove) m;
+        Integer[] tour = null;
+        if(s.switcher.equals("Random") || s.switcher.equals("random")){
+            TspRandomSolution2 sol = (TspRandomSolution2) s;
+            tour = sol.getTour().clone();
+        }
 
-        Integer[] tour = sol.getTour().clone();
+        if(s.switcher.equals("Greedy") || s.switcher.equals("greedy")){
+            TspGreedySolution2 sol = (TspGreedySolution2) s;
+            tour = sol.getTour().clone();
+        }
+
+        TspMove move = (TspMove) m;
 
         if(m!=null)
         {   

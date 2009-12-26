@@ -14,30 +14,13 @@ import org.seage.problem.tsp.City;
  *
  * @author rick
  */
-public class TspSolution extends Solution {
+public class TspGreedySolution2 extends Solution {
 
     private Integer[] _tour;
     private Random rnd = new Random();
 
-    public TspSolution(City[] cities) {
-        //findBestHunger(cities);
-            initRandTour(cities);
-
-    }
-
-    private void findBestHunger(City[] cities) {
-        double smaller = initGreedyTour(cities, 0);
-        double act = 0;
-        int indexSmaller = 0;
-        for (int i = 1; i < cities.length; i++) {
-            act = initGreedyTour(cities, i);
-            if(act < smaller){
-                smaller = act;
-                indexSmaller = i;
-            }
-        }
-        initGreedyTour(cities, indexSmaller);
-        System.out.println("smaller: "+smaller);
+    public TspGreedySolution2(City[] cities) {
+            initGreedyTour(cities, rnd.nextInt(cities.length));
     }
 
     private double initGreedyTour(City[] c, int listIndex) {
@@ -68,9 +51,9 @@ public class TspSolution extends Solution {
         }
         totalDist += euklDist(hungerTour.get(0), hungerTour.get(hungerTour.size() - 1));
 
-        this._tour = new Integer[c.length];
+        _tour = new Integer[c.length];
         for (int i = 0; i < c.length; i++) {
-            this._tour[i] = hungerTour.get(i).ID - 1;
+            _tour[i] = hungerTour.get(i).ID - 1;
         }
 
         System.out.println("total distance: " + totalDist);
@@ -83,32 +66,11 @@ public class TspSolution extends Solution {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    private void initRandTour(City[] c) {
-
-        List<Integer> listTour = new ArrayList();
-        for (int i = 0; i < c.length; i++) {
-            listTour.add(i);
-        }
-
-        List<Integer> randTour = new ArrayList();
-        Integer pom = null;
-        for (int i = 0; i < c.length; i++) {
-            pom = listTour.get(rnd.nextInt(listTour.size()));
-            randTour.add(pom);
-            listTour.remove(pom);
-        }
-
-        this._tour = new Integer[c.length];
-        for (int i = 0; i < c.length; i++) {
-            this._tour[i] = randTour.get(i);
-        }
-    }
-
     public Integer[] getTour() {
         return _tour;
     }
 
     public void setTour(Integer[] tour) {
-        this._tour = tour;
+        _tour = tour;
     }
 }
