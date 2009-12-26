@@ -23,9 +23,9 @@ public class TspMove implements IMove {
     int _ix1;
     int _ix2;
 
-    public TspMove(int _ix1, int _ix2) {
-        this._ix1 = _ix1;
-        this._ix2 = _ix2;
+    public TspMove(int ix1, int ix2) {
+        _ix1 = ix1;
+        _ix2 = ix2;
     }
 
     public int getIx1() {
@@ -37,12 +37,25 @@ public class TspMove implements IMove {
     }
 
     public Solution apply(Solution s) {
-        TspSolution newSol = (TspSolution) s;
-        Integer[] newTour = newSol.getTour();
-        int pom = newTour[_ix1];
-        newTour[_ix1] = newTour[_ix2];
-        newTour[_ix2] = pom;
-        newSol.setTour(newTour);
-        return (Solution) newSol;
+        if (s.switcher.equals("Random") || s.switcher.equals("random")) {
+            TspRandomSolution2 newSol = (TspRandomSolution2) s;
+            Integer[] newTour = newSol.getTour();
+            int pom = newTour[_ix1];
+            newTour[_ix1] = newTour[_ix2];
+            newTour[_ix2] = pom;
+            newSol.setTour(newTour);
+            return (Solution) newSol;
+        }
+
+        if (s.switcher.equals("Greedy") || s.switcher.equals("greedy")) {
+            TspGreedySolution2 newSol = (TspGreedySolution2) s;
+            Integer[] newTour = newSol.getTour();
+            int pom = newTour[_ix1];
+            newTour[_ix1] = newTour[_ix2];
+            newTour[_ix2] = pom;
+            newSol.setTour(newTour);
+            return (Solution) newSol;
+        }
+        return null;
     }
 }
