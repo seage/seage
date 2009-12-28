@@ -42,7 +42,7 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
         _initialSolution = initialSolution;
         _simulatedAnnealing = new SimulatedAnnealing( objectiveFunction , moveManager );
 
-        _reporter = new AlgorithmReporter(searchID);
+        _reporter = new AlgorithmReporter( searchID );
     }
 
     public void startSearching(DataNode params) throws Exception {
@@ -62,15 +62,28 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
 //            avg +=_solutions[i].getObjectiveValue()[0];
 //        avg /= num;
 //
-//        _reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);
+          _reporter.putStatistics(
+                  _simulatedAnnealing.getNumberOfIteration(),
+                  _simulatedAnnealing.getNumberOfNewSolutions(),
+                  _simulatedAnnealing.getNumberOfNewSolutions(),
+                  _simulatedAnnealing.getInitObjectiveValue(),
+                  _simulatedAnnealing.getAvgObjectiveValue(),
+                  _simulatedAnnealing.getBestSolution().getObjectiveValue()
+                  );
 //
 //        return _reporter.getReport();
-        _reporter.putStatistics(0, 0, 0, 0, 0, 0);
+        //_reporter.putStatistics(0, 0, 0, 0, 0, 0);
 
         return _reporter.getReport();
     }
 
- 
+    public Solution getInitialSolution() {
+        return _initialSolution;
+    }
+
+    public void setInitialSolution(Solution _initialSolution) {
+        this._initialSolution = _initialSolution;
+    }
 
     private void setParameters(DataNode param) throws Exception
     {
