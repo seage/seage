@@ -18,8 +18,9 @@ package org.seage.metaheuristic.hillclimber;
 public interface IMoveManager {
     
     /**
-     * Returns moves for a given solution
-     * @param Solution solution
+     *
+     * @param solution - Solutions for which are generated following steps
+     * @return - Returns moves for a given solution
      */
     IMove[] getAllMoves(Solution solution);
 }
