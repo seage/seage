@@ -19,26 +19,24 @@ public class Solution implements java.lang.Cloneable {
 
     /**
      * The value is value of Solution
+     * The switcher is for switching between types of initial solution
      */
     double value = Double.MAX_VALUE;
     public String switcher;
 
     /**
      * Returns the value of Solution
-     * @return double value
+     * @return - The rating of Solution
      */
-    public double getObjectiveValue()
-    {
+    public double getObjectiveValue() {
         return value;
     }
 
     /**
      * Sets the value of Solution
-     * @param double objValue
+     * @param objValue - Evaluation of the solution
      */
-    public void setObjectiveValue(double objValue)
-    {
+    public void setObjectiveValue(double objValue) {
         value = objValue;
     }
-
 }

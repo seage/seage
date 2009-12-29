@@ -17,5 +17,17 @@ package org.seage.metaheuristic.hillclimber;
  * @author Martin Zaloga
  */
 public interface IObjectiveFunction {
+
+    /**
+     * Function that returns the rating for the next step
+     * @param s - Solutions for which was generated the steps
+     * @param move - The next step
+     * @return - Rating for the step
+     */
     double evaluateMove(Solution s, IMove move);
+
+    /**
+     * Method for reseting parameters
+     */
+    void reset();
 }
