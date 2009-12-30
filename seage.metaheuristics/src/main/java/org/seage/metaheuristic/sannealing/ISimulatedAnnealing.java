@@ -31,6 +31,8 @@ public interface ISimulatedAnnealing {
         public void setMaximalSuccessIterationCount(long _maximalSuccessIterationCount);
 
         Solution getBestSolution();
+        public Solution getCurrentSolution();
+
         void startSearching(Solution solution);
         void stopSearching();
 }

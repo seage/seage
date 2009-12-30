@@ -32,6 +32,10 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
     private String _searchID;
     private Solution _initialSolution;
     private Solution _bestSolution;
+    private long _numberOfIterations = 0;
+    private long _numberOfNewSolutions = 0;
+    private long _lastIterationNumberNewSolution = 0;
+    private double _initObjectiveValue = Double.MAX_VALUE;
 
     public SimulatedAnnealingAdapter( Solution initialSolution,
                                 IObjectiveFunction  objectiveFunction,
@@ -51,28 +55,18 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
 
         setParameters( params );
         _simulatedAnnealing.startSearching( _initialSolution );
-
     }
 
     public DataNode getReport() throws Exception
     {
-//        int num = _solutions.length;// > 10 ? 10 : solutions.length;
-//        double avg = 0;
-//        for (int i = 0; i < num; i++)
-//            avg +=_solutions[i].getObjectiveValue()[0];
-//        avg /= num;
-//
-          _reporter.putStatistics(
-                  _simulatedAnnealing.getNumberOfIteration(),
-                  _simulatedAnnealing.getNumberOfNewSolutions(),
-                  _simulatedAnnealing.getNumberOfNewSolutions(),
-                  _simulatedAnnealing.getInitObjectiveValue(),
-                  _simulatedAnnealing.getAvgObjectiveValue(),
-                  _simulatedAnnealing.getBestSolution().getObjectiveValue()
-                  );
-//
-//        return _reporter.getReport();
-        //_reporter.putStatistics(0, 0, 0, 0, 0, 0);
+          _reporter.putStatistics (
+                  _numberOfIterations,
+                  _numberOfNewSolutions,
+                  _lastIterationNumberNewSolution,
+                  _initObjectiveValue,
+                  _bestSolution.getObjectiveValue(),
+                  _bestSolution.getObjectiveValue()
+                 );
 
         return _reporter.getReport();
     }
@@ -91,7 +85,7 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
         _simulatedAnnealing.setMinimalTemperature( param.getValueDouble("minTemperature") );
         _simulatedAnnealing.setAnnealingCoefficient( param.getValueDouble("annealCoeficient") );
         _simulatedAnnealing.setMaximalIterationCount( param.getValueInt("maxInnerIterations") );
-        _simulatedAnnealing.setMaximalSuccessIterationCount( param.getValueInt("numInnerSuccesses" ));
+        _simulatedAnnealing.setMaximalSuccessIterationCount( param.getValueInt("numInnerSuccesses" ) );
         _simulatedAnnealing.addSimulatedAnnealingListener( this );
     }
 
@@ -99,23 +93,23 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
         _simulatedAnnealing.stopSearching();
     }
 
-    /****************************************************************/
+    //############################ EVENTS ###############################//
     public void newBestSolutionFound(SimulatedAnnealingEvent e) {
         System.out.println("Best+: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
+        _numberOfNewSolutions++;
+        _lastIterationNumberNewSolution = _numberOfIterations;
     }
 
-    public void newCurrentSolutionFound(SimulatedAnnealingEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void newIterationStarted(SimulatedAnnealingEvent e) {
+        _numberOfIterations++;
     }
 
     public void simulatedAnnealingStarted(SimulatedAnnealingEvent e) {
-        System.out.println("SA Started");
+        _initObjectiveValue = e.getSimulatedAnnealing().getCurrentSolution().getObjectiveValue();
     }
 
     public void simulatedAnnealingStopped(SimulatedAnnealingEvent e) {
-        System.out.println("SA Stopped");
         _bestSolution = e.getSimulatedAnnealing().getBestSolution();
     }
-
 
 }
