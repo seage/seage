@@ -9,20 +9,29 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
-package org.seage.metaheuristic.sannealing;
+
+package org.seage.problem.tsp.sannealing;
+
+import org.seage.problem.tsp.City;
 
 /**
  *
  * @author Jan Zmatlik
  */
-public interface ISimulatedAnnealingListener {
+public class TspSortedSolution extends TspSolution{
+    
+    public TspSortedSolution(City[] cities)
+    {
+        super( cities );
+        initSortedTour();
+    }
 
-    public void simulatedAnnealingStarted( SimulatedAnnealingEvent e );
-
-    public void simulatedAnnealingStopped( SimulatedAnnealingEvent e );
-
-    public void newBestSolutionFound( SimulatedAnnealingEvent e );
-
-    public void newIterationStarted( SimulatedAnnealingEvent e );
+    /**
+     * Sort and fill the tour
+     */
+    private void initSortedTour()
+    {
+        for(int i = 0; i < _tour.length; i++) _tour[i] = i;
+    }
 
 }

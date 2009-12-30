@@ -29,5 +29,7 @@
         minTemperature="0.1"
         annealCoeficient="0.99"
         maxInnerIterations="500"
-        numInnerSuccesses="800"/>
+        numInnerSuccesses="800"
+        initSolutionType="greedy"/>
+
 </config>

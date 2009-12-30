@@ -17,16 +17,10 @@ package org.seage.metaheuristic.sannealing;
  */
 public class Solution implements java.lang.Cloneable {
 
-    public enum SolutionType { RANDOM , GREEDY , SORTED }
-
     /**
      * The value is value of Solution
      */
     private double _value = Double.MAX_VALUE;
-    /**
-     * Type of solution
-     */
-    private SolutionType _solutionType = SolutionType.SORTED;
 
     /**
      * Returns the value of Solution
@@ -44,16 +38,6 @@ public class Solution implements java.lang.Cloneable {
     public void setObjectiveValue(double objValue)
     {
         _value = objValue;
-    }
-
-    public SolutionType getSolutionType()
-    {
-        return _solutionType;
-    }
-
-    public void setSolutionType(SolutionType _solutionType)
-    {
-        this._solutionType = _solutionType;
     }
 
 }

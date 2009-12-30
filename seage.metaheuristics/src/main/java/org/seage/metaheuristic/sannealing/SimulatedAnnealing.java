@@ -75,12 +75,6 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
   private boolean _stopSearching = false;
 
-  private long _numberOfIteration = 0;
-  private long _numberOfNewSolutions = 0;
-  private long _lastIterationNumberNewSolution = 0;
-  private double _initObjectiveValue = Double.MAX_VALUE;
-  private double _avgObjectiveValue = Double.MAX_VALUE;
-
   /**
    * Constructor
    *
@@ -117,9 +111,6 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     // The best solution is same as current solution
     _bestSolution = _currentSolution = solution;
 
-    // Set init objective value
-    _initObjectiveValue = _currentSolution.getObjectiveValue();
-
     // Fire event to listeners about that algorithm has started
     _listenerProvider.fireSimulatedAnnealingStarted();
 
@@ -127,11 +118,12 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     // and successful iteration count is less than zero
     while (( _currentTemperature >= _minimalTemperature ) && ( successIterationCount > 0 ))
     {
-        _numberOfIteration++;
+        _listenerProvider.fireNewIterationStarted();
         iterationCount = successIterationCount = 0;
 
         while(( iterationCount < _maximalIterationCount ) && ( successIterationCount < _maximalSuccessIterationCount ))
         {
+            _listenerProvider.fireNewIterationStarted();
             if( _stopSearching ) return;
             iterationCount++;
                 
@@ -153,7 +145,6 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
                 if(_currentSolution.getObjectiveValue() < _bestSolution.getObjectiveValue())
                 {
                     _bestSolution = modifiedSolution;
-                    _numberOfNewSolutions++;
                     _listenerProvider.fireNewBestSolutionFound();
                 }
             }
@@ -161,9 +152,16 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
         // Anneal temperature
         _currentTemperature = _annealCoefficient * _currentTemperature;
     }
-    _avgObjectiveValue = _avgObjectiveValue / _numberOfIteration;
     // Fire event to listeners about that algorithm was stopped
     _listenerProvider.fireSimulatedAnnealingStopped();
+  }
+
+  public Solution getCurrentSolution() {
+    return _currentSolution;
+  }
+
+  public void setCurrentSolution(Solution _currentSolution) {
+    this._currentSolution = _currentSolution;
   }
 
   public final void addSimulatedAnnealingListener( ISimulatedAnnealingListener listener )
@@ -210,60 +208,20 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     _stopSearching = true;
   }
 
-    public long getMaximalIterationCount() {
-        return _maximalIterationCount;
-    }
+  public long getMaximalIterationCount() {
+      return _maximalIterationCount;
+  }
 
-    public void setMaximalIterationCount(long _maximalIterationCount) {
-        this._maximalIterationCount = _maximalIterationCount;
-    }
+  public void setMaximalIterationCount(long _maximalIterationCount) {
+      this._maximalIterationCount = _maximalIterationCount;
+  }
 
-    public long getMaximalSuccessIterationCount() {
-        return _maximalSuccessIterationCount;
-    }
+  public long getMaximalSuccessIterationCount() {
+      return _maximalSuccessIterationCount;
+  }
 
-    public void setMaximalSuccessIterationCount(long _maximalSuccessIterationCount) {
-        this._maximalSuccessIterationCount = _maximalSuccessIterationCount;
-    }
-
-    public double getAvgObjectiveValue() {
-        return _avgObjectiveValue;
-    }
-
-    public void setAvgObjectiveValue(double _avgObjectiveValue) {
-        this._avgObjectiveValue = _avgObjectiveValue;
-    }
-
-    public double getInitObjectiveValue() {
-        return _initObjectiveValue;
-    }
-
-    public void setInitObjectiveValue(double _initObjectiveValue) {
-        this._initObjectiveValue = _initObjectiveValue;
-    }
-
-    public long getLastIterationNumberNewSolution() {
-        return _lastIterationNumberNewSolution;
-    }
-
-    public void setLastIterationNumberNewSolution(long _lastIterationNumberNewSolution) {
-        this._lastIterationNumberNewSolution = _lastIterationNumberNewSolution;
-    }
-
-    public long getNumberOfIteration() {
-        return _numberOfIteration;
-    }
-
-    public void setNumberOfIteration(long _numberOfIteration) {
-        this._numberOfIteration = _numberOfIteration;
-    }
-
-    public long getNumberOfNewSolutions() {
-        return _numberOfNewSolutions;
-    }
-
-    public void setNumberOfNewSolutions(long _numberOfNewSolutions) {
-        this._numberOfNewSolutions = _numberOfNewSolutions;
-    }
+  public void setMaximalSuccessIterationCount(long _maximalSuccessIterationCount) {
+      this._maximalSuccessIterationCount = _maximalSuccessIterationCount;
+  }
 
 }

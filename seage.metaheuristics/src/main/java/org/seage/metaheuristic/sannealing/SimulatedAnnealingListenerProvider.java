@@ -60,11 +60,11 @@ public class SimulatedAnnealingListenerProvider  {
             _simulatedAnnealingListenerList[i].newBestSolutionFound( _simulatedAnnealingEvent );
   }
 
-  protected final void fireNewCurrentSolutionFound()
+  protected final void fireNewIterationStarted()
   {
       int length = _simulatedAnnealingListenerList.length;
         for( int i = 0; i < length; i++ )
-            _simulatedAnnealingListenerList[i].newCurrentSolutionFound( _simulatedAnnealingEvent );
+            _simulatedAnnealingListenerList[i].newIterationStarted( _simulatedAnnealingEvent );
   }
 
 }
