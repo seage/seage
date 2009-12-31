@@ -26,14 +26,10 @@ import org.seage.problem.tsp.City;
  */
 public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 {
-    private DataNode _algParams;
-    private City[] _cities;
     private TspSolution _tspSolution;
 
     public TspSimulatedAnnealingFactory(DataNode params, City[] cities)
     {
-        _algParams = params;
-        _cities = cities;
         try
         {
             String solutionType = params.getValueStr("initSolutionType");
@@ -43,12 +39,10 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
                 _tspSolution = new TspRandomSolution( cities );
             else if( solutionType.toLowerCase().equals("sorted") )
                 _tspSolution = new TspSortedSolution( cities );
-            else
-                _tspSolution = new TspSortedSolution( cities );
         }
         catch (Exception ex)
         {
-            _tspSolution = new TspSortedSolution( cities );
+            ex.printStackTrace();
         }
     }
 

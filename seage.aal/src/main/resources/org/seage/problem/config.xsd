@@ -78,14 +78,14 @@
                 <xsd:attribute name="annealCoeficient" type="xsd:double"/>
                 <xsd:attribute name="maxInnerIterations" type="xsd:unsignedInt"/>
                 <xsd:attribute name="numInnerSuccesses" type="xsd:unsignedInt"/>
-                <xsd:attribute name="initSolutionType" type="xsd:string">
-<!--                    <xsd:simpleType>
+                <xsd:attribute name="initSolutionType">
+                   <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
                           <xsd:enumeration value="greedy"/>
                           <xsd:enumeration value="random"/>
                           <xsd:enumeration value="sorted"/>
                         </xsd:restriction>
-                    </xsd:simpleType>-->
+                    </xsd:simpleType>
                 </xsd:attribute>
             </xsd:extension>
         </xsd:complexContent>
