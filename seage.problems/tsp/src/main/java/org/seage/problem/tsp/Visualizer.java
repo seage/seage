@@ -105,7 +105,7 @@ public class Visualizer
         cells.add(lastLink);
         
         frame.pack();
-        //frame.setVisible(true);
+        frame.setVisible(true);
         graph.getGraphLayoutCache().insert(cells.toArray());
         try
         {
