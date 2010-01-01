@@ -11,8 +11,6 @@
  */
 package org.seage.problem.tsp.sannealing;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.sannealing.SimulatedAnnealingAdapter;
@@ -28,22 +26,15 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 {
     private TspSolution _tspSolution;
 
-    public TspSimulatedAnnealingFactory(DataNode params, City[] cities)
+    public TspSimulatedAnnealingFactory(DataNode params, City[] cities) throws Exception
     {
-        try
-        {
-            String solutionType = params.getValueStr("initSolutionType");
-            if( solutionType.toLowerCase().equals("greedy") )
-                _tspSolution = new TspGreedySolution( cities );
-            else if( solutionType.toLowerCase().equals("random") )
-                _tspSolution = new TspRandomSolution( cities );
-            else if( solutionType.toLowerCase().equals("sorted") )
-                _tspSolution = new TspSortedSolution( cities );
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+        String solutionType = params.getValueStr("initSolutionType");
+        if( solutionType.toLowerCase().equals("greedy") )
+            _tspSolution = new TspGreedySolution( cities );
+        else if( solutionType.toLowerCase().equals("random") )
+            _tspSolution = new TspRandomSolution( cities );
+        else if( solutionType.toLowerCase().equals("sorted") )
+            _tspSolution = new TspSortedSolution( cities );
     }
 
     public IAlgorithmAdapter createAlgorithm() throws Exception

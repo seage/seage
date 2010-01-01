@@ -95,7 +95,7 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
 
     //############################ EVENTS ###############################//
     public void newBestSolutionFound(SimulatedAnnealingEvent e) {
-        System.out.println("Best+: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
+        System.out.println( e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
         _numberOfNewSolutions++;
         _lastIterationNumberNewSolution = _numberOfIterations;
     }
