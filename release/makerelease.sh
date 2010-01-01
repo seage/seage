@@ -27,7 +27,7 @@ svn up ..
 
 PROBLEM="seage.problems"
 PDIR="../$PROBLEM"
-PROJECTS=(seage.aal seage.metaheuristics seage.misc)
+PROJECTS=(seage.aal seage.metaheuristics )
 
 for name in ${PROJECTS[*]}; do 
   ant -f "../$name/build.xml" > release.log
@@ -47,14 +47,18 @@ for i in $( ls $PDIR); do
     rm -rf $OUTPUT/problems/$i/data/.svn
     cp -r $PDIR/$i/config.xml $OUTPUT/problems/$i
 
-    RUN="$OUTPUT/problems/$i/run.sh"
-    touch $RUN
-    chmod +x $RUN
+    RUNSH="$OUTPUT/problems/$i/run.sh"
+    RUNBAT="$OUTPUT/problems/$i/run.bat"
+    touch $RUNSH
+    touch $RUNBAT
+    chmod +x $RUNSH
 
-    echo "#!/bin/bash" > $RUN
-    echo -n "java -jar " >> $RUN    
+    echo "#!/bin/bash" > $RUNSH
+    echo -n "java -jar " >> $RUNSH
+    echo -n "java -jar " >> $RUNBAT
     cd $OUTPUT/problems/$i/
     echo -n "`find bin -maxdepth 1 -name \*.jar` config.xml" >> run.sh
+    echo -n "`find bin -maxdepth 1 -name \*.jar` config.xml" >> run.bat
     cd ../../..
   fi
   
