@@ -48,9 +48,10 @@ public class TspProblemSolver extends ProblemSolver
     }
 
     @Override
-    protected void initProblem(DataNode config) throws Exception {
+    protected void initProblem(DataNode config) throws Exception
+    {
         _cities = CityProvider.readCities(
-                 _problemParams.getDataNode("instance").getValueStr("path"));
+        _problemParams.getDataNode("instance").getValueStr("path"));
     }
 
     protected IAlgorithmFactory createAlgorithmFactory(DataNode config) throws Exception
