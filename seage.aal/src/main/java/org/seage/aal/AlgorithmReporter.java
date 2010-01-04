@@ -20,11 +20,11 @@ import org.seage.data.DataNode;
  */
 public class AlgorithmReporter
 {
-    private DataNode _report;
+    private AlgorithmReport _report;
 
     public AlgorithmReporter(String searchID) throws Exception
     {
-        _report = new DataNode("running");
+        _report = new AlgorithmReport("running");
         _report.putValue("id", searchID);
         _report.putDataNode(new DataNode("parameters"));
         _report.putDataNode(new DataNode("minutes"));
@@ -61,5 +61,5 @@ public class AlgorithmReporter
         stats.putValue("bestObjVal", bestObjVal);
     }
 
-    public DataNode getReport(){return (DataNode)_report.clone();}
+    public AlgorithmReport getReport(){return (AlgorithmReport)_report.clone();}
 }

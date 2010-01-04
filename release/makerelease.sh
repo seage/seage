@@ -27,7 +27,7 @@ svn up ..
 
 PROBLEM="seage.problems"
 PDIR="../$PROBLEM"
-PROJECTS=(seage.aal seage.metaheuristics )
+PROJECTS=(seage.aal seage.metaheuristics seage.misc)
 
 for name in ${PROJECTS[*]}; do 
   ant -f "../$name/build.xml" > release.log

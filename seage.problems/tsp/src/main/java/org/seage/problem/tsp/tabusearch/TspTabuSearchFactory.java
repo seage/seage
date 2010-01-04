@@ -34,7 +34,7 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
         _cities = cities;
     }
 
-    public IAlgorithmAdapter createAlgorithm() throws Exception
+    public IAlgorithmAdapter createAlgorithm(DataNode params) throws Exception
     {
         IAlgorithmAdapter algorithm;
 
@@ -76,5 +76,11 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
 
         return algorithm;
     }
+
+    public DataNode getAlgorithmParameters(DataNode params) throws Exception
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 
 }

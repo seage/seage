@@ -9,7 +9,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.problem;
+package org.seage.aal;
 
 import java.io.File;
 import java.io.InputStream;
@@ -40,7 +40,7 @@ public abstract class ProblemSolver
         
         _problemParams = config.getDataNode("problem");
         initProblem(config);
-        _algorithm = createAlgorithmFactory(config).createAlgorithm();
+        _algorithm = createAlgorithmFactory(config).createAlgorithm(config);
     }
 
     public void run() throws Exception

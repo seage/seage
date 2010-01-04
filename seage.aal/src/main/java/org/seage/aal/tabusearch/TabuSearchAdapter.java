@@ -14,6 +14,7 @@ package org.seage.aal.tabusearch;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.AlgorithmReporter;
 import java.util.*;
+import org.seage.aal.AlgorithmReport;
 
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.*;
@@ -151,7 +152,7 @@ public abstract class TabuSearchAdapter implements IAlgorithmAdapter
 	}
 
 	
-	public DataNode getReport() throws Exception
+	public AlgorithmReport getReport() throws Exception
 	{		
 		int num = _solutions.length;
 		double avg = 0;

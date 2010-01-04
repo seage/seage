@@ -14,7 +14,7 @@ package org.seage.problem.tsp;
 import java.util.Random;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.data.DataNode;
-import org.seage.problem.ProblemSolver;
+import org.seage.aal.ProblemSolver;
 import org.seage.problem.tsp.genetics.TspGeneticAlgorithmFactory;
 import org.seage.problem.tsp.sannealing.TspSimulatedAnnealingFactory;
 import org.seage.problem.tsp.tabusearch.TspTabuSearchFactory;
