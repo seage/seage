@@ -16,6 +16,7 @@ import org.seage.aal.IAlgorithmAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.genetics.*;
 import java.util.Arrays;
+import org.seage.aal.AlgorithmReport;
 import org.seage.aal.AlgorithmReporter;
 
 /**
@@ -123,7 +124,7 @@ public class GeneticAlgorithmAdapter implements IAlgorithmAdapter
         }
     }
 	
-    public DataNode getReport() throws Exception
+    public AlgorithmReport getReport() throws Exception
     {
         int num = _solutions.length;// > 10 ? 10 : solutions.length;
         double avg = 0;

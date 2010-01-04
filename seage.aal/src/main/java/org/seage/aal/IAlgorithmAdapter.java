@@ -27,7 +27,7 @@ public interface IAlgorithmAdapter
         void stopSearching() throws Exception;
 
         // Returns the runtime report collected during the algorithm run.
-	DataNode getReport() throws Exception;
+	AlgorithmReport getReport() throws Exception;
 
         // Converts solution from outer representation to the inner one.
 	void solutionsFromPhenotype(Object[][] source) throws Exception;

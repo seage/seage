@@ -12,6 +12,7 @@
 
 package org.seage.aal.sannealing;
 
+import org.seage.aal.AlgorithmReport;
 import org.seage.aal.AlgorithmReporter;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.data.DataNode;
@@ -57,7 +58,7 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
         _simulatedAnnealing.startSearching( _initialSolution );
     }
 
-    public DataNode getReport() throws Exception
+    public AlgorithmReport getReport() throws Exception
     {
           _reporter.putStatistics (
                   _numberOfIterations,
