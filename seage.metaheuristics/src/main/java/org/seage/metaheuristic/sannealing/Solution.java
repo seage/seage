@@ -15,7 +15,7 @@ package org.seage.metaheuristic.sannealing;
  *
  * @author Jan Zmatlik
  */
-public class Solution implements java.lang.Cloneable {
+public abstract class Solution implements java.lang.Cloneable {
 
     /**
      * The value is value of Solution
@@ -40,4 +40,5 @@ public class Solution implements java.lang.Cloneable {
         _value = objValue;
     }
 
+    public abstract Solution clone();
 }

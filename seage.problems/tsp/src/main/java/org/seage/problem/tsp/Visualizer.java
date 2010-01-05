@@ -19,6 +19,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
@@ -109,7 +110,10 @@ public class Visualizer
         graph.getGraphLayoutCache().insert(cells.toArray());
         try
         {
-            BufferedOutputStream out = new BufferedOutputStream( new FileOutputStream( path ) );
+            File f = new File(path);
+            if(path.contains("/"))
+                new File(f.getParent()).mkdirs();
+            BufferedOutputStream out = new BufferedOutputStream( new FileOutputStream( f ) );
             BufferedImage image = graph.getImage(graph.getBackground(), 0);
             ImageIO.write(image, "png", out);
             out.close();

@@ -28,7 +28,7 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, ISimulatedAnnealingListener
 {
-    private SimulatedAnnealing _simulatedAnnealing;
+    protected SimulatedAnnealing _simulatedAnnealing;
     private AlgorithmReporter _reporter;
     private String _searchID;
     private Solution _initialSolution;
