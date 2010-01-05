@@ -64,10 +64,11 @@ public abstract class TspSolution extends Solution
         TspSolution tspSolution = null;
         try
         {
-            tspSolution = (TspSolution)super.clone();
+            tspSolution = new TspSolution(_cities) {};
             tspSolution.setTour( this._tour.clone() );
             tspSolution.setCities( this._cities.clone() );
-        } catch (CloneNotSupportedException ex)
+            tspSolution.setObjectiveValue(this.getObjectiveValue());
+        } catch (Exception ex)
         {
             Logger.getLogger(TspSolution.class.getName()).log(Level.SEVERE, null, ex);
         }

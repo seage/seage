@@ -133,18 +133,18 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
             // Calculate objective function and set value to modified solution
             _objectiveFunction.setObjectiveValue( modifiedSolution );
 
-            if(modifiedSolution.getObjectiveValue() <= _currentSolution.getObjectiveValue())
+            if(modifiedSolution.getObjectiveValue() < _currentSolution.getObjectiveValue())
                 probability = 1;
             else
                 probability = Math.exp( - ( modifiedSolution.getObjectiveValue() - _currentSolution.getObjectiveValue() ) / _currentTemperature );
 
-            if( Math.random() < probability )
+            if( Math.random() <= probability )
             {
                 successIterationCount++;
                 _currentSolution = modifiedSolution;
                 if(_currentSolution.getObjectiveValue() < _bestSolution.getObjectiveValue())
                 {
-                    _bestSolution = modifiedSolution;
+                    _bestSolution = modifiedSolution.clone();
                     _listenerProvider.fireNewBestSolutionFound();
                 }
             }
