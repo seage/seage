@@ -48,22 +48,19 @@ public class TspProblemSolver extends ProblemSolver
     }
 
     @Override
-    protected void initProblem(DataNode config) throws Exception
+    protected void initProblem(DataNode problemParams) throws Exception
     {
         _cities = CityProvider.readCities(
-        _problemParams.getDataNode("instance").getValueStr("path"));
+        problemParams.getDataNode("instance").getValueStr("path"));
     }
 
-    protected IAlgorithmFactory createAlgorithmFactory(DataNode config) throws Exception
-    {
-        _algorithmParams = config.getDataNode(config.getDataNode("problem").getValueStr("runAlgorithm"));
-        String algName = _algorithmParams.getName();
-        
-        if(algName.equals("algGeneticAlgorithm"))
+    protected IAlgorithmFactory createAlgorithmFactory(String algName) throws Exception
+    {       
+        if(algName.equals("geneticAlgorithm"))
             return new TspGeneticAlgorithmFactory(_algorithmParams, _cities);
-        if(algName.equals("algTabuSearch"))
+        if(algName.equals("tabuSearch"))
             return new TspTabuSearchFactory(_algorithmParams, _cities);
-        if(algName.equals("algSimulatedAnnealing"))
+        if(algName.equals("simulatedAnnealing"))
             return new TspSimulatedAnnealingFactory(_algorithmParams, _cities);
 
         throw new Exception("No algorithm factory for name: " + algName);

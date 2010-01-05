@@ -31,8 +31,11 @@ import org.w3c.dom.ProcessingInstruction;
 public class DataNode implements Serializable
 {
     private String _name;
+    
     private HashMap<String, List<DataNode>> _dataNodes;
     private HashMap<String, Object> _values;
+    private HashMap<String, DataNode> _ids;
+
     private List<DataNodeListener> _listeners;
 
     private String _xslPath;
@@ -42,6 +45,7 @@ public class DataNode implements Serializable
         _name = name;
         _dataNodes = new HashMap<String, List<DataNode>>();
         _values = new HashMap<String, Object>();
+        _ids = new HashMap<String, DataNode>();
         
         _listeners = new ArrayList<DataNodeListener>();
         _xslPath = "";
@@ -59,6 +63,9 @@ public class DataNode implements Serializable
 
         if(!_dataNodes.containsKey(dataSet.getName()))
             _dataNodes.put(dataSet.getName(), new ArrayList<DataNode>());
+
+        if(dataSet.containsValue("id"))
+            _ids.put(dataSet.getValueStr("id"), dataSet0);
 
         List<DataNode> list = _dataNodes.get(dataSet.getName());
         list.add(dataSet);
@@ -194,6 +201,11 @@ public class DataNode implements Serializable
     {
         checkNodeName(name);
         return _dataNodes.get(name).get(index);
+    }
+
+    public DataNode getDataNodeById(String id) throws Exception
+    {
+        return _ids.get(id);
     }
     
     public List<DataNode> getDataNodes()

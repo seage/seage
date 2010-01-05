@@ -4,29 +4,38 @@
    xmlns='http://xml.seage.org/schema'
    xsi:schemaLocation='http://xml.seage.org/schema config.xsd'>
 
-    <problem problemName="tsp" runAlgorithm="algGeneticAlgorithm">
-        <instance name="aaa" path="aaa"></instance>
-        <visualizer outPath="aaa" width="800" height="600"/>
+    <problem problemName="TSP" runAlgorithmId="GeneticAlgorithm">
+        <instance name="eil51" path="data/eil51.tsp"/>
+        <visualizer outPath="output/eil51.png" width="800" height="600"/>
     </problem>
 
-    <algGeneticAlgorithm
-        numSolution="1"
-        iterationCount="1"
-        crossLengthPct="1"
-        eliteSubjectPct="1"
-        mutateSubjectPct="1"
-        mutateLengthPct="1"
-        randomSubjectPct="1"/>
+    <algorithm id="GeneticAlgorithm">
+        <geneticAlgorithm 
+            numSolution="200"
+            iterationCount="500"
+            crossLengthPct="40"
+            eliteSubjectPct="10"
+            mutateSubjectPct="5"
+            mutateLengthPct="10"
+            randomSubjectPct="2"/>
+    </algorithm>
 
-    <algTabuSearch
-        numIteration="1"
-        tabuListLength="1"
-        numSolution="1"/>
+    <algorithm id="TabuSearch">
+        <tabuSearch
+            numIteration="1000"
+            numIterDivers="1"
+            numSolution="1"
+            tabuListLength="30"/>
+    </algorithm>
 
-    <algSimulatedAnnealing 
-        maxTemperature="1"
-        minTemperature="1"
-        annealCoeficient="1"
-        maxInnerIterations="1"
-        numInnerSuccesses="1"/>
+    <algorithm id="SimulatedAnnealing">
+        <simulatedAnnealing
+            annealCoeficient="0.99"
+            initSolutionType="sorted"
+            maxInnerIterations="200"
+            maxTemperature="1000"
+            minTemperature="10"
+            numInnerSuccesses="20"/>
+    </algorithm>
+
 </config>
