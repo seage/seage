@@ -30,7 +30,7 @@ public abstract class ProblemSolver
 
 
     protected abstract void initProblem(DataNode config) throws Exception;
-    protected abstract IAlgorithmFactory createAlgorithmFactory(DataNode config) throws Exception;
+    protected abstract IAlgorithmFactory createAlgorithmFactory(String algName) throws Exception;
     protected abstract void visualize() throws Exception;
 
     public ProblemSolver(String[] args) throws Exception
@@ -39,8 +39,9 @@ public abstract class ProblemSolver
         DataNode config = XmlHelper.readXml(new File(args[0]), schema);
         
         _problemParams = config.getDataNode("problem");
-        initProblem(config);
-        _algorithm = createAlgorithmFactory(config).createAlgorithm(config);
+        _algorithmParams = config.getDataNodeById(config.getDataNode("problem").getValueStr("runAlgorithmId")).getDataNodes().get(0);
+        initProblem(_problemParams);
+        _algorithm = createAlgorithmFactory(_algorithmParams.getName()).createAlgorithm(_algorithmParams);
     }
 
     public void run() throws Exception
