@@ -4,7 +4,7 @@
    xmlns='http://xml.seage.org/schema'
    xsi:schemaLocation='http://xml.seage.org/schema config.xsd'>
 
-    <problem problemName="TSP" runAlgorithmId="GeneticAlgorithm">
+    <problem problemName="TSP" runAlgorithmId="SimulatedAnnealing">
         <instance name="eil51" path="data/eil51.tsp"/>
         <visualizer outPath="output/eil51.png" width="800" height="600"/>
     </problem>
@@ -31,7 +31,7 @@
     <algorithm id="SimulatedAnnealing">
         <simulatedAnnealing
             annealCoeficient="0.99"
-            initSolutionType="sorted"
+            initSolutionType="random"
             maxInnerIterations="200"
             maxTemperature="1000"
             minTemperature="10"

@@ -9,10 +9,10 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
-
 package org.seage.problem.tsp.sannealing;
 
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TourProvider;
 
 /**
  *
@@ -23,15 +23,7 @@ public class TspSortedSolution extends TspSolution{
     public TspSortedSolution(City[] cities)
     {
         super( cities );
-        initSortedTour();
-    }
-
-    /**
-     * Sort and fill the tour
-     */
-    private void initSortedTour()
-    {
-        for(int i = 0; i < _tour.length; i++) _tour[i] = i;
+        _tour = TourProvider.createSortedTour( cities );
     }
 
 }

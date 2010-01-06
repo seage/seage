@@ -34,7 +34,7 @@ public abstract class TspSolution extends Solution
 
     public TspSolution(City[] cities)
     {
-        _tour = new Integer[cities.length];
+        _tour = new Integer[ cities.length ];
         _cities = cities;
     }
 

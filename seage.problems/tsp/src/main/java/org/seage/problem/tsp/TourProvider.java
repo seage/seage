@@ -11,6 +11,10 @@
  */
 package org.seage.problem.tsp;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  *
  * @author Richard Malek
@@ -80,6 +84,40 @@ public class TourProvider
             tour[i] = closest;
             avail[closest] = -1;
         }   // end for
+
+        return tour;
+    }
+
+    // TODO: A - create better implementation
+    public static Integer[] createRandomTour(City[] cities)
+    {
+        Integer[] tour = new Integer[ cities.length ];
+        Random random = new Random();
+        List<Integer> listTour = new ArrayList();
+        for (int i = 0; i < cities.length; i++) {
+            listTour.add(i);
+        }
+
+        List<Integer> randTour = new ArrayList();
+        Integer pom = null;
+        for (int i = 0; i < cities.length; i++) {
+            pom = listTour.get(random.nextInt(listTour.size()));
+            randTour.add(pom);
+            listTour.remove(pom);
+        }
+
+        for (int i = 0; i < cities.length; i++) {
+            tour[i] = randTour.get(i);
+        }
+
+        return tour;
+    }
+
+    public static Integer[] createSortedTour(City[] cities)
+    {
+        Integer[] tour = new Integer[ cities.length ];
+        for(int i = 0; i < tour.length; i++)
+            tour[i] = i;
 
         return tour;
     }
