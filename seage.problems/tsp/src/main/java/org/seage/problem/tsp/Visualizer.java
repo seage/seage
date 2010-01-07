@@ -30,6 +30,9 @@ import javax.imageio.ImageIO;
  */
 public class Visualizer
 {
+    private static final int _pWidth = 4;
+    private static final int _pHeight = 4;
+
     // <editor-fold defaultstate="collapsed" desc="Singleton design pattern">
     private static Visualizer _instance;
     private Visualizer()
@@ -64,46 +67,38 @@ public class Visualizer
         double currWidth = maxX - minX;
         double currHeight = maxY - minY;
 
-        AffineTransform transform = graphics.getTransform();
-
-        // change the start coordinates to left down corner
-        transform.translate(0, height);
-
-        // rotate to fourth quadrant (180 degrees about x-axis)
-        // quadrant * Math.PI / 2.0
-        transform.quadrantRotate(3);
-        graphics.setTransform(transform);
-
         graphics.setColor(Color.black);
         graphics.setBackground(Color.white);
 
-        // TODO: A - Resolve points over bounds
-        // draw first city
-        graphics.fillRect(
-                    (int)(width*cities[tour[0]].X / currWidth)-1,
-                    (int)(height*cities[tour[0]].Y / currHeight)-1, 3 , 3 );
+        width -=_pWidth;
+        height -=_pHeight;
+
+        //TODO: B - Simplify the computation of X,Y coordinates.
+        graphics.fillOval(
+                    (int)(width*(cities[tour[0]].X-minX) / currWidth),
+                    height-(int)(height*(cities[tour[0]].Y-minY) / currHeight), _pWidth , _pHeight );
 
         int i = 1;
         for( ; i < cities.length; i++)
         {
-            graphics.fillRect(
-                    (int)(width*cities[tour[i]].X / currWidth)-1,
-                    (int)(height*cities[tour[i]].Y / currHeight)-1, 3 , 3 );
+            graphics.fillOval(
+                    (int)(width*(cities[tour[i]].X-minX) / currWidth),
+                    height-(int)(height*(cities[tour[i]].Y-minY) / currHeight), _pWidth , _pHeight );
             
             graphics.drawLine (
-                        (int)(width*cities[tour[i]].X / currWidth),
-                        (int)(height*cities[tour[i]].Y / currHeight),
-                        (int)(width*cities[tour[i - 1]].X / currWidth),
-                        (int)(height*cities[tour[i - 1]].Y / currHeight)
+                        (int)(width*(cities[tour[i]].X-minX) / currWidth+_pWidth/2),
+                        height-(int)(height*(cities[tour[i]].Y-minY) / currHeight-_pHeight/2),
+                        (int)(width*(cities[tour[i - 1]].X-minX) / currWidth+_pWidth/2),
+                        height-(int)(height*(cities[tour[i - 1]].Y-minY) / currHeight-_pHeight/2)
                     );
         }
 
         // draw line between first and end city
         graphics.drawLine (
-                        (int)(width*cities[tour[0]].X / currWidth),
-                        (int)(height*cities[tour[0]].Y / currHeight),
-                        (int)(width*cities[tour[i - 1]].X / currWidth),
-                        (int)(height*cities[tour[i - 1]].Y / currHeight)
+                        (int)(width*(cities[tour[0]].X-minX) / currWidth+_pWidth/2),
+                        height-(int)(height*(cities[tour[0]].Y-minY) / currHeight-_pHeight/2),
+                        (int)(width*(cities[tour[i - 1]].X-minX) / currWidth+_pWidth/2),
+                        height-(int)(height*(cities[tour[i - 1]].Y-minY) / currHeight-_pHeight/2)
                     );
 
         try
