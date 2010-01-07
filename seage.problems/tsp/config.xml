@@ -31,11 +31,11 @@
     <algorithm id="SimulatedAnnealing">
         <simulatedAnnealing
             annealCoeficient="0.99"
-            initSolutionType="sorted"
-            maxInnerIterations="200"
-            maxTemperature="1000"
-            minTemperature="0.10"
-            numInnerSuccesses="20"/>
+            initSolutionType="greedy"
+            maxInnerIterations="2000"
+            maxTemperature="200"
+            minTemperature="0.01"
+            numInnerSuccesses="200"/>
     </algorithm>
 
 </config>

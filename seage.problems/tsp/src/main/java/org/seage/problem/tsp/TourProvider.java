@@ -47,10 +47,16 @@ public class TourProvider
 
             double tourLenght = getTourLenght(tour, cities);
             System.out.println("Evaluation: "+(System.currentTimeMillis() - t0) + " ms");
+            t0 = System.currentTimeMillis();
+
+            Visualizer.instance().createGraph(cities, tour, "tour.png", 1000, 1000);
+            System.out.println("Visualization: "+(System.currentTimeMillis() - t0) + " ms");
 
             System.out.println();
             System.out.println("Tour lenght: "+tourLenght);
             System.out.println("Time: "+(System.currentTimeMillis() - t0) / 1000 + " s");
+
+
         }
         catch(Exception ex)
         {
