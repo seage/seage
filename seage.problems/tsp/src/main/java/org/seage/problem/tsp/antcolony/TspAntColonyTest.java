@@ -18,15 +18,14 @@ import org.seage.problem.tsp.CityProvider;
 /**
  * 
  * @author Richard Malek
- * @deprecated Replaced by TspProblemSolver
  */
-public class TspAntsMain
+public class TspAntColonyTest
 {
 	public static void main(String[] args)
 	{
             try
             {
-		new TspAntsMain().run(args[0]);
+		new TspAntColonyTest().run(args[0]);
             }
             catch(Exception ex)
             {

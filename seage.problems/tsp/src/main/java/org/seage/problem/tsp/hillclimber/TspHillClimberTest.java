@@ -20,9 +20,8 @@ import org.seage.problem.tsp.Visualizer;
 /**
  *
  * @author Martin Zaloga
- * @deprecated Replaced by TspProblemSolver
  */
-public class TspMain {
+public class TspHillClimberTest {
 
     /**
      * _cities - List of a loaded cities
@@ -31,7 +30,7 @@ public class TspMain {
 
     public static void main(String[] args) {
         try {
-            new TspMain().run(args[0], "my", "greedy", 100, 1000);
+            new TspHillClimberTest().run(args[0], "my", "greedy", 100, 1000);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
