@@ -11,11 +11,13 @@
  */
 package org.seage.metaheuristic.sannealing;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Jan Zmatlik
  */
-public abstract class Solution implements java.lang.Cloneable {
+public class Solution implements Cloneable, Serializable {
 
     /**
      * The value is value of Solution
@@ -40,5 +42,17 @@ public abstract class Solution implements java.lang.Cloneable {
         _value = objValue;
     }
 
-    public abstract Solution clone();
+    public  Solution clone()
+    {
+        try
+        {
+            Solution sol = (Solution)super.clone();
+            sol._value = _value;
+            return sol;
+        }
+        catch(CloneNotSupportedException e)
+        {
+            throw new InternalError( e.toString() );
+        }
+    }
 }
