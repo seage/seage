@@ -30,7 +30,7 @@ public abstract class TspSolution extends Solution
     /**
      * Array of cities
      */
-    protected City[] _cities;
+    protected static City[] _cities;
 
     public TspSolution(City[] cities)
     {
@@ -64,10 +64,10 @@ public abstract class TspSolution extends Solution
         TspSolution tspSolution = null;
         try
         {
-            tspSolution = new TspSolution(_cities) {};
-            tspSolution.setTour( this._tour.clone() );
-            tspSolution.setCities( this._cities.clone() );
-            tspSolution.setObjectiveValue(this.getObjectiveValue());
+            tspSolution = (TspSolution)super.clone();
+            tspSolution.setTour( _tour.clone() );
+            tspSolution.setCities( _cities );
+            tspSolution.setObjectiveValue(getObjectiveValue());
         } catch (Exception ex)
         {
             Logger.getLogger(TspSolution.class.getName()).log(Level.SEVERE, null, ex);
