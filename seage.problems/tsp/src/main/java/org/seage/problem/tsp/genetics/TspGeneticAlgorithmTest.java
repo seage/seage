@@ -11,7 +11,6 @@
  */
 package org.seage.problem.tsp.genetics;
 
-import java.util.Random;
 import org.seage.metaheuristic.genetics.GeneticSearch;
 import org.seage.metaheuristic.genetics.GeneticSearchEvent;
 import org.seage.metaheuristic.genetics.GeneticSearchListener;
@@ -19,19 +18,19 @@ import org.seage.metaheuristic.genetics.Genome;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
+import org.seage.problem.tsp.TourProvider;
 
 /**
  *
  * @author Richard Malek
- * @deprecated Replaced by TspProblemSolver
  */
-public class TspMain implements GeneticSearchListener
+public class TspGeneticAlgorithmTest implements GeneticSearchListener
 {
     public static void main(String[] args)
     {
         try
         {
-            new TspMain().run(args[0]);
+            new TspGeneticAlgorithmTest().run(args[0]);
         }
         catch(Exception ex)
         {
@@ -48,43 +47,31 @@ public class TspMain implements GeneticSearchListener
         gs.setEliteSubjectPct(0.05);
         gs.setMutateSubjectPct(0.25);
         gs.setPopulationCount(500);
-        gs.setRandomSubjectPct(0.05);
+        gs.setRandomSubjectPct(0.1);
         gs.setCrossLengthPct(0.40);
         gs.setIterationToGo(500);
-        gs.startSearching(generateInitialSubjects(cities.length, 100));
+        gs.startSearching(generateInitialSubjects(cities, 100));
     }
-    private Subject[] generateInitialSubjects(int length, int count)
+
+    private Subject[] generateInitialSubjects(City[] cities, int count) throws Exception
     {
         int numTours = count;
-        int tourLenght = length;
+        int tourLenght = cities.length;
+        Integer[][] tours = new Integer[numTours][tourLenght];
         Subject[] result = new Subject[numTours];
 
-        Random r = new Random();
+        for(int k=0;k<tours.length;k++)
+            if(k<tours.length/20)
+                tours[k] = TourProvider.createGreedyTour(cities);
+            else
+                tours[k] = TourProvider.createRandomTour(cities);
 
-        for(int k=0;k<numTours;k++)
+        for(int k=0;k<tours.length;k++)
         {
-            Integer[] newTour = new Integer[tourLenght];
-
-            for (int i = 0; i < tourLenght; i++)
-            {
-                newTour[i] = i;
-            }
-
-            for (int i = 0; i < tourLenght*10; i++)
-            {
-                int a = r.nextInt(length);
-                int b = r.nextInt(length);
-                // swap
-                int t = newTour[a];
-                newTour[a] = newTour[b];
-                newTour[b] = t;
-            }
-
             Subject s = new Subject(new Genome(1, tourLenght));
-            s.getGenome().getChromosome(0).setGeneArray(newTour);
+            s.getGenome().getChromosome(0).setGeneArray(tours[k]);
 
             result[k] = s;
-
         }
         return result;
     }
