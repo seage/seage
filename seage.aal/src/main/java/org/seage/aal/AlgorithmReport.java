@@ -26,6 +26,7 @@ public class AlgorithmReport extends DataNode
     public void setId(int id)
     {
         _id = id;
+        putValue("id", id);
     }
 
 }

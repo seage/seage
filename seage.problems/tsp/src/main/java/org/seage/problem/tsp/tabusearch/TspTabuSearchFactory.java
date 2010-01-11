@@ -16,8 +16,8 @@ import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.tabusearch.TabuSearchAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.Solution;
-import org.seage.problem.tsp.TspProblemSolver;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspProblemProvider;
 
 /**
  *
@@ -25,20 +25,21 @@ import org.seage.problem.tsp.City;
  */
 public class TspTabuSearchFactory implements IAlgorithmFactory
 {
-    private DataNode _algParams;
-    private City[] _cities;
+//    private DataNode _algParams;
+//    private TspProblemProvider _provider;
+//
+//    public TspTabuSearchFactory(DataNode algParams, TspProblemProvider provider)
+//    {
+//        _algParams = algParams;
+//        _provider = provider;
+//    }
 
-    public TspTabuSearchFactory(DataNode algParams, City[] cities)
-    {
-        _algParams = algParams;
-        _cities = cities;
-    }
-
-    public IAlgorithmAdapter createAlgorithm(DataNode params) throws Exception
+    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
     {
         IAlgorithmAdapter algorithm;
+        City[] cities = TspProblemProvider.getCities();
 
-        algorithm = new TabuSearchAdapter(new TspMoveManager(), new TspObjectiveFunction(_cities), new TspLongTermMemory(), "" ) {
+        algorithm = new TabuSearchAdapter(new TspMoveManager(), new TspObjectiveFunction(cities), new TspLongTermMemory(), "" ) {
 
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
@@ -71,8 +72,8 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
             }
         };
 
-        Object[][] solutions = TspProblemSolver.generateInitialSolutions(_cities.length, _algParams.getValueInt("numSolution"));
-        algorithm.solutionsFromPhenotype(solutions);
+        //Object[][] solutions = _provider.generateInitialSolutions( _algParams.getValueInt("numSolution"));
+        //algorithm.solutionsFromPhenotype(solutions);
 
         return algorithm;
     }
