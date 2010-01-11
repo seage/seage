@@ -32,6 +32,8 @@ public class TspObjectiveFunction implements IObjectiveFunction
         for (int i = 1; i <= tourLength; i++)
             distance += this.getDistance( i , i - 1 );
 
+        distance += getDistance(tourLength, 0);
+
         solution.setObjectiveValue( distance );
     }
 
