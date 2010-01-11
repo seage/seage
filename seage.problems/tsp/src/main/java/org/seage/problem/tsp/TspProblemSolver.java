@@ -11,13 +11,8 @@
  */
 package org.seage.problem.tsp;
 
-import java.util.Random;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.data.DataNode;
+import org.seage.aal.IProblemProvider;
 import org.seage.aal.ProblemSolver;
-import org.seage.problem.tsp.genetics.TspGeneticAlgorithmFactory;
-import org.seage.problem.tsp.sannealing.TspSimulatedAnnealingFactory;
-import org.seage.problem.tsp.tabusearch.TspTabuSearchFactory;
 
 /**
  *
@@ -25,8 +20,7 @@ import org.seage.problem.tsp.tabusearch.TspTabuSearchFactory;
  */
 public class TspProblemSolver extends ProblemSolver
 {
-    private City[] _cities;
-   
+    private TspProblemProvider _provider;
 
     public static void main(String[] args)
     {
@@ -44,26 +38,14 @@ public class TspProblemSolver extends ProblemSolver
 
     public TspProblemSolver(String[] args) throws Exception
     {
-        super(args);        
+        super(args);       
     }
 
     @Override
-    protected void initProblem(DataNode problemParams) throws Exception
+    protected IProblemProvider getProblemProvider()
     {
-        _cities = CityProvider.readCities(
-        problemParams.getDataNode("instance").getValueStr("path"));
-    }
-
-    protected IAlgorithmFactory createAlgorithmFactory(String algName) throws Exception
-    {       
-        if(algName.equals("geneticAlgorithm"))
-            return new TspGeneticAlgorithmFactory(_algorithmParams, _cities);
-        if(algName.equals("tabuSearch"))
-            return new TspTabuSearchFactory(_algorithmParams, _cities);
-        if(algName.equals("simulatedAnnealing"))
-            return new TspSimulatedAnnealingFactory(_algorithmParams, _cities);
-
-        throw new Exception("No algorithm factory for name: " + algName);
+         _provider = new TspProblemProvider();
+        return _provider;
     }
 
     protected void visualize() throws Exception
@@ -74,38 +56,7 @@ public class TspProblemSolver extends ProblemSolver
         int width = _problemParams.getDataNode("visualizer").getValueInt("width");
         int height = _problemParams.getDataNode("visualizer").getValueInt("height");
 
-        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
+        Visualizer.instance().createGraph(_provider.getCities(), tour, outPath, width, height);
     }
-
-    public static Integer[][] generateInitialSolutions(int length, int count )
-    {
-        int numTours = count;
-        int tourLenght = length;
-        Integer[][] result = new Integer[numTours][];
-
-        Random r = new Random();
-
-        for(int k=0;k<numTours;k++)
-        {
-            result[k] = new Integer[tourLenght];
-
-            for (int i = 0; i < tourLenght; i++)
-            {
-                result[k][i] = i;
-            }
-
-            for (int i = 0; i < tourLenght*10; i++)
-            {
-                int a = r.nextInt(length);
-                int b = r.nextInt(length);
-                // swap
-                int t = result[k][a];
-                result[k][a] = result[k][b];
-                result[k][b] = t;
-            }
-        }
-        return result;
-    }
-
     
 }

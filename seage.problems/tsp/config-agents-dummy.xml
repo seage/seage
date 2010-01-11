@@ -1,0 +1,66 @@
+<config xmlns='http://xml.seage.org/schema'>
+
+    <agent name="TSPProblem" mainClass="org.seage.ael.agent.ProblemAgent">
+        <problem timeoutMS="300" numberOfRuns="1" outputDir="Output" problemProvider="org.seage.problem.tsp.TspProblemProvider">
+            <evaluator mainClass="org.seage.problem.tsp.TspPhenotypeEvaluator"/>
+	    <instance name="eil51"  path="data/eil51.tsp"/>
+	    <!--instance name="eil101" path="data/eil101.tsp"/-->
+        </problem>
+    </agent>
+    
+    <agent name="TSPSolutionPool" 
+           mainClass="org.seage.ael.agent.SolutionPoolAgent">
+        <solutionPool capacity="2"/>
+    </agent>
+
+    <agent name="TSPGeneticSearchDummyAdviser" mainClass="org.seage.ael.agent.AdviserAgent">
+         <adviser id="GeneticSearchDummyAdviser" factoryClass="org.seage.reasoning.algparams.dummy.DummyReasonerFactory">
+             <dummyReasoner runtimeEvaluator="org.seage.aal.genetics.GeneticSearchRuntimeEvaluator"/>
+         </adviser>
+    </agent>
+
+    <agent name="TSPTabuSearchDummyAdviser" mainClass="org.seage.ael.agent.AdviserAgent">
+         <adviser id="TabuSearchDummyAdviser" factoryClass="org.seage.reasoning.algparams.dummy.DummyReasonerFactory">
+             <dummyReasoner runtimeEvaluator="org.seage.aal.tabusearch.TabuSearchRuntimeEvaluator"/>
+         </adviser>
+    </agent>
+    
+    <agent name="SimulatedAnnealingDummyAdviser" mainClass="org.seage.ael.agent.AdviserAgent">
+         <adviser id="SimulatedAnnealingDummyAdviser" factoryClass="org.seage.reasoning.algparams.dummy.DummyReasonerFactory">
+             <dummyReasoner runtimeEvaluator="org.seage.aal.sannealing.SimulatedAnnealingRuntimeEvaluator"/>
+         </adviser>
+    </agent>
+    
+    <!--agent name="TSPGeneticSearch01" mainClass="org.seage.ael.agent.AlgorithmAgent" instances="2">
+	<algorithm factoryClass="tsp.aal.algorithm.genetics.TspGeneticSearchFactory" adviserID="GeneticSearchDummyAdviser">
+	    <geneticAlgorithm 
+		numSolution="100" iterationCount="100"  crossLengthPct="40" 
+		eliteSubjectPct="10" mutateSubjectPct="5" mutateLengthPct="20"
+		randomSubjectPct="5"/>
+	</algorithm>
+    </agent-->
+    
+    <agent name="TSPTabuSearch01" mainClass="org.seage.ael.agent.AlgorithmAgent" instances="1">
+	<algorithm factoryClass="org.seage.problem.tsp.tabusearch.TspTabuSearchFactory" adviserID="TabuSearchDummyAdviser">
+	    <tabuSearch
+                numIteration="100000"
+                tabuListLength="130"
+                numSolution="1"
+                numIterDivers="1"/>
+	</algorithm>
+    </agent>
+    
+    <agent name="TSPSimulatedAnnealing01" mainClass="org.seage.ael.agent.AlgorithmAgent" instances="1">
+	<algorithm factoryClass="org.seage.problem.tsp.sannealing.TspSimulatedAnnealingFactory" adviserID="SimulatedAnnealingDummyAdviser">
+	    <simulatedAnnealing
+		numSolution="1"
+                annealCoeficient="0.999"
+                initSolutionType="greedy"
+                maxInnerIterations="5000"
+                maxTemperature="1000"
+                minTemperature="0.01"
+                numInnerSuccesses="500"/>
+	</algorithm>
+    </agent>
+
+</config>

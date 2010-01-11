@@ -18,6 +18,7 @@ import org.seage.aal.genetics.GeneticAlgorithmAdapter;
 import org.seage.data.DataNode;
 import org.seage.problem.tsp.TspProblemSolver;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspProblemProvider;
 
 
 /**
@@ -26,23 +27,23 @@ import org.seage.problem.tsp.City;
  */
 public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 {
-    private DataNode _algParams;
-    private City[] _cities;
+//    private DataNode _algParams;
+//    private TspProblemProvider _provider;
+//
+//    public TspGeneticAlgorithmFactory(DataNode algParams, TspProblemProvider provider) throws Exception
+//    {
+//        _algParams = algParams;
+//        _provider = provider;
+//    }
 
-    public TspGeneticAlgorithmFactory(DataNode algParams, City[] cities) throws Exception
-    {
-        _algParams = algParams;
-        _cities = cities;
-    }
-
-    public IAlgorithmAdapter createAlgorithm(DataNode params) throws Exception
+    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
     {
         IAlgorithmAdapter algorithm;
+        City[] cities = TspProblemProvider.getCities();
+        algorithm = new GeneticAlgorithmAdapter(new TspGeneticOperator(), new TspEvaluator(cities), false, "");
 
-        algorithm = new GeneticAlgorithmAdapter(new TspGeneticOperator(), new TspEvaluator(_cities), false, "");
-
-        Object[][] solutions = TspProblemSolver.generateInitialSolutions(_cities.length, _algParams.getValueInt("numSolution"));
-        algorithm.solutionsFromPhenotype(solutions);
+//        Object[][] solutions = _provider.generateInitialSolutions(_algParams.getValueInt("numSolution"));
+//        algorithm.solutionsFromPhenotype(solutions);
         return algorithm;
     }
 

@@ -28,20 +28,20 @@ public abstract class ProblemSolver
     protected DataNode _problemParams;
     protected DataNode _algorithmParams;
 
-
-    protected abstract void initProblem(DataNode config) throws Exception;
-    protected abstract IAlgorithmFactory createAlgorithmFactory(String algName) throws Exception;
+    protected abstract IProblemProvider getProblemProvider();
     protected abstract void visualize() throws Exception;
 
     public ProblemSolver(String[] args) throws Exception
     {
         InputStream schema = ProblemSolver.class.getResourceAsStream("config.xsd");
         DataNode config = XmlHelper.readXml(new File(args[0]), schema);
+
+        IProblemProvider provider = getProblemProvider();
         
         _problemParams = config.getDataNode("problem");
         _algorithmParams = config.getDataNodeById(config.getDataNode("problem").getValueStr("runAlgorithmId")).getDataNodes().get(0);
-        initProblem(_problemParams);
-        _algorithm = createAlgorithmFactory(_algorithmParams.getName()).createAlgorithm(_algorithmParams);
+        provider.initProblemInstance(_problemParams, 0);
+        _algorithm = provider.createAlgorithmFactory(_algorithmParams).createAlgorithm(_algorithmParams);
     }
 
     public void run() throws Exception

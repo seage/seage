@@ -62,7 +62,7 @@ public class CityProvider
         return (Double[])result.toArray(new Double[0]);
     }
 
-	public City[] generateCircleCities(int numCircleCities)
+    public static City[] generateCircleCities(int numCircleCities)
     {
         City[] result = new City[numCircleCities];
 

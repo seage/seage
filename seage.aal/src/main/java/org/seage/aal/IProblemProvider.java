@@ -13,6 +13,7 @@ import org.seage.data.DataNode;
  */
 public interface IProblemProvider
 {
-    void initProblemInstance(DataNode params, int instanceIx) throws Exception;
-    Object[][] generateInitialSolutions(int numSolutions);
+    void initProblemInstance(DataNode problemParams, int instanceIx) throws Exception;
+    Object[][] generateInitialSolutions(int numSolutions) throws Exception;
+    IAlgorithmFactory createAlgorithmFactory(DataNode algorithmParams) throws Exception;
 }
