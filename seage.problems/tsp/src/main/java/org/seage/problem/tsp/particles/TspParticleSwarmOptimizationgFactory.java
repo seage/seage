@@ -15,9 +15,10 @@ import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.particles.ParticleSwarmOptimizationAdapter;
 import org.seage.data.DataNode;
-import org.seage.metaheuristic.particles.ParticleSwarmOptimizationEvent;
+
 import org.seage.metaheuristic.particles.Solution;
 import org.seage.problem.tsp.City;
+
 
 
 /**
@@ -28,6 +29,8 @@ public class TspParticleSwarmOptimizationgFactory implements IAlgorithmFactory
 {
 //    private TspSolution _tspSolution;
     private City[] _cities;
+
+    private TspObjectiveFunction _objectiveFunction;
 
     public TspParticleSwarmOptimizationgFactory(DataNode params, City[] cities) throws Exception
     {
@@ -45,10 +48,11 @@ public class TspParticleSwarmOptimizationgFactory implements IAlgorithmFactory
     public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
     {
         IAlgorithmAdapter algorithm;
+        _objectiveFunction = new TspObjectiveFunction();
 
         algorithm = new ParticleSwarmOptimizationAdapter(
                 generateInitialSolutions(),
-                new TspObjectiveFunction(),
+                _objectiveFunction,
                 new TspVelocityManager(), false, "")
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception
@@ -97,11 +101,26 @@ public class TspParticleSwarmOptimizationgFactory implements IAlgorithmFactory
 
     private Solution[] generateInitialSolutions() throws Exception
     {
-        return new Solution[]
-        {
-            new TspGreedySolution(_cities),
-            new TspRandomSolution(_cities),
-            new TspSortedSolution(_cities)
-        };
+        Solution[] solutions = new Solution[3];
+
+        TspGreedySolution greedy = new TspGreedySolution(_cities);
+        TspRandomSolution random = new TspRandomSolution(_cities);
+        TspSortedSolution sorted = new TspSortedSolution(_cities);
+
+        _objectiveFunction.setObjectiveValue(greedy);
+        _objectiveFunction.setObjectiveValue(random);
+        _objectiveFunction.setObjectiveValue(sorted);
+
+        solutions[0] = greedy;
+        solutions[1] = random;
+        solutions[2] = sorted;
+        
+//        return new Solution[]{
+//            new TspGreedySolution(_cities),
+//            new TspRandomSolution(_cities),
+//            new TspSortedSolution(_cities)
+//        };
+
+        return solutions;
     }
 }

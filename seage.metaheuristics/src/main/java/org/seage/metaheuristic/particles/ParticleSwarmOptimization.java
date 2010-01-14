@@ -80,17 +80,32 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
       _listenerProvider.fireParticleSwarmOptimizationStarted();
 
 
-      while ( _maximalVelocity > iterationCount )
+      // TODO: A - create logic for algorithm
+      while ( _maximalVelocity > iterationCount && !_stopSearching )
       {
-          if( _stopSearching ) return;
           iterationCount++;
 
           for(Solution solution : solutions)
           {
               if( _stopSearching ) return;
-              System.out.println("solutions");
+              System.out.println("solutions values: " + solution.getObjectiveValue());
+
+              //###########################
+              // Generate velocity for current solution v(iterationCount + 1)
+
+              //###########################
+              // Calculate new locations for current solution ->
+              // -> x(iterationCount + 1) = x(iterationCount) + v(iterationCount + 1)
+
+              //###########################
+              // Evaluate x(iterationCount + 1) by objective function
+
+              //###########################
+              // Find current minimum
           }
 
+          //###########################
+          // Find best current x and global best g
       }
 
   }
