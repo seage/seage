@@ -13,12 +13,12 @@ package org.seage.problem.tsp.particles;
 
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.sannealing.SimulatedAnnealingAdapter;
+import org.seage.aal.particles.ParticleSwarmOptimizationAdapter;
 import org.seage.data.DataNode;
-import org.seage.metaheuristic.sannealing.Solution;
+import org.seage.metaheuristic.particles.ParticleSwarmOptimizationEvent;
+import org.seage.metaheuristic.particles.Solution;
 import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.TourProvider;
-import org.seage.problem.tsp.TspProblemProvider;
+
 
 /**
  *
@@ -27,14 +27,12 @@ import org.seage.problem.tsp.TspProblemProvider;
 public class TspParticleSwarmOptimizationgFactory implements IAlgorithmFactory
 {
 //    private TspSolution _tspSolution;
-
-    public TspParticleSwarmOptimizationgFactory()
-    {
-    }
-
+    private City[] _cities;
 
     public TspParticleSwarmOptimizationgFactory(DataNode params, City[] cities) throws Exception
     {
+        _cities = cities;
+        System.out.println("JOJO");
 //        String solutionType = params.getValueStr("initSolutionType");
 //        if( solutionType.toLowerCase().equals("greedy") )
 //            _tspSolution = new TspGreedySolution( cities );
@@ -46,7 +44,24 @@ public class TspParticleSwarmOptimizationgFactory implements IAlgorithmFactory
 
     public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
     {
-//        IAlgorithmAdapter algorithm;
+        IAlgorithmAdapter algorithm;
+
+        algorithm = new ParticleSwarmOptimizationAdapter(
+                generateInitialSolutions(),
+                new TspObjectiveFunction(),
+                new TspVelocityManager(), false, "")
+        {
+            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            {
+
+            }
+
+            public Object[][] solutionsToPhenotype() throws Exception
+            {
+                return null;
+            }
+        };
+//        {
 //
 //        algorithm = new ParticleSwarmOptimizationAdapter((Solution) _tspSolution,
 //                new TspObjectiveFunction(),
@@ -77,7 +92,16 @@ public class TspParticleSwarmOptimizationgFactory implements IAlgorithmFactory
 //
 //        };
 
-        return null;
+        return algorithm;
     }
 
+    private Solution[] generateInitialSolutions() throws Exception
+    {
+        return new Solution[]
+        {
+            new TspGreedySolution(_cities),
+            new TspRandomSolution(_cities),
+            new TspSortedSolution(_cities)
+        };
+    }
 }

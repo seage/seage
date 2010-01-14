@@ -70,26 +70,28 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
    */
   public void startSearching(Solution[] solutions)
   {
-    // Searching is starting
-    _stopSearching = false;
+      // Searching is starting
+      _stopSearching = false;
 
-    // Initial number of iteration
-    long iterationCount = 0;
+      // Initial number of iteration
+      long iterationCount = 0;
 
-    // Fire event to listeners about that algorithm has started
-    _listenerProvider.fireParticleSwarmOptimizationStarted();
+      // Fire event to listeners about that algorithm has started
+      _listenerProvider.fireParticleSwarmOptimizationStarted();
 
 
-    while ( _maximalVelocity > iterationCount )
-    {
-      iterationCount++;
-
-      for(Solution solution : solutions)
+      while ( _maximalVelocity > iterationCount )
       {
-        
-      }
+          if( _stopSearching ) return;
+          iterationCount++;
 
-    }
+          for(Solution solution : solutions)
+          {
+              if( _stopSearching ) return;
+              System.out.println("solutions");
+          }
+
+      }
 
   }
 

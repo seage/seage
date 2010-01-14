@@ -57,13 +57,14 @@ public class Solution implements Cloneable, Serializable {
         this._velocity = _velocity;
     }
 
-    // TODO: A - Change clone method
+    @Override
     public  Solution clone()
     {
         try
         {
             Solution sol = (Solution)super.clone();
             sol._value = _value;
+            sol._velocity = _velocity;
             return sol;
         }
         catch(CloneNotSupportedException e)
