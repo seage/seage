@@ -37,6 +37,7 @@
                                 <xsd:element ref="tns:geneticAlgorithm"/>
                                 <xsd:element ref="tns:tabuSearch"/>
                                 <xsd:element ref="tns:simulatedAnnealing"/>
+                                <xsd:element ref="tns:particleSwarmOptimization"/>
                             </xsd:choice>
                         </xsd:sequence>
                         <xsd:attribute name="id" type="xsd:ID"/>
@@ -100,6 +101,22 @@
                         </xsd:restriction>
                     </xsd:simpleType>
                 </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="particleSwarmOptimization" >
+        <xsd:complexType >
+                <xsd:sequence/>
+                <xsd:attribute name="maxIterationCount" type="xsd:long"/>
+                <xsd:attribute name="maxVelocity" type="xsd:double"/>
+<!--                <xsd:attribute name="initSolutionType">
+                   <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                          <xsd:enumeration value="greedy"/>
+                          <xsd:enumeration value="random"/>
+                          <xsd:enumeration value="sorted"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>-->
         </xsd:complexType>
     </xsd:element>
 </xsd:schema>

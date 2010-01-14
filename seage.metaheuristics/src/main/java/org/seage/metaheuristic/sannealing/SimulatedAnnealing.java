@@ -118,6 +118,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     // and successful iteration count is less than zero
     while (( _currentTemperature >= _minimalTemperature ) && ( successIterationCount > 0 ))
     {
+        if( _stopSearching ) return;
         _listenerProvider.fireNewIterationStarted();
         iterationCount = successIterationCount = 0;
 
