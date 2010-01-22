@@ -55,6 +55,8 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
         _reporter = new AlgorithmReporter( _searchID );
         _reporter.putParameters( params );
 
+        _numberOfIterations = _numberOfNewSolutions = _lastIterationNumberNewSolution = 0;
+
         setParameters( params );
         _simulatedAnnealing.startSearching( _initialSolution );
     }
@@ -96,14 +98,26 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
     }
 
     //############################ EVENTS ###############################//
-    public void newBestSolutionFound(SimulatedAnnealingEvent e) {
-        System.out.println( e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
-        _numberOfNewSolutions++;
-        _lastIterationNumberNewSolution = _numberOfIterations;
+    public void newBestSolutionFound(SimulatedAnnealingEvent e) 
+    {
+        try
+        {
+            System.out.println( e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
+
+            Solution s = e.getSimulatedAnnealing().getBestSolution();
+
+            _reporter.putNewSolution(System.currentTimeMillis(), e.getSimulatedAnnealing().getCurrentIteration(), s.getObjectiveValue(), s.toString());
+            _numberOfNewSolutions++;
+            _lastIterationNumberNewSolution = e.getSimulatedAnnealing().getCurrentIteration();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     public void newIterationStarted(SimulatedAnnealingEvent e) {
-        _numberOfIterations++;
+        _numberOfIterations = e.getSimulatedAnnealing().getCurrentIteration();
     }
 
     public void simulatedAnnealingStarted(SimulatedAnnealingEvent e) {
