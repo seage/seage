@@ -39,6 +39,11 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   private double _annealCoefficient;
 
   /**
+   * The number of current iteration
+   */
+  private long _currentIteration;
+
+  /**
    * Provide firing Events, registering listeners
    */
   private SimulatedAnnealingListenerProvider _listenerProvider = new SimulatedAnnealingListenerProvider( this );
@@ -97,7 +102,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     _stopSearching = false;
 
     // Initial number of iteration
-    long iterationCount = 1;
+    long innerIterationCount = 1;
 
     // Initial number of successful iteration
     long successIterationCount = 1;
@@ -105,11 +110,15 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     // Initial probability
     double probability = 0;
 
+    _currentIteration = 0;
+
     // At first current temperature is same such as maximal temperature
     _currentTemperature = _maximalTemperature;
 
     // The best solution is same as current solution
     _bestSolution = _currentSolution = solution;
+    _objectiveFunction.setObjectiveValue( solution );
+
 
     // Fire event to listeners about that algorithm has started
     _listenerProvider.fireSimulatedAnnealingStarted();
@@ -117,16 +126,16 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     // Iterates until current temperature is equal or greather than minimal temperature
     // and successful iteration count is less than zero
     while (( _currentTemperature >= _minimalTemperature ) && ( successIterationCount > 0 ))
-    {
-        if( _stopSearching ) return;
-        _listenerProvider.fireNewIterationStarted();
-        iterationCount = successIterationCount = 0;
+    {        
+        innerIterationCount = successIterationCount = 0;
 
-        while(( iterationCount < _maximalIterationCount ) && ( successIterationCount < _maximalSuccessIterationCount ))
+        while(( innerIterationCount < _maximalIterationCount ) && ( successIterationCount < _maximalSuccessIterationCount ))
         {
-            _listenerProvider.fireNewIterationStarted();
             if( _stopSearching ) return;
-            iterationCount++;
+            _listenerProvider.fireNewIterationStarted();
+
+            _currentIteration++;
+            innerIterationCount++;
                 
             // Move randomly to new locations
             Solution modifiedSolution = _moveManager.getModifiedSolution( _currentSolution );
@@ -207,6 +216,10 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
   public void stopSearching() throws SecurityException {
     _stopSearching = true;
+  }
+
+  public long getCurrentIteration(){
+        return _currentIteration;
   }
 
   public long getMaximalIterationCount() {
