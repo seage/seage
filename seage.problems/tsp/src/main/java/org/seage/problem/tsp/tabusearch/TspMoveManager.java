@@ -31,7 +31,7 @@ public class TspMoveManager implements MoveManager
         // Generate moves that move each customer
         // forward and back up to five spaces.
         for (int i = 1; i < tour.length; i++)
-            for (int j = -5; j <= 5; j++)
+            for (int j = -tour.length/5; j <= tour.length/5; j++)
                 if ((i + j >= 1) && (i + j < tour.length) && (j != 0))
                     buffer[nextBufferPos++] = new TspSwapMove(tour[i], j);
 
