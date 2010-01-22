@@ -214,9 +214,10 @@ public class GeneticAlgorithmAdapter implements IAlgorithmAdapter
 //                log.putValue("numIter", e.getGeneticSearch().getCurrentIteration());
 //                log.putValue("objVal", subject.getObjectiveValue()[0]);
 //                log.putValue("solution", subject.toString());
-//                _reporter.putNewSolution(System.currentTimeMillis(), e.getGeneticSearch().getCurrentIteration(), subject.getObjectiveValue()[0], subject.toString());
+                _reporter.putNewSolution(System.currentTimeMillis(), e.getGeneticSearch().getCurrentIteration(), subject.getObjectiveValue()[0], subject.toString());
                 _statNumNewSol++;
                 _statLastIterNewSol = e.getGeneticSearch().getCurrentIteration();
+
             }
             catch(Exception ex)
             {
