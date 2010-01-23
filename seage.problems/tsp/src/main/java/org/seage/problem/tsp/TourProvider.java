@@ -77,11 +77,12 @@ public class TourProvider
             avail[i] = i;
         }
         tour[0] = (int)(Math.random() * (cities.length-1));
+        avail[tour[0]] = -1;
         for( int i = 1; i < tour.length; i++ )
         {
             int closest = -1;
             double dist = Double.MAX_VALUE;
-            for( int j = 1; j < avail.length; j++ )
+            for( int j = 0; j < avail.length; j++ )
                 if( (norm(cities, tour[i-1], j ) < dist) && (avail[j] >= 0) )
                 {
                     dist = norm(cities, tour[i-1], j );

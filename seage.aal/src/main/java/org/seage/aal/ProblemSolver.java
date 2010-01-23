@@ -27,6 +27,7 @@ public abstract class ProblemSolver
     protected IAlgorithmAdapter _algorithm;
     protected DataNode _problemParams;
     protected DataNode _algorithmParams;
+    private IProblemProvider _provider;
 
     protected abstract IProblemProvider getProblemProvider();
     protected abstract void visualize() throws Exception;
@@ -34,18 +35,24 @@ public abstract class ProblemSolver
     public ProblemSolver(String[] args) throws Exception
     {
         InputStream schema = ProblemSolver.class.getResourceAsStream("config.xsd");
+        if(schema == null)
+            throw new Exception("No xsd schema found.");
+        
         DataNode config = XmlHelper.readXml(new File(args[0]), schema);
 
-        IProblemProvider provider = getProblemProvider();
+        _provider = getProblemProvider();
         
         _problemParams = config.getDataNode("problem");
         _algorithmParams = config.getDataNodeById(config.getDataNode("problem").getValueStr("runAlgorithmId")).getDataNodes().get(0);
-        provider.initProblemInstance(_problemParams, 0);
-        _algorithm = provider.createAlgorithmFactory(_algorithmParams).createAlgorithm(_algorithmParams);
+        _provider.initProblemInstance(_problemParams, 0);
+        _algorithm = _provider.createAlgorithmFactory(_algorithmParams).createAlgorithm(_algorithmParams);
+
+        run();
     }
 
     public void run() throws Exception
-    { 
+    {
+        _algorithm.solutionsFromPhenotype(_provider.generateInitialSolutions(_algorithmParams.getValueInt("numSolutions")));
         _algorithm.startSearching(_algorithmParams);
         reportBest();
         visualize();

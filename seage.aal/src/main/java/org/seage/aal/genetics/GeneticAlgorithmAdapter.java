@@ -94,7 +94,7 @@ public class GeneticAlgorithmAdapter implements IAlgorithmAdapter
         _statNumIter = param.getValueInt("iterationCount");
 //        _geneticSearch.setSolutionCount(param.getValueInt("numSolution"));
         _geneticSearch.setMutateSubjectPct(param.getValueInt("mutateSubjectPct") / 100.0);
-        _geneticSearch.setPopulationCount(param.getValueInt("numSolution"));
+        _geneticSearch.setPopulationCount(param.getValueInt("numSolutions"));
         _geneticSearch.setRandomSubjectPct(param.getValueInt("randomSubjectPct") / 100.0);
 
         //_paramID = param.getValue("ID");

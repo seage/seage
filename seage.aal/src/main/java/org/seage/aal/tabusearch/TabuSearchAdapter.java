@@ -148,7 +148,7 @@ public abstract class TabuSearchAdapter implements IAlgorithmAdapter
 
         _tabuListLength = param.getValueInt("tabuListLength");
         _iterationDivers = param.getValueInt("numIterDivers");
-        _solutionsToExplore = param.getValueInt("numSolution");
+        _solutionsToExplore = param.getValueInt("numSolutions");
 
         //_paramID = param.getParam("ID");
     }
