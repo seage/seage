@@ -37,7 +37,7 @@
                                 <xsd:element ref="tns:geneticAlgorithm"/>
                                 <xsd:element ref="tns:tabuSearch"/>
                                 <xsd:element ref="tns:simulatedAnnealing"/>
-                                <xsd:element ref="tns:particleSwarmOptimization"/>
+                                <xsd:element ref="tns:particleSwarm"/>
                             </xsd:choice>
                         </xsd:sequence>
                         <xsd:attribute name="id" type="xsd:ID"/>
@@ -64,7 +64,7 @@
     <xsd:element name="geneticAlgorithm">
         <xsd:complexType>
                 <xsd:sequence/>
-                <xsd:attribute name="numSolution" type="xsd:unsignedInt"/>
+                <xsd:attribute name="numSolutions" type="xsd:unsignedInt" use="required"/>
                 <xsd:attribute name="iterationCount" type="xsd:unsignedInt"/>
                 <xsd:attribute name="crossLengthPct" type="xsd:unsignedByte"/>
                 <xsd:attribute name="eliteSubjectPct" type="xsd:unsignedByte"/>
@@ -79,7 +79,7 @@
                 <xsd:sequence/>
                 <xsd:attribute name="numIteration" type="xsd:unsignedInt"/>
                 <xsd:attribute name="tabuListLength" type="xsd:unsignedInt"/>
-                <xsd:attribute name="numSolution" type="xsd:unsignedInt"/>
+                <xsd:attribute name="numSolutions" type="xsd:unsignedInt" use="required"/>
                 <xsd:attribute name="numIterDivers" type="xsd:unsignedInt"/>
         </xsd:complexType>
     </xsd:element>
@@ -101,9 +101,10 @@
                         </xsd:restriction>
                     </xsd:simpleType>
                 </xsd:attribute>
+            <xsd:attribute name="numSolutions" type="xsd:string" use="required"/>
         </xsd:complexType>
     </xsd:element>
-    <xsd:element name="particleSwarmOptimization" >
+    <xsd:element name="particleSwarm" >
         <xsd:complexType >
                 <xsd:sequence/>
                 <xsd:attribute name="maxIterationCount" type="xsd:long"/>
@@ -117,9 +118,11 @@
                         </xsd:restriction>
                     </xsd:simpleType>
                 </xsd:attribute>-->
+            <xsd:attribute name="numSolutions" type="xsd:unsignedInt" use="required"/>
         </xsd:complexType>
     </xsd:element>
 </xsd:schema>
+
 
 
 

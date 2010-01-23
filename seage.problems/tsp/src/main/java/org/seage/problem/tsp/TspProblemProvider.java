@@ -50,7 +50,9 @@ public class TspProblemProvider implements IProblemProvider
 
 	Random r = new Random();
 
-        for(int k=0;k<numTours;k++)
+        result[0] = TourProvider.createGreedyTour(_cities);
+        
+        for(int k=1;k<numTours;k++)
         {
             int[] initTour = new int[tourLenght];
 

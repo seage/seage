@@ -4,15 +4,15 @@
    xmlns='http://xml.seage.org/schema'
    xsi:schemaLocation='http://xml.seage.org/schema config.xsd'>
 
-    <problem problemName="TSP" runAlgorithmId="ParticleSwarmOptimization">
+    <problem problemName="TSP" runAlgorithmId="SimulatedAnnealing">
         <instance name="eil51" path="data/eil51.tsp"/>
-        <visualizer outPath="output/eil51.png" width="800" height="600"/>
+        <visualizer outPath="output/eil51.png" width="800" height="800"/>
     </problem>
 
     <algorithm id="GeneticAlgorithm">
         <geneticAlgorithm 
-            numSolution="100"
-            iterationCount="100"
+            numSolutions="100"
+            iterationCount="1000"
             crossLengthPct="40"
             eliteSubjectPct="10"
             mutateSubjectPct="5"
@@ -22,10 +22,10 @@
 
     <algorithm id="TabuSearch">
         <tabuSearch
-            numIteration="1000"
+            numIteration="100000"
             numIterDivers="1"
-            numSolution="1"
-            tabuListLength="30"/>
+            numSolutions="1"
+            tabuListLength="50"/>
     </algorithm>
 
     <algorithm id="SimulatedAnnealing">
@@ -35,13 +35,15 @@
             maxInnerIterations="2000"
             maxTemperature="200"
             minTemperature="0.01"
-            numInnerSuccesses="200"/>
+            numInnerSuccesses="200"
+            numSolutions="1"/>
     </algorithm>
 
-    <algorithm id="ParticleSwarmOptimization">
-        <particleSwarmOptimization
+    <algorithm id="ParticleSwarm">
+        <particleSwarm
             maxIterationCount="1500"
-            maxVelocity="150.12"/>
+            maxVelocity="150.12"
+            numSolutions="1"/>
     </algorithm>
 
 </config>

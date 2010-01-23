@@ -28,7 +28,7 @@ public class TspProblemSolver extends ProblemSolver
         {
             if(args.length == 0)
                 throw new Exception("Usage: java -jar seage.problem.jar {config-xml-path}");
-            new TspProblemSolver(args).run();
+            new TspProblemSolver(args);
         }
         catch(Exception ex)
         {
