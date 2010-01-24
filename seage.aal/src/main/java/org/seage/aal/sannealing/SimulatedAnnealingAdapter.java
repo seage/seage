@@ -31,7 +31,7 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
     protected SimulatedAnnealing _simulatedAnnealing;
     protected Solution _initialSolution;
 
-    private Solution _bestSolution;
+    //private Solution _bestSolution;
     private AlgorithmReporter _reporter;
     private String _searchID;    
     private long _numberOfIterations = 0;
@@ -68,8 +68,8 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
                   _numberOfNewSolutions,
                   _lastIterationNumberNewSolution,
                   _initObjectiveValue,
-                  _bestSolution.getObjectiveValue(),
-                  _bestSolution.getObjectiveValue()
+                  _simulatedAnnealing.getBestSolution().getObjectiveValue(),
+                  _simulatedAnnealing.getBestSolution().getObjectiveValue()
                  );
 
         return _reporter.getReport();
@@ -125,7 +125,6 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
     }
 
     public void simulatedAnnealingStopped(SimulatedAnnealingEvent e) {
-        _bestSolution = e.getSimulatedAnnealing().getBestSolution();
     }
 
 }

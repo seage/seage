@@ -12,6 +12,7 @@
 package org.seage.data;
 
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,6 +20,10 @@ import java.util.List;
 import java.util.Map.Entry;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -305,6 +310,26 @@ public class DataNode implements Serializable
             }
         //}
         //return elem;
+    }
+
+    @Override
+    public String toString()
+    {
+        try
+        {
+            DOMSource domSource = new DOMSource(toXml());
+            StringWriter writer = new StringWriter();
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            return writer.toString();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return "";
+        }
     }
 
     @Override
