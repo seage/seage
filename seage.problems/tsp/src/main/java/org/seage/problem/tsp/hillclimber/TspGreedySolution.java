@@ -6,28 +6,20 @@ package org.seage.problem.tsp.hillclimber;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import org.seage.metaheuristic.hillclimber.Solution;
 import org.seage.problem.tsp.City;
 
 /**
  *
  * @author Martin Zaloga
  */
-public class TspGreedySolution extends Solution {
-
-    /**
-     * _tour - Contains the tour of the solution
-     * _rnd - Variable for the purposes of generating the random numbers
-     */
-    private Integer[] _tour;
-    private Random _rnd = new Random();
+public class TspGreedySolution extends TspSolution {
 
     /**
      * Constructor the solution with using the greedy algorithm for initial solution
      * @param cities - List of cities with their coordinates
      */
     public TspGreedySolution(City[] cities) {
+        super();
         initGreedyTour(cities, _rnd.nextInt(cities.length));
     }
 
@@ -88,21 +80,5 @@ public class TspGreedySolution extends Solution {
         double dx = c1.X - c2.X;
         double dy = c1.Y - c2.Y;
         return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    /**
-     * Function for getting tour
-     * @return - actual tour
-     */
-    public Integer[] getTour() {
-        return _tour;
-    }
-
-    /**
-     * Method for setting tour
-     * @param tour - Setting tour
-     */
-    public void setTour(Integer[] tour) {
-        _tour = tour;
     }
 }
