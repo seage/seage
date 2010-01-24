@@ -56,29 +56,13 @@ public class TspMove implements IMove {
      * @return - New solution
      */
     public Solution apply(Solution s) {
+        TspSolution newSol = (TspSolution) s;
+        Integer[] newTour = newSol.getTour();
+        int pom = newTour[_ix1];
+        newTour[_ix1] = newTour[_ix2];
+        newTour[_ix2] = pom;
+        newSol.setTour(newTour);
+        return (Solution) newSol;
 
-        /*Applycation for the random solution*/
-        if (s.switcher.equals("Random") || s.switcher.equals("random")) {
-            TspRandomSolution newSol = (TspRandomSolution) s;
-            Integer[] newTour = newSol.getTour();
-            int pom = newTour[_ix1];
-            newTour[_ix1] = newTour[_ix2];
-            newTour[_ix2] = pom;
-            newSol.setTour(newTour);
-            return (Solution) newSol;
-        }
-
-        /*Applycation for the greedy solution*/
-        if (s.switcher.equals("Greedy") || s.switcher.equals("greedy")) {
-            TspGreedySolution newSol = (TspGreedySolution) s;
-            Integer[] newTour = newSol.getTour();
-            int pom = newTour[_ix1];
-            newTour[_ix1] = newTour[_ix2];
-            newTour[_ix2] = pom;
-            newSol.setTour(newTour);
-            return (Solution) newSol;
-        }
-        
-        return null;
     }
 }
