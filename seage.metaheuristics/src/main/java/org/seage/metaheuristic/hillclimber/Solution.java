@@ -22,7 +22,7 @@ public class Solution implements java.lang.Cloneable {
      * The switcher is for switching between types of initial solution
      */
     double value = Double.MAX_VALUE;
-    public String switcher;
+    //public String switcher;
 
     /**
      * Returns the value of Solution
