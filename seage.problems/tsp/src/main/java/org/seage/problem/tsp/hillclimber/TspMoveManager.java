@@ -21,35 +21,15 @@ public class TspMoveManager implements IMoveManager {
      * @return - The next steps algorithm
      */
     public IMove[] getAllMoves(Solution solution) {
+        TspSolution sol = (TspSolution) solution;
+        TspMove[] moves = new TspMove[sol.getTour().length];
+        Random rnd = new Random();
 
-        /*Block for the random initial solution*/
-        if (solution.switcher.equals("Random") || solution.switcher.equals("random")) {
-            TspRandomSolution sol = (TspRandomSolution) solution;
-            TspMove[] moves = new TspMove[sol.getTour().length];
-            Random rnd = new Random();
-
-            /*random selection of sequence the steps*/
-            for (int i = 0; i < sol.getTour().length; i++) {
-                moves[i] = new TspMove(rnd.nextInt(sol.getTour().length), rnd.nextInt(sol.getTour().length));
-            }
-
-            return (IMove[]) moves;
+        /*random selection of sequence the steps*/
+        for (int i = 0; i < sol.getTour().length; i++) {
+            moves[i] = new TspMove(rnd.nextInt(sol.getTour().length), rnd.nextInt(sol.getTour().length));
         }
-
-        /*Block for the greedy initial solution*/
-        if (solution.switcher.equals("Greedy") || solution.switcher.equals("greedy")) {
-            TspGreedySolution sol = (TspGreedySolution) solution;
-            TspMove[] moves = new TspMove[sol.getTour().length];
-            Random rnd = new Random();
-
-            /*random selection of sequence the steps*/
-            for (int i = 0; i < sol.getTour().length; i++) {
-                moves[i] = new TspMove(rnd.nextInt(sol.getTour().length), rnd.nextInt(sol.getTour().length));
-            }
-
-            return (IMove[]) moves;
-        }
-
-        return (IMove[]) null;
+        
+        return (IMove[]) moves;
     }
 }
