@@ -34,7 +34,7 @@ public class TspObjectiveFunction implements IObjectiveFunction {
     /**
      * Reseting the iteration counter
      */
-    public void reset(){
+    public void reset() {
         _counter = 0;
     }
 
@@ -48,26 +48,16 @@ public class TspObjectiveFunction implements IObjectiveFunction {
         Integer[] tour = null;
         Integer[] tourBefMod = null;
         double length = 0;
+        TspSolution sol = (TspSolution) s;
 
-        /*Block for the random initial solution*/
-        if (s.switcher.equals("Random") || s.switcher.equals("random")) {
-            TspRandomSolution sol = (TspRandomSolution) s;
-            tour = sol.getTour().clone();
-        }
-
-        /*Block for the random greedy solution*/
-        if (s.switcher.equals("Greedy") || s.switcher.equals("greedy")) {
-            TspGreedySolution sol = (TspGreedySolution) s;
-            tour = sol.getTour().clone();
-        }
-
+        tour = sol.getTour().clone();
         TspMove move = (TspMove) m;
 
         /*Deciding whether to rate the next step or the current solution*/
         if (m != null) {
 
             /*In the first step must be first determine the evaluation*/
-            if(_counter == 0){
+            if (_counter == 0) {
                 length = length(tour);
             } else {
                 length = s.getObjectiveValue();
