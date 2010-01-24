@@ -6,29 +6,21 @@ package org.seage.problem.tsp.hillclimber;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import org.seage.metaheuristic.hillclimber.Solution;
 import org.seage.problem.tsp.City;
 
 /**
  *
  * @author Martin Zaloga
  */
-public class TspRandomSolution extends Solution {
-
-    /**
-     * _tour - Contains the tour of the solution
-     * _rnd - Variable for the purposes of generating the random numbers
-     */
-    private Integer[] _tour;
-    private Random _rnd = new Random();
+public class TspRandomSolution extends TspSolution {
 
     /**
      * Constructor the solution with using the random algorithm for initial solution
      * @param cities - List of cities with their coordinates
      */
     public TspRandomSolution(City[] cities) {
-            initRandTour(cities);
+        super();
+        initRandTour(cities);
     }
 
     /**
@@ -59,21 +51,5 @@ public class TspRandomSolution extends Solution {
         for (int i = 0; i < c.length; i++) {
             _tour[i] = randTour.get(i);
         }
-    }
-
-    /**
-     * Function for getting tour
-     * @return - actual tour
-     */
-    public Integer[] getTour() {
-        return _tour;
-    }
-
-    /**
-     * Method for setting tour
-     * @param tour - Setting tour
-     */
-    public void setTour(Integer[] tour) {
-        _tour = tour;
     }
 }
