@@ -20,6 +20,7 @@ import org.seage.problem.tsp.Visualizer;
 /**
  *
  * @author Martin Zaloga
+ * @deprecated Replaced by TspProblemSolver
  */
 public class TspHillClimberTest {
 
@@ -46,17 +47,20 @@ public class TspHillClimberTest {
      */
     private Integer[] startHC(String clasic, String switcher, HillClimber hc) {
         Integer[] tour = null;
-
         TspSolution tspSolution = null;
+
         /*Initialization for the random initial solution*/
-        if (switcher.toLowerCase().equals("random"))
-            tspSolution = new TspRandomSolution(_cities);        
+        if (switcher.equals("Random") || switcher.equals("random")) {
+            tspSolution = new TspRandomSolution(_cities);
+        }
 
         /*Initialization for the greedy initial solution*/
-        if (switcher.toLowerCase().equals("Greedy"))
-            tspSolution = new TspGreedySolution(_cities);            
+        if (switcher.equals("Greedy") || switcher.equals("greedy")) {
+            tspSolution = new TspGreedySolution(_cities);
+        }
 
         hc.startSearching(tspSolution, clasic);
+        //hc.startRestartedSearching(tspSolution, clasic, 100);
         tour = tspSolution.getTour();
 
         return tour;
@@ -85,7 +89,6 @@ public class TspHillClimberTest {
             hc = new HillClimber(new TspObjectiveFunction(_cities), new TspMoveManager());
             hc.setIterationCount(iteration);
             tour = startHC(clasic, switcher, hc);
-            countRest++;
 
             /*Choosing the best solution*/
             if (bestDist > hc.getBestSolution().getObjectiveValue()) {

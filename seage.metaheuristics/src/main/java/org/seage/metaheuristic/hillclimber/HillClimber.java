@@ -84,6 +84,27 @@ public class HillClimber implements IHillClimber {
         }
     }
 
+    public void startRestartedSearching(Solution solution, String classic, int restarts) {
+        int countRest = 0;
+        double bestDist = Double.MAX_VALUE;
+        Solution bestSolution = null;
+
+        while (countRest <= restarts) {
+
+            startSearching(solution, classic);
+
+            /*Choosing the best solution*/
+            if (bestDist > getBestSolution().getObjectiveValue()) {
+                bestDist = getBestSolution().getObjectiveValue();
+                bestSolution = getBestSolution();
+            }
+            countRest++;
+        }
+        _currentSolution = bestSolution;
+        _currentSolution.setObjectiveValue(bestDist);
+        System.out.println("best is "+bestSolution.getObjectiveValue());
+    }
+
     /**
      * Method for setting number of iteration
      * @param count - Number of iteration algorithm
