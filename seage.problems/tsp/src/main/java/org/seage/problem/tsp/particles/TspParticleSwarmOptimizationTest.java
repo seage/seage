@@ -54,11 +54,11 @@ public class TspParticleSwarmOptimizationTest implements IParticleSwarmOptimizat
         pso.addParticleSwarmOptimizationListener( this );
         pso.startSearching( null );
 
-        System.out.println(pso.getBestSolution());
+//        System.out.println(pso.getBestSolution());
     }
 
     public void newBestSolutionFound(ParticleSwarmOptimizationEvent e) {
-        System.out.println("Best: " + e.getParticleSwarmOptimization().getBestSolution().getObjectiveValue());
+       // System.out.println("Best: " + e.getParticleSwarmOptimization().getBestSolution().getObjectiveValue());
     }
 
     public void newIterationStarted(ParticleSwarmOptimizationEvent e) {

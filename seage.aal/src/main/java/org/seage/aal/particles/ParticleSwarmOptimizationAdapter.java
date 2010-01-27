@@ -96,7 +96,7 @@ public abstract class ParticleSwarmOptimizationAdapter implements IAlgorithmAdap
 
     //############################ EVENTS ###############################//
     public void newBestSolutionFound(ParticleSwarmOptimizationEvent e) {
-        System.out.println( e.getParticleSwarmOptimization().getBestSolution().getObjectiveValue());
+//        System.out.println( e.getParticleSwarmOptimization().getBestSolution().getObjectiveValue());
         _numberOfNewSolutions++;
         _lastIterationNumberNewSolution = _numberOfIterations;
     }
@@ -110,7 +110,7 @@ public abstract class ParticleSwarmOptimizationAdapter implements IAlgorithmAdap
     }
 
     public void particleSwarmOptimizationStopped(ParticleSwarmOptimizationEvent e) {
-        _bestSolution = e.getParticleSwarmOptimization().getBestSolution();
+        //_bestSolution = e.getParticleSwarmOptimization().getBestSolution();
     }
     
 }

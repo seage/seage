@@ -11,7 +11,7 @@
 
     <algorithm id="GeneticAlgorithm">
         <geneticAlgorithm 
-            numSolution="200"
+            numSolutions="200"
             iterationCount="500"
             crossLengthPct="40"
             eliteSubjectPct="10"
@@ -24,7 +24,7 @@
         <tabuSearch
             numIteration="1000"
             numIterDivers="1"
-            numSolution="1"
+            numSolutions="1"
             tabuListLength="30"/>
     </algorithm>
 
@@ -35,12 +35,14 @@
             maxInnerIterations="200"
             maxTemperature="1000"
             minTemperature="10"
-            numInnerSuccesses="20"/>
+            numInnerSuccesses="20"
+            numSolutions="1"/>
     </algorithm>
 
     <algorithm id="ParticleSwarmOptimization">
-        <particleSwarmOptimization
+        <particleSwarm
             maxIterationCount="1500"
+            numSolutions="1"
             maxVelocity="150.12"/>
     </algorithm>
 
