@@ -12,7 +12,7 @@ import org.seage.aal.AlgorithmReportEvaluator;
  *
  * @author rick
  */
-public class ParticleSwarmOptimizationRuntimeEvaluator extends AlgorithmReportEvaluator{
+public class ParticleSwarmRuntimeEvaluator extends AlgorithmReportEvaluator{
 
     @Override
     public int evaluate(AlgorithmReport statistics) {

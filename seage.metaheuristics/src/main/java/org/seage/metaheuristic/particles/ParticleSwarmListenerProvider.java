@@ -15,20 +15,20 @@ package org.seage.metaheuristic.particles;
  *
  * @author Jan Zmatlik
  */
-public class ParticleSwarmOptimizationListenerProvider  {
+public class ParticleSwarmListenerProvider  {
 
-  private IParticleSwarmOptimizationListener[] _particleSwarmOptimizationListenerList = {};
+  private IParticleSwarmListener[] _particleSwarmOptimizationListenerList = {};
 
-  private final ParticleSwarmOptimizationEvent _particleSwarmOptimizationEvent;
+  private final ParticleSwarmEvent _particleSwarmOptimizationEvent;
 
-  public ParticleSwarmOptimizationListenerProvider(IParticleSwarmOptimization particleSwarmOptimization)
+  public ParticleSwarmListenerProvider(IParticleSwarm particleSwarmOptimization)
   {
-        _particleSwarmOptimizationEvent = new ParticleSwarmOptimizationEvent( particleSwarmOptimization );
+        _particleSwarmOptimizationEvent = new ParticleSwarmEvent( particleSwarmOptimization );
   }
 
-  public final void addParticleSwarmOptimizationListener( IParticleSwarmOptimizationListener listener )
+  public final void addParticleSwarmOptimizationListener( IParticleSwarmListener listener )
   {
-        IParticleSwarmOptimizationListener[] list = new IParticleSwarmOptimizationListener[
+        IParticleSwarmListener[] list = new IParticleSwarmListener[
             _particleSwarmOptimizationListenerList.length + 1 ];
 
         int length = list.length;

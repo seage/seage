@@ -15,15 +15,15 @@ package org.seage.metaheuristic.particles;
  * @author Jan Zmatlik
  */
 
-public class ParticleSwarmOptimization implements IParticleSwarmOptimization
+public class ParticleSwarm implements IParticleSwarm
 {
 
-  private double _maximalVelocity = 0.0;
+  private double _maximalVelocity;
 
   /**
    * Provide firing Events, registering listeners
    */
-  private ParticleSwarmOptimizationListenerProvider _listenerProvider = new ParticleSwarmOptimizationListenerProvider( this );
+  private ParticleSwarmListenerProvider _listenerProvider = new ParticleSwarmListenerProvider( this );
 
 //  /**
 //   * The Solution which is actual
@@ -62,15 +62,13 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
 
   private boolean _stopSearching = false;
 
-  private int _dimension = 2;
-
   /**
    * Constructor
    *
    * @param objectiveFunction is objective function.
    * @param moveManager is performing modification solution.
    */
-  public ParticleSwarmOptimization(IObjectiveFunction objectiveFunction, IVelocityManager velocityManager)
+  public ParticleSwarm(IObjectiveFunction objectiveFunction, IVelocityManager velocityManager)
   {
     _objectiveFunction = objectiveFunction;
     _velocityManager = velocityManager;
@@ -95,12 +93,14 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
       //######################################
       // Rosenbrock
 
+      int dimension = 2;
+
       Particle[] particles = 
       {
-          new Particle( _dimension ) ,
-          new Particle( _dimension ) ,
-          new Particle( _dimension ) ,
-          new Particle( _dimension )
+          new Particle( dimension ) ,
+          new Particle( dimension ) ,
+          new Particle( dimension ) ,
+          new Particle( dimension )
       };
 
       //######################################
@@ -108,11 +108,11 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
       for(Particle particle : particles)
       {
           // Initial coords
-          for(int i = 0; i < _dimension; i++)
+          for(int i = 0; i < dimension; i++)
               particle.getCoords()[i] = Math.random();
 
           // Initial velocity
-          for(int i = 0; i < _dimension; i++)
+          for(int i = 0; i < dimension; i++)
               particle.getVelocity()[i] = Math.random();
 
           // Evaluate
@@ -153,18 +153,14 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
               // Find current minimum
               
               System.out.println("Local MINIMUM---: " + _localMinimum.getEvaluation());
-              //System.out.println();
+              System.out.println();
           }
 
-
           System.out.println();
-
           //###########################
           // Find best current x and global best g
 
           _localMinimum = findMinimum(particles);
-
-          System.out.println("GLOBAL: " + _globalMinimum.getEvaluation());
 
           if(_localMinimum.getEvaluation() < _globalMinimum.getEvaluation())
               _globalMinimum = _localMinimum;
@@ -248,11 +244,6 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
       }
   }
 
-  /**
-   *
-   * Clone particle with minimum evaluation?
-   *
-   */
   private Particle findMinimum(Particle[] particles)
   {
       double minEvaluation = Double.MAX_VALUE;
@@ -267,7 +258,7 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
           }
       }
       
-      return minParticle.clone();
+      return minParticle;
   }
 
   private void setRandomVector(double[] vector)
@@ -284,7 +275,7 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
 //    this._currentSolution = _currentSolution;
 //  }
 
-  public final void addParticleSwarmOptimizationListener( IParticleSwarmOptimizationListener listener )
+  public final void addParticleSwarmOptimizationListener( IParticleSwarmListener listener )
   {
     _listenerProvider.addParticleSwarmOptimizationListener( listener );
   } 

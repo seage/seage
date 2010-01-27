@@ -11,9 +11,9 @@
  */
 package org.seage.problem.tsp.particles;
 
-import org.seage.metaheuristic.particles.IParticleSwarmOptimizationListener;
-import org.seage.metaheuristic.particles.ParticleSwarmOptimization;
-import org.seage.metaheuristic.particles.ParticleSwarmOptimizationEvent;
+import org.seage.metaheuristic.particles.IParticleSwarmListener;
+import org.seage.metaheuristic.particles.ParticleSwarm;
+import org.seage.metaheuristic.particles.ParticleSwarmEvent;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.City;
 
@@ -22,7 +22,7 @@ import org.seage.problem.tsp.City;
  *
  * @author Jan Zmatlik
  */
-public class TspParticleSwarmOptimizationTest implements IParticleSwarmOptimizationListener
+public class TspParticleSwarmTest implements IParticleSwarmListener
 {
     private City[] _cities;
     private static String _dataPath = "data/eil101.tsp";
@@ -31,7 +31,7 @@ public class TspParticleSwarmOptimizationTest implements IParticleSwarmOptimizat
     {
         try
         {
-            new TspParticleSwarmOptimizationTest().run( args[0] );
+            new TspParticleSwarmTest().run( args[0] );
         }
         catch(Exception ex)
         {
@@ -46,7 +46,7 @@ public class TspParticleSwarmOptimizationTest implements IParticleSwarmOptimizat
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 
-        ParticleSwarmOptimization pso = new ParticleSwarmOptimization( new TspObjectiveFunction() , new TspVelocityManager() );
+        ParticleSwarm pso = new ParticleSwarm( new TspObjectiveFunction() , new TspVelocityManager() );
 
         pso.setMaximalIterationCount( 1500 );
         pso.setMaximalVelocity(150.0);
@@ -57,18 +57,18 @@ public class TspParticleSwarmOptimizationTest implements IParticleSwarmOptimizat
 //        System.out.println(pso.getBestSolution());
     }
 
-    public void newBestSolutionFound(ParticleSwarmOptimizationEvent e) {
+    public void newBestSolutionFound(ParticleSwarmEvent e) {
        // System.out.println("Best: " + e.getParticleSwarmOptimization().getBestSolution().getObjectiveValue());
     }
 
-    public void newIterationStarted(ParticleSwarmOptimizationEvent e) {
+    public void newIterationStarted(ParticleSwarmEvent e) {
     }
 
-    public void particleSwarmOptimizationStarted(ParticleSwarmOptimizationEvent e) {
+    public void particleSwarmOptimizationStarted(ParticleSwarmEvent e) {
         System.out.println("Started");
     }
 
-    public void particleSwarmOptimizationStopped(ParticleSwarmOptimizationEvent e) {
+    public void particleSwarmOptimizationStopped(ParticleSwarmEvent e) {
         System.out.println("Stopped");
     }
 

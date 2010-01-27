@@ -15,16 +15,16 @@ package org.seage.metaheuristic.particles;
  *
  * @author Jan Zmatlik
  */
-public class ParticleSwarmOptimizationEvent extends java.util.EventObject {
+public class ParticleSwarmEvent extends java.util.EventObject {
 
-    public ParticleSwarmOptimizationEvent(Object source)
+    public ParticleSwarmEvent(Object source)
     {
         super( source );
     }
 
-    public IParticleSwarmOptimization getParticleSwarmOptimization()
+    public IParticleSwarm getParticleSwarmOptimization()
     {
-        return (IParticleSwarmOptimization) source;
+        return (IParticleSwarm) source;
     }
 
 }

@@ -10,7 +10,7 @@ import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.IProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.problem.tsp.genetics.TspGeneticAlgorithmFactory;
-import org.seage.problem.tsp.particles.TspParticleSwarmOptimizationgFactory;
+import org.seage.problem.tsp.particles.TspParticleSwarmFactory;
 import org.seage.problem.tsp.sannealing.TspSimulatedAnnealingFactory;
 import org.seage.problem.tsp.tabusearch.TspTabuSearchFactory;
 
@@ -84,7 +84,7 @@ public class TspProblemProvider implements IProblemProvider
         if(algName.equals("simulatedAnnealing"))
             return new TspSimulatedAnnealingFactory(algorithmParams, _cities);
         if(algName.equals("particleSwarm"))
-            return new TspParticleSwarmOptimizationgFactory(algorithmParams, _cities);
+            return new TspParticleSwarmFactory(algorithmParams, _cities);
 
         throw new Exception("No algorithm factory for name: " + algName);
     }

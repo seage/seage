@@ -13,7 +13,7 @@ package org.seage.problem.tsp.particles;
 
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.particles.ParticleSwarmOptimizationAdapter;
+import org.seage.aal.particles.ParticleSwarmAdapter;
 import org.seage.data.DataNode;
 
 import org.seage.metaheuristic.particles.Solution;
@@ -25,14 +25,14 @@ import org.seage.problem.tsp.City;
  *
  * @author Jan Zmatlik
  */
-public class TspParticleSwarmOptimizationgFactory implements IAlgorithmFactory
+public class TspParticleSwarmFactory implements IAlgorithmFactory
 {
 //    private TspSolution _tspSolution;
     private City[] _cities;
 
     private TspObjectiveFunction _objectiveFunction;
 
-    public TspParticleSwarmOptimizationgFactory(DataNode params, City[] cities) throws Exception
+    public TspParticleSwarmFactory(DataNode params, City[] cities) throws Exception
     {
         _cities = cities;
 //        String solutionType = params.getValueStr("initSolutionType");
@@ -49,7 +49,7 @@ public class TspParticleSwarmOptimizationgFactory implements IAlgorithmFactory
         IAlgorithmAdapter algorithm;
         _objectiveFunction = new TspObjectiveFunction();
 
-        algorithm = new ParticleSwarmOptimizationAdapter(
+        algorithm = new ParticleSwarmAdapter(
                 generateInitialSolutions(),
                 _objectiveFunction,
                 new TspVelocityManager(), false, "")
@@ -66,7 +66,7 @@ public class TspParticleSwarmOptimizationgFactory implements IAlgorithmFactory
         };
 //        {
 //
-//        algorithm = new ParticleSwarmOptimizationAdapter((Solution) _tspSolution,
+//        algorithm = new ParticleSwarmAdapter((Solution) _tspSolution,
 //                new TspObjectiveFunction(),
 //                new TspVelocityManager(), false, "")
 //        {

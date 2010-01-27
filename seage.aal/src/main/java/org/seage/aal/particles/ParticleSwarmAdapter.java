@@ -18,17 +18,17 @@ import org.seage.aal.IAlgorithmAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.particles.IVelocityManager;
 import org.seage.metaheuristic.particles.IObjectiveFunction;
-import org.seage.metaheuristic.particles.IParticleSwarmOptimizationListener;
-import org.seage.metaheuristic.particles.ParticleSwarmOptimization;
-import org.seage.metaheuristic.particles.ParticleSwarmOptimizationEvent;
+import org.seage.metaheuristic.particles.IParticleSwarmListener;
+import org.seage.metaheuristic.particles.ParticleSwarm;
+import org.seage.metaheuristic.particles.ParticleSwarmEvent;
 import org.seage.metaheuristic.particles.Solution;
 /**
  *
  * @author Jan Zmatlik
  */
-public abstract class ParticleSwarmOptimizationAdapter implements IAlgorithmAdapter, IParticleSwarmOptimizationListener
+public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IParticleSwarmListener
 {
-    protected ParticleSwarmOptimization _particleSwarmOptimization;
+    protected ParticleSwarm _particleSwarmOptimization;
     protected Solution[] _initialSolutions;
 
     private Solution _bestSolution;
@@ -39,14 +39,14 @@ public abstract class ParticleSwarmOptimizationAdapter implements IAlgorithmAdap
     private long _lastIterationNumberNewSolution = 0;
     private double _initObjectiveValue = Double.MAX_VALUE;
 
-    public ParticleSwarmOptimizationAdapter( Solution[] initialSolutions,
+    public ParticleSwarmAdapter( Solution[] initialSolutions,
                                 IObjectiveFunction  objectiveFunction,
                                 IVelocityManager velocityManager,
                                 boolean maximizing,
                                 String searchID) throws Exception
     {
         _initialSolutions = initialSolutions;
-        _particleSwarmOptimization = new ParticleSwarmOptimization( objectiveFunction , velocityManager );
+        _particleSwarmOptimization = new ParticleSwarm( objectiveFunction , velocityManager );
 
         _reporter = new AlgorithmReporter( searchID );
     }
@@ -95,21 +95,21 @@ public abstract class ParticleSwarmOptimizationAdapter implements IAlgorithmAdap
     }
 
     //############################ EVENTS ###############################//
-    public void newBestSolutionFound(ParticleSwarmOptimizationEvent e) {
+    public void newBestSolutionFound(ParticleSwarmEvent e) {
 //        System.out.println( e.getParticleSwarmOptimization().getBestSolution().getObjectiveValue());
         _numberOfNewSolutions++;
         _lastIterationNumberNewSolution = _numberOfIterations;
     }
 
-    public void newIterationStarted(ParticleSwarmOptimizationEvent e) {
+    public void newIterationStarted(ParticleSwarmEvent e) {
         _numberOfIterations++;
     }
 
-    public void particleSwarmOptimizationStarted(ParticleSwarmOptimizationEvent e) {
+    public void particleSwarmOptimizationStarted(ParticleSwarmEvent e) {
 //        _initObjectiveValue = e.getParticleSwarmOptimization().getCurrentSolution().getObjectiveValue();
     }
 
-    public void particleSwarmOptimizationStopped(ParticleSwarmOptimizationEvent e) {
+    public void particleSwarmOptimizationStopped(ParticleSwarmEvent e) {
         //_bestSolution = e.getParticleSwarmOptimization().getBestSolution();
     }
     
