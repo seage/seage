@@ -12,11 +12,13 @@
 
 package org.seage.metaheuristic.particles;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Jan Zmatlik
  */
-public class Particle {
+public class Particle implements Cloneable, Serializable{
 
     private double[] _coords;
 
@@ -52,6 +54,23 @@ public class Particle {
 
     public void setVelocity(double[] velocity) {
         this._velocity = velocity;
+    }
+
+    @Override
+    public  Particle clone()
+    {
+        try
+        {
+            Particle particle = (Particle)super.clone();
+            particle._coords = _coords.clone();
+            particle._velocity = _velocity.clone();
+            particle._evaluation = _evaluation;
+            return particle;
+        }
+        catch(CloneNotSupportedException e)
+        {
+            throw new InternalError( e.toString() );
+        }
     }
 
     
