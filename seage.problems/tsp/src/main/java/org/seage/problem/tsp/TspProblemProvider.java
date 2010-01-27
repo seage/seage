@@ -83,7 +83,7 @@ public class TspProblemProvider implements IProblemProvider
             return new TspTabuSearchFactory();
         if(algName.equals("simulatedAnnealing"))
             return new TspSimulatedAnnealingFactory(algorithmParams, _cities);
-        if(algName.equals("particleSwarmOptimization"))
+        if(algName.equals("particleSwarm"))
             return new TspParticleSwarmOptimizationgFactory(algorithmParams, _cities);
 
         throw new Exception("No algorithm factory for name: " + algName);

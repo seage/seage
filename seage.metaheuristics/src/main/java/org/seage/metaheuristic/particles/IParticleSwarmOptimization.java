@@ -22,7 +22,7 @@ public interface IParticleSwarmOptimization {
         void setMaximalVelocity(double maximalVelocity);
 
 
-        Solution getBestSolution();
+       // Solution getBestSolution();
         //public Solution getCurrentSolution();
 
         void startSearching(Solution[] solutions);

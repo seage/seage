@@ -35,7 +35,6 @@ public class TspParticleSwarmOptimizationgFactory implements IAlgorithmFactory
     public TspParticleSwarmOptimizationgFactory(DataNode params, City[] cities) throws Exception
     {
         _cities = cities;
-        System.out.println("JOJO");
 //        String solutionType = params.getValueStr("initSolutionType");
 //        if( solutionType.toLowerCase().equals("greedy") )
 //            _tspSolution = new TspGreedySolution( cities );
