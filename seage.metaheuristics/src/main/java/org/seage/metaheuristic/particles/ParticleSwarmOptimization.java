@@ -18,7 +18,7 @@ package org.seage.metaheuristic.particles;
 public class ParticleSwarmOptimization implements IParticleSwarmOptimization
 {
 
-  private double _maximalVelocity;
+  private double _maximalVelocity = 0.0;
 
   /**
    * Provide firing Events, registering listeners
@@ -62,6 +62,8 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
 
   private boolean _stopSearching = false;
 
+  private int _dimension = 2;
+
   /**
    * Constructor
    *
@@ -93,14 +95,12 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
       //######################################
       // Rosenbrock
 
-      int dimension = 2;
-
       Particle[] particles = 
       {
-          new Particle( dimension ) ,
-          new Particle( dimension ) ,
-          new Particle( dimension ) ,
-          new Particle( dimension )
+          new Particle( _dimension ) ,
+          new Particle( _dimension ) ,
+          new Particle( _dimension ) ,
+          new Particle( _dimension )
       };
 
       //######################################
@@ -108,11 +108,11 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
       for(Particle particle : particles)
       {
           // Initial coords
-          for(int i = 0; i < dimension; i++)
+          for(int i = 0; i < _dimension; i++)
               particle.getCoords()[i] = Math.random();
 
           // Initial velocity
-          for(int i = 0; i < dimension; i++)
+          for(int i = 0; i < _dimension; i++)
               particle.getVelocity()[i] = Math.random();
 
           // Evaluate
@@ -153,14 +153,18 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
               // Find current minimum
               
               System.out.println("Local MINIMUM---: " + _localMinimum.getEvaluation());
-              System.out.println();
+              //System.out.println();
           }
 
+
           System.out.println();
+
           //###########################
           // Find best current x and global best g
 
           _localMinimum = findMinimum(particles);
+
+          System.out.println("GLOBAL: " + _globalMinimum.getEvaluation());
 
           if(_localMinimum.getEvaluation() < _globalMinimum.getEvaluation())
               _globalMinimum = _localMinimum;
@@ -244,6 +248,11 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
       }
   }
 
+  /**
+   *
+   * Clone particle with minimum evaluation?
+   *
+   */
   private Particle findMinimum(Particle[] particles)
   {
       double minEvaluation = Double.MAX_VALUE;
@@ -258,7 +267,7 @@ public class ParticleSwarmOptimization implements IParticleSwarmOptimization
           }
       }
       
-      return minParticle;
+      return minParticle.clone();
   }
 
   private void setRandomVector(double[] vector)
