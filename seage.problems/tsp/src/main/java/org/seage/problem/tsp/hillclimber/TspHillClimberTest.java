@@ -47,21 +47,17 @@ public class TspHillClimberTest {
     private Integer[] startHC(String clasic, String switcher, HillClimber hc) {
         Integer[] tour = null;
 
+        TspSolution tspSolution = null;
         /*Initialization for the random initial solution*/
-        if (switcher.equals("Random") || switcher.equals("random")) {
-            TspRandomSolution tspSolution = new TspRandomSolution(_cities);
-            tspSolution.switcher = "Random";
-            hc.startSearching(tspSolution, clasic);
-            tour = tspSolution.getTour();
-        }
+        if (switcher.toLowerCase().equals("random"))
+            tspSolution = new TspRandomSolution(_cities);        
 
         /*Initialization for the greedy initial solution*/
-        if (switcher.equals("Greedy") || switcher.equals("greedy")) {
-            TspGreedySolution tspSolution = new TspGreedySolution(_cities);
-            tspSolution.switcher = "Greedy";
-            hc.startSearching(tspSolution, clasic);
-            tour = tspSolution.getTour();
-        }
+        if (switcher.toLowerCase().equals("Greedy"))
+            tspSolution = new TspGreedySolution(_cities);            
+
+        hc.startSearching(tspSolution, clasic);
+        tour = tspSolution.getTour();
 
         return tour;
     }
