@@ -12,19 +12,17 @@
 package org.seage.metaheuristic.particles;
 
 /**
+ *
  * @author Jan Zmatlik
  */
-public interface IParticleSwarmOptimization {
-        long getMaximalIterationCount();
-        void setMaximalIterationCount(long maximalIterationCount);
+public interface IParticleSwarmListener {
 
-        double getMaximalVelocity();
-        void setMaximalVelocity(double maximalVelocity);
+    public void particleSwarmOptimizationStarted( ParticleSwarmEvent e );
 
+    public void particleSwarmOptimizationStopped( ParticleSwarmEvent e );
 
-       // Solution getBestSolution();
-        //public Solution getCurrentSolution();
+    public void newBestSolutionFound( ParticleSwarmEvent e );
 
-        void startSearching(Solution[] solutions);
-        void stopSearching();
+    public void newIterationStarted( ParticleSwarmEvent e );
+
 }
