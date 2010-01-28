@@ -21,10 +21,6 @@ public interface IParticleSwarm {
         double getMaximalVelocity();
         void setMaximalVelocity(double maximalVelocity);
 
-
-       // Solution getBestSolution();
-        //public Solution getCurrentSolution();
-
-        void startSearching(Solution[] solutions);
+        void startSearching(Particle[] particles);
         void stopSearching();
 }

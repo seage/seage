@@ -52,7 +52,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
         algorithm = new ParticleSwarmAdapter(
                 generateInitialSolutions(),
                 _objectiveFunction,
-                new TspVelocityManager(), false, "")
+                new TspMoveManager(), false, "")
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
@@ -68,7 +68,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 //
 //        algorithm = new ParticleSwarmAdapter((Solution) _tspSolution,
 //                new TspObjectiveFunction(),
-//                new TspVelocityManager(), false, "")
+//                new TspMoveManager(), false, "")
 //        {
 //            public void solutionsFromPhenotype(Object[][] source) throws Exception
 //            {
@@ -100,19 +100,19 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 
     private Solution[] generateInitialSolutions() throws Exception
     {
-        Solution[] solutions = new Solution[3];
-
-        TspGreedySolution greedy = new TspGreedySolution(_cities);
-        TspRandomSolution random = new TspRandomSolution(_cities);
-        TspSortedSolution sorted = new TspSortedSolution(_cities);
-
-        _objectiveFunction.setObjectiveValue(greedy);
-        _objectiveFunction.setObjectiveValue(random);
-        _objectiveFunction.setObjectiveValue(sorted);
-
-        solutions[0] = greedy;
-        solutions[1] = random;
-        solutions[2] = sorted;
+//        Solution[] solutions = new Solution[3];
+//
+//        TspGreedySolution greedy = new TspGreedySolution(_cities);
+//        TspRandomSolution random = new TspRandomSolution(_cities);
+//        TspSortedSolution sorted = new TspSortedSolution(_cities);
+//
+//        _objectiveFunction.setObjectiveValue(greedy);
+//        _objectiveFunction.setObjectiveValue(random);
+//        _objectiveFunction.setObjectiveValue(sorted);
+//
+//        solutions[0] = greedy;
+//        solutions[1] = random;
+//        solutions[2] = sorted;
         
 //        return new Solution[]{
 //            new TspGreedySolution(_cities),
@@ -120,6 +120,6 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 //            new TspSortedSolution(_cities)
 //        };
 
-        return solutions;
+        return null;
     }
 }

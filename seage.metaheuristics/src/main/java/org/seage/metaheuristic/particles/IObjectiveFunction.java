@@ -17,5 +17,5 @@ package org.seage.metaheuristic.particles;
  * @author Jan Zmatlik
  */
 public interface IObjectiveFunction {
-    void setObjectiveValue(Solution s);
+    void setObjectiveValue(Particle particle);
 }

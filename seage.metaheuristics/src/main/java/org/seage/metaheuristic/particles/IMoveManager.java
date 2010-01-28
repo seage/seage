@@ -15,11 +15,9 @@ package org.seage.metaheuristic.particles;
  *
  * @author Jan Zmatlik
  */
-public interface IVelocityManager {
+public interface IMoveManager {
     
-    /**
-     * Returns modified clone of solution in parameter
-     * @param Solution solution
-     */
-    Solution getModifiedSolution(Solution solution);
+    public void generateNewVelocity(Particle particle, Particle localMinimum, Particle globalMinimum, double alpha, double beta);
+
+    public void calculateNewLocations(Particle particle);
 }
