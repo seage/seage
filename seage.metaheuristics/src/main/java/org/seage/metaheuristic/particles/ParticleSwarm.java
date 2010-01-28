@@ -38,7 +38,7 @@ public class ParticleSwarm implements IParticleSwarm
   /**
    * Modifying current solution
    */
-  private IVelocityManager _velocityManager;
+  private IMoveManager _moveManager;
 
   /**
    * Calculate and set objective value of solution
@@ -68,17 +68,17 @@ public class ParticleSwarm implements IParticleSwarm
    * @param objectiveFunction is objective function.
    * @param moveManager is performing modification solution.
    */
-  public ParticleSwarm(IObjectiveFunction objectiveFunction, IVelocityManager velocityManager)
+  public ParticleSwarm(IObjectiveFunction objectiveFunction, IMoveManager moveManager)
   {
     _objectiveFunction = objectiveFunction;
-    _velocityManager = velocityManager;
+    _moveManager = moveManager;
   }  
 
   /**
    * This method is called to
    * perform the simulated annealing.
    */
-  public void startSearching(Solution[] solutions)
+  public void startSearching(Particle[] particles)
   {
       // Searching is starting
       _stopSearching = false;
@@ -93,37 +93,36 @@ public class ParticleSwarm implements IParticleSwarm
       //######################################
       // Rosenbrock
 
-      int dimension = 2;
-
-      Particle[] particles = 
-      {
-          new Particle( dimension ) ,
-          new Particle( dimension ) ,
-          new Particle( dimension ) ,
-          new Particle( dimension )
-      };
+//      int dimension = 2;
+//
+//      Particle[] particles =
+//      {
+//          new Particle( dimension ) ,
+//          new Particle( dimension ) ,
+//          new Particle( dimension ) ,
+//          new Particle( dimension )
+//      };
 
       //######################################
       // Initial
-      for(Particle particle : particles)
-      {
-          // Initial coords
-          for(int i = 0; i < dimension; i++)
-              particle.getCoords()[i] = Math.random();
-
-          // Initial velocity
-          for(int i = 0; i < dimension; i++)
-              particle.getVelocity()[i] = Math.random();
-
-          // Evaluate
-          rosenbrockObjectiveFunction( particle );
-      }
+//      for(Particle particle : particles)
+//      {
+//          // Initial coords
+//          for(int i = 0; i < dimension; i++)
+//              particle.getCoords()[i] = Math.random();
+//
+//          // Initial velocity
+//          for(int i = 0; i < dimension; i++)
+//              particle.getVelocity()[i] = Math.random();
+//
+//          // Evaluate
+//          _objectiveFunction.setObjectiveValue( particle );
+//      }
       
       _globalMinimum = _localMinimum = findMinimum( particles );
       
       System.out.println("MINIMUM: " + _globalMinimum.getEvaluation());
 
-      // TODO: A - create logic for algorithm
       while ( _maximalIterationCount > iterationCount && !_stopSearching )
       {
           iterationCount++;
@@ -134,20 +133,20 @@ public class ParticleSwarm implements IParticleSwarm
 
               //###########################
               // Generate velocity for current solution v(iterationCount + 1)
-              
-              //System.out.println("OLD VELOCITY: " + particle.get );
-              generateNewVelocity( particle );
+
+              _moveManager.generateNewVelocity( particle, _localMinimum, _globalMinimum, _alpha, _beta );
 
               //###########################
               // Calculate new locations for current solution ->
               // -> x(iterationCount + 1) = x(iterationCount) + v(iterationCount + 1)
 
-              additionVectorVectorToVector( particle.getCoords() , particle.getVelocity() );
+              _moveManager.calculateNewLocations( particle );
+              //additionVectorVectorToVector( particle.getCoords() , particle.getVelocity() );
 
               //###########################
               // Evaluate x(iterationCount + 1) by objective function
 
-              rosenbrockObjectiveFunction( particle );
+              _objectiveFunction.setObjectiveValue( particle );
 
               //###########################
               // Find current minimum
@@ -160,7 +159,7 @@ public class ParticleSwarm implements IParticleSwarm
           //###########################
           // Find best current x and global best g
 
-          _localMinimum = findMinimum(particles);
+          _localMinimum = findMinimum( particles );
 
           if(_localMinimum.getEvaluation() < _globalMinimum.getEvaluation())
               _globalMinimum = _localMinimum;
@@ -169,79 +168,6 @@ public class ParticleSwarm implements IParticleSwarm
       System.out.println("Local MINIMUM: " + _localMinimum.getEvaluation());
       System.out.println("Global MINIMUM: " + _globalMinimum.getEvaluation());
 
-  }
-
-  private void generateNewVelocity(Particle particle)
-  {
-      double[] randomVector1 = new double[particle.getCoords().length];
-      double[] randomVector2 = new double[particle.getCoords().length];
-
-      setRandomVector(randomVector1);
-      setRandomVector(randomVector2);
-
-      particle.setVelocity
-                (
-                    additionVectorVector
-                    (
-                        particle.getVelocity()
-                        ,
-                        additionVectorVector
-                        (
-                            multiplicationVectorVector( multiplicationScalarVector(_alpha, randomVector1), subtractionVectorVector(_globalMinimum.getCoords(), particle.getCoords()))
-                            ,
-                            multiplicationVectorVector( multiplicationScalarVector(_beta, randomVector2), subtractionVectorVector(_localMinimum.getCoords(), particle.getCoords()))
-                        )
-                    )
-               );
-
-  }
-
-  // w = u + (-1)v
-  private double[] subtractionVectorVector(double[] a, double[] b)
-  {
-      double[] resultVector = new double[a.length];
-      for(int i = 0; i < a.length; i++)
-          resultVector[i] = a[i] - b[i];
-      return resultVector;
-  }
-
-  private double[] multiplicationVectorVector(double[] a, double[] b)
-  {
-      double[] resultVector = new double[a.length];
-      for(int i = 0; i < a.length; i++)
-          resultVector[i] = a[i] * b[i];
-      return resultVector;
-  }
-
-  private double[] multiplicationScalarVector(double scalar, double[] vector)
-  {
-      double[] resultVector = new double[vector.length];
-      for(int i = 0; i < vector.length; i++)
-          resultVector[i] = scalar * vector[i];
-      return resultVector;
-  }
-
-  private double[] additionVectorVector(double[] a, double[] b)
-  {
-      double[] resultVector = new double[a.length];
-      for(int i = 0; i < a.length; i++)
-          resultVector[i] = a[i] + b[i];
-      return resultVector;
-  }
-
-  private void additionVectorVectorToVector(double[] a, double[] b)
-  {
-      for(int i = 0; i < a.length; i++)
-          a[i] = a[i] + b[i];
-  }
-
-  private void rosenbrockObjectiveFunction(Particle particle)
-  {
-      double[] coords = particle.getCoords();
-      for(int i = 0; i < coords.length - 1; i++)
-      {
-          particle.setEvaluation( Math.pow(1 - coords[i], 2) + 100 * Math.pow( coords[i + 1] - Math.pow( coords[i], 2 ) , 2 ) );
-      }
   }
 
   private Particle findMinimum(Particle[] particles)
@@ -261,29 +187,10 @@ public class ParticleSwarm implements IParticleSwarm
       return minParticle;
   }
 
-  private void setRandomVector(double[] vector)
-  {
-      for(int i = 0; i < vector.length; i++)
-          vector[i] = Math.random();
-  }
-
-//  public Solution getCurrentSolution() {
-//    return _currentSolution;
-//  }
-//
-//  public void setCurrentSolution(Solution _currentSolution) {
-//    this._currentSolution = _currentSolution;
-//  }
-
   public final void addParticleSwarmOptimizationListener( IParticleSwarmListener listener )
   {
     _listenerProvider.addParticleSwarmOptimizationListener( listener );
   } 
-
-//  public Solution getBestSolution()
-//  {
-//    return _bestSolution;
-//  }
 
   public void stopSearching() {
     _stopSearching = true;

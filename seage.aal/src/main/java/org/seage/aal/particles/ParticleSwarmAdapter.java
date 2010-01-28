@@ -16,7 +16,7 @@ import org.seage.aal.AlgorithmReport;
 import org.seage.aal.AlgorithmReporter;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.data.DataNode;
-import org.seage.metaheuristic.particles.IVelocityManager;
+import org.seage.metaheuristic.particles.IMoveManager;
 import org.seage.metaheuristic.particles.IObjectiveFunction;
 import org.seage.metaheuristic.particles.IParticleSwarmListener;
 import org.seage.metaheuristic.particles.ParticleSwarm;
@@ -29,7 +29,7 @@ import org.seage.metaheuristic.particles.Solution;
 public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IParticleSwarmListener
 {
     protected ParticleSwarm _particleSwarmOptimization;
-    protected Solution[] _initialSolutions;
+    //protected Solution[] _initialSolutions;
 
     private Solution _bestSolution;
     private AlgorithmReporter _reporter;
@@ -41,11 +41,11 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
 
     public ParticleSwarmAdapter( Solution[] initialSolutions,
                                 IObjectiveFunction  objectiveFunction,
-                                IVelocityManager velocityManager,
+                                IMoveManager velocityManager,
                                 boolean maximizing,
                                 String searchID) throws Exception
     {
-        _initialSolutions = initialSolutions;
+        //_initialSolutions = initialSolutions;
         _particleSwarmOptimization = new ParticleSwarm( objectiveFunction , velocityManager );
 
         _reporter = new AlgorithmReporter( searchID );
@@ -56,7 +56,7 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
         _reporter.putParameters( params );
 
         setParameters( params );
-        _particleSwarmOptimization.startSearching( _initialSolutions );
+//        _particleSwarmOptimization.startSearching( _initialSolutions );
     }
 
     public AlgorithmReport getReport() throws Exception
