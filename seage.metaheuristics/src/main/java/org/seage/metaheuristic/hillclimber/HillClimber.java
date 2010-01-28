@@ -27,15 +27,18 @@ public class HillClimber implements IHillClimber {
     private Solution _currentSolution;
     private IMoveManager _moveManager;
     private IObjectiveFunction _objectiveFunction;
+    private ISolutionGenerator _solutionGenerator;
 
     /**
      * Constructor the object Hill-Climber which content the optimization methods
      * @param objectiveFunction - Contains methods for selecting steps
      * @param moveManager - Contains methods for generating steps
      */
-    public HillClimber(IObjectiveFunction objectiveFunction, IMoveManager moveManager) {
+    public HillClimber(IObjectiveFunction objectiveFunction, IMoveManager moveManager, ISolutionGenerator solutionGenerator, int numIter) {
         _moveManager = moveManager;
         _objectiveFunction = objectiveFunction;
+        _solutionGenerator = solutionGenerator;
+        _numIter = numIter;
     }
 
     /**
@@ -46,7 +49,7 @@ public class HillClimber implements IHillClimber {
     public void startSearching(Solution solution, String classic) {
         _currentSolution = solution;
         int iter = 0;
-        double bestVal;
+        double bestVal = 0;
 
         /*cycle for repeat steps optimization algorithm*/
         while (iter < _numIter) {
@@ -82,16 +85,17 @@ public class HillClimber implements IHillClimber {
             _objectiveFunction.reset();
             iter++;
         }
+        //System.out.println("good is " + bestVal);
     }
 
-    public void startRestartedSearching(Solution solution, String classic, int restarts) {
+    public void startRestartedSearching(String classic, String switcher, int numRestarts){
         int countRest = 0;
         double bestDist = Double.MAX_VALUE;
         Solution bestSolution = null;
 
-        while (countRest <= restarts) {
+        while (countRest <= numRestarts) {
 
-            startSearching(solution, classic);
+            startSearching(_solutionGenerator.generateSolution(classic, switcher), classic);
 
             /*Choosing the best solution*/
             if (bestDist > getBestSolution().getObjectiveValue()) {
@@ -102,7 +106,6 @@ public class HillClimber implements IHillClimber {
         }
         _currentSolution = bestSolution;
         _currentSolution.setObjectiveValue(bestDist);
-        System.out.println("best is "+bestSolution.getObjectiveValue());
     }
 
     /**

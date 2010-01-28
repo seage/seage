@@ -31,6 +31,14 @@ public interface IHillClimber {
     void startSearching(Solution solution, String calsic);
 
     /**
+     *
+     * @param solution
+     * @param classic
+     * @param numRestarts
+     */
+    void startRestartedSearching(String classic, String switcher, int numRestarts);
+
+    /**
      * Defining the shape functions for getting the best solution
      * @return - The best solution
      */
