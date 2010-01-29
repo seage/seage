@@ -46,7 +46,7 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
                                 String searchID) throws Exception
     {
         //_initialSolutions = initialSolutions;
-        _particleSwarmOptimization = new ParticleSwarm( objectiveFunction , velocityManager );
+        _particleSwarmOptimization = new ParticleSwarm( objectiveFunction );
 
         _reporter = new AlgorithmReporter( searchID );
     }
