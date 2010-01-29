@@ -50,7 +50,7 @@ public class RosenbrockTest
             objFunction.setObjectiveValue( particle );
         }
 
-        ParticleSwarm pso = new ParticleSwarm( objFunction , new RosenbrockMoveManager() );
+        ParticleSwarm pso = new ParticleSwarm( objFunction );
         pso.setMaximalIterationCount( 1000 );
         pso.setMaximalVelocity( 1.0 );
         pso.startSearching( particles );

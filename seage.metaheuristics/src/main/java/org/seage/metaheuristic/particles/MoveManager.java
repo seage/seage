@@ -9,19 +9,16 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
-package org.seage.problem.rosenbrock.particles;
-
-import org.seage.metaheuristic.particles.IMoveManager;
-import org.seage.metaheuristic.particles.Particle;
+package org.seage.metaheuristic.particles;
 
 /**
  *
  * @author Jan Zmatlik
  */
-public class RosenbrockMoveManager implements IMoveManager
+public class MoveManager implements IMoveManager
 {
 
-    public void generateNewVelocity(Particle particle, Particle localMinimum, Particle globalMinimum, double alpha, double beta)
+    public void calculateNewVelocity(Particle particle, Particle localMinimum, Particle globalMinimum, double alpha, double beta)
     {
         double[] randomVector1 = new double[particle.getCoords().length];
         double[] randomVector2 = new double[particle.getCoords().length];

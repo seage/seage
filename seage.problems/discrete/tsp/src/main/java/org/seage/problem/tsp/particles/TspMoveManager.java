@@ -20,7 +20,7 @@ import org.seage.metaheuristic.particles.Particle;
  */
 public class TspMoveManager implements IMoveManager
 {
-    public void generateNewVelocity(Particle particle, Particle localMinimum, Particle globalMinimum, double alpha, double beta) {
+    public void calculateNewVelocity(Particle particle, Particle localMinimum, Particle globalMinimum, double alpha, double beta) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
