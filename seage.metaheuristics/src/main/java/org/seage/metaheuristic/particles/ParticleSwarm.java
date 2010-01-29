@@ -25,24 +25,8 @@ public class ParticleSwarm implements IParticleSwarm
    */
   private ParticleSwarmListenerProvider _listenerProvider = new ParticleSwarmListenerProvider( this );
 
-//  /**
-//   * The Solution which is actual
-//   */
-//  private Solution _currentSolution;
-//
-//  /**
-//   * The Solution which is best
-//   */
-//  private Solution _bestSolution;
-
-  /**
-   * Modifying current solution
-   */
   private IMoveManager _moveManager;
 
-  /**
-   * Calculate and set objective value of solution
-   */
   private IObjectiveFunction _objectiveFunction;
 
   // Learning parametr or acceleration constant
@@ -55,9 +39,6 @@ public class ParticleSwarm implements IParticleSwarm
 
   private Particle _localMinimum = null;
 
-  /**
-   * Maximal count of iterations
-   */
   private long _maximalIterationCount;
 
   private boolean _stopSearching = false;
@@ -66,18 +47,13 @@ public class ParticleSwarm implements IParticleSwarm
    * Constructor
    *
    * @param objectiveFunction is objective function.
-   * @param moveManager is performing modification solution.
    */
-  public ParticleSwarm(IObjectiveFunction objectiveFunction, IMoveManager moveManager)
+  public ParticleSwarm(IObjectiveFunction objectiveFunction)
   {
     _objectiveFunction = objectiveFunction;
-    _moveManager = moveManager;
+    _moveManager = new MoveManager();
   }  
 
-  /**
-   * This method is called to
-   * perform the simulated annealing.
-   */
   public void startSearching(Particle[] particles)
   {
       // Searching is starting
@@ -88,36 +64,6 @@ public class ParticleSwarm implements IParticleSwarm
 
       // Fire event to listeners about that algorithm has started
       _listenerProvider.fireParticleSwarmOptimizationStarted();
-
-
-      //######################################
-      // Rosenbrock
-
-//      int dimension = 2;
-//
-//      Particle[] particles =
-//      {
-//          new Particle( dimension ) ,
-//          new Particle( dimension ) ,
-//          new Particle( dimension ) ,
-//          new Particle( dimension )
-//      };
-
-      //######################################
-      // Initial
-//      for(Particle particle : particles)
-//      {
-//          // Initial coords
-//          for(int i = 0; i < dimension; i++)
-//              particle.getCoords()[i] = Math.random();
-//
-//          // Initial velocity
-//          for(int i = 0; i < dimension; i++)
-//              particle.getVelocity()[i] = Math.random();
-//
-//          // Evaluate
-//          _objectiveFunction.setObjectiveValue( particle );
-//      }
       
       _globalMinimum = _localMinimum = findMinimum( particles );
       
@@ -131,34 +77,18 @@ public class ParticleSwarm implements IParticleSwarm
           {
               if( _stopSearching ) return;
 
-              //###########################
               // Generate velocity for current solution v(iterationCount + 1)
+              _moveManager.calculateNewVelocity( particle, _localMinimum, _globalMinimum, _alpha, _beta );
 
-              _moveManager.generateNewVelocity( particle, _localMinimum, _globalMinimum, _alpha, _beta );
-
-              //###########################
               // Calculate new locations for current solution ->
               // -> x(iterationCount + 1) = x(iterationCount) + v(iterationCount + 1)
-
               _moveManager.calculateNewLocations( particle );
-              //additionVectorVectorToVector( particle.getCoords() , particle.getVelocity() );
 
-              //###########################
               // Evaluate x(iterationCount + 1) by objective function
-
               _objectiveFunction.setObjectiveValue( particle );
-
-              //###########################
-              // Find current minimum
-              
-              System.out.println("Local MINIMUM---: " + _localMinimum.getEvaluation());
-              System.out.println();
           }
 
-          System.out.println();
-          //###########################
           // Find best current x and global best g
-
           _localMinimum = findMinimum( particles );
 
           if(_localMinimum.getEvaluation() < _globalMinimum.getEvaluation())
@@ -167,7 +97,6 @@ public class ParticleSwarm implements IParticleSwarm
 
       System.out.println("Local MINIMUM: " + _localMinimum.getEvaluation());
       System.out.println("Global MINIMUM: " + _globalMinimum.getEvaluation());
-
   }
 
   private Particle findMinimum(Particle[] particles)
