@@ -26,11 +26,17 @@ public class TspHillClimberTest {
 
     /**
      * _cities - List of a loaded cities
+     * _tour - Index list of cities that make up the path
+     * _hc - Object containing hill climber algorithm
      */
     private City[] _cities;
     private Integer[] _tour;
     private HillClimber _hc;
 
+    /**
+     * The main trigger method
+     * @param args - the argument is the path to the data
+     */
     public static void main(String[] args) {
         try {
             new TspHillClimberTest().run(args[0], "my", "greedy", 100, 100);
@@ -41,7 +47,7 @@ public class TspHillClimberTest {
     }
 
     /**
-     * Function for the
+     * Function for the run the program
      * @param path - Path where is fyle of data the cities
      * @param clasic - Switching between the classical and improved algorithm Hill-Climber
      * @param switcher - Switching between the Geedy and Random initial solution
@@ -53,8 +59,8 @@ public class TspHillClimberTest {
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 
-        _hc = new HillClimber(new TspObjectiveFunction(_cities), new TspMoveManager(), new TSPSolutionGenerator(_cities), iteration);
-        _hc.startRestartedSearching(classic, switcher, restarts);
+        _hc = new HillClimber(new TspObjectiveFunction(_cities), new TspMoveManager(), new TSPSolutionGenerator(switcher, _cities), iteration);
+        _hc.startRestartedSearching(classic, restarts);
         TspSolution bestSol = (TspSolution) _hc.getBestSolution();
         _tour = bestSol.getTour();
 
