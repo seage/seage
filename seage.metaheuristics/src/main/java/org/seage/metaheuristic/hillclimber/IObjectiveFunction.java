@@ -27,7 +27,7 @@ public interface IObjectiveFunction {
     double evaluateMove(Solution s, IMove move);
 
     /**
-     * Method for reseting parameters
+     * Function that sets this to indicate that this is the first step
      */
     void reset();
 }

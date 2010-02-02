@@ -22,6 +22,7 @@ public class HillClimber implements IHillClimber {
      * _currentSolution - Actual best solution
      * _moveManager - Interface that defines the methods for generating steps
      * _objectiveFunction - Interface that defines the methods for selecting steps
+     * _solutionGenerator - Object for generating solutions
      */
     private int _numIter;
     private Solution _currentSolution;
@@ -33,6 +34,8 @@ public class HillClimber implements IHillClimber {
      * Constructor the object Hill-Climber which content the optimization methods
      * @param objectiveFunction - Contains methods for selecting steps
      * @param moveManager - Contains methods for generating steps
+     * @param solutionGenerator - Object for generating solutions
+     * @param numIter - Number of iteration
      */
     public HillClimber(IObjectiveFunction objectiveFunction, IMoveManager moveManager, ISolutionGenerator solutionGenerator, int numIter) {
         _moveManager = moveManager;
@@ -51,15 +54,14 @@ public class HillClimber implements IHillClimber {
         int iter = 0;
         double bestVal = 0;
 
-        /*cycle for repeat steps optimization algorithm*/
         while (iter < _numIter) {
             IMove[] moves = _moveManager.getAllMoves(_currentSolution);
 
-            /*Checking version of Hill-Climber algorithm*/
+            /*Checking version of Hill-Climber algorithm (worsening / no worsening)*/
             if (classic.equals("clasic") || classic.equals("Clasic")) {
-                bestVal = Double.MAX_VALUE;
+                bestVal = Double.MAX_VALUE; //worsening
             } else {
-                bestVal = solution.getObjectiveValue();
+                bestVal = solution.getObjectiveValue(); // no worsening
             }
 
             IMove best = null;
@@ -85,17 +87,21 @@ public class HillClimber implements IHillClimber {
             _objectiveFunction.reset();
             iter++;
         }
-        //System.out.println("good is " + bestVal);
     }
 
-    public void startRestartedSearching(String classic, String switcher, int numRestarts){
+    /**
+     * Restarted algorithm of Hill-Climber optimalization
+     * @param classic - Determines whether the solution can deteriorate
+     * @param numRestarts - Number of restarts algorithm
+     */
+    public void startRestartedSearching(String classic, int numRestarts) {
         int countRest = 0;
         double bestDist = Double.MAX_VALUE;
         Solution bestSolution = null;
 
         while (countRest <= numRestarts) {
 
-            startSearching(_solutionGenerator.generateSolution(classic, switcher), classic);
+            startSearching(_solutionGenerator.generateSolution(), classic);
 
             /*Choosing the best solution*/
             if (bestDist > getBestSolution().getObjectiveValue()) {

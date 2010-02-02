@@ -18,18 +18,16 @@ package org.seage.metaheuristic.hillclimber;
 public class Solution implements java.lang.Cloneable {
 
     /**
-     * The value is value of Solution
-     * The switcher is for switching between types of initial solution
+     * The _value is value of Solution
      */
-    double value = Double.MAX_VALUE;
-    //public String switcher;
+    double _value = Double.MAX_VALUE;
 
     /**
      * Returns the value of Solution
      * @return - The rating of Solution
      */
     public double getObjectiveValue() {
-        return value;
+        return _value;
     }
 
     /**
@@ -37,6 +35,6 @@ public class Solution implements java.lang.Cloneable {
      * @param objValue - Evaluation of the solution
      */
     public void setObjectiveValue(double objValue) {
-        value = objValue;
+        _value = objValue;
     }
 }
