@@ -1,6 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Martin Zaloga
+ *     - Initial implementation
  */
 package org.seage.problem.tsp.hillclimber;
 
@@ -17,10 +24,10 @@ public class TspObjectiveFunction implements IObjectiveFunction {
 
     /**
      * _cities - Array of cities
-     * _counter - Counter of iteration the algorithm
+     * _firstIter - Counter of iteration the algorithm
      */
     private City[] _cities;
-    private int _counter;
+    private boolean _firstIter;
 
     /**
      * Constructor the object to assess the steps
@@ -28,14 +35,14 @@ public class TspObjectiveFunction implements IObjectiveFunction {
      */
     public TspObjectiveFunction(City[] cities) {
         _cities = cities;
-        _counter = 0;
+        _firstIter = true;
     }
 
     /**
-     * Reseting the iteration counter
+     * Parameter settings, which says that this is the first iteration
      */
     public void reset() {
-        _counter = 0;
+        _firstIter = true;
     }
 
     /**
@@ -57,7 +64,7 @@ public class TspObjectiveFunction implements IObjectiveFunction {
         if (m != null) {
 
             /*In the first step must be first determine the evaluation*/
-            if (_counter == 0) {
+            if (_firstIter) {
                 length = length(tour);
             } else {
                 length = s.getObjectiveValue();
@@ -72,7 +79,7 @@ public class TspObjectiveFunction implements IObjectiveFunction {
             length = length(tour);
         }
 
-        _counter++;
+        _firstIter = false;
         return length;
     }
 

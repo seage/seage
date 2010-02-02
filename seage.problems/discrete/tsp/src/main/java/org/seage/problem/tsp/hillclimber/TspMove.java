@@ -63,6 +63,5 @@ public class TspMove implements IMove {
         newTour[_ix2] = pom;
         newSol.setTour(newTour);
         return (Solution) newSol;
-
     }
 }
