@@ -19,31 +19,22 @@ import org.seage.problem.sat.Literal;
  */
 public class SatRandomSolution extends SatSolution {
 
-    public SatRandomSolution(String path) {
+    public SatRandomSolution(int countLiterals) {
         super();
-        initRandSol(path);
+        initRandSol(countLiterals);
     }
 
-    private void initRandSol(String path) {
-        String countLit1 = path.substring(7, 9);
-        String countLit2 = path.substring(7, 10);
-        int countLiterals;
-
-        try {
-            countLiterals = Integer.parseInt(countLit1);
-        } catch (Exception e) {
-            countLiterals = Integer.parseInt(countLit2);
-        }
-
+    private void initRandSol(int countLiterals) {
         _literals = new Literal[countLiterals];
 
         for (int i = 0; i < countLiterals; i++) {
             if (_rnd.nextBoolean()) {
                 _literals[i] = new Literal(i + 1);
+                System.out.println("lit["+(i+1)+"]: "+_literals[i]);
             } else {
                 _literals[i] = new Literal(-(i + 1));
+                System.out.println("lit["+(i+1)+"]: "+_literals[i]);
             }
         }
-
     }
 }
