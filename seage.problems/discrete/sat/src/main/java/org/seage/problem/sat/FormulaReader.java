@@ -88,4 +88,18 @@ public class FormulaReader
 
 		return result;
 	}
+
+        public int loadNumberLiterals(String path) {
+        String countLit1 = path.substring(7, 9);
+        String countLit2 = path.substring(7, 10);
+        int number;
+
+        try {
+            number = Integer.parseInt(countLit1);
+        } catch (Exception e) {
+            number = Integer.parseInt(countLit2);
+        }
+
+        return number;
+    }
 }
