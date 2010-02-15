@@ -33,12 +33,12 @@ public class FormulaReaderTest {
     @Test
     public void testReadClauses() throws Exception 
     {
-        FormulaReader reader = new FormulaReader();
-        Clause[] clauses = reader.readClauses("data/uf20/uf20-01.cnf");
+        FormulaReader reader = new FormulaReader("data/uf20/uf20-01.cnf");
+        Clause[] clauses = reader.readClauses();
 
         assertNotNull(clauses);
         assertNotNull(clauses[0].getLiterals());
-        assertNotNull(clauses[0].getLiterals()[0].getValue());
+        assertNotNull(clauses[0].getLiterals()[0].getAbsValue());
     }
 
 }
