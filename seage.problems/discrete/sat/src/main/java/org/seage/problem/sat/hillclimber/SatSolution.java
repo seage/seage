@@ -21,55 +21,53 @@ import org.seage.problem.sat.Literal;
  */
 public class SatSolution extends Solution {
 
-    protected Literal[] _literals;
+    protected boolean[] _litValues;
     protected Random _rnd;
-    private int numLiterals;
 
     //OK
     public SatSolution() {
         _rnd = new Random();
     }
 
-    public int numLiterals(){
-        return numLiterals;
-    }
 
     //OK
     public void initLiterals(int size){
-        numLiterals = size;
         for(int i = 0; i < size; i++){
-            _literals[i] = new Literal(i+1);
+            _litValues[i] = true;
         }
     }
 
-    //OK
-    public Literal[] getLiterals() {
-        return _literals;
+    public int getLiteralCount(){
+        return _litValues.length;
     }
 
     //OK
-    public void setLiterals(Literal[] literals) {
-        _literals = literals;
-        numLiterals = literals.length;
+    public boolean[] getLiteralValues() {
+        return _litValues;
+    }
+
+    //OK
+    public void setLiteralValues(boolean[] litValues) {
+        _litValues = litValues;
     }
 
     //OK
     public Literal[] copyLiterals() {
         Literal[] newLiterals = new Literal[_literals.length];
         for(int i = 0; i < _literals.length; i++){
-            newLiterals[i] = new Literal(_literals[i].getLiteral());
+            newLiterals[i] = new Literal(_literals[i].getValue());
         }
         return newLiterals;
     }
 
     //OK
-    public Literal getLiteral(int index) {
-        return _literals[index];
+    public boolean  getLiteralValue(int index) {
+        return _litValues[index];
     }
 
     //OK
     public void setLiteral(int literal) {
-        _literals[Math.abs(literal) - 1].setLiteral(literal);
+        _literals[Math.abs(literal) - 1].setValue(literal);
     }
 
     //OK

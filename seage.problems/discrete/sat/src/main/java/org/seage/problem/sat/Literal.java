@@ -5,36 +5,28 @@ package org.seage.problem.sat;
  */
 public class Literal implements java.lang.Cloneable {
 
-    int _literal;
+    private int _index;
+    private boolean _neg;
 
-    public Literal(int value) {
-        _literal = value;
+    public Literal(int index, boolean neg) {
+        _index = index;
+        _neg = neg;
     }
 
     public boolean isNeg() {
-        return _literal < 0 ? true : false;
+        return _neg;
     }
 
-    public void neg() {
-        _literal = -_literal;
-    }
 
-    public void setLiteral(int literal) {
-        _literal = literal;
-    }
-
-    public int getLiteral() {
-        return _literal;
-    }
-
-    public int getAbsValue() {
-        return Math.abs(_literal);
+    public int getIndex()
+    {
+        return _index;
     }
 
     @Override
     public String toString() {
         String result = "";
-        result += _literal;
+        result += _neg==true?"-":""+_index;
         return result;
     }
 }

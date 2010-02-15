@@ -33,23 +33,16 @@ public class SatMoveManager implements IMoveManager {
      */
     public IMove[] getAllMoves(Solution solution) {
         SatSolution sol = (SatSolution) solution;
-        SatMove[] moves = new SatMove[sol.numLiterals()];
+        SatMove[] moves = new SatMove[sol.getLiteralCount()];
 
         /*random selection of sequence the steps*/
-        for (int i = 0; i < sol.numLiterals(); i++) {
-            moves[i] = new SatMove(new Literal(randomInt(sol.numLiterals())));
+        for (int i = 0; i < sol.getLiteralCount(); i++) {
+            moves[i] = new SatMove(_rnd.nextInt(sol.getLiteralCount()));
         }
         _moves = moves;
         return (IMove[]) moves;
     }
 
-    private int randomInt(int n){
-        int random = _rnd.nextInt(n);
-        while(random == 0){
-            random = _rnd.nextInt(n);
-        }
-        return random;
-    }
 
     public void printMoves(){
         for(int i = 0; i < _moves.length; i++){

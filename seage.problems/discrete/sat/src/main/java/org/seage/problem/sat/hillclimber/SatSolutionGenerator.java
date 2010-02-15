@@ -48,7 +48,7 @@ public class SatSolutionGenerator implements ISolutionGenerator {
 
         /*Initialization for the random initial solution*/
         if (_switcher.equals("Random") || _switcher.equals("random")) {
-            satSolution = new SatRandomSolution(_formula.getNumLiteral());
+            satSolution = new SatRandomSolution(_formula.getLiteralCount());
         }
 
         /*Initialization for the greedy initial solution*/

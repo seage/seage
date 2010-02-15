@@ -18,14 +18,13 @@ public class SatHillClimberTest {
      */
     public static void main(String[] args) throws Exception {
         String path = "data/uf20/uf20-01.cnf";
-        FormulaReader reader = new FormulaReader(path);
-        Formula formula = new Formula();
-        formula.readArrayClauses(reader.readClauses());
+        Formula formula = FormulaReader.readFormula(path);
+
 
         HillClimber _hc = new HillClimber(new SatObjectiveFunction(formula), new SatMoveManager(), new SatSolutionGenerator("greedy", formula), 10);
         _hc.startRestartedSearching("my", 100);
         SatSolution bestSol = (SatSolution)_hc.getBestSolution();
-        formula.printSubstitutedFormula();
+        formula.printFormula();
         System.out.println("false clauses: " + bestSol.getObjectiveValue());
 
 //        SatSolution sol = new SatGreedySolution(formula);
