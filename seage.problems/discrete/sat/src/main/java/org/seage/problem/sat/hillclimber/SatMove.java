@@ -21,17 +21,14 @@ import org.seage.problem.sat.Literal;
  */
 public class SatMove implements IMove {
 
-    private Literal _literal;
+    private int _literalIx;
 
-    public SatMove(Literal literal) {
-        _literal = literal;
+    public SatMove(int literalIx) {
+        literalIx = _literalIx;
     }
-
-    public Literal getLiteral() {
-        return _literal;
-    }
-
+ 
     public Solution apply(Solution s) {
+        // TODO: A - tady se musi 's' klonovat - (hluboka kopie)
         SatSolution newSol = (SatSolution)s;
         for(int i = 0; i < newSol.getLiterals().length; i++){
             if(_literal.getAbsValue() == newSol.getLiterals()[i].getAbsValue()){

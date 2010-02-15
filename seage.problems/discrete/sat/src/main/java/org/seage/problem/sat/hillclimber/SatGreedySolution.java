@@ -31,7 +31,7 @@ public class SatGreedySolution extends SatSolution {
      */
     public SatGreedySolution(Formula formula) {
         super();
-        _literals = new Literal[formula.getNumLiteral()];
+        _literals = new Literal[formula.getLiteralCount()];
         initGreedySolution(formula);
     }
 
@@ -40,9 +40,9 @@ public class SatGreedySolution extends SatSolution {
     private void initGreedySolution(Formula formula){
         List<Integer> listOfLiteralsIndexes = new ArrayList();
         _objFce = new SatObjectiveFunction(formula);
-        initLiterals(formula.getNumLiteral());
+        initLiterals(formula.getLiteralCount());
         _sol.setLiterals(_literals);
-        int numLiterals = formula.getNumLiteral();
+        int numLiterals = formula.getLiteralCount();
         for(int i = 0; i < numLiterals; i++){
             listOfLiteralsIndexes.add(i+1);
         }

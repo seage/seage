@@ -6,16 +6,9 @@ package org.seage.problem.sat;
 public class Clause {
 
     private Literal[] _literals;
-    private int _numberLiterals;
-    private Literal[] _copyLiterals;
 
     public Clause(Literal[] literals) {
         _literals = literals;
-        _numberLiterals = literals.length;
-    }
-
-    public int Size() {
-        return _numberLiterals;
     }
 
     public Literal[] getLiterals() {
@@ -23,8 +16,7 @@ public class Clause {
     }
 
     public Literal[] copyLiterals() {
-        _copyLiterals = _literals.clone();
-        return _copyLiterals;
+        return _literals.clone();
     }
 
     public void setLiterals(Literal[] literals) {
@@ -33,7 +25,7 @@ public class Clause {
 
     public int numberNegLitInClause() {
         int numberNegLiterals = 0;
-        for (int i = 0; i < _numberLiterals; i++) {
+        for (int i = 0; i < _literals.length; i++) {
             if (getLiterals()[i].isNeg()) {
                 numberNegLiterals++;
             }
@@ -41,9 +33,9 @@ public class Clause {
         return numberNegLiterals;
     }
 
-    public boolean trueClause() {
+    public boolean isTrue() {
         boolean isTrue = false;
-        for (int i = 0; i < _numberLiterals; i++) {
+        for (int i = 0; i < _literals.length; i++) {
             if (!_literals[i].isNeg()) {
                 isTrue = true;
             }
@@ -51,6 +43,7 @@ public class Clause {
         return isTrue;
     }
 
+    @Override
     public String toString() {
         String result = "";
 
