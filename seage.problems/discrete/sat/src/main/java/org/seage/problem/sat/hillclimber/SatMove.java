@@ -11,28 +11,33 @@
  */
 package org.seage.problem.sat.hillclimber;
 
+import org.seage.metaheuristic.hillclimber.IMove;
+import org.seage.metaheuristic.hillclimber.Solution;
 import org.seage.problem.sat.Literal;
 
 /**
  *
  * @author Martin Zaloga
  */
-public class SatRandomSolution extends SatSolution {
+public class SatMove implements IMove {
 
-    public SatRandomSolution(int countLiterals) {
-        super();
-        initRandSol(countLiterals);
+    private Literal _literal;
+
+    public SatMove(Literal literal) {
+        _literal = literal;
     }
 
-    private void initRandSol(int countLiterals) {
-        _literals = new Literal[countLiterals];
+    public Literal getLiteral() {
+        return _literal;
+    }
 
-        for (int i = 0; i < countLiterals; i++) {
-            if (_rnd.nextBoolean()) {
-                _literals[i] = new Literal(i + 1);
-            } else {
-                _literals[i] = new Literal(-(i + 1));
+    public Solution apply(Solution s) {
+        SatSolution newSol = (SatSolution)s;
+        for(int i = 0; i < newSol.getLiterals().length; i++){
+            if(_literal.getAbsValue() == newSol.getLiterals()[i].getAbsValue()){
+                newSol.getLiterals()[i].neg();
             }
         }
+        return (Solution)newSol;
     }
 }

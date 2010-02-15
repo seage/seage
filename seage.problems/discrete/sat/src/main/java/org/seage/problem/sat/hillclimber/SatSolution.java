@@ -21,24 +21,66 @@ import org.seage.problem.sat.Literal;
  */
 public class SatSolution extends Solution {
 
-    /**
-     * _rnd - Variable for the purposes of generating the random numbers
-     */
     protected Literal[] _literals;
     protected Random _rnd;
+    private int numLiterals;
 
-    /**
-     * Constructor the solution with using the random algorithm for initial solution
-     */
+    //OK
     public SatSolution() {
         _rnd = new Random();
     }
 
-    public Literal[] getTour() {
+    public int numLiterals(){
+        return numLiterals;
+    }
+
+    //OK
+    public void initLiterals(int size){
+        numLiterals = size;
+        for(int i = 0; i < size; i++){
+            _literals[i] = new Literal(i+1);
+        }
+    }
+
+    //OK
+    public Literal[] getLiterals() {
         return _literals;
     }
 
-    public void setTour(Literal[] clauses) {
-        _literals = clauses;
+    //OK
+    public void setLiterals(Literal[] literals) {
+        _literals = literals;
+        numLiterals = literals.length;
+    }
+
+    //OK
+    public Literal[] copyLiterals() {
+        Literal[] newLiterals = new Literal[_literals.length];
+        for(int i = 0; i < _literals.length; i++){
+            newLiterals[i] = new Literal(_literals[i].getLiteral());
+        }
+        return newLiterals;
+    }
+
+    //OK
+    public Literal getLiteral(int index) {
+        return _literals[index];
+    }
+
+    //OK
+    public void setLiteral(int literal) {
+        _literals[Math.abs(literal) - 1].setLiteral(literal);
+    }
+
+    //OK
+    public void negLiteral(int literal) {
+        _literals[Math.abs(literal) - 1].neg();
+    }
+
+    //OK
+    public void printLiterals() {
+        for(int i = 0; i < _literals.length; i++){
+            System.out.println("literal["+i+"] = "+_literals[i]);
+        }
     }
 }

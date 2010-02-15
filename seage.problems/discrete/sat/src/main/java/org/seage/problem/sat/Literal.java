@@ -3,29 +3,38 @@ package org.seage.problem.sat;
 /**
  * Summary description for Literal.
  */
-public class Literal
-{
-	int _value;
+public class Literal implements java.lang.Cloneable {
 
-	public Literal(int value)
-	{
-		_value = value;
-	}
+    int _literal;
 
-	public boolean isNeg()
-	{
-		return _value < 0 ? true : false;
-	}
+    public Literal(int value) {
+        _literal = value;
+    }
 
-	public int getValue()
-	{
-		return Math.abs(_value);
-	}
+    public boolean isNeg() {
+        return _literal < 0 ? true : false;
+    }
 
-	public String toString()
-	{
-		String result = "";
-		result += _value;
-		return result;
-	}
+    public void neg() {
+        _literal = -_literal;
+    }
+
+    public void setLiteral(int literal) {
+        _literal = literal;
+    }
+
+    public int getLiteral() {
+        return _literal;
+    }
+
+    public int getAbsValue() {
+        return Math.abs(_literal);
+    }
+
+    @Override
+    public String toString() {
+        String result = "";
+        result += _literal;
+        return result;
+    }
 }

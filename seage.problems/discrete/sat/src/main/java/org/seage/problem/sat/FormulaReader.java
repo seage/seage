@@ -8,9 +8,17 @@ import java.io.*;
 public class FormulaReader
 {
 
-	public Clause[] readClauses(String path) throws IOException
+    private String _path;
+//    public int _countLiterals;
+
+    public FormulaReader(String path){
+        _path = path;
+//        _countLiterals = loadNumberLiterals();
+    }
+
+	public Clause[] readClauses() throws IOException
 	{
-		LineNumberReader lnr = new LineNumberReader(new FileReader(path));
+		LineNumberReader lnr = new LineNumberReader(new FileReader(_path));
 		lnr.setLineNumber(1);
 		StreamTokenizer stok = new StreamTokenizer(lnr);
 
@@ -89,17 +97,17 @@ public class FormulaReader
 		return result;
 	}
 
-        public int loadNumberLiterals(String path) {
-        String countLit1 = path.substring(7, 9);
-        String countLit2 = path.substring(7, 10);
-        int number;
-
-        try {
-            number = Integer.parseInt(countLit1);
-        } catch (Exception e) {
-            number = Integer.parseInt(countLit2);
-        }
-
-        return number;
-    }
+//        public int loadNumberLiterals() {
+//        String countLit1 = _path.substring(7, 9);
+//        String countLit2 = _path.substring(7, 10);
+//        int number;
+//
+//        try {
+//            number = Integer.parseInt(countLit1);
+//        } catch (Exception e) {
+//            number = Integer.parseInt(countLit2);
+//        }
+//
+//        return number;
+//    }
 }

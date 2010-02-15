@@ -17,22 +17,17 @@ import org.seage.problem.sat.Literal;
  *
  * @author Martin Zaloga
  */
-public class SatRandomSolution extends SatSolution {
+public class SatTestSolution extends SatSolution {
 
-    public SatRandomSolution(int countLiterals) {
+    public SatTestSolution(int countLiterals) {
         super();
-        initRandSol(countLiterals);
+        initTestSol(countLiterals);
     }
 
-    private void initRandSol(int countLiterals) {
+    private void initTestSol(int countLiterals) {
         _literals = new Literal[countLiterals];
-
         for (int i = 0; i < countLiterals; i++) {
-            if (_rnd.nextBoolean()) {
-                _literals[i] = new Literal(i + 1);
-            } else {
-                _literals[i] = new Literal(-(i + 1));
-            }
+            _literals[i] = new Literal(i + 1);
         }
     }
 }
