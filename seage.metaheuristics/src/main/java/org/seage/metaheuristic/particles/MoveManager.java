@@ -46,9 +46,15 @@ public class MoveManager implements IMoveManager
                         ,
                         additionVectorVector
                         (
-                            multiplicationVectorVector( multiplicationScalarVector(alpha, randomVector1), subtractionVectorVector(globalMinimum.getCoords(), particle.getCoords()))
+                            multiplicationVectorVector(
+                                multiplicationScalarVector(alpha, randomVector1),
+                                subtractionVectorVector(globalMinimum.getCoords(), particle.getCoords())
+                            )
                             ,
-                            multiplicationVectorVector( multiplicationScalarVector(beta, randomVector2), subtractionVectorVector(localMinimum.getCoords(), particle.getCoords()))
+                            multiplicationVectorVector(
+                                multiplicationScalarVector(beta, randomVector2),
+                                subtractionVectorVector(localMinimum.getCoords(), particle.getCoords())
+                            )
                         )
                     )
                 );

@@ -11,6 +11,7 @@
  */
 package org.seage.problem.rosenbrock.particles;
 
+import java.util.Random;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.metaheuristic.particles.ParticleSwarm;
 
@@ -23,18 +24,13 @@ public class RosenbrockTest
     public static void main(String[] args)
     {
         int dimension = 2;
-
-//        Particle[] particles =
-//        {
-//            new Particle( dimension ) ,
-//            new Particle( dimension ) ,
-//            new Particle( dimension ) ,
-//            new Particle( dimension )
-//        };
+        int maximalVelocity = 6;
 
         RosenbrockObjectiveFunction objFunction = new RosenbrockObjectiveFunction();
 
         Particle[] particles = generateParticles( 5 , 2 );
+
+        Random rand = new Random();
 
         for(Particle particle : particles)
         {
@@ -44,14 +40,14 @@ public class RosenbrockTest
 
             // Initial velocity
             for(int i = 0; i < dimension; i++)
-                particle.getVelocity()[i] = Math.random();
+                particle.getVelocity()[i] = rand.nextInt(maximalVelocity);
 
             // Evaluate
             objFunction.setObjectiveValue( particle );
         }
 
         ParticleSwarm pso = new ParticleSwarm( objFunction );
-        pso.setMaximalIterationCount( 1000 );
+        pso.setMaximalIterationCount( 20000 );
         pso.setMaximalVelocity( 1.0 );
         pso.startSearching( particles );
     }
