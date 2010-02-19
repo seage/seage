@@ -10,8 +10,8 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="744.09448819"
-   height="1052.3622047"
+   width="320"
+   height="289.24902"
    id="svg2"
    version="1.1"
    inkscape:version="0.47 r22583"
@@ -19,9 +19,21 @@
   <defs
      id="defs4">
     <linearGradient
+       inkscape:collect="always"
+       id="linearGradient6098">
+      <stop
+         style="stop-color:#f2785c;stop-opacity:1;"
+         offset="0"
+         id="stop6100" />
+      <stop
+         style="stop-color:#f2785c;stop-opacity:0;"
+         offset="1"
+         id="stop6102" />
+    </linearGradient>
+    <linearGradient
        id="linearGradient6052">
       <stop
-         style="stop-color:#618cff;stop-opacity:0.53448278;"
+         style="stop-color:#84a5ff;stop-opacity:0.7758621;"
          offset="0"
          id="stop6054" />
       <stop
@@ -32,7 +44,7 @@
     <linearGradient
        id="linearGradient6044">
       <stop
-         style="stop-color:#b6f78f;stop-opacity:1;"
+         style="stop-color:#a1f56f;stop-opacity:1;"
          offset="0"
          id="stop6046" />
       <stop
@@ -43,7 +55,7 @@
     <linearGradient
        id="linearGradient6036">
       <stop
-         style="stop-color:#f6fc87;stop-opacity:1;"
+         style="stop-color:#f2fb4f;stop-opacity:1;"
          offset="0"
          id="stop6038" />
       <stop
@@ -54,28 +66,28 @@
     <marker
        inkscape:stockid="Arrow1Lend"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="Arrow1Lend"
-       style="overflow:visible;">
+       style="overflow:visible">
       <path
          id="path5177"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
-         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
     </marker>
     <marker
        inkscape:stockid="Arrow1Lstart"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="Arrow1Lstart"
        style="overflow:visible">
       <path
          id="path5174"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none"
-         transform="scale(0.8) translate(12.5,0)" />
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+         transform="matrix(0.8,0,0,0.8,10,0)" />
     </marker>
     <linearGradient
        id="linearGradient5058">
@@ -189,7 +201,7 @@
        x2="231.00029"
        y2="362.55029"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.99831905,0,0,0.99967787,15.48829,-0.0051464)" />
+       gradientTransform="matrix(0.99831905,0,0,0.99967787,-48.815796,-395.65573)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient6044"
@@ -199,17 +211,27 @@
        x2="220.89819"
        y2="461.37476"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.99867885,0,0,0.99902699,25.254728,-0.00785339)" />
+       gradientTransform="matrix(0.99867885,0,0,0.99902699,-38.751959,-395.65773)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient6052"
        id="linearGradient6058"
        x1="243.9473"
        y1="660.42816"
-       x2="243.9473"
-       y2="446.52362"
+       x2="241.96648"
+       y2="479.15427"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.99826246,0,-0.02002995,1.0000068,10.698906,-0.00414981)" />
+       gradientTransform="matrix(0.99837636,0,-0.02003224,0.92837445,-52.549835,-355.66898)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6098"
+       id="linearGradient6104"
+       x1="243.75107"
+       y1="706.3858"
+       x2="243.49756"
+       y2="544.11884"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-63.849294,-401.35999)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -219,8 +241,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.2258337"
-     inkscape:cx="184.24755"
-     inkscape:cy="505.53959"
+     inkscape:cx="164.8223"
+     inkscape:cy="94.035038"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -237,81 +259,82 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-19.425245,-15.776434)">
     <rect
-       style="fill:#f7a997;fill-opacity:1;fill-rule:evenodd"
+       style="fill:url(#linearGradient6104);fill-opacity:1;fill-rule:evenodd"
        id="rect5811-5"
        width="319.87534"
        height="79.802147"
-       x="83.75106"
-       y="626.58368"
+       x="19.901768"
+       y="225.22369"
        transform="matrix(1,0,-0.00156223,0.99999878,0,0)" />
     <path
-       style="fill:url(#linearGradient6058);fill-opacity:1;fill-rule:evenodd;stroke:#9797f0;stroke-width:0.9991343;stroke-opacity:1"
-       d="m 83.147094,535.66438 0.212031,84.41957 10.200993,0 -0.808096,40.34463 295.454458,0 0.80809,-40.34463 13.13339,0 -0.21203,-84.41957 -318.788836,0 z"
+       style="fill:url(#linearGradient6058);fill-opacity:1;fill-rule:evenodd;stroke:#9797f0;stroke-width:0.96273941;stroke-opacity:1"
+       d="m 19.906615,141.62863 0.212057,78.37243 10.202157,0 -0.808189,37.45468 295.48817,0 0.80817,-37.45468 13.1349,0 -0.21205,-78.37243 -318.825215,0 z"
        id="rect5811-5-2" />
     <text
        xml:space="preserve"
        style="font-size:24px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       x="192.49747"
-       y="589.96881"
+       x="129.48579"
+       y="188.60931"
        id="text5909"><tspan
          sodipodi:role="line"
          id="tspan5911"
-         x="192.49747"
-         y="589.96881">Algorithm</tspan></text>
+         x="129.48579"
+         y="188.60931">Algorithm</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:24px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       x="197.55411"
-       y="685.03467"
+       x="134.54243"
+       y="283.67517"
        id="text5913"><tspan
          sodipodi:role="line"
          id="tspan5915"
-         x="197.55411"
-         y="685.03467">Problem</tspan></text>
+         x="134.54243"
+         y="283.67517">Problem</tspan></text>
     <rect
        style="fill:url(#linearGradient6050);fill-opacity:1;fill-rule:evenodd;stroke:#8df655;stroke-width:0.99885291;stroke-opacity:1"
        id="rect5811-5-9"
        width="318.91702"
        height="42.427143"
-       x="84.200958"
-       y="489.20276"
+       x="20.194267"
+       y="93.552887"
        transform="matrix(1,0,-0.00198258,0.99999803,0,0)" />
     <rect
-       style="fill:url(#linearGradient6042);fill-opacity:1;fill-rule:evenodd;stroke:#f6fc56;stroke-width:0.99899828;stroke-opacity:1"
+       style="fill:url(#linearGradient6042);fill-opacity:1;fill-rule:evenodd;stroke:#f5fc06;stroke-width:0.99899828;stroke-opacity:1"
        id="rect5811-5-9-4"
        width="318.80212"
        height="72.732094"
-       x="84.472206"
-       y="411.92657"
+       x="20.168123"
+       y="16.275993"
        transform="matrix(1,0,-0.00273424,0.99999626,0,0)" />
     <text
        xml:space="preserve"
        style="font-size:24px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       x="200.23184"
-       y="516.62042"
+       x="137.22017"
+       y="120.97131"
        id="text5988"><tspan
          sodipodi:role="line"
          id="tspan5990"
-         x="200.23184"
-         y="516.62042">Adapter</tspan></text>
+         x="137.22017"
+         y="120.97131">Adapter</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:24px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       x="211.15372"
-       y="454.35541"
+       x="148.14204"
+       y="58.706295"
        id="text5992"><tspan
          sodipodi:role="line"
          id="tspan5994"
-         x="211.15372"
-         y="454.35541">Agent</tspan></text>
+         x="148.14204"
+         y="58.706295">Agent</tspan></text>
   </g>
 </svg>
