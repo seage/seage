@@ -20,21 +20,43 @@ height: 160px;
 border-bottom: thin solid #000000;
 }
 div#header_logo {
-margin-left: 10%;
+margin-left: 7%;
 float: left;
 }
 div#header_label {
 padding-top: 40px;
-padding-left: 30px;
-margin-left: 30px;
-float: left;
+width: 384px;
+margin-left: auto ;
+margin-right: auto ;
 text-align:left;
+font-size: 26px;
+}
+div.header_label_1 {
+font-size: 30px;
+color: #5889e3;
+float: left;
+}
+div.header_label_2 {
+float: left;
+padding-top: 3px;
+}
+div.header_label_3 {
+float:left;
 }
 div#body {
 padding-top: 40px;
 margin-top: 10px;
 padding: 10px;
 clear: left;
+}
+div#overview {
+text-align: center;
+}
+div#overview_text {
+width: 384px;
+text-align: left;
+margin-left: auto ;
+margin-right: auto ;
 }
 div#matrix_label {
 text-align: left;
@@ -46,7 +68,7 @@ padding-top: 10px;
 .label {
 padding-top: 10px;
 text-align: left;
-font-size: 14pt;
+font-size: 12pt;
 margin-left: 10%;
 }
 div#architecture_schema {
@@ -61,24 +83,44 @@ table
 {
 border-collapse:collapse;
 }
-A:link {text-decoration: none; color: white;}
-A:visited {text-decoration: none; color: white;}
-A:active {text-decoration: none; color: white;}
-A:hover {text-decoration: none; color: white;}
+#header A:link {text-decoration: none; color: white;}
+#header A:visited {text-decoration: none; color: white;}
+#header A:active {text-decoration: none; color: white;}
+#header A:hover {text-decoration: none; color: white;}
+#source A:link {text-decoration: none; color: white;}
+#source A:visited {text-decoration: none; color: white;}
+#source A:active {text-decoration: none; color: white;}
+#source A:hover {text-decoration: none; color: white;}
 -->
 </style>
 </head>
 <body>
 <div id="page">
 <div id="header">
-<div id="header_logo"><img src="images/logo.png" alt="SEAGE logo"></div>
-<div style="font-family: Arial;" id="header_label"><font size="+4">
-SE<font size="+3">ARCH</font> AGE<font size="+3">NTS</font></font>
+<div id="header_logo"><a href="http://sourceforge.net/projects/seage/"><img src="images/logo.png" alt="SEAGE logo"></a></div>
+<div id="header_label">
+<div class="header_label_1">SE</div>
+<div class="header_label_2">ARCH</div>
+<div class="header_label_1" style="padding-left: 20px;">AGE</div>
+<div class="header_label_2">NTS</div>
 <br>
-<font size="+3">for optimization</font>
+<div class="header_label_3">for optimization</div>
 </div>
 </div>
 <div id="body">
+<div class="label">Overview</div>
+<div id="overview">
+<div id="overview_text">SEAGE is an open-source project
+which provides various meta-heuristic algorithms with their
+implementations on various optimization problems. Each meta-heuristic
+can be handled through an unified interface of an object called
+Adapter.
+Agents have been designed to solve optimization problems through a
+collaboration of different meta-heuristics. <br>
+A more detailed description
+can be found in <a href="data/malek09col.pdf">this paper</a>.
+</div>
+</div>
 <div class="label">Feature Matrix</div>
 <div id="matrix_table">
 <center>
@@ -126,7 +168,7 @@ SE<font size="+3">ARCH</font> AGE<font size="+3">NTS</font></font>
 </tr>
 <tr>
 <td>GRASP</td>
-<td style="text-align: center;"></td>
+<td style="text-align: center;">X</td>
 <td style="text-align: center;">X</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
