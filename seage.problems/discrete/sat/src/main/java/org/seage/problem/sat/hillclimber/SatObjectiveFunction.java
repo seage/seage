@@ -11,10 +11,12 @@
  */
 package org.seage.problem.sat.hillclimber;
 
+import org.seage.data.ObjectCloner;
 import org.seage.metaheuristic.hillclimber.IMove;
 import org.seage.metaheuristic.hillclimber.IObjectiveFunction;
 import org.seage.metaheuristic.hillclimber.Solution;
 import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.FormulaEvaluator;
 import org.seage.problem.sat.Literal;
 
 /**
@@ -25,18 +27,32 @@ public class SatObjectiveFunction implements IObjectiveFunction {
 
     public Literal[] _literals;
     SatSolution _sol = new SatSolution();
-    Formula _readedFormula;
+    Formula _formula;
 
-    public SatObjectiveFunction(Formula readedFormula) {
-        _readedFormula = readedFormula;
+    public SatObjectiveFunction(Formula formula) {
+        _formula = formula;
     }
 
     public void reset() {
     }
 
     //OK
-    public double evaluateMove(Solution sol, IMove mov) {
-        return 0;
+    public double evaluateMove(Solution sol, IMove move) throws Exception
+    {
+
+        if(move == null)
+            return evaluate((SatSolution)sol);
+        else
+        {
+            SatSolution s = (SatSolution)ObjectCloner.deepCopy(sol);
+            move.apply(s);
+            return evaluate(s);
+        }
+    }
+
+    private int evaluate(SatSolution sol)
+    {
+        return FormulaEvaluator.evaluate(_formula, sol.getLiteralValues());
     }
 
     //OK

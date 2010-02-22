@@ -11,6 +11,7 @@
  */
 package org.seage.problem.sat.hillclimber;
 
+import java.io.Serializable;
 import java.util.Random;
 import org.seage.metaheuristic.hillclimber.Solution;
 
@@ -18,7 +19,7 @@ import org.seage.metaheuristic.hillclimber.Solution;
  *
  * @author Martin Zaloga
  */
-public class SatSolution extends Solution implements java.lang.Cloneable {
+public class SatSolution extends Solution implements java.lang.Cloneable, Serializable {
 
     protected boolean[] _litValues;
     protected Random _rnd;
