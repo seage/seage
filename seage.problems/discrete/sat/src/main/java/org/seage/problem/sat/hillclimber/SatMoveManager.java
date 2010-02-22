@@ -22,8 +22,8 @@ import org.seage.metaheuristic.hillclimber.Solution;
  */
 public class SatMoveManager implements IMoveManager {
 
-    Random _rnd = new Random();
-    SatMove[] _moves;
+    private Random _rnd = new Random();
+    private SatMove[] _moves;
 
     /**
      * Function which generates the next steps algorithm

@@ -28,14 +28,14 @@ public interface IHillClimber {
      * @param solution - Initial solution
      * @param calsic - Determine the version of the algorithm
      */
-    void startSearching(Solution solution, String calsic);
+    void startSearching(Solution solution, String calsic) throws Exception;
 
     /**
      * Method for running the restarted search
      * @param classic - Parameter that determines whether the solution can deteriorate
      * @param numRestarts - Number of restarts algorithm
      */
-    void startRestartedSearching(String classic, int numRestarts);
+    void startRestartedSearching(String classic, int numRestarts) throws Exception;
 
     /**
      * Defining the shape functions for getting the best solution

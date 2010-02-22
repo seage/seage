@@ -49,7 +49,7 @@ public class HillClimber implements IHillClimber {
      * @param solution - Object with an initial solution, which is made better
      * @param classic - Parameter that switchs between the classical and improved Hill-Climber algorithm
      */
-    public void startSearching(Solution solution, String classic) {
+    public void startSearching(Solution solution, String classic) throws Exception {
         _currentSolution = solution;
         int iter = 0;
         double bestVal = 0;
@@ -94,7 +94,7 @@ public class HillClimber implements IHillClimber {
      * @param classic - Determines whether the solution can deteriorate
      * @param numRestarts - Number of restarts algorithm
      */
-    public void startRestartedSearching(String classic, int numRestarts) {
+    public void startRestartedSearching(String classic, int numRestarts) throws Exception {
         int countRest = 0;
         double bestDist = Double.MAX_VALUE;
         Solution bestSolution = null;
