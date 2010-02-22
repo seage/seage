@@ -11,8 +11,6 @@
  */
 package org.seage.problem.sat.hillclimber;
 
-import org.seage.problem.sat.Literal;
-
 /**
  *
  * @author Martin Zaloga
@@ -25,9 +23,9 @@ public class SatTestSolution extends SatSolution {
     }
 
     private void initTestSol(int countLiterals) {
-        _literals = new Literal[countLiterals];
+        _litValues = new boolean[countLiterals];
         for (int i = 0; i < countLiterals; i++) {
-            _literals[i] = new Literal(i + 1);
+            _litValues[i] = true;
         }
     }
 }

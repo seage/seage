@@ -31,34 +31,34 @@ public class SatGreedySolution extends SatSolution {
      */
     public SatGreedySolution(Formula formula) {
         super();
-        _literals = new Literal[formula.getLiteralCount()];
-        initGreedySolution(formula);
+//        _literals = new Literal[formula.getLiteralCount()];
+//        initGreedySolution(formula);
     }
 
 
     //OK
-    private void initGreedySolution(Formula formula){
-        List<Integer> listOfLiteralsIndexes = new ArrayList();
-        _objFce = new SatObjectiveFunction(formula);
-        initLiterals(formula.getLiteralCount());
-        _sol.setLiterals(_literals);
-        int numLiterals = formula.getLiteralCount();
-        for(int i = 0; i < numLiterals; i++){
-            listOfLiteralsIndexes.add(i+1);
-        }
-        int listIndex;
-        int literal;
-        double valueBeforeMove = formula.numberFalseClausesInReadedFormula();
-        double valueAfterMove;
-        while(listOfLiteralsIndexes.size() != 0){
-            listIndex = _rnd.nextInt(listOfLiteralsIndexes.size());
-            literal = listOfLiteralsIndexes.get(listIndex);
-            valueAfterMove = _objFce.evaluateMove(_sol, new SatMove(new Literal(literal)));
-            if(valueAfterMove < valueBeforeMove){
-                _sol.getLiterals()[literal - 1].neg();
-                valueBeforeMove = valueAfterMove;
-            }
-            listOfLiteralsIndexes.remove(listIndex);
-        }
-    }
+//    private void initGreedySolution(Formula formula){
+//        List<Integer> listOfLiteralsIndexes = new ArrayList();
+//        _objFce = new SatObjectiveFunction(formula);
+//        initLiterals(formula.getLiteralCount());
+//        _sol.setLiterals(_literals);
+//        int numLiterals = formula.getLiteralCount();
+//        for(int i = 0; i < numLiterals; i++){
+//            listOfLiteralsIndexes.add(i+1);
+//        }
+//        int listIndex;
+//        int literal;
+//        double valueBeforeMove = formula.numberFalseClausesInReadedFormula();
+//        double valueAfterMove;
+//        while(listOfLiteralsIndexes.size() != 0){
+//            listIndex = _rnd.nextInt(listOfLiteralsIndexes.size());
+//            literal = listOfLiteralsIndexes.get(listIndex);
+//            valueAfterMove = _objFce.evaluateMove(_sol, new SatMove(new Literal(literal)));
+//            if(valueAfterMove < valueBeforeMove){
+//                _sol.getLiterals()[literal - 1].neg();
+//                valueBeforeMove = valueAfterMove;
+//            }
+//            listOfLiteralsIndexes.remove(listIndex);
+//        }
+//    }
 }

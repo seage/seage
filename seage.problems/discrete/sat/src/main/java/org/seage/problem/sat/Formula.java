@@ -74,6 +74,19 @@ public class Formula {
         return falseClauses;
     }
 
+    public void setLiterals(Literal[] allLiterals){
+        
+    }
+
+    public Literal[] getLiterals(){
+        Clause[] clauses =  getClauses();
+        Literal[] allLiterals = new Literal[_literalCount*_clauses.size()];
+        for(int i = 0; i < _literalCount*_clauses.size(); i++){
+            
+        }
+        return null;
+    }
+
 //    //OK
 //    public void substituteLiteralsInFormula(SatSolution sol) {
 //        Clause clause;
