@@ -42,7 +42,7 @@ public class SatSolutionGenerator implements ISolutionGenerator {
      * Function to generate the initial solution
      * @return
      */
-    public Solution generateSolution() {
+    public Solution generateSolution() throws Exception {
 
         SatSolution satSolution = null;
 

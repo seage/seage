@@ -28,8 +28,8 @@ public class SatSolution extends Solution implements java.lang.Cloneable, Serial
         _rnd = new Random();
     }
 
-
     public void initLiterals(int size){
+        _litValues = new boolean[size];
         for(int i = 0; i < size; i++){
             _litValues[i] = true;
         }

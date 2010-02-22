@@ -21,5 +21,5 @@ public interface ISolutionGenerator {
      * Function to generate initial solution
      * @return
      */
-    Solution generateSolution();
+    Solution generateSolution() throws Exception;
 }

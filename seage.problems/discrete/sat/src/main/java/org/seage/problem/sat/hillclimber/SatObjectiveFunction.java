@@ -25,9 +25,9 @@ import org.seage.problem.sat.Literal;
  */
 public class SatObjectiveFunction implements IObjectiveFunction {
 
-    public Literal[] _literals;
-    SatSolution _sol = new SatSolution();
-    Formula _formula;
+    private Literal[] _literals;
+    private SatSolution _sol = new SatSolution();
+    private Formula _formula;
 
     public SatObjectiveFunction(Formula formula) {
         _formula = formula;
