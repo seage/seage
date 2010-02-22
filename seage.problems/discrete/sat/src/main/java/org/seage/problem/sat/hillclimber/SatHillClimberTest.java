@@ -27,16 +27,5 @@ public class SatHillClimberTest {
         formula.printFormula();
         System.out.println("false clauses: " + bestSol.getObjectiveValue());
 
-//        SatSolution sol = new SatGreedySolution(formula);
-//        SatMoveManager mm = new SatMoveManager();
-//        mm.getAllMoves(sol);
-//        mm.printMoves();
-//        sol.printLiterals();
-//
-//        formula.substituteLiteralsInFormula(sol);
-//        formula.printReadedFormula();
-//        formula.printSubstitutedFormula();
-//        System.out.println(""+formula.numberFalseClausesAfterSubstitute());
-//        System.out.println(""+formula.numberFalseClausesInReadedFormula());
     }
 }

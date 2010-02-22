@@ -26,7 +26,7 @@ public class Literal implements java.lang.Cloneable {
     @Override
     public String toString() {
         String result = "";
-        result += _neg==true?"-":""+_index;
+        result += _neg==true?"-"+_index:""+_index;
         return result;
     }
 }

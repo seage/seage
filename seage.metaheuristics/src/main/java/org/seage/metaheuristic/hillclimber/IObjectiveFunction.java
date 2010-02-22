@@ -24,7 +24,7 @@ public interface IObjectiveFunction {
      * @param move - The next step
      * @return - Rating for the step
      */
-    double evaluateMove(Solution s, IMove move);
+    double evaluateMove(Solution s, IMove move) throws Exception;
 
     /**
      * Function that sets this to indicate that this is the first step
