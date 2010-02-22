@@ -36,19 +36,7 @@ public class SatObjectiveFunction implements IObjectiveFunction {
 
     //OK
     public double evaluateMove(Solution sol, IMove mov) {
-        SatSolution solution = CopySolution((SatSolution)sol);
-        SatMove move = (SatMove)mov;
-        _sol = (SatSolution)move.apply(solution);
-        _readedFormula.substituteLiteralsInFormula(_sol);
-        //System.out.println(""+_readedFormula.numberFalseClausesAfterSubstitute());
-        return _readedFormula.numberFalseClausesAfterSubstitute();
-    }
-
-    //OK
-    public SatSolution CopySolution(SatSolution sol){
-        SatSolution newSol = new SatSolution();
-        newSol.setLiterals(sol.copyLiterals());
-        return newSol;
+        return 0;
     }
 
     //OK

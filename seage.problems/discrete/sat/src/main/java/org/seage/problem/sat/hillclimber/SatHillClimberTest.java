@@ -21,7 +21,7 @@ public class SatHillClimberTest {
         Formula formula = FormulaReader.readFormula(path);
 
 
-        HillClimber _hc = new HillClimber(new SatObjectiveFunction(formula), new SatMoveManager(), new SatSolutionGenerator("greedy", formula), 10);
+        HillClimber _hc = new HillClimber(new SatObjectiveFunction(formula), new SatMoveManager(), new SatSolutionGenerator("random", formula), 10);
         _hc.startRestartedSearching("my", 100);
         SatSolution bestSol = (SatSolution)_hc.getBestSolution();
         formula.printFormula();

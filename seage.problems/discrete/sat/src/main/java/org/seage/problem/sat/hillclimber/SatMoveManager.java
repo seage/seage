@@ -15,7 +15,6 @@ import java.util.Random;
 import org.seage.metaheuristic.hillclimber.IMove;
 import org.seage.metaheuristic.hillclimber.IMoveManager;
 import org.seage.metaheuristic.hillclimber.Solution;
-import org.seage.problem.sat.Literal;
 
 /**
  *
@@ -46,7 +45,7 @@ public class SatMoveManager implements IMoveManager {
 
     public void printMoves(){
         for(int i = 0; i < _moves.length; i++){
-            System.out.println("move["+i+"] "+_moves[i].getLiteral().toString());
+            System.out.println("move["+i+"] "+_moves[i].toString());
         }
     }
 }

@@ -13,7 +13,6 @@ package org.seage.problem.sat.hillclimber;
 
 import org.seage.metaheuristic.hillclimber.IMove;
 import org.seage.metaheuristic.hillclimber.Solution;
-import org.seage.problem.sat.Literal;
 
 /**
  *
@@ -26,15 +25,22 @@ public class SatMove implements IMove {
     public SatMove(int literalIx) {
         literalIx = _literalIx;
     }
+
+    public int getLiteralIx() {
+        return _literalIx;
+    }
  
     public Solution apply(Solution s) {
         // TODO: A - tady se musi 's' klonovat - (hluboka kopie)
         SatSolution newSol = (SatSolution)s;
-        for(int i = 0; i < newSol.getLiterals().length; i++){
-            if(_literal.getAbsValue() == newSol.getLiterals()[i].getAbsValue()){
-                newSol.getLiterals()[i].neg();
-            }
+        boolean[] litValues = newSol._litValues.clone();
+        if(litValues[_literalIx]){
+            litValues[_literalIx] = false;
+        } else {
+            litValues[_literalIx] = true;
         }
+        newSol = new SatSolution();
+        newSol.setLiteralValues(litValues);
         return (Solution)newSol;
     }
 }
