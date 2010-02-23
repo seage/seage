@@ -11,21 +11,27 @@
  */
 package org.seage.problem.sat.hillclimber;
 
+import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.FormulaEvaluator;
+
 /**
  *
  * @author Martin Zaloga
  */
 public class SatRandomSolution extends SatSolution {
+    private int _countLiterals;
 
-    public SatRandomSolution(int countLiterals) {
+    public SatRandomSolution(Formula formula) {
         super();
-        initRandSol(countLiterals);
+        _countLiterals = formula.getLiteralCount();
+        initRandSol(formula);
     }
 
-    private void initRandSol(int countLiterals) {
-        _litValues = new boolean[countLiterals];
-        for (int i = 0; i < countLiterals; i++) {
+    private void initRandSol(Formula formula) {
+        _litValues = new boolean[_countLiterals];
+        for (int i = 0; i < _countLiterals; i++) {
             _litValues[i] = _rnd.nextBoolean();
         }
+        setObjectiveValue(FormulaEvaluator.evaluate(formula, _litValues));
     }
 }
