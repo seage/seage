@@ -11,6 +11,7 @@
  */
 package org.seage.problem.sat.hillclimber;
 
+import java.io.Serializable;
 import org.seage.data.ObjectCloner;
 import org.seage.metaheuristic.hillclimber.IMove;
 import org.seage.metaheuristic.hillclimber.IObjectiveFunction;
@@ -23,10 +24,8 @@ import org.seage.problem.sat.Literal;
  *
  * @author Martin Zaloga
  */
-public class SatObjectiveFunction implements IObjectiveFunction {
+public class SatObjectiveFunction implements IObjectiveFunction, Serializable {
 
-    private Literal[] _literals;
-    private SatSolution _sol = new SatSolution();
     private Formula _formula;
 
     public SatObjectiveFunction(Formula formula) {
@@ -55,10 +54,4 @@ public class SatObjectiveFunction implements IObjectiveFunction {
         return FormulaEvaluator.evaluate(_formula, sol.getLiteralValues());
     }
 
-    //OK
-    public void printLiterals(){
-        for(int i = 0; i < _literals.length; i++){
-            System.out.println("literal["+i+"] = "+_literals[i]);
-        }
-    }
 }

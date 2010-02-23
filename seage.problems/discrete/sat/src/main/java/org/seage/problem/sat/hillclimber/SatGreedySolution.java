@@ -14,6 +14,7 @@ package org.seage.problem.sat.hillclimber;
 import java.util.ArrayList;
 import java.util.List;
 import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.FormulaEvaluator;
 
 /**
  *
@@ -21,8 +22,8 @@ import org.seage.problem.sat.Formula;
  */
 public class SatGreedySolution extends SatSolution {
 
-     private SatObjectiveFunction _objFce;
-     private SatSolution _sol = new SatSolution();
+     //private SatObjectiveFunction _objFce;
+     //private SatSolution _sol = new SatSolution();
 
     /**
      * Constructor the solution with using the greedy algorithm for initial solution
@@ -37,24 +38,25 @@ public class SatGreedySolution extends SatSolution {
 
     //OK
     private void initGreedySolution(Formula formula) throws Exception {
+
         List<Integer> listOfLiteralsIndexes = new ArrayList();
-        _objFce = new SatObjectiveFunction(formula);
+        //_objFce = new SatObjectiveFunction(formula);
         initLiterals(formula.getLiteralCount());
-        _sol.setLiteralValues(_litValues);
+        //_sol.setLiteralValues(_litValues);
         int numLiterals = formula.getLiteralCount();
         for(int i = 0; i < numLiterals; i++){
             listOfLiteralsIndexes.add(i+1);
         }
         int listIndex;
         int literal;
-        double valueBeforeMove = _objFce.evaluateMove(_sol, null);
+        double valueBeforeMove = FormulaEvaluator.evaluate(formula, _litValues);
         double valueAfterMove;
         while(listOfLiteralsIndexes.size() != 0){
             listIndex = _rnd.nextInt(listOfLiteralsIndexes.size());
             literal = listOfLiteralsIndexes.get(listIndex);
-            valueAfterMove = _objFce.evaluateMove(_sol, new SatMove(literal));
+            valueAfterMove = FormulaEvaluator.evaluate(formula, _litValues);
             if(valueAfterMove < valueBeforeMove){
-                _sol.negLiteral(literal);
+                negLiteral(literal);
                 valueBeforeMove = valueAfterMove;
             }
             listOfLiteralsIndexes.remove(listIndex);
