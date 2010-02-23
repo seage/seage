@@ -22,8 +22,7 @@ import org.seage.problem.sat.FormulaEvaluator;
  */
 public class SatGreedySolution extends SatSolution {
 
-     //private SatObjectiveFunction _objFce;
-     //private SatSolution _sol = new SatSolution();
+     boolean[] _copyLitValues;
 
     /**
      * Constructor the solution with using the greedy algorithm for initial solution
@@ -31,35 +30,34 @@ public class SatGreedySolution extends SatSolution {
      */
     public SatGreedySolution(Formula formula) throws Exception {
         super();
-        _litValues = new boolean[formula.getLiteralCount()];
         initGreedySolution(formula);
-    }
 
+    }
 
     //OK
     private void initGreedySolution(Formula formula) throws Exception {
-
         List<Integer> listOfLiteralsIndexes = new ArrayList();
-        //_objFce = new SatObjectiveFunction(formula);
         initLiterals(formula.getLiteralCount());
-        //_sol.setLiteralValues(_litValues);
         int numLiterals = formula.getLiteralCount();
         for(int i = 0; i < numLiterals; i++){
-            listOfLiteralsIndexes.add(i+1);
+            listOfLiteralsIndexes.add(i);
         }
         int listIndex;
-        int literal;
+        int literalIx;
         double valueBeforeMove = FormulaEvaluator.evaluate(formula, _litValues);
         double valueAfterMove;
         while(listOfLiteralsIndexes.size() != 0){
             listIndex = _rnd.nextInt(listOfLiteralsIndexes.size());
-            literal = listOfLiteralsIndexes.get(listIndex);
-            valueAfterMove = FormulaEvaluator.evaluate(formula, _litValues);
+            literalIx = listOfLiteralsIndexes.get(listIndex);
+            _copyLitValues = _litValues.clone();
+            _copyLitValues[literalIx] = false;
+            valueAfterMove = FormulaEvaluator.evaluate(formula, _copyLitValues);
             if(valueAfterMove < valueBeforeMove){
-                negLiteral(literal);
+                _litValues[literalIx] = false;
                 valueBeforeMove = valueAfterMove;
             }
             listOfLiteralsIndexes.remove(listIndex);
         }
+        setObjectiveValue(FormulaEvaluator.evaluate(formula, _litValues));
     }
 }
