@@ -21,8 +21,8 @@ public class SatHillClimberTest {
         Formula formula = FormulaReader.readFormula(path);
         SatObjectiveFunction objFce = new SatObjectiveFunction(formula);
         SatSolutionGenerator solGen = new SatSolutionGenerator("greedy", formula);
-        int numRestarts = 10;
-        int numIterations = 10;
+        int numRestarts = 0;
+        int numIterations = 1;
 
         HillClimber _hc = new HillClimber(objFce, new SatMoveManager(), solGen, numIterations);
         _hc.startRestartedSearching("my", numRestarts);
