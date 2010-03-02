@@ -22,8 +22,7 @@ public class RosenbrockObjectiveFunction implements IObjectiveFunction
 {
 
     // f(X) = SUM(to N-1, i = 0) [(1 - Xi)^2 + 100 * (Xi+1 - Xi^2)^2]
-    @Deprecated
-    public void setObjectiveValueOld(Particle particle)
+    public void setObjectiveValue(Particle particle)
     {
         double[] coords = particle.getCoords();
         double value = 0.0;
@@ -32,12 +31,13 @@ public class RosenbrockObjectiveFunction implements IObjectiveFunction
             value += (Math.pow(1 - coords[i], 2) + 100 * Math.pow( coords[i + 1] - Math.pow( coords[i], 2 ) , 2 ) );
         }
         particle.setEvaluation( value );
-        System.out.println("VALUE1:" + value);
+        //System.out.println("VALUE1:" + value);
     }
 
     // f(X) = SUM(to N-1, i = 0) [100*(Xi^2 - Xi+1)^2 + (1 - Xi)^2]
     // source: http://www.it.lut.fi/ip/evo/functions/node5.html
-    public void setObjectiveValue(Particle particle)
+    @Deprecated
+    public void setObjectiveValueOld(Particle particle)
     {
         double[] coords = particle.getCoords();
         double value = 0.0;
@@ -48,4 +48,19 @@ public class RosenbrockObjectiveFunction implements IObjectiveFunction
         particle.setEvaluation( value );
         //System.out.println("VALUE: " + value);
     }
+
+//    public void setObjectiveValue(Particle particle)
+//    {
+//         double value = 0.0;
+//        for (int i = 0; i < (particle.getCoords().length - 1); i++) {
+//			double p1 = particle.getCoords()[i] * particle.getCoords()[i]; //	x_i^2
+//			double p2 = (1 - particle.getCoords()[i]); // 			( 1 - x_i )
+//			p2 *= p2; // 								( 1 - x_i )^2
+//			double p3 = particle.getCoords()[i + 1] - p1; // 		( x_{i+1} - x_i^2 )
+//			p3 *= p3; // 								( x_{i+1} - x_i^2 )^2
+//
+//			value += 100 * p3 + p2; // 						100 ( x_{i+1} - x_i^2 )^2 + ( 1 - x_i )^2
+//		}
+//         particle.setEvaluation(value);
+//    }
 }

@@ -25,7 +25,7 @@ public class ParticleSwarm implements IParticleSwarm
    */
   private ParticleSwarmListenerProvider _listenerProvider = new ParticleSwarmListenerProvider( this );
 
-  private IMoveManager _moveManager;
+  private IVelocityManager _velocityManager;
 
   private IObjectiveFunction _objectiveFunction;
 
@@ -51,7 +51,7 @@ public class ParticleSwarm implements IParticleSwarm
   public ParticleSwarm(IObjectiveFunction objectiveFunction)
   {
     _objectiveFunction = objectiveFunction;
-    _moveManager = new MoveManager();
+    _velocityManager = new VelocityManager();
   }  
 
   public void startSearching(Particle[] particles)
@@ -68,7 +68,7 @@ public class ParticleSwarm implements IParticleSwarm
       _globalMinimum = _localMinimum = findMinimum( particles );
       
       System.out.println("MINIMUM: " + _globalMinimum.getEvaluation());
-
+      long globalFoundIteration = 0;
       while ( _maximalIterationCount > iterationCount && !_stopSearching )
       {
           iterationCount++;
@@ -77,35 +77,50 @@ public class ParticleSwarm implements IParticleSwarm
           {
               if( _stopSearching ) return;
 
-              System.out.print("Particle Velocity");
-              printArray(particle.getVelocity());
-              System.out.println("");
-
-              System.out.print("Particle Location");
-              printArray(particle.getCoords());
-
-              System.out.println("");
+//              System.out.print("Particle Velocity");
+//              printArray(particle.getVelocity());
+//              System.out.println("");
+//
+//              System.out.print("Particle Location");
+//              printArray(particle.getCoords());
+//              System.out.println("");
+//
+//              System.out.print("Particle evalution: " + particle.getEvaluation());
+//              System.out.println("");
+              
               // Generate velocity for current solution v(iterationCount + 1)
-              _moveManager.calculateNewVelocity( particle, _localMinimum, _globalMinimum, _alpha, _beta );
+              _velocityManager.calculateNewVelocity( particle, _localMinimum, _globalMinimum, _alpha, _beta );
 
               // Calculate new locations for current solution ->
               // -> x(iterationCount + 1) = x(iterationCount) + v(iterationCount + 1)
-              _moveManager.calculateNewLocations( particle );
+              _velocityManager.calculateNewLocations( particle );
 
               // Evaluate x(iterationCount + 1) by objective function
               _objectiveFunction.setObjectiveValue( particle );
+
+              // Find the current minimum f(t+1)
+              // ????
+              //_localMinimum = findMinimum( particles );
           }
-          System.out.println("");
+          System.out.println(iterationCount);
 
           // Find best current x and global best g
           _localMinimum = findMinimum( particles );
 
           if(_localMinimum.getEvaluation() < _globalMinimum.getEvaluation())
+          {
               _globalMinimum = _localMinimum;
+              globalFoundIteration = iterationCount;
+              //System.out.println("GLOBAL FOUND");
+          }
       }
 
       System.out.println("Local MINIMUM: " + _localMinimum.getEvaluation());
       System.out.println("Global MINIMUM: " + _globalMinimum.getEvaluation());
+      System.out.print("Global Coords: ");
+      printArray(_globalMinimum.getCoords());
+      System.out.println("");
+      System.out.println("Found in " + globalFoundIteration + " iteration.");
   }
 
   void printArray(double[] array)
@@ -118,7 +133,6 @@ public class ParticleSwarm implements IParticleSwarm
   {
       double minEvaluation = Double.MAX_VALUE;
       Particle minParticle = null;
-
 
       for(Particle particle : particles)
       {

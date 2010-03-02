@@ -71,7 +71,5 @@ public class Particle implements Cloneable, Serializable{
         {
             throw new InternalError( e.toString() );
         }
-    }
-
-    
+    }    
 }

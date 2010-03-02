@@ -23,14 +23,13 @@ public class RosenbrockTest
 {
     public static void main(String[] args)
     {
-        int dimension = 2;
-        int maximalVelocity = 6;
+        int dimension = 4;
+        int numberOfParticles = 100;
+        //int maximalVelocity = 1.0d;
 
         RosenbrockObjectiveFunction objFunction = new RosenbrockObjectiveFunction();
 
-        Particle[] particles = generateParticles( 5 , 2 );
-
-        Random rand = new Random();
+        Particle[] particles = generateParticles( numberOfParticles , dimension );
 
         for(Particle particle : particles)
         {
@@ -40,17 +39,30 @@ public class RosenbrockTest
 
             // Initial velocity
             for(int i = 0; i < dimension; i++)
-                particle.getVelocity()[i] = rand.nextInt(maximalVelocity);
+                particle.getVelocity()[i] = Math.random();
 
             // Evaluate
             objFunction.setObjectiveValue( particle );
+
+            //printArray(particle.getCoords());
+            //System.out.println("OBJ: " + particle.getEvaluation());
         }
 
         ParticleSwarm pso = new ParticleSwarm( objFunction );
-        pso.setMaximalIterationCount( 20000 );
+        pso.setMaximalIterationCount( 100000 );
         pso.setMaximalVelocity( 1.0 );
         pso.startSearching( particles );
+
+//        for(int i = 0; i < 1000; i++)
+//            System.out.println("RAND> " + Math.random());
     }
+
+//    static void printArray(double[] array)
+//  {
+//    for(int i = 0; i< array.length; i++)
+//          System.out.print(" " + array[i]);
+//      System.out.println("");
+//  }
 
     private static Particle[] generateParticles(int count, int dimension)
     {
