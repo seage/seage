@@ -102,7 +102,7 @@ public class ParticleSwarm implements IParticleSwarm
               // ????
               //_localMinimum = findMinimum( particles );
           }
-          System.out.println(iterationCount);
+          System.out.println(">" + iterationCount);
 
           // Find best current x and global best g
           _localMinimum = findMinimum( particles );
