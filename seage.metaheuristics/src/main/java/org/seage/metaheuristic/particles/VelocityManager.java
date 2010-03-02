@@ -41,12 +41,11 @@ public class VelocityManager implements IVelocityManager
         // e1 as random vector
         // e2 as random vector
         //
-        // V(T+1) = w*Vi(T) + Al*e1{*}[g - Xi(t)] + Be*e2[l - Xi(T)]
+        // V(T+1) = w*Vi(T) + Al*e1{*}[g - Xi(T)] + Be*e2[l - Xi(T)]
+
+        particle.setVelocity(multiplicationScalarVector(w, particle.getVelocity()));
         particle.setVelocity
                 (
-                multiplicationScalarVector(
-                w
-                ,
                     additionVectorVector
                     (
                         particle.getVelocity()
@@ -63,7 +62,7 @@ public class VelocityManager implements IVelocityManager
                                 subtractionVectorVector(localMinimum.getCoords(), particle.getCoords())
                             )
                         )
-                    ))
+                    )
                 );
 
 //        for(int i = 0; i < particle.getVelocity().length; i++)

@@ -23,13 +23,20 @@ public class RosenbrockTest
 {
     public static void main(String[] args)
     {
-        int dimension = 4;
-        int numberOfParticles = 100;
+        int dimension = 2;
+        int numberOfParticles = 50;
         //int maximalVelocity = 1.0d;
 
         RosenbrockObjectiveFunction objFunction = new RosenbrockObjectiveFunction();
 
         Particle[] particles = generateParticles( numberOfParticles , dimension );
+
+//        particles[0].getCoords()[0] = 1.0000000000000002;
+//        particles[0].getCoords()[1] = 1.0000000000000004;
+//
+//        objFunction.setObjectiveValue( particles[0] );
+//        System.out.println("VAL: " + particles[0].getEvaluation());
+//        //Global MINIMUM: 4.930380657631324E-32
 
         for(Particle particle : particles)
         {
