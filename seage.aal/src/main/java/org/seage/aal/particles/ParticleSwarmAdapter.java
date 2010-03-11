@@ -16,12 +16,12 @@ import org.seage.aal.AlgorithmReport;
 import org.seage.aal.AlgorithmReporter;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.data.DataNode;
-import org.seage.metaheuristic.particles.IMoveManager;
+import org.seage.metaheuristic.particles.IVelocityManager;
 import org.seage.metaheuristic.particles.IObjectiveFunction;
 import org.seage.metaheuristic.particles.IParticleSwarmListener;
+import org.seage.metaheuristic.particles.Particle;
 import org.seage.metaheuristic.particles.ParticleSwarm;
 import org.seage.metaheuristic.particles.ParticleSwarmEvent;
-import org.seage.metaheuristic.particles.Solution;
 /**
  *
  * @author Jan Zmatlik
@@ -29,9 +29,9 @@ import org.seage.metaheuristic.particles.Solution;
 public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IParticleSwarmListener
 {
     protected ParticleSwarm _particleSwarmOptimization;
-    //protected Solution[] _initialSolutions;
+    protected Particle[] _initialParticles;
 
-    private Solution _bestSolution;
+    private Particle _bestParticle;
     private AlgorithmReporter _reporter;
     private String _searchID;    
     private long _numberOfIterations = 0;
@@ -39,13 +39,12 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
     private long _lastIterationNumberNewSolution = 0;
     private double _initObjectiveValue = Double.MAX_VALUE;
 
-    public ParticleSwarmAdapter( Solution[] initialSolutions,
+    public ParticleSwarmAdapter( Particle[] initialParticles,
                                 IObjectiveFunction  objectiveFunction,
-                                IMoveManager velocityManager,
                                 boolean maximizing,
                                 String searchID) throws Exception
     {
-        //_initialSolutions = initialSolutions;
+        _initialParticles = initialParticles;
         _particleSwarmOptimization = new ParticleSwarm( objectiveFunction );
 
         _reporter = new AlgorithmReporter( searchID );
@@ -56,7 +55,7 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
         _reporter.putParameters( params );
 
         setParameters( params );
-//        _particleSwarmOptimization.startSearching( _initialSolutions );
+        _particleSwarmOptimization.startSearching( _initialParticles );
     }
 
     public AlgorithmReport getReport() throws Exception
@@ -86,6 +85,7 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
     {
         _particleSwarmOptimization.setMaximalIterationCount( param.getValueLong("maxIterationCount") );
         _particleSwarmOptimization.setMaximalVelocity( param.getValueDouble("maxVelocity") );
+        _particleSwarmOptimization.setInertia( param.getValueDouble("inertia") );
 
         _particleSwarmOptimization.addParticleSwarmOptimizationListener( this );
     }

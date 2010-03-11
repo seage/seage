@@ -109,6 +109,7 @@
                 <xsd:sequence/>
                 <xsd:attribute name="maxIterationCount" type="xsd:long"/>
                 <xsd:attribute name="maxVelocity" type="xsd:double"/>
+                <xsd:attribute name="inertia" type="xsd:double"/>
 <!--                <xsd:attribute name="initSolutionType">
                    <xsd:simpleType>
                         <xsd:restriction base="xsd:string">

@@ -18,12 +18,12 @@ import org.seage.problem.tsp.TourProvider;
  *
  * @author Jan Zmatlik
  */
-public class TspSortedSolution extends TspSolution{
-    
-    public TspSortedSolution(City[] cities)
+public class TspRandomParticle extends TspParticle {
+
+    public TspRandomParticle(City[] cities)
     {
         super( cities );
-        _tour = TourProvider.createSortedTour( cities );
+        _tour = TourProvider.createRandomTour( cities );
     }
 
 }
