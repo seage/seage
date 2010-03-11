@@ -25,6 +25,11 @@ public class TspObjectiveFunction implements IObjectiveFunction
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+//    private void transformCoords(Particle particle)
+//    {
+//
+//    }
 //    private TspSolution _currrentTspSolution;
 //
 //    public void setObjectiveValue(Solution solution)

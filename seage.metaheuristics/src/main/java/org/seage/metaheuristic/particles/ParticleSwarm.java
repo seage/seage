@@ -39,6 +39,8 @@ public class ParticleSwarm implements IParticleSwarm
 
   private Particle _localMinimum = null;
 
+  private double _inertia;
+
   private long _maximalIterationCount;
 
   private boolean _stopSearching = false;
@@ -89,7 +91,7 @@ public class ParticleSwarm implements IParticleSwarm
 //              System.out.println("");
               
               // Generate velocity for current solution v(iterationCount + 1)
-              _velocityManager.calculateNewVelocity( particle, _localMinimum, _globalMinimum, _alpha, _beta );
+              _velocityManager.calculateNewVelocity( particle, _localMinimum, _globalMinimum, _alpha, _beta, _inertia );
 
               // Calculate new locations for current solution ->
               // -> x(iterationCount + 1) = x(iterationCount) + v(iterationCount + 1)
@@ -97,10 +99,6 @@ public class ParticleSwarm implements IParticleSwarm
 
               // Evaluate x(iterationCount + 1) by objective function
               _objectiveFunction.setObjectiveValue( particle );
-
-              // Find the current minimum f(t+1)
-              // ????
-              //_localMinimum = findMinimum( particles );
           }
           System.out.println(">" + iterationCount);
 
@@ -175,5 +173,13 @@ public class ParticleSwarm implements IParticleSwarm
   public void setMaximalVelocity(double maximalVelocity) {
     _maximalVelocity = maximalVelocity;
   }
+
+    public double getInertia() {
+        return _inertia;
+    }
+
+    public void setInertia(double _inertia) {
+        this._inertia = _inertia;
+    }
 
 }

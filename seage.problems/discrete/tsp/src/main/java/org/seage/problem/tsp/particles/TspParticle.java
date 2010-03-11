@@ -13,14 +13,14 @@ package org.seage.problem.tsp.particles;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.seage.metaheuristic.particles.Solution;
+import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.tsp.City;
 
 /**
  *
  * @author Jan Zmatlik
  */
-public abstract class TspSolution extends Solution
+public class TspParticle extends Particle
 {
     /**
      * Represent order of cities
@@ -32,10 +32,11 @@ public abstract class TspSolution extends Solution
      */
     protected static City[] _cities;
 
-    public TspSolution(City[] cities)
+    public TspParticle(City[] cities)
     {
+        super( cities.length );
         _tour = new Integer[ cities.length ];
-        _cities = cities;
+        _cities = cities;        
     }
 
     public Integer[] getTour()
@@ -59,20 +60,19 @@ public abstract class TspSolution extends Solution
     }
 
     @Override
-    public TspSolution clone()
+    public TspParticle clone()
     {
-        TspSolution tspSolution = null;
+        TspParticle tspParticle = null;
         try
         {
-            tspSolution = (TspSolution)super.clone();
-            tspSolution.setTour( _tour.clone() );
-            tspSolution.setCities( _cities );
-            tspSolution.setObjectiveValue( getObjectiveValue() );
+            tspParticle = (TspParticle)super.clone();
+            tspParticle.setTour( _tour.clone() );
+            tspParticle.setCities( _cities.clone() );
         } catch (Exception ex)
         {
-            Logger.getLogger(TspSolution.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TspParticle.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return tspSolution;
+        return tspParticle;
     }
 
 }

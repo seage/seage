@@ -16,7 +16,7 @@ import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.particles.ParticleSwarmAdapter;
 import org.seage.data.DataNode;
 
-import org.seage.metaheuristic.particles.Solution;
+import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.tsp.City;
 
 
@@ -52,7 +52,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
         algorithm = new ParticleSwarmAdapter(
                 generateInitialSolutions(),
                 _objectiveFunction,
-                new TspMoveManager(), false, "")
+                false, "")
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
@@ -68,7 +68,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 //
 //        algorithm = new ParticleSwarmAdapter((Solution) _tspSolution,
 //                new TspObjectiveFunction(),
-//                new TspMoveManager(), false, "")
+//                new TspVelocityManager(), false, "")
 //        {
 //            public void solutionsFromPhenotype(Object[][] source) throws Exception
 //            {
@@ -98,7 +98,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
         return algorithm;
     }
 
-    private Solution[] generateInitialSolutions() throws Exception
+    private Particle[] generateInitialSolutions() throws Exception
     {
 //        Solution[] solutions = new Solution[3];
 //

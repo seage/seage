@@ -18,12 +18,12 @@ import org.seage.problem.tsp.TourProvider;
  *
  * @author Jan Zmatlik
  */
-public class TspGreedySolution extends TspSolution {
-
-    public TspGreedySolution(City[] cities) throws Exception
+public class TspSortedParticle extends TspParticle {
+    
+    public TspSortedParticle(City[] cities)
     {
         super( cities );
-        _tour = TourProvider.createGreedyTour( cities );
+        _tour = TourProvider.createSortedTour( cities );
     }
 
 }

@@ -18,7 +18,7 @@ package org.seage.metaheuristic.particles;
 public class VelocityManager implements IVelocityManager
 {
 
-    public void calculateNewVelocity(Particle particle, Particle localMinimum, Particle globalMinimum, double alpha, double beta)
+    public void calculateNewVelocity(Particle particle, Particle localMinimum, Particle globalMinimum, double alpha, double beta, double inertia)
     {
         double[] randomVector1 = new double[particle.getCoords().length];
         double[] randomVector2 = new double[particle.getCoords().length];
@@ -26,8 +26,6 @@ public class VelocityManager implements IVelocityManager
         setRandomVector(randomVector1);
         setRandomVector(randomVector2);
 
-
-        double w = 0.005;
         // w as inertial weight
         // about inertial weight - http://tracer.uc3m.es/tws/pso/basics.html
         // {*} as Hadamard Product
@@ -43,7 +41,7 @@ public class VelocityManager implements IVelocityManager
         //
         // V(T+1) = w*Vi(T) + Al*e1{*}[g - Xi(T)] + Be*e2[l - Xi(T)]
 
-        particle.setVelocity(multiplicationScalarVector(w, particle.getVelocity()));
+        particle.setVelocity(multiplicationScalarVector(inertia, particle.getVelocity()));
         particle.setVelocity
                 (
                     additionVectorVector
@@ -64,14 +62,6 @@ public class VelocityManager implements IVelocityManager
                         )
                     )
                 );
-
-//        for(int i = 0; i < particle.getVelocity().length; i++)
-//        {
-//            if(particle.getVelocity()[i] > 1.0)
-//                particle.getVelocity()[i] = 1.0;
-//            if(particle.getVelocity()[i] <= 0.0)
-//                particle.getVelocity()[i] = 0.001;
-//        }
     }
 
     public void calculateNewLocations(Particle particle)
