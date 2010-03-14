@@ -19,14 +19,14 @@ import java.util.*;
  */
 public class Node
 {
-	private String name = "";
+	private int id = -1;
 	private double xCoordinate = 0.0;
 	private double yCoordinate = 0.0;
 	private ArrayList<Edge> connectionMap = new ArrayList<Edge>();
 	
-	public Node(String name, double xCoord, double yCoord)
+	public Node(int id, double xCoord, double yCoord)
 	{
-		this.name = name;
+		this.id = id;
 		this.xCoordinate = xCoord;
 		this.yCoordinate = yCoord;
 	}
@@ -58,9 +58,9 @@ public class Node
 	 * @return the name of this Vertice
 	 */
 	
-	public String getName()
+	public int getId()
 	{
-		return name;
+		return this.id;
 	}
 	
 	/**

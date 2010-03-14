@@ -17,120 +17,83 @@ import java.util.*;
  *
  * @author Richard Malek (original)
  */
-public class AntColony implements Observer
-{
-	private double roundBest = Double.MAX_VALUE;
-	private double globalBest = Double.MAX_VALUE;
-	private Vector<Edge> bestPath;
-	private Vector<Vector<Edge>> reports = new Vector<Vector<Edge>>();
-	private int numAnts;
-	private int numIterations;
-	private boolean nextRound = true;
-	private int round;
-	private boolean running = true;
+public class AntColony {
 
+    private double roundBest = Double.MAX_VALUE;
+    private double globalBest = Double.MAX_VALUE;
+    private Vector<Edge> bestPath;
+    private Vector<Vector<Edge>> reports = new Vector<Vector<Edge>>();
+    private int numAnts;
+    private int numIterations;
+    private int round = 0;
 
-	public AntColony(int numAnts, int numIterations)
-	{
-		this.numAnts = numAnts;
-		this.numIterations = numIterations;
-	}
-	public void beginExploring()
-	{
-		round = 0;
-		while (running)
-		{
-			while (round < numIterations)
-			{
-				spawnAnts();
-				round++;
-				nextRound = false;
+    public AntColony(int numAnts, int numIterations) {
+        this.numAnts = numAnts;
+        this.numIterations = numIterations;
+    }
 
-			}
-			if (round == numIterations)
-			{
-				running = false;
-			}
-		}
-	}
+    public void beginExploring() {
+        for (int i = 0; i < numIterations; i++) {
+            spawnAnts();
+            round++;
+        }
+    }
 
-	public void update(Observable o, Object arg)
-	{
-		reports.add((Vector<Edge>)arg);
+    private void solveRound() {
+        double roundTotal = 0;
+        for (Vector<Edge> vector : reports) {
+            if (bestPath == null) {
+                bestPath = vector;
+            }
+            for (Edge edges : vector) {
+                roundTotal += edges.getEdgeLength();
+            }
+            if (roundTotal < roundBest) {
 
-		if (reports.size() == numAnts)
-		{
+                roundBest = roundTotal;
+            }
+            roundTotal = 0;
+            if (roundBest < globalBest) {
+                globalBest = roundBest;
+                bestPath = vector;
+            }
+        }
 
-//			solveRound();
-		}
+        System.out.println("Round " + round);
+        System.out.println("This round best was  : " + roundBest);
+        System.out.println("The global best was : " + globalBest + "\n");
 
-	}
+        setGlobalPheromone();
 
-	private void solveRound()
-	{
-		double roundTotal = 0d;
+//        roundBest = Double.MAX_VALUE;
+        reports.clear();
+    }
 
-		for (Vector<Edge> vector : reports)
-		{
-                        if(bestPath == null)
-                            bestPath = vector;
+    private void spawnAnts() {
+        Random rand = new Random();
+        for (int i = 0; i < numAnts; i++) {
+            //random selection of starting node
+            Ant someAnt = new Ant(Graph.getInstance().getVerticeList().get(rand.nextInt(Graph.getInstance().getVerticeList().size())));
+            reports.add(someAnt.explore());
+        }
+        solveRound();
+    }
 
-			for (Edge edges : vector)
-			{
-				roundTotal += edges.getEdgeLength();
-			}
-			if (roundTotal < roundBest)
-			{
-				roundBest = roundTotal;
-			}
-				
-			if (roundBest < globalBest)
-			{
-				globalBest = roundBest;
-				bestPath = vector;
-			}
-		}
-		
-		System.out.println("Round " + round + "\n----------------------------");
-		System.out.println("This round best was  : " + roundBest);
-		System.out.println("The global best was : " + globalBest + "\n");
-		
-		reinforceUpdateAndDecay();
+    private void setGlobalPheromone() {
+        double limit = 0.8;
+        if (globalBest / roundBest > limit) {
+            //System.out.println(""+(globalBest / roundBest));
+            for (Edge best : bestPath) {
+                best.adjustGlobalPheromone((1 / best.getEdgeLength()));
+            }
+        }
 
-		roundBest = Double.MAX_VALUE;
-		reports.clear();
-		nextRound = true;
-	}
-
-	private void spawnAnts()
-	{
-		Random rand = new Random(System.currentTimeMillis());
-		for (int i = 0; i < numAnts; i++)
-		{
-			Ant someAnt = new Ant(Graph.getInstance().getVerticeList().get(rand.nextInt(Graph.getInstance().getVerticeList().size())));
-                        reports.add(someAnt.explore());
-		}
-                solveRound();
-	}
-	
-	private void reinforceUpdateAndDecay()
-	{
-		if (globalBest/roundBest > .8 )
-		{
-			for (Edge best : bestPath)
-			{
-				best.adjustGlobalPheromone((1/best.getEdgeLength()));
-			}
-		}
-		
-		for (Edge updateLocal : Graph.getInstance().getEdgeList())
-		{
-			updateLocal.adjustGlobalPheromone(updateLocal.getLocalPheromone());
-			updateLocal.resetLocalPheromone();
-			if (!(updateLocal.getGlobalPheromone() >= 0))
-			{
-				updateLocal.adjustGlobalPheromone(-(1/updateLocal.getEdgeLength()));
-			}
-		}
-	}
+//        for (Edge updateLocal : Graph.getInstance().getEdgeList()) {
+//            updateLocal.adjustGlobalPheromone(updateLocal.getLocalPheromone());
+//            updateLocal.resetLocalPheromone();
+//            if (!(updateLocal.getGlobalPheromone() >= 0)) {
+//                updateLocal.adjustGlobalPheromone(-(1 / updateLocal.getEdgeLength()));
+//            }
+//        }
+    }
 }
