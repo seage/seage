@@ -20,11 +20,11 @@ import java.util.Vector;
 public class Edge
 {
 	private double edgeLength;
-	private String name;
+	//private String name;
 	private Node originator;
 	private Node destination;
-	private double globalPheromone;
-	private double localPheromone;
+	private double globalPheromone = 0;
+	private double localPheromone = 0;
 	private Vector<Node> connections = new Vector<Node>();
 	
 	public double getGlobalPheromone()
@@ -42,10 +42,10 @@ public class Edge
 		globalPheromone += adjustment;
 	}
 	
-	public void resetLocalPheromone()
-	{
-		localPheromone = 0;
-	}
+//	public void resetLocalPheromone()
+//	{
+//		localPheromone = 0;
+//	}
 	
 	public synchronized void adjustLocalPheromone(double adjustment)
 	{
@@ -54,7 +54,11 @@ public class Edge
 	
 	public Edge(Node start, Node end)
 	{
-		setNames(start, end);
+		//setNames(start, end);
+                originator = start;
+		destination = end;
+		connections.add(start);
+		connections.add(end);
 		if (start.equals(end))
 		{
 			edgeLength = 0;
@@ -65,14 +69,14 @@ public class Edge
 		}
 	}
 	
-	private void setNames(Node start, Node end)
-	{
-		name = start.getName() + end.getName() + "---" + end.getName() + start.getName();
-		originator = start;
-		destination = end;
-		connections.add(start);
-		connections.add(end);
-	}
+//	private void setNames(Node start, Node end)
+//	{
+//		name = start.getName() + end.getName() + "---" + end.getName() + start.getName();
+//		originator = start;
+//		destination = end;
+//		connections.add(start);
+//		connections.add(end);
+//	}
 	
 	public Vector<Node> getConnections()
 	{
@@ -102,6 +106,7 @@ public class Edge
 	 */
 	public Node getOriginator()
 	{
+            //puvodce
 		return originator;
 	}
 	
@@ -109,8 +114,8 @@ public class Edge
 	 * 
 	 * @return the name of this edge, made by combining the starting vertice and ending vertice
 	 */
-	public String getName()
-	{
-		return name;
-	}
+//	public String getName()
+//	{
+//		return name;
+//	}
 }

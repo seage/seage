@@ -17,85 +17,66 @@ import java.util.*;
  *
  * @author Richard Malek (original)
  */
-public class Graph
-{
-	private static Graph ref;
+public class Graph {
 
-	private ArrayList<Node> verticeList = new ArrayList<Node>();
-	private ArrayList<Edge> edgeList = new ArrayList<Edge>();
+    private static Graph ref;
+    private ArrayList<Node> verticeList = new ArrayList<Node>();
+    private ArrayList<Edge> edgeList = new ArrayList<Edge>();
 
-	private Graph()
-	{
-//		fillVerticeMap();
-//		fillEdgeMap();
-	}
+    private Graph() {
+//        fillVerticeMap();
+        fillEdgeMap();
+    }
 
-	public static Graph getInstance()
-	{
-		if (ref == null)
-		{
-			ref = new Graph();
-			return ref;
-		}
-		else
-		{
-			return ref;
-		}
-
-	}
-
-	public ArrayList<Node> getVerticeList()
-	{
-		return verticeList;
-	}
-
-        public void addVertice(double x, double y)
-        {
-            String id = new Integer(verticeList.size()+1).toString();
-            verticeList.add(new Node(id, x, y));
+    public static Graph getInstance() {
+        if (ref == null) {
+            System.out.println("null!!!");
+            ref = new Graph();
+            return ref;
+        } else {
+            return ref;
         }
 
-	public ArrayList<Edge> getEdgeList()
-	{
-		return edgeList;
-	}
+    }
 
-	public void fillEdgeMap()
-	{
-		boolean same = false;
+    public ArrayList<Node> getVerticeList() {
+        return verticeList;
+    }
 
-		for (Node i: verticeList)
-		{
-			for (Node j : verticeList)
-			{
-				if (! i.equals(j))
-				{
-					Edge theEdge = new Edge(i,j);
-					for (Edge k : edgeList)
-					{
-						if (k.getOriginator().equals(j) && k.getDestination().equals(i))
-						{
-							same = true;
-						}
-					}
-					if (!same)
-					{
-						edgeList.add(theEdge);
-					}
-				}
-				same = false;
-			}
-		}
+    public void addVertice(double x, double y) {
+        int id = verticeList.size();
+        System.out.println("ID"+verticeList.size());
+        verticeList.add(new Node(id, x, y));
+    }
 
-		for (Node i : verticeList)
-		{
-			for (Edge j : edgeList)
-			{
-				if (j.getOriginator().equals(i) || j.getDestination().equals(i))
-				{
-					i.buildEdgeMap(j);
-				}
-			}
-		}
-	}
+    public ArrayList<Edge> getEdgeList() {
+        return edgeList;
+    }
+
+    public void fillEdgeMap() {
+        boolean same = false; //stejne
+        for (Node i : verticeList) {
+            for (Node j : verticeList) {
+                if (!i.equals(j)) {
+                    Edge theEdge = new Edge(i, j);
+                    for (Edge k : edgeList) {
+                        if (k.getOriginator().equals(j) && k.getDestination().equals(i)) {
+                            same = true;
+                        }
+                    }
+                    if (!same) {
+                        edgeList.add(theEdge);
+                    }
+                }
+                same = false;
+            }
+        }
+        for (Node i : verticeList) {
+            for (Edge j : edgeList) {
+                if (j.getOriginator().equals(i) || j.getDestination().equals(i)) {
+                    i.buildEdgeMap(j);
+                }
+            }
+        }
+    }
 }
