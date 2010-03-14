@@ -19,42 +19,37 @@ import org.seage.problem.tsp.CityProvider;
  * 
  * @author Richard Malek
  */
-public class TspAntColonyTest
-{
-	public static void main(String[] args)
-	{
-            try
-            {
-		new TspAntColonyTest().run(args[0]);
-            }
-            catch(Exception ex)
-            {
-                ex.printStackTrace();
-            }
-	}
+public class TspAntColonyTest {
 
-        public void run(String path) throws Exception
-        {
-            City[] cities = CityProvider.readCities(path);
-
-            for(City c : cities)
-                Graph.getInstance().addVertice(c.X, c.Y);
-            Graph.getInstance().fillEdgeMap();
-
-            double sum = 0;
-            double edges = 0;
-            for (Edge edge : Graph.getInstance().getEdgeList())
-            {
-                    sum += edge.getEdgeLength();
-                    edges++;
-            }
-
-            System.out.println(sum);
-            System.out.println(edges);
-
-            int ants = 20;
-            int iterations = 100;
-            AntColony brain = new AntColony(ants, iterations);
-            brain.beginExploring();
+    public static void main(String[] args) {
+        try {
+            new TspAntColonyTest().run(args[0]);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+    }
+
+    public void run(String path) throws Exception {
+        City[] cities = CityProvider.readCities(path);
+
+        for (City c : cities) {
+            Graph.getInstance().addVertice(c.X, c.Y);
+        }
+        Graph.getInstance().fillEdgeMap();
+
+        double sum = 0;
+        int edges = 0;
+        for (Edge edge : Graph.getInstance().getEdgeList()) {
+            sum += edge.getEdgeLength();
+            edges++;
+        }
+
+        System.out.println(sum);
+        System.out.println(edges);
+
+        int ants = 20;
+        int iterations = 20;
+        AntColony colony = new AntColony(ants, iterations);
+        colony.beginExploring();
+    }
 }
