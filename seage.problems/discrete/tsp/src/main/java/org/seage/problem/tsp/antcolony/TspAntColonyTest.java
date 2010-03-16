@@ -31,15 +31,16 @@ public class TspAntColonyTest {
 
     public void run(String path) throws Exception {
         City[] cities = CityProvider.readCities(path);
+        Graph graph = new Graph(cities);
 
-        for (City c : cities) {
-            Graph.getInstance().addVertice(c.X, c.Y);
-        }
-        Graph.getInstance().fillEdgeMap();
+//        for (City c : cities) {
+//            Graph.getInstance().addVertice(c.X, c.Y);
+//        }
+        //Graph.getInstance().fillEdgeMap();
 
         double sum = 0;
         int edges = 0;
-        for (Edge edge : Graph.getInstance().getEdgeList()) {
+        for (Edge edge : graph.getEdgeList()) {
             sum += edge.getEdgeLength();
             edges++;
         }
@@ -49,7 +50,7 @@ public class TspAntColonyTest {
 
         int ants = 20;
         int iterations = 20;
-        AntColony colony = new AntColony(ants, iterations);
+        AntColony colony = new AntColony(ants, iterations, graph);
         colony.beginExploring();
     }
 }
