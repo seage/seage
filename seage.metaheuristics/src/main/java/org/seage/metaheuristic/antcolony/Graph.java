@@ -19,24 +19,12 @@ import java.util.*;
  */
 public class Graph {
 
-    private static Graph ref;
     private ArrayList<Node> verticeList = new ArrayList<Node>();
     private ArrayList<Edge> edgeList = new ArrayList<Edge>();
 
-    private Graph() {
-//        fillVerticeMap();
+    public Graph(City[] cities) {
+        fillVerticeMap(cities);
         fillEdgeMap();
-    }
-
-    public static Graph getInstance() {
-        if (ref == null) {
-            System.out.println("null!!!");
-            ref = new Graph();
-            return ref;
-        } else {
-            return ref;
-        }
-
     }
 
     public ArrayList<Node> getVerticeList() {
@@ -45,8 +33,13 @@ public class Graph {
 
     public void addVertice(double x, double y) {
         int id = verticeList.size();
-        System.out.println("ID"+verticeList.size());
         verticeList.add(new Node(id, x, y));
+    }
+
+    public void fillVerticeMap(City[] cities){
+        for (City c : cities) {
+            addVertice(c.X, c.Y);
+        }
     }
 
     public ArrayList<Edge> getEdgeList() {

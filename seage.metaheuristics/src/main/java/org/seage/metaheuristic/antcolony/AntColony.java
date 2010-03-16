@@ -19,6 +19,7 @@ import java.util.*;
  */
 public class AntColony {
 
+    Graph _graph;
     private double roundBest = Double.MAX_VALUE;
     private double globalBest = Double.MAX_VALUE;
     private Vector<Edge> bestPath;
@@ -27,9 +28,10 @@ public class AntColony {
     private int numIterations;
     private int round = 0;
 
-    public AntColony(int numAnts, int numIterations) {
+    public AntColony(int numAnts, int numIterations, Graph graph) {
         this.numAnts = numAnts;
         this.numIterations = numIterations;
+        _graph = graph;
     }
 
     public void beginExploring() {
@@ -70,10 +72,8 @@ public class AntColony {
     }
 
     private void spawnAnts() {
-        Random rand = new Random();
         for (int i = 0; i < numAnts; i++) {
-            //random selection of starting node
-            Ant someAnt = new Ant(Graph.getInstance().getVerticeList().get(rand.nextInt(Graph.getInstance().getVerticeList().size())));
+            Ant someAnt = new Ant(_graph);
             reports.add(someAnt.explore());
         }
         solveRound();

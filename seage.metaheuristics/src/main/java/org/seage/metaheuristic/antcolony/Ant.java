@@ -19,27 +19,32 @@ import java.util.*;
  */
 public class Ant {
 
+    Graph _graph;
+    Node _start;
+    Random _rand = new Random();
     private Node startPosition;
     private Node currentPosition;
     private double distanceTravelled;
     private Vector<Node> visited = new Vector<Node>();
     private Vector<Edge> path = new Vector<Edge>();
 
-    public Ant(Node start) {
-        startPosition = start;
-        currentPosition = start;
-        visited.add(start);
+    public Ant(Graph graph) {
+        _start = _graph.getVerticeList().get(_rand.nextInt(_graph.getVerticeList().size()));
+        startPosition = _start;
+        currentPosition = _start;
+        visited.add(_start);
+        _graph = graph;
     }
 
     public Vector<Edge> explore() {
-        int size = Graph.getInstance().getVerticeList().size();
+        int size = _graph.getVerticeList().size();
 
         for (int i = 0; i < size - 1; i++) {
             Edge next = AntBrain.getBrain().calculateProbability(visited, currentPosition);
             updatePosition(next);
         }
 
-        for (Edge last : Graph.getInstance().getEdgeList()) {
+        for (Edge last : _graph.getEdgeList()) {
             if (last.getOriginator().equals(currentPosition) || last.getDestination().equals(currentPosition)) {
                 if (last.getOriginator().equals(startPosition) || last.getDestination().equals(startPosition)) {
                     distanceTravelled += last.getEdgeLength();
