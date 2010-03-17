@@ -31,12 +31,7 @@ public class TspAntColonyTest {
 
     public void run(String path) throws Exception {
         City[] cities = CityProvider.readCities(path);
-        Graph graph = new Graph(cities);
-
-//        for (City c : cities) {
-//            Graph.getInstance().addVertice(c.X, c.Y);
-//        }
-        //Graph.getInstance().fillEdgeMap();
+        TspGraph graph = new TspGraph(TspGraph.citiesToNodes(cities));
 
         double sum = 0;
         int edges = 0;
