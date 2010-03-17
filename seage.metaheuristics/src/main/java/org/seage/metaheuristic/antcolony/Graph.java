@@ -19,55 +19,56 @@ import java.util.*;
  */
 public class Graph {
 
-    private ArrayList<Node> verticeList = new ArrayList<Node>();
-    private ArrayList<Edge> edgeList = new ArrayList<Edge>();
+    private ArrayList<Node> _nodeList = new ArrayList<Node>();
+    private ArrayList<Edge> _edgeList = new ArrayList<Edge>();
+    int _id;
 
-    public Graph(City[] cities) {
-        fillVerticeMap(cities);
+    public Graph(ArrayList<Node> nodes) {
+        fillNodeMap(nodes);
         fillEdgeMap();
     }
 
-    public ArrayList<Node> getVerticeList() {
-        return verticeList;
+    public ArrayList<Node> getNodeList() {
+        return _nodeList;
     }
 
-    public void addVertice(double x, double y) {
-        int id = verticeList.size();
-        verticeList.add(new Node(id, x, y));
+    public void addNode(Node n) {
+        _id = _nodeList.size();
+        _nodeList.add(new Node(_id));
     }
 
-    public void fillVerticeMap(City[] cities){
-        for (City c : cities) {
-            addVertice(c.X, c.Y);
+    public void fillNodeMap(ArrayList<Node> nodes){
+        for (Node n : nodes) {
+            addNode(n);
         }
     }
 
     public ArrayList<Edge> getEdgeList() {
-        return edgeList;
+        return _edgeList;
     }
 
     public void fillEdgeMap() {
         boolean same = false; //stejne
-        for (Node i : verticeList) {
-            for (Node j : verticeList) {
-                if (!i.equals(j)) {
+        for (Node i : _nodeList) {
+            for (Node j : _nodeList) {
+                if (i.getId() != j.getId()) {
                     Edge theEdge = new Edge(i, j);
-                    for (Edge k : edgeList) {
+                    for (Edge k : _edgeList) {
                         if (k.getOriginator().equals(j) && k.getDestination().equals(i)) {
                             same = true;
                         }
                     }
                     if (!same) {
-                        edgeList.add(theEdge);
+                        _edgeList.add(theEdge);
                     }
                 }
                 same = false;
             }
         }
-        for (Node i : verticeList) {
-            for (Edge j : edgeList) {
+        for (Node i : _nodeList) {
+            for (Edge j : _edgeList) {
                 if (j.getOriginator().equals(i) || j.getDestination().equals(i)) {
-                    i.buildEdgeMap(j);
+                    i.addConectionEdge(j);
                 }
             }
         }

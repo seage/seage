@@ -17,105 +17,60 @@ import java.util.Vector;
  *
  * @author Richard Malek (original)
  */
-public class Edge
-{
-	private double edgeLength;
-	//private String name;
-	private Node originator;
-	private Node destination;
-	private double globalPheromone = 0;
-	private double localPheromone = 0;
-	private Vector<Node> connections = new Vector<Node>();
-	
-	public double getGlobalPheromone()
-	{
-		return globalPheromone;
-	}
-	
-	public double getLocalPheromone()
-	{
-		return localPheromone;
-	}
-	
-	public void adjustGlobalPheromone(double adjustment)
-	{
-		globalPheromone += adjustment;
-	}
-	
-//	public void resetLocalPheromone()
-//	{
-//		localPheromone = 0;
-//	}
-	
-	public synchronized void adjustLocalPheromone(double adjustment)
-	{
-		localPheromone += adjustment;
-	}
-	
-	public Edge(Node start, Node end)
-	{
-		//setNames(start, end);
-                originator = start;
-		destination = end;
-		connections.add(start);
-		connections.add(end);
-		if (start.equals(end))
-		{
-			edgeLength = 0;
-		}
-		else
-		{
-			edgeLength = Node.getEdgeLength(start, end);
-		}
-	}
-	
-//	private void setNames(Node start, Node end)
-//	{
-//		name = start.getName() + end.getName() + "---" + end.getName() + start.getName();
-//		originator = start;
-//		destination = end;
-//		connections.add(start);
-//		connections.add(end);
-//	}
-	
-	public Vector<Node> getConnections()
-	{
-		return connections;
-	}
-	
-	/**
-	 * 
-	 * @return the edgeLength of this edge
-	 */
-	public double getEdgeLength()
-	{
-		return edgeLength;
-	}
-	
-	/**
-	 * @return the destination Vertice
-	 */
-	public Node getDestination()
-	{
-		return destination;
-	}
-	
-	/**
-	 * 
-	 * @return the name of the originating vertice
-	 */
-	public Node getOriginator()
-	{
-            //puvodce
-		return originator;
-	}
-	
-	/**
-	 * 
-	 * @return the name of this edge, made by combining the starting vertice and ending vertice
-	 */
-//	public String getName()
-//	{
-//		return name;
-//	}
+public class Edge {
+
+    private double _edgeLength;
+    private double _globalPheromone = 0;
+    private double _localPheromone = 0;
+    private Node _originator;
+    private Node _destination;
+    //private Vector<Node> _connections = new Vector<Node>();
+
+    public Edge(Node start, Node end) {
+        _originator = start;
+        _destination = end;
+    }
+
+    public double getGlobalPheromone() {
+        return _globalPheromone;
+    }
+
+    public double getLocalPheromone() {
+        return _localPheromone;
+    }
+
+    public synchronized void addGlobalPheromone(double adjustment) {
+        _globalPheromone += adjustment;
+    }
+
+    public synchronized void addLocalPheromone(double adjustment) {
+        _localPheromone += adjustment;
+    }
+
+    /**
+     *
+     * @return the _edgeLength of this edge
+     */
+    public double getEdgeLength() {
+        return _edgeLength;
+    }
+
+    public void setEdgeLength(double edgeLength) {
+        _edgeLength = edgeLength;
+    }
+
+    /**
+     * @return the destination node
+     */
+    public Node getDestination() {
+        return _destination;
+    }
+
+    /**
+     *
+     * @return the originator node
+     */
+    public Node getOriginator() {
+        return _originator;
+    }
 }
