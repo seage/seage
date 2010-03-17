@@ -31,7 +31,7 @@ public class TspAntColonyTest {
 
     public void run(String path) throws Exception {
         City[] cities = CityProvider.readCities(path);
-        TspGraph graph = new TspGraph(TspGraph.citiesToNodes(cities));
+        TspGraph graph = new TspGraph(cities);
 
         double sum = 0;
         int edges = 0;
@@ -40,8 +40,9 @@ public class TspAntColonyTest {
             edges++;
         }
 
-        System.out.println(sum);
+        System.out.println(""+graph.getNodeList().size());
         System.out.println(edges);
+        System.out.println(sum);
 
         int ants = 20;
         int iterations = 20;
