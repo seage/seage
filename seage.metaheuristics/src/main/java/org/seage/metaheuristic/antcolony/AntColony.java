@@ -84,15 +84,15 @@ public class AntColony {
         if (globalBest / roundBest > limit) {
             //System.out.println(""+(globalBest / roundBest));
             for (Edge best : bestPath) {
-                best.adjustGlobalPheromone((1 / best.getEdgeLength()));
+                best.addGlobalPheromone((1 / best.getEdgeLength()));
             }
         }
 
 //        for (Edge updateLocal : Graph.getInstance().getEdgeList()) {
-//            updateLocal.adjustGlobalPheromone(updateLocal.getLocalPheromone());
+//            updateLocal.addGlobalPheromone(updateLocal.getLocalPheromone());
 //            updateLocal.resetLocalPheromone();
 //            if (!(updateLocal.getGlobalPheromone() >= 0)) {
-//                updateLocal.adjustGlobalPheromone(-(1 / updateLocal.getEdgeLength()));
+//                updateLocal.addGlobalPheromone(-(1 / updateLocal.getEdgeLength()));
 //            }
 //        }
     }
