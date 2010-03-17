@@ -17,25 +17,56 @@ import org.seage.problem.tsp.City;
  */
 public class TspGraph extends Graph {
 
-    public TspGraph(ArrayList<Node> nodes) {
-        super(nodes);
-        setEdgesLenght();
+    private ArrayList<TspNode> _tspNodeList = new ArrayList<TspNode>();
+    private ArrayList<TspEdge> _tspEdgeList = new ArrayList<TspEdge>();
+
+    public TspGraph(City[] cities) {
+        //super();
+        fillNodeMap(cities);
+        fillEdgeMap();
+        //setEdgesLenght();
     }
 
-    public static ArrayList<Node> citiesToNodes(City[] cities){
-        ArrayList<Node> nodes = new ArrayList();
-        for(City c : cities){
-            nodes.add(new TspNode(c.ID, c.X, c.Y));
+//    public void setEdgesLenght(){
+//    }
+
+    public void fillNodeMap(City[] cities){
+        for (City c : cities) {
+            addCity(c);
         }
-        return nodes;
     }
 
-    public void setEdgesLenght(){
-        ArrayList<Edge> edgeList = getEdgeList();
-        TspEdge tspEdge;
-        for(Edge e : edgeList){
-            tspEdge = (TspEdge)e;
-            e.setEdgeLength((double)tspEdge.calculateEdgeLength());
+    public void addCity(City c) {
+        _id = _tspNodeList.size();
+        _tspNodeList.add(new TspNode(_id, c.X, c.Y));
+        _nodeList.add(new Node(_id));
+    }
+
+    public void fillEdgeMap() {
+        boolean same = false; //stejne
+        for (TspNode i : _tspNodeList) {
+            for (TspNode j : _tspNodeList) {
+                if (i.getId() != j.getId()) {
+                    TspEdge theEdge = new TspEdge(i, j);
+                    for (TspEdge k : _tspEdgeList) {
+                        if (k.getOriginator().equals(j) && k.getDestination().equals(i)) {
+                            same = true;
+                        }
+                    }
+                    if (!same) {
+                        _tspEdgeList.add(theEdge);
+                        _edgeList.add(theEdge);
+                    }
+                }
+                same = false;
+            }
+        }
+        for (Node i : _tspNodeList) {
+            for (Edge j : _tspEdgeList) {
+                if (j.getOriginator().equals(i) || j.getDestination().equals(i)) {
+                    i.addConectionEdge(j);
+                }
+            }
         }
     }
 }
