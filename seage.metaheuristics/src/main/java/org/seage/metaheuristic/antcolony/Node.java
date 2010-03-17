@@ -33,7 +33,7 @@ public class Node {
         return _id;
     }
 
-    protected void addConectionEdge(Edge edge) {
+    public void addConectionEdge(Edge edge) {
         connectionMap.add(edge);
     }
 
