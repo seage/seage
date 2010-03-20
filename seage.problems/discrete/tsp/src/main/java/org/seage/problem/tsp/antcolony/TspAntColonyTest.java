@@ -33,16 +33,17 @@ public class TspAntColonyTest {
         City[] cities = CityProvider.readCities(path);
         TspGraph graph = new TspGraph(cities);
 
-        double sum = 0;
-        int edges = 0;
-        for (Edge edge : graph.getEdgeList()) {
-            sum += edge.getEdgeLength();
-            edges++;
-        }
-
-        System.out.println(""+graph.getNodeList().size());
-        System.out.println(edges);
-        System.out.println(sum);
+//        double sum = 0;
+//        int edges = 0;
+//        for (Edge edge : graph.getEdgeList()) {
+//            sum += edge.getEdgeLength();
+//            System.out.println(""+edge.getEdgeLength());
+//            edges++;
+//        }
+//
+//        System.out.println(""+graph.getNodeList().size());
+//        System.out.println(edges);
+//        System.out.println(sum);
 
         int ants = 20;
         int iterations = 20;
