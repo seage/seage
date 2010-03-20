@@ -20,80 +20,81 @@ import java.util.*;
 public class AntColony {
 
     Graph _graph;
-    private double roundBest = Double.MAX_VALUE;
-    private double globalBest = Double.MAX_VALUE;
-    private Vector<Edge> bestPath;
-    private Vector<Vector<Edge>> reports = new Vector<Vector<Edge>>();
-    private int numAnts;
-    private int numIterations;
-    private int round = 0;
+    private double _roundBest = Double.MAX_VALUE;
+    private double _globalBest = Double.MAX_VALUE;
+    private Vector<Edge> _bestPath;
+    private Vector<Vector<Edge>> _reports = new Vector<Vector<Edge>>();
+    private int _numAnts;
+    private int _numIterations;
+    private int _round = 0;
+    private Random _rand = new Random();
 
     public AntColony(int numAnts, int numIterations, Graph graph) {
-        this.numAnts = numAnts;
-        this.numIterations = numIterations;
         _graph = graph;
+        _numAnts = numAnts;
+        _numIterations = numIterations;
     }
 
     public void beginExploring() {
-        for (int i = 0; i < numIterations; i++) {
+        for (int i = 0; i < _numIterations; i++) {
             spawnAnts();
-            round++;
+            _round++;
         }
     }
 
     private void solveRound() {
         double roundTotal = 0;
-        for (Vector<Edge> vector : reports) {
-            if (bestPath == null) {
-                bestPath = vector;
+        for (Vector<Edge> vector : _reports) {
+            if (_bestPath == null) {
+                _bestPath = vector;
             }
             for (Edge edges : vector) {
                 roundTotal += edges.getEdgeLength();
             }
-            if (roundTotal < roundBest) {
+            if (roundTotal < _roundBest) {
 
-                roundBest = roundTotal;
+                _roundBest = roundTotal;
             }
             roundTotal = 0;
-            if (roundBest < globalBest) {
-                globalBest = roundBest;
-                bestPath = vector;
+            if (_roundBest < _globalBest) {
+                _globalBest = _roundBest;
+                _bestPath = vector;
             }
         }
 
-        System.out.println("Round " + round);
-        System.out.println("This round best was  : " + roundBest);
-        System.out.println("The global best was : " + globalBest + "\n");
+        System.out.println("Round " + _round);
+        System.out.println("This round best was  : " + _roundBest);
+        System.out.println("The global best was : " + _globalBest + "\n");
 
         setGlobalPheromone();
 
-//        roundBest = Double.MAX_VALUE;
-        reports.clear();
+        _roundBest = Double.MAX_VALUE;
+        _reports.clear();
     }
 
     private void spawnAnts() {
-        for (int i = 0; i < numAnts; i++) {
-            Ant someAnt = new Ant(_graph);
-            reports.add(someAnt.explore());
+        for (int i = 0; i < _numAnts; i++) {
+            Ant someAnt = new Ant(_graph, _graph.getNodeList().size() - 1);
+            _reports.add(someAnt.explore());
         }
         solveRound();
     }
 
     private void setGlobalPheromone() {
         double limit = 0.8;
-        if (globalBest / roundBest > limit) {
-            //System.out.println(""+(globalBest / roundBest));
-            for (Edge best : bestPath) {
+        if (_globalBest / _roundBest > limit) {
+            //System.out.println(""+(_globalBest / _roundBest));
+            for (Edge best : _bestPath) {
                 best.addGlobalPheromone((1 / best.getEdgeLength()));
             }
         }
 
-//        for (Edge updateLocal : Graph.getInstance().getEdgeList()) {
-//            updateLocal.addGlobalPheromone(updateLocal.getLocalPheromone());
+        for (Edge updateLocal : _graph.getEdgeList()) {
+            updateLocal.addGlobalPheromone(updateLocal.getLocalPheromone());
 //            updateLocal.resetLocalPheromone();
-//            if (!(updateLocal.getGlobalPheromone() >= 0)) {
-//                updateLocal.addGlobalPheromone(-(1 / updateLocal.getEdgeLength()));
-//            }
-//        }
+            if (!(updateLocal.getGlobalPheromone() >= 0)) {
+                updateLocal.addGlobalPheromone(-(1 / updateLocal.getEdgeLength()));
+            }
+        }
     }
 }

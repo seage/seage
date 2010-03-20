@@ -47,9 +47,10 @@ public class AntBrain {
         Vector<Edge> nextEdges = new Vector<Edge>();
 
         boolean same;
-
+        System.out.println(""+currentNode.getConnectionMap().size());
         for (Edge i : currentNode.getConnectionMap()) {
             same = false;
+            //System.out.println(""+visitedNodes.size());
             for (Node k : visitedNodes) {
                 if (i.getDestination().getId() == k.getId()) {
                     same = true;
