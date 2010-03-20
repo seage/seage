@@ -22,36 +22,35 @@ public class Ant {
     Graph _graph;
     Node _start;
     Random _rand = new Random();
-    private Node startPosition;
-    private Node currentPosition;
-    private double distanceTravelled;
-    private Vector<Node> visited = new Vector<Node>();
-    private Vector<Edge> path = new Vector<Edge>();
+    private Node _startPosition;
+    private Node _currentPosition;
+    private double _distanceTravelled;
+    private Vector<Node> _visited = new Vector<Node>();
+    private Vector<Edge> _path = new Vector<Edge>();
 
-    public Ant(Graph graph) {
-        System.out.println(""+graph);
-        _start = _graph.getNodeList().get(_rand.nextInt(_graph.getNodeList().size()));
-        startPosition = _start;
-        currentPosition = _start;
-        visited.add(_start);
+    public Ant(Graph graph, int start) {
         _graph = graph;
+        _start = _graph.getNodeList().get(start);
+        _startPosition = _start;
+        _currentPosition = _start;
+        _visited.add(_start);
     }
 
     public Vector<Edge> explore() {
         int size = _graph.getNodeList().size();
 
         for (int i = 0; i < size - 1; i++) {
-            Edge next = AntBrain.getBrain().calculateProbability(visited, currentPosition);
+            Edge next = AntBrain.getBrain().calculateProbability(_visited, _currentPosition);
             updatePosition(next);
         }
 
         for (Edge last : _graph.getEdgeList()) {
-            if (last.getOriginator().equals(currentPosition) || last.getDestination().equals(currentPosition)) {
-                if (last.getOriginator().equals(startPosition) || last.getDestination().equals(startPosition)) {
-                    distanceTravelled += last.getEdgeLength();
+            if (last.getOriginator().equals(_currentPosition) || last.getDestination().equals(_currentPosition)) {
+                if (last.getOriginator().equals(_startPosition) || last.getDestination().equals(_startPosition)) {
+                    _distanceTravelled += last.getEdgeLength();
                     leavePheromone(last);
-                    path.add(last);
-                    return path;
+                    _path.add(last);
+                    return _path;
                 }
             }
         }
@@ -61,24 +60,23 @@ public class Ant {
 
     private void updatePosition(Edge arcChoice) {
         Node choice;
-        path.add(arcChoice);
-        if (arcChoice.getOriginator().equals(currentPosition)) {
+        _path.add(arcChoice);
+        if (arcChoice.getOriginator().equals(_currentPosition)) {
             choice = (arcChoice.getDestination());
         } else {
             choice = (arcChoice.getOriginator());
         }
-        distanceTravelled += arcChoice.getEdgeLength();
+        _distanceTravelled += arcChoice.getEdgeLength();
         leavePheromone(arcChoice);
-        visited.add(choice);
-        currentPosition = choice;
+        _visited.add(choice);
+        _currentPosition = choice;
     }
 
     private void leavePheromone(Edge arcChoice) {
         arcChoice.addLocalPheromone(1 / arcChoice.getEdgeLength());
-       //System.out.println(""+arcChoice.getLocalPheromone());
     }
 
     public double getDistanceTravelled() {
-        return distanceTravelled;
+        return _distanceTravelled;
     }
 }
