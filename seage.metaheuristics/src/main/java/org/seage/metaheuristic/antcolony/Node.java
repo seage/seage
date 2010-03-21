@@ -17,28 +17,24 @@ import java.util.*;
  *
  * @author Richard Malek (original)
  */
-public class Node
-{
-	private String _name = "";
-	private ArrayList<Edge> _connectionMap = new ArrayList<Edge>();
+public class Node {
 
-	public Node(String name)
-	{
-		this._name = name;
-	}
+    private String _name = "";
+    private ArrayList<Edge> _connectionMap = new ArrayList<Edge>();
 
-	public String getName()
-	{
-		return _name;
-	}
+    public Node(String name) {
+        this._name = name;
+    }
 
-	public void buildEdgeMap(Edge edge)
-	{
-		_connectionMap.add(edge);
-	}
+    public String getName() {
+        return _name;
+    }
 
-	public ArrayList<Edge> getConnectionMap()
-	{
-		return _connectionMap;
-	}
+    public void buildEdgeMap(Edge edge) {
+        _connectionMap.add(edge);
+    }
+
+    public ArrayList<Edge> getConnectionMap() {
+        return _connectionMap;
+    }
 }

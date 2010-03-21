@@ -73,7 +73,7 @@ public class Ant {
     }
 
     private void leavePheromone(Edge arcChoice) {
-        arcChoice.adjustLocalPheromone(1 / arcChoice.getEdgeLength());
+        arcChoice.addLocalPheromone(1 / arcChoice.getEdgeLength());
     }
 
     public double getDistanceTravelled() {

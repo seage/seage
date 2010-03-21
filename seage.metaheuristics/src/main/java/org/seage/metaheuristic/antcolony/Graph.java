@@ -17,24 +17,43 @@ import java.util.*;
  *
  * @author Richard Malek (original)
  */
-public class Graph
-{
-	protected ArrayList<Node> _verticeList = new ArrayList<Node>();
-	protected ArrayList<Edge> _edgeList = new ArrayList<Edge>();
+public class Graph {
 
-	public Graph()
-	{
-//		fillVerticeMap();
-//		fillEdgeMap();
-	}
+    protected ArrayList<Node> _nodeList = new ArrayList<Node>();
+    protected ArrayList<Edge> _edgeList = new ArrayList<Edge>();
+    protected double _globalEvaporation;
+    protected double _localEvaporation;
 
-	public ArrayList<Node> getVerticeList()
-	{
-		return _verticeList;
-	}
+    public Graph(double globEvaporCoeff, double locEvaporCoeff) {
+        _globalEvaporation = globEvaporCoeff;
+        _localEvaporation = locEvaporCoeff;
+    }
 
-	public ArrayList<Edge> getEdgeList()
-	{
-		return _edgeList;
-	}
+    public ArrayList<Node> getVerticeList() {
+        return _nodeList;
+    }
+
+    public ArrayList<Edge> getEdgeList() {
+        return _edgeList;
+    }
+
+    public void evaporating(){
+        for(Edge e : getEdgeList()){
+            e.evaporateFromEdge();
+        }
+    }
+
+    public void setDefaultPheromone(double defaultPheromone){
+        for(Edge e : getEdgeList()){
+            e.addGlobalPheromone(defaultPheromone);
+            e.addLocalPheromone(defaultPheromone);
+        }
+    }
+
+    public void printPheromone(){
+        for(Edge e : getEdgeList()){
+            System.out.println("global: "+e.getGlobalPheromone());
+            System.out.println("local: "+e.getLocalPheromone());
+        }
+    }
 }
