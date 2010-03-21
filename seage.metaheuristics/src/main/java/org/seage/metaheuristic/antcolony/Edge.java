@@ -20,16 +20,12 @@ import java.util.Vector;
 public class Edge {
 
     private double _edgeLength;
-    private double _globalPheromone = 0;
-    private double _localPheromone = 0;
+    private String _name;
     private Node _originator;
     private Node _destination;
-    //private Vector<Node> _connections = new Vector<Node>();
-
-    public Edge(Node start, Node end) {
-        _originator = start;
-        _destination = end;
-    }
+    private double _globalPheromone;
+    private double _localPheromone;
+    private Vector<Node> _connections = new Vector<Node>();
 
     public double getGlobalPheromone() {
         return _globalPheromone;
@@ -39,12 +35,32 @@ public class Edge {
         return _localPheromone;
     }
 
-    public synchronized void addGlobalPheromone(double adjustment) {
+    public void adjustGlobalPheromone(double adjustment) {
         _globalPheromone += adjustment;
     }
 
-    public synchronized void addLocalPheromone(double adjustment) {
+    public void resetLocalPheromone() {
+        _localPheromone = 0;
+    }
+
+    public synchronized void adjustLocalPheromone(double adjustment) {
         _localPheromone += adjustment;
+    }
+
+    public Edge(Node start, Node end) {
+        setNames(start, end);
+    }
+
+    private void setNames(Node start, Node end) {
+        _name = start.getName() + end.getName() + "---" + end.getName() + start.getName();
+        _originator = start;
+        _destination = end;
+        _connections.add(start);
+        _connections.add(end);
+    }
+
+    public Vector<Node> getConnections() {
+        return _connections;
     }
 
     /**
@@ -55,12 +71,12 @@ public class Edge {
         return _edgeLength;
     }
 
-    public void setEdgeLength(double edgeLength) {
-        _edgeLength = edgeLength;
+    public void setEdgeLength(double length) {
+        _edgeLength = length;
     }
 
     /**
-     * @return the destination node
+     * @return the _destination Vertice
      */
     public Node getDestination() {
         return _destination;
@@ -68,9 +84,17 @@ public class Edge {
 
     /**
      *
-     * @return the originator node
+     * @return the _name of the originating vertice
      */
     public Node getOriginator() {
         return _originator;
+    }
+
+    /**
+     *
+     * @return the _name of this edge, made by combining the starting vertice and ending vertice
+     */
+    public String getName() {
+        return _name;
     }
 }

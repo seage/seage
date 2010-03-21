@@ -17,27 +17,28 @@ import java.util.*;
  *
  * @author Richard Malek (original)
  */
-public class Node {
+public class Node
+{
+	private String _name = "";
+	private ArrayList<Edge> _connectionMap = new ArrayList<Edge>();
 
-    private int _id;
-    private ArrayList<Edge> connectionMap = new ArrayList<Edge>();
+	public Node(String name)
+	{
+		this._name = name;
+	}
 
-    public Node(int id) {
-        _id = id;
-    }
+	public String getName()
+	{
+		return _name;
+	}
 
-    /**
-     * @return the ID of this Vertice
-     */
-    public int getId() {
-        return _id;
-    }
+	public void buildEdgeMap(Edge edge)
+	{
+		_connectionMap.add(edge);
+	}
 
-    public void addConectionEdge(Edge edge) {
-        connectionMap.add(edge);
-    }
-
-    public ArrayList<Edge> getConnectionMap() {
-        return connectionMap;
-    }
+	public ArrayList<Edge> getConnectionMap()
+	{
+		return _connectionMap;
+	}
 }
