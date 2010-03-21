@@ -1,32 +1,35 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Martin Zaloga
+ *     - Initial implementation
  */
-
 package org.seage.problem.tsp.antcolony;
 
 import org.seage.metaheuristic.antcolony.Edge;
-import org.seage.metaheuristic.antcolony.Node;
 
-/**
- *
- * @author Zagy
- */
 public class TspEdge extends Edge {
 
-    private TspNode _node1, _node2;
-    double _dX, _dY;
+    private double _dX;
+    private double _dY;
 
     public TspEdge(TspNode start, TspNode end) {
         super(start, end);
-        setEdgeLength(calculateEdgeLength());
+        if (start.equals(end)) {
+            setEdgeLength(0);
+        } else {
+            setEdgeLength(calculateEdgeLength(start, end));
+        }
     }
 
-    public double calculateEdgeLength(){
-        _node1 = (TspNode)getOriginator();
-        _node2 = (TspNode)getDestination();
-        _dX = (_node1.getX() - _node2.getX());
-        _dY = (_node1.getY() - _node2.getY());
+    public double calculateEdgeLength(TspNode start, TspNode end){
+        _dX = (start.getX() - end.getX());
+        _dY = (start.getY() - end.getY());
         return Math.sqrt(_dX*_dX + _dY*_dY);
     }
 }
