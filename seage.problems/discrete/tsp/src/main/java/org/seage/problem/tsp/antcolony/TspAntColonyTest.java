@@ -32,8 +32,9 @@ public class TspAntColonyTest {
     public void run(String path) throws Exception {
         City[] cities = CityProvider.readCities(path);
         double localEvaporation = 0.9;
-        double globalEvaporation = 0.9;
-        TspGraph graph = new TspGraph(cities, globalEvaporation, localEvaporation);
+        int ants = 20;
+        double globalEvaporation = 0.99;
+        TspGraph graph = new TspGraph(cities, globalEvaporation, localEvaporation, ants);
 
         //testing
         double sum = 0;
@@ -45,11 +46,12 @@ public class TspAntColonyTest {
         System.out.println(sum);
         System.out.println(edges);
 
+        //working
         graph.setDefaultPheromone(1);
-
-        int ants = 20;
         int iterations = 100;
-        AntColony brain = new AntColony(ants, iterations, graph);
-        brain.beginExploring();
+        AntColony colony = new AntColony(ants, iterations, graph);
+        colony.beginExploring();
+        //colony.printGlobalBest();
+        graph.printPheromone();
     }
 }

@@ -30,14 +30,14 @@ public class Ant {
 
     public Ant(Graph graph) {
         _graph = graph;
-        _start = _graph.getVerticeList().get(_rand.nextInt(_graph.getVerticeList().size()));
+        _start = _graph.getNodeList().get(_rand.nextInt(_graph.getNodeList().size()));
         _startPosition = _start;
         _currentPosition = _start;
         _visited.add(_start);
     }
 
     public Vector<Edge> explore() {
-        int size = _graph.getVerticeList().size();
+        int size = _graph.getNodeList().size();
 
         for (int i = 0; i < size - 1; i++) {
             Edge next = AntBrain.getBrain().calculateProbability(_visited, _currentPosition);
@@ -48,7 +48,7 @@ public class Ant {
             if (last.getOriginator().equals(_currentPosition) || last.getDestination().equals(_currentPosition)) {
                 if (last.getOriginator().equals(_startPosition) || last.getDestination().equals(_startPosition)) {
                     _distanceTravelled += last.getEdgeLength();
-                    leavePheromone(last);
+                    leaveLocalPheromone(last);
                     _path.add(last);
                     return _path;
                 }
@@ -67,13 +67,13 @@ public class Ant {
             choice = (arcChoice.getOriginator());
         }
         _distanceTravelled += arcChoice.getEdgeLength();
-        leavePheromone(arcChoice);
+        leaveLocalPheromone(arcChoice);
         _visited.add(choice);
         _currentPosition = choice;
     }
 
-    private void leavePheromone(Edge arcChoice) {
-        arcChoice.addLocalPheromone(1 / arcChoice.getEdgeLength());
+    private void leaveLocalPheromone(Edge arcChoice) {
+        arcChoice.addLocalPheromone();
     }
 
     public double getDistanceTravelled() {

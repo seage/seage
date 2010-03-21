@@ -30,7 +30,7 @@ public class Node {
         return _name;
     }
 
-    public void buildEdgeMap(Edge edge) {
+    public void addConnection(Edge edge) {
         _connectionMap.add(edge);
     }
 
