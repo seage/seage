@@ -23,13 +23,15 @@ public class Graph {
     protected ArrayList<Edge> _edgeList = new ArrayList<Edge>();
     protected double _globalEvaporation;
     protected double _localEvaporation;
+    protected int _nuberNodes;
+    protected int _numberAnts;
 
     public Graph(double globEvaporCoeff, double locEvaporCoeff) {
         _globalEvaporation = globEvaporCoeff;
         _localEvaporation = locEvaporCoeff;
     }
 
-    public ArrayList<Node> getVerticeList() {
+    public ArrayList<Node> getNodeList() {
         return _nodeList;
     }
 
@@ -45,8 +47,7 @@ public class Graph {
 
     public void setDefaultPheromone(double defaultPheromone){
         for(Edge e : getEdgeList()){
-            e.addGlobalPheromone(defaultPheromone);
-            e.addLocalPheromone(defaultPheromone);
+            e.setDefaultPheromone(defaultPheromone);
         }
     }
 

@@ -26,15 +26,22 @@ public class Edge {
     private double _localPheromone = 0;
     private double _globalEvaporation = 0;
     private double _localEvaporation = 0;
+    private double _maxValuePheromone = 10;
+    private double _localMultiplicator;
+    private double _globalMultiplicator;
+    private int _numberGraphNodes;
+    private int _numberAnts;
     private Vector<Node> _connections = new Vector<Node>();
 
-    public Edge(Node start, Node end, double globEvaporCoeff, double locEvaporCoeff) {
+    public Edge(Node start, Node end, double globEvaporCoeff, double locEvaporCoeff, int numberGraphNodes, int numberAnts) {
         _originator = start;
         _destination = end;
         _connections.add(start);
         _connections.add(end);
         _globalEvaporation = globEvaporCoeff;
         _localEvaporation = locEvaporCoeff;
+        _numberGraphNodes = numberGraphNodes;
+        _numberAnts = numberAnts;
     }
 
     public double getGlobalPheromone() {
@@ -45,21 +52,30 @@ public class Edge {
         return _localPheromone;
     }
 
-    public void addGlobalPheromone(double addPheromone) {
-        _globalPheromone += addPheromone;
+    public synchronized void setDefaultPheromone(double defaultPheromone) {
+        _localPheromone = defaultPheromone;
+        _globalPheromone = defaultPheromone;
     }
 
-    public synchronized void addLocalPheromone(double addPheromone) {
-        _localPheromone += addPheromone;
+    public void addGlobalPheromone(double pathLength) {
+        _globalMultiplicator = (_numberAnts*_numberGraphNodes*_maxValuePheromone)/pathLength;
+        if(_globalMultiplicator > 1){
+            _globalMultiplicator = 1;
+        }
+        _globalPheromone = (_maxValuePheromone - _globalPheromone)*_globalMultiplicator;
+    }
+
+    public synchronized void addLocalPheromone() {
+        _localMultiplicator =  (_maxValuePheromone/_edgeLength);
+        if(_localMultiplicator > 1){
+            _localMultiplicator = 1;
+        }
+        _localPheromone = (_maxValuePheromone - _localPheromone)*_localMultiplicator;
     }
 
     public void evaporateFromEdge(){
         _globalPheromone = _globalPheromone*_globalEvaporation;
         _localPheromone = _localPheromone*_localEvaporation;
-    }
-
-    public Vector<Node> getConnections() {
-        return _connections;
     }
 
     public double getEdgeLength() {
@@ -76,5 +92,9 @@ public class Edge {
 
     public Node getOriginator() {
         return _originator;
+    }
+
+    public Vector<Node> getConnections() {
+        return _connections;
     }
 }
