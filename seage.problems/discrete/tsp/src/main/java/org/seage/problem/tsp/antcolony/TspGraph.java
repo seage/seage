@@ -4,11 +4,9 @@
  */
 package org.seage.problem.tsp.antcolony;
 
-import java.util.ArrayList;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
-import org.seage.problem.tsp.City;
 
 /**
  *
@@ -16,53 +14,38 @@ import org.seage.problem.tsp.City;
  */
 public class TspGraph extends Graph {
 
-    private ArrayList<TspNode> _tspNodeList = new ArrayList<TspNode>();
-    private ArrayList<TspEdge> _tspEdgeList = new ArrayList<TspEdge>();
-
-    public TspGraph(City[] cities) {
-        super();
-        fillNodeMap(cities);
-        fillEdgeMap();
-    }
-
-    public void fillNodeMap(City[] cities) {
-        for (City c : cities) {
-            addCity(c);
-        }
-    }
-
-    public void addCity(City c) {
-        _id = _tspNodeList.size();
-        _tspNodeList.add(new TspNode(_id, c.X, c.Y));
-        _nodeList.add(new Node(_id));
+    public void addVertice(double x, double y) {
+        String id = new Integer(_verticeList.size() + 1).toString();
+        _verticeList.add(new TspNode(id, x, y));
     }
 
     public void fillEdgeMap() {
+        TspEdge tspEdg;
         boolean same = false;
-        for (TspNode i : _tspNodeList) {
-            for (TspNode j : _tspNodeList) {
+        for (Node i : _verticeList) {
+            for (Node j : _verticeList) {
                 if (!i.equals(j)) {
-                    TspEdge theEdge = new TspEdge(i, j);
-                    for (Edge k : _tspEdgeList) {
-                        if (k.getOriginator().equals(j) && k.getDestination().equals(i)) {
+                    TspEdge theEdge = new TspEdge((TspNode)i, (TspNode)j);
+                    for (Edge k : _edgeList) {
+                        tspEdg = (TspEdge)k;
+                        if (tspEdg.getOriginator().equals(j) && tspEdg.getDestination().equals(i)) {
                             same = true;
                         }
                     }
                     if (!same) {
-                        _tspEdgeList.add(theEdge);
+                        _edgeList.add(theEdge);
                     }
                 }
                 same = false;
             }
         }
-
-        for (Node i : _tspNodeList) {
-            for (Edge j : _tspEdgeList) {
+        for (Node i : _verticeList) {
+            for (Edge j : _edgeList) {
                 if (j.getOriginator().equals(i) || j.getDestination().equals(i)) {
-                    i.addConectionEdge(j);
-                    System.out.println("pridavam"+j);
+                    i.buildEdgeMap(j);
                 }
             }
         }
     }
+
 }
