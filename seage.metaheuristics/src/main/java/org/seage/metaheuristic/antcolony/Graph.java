@@ -17,17 +17,24 @@ import java.util.*;
  *
  * @author Richard Malek (original)
  */
-public class Graph {
+public class Graph
+{
+	protected ArrayList<Node> _verticeList = new ArrayList<Node>();
+	protected ArrayList<Edge> _edgeList = new ArrayList<Edge>();
 
-    protected ArrayList<Node> _nodeList = new ArrayList<Node>();
-    protected ArrayList<Edge> _edgeList = new ArrayList<Edge>();
-    protected int _id;
+	public Graph()
+	{
+//		fillVerticeMap();
+//		fillEdgeMap();
+	}
 
-    public ArrayList<Node> getNodeList() {
-        return _nodeList;
-    }
+	public ArrayList<Node> getVerticeList()
+	{
+		return _verticeList;
+	}
 
-    public ArrayList<Edge> getEdgeList() {
-        return _edgeList;
-    }
+	public ArrayList<Edge> getEdgeList()
+	{
+		return _edgeList;
+	}
 }

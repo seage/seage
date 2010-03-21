@@ -16,7 +16,7 @@ import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
 
 /**
- * 
+ *
  * @author Richard Malek
  */
 public class TspAntColonyTest {
@@ -31,23 +31,26 @@ public class TspAntColonyTest {
 
     public void run(String path) throws Exception {
         City[] cities = CityProvider.readCities(path);
-        TspGraph graph = new TspGraph(cities);
+        TspGraph graph = new TspGraph();
 
-//        double sum = 0;
-//        int edges = 0;
-//        for (Edge edge : graph.getEdgeList()) {
-//            sum += edge.getEdgeLength();
-//            System.out.println(""+edge.getEdgeLength());
-//            edges++;
-//        }
-//
-//        System.out.println(""+graph.getNodeList().size());
-//        System.out.println(edges);
-//        System.out.println(sum);
+        for (City c : cities) {
+            graph.addVertice(c.X, c.Y);
+        }
+        graph.fillEdgeMap();
+
+        double sum = 0;
+        double edges = 0;
+        for (Edge edge : graph.getEdgeList()) {
+            sum += edge.getEdgeLength();
+            edges++;
+        }
+
+        System.out.println(sum);
+        System.out.println(edges);
 
         int ants = 20;
-        int iterations = 20;
-        AntColony colony = new AntColony(ants, iterations, graph);
-        colony.beginExploring();
+        int iterations = 10;
+        AntColony brain = new AntColony(ants, iterations, graph);
+        brain.beginExploring();
     }
 }
