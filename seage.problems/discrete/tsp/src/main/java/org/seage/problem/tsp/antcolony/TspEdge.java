@@ -18,8 +18,8 @@ public class TspEdge extends Edge {
     private double _dX;
     private double _dY;
 
-    public TspEdge(TspNode start, TspNode end) {
-        super(start, end);
+    public TspEdge(TspNode start, TspNode end, double globEvaporCoeff, double locEvaporCoeff) {
+        super(start, end, globEvaporCoeff, locEvaporCoeff);
         if (start.equals(end)) {
             setEdgeLength(0);
         } else {

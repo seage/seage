@@ -51,6 +51,7 @@ public class AntColony implements Observer
 			{
 				_running = false;
 			}
+                        _graph.evaporating();
 		}
 	}
 
@@ -117,17 +118,16 @@ public class AntColony implements Observer
 		{
 			for (Edge best : _bestPath)
 			{
-				best.adjustGlobalPheromone((1/best.getEdgeLength()));
+				best.addGlobalPheromone((1/best.getEdgeLength()));
 			}
 		}
 
 		for (Edge updateLocal : _graph.getEdgeList())
 		{
-			updateLocal.adjustGlobalPheromone(updateLocal.getLocalPheromone());
-			updateLocal.resetLocalPheromone();
+			updateLocal.addGlobalPheromone(updateLocal.getLocalPheromone());
 			if (!(updateLocal.getGlobalPheromone() >= 0))
 			{
-				updateLocal.adjustGlobalPheromone(-(1/updateLocal.getEdgeLength()));
+				updateLocal.addGlobalPheromone(-(1/updateLocal.getEdgeLength()));
 			}
 		}
 	}

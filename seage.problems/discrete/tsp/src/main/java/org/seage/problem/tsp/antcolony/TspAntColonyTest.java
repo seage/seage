@@ -31,25 +31,24 @@ public class TspAntColonyTest {
 
     public void run(String path) throws Exception {
         City[] cities = CityProvider.readCities(path);
-        TspGraph graph = new TspGraph();
+        double localEvaporation = 0.9;
+        double globalEvaporation = 0.9;
+        TspGraph graph = new TspGraph(cities, globalEvaporation, localEvaporation);
 
-        for (City c : cities) {
-            graph.addVertice(c.X, c.Y);
-        }
-        graph.fillEdgeMap();
-
+        //testing
         double sum = 0;
         double edges = 0;
         for (Edge edge : graph.getEdgeList()) {
             sum += edge.getEdgeLength();
             edges++;
         }
-
         System.out.println(sum);
         System.out.println(edges);
 
+        graph.setDefaultPheromone(1);
+
         int ants = 20;
-        int iterations = 10;
+        int iterations = 100;
         AntColony brain = new AntColony(ants, iterations, graph);
         brain.beginExploring();
     }
