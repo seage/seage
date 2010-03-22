@@ -20,9 +20,9 @@ import org.seage.problem.tsp.TourProvider;
  */
 public class TspGreedyParticle extends TspParticle {
 
-    public TspGreedyParticle(City[] cities) throws Exception
+    public TspGreedyParticle(City[] cities, int dimension) throws Exception
     {
-        super( cities );
+        super( cities , dimension  );
         _tour = TourProvider.createGreedyTour( cities );
     }
 

@@ -20,7 +20,7 @@ import org.seage.problem.tsp.City;
  *
  * @author Jan Zmatlik
  */
-public class TspParticle extends Particle
+public abstract class TspParticle extends Particle
 {
     /**
      * Represent order of cities
@@ -32,9 +32,9 @@ public class TspParticle extends Particle
      */
     protected static City[] _cities;
 
-    public TspParticle(City[] cities)
+    public TspParticle(City[] cities, int dimension)
     {
-        super( cities.length );
+        super( dimension );
         _tour = new Integer[ cities.length ];
         _cities = cities;        
     }
