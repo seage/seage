@@ -97,6 +97,11 @@ public class AntColony {
         }
     }
 
+    public Vector<Edge> getBestPath()
+    {
+        return _bestPath;
+    }
+
     public void printGlobalBest(){
         System.out.println("Global best: "+_globalBest);
     }
