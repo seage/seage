@@ -1,190 +1,107 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head>
-<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>SEAGE</title>
-<link rel="icon" type="image/png" href="images/favicon.png">
-<style type="text/css">
-<!--
-body {
-font-size:12px;
-font-family:Verdana, Arial, Helvetica, sans-serif;
-}
-#page{
-width:1000px;
-margin:0 auto;
-text-align:center;
-}
-div#header {
-padding: 15px;
-margin: 0px;
-height: 160px;
-border-bottom: thin solid #000000;
-}
-div#header_logo {
-margin-left: 7%;
-float: left;
-}
-div#header_label {
-padding-top: 40px;
-width: 384px;
-margin-left: auto ;
-margin-right: auto ;
-text-align:left;
-font-size: 26px;
-}
-div.header_label_1 {
-font-size: 30px;
-color: #5889e3;
-float: left;
-}
-div.header_label_2 {
-float: left;
-padding-top: 3px;
-}
-div.header_label_3 {
-float:left;
-}
-div#body {
-padding-top: 40px;
-margin-top: 10px;
-padding: 10px;
-clear: left;
-}
-div#overview {
-text-align: center;
-}
-div#overview_text {
-width: 384px;
-text-align: left;
-margin-left: auto ;
-margin-right: auto ;
-}
-div#matrix_label {
-text-align: left;
-margin-left: 10%;
-}
-div#matrix_table {
-padding-top: 10px;
-}
-.label {
-padding-top: 10px;
-text-align: left;
-font-size: 12pt;
-margin-left: 10%;
-}
-div#architecture_schema {
-padding-top: 10px;
-}
-div#footer {
-padding: 15px;
-margin: 0px;
-border-top: thin solid #000000;
-}
-table
-{
-border-collapse:collapse;
-}
-#header A:link {text-decoration: none; color: white;}
-#header A:visited {text-decoration: none; color: white;}
-#header A:active {text-decoration: none; color: white;}
-#header A:hover {text-decoration: none; color: white;}
-#source A:link {text-decoration: none; color: white;}
-#source A:visited {text-decoration: none; color: white;}
-#source A:active {text-decoration: none; color: white;}
-#source A:hover {text-decoration: none; color: white;}
--->
-</style>
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='cs' lang='cs'>
+<head>
+  <meta name='robots' content='all, follow' /> 
+  <meta http-equiv='Cache-Control' content='no-cache' />  
+  <meta http-equiv='Content-Language' content='cs' />  
+  <meta http-equiv='content-type' content='text/html; charset=utf-8' />
+  <meta name='author' content='all: Richard Málek - FEE, CTU in Prague, CZ' />  
+  <meta name='description' content='SEAGE: SEarch AGEnts for optimization' /> 
+  <meta name='keywords' content='search agents optimalization open source meta-heuristic algorithm' /> 
+  <title>SEAGE</title>
+  <link href='./seage.css' type='text/css' rel='stylesheet'  media='screen' />
 </head>
 <body>
-<div id="page">
-<div id="header">
-<div id="header_logo"><a href="http://sourceforge.net/projects/seage/"><img src="images/logo.png" alt="SEAGE logo"></a></div>
-<div id="header_label">
-<div class="header_label_1">SE</div>
-<div class="header_label_2">ARCH</div>
-<div class="header_label_1" style="padding-left: 20px;">AGE</div>
-<div class="header_label_2">NTS</div>
-<br>
-<div class="header_label_3">for optimization</div>
+
+<div id='str'>
+  <h1><a href='http://sourceforge.net/projects/seage/' title='SEAGE: SEarch AGEnts for optimization'><strong>SEAGE</strong></a></h1>
+  <h2><em>SE</em>ARCH <em>AGE</em>NTS for optimization</h2>
+  
+  <hr />
+  
+  <div id='str-stat'>
+  
+    <h3>Overview</h3>
+    <div class='str-stat-odd'>
+      SEAGE is an open-source project which provides various meta-heuristic algorithms with their implementations on various optimization problems. Each meta-heuristic can be handled through an unified interface of an object called Adapter. Agents have been designed to solve optimization problems through a collaboration of different meta-heuristics. 
+      <br />A more detailed description can be found in <a href='http://seage.sourceforge.net/data/malek09col.pdf' onclick='window.open(this.href); return false;'>this paper</a>. 
+    </div>
+    
+    
+    <h3>Feature Matrix</h3>
+    <div class='str-stat-odd'>
+      <table border='0' id='tab-fm'>
+        <tr>
+          <th>&nbsp;</th>
+          <th title="Travelling Salesman Problem">TSP</th>
+          <th title="Boolean Satisfiability Problem">SAT</th>
+          <th title="Jobshop Scheduling Problem">JSSP</th>
+          <th title="Quadratic Assignment Problem">QAP</th>
+          <th>...</th>
+        </tr><tr>
+          <td class='sl1'>Genetic Algorithm</td>
+          <td><img src="images/accept.png"/></td>
+          <td><img src="images/in_progress.png" title="In progress"/></td>
+          <td><img src="images/in_progress.png" title="In progress"/></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr><tr>
+          <td class='sl1'>Tabu Search</td>
+          <td><img src="images/accept.png"/></td>
+          <td><img src="images/in_progress.png" title="In progress"/></td>
+          <td><img src="images/in_progress.png" title="In progress"/></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr><tr>
+          <td class='sl1'>Simulated Annealing</td>
+          <td><img src="images/accept.png"/></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr><tr>
+          <td class='sl1'>Particle Swarm</td>
+          <td><img src="images/in_progress.png" title="In progress"/></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr><tr>
+          <td class='sl1'>GRASP</td>
+          <td><img src="images/accept.png"/></td>
+          <td><img src="images/accept.png"/></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr><tr>
+          <td class='sl1'>Ant Colony</td>
+          <td><img src="images/in_progress.png" title="In progress"/></td>
+          <td><img src="images/in_progress.png" title="In progress"/></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+    </div>
+    
+    
+    <h3>Architecture</h3>
+    <div class='str-stat-odd centered'>
+      <img src='./images/schema.png' width='384' height='358' alt='Architecture' title='Architecture' />
+    </div>
+    
+     
+    <h3>Source Code</h3>
+    <div class='str-stat-odd centered'>
+      <a href='http://sourceforge.net/projects/seage/'><img src='./images/sourceforge.png' width='210' height='62' alt='Source Code' title='Source Code' /></a>
+    </div>
+    
+  </div>
+  
+  <hr />
 </div>
-</div>
-<div id="body">
-<div class="label">Overview</div>
-<div id="overview">
-<div id="overview_text">SEAGE is an open-source project
-which provides various meta-heuristic algorithms with their
-implementations on various optimization problems. Each meta-heuristic
-can be handled through an unified interface of an object called
-Adapter.
-Agents have been designed to solve optimization problems through a
-collaboration of different meta-heuristics. <br>
-A more detailed description
-can be found in <a href="data/malek09col.pdf">this paper</a>.
-</div>
-</div>
-<div class="label">Feature Matrix</div>
-<div id="matrix_table">
-<center>
-<table style="width: 384px;" border="1" cellspacing="0">
-<tbody>
-<tr>
-<td></td>
-<td style="text-align: center;">TSP</td>
-<td style="text-align: center;">SAT</td>
-<td style="text-align: center;">JSSP</td>
-<td style="text-align: center;">...</td>
-<td style="text-align: center;">...</td>
-</tr>
-<tr>
-<td>Genetic Algorithm</td>
-<td style="text-align: center;">X</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr>
-<td>Tabu Search</td>
-<td style="text-align: center;">X</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr>
-<td>Simulated Annealing</td>
-<td style="text-align: center;">X</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr>
-<td>Particle Swarm&nbsp;</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr>
-<td>GRASP</td>
-<td style="text-align: center;">X</td>
-<td style="text-align: center;">X</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-</tbody>
-</table>
-</center>
-</div>
-<div class="label">Architecture</div>
-<div id="architecture_schema"><img src="images/schema.png" alt="SEAGE schema"></div>
-<div class="label">Source Code</div>
-<div id="source">
-<a href="http://sourceforge.net/projects/seage/"><img src="images/sourceforge.png" alt="SF"></a></div>
-</div>
-<div id="footer">
-</div>
-</div>
-</body></html>
+
+
+</body>
+</html>

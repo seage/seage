@@ -1,0 +1,152 @@
+body {
+	margin: 0px;
+	padding: 20px;
+	background-color: #fff;
+	font-family: "Verdana CE", Verdana, "Arial CE", Arial, Helvetica, sans-serif;
+	font-size: 0.8em;
+	color: #000;
+	text-align: center;
+}
+
+
+
+/* --------------------------------------------------------------------------------------------------------- */
+
+
+
+a img {
+	border: 0px;
+}
+
+a {
+	color: #5889e3;
+	text-decoration: underline;
+}
+
+a:hover {
+	color: #f5793f;
+}
+
+h1 {
+	margin: 0px;
+	padding: 0px;
+	width: 160px;
+	height: 160px;
+	font-size: 5px;
+	background-image: URL('./images/logo.png');
+	background-position: left top;
+	background-repeat: no-repeat;
+	margin-left: 90px;
+}
+
+	h1 a {
+		display: block;
+		height: 160px;
+		text-decoration: none;
+	}
+	
+		h1 a strong {
+			display: none;
+			visibility: hidden;
+		}
+		
+h2 {
+	margin: 0px;
+	padding: 0px;
+	width: 250px;
+	height: 80px;
+	font-size: 1.9em;
+	font-weight: normal;
+	position: absolute;
+	left: 310px;
+	top: 40px;
+}
+
+	h2 em {
+		color: #5889e3;
+		font-style: normal;
+		font-size: 1.2em;
+	}
+
+
+h3 {
+	margin-top: 30px;
+	margin-bottom: 5px;
+	font-size: 1.3em;
+	font-weight: normal;
+}
+	
+
+hr {
+	color: #000;
+	height: 1px;
+	background-color: #000;
+	border: 0px;
+}
+
+
+
+
+
+/* --------------------------------------------------------------------------------------------------------- */
+
+
+
+
+
+#str {
+	width: 1000px;
+	margin: auto;
+	margin-top: 0px;
+	text-align: left;
+	position: relative;
+}
+
+
+	#str-stat {
+		width: 600px;
+		margin-left: 110px;
+		text-align: justify;
+	}
+	
+	
+		.str-stat-odd {
+			width: 385px;
+			margin-left: 200px;
+		}
+		
+		
+		#tab-fm {
+			width: 380px;
+			border: 1px solid #cdcdcd;
+		}
+		
+			#tab-fm th {
+				padding: 2px;
+				font-weight: bold;
+				background-color: #cdcdcd;
+				text-align: left;
+				vertical-align: middle;
+			}
+			
+			#tab-fm td {
+				padding: 2px;
+				text-align: center;
+				border-bottom: 1px solid #efefef;
+			}
+			
+				#tab-fm td.sl1 {
+					text-align: left;
+				}
+
+		
+		
+		
+/* --------------------------------------------------------------------------------------------------------- */
+
+
+
+
+.centered {
+	text-align: center;
+}
