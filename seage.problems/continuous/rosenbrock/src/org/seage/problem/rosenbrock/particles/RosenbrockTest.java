@@ -30,13 +30,6 @@ public class RosenbrockTest
 
         Particle[] particles = generateParticles( numberOfParticles , dimension );
 
-//        particles[0].getCoords()[0] = 1.0000000000000002;
-//        particles[0].getCoords()[1] = 1.0000000000000004;
-//
-//        objFunction.setObjectiveValue( particles[0] );
-//        System.out.println("VAL: " + particles[0].getEvaluation());
-//        //Global MINIMUM: 4.930380657631324E-32
-
         for(Particle particle : particles)
         {
             // Initial coords
@@ -49,26 +42,13 @@ public class RosenbrockTest
 
             // Evaluate
             objFunction.setObjectiveValue( particle );
-
-            //printArray(particle.getCoords());
-            //System.out.println("OBJ: " + particle.getEvaluation());
         }
 
         ParticleSwarm pso = new ParticleSwarm( objFunction );
         pso.setMaximalIterationCount( 100000 );
         pso.setMaximalVelocity( 1.0 );
         pso.startSearching( particles );
-
-//        for(int i = 0; i < 1000; i++)
-//            System.out.println("RAND> " + Math.random());
     }
-
-//    static void printArray(double[] array)
-//  {
-//    for(int i = 0; i< array.length; i++)
-//          System.out.print(" " + array[i]);
-//      System.out.println("");
-//  }
 
     private static Particle[] generateParticles(int count, int dimension)
     {

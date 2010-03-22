@@ -100,19 +100,38 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 
     private Particle[] generateInitialSolutions() throws Exception
     {
-//        Solution[] solutions = new Solution[3];
-//
-//        TspGreedySolution greedy = new TspGreedySolution(_cities);
-//        TspRandomSolution random = new TspRandomSolution(_cities);
-//        TspSortedSolution sorted = new TspSortedSolution(_cities);
-//
-//        _objectiveFunction.setObjectiveValue(greedy);
+        Particle[] particles = new Particle[]
+        {
+            new TspRandomParticle(_cities, _cities.length),
+            new TspRandomParticle(_cities, _cities.length),
+            new TspRandomParticle(_cities, _cities.length)
+        };
+
+
+        for(Particle particle : particles)
+        {
+            // Initial coords
+            for(int i = 0; i < _cities.length; i++)
+                particle.getCoords()[i] = Math.random();
+
+            insertionSort(particle.getCoords());
+            
+            for(int i = 0; i < _cities.length; i++)
+                ((TspParticle)particle).getTour()[i] = i;
+
+            // Initial velocity
+            for(int i = 0; i < _cities.length; i++)
+                particle.getVelocity()[i] = Math.random();
+
+            // Evaluate
+            _objectiveFunction.setObjectiveValue( particle );
+        }
+
 //        _objectiveFunction.setObjectiveValue(random);
-//        _objectiveFunction.setObjectiveValue(sorted);
-//
-//        solutions[0] = greedy;
-//        solutions[1] = random;
-//        solutions[2] = sorted;
+//        _objectiveFunction.setObjectiveValue(random1);
+//        _objectiveFunction.setObjectiveValue(random2);
+
+
         
 //        return new Solution[]{
 //            new TspGreedySolution(_cities),
@@ -120,6 +139,22 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 //            new TspSortedSolution(_cities)
 //        };
 
-        return null;
+        return particles;
+    }
+
+    public void insertionSort(double[] array)
+    {
+        //double[] sortedArray = array.clone();
+        for(int i = 0; i < array.length - 1; i++)
+        {
+            int j = i + 1;
+            double tmp = array[j];
+            while(j > 0 && tmp > array[j-1])
+            {
+                array[j] = array[j-1];
+                j--;
+            }
+            array[j] = tmp;
+        }
     }
 }

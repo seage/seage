@@ -87,8 +87,8 @@ public class ParticleSwarm implements IParticleSwarm
 //              printArray(particle.getCoords());
 //              System.out.println("");
 //
-//              System.out.print("Particle evalution: " + particle.getEvaluation());
-//              System.out.println("");
+              System.out.print("Particle evalution: " + particle.getEvaluation());
+              System.out.println("");
               
               // Generate velocity for current solution v(iterationCount + 1)
               _velocityManager.calculateNewVelocity( particle, _localMinimum, _globalMinimum, _alpha, _beta, _inertia );

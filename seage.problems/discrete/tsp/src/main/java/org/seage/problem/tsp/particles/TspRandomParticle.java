@@ -12,7 +12,7 @@
 package org.seage.problem.tsp.particles;
 
 import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.TourProvider;
+//import org.seage.problem.tsp.TourProvider;
 
 /**
  *
@@ -20,10 +20,10 @@ import org.seage.problem.tsp.TourProvider;
  */
 public class TspRandomParticle extends TspParticle {
 
-    public TspRandomParticle(City[] cities)
+    public TspRandomParticle(City[] cities, int dimension)
     {
-        super( cities );
-        _tour = TourProvider.createRandomTour( cities );
+        super( cities , dimension  );
+        //_tour = TourProvider.createRandomTour( cities );
     }
 
 }
