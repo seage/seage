@@ -43,20 +43,12 @@ public class AntBrain {
     public synchronized Edge calculateProbability(Vector<Node> visited, Node currentPosition) {
         Vector<Edge> arcs = new Vector<Edge>();
 
-        boolean same;
-
         for (Edge i : currentPosition.getConnectionMap()) {
             for (Node j : i.getConnections()) {
-                same = false;
-                for (Node k : visited) {
-                    if (j.getName().equals(k.getName())) {
-                        same = true;
-                        break;
-                    }
-                }
-                if (!same) {
+                if(visited.contains(j))
+                    continue;
+                else
                     arcs.add(i);
-                }
             }
         }
 

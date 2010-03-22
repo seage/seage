@@ -14,6 +14,7 @@ package org.seage.problem.tsp.antcolony;
 import org.seage.metaheuristic.antcolony.*;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
+import org.seage.problem.tsp.Visualizer;
 
 /**
  *
@@ -53,5 +54,13 @@ public class TspAntColonyTest {
         colony.beginExploring();
         //colony.printGlobalBest();
         graph.printPheromone();
+
+        // visualization
+        Integer[] tour = new Integer[colony.getBestPath().size()];
+        for(int i=0;i<tour.length;i++)
+            tour[i] = Integer.parseInt(colony.getBestPath().get(i).getDestination().getName())-1;
+
+        Visualizer.instance().createGraph(cities, tour, "ants-tour.png", 800, 800);
+
     }
 }
