@@ -41,8 +41,9 @@
 
     <algorithm id="ParticleSwarm">
         <particleSwarm
-            maxIterationCount="1500"
+            maxIterationCount="500"
             maxVelocity="150.12"
+            minVelocity="1E-14"
             inertia="0.05"
             numSolutions="1"/>
     </algorithm>

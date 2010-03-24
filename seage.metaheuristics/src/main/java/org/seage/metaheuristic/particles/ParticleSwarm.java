@@ -20,6 +20,8 @@ public class ParticleSwarm implements IParticleSwarm
 
   private double _maximalVelocity;
 
+  private double _minimalVelocity;
+
   /**
    * Provide firing Events, registering listeners
    */
@@ -79,19 +81,22 @@ public class ParticleSwarm implements IParticleSwarm
           {
               if( _stopSearching ) return;
 
-//              System.out.print("Particle Velocity");
-//              printArray(particle.getVelocity());
-//              System.out.println("");
-//
-//              System.out.print("Particle Location");
-//              printArray(particle.getCoords());
-//              System.out.println("");
-//
+              System.out.print("Particle Velocity");
+              printArray(particle.getVelocity());
+              System.out.println("");
+
+              System.out.print("Particle Location");
+              printArray(particle.getCoords());
+              System.out.println("");
+
               System.out.print("Particle evalution: " + particle.getEvaluation());
               System.out.println("");
               
               // Generate velocity for current solution v(iterationCount + 1)
               _velocityManager.calculateNewVelocity( particle, _localMinimum, _globalMinimum, _alpha, _beta, _inertia );
+
+              // Check and set minimal and maximal velocities
+              checkVelocityBounds(particle);
 
               // Calculate new locations for current solution ->
               // -> x(iterationCount + 1) = x(iterationCount) + v(iterationCount + 1)
@@ -99,6 +104,10 @@ public class ParticleSwarm implements IParticleSwarm
 
               // Evaluate x(iterationCount + 1) by objective function
               _objectiveFunction.setObjectiveValue( particle );
+//              System.out.print("Particle NEW evalution: " + particle.getEvaluation());
+//              System.out.println("");
+
+
           }
           System.out.println(">" + iterationCount);
 
@@ -119,6 +128,17 @@ public class ParticleSwarm implements IParticleSwarm
       printArray(_globalMinimum.getCoords());
       System.out.println("");
       System.out.println("Found in " + globalFoundIteration + " iteration.");
+  }
+
+  void checkVelocityBounds(Particle particle)
+  {
+      for(int i = 0; i < particle.getVelocity().length; i++)
+      {
+          if(particle.getVelocity()[i] < _minimalVelocity)
+              particle.getVelocity()[i] = _minimalVelocity;
+          else if(particle.getVelocity()[i] > _maximalVelocity)
+              particle.getVelocity()[i] = _maximalVelocity;
+      }
   }
 
   void printArray(double[] array)
@@ -180,6 +200,14 @@ public class ParticleSwarm implements IParticleSwarm
 
     public void setInertia(double _inertia) {
         this._inertia = _inertia;
+    }
+
+    public double getMinimalVelocity() {
+        return _minimalVelocity;
+    }
+
+    public void setMinimalVelocity(double _minimalVelocity) {
+        this._minimalVelocity = _minimalVelocity;
     }
 
 }

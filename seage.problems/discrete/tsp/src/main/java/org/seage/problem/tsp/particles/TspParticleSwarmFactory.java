@@ -100,13 +100,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 
     private Particle[] generateInitialSolutions() throws Exception
     {
-        Particle[] particles = new Particle[]
-        {
-            new TspRandomParticle(_cities, _cities.length),
-            new TspRandomParticle(_cities, _cities.length),
-            new TspRandomParticle(_cities, _cities.length)
-        };
-
+        Particle[] particles = generateTspRandomParticles(5);
 
         for(Particle particle : particles)
         {
@@ -156,5 +150,14 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
             }
             array[j] = tmp;
         }
+    }
+
+    private Particle[] generateTspRandomParticles(int count)
+    {
+        TspRandomParticle[] particles = new TspRandomParticle[count];
+        for(int i = 0; i < count; i++)
+            particles[i] = new TspRandomParticle( _cities , _cities.length );
+
+        return particles;
     }
 }

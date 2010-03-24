@@ -27,6 +27,8 @@ public class TspObjectiveFunction implements IObjectiveFunction
         double distance = 0.0;
         int tourLength = _currentParticle.getTour().length - 1;
 
+        insertionSort(particle.getCoords());
+
         for (int i = 1; i <= tourLength; i++)
             distance += this.getDistance( i , i - 1 );
 
@@ -35,9 +37,28 @@ public class TspObjectiveFunction implements IObjectiveFunction
         particle.setEvaluation( distance );
     }
 
-    public static double[] transformCoords(double[] coords)
+//    public static double[] transformCoords(double[] coords)
+//    {
+//        return null;
+//    }
+
+    private void insertionSort(double[] array)
     {
-        return null;
+        //double[] sortedArray = array.clone();
+        for(int i = 0; i < array.length - 1; i++)
+        {
+            int j = i + 1;
+            double tmp = array[j];
+            int tmpIndex = _currentParticle.getTour()[j];
+            while(j > 0 && tmp > array[j-1])
+            {
+                array[j] = array[j-1];
+                _currentParticle.getTour()[j] = _currentParticle.getTour()[j-1];
+                j--;
+            }
+            array[j] = tmp;
+           _currentParticle.getTour()[j] = tmpIndex;
+        }
     }
 
   /**

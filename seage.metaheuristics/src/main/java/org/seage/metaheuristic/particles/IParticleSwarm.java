@@ -20,6 +20,8 @@ public interface IParticleSwarm {
 
         double getMaximalVelocity();
         void setMaximalVelocity(double maximalVelocity);
+        double getMinimalVelocity();
+        void setMinimalVelocity(double minimalVelocity);
 
         void startSearching(Particle[] particles);
         void stopSearching();

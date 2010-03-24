@@ -43,7 +43,8 @@
         <particleSwarm
             maxIterationCount="1500"
             numSolutions="1"
-            maxVelocity="150.12"/>
+            maxVelocity="150.12"
+            minVelocity="0.001"/>
     </algorithm>
 
 </config>
