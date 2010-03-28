@@ -25,10 +25,10 @@ public class AntColony {
     private Vector<Vector<Edge>> _reports = new Vector<Vector<Edge>>();
     private int _numAnts;
     private int _numIterations;
-    private int _round;
-    private boolean _running = true;
     private Graph _graph;
-    private double _updateLimit = 0.5;
+    private double _updateLimit = 0.8;
+    private double _pathLength;
+    private Ant _someAnt;
 
     public AntColony(int numAnts, int numIterations, Graph graph) {
         _graph = graph;
@@ -37,32 +37,28 @@ public class AntColony {
     }
 
     public void beginExploring() {
-        _round = 0;
-        while (_running) {
-            while (_round < _numIterations) {
-                spawnAnts();
-                _round++;
+        for (int i = 0; i < _numIterations; i++) {
+            for (int j = 0; j < _numAnts; j++) {
+                _someAnt = new Ant(_graph);
+                _reports.add(_someAnt.explore());
                 _graph.evaporating();
             }
-            if (_round == _numIterations) {
-                _running = false;
-            }
+            solveRound();
         }
     }
 
     private void solveRound() {
-        double roundTotal = 0d;
-
+        _pathLength = 0;
         for (Vector<Edge> vector : _reports) {
             if (_bestPath == null) {
                 _bestPath = vector;
             }
 
             for (Edge edges : vector) {
-                roundTotal += edges.getEdgeLength();
+                _pathLength += edges.getEdgeLength();
             }
-            if (roundTotal < _roundBest) {
-                _roundBest = roundTotal;
+            if (_pathLength < _roundBest) {
+                _roundBest = _pathLength;
             }
 
             if (_roundBest < _globalBest) {
@@ -71,22 +67,13 @@ public class AntColony {
             }
         }
 
-        System.out.println("Round " + _round + "\n----------------------------");
-        System.out.println("This round best was  : " + _roundBest);
-        System.out.println("The global best was : " + _globalBest + "\n");
+//        System.out.println("Round " + _round + "\n----------------------------");
+//        System.out.println("This round best was  : " + _roundBest);
+//        System.out.println("The global best was : " + _globalBest + "\n");
 
         leaveGlobalPheromone();
-
         _roundBest = Double.MAX_VALUE;
         _reports.clear();
-    }
-
-    private void spawnAnts() {
-        for (int i = 0; i < _numAnts; i++) {
-            Ant someAnt = new Ant(_graph);
-            _reports.add(someAnt.explore());
-        }
-        solveRound();
     }
 
     private void leaveGlobalPheromone() {
@@ -97,12 +84,11 @@ public class AntColony {
         }
     }
 
-    public Vector<Edge> getBestPath()
-    {
+    public Vector<Edge> getBestPath() {
         return _bestPath;
     }
 
-    public void printGlobalBest(){
-        System.out.println("Global best: "+_globalBest);
+    public void printGlobalBest() {
+        System.out.println("Global best: " + _globalBest);
     }
 }

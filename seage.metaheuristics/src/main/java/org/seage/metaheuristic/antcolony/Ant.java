@@ -19,14 +19,17 @@ import java.util.*;
  */
 public class Ant {
 
-    Graph _graph;
-    Node _start;
-    Random _rand = new Random();
+    private Graph _graph;
+    private Node _start;
+    private Random _rand = new Random();
     private Node _startPosition;
     private Node _currentPosition;
+    private Node _originator;
+    private Node _destination;
     private double _distanceTravelled;
     private Vector<Node> _visited = new Vector<Node>();
     private Vector<Edge> _path = new Vector<Edge>();
+    Node _choiceNode;
 
     public Ant(Graph graph) {
         _graph = graph;
@@ -37,39 +40,34 @@ public class Ant {
     }
 
     public Vector<Edge> explore() {
-        int size = _graph.getNodeList().size();
-
-        for (int i = 0; i < size - 1; i++) {
-            Edge next = AntBrain.getBrain().calculateProbability(_visited, _currentPosition);
-            updatePosition(next);
+        for (int i = 0; i < _graph.getNodeList().size() - 1; i++) {
+            updatePosition(AntBrain.getBrain().calculateProbability(_visited, _currentPosition));
         }
-
         for (Edge last : _graph.getEdgeList()) {
-            if (last.getOriginator().equals(_currentPosition) || last.getDestination().equals(_currentPosition)) {
-                if (last.getOriginator().equals(_startPosition) || last.getDestination().equals(_startPosition)) {
+            _originator = last.getOriginator();
+            _destination = last.getDestination();
+            if (_originator.equals(_currentPosition) || _destination.equals(_currentPosition)) {
+                if (_originator.equals(_startPosition) || _destination.equals(_startPosition)) {
                     _distanceTravelled += last.getEdgeLength();
-                    leaveLocalPheromone(last);
                     _path.add(last);
                     return _path;
                 }
             }
         }
-        System.out.println("null!!!");
         return null;
     }
 
     private void updatePosition(Edge arcChoice) {
-        Node choice;
         _path.add(arcChoice);
         if (arcChoice.getOriginator().equals(_currentPosition)) {
-            choice = (arcChoice.getDestination());
+            _choiceNode = (arcChoice.getDestination());
         } else {
-            choice = (arcChoice.getOriginator());
+            _choiceNode = (arcChoice.getOriginator());
         }
         _distanceTravelled += arcChoice.getEdgeLength();
         leaveLocalPheromone(arcChoice);
-        _visited.add(choice);
-        _currentPosition = choice;
+        _visited.add(_choiceNode);
+        _currentPosition = _choiceNode;
     }
 
     private void leaveLocalPheromone(Edge arcChoice) {

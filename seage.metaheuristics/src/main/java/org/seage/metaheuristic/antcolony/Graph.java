@@ -26,9 +26,10 @@ public class Graph {
     protected int _nuberNodes;
     protected int _numberAnts;
 
-    public Graph(double globEvaporCoeff, double locEvaporCoeff) {
+    public Graph(double globEvaporCoeff, double locEvaporCoeff, double defaultPheromone) {
         _globalEvaporation = globEvaporCoeff;
         _localEvaporation = locEvaporCoeff;
+        setDefaultPheromone(defaultPheromone);
     }
 
     public ArrayList<Node> getNodeList() {
@@ -45,7 +46,7 @@ public class Graph {
         }
     }
 
-    public void setDefaultPheromone(double defaultPheromone){
+    private void setDefaultPheromone(double defaultPheromone){
         for(Edge e : getEdgeList()){
             e.setDefaultPheromone(defaultPheromone);
         }

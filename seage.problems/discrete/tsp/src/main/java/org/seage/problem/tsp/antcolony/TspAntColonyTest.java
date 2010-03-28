@@ -30,14 +30,7 @@ public class TspAntColonyTest {
         }
     }
 
-    public void run(String path) throws Exception {
-        City[] cities = CityProvider.readCities(path);
-        double localEvaporation = 0.9;
-        int ants = 20;
-        double globalEvaporation = 0.99;
-        TspGraph graph = new TspGraph(cities, globalEvaporation, localEvaporation, ants);
-
-        //testing
+    public void testing(Graph graph){
         double sum = 0;
         double edges = 0;
         for (Edge edge : graph.getEdgeList()) {
@@ -46,21 +39,28 @@ public class TspAntColonyTest {
         }
         System.out.println(sum);
         System.out.println(edges);
+    }
 
-        //working
-        graph.setDefaultPheromone(1);
-        int iterations = 100;
+    public void run(String path) throws Exception {
+        City[] cities = CityProvider.readCities(path);
+        int iterations = 1000;
+        double defaultPheromone = 0.1;
+        double localEvaporation = 0.98;
+        int ants = (int)Math.sqrt(cities.length);
+        String s = String.valueOf(1/(double)ants)+"d";
+        double globalEvaporation = Math.pow(localEvaporation, Double.valueOf(s));
+        TspGraph graph = new TspGraph(cities, globalEvaporation, localEvaporation, ants, defaultPheromone);
+        //testing(graph);
         AntColony colony = new AntColony(ants, iterations, graph);
         colony.beginExploring();
-        //colony.printGlobalBest();
-        graph.printPheromone();
+        //graph.printPheromone();
+        colony.printGlobalBest();
 
-        // visualization
-        Integer[] tour = new Integer[colony.getBestPath().size()];
-        for(int i=0;i<tour.length;i++)
-            tour[i] = Integer.parseInt(colony.getBestPath().get(i).getDestination().getName())-1;
-
-        Visualizer.instance().createGraph(cities, tour, "ants-tour.png", 800, 800);
-
+//        // visualization
+//        Integer[] tour = new Integer[colony.getBestPath().size()];
+//        for(int i=0;i<tour.length;i++)
+//            tour[i] = Integer.parseInt(colony.getBestPath().get(i).getDestination().getName())-1;
+//
+//        Visualizer.instance().createGraph(cities, tour, "ants-tour.png", 800, 800);
     }
 }
