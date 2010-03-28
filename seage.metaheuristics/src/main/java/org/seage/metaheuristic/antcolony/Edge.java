@@ -26,11 +26,11 @@ public class Edge {
     private double _localPheromone = 0;
     private double _globalEvaporation = 0;
     private double _localEvaporation = 0;
-    private double _maxValuePheromone = 10;
+    private double _maxValuePheromone = 1;
+    private double _minValuePheromone = 0.001;
     private double _localMultiplicator;
     private double _globalMultiplicator;
-    private int _numberGraphNodes;
-    private int _numberAnts;
+    private double _globalCoeficient;
     private Vector<Node> _connections = new Vector<Node>();
 
     public Edge(Node start, Node end, double globEvaporCoeff, double locEvaporCoeff, int numberGraphNodes, int numberAnts) {
@@ -40,8 +40,7 @@ public class Edge {
         _connections.add(end);
         _globalEvaporation = globEvaporCoeff;
         _localEvaporation = locEvaporCoeff;
-        _numberGraphNodes = numberGraphNodes;
-        _numberAnts = numberAnts;
+        _globalCoeficient = numberAnts*numberGraphNodes*_maxValuePheromone;
     }
 
     public double getGlobalPheromone() {
@@ -58,7 +57,7 @@ public class Edge {
     }
 
     public void addGlobalPheromone(double pathLength) {
-        _globalMultiplicator = (_numberAnts*_numberGraphNodes*_maxValuePheromone)/pathLength;
+        _globalMultiplicator = (_globalCoeficient)/pathLength;
         if(_globalMultiplicator > 1){
             _globalMultiplicator = 1;
         }
@@ -75,7 +74,13 @@ public class Edge {
 
     public void evaporateFromEdge(){
         _globalPheromone = _globalPheromone*_globalEvaporation;
+        if(_globalPheromone < _minValuePheromone){
+            _globalPheromone = _minValuePheromone;
+        }
         _localPheromone = _localPheromone*_localEvaporation;
+        if(_localPheromone < _minValuePheromone){
+            _localPheromone = _minValuePheromone;
+        }
     }
 
     public double getEdgeLength() {
