@@ -65,37 +65,16 @@ public class AntBrain {
         return _edges.get(next(_probability, _edgesSize));
     }
 
-    /**
-     * @param _probability, the _probability array built from possible choices
-     * @return int, the integer corresponding to the index of the ACEdge object the ant should travel
-     */
-    private synchronized int next(double[] probability, int selections) {
+    private synchronized int next(double[] probability, int size) {
         _rand = new Random(System.currentTimeMillis());
-        _spread = 1;
-        _antChoice = _rand.nextDouble();
-
-        for (int i = 0; i < selections; i++) {
-            _spread -= probability[i];
-            if (_antChoice > _spread) {
+        _randomNumber = _rand.nextDouble();
+        _numberReach = 0;
+        for(int i = 0; i < size; i++){
+            _numberReach += probability[i];
+            if(_numberReach > _randomNumber){
                 return i;
             }
         }
         return 0;
     }
-//    private synchronized int next(double[] probability, int size) {
-//        _rand = new Random(System.currentTimeMillis());
-//        _randomNumber = _rand.nextDouble();
-//        _numberReach = 0;
-//        for(int i = 0; i < size-1; i++){
-//            _numberReach += probability[i];
-//            System.out.println("probability[i] "+probability[i]);
-////            System.out.println("_numberReach " + _numberReach);
-////            System.out.println("_randomNumber " + _randomNumber);
-//            if(_numberReach <= _randomNumber && _randomNumber <= (_numberReach + probability[i+1])){
-//                System.out.println("jo");
-//                return i;
-//            }
-//        }
-//        return 0;
-//    }
 }
