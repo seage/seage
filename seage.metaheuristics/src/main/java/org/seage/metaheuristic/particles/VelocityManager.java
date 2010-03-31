@@ -18,7 +18,7 @@ package org.seage.metaheuristic.particles;
 public class VelocityManager implements IVelocityManager
 {
 
-    public void calculateNewVelocity(Particle particle, Particle localMinimum, Particle globalMinimum, double alpha, double beta, double inertia)
+    public void calculateNewVelocityAndPosition(Particle particle, Particle localMinimum, Particle globalMinimum, double alpha, double beta, double inertia)
     {
         double[] randomVector1 = new double[particle.getCoords().length];
         double[] randomVector2 = new double[particle.getCoords().length];
@@ -34,39 +34,20 @@ public class VelocityManager implements IVelocityManager
         // Vi as velocity vector of current particle
         // Xi as coords of current particle
         // T as iteration counter
-        // Al as Alpha - Learning parametr or acceleration constant
-        // Be as Beta - Learning parametr or acceleration constant
+        // Al as Alpha - Global acceleration constant
+        // Be as Beta - Local acceleration constant
         // e1 as random vector
         // e2 as random vector
         //
         // V(T+1) = w*Vi(T) + Al*e1{*}[g - Xi(T)] + Be*e2[l - Xi(T)]
+        for(int i = 0; i < particle.getCoords().length; i++)
+        {
+            particle.getVelocity()[i] = inertia * particle.getVelocity()[i] +
+                    randomVector1[i] * alpha * (globalMinimum.getCoords()[i] - particle.getCoords()[i]) +
+                    randomVector2[i] * beta * (localMinimum.getCoords()[i] - particle.getCoords()[i]);                  ;
 
-        particle.setVelocity(multiplicationScalarVector(inertia, particle.getVelocity()));
-        particle.setVelocity
-                (
-                    additionVectorVector
-                    (
-                        particle.getVelocity()
-                        ,
-                        additionVectorVector
-                        (
-                            multiplicationVectorVector(
-                                multiplicationScalarVector(alpha, randomVector1),
-                                subtractionVectorVector(globalMinimum.getCoords(), particle.getCoords())
-                            )
-                            ,
-                            multiplicationVectorVector(
-                                multiplicationScalarVector(beta, randomVector2),
-                                subtractionVectorVector(localMinimum.getCoords(), particle.getCoords())
-                            )
-                        )
-                    )
-                );
-    }
-
-    public void calculateNewLocations(Particle particle)
-    {
-        additionVectorVectorToFirstVector(particle.getCoords(), particle.getVelocity());
+            particle.getCoords()[i] += particle.getVelocity()[i];
+        }
     }
 
     private void setRandomVector(double[] vector)
@@ -74,44 +55,4 @@ public class VelocityManager implements IVelocityManager
         for(int i = 0; i < vector.length; i++)
             vector[i] = Math.random();
     }
-
-    // w = u + (-1)v
-    private double[] subtractionVectorVector(double[] a, double[] b)
-    {
-        double[] resultVector = new double[a.length];
-        for(int i = 0; i < a.length; i++)
-            resultVector[i] = a[i] - b[i];
-        return resultVector;
-    }
-
-    private double[] multiplicationVectorVector(double[] a, double[] b)
-    {
-        double[] resultVector = new double[a.length];
-        for(int i = 0; i < a.length; i++)
-              resultVector[i] = a[i] * b[i];
-        return resultVector;
-    }
-
-    private double[] multiplicationScalarVector(double scalar, double[] vector)
-    {
-        double[] resultVector = new double[vector.length];
-        for(int i = 0; i < vector.length; i++)
-            resultVector[i] = scalar * vector[i];
-        return resultVector;
-    }
-
-    private double[] additionVectorVector(double[] a, double[] b)
-    {
-        double[] resultVector = new double[a.length];
-        for(int i = 0; i < a.length; i++)
-            resultVector[i] = a[i] + b[i];
-        return resultVector;
-    }
-
-    private void additionVectorVectorToFirstVector(double[] a, double[] b)
-    {
-        for(int i = 0; i < a.length; i++)
-            a[i] = a[i] + b[i];
-    }
-
 }

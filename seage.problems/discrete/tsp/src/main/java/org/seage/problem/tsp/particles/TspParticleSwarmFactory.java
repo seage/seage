@@ -100,7 +100,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 
     private Particle[] generateInitialSolutions() throws Exception
     {
-        Particle[] particles = generateTspRandomParticles(5);
+        Particle[] particles = generateTspRandomParticles(1000);
 
         for(Particle particle : particles)
         {

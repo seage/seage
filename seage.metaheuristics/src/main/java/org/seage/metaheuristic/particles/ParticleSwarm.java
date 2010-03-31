@@ -31,11 +31,11 @@ public class ParticleSwarm implements IParticleSwarm
 
   private IObjectiveFunction _objectiveFunction;
 
-  // Learning parametr or acceleration constant
-  private double _alpha = 2;
+  // Global acceleration constant
+  private double _alpha = 0.9;
 
-  // Learning parametr or acceleration constant
-  private double _beta = 2;
+  // Local acceleration constant
+  private double _beta = 0.9;
 
   private Particle _globalMinimum = null;
 
@@ -92,22 +92,22 @@ public class ParticleSwarm implements IParticleSwarm
               System.out.print("Particle evalution: " + particle.getEvaluation());
               System.out.println("");
               
-              // Generate velocity for current solution v(iterationCount + 1)
-              _velocityManager.calculateNewVelocity( particle, _localMinimum, _globalMinimum, _alpha, _beta, _inertia );
+              // Calculate velocity for current particle
+              // Calculate new locations for current particle ->
+              _velocityManager.calculateNewVelocityAndPosition( 
+                      particle,
+                      _localMinimum,
+                      _globalMinimum,
+                      _alpha,
+                      _beta,
+                      _inertia
+                      );
 
-              // Check and set minimal and maximal velocities
+              // Check and set minimal and maximal velocity
               checkVelocityBounds(particle);
 
-              // Calculate new locations for current solution ->
-              // -> x(iterationCount + 1) = x(iterationCount) + v(iterationCount + 1)
-              _velocityManager.calculateNewLocations( particle );
-
-              // Evaluate x(iterationCount + 1) by objective function
+              // Evaluate particle by objective function
               _objectiveFunction.setObjectiveValue( particle );
-//              System.out.print("Particle NEW evalution: " + particle.getEvaluation());
-//              System.out.println("");
-
-
           }
           System.out.println(">" + iterationCount);
 
@@ -116,9 +116,8 @@ public class ParticleSwarm implements IParticleSwarm
 
           if(_localMinimum.getEvaluation() < _globalMinimum.getEvaluation())
           {
-              _globalMinimum = _localMinimum;
+              _globalMinimum = _localMinimum.clone();
               globalFoundIteration = iterationCount;
-              //System.out.println("GLOBAL FOUND");
           }
       }
 
@@ -154,11 +153,6 @@ public class ParticleSwarm implements IParticleSwarm
 
       for(Particle particle : particles)
       {
-          if(Double.isInfinite(particle.getEvaluation()))
-          {
-              System.out.println("Particle evaluation is INFINITY");
-          }
-
           if(particle.getEvaluation() < minEvaluation)
           {
               minEvaluation = particle.getEvaluation();
