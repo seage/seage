@@ -81,16 +81,16 @@ public class ParticleSwarm implements IParticleSwarm
           {
               if( _stopSearching ) return;
 
-              System.out.print("Particle Velocity");
-              printArray(particle.getVelocity());
-              System.out.println("");
-
-              System.out.print("Particle Location");
-              printArray(particle.getCoords());
-              System.out.println("");
-
-              System.out.print("Particle evalution: " + particle.getEvaluation());
-              System.out.println("");
+//              System.out.print("Particle Velocity");
+//              printArray(particle.getVelocity());
+//              System.out.println("");
+//
+//              System.out.print("Particle Location");
+//              printArray(particle.getCoords());
+//              System.out.println("");
+//
+//              System.out.print("Particle evalution: " + particle.getEvaluation());
+//              System.out.println("");
               
               // Calculate velocity for current particle
               // Calculate new locations for current particle ->
