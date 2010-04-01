@@ -32,10 +32,10 @@ public class ParticleSwarm implements IParticleSwarm
   private IObjectiveFunction _objectiveFunction;
 
   // Global acceleration constant
-  private double _alpha = 0.9;
+  private double _alpha;
 
   // Local acceleration constant
-  private double _beta = 0.9;
+  private double _beta;
 
   private Particle _globalMinimum = null;
 
@@ -60,6 +60,7 @@ public class ParticleSwarm implements IParticleSwarm
 
   public void startSearching(Particle[] particles)
   {
+      System.out.println("Alpha > Beta " +_alpha + " < " + _beta);
       // Searching is starting
       _stopSearching = false;
 
@@ -204,4 +205,19 @@ public class ParticleSwarm implements IParticleSwarm
         this._minimalVelocity = _minimalVelocity;
     }
 
+    public double getAlpha() {
+        return _alpha;
+    }
+
+    public void setAlpha(double _alpha) {
+        this._alpha = _alpha;
+    }
+
+    public double getBeta() {
+        return _beta;
+    }
+
+    public void setBeta(double _beta) {
+        this._beta = _beta;
+    }
 }

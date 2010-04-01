@@ -87,6 +87,8 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
         _particleSwarmOptimization.setMaximalVelocity( param.getValueDouble("maxVelocity") );
         _particleSwarmOptimization.setMinimalVelocity( param.getValueDouble("minVelocity") );
         _particleSwarmOptimization.setInertia( param.getValueDouble("inertia") );
+        _particleSwarmOptimization.setAlpha( param.getValueDouble("alpha") );
+        _particleSwarmOptimization.setBeta( param.getValueDouble("beta") );
 
         _particleSwarmOptimization.addParticleSwarmOptimizationListener( this );
     }
