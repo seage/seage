@@ -111,6 +111,8 @@
                 <xsd:attribute name="maxVelocity" type="xsd:double"/>
                 <xsd:attribute name="minVelocity" type="xsd:double"/>
                 <xsd:attribute name="inertia" type="xsd:double"/>
+                <xsd:attribute name="alpha" type="xsd:double"/>
+                <xsd:attribute name="beta" type="xsd:double"/>
 <!--                <xsd:attribute name="initSolutionType">
                    <xsd:simpleType>
                         <xsd:restriction base="xsd:string">
