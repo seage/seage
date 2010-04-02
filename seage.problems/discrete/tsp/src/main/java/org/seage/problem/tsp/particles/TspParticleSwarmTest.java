@@ -46,7 +46,7 @@ public class TspParticleSwarmTest implements IParticleSwarmListener
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 
-        ParticleSwarm pso = new ParticleSwarm( new TspObjectiveFunction() );
+        ParticleSwarm pso = new ParticleSwarm( new TspObjectiveFunction(_cities) );
 
         pso.setMaximalIterationCount( 1500 );
         pso.setMaximalVelocity(150.0);
