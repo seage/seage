@@ -23,7 +23,7 @@ public class TspGreedyParticle extends TspParticle {
     public TspGreedyParticle(City[] cities, int dimension) throws Exception
     {
         super( cities , dimension  );
-        _tour = TourProvider.createGreedyTour( cities );
+//        _tour = TourProvider.createGreedyTour( cities );
     }
 
 }

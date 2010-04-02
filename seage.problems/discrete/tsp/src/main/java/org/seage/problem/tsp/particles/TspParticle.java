@@ -11,6 +11,7 @@
  */
 package org.seage.problem.tsp.particles;
 
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.seage.metaheuristic.particles.Particle;
@@ -25,7 +26,7 @@ public abstract class TspParticle extends Particle
     /**
      * Represent order of cities
      */
-    protected Integer[] _tour;
+//    protected Integer[] _tour;
 
     /**
      * Array of cities
@@ -35,19 +36,24 @@ public abstract class TspParticle extends Particle
     public TspParticle(City[] cities, int dimension)
     {
         super( dimension );
-        _tour = new Integer[ cities.length ];
+//        _tour = new Integer[ cities.length ];
         _cities = cities;        
     }
 
     public Integer[] getTour()
     {
-        return _tour;
+        Integer[] tour = new Integer[getCoords().length];
+        for(int i=0;i<tour.length;i++) tour[i] = i;
+
+        java.util.Arrays.sort(tour, new CoordComparator(getCoords()));
+
+        return tour;
     }
 
-     public void setTour(Integer[] tour)
-    {
-        _tour = tour;
-    }
+//     public void setTour(Integer[] tour)
+//    {
+//        _tour = tour;
+//    }
 
     public City[] getCities()
     {
@@ -66,7 +72,7 @@ public abstract class TspParticle extends Particle
         try
         {
             tspParticle = (TspParticle)super.clone();
-            tspParticle.setTour( _tour.clone() );
+//            tspParticle.setTour( _tour.clone() );
             tspParticle.setCities( _cities.clone() );
         } catch (Exception ex)
         {

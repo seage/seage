@@ -23,7 +23,7 @@ public class TspSortedParticle extends TspParticle {
     public TspSortedParticle(City[] cities, int dimension)
     {
         super( cities , dimension );
-        _tour = TourProvider.createSortedTour( cities );
+//        _tour = TourProvider.createSortedTour( cities );
     }
 
 }
