@@ -50,7 +50,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
     public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
     {
         IAlgorithmAdapter algorithm;
-        _objectiveFunction = new TspObjectiveFunction();
+        _objectiveFunction = new TspObjectiveFunction(_cities);
 
         algorithm = new ParticleSwarmAdapter(
                 generateInitialSolutions(),

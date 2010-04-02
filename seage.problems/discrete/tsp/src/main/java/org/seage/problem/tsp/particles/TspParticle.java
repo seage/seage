@@ -23,21 +23,9 @@ import org.seage.problem.tsp.City;
  */
 public abstract class TspParticle extends Particle
 {
-    /**
-     * Represent order of cities
-     */
-//    protected Integer[] _tour;
-
-    /**
-     * Array of cities
-     */
-    protected static City[] _cities;
-
-    public TspParticle(City[] cities, int dimension)
+    public TspParticle(int dimension)
     {
         super( dimension );
-//        _tour = new Integer[ cities.length ];
-        _cities = cities;        
     }
 
     public Integer[] getTour()
@@ -48,37 +36,6 @@ public abstract class TspParticle extends Particle
         java.util.Arrays.sort(tour, new CoordComparator(getCoords()));
 
         return tour;
-    }
-
-//     public void setTour(Integer[] tour)
-//    {
-//        _tour = tour;
-//    }
-
-    public City[] getCities()
-    {
-        return _cities;
-    }
-    
-    public void setCities(City[] cities)
-    {
-        _cities = cities;
-    }
-
-    @Override
-    public TspParticle clone()
-    {
-        TspParticle tspParticle = null;
-        try
-        {
-            tspParticle = (TspParticle)super.clone();
-//            tspParticle.setTour( _tour.clone() );
-            tspParticle.setCities( _cities.clone() );
-        } catch (Exception ex)
-        {
-            Logger.getLogger(TspParticle.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return tspParticle;
     }
 
 }

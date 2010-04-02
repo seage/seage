@@ -22,7 +22,7 @@ public class TspRandomParticle extends TspParticle {
 
     public TspRandomParticle(City[] cities, int dimension)
     {
-        super( cities , dimension  );
+        super(  dimension  );
         //_tour = TourProvider.createRandomTour( cities );
     }
 

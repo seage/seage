@@ -20,9 +20,9 @@ import org.seage.problem.tsp.TourProvider;
  */
 public class TspSortedParticle extends TspParticle {
     
-    public TspSortedParticle(City[] cities, int dimension)
+    public TspSortedParticle(int dimension)
     {
-        super( cities , dimension );
+        super( dimension );
 //        _tour = TourProvider.createSortedTour( cities );
     }
 
