@@ -44,7 +44,7 @@ public class VelocityManager implements IVelocityManager
         {
             particle.getVelocity()[i] = inertia * particle.getVelocity()[i] +
                     randomVector1[i] * alpha * (globalMinimum.getCoords()[i] - particle.getCoords()[i]) +
-                    randomVector2[i] * beta * (localMinimum.getCoords()[i] - particle.getCoords()[i]);                  ;
+                    randomVector2[i] * beta * (localMinimum.getCoords()[i] - particle.getCoords()[i]);
 
             particle.getCoords()[i] += particle.getVelocity()[i];
         }

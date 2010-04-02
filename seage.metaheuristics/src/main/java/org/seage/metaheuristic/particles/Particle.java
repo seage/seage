@@ -13,6 +13,7 @@
 package org.seage.metaheuristic.particles;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  *
@@ -71,5 +72,25 @@ public class Particle implements Cloneable, Serializable{
         {
             throw new InternalError( e.toString() );
         }
-    }    
+    }
+
+    protected class CoordComparator implements Comparator<Integer>
+    {
+        double _coords[];
+        public CoordComparator(double[] coords)
+        {
+            _coords = coords;
+        }
+        public int compare(Integer t, Integer t1)
+        {
+            if( _coords[t] >  _coords[t1])
+                return 1;
+            if( _coords[t] <  _coords[t1])
+                return -1;
+
+            return 0;
+        }
+
+
+    }
 }
