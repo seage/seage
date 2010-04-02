@@ -11,6 +11,7 @@
  */
 package org.seage.problem.tsp.particles;
 
+import java.util.Comparator;
 import org.seage.metaheuristic.particles.IObjectiveFunction;
 import org.seage.metaheuristic.particles.Particle;
 
@@ -27,6 +28,8 @@ public class TspObjectiveFunction implements IObjectiveFunction
         double distance = 0.0;
         int tourLength = _currentParticle.getTour().length - 1;
 
+        
+
         insertionSort(particle.getCoords());
 
         for (int i = 1; i <= tourLength; i++)
@@ -41,6 +44,8 @@ public class TspObjectiveFunction implements IObjectiveFunction
 //    {
 //        return null;
 //    }
+
+    
 
     private void insertionSort(double[] array)
     {
