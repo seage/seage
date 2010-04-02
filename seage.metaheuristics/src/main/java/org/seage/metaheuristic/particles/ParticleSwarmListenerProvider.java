@@ -26,7 +26,7 @@ public class ParticleSwarmListenerProvider  {
         _particleSwarmOptimizationEvent = new ParticleSwarmEvent( particleSwarmOptimization );
   }
 
-  public final void addParticleSwarmOptimizationListener( IParticleSwarmListener listener )
+  public final void addParticleSwarmListener( IParticleSwarmListener listener )
   {
         IParticleSwarmListener[] list = new IParticleSwarmListener[
             _particleSwarmOptimizationListenerList.length + 1 ];
@@ -39,18 +39,18 @@ public class ParticleSwarmListenerProvider  {
         _particleSwarmOptimizationListenerList = list;
   }
 
-  protected final void fireParticleSwarmOptimizationStarted()
+  protected final void fireParticleSwarmStarted()
   {
       int length = _particleSwarmOptimizationListenerList.length;
         for( int i = 0; i < length; i++ )
-            _particleSwarmOptimizationListenerList[i].particleSwarmOptimizationStarted( _particleSwarmOptimizationEvent );
+            _particleSwarmOptimizationListenerList[i].particleSwarmStarted( _particleSwarmOptimizationEvent );
   }
 
-  protected final void fireParticleSwarmOptimizationStopped()
+  protected final void fireParticleSwarmStopped()
   {
       int length = _particleSwarmOptimizationListenerList.length;
         for( int i = 0; i < length; i++ )
-            _particleSwarmOptimizationListenerList[i].particleSwarmOptimizationStopped( _particleSwarmOptimizationEvent );
+            _particleSwarmOptimizationListenerList[i].particleSwarmStopped( _particleSwarmOptimizationEvent );
   }
 
   protected final void fireNewBestSolutionFound()

@@ -11,16 +11,13 @@
  */
 package org.seage.problem.tsp.particles;
 
-import org.seage.problem.tsp.City;
-//import org.seage.problem.tsp.TourProvider;
-
 /**
  *
  * @author Jan Zmatlik
  */
 public class TspRandomParticle extends TspParticle {
 
-    public TspRandomParticle(City[] cities, int dimension)
+    public TspRandomParticle(int dimension)
     {
         super(  dimension  );
         //_tour = TourProvider.createRandomTour( cities );

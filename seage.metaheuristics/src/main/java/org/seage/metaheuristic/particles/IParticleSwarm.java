@@ -25,4 +25,6 @@ public interface IParticleSwarm {
 
         void startSearching(Particle[] particles);
         void stopSearching();
+
+        Particle getBestParticle();
 }

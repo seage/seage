@@ -17,7 +17,6 @@ import org.seage.aal.sannealing.SimulatedAnnealingAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.TourProvider;
 import org.seage.problem.tsp.TspProblemProvider;
 
 /**

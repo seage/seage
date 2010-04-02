@@ -81,6 +81,7 @@ public class Particle implements Cloneable, Serializable{
         {
             _coords = coords;
         }
+
         public int compare(Integer t, Integer t1)
         {
             if( _coords[t] >  _coords[t1])

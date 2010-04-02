@@ -17,6 +17,7 @@ import org.seage.aal.particles.ParticleSwarmAdapter;
 import org.seage.data.DataNode;
 
 import org.seage.metaheuristic.particles.Particle;
+import org.seage.metaheuristic.particles.ParticleSwarmEvent;
 import org.seage.problem.tsp.City;
 
 
@@ -36,15 +37,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
     public TspParticleSwarmFactory(DataNode params, City[] cities) throws Exception
     {
         _cities = cities;
-
         _numParticles = params.getValueInt("numSolutions");
-//        String solutionType = params.getValueStr("initSolutionType");
-//        if( solutionType.toLowerCase().equals("greedy") )
-//            _tspSolution = new TspGreedySolution( cities );
-//        else if( solutionType.toLowerCase().equals("random") )
-//            _tspSolution = new TspRandomSolution( cities );
-//        else if( solutionType.toLowerCase().equals("sorted") )
-//            _tspSolution = new TspSortedSolution( cities );
     }
 
     public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
@@ -59,12 +52,29 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-
+//                TspSolution initialSolution = new TspGreedySolution(TspProblemProvider.getCities());
+//                Integer[] tour = initialSolution.getTour();
+//
+//                for(int i = 0; i < tour.length; i++)
+//                    tour[i] = (Integer)source[0][i];
+//
+//                _initialSolution = initialSolution;
             }
 
             public Object[][] solutionsToPhenotype() throws Exception
             {
-                return null;
+                Integer[] tour = ((TspParticle)_particleSwarm.getBestParticle()).getTour();
+                Object[][] source = new Object[1][ tour.length ];
+
+                source[0] = new Integer[ tour.length ];
+                for(int i = 0; i < tour.length; i++)
+                    source[0][i] = tour[i];
+
+                System.out.println("BEST TOUR: ");
+                printArray(tour);
+                System.out.println("");
+                
+                return source;
             }
         };
         
@@ -74,15 +84,12 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
     private Particle[] generateInitialSolutions() throws Exception
     {
         Particle[] particles = generateTspRandomParticles( _numParticles );
-        System.out.println("COUNT+ " + _numParticles);
 
         for(Particle particle : particles)
         {
             // Initial coords
             for(int i = 0; i < _cities.length; i++)
                 particle.getCoords()[i] = Math.random();
-
-            insertionSort(particle.getCoords());
             
             for(int i = 0; i < _cities.length; i++)
                 ((TspParticle)particle).getTour()[i] = i;
@@ -98,26 +105,17 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
         return particles;
     }
 
-    public void insertionSort(double[] array)
+    void printArray(Integer[] array)
     {
-        for(int i = 0; i < array.length - 1; i++)
-        {
-            int j = i + 1;
-            double tmp = array[j];
-            while(j > 0 && tmp > array[j-1])
-            {
-                array[j] = array[j-1];
-                j--;
-            }
-            array[j] = tmp;
-        }
+        for(int i = 0; i< array.length; i++)
+            System.out.print(" " + array[i]);
     }
 
     private Particle[] generateTspRandomParticles(int count)
     {
         TspRandomParticle[] particles = new TspRandomParticle[count];
         for(int i = 0; i < count; i++)
-            particles[i] = new TspRandomParticle( _cities , _cities.length );
+            particles[i] = new TspRandomParticle( _cities.length );
 
         return particles;
     }

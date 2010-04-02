@@ -16,7 +16,6 @@ import org.seage.aal.AlgorithmReport;
 import org.seage.aal.AlgorithmReporter;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.data.DataNode;
-import org.seage.metaheuristic.particles.IVelocityManager;
 import org.seage.metaheuristic.particles.IObjectiveFunction;
 import org.seage.metaheuristic.particles.IParticleSwarmListener;
 import org.seage.metaheuristic.particles.Particle;
@@ -28,16 +27,19 @@ import org.seage.metaheuristic.particles.ParticleSwarmEvent;
  */
 public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IParticleSwarmListener
 {
-    protected ParticleSwarm _particleSwarmOptimization;
+    protected ParticleSwarm _particleSwarm;
     protected Particle[] _initialParticles;
-
     private Particle _bestParticle;
+
     private AlgorithmReporter _reporter;
-    private String _searchID;    
+    private String _searchID;
+
     private long _numberOfIterations = 0;
     private long _numberOfNewSolutions = 0;
     private long _lastIterationNumberNewSolution = 0;
     private double _initObjectiveValue = Double.MAX_VALUE;
+    private double _evaluationsOfParticles = 0;
+    private double _avgOfBestSolutions = 0;
 
     public ParticleSwarmAdapter( Particle[] initialParticles,
                                 IObjectiveFunction  objectiveFunction,
@@ -45,7 +47,7 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
                                 String searchID) throws Exception
     {
         _initialParticles = initialParticles;
-        _particleSwarmOptimization = new ParticleSwarm( objectiveFunction );
+        _particleSwarm = new ParticleSwarm( objectiveFunction );
 
         _reporter = new AlgorithmReporter( searchID );
     }
@@ -55,52 +57,45 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
         _reporter.putParameters( params );
 
         setParameters( params );
-        _particleSwarmOptimization.startSearching( _initialParticles );
+        _particleSwarm.startSearching( _initialParticles );
     }
 
     public AlgorithmReport getReport() throws Exception
     {
-        // TODO: A - change AVG objective value
           _reporter.putStatistics (
                   _numberOfIterations,
                   _numberOfNewSolutions,
                   _lastIterationNumberNewSolution,
                   _initObjectiveValue,
-                  0.0,//_bestSolution.getObjectiveValue()
-                  0.0//_bestSolution.getObjectiveValue()
+                  _avgOfBestSolutions,
+                  _bestParticle.getEvaluation()
                  );
 
         return _reporter.getReport();
     }
 
-//    public Solution getInitialSolution() {
-//        return _initialSolution;
-//    }
-//
-//    public void setInitialSolution(Solution _initialSolution) {
-//        this._initialSolution = _initialSolution;
-//    }
-
     private void setParameters(DataNode param) throws Exception
     {
-        _particleSwarmOptimization.setMaximalIterationCount( param.getValueLong("maxIterationCount") );
-        _particleSwarmOptimization.setMaximalVelocity( param.getValueDouble("maxVelocity") );
-        _particleSwarmOptimization.setMinimalVelocity( param.getValueDouble("minVelocity") );
-        _particleSwarmOptimization.setInertia( param.getValueDouble("inertia") );
-        _particleSwarmOptimization.setAlpha( param.getValueDouble("alpha") );
-        _particleSwarmOptimization.setBeta( param.getValueDouble("beta") );
+        _particleSwarm.setMaximalIterationCount( param.getValueLong("maxIterationCount") );
+        _particleSwarm.setMaximalVelocity( param.getValueDouble("maxVelocity") );
+        _particleSwarm.setMinimalVelocity( param.getValueDouble("minVelocity") );
+        _particleSwarm.setInertia( param.getValueDouble("inertia") );
+        _particleSwarm.setAlpha( param.getValueDouble("alpha") );
+        _particleSwarm.setBeta( param.getValueDouble("beta") );
 
-        _particleSwarmOptimization.addParticleSwarmOptimizationListener( this );
+        _particleSwarm.addParticleSwarmOptimizationListener( this );
     }
 
     public void stopSearching() {
-        _particleSwarmOptimization.stopSearching();
+        _particleSwarm.stopSearching();
     }
 
     //############################ EVENTS ###############################//
     public void newBestSolutionFound(ParticleSwarmEvent e) {
-//        System.out.println( e.getParticleSwarmOptimization().getBestSolution().getObjectiveValue());
+        _bestParticle = e.getParticleSwarm().getBestParticle();
         _numberOfNewSolutions++;
+        _evaluationsOfParticles += _bestParticle.getEvaluation();
+        _avgOfBestSolutions = _evaluationsOfParticles / _numberOfNewSolutions;
         _lastIterationNumberNewSolution = _numberOfIterations;
     }
 
@@ -108,12 +103,12 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
         _numberOfIterations++;
     }
 
-    public void particleSwarmOptimizationStarted(ParticleSwarmEvent e) {
-//        _initObjectiveValue = e.getParticleSwarmOptimization().getCurrentSolution().getObjectiveValue();
+    public void particleSwarmStarted(ParticleSwarmEvent e) {
+        _initObjectiveValue = e.getParticleSwarm().getBestParticle().getEvaluation();
     }
 
-    public void particleSwarmOptimizationStopped(ParticleSwarmEvent e) {
-        //_bestSolution = e.getParticleSwarmOptimization().getBestSolution();
+    public void particleSwarmStopped(ParticleSwarmEvent e) {
+        _bestParticle = e.getParticleSwarm().getBestParticle();
     }
     
 }

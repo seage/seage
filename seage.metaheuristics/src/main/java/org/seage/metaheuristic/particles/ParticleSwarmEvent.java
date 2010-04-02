@@ -22,9 +22,9 @@ public class ParticleSwarmEvent extends java.util.EventObject {
         super( source );
     }
 
-    public IParticleSwarm getParticleSwarmOptimization()
+    public IParticleSwarm getParticleSwarm()
     {
-        return (IParticleSwarm) source;
+        return (IParticleSwarm)source;
     }
 
 }
