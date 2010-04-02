@@ -167,8 +167,8 @@ public class ParticleSwarm implements IParticleSwarm
       return _maximalIterationCount;
   }
 
-  public void setMaximalIterationCount(long _maximalIterationCount) {
-      this._maximalIterationCount = _maximalIterationCount;
+  public void setMaximalIterationCount(long maximalIterationCount) {
+      this._maximalIterationCount = maximalIterationCount;
   }
 
   public double getMaximalVelocity() {
@@ -183,32 +183,32 @@ public class ParticleSwarm implements IParticleSwarm
       return _inertia;
   }
 
-  public void setInertia(double _inertia) {
-      this._inertia = _inertia;
+  public void setInertia(double inertia) {
+      this._inertia = inertia;
   }
 
   public double getMinimalVelocity() {
       return _minimalVelocity;
   }
 
-  public void setMinimalVelocity(double _minimalVelocity) {
-      this._minimalVelocity = _minimalVelocity;
+  public void setMinimalVelocity(double minimalVelocity) {
+      this._minimalVelocity = minimalVelocity;
   }
 
   public double getAlpha() {
       return _alpha;
   }
 
-  public void setAlpha(double _alpha) {
-      this._alpha = _alpha;
+  public void setAlpha(double alpha) {
+      this._alpha = alpha;
   }
 
   public double getBeta() {
       return _beta;
   }
 
-  public void setBeta(double _beta) {
-      this._beta = _beta;
+  public void setBeta(double beta) {
+      this._beta = beta;
   }
 
   public Particle getBestParticle()
