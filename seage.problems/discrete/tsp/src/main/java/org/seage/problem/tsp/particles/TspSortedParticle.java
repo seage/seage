@@ -11,9 +11,6 @@
  */
 package org.seage.problem.tsp.particles;
 
-import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.TourProvider;
-
 /**
  *
  * @author Jan Zmatlik

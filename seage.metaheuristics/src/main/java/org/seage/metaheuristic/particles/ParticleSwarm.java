@@ -17,7 +17,6 @@ package org.seage.metaheuristic.particles;
 
 public class ParticleSwarm implements IParticleSwarm
 {
-
   private double _maximalVelocity;
 
   private double _minimalVelocity;
@@ -41,6 +40,7 @@ public class ParticleSwarm implements IParticleSwarm
 
   private Particle _localMinimum = null;
 
+  // Inertia constant
   private double _inertia;
 
   private long _maximalIterationCount;
@@ -60,38 +60,26 @@ public class ParticleSwarm implements IParticleSwarm
 
   public void startSearching(Particle[] particles)
   {
-      System.out.println("Alpha > Beta " +_alpha + " < " + _beta);
       // Searching is starting
       _stopSearching = false;
 
       // Initial number of iteration
       long iterationCount = 0;
-
-      // Fire event to listeners about that algorithm has started
-      _listenerProvider.fireParticleSwarmOptimizationStarted();
       
       _globalMinimum = _localMinimum = findMinimum( particles );
+
+      // Fire event to listeners about that algorithm has started
+      _listenerProvider.fireParticleSwarmStarted();
       
-      System.out.println("MINIMUM: " + _globalMinimum.getEvaluation());
       long globalFoundIteration = 0;
       while ( _maximalIterationCount > iterationCount && !_stopSearching )
       {
+          _listenerProvider.fireNewIterationStarted();
           iterationCount++;
 
           for(Particle particle : particles)
           {
               if( _stopSearching ) return;
-
-//              System.out.print("Particle Velocity");
-//              printArray(particle.getVelocity());
-//              System.out.println("");
-//
-//              System.out.print("Particle Location");
-//              printArray(particle.getCoords());
-//              System.out.println("");
-//
-//              System.out.print("Particle evalution: " + particle.getEvaluation());
-//              System.out.println("");
               
               // Calculate velocity for current particle
               // Calculate new locations for current particle ->
@@ -119,18 +107,20 @@ public class ParticleSwarm implements IParticleSwarm
           {
               _globalMinimum = _localMinimum.clone();
               globalFoundIteration = iterationCount;
+              _listenerProvider.fireNewBestSolutionFound();
           }
       }
 
-      System.out.println("Local MINIMUM: " + _localMinimum.getEvaluation());
+      _listenerProvider.fireParticleSwarmStopped();
+
       System.out.println("Global MINIMUM: " + _globalMinimum.getEvaluation());
       System.out.print("Global Coords: ");
       printArray(_globalMinimum.getCoords());
       System.out.println("");
-      System.out.println("Found in " + globalFoundIteration + " iteration.");
+      System.out.println("Found in " + globalFoundIteration + " iteration.");  
   }
 
-  void checkVelocityBounds(Particle particle)
+  private void checkVelocityBounds(Particle particle)
   {
       for(int i = 0; i < particle.getVelocity().length; i++)
       {
@@ -166,11 +156,11 @@ public class ParticleSwarm implements IParticleSwarm
 
   public final void addParticleSwarmOptimizationListener( IParticleSwarmListener listener )
   {
-    _listenerProvider.addParticleSwarmOptimizationListener( listener );
+      _listenerProvider.addParticleSwarmListener( listener );
   } 
 
   public void stopSearching() {
-    _stopSearching = true;
+      _stopSearching = true;
   }
 
   public long getMaximalIterationCount() {
@@ -182,42 +172,47 @@ public class ParticleSwarm implements IParticleSwarm
   }
 
   public double getMaximalVelocity() {
-    return _maximalVelocity;
+      return _maximalVelocity;
   }
 
   public void setMaximalVelocity(double maximalVelocity) {
-    _maximalVelocity = maximalVelocity;
+      _maximalVelocity = maximalVelocity;
   }
 
-    public double getInertia() {
-        return _inertia;
-    }
+  public double getInertia() {
+      return _inertia;
+  }
 
-    public void setInertia(double _inertia) {
-        this._inertia = _inertia;
-    }
+  public void setInertia(double _inertia) {
+      this._inertia = _inertia;
+  }
 
-    public double getMinimalVelocity() {
-        return _minimalVelocity;
-    }
+  public double getMinimalVelocity() {
+      return _minimalVelocity;
+  }
 
-    public void setMinimalVelocity(double _minimalVelocity) {
-        this._minimalVelocity = _minimalVelocity;
-    }
+  public void setMinimalVelocity(double _minimalVelocity) {
+      this._minimalVelocity = _minimalVelocity;
+  }
 
-    public double getAlpha() {
-        return _alpha;
-    }
+  public double getAlpha() {
+      return _alpha;
+  }
 
-    public void setAlpha(double _alpha) {
-        this._alpha = _alpha;
-    }
+  public void setAlpha(double _alpha) {
+      this._alpha = _alpha;
+  }
 
-    public double getBeta() {
-        return _beta;
-    }
+  public double getBeta() {
+      return _beta;
+  }
 
-    public void setBeta(double _beta) {
-        this._beta = _beta;
-    }
+  public void setBeta(double _beta) {
+      this._beta = _beta;
+  }
+
+  public Particle getBestParticle()
+  {
+      return _globalMinimum;
+  }
 }

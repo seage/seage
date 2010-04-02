@@ -25,7 +25,7 @@ import org.seage.problem.tsp.City;
 public class TspParticleSwarmTest implements IParticleSwarmListener
 {
     private City[] _cities;
-    private static String _dataPath = "data/eil101.tsp";
+    //private static String _dataPath = "data/eil101.tsp";
 
     public static void main(String[] args)
     {
@@ -49,12 +49,13 @@ public class TspParticleSwarmTest implements IParticleSwarmListener
         ParticleSwarm pso = new ParticleSwarm( new TspObjectiveFunction(_cities) );
 
         pso.setMaximalIterationCount( 1500 );
-        pso.setMaximalVelocity(150.0);
+        pso.setMaximalVelocity(0.9);
+        pso.setMinimalVelocity(-0.9);
+        pso.setAlpha(0.9);
+        pso.setBeta(0.9);
 
         pso.addParticleSwarmOptimizationListener( this );
         pso.startSearching( null );
-
-//        System.out.println(pso.getBestSolution());
     }
 
     public void newBestSolutionFound(ParticleSwarmEvent e) {
@@ -64,11 +65,11 @@ public class TspParticleSwarmTest implements IParticleSwarmListener
     public void newIterationStarted(ParticleSwarmEvent e) {
     }
 
-    public void particleSwarmOptimizationStarted(ParticleSwarmEvent e) {
+    public void particleSwarmStarted(ParticleSwarmEvent e) {
         System.out.println("Started");
     }
 
-    public void particleSwarmOptimizationStopped(ParticleSwarmEvent e) {
+    public void particleSwarmStopped(ParticleSwarmEvent e) {
         System.out.println("Stopped");
     }
 

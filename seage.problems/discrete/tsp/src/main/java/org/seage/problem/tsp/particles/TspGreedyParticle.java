@@ -11,16 +11,13 @@
  */
 package org.seage.problem.tsp.particles;
 
-import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.TourProvider;
-
 /**
  *
  * @author Jan Zmatlik
  */
 public class TspGreedyParticle extends TspParticle {
 
-    public TspGreedyParticle(City[] cities, int dimension) throws Exception
+    public TspGreedyParticle(int dimension) throws Exception
     {
         super(  dimension  );
 //        _tour = TourProvider.createGreedyTour( cities );

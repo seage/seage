@@ -23,8 +23,8 @@ public class VelocityManager implements IVelocityManager
         double[] randomVector1 = new double[particle.getCoords().length];
         double[] randomVector2 = new double[particle.getCoords().length];
 
-        setRandomVector(randomVector1);
-        setRandomVector(randomVector2);
+        setRandomVector( randomVector1 );
+        setRandomVector( randomVector2 );
 
         // w as inertial weight
         // about inertial weight - http://tracer.uc3m.es/tws/pso/basics.html

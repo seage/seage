@@ -17,9 +17,9 @@ package org.seage.metaheuristic.particles;
  */
 public interface IParticleSwarmListener {
 
-    public void particleSwarmOptimizationStarted( ParticleSwarmEvent e );
+    public void particleSwarmStarted( ParticleSwarmEvent e );
 
-    public void particleSwarmOptimizationStopped( ParticleSwarmEvent e );
+    public void particleSwarmStopped( ParticleSwarmEvent e );
 
     public void newBestSolutionFound( ParticleSwarmEvent e );
 
