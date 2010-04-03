@@ -22,8 +22,8 @@ public class RosenbrockTest
 {
     public static void main(String[] args)
     {
-        int dimension = 2;
-        int numberOfParticles = 50;
+        int dimension = 10;
+        int numberOfParticles = 1000;
         //int maximalVelocity = 1.0d;
 
         RosenbrockObjectiveFunction objFunction = new RosenbrockObjectiveFunction();
@@ -45,10 +45,12 @@ public class RosenbrockTest
         }
 
         ParticleSwarm pso = new ParticleSwarm( objFunction );
-        pso.setMaximalIterationCount( 100000 );
+        pso.setMaximalIterationCount( 1000 );
         pso.setMaximalVelocity( 0.9 );
         pso.setMinimalVelocity( -0.9 );
         pso.setInertia( 0.95 );
+        pso.setAlpha(0.9);
+        pso.setBeta(0.9);
         pso.startSearching( particles );
     }
 
