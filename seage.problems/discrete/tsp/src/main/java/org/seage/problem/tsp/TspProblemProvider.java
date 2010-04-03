@@ -23,6 +23,7 @@ public class TspProblemProvider implements IProblemProvider
     private static City[] _cities;
     private int currentInstanceIx = -1;
 
+    @Override
     public void initProblemInstance(DataNode params, int instanceIx) throws Exception
     {
         if(currentInstanceIx != instanceIx)
@@ -42,6 +43,7 @@ public class TspProblemProvider implements IProblemProvider
         }
     }
 
+    @Override
     public Object[][] generateInitialSolutions(int numSolutions) throws Exception
     {
         int numTours = numSolutions;
@@ -74,6 +76,7 @@ public class TspProblemProvider implements IProblemProvider
         return result;
     }
 
+    @Override
     public IAlgorithmFactory createAlgorithmFactory(DataNode algorithmParams) throws Exception
     {
         String algName = algorithmParams.getName();
@@ -87,6 +90,19 @@ public class TspProblemProvider implements IProblemProvider
             return new TspParticleSwarmFactory(algorithmParams, _cities);
 
         throw new Exception("No algorithm factory for name: " + algName);
+    }
+
+    @Override
+    public void visualize(Object[] solution) throws Exception
+    {
+        Integer[] tour = (Integer[])solution;
+
+        // TODO: A - Implement visualize method
+//        String outPath = _problemParams.getDataNode("visualizer").getValueStr("outPath");
+//        int width = _problemParams.getDataNode("visualizer").getValueInt("width");
+//        int height = _problemParams.getDataNode("visualizer").getValueInt("height");
+//
+//        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
     }
 
     public static City[] getCities()
