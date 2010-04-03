@@ -16,4 +16,5 @@ public interface IProblemProvider
     void initProblemInstance(DataNode problemParams, int instanceIx) throws Exception;
     Object[][] generateInitialSolutions(int numSolutions) throws Exception;
     IAlgorithmFactory createAlgorithmFactory(DataNode algorithmParams) throws Exception;
+    public void visualize(Object[] solution) throws Exception;
 }

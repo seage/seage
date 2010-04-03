@@ -30,7 +30,6 @@ public abstract class ProblemSolver
     private IProblemProvider _provider;
 
     protected abstract IProblemProvider getProblemProvider();
-    protected abstract void visualize() throws Exception;
 
     public ProblemSolver(String[] args) throws Exception
     {
@@ -53,9 +52,10 @@ public abstract class ProblemSolver
     public void run() throws Exception
     {
         _algorithm.solutionsFromPhenotype(_provider.generateInitialSolutions(_algorithmParams.getValueInt("numSolutions")));
-        _algorithm.startSearching(_algorithmParams);
+        _algorithm.startSearching(_algorithmParams);        
+        _provider.visualize(_algorithm.solutionsToPhenotype()[0]);
+
         reportBest();
-        visualize();
     }
 
     protected void reportBest() throws Exception

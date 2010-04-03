@@ -20,8 +20,6 @@ import org.seage.aal.ProblemSolver;
  */
 public class TspProblemSolver extends ProblemSolver
 {
-    private TspProblemProvider _provider;
-
     public static void main(String[] args)
     {
         try
@@ -44,19 +42,7 @@ public class TspProblemSolver extends ProblemSolver
     @Override
     protected IProblemProvider getProblemProvider()
     {
-         _provider = new TspProblemProvider();
-        return _provider;
+        return new TspProblemProvider();
     }
-
-    protected void visualize() throws Exception
-    {
-        Integer[] tour = (Integer[])_algorithm.solutionsToPhenotype()[0];
-
-        String outPath = _problemParams.getDataNode("visualizer").getValueStr("outPath");
-        int width = _problemParams.getDataNode("visualizer").getValueInt("width");
-        int height = _problemParams.getDataNode("visualizer").getValueInt("height");
-
-        Visualizer.instance().createGraph(_provider.getCities(), tour, outPath, width, height);
-    }
-    
+     
 }
