@@ -17,19 +17,21 @@ import java.util.*;
  *
  * @author Richard Malek (original)
  */
-public class Graph {
+public class Graph implements java.lang.Cloneable {
 
     protected ArrayList<Node> _nodeList = new ArrayList<Node>();
     protected ArrayList<Edge> _edgeList = new ArrayList<Edge>();
     protected double _globalEvaporation;
     protected double _localEvaporation;
     protected int _nuberNodes;
+    protected int _nuberEdges;
     protected int _numberAnts;
+    private double _sum;
+    private double[] _working;
 
-    public Graph(double globEvaporCoeff, double locEvaporCoeff, double defaultPheromone) {
+    public Graph(double globEvaporCoeff, double locEvaporCoeff) {
         _globalEvaporation = globEvaporCoeff;
         _localEvaporation = locEvaporCoeff;
-        setDefaultPheromone(defaultPheromone);
     }
 
     public ArrayList<Node> getNodeList() {
@@ -46,9 +48,21 @@ public class Graph {
         }
     }
 
-    private void setDefaultPheromone(double defaultPheromone){
+    protected void setDefaultPheromone(double defaultPheromone){
         for(Edge e : getEdgeList()){
             e.setDefaultPheromone(defaultPheromone);
+        }
+    }
+
+    public void calculateProbability(){
+        _sum = 0;
+        _working = new double[_nuberEdges];
+        for (int i = 0; i < _nuberEdges; i++) {
+            _working[i] = ((1 / _edgeList.get(i).getEdgeLength())) * ((_edgeList.get(i).getGlobalPheromone() + _edgeList.get(i).getLocalPheromone()));
+            _sum += _working[i];
+        }
+        for (int i = 0; i < _nuberEdges; i++) {
+            _edgeList.get(i).setProbability(_working[i] / _sum);
         }
     }
 

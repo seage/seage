@@ -41,7 +41,7 @@ public class Ant {
 
     public Vector<Edge> explore() {
         for (int i = 0; i < _graph.getNodeList().size() - 1; i++) {
-            updatePosition(AntBrain.getBrain().calculateProbability(_visited, _currentPosition));
+            updatePosition(AntBrain.getBrain().getNextEdge(_visited, _currentPosition));
         }
         for (Edge last : _graph.getEdgeList()) {
             _originator = last.getOriginator();

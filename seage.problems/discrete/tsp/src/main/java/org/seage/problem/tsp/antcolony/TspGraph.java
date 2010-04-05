@@ -16,13 +16,14 @@ import org.seage.problem.tsp.City;
 public class TspGraph extends Graph {
 
     public TspGraph(City[] cities, double globEvaporCoeff, double locEvaporCoeff, int numberAnts, double defaultPheromone) {
-        super(globEvaporCoeff, locEvaporCoeff, defaultPheromone);
+        super(globEvaporCoeff, locEvaporCoeff);
         for (City c : cities) {
             addNode(c.X, c.Y);
         }
         _nuberNodes = _nodeList.size();
         _numberAnts = numberAnts;
         fillEdgeMap();
+        setDefaultPheromone(defaultPheromone);
     }
 
     public void addNode(double x, double y) {
@@ -57,6 +58,7 @@ public class TspGraph extends Graph {
                 }
             }
         }
+        _nuberEdges = _edgeList.size();
     }
 
 }

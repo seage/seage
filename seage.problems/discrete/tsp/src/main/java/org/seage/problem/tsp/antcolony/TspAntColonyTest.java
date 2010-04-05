@@ -51,6 +51,7 @@ public class TspAntColonyTest {
         double globalEvaporation = Math.pow(localEvaporation, Double.valueOf(s));
         TspGraph graph = new TspGraph(cities, globalEvaporation, localEvaporation, ants, defaultPheromone);
         //testing(graph);
+//        graph.printPheromone();
         AntColony colony = new AntColony(ants, iterations, graph);
         colony.beginExploring();
         //graph.printPheromone();
