@@ -104,20 +104,40 @@ hr {
 
 
 	#str-stat {
-		width: 600px;
+		width: 840px;
 		margin-left: 110px;
 		text-align: justify;
 	}
 	
+		#stat-sl1 {
+			width: 390px;
+			float: left;
+		}
+		
+		#stat-sl2 {
+			width: 390px;
+			float: right;
+		}
+		
+		#stat-reset {
+			height: 1px;
+			font-size: 1px;
+			clear: both;
+		}
+	
 	
 		.str-stat-odd {
-			width: 385px;
-			margin-left: 200px;
+			/*width: 385px;
+			margin-left: 200px;*/
 		}
+		
+			.odd1 {
+				margin-bottom: 110px;
+			}
 		
 		
 		#tab-fm {
-			width: 384px;
+			width: 380px;
 			border: 1px solid #cdcdcd;
 		}
 		
@@ -127,6 +147,7 @@ hr {
 				background-color: #cdcdcd;
 				text-align: left;
 				vertical-align: middle;
+				cursor: help;
 			}
 			
 			#tab-fm td {
