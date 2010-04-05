@@ -20,16 +20,11 @@ import java.util.*;
 public class AntBrain {
 
     private static AntBrain _ref;
-    private Vector<Edge> _edges;
-    private double _sum;
-    private int _edgesSize;
-    private double[] _working;
-    private double[] _probability;
+    private Vector<Edge> _notVisitedEdges;
     private Random _rand;
-    private double _spread;
-    private double _antChoice;
     private double _randomNumber;
     private double _numberReach;
+    double _spread;
 
     public static AntBrain getBrain() {
         if (_ref == null) {
@@ -40,39 +35,68 @@ public class AntBrain {
         }
     }
 
-    public synchronized Edge calculateProbability(Vector<Node> visited, Node currentPosition) {
-        _edges = new Vector<Edge>();
-        for (Edge i : currentPosition.getConnectionMap()) {
-            for (Node j : i.getConnections()) {
-                if(visited.contains(j))
-                    continue;
-                else
-                    _edges.add(i);
-            }
-        }
+//    public synchronized Edge calculateProbability(Vector<Node> visited, Node currentPosition) {
+//        _edges = new Vector<Edge>();
+//        for (Edge i : currentPosition.getConnectionMap()) {
+//            for (Node j : i.getConnections()) {
+//                if (visited.contains(j)) {
+//                    continue;
+//                } else {
+//                    _edges.add(i);
+//                }
+//            }
+//        }
 
-        _sum = 0;
-        _edgesSize = _edges.size();
-        _working = new double[_edgesSize];
-        _probability = new double[_edgesSize];
-        for (int i = 0; i < _edgesSize; i++) {
-            _working[i] = ((1/_edges.get(i).getEdgeLength()))*((_edges.get(i).getGlobalPheromone() + _edges.get(i).getLocalPheromone()));
-            _sum += _working[i];
-        }
-        for (int i = 0; i < _edgesSize; i++) {
-            _probability[i] = _working[i] / _sum;
-        }
-        return _edges.get(next(_probability, _edgesSize));
+//        _sum = 0;
+//        _edgesSize = _edges.size();
+//        _working = new double[_edgesSize];
+//        _probability = new double[_edgesSize];
+//        for (int i = 0; i < _edgesSize; i++) {
+//            _working[i] = ((1 / _edges.get(i).getEdgeLength())) * ((_edges.get(i).getGlobalPheromone() + _edges.get(i).getLocalPheromone()));
+//            _sum += _working[i];
+//        }
+//        for (int i = 0; i < _edgesSize; i++) {
+//            _probability[i] = _working[i] / _sum;
+//        }
+//        return _edges.get(next(_probability, _edgesSize));
+//    }
+
+    public Edge getNextEdge(Vector<Node> visited, Node currentPosition){
+        doNotVisitedList(visited, currentPosition);
+        return _notVisitedEdges.get(next());
     }
 
-    private synchronized int next(double[] probability, int size) {
+    public void doNotVisitedList(Vector<Node> visited, Node currentPosition) {
+        _notVisitedEdges = new Vector<Edge>();
+        for (Edge i : currentPosition.getConnectionMap()) {
+            for (Node j : i.getConnections()) {
+                if (visited.contains(j)) {
+                    continue;
+                } else {
+                    _notVisitedEdges.add(i);
+                }
+            }
+        }
+    }
+
+    private int next() {
         _rand = new Random(System.currentTimeMillis());
         _randomNumber = _rand.nextDouble();
         _numberReach = 0;
-        for(int i = 0; i < size; i++){
-            _numberReach += probability[i];
-            if(_numberReach > _randomNumber){
-                return i;
+        if (_numberReach <= 0.5) {
+            for (int i = 0; i < _notVisitedEdges.size(); i++) {
+                _numberReach += _notVisitedEdges.get(i).getProbability();
+                if (_numberReach > _randomNumber) {
+                    return i;
+                }
+            }
+        } else {
+            _spread = 1;
+            for (int i = 0; i < _notVisitedEdges.size(); i++) {
+                _spread -= _notVisitedEdges.get(i).getProbability();
+                if (_numberReach > _spread) {
+                    return i;
+                }
             }
         }
         return 0;

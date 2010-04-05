@@ -37,6 +37,7 @@ public class AntColony {
     }
 
     public void beginExploring() {
+        _graph.calculateProbability();
         for (int i = 0; i < _numIterations; i++) {
             for (int j = 0; j < _numAnts; j++) {
                 _someAnt = new Ant(_graph);
@@ -44,6 +45,7 @@ public class AntColony {
                 _graph.evaporating();
             }
             solveRound();
+            _graph.calculateProbability();
         }
     }
 

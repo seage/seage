@@ -32,6 +32,7 @@ public class Edge {
     private double _globalMultiplicator;
     private double _globalCoeficient;
     private Vector<Node> _connections = new Vector<Node>();
+    private double _probability;
 
     public Edge(Node start, Node end, double globEvaporCoeff, double locEvaporCoeff, int numberGraphNodes, int numberAnts) {
         _originator = start;
@@ -89,6 +90,14 @@ public class Edge {
 
     public void setEdgeLength(double length) {
         _edgeLength = length;
+    }
+
+    public double getProbability() {
+        return _probability;
+    }
+
+    public void setProbability(double probability) {
+        _probability = probability;
     }
 
     public Node getDestination() {
