@@ -15,8 +15,8 @@ import org.seage.problem.tsp.City;
  */
 public class TspGraph extends Graph {
 
-    public TspGraph(City[] cities, double globEvaporCoeff, double locEvaporCoeff, int numberAnts, double defaultPheromone) {
-        super(globEvaporCoeff, locEvaporCoeff);
+    public TspGraph(City[] cities, double locEvaporCoeff, int numberAnts, double defaultPheromone) {
+        super(locEvaporCoeff);
         for (City c : cities) {
             addNode(c.X, c.Y);
         }
@@ -37,7 +37,7 @@ public class TspGraph extends Graph {
         for (Node i : _nodeList) {
             for (Node j : _nodeList) {
                 if (!i.equals(j)) {
-                    TspEdge theEdge = new TspEdge((TspNode)i, (TspNode)j, _globalEvaporation, _localEvaporation, _nuberNodes, _numberAnts);
+                    TspEdge theEdge = new TspEdge((TspNode)i, (TspNode)j, _localEvaporation, _nuberNodes, _numberAnts);
                     for (Edge k : _edgeList) {
                         tspEdg = (TspEdge)k;
                         if (tspEdg.getOriginator().equals(j) && tspEdg.getDestination().equals(i)) {

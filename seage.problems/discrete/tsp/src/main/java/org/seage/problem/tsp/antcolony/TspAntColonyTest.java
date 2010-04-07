@@ -43,18 +43,17 @@ public class TspAntColonyTest {
 
     public void run(String path) throws Exception {
         City[] cities = CityProvider.readCities(path);
-        int iterations = 1000;
-        double defaultPheromone = 0.1;
-        double localEvaporation = 0.98;
-        int ants = (int)Math.sqrt(cities.length);
-        String s = String.valueOf(1/(double)ants)+"d";
-        double globalEvaporation = Math.pow(localEvaporation, Double.valueOf(s));
-        TspGraph graph = new TspGraph(cities, globalEvaporation, localEvaporation, ants, defaultPheromone);
+        int iterations = 100;
+        double defaultPheromone = 0.01;
+        double localEvaporation = 0.995;
+        double qantumPheromone = 1000;
+        int ants = 10;//(int)Math.sqrt(cities.length);
+        TspGraph graph = new TspGraph(cities, localEvaporation, ants, defaultPheromone);
         //testing(graph);
 //        graph.printPheromone();
-        AntColony colony = new AntColony(ants, iterations, graph);
+        AntColony colony = new AntColony(ants, iterations, graph, qantumPheromone);
         colony.beginExploring();
-        //graph.printPheromone();
+        graph.printPheromone();
         colony.printGlobalBest();
 
 //        // visualization

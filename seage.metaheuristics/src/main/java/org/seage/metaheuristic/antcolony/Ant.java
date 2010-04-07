@@ -27,16 +27,18 @@ public class Ant {
     private Node _originator;
     private Node _destination;
     private double _distanceTravelled;
+    private double _qantumPheromone;
     private Vector<Node> _visited = new Vector<Node>();
     private Vector<Edge> _path = new Vector<Edge>();
     Node _choiceNode;
 
-    public Ant(Graph graph) {
+    public Ant(Graph graph, double qantumPheromone) {
         _graph = graph;
         _start = _graph.getNodeList().get(_rand.nextInt(_graph.getNodeList().size()));
         _startPosition = _start;
         _currentPosition = _start;
         _visited.add(_start);
+        _qantumPheromone = qantumPheromone;
     }
 
     public Vector<Edge> explore() {
@@ -65,13 +67,14 @@ public class Ant {
             _choiceNode = (arcChoice.getOriginator());
         }
         _distanceTravelled += arcChoice.getEdgeLength();
-        leaveLocalPheromone(arcChoice);
         _visited.add(_choiceNode);
         _currentPosition = _choiceNode;
     }
 
-    private void leaveLocalPheromone(Edge arcChoice) {
-        arcChoice.addLocalPheromone();
+    public void leavePheromone() {
+        for (Edge edge : _path) {
+            edge.addLocalPheromone(_qantumPheromone/_distanceTravelled);
+        }
     }
 
     public double getDistanceTravelled() {
