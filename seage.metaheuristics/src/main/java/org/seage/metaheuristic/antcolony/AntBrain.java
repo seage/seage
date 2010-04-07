@@ -35,32 +35,6 @@ public class AntBrain {
         }
     }
 
-//    public synchronized Edge calculateProbability(Vector<Node> visited, Node currentPosition) {
-//        _edges = new Vector<Edge>();
-//        for (Edge i : currentPosition.getConnectionMap()) {
-//            for (Node j : i.getConnections()) {
-//                if (visited.contains(j)) {
-//                    continue;
-//                } else {
-//                    _edges.add(i);
-//                }
-//            }
-//        }
-
-//        _sum = 0;
-//        _edgesSize = _edges.size();
-//        _working = new double[_edgesSize];
-//        _probability = new double[_edgesSize];
-//        for (int i = 0; i < _edgesSize; i++) {
-//            _working[i] = ((1 / _edges.get(i).getEdgeLength())) * ((_edges.get(i).getGlobalPheromone() + _edges.get(i).getLocalPheromone()));
-//            _sum += _working[i];
-//        }
-//        for (int i = 0; i < _edgesSize; i++) {
-//            _probability[i] = _working[i] / _sum;
-//        }
-//        return _edges.get(next(_probability, _edgesSize));
-//    }
-
     public Edge getNextEdge(Vector<Node> visited, Node currentPosition){
         doNotVisitedList(visited, currentPosition);
         return _notVisitedEdges.get(next());

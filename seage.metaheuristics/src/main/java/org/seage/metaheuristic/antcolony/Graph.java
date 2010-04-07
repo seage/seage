@@ -21,7 +21,6 @@ public class Graph implements java.lang.Cloneable {
 
     protected ArrayList<Node> _nodeList = new ArrayList<Node>();
     protected ArrayList<Edge> _edgeList = new ArrayList<Edge>();
-    protected double _globalEvaporation;
     protected double _localEvaporation;
     protected int _nuberNodes;
     protected int _nuberEdges;
@@ -29,8 +28,7 @@ public class Graph implements java.lang.Cloneable {
     private double _sum;
     private double[] _working;
 
-    public Graph(double globEvaporCoeff, double locEvaporCoeff) {
-        _globalEvaporation = globEvaporCoeff;
+    public Graph(double locEvaporCoeff) {
         _localEvaporation = locEvaporCoeff;
     }
 
@@ -58,7 +56,7 @@ public class Graph implements java.lang.Cloneable {
         _sum = 0;
         _working = new double[_nuberEdges];
         for (int i = 0; i < _nuberEdges; i++) {
-            _working[i] = ((1 / _edgeList.get(i).getEdgeLength())) * ((_edgeList.get(i).getGlobalPheromone() + _edgeList.get(i).getLocalPheromone()));
+            _working[i] = (1 / _edgeList.get(i).getEdgeLength()) * _edgeList.get(i).getLocalPheromone();
             _sum += _working[i];
         }
         for (int i = 0; i < _nuberEdges; i++) {
@@ -68,7 +66,6 @@ public class Graph implements java.lang.Cloneable {
 
     public void printPheromone(){
         for(Edge e : getEdgeList()){
-            System.out.println("global: "+e.getGlobalPheromone());
             System.out.println("local: "+e.getLocalPheromone());
         }
     }

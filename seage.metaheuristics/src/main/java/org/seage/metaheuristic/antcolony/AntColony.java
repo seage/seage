@@ -26,26 +26,27 @@ public class AntColony {
     private int _numAnts;
     private int _numIterations;
     private Graph _graph;
-    private double _updateLimit = 0.8;
     private double _pathLength;
+    private double _qantumPheromone;
     private Ant _someAnt;
 
-    public AntColony(int numAnts, int numIterations, Graph graph) {
+    public AntColony(int numAnts, int numIterations, Graph graph, double qantumPheromone) {
         _graph = graph;
         _numAnts = numAnts;
         _numIterations = numIterations;
+        _qantumPheromone = qantumPheromone;
     }
 
     public void beginExploring() {
-        _graph.calculateProbability();
         for (int i = 0; i < _numIterations; i++) {
+            _graph.calculateProbability();
             for (int j = 0; j < _numAnts; j++) {
-                _someAnt = new Ant(_graph);
+                _someAnt = new Ant(_graph, _qantumPheromone);
                 _reports.add(_someAnt.explore());
-                _graph.evaporating();
+                _someAnt.leavePheromone();
             }
             solveRound();
-            _graph.calculateProbability();
+            _graph.evaporating();
         }
     }
 
@@ -73,17 +74,8 @@ public class AntColony {
 //        System.out.println("This round best was  : " + _roundBest);
 //        System.out.println("The global best was : " + _globalBest + "\n");
 
-        leaveGlobalPheromone();
         _roundBest = Double.MAX_VALUE;
         _reports.clear();
-    }
-
-    private void leaveGlobalPheromone() {
-        if (_globalBest / _roundBest > _updateLimit) {
-            for (Edge best : _bestPath) {
-                best.addGlobalPheromone(_roundBest);
-            }
-        }
     }
 
     public Vector<Edge> getBestPath() {
