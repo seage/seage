@@ -30,7 +30,7 @@ public class TspAntColonyTest {
         }
     }
 
-    public void testing(Graph graph){
+    public void testing(Graph graph) {
         double sum = 0;
         double edges = 0;
         for (Edge edge : graph.getEdgeList()) {
@@ -53,14 +53,19 @@ public class TspAntColonyTest {
 //        graph.printPheromone();
         AntColony colony = new AntColony(ants, iterations, graph, qantumPheromone);
         colony.beginExploring();
-        graph.printPheromone();
+//        graph.printPheromone();
         colony.printGlobalBest();
+        System.out.println("size: " + colony.getBestPath().size());
 
-//        // visualization
-//        Integer[] tour = new Integer[colony.getBestPath().size()];
-//        for(int i=0;i<tour.length;i++)
-//            tour[i] = Integer.parseInt(colony.getBestPath().get(i).getDestination().getName())-1;
-//
-//        Visualizer.instance().createGraph(cities, tour, "ants-tour.png", 800, 800);
+        // visualization
+        Integer[] tour = new Integer[colony.getBestPath().size()];
+        tour[0] = Integer.parseInt(colony.getBestPath().get(0).getDestination().getName()) - 1;
+        for (int i = 1; i < tour.length; i++) {
+            tour[i] = Integer.parseInt(colony.getBestPath().get(i).getDestination().getName()) - 1;
+            if(tour[i-1] == tour[i]){
+                tour[i] = Integer.parseInt(colony.getBestPath().get(i).getOriginator().getName()) - 1;
+            }
+        }
+        Visualizer.instance().createGraph(cities, tour, "ants-tour.png", 800, 800);
     }
 }

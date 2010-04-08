@@ -19,23 +19,23 @@ import java.util.*;
  */
 public class AntBrain {
 
-    private static AntBrain _ref;
+    private static AntBrain _brain;
     private Vector<Edge> _notVisitedEdges;
-    private Random _rand;
-    private double _randomNumber;
-    private double _numberReach;
-    double _spread;
+//    private Random _rand;
+//    private double _randomNumber;
+//    private double _numberReach;
+//    double _spread;
 
     public static AntBrain getBrain() {
-        if (_ref == null) {
-            _ref = new AntBrain();
-            return _ref;
+        if (_brain == null) {
+            _brain = new AntBrain();
+            return _brain;
         } else {
-            return _ref;
+            return _brain;
         }
     }
 
-    public Edge getNextEdge(Vector<Node> visited, Node currentPosition){
+    public Edge getNextEdge(Vector<Node> visited, Node currentPosition) {
         doNotVisitedList(visited, currentPosition);
         return _notVisitedEdges.get(next());
     }
@@ -54,25 +54,38 @@ public class AntBrain {
     }
 
     private int next() {
-        _rand = new Random(System.currentTimeMillis());
-        _randomNumber = _rand.nextDouble();
-        _numberReach = 0;
-        if (_numberReach <= 0.5) {
-            for (int i = 0; i < _notVisitedEdges.size(); i++) {
-                _numberReach += _notVisitedEdges.get(i).getProbability();
-                if (_numberReach > _randomNumber) {
-                    return i;
-                }
-            }
-        } else {
-            _spread = 1;
-            for (int i = 0; i < _notVisitedEdges.size(); i++) {
-                _spread -= _notVisitedEdges.get(i).getProbability();
-                if (_numberReach > _spread) {
-                    return i;
-                }
+        double probability = 0;
+        double bestProbability = 0;
+        int index = 0;
+        for (int i = 0; i < _notVisitedEdges.size(); i++) {
+            probability = _notVisitedEdges.get(i).getProbability();
+            if(bestProbability < probability){
+                bestProbability = probability;
+                index = i;
             }
         }
-        return 0;
+        return index;
     }
+//    private int next() {
+//        _rand = new Random(System.currentTimeMillis());
+//        _randomNumber = _rand.nextDouble();
+//        _numberReach = 0;
+//        if (_numberReach <= 0.5) {
+//            for (int i = 0; i < _notVisitedEdges.size(); i++) {
+//                _numberReach += _notVisitedEdges.get(i).getProbability();
+//                if (_numberReach > _randomNumber) {
+//                    return i;
+//                }
+//            }
+//        } else {
+//            _spread = 1;
+//            for (int i = 0; i < _notVisitedEdges.size(); i++) {
+//                _spread -= _notVisitedEdges.get(i).getProbability();
+//                if (_numberReach > _spread) {
+//                    return i;
+//                }
+//            }
+//        }
+//        return 0;
+//    }
 }
