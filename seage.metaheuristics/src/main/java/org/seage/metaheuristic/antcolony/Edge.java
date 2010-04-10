@@ -25,7 +25,7 @@ public class Edge {
     private double _localPheromone = 0;
     private double _localEvaporation = 0;
     private double _maxValuePheromone = 1;
-    private double _minValuePheromone = 0.001;
+    private double _minValuePheromone = 0.0;
     private Vector<Node> _connections = new Vector<Node>();
     private double _probability;
 
@@ -46,10 +46,11 @@ public class Edge {
     }
 
     public void addLocalPheromone(double pheromone) {
-        if(pheromone > 1){
-            pheromone = 1;
-        }
-        _localPheromone = +(_maxValuePheromone - _localPheromone)*pheromone;
+//        if(pheromone > 1){
+//            pheromone = 1;
+//        }
+//        _localPheromone = +(_maxValuePheromone - _localPheromone)*pheromone;
+        _localPheromone+=pheromone;
     }
 
     public void evaporateFromEdge(){
