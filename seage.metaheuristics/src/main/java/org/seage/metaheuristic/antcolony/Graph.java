@@ -25,8 +25,6 @@ public class Graph implements java.lang.Cloneable {
     protected int _nuberNodes;
     protected int _nuberEdges;
     protected int _numberAnts;
-    private double _sum;
-    private double[] _working;
 
     public Graph(double locEvaporCoeff) {
         _localEvaporation = locEvaporCoeff;
@@ -52,21 +50,34 @@ public class Graph implements java.lang.Cloneable {
         }
     }
 
-    public void calculateProbability(){
-        _sum = 0;
-        _working = new double[_nuberEdges];
-        for (int i = 0; i < _nuberEdges; i++) {
-            _working[i] = (1 / _edgeList.get(i).getEdgeLength()) * _edgeList.get(i).getLocalPheromone();
-            _sum += _working[i];
-        }
-        for (int i = 0; i < _nuberEdges; i++) {
-            _edgeList.get(i).setProbability(_working[i] / _sum);
-        }
-    }
+//    public void calculateProbability(){
+//        double alpha = 4, beta = 1;
+//
+//        for(Node n : _nodeList)
+//        {
+//            double[] working = new double[n.getConnectionMap().size()];
+//            double sum = 0;
+//
+//            for (int i = 0; i < n.getConnectionMap().size(); i++)
+//            {
+//                Edge e = n.getConnectionMap().get(i);
+//                working[i] = Math.pow(e.getLocalPheromone(), alpha)*Math.pow(1 / e.getEdgeLength(), beta);
+//                sum += working[i];
+//            }
+//            for (int i = 0; i < n.getConnectionMap().size(); i++) {
+//                n.getConnectionMap().get(i).setProbability(working[i] / sum);
+//            }
+//        }
+//    }
 
     public void printPheromone(){
-        for(Edge e : getEdgeList()){
-            System.out.println("local: "+e.getLocalPheromone());
+        for(Node n : _nodeList)
+        {
+            System.out.println(n.getName());
+            for(Edge e : n.getConnectionMap()){
+                System.out.printf("\t%3.3f\t%3.5f\n",e.getEdgeLength(),e.getLocalPheromone());
+                //System.out.println("\t"+e.getEdgeLength()+"\t"+e.getLocalPheromone()+"\t"+e.getProbability());
+            }
         }
     }
 }

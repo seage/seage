@@ -21,7 +21,7 @@ public class Ant {
 
     private Graph _graph;
     private Node _start;
-    private Random _rand = new Random();
+    private Random _rand = new Random(hashCode());
     private Node _startPosition;
     private Node _currentPosition;
     private Node _originator;
@@ -52,11 +52,12 @@ public class Ant {
                 if (_originator.equals(_startPosition) || _destination.equals(_startPosition)) {
                     _distanceTravelled += last.getEdgeLength();
                     _path.add(last);
+                    //leavePheromone();
                     return _path;
                 }
             }
-        }
-        return null;
+        }        
+        return _path;
     }
 
     private void updatePosition(Edge arcChoice) {
@@ -75,9 +76,5 @@ public class Ant {
         for (Edge edge : _path) {
             edge.addLocalPheromone(_qantumPheromone/_distanceTravelled);
         }
-    }
-
-    public double getDistanceTravelled() {
-        return _distanceTravelled;
     }
 }

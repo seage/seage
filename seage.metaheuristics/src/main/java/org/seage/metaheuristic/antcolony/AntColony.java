@@ -39,14 +39,17 @@ public class AntColony {
 
     public void beginExploring() {
         for (int i = 0; i < _numIterations; i++) {
-            _graph.calculateProbability();
+            //_graph.calculateProbability();
+            Ant[] ants = new Ant[_numAnts];
             for (int j = 0; j < _numAnts; j++) {
-                _someAnt = new Ant(_graph, _qantumPheromone);
-                _reports.add(_someAnt.explore());
-                _someAnt.leavePheromone();
+                ants[j] = new Ant(_graph, _qantumPheromone);
+                _reports.add(ants[j].explore());
             }
             solveRound();
             _graph.evaporating();
+
+            for (int j = 0; j < _numAnts; j++)
+                ants[j].leavePheromone();
         }
     }
 
