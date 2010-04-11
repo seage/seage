@@ -55,6 +55,8 @@ public class ParticleSwarm implements IParticleSwarm
   public ParticleSwarm(IObjectiveFunction objectiveFunction)
   {
     _objectiveFunction = objectiveFunction;
+//    _velocityManager = new RapidVelocityManager();
+//    _velocityManager = new AcceleratedVelocityManager();
     _velocityManager = new VelocityManager();
   }  
 
@@ -80,7 +82,13 @@ public class ParticleSwarm implements IParticleSwarm
           for(Particle particle : particles)
           {
               if( _stopSearching ) return;
-              
+
+//              System.out.println("Velocity:");
+//              printArray(particle.getVelocity());
+//              System.out.println("Coords:");
+//              printArray(particle.getCoords());
+//              System.out.println("Eval: " + particle.getEvaluation());
+
               // Calculate velocity for current particle
               // Calculate new locations for current particle ->
               _velocityManager.calculateNewVelocityAndPosition( 
@@ -99,6 +107,7 @@ public class ParticleSwarm implements IParticleSwarm
               _objectiveFunction.setObjectiveValue( particle );
           }
           System.out.println(">" + iterationCount);
+          System.out.println("");
 
           // Find best current x and global best g
           _localMinimum = findMinimum( particles );

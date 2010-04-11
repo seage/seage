@@ -26,13 +26,10 @@ public class VelocityManager implements IVelocityManager
         double[] randomVector1 = new double[particle.getCoords().length];
         double[] randomVector2 = new double[particle.getCoords().length];
 
-//        setRandomVector( randomVector1 );
-//        setRandomVector( randomVector2 );
-
         for(int i = 0; i < particle.getCoords().length; i++)
         {
             randomVector1[i] = _rnd.nextDouble();
-            randomVector1[i] = _rnd.nextDouble();
+            randomVector2[i] = _rnd.nextDouble();
         }
 
         // w as inertial weight
@@ -58,10 +55,4 @@ public class VelocityManager implements IVelocityManager
             particle.getCoords()[i] += particle.getVelocity()[i];
         }
     }
-
-//    private void setRandomVector(double[] vector)
-//    {
-//        for(int i = 0; i < vector.length; i++)
-//            vector[i] = _rnd.nextDouble();
-//    }
 }
