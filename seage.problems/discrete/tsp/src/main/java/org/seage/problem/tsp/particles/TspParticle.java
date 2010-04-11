@@ -11,11 +11,7 @@
  */
 package org.seage.problem.tsp.particles;
 
-import java.util.Comparator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.seage.metaheuristic.particles.Particle;
-import org.seage.problem.tsp.City;
 
 /**
  *
