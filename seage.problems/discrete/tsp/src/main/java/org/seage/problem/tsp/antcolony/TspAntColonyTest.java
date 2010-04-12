@@ -49,9 +49,10 @@ public class TspAntColonyTest {
         double qantumPheromone = 1;
         int ants = 50;//(int)Math.sqrt(cities.length);
         TspGraph graph = new TspGraph(cities, localEvaporation, ants, defaultPheromone);
+        TspEdgeManager em = new TspEdgeManager(graph);
         //testing(graph);
 //        graph.printPheromone();
-        AntColony colony = new AntColony(ants, iterations, graph, qantumPheromone);
+        AntColony colony = new AntColony(ants, iterations, graph, qantumPheromone, em);
         colony.beginExploring();
         graph.printPheromone();
         colony.printGlobalBest();

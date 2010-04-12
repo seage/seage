@@ -19,18 +19,18 @@ import java.util.*;
  */
 public class AntBrain {
 
-//    private static AntBrain _brain;
+    private static AntBrain _brain;
 //    private Vector<Edge> _notVisitedEdges;
     private Random _rand = new Random(System.currentTimeMillis());
 
-//    public static AntBrain getBrain() {
-//        if (_brain == null) {
-//            _brain = new AntBrain();
-//            return _brain;
-//        } else {
-//            return _brain;
-//        }
-//    }
+    public static AntBrain getBrain() {
+        if (_brain == null) {
+            _brain = new AntBrain();
+            return _brain;
+        } else {
+            return _brain;
+        }
+    }
 
     public Edge getNextEdge(Vector<Node> visited, Node currentPosition) {
         double alpha = 2, beta = 1;
