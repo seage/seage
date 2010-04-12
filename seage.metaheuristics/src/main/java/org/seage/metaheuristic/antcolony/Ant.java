@@ -20,24 +20,20 @@ import java.util.*;
 public class Ant {
 
     private Graph _graph;
-    private Node _start;
     private Random _rand = new Random(hashCode());
     private Node _startPosition;
     private Node _currentPosition;
-    private Node _originator;
-    private Node _destination;
     private double _distanceTravelled;
     private double _qantumPheromone;
     private Vector<Node> _visited = new Vector<Node>();
     private Vector<Edge> _path = new Vector<Edge>();
-    Node _choiceNode;
 
     public Ant(Graph graph, double qantumPheromone) {
         _graph = graph;
-        _start = _graph.getNodeList().get(_rand.nextInt(_graph.getNodeList().size()));
-        _startPosition = _start;
-        _currentPosition = _start;
-        _visited.add(_start);
+        Node start = _graph.getNodeList().get(_rand.nextInt(_graph.getNodeList().size()));
+        _startPosition = start;
+        _currentPosition = start;
+        _visited.add(start);
         _qantumPheromone = qantumPheromone;
     }
 
@@ -46,13 +42,12 @@ public class Ant {
             updatePosition(AntBrain.getBrain().getNextEdge(_visited, _currentPosition));
         }
         for (Edge last : _graph.getEdgeList()) {
-            _originator = last.getOriginator();
-            _destination = last.getDestination();
-            if (_originator.equals(_currentPosition) || _destination.equals(_currentPosition)) {
-                if (_originator.equals(_startPosition) || _destination.equals(_startPosition)) {
+            Node node1 = last.getNode1();
+            Node node2 = last.getNode2();
+            if (node1.equals(_currentPosition) || node2.equals(_currentPosition)) {
+                if (node1.equals(_startPosition) || node2.equals(_startPosition)) {
                     _distanceTravelled += last.getEdgeLength();
                     _path.add(last);
-                    //leavePheromone();
                     return _path;
                 }
             }
@@ -62,14 +57,15 @@ public class Ant {
 
     private void updatePosition(Edge arcChoice) {
         _path.add(arcChoice);
-        if (arcChoice.getOriginator().equals(_currentPosition)) {
-            _choiceNode = (arcChoice.getDestination());
+        Node choiceNode;
+        if (arcChoice.getNode1().equals(_currentPosition)) {
+            choiceNode = (arcChoice.getNode2());
         } else {
-            _choiceNode = (arcChoice.getOriginator());
+            choiceNode = (arcChoice.getNode1());
         }
         _distanceTravelled += arcChoice.getEdgeLength();
-        _visited.add(_choiceNode);
-        _currentPosition = _choiceNode;
+        _visited.add(choiceNode);
+        _currentPosition = choiceNode;
     }
 
     public void leavePheromone() {

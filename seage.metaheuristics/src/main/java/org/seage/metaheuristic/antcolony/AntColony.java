@@ -26,9 +26,7 @@ public class AntColony {
     private int _numAnts;
     private int _numIterations;
     private Graph _graph;
-    private double _pathLength;
     private double _qantumPheromone;
-    private Ant _someAnt;
 
     public AntColony(int numAnts, int numIterations, Graph graph, double qantumPheromone, EdgeManager em) {
         _graph = graph;
@@ -39,7 +37,6 @@ public class AntColony {
 
     public void beginExploring() {
         for (int i = 0; i < _numIterations; i++) {
-            //_graph.calculateProbability();
             Ant[] ants = new Ant[_numAnts];
             for (int j = 0; j < _numAnts; j++) {
                 ants[j] = new Ant(_graph, _qantumPheromone);
@@ -54,17 +51,17 @@ public class AntColony {
     }
 
     private void solveRound() {
-        _pathLength = 0;
+        double pathLength = 0;
         for (Vector<Edge> vector : _reports) {
             if (_bestPath == null) {
                 _bestPath = vector;
             }
 
             for (Edge edges : vector) {
-                _pathLength += edges.getEdgeLength();
+                pathLength += edges.getEdgeLength();
             }
-            if (_pathLength < _roundBest) {
-                _roundBest = _pathLength;
+            if (pathLength < _roundBest) {
+                _roundBest = pathLength;
             }
 
             if (_roundBest < _globalBest) {

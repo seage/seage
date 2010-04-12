@@ -40,7 +40,7 @@ public class TspGraph extends Graph {
                     TspEdge theEdge = new TspEdge((TspNode)i, (TspNode)j, _localEvaporation, _nuberNodes, _numberAnts);
                     for (Edge k : _edgeList) {
                         tspEdg = (TspEdge)k;
-                        if (tspEdg.getOriginator().equals(j) && tspEdg.getDestination().equals(i)) {
+                        if (tspEdg.getNode1().equals(j) && tspEdg.getNode2().equals(i)) {
                             same = true;
                         }
                     }
@@ -53,7 +53,7 @@ public class TspGraph extends Graph {
         }
         for (Node i : _nodeList) {
             for (Edge j : _edgeList) {
-                if (j.getOriginator().equals(i) || j.getDestination().equals(i)) {
+                if (j.getNode1().equals(i) || j.getNode2().equals(i)) {
                     i.addConnection(j);
                 }
             }
