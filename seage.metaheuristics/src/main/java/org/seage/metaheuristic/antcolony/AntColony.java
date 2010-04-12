@@ -30,7 +30,7 @@ public class AntColony {
     private double _qantumPheromone;
     private Ant _someAnt;
 
-    public AntColony(int numAnts, int numIterations, Graph graph, double qantumPheromone) {
+    public AntColony(int numAnts, int numIterations, Graph graph, double qantumPheromone, EdgeManager em) {
         _graph = graph;
         _numAnts = numAnts;
         _numIterations = numIterations;
