@@ -20,43 +20,39 @@ import java.util.Vector;
 public class Edge {
 
     private double _edgeLength = 0;
-    private Node _originator;
-    private Node _destination;
-    private double _localPheromone = 0;
-    private double _localEvaporation = 0;
-    private double _maxValuePheromone = 1;
-    private double _minValuePheromone = 0.0;
+    private Node _node1;
+    private Node _node2;
+    private double _pheromone = 0;
+    private double _evaporationFactor;
     private Vector<Node> _connections = new Vector<Node>();
-    private double _probability;
 
-    public Edge(Node start, Node end, double locEvaporCoeff, int numberGraphNodes, int numberAnts) {
-        _originator = start;
-        _destination = end;
+    public Edge(Node start, Node end, double evaporation, int numberGraphNodes, int numberAnts) {
+        _node1 = start;
+        _node2 = end;
         _connections.add(start);
         _connections.add(end);
-        _localEvaporation = locEvaporCoeff;
+        _evaporationFactor = 1 - evaporation;
     }
 
     public double getLocalPheromone() {
-        return _localPheromone;
+        return _pheromone;
     }
 
     public void setDefaultPheromone(double defaultPheromone) {
-        _localPheromone = defaultPheromone;
+        _pheromone = defaultPheromone;
     }
 
     public void addLocalPheromone(double pheromone) {
-//        if(pheromone > 1){
-//            pheromone = 1;
+        _pheromone += pheromone;
+//        if (_pheromone > 1) {
+//            _pheromone = 1;
 //        }
-//        _localPheromone = +(_maxValuePheromone - _localPheromone)*pheromone;
-        _localPheromone+=pheromone;
     }
 
-    public void evaporateFromEdge(){
-        _localPheromone = _localPheromone*_localEvaporation;
-        if(_localPheromone < _minValuePheromone){
-            _localPheromone = _minValuePheromone;
+    public void evaporateFromEdge() {
+        _pheromone = _pheromone * _evaporationFactor;
+        if(_pheromone < 0.00001){
+            _pheromone = 0.00001;
         }
     }
 
@@ -68,20 +64,12 @@ public class Edge {
         _edgeLength = length;
     }
 
-    public double getProbability() {
-        return _probability;
+    public Node getNode2() {
+        return _node2;
     }
 
-    public void setProbability(double probability) {
-        _probability = probability;
-    }
-
-    public Node getDestination() {
-        return _destination;
-    }
-
-    public Node getOriginator() {
-        return _originator;
+    public Node getNode1() {
+        return _node1;
     }
 
     public Vector<Node> getConnections() {

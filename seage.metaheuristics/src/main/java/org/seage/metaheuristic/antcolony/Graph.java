@@ -17,7 +17,7 @@ import java.util.*;
  *
  * @author Richard Malek (original)
  */
-public class Graph implements java.lang.Cloneable {
+public class Graph {
 
     protected ArrayList<Node> _nodeList = new ArrayList<Node>();
     protected ArrayList<Edge> _edgeList = new ArrayList<Edge>();
@@ -49,26 +49,6 @@ public class Graph implements java.lang.Cloneable {
             e.setDefaultPheromone(defaultPheromone);
         }
     }
-
-//    public void calculateProbability(){
-//        double alpha = 4, beta = 1;
-//
-//        for(Node n : _nodeList)
-//        {
-//            double[] working = new double[n.getConnectionMap().size()];
-//            double sum = 0;
-//
-//            for (int i = 0; i < n.getConnectionMap().size(); i++)
-//            {
-//                Edge e = n.getConnectionMap().get(i);
-//                working[i] = Math.pow(e.getLocalPheromone(), alpha)*Math.pow(1 / e.getEdgeLength(), beta);
-//                sum += working[i];
-//            }
-//            for (int i = 0; i < n.getConnectionMap().size(); i++) {
-//                n.getConnectionMap().get(i).setProbability(working[i] / sum);
-//            }
-//        }
-//    }
 
     public void printPheromone(){
         for(Node n : _nodeList)

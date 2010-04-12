@@ -45,26 +45,25 @@ public class TspAntColonyTest {
         City[] cities = CityProvider.readCities(path);
         int iterations = 100;
         double defaultPheromone = 0.0001;
-        double localEvaporation = 0.5;
+        double localEvaporation = 0.05;
         double qantumPheromone = 1;
-        int ants = 50;//(int)Math.sqrt(cities.length);
+        int ants = 50;
         TspGraph graph = new TspGraph(cities, localEvaporation, ants, defaultPheromone);
         TspEdgeManager em = new TspEdgeManager(graph);
         //testing(graph);
-//        graph.printPheromone();
         AntColony colony = new AntColony(ants, iterations, graph, qantumPheromone, em);
         colony.beginExploring();
-        graph.printPheromone();
+//        graph.printPheromone();
         colony.printGlobalBest();
         System.out.println("size: " + colony.getBestPath().size());
 
         // visualization
         Integer[] tour = new Integer[colony.getBestPath().size()];
-        tour[0] = Integer.parseInt(colony.getBestPath().get(0).getDestination().getName()) - 1;
+        tour[0] = Integer.parseInt(colony.getBestPath().get(0).getNode2().getName()) - 1;
         for (int i = 1; i < tour.length; i++) {
-            tour[i] = Integer.parseInt(colony.getBestPath().get(i).getDestination().getName()) - 1;
+            tour[i] = Integer.parseInt(colony.getBestPath().get(i).getNode2().getName()) - 1;
             if(tour[i-1] == tour[i]){
-                tour[i] = Integer.parseInt(colony.getBestPath().get(i).getOriginator().getName()) - 1;
+                tour[i] = Integer.parseInt(colony.getBestPath().get(i).getNode1().getName()) - 1;
             }
         }
         Visualizer.instance().createGraph(cities, tour, "ants-tour.png", 800, 800);
