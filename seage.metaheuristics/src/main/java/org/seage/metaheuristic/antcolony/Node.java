@@ -19,15 +19,23 @@ import java.util.*;
  */
 public class Node {
 
-    private String _name = "";
+    private int _id = 0;
     private ArrayList<Edge> _connectionMap = new ArrayList<Edge>();
 
-    public Node(String name) {
-        this._name = name;
+    public Node(int id) {
+        _id = id;
     }
 
-    public String getName() {
-        return _name;
+    public boolean equals(Node node) {
+        if(_id == node._id){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public int getId() {
+        return _id;
     }
 
     public void addConnection(Edge edge) {

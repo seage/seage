@@ -2,43 +2,48 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.seage.problem.tsp.antcolony;
+package org.seage.problem.sat.antColony;
 
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
-import org.seage.problem.tsp.City;
+import org.seage.problem.sat.Formula;
 
 /**
  *
  * @author Zagy
  */
-public class TspGraph extends Graph {
+public class SatGraph extends Graph implements java.lang.Cloneable {
 
-    public TspGraph(City[] cities, double locEvaporCoeff, double defaultPheromone) {
+    boolean[] _preparedSolution;
+
+    public SatGraph(Formula formula, double locEvaporCoeff, double defaultPheromone) {
         super(locEvaporCoeff);
-        for (City c : cities) {
-            addNode(c.X, c.Y);
+        for (int i = 0; i < formula.getLiteralCount(); i++) {
+            addNode(i, true);
+            addNode(formula.getLiteralCount() + i, true);
         }
         _nuberNodes = _nodeList.size();
-        fillEdgeMap();
+        for (int i = 0; i < formula.getLiteralCount(); i++) {
+            _preparedSolution[i] = true;
+        }
+        fillEdgeMap(formula);
         setDefaultPheromone(defaultPheromone);
     }
 
-    public void addNode(double x, double y) {
-        int id = _nodeList.size();
-        _nodeList.add(new TspNode(id, x, y));
+    public void addNode(int id, boolean value) {
+        _nodeList.add(new SatNode(id, value));
     }
 
-    public void fillEdgeMap() {
-        TspEdge tspEdg;
+    public void fillEdgeMap(Formula formula) {
+        SatEdge tspEdg;
         boolean same = false;
         for (Node i : _nodeList) {
             for (Node j : _nodeList) {
                 if (!i.equals(j)) {
-                    TspEdge theEdge = new TspEdge((TspNode)i, (TspNode)j, _localEvaporation);
+                    SatEdge theEdge = new SatEdge((SatNode) i, (SatNode) j, _localEvaporation, formula, _preparedSolution);
                     for (Edge k : _edgeList) {
-                        tspEdg = (TspEdge)k;
+                        tspEdg = (SatEdge) k;
                         if (tspEdg.getNode1().equals(j) && tspEdg.getNode2().equals(i)) {
                             same = true;
                         }
@@ -59,5 +64,4 @@ public class TspGraph extends Graph {
         }
         _nuberEdges = _edgeList.size();
     }
-
 }
