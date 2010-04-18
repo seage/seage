@@ -27,19 +27,21 @@ public class AntColony {
     private int _numIterations;
     private Graph _graph;
     private double _qantumPheromone;
+    private AntBrain _brain;
 
-    public AntColony(int numAnts, int numIterations, Graph graph, double qantumPheromone, EdgeManager em) {
+    public AntColony(int numAnts, int numIterations, Graph graph, double qantumPheromone, AntBrain brain) {
         _graph = graph;
         _numAnts = numAnts;
         _numIterations = numIterations;
         _qantumPheromone = qantumPheromone;
+        _brain = brain;
     }
 
     public void beginExploring() {
         for (int i = 0; i < _numIterations; i++) {
             Ant[] ants = new Ant[_numAnts];
             for (int j = 0; j < _numAnts; j++) {
-                ants[j] = new Ant(_graph, _qantumPheromone);
+                ants[j] = new Ant(_graph, _qantumPheromone, _brain);
                 _reports.add(ants[j].explore());
             }
             solveRound();
@@ -70,7 +72,6 @@ public class AntColony {
             }
         }
 
-//        System.out.println("Round " + _round + "\n----------------------------");
 //        System.out.println("This round best was  : " + _roundBest);
 //        System.out.println("The global best was : " + _globalBest + "\n");
 

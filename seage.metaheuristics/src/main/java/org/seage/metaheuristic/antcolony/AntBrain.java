@@ -19,42 +19,23 @@ import java.util.*;
  */
 public class AntBrain {
 
-    private static AntBrain _brain;
-    private Random _rand = new Random(System.currentTimeMillis());
+//    protected static AntBrain _brain;
+    protected Random _rand = new Random(System.currentTimeMillis());
 
-    public static AntBrain getBrain() {
-        if (_brain == null) {
-            _brain = new AntBrain();
-            return _brain;
-        } else {
-            return _brain;
-        }
-    }
+//    public static AntBrain getBrain() {
+//        if (_brain == null) {
+//            _brain = new AntBrain();
+//            return _brain;
+//        } else {
+//            return _brain;
+//        }
+//    }
 
     public Edge getNextEdge(Vector<Node> visited, Node currentPosition) {
-        double alpha = 2, beta = 1;
-        double sum = 0;
-        double[] probabilities = new double[currentPosition.getConnectionMap().size()];
-
-        // for each Edges
-        for (int i = 0; i < probabilities.length; i++) {
-            Edge e = currentPosition.getConnectionMap().get(i);
-            for (Node n : e.getConnections()) {
-                if (visited.contains(n)) {
-                    continue;
-                } else {
-                    probabilities[i] = Math.pow(e.getLocalPheromone(), alpha) * Math.pow(1 / e.getEdgeLength(), beta);
-                    sum += probabilities[i];
-                }
-            }
-        }
-        for (int i = 0; i < probabilities.length; i++) {
-            probabilities[i] /= sum;
-        }
-        return currentPosition.getConnectionMap().get(next(probabilities));
+        return null;
     }
 
-    private int next(double[] probs) {
+    protected int next(double[] probs) {
         double randomNumber = _rand.nextDouble();
         double numberReach;
 

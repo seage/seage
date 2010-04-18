@@ -18,18 +18,14 @@ public class TspEdge extends Edge {
     private double _dX;
     private double _dY;
 
-    public TspEdge(TspNode start, TspNode end, double locEvaporCoeff, int numberGraphNodes, int numberAnts) {
-        super(start, end, locEvaporCoeff, numberGraphNodes, numberAnts);
-        if (start.equals(end)) {
-            setEdgeLength(0);
-        } else {
-            setEdgeLength(calculateEdgeLength(start, end));
-        }
+    public TspEdge(TspNode start, TspNode end, double locEvaporCoeff) {
+        super(start, end, locEvaporCoeff);
+        setEdgeLengthFrom1in2(calculateEdgeLength(start, end));
     }
 
-    public double calculateEdgeLength(TspNode start, TspNode end){
+    public double calculateEdgeLength(TspNode start, TspNode end) {
         _dX = (start.getX() - end.getX());
         _dY = (start.getY() - end.getY());
-        return Math.sqrt(_dX*_dX + _dY*_dY);
+        return Math.sqrt(_dX * _dX + _dY * _dY);
     }
 }

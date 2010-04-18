@@ -9,7 +9,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.problem.tsp.antcolony;
+package org.seage.problem.sat.antColony;
 
 import org.seage.metaheuristic.antcolony.Node;
 
@@ -17,22 +17,16 @@ import org.seage.metaheuristic.antcolony.Node;
  *
  * @author Richard Malek (original)
  */
-public class TspNode extends Node {
+public class SatNode extends Node {
 
-    private double _x = 0;
-    private double _y = 0;
+    private boolean _value;
 
-    public TspNode(int id, double x, double y) {
+    public SatNode(int id, boolean value) {
         super(id);
-        _x = x;
-        _y = y;
+        _value = value;
     }
 
-    public double getX(){
-        return _x;
-    }
-
-    public double getY(){
-        return _y;
+    public boolean getValue(){
+        return _value;
     }
 }

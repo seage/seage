@@ -24,7 +24,6 @@ public class Graph {
     protected double _localEvaporation;
     protected int _nuberNodes;
     protected int _nuberEdges;
-    protected int _numberAnts;
 
     public Graph(double locEvaporCoeff) {
         _localEvaporation = locEvaporCoeff;
@@ -53,10 +52,9 @@ public class Graph {
     public void printPheromone(){
         for(Node n : _nodeList)
         {
-            System.out.println(n.getName());
+            System.out.println(n.getId());
             for(Edge e : n.getConnectionMap()){
                 System.out.printf("\t%3.3f\t%3.5f\n",e.getEdgeLength(),e.getLocalPheromone());
-                //System.out.println("\t"+e.getEdgeLength()+"\t"+e.getLocalPheromone()+"\t"+e.getProbability());
             }
         }
     }

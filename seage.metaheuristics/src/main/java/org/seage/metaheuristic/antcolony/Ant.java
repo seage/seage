@@ -27,9 +27,11 @@ public class Ant {
     private double _qantumPheromone;
     private Vector<Node> _visited = new Vector<Node>();
     private Vector<Edge> _path = new Vector<Edge>();
+    private AntBrain _brain;
 
-    public Ant(Graph graph, double qantumPheromone) {
+    public Ant(Graph graph, double qantumPheromone, AntBrain brain) {
         _graph = graph;
+        _brain = brain;
         Node start = _graph.getNodeList().get(_rand.nextInt(_graph.getNodeList().size()));
         _startPosition = start;
         _currentPosition = start;
@@ -39,7 +41,7 @@ public class Ant {
 
     public Vector<Edge> explore() {
         for (int i = 0; i < _graph.getNodeList().size() - 1; i++) {
-            updatePosition(AntBrain.getBrain().getNextEdge(_visited, _currentPosition));
+            updatePosition(_brain.getNextEdge(_visited, _currentPosition));
         }
         for (Edge last : _graph.getEdgeList()) {
             Node node1 = last.getNode1();
