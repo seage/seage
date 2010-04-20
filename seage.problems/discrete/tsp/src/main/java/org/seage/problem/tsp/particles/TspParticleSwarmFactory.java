@@ -52,27 +52,33 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-//                TspSolution initialSolution = new TspGreedySolution(TspProblemProvider.getCities());
-//                Integer[] tour = initialSolution.getTour();
-//
-//                for(int i = 0; i < tour.length; i++)
-//                    tour[i] = (Integer)source[0][i];
-//
-//                _initialSolution = initialSolution;
+                // TODO: B - initial particles have to be inicialized
+                for(int i = 0; i < source.length; i++)
+                {
+                    Integer[] tour = ((TspParticle)_particleSwarm.getParticles()[i]).getTour();
+                    for(int j = 0; j < source[i].length; j++)
+                    {
+                        tour[j] = (Integer)source[i][j];
+                    }
+                }
             }
 
             public Object[][] solutionsToPhenotype() throws Exception
             {
-                Integer[] tour = ((TspParticle)_particleSwarm.getBestParticle()).getTour();
-                Object[][] source = new Object[1][ tour.length ];
+                int numOfParticles = _particleSwarm.getParticles().length;
+                Object[][] source = new Object[ numOfParticles ][ _cities.length ];
 
-                source[0] = new Integer[ tour.length ];
-                for(int i = 0; i < tour.length; i++)
-                    source[0][i] = tour[i];
+                for(int i = 0; i < source.length; i++)
+                {
+                    source[i] = new Integer[ _cities.length ];
+                    Integer[] tour = ((TspParticle)_particleSwarm.getParticles()[i]).getTour();
+                    for(int j = 0; j < source[i].length; j++)
+                    {
+                        source[i][j] = tour[j];
+                    }
+                }
 
-                System.out.println("BEST TOUR: ");
-                printArray(tour);
-                System.out.println("");
+                // TODO: A - need to sort source by fitness function of each tour
                 
                 return source;
             }

@@ -27,4 +27,6 @@ public interface IParticleSwarm {
         void stopSearching();
 
         Particle getBestParticle();
+        public Particle[] getParticles();
+        public void setParticles(Particle[] particles);
 }
