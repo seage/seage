@@ -47,6 +47,8 @@ public class ParticleSwarm implements IParticleSwarm
 
   private boolean _stopSearching = false;
 
+  private Particle[] _particles = null;
+
   /**
    * Constructor
    *
@@ -72,7 +74,9 @@ public class ParticleSwarm implements IParticleSwarm
 
       // Fire event to listeners about that algorithm has started
       _listenerProvider.fireParticleSwarmStarted();
-      
+
+      _particles = particles;
+
       long globalFoundIteration = 0;
       while ( _maximalIterationCount > iterationCount && !_stopSearching )
       {
@@ -224,4 +228,13 @@ public class ParticleSwarm implements IParticleSwarm
   {
       return _globalMinimum;
   }
+
+  public Particle[] getParticles() {
+      return _particles;
+  }
+
+  public void setParticles(Particle[] particles) {
+      this._particles = particles;
+  }
+  
 }
