@@ -20,7 +20,7 @@ public class TspEdge extends Edge {
 
     public TspEdge(TspNode start, TspNode end, double locEvaporCoeff) {
         super(start, end, locEvaporCoeff);
-        setEdgeLengthFrom1in2(calculateEdgeLength(start, end));
+        setEdgeLength(calculateEdgeLength(start, end));
     }
 
     public double calculateEdgeLength(TspNode start, TspNode end) {

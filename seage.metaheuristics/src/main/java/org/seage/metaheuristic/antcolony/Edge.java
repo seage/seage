@@ -20,7 +20,6 @@ import java.util.Vector;
 public class Edge {
 
     private double _edgeLengthFrom1in2 = 0;
-    private double _edgeLengthFrom2in1 = 0;
     private Node _node1;
     private Node _node2;
     private double _pheromone = 0;
@@ -62,12 +61,8 @@ public class Edge {
         return _edgeLengthFrom1in2;
     }
 
-    public void setEdgeLengthFrom1in2(double length) {
+    public void setEdgeLength(double length) {
         _edgeLengthFrom1in2 = length;
-    }
-
-    public void setEdgeLengthFrom2in1(double length) {
-        _edgeLengthFrom2in1 = length;
     }
 
     public Node getNode2() {
