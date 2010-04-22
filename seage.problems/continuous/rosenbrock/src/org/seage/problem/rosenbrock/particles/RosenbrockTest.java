@@ -11,7 +11,6 @@
  */
 package org.seage.problem.rosenbrock.particles;
 
-import org.seage.metaheuristic.particles.AcceleratedVelocityManager;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.metaheuristic.particles.ParticleSwarm;
 

@@ -4,7 +4,7 @@
    xmlns='http://xml.seage.org/schema'
    xsi:schemaLocation='http://xml.seage.org/schema config.xsd'>
 
-    <problem problemName="TSP" runAlgorithmId="ParticleSwarm">
+    <problem problemName="TSP" runAlgorithmId="SimulatedAnnealing">
         <instance name="eil51" path="data/eil51.tsp"/>
         <visualizer outPath="output/eil51.png" width="800" height="800"/>
     </problem>
@@ -41,11 +41,11 @@
 
     <algorithm id="ParticleSwarm">
         <particleSwarm
-            maxIterationCount="10000"
+            maxIterationCount="150000"
             maxVelocity="0.9"
             minVelocity="-0.9"
             inertia="0.95"
-            numSolutions="50"
+            numSolutions="10"
             alpha="0.9"
             beta="0.9"
             />
