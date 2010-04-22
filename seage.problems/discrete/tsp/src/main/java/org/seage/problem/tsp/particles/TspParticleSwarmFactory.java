@@ -53,14 +53,14 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 // TODO: B - initial particles have to be inicialized
-                for(int i = 0; i < source.length; i++)
-                {
-                    Integer[] tour = ((TspParticle)_particleSwarm.getParticles()[i]).getTour();
-                    for(int j = 0; j < source[i].length; j++)
-                    {
-                        tour[j] = (Integer)source[i][j];
-                    }
-                }
+//                for(int i = 0; i < source.length; i++)
+//                {
+//                    Integer[] tour = ((TspParticle)_particleSwarm.getParticles()[i]).getTour();
+//                    for(int j = 0; j < source[i].length; j++)
+//                    {
+//                        tour[j] = (Integer)source[i][j];
+//                    }
+//                }
             }
 
             public Object[][] solutionsToPhenotype() throws Exception
