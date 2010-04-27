@@ -37,25 +37,18 @@ public class Graph {
         return _edgeList;
     }
 
-    public void evaporating(){
-        for(Edge e : getEdgeList()){
+    public void evaporating() {
+        for (Edge e : getEdgeList()) {
             e.evaporateFromEdge();
         }
     }
 
-    protected void setDefaultPheromone(double defaultPheromone){
-        for(Edge e : getEdgeList()){
+    protected void setDefaultPheromone(double defaultPheromone) {
+        for (Edge e : getEdgeList()) {
             e.setDefaultPheromone(defaultPheromone);
         }
     }
 
-    public void printPheromone(){
-        for(Node n : _nodeList)
-        {
-            System.out.println(n.getId());
-            for(Edge e : n.getConnectionMap()){
-                System.out.printf("\t%3.3f\t%3.5f\n",e.getEdgeLength(),e.getLocalPheromone());
-            }
-        }
+    public void printPheromone() {
     }
 }
