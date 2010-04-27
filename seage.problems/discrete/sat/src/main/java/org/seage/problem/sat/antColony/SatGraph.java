@@ -4,7 +4,9 @@
  */
 package org.seage.problem.sat.antColony;
 
+import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
+import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.sat.Formula;
 
 /**
@@ -22,7 +24,6 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
             addNode(i, true);
             addNode(-i, false);
         }
-        addNode(1 + formula.getLiteralCount(), false);
         _nuberNodes = _nodeList.size();
         _preparedSolution = new boolean[formula.getLiteralCount()];
         for (int i = 0; i < formula.getLiteralCount(); i++) {
@@ -68,15 +69,17 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
             satNode2.addConnection(satEdge3);
             satNode2.addConnection(satEdge4);
         }
-        satNode1 = (SatNode) _nodeList.get(_nodeList.size()-3);
-        satNode2 = (SatNode) _nodeList.get(_nodeList.size()-2);
-        satNode3 = (SatNode) _nodeList.get(_nodeList.size()-1);
-        satEdge1 = new SatEdge(satNode1, satNode3, _localEvaporation, formula, _preparedSolution);
-        satEdge2 = new SatEdge(satNode2, satNode3, _localEvaporation, formula, _preparedSolution);
-        _edgeList.add(satEdge1);
-        _edgeList.add(satEdge2);
-        satNode1.addConnection(satEdge1);
-        satNode2.addConnection(satEdge2);
         _nuberEdges = _edgeList.size();
+    }
+
+    @Override
+    public void printPheromone(){
+        for(Node n : _nodeList)
+        {
+            System.out.println("n1:"+n.getId());
+            for(Edge e : n.getConnectionMap()){
+                System.out.println(e.getEdgeLength()+"  n2:"+e.getNode2().getId()+"  ph:"+e.getLocalPheromone());
+            }
+        }
     }
 }

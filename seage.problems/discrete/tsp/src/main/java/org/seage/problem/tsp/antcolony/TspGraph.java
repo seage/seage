@@ -60,4 +60,14 @@ public class TspGraph extends Graph {
         _nuberEdges = _edgeList.size();
     }
 
+    @Override
+    public void printPheromone(){
+        for(Node n : _nodeList)
+        {
+            System.out.println(n.getId());
+            for(Edge e : n.getConnectionMap()){
+                System.out.printf("\t%3.3f\t%3.5f\n",e.getEdgeLength(),e.getLocalPheromone());
+            }
+        }
+    }
 }

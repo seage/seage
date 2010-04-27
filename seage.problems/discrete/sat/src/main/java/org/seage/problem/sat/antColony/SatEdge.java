@@ -17,16 +17,9 @@ import org.seage.problem.sat.FormulaEvaluator;
 
 public class SatEdge extends Edge {
 
-    FormulaEvaluator _evaluator = new FormulaEvaluator();
-
     public SatEdge(SatNode start, SatNode end, double locEvaporCoeff, Formula formula, boolean[] preparedSolution) {
         super(start, end, locEvaporCoeff);
-        int index = Math.abs(end.getId());
-        if (index < formula.getLiteralCount()) {
-            setEdgeLength(_evaluator.evaluate(formula, createSol(end, formula, preparedSolution)));
-        } else {
-            setEdgeLength(0.1);
-        }
+            setEdgeLength(FormulaEvaluator.evaluate(formula, createSol(end, formula, preparedSolution)));
     }
 
     public boolean[] createSol(SatNode node, Formula formula, boolean[] preparedSolution) {

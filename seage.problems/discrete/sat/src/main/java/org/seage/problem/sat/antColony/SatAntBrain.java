@@ -2,18 +2,25 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.seage.problem.tsp.antcolony;
+package org.seage.problem.sat.antColony;
 
 import java.util.Vector;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Node;
+import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.FormulaEvaluator;
 
 /**
  *
  * @author Zagy
  */
-public class TspAntBrain extends AntBrain {
+public class SatAntBrain extends AntBrain {
+    private Formula _formula;
+
+    public SatAntBrain(Formula formula) {
+        _formula = formula;
+    }
 
     @Override
     public Edge getNextEdge(Vector<Node> visited, Node currentPosition) {
@@ -24,14 +31,8 @@ public class TspAntBrain extends AntBrain {
         // for each Edges
         for (int i = 0; i < probabilities.length; i++) {
             Edge e = currentPosition.getConnectionMap().get(i);
-            for (Node n : e.getConnections()) {
-                if (visited.contains(n)) {
-                    continue;
-                } else {
-                    probabilities[i] = Math.pow(e.getLocalPheromone(), alpha) * Math.pow(1 / e.getEdgeLength(), beta);
-                    sum += probabilities[i];
-                }
-            }
+            probabilities[i] = Math.pow(e.getLocalPheromone(), alpha) * Math.pow(1 / e.getEdgeLength(), beta);
+            sum += probabilities[i];
         }
         for (int i = 0; i < probabilities.length; i++) {
             probabilities[i] /= sum;
@@ -42,25 +43,20 @@ public class TspAntBrain extends AntBrain {
     @Override
     protected int next(double[] probs) {
         double randomNumber = _rand.nextDouble();
-        double numberReach;
-
-        if (randomNumber <= 0.5) {
-            numberReach = 0;
-            for (int i = 0; i < probs.length; i++) {
-                numberReach += probs[i];
-                if (numberReach > randomNumber) {
-                    return i;
-                }
-            }
+        if (probs[0] > randomNumber) {
+            return 0;
         } else {
-            numberReach = 1;
-            for (int i = probs.length - 1; i >= 0; i--) {
-                numberReach -= probs[i];
-                if (numberReach <= randomNumber) {
-                    return i;
-                }
-            }
+            return 1;
         }
-        return probs.length - 1;
+    }
+
+    public double solutionCost(Vector<Edge> path){
+        boolean[] solution = new boolean[_formula.getLiteralCount()];
+        SatNode node;
+        for (int i = 0; i < _formula.getLiteralCount(); i++) {
+            node = (SatNode)path.get(i).getNode2();
+            solution[i] = node.getValue();
+        }
+        return (FormulaEvaluator.evaluate(_formula, solution) + 1);
     }
 }

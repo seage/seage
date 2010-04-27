@@ -19,62 +19,57 @@ import java.util.*;
  */
 public class AntColony {
 
-    private double _roundBest = Double.MAX_VALUE;
-    private double _globalBest = Double.MAX_VALUE;
-    private Vector<Edge> _bestPath;
-    private Vector<Vector<Edge>> _reports = new Vector<Vector<Edge>>();
+    protected double _roundBest = Double.MAX_VALUE;
+    protected double _globalBest = Double.MAX_VALUE;
+    protected Vector<Edge> _bestPath;
+    protected Vector<Vector<Edge>> _reports = new Vector<Vector<Edge>>();
     private int _numAnts;
     private int _numIterations;
     private Graph _graph;
-    private double _qantumPheromone;
-    private AntBrain _brain;
+    private AntCreator _antCreator;
+    private Ant[] _ants;
 
-    public AntColony(int numAnts, int numIterations, Graph graph, double qantumPheromone, AntBrain brain) {
-        _graph = graph;
-        _numAnts = numAnts;
+    public AntColony(AntCreator antCreator, int numIterations) {
+        _graph = antCreator._graph;
+        _numAnts = antCreator._numAnts;
         _numIterations = numIterations;
-        _qantumPheromone = qantumPheromone;
-        _brain = brain;
+        _antCreator = antCreator;
     }
 
     public void beginExploring() {
         for (int i = 0; i < _numIterations; i++) {
-            Ant[] ants = new Ant[_numAnts];
+            _ants = _antCreator.createAnts();
             for (int j = 0; j < _numAnts; j++) {
-                ants[j] = new Ant(_graph, _qantumPheromone, _brain);
-                _reports.add(ants[j].explore());
+                _reports.add(_ants[j].explore());
             }
             solveRound();
             _graph.evaporating();
 
-            for (int j = 0; j < _numAnts; j++)
-                ants[j].leavePheromone();
+            for (int j = 0; j < _numAnts; j++) {
+                _ants[j].leavePheromone();
+            }
         }
     }
 
-    private void solveRound() {
+    protected void solveRound() {
         double pathLength = 0;
+        int counter = 0;
         for (Vector<Edge> vector : _reports) {
             if (_bestPath == null) {
                 _bestPath = vector;
             }
-
-            for (Edge edges : vector) {
-                pathLength += edges.getEdgeLength();
-            }
+            pathLength = _ants[counter]._distanceTravelled;
+            counter++;
             if (pathLength < _roundBest) {
                 _roundBest = pathLength;
             }
-
             if (_roundBest < _globalBest) {
                 _globalBest = _roundBest;
                 _bestPath = vector;
             }
         }
-
 //        System.out.println("This round best was  : " + _roundBest);
 //        System.out.println("The global best was : " + _globalBest + "\n");
-
         _roundBest = Double.MAX_VALUE;
         _reports.clear();
     }
@@ -84,6 +79,6 @@ public class AntColony {
     }
 
     public void printGlobalBest() {
-        System.out.println("Global best: " + _globalBest);
+        System.out.println("Global best: " + (_globalBest - 1));
     }
 }
