@@ -22,10 +22,18 @@ public class AntCreator {
         _qantumPheromone = qantumPheromone;
     }
 
+    /**
+     * Making ants
+     * @return - Ants
+     */
     public Ant[] createAnts() {
         return null;
     }
 
+    /**
+     * Nuber ants finding
+     * @return Number ants
+     */
     public int getnumAnts(){
         return _numAnts;
     }

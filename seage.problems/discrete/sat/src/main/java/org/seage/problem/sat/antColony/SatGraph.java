@@ -33,10 +33,20 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
         setDefaultPheromone(defaultPheromone);
     }
 
+
+    /**
+     * Nones adding
+     * @param id - Identification number
+     * @param value - Value of atual node
+     */
     public void addNode(int id, boolean value) {
         _nodeList.add(new SatNode(id, value));
     }
 
+    /**
+     * List of edges filling
+     * @param formula - Readed formula
+     */
     public void fillEdgeMap(Formula formula) {
         SatEdge satEdge1, satEdge2, satEdge3, satEdge4;
         SatNode satNode1, satNode2, satNode3, satNode4;

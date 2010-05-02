@@ -19,13 +19,50 @@ import java.util.*;
  */
 public class AntBrain {
 
-    protected Random _rand = new Random(System.currentTimeMillis());
+    protected double _alpha, _beta;
+    protected Random _rand;
 
+    public AntBrain(double alpha, double beta) {
+        _alpha = alpha;
+        _beta = beta;
+        _rand = new Random(System.currentTimeMillis());
+    }
+
+    /**
+     * Following edge choice
+     * @param visited - All visited nodes
+     * @param currentPosition - Actual position
+     * @return - Selected edge
+     */
     public Edge getNextEdge(Vector<Node> visited, Node currentPosition) {
         return null;
     }
 
+    /**
+     * Next edges index calculation
+     * @param probs - probabilities all edges
+     * @return - Next edges index
+     */
     protected int next(double[] probs) {
-        return 0;
+        double randomNumber = _rand.nextDouble();
+        double numberReach;
+        if (randomNumber <= 0.5) {
+            numberReach = 0;
+            for (int i = 0; i < probs.length; i++) {
+                numberReach += probs[i];
+                if (numberReach > randomNumber) {
+                    return i;
+                }
+            }
+        } else {
+            numberReach = 1;
+            for (int i = probs.length - 1; i >= 0; i--) {
+                numberReach -= probs[i];
+                if (numberReach <= randomNumber) {
+                    return i;
+                }
+            }
+        }
+        return probs.length - 1;
     }
 }

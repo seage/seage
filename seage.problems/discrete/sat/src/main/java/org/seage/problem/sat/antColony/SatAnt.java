@@ -43,11 +43,4 @@ import org.seage.metaheuristic.antcolony.Node;
         _visited.add(chosedEdge.getNode2());
         _currentPosition = chosedEdge.getNode2();
     }
-
-    @Override
-    public void leavePheromone() {
-        for (Edge edge : _path) {
-            edge.addLocalPheromone(_qantumPheromone / (_distanceTravelled));
-        }
-    }
 }

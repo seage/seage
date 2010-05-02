@@ -14,7 +14,6 @@ package org.seage.problem.tsp.hillclimber;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.City;
 import org.seage.metaheuristic.hillclimber.HillClimber;
-import org.seage.metaheuristic.hillclimber.Solution;
 import org.seage.problem.tsp.Visualizer;
 
 /**
@@ -39,7 +38,7 @@ public class TspHillClimberTest {
      */
     public static void main(String[] args) {
         try {
-            new TspHillClimberTest().run(args[0], "my", "greedy", 100, 100);
+            new TspHillClimberTest().run(args[0], "my", "greedy", 500, 500);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();

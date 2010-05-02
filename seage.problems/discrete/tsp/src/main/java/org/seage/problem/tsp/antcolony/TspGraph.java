@@ -25,11 +25,19 @@ public class TspGraph extends Graph {
         setDefaultPheromone(defaultPheromone);
     }
 
+    /**
+     * Adding node in graph
+     * @param x - x-coordination
+     * @param y - y-coordination
+     */
     public void addNode(double x, double y) {
         int id = _nodeList.size();
         _nodeList.add(new TspNode(id, x, y));
     }
 
+    /**
+     * List of graph edges filling
+     */
     public void fillEdgeMap() {
         TspEdge tspEdg;
         boolean same = false;

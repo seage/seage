@@ -24,23 +24,39 @@ public class Ant {
     protected Node _currentPosition;
     protected double _distanceTravelled;
     protected double _qantumPheromone;
-    protected Vector<Node> _visited = new Vector<Node>();
-    protected Vector<Edge> _path = new Vector<Edge>();
+    protected Vector<Node> _visited;
+    protected Vector<Edge> _path;
     protected AntBrain _brain;
 
     public Ant(Graph graph, double qantumPheromone, AntBrain brain) {
         _graph = graph;
         _brain = brain;
         _qantumPheromone = qantumPheromone;
+        _visited = new Vector<Node>();
+        _path = new Vector<Edge>();
     }
 
+    /**
+     * Ant passage through the graph
+     * @return - ants path
+     */
     public Vector<Edge> explore() {
         return null;
     }
 
-    protected void updatePosition(Edge arcChoice) {
+    /**
+     * Update ants position
+     * @param selectedEdge - Actual selected edge
+     */
+    protected void updatePosition(Edge selectedEdge) {
     }
 
+    /**
+     * Pheromone leaving
+     */
     public void leavePheromone() {
+        for (Edge edge : _path) {
+            edge.addLocalPheromone(_qantumPheromone / (_distanceTravelled));
+        }
     }
 }

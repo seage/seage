@@ -19,8 +19,8 @@ import org.seage.metaheuristic.antcolony.Node;
  */
 public class TspNode extends Node {
 
-    private double _x = 0;
-    private double _y = 0;
+    private double _x;
+    private double _y;
 
     public TspNode(int id, double x, double y) {
         super(id);
@@ -28,10 +28,18 @@ public class TspNode extends Node {
         _y = y;
     }
 
+    /**
+     * Coordination X getting
+     * @return x-coordination
+     */
     public double getX(){
         return _x;
     }
 
+    /**
+     * Coordination Y getting
+     * @return y-coordination
+     */
     public double getY(){
         return _y;
     }

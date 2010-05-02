@@ -22,6 +22,13 @@ public class SatEdge extends Edge {
             setEdgeLength(FormulaEvaluator.evaluate(formula, createSol(end, formula, preparedSolution)));
     }
 
+    /**
+     * Creating solution in form for determinig
+     * @param node - Actual node
+     * @param formula - Readed formula
+     * @param preparedSolution - pre-prepared solution
+     * @return - Prepared array of values
+     */
     public boolean[] createSol(SatNode node, Formula formula, boolean[] preparedSolution) {
         boolean[] solution = preparedSolution.clone();
         int index = Math.abs(node.getId());
