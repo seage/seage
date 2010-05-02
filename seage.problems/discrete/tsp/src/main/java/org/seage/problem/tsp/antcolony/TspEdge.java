@@ -23,6 +23,12 @@ public class TspEdge extends Edge {
         setEdgeLength(calculateEdgeLength(start, end));
     }
 
+    /**
+     * Edge length calculating
+     * @param start - Starting node
+     * @param end - Terminate node
+     * @return - Euclide edge length
+     */
     public double calculateEdgeLength(TspNode start, TspNode end) {
         _dX = (start.getX() - end.getX());
         _dY = (start.getY() - end.getY());

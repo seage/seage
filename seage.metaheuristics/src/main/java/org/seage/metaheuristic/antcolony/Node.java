@@ -19,13 +19,19 @@ import java.util.*;
  */
 public class Node {
 
-    private int _id = 0;
-    private ArrayList<Edge> _connectionMap = new ArrayList<Edge>();
+    private int _id;
+    private ArrayList<Edge> _connectionMap;
 
     public Node(int id) {
         _id = id;
+        _connectionMap = new ArrayList<Edge>();
     }
 
+    /**
+     * My implementation function equals
+     * @param node - Compared node
+     * @return - if compared nodes are some
+     */
     public boolean equals(Node node) {
         if(_id == node._id){
             return true;
@@ -34,14 +40,26 @@ public class Node {
         }
     }
 
+    /**
+     * Identification number
+     * @return - Number id
+     */
     public int getId() {
         return _id;
     }
 
+    /**
+     * Edge in edge-list adding
+     * @param edge - Edge for add
+     */
     public void addConnection(Edge edge) {
         _connectionMap.add(edge);
     }
 
+    /**
+     * List all edges which are joined with actual node
+     * @return - List edges
+     */
     public ArrayList<Edge> getConnectionMap() {
         return _connectionMap;
     }

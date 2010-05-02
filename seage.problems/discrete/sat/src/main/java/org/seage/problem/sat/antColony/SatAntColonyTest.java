@@ -19,17 +19,19 @@ public class SatAntColonyTest {
      */
     public static void main(String[] args) throws Exception {
         String path = "data/uf75/uf75-01.cnf";
+//        String path = "data/uf20/my.cnf";
         Formula formula = FormulaReader.readFormula(path);
-        double qantumPheromone = 0.01, evaporation = 0.005, defaultPheromone = 0.1;
-        int numAnts = 100, iterations = 1000;
+        double qantumPheromone = 0.01, evaporation = 0.05, defaultPheromone = 1;
+        double alpha = 1, beta = 2;
+        int numAnts = 250, iterations = 500;
 
         SatGraph graph = new SatGraph(formula, evaporation, defaultPheromone);
-        SatAntBrain brain = new SatAntBrain(formula);
+        SatAntBrain brain = new SatAntBrain(alpha, beta, formula);
 
         SatAntCreator antCreator = new SatAntCreator(graph, brain, numAnts, qantumPheromone);
         AntColony colony = new AntColony(antCreator, iterations);
         colony.beginExploring();
-        colony.printGlobalBest();
-//        graph.printPheromone();
+        System.out.println("Global best: "+(colony.getGlobalBest()-1));
+        //graph.printPheromone();
     }
 }

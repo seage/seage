@@ -26,6 +26,10 @@ public class SatNode extends Node {
         _value = value;
     }
 
+    /**
+     * Value finding
+     * @return - Value of actual node
+     */
     public boolean getValue(){
         return _value;
     }

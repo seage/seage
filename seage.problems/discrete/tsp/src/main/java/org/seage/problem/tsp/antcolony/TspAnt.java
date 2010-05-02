@@ -18,10 +18,11 @@ import org.seage.metaheuristic.antcolony.Node;
  */
 public class TspAnt extends Ant {
 
-    private Random _rand = new Random(hashCode());
+    private Random _rand;
 
     public TspAnt(Graph graph, double qantumPheromone, AntBrain brain) {
         super(graph, qantumPheromone, brain);
+        _rand = new Random(hashCode());
         Node start = _graph.getNodeList().get(_rand.nextInt(_graph.getNodeList().size()));
         _startPosition = start;
         _currentPosition = start;
@@ -59,12 +60,5 @@ public class TspAnt extends Ant {
         _distanceTravelled += arcChoice.getEdgeLength();
         _visited.add(choiceNode);
         _currentPosition = choiceNode;
-    }
-
-    @Override
-    public void leavePheromone() {
-        for (Edge edge : _path) {
-            edge.addLocalPheromone(_qantumPheromone / _distanceTravelled);
-        }
     }
 }

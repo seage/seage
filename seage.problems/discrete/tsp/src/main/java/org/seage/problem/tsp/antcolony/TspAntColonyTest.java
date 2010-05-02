@@ -43,15 +43,16 @@ public class TspAntColonyTest {
 
     public void run(String path) throws Exception {
         City[] cities = CityProvider.readCities(path);
-        int iterations = 100, numAnts = 20;
+        int iterations = 300, numAnts = 30;
         double defaultPheromone = 0.0001, localEvaporation = 0.05, qantumPheromone = 1;
+        double alpha = 1, beta = 2;
         TspGraph graph = new TspGraph(cities, localEvaporation, defaultPheromone);
-        TspAntBrain brain = new TspAntBrain();
+        TspAntBrain brain = new TspAntBrain(alpha, beta);
         TspAntCreator antCreator = new TspAntCreator(graph, brain, numAnts, qantumPheromone);
         AntColony colony = new AntColony(antCreator, iterations);
         colony.beginExploring();
 //        graph.printPheromone();
-        colony.printGlobalBest();
+        System.out.println("Global best: "+colony.getGlobalBest());
         System.out.println("size: " + colony.getBestPath().size());
 
         // visualization
@@ -59,7 +60,7 @@ public class TspAntColonyTest {
         tour[0] = colony.getBestPath().get(0).getNode2().getId();
         for (int i = 1; i < tour.length; i++) {
             tour[i] = colony.getBestPath().get(i).getNode2().getId();
-            if(tour[i-1] == tour[i]){
+            if (tour[i - 1] == tour[i]) {
                 tour[i] = colony.getBestPath().get(i).getNode1().getId();
             }
         }

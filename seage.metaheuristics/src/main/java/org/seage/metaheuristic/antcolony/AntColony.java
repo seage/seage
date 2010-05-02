@@ -19,10 +19,10 @@ import java.util.*;
  */
 public class AntColony {
 
-    protected double _roundBest = Double.MAX_VALUE;
-    protected double _globalBest = Double.MAX_VALUE;
+    protected double _roundBest;
+    protected double _globalBest;
     protected Vector<Edge> _bestPath;
-    protected Vector<Vector<Edge>> _reports = new Vector<Vector<Edge>>();
+    protected Vector<Vector<Edge>> _reports;
     private int _numAnts;
     private int _numIterations;
     private Graph _graph;
@@ -30,12 +30,18 @@ public class AntColony {
     private Ant[] _ants;
 
     public AntColony(AntCreator antCreator, int numIterations) {
+        _roundBest = Double.MAX_VALUE;
+        _globalBest = Double.MAX_VALUE;
+        _reports = new Vector<Vector<Edge>>();
         _graph = antCreator._graph;
         _numAnts = antCreator._numAnts;
         _numIterations = numIterations;
         _antCreator = antCreator;
     }
 
+    /**
+     * Main part of ant-colony algorithm
+     */
     public void beginExploring() {
         for (int i = 0; i < _numIterations; i++) {
             _ants = _antCreator.createAnts();
@@ -44,13 +50,15 @@ public class AntColony {
             }
             solveRound();
             _graph.evaporating();
-
             for (int j = 0; j < _numAnts; j++) {
                 _ants[j].leavePheromone();
             }
         }
     }
 
+    /**
+     * Evaluation of each iteration
+     */
     protected void solveRound() {
         double pathLength = 0;
         int counter = 0;
@@ -74,11 +82,19 @@ public class AntColony {
         _reports.clear();
     }
 
+    /**
+     * The best solution
+     * @return The best path
+     */
     public Vector<Edge> getBestPath() {
         return _bestPath;
     }
 
-    public void printGlobalBest() {
-        System.out.println("Global best: " + (_globalBest - 1));
+    /**
+     * Value finding of the best solution
+     * @return - Value of the best solution
+     */
+    public double getGlobalBest() {
+        return _globalBest;
     }
 }

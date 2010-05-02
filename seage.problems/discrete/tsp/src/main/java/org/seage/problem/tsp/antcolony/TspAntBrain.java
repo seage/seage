@@ -15,9 +15,12 @@ import org.seage.metaheuristic.antcolony.Node;
  */
 public class TspAntBrain extends AntBrain {
 
+    public TspAntBrain(double alpha, double beta) {
+        super(alpha, beta);
+    }
+
     @Override
     public Edge getNextEdge(Vector<Node> visited, Node currentPosition) {
-        double alpha = 2, beta = 1;
         double sum = 0;
         double[] probabilities = new double[currentPosition.getConnectionMap().size()];
 
@@ -28,7 +31,7 @@ public class TspAntBrain extends AntBrain {
                 if (visited.contains(n)) {
                     continue;
                 } else {
-                    probabilities[i] = Math.pow(e.getLocalPheromone(), alpha) * Math.pow(1 / e.getEdgeLength(), beta);
+                    probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgeLength(), _beta);
                     sum += probabilities[i];
                 }
             }
@@ -37,30 +40,5 @@ public class TspAntBrain extends AntBrain {
             probabilities[i] /= sum;
         }
         return currentPosition.getConnectionMap().get(next(probabilities));
-    }
-
-    @Override
-    protected int next(double[] probs) {
-        double randomNumber = _rand.nextDouble();
-        double numberReach;
-
-        if (randomNumber <= 0.5) {
-            numberReach = 0;
-            for (int i = 0; i < probs.length; i++) {
-                numberReach += probs[i];
-                if (numberReach > randomNumber) {
-                    return i;
-                }
-            }
-        } else {
-            numberReach = 1;
-            for (int i = probs.length - 1; i >= 0; i--) {
-                numberReach -= probs[i];
-                if (numberReach <= randomNumber) {
-                    return i;
-                }
-            }
-        }
-        return probs.length - 1;
     }
 }
