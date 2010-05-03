@@ -41,7 +41,16 @@ public class Ant {
      * @return - ants path
      */
     public Vector<Edge> explore() {
-        return null;
+
+       List<Edge> edges = null;
+       while((edges = _brain.getNextEdges(_currentPosition, _visited)) != null)
+       {
+            Edge nextEdge = _brain.selectNextEdge(edges);
+            updatePosition(nextEdge);
+            _path.add(nextEdge);
+       }
+       leavePheromone();
+       return null; // Report
     }
 
     /**
