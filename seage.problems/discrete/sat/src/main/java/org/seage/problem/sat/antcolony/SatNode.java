@@ -9,7 +9,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.problem.sat.antColony;
+package org.seage.problem.sat.antcolony;
 
 import org.seage.metaheuristic.antcolony.Node;
 
