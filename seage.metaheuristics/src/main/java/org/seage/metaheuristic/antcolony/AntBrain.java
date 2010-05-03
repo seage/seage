@@ -38,6 +38,14 @@ public class AntBrain {
         return null;
     }
 
+    public List<Edge> getNextEdges(Node currentPosition, Vector<Node> visited) {
+        return null;
+    }
+
+    protected Edge selectNextEdge(List<Edge> edges)
+    {
+        return null;
+    }
     /**
      * Next edges index calculation
      * @param probs - probabilities all edges
