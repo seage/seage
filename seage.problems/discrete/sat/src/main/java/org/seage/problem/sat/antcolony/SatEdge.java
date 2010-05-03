@@ -9,7 +9,7 @@
  *     Martin Zaloga
  *     - Initial implementation
  */
-package org.seage.problem.sat.antColony;
+package org.seage.problem.sat.antcolony;
 
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.problem.sat.Formula;

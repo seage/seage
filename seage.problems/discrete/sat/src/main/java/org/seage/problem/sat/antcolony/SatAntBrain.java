@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.seage.problem.sat.antColony;
+package org.seage.problem.sat.antcolony;
 
 import java.util.Vector;
 import org.seage.metaheuristic.antcolony.AntBrain;

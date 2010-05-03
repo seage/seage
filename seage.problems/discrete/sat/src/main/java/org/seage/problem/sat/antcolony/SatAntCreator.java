@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.seage.problem.sat.antColony;
+package org.seage.problem.sat.antcolony;
 
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
