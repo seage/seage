@@ -10,7 +10,6 @@
  *     - Initial implementation
  */
 
-
 package org.seage.problem.rosenbrock.sannealing;
 
 import java.util.Random;
@@ -29,10 +28,35 @@ public class RosenbrockMoveManager implements IMoveManager
     {
         RosenbrockSolution rosSolution = ((RosenbrockSolution)solution).clone();
 
+        // X(i + 1) = Xi + C*u
+        // X is a solution
+        // u is a vector of random numbers
+        // C is a identity matrix
+        int length = rosSolution.getCoords().length;
+        for(int i = 0; i < length; i++)
+        {
+            rosSolution.getCoords()[i] = rosSolution.getCoords()[i] + randomNumberOneToMinusOne();
+        }
+
+        return (Solution)rosSolution;
+    }
+
+    private double randomNumberOneToMinusOne()
+    {
+        double random = Math.random();
+        int rand = rnd.nextInt(2);
+
+        return rand == 0 ? random : -random;
+    }
+
+    @Deprecated
+    public Solution getModifiedSolutionOld(Solution solution)
+    {
+        RosenbrockSolution rosSolution = ((RosenbrockSolution)solution).clone();
+
         int index = rnd.nextInt( rosSolution.getCoords().length );
         rosSolution.getCoords()[index] = Math.random();
 
         return (Solution)rosSolution;
     }
-
 }

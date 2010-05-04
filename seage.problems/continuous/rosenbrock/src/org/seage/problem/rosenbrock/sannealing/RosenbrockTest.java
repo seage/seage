@@ -21,7 +21,7 @@ public class RosenbrockTest {
 
     public static void main(String[] args)
     {
-        int dimension = 2;
+        int dimension = 30;
 
         RosenbrockSolution rosSolution = new RosenbrockSolution(dimension);
 
@@ -29,8 +29,8 @@ public class RosenbrockTest {
         {
             rosSolution.getCoords()[i] = Math.random();
         }
-        
-        SimulatedAnnealing sa = new SimulatedAnnealing(new RosenbrockObjectiveFunction() , new RosenbrockMoveManager());
+
+        SimulatedAnnealing sa = new SimulatedAnnealing(new RosenbrockObjectiveFunction(), new RosenbrockMoveManager());
         sa.setAnnealingCoefficient(0.99);
         sa.setMaximalIterationCount(2000);
         sa.setMaximalSuccessIterationCount(200);
@@ -39,9 +39,12 @@ public class RosenbrockTest {
 
         sa.startSearching(rosSolution);
 
-        System.out.println(">BEST " + rosSolution.getObjectiveValue());
+        System.out.println(">BEST " + sa.getBestSolution().getObjectiveValue());
         System.out.println(">COORDS ");
+
         for(int i = 0; i < dimension; i++)
-            System.out.print(" " + rosSolution.getCoords()[i]);
+            System.out.print(" " + ((RosenbrockSolution)sa.getBestSolution()).getCoords()[i]);
+
+        System.out.println("");
     }
 }

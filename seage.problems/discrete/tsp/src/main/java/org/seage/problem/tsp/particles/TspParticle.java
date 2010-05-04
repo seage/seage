@@ -27,7 +27,8 @@ public abstract class TspParticle extends Particle
     public Integer[] getTour()
     {
         Integer[] tour = new Integer[getCoords().length];
-        for(int i=0;i<tour.length;i++) tour[i] = i;
+
+        for(int i = 0; i < tour.length; i++) tour[i] = i;
 
         java.util.Arrays.sort(tour, new CoordComparator(getCoords()));
 

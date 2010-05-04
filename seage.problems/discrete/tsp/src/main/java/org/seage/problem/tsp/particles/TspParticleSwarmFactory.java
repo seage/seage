@@ -17,7 +17,6 @@ import org.seage.aal.particles.ParticleSwarmAdapter;
 import org.seage.data.DataNode;
 
 import org.seage.metaheuristic.particles.Particle;
-import org.seage.metaheuristic.particles.ParticleSwarmEvent;
 import org.seage.problem.tsp.City;
 
 
@@ -27,7 +26,6 @@ import org.seage.problem.tsp.City;
  */
 public class TspParticleSwarmFactory implements IAlgorithmFactory
 {
-//    private TspSolution _tspSolution;
     private City[] _cities;
 
     private int _numParticles;
@@ -52,10 +50,10 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-                // TODO: B - initial particles have to be inicialized
+//                Particle[] particles = generateInitialSolutions();
 //                for(int i = 0; i < source.length; i++)
 //                {
-//                    Integer[] tour = ((TspParticle)_particleSwarm.getParticles()[i]).getTour();
+//                    Integer[] tour = ((TspParticle)particles[i]).getTour();
 //                    for(int j = 0; j < source[i].length; j++)
 //                    {
 //                        tour[j] = (Integer)source[i][j];
@@ -96,9 +94,6 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
             // Initial coords
             for(int i = 0; i < _cities.length; i++)
                 particle.getCoords()[i] = Math.random();
-            
-            for(int i = 0; i < _cities.length; i++)
-                ((TspParticle)particle).getTour()[i] = i;
 
             // Initial velocity
             for(int i = 0; i < _cities.length; i++)
