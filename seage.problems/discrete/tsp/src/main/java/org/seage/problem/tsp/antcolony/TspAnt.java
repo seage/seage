@@ -29,36 +29,22 @@ public class TspAnt extends Ant {
         _visited.add(start);
     }
 
-    @Override
-    public Vector<Edge> explore() {
-        for (int i = 0; i < _graph.getNodeList().size() - 1; i++) {
-            updatePosition(_brain.getNextEdge(_visited, _currentPosition));
-        }
-        for (Edge last : _graph.getEdgeList()) {
-            Node node1 = last.getNode1();
-            Node node2 = last.getNode2();
-            if (node1.equals(_currentPosition) || node2.equals(_currentPosition)) {
-                if (node1.equals(_startPosition) || node2.equals(_startPosition)) {
-                    _distanceTravelled += last.getEdgeLength();
-                    _path.add(last);
-                    return _path;
-                }
-            }
-        }
-        return _path;
-    }
-
-    @Override
-    protected void updatePosition(Edge arcChoice) {
-        _path.add(arcChoice);
-        Node choiceNode;
-        if (arcChoice.getNode1().equals(_currentPosition)) {
-            choiceNode = (arcChoice.getNode2());
-        } else {
-            choiceNode = (arcChoice.getNode1());
-        }
-        _distanceTravelled += arcChoice.getEdgeLength();
-        _visited.add(choiceNode);
-        _currentPosition = choiceNode;
-    }
+//    @Override
+//    public Vector<Edge> explore() {
+//        for (int i = 0; i < _graph.getNodeList().size() - 1; i++) {
+//            updatePosition(_brain.getNextEdge(_visited, _currentPosition));
+//        }
+//        for (Edge last : _graph.getEdgeList()) {
+//            Node node1 = last.getNode1();
+//            Node node2 = last.getNode2();
+//            if (node1.equals(_currentPosition) || node2.equals(_currentPosition)) {
+//                if (node1.equals(_startPosition) || node2.equals(_startPosition)) {
+//                    _path.add(last);
+//                    break;
+//                }
+//            }
+//        }
+//        _distanceTravelled = _brain.pathLength(_path);
+//        return _path;
+//    }
 }

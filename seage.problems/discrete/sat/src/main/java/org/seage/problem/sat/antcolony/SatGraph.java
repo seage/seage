@@ -8,6 +8,7 @@ import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.FormulaEvaluator;
 
 /**
  *
@@ -15,14 +16,14 @@ import org.seage.problem.sat.Formula;
  */
 public class SatGraph extends Graph implements java.lang.Cloneable {
 
-    boolean[] _preparedSolution;
+    private boolean[] _preparedSolution;
 
     public SatGraph(Formula formula, double evaporation, double defaultPheromone) {
         super(evaporation);
-        addNode(0, false);
+        _nodeList.add(new Node(0));
         for (int i = 1; i <= formula.getLiteralCount(); i++) {
-            addNode(i, true);
-            addNode(-i, false);
+            _nodeList.add(new Node(i));
+            _nodeList.add(new Node(-i));
         }
         _nuberNodes = _nodeList.size();
         _preparedSolution = new boolean[formula.getLiteralCount()];
@@ -33,62 +34,56 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
         setDefaultPheromone(defaultPheromone);
     }
 
+    /**
+     * Creating solution in form for determinig
+     * @param node - Actual node
+     * @param preparedSolution - pre-prepared solution
+     * @return - Prepared array of values
+     */
+    private boolean[] createSol(Node node) {
+        boolean[] solution = _preparedSolution.clone();
+        int index = Math.abs(node.getId());
+        if (node.getId() < 0) {
+            solution[index - 1] = false;
+        }
+        return solution;
+    }
 
     /**
-     * Nones adding
-     * @param id - Identification number
-     * @param value - Value of atual node
+     * Making edges
+     * @param start - Start node
+     * @param end - Destination node
+     * @param formula - Readed formula
      */
-    public void addNode(int id, boolean value) {
-        _nodeList.add(new SatNode(id, value));
+    private void makeEdge(Node start, Node end, Formula formula) {
+        Edge edge = new Edge(start, end, _localEvaporation);
+        edge.setEdgeLength(FormulaEvaluator.evaluate(formula, createSol(end)));
+        _edgeList.add(edge);
+        start.addConnection(edge);
     }
 
     /**
      * List of edges filling
      * @param formula - Readed formula
      */
-    public void fillEdgeMap(Formula formula) {
-        SatEdge satEdge1, satEdge2, satEdge3, satEdge4;
-        SatNode satNode1, satNode2, satNode3, satNode4;
-
-        satNode1 = (SatNode) _nodeList.get(0);
-        satNode2 = (SatNode) _nodeList.get(1);
-        satNode3 = (SatNode) _nodeList.get(2);
-        satEdge1 = new SatEdge(satNode1, satNode2, _localEvaporation, formula, _preparedSolution);
-        satEdge2 = new SatEdge(satNode1, satNode3, _localEvaporation, formula, _preparedSolution);
-        _edgeList.add(satEdge1);
-        _edgeList.add(satEdge2);
-        satNode1.addConnection(satEdge1);
-        satNode1.addConnection(satEdge2);
-
+    private void fillEdgeMap(Formula formula) {
+        makeEdge(_nodeList.get(0), _nodeList.get(1), formula);
+        makeEdge(_nodeList.get(0), _nodeList.get(2), formula);
         for (int i = 1; i < formula.getLiteralCount() * 2 - 2; i += 2) {
-            satNode1 = (SatNode) _nodeList.get(i);
-            satNode2 = (SatNode) _nodeList.get(i + 1);
-            satNode3 = (SatNode) _nodeList.get(i + 2);
-            satNode4 = (SatNode) _nodeList.get(i + 3);
-            satEdge1 = new SatEdge(satNode1, satNode3, _localEvaporation, formula, _preparedSolution);
-            satEdge2 = new SatEdge(satNode1, satNode4, _localEvaporation, formula, _preparedSolution);
-            satEdge3 = new SatEdge(satNode2, satNode3, _localEvaporation, formula, _preparedSolution);
-            satEdge4 = new SatEdge(satNode2, satNode4, _localEvaporation, formula, _preparedSolution);
-            _edgeList.add(satEdge1);
-            _edgeList.add(satEdge2);
-            _edgeList.add(satEdge3);
-            _edgeList.add(satEdge4);
-            satNode1.addConnection(satEdge1);
-            satNode1.addConnection(satEdge2);
-            satNode2.addConnection(satEdge3);
-            satNode2.addConnection(satEdge4);
+            makeEdge(_nodeList.get(i), _nodeList.get(i + 2), formula);
+            makeEdge(_nodeList.get(i), _nodeList.get(i + 3), formula);
+            makeEdge(_nodeList.get(i + 1), _nodeList.get(i + 2), formula);
+            makeEdge(_nodeList.get(i + 1), _nodeList.get(i + 3), formula);
         }
         _nuberEdges = _edgeList.size();
     }
 
     @Override
-    public void printPheromone(){
-        for(Node n : _nodeList)
-        {
-            System.out.println("n1:"+n.getId());
-            for(Edge e : n.getConnectionMap()){
-                System.out.println(e.getEdgeLength()+"  n2:"+e.getNode2().getId()+"  ph:"+e.getLocalPheromone());
+    public void printPheromone() {
+        for (Node n : _nodeList) {
+            System.out.println("n1:" + n.getId());
+            for (Edge e : n.getConnectionMap()) {
+                System.out.println(e.getEdgeLength() + "  n2:" + e.getNode2().getId() + "  ph:" + e.getLocalPheromone());
             }
         }
     }

@@ -17,42 +17,47 @@ public class TspGraph extends Graph {
 
     public TspGraph(City[] cities, double locEvaporCoeff, double defaultPheromone) {
         super(locEvaporCoeff);
-        for (City c : cities) {
-            addNode(c.X, c.Y);
+        for (int i = 0; i < cities.length; i++) {
+            int id = _nodeList.size();
+            _nodeList.add(new Node(id));
         }
         _nuberNodes = _nodeList.size();
-        fillEdgeMap();
+        fillEdgeMap(cities);
         setDefaultPheromone(defaultPheromone);
     }
 
     /**
-     * Adding node in graph
-     * @param x - x-coordination
-     * @param y - y-coordination
+     * Edge length calculating
+     * @param start - Starting node
+     * @param end - Terminate node
+     * @param cities - Readed cities
+     * @return - Euclide edge length
      */
-    public void addNode(double x, double y) {
-        int id = _nodeList.size();
-        _nodeList.add(new TspNode(id, x, y));
+    public double calculateEdgeLength(Node start, Node end, City[] cities) {
+        double _dX = (cities[start.getId()].X - cities[end.getId()].X);
+        double _dY = (cities[start.getId()].Y - cities[end.getId()].Y);
+        return Math.sqrt(_dX * _dX + _dY * _dY);
     }
 
     /**
      * List of graph edges filling
      */
-    public void fillEdgeMap() {
-        TspEdge tspEdg;
+    public void fillEdgeMap(City[] cities) {
+        Edge helpEdge;
         boolean same = false;
         for (Node i : _nodeList) {
             for (Node j : _nodeList) {
                 if (!i.equals(j)) {
-                    TspEdge theEdge = new TspEdge((TspNode)i, (TspNode)j, _localEvaporation);
+                    Edge makedEdge = new Edge(i, j, _localEvaporation);
+                    makedEdge.setEdgeLength(calculateEdgeLength(i, j, cities));
                     for (Edge k : _edgeList) {
-                        tspEdg = (TspEdge)k;
-                        if (tspEdg.getNode1().equals(j) && tspEdg.getNode2().equals(i)) {
+                        helpEdge = k;
+                        if (helpEdge.getNode1().equals(j) && helpEdge.getNode2().equals(i)) {
                             same = true;
                         }
                     }
                     if (!same) {
-                        _edgeList.add(theEdge);
+                        _edgeList.add(makedEdge);
                     }
                 }
                 same = false;
@@ -69,12 +74,11 @@ public class TspGraph extends Graph {
     }
 
     @Override
-    public void printPheromone(){
-        for(Node n : _nodeList)
-        {
+    public void printPheromone() {
+        for (Node n : _nodeList) {
             System.out.println(n.getId());
-            for(Edge e : n.getConnectionMap()){
-                System.out.printf("\t%3.3f\t%3.5f\n",e.getEdgeLength(),e.getLocalPheromone());
+            for (Edge e : n.getConnectionMap()) {
+                System.out.printf("\t%3.3f\t%3.5f\n", e.getEdgeLength(), e.getLocalPheromone());
             }
         }
     }

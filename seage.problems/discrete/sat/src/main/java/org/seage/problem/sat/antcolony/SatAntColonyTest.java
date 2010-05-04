@@ -23,7 +23,7 @@ public class SatAntColonyTest {
         Formula formula = FormulaReader.readFormula(path);
         double qantumPheromone = 0.01, evaporation = 0.05, defaultPheromone = 1;
         double alpha = 1, beta = 2;
-        int numAnts = 250, iterations = 500;
+        int numAnts = 100, iterations = 500;
 
         SatGraph graph = new SatGraph(formula, evaporation, defaultPheromone);
         SatAntBrain brain = new SatAntBrain(alpha, beta, formula);

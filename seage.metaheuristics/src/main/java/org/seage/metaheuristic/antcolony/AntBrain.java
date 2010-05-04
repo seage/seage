@@ -28,24 +28,27 @@ public class AntBrain {
         _rand = new Random(System.currentTimeMillis());
     }
 
-    /**
-     * Following edge choice
-     * @param visited - All visited nodes
-     * @param currentPosition - Actual position
-     * @return - Selected edge
-     */
-    public Edge getNextEdge(Vector<Node> visited, Node currentPosition) {
+    public double pathLength(Vector<Edge> path) {
+        return 0;
+    }
+
+//    /**
+//     * Following edge choice
+//     * @param visited - All visited nodes
+//     * @param currentPosition - Actual position
+//     * @return - Selected edge
+//     */
+//    public Edge getNextEdge(Vector<Node> visited, Node currentPosition) {
+//        return null;
+//    }
+    public List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited) {
         return null;
     }
 
-    public List<Edge> getNextEdges(Node currentPosition, Vector<Node> visited) {
+    protected Edge selectNextEdge(List<Edge> edges) {
         return null;
     }
 
-    protected Edge selectNextEdge(List<Edge> edges)
-    {
-        return null;
-    }
     /**
      * Next edges index calculation
      * @param probs - probabilities all edges
