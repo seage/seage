@@ -18,7 +18,7 @@ import org.seage.metaheuristic.sannealing.Solution;
  *
  * @author Jan Zmatlik
  */
-public class RosenbrockSolution extends Solution{
+public class RosenbrockSolution extends Solution {
 
     private double[] _coords;
 

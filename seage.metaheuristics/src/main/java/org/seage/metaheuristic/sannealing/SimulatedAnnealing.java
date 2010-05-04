@@ -137,7 +137,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
             _currentIteration++;
             innerIterationCount++;
                 
-            // Move randomly to new locations
+            // Move to new locations
             Solution modifiedSolution = _moveManager.getModifiedSolution( _currentSolution );
 
             // Calculate objective function and set value to modified solution
