@@ -42,22 +42,30 @@ public class Ant {
      */
     public Vector<Edge> explore() {
 
-       List<Edge> edges = null;
-       while((edges = _brain.getNextEdges(_currentPosition, _visited)) != null)
-       {
+        List<Edge> edges = _brain.getAvailableEdges(_currentPosition, _visited);
+        while (edges.size() != 0) {
             Edge nextEdge = _brain.selectNextEdge(edges);
             updatePosition(nextEdge);
             _path.add(nextEdge);
-       }
-       leavePheromone();
-       return null; // Report
+        }
+        leavePheromone();
+        return _path; // Report
     }
 
     /**
      * Update ants position
      * @param selectedEdge - Actual selected edge
      */
-    protected void updatePosition(Edge selectedEdge) {
+    protected void updatePosition(Edge arcChoice) {
+        Node choiceNode;
+        if (arcChoice.getNode1().equals(_currentPosition)) {
+            choiceNode = (arcChoice.getNode2());
+        } else {
+            choiceNode = (arcChoice.getNode1());
+        }
+        _path.add(arcChoice);
+        _visited.add(choiceNode);
+        _currentPosition = choiceNode;
     }
 
     /**
