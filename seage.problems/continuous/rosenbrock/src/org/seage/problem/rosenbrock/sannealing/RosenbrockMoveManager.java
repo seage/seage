@@ -24,7 +24,8 @@ public class RosenbrockMoveManager implements IMoveManager
 {
     Random rnd = new Random();
 
-    public Solution getModifiedSolution(Solution solution)
+    @Deprecated
+    public Solution getModifiedSolutionOld(Solution solution)
     {
         RosenbrockSolution rosSolution = ((RosenbrockSolution)solution).clone();
 
@@ -49,8 +50,18 @@ public class RosenbrockMoveManager implements IMoveManager
         return rand == 0 ? random : -random;
     }
 
+    public Solution getModifiedSolution(Solution solution)
+    {
+        RosenbrockSolution rosSolution = ((RosenbrockSolution)solution).clone();
+
+        int index = rnd.nextInt( rosSolution.getCoords().length );
+        rosSolution.getCoords()[index] = randomNumberOneToMinusOne();
+
+        return (Solution)rosSolution;
+    }
+
     @Deprecated
-    public Solution getModifiedSolutionOld(Solution solution)
+    public Solution getModifiedSolutionOldOld(Solution solution)
     {
         RosenbrockSolution rosSolution = ((RosenbrockSolution)solution).clone();
 
