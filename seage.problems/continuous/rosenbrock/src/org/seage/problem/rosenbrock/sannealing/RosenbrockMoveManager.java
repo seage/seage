@@ -55,7 +55,7 @@ public class RosenbrockMoveManager implements IMoveManager
         RosenbrockSolution rosSolution = ((RosenbrockSolution)solution).clone();
 
         int index = rnd.nextInt( rosSolution.getCoords().length );
-        rosSolution.getCoords()[index] = randomNumberOneToMinusOne();
+        rosSolution.getCoords()[index] += randomNumberOneToMinusOne();
 
         return (Solution)rosSolution;
     }

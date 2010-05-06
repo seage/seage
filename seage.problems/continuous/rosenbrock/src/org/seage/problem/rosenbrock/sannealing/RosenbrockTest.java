@@ -32,7 +32,7 @@ public class RosenbrockTest {
 
         SimulatedAnnealing sa = new SimulatedAnnealing(new RosenbrockObjectiveFunction(), new RosenbrockMoveManager());
         sa.setAnnealingCoefficient(0.99);
-        sa.setMaximalIterationCount(2000);
+        sa.setMaximalIterationCount(10000);
         sa.setMaximalSuccessIterationCount(200);
         sa.setMaximalTemperature(200);
         sa.setMinimalTemperature(0.01);
