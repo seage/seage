@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.seage.problem.tsp.antcolony;
+package org.seage.problem.sat.antcolony2;
 
 import java.util.Random;
 import org.seage.metaheuristic.antcolony.Ant;
@@ -15,11 +15,11 @@ import org.seage.metaheuristic.antcolony.Node;
  *
  * @author Zagy
  */
-public class TspAnt extends Ant {
+public class SatAnt2 extends Ant {
 
     private Random _rand;
 
-    public TspAnt(Graph graph, double qantumPheromone, AntBrain brain) {
+    public SatAnt2(Graph graph, double qantumPheromone, AntBrain brain) {
         super(graph, qantumPheromone, brain);
         _rand = new Random(hashCode());
         Node start = _graph.getNodeList().get(_rand.nextInt(_graph.getNodeList().size()));

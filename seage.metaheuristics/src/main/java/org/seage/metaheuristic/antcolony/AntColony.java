@@ -19,10 +19,10 @@ import java.util.*;
  */
 public class AntColony {
 
-    protected double _roundBest;
-    protected double _globalBest;
-    protected Vector<Edge> _bestPath;
-    protected Vector<Vector<Edge>> _reports;
+    private double _roundBest;
+    private double _globalBest;
+    private Vector<Edge> _bestPath;
+    private Vector<Vector<Edge>> _reports;
     private int _numAnts;
     private int _numIterations;
     private Graph _graph;
@@ -59,7 +59,7 @@ public class AntColony {
     /**
      * Evaluation of each iteration
      */
-    protected void solveRound() {
+    private void solveRound() {
         double pathLength = 0;
         int counter = 0;
         for (Vector<Edge> vector : _reports) {

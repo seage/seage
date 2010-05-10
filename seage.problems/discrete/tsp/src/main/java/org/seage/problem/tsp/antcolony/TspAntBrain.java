@@ -4,6 +4,7 @@
  */
 package org.seage.problem.tsp.antcolony;
 
+import java.util.List;
 import java.util.Vector;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
@@ -20,7 +21,7 @@ public class TspAntBrain extends AntBrain {
     }
 
     @Override
-    public double pathLength(Vector<Edge> path){
+    protected double pathLength(Vector<Edge> path){
         double totalLength = 0;
         for(Edge e : path){
             totalLength += e.getEdgeLength();
@@ -28,26 +29,33 @@ public class TspAntBrain extends AntBrain {
         return totalLength;
     }
 
-//    @Override
-//    public Edge getNextEdge(Vector<Node> visited, Node currentPosition) {
-//        double sum = 0;
-//        double[] probabilities = new double[currentPosition.getConnectionMap().size()];
-//
-//        // for each Edges
-//        for (int i = 0; i < probabilities.length; i++) {
-//            Edge e = currentPosition.getConnectionMap().get(i);
-//            for (Node n : e.getConnections()) {
-//                if (visited.contains(n)) {
-//                    continue;
-//                } else {
-//                    probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgeLength(), _beta);
-//                    sum += probabilities[i];
-//                }
-//            }
-//        }
-//        for (int i = 0; i < probabilities.length; i++) {
-//            probabilities[i] /= sum;
-//        }
-//        return currentPosition.getConnectionMap().get(next(probabilities));
-//    }
+    @Override
+    protected List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited) {
+        if((currentPosition.getConnectionMap().size() + 1) == visited.size()){
+            return null;
+        }
+        return currentPosition.getConnectionMap();
+    }
+
+    @Override
+    protected Edge selectNextEdge(List<Edge> edges, Vector<Node> visited) {
+        double sum = 0;
+        double[] probabilities = new double[edges.size()];
+        // for each Edges
+        for (int i = 0; i < probabilities.length; i++) {
+            Edge e = edges.get(i);
+            for (Node n : e.getConnections()) {
+                if (visited.contains(n)) {
+                    continue;
+                } else {
+                    probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgeLength(), _beta);
+                    sum += probabilities[i];
+                }
+            }
+        }
+        for (int i = 0; i < probabilities.length; i++) {
+            probabilities[i] /= sum;
+        }
+        return edges.get(next(probabilities));
+    }
 }

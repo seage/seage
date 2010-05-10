@@ -4,7 +4,6 @@
  */
 package org.seage.problem.sat.antcolony;
 
-import java.util.Vector;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
@@ -24,15 +23,6 @@ import org.seage.metaheuristic.antcolony.Node;
         _currentPosition = start;
         _visited.add(start);
     }
-
-//    @Override
-//    public Vector<Edge> explore() {
-//        for (int i = 0; i < (_graph.getNodeList().size() - 1)/2; i++) {
-//            updatePosition(_brain.getNextEdge(null, _currentPosition));
-//        }
-//        _distanceTravelled = _brain.pathLength(_path);
-//        return _path;
-//    }
 
     @Override
     protected void updatePosition(Edge chosedEdge) {

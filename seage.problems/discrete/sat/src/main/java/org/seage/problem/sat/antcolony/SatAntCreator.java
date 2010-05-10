@@ -21,7 +21,7 @@ public class SatAntCreator extends AntCreator {
     }
 
     @Override
-    public Ant[] createAnts() {
+    protected Ant[] createAnts() {
         SatAnt[] ants = new SatAnt[_numAnts];
         for (int i = 0; i < _numAnts; i++) {
             ants[i] = new SatAnt(_graph, _qantumPheromone, _brain);

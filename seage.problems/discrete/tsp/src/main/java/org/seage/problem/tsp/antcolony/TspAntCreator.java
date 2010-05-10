@@ -15,12 +15,12 @@ import org.seage.metaheuristic.antcolony.Graph;
  */
 public class TspAntCreator extends AntCreator {
 
-    public TspAntCreator(Graph graph, AntBrain brain, int numAnts, double qantumPheromone) {
+    protected TspAntCreator(Graph graph, AntBrain brain, int numAnts, double qantumPheromone) {
         super(graph, brain, numAnts, qantumPheromone);
     }
 
     @Override
-    public Ant[] createAnts() {
+    protected Ant[] createAnts() {
         TspAnt[] ants = new TspAnt[_numAnts];
         for (int i = 0; i < _numAnts; i++) {
             ants[i] = new TspAnt(_graph, _qantumPheromone, _brain);
