@@ -54,6 +54,7 @@ public class TspAntColonyTest {
 //        graph.printPheromone();
         System.out.println("Global best: "+colony.getGlobalBest());
         System.out.println("size: " + colony.getBestPath().size());
+        System.out.println("nodes: "+graph.getNodeList().size());
 
         // visualization
         Integer[] tour = new Integer[colony.getBestPath().size()];

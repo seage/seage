@@ -26,7 +26,7 @@ public class AntCreator {
      * Making ants
      * @return - Ants
      */
-    public Ant[] createAnts() {
+    protected Ant[] createAnts() {
         return null;
     }
 

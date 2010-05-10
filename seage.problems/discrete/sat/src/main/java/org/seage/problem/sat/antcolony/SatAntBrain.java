@@ -25,30 +25,16 @@ public class SatAntBrain extends AntBrain {
         _formula = formula;
     }
 
-//    @Override
-//    public Edge getNextEdge(Vector<Node> visited, Node currentPosition) {
-//        double sum = 0;
-//        double[] probabilities = new double[currentPosition.getConnectionMap().size()];
-//
-//        // for each Edges
-//        for (int i = 0; i < probabilities.length; i++) {
-//            Edge e = currentPosition.getConnectionMap().get(i);
-//            probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgeLength(), _beta);
-//            sum += probabilities[i];
-//        }
-//        for (int i = 0; i < probabilities.length; i++) {
-//            probabilities[i] /= sum;
-//        }
-//        return currentPosition.getConnectionMap().get(next(probabilities));
-//    }
-
     @Override
-    public List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited) {
+    protected List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited) {
+        if(currentPosition.getConnectionMap().size() == 0){
+            return null;
+        }
         return currentPosition.getConnectionMap();
     }
 
     @Override
-    protected Edge selectNextEdge(List<Edge> edges) {
+    protected Edge selectNextEdge(List<Edge> edges, Vector<Node> visited) {
         double[] probabilities = new double[edges.size()];
         double sum = 0;
         // for each Edges
@@ -69,7 +55,7 @@ public class SatAntBrain extends AntBrain {
      * @return - Advantageous solutions
      */
     @Override
-    public double pathLength(Vector<Edge> path) {
+    protected double pathLength(Vector<Edge> path) {
         boolean[] solution = new boolean[_formula.getLiteralCount()];
         Node node;
         for (int i = 0; i < _formula.getLiteralCount(); i++) {
@@ -80,6 +66,6 @@ public class SatAntBrain extends AntBrain {
                 solution[i] = true;
             }
         }
-        return (FormulaEvaluator.evaluate(_formula, solution) + 1);
+        return (FormulaEvaluator.evaluate(_formula, solution) + 0.1);
     }
 }

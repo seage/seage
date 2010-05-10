@@ -20,7 +20,7 @@ import java.util.*;
 public class AntBrain {
 
     protected double _alpha, _beta;
-    protected Random _rand;
+    private Random _rand;
 
     public AntBrain(double alpha, double beta) {
         _alpha = alpha;
@@ -28,24 +28,15 @@ public class AntBrain {
         _rand = new Random(System.currentTimeMillis());
     }
 
-    public double pathLength(Vector<Edge> path) {
+    protected double pathLength(Vector<Edge> path) {
         return 0;
     }
 
-//    /**
-//     * Following edge choice
-//     * @param visited - All visited nodes
-//     * @param currentPosition - Actual position
-//     * @return - Selected edge
-//     */
-//    public Edge getNextEdge(Vector<Node> visited, Node currentPosition) {
-//        return null;
-//    }
-    public List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited) {
+    protected List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited) {
         return null;
     }
 
-    protected Edge selectNextEdge(List<Edge> edges) {
+    protected Edge selectNextEdge(List<Edge> edges, Vector<Node> visited) {
         return null;
     }
 
@@ -74,6 +65,6 @@ public class AntBrain {
                 }
             }
         }
-        return probs.length - 1;
+        return 0;
     }
 }

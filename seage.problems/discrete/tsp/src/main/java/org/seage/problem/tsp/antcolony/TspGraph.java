@@ -17,8 +17,7 @@ public class TspGraph extends Graph {
 
     public TspGraph(City[] cities, double locEvaporCoeff, double defaultPheromone) {
         super(locEvaporCoeff);
-        for (int i = 0; i < cities.length; i++) {
-            int id = _nodeList.size();
+        for (int id = 0; id < cities.length; id++) {
             _nodeList.add(new Node(id));
         }
         _nuberNodes = _nodeList.size();
@@ -33,7 +32,7 @@ public class TspGraph extends Graph {
      * @param cities - Readed cities
      * @return - Euclide edge length
      */
-    public double calculateEdgeLength(Node start, Node end, City[] cities) {
+    private double calculateEdgeLength(Node start, Node end, City[] cities) {
         double _dX = (cities[start.getId()].X - cities[end.getId()].X);
         double _dY = (cities[start.getId()].Y - cities[end.getId()].Y);
         return Math.sqrt(_dX * _dX + _dY * _dY);
@@ -42,7 +41,7 @@ public class TspGraph extends Graph {
     /**
      * List of graph edges filling
      */
-    public void fillEdgeMap(City[] cities) {
+    private void fillEdgeMap(City[] cities) {
         Edge helpEdge;
         boolean same = false;
         for (Node i : _nodeList) {

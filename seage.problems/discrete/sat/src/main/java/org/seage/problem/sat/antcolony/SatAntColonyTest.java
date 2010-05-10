@@ -31,7 +31,7 @@ public class SatAntColonyTest {
         SatAntCreator antCreator = new SatAntCreator(graph, brain, numAnts, qantumPheromone);
         AntColony colony = new AntColony(antCreator, iterations);
         colony.beginExploring();
-        System.out.println("Global best: "+(colony.getGlobalBest()-1));
+        System.out.println("Global best: "+(colony.getGlobalBest()-0.1));
         //graph.printPheromone();
     }
 }

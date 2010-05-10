@@ -23,10 +23,10 @@ public class Ant {
     protected Node _startPosition;
     protected Node _currentPosition;
     protected double _distanceTravelled;
-    protected double _qantumPheromone;
     protected Vector<Node> _visited;
     protected Vector<Edge> _path;
     protected AntBrain _brain;
+    private double _qantumPheromone;
 
     public Ant(Graph graph, double qantumPheromone, AntBrain brain) {
         _graph = graph;
@@ -40,16 +40,23 @@ public class Ant {
      * Ant passage through the graph
      * @return - ants path
      */
-    public Vector<Edge> explore() {
-
+    protected Vector<Edge> explore() {
         List<Edge> edges = _brain.getAvailableEdges(_currentPosition, _visited);
-        while (edges.size() != 0) {
-            Edge nextEdge = _brain.selectNextEdge(edges);
+        while (edges != null) {
+            Edge nextEdge = _brain.selectNextEdge(edges, _visited);
             updatePosition(nextEdge);
-            _path.add(nextEdge);
+            edges = _brain.getAvailableEdges(_currentPosition, _visited);
         }
+        lastNodeAdding();
+        _distanceTravelled = _brain.pathLength(_path);
         leavePheromone();
         return _path; // Report
+    }
+
+    /**
+     * This method is for full-graph
+     */
+    protected void lastNodeAdding() {
     }
 
     /**
@@ -71,7 +78,7 @@ public class Ant {
     /**
      * Pheromone leaving
      */
-    public void leavePheromone() {
+    protected void leavePheromone() {
         for (Edge edge : _path) {
             edge.addLocalPheromone(_qantumPheromone / (_distanceTravelled));
         }
