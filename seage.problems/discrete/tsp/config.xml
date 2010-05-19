@@ -5,7 +5,7 @@
    xsi:schemaLocation='http://xml.seage.org/schema config.xsd'>
 
     <problem problemName="TSP" runAlgorithmId="SimulatedAnnealing">
-        <instance name="eil51" path="data/eil51.tsp"/>
+        <instance name="eil101" path="data/pcb3038.tsp"/>
         <visualizer outPath="output/eil51.png" width="800" height="800"/>
     </problem>
 
@@ -34,7 +34,7 @@
             initSolutionType="greedy"
             maxInnerIterations="2000"
             maxTemperature="200"
-            minTemperature="0.01"
+            minTemperature="0.1"
             numInnerSuccesses="200"
             numSolutions="1"/>
     </algorithm>
