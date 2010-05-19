@@ -49,7 +49,7 @@ public class HillClimber implements IHillClimber {
      * @param solution - Object with an initial solution, which is made better
      * @param classic - Parameter that switchs between the classical and improved Hill-Climber algorithm
      */
-    public void startSearching(Solution solution, String classic) throws Exception {
+    public void startSearching(Solution solution) throws Exception {
         _currentSolution = solution;
         int iter = 0;
         double bestVal = 0;
@@ -57,15 +57,11 @@ public class HillClimber implements IHillClimber {
         while (iter < _numIter) {
             IMove[] moves = _moveManager.getAllMoves(_currentSolution);
 
-            /*Checking version of Hill-Climber algorithm (worsening / no worsening)*/
-            if (classic.equals("clasic") || classic.equals("Clasic")) {
-                bestVal = Double.MAX_VALUE; //worsening
-            } else {
-                bestVal = solution.getObjectiveValue(); // no worsening
-            }
+            bestVal = solution.getObjectiveValue();
 
             IMove best = null;
             double val;
+            boolean noBetterMove = true;
 
             /*Browsing generated steps*/
             for (IMove m : moves) {
@@ -75,7 +71,11 @@ public class HillClimber implements IHillClimber {
                 if (val < bestVal) {
                     best = m;
                     bestVal = val;
+                    noBetterMove = false;
                 }
+            }
+            if (noBetterMove) {
+                return;
             }
 
             /*Selection of the best actual solution*/
@@ -94,21 +94,21 @@ public class HillClimber implements IHillClimber {
      * @param classic - Determines whether the solution can deteriorate
      * @param numRestarts - Number of restarts algorithm
      */
-    public void startRestartedSearching(String classic, int numRestarts) throws Exception {
+    public void startRestartedSearching(int numRestarts) throws Exception {
         int countRest = 0;
         double bestDist = Double.MAX_VALUE;
         Solution bestSolution = null;
 
         while (countRest <= numRestarts) {
 
-            startSearching(_solutionGenerator.generateSolution(), classic);
+            startSearching(_solutionGenerator.generateSolution());
+            countRest++;
 
             /*Choosing the best solution*/
             if (bestDist > getBestSolution().getObjectiveValue()) {
                 bestDist = getBestSolution().getObjectiveValue();
                 bestSolution = getBestSolution();
             }
-            countRest++;
         }
         _currentSolution = bestSolution;
         _currentSolution.setObjectiveValue(bestDist);

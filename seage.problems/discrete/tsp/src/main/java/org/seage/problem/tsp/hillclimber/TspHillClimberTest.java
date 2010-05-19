@@ -38,7 +38,7 @@ public class TspHillClimberTest {
      */
     public static void main(String[] args) {
         try {
-            new TspHillClimberTest().run(args[0], "my", "greedy", 500, 500);
+            new TspHillClimberTest().run(args[0], "greedy", 500, 500);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
@@ -53,13 +53,13 @@ public class TspHillClimberTest {
      * @param restarts - Numer of repeat optimalizations algorithm
      * @param iteration - Number of iteration algorthm
      */
-    public void run(String path, String classic, String switcher, int restarts, int iteration) throws Exception {
+    public void run(String path, String switcher, int restarts, int iteration) throws Exception {
         _cities = CityProvider.readCities(path);
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 
         _hc = new HillClimber(new TspObjectiveFunction(_cities), new TspMoveManager(), new TSPSolutionGenerator(switcher, _cities), iteration);
-        _hc.startRestartedSearching(classic, restarts);
+        _hc.startRestartedSearching(restarts);
         TspSolution bestSol = (TspSolution) _hc.getBestSolution();
         _tour = bestSol.getTour();
 
