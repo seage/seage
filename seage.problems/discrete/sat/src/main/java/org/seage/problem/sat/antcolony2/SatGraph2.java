@@ -55,7 +55,7 @@ public class SatGraph2 extends Graph {
             for (Node j : _nodeList) {
                 if (!i.equals(j) && !(Math.abs(i.getId()) == Math.abs(j.getId()))) {
                     Edge makedEdge = new Edge(i, j, _localEvaporation);
-                    makedEdge.setEdgeLength(FormulaEvaluator.evaluate(formula, createSol(i, j)));
+                    makedEdge.setEdgePrice(FormulaEvaluator.evaluate(formula, createSol(i, j)));
                     for (Edge k : _edgeList) {
                         if (k.getNode1().equals(j) && k.getNode2().equals(i)) {
                             same = true;
@@ -84,9 +84,9 @@ public class SatGraph2 extends Graph {
             System.out.println("n1:" + n.getId());
             for (Edge e : n.getConnectionMap()) {
                 if (n.getId() != e.getNode1().getId()) {
-                    System.out.println("length: " + e.getEdgeLength() + "  n2:" + e.getNode1().getId() + "  ph:" + e.getLocalPheromone());
+                    System.out.println("length: " + e.getEdgePrice() + "  n2:" + e.getNode1().getId() + "  ph:" + e.getLocalPheromone());
                 } else {
-                    System.out.println("length: " + e.getEdgeLength() + "  n2:" + e.getNode2().getId() + "  ph:" + e.getLocalPheromone());
+                    System.out.println("length: " + e.getEdgePrice() + "  n2:" + e.getNode2().getId() + "  ph:" + e.getLocalPheromone());
                 }
             }
         }

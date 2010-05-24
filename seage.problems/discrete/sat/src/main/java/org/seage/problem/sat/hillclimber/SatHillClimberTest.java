@@ -96,11 +96,11 @@ public class SatHillClimberTest {
         SatObjectiveFunction objFce = new SatObjectiveFunction(formula);
         SatMoveManager moveManager = new SatMoveManager();
         SatSolutionGenerator solGen = new SatSolutionGenerator("Greedy", formula);
-        ;
+        
         HillClimber hc;
 
-        int[] iterations = {5000};
-        int[] restarts = {200000};
+        int[] iterations = {2000};
+        int[] restarts = {1};
 
         double sumTime, hlpTime;
 
@@ -121,7 +121,7 @@ public class SatHillClimberTest {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        String path = "data/uf100/uf100-0100.cnf";
+        String path = "data/uf75/uf75-050.cnf";
         Formula formula = FormulaReader.readFormula(path);
         testing2(formula);
     }
