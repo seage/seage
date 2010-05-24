@@ -48,7 +48,7 @@ public class TspGraph extends Graph {
             for (Node j : _nodeList) {
                 if (!i.equals(j)) {
                     Edge makedEdge = new Edge(i, j, _localEvaporation);
-                    makedEdge.setEdgeLength(calculateEdgeLength(i, j, cities));
+                    makedEdge.setEdgePrice(calculateEdgeLength(i, j, cities));
                     for (Edge k : _edgeList) {
                         helpEdge = k;
                         if (helpEdge.getNode1().equals(j) && helpEdge.getNode2().equals(i)) {
@@ -77,7 +77,7 @@ public class TspGraph extends Graph {
         for (Node n : _nodeList) {
             System.out.println(n.getId());
             for (Edge e : n.getConnectionMap()) {
-                System.out.printf("\t%3.3f\t%3.5f\n", e.getEdgeLength(), e.getLocalPheromone());
+                System.out.printf("\t%3.3f\t%3.5f\n", e.getEdgePrice(), e.getLocalPheromone());
             }
         }
     }

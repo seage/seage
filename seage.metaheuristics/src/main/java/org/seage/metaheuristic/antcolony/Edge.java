@@ -19,7 +19,7 @@ import java.util.Vector;
  */
 public class Edge {
 
-    private double _edgeLength;
+    private double _edgePrice;
     private Node _node1;
     private Node _node2;
     private double _pheromone;
@@ -27,7 +27,7 @@ public class Edge {
     private Vector<Node> _connections;
 
     public Edge(Node start, Node end, double evaporation) {
-        _edgeLength = 0;
+        _edgePrice = 0;
         _node1 = start;
         _node2 = end;
         _pheromone = 0;
@@ -75,16 +75,16 @@ public class Edge {
      * Edge length finding
      * @return - Edge length
      */
-    public double getEdgeLength() {
-        return _edgeLength;
+    public double getEdgePrice() {
+        return _edgePrice;
     }
 
     /**
      * Edge length setting
      * @param length - Edge length
      */
-    public void setEdgeLength(double length) {
-        _edgeLength = length;
+    public void setEdgePrice(double length) {
+        _edgePrice = length;
     }
 
     /**

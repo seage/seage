@@ -44,11 +44,11 @@ public class SatAntColonyTest {
 
         double sumTime, hlpTime;
 
-        double[] alpha = {1, 2};
-        double[] beta = {1, 2};
+        double[] alpha = {1};
+        double[] beta = {1, 2, 3};
         double[] defaultPheromone = {0.1, 1};
-        double[] quantumPheromone = {0.01, 0.1, 1};
-        double[] evaporation = {0.005, 0.05, 0.5};
+        double[] quantumPheromone = {0.2, 0.5, 1};
+        double[] evaporation = {0.2, 0.5};
 
         for (double a : alpha) {
             for (double b : beta) {
@@ -85,14 +85,14 @@ public class SatAntColonyTest {
 
         double sumTime, hlpTime;
 
-        int numAnts[] = {40000};
-        int iterations[] = {600};
+        int numAnts[] = {1};
+        int iterations[] = {500};
 
         double alpha = 1;
         double beta = 1;
-        double defaultPheromone = 0.5;
-        double quantumPheromone = 0.5;
-        double evaporation = 0.25;
+        double defaultPheromone = 1;
+        double quantumPheromone = 0.2;
+        double evaporation = 0.2;
 
         for (int num : numAnts) {
             for (int iter : iterations) {
@@ -103,7 +103,8 @@ public class SatAntColonyTest {
                 hlpTime = getTime();
                 colony.beginExploring();
                 sumTime = getTime() - hlpTime;
-                System.out.print("\t" + iter);
+                System.out.print("\t" + num);
+//                System.out.print("\t" + iter);
                 System.out.print("\t" + (colony.getGlobalBest() - 0.1));
                 System.out.println("\t" + sumTime);
             }
@@ -114,22 +115,22 @@ public class SatAntColonyTest {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        String path = "data/uf100/uf100-0100.cnf";
+        String path = "data/uf75/uf75-050.cnf";
         Formula formula = FormulaReader.readFormula(path);
 
-        testing2(formula);
-
-//        double quantumPheromone = 0.1, evaporation = 0.5, defaultPheromone = 0.1;
-//        double alpha = 1, beta = 2;
-//        int numAnts = 100, iterations = 500;
-
-//        SatGraph graph = new SatGraph(formula, evaporation, defaultPheromone);
-//        SatAntBrain brain = new SatAntBrain(alpha, beta, formula);
+//        testing2(formula);
 //
-//        SatAntCreator antCreator = new SatAntCreator(graph, brain, numAnts, quantumPheromone);
-//        AntColony colony = new AntColony(antCreator, iterations);
-//        colony.beginExploring();
-//        System.out.println("Global best: "+(colony.getGlobalBest()-0.1));
-//        graph.printPheromone();
+        double quantumPheromone = 1, evaporation = 0.2, defaultPheromone = 1;
+        double alpha = 1, beta = 1;
+        int numAnts = 100, iterations = 500;
+
+        SatGraph graph = new SatGraph(formula, evaporation, defaultPheromone);
+        SatAntBrain brain = new SatAntBrain(alpha, beta, formula);
+
+        SatAntCreator antCreator = new SatAntCreator(graph, brain, numAnts, quantumPheromone);
+        AntColony colony = new AntColony(antCreator, iterations);
+        colony.beginExploring();
+        System.out.println("Global best: "+(colony.getGlobalBest()-0.1));
+        graph.printPheromone();
     }
 }

@@ -34,7 +34,7 @@ public class TspAntColonyTest {
         double sum = 0;
         double edges = 0;
         for (Edge edge : graph.getEdgeList()) {
-            sum += edge.getEdgeLength();
+            sum += edge.getEdgePrice();
             edges++;
         }
         System.out.println(sum);

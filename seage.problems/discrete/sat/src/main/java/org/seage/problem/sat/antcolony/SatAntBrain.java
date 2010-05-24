@@ -40,7 +40,7 @@ public class SatAntBrain extends AntBrain {
         // for each Edges
         for (int i = 0; i < probabilities.length; i++) {
             Edge e = edges.get(i);
-            probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgeLength(), _beta);
+            probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgePrice(), _beta);
             sum += probabilities[i];
         }
         for (int i = 0; i < probabilities.length; i++) {
