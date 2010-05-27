@@ -21,7 +21,7 @@ public class TspAntBrain extends AntBrain {
     }
 
     @Override
-    protected double pathLength(Vector<Edge> path){
+    protected double pathCost(Vector<Edge> path){
         double totalLength = 0;
         for(Edge e : path){
             totalLength += e.getEdgePrice();

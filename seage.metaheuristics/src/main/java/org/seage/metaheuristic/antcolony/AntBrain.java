@@ -15,7 +15,7 @@ import java.util.*;
 
 /**
  *
- * @author Richard Malek (original)
+ * @author Martin Zaloga
  */
 public class AntBrain {
 
@@ -28,14 +28,31 @@ public class AntBrain {
         _rand = new Random(System.currentTimeMillis());
     }
 
-    protected double pathLength(Vector<Edge> path) {
+    /**
+     * Total costs of path
+     * @param path - Path
+     * @return - Total costs
+     */
+    protected double pathCost(Vector<Edge> path) {
         return 0;
     }
 
+    /**
+     * Finding available edges
+     * @param currentPosition - Current position
+     * @param visited - Visited nodes
+     * @return - Available edges
+     */
     protected List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited) {
         return null;
     }
 
+    /**
+     * Selection following edge
+     * @param edges - Available edges
+     * @param visited - Visited nodes
+     * @return - Selected edge
+     */
     protected Edge selectNextEdge(List<Edge> edges, Vector<Node> visited) {
         double sum = 0;
         double[] probabilities = new double[edges.size()];

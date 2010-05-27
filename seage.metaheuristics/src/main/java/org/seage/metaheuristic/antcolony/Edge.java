@@ -15,7 +15,7 @@ import java.util.Vector;
 
 /**
  *
- * @author Richard Malek (original)
+ * @author Martin Zaloga
  */
 public class Edge {
 

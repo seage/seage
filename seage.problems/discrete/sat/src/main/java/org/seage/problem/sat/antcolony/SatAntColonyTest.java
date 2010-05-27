@@ -24,6 +24,10 @@ public class SatAntColonyTest {
     static int _h, _m, _s;
     static double _actualTime, _ms;
 
+    /**
+     * Finding current time
+     * @return - Time in seconds
+     */
     public static double getTime() {
         _date = new Date();
         _h = Integer.parseInt(_hours.format(_date));
@@ -34,6 +38,11 @@ public class SatAntColonyTest {
         return _actualTime;
     }
 
+    /**
+     * First part of testing
+     * @param formula - Readed formula
+     * @throws Exception
+     */
     public static void testing1(Formula formula) throws Exception {
         int numAnts = 100;
         int iterations = 500;
@@ -76,6 +85,11 @@ public class SatAntColonyTest {
         }
     }
 
+    /**
+     * Second part of testing
+     * @param formula - readed formula
+     * @throws Exception
+     */
     public static void testing2(Formula formula) throws Exception {
 
         SatGraph graph;

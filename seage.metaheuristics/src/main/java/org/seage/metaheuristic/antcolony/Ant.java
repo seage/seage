@@ -15,7 +15,7 @@ import java.util.*;
 
 /**
  *
- * @author Richard Malek (original)
+ * @author Martin Zaloga
  */
 public class Ant {
 
@@ -48,7 +48,7 @@ public class Ant {
             edges = _brain.getAvailableEdges(_currentPosition, _visited);
         }
         lastNodeAdding();
-        _distanceTravelled = _brain.pathLength(_path);
+        _distanceTravelled = _brain.pathCost(_path);
         leavePheromone();
         return _path; // Report
     }
