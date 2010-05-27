@@ -48,14 +48,9 @@ public class SatAntBrain extends AntBrain {
         }
         return edges.get(next(probabilities));
     }
-
-    /**
-     * Advantageous solutions determining
-     * @param path - Actual ants path
-     * @return - Advantageous solutions
-     */
+ 
     @Override
-    protected double pathLength(Vector<Edge> path) {
+    protected double pathCost(Vector<Edge> path) {
         boolean[] solution = new boolean[_formula.getLiteralCount()];
         Node node;
         for (int i = 0; i < _formula.getLiteralCount(); i++) {

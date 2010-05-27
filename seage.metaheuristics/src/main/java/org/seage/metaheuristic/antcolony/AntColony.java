@@ -15,7 +15,7 @@ import java.util.*;
 
 /**
  *
- * @author Richard Malek (original)
+ * @author Martin Zaloga
  */
 public class AntColony {
 
@@ -57,7 +57,7 @@ public class AntColony {
     }
 
     /**
-     * Evaluation of each iteration
+     * Evaluation for each iteration
      */
     private void solveRound() {
         double pathLength = 0;

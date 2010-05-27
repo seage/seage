@@ -6,7 +6,7 @@
  * http://seage.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Martin Zaloga
+ *     Richard Malek
  *     - Initial implementation
  */
 package org.seage.metaheuristic.hillclimber;
