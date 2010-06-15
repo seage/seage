@@ -28,7 +28,7 @@ public class SatAnt2 extends Ant {
         _visited.add(start);
     }
 
-    @Override
+
     protected void lastNodeAdding() {
         for (Edge last : _graph.getEdgeList()) {
             Node node1 = last.getNode1();

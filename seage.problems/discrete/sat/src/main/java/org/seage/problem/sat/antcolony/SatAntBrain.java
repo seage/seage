@@ -49,7 +49,6 @@ public class SatAntBrain extends AntBrain {
         return edges.get(next(probabilities));
     }
  
-    @Override
     protected double pathCost(Vector<Edge> path) {
         boolean[] solution = new boolean[_formula.getLiteralCount()];
         Node node;

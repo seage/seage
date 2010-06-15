@@ -24,8 +24,7 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
         for (int i = 1; i <= formula.getLiteralCount(); i++) {
             _nodeList.add(new Node(i));
             _nodeList.add(new Node(-i));
-        }
-        _nuberNodes = _nodeList.size();
+        }        
         _preparedSolution = new boolean[formula.getLiteralCount()];
         for (int i = 0; i < formula.getLiteralCount(); i++) {
             _preparedSolution[i] = true;
@@ -56,8 +55,9 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
      * @param formula - Readed formula
      */
     private void makeEdge(Node start, Node end, Formula formula) {
-        Edge edge = new Edge(start, end, _localEvaporation);
-        edge.setEdgePrice(FormulaEvaluator.evaluate(formula, createSol(end)));
+        Edge edge = new Edge(start, end);
+//        edge.setEdgePrice(FormulaEvaluator.evaluate(formula, createSol(end)));
+        edge.setEdgePrice(FormulaEvaluator.evaluate(formula, Math.abs(end.getId())-1, end.getId()>0));
         _edgeList.add(edge);
         start.addConnection(edge);
     }
@@ -75,7 +75,6 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
             makeEdge(_nodeList.get(i + 1), _nodeList.get(i + 2), formula);
             makeEdge(_nodeList.get(i + 1), _nodeList.get(i + 3), formula);
         }
-        _nuberEdges = _edgeList.size();
     }
 
     @Override

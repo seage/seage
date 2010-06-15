@@ -8,6 +8,8 @@
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
+ *     Martin Zaloga
+ *     - Reimplementation
  */
 package org.seage.metaheuristic.antcolony;
 
@@ -46,17 +48,11 @@ public class Ant {
             Edge nextEdge = _brain.selectNextEdge(edges, _visited);
             updatePosition(nextEdge);
             edges = _brain.getAvailableEdges(_currentPosition, _visited);
-        }
-        lastNodeAdding();
+        }        
+
         _distanceTravelled = _brain.pathCost(_path);
         leavePheromone();
         return _path; // Report
-    }
-
-    /**
-     * This method is for full-graph
-     */
-    protected void lastNodeAdding() {
     }
 
     /**
@@ -70,6 +66,7 @@ public class Ant {
         } else {
             choiceNode = (arcChoice.getNode1());
         }
+        _distanceTravelled += arcChoice.getEdgePrice();
         _path.add(arcChoice);
         _visited.add(choiceNode);
         _currentPosition = choiceNode;

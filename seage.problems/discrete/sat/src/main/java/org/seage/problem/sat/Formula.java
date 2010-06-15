@@ -10,7 +10,7 @@ public class Formula {
     private ArrayList _clauses;
     private int _literalCount;
     private Clause[] __null;
-
+    private ArrayList< ArrayList<Literal>> _literals;
 
     public Formula(List<Clause> clauses)
     {
@@ -21,6 +21,13 @@ public class Formula {
             for(Literal l : c.getLiterals())
                 if(l.getIndex() >= _literalCount)
                     _literalCount =l.getIndex()+1;
+
+        _literals = new ArrayList<ArrayList<Literal>>();
+        for(int i=0;i<_literalCount;i++) _literals.add(new ArrayList<Literal>());
+
+        for(Clause c : clauses)
+            for(Literal l : c.getLiterals())
+                _literals.get(l.getIndex()).add(l);
     }
 
     //OK
@@ -38,6 +45,10 @@ public class Formula {
         return _literalCount;
     }
 
+    public ArrayList< ArrayList<Literal>> getLiterals()
+    {
+        return _literals;
+    }
 
     //OK
     @Override

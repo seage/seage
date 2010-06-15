@@ -8,6 +8,8 @@
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
+ *     Martin Zaloga
+ *     - Reimplementation
  */
 package org.seage.metaheuristic.antcolony;
 
@@ -23,10 +25,9 @@ public class Edge {
     private Node _node1;
     private Node _node2;
     private double _pheromone;
-    private double _evaporationFactor;
     private Vector<Node> _connections;
 
-    public Edge(Node start, Node end, double evaporation) {
+    public Edge(Node start, Node end) {
         _edgePrice = 0;
         _node1 = start;
         _node2 = end;
@@ -34,7 +35,6 @@ public class Edge {
         _connections = new Vector<Node>();
         _connections.add(start);
         _connections.add(end);
-        _evaporationFactor = 1 - evaporation;
     }
 
     /**
@@ -64,8 +64,8 @@ public class Edge {
     /**
      * Pheromone evaporation
      */
-    public void evaporateFromEdge() {
-        _pheromone = _pheromone * _evaporationFactor;
+    public void evaporateFromEdge(double evapoCoef) {
+        _pheromone = _pheromone * evapoCoef;
         if(_pheromone < 0.00001){
             _pheromone = 0.00001;
         }

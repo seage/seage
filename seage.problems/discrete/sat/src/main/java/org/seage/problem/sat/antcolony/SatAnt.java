@@ -23,11 +23,4 @@ import org.seage.metaheuristic.antcolony.Node;
         _currentPosition = start;
         _visited.add(start);
     }
-
-    @Override
-    protected void updatePosition(Edge chosedEdge) {
-        _path.add(chosedEdge);
-        _visited.add(chosedEdge.getNode2());
-        _currentPosition = chosedEdge.getNode2();
-    }
 }

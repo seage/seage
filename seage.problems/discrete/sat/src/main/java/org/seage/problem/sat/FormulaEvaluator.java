@@ -33,4 +33,23 @@ public class FormulaEvaluator {
         }
         return numFalseClauses;
     }
+
+    public static double evaluate(Formula f, int ix, boolean value)
+    {
+        int positive = 0;
+        int negative = 0;
+
+        for (Literal l : f.getLiterals().get(ix))
+        {
+            if(l.isNeg() == value)
+                negative++;
+            else
+                positive++;
+        }
+
+        if(positive == 0 )
+            return Double.MAX_VALUE;
+        else
+            return 1.0 * negative / positive;
+    }
 }
