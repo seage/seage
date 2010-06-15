@@ -8,6 +8,8 @@
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
+ *     Martin Zaloga
+ *     - Reimplementation
  */
 package org.seage.metaheuristic.antcolony;
 

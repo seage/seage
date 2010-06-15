@@ -8,6 +8,8 @@
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
+ *     Martin Zaloga
+ *     - Reimplementation
  */
 package org.seage.metaheuristic.antcolony;
 
@@ -26,15 +28,6 @@ public class AntBrain {
         _alpha = alpha;
         _beta = beta;
         _rand = new Random(System.currentTimeMillis());
-    }
-
-    /**
-     * Total costs of path
-     * @param path - Path
-     * @return - Total costs
-     */
-    protected double pathCost(Vector<Edge> path) {
-        return 0;
     }
 
     /**
@@ -99,6 +92,11 @@ public class AntBrain {
                 }
             }
         }
+        return 0;
+    }
+
+    protected double pathCost(Vector<Edge> path)
+    {
         return 0;
     }
 }

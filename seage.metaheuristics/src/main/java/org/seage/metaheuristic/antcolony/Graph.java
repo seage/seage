@@ -8,6 +8,8 @@
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
+ *     Martin Zaloga
+ *     - Reimplementation
  */
 package org.seage.metaheuristic.antcolony;
 
@@ -21,14 +23,12 @@ public class Graph {
 
     protected ArrayList<Node> _nodeList;
     protected ArrayList<Edge> _edgeList;
-    protected double _localEvaporation;
-    protected int _nuberNodes;
-    protected int _nuberEdges;
+    protected double _evaporCoeff;
 
-    public Graph(double locEvaporCoeff) {
+    public Graph(double evaporCoeff) {
         _nodeList = new ArrayList<Node>();
         _edgeList = new ArrayList<Edge>();
-        _localEvaporation = locEvaporCoeff;
+        _evaporCoeff = evaporCoeff;
     }
 
     /**
@@ -52,7 +52,7 @@ public class Graph {
      */
     public void evaporating() {
         for (Edge e : getEdgeList()) {
-            e.evaporateFromEdge();
+            e.evaporateFromEdge(_evaporCoeff);
         }
     }
 

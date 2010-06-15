@@ -24,7 +24,7 @@ public class SatGraph2 extends Graph {
             _nodeList.add(new Node(id));
             _nodeList.add(new Node(-id));
         }
-        _nuberNodes = _nodeList.size();
+
         _preparedSolution = new boolean[formula.getLiteralCount()];
         for (int i = 0; i < formula.getLiteralCount(); i++) {
             _preparedSolution[i] = true;
@@ -54,7 +54,7 @@ public class SatGraph2 extends Graph {
         for (Node i : _nodeList) {
             for (Node j : _nodeList) {
                 if (!i.equals(j) && !(Math.abs(i.getId()) == Math.abs(j.getId()))) {
-                    Edge makedEdge = new Edge(i, j, _localEvaporation);
+                    Edge makedEdge = new Edge(i, j);
                     makedEdge.setEdgePrice(FormulaEvaluator.evaluate(formula, createSol(i, j)));
                     for (Edge k : _edgeList) {
                         if (k.getNode1().equals(j) && k.getNode2().equals(i)) {
@@ -75,7 +75,6 @@ public class SatGraph2 extends Graph {
                 }
             }
         }
-        _nuberEdges = _edgeList.size();
     }
 
     @Override
