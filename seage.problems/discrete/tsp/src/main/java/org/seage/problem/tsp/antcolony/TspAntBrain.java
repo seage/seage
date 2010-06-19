@@ -4,6 +4,7 @@
  */
 package org.seage.problem.tsp.antcolony;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import org.seage.metaheuristic.antcolony.AntBrain;
@@ -16,24 +17,29 @@ import org.seage.metaheuristic.antcolony.Node;
  */
 public class TspAntBrain extends AntBrain {
 
-    public TspAntBrain(double alpha, double beta) {
-        super(alpha, beta);
-    }
-
     @Override
-    protected double pathCost(Vector<Edge> path){
-        double totalLength = 0;
-        for(Edge e : path){
-            totalLength += e.getEdgePrice();
-        }
-        return totalLength;
-    }
+    protected List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited)
+    {
+        List<Edge> result = new ArrayList<Edge>();
+        for(Edge e : currentPosition.getConnectionMap())
+        {
+            Node node2 = null;
+            if(e.getNode1().equals(currentPosition))
+                node2 = e.getNode2();
+            else
+                node2 = e.getNode1();
 
-    @Override
-    protected List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited) {
-        if((currentPosition.getConnectionMap().size() + 1) == visited.size()){
-            return null;
+            if(visited.size() == _numNodes)
+                if(node2 == _startingNode)
+                {
+                    result.add(e);
+                    return result;
+                }
+
+            if(!visited.contains(node2))
+                result.add(e);
         }
-        return currentPosition.getConnectionMap();
+
+        return result;
     }
 }

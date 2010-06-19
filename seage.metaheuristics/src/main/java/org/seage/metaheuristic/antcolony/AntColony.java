@@ -25,30 +25,47 @@ public class AntColony {
     private double _globalBest;
     private Vector<Edge> _bestPath;
     private Vector<Vector<Edge>> _reports;
+    private Graph _graph;
+    private Ant[] _ants;
+    private AntBrain _antBrain;
+
     private int _numAnts;
     private int _numIterations;
-    private Graph _graph;
-    private AntCreator _antCreator;
-    private Ant[] _ants;
+    private double _alpha;
+    private double _beta;
+    private double _quantumPheromone;
+    
+//    private AntCreator _antCreator;
+    
 
-    public AntColony(AntCreator antCreator, int numIterations) {
+    public AntColony(AntBrain antBrain, Graph graph)
+    {
+        _antBrain = antBrain;
+        _graph = graph;
+
         _roundBest = Double.MAX_VALUE;
         _globalBest = Double.MAX_VALUE;
-        _reports = new Vector<Vector<Edge>>();
-        _graph = antCreator._graph;
-        _numAnts = antCreator._numAnts;
+        _reports = new Vector<Vector<Edge>>();    
+    }
+
+    public void setParameters(int numAnts, int numIterations, double alpha, double beta, double quantumPheromone) throws Exception
+    {
+        _numAnts = numAnts;
         _numIterations = numIterations;
-        _antCreator = antCreator;
+        _alpha = alpha;
+        _beta = beta;
+        _quantumPheromone = quantumPheromone;
+        createAnts();
     }
 
     /**
      * Main part of ant-colony algorithm
      */
-    public void beginExploring() {
-        for (int i = 0; i < _numIterations; i++) {
-            _ants = _antCreator.createAnts();
+    public void beginExploring(Node startingNode) throws Exception
+    {
+        for (int i = 0; i < _numIterations; i++) {            
             for (int j = 0; j < _numAnts; j++) {
-                _reports.add(_ants[j].explore());
+                _reports.add(_ants[j].explore(startingNode));
             }
             solveRound();
             _graph.evaporating();
@@ -56,6 +73,15 @@ public class AntColony {
                 _ants[j].leavePheromone();
             }
         }
+    }
+
+    private void createAnts() throws Exception
+    {
+        _ants = new Ant[_numAnts];
+        _antBrain.setParameters(_graph.getNodeList().size(), _alpha, _beta);
+        for(int i=0;i<_numAnts;i++)        
+            _ants[i] = new Ant(_antBrain, _graph, _quantumPheromone);
+        
     }
 
     /**

@@ -20,7 +20,7 @@ public class TspGraph extends Graph {
         for (int id = 0; id < cities.length; id++) {
             _nodeList.add(new Node(id));
         }
-        _nuberNodes = _nodeList.size();
+
         fillEdgeMap(cities);
         setDefaultPheromone(defaultPheromone);
     }
@@ -47,7 +47,7 @@ public class TspGraph extends Graph {
         for (Node i : _nodeList) {
             for (Node j : _nodeList) {
                 if (!i.equals(j)) {
-                    Edge makedEdge = new Edge(i, j, _localEvaporation);
+                    Edge makedEdge = new Edge(i, j);
                     makedEdge.setEdgePrice(calculateEdgeLength(i, j, cities));
                     for (Edge k : _edgeList) {
                         helpEdge = k;
@@ -69,7 +69,6 @@ public class TspGraph extends Graph {
                 }
             }
         }
-        _nuberEdges = _edgeList.size();
     }
 
     @Override

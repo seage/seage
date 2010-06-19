@@ -49,7 +49,7 @@ public class SatAntColonyTest {
         int iterations = 500;
         SatGraph graph;
         SatAntBrain brain;
-        SatAntCreator antCreator;
+
         AntColony colony;
 
         double sumTime, hlpTime;
@@ -62,15 +62,15 @@ public class SatAntColonyTest {
 
         for (double a : alpha) {
             for (double b : beta) {
-                brain = new SatAntBrain(a, b, formula);
+                brain = new SatAntBrain(formula);
                 for (double def : defaultPheromone) {
                     for (double quant : quantumPheromone) {
                         for (double evapor : evaporation) {
-                            graph = new SatGraph(formula, evapor, def);
-                            antCreator = new SatAntCreator(graph, brain, numAnts, quant);
-                            colony = new AntColony(antCreator, iterations);
+                            graph = new SatGraph(formula, evapor, def);                            
+                            colony = new AntColony(brain, graph);
+                            colony.setParameters(numAnts, iterations, a, b, quant);
                             hlpTime = getTime();
-                            colony.beginExploring();
+                            colony.beginExploring(graph.getNodeList().get(0));
                             sumTime = getTime() - hlpTime;
                             System.out.print(a);
                             System.out.print("\t" + b);
@@ -95,7 +95,6 @@ public class SatAntColonyTest {
 
         SatGraph graph;
         SatAntBrain brain;
-        SatAntCreator antCreator;
         AntColony colony;
 
         double sumTime, hlpTime;
@@ -112,11 +111,11 @@ public class SatAntColonyTest {
         for (int num : numAnts) {
             for (int iter : iterations) {
                 graph = new SatGraph(formula, evaporation, defaultPheromone);
-                brain = new SatAntBrain(alpha, beta, formula);
-                antCreator = new SatAntCreator(graph, brain, num, quantumPheromone);
-                colony = new AntColony(antCreator, iter);
+                brain = new SatAntBrain(formula);                
+                colony = new AntColony(brain, graph);
+                colony.setParameters(num, iter, alpha, beta, quantumPheromone);
                 hlpTime = getTime();
-                colony.beginExploring();
+                colony.beginExploring(graph.getNodeList().get(0));
                 sumTime = getTime() - hlpTime;
                 System.out.print("\t" + num);
 //                System.out.print("\t" + iter);
@@ -135,16 +134,16 @@ public class SatAntColonyTest {
 
 //        testing2(formula);
 //
-        double quantumPheromone = 1, evaporation = 0.95, defaultPheromone = 0.1;
-        double alpha = 1, beta = 1;
+        double quantumPheromone = 10, evaporation = 0.95, defaultPheromone = 0.1;
+        double alpha = 1, beta = 5;
         int numAnts = 100, iterations = 5000;
 
         SatGraph graph = new SatGraph(formula, evaporation, defaultPheromone);
-        SatAntBrain brain = new SatAntBrain(alpha, beta, formula);
-
-        SatAntCreator antCreator = new SatAntCreator(graph, brain, numAnts, quantumPheromone);
-        AntColony colony = new AntColony(antCreator, iterations);
-        colony.beginExploring();
+        SatAntBrain brain = new SatAntBrain(formula);
+        
+        AntColony colony = new AntColony(brain, graph);
+        colony.setParameters(numAnts, iterations, alpha, beta, quantumPheromone);
+        colony.beginExploring(graph.getNodeList().get(0));
         System.out.println("Global best: "+(colony.getGlobalBest()-0.1));
         
         boolean[] s = new boolean[colony.getBestPath().size()];

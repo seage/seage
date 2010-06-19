@@ -30,27 +30,34 @@ public class Ant {
     protected AntBrain _brain;
     private double _qantumPheromone;
 
-    public Ant(Graph graph, double qantumPheromone, AntBrain brain) {
-        _graph = graph;
+    public Ant(AntBrain brain, Graph graph , double qantumPheromone)
+    {
         _brain = brain;
-        _qantumPheromone = qantumPheromone;
-        _visited = new Vector<Node>();
-        _path = new Vector<Edge>();
+        _graph = graph;
+        
+        _qantumPheromone = qantumPheromone;        
     }
 
     /**
      * Ant passage through the graph
      * @return - ants path
      */
-    protected Vector<Edge> explore() {
+    protected Vector<Edge> explore(Node startingNode)
+    {
+        _visited = new Vector<Node>();
+        _path = new Vector<Edge>();
+        _brain._startingNode = startingNode;
+        _currentPosition = startingNode;
+        _visited.add(startingNode);
+
         List<Edge> edges = _brain.getAvailableEdges(_currentPosition, _visited);
-        while (edges != null) {
+        while (edges != null && edges.size() > 0) {
             Edge nextEdge = _brain.selectNextEdge(edges, _visited);
             updatePosition(nextEdge);
             edges = _brain.getAvailableEdges(_currentPosition, _visited);
         }        
 
-        _distanceTravelled = _brain.pathCost(_path);
+        //_distanceTravelled = _brain.pathCost(_path);
         leavePheromone();
         return _path; // Report
     }
