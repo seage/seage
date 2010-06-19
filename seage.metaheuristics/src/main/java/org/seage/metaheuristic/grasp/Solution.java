@@ -9,17 +9,32 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.metaheuristic.hillclimber;
+package org.seage.metaheuristic.grasp;
 
 /**
  *
  * @author Martin Zaloga
  */
-public interface ISolutionGenerator {
+public class Solution implements java.lang.Cloneable {
 
     /**
-     * Function to generate initial solution
-     * @return
+     * The _value is value of Solution
      */
-    Solution generateSolution() throws Exception;
+    double _value = Double.MAX_VALUE;
+
+    /**
+     * Returns the value of Solution
+     * @return - The rating of Solution
+     */
+    public double getObjectiveValue() {
+        return _value;
+    }
+
+    /**
+     * Sets the value of Solution
+     * @param objValue - Evaluation of the solution
+     */
+    public void setObjectiveValue(double objValue) {
+        _value = objValue;
+    }
 }

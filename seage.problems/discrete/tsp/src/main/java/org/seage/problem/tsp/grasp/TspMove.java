@@ -9,10 +9,10 @@
  *     Martin Zaloga
  *     - Initial implementation
  */
-package org.seage.problem.tsp.hillclimber;
+package org.seage.problem.tsp.grasp;
 
-import org.seage.metaheuristic.hillclimber.IMove;
-import org.seage.metaheuristic.hillclimber.Solution;
+import org.seage.metaheuristic.grasp.IMove;
+import org.seage.metaheuristic.grasp.Solution;
 
 /**
  *

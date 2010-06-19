@@ -6,21 +6,26 @@
  * http://seage.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Richard Malek
+ *     Martin Zaloga
  *     - Initial implementation
  */
-package org.seage.metaheuristic.hillclimber;
+package org.seage.problem.sat.grasp;
 
 /**
  *
  * @author Martin Zaloga
  */
-public interface IMove {
+public class SatTestSolution extends SatSolution {
 
-    /**
-     * Defining the shape functions for apply the solution
-     * @param s - Solution which to have to apply
-     * @return - New actual slolution
-     */
-    Solution apply(Solution s);
+    public SatTestSolution(int countLiterals) {
+        super();
+        initTestSol(countLiterals);
+    }
+
+    private void initTestSol(int countLiterals) {
+        _litValues = new boolean[countLiterals];
+        for (int i = 0; i < countLiterals; i++) {
+            _litValues[i] = true;
+        }
+    }
 }

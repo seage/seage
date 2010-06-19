@@ -9,7 +9,7 @@
  *     Martin Zaloga
  *     - Initial implementation
  */
-package org.seage.problem.tsp.hillclimber;
+package org.seage.problem.tsp.grasp;
 
 import java.util.ArrayList;
 import java.util.List;

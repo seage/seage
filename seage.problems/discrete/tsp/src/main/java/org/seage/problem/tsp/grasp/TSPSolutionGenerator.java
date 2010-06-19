@@ -9,10 +9,10 @@
  *     Martin Zaloga
  *     - Initial implementation
  */
-package org.seage.problem.tsp.hillclimber;
+package org.seage.problem.tsp.grasp;
 
-import org.seage.metaheuristic.hillclimber.ISolutionGenerator;
-import org.seage.metaheuristic.hillclimber.Solution;
+import org.seage.metaheuristic.grasp.ISolutionGenerator;
+import org.seage.metaheuristic.grasp.Solution;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
 

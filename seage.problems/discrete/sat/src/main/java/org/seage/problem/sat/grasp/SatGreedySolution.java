@@ -9,7 +9,7 @@
  *     Martin Zaloga
  *     - Initial implementation
  */
-package org.seage.problem.sat.hillclimber;
+package org.seage.problem.sat.grasp;
 
 import java.util.ArrayList;
 import java.util.List;
