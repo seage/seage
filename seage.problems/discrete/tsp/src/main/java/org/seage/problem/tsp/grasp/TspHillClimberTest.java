@@ -9,11 +9,11 @@
  *     Martin Zaloga
  *     - Initial implementation
  */
-package org.seage.problem.tsp.hillclimber;
+package org.seage.problem.tsp.grasp;
 
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.City;
-import org.seage.metaheuristic.hillclimber.HillClimber;
+import org.seage.metaheuristic.grasp.HillClimber;
 import org.seage.problem.tsp.Visualizer;
 
 /**

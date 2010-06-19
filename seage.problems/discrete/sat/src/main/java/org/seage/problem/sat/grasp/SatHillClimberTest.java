@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.seage.problem.sat.hillclimber;
+package org.seage.problem.sat.grasp;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.seage.metaheuristic.hillclimber.HillClimber;
+import org.seage.metaheuristic.grasp.HillClimber;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaReader;
 
@@ -100,7 +100,7 @@ public class SatHillClimberTest {
         HillClimber hc;
 
         int[] iterations = {2000};
-        int[] restarts = {1};
+        int[] restarts = {100};
 
         double sumTime, hlpTime;
 

@@ -9,7 +9,7 @@
  *     Martin Zaloga
  *     - Initial implementation
  */
-package org.seage.problem.sat.hillclimber;
+package org.seage.problem.sat.grasp;
 
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;

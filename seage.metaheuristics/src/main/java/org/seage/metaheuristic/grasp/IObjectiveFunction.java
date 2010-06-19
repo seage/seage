@@ -9,7 +9,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.metaheuristic.hillclimber;
+package org.seage.metaheuristic.grasp;
 
 
 /**

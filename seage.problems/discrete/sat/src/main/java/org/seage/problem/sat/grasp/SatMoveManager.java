@@ -9,12 +9,12 @@
  *     Martin Zaloga
  *     - Initial implementation
  */
-package org.seage.problem.sat.hillclimber;
+package org.seage.problem.sat.grasp;
 
 import java.util.Random;
-import org.seage.metaheuristic.hillclimber.IMove;
-import org.seage.metaheuristic.hillclimber.IMoveManager;
-import org.seage.metaheuristic.hillclimber.Solution;
+import org.seage.metaheuristic.grasp.IMove;
+import org.seage.metaheuristic.grasp.IMoveManager;
+import org.seage.metaheuristic.grasp.Solution;
 
 /**
  *
