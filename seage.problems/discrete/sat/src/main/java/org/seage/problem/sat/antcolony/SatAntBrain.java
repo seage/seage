@@ -20,8 +20,8 @@ public class SatAntBrain extends AntBrain {
 
     private Formula _formula;
 
-    public SatAntBrain(double alpha, double beta, Formula formula) {
-        super(alpha, beta);
+    public SatAntBrain( Formula formula) {
+        super();
         _formula = formula;
     }
 

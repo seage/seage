@@ -19,15 +19,24 @@ import java.util.*;
  *
  * @author Martin Zaloga
  */
-public class AntBrain {
+public abstract class AntBrain{
 
+    protected Node _startingNode;
     protected double _alpha, _beta;
+    protected int _numNodes;
     private Random _rand;
 
-    public AntBrain(double alpha, double beta) {
+    public AntBrain() {
+
+        _rand = new Random(System.currentTimeMillis());
+    }
+
+    public void setParameters(int numNodes, double alpha, double beta)
+    {
+        _numNodes = numNodes;
         _alpha = alpha;
         _beta = beta;
-        _rand = new Random(System.currentTimeMillis());
+
     }
 
     /**
@@ -36,9 +45,10 @@ public class AntBrain {
      * @param visited - Visited nodes
      * @return - Available edges
      */
-    protected List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited) {
-        return null;
-    }
+    protected abstract List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited);
+//    {
+//        return null;
+//    }
 
     /**
      * Selection following edge
@@ -95,8 +105,8 @@ public class AntBrain {
         return 0;
     }
 
-    protected double pathCost(Vector<Edge> path)
-    {
-        return 0;
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
