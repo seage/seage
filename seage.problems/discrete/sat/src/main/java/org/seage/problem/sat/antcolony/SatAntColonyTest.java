@@ -4,8 +4,6 @@
  */
 package org.seage.problem.sat.antcolony;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
@@ -15,125 +13,15 @@ import org.seage.problem.sat.FormulaReader;
  *
  * @author Zagy
  */
-public class SatAntColonyTest {
-
-    static Date _date;
-    static SimpleDateFormat _hours = new SimpleDateFormat("h");
-    static SimpleDateFormat _minutes = new SimpleDateFormat("m");
-    static SimpleDateFormat _seconds = new SimpleDateFormat("s");
-    static SimpleDateFormat _milisec = new SimpleDateFormat("S");
-    static int _h, _m, _s;
-    static double _actualTime, _ms;
-
-    /**
-     * Finding current time
-     * @return - Time in seconds
-     */
-    public static double getTime() {
-        _date = new Date();
-        _h = Integer.parseInt(_hours.format(_date));
-        _m = Integer.parseInt(_minutes.format(_date));
-        _s = Integer.parseInt(_seconds.format(_date));
-        _ms = Double.parseDouble(_milisec.format(_date));
-        _actualTime = _h * 3600 + _m * 60 + _s + _ms / 1000;
-        return _actualTime;
-    }
-
-    /**
-     * First part of testing
-     * @param formula - Readed formula
-     * @throws Exception
-     */
-    public static void testing1(Formula formula) throws Exception {
-        int numAnts = 100;
-        int iterations = 500;
-        SatGraph graph;
-        SatAntBrain brain;
-
-        AntColony colony;
-
-        double sumTime, hlpTime;
-
-        double[] alpha = {1};
-        double[] beta = {1, 2, 3};
-        double[] defaultPheromone = {0.1, 1};
-        double[] quantumPheromone = {0.2, 0.5, 1};
-        double[] evaporation = {0.2, 0.5};
-
-        for (double a : alpha) {
-            for (double b : beta) {
-                brain = new SatAntBrain(formula);
-                for (double def : defaultPheromone) {
-                    for (double quant : quantumPheromone) {
-                        for (double evapor : evaporation) {
-                            graph = new SatGraph(formula, evapor, def);                            
-                            colony = new AntColony(brain, graph);
-                            colony.setParameters(numAnts, iterations, a, b, quant);
-                            hlpTime = getTime();
-                            colony.beginExploring(graph.getNodeList().get(0));
-                            sumTime = getTime() - hlpTime;
-                            System.out.print(a);
-                            System.out.print("\t" + b);
-                            System.out.print("\t" + def);
-                            System.out.print("\t" + quant);
-                            System.out.print("\t" + evapor);
-                            System.out.print("\t" + (colony.getGlobalBest() - 0.1));
-                            System.out.println("\t" + sumTime);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Second part of testing
-     * @param formula - readed formula
-     * @throws Exception
-     */
-    public static void testing2(Formula formula) throws Exception {
-
-        SatGraph graph;
-        SatAntBrain brain;
-        AntColony colony;
-
-        double sumTime, hlpTime;
-
-        int numAnts[] = {1};
-        int iterations[] = {500};
-
-        double alpha = 1;
-        double beta = 1;
-        double defaultPheromone = 1;
-        double quantumPheromone = 0.2;
-        double evaporation = 0.2;
-
-        for (int num : numAnts) {
-            for (int iter : iterations) {
-                graph = new SatGraph(formula, evaporation, defaultPheromone);
-                brain = new SatAntBrain(formula);                
-                colony = new AntColony(brain, graph);
-                colony.setParameters(num, iter, alpha, beta, quantumPheromone);
-                hlpTime = getTime();
-                colony.beginExploring(graph.getNodeList().get(0));
-                sumTime = getTime() - hlpTime;
-                System.out.print("\t" + num);
-//                System.out.print("\t" + iter);
-                System.out.print("\t" + (colony.getGlobalBest() - 0.1));
-                System.out.println("\t" + sumTime);
-            }
-        }
-    }
-
+public class SatAntColonyTest
+{
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        String path = "data/uf75/uf75-050.cnf";
+        String path = "data/uf75/uf75-050.cnf";// args[0];
         Formula formula = FormulaReader.readFormula(path);
 
-//        testing2(formula);
-//
         double quantumPheromone = 10, evaporation = 0.95, defaultPheromone = 0.1;
         double alpha = 1, beta = 5;
         int numAnts = 100, iterations = 5000;
@@ -144,6 +32,7 @@ public class SatAntColonyTest {
         AntColony colony = new AntColony(brain, graph);
         colony.setParameters(numAnts, iterations, alpha, beta, quantumPheromone);
         colony.beginExploring(graph.getNodeList().get(0));
+
         System.out.println("Global best: "+(colony.getGlobalBest()-0.1));
         
         boolean[] s = new boolean[colony.getBestPath().size()];
