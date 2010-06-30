@@ -1,5 +1,5 @@
 .svn
-build
-dist
-nbproject/private/**/*
-
+*.class
+nbproject/private/*
+dist/*
+build/*
