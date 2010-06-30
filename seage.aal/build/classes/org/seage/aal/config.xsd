@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://xml.seage.org/schema"
+    xmlns:tns="http://xml.seage.org/schema"
+    elementFormDefault="qualified">
+    <xsd:element name="config">        
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="problem">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="instance">
+                                <xsd:complexType>
+                                        <xsd:sequence/>
+                                            <xsd:attribute name="name" type="tns:nonEmptyString"/>
+                                            <xsd:attribute name="path" type="tns:nonEmptyString"/>
+                                    </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="visualizer">
+                                <xsd:complexType>
+                                        <xsd:sequence/>
+                                            <xsd:attribute name="outPath" type="tns:nonEmptyString"/>
+                                            <xsd:attribute name="width" type="xsd:unsignedInt"/>
+                                            <xsd:attribute name="height" type="xsd:string"/>
+                                    </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                        <xsd:attribute name="problemName" type="tns:nonEmptyString"/>
+                        <xsd:attribute name="runAlgorithmId" type="tns:nonEmptyString"/>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="algorithm" maxOccurs="unbounded">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:choice>
+                                <xsd:element ref="tns:geneticAlgorithm"/>
+                                <xsd:element ref="tns:tabuSearch"/>
+                                <xsd:element ref="tns:simulatedAnnealing"/>
+                                <xsd:element ref="tns:particleSwarm"/>
+                            </xsd:choice>
+                        </xsd:sequence>
+                        <xsd:attribute name="id" type="xsd:ID"/>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+        <xsd:key name="algorithmKey">
+            <xsd:selector xpath="tns:algorithm"/>
+            <xsd:field xpath="@id"/>
+        </xsd:key>
+        <xsd:keyref name="algorithmKeyRef" refer="tns:algorithmKey">
+            <xsd:selector xpath="tns:problem"/>
+            <xsd:field xpath="@runAlgorithmId"/>
+        </xsd:keyref>
+    </xsd:element>
+    <xsd:simpleType name="nonEmptyString">
+        <xsd:restriction base="xsd:string">
+            <xsd:minLength value="2"/>
+            <xsd:whiteSpace value="preserve"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:element name="geneticAlgorithm">
+        <xsd:complexType>
+                <xsd:sequence/>
+                <xsd:attribute name="numSolutions" type="xsd:unsignedInt" use="required"/>
+                <xsd:attribute name="iterationCount" type="xsd:unsignedInt"/>
+                <xsd:attribute name="crossLengthPct" type="xsd:unsignedByte"/>
+                <xsd:attribute name="eliteSubjectPct" type="xsd:unsignedByte"/>
+                <xsd:attribute name="mutateSubjectPct" type="xsd:unsignedByte"/>
+                <xsd:attribute name="mutateLengthPct" type="xsd:unsignedByte"/>
+                <xsd:attribute name="randomSubjectPct" type="xsd:unsignedByte"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="tabuSearch" >
+        <xsd:complexType>
+                <xsd:sequence/>
+                <xsd:attribute name="numIteration" type="xsd:unsignedInt"/>
+                <xsd:attribute name="tabuListLength" type="xsd:unsignedInt"/>
+                <xsd:attribute name="numSolutions" type="xsd:unsignedInt" use="required"/>
+                <xsd:attribute name="numIterDivers" type="xsd:unsignedInt"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="simulatedAnnealing" >
+        <xsd:complexType >
+                <xsd:sequence/>
+                <xsd:attribute name="maxTemperature" type="xsd:double"/>
+                <xsd:attribute name="minTemperature" type="xsd:double"/>
+                <xsd:attribute name="annealCoeficient" type="xsd:double"/>
+                <xsd:attribute name="maxInnerIterations" type="xsd:unsignedInt"/>
+                <xsd:attribute name="numInnerSuccesses" type="xsd:unsignedInt"/>
+                <xsd:attribute name="initSolutionType">
+                   <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                          <xsd:enumeration value="greedy"/>
+                          <xsd:enumeration value="random"/>
+                          <xsd:enumeration value="sorted"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>
+            <xsd:attribute name="numSolutions" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="particleSwarm" >
+        <xsd:complexType >
+                <xsd:sequence/>
+                <xsd:attribute name="maxIterationCount" type="xsd:long"/>
+                <xsd:attribute name="maxVelocity" type="xsd:double"/>
+                <xsd:attribute name="minVelocity" type="xsd:double"/>
+                <xsd:attribute name="inertia" type="xsd:double"/>
+                <xsd:attribute name="alpha" type="xsd:double"/>
+                <xsd:attribute name="beta" type="xsd:double"/>
+<!--                <xsd:attribute name="initSolutionType">
+                   <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                          <xsd:enumeration value="greedy"/>
+                          <xsd:enumeration value="random"/>
+                          <xsd:enumeration value="sorted"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:attribute>-->
+            <xsd:attribute name="numSolutions" type="xsd:unsignedInt" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
