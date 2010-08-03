@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+   xmlns='http://xml.seage.org/schema'
+   xsi:schemaLocation='http://xml.seage.org/schema config.xsd'>
+
+    <problem problemName="TSP" runAlgorithmId="SimulatedAnnealing">
+        <instance name="eil101" path="data2/pcb3038.tsp"/>
+        <visualizer outPath="output/eil51.png" width="800" height="800"/>
+    </problem>
+
+    <algorithm id="GeneticAlgorithm">
+        <geneticAlgorithm 
+            numSolutions="100"
+            iterationCount="1000"
+            crossLengthPct="40"
+            eliteSubjectPct="10"
+            mutateSubjectPct="5"
+            mutateLengthPct="10"
+            randomSubjectPct="2"/>
+    </algorithm>
+
+    <algorithm id="TabuSearch">
+        <tabuSearch
+            numIteration="100000"
+            numIterDivers="1"
+            numSolutions="1"
+            tabuListLength="50"/>
+    </algorithm>
+
+    <algorithm id="SimulatedAnnealing">
+        <simulatedAnnealing
+            annealCoeficient="0.99"
+            initSolutionType="greedy"
+            maxInnerIterations="2000"
+            maxTemperature="200"
+            minTemperature="0.1"
+            numInnerSuccesses="200"
+            numSolutions="1"/>
+    </algorithm>
+
+    <algorithm id="ParticleSwarm">
+        <particleSwarm
+            maxIterationCount="150000"
+            maxVelocity="0.9"
+            minVelocity="-0.9"
+            inertia="0.95"
+            numSolutions="10"
+            alpha="0.9"
+            beta="0.9"
+            />
+    </algorithm>
+
+</config>
