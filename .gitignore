@@ -1,5 +1,5 @@
-.svn
+.svn*
 *.class
-nbproject/private/*
-dist/*
-build/*
+private/
+dist/
+build/
