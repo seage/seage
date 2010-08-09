@@ -14,8 +14,6 @@ package org.seage.experimenter;
 import java.io.File;
 import java.io.InputStream;
 import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.IProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
@@ -24,14 +22,14 @@ import org.seage.data.xml.XmlHelper;
  *
  * @author Richard Malek
  */
-public abstract class Experimenter
+public class Experimenter
 {
     protected IAlgorithmAdapter _algorithm;
     protected DataNode _problemParams;
     protected DataNode _algorithmParams;
     private IProblemProvider _provider;
 
-    protected abstract IProblemProvider getProblemProvider();
+    //protected abstract IProblemProvider getProblemProvider();
 
     public Experimenter(String[] args) throws Exception
     {
@@ -41,12 +39,12 @@ public abstract class Experimenter
         
         DataNode config = XmlHelper.readXml(new File(args[0]), schema);
 
-        _provider = getProblemProvider();
+        _provider = new org.seage.problem.tsp.TspProblemProvider();//getProblemProvider();
         
         _problemParams = config.getDataNode("problem");
         _algorithmParams = config.getDataNodeById(config.getDataNode("problem").getValueStr("runAlgorithmId")).getDataNodes().get(0);
-        _provider.initProblemInstance(_problemParams, 0);
-        _algorithm = _provider.createAlgorithmFactory(_algorithmParams).createAlgorithm(_algorithmParams);
+        _provider.initProblemInstance(_problemParams);
+        //_algorithm = _provider.createAlgorithmFactory(_algorithmParams).createAlgorithm(_algorithmParams);
 
         run();
     }
@@ -55,7 +53,7 @@ public abstract class Experimenter
     {
         _algorithm.solutionsFromPhenotype(_provider.generateInitialSolutions(_algorithmParams.getValueInt("numSolutions")));
         _algorithm.startSearching(_algorithmParams);        
-        _provider.visualize(_algorithm.solutionsToPhenotype()[0]);
+        _provider.visualizeSolution(_algorithm.solutionsToPhenotype()[0]);
 
         reportBest();
     }
@@ -64,4 +62,17 @@ public abstract class Experimenter
     {
         System.out.println("Best: "+_algorithm.getReport().getDataNode("statistics").getValueStr("bestObjVal"));
     }
+
+    public static void main(String[] args)
+    {
+        try
+        {
+            new Experimenter(args).run();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
 }
+
