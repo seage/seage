@@ -6,41 +6,37 @@
 package org.seage.problem.tsp;
 
 import java.util.Random;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.IProblemProvider;
+import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
-import org.seage.problem.tsp.genetics.TspGeneticAlgorithmFactory;
-import org.seage.problem.tsp.particles.TspParticleSwarmFactory;
-import org.seage.problem.tsp.sannealing.TspSimulatedAnnealingFactory;
-import org.seage.problem.tsp.tabusearch.TspTabuSearchFactory;
+
 
 /**
  *
  * @author rick
  */
-public class TspProblemProvider implements IProblemProvider
+public class TspProblemProvider extends ProblemProvider
 {
     private static City[] _cities;
     private int currentInstanceIx = -1;
 
     @Override
-    public void initProblemInstance(DataNode params, int instanceIx) throws Exception
+    public void initProblemInstance(DataNode params) throws Exception
     {
-        if(currentInstanceIx != instanceIx)
-        {
-            currentInstanceIx = instanceIx;
-            DataNode info = params.getDataNode("instance", instanceIx);
-            String path = info.getValueStr("path");
-
-            if(path.equals("[circle]"))
-                _cities = CityProvider.generateCircleCities(info.getValueInt("numberOfCities"));
-            else
-                _cities = CityProvider.readCities(info.getValueStr("path"));
-
-
-            //params.getDataNode("evaluator").putValue("cities", _cities);
-
-        }
+//        if(currentInstanceIx != instanceIx)
+//        {
+//            currentInstanceIx = instanceIx;
+//            DataNode info = params.getDataNode("instance", instanceIx);
+//            String path = info.getValueStr("path");
+//
+//            if(path.equals("[circle]"))
+//                _cities = CityProvider.generateCircleCities(info.getValueInt("numberOfCities"));
+//            else
+//                _cities = CityProvider.readCities(info.getValueStr("path"));
+//
+//
+//            //params.getDataNode("evaluator").putValue("cities", _cities);
+//
+//        }
     }
 
     @Override
@@ -76,24 +72,24 @@ public class TspProblemProvider implements IProblemProvider
         return result;
     }
 
-    @Override
-    public IAlgorithmFactory createAlgorithmFactory(DataNode algorithmParams) throws Exception
-    {
-        String algName = algorithmParams.getName();
-        if(algName.equals("geneticAlgorithm"))
-            return new TspGeneticAlgorithmFactory();
-        if(algName.equals("tabuSearch"))
-            return new TspTabuSearchFactory();
-        if(algName.equals("simulatedAnnealing"))
-            return new TspSimulatedAnnealingFactory(algorithmParams, _cities);
-        if(algName.equals("particleSwarm"))
-            return new TspParticleSwarmFactory(algorithmParams, _cities);
+//    @Override
+//    public IAlgorithmFactory createAlgorithmFactory(DataNode algorithmParams) throws Exception
+//    {
+//        String algName = algorithmParams.getName();
+//        if(algName.equals("geneticAlgorithm"))
+//            return new TspGeneticAlgorithmFactory();
+//        if(algName.equals("tabuSearch"))
+//            return new TspTabuSearchFactory();
+//        if(algName.equals("simulatedAnnealing"))
+//            return new TspSimulatedAnnealingFactory(algorithmParams, _cities);
+//        if(algName.equals("particleSwarm"))
+//            return new TspParticleSwarmFactory(algorithmParams, _cities);
+//
+//        throw new Exception("No algorithm factory for name: " + algName);
+//    }
 
-        throw new Exception("No algorithm factory for name: " + algName);
-    }
-
     @Override
-    public void visualize(Object[] solution) throws Exception
+    public void visualizeSolution(Object[] solution) throws Exception
     {
         Integer[] tour = (Integer[])solution;
 

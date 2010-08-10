@@ -5,6 +5,12 @@
 
 package org.seage.experimenter;
 
+import org.seage.aal.IProblemProvider;
+import org.seage.data.DataNode;
+import org.seage.problem.qap.QapProblemProvider;
+import org.seage.problem.sat.SatProblemProvider;
+import org.seage.problem.tsp.TspProblemProvider;
+
 /**
  *
  * @author rick
@@ -14,8 +20,24 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args)
+    {
+        try
+        {
+            IProblemProvider[] providers = new IProblemProvider[]
+            {new TspProblemProvider(), new SatProblemProvider(), new QapProblemProvider()};
+
+            for(IProblemProvider pp : providers)
+            {
+                System.out.println(pp.getClass().getName());
+                for(DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes())
+                    System.out.println("\t"+alg.getValue("name").toString());
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
 }
