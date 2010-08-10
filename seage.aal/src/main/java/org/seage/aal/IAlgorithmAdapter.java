@@ -20,6 +20,9 @@ import org.seage.data.DataNode;
  */
 public interface IAlgorithmAdapter
 {
+        // Inits the algorithm.
+        //void init(DataNode params);
+
         // Runs the algorithm.
 	void startSearching(DataNode params) throws Exception;
         
