@@ -6,12 +6,9 @@
 package org.seage.experimenter;
 
 import org.seage.aal.IProblemProvider;
-import org.seage.aal.ProblemProvider;
-import org.seage.classpath.ClassFinder;
+import org.seage.classutil.ClassFinder;
+import org.seage.classutil.ClassInfo;
 import org.seage.data.DataNode;
-import org.seage.problem.qap.QapProblemProvider;
-import org.seage.problem.sat.SatProblemProvider;
-import org.seage.problem.tsp.TspProblemProvider;
 
 /**
  *
@@ -26,20 +23,10 @@ public class Main {
     {
         try
         {
-//            IProblemProvider[] providers = new IProblemProvider[]
-//            {new TspProblemProvider(), new SatProblemProvider(), new QapProblemProvider()};
-
-//            for(IProblemProvider pp : providers)
-//            {
-//                System.out.println(pp.getClass().getName());
-//                for(DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes())
-//                    System.out.println("\t"+alg.getValue("name").toString());
-//            }
-
-            for(Class c : ClassFinder.searchForClasses("org.seage.problem", ProblemProvider.class))
+            for(ClassInfo ci : ClassFinder.searchForClasses(".", "seage.problem", "org.seage.problem", IProblemProvider.class))
             {
-                System.out.println(c.getName());
-                IProblemProvider pp = (IProblemProvider)c.newInstance();
+                System.out.println(ci.getClassObj().getName() + " ("+ci.getPackagePath() + ")");
+                IProblemProvider pp = (IProblemProvider)ci.getClassObj().newInstance();
                 for(DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes())
                     System.out.println("\t"+alg.getValue("name").toString());
             }
