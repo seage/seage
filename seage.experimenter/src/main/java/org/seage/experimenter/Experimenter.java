@@ -39,14 +39,14 @@ public class Experimenter
         
         DataNode config = XmlHelper.readXml(new File(args[0]), schema);
 
-        _provider = new org.seage.problem.tsp.TspProblemProvider();//getProblemProvider();
-        
-        _problemParams = config.getDataNode("problem");
-        _algorithmParams = config.getDataNodeById(config.getDataNode("problem").getValueStr("runAlgorithmId")).getDataNodes().get(0);
-        _provider.initProblemInstance(_problemParams);
-        //_algorithm = _provider.createAlgorithmFactory(_algorithmParams).createAlgorithm(_algorithmParams);
-
-        run();
+//        _provider = new org.seage.problem.tsp.TspProblemProvider();//getProblemProvider();
+//
+//        _problemParams = config.getDataNode("problem");
+//        _algorithmParams = config.getDataNodeById(config.getDataNode("problem").getValueStr("runAlgorithmId")).getDataNodes().get(0);
+//        _provider.initProblemInstance(_problemParams);
+//        //_algorithm = _provider.createAlgorithmFactory(_algorithmParams).createAlgorithm(_algorithmParams);
+//
+//        run();
     }
 
     public void run() throws Exception
@@ -63,16 +63,16 @@ public class Experimenter
         System.out.println("Best: "+_algorithm.getReport().getDataNode("statistics").getValueStr("bestObjVal"));
     }
 
-    public static void main(String[] args)
-    {
-        try
-        {
-            new Experimenter(args).run();
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-    }
+//    public static void main(String[] args)
+//    {
+//        try
+//        {
+//            new Experimenter(args).run();
+//        }
+//        catch(Exception ex)
+//        {
+//            ex.printStackTrace();
+//        }
+//    }
 }
 

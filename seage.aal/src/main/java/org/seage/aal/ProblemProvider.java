@@ -19,7 +19,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import org.seage.classpath.ClassFinder;
+import org.seage.classutil.ClassFinder;
+import org.seage.classutil.ClassInfo;
 import org.seage.data.DataNode;
 
 /**
@@ -48,10 +49,10 @@ public class ProblemProvider implements IProblemProvider
         String pkg = this.getClass().getPackage().getName();
         alg.putValue("package", pkg);
 
-        for(Class c : ClassFinder.searchForClasses(pkg, IAlgorithmFactory.class))
+        for(ClassInfo ci : ClassFinder.searchForClasses(".", "", pkg, IAlgorithmFactory.class))
         {
             DataNode algDn = new DataNode("Algorithm");
-            algDn.putValue("name", c.getCanonicalName());
+            algDn.putValue("name", ci.getClassObj().getCanonicalName());
             alg.putDataNode(algDn);
         }
         result.putDataNode(alg);
