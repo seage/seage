@@ -23,12 +23,12 @@ public class Main {
     {
         try
         {
-            for(ClassInfo ci : ClassFinder.searchForClasses(".", "seage.problem", "org.seage.problem", IProblemProvider.class))
+            for(ClassInfo ci : ClassFinder.searchForClasses("..", "seage.problem", "org.seage.problem", IProblemProvider.class))
             {
-                System.out.println(ci.getClassObj().getName() + " ("+ci.getPackagePath() + ")");
-                IProblemProvider pp = (IProblemProvider)ci.getClassObj().newInstance();
-                for(DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes())
-                    System.out.println("\t"+alg.getValue("name").toString());
+                System.out.println(ci.getClassName() );
+//                IProblemProvider pp = (IProblemProvider)ci.getClassObj().newInstance();
+//                for(DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes())
+//                    System.out.println("\t"+alg.getValue("name").toString());
             }
         }
         catch(Exception ex)
