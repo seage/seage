@@ -9,10 +9,12 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.jar.Attributes.Name;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -29,18 +31,35 @@ public class ClassFinder
         for(File f : searchForJars(rootDir, jarPrefix))
         {
            JarFile jarFile = new JarFile(f);
+
+           URLClassLoader classLoader = createClassLoader(jarFile, f.getCanonicalPath());
+           //classLoader.findClass();
+
            Enumeration en = jarFile.entries();
            while (en.hasMoreElements()) {
              JarEntry entry = (JarEntry)en.nextElement();
              if(entry.getName().startsWith(packagePrefix.replace(".", "/")) && entry.getName().endsWith(".class"))
              {
                 String s = entry.getName();
-                Class c = Class.forName(s.substring(0, s.indexOf(".class")).replace("/", "."));
-
-                if(searchForParent(classObj, c))
+                String className = s.substring(0, s.indexOf(".class")).replace("/", ".");
+                try
                 {
-                    result.add(createClassInfo(jarFile, f.getCanonicalPath(), c));
-//                    jarFile.getManifest().getAttributes("Class-Path").
+                    System.out.println(className);
+                    Class c = Class.forName(className, false, classLoader);
+                    //Class c = classLoader.loadClass(className);
+                
+                    if(searchForParent(classObj, c))
+                        //result.add(createClassInfo(jarFile, f.getCanonicalPath(), c));
+                        result.add(new ClassInfo(c.getCanonicalName(), classLoader.getURLs()));
+
+                }
+                catch(Error er)
+                {
+                    System.err.println(f.getCanonicalPath()+" - "+s +" - " + er.toString());
+                    for(URL u : classLoader.getURLs())
+                        System.err.println("\t"+u.toString());
+                    //er.printStackTrace();
+                    //System.err.println();
                 }
              }
            }
@@ -108,16 +127,40 @@ public class ClassFinder
         return false;
     }
 
-    private static ClassInfo createClassInfo(JarFile jar, String jarPath, Class cls) throws IOException
+    private static URLClassLoader createClassLoader(JarFile jarFile, String jarPath) throws Exception
     {
-        String[] paths = jar.getManifest().getMainAttributes().getValue("Class-Path").split(" ");
+        String[] paths = jarFile.getManifest().getMainAttributes().getValue("Class-Path").split(" ");
+        URL[] urls = new URL[1/*paths.length*/];
 
-        for(int i = 0;i< paths.length;i++)
-            if(paths[i].charAt(0) != '/' && paths[i].charAt(1) != ':')
-                paths[i] = new File(jarPath).getParent() + "/" + paths[i];
+        urls[0] = new URL("file://" +jarPath);
+        URLClassLoader result = new URLClassLoader(urls);
 
-        ClassInfo result = new ClassInfo(jarPath, cls, paths);
+        Class[] parameters = new Class[]{URL.class};
+        Method method = URLClassLoader.class.getDeclaredMethod("addURL", parameters);
+        method.setAccessible(true);
 
-        return result;
+        //urls[1] = new URL("file:///mirror/rick/Projects/seage/seage.problems/discrete/qap/dist/lib/seage.metaheuristics.jar");
+
+//        for(int i = 0;i< urls.length;i++)
+//            if(paths[i].charAt(0) != '/' && paths[i].charAt(1) != ':')
+////                urls[i+1] = new URL("file://" +new File(jarPath).getParent() + "/" + paths[i]);
+//                method.invoke(result, new Object[]{new URL("file://" +new File(jarPath).getParent() + "/" + paths[i])});
+
+        //urls[paths.length] = new URL("file://" +jarPath);
+
+        return result;//new URLClassLoader(urls/*, ClassLoader.getSystemClassLoader()*/);
     }
+
+//    private static ClassInfo createClassInfo(JarFile jar, String jarPath, Class cls) throws IOException
+//    {
+//        String[] paths = jar.getManifest().getMainAttributes().getValue("Class-Path").split(" ");
+//
+//        for(int i = 0;i< paths.length;i++)
+//            if(paths[i].charAt(0) != '/' && paths[i].charAt(1) != ':')
+//                paths[i] = new File(jarPath).getParent() + "/" + paths[i];
+//
+//        ClassInfo result = new ClassInfo(cls.getCanonicalName(), null);
+//
+//        return result;
+//    }
 }

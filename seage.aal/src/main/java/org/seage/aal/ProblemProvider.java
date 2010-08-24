@@ -52,7 +52,7 @@ public class ProblemProvider implements IProblemProvider
         for(ClassInfo ci : ClassFinder.searchForClasses(".", "", pkg, IAlgorithmFactory.class))
         {
             DataNode algDn = new DataNode("Algorithm");
-            algDn.putValue("name", ci.getClassObj().getCanonicalName());
+            algDn.putValue("name", ci.getClassName());
             alg.putDataNode(algDn);
         }
         result.putDataNode(alg);

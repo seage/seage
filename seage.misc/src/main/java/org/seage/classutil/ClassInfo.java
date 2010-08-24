@@ -5,33 +5,29 @@
 
 package org.seage.classutil;
 
+import java.net.URL;
+
 /**
  *
  * @author rick
  */
 public class ClassInfo
 {
-    private String _jarPath;
-    private Class _class;
-    private String[] _classPaths;
+    private String _className;
+    private URL[] _classPaths;
 
 
-    public ClassInfo(String jarPath, Class classObj, String[] classPaths)
+    public ClassInfo(String className, URL[] classPaths)
     {
-        _jarPath = jarPath;
-        _class = classObj;
+        _className = className;
         _classPaths = classPaths;
     }  
 
-    public Class getClassObj() {
-        return _class;
+    public String getClassName() {
+        return _className;
     }
 
-    public String getPackagePath() {
-        return _jarPath;
-    }
-
-    public String[] getClassPaths() {
+    public URL[] getClassPaths() {
         return _classPaths;
     }
 
