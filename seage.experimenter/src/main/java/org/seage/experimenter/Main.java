@@ -6,7 +6,7 @@
 package org.seage.experimenter;
 
 import org.seage.aal.IProblemProvider;
-import org.seage.classutil.ClassFinder;
+import org.seage.classutil.ClassFinder2;
 import org.seage.classutil.ClassInfo;
 import org.seage.data.DataNode;
 
@@ -23,9 +23,10 @@ public class Main {
     {
         try
         {
-            for(ClassInfo ci : ClassFinder.searchForClasses("..", "seage.problem", "org.seage.problem", IProblemProvider.class))
+//            for(ClassInfo ci : ClassFinder.searchForClasses("..", "seage.problem", "org.seage.problem", IProblemProvider.class))
+            for(ClassInfo ci : ClassFinder2.searchForClasses(IProblemProvider.class))
             {
-                System.out.println(ci.getClassName() );
+                System.out.println("+++"+ci.getClassName() );
 //                IProblemProvider pp = (IProblemProvider)ci.getClassObj().newInstance();
 //                for(DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes())
 //                    System.out.println("\t"+alg.getValue("name").toString());
