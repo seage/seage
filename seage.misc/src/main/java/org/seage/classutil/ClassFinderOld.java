@@ -6,13 +6,15 @@
 package org.seage.classutil;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -20,53 +22,42 @@ import java.util.jar.JarFile;
  *
  * @author rick
  */
-public class ClassFinder
+public class ClassFinderOld
 {
-
-    public static ClassInfo[] searchForClasses(Class classObj) throws Exception
-    {
-        return searchForClasses(classObj, searchForJars());
-    }
-
-    public static ClassInfo[] searchForClasses(Class classObj, String pkgName) throws Exception
-    {
-        return searchForClasses(classObj, new File[]{new File(getJarPath(pkgName))});
-    }
-
-    public static ClassInfo[] searchForClasses(Class classObj, File[] jars) throws Exception
+    public static ClassInfo[] searchForClasses(String rootDir, String jarPrefix, String packagePrefix, Class classObj) throws Exception
     {
         List<ClassInfo> result = new ArrayList<ClassInfo>();
 
-        for(File f : jars)
+        for(File f : searchForJars(rootDir, jarPrefix))
         {
            JarFile jarFile = new JarFile(f);
 
-           //URLClassLoader classLoader = createClassLoader(jarFile, f.getCanonicalPath());
+           URLClassLoader classLoader = createClassLoader(jarFile, f.getCanonicalPath());
            //classLoader.findClass();
 
            Enumeration en = jarFile.entries();
            while (en.hasMoreElements()) {
              JarEntry entry = (JarEntry)en.nextElement();
-             if( entry.getName().endsWith(".class"))
+             if(entry.getName().startsWith(packagePrefix.replace(".", "/")) && entry.getName().endsWith(".class"))
              {
                 String s = entry.getName();
                 String className = s.substring(0, s.indexOf(".class")).replace("/", ".");
                 try
                 {
-                    //System.out.println(className);
-                    //Class c = Class.forName(className, false, classLoader);
-                    Class c = Class.forName(className);
+                    System.out.println(className);
+                    Class c = Class.forName(className, false, classLoader);
+                    //Class c = classLoader.loadClass(className);
                 
-                    if(searchForParent(classObj, c))
+                    if(checkForParent(classObj, c))
                         //result.add(createClassInfo(jarFile, f.getCanonicalPath(), c));
-                        result.add(new ClassInfo(c.getCanonicalName(), null));
+                        result.add(new ClassInfo(c.getCanonicalName(), classLoader.getURLs()));
 
                 }
                 catch(Error er)
                 {
                     System.err.println(f.getCanonicalPath()+" - "+s +" - " + er.toString());
-//                    for(URL u : classLoader.getURLs())
-//                        System.err.println("\t"+u.toString());
+                    for(URL u : classLoader.getURLs())
+                        System.err.println("\t"+u.toString());
                     //er.printStackTrace();
                     //System.err.println();
                 }
@@ -77,26 +68,11 @@ public class ClassFinder
         return result.toArray(new ClassInfo[0]);
     }
 
-    private static File[] searchForJars() throws Exception
+    private static File[] searchForJars(String rootDir, String jarPrefix) throws Exception
     {
         List<File> result = new ArrayList<File>();
 
-        //searchForJarsInDir(new File(rootDir), jarPrefix, result);
-
-        String classPath = System.getProperty("java.class.path",".");
-        StringTokenizer tokenizer =
-            new StringTokenizer(classPath, File.pathSeparator);
-        while (tokenizer.hasMoreTokens()) {
-            String token = tokenizer.nextToken();
-            File f = new File(token);
-
-            if (f.isFile()) {
-                String name = f.getName().toLowerCase();
-                if (name.startsWith("seage.problem") && (name.endsWith(".zip") || name.endsWith(".jar"))) {
-                    result.add(f);
-                }
-            }
-        }
+        searchForJarsInDir(new File(rootDir), jarPrefix, result);
 
         //result.add(new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()));
         //ClassLoader loader = this.getClass().getClassLoader();
@@ -105,8 +81,29 @@ public class ClassFinder
         return result.toArray(new File[0]);
     }
 
+    private static void searchForJarsInDir(File dir, final String jarPrefix, List<File> result)
+    {
+        File[] searchResults = dir.listFiles(new FilenameFilter() {
 
-    private static boolean searchForParent(Class pattern, Class current)
+            public boolean accept(File file, String name) {
+                 return name.startsWith(jarPrefix) && name.endsWith(".jar");
+            }
+        });
+
+        for(File f : searchResults)
+            result.add(f);
+
+        for(File d : dir.listFiles(new FileFilter() {
+            public boolean accept(File file) {
+                return file.isDirectory();
+            }
+        }))
+        {
+            searchForJarsInDir(d, jarPrefix, result);
+        }
+    }
+
+    public static boolean checkForParent(Class current, Class pattern)
     {
         ArrayList<Class> cls = new ArrayList<Class>();
 
@@ -125,7 +122,7 @@ public class ClassFinder
                 if(c.getName().equals(pattern.getName()))
                     return true;
                 else
-                    return searchForParent(pattern, c);
+                    return checkForParent(pattern, c);
             }
         return false;
     }
@@ -166,6 +163,60 @@ public class ClassFinder
 //
 //        return result;
 //    }
+
+
+    /**
+     * Scans all classes accessible from the context class loader which belong to the given package and subpackages.
+     *
+     * @param packageName The base package
+     * @return The classes
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
+    public static Class[] getClassesInPackage(String packageName) throws ClassNotFoundException, IOException
+    {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        assert classLoader != null;
+        String path = packageName.replace('.', '/');
+        Enumeration<URL> resources = classLoader.getResources(path);
+        List<File> dirs = new ArrayList<File>();
+        while (resources.hasMoreElements()) {
+            URL resource = resources.nextElement();
+            dirs.add(new File(resource.getFile()));
+        }
+        ArrayList<Class> classes = new ArrayList<Class>();
+        for (File directory : dirs) {
+            classes.addAll(findClasses(directory, packageName));
+        }
+        return classes.toArray(new Class[classes.size()]);
+    }
+
+    /**
+     * Recursive method used to find all classes in a given directory and subdirs.
+     *
+     * @param directory   The base directory
+     * @param packageName The package name for classes found inside the base directory
+     * @return The classes
+     * @throws ClassNotFoundException
+     */
+    private static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException
+    {
+        List<Class> classes = new ArrayList<Class>();
+        if (!directory.exists()) {
+            return classes;
+        }
+        File[] files = directory.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                assert !file.getName().contains(".");
+                classes.addAll(findClasses(file, packageName + "." + file.getName()));
+            } else if (file.getName().endsWith(".class")) {
+                classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+            }
+        }
+        return classes;
+    }
+
     public static String getJarPath(String pkgName)
     {
         pkgName = pkgName.replace('.', '/');
