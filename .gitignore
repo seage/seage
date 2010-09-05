@@ -3,4 +3,5 @@
 private/
 dist/
 build/
+target/
 *~

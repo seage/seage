@@ -63,6 +63,7 @@ public abstract class TabuSearchAdapter implements IAlgorithmAdapter
         _searchID = searchID;
     }
 
+    @Override
     public void startSearching(DataNode params) throws Exception
     {
         _reporter = new AlgorithmReporter(_searchID);
