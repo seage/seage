@@ -28,15 +28,16 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>aglobe</groupId>
+      <artifactId>aglobe</artifactId>
+      <version>5.2.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/../seage.ael/lib/aglobe/aglobe-5.2.jar</systemPath>
+    </dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>seage.ael</artifactId>
       <version>${project.version}</version>
-        <exclusions>
-            <exclusion>
-                <artifactId>aglobe</artifactId>
-                <groupId>aglobe</groupId>
-            </exclusion>
-        </exclusions>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
