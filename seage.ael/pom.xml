@@ -31,7 +31,8 @@
             <groupId>aglobe</groupId>
             <artifactId>aglobe</artifactId>
             <version>5.2.0</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/aglobe/aglobe-5.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
