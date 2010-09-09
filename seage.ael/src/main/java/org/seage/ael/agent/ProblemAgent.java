@@ -14,7 +14,6 @@ import aglobe.ontology.*;
 import aglobex.protocol.queryref.QueryRefParticipantTask;
 import aglobex.protocol.request.RequestInitiatorTask;
 import org.seage.aal.IPhenotypeEvaluator;
-import org.seage.aal.IProblemFactory;
 import org.seage.aal.IProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.data.file.FileHelper;
@@ -30,7 +29,7 @@ import java.util.Map.Entry;
 
 public class ProblemAgent extends AelAgent
 {
-    private final String _configPath = "config-agents.xml";
+    private String _configPath = "config-agents.xml";
     private String _outputPath;
 
     private final int stPREINIT = 1;                // 
@@ -85,6 +84,7 @@ public class ProblemAgent extends AelAgent
         try
         {
             // read config file
+            _configPath = getContainer().getProperty("config");
             DataNode config = XmlHelper.readXml(new File(_configPath));
             List<DataNode> param = config.getDataNodes();
 

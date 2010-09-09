@@ -22,21 +22,21 @@ public class TspProblemProvider extends ProblemProvider
     @Override
     public void initProblemInstance(DataNode params) throws Exception
     {
-//        if(currentInstanceIx != instanceIx)
-//        {
-//            currentInstanceIx = instanceIx;
-//            DataNode info = params.getDataNode("instance", instanceIx);
-//            String path = info.getValueStr("path");
-//
-//            if(path.equals("[circle]"))
-//                _cities = CityProvider.generateCircleCities(info.getValueInt("numberOfCities"));
-//            else
-//                _cities = CityProvider.readCities(info.getValueStr("path"));
-//
-//
-//            //params.getDataNode("evaluator").putValue("cities", _cities);
-//
-//        }
+        if(currentInstanceIx != 0)
+        {
+            currentInstanceIx = 0;
+            DataNode info = params.getDataNode("instance", 0);
+            String path = info.getValueStr("path");
+
+            if(path.equals("[circle]"))
+                _cities = CityProvider.generateCircleCities(info.getValueInt("numberOfCities"));
+            else
+                _cities = CityProvider.readCities(info.getValueStr("path"));
+
+
+            //params.getDataNode("evaluator").putValue("cities", _cities);
+
+        }
     }
 
     @Override
