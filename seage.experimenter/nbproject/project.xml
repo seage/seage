@@ -25,7 +25,7 @@
                 <id>jar</id>
             </reference>
             <reference>
-                <foreign-project>seage_ael</foreign-project>
+                <foreign-project>seage_agents</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
                 <target>jar</target>
