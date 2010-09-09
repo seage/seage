@@ -68,8 +68,8 @@ public class XmlHelper
         if(doc.getDocumentElement().hasAttribute("redirect"))
         {
             String path = doc.getDocumentElement().getAttribute("redirect");
-            if(!path.startsWith("\\") && file.getParent() != null)
-                path = file.getParent()+"\\"+path;
+            if(!path.startsWith("/") && file.getParent() != null)
+                path = file.getParent()+"/"+path;
             return readXml(new File(path), schema);
         }
         else if(schema != null)
