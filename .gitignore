@@ -3,6 +3,5 @@
 private/
 dist/
 build/
-target/
 *~
 aglobe*.log*
