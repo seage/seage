@@ -11,68 +11,51 @@
  */
 package org.seage.experimenter;
 
-import java.io.File;
-import java.io.InputStream;
-import org.seage.aal.IAlgorithmAdapter;
+import aglobe.platform.Platform;
 import org.seage.aal.IProblemProvider;
+import org.seage.classutil.ClassFinder;
+import org.seage.classutil.ClassInfo;
 import org.seage.data.DataNode;
-import org.seage.data.xml.XmlHelper;
 
 /**
  *
- * @author Richard Malek
+ * @author rick
  */
-public class Experimenter
-{
-    protected IAlgorithmAdapter _algorithm;
-    protected DataNode _problemParams;
-    protected DataNode _algorithmParams;
-    private IProblemProvider _provider;
+public class Experimenter {
 
-    //protected abstract IProblemProvider getProblemProvider();
-
-    public Experimenter(String[] args) throws Exception
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args)
     {
-        InputStream schema = Experimenter.class.getResourceAsStream("config.xsd");
-        if(schema == null)
-            throw new Exception("No xsd schema found.");
-        
-        DataNode config = XmlHelper.readXml(new File(args[0]), schema);
+        try
+        {
+            if(args.length > 0 && args[0].equals("-agents"))
+            {
+                if(args.length<2){
+                    System.out.println("Usage: Experimenter -agents path-to-agent-config-xml");
+                    return;
+                }
 
-//        _provider = new org.seage.problem.tsp.TspProblemProvider();//getProblemProvider();
-//
-//        _problemParams = config.getDataNode("problem");
-//        _algorithmParams = config.getDataNodeById(config.getDataNode("problem").getValueStr("runAlgorithmId")).getDataNodes().get(0);
-//        _provider.initProblemInstance(_problemParams);
-//        //_algorithm = _provider.createAlgorithmFactory(_algorithmParams).createAlgorithm(_algorithmParams);
-//
-//        run();
+                Platform.main(new String[]{"-name", "SEAGE", "-topics", "-gui", "-p", "config="+args[1], "ProblemAgent:org.seage.ael.agent.ProblemAgent" });
+            }
+            else
+            {
+                System.out.println("List of implemented problems and algorithms:");
+                System.out.println("--------------------------------------------");
+                for(ClassInfo ci : ClassFinder.searchForClasses(IProblemProvider.class))
+                {
+                    System.out.println(ci.getClassName() );
+                    IProblemProvider pp = (IProblemProvider)Class.forName(ci.getClassName()).newInstance();
+                    for(DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes())
+                        System.out.println("\t"+alg.getValue("name").toString());
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
-    public void run() throws Exception
-    {
-        _algorithm.solutionsFromPhenotype(_provider.generateInitialSolutions(_algorithmParams.getValueInt("numSolutions")));
-        _algorithm.startSearching(_algorithmParams);        
-        _provider.visualizeSolution(_algorithm.solutionsToPhenotype()[0]);
-
-        reportBest();
-    }
-
-    protected void reportBest() throws Exception
-    {
-        System.out.println("Best: "+_algorithm.getReport().getDataNode("statistics").getValueStr("bestObjVal"));
-    }
-
-//    public static void main(String[] args)
-//    {
-//        try
-//        {
-//            new Experimenter(args).run();
-//        }
-//        catch(Exception ex)
-//        {
-//            ex.printStackTrace();
-//        }
-//    }
 }
-
