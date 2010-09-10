@@ -4,3 +4,5 @@
 private/
 dist/
 build/
+*~
+aglobe*.log*
