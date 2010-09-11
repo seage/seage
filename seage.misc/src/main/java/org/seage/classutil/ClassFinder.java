@@ -12,6 +12,8 @@
 package org.seage.classutil;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -29,17 +31,17 @@ import java.util.jar.JarFile;
 public class ClassFinder
 {
 
-    public static ClassInfo[] searchForClasses(Class classObj) throws Exception
+    public static ClassInfo[] searchForClasses(Class classObj, String rootDir, String pkgPrefix) throws Exception
     {
-        return searchForClasses(classObj, searchForJars());
+        return searchForClasses(classObj, searchForJars(rootDir, pkgPrefix));
     }
 
-    public static ClassInfo[] searchForClasses(Class classObj, String pkgName) throws Exception
-    {
-        return searchForClasses(classObj, new File[]{new File(getJarPath(pkgName))});
-    }
+//    public static ClassInfo[] searchForClasses(Class classObj, String pkgName) throws Exception
+//    {
+//        return searchForClasses(classObj, new File[]{new File(getJarPath(pkgName))});
+//    }
 
-    public static ClassInfo[] searchForClasses(Class classObj, File[] jars) throws Exception
+    private static ClassInfo[] searchForClasses(Class classObj, File[] jars) throws Exception
     {
         List<ClassInfo> result = new ArrayList<ClassInfo>();
 
@@ -83,32 +85,70 @@ public class ClassFinder
         return result.toArray(new ClassInfo[0]);
     }
 
-    private static File[] searchForJars() throws Exception
+    public static ClassInfo[] searchForClassesInJar(Class targetClass, Class sourceClass) throws Exception
+    {
+        File jarFile = new File (sourceClass.getProtectionDomain().getCodeSource().getLocation().toURI());
+        return searchForClasses(targetClass, new File[]{jarFile});
+    }
+
+//    private static File[] searchForJars() throws Exception
+//    {
+//        List<File> result = new ArrayList<File>();
+//
+//        //searchForJarsInDir(new File(rootDir), jarPrefix, result);
+//
+//        String classPath = System.getProperty("java.class.path",".");
+//        System.out.println(classPath);
+//        StringTokenizer tokenizer =
+//            new StringTokenizer(classPath, File.pathSeparator);
+//        while (tokenizer.hasMoreTokens()) {
+//            String token = tokenizer.nextToken();
+//            File f = new File(token);
+//
+//            if (f.isFile()) {
+//                String name = f.getName().toLowerCase();
+//                if (name.startsWith("seage.problem") && (name.endsWith(".zip") || name.endsWith(".jar"))) {
+//                    result.add(f);
+//                }
+//            }
+//        }
+//
+//        //result.add(new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()));
+//        //ClassLoader loader = this.getClass().getClassLoader();
+//        //System.out.println(loader.getResource(this.getClass().getCanonicalName().replace(".", "/")+".class"));
+//
+//        return result.toArray(new File[0]);
+//    }
+
+    private static File[] searchForJars(String rootDir, String jarPrefix) throws Exception
+    {
+        List<File> result = searchForJarsInDir(new File(rootDir), jarPrefix);
+        return result.toArray(new File[0]);
+    }
+
+    private static List<File> searchForJarsInDir(File dir, final String jarPrefix)
     {
         List<File> result = new ArrayList<File>();
+        File[] searchResults = dir.listFiles(new FilenameFilter() {
 
-        //searchForJarsInDir(new File(rootDir), jarPrefix, result);
-
-        String classPath = System.getProperty("java.class.path",".");
-        StringTokenizer tokenizer =
-            new StringTokenizer(classPath, File.pathSeparator);
-        while (tokenizer.hasMoreTokens()) {
-            String token = tokenizer.nextToken();
-            File f = new File(token);
-
-            if (f.isFile()) {
-                String name = f.getName().toLowerCase();
-                if (name.startsWith("seage.problem") && (name.endsWith(".zip") || name.endsWith(".jar"))) {
-                    result.add(f);
-                }
+            public boolean accept(File file, String name) {
+                 return name.startsWith(jarPrefix) && name.endsWith(".jar");
             }
+        });
+
+        for(File f : searchResults)
+            result.add(f);
+
+        for(File d : dir.listFiles(new FileFilter() {
+            public boolean accept(File file) {
+                return file.isDirectory();
+            }
+        }))
+        {
+            result.addAll( searchForJarsInDir(d, jarPrefix));
         }
 
-        //result.add(new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()));
-        //ClassLoader loader = this.getClass().getClassLoader();
-        //System.out.println(loader.getResource(this.getClass().getCanonicalName().replace(".", "/")+".class"));
-
-        return result.toArray(new File[0]);
+        return result;
     }
 
 
@@ -172,14 +212,14 @@ public class ClassFinder
 //
 //        return result;
 //    }
-    public static String getJarPath(String pkgName)
-    {
-        pkgName = pkgName.replace('.', '/');
-        URL u = Thread.currentThread().getContextClassLoader().getResource(pkgName);
-        String jar = u.getFile();
-        if(jar.contains(".jar"))
-            return jar.split("!")[0].split("file:")[1];
-        else
-            return null;
-    }
+//    public static String getJarPath(String pkgName)
+//    {
+//        pkgName = pkgName.replace('.', '/');
+//        URL u = Thread.currentThread().getContextClassLoader().getResource(pkgName);
+//        String jar = u.getFile();
+//        if(jar.contains(".jar"))
+//            return jar.split("!")[0].split("file:")[1];
+//        else
+//            return null;
+//    }
 }

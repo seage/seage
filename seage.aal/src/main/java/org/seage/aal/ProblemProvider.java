@@ -47,12 +47,12 @@ public class ProblemProvider implements IProblemProvider
         
         DataNode alg = new DataNode("Algorithms");
 
-        String pkg = this.getClass().getPackage().getName();
-        alg.putValue("package", pkg);
+//        String pkg = this.getClass().getPackage().getName();
+//        alg.putValue("package", pkg);
 
 
 
-        for(ClassInfo ci : ClassFinder.searchForClasses(IAlgorithmFactory.class, pkg))
+        for(ClassInfo ci : ClassFinder.searchForClassesInJar(IAlgorithmFactory.class, this.getClass()))
         {
             //if(ClassFinderOld.checkForParent(c, IAlgorithmFactory.class))
             {
