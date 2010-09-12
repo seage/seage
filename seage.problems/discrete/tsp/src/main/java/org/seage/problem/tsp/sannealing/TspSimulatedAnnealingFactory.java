@@ -8,9 +8,12 @@
  * Contributors:
  *     Jan Zmatlik
  *     - Initial implementation
+ *     Richard Malek
+ *     - Added algorithm annotations
  */
 package org.seage.problem.tsp.sannealing;
 
+import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.sannealing.SimulatedAnnealingAdapter;
@@ -23,6 +26,8 @@ import org.seage.problem.tsp.TspProblemProvider;
  *
  * @author Jan Zmatlik
  */
+@Annotations.AlgorithmId("SimulatedAnnealing")
+@Annotations.AlgorithmName("Simulated Annealing")
 public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 {
     private TspSolution _tspSolution;

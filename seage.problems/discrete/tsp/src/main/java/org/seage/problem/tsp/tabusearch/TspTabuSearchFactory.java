@@ -11,6 +11,7 @@
  */
 package org.seage.problem.tsp.tabusearch;
 
+import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.tabusearch.TabuSearchAdapter;
@@ -23,6 +24,8 @@ import org.seage.problem.tsp.TspProblemProvider;
  *
  * @author Richard Malek
  */
+@Annotations.AlgorithmId("TabuSearch")
+@Annotations.AlgorithmName("Tabu Search")
 public class TspTabuSearchFactory implements IAlgorithmFactory
 {
 //    private DataNode _algParams;
