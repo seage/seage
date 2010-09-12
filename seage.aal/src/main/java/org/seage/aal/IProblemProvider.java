@@ -20,8 +20,12 @@ import org.seage.data.DataNode;
 public interface IProblemProvider
 {
     // Returns meta-data on the problem to be solved
+    //  |_ id
+    //  |_ name
     //  |_ instances
     //  |_ algorithms
+    //     |_ id
+    //     |_ name
     //  |_ parameters
     DataNode getProblemInfo() throws Exception;
 

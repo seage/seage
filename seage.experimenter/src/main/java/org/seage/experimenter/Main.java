@@ -12,6 +12,8 @@
 package org.seage.experimenter;
 
 import aglobe.platform.Platform;
+import java.lang.annotation.Annotation;
+import org.seage.aal.Annotations;
 import org.seage.aal.IProblemProvider;
 import org.seage.classutil.ClassFinder;
 import org.seage.classutil.ClassInfo;
@@ -79,10 +81,28 @@ public class Main {
         System.out.println("--------------------------------------------");
         for(ClassInfo ci : ClassFinder.searchForClasses(IProblemProvider.class, "seage.problem"))
         {
-            System.out.println(ci.getClassName() );
-            IProblemProvider pp = (IProblemProvider)Class.forName(ci.getClassName()).newInstance();
-            for(DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes())
-                System.out.println("\t"+alg.getValue("name").toString());
+            try
+            {
+                Class cls = Class.forName(ci.getClassName());
+                Annotation an = null;
+
+                an = cls.getAnnotation(Annotations.ProblemId.class);
+                if(an == null) throw new Exception("Unable to get annotation ProblemId");
+                String id = ((Annotations.ProblemId)an).value();
+
+                an = cls.getAnnotation(Annotations.ProblemName.class);
+                if(an == null) throw new Exception("Unable to get annotation ProblemName");
+                String name = ((Annotations.ProblemName)an).value();
+
+                System.out.println(name + " ("+id+")" );
+                IProblemProvider pp = (IProblemProvider)Class.forName(ci.getClassName()).newInstance();
+                for(DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes())
+                    System.out.println("\t"+alg.getValueStr("id")/*+" ("+alg.getValueStr("id")+")"*/);
+            }
+            catch(Exception ex)
+            {
+                System.err.println(ci.getClassName()+": "+ex.getMessage());
+            }
         }
     }
 
