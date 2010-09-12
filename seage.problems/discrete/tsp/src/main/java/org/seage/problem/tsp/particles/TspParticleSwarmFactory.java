@@ -8,9 +8,12 @@
  * Contributors:
  *     Jan Zmatlik
  *     - Initial implementation
+ *     Richard Malek
+ *     - Added algorithm annotations
  */
 package org.seage.problem.tsp.particles;
 
+import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.particles.ParticleSwarmAdapter;
@@ -24,6 +27,8 @@ import org.seage.problem.tsp.City;
  *
  * @author Jan Zmatlik
  */
+@Annotations.AlgorithmId("ParticleSwarm")
+@Annotations.AlgorithmName("Particle Swarm")
 public class TspParticleSwarmFactory implements IAlgorithmFactory
 {
     private City[] _cities;

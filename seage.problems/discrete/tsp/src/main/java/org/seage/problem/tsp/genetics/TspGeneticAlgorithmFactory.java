@@ -12,6 +12,7 @@
 
 package org.seage.problem.tsp.genetics;
 
+import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.genetics.GeneticAlgorithmAdapter;
@@ -24,6 +25,8 @@ import org.seage.problem.tsp.TspProblemProvider;
  *
  * @author Richard Malek
  */
+@Annotations.AlgorithmId("GeneticAlgorithm")
+@Annotations.AlgorithmName("GeneticAlgorithm")
 public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 {
 //    private DataNode _algParams;

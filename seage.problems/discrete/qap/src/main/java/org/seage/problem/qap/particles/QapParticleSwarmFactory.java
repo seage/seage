@@ -6,11 +6,14 @@
  * http://seage.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Jan Zmatlik
+ *     Karel Durkota
  *     - Initial implementation
+ *     Richard Malek
+ *     - Added algorithm annotations
  */
 package org.seage.problem.qap.particles;
 
+import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.particles.ParticleSwarmAdapter;
@@ -23,6 +26,8 @@ import org.seage.metaheuristic.particles.Particle;
  *
  * @author Karel Durkota
  */
+@Annotations.AlgorithmId("ParticleSwarm")
+@Annotations.AlgorithmName("Particle Swarm")
 public class QapParticleSwarmFactory implements IAlgorithmFactory
 {
     private Double[][] _facilityLocation;
