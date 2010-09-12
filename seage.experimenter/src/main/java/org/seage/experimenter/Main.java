@@ -52,7 +52,7 @@ public class Main {
         }
         if(args[0].equals("-test"))
         {
-            test();
+            new AlgorithmTester().test();
             return;
         }
         if(args[0].equals("-agents"))
@@ -77,7 +77,7 @@ public class Main {
     {
         System.out.println("List of implemented problems and algorithms:");
         System.out.println("--------------------------------------------");
-        for(ClassInfo ci : ClassFinder.searchForClasses(IProblemProvider.class, ".", "seage.problem"))
+        for(ClassInfo ci : ClassFinder.searchForClasses(IProblemProvider.class, "seage.problem"))
         {
             System.out.println(ci.getClassName() );
             IProblemProvider pp = (IProblemProvider)Class.forName(ci.getClassName()).newInstance();
@@ -86,18 +86,6 @@ public class Main {
         }
     }
 
-    private void test() throws Exception
-    {
-        System.out.println("Testing algorithms:");
-        System.out.println("-------------------");
-        for(ClassInfo ci : ClassFinder.searchForClasses(IProblemProvider.class, ".", "seage.problem"))
-        {
-            System.out.println(ci.getClassName() );
-            IProblemProvider pp = (IProblemProvider)Class.forName(ci.getClassName()).newInstance();
-            for(DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes())
-                System.out.println("\t"+alg.getValue("name").toString());
-        }
-    }
 
     private void agents(String config)
     {
