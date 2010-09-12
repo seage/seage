@@ -30,6 +30,10 @@ import java.util.jar.JarFile;
  */
 public class ClassFinder
 {
+    public static ClassInfo[] searchForClasses(Class classObj, String pkgPrefix) throws Exception
+    {
+        return searchForClasses(classObj, searchForJars(".", pkgPrefix));
+    }
 
     public static ClassInfo[] searchForClasses(Class classObj, String rootDir, String pkgPrefix) throws Exception
     {
