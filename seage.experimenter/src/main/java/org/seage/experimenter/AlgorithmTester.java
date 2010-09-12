@@ -29,7 +29,10 @@ public class AlgorithmTester {
         for (ClassInfo ci : ClassFinder.searchForClasses(IProblemProvider.class, "seage.problem")) {
 
             System.out.println(ci.getClassName());
+            
             IProblemProvider pp = (IProblemProvider) Class.forName(ci.getClassName()).newInstance();
+            //pp.initProblemInstance(null);
+
             for (DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes()) {
                 try {
                     String factoryName = alg.getValueStr("name");
