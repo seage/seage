@@ -12,6 +12,8 @@
 package org.seage.aal;
 
 import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
 import org.seage.classutil.ClassFinder;
 import org.seage.classutil.ClassInfo;
 import org.seage.data.DataNode;
@@ -23,6 +25,7 @@ import org.seage.data.DataNode;
  */
 public abstract class ProblemProvider implements IProblemProvider
 {
+    private HashMap<String, IAlgorithmFactory> _algFactories;
 
     @Override
     public Object[][] generateInitialSolutions(int numSolutions) throws Exception
@@ -34,48 +37,97 @@ public abstract class ProblemProvider implements IProblemProvider
     public DataNode getProblemInfo() throws Exception
     {
         DataNode result = new DataNode("ProblemInfo");
-        result.putDataNode(new DataNode("Instances"));
         
-        DataNode alg = new DataNode("Algorithms");
+        Class problemClass = this.getClass();
+        Annotation an = null;
 
+        an = problemClass.getAnnotation(Annotations.ProblemId.class);
+        if(an == null) throw new Exception("Unable to get annotation ProblemId");
+        String problemId = ((Annotations.ProblemId)an).value();
+
+        an = problemClass.getAnnotation(Annotations.ProblemName.class);
+        if(an == null) throw new Exception("Unable to get annotation ProblemName");
+        String problemName = ((Annotations.ProblemName)an).value();
+
+        result.putValue("id", problemId);
+        result.putValue("name", problemName);
+        result.putValue("class", getClass().getCanonicalName());
+
+        DataNode instances = new DataNode("Instances");
+        result.putDataNode(instances);
+
+        // Add instance info here
+        //-----------------------
+
+        // Algorithms
+        DataNode algorithms = new DataNode("Algorithms");
+        _algFactories = new HashMap<String, IAlgorithmFactory>();
 
         for(ClassInfo ci : ClassFinder.searchForClassesInJar(IAlgorithmFactory.class, this.getClass()))
         {
-            //if(ClassFinderOld.checkForParent(c, IAlgorithmFactory.class))
+            DataNode algorithm = new DataNode("Algorithm");            
+            
+            try
             {
-                try
-                {
-                    Class cls = Class.forName(ci.getClassName());
-                    Annotation an = null;
+                Class algClass = Class.forName(ci.getClassName());
 
-                    an = cls.getAnnotation(Annotations.AlgorithmId.class);
-                    if(an == null) throw new Exception("Unable to get annotation AlgorithmId");
-                    String id = ((Annotations.AlgorithmId)an).value();
+                Annotation an2 = null;
 
-                    an = cls.getAnnotation(Annotations.AlgorithmName.class);
-                    if(an == null) throw new Exception("Unable to get annotation AlgorithmName");
-                    String name = ((Annotations.AlgorithmName)an).value();
+                an2 = algClass.getAnnotation(Annotations.AlgorithmId.class);
+                if(an == null) throw new Exception("Unable to get annotation AlgorithmId");
+                String algId = ((Annotations.AlgorithmId)an2).value();
 
-                    
-                    DataNode algDn = new DataNode("Algorithm");
-                    //algDn.putValue("name", ci.getClassName());
-                    algDn.putValue("id", id);
-                    algDn.putValue("name", name);
-                    alg.putDataNode(algDn);
-                }
-                catch(Exception ex)
-                {
-                    System.err.println(ci.getClassName()+": "+ex.getMessage());
-                }
+                an2 = algClass.getAnnotation(Annotations.AlgorithmName.class);
+                if(an == null) throw new Exception("Unable to get annotation AlgorithmName");
+                String algName = ((Annotations.AlgorithmName)an2).value();
+
+                algorithm.putValue("id", algId);
+                algorithm.putValue("name", algName);
+                algorithm.putValue("factoryClass", ci.getClassName());
+
+                _algFactories.put(algId, (IAlgorithmFactory)algClass.newInstance());
+
+                algorithms.putDataNode(algorithm);
+            }
+            catch(Exception ex)
+            {
+                System.err.println(ci.getClassName()+": "+ex.getMessage());
+                ex.printStackTrace();
             }
         }
-        result.putDataNode(alg);
+        result.putDataNode(algorithms);
 
         return result;
     }
 
+    public IAlgorithmFactory getAlgorithmFactory(String algId) throws Exception
+    {
+        return _algFactories.get(algId);
+    }
+
+
+
     ///////////////////////////////////////////////////////////////////////////
 
-    
+    public static Map<String, IProblemProvider> getProblemProviders() throws Exception
+    {
+        HashMap<String, IProblemProvider> result = new HashMap<String, IProblemProvider>();
+
+        for(ClassInfo ci : ClassFinder.searchForClasses(IProblemProvider.class, "seage.problem"))
+        {
+            try
+            {
+                IProblemProvider pp = (IProblemProvider)Class.forName(ci.getClassName()).newInstance();
+
+                result.put(pp.getProblemInfo().getValueStr("id"), pp);
+            }
+            catch(Exception ex)
+            {
+                System.err.println(ci.getClassName()+": "+ex.getMessage());
+            }
+        }
+
+        return result;
+    }
 
 }

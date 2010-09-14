@@ -11,18 +11,18 @@
  */
 package org.seage.aal.genetics;
 
-import org.seage.aal.IAlgorithmAdapter;
 
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.genetics.*;
 import java.util.Arrays;
+import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.AlgorithmReport;
 import org.seage.aal.AlgorithmReporter;
 
 /**
  * GeneticSearchAdapter class
  */
-public class GeneticAlgorithmAdapter implements IAlgorithmAdapter
+public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
 {
     protected Subject[] _solutions;
     private GeneticSearch _geneticSearch;

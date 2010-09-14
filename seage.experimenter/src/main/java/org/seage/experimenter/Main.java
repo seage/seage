@@ -12,11 +12,9 @@
 package org.seage.experimenter;
 
 import aglobe.platform.Platform;
-import java.lang.annotation.Annotation;
-import org.seage.aal.Annotations;
+import java.util.Map;
 import org.seage.aal.IProblemProvider;
-import org.seage.classutil.ClassFinder;
-import org.seage.classutil.ClassInfo;
+import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
 
 /**
@@ -79,29 +77,24 @@ public class Main {
     {
         System.out.println("List of implemented problems and algorithms:");
         System.out.println("--------------------------------------------");
-        for(ClassInfo ci : ClassFinder.searchForClasses(IProblemProvider.class, "seage.problem"))
+
+        Map<String, IProblemProvider> providers = ProblemProvider.getProblemProviders();
+
+        for(String problemId : providers.keySet())
         {
             try
             {
-                Class cls = Class.forName(ci.getClassName());
-                Annotation an = null;
+                IProblemProvider pp = providers.get(problemId);
+                DataNode pi = pp.getProblemInfo();
+                String name = pi.getValueStr("name");
+                System.out.println(name);
 
-                an = cls.getAnnotation(Annotations.ProblemId.class);
-                if(an == null) throw new Exception("Unable to get annotation ProblemId");
-                String id = ((Annotations.ProblemId)an).value();
-
-                an = cls.getAnnotation(Annotations.ProblemName.class);
-                if(an == null) throw new Exception("Unable to get annotation ProblemName");
-                String name = ((Annotations.ProblemName)an).value();
-
-                System.out.println(name + " ("+id+")" );
-                IProblemProvider pp = (IProblemProvider)Class.forName(ci.getClassName()).newInstance();
-                for(DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes())
+                for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
                     System.out.println("\t"+alg.getValueStr("id")/*+" ("+alg.getValueStr("id")+")"*/);
             }
             catch(Exception ex)
             {
-                System.err.println(ci.getClassName()+": "+ex.getMessage());
+                System.err.println(problemId+": "+ex.getMessage());
             }
         }
     }

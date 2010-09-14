@@ -39,7 +39,7 @@ public class AlgorithmTester {
                     System.out.println("\t" + factoryName);
 
                     IAlgorithmFactory f = (IAlgorithmFactory) Class.forName(factoryName).newInstance();
-                    f.createAlgorithm(alg);
+                    f.createAlgorithm();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

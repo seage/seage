@@ -20,6 +20,6 @@ import org.seage.data.DataNode;
  */
 public interface IAlgorithmFactory
 {
-    IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception;
+    IAlgorithmAdapter createAlgorithm() throws Exception;
     //DataNode getAlgorithmParameters(DataNode params) throws Exception;
 }

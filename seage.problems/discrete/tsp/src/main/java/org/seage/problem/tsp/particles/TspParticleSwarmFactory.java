@@ -21,6 +21,7 @@ import org.seage.data.DataNode;
 
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspProblemProvider;
 
 
 /**
@@ -37,13 +38,13 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 
     private TspObjectiveFunction _objectiveFunction;
 
-    public TspParticleSwarmFactory(DataNode params, City[] cities) throws Exception
+    public TspParticleSwarmFactory() throws Exception
     {
-        _cities = cities;
-        _numParticles = params.getValueInt("numSolutions");
+        _cities = TspProblemProvider.getCities();
+        _numParticles = 0;//params.getValueInt("numSolutions");
     }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
         _objectiveFunction = new TspObjectiveFunction(_cities);
