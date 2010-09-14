@@ -16,6 +16,7 @@ package org.seage.problem.qap.particles;
 import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
+import org.seage.aal.IProblemProvider;
 import org.seage.aal.particles.ParticleSwarmAdapter;
 import org.seage.data.DataNode;
 
@@ -40,6 +41,10 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
     {
 //        _facilityLocation = facilityLocation;
 //        _numParticles = params.getValueInt("numSolutions");
+    }
+
+    public void setProblemProvider(IProblemProvider provider) throws Exception {
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public IAlgorithmAdapter createAlgorithm() throws Exception

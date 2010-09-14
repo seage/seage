@@ -85,7 +85,9 @@ public abstract class ProblemProvider implements IProblemProvider
                 algorithm.putValue("name", algName);
                 algorithm.putValue("factoryClass", ci.getClassName());
 
-                _algFactories.put(algId, (IAlgorithmFactory)algClass.newInstance());
+                IAlgorithmFactory factory = (IAlgorithmFactory)algClass.newInstance();
+                factory.setProblemProvider(this);
+                _algFactories.put(algId, factory);
 
                 algorithms.putDataNode(algorithm);
             }
