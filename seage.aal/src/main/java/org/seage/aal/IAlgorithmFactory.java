@@ -12,14 +12,13 @@
 
 package org.seage.aal;
 
-import org.seage.data.DataNode;
-
 /**
  *
  * @author Richard Malek
  */
 public interface IAlgorithmFactory
 {
+    void setProblemProvider(IProblemProvider provider) throws Exception;
     IAlgorithmAdapter createAlgorithm() throws Exception;
     //DataNode getAlgorithmParameters(DataNode params) throws Exception;
 }

@@ -16,6 +16,7 @@ package org.seage.problem.tsp.sannealing;
 import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
+import org.seage.aal.IProblemProvider;
 import org.seage.aal.sannealing.SimulatedAnnealingAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.sannealing.Solution;
@@ -46,6 +47,10 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
             _tspSolution = new TspRandomSolution( cities );
         else if( solutionType.toLowerCase().equals("sorted") )
             _tspSolution = new TspSortedSolution( cities );
+    }
+
+    public void setProblemProvider(IProblemProvider provider) throws Exception {
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public IAlgorithmAdapter createAlgorithm() throws Exception

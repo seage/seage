@@ -16,6 +16,7 @@ package org.seage.problem.qap.sannealing;
 import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
+import org.seage.aal.IProblemProvider;
 import org.seage.aal.sannealing.SimulatedAnnealingAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.sannealing.Solution;
@@ -45,6 +46,10 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
             _qapSolution = new QapRandomSolution( facilityLocation );
         else if( solutionType.toLowerCase().equals("sorted") )
             _qapSolution = new QapSortedSolution( facilityLocation );
+    }
+
+    public void setProblemProvider(IProblemProvider provider) throws Exception {
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public IAlgorithmAdapter createAlgorithm() throws Exception
