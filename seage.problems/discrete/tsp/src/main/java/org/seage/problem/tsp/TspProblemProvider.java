@@ -24,7 +24,7 @@ import org.seage.data.DataNode;
  *
  * @author Richard Malek
  */
-@Annotations.ProblemId("tsp")
+@Annotations.ProblemId("TSP")
 @Annotations.ProblemName("Travelling Salesman Problem")
 public class TspProblemProvider extends ProblemProvider
 {

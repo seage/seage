@@ -22,7 +22,7 @@ import org.seage.data.DataNode;
  *
  * @author Richard Malek
  */
-@Annotations.ProblemId("sat")
+@Annotations.ProblemId("SAT")
 @Annotations.ProblemName("Boolean Satisfiability Problem")
 public class SatProblemProvider extends ProblemProvider
 {

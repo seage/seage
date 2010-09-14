@@ -25,7 +25,7 @@ import org.seage.data.DataNode;
  *
  * @author Karel Durkota
  */
-@Annotations.ProblemId("qap")
+@Annotations.ProblemId("QAP")
 @Annotations.ProblemName("Quadratic Assignment Problem")
 public class QapProblemProvider extends ProblemProvider
 {

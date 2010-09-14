@@ -11,8 +11,10 @@
  */
 package org.seage.experimenter;
 
+import java.util.Map;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.IProblemProvider;
+import org.seage.aal.ProblemProvider;
 import org.seage.classutil.ClassFinder;
 import org.seage.classutil.ClassInfo;
 import org.seage.data.DataNode;
@@ -26,25 +28,37 @@ public class AlgorithmTester {
     public void test() throws Exception {
         System.out.println("Testing algorithms:");
         System.out.println("-------------------");
-        for (ClassInfo ci : ClassFinder.searchForClasses(IProblemProvider.class, "seage.problem")) {
 
-            System.out.println(ci.getClassName());
-            
-            IProblemProvider pp = (IProblemProvider) Class.forName(ci.getClassName()).newInstance();
-            //pp.initProblemInstance(null);
+        Map<String, IProblemProvider> providers = ProblemProvider.getProblemProviders();
 
-            for (DataNode alg : pp.getProblemInfo().getDataNode("Algorithms").getDataNodes()) {
-                try {
-                    String factoryName = alg.getValueStr("name");
-                    System.out.println("\t" + factoryName);
+        for(String problemId : providers.keySet())
+        {
+            try
+            {
+                IProblemProvider pp = providers.get(problemId);
+                DataNode pi = pp.getProblemInfo();
+                String name = pi.getValueStr("name");
+                System.out.println(name);
 
-                    IAlgorithmFactory f = (IAlgorithmFactory) Class.forName(factoryName).newInstance();
-                    f.createAlgorithm();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
+                {
+                    try {
+                        String factoryName = alg.getValueStr("factoryClass");
+                        System.out.println("\t" + factoryName);
+
+                        IAlgorithmFactory f = (IAlgorithmFactory) Class.forName(factoryName).newInstance();
+                        f.createAlgorithm();
+                    } catch (Exception ex) {
+                        //ex.printStackTrace();
+                        System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
+                    }
+                    //System.out.println("\t"+alg.getValueStr("id")/*+" ("+alg.getValueStr("id")+")"*/);
                 }
             }
-
+            catch(Exception ex)
+            {
+                System.err.println(problemId+": "+ex.getLocalizedMessage());
+            }
         }
     }
 }
