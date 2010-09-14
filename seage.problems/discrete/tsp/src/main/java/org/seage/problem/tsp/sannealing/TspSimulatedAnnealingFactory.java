@@ -48,7 +48,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
             _tspSolution = new TspSortedSolution( cities );
     }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
 

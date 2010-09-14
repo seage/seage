@@ -38,7 +38,7 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
 //        _provider = provider;
 //    }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
         Double[][] facilityLocation = QapProblemProvider.getFacilityLocation();

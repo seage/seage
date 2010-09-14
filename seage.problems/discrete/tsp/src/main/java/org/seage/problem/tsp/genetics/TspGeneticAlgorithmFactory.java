@@ -38,7 +38,7 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 //        _provider = provider;
 //    }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
         City[] cities = TspProblemProvider.getCities();

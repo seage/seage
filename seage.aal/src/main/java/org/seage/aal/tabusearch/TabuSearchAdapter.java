@@ -11,11 +11,10 @@
  */
 package org.seage.aal.tabusearch;
 
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.AlgorithmReporter;
 import java.util.*;
+import org.seage.aal.AlgorithmReporter;
+import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.AlgorithmReport;
-
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.*;
 

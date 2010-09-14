@@ -47,7 +47,7 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
             _qapSolution = new QapSortedSolution( facilityLocation );
     }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
 
