@@ -8,12 +8,16 @@
  * Contributors:
  *     Jan Zmatlik
  *     - Initial implementation
+ *     Richard Malek
+ *     - Added annotations
  */
 
 package org.seage.aal.sannealing;
 
 import org.seage.aal.AlgorithmReport;
 import org.seage.aal.AlgorithmReporter;
+import org.seage.aal.Annotations.AlgorithmParameters;
+import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.sannealing.IMoveManager;
@@ -22,10 +26,19 @@ import org.seage.metaheuristic.sannealing.ISimulatedAnnealingListener;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
 import org.seage.metaheuristic.sannealing.Solution;
+
 /**
  *
  * @author Jan Zmatlik
  */
+@AlgorithmParameters({
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1)
+})
 public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, ISimulatedAnnealingListener
 {
     protected SimulatedAnnealing _simulatedAnnealing;

@@ -53,6 +53,10 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public Class getAlgorithmClass() {
+        return SimulatedAnnealingAdapter.class;
+    }
+
     public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;

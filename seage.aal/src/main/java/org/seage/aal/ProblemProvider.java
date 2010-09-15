@@ -11,12 +11,8 @@
  */
 package org.seage.aal;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.lang.annotation.Annotation;
-import java.net.URI;
-import java.net.URL;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import org.seage.classutil.ClassUtil;
@@ -74,36 +70,55 @@ public abstract class ProblemProvider implements IProblemProvider
 
         for(ClassInfo ci : ClassUtil.searchForClassesInJar(IAlgorithmFactory.class, this.getClass()))
         {
-            DataNode algorithm = new DataNode("Algorithm");            
+                        
             
             try
             {
-                Class algClass = Class.forName(ci.getClassName());
-
+                Class algFactoryClass = Class.forName(ci.getClassName());
                 Annotation an2 = null;
 
-                an2 = algClass.getAnnotation(Annotations.AlgorithmId.class);
-                if(an == null) throw new Exception("Unable to get annotation AlgorithmId");
+                // Algorithm adapters
+                DataNode algorithm = new DataNode("Algorithm");
+
+                an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmId.class);
+                if(an2 == null) throw new Exception("Unable to get annotation AlgorithmId");
                 String algId = ((Annotations.AlgorithmId)an2).value();
 
-                an2 = algClass.getAnnotation(Annotations.AlgorithmName.class);
-                if(an == null) throw new Exception("Unable to get annotation AlgorithmName");
+                an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmName.class);
+                if(an2 == null) throw new Exception("Unable to get annotation AlgorithmName");
                 String algName = ((Annotations.AlgorithmName)an2).value();
 
                 algorithm.putValue("id", algId);
                 algorithm.putValue("name", algName);
                 algorithm.putValue("factoryClass", ci.getClassName());
 
-                IAlgorithmFactory factory = (IAlgorithmFactory)algClass.newInstance();
+                IAlgorithmFactory factory = (IAlgorithmFactory)algFactoryClass.newInstance();
                 factory.setProblemProvider(this);
-                _algFactories.put(algId, factory);
+                _algFactories.put(algId, factory);                
 
+                // Algorithm parameters                
+
+                Class algAdapterClass = ((IAlgorithmFactory)algFactoryClass.newInstance()).getAlgorithmClass();
+                an2 = algAdapterClass.getAnnotation(Annotations.AlgorithmParameters.class);
+                if(an2 == null) throw new Exception("Unable to get annotation AlgorithmParameters");
+                Annotations.Parameter[] params = ((Annotations.AlgorithmParameters)an2).value();
+
+                for(Annotations.Parameter p : params)
+                {
+                    DataNode parameter = new DataNode("Parameter");
+                    parameter.putValue("name", p.name());
+                    parameter.putValue("min", p.min());
+                    parameter.putValue("max", p.max());
+                    parameter.putValue("init", p.init());
+                    algorithm.putDataNode(parameter);
+                }
+                // ---
                 algorithms.putDataNode(algorithm);
             }
             catch(Exception ex)
             {
                 System.err.println(ci.getClassName()+": "+ex.getMessage());
-                ex.printStackTrace();
+                //ex.printStackTrace();
             }
         }
         result.putDataNode(algorithms);

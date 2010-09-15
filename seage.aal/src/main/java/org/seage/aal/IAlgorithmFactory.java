@@ -19,6 +19,7 @@ package org.seage.aal;
 public interface IAlgorithmFactory
 {
     void setProblemProvider(IProblemProvider provider) throws Exception;
+    Class getAlgorithmClass();
     IAlgorithmAdapter createAlgorithm() throws Exception;
     //DataNode getAlgorithmParameters(DataNode params) throws Exception;
 }

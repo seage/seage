@@ -26,7 +26,7 @@ public interface IAlgorithmAdapter
 //    //  |_ class
 //    //  |_ parameters
 //    DataNode getAlgorithmInfo() throws Exception;
-    
+
     // Inits the algorithm.
     //void init(DataNode params);
 

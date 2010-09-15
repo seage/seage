@@ -47,6 +47,10 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public Class getAlgorithmClass() {
+        return ParticleSwarmAdapter.class;
+    }
+
     public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
