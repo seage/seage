@@ -31,12 +31,12 @@ import org.seage.metaheuristic.particles.ParticleSwarmEvent;
  * @author Jan Zmatlik
  */
 @AlgorithmParameters({
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1)
+    @Parameter(name="maxIterationCount", min=0, max=1000000, init=1000),
+    @Parameter(name="maxVelocity", min=0, max=10000, init=1),
+    @Parameter(name="minVelocity", min=0, max=10000, init=1),
+    @Parameter(name="inertia", min=0, max=10000, init=10),
+    @Parameter(name="alpha", min=0, max=100, init=1),
+    @Parameter(name="beta", min=0, max=100, init=1)
 })
 public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IParticleSwarmListener
 {

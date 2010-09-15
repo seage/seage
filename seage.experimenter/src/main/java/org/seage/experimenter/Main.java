@@ -99,10 +99,10 @@ public class Main {
                     //System.out.println("\t\t\tparameters:");
                     for(DataNode param : alg.getDataNodes("Parameter"))
                         System.out.println("\t\t\t"+
-                            param.getValueStr("name")+" "+
-                            param.getValueStr("min")+" "+
-                            param.getValueStr("max")+" "+
-                            param.getValueStr("init"));
+                            param.getValueStr("name")+"  ("+
+                            param.getValueStr("min")+", "+
+                            param.getValueStr("max")+", "+
+                            param.getValueStr("init")+")");
                 }
                 System.out.println("\tinstances:");
                 for(DataNode inst : pi.getDataNode("Instances").getDataNodes())
