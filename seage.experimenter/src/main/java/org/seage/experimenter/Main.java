@@ -53,8 +53,17 @@ public class Main {
         }
         if(args[0].equals("-test"))
         {
-            new AlgorithmTester().test("TSP");
-            return;
+            if(args.length == 1)
+            {
+                new AlgorithmTester().test();
+                return;
+            }
+            if(args.length==3 && args[1].equals("-problem"))
+            {
+                new AlgorithmTester().test(args[2]);
+                return;
+            }
+            usage();
         }
         if(args[0].equals("-agents"))
         {
@@ -79,6 +88,7 @@ public class Main {
         System.out.println("List of implemented problems and algorithms:");
         System.out.println("--------------------------------------------");
 
+        DataNode problems = new DataNode("Problems");
         Map<String, IProblemProvider> providers = ProblemProvider.getProblemProviders();
 
         for(String problemId : providers.keySet())
@@ -87,7 +97,8 @@ public class Main {
             {
                 IProblemProvider pp = providers.get(problemId);
                 DataNode pi = pp.getProblemInfo();
-                XmlHelper.writeXml(pi, problemId+".xml");
+                problems.putDataNode(pi);
+                
                 String name = pi.getValueStr("name");
                 System.out.println(name);
 
@@ -114,6 +125,7 @@ public class Main {
             {
                 System.err.println(problemId+": "+ex.getMessage());
             }
+            XmlHelper.writeXml(problems, "problems.xml");
         }
     }
 
