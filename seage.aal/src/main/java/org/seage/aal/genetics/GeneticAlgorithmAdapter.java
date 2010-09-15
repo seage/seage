@@ -25,12 +25,13 @@ import org.seage.aal.Annotations.AlgorithmParameters;
  * GeneticSearchAdapter class
  */
 @AlgorithmParameters({
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1)
+    @Parameter(name="iterationCount", min=0, max=1000000, init=1000),
+    @Parameter(name="numSolutions", min=1, max=1000000, init=100),
+    @Parameter(name="crossLengthPct", min=0, max=100, init=10),
+    @Parameter(name="mutateLengthPct", min=0, max=100, init=10),
+    @Parameter(name="eliteSubjectPct", min=0, max=100, init=10),
+    @Parameter(name="mutateSubjectPct", min=0, max=100, init=10),
+    @Parameter(name="randomSubjectPct", min=0, max=100, init=10)
 })
 public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
 {

@@ -24,12 +24,10 @@ import org.seage.metaheuristic.tabusearch.*;
  *  TabuSearchAdapter interface.
  */
 @AlgorithmParameters({
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1),
-    @Parameter(name="asdf", min=1, max=1, init=1)
+    @Parameter(name="numIteration", min=1, max=1000000, init=1000),
+    @Parameter(name="numSolutions", min=1, max=1, init=1),
+    @Parameter(name="tabuListLength", min=1, max=10000, init=30),
+    @Parameter(name="numIterDivers", min=1, max=1, init=1)
 })
 public abstract class TabuSearchAdapter implements IAlgorithmAdapter
 {
