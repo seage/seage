@@ -15,8 +15,6 @@ import java.util.Map;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.IProblemProvider;
 import org.seage.aal.ProblemProvider;
-import org.seage.classutil.ClassFinder;
-import org.seage.classutil.ClassInfo;
 import org.seage.data.DataNode;
 
 /**
@@ -58,6 +56,34 @@ public class AlgorithmTester {
             catch(Exception ex)
             {
                 System.err.println(problemId+": "+ex.getLocalizedMessage());
+            }
+        }
+    }
+
+    public void test(String problemId) throws Exception
+    {
+        System.out.println("Testing algorithms:");
+        System.out.println("-------------------");
+
+        Map<String, IProblemProvider> providers = ProblemProvider.getProblemProviders();
+
+
+        IProblemProvider pp = providers.get(problemId);
+        DataNode pi = pp.getProblemInfo();
+        String name = pi.getValueStr("name");
+        System.out.println(name);
+
+        for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
+        {
+            try {
+                String factoryName = alg.getValueStr("factoryClass");
+                System.out.println("\t" + factoryName);
+
+                IAlgorithmFactory f = (IAlgorithmFactory) Class.forName(factoryName).newInstance();
+                f.createAlgorithm();
+            } catch (Exception ex) {
+                //ex.printStackTrace();
+                System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
             }
         }
     }

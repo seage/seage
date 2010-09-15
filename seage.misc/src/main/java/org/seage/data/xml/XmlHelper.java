@@ -127,6 +127,7 @@ public class XmlHelper
                 TransformerFactory.newInstance();
             Transformer transformer = tFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
             DOMSource source = new DOMSource(dataSet.toXml());
             StreamResult result = new StreamResult(new File(path));
