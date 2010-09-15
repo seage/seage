@@ -11,10 +11,15 @@
  */
 package org.seage.aal;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
+import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import org.seage.classutil.ClassFinder;
+import org.seage.classutil.ClassUtil;
 import org.seage.classutil.ClassInfo;
 import org.seage.data.DataNode;
 
@@ -53,17 +58,21 @@ public abstract class ProblemProvider implements IProblemProvider
         result.putValue("name", problemName);
         result.putValue("class", getClass().getCanonicalName());
 
+        // Instances
         DataNode instances = new DataNode("Instances");
+        for(String in : ClassUtil.searchForInstancesInJar("instances", this.getClass()))
+        {
+            DataNode instance = new DataNode("Instance");
+            instance.putValue("resource", in);
+            instances.putDataNode(instance);
+        }
         result.putDataNode(instances);
-
-        // Add instance info here
-        //-----------------------
 
         // Algorithms
         DataNode algorithms = new DataNode("Algorithms");
         _algFactories = new HashMap<String, IAlgorithmFactory>();
 
-        for(ClassInfo ci : ClassFinder.searchForClassesInJar(IAlgorithmFactory.class, this.getClass()))
+        for(ClassInfo ci : ClassUtil.searchForClassesInJar(IAlgorithmFactory.class, this.getClass()))
         {
             DataNode algorithm = new DataNode("Algorithm");            
             
@@ -115,7 +124,7 @@ public abstract class ProblemProvider implements IProblemProvider
     {
         HashMap<String, IProblemProvider> result = new HashMap<String, IProblemProvider>();
 
-        for(ClassInfo ci : ClassFinder.searchForClasses(IProblemProvider.class, "seage.problem"))
+        for(ClassInfo ci : ClassUtil.searchForClasses(IProblemProvider.class, "seage.problem"))
         {
             try
             {

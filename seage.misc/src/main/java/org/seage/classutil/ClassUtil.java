@@ -18,9 +18,8 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.Collections;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -28,7 +27,7 @@ import java.util.jar.JarFile;
  *
  * @author rick
  */
-public class ClassFinder
+public class ClassUtil
 {
     public static ClassInfo[] searchForClasses(Class classObj, String pkgPrefix) throws Exception
     {
@@ -56,9 +55,10 @@ public class ClassFinder
            //URLClassLoader classLoader = createClassLoader(jarFile, f.getCanonicalPath());
            //classLoader.findClass();
 
-           Enumeration en = jarFile.entries();
-           while (en.hasMoreElements()) {
-             JarEntry entry = (JarEntry)en.nextElement();
+           //Enumeration<JarEntry> en = jarFile.entries();
+           //while (en.hasMoreElements()) {
+           for(JarEntry entry : Collections.list(jarFile.entries())){
+             //JarEntry entry = en.nextElement();
              if( entry.getName().endsWith(".class"))
              {
                 String s = entry.getName();
@@ -93,6 +93,21 @@ public class ClassFinder
     {
         File jarFile = new File (sourceClass.getProtectionDomain().getCodeSource().getLocation().toURI());
         return searchForClasses(targetClass, new File[]{jarFile});
+    }
+
+    public static String[] searchForInstancesInJar(final String instanceDir, Class sourceClass) throws Exception
+    {
+        ArrayList<String> result = new ArrayList<String>();
+        File file = new File (sourceClass.getProtectionDomain().getCodeSource().getLocation().toURI());
+        JarFile jarFile = new JarFile(file);
+        JarEntry je = jarFile.getJarEntry(instanceDir);
+        for(JarEntry entry : Collections.list(jarFile.entries())){
+            String name = entry.getName();            
+            if(name.contains(instanceDir) && !entry.isDirectory())
+                result.add(name);
+        }
+
+        return result.toArray(new String[0]);
     }
 
 //    private static File[] searchForJars() throws Exception

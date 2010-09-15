@@ -16,6 +16,7 @@ import java.util.Map;
 import org.seage.aal.IProblemProvider;
 import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
+import org.seage.data.xml.XmlHelper;
 
 /**
  *
@@ -52,7 +53,7 @@ public class Main {
         }
         if(args[0].equals("-test"))
         {
-            new AlgorithmTester().test();
+            new AlgorithmTester().test("TSP");
             return;
         }
         if(args[0].equals("-agents"))
@@ -86,11 +87,19 @@ public class Main {
             {
                 IProblemProvider pp = providers.get(problemId);
                 DataNode pi = pp.getProblemInfo();
+                XmlHelper.writeXml(pi, problemId+".xml");
                 String name = pi.getValueStr("name");
                 System.out.println(name);
 
+                System.out.println("\tAlgorithms");
                 for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
-                    System.out.println("\t"+alg.getValueStr("id")/*+" ("+alg.getValueStr("id")+")"*/);
+                    System.out.println("\t\t"+alg.getValueStr("id")/*+" ("+alg.getValueStr("id")+")"*/);
+
+                System.out.println("\tInstances");
+                for(DataNode inst : pi.getDataNode("Instances").getDataNodes())
+                    System.out.println("\t\t"+inst.getValueStr("resource")/*+" ("+alg.getValueStr("id")+")"*/);
+
+                System.out.println();
             }
             catch(Exception ex)
             {
