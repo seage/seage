@@ -59,6 +59,21 @@ public @interface Annotations
         String value();
     }
 
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    public @interface AlgorithmParameters{
+        Parameter[] value();
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    public @interface Parameter{
+        String name();
+        double min();        
+        double max();
+        double init();
+    }
+
 //    public static Annotation get(String clsName, Class anotClass)
 //    {
 //

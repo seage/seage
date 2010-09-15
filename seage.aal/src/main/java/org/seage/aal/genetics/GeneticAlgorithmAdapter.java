@@ -18,10 +18,20 @@ import java.util.Arrays;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.AlgorithmReport;
 import org.seage.aal.AlgorithmReporter;
+import org.seage.aal.Annotations.Parameter;
+import org.seage.aal.Annotations.AlgorithmParameters;
 
 /**
  * GeneticSearchAdapter class
  */
+@AlgorithmParameters({
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1)
+})
 public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
 {
     protected Subject[] _solutions;
@@ -66,6 +76,7 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
      * @param param
      * @throws java.lang.Exception
      */
+
     public void startSearching(DataNode param) throws Exception
     {
         _reporter = new AlgorithmReporter(_searchID);

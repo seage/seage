@@ -70,7 +70,7 @@ public class Main {
         System.out.println("java -jar seage.experimenter.jar {params}\n");
         System.out.println("params:");
         System.out.println("\t-list");
-        System.out.println("\t-test");
+        System.out.println("\t-test [-problem problem-id]");
         System.out.println("\t-agents path-to-agent-config-xml");
     }
 
@@ -91,11 +91,20 @@ public class Main {
                 String name = pi.getValueStr("name");
                 System.out.println(name);
 
-                System.out.println("\tAlgorithms");
+                System.out.println("\talgorithms:");
                 for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
+                {
                     System.out.println("\t\t"+alg.getValueStr("id")/*+" ("+alg.getValueStr("id")+")"*/);
 
-                System.out.println("\tInstances");
+                    //System.out.println("\t\t\tparameters:");
+                    for(DataNode param : alg.getDataNodes("Parameter"))
+                        System.out.println("\t\t\t"+
+                            param.getValueStr("name")+" "+
+                            param.getValueStr("min")+" "+
+                            param.getValueStr("max")+" "+
+                            param.getValueStr("init"));
+                }
+                System.out.println("\tinstances:");
                 for(DataNode inst : pi.getDataNode("Instances").getDataNodes())
                     System.out.println("\t\t"+inst.getValueStr("resource")/*+" ("+alg.getValueStr("id")+")"*/);
 

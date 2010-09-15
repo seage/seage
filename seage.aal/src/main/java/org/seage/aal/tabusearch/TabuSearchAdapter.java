@@ -15,12 +15,22 @@ import java.util.*;
 import org.seage.aal.AlgorithmReporter;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.AlgorithmReport;
+import org.seage.aal.Annotations.AlgorithmParameters;
+import org.seage.aal.Annotations.Parameter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.*;
 
 /**
  *  TabuSearchAdapter interface.
  */
+@AlgorithmParameters({
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1),
+    @Parameter(name="asdf", min=1, max=1, init=1)
+})
 public abstract class TabuSearchAdapter implements IAlgorithmAdapter
 {
 

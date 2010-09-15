@@ -42,6 +42,10 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public Class getAlgorithmClass() {
+        return TabuSearchAdapter.class;
+    }
+
     public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
