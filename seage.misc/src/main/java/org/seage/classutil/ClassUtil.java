@@ -241,4 +241,9 @@ public class ClassUtil
 //        else
 //            return null;
 //    }
+
+    public static String getClassDir(Class classObj) throws Exception
+    {
+        return new File (classObj.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
+    }
 }
