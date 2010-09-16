@@ -147,26 +147,33 @@ public class ClassUtil
 
     private static List<File> searchForJarsInDir(File dir, final String jarPrefix)
     {
+
         List<File> result = new ArrayList<File>();
-        File[] searchResults = dir.listFiles(new FilenameFilter() {
-
-            public boolean accept(File file, String name) {
-                 return name.startsWith(jarPrefix) && name.endsWith(".jar");
-            }
-        });
-
-        for(File f : searchResults)
-            result.add(f);
-
-        for(File d : dir.listFiles(new FileFilter() {
-            public boolean accept(File file) {
-                return file.isDirectory();
-            }
-        }))
+        try
         {
-            result.addAll( searchForJarsInDir(d, jarPrefix));
-        }
+            File[] searchResults = dir.listFiles(new FilenameFilter() {
 
+                public boolean accept(File file, String name) {
+                     return name.startsWith(jarPrefix) && name.endsWith(".jar");
+                }
+            });
+
+            for(File f : searchResults)
+                result.add(f);
+
+            for(File d : dir.listFiles(new FileFilter() {
+                public boolean accept(File file) {
+                    return file.isDirectory();
+                }
+            }))
+            {
+                result.addAll( searchForJarsInDir(d, jarPrefix));
+            }
+        }
+        catch(Exception ex)
+        {
+            System.err.println("Unable to read "+dir);
+        }
         return result;
     }
 
