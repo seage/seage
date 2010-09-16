@@ -9,7 +9,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.experimenter;
+package org.seage;
 
 import aglobe.platform.Platform;
 import java.util.Map;
@@ -17,12 +17,13 @@ import org.seage.aal.IProblemProvider;
 import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
+import org.seage.experimenter.AlgorithmTester;
 
 /**
  *
  * @author rick
  */
-public class Main {
+public class Launcher {
 
     /**
      * @param args the command line arguments
@@ -31,7 +32,7 @@ public class Main {
     {
         try
         {
-            new Main().run(args);
+            new Launcher().run(args);
         }
         catch(Exception ex)
         {
@@ -76,7 +77,7 @@ public class Main {
     {
         System.out.println("Usage:");
         System.out.println("------");
-        System.out.println("java -jar seage.experimenter.jar {params}\n");
+        System.out.println("java -jar seage.launcher.jar {params}\n");
         System.out.println("params:");
         System.out.println("\t-list");
         System.out.println("\t-test [-problem problem-id]");

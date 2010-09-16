@@ -6,5 +6,5 @@ dist/
 build/
 *~
 aglobe*.log*
-seage.experimenter/target/bin/
-seage.experimenter/target/output/
+seage.launcher/target/bin/
+seage.launcher/target/output/
