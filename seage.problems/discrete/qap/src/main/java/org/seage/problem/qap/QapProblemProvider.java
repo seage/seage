@@ -1,11 +1,23 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Karel Durkota
+ *     - Initial implementation
+ *     Richard Malek
+ *     - Added problem annotations
  */
 
 package org.seage.problem.qap;
 
 import java.util.Random;
+import org.seage.aal.Annotations;
+import org.seage.aal.IAlgorithmAdapter;
+import org.seage.aal.IPhenotypeEvaluator;
 import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
 
@@ -13,6 +25,8 @@ import org.seage.data.DataNode;
  *
  * @author Karel Durkota
  */
+@Annotations.ProblemId("QAP")
+@Annotations.ProblemName("Quadratic Assignment Problem")
 public class QapProblemProvider extends ProblemProvider
 {
     //private static City[] _cities;
@@ -103,5 +117,15 @@ public class QapProblemProvider extends ProblemProvider
     {
         return _facilityLocation;
     }
+
+    public IAlgorithmAdapter initAlgorithm(DataNode params) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public IPhenotypeEvaluator initPhenotypeEvaluator() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+
     
 }

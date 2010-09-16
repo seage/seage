@@ -12,10 +12,11 @@
 
 package org.seage.problem.tsp.genetics;
 
+import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
+import org.seage.aal.IProblemProvider;
 import org.seage.aal.genetics.GeneticAlgorithmAdapter;
-import org.seage.data.DataNode;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspProblemProvider;
 
@@ -24,6 +25,8 @@ import org.seage.problem.tsp.TspProblemProvider;
  *
  * @author Richard Malek
  */
+@Annotations.AlgorithmId("GeneticAlgorithm")
+@Annotations.AlgorithmName("GeneticAlgorithm")
 public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 {
 //    private DataNode _algParams;
@@ -35,7 +38,15 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 //        _provider = provider;
 //    }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public void setProblemProvider(IProblemProvider provider) throws Exception {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Class getAlgorithmClass() {
+        return GeneticAlgorithmAdapter.class;
+    }
+
+    public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
         City[] cities = TspProblemProvider.getCities();

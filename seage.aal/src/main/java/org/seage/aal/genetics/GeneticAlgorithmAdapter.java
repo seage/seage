@@ -11,18 +11,29 @@
  */
 package org.seage.aal.genetics;
 
-import org.seage.aal.IAlgorithmAdapter;
 
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.genetics.*;
 import java.util.Arrays;
+import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.AlgorithmReport;
 import org.seage.aal.AlgorithmReporter;
+import org.seage.aal.Annotations.Parameter;
+import org.seage.aal.Annotations.AlgorithmParameters;
 
 /**
  * GeneticSearchAdapter class
  */
-public class GeneticAlgorithmAdapter implements IAlgorithmAdapter
+@AlgorithmParameters({
+    @Parameter(name="iterationCount", min=0, max=1000000, init=1000),
+    @Parameter(name="numSolutions", min=1, max=1000000, init=100),
+    @Parameter(name="crossLengthPct", min=0, max=100, init=10),
+    @Parameter(name="mutateLengthPct", min=0, max=100, init=10),
+    @Parameter(name="eliteSubjectPct", min=0, max=100, init=10),
+    @Parameter(name="mutateSubjectPct", min=0, max=100, init=10),
+    @Parameter(name="randomSubjectPct", min=0, max=100, init=10)
+})
+public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
 {
     protected Subject[] _solutions;
     private GeneticSearch _geneticSearch;
@@ -66,6 +77,7 @@ public class GeneticAlgorithmAdapter implements IAlgorithmAdapter
      * @param param
      * @throws java.lang.Exception
      */
+
     public void startSearching(DataNode param) throws Exception
     {
         _reporter = new AlgorithmReporter(_searchID);

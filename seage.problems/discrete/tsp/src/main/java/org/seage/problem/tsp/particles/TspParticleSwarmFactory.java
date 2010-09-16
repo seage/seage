@@ -8,22 +8,28 @@
  * Contributors:
  *     Jan Zmatlik
  *     - Initial implementation
+ *     Richard Malek
+ *     - Added algorithm annotations
  */
 package org.seage.problem.tsp.particles;
 
+import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
+import org.seage.aal.IProblemProvider;
 import org.seage.aal.particles.ParticleSwarmAdapter;
-import org.seage.data.DataNode;
 
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspProblemProvider;
 
 
 /**
  *
  * @author Jan Zmatlik
  */
+@Annotations.AlgorithmId("ParticleSwarm")
+@Annotations.AlgorithmName("Particle Swarm")
 public class TspParticleSwarmFactory implements IAlgorithmFactory
 {
     private City[] _cities;
@@ -32,13 +38,21 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 
     private TspObjectiveFunction _objectiveFunction;
 
-    public TspParticleSwarmFactory(DataNode params, City[] cities) throws Exception
+    public TspParticleSwarmFactory() throws Exception
     {
-        _cities = cities;
-        _numParticles = params.getValueInt("numSolutions");
+        _cities = TspProblemProvider.getCities();
+        _numParticles = 0;//params.getValueInt("numSolutions");
     }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public void setProblemProvider(IProblemProvider provider) throws Exception {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Class getAlgorithmClass() {
+        return ParticleSwarmAdapter.class;
+    }
+
+    public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
         _objectiveFunction = new TspObjectiveFunction(_cities);

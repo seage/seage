@@ -11,17 +11,24 @@
  */
 package org.seage.aal.tabusearch;
 
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.AlgorithmReporter;
 import java.util.*;
+import org.seage.aal.AlgorithmReporter;
+import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.AlgorithmReport;
-
+import org.seage.aal.Annotations.AlgorithmParameters;
+import org.seage.aal.Annotations.Parameter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.*;
 
 /**
  *  TabuSearchAdapter interface.
  */
+@AlgorithmParameters({
+    @Parameter(name="numIteration", min=1, max=1000000, init=1000),
+    @Parameter(name="numSolutions", min=1, max=1, init=1),
+    @Parameter(name="tabuListLength", min=1, max=10000, init=30),
+    @Parameter(name="numIterDivers", min=1, max=1, init=1)
+})
 public abstract class TabuSearchAdapter implements IAlgorithmAdapter
 {
 

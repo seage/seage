@@ -8,12 +8,16 @@
  * Contributors:
  *     Jan Zmatlik
  *     - Initial implementation
+ *     Richard Malek
+ *     - Added annotations
  */
 
 package org.seage.aal.particles;
 
 import org.seage.aal.AlgorithmReport;
 import org.seage.aal.AlgorithmReporter;
+import org.seage.aal.Annotations.AlgorithmParameters;
+import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.particles.IObjectiveFunction;
@@ -21,10 +25,19 @@ import org.seage.metaheuristic.particles.IParticleSwarmListener;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.metaheuristic.particles.ParticleSwarm;
 import org.seage.metaheuristic.particles.ParticleSwarmEvent;
+
 /**
  *
  * @author Jan Zmatlik
  */
+@AlgorithmParameters({
+    @Parameter(name="maxIterationCount", min=0, max=1000000, init=1000),
+    @Parameter(name="maxVelocity", min=0, max=10000, init=1),
+    @Parameter(name="minVelocity", min=0, max=10000, init=1),
+    @Parameter(name="inertia", min=0, max=10000, init=10),
+    @Parameter(name="alpha", min=0, max=100, init=1),
+    @Parameter(name="beta", min=0, max=100, init=1)
+})
 public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IParticleSwarmListener
 {
     protected ParticleSwarm _particleSwarm;
