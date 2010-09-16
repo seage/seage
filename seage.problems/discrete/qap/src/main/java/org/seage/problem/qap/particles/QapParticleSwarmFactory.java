@@ -6,13 +6,17 @@
  * http://seage.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Jan Zmatlik
+ *     Karel Durkota
  *     - Initial implementation
+ *     Richard Malek
+ *     - Added algorithm annotations
  */
 package org.seage.problem.qap.particles;
 
+import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
+import org.seage.aal.IProblemProvider;
 import org.seage.aal.particles.ParticleSwarmAdapter;
 import org.seage.data.DataNode;
 
@@ -23,6 +27,8 @@ import org.seage.metaheuristic.particles.Particle;
  *
  * @author Karel Durkota
  */
+@Annotations.AlgorithmId("ParticleSwarm")
+@Annotations.AlgorithmName("Particle Swarm")
 public class QapParticleSwarmFactory implements IAlgorithmFactory
 {
     private Double[][] _facilityLocation;
@@ -31,13 +37,21 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
 
     private QapObjectiveFunction _objectiveFunction;
 
-    public QapParticleSwarmFactory(DataNode params, Double[][] facilityLocation) throws Exception
+    public QapParticleSwarmFactory(/*DataNode params, Double[][] facilityLocation*/) throws Exception
     {
-        _facilityLocation = facilityLocation;
-        _numParticles = params.getValueInt("numSolutions");
+//        _facilityLocation = facilityLocation;
+//        _numParticles = params.getValueInt("numSolutions");
     }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public void setProblemProvider(IProblemProvider provider) throws Exception {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Class getAlgorithmClass() {
+        return ParticleSwarmAdapter.class;
+    }
+
+    public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
         _objectiveFunction = new QapObjectiveFunction(_facilityLocation);

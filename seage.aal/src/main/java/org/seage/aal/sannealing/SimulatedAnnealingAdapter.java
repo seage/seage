@@ -8,12 +8,16 @@
  * Contributors:
  *     Jan Zmatlik
  *     - Initial implementation
+ *     Richard Malek
+ *     - Added annotations
  */
 
 package org.seage.aal.sannealing;
 
 import org.seage.aal.AlgorithmReport;
 import org.seage.aal.AlgorithmReporter;
+import org.seage.aal.Annotations.AlgorithmParameters;
+import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.sannealing.IMoveManager;
@@ -22,10 +26,18 @@ import org.seage.metaheuristic.sannealing.ISimulatedAnnealingListener;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
 import org.seage.metaheuristic.sannealing.Solution;
+
 /**
  *
  * @author Jan Zmatlik
  */
+@AlgorithmParameters({
+    @Parameter(name="maxTemperature", min=10, max=1000000, init=100),
+    @Parameter(name="minTemperature", min=0, max=100000, init=1),
+    @Parameter(name="annealCoeficient", min=0.1, max=1, init=0.99),
+    @Parameter(name="maxInnerIterations", min=1, max=1000000, init=100),
+    @Parameter(name="numInnerSuccesses", min=0, max=100000, init=100)
+})
 public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, ISimulatedAnnealingListener
 {
     protected SimulatedAnnealing _simulatedAnnealing;

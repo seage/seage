@@ -20,22 +20,29 @@ import org.seage.data.DataNode;
  */
 public interface IAlgorithmAdapter
 {
-        // Inits the algorithm.
-        //void init(DataNode params);
+//    // Returns meta-data on the algorithm
+//    //  |_ id
+//    //  |_ name
+//    //  |_ class
+//    //  |_ parameters
+//    DataNode getAlgorithmInfo() throws Exception;
 
-        // Runs the algorithm.
-	void startSearching(DataNode params) throws Exception;
-        
-        // Stops the algorithm.
-        void stopSearching() throws Exception;
+    // Inits the algorithm.
+    //void init(DataNode params);
 
-        // Returns the runtime report collected during the algorithm run.
-	AlgorithmReport getReport() throws Exception;
+    // Runs the algorithm.
+    void startSearching(DataNode params) throws Exception;
 
-        // Converts solution from outer representation to the inner one.
-	void solutionsFromPhenotype(Object[][] source) throws Exception;
+    // Stops the algorithm.
+    void stopSearching() throws Exception;
 
-        // Converts solution from inner representation to the outer one.
-        // Solutions are ordered in descendent (best first) order according to the quality.
-	Object[][] solutionsToPhenotype() throws Exception;
+    // Returns the runtime report collected during the algorithm run.
+    AlgorithmReport getReport() throws Exception;
+
+    // Converts solution from outer representation to the inner one.
+    void solutionsFromPhenotype(Object[][] source) throws Exception;
+
+    // Converts solution from inner representation to the outer one.
+    // Solutions are ordered in descendent (best first) order according to the quality.
+    Object[][] solutionsToPhenotype() throws Exception;
 }

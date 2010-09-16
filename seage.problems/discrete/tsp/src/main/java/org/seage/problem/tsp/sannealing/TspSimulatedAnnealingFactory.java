@@ -8,11 +8,15 @@
  * Contributors:
  *     Jan Zmatlik
  *     - Initial implementation
+ *     Richard Malek
+ *     - Added algorithm annotations
  */
 package org.seage.problem.tsp.sannealing;
 
+import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
+import org.seage.aal.IProblemProvider;
 import org.seage.aal.sannealing.SimulatedAnnealingAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.sannealing.Solution;
@@ -23,6 +27,8 @@ import org.seage.problem.tsp.TspProblemProvider;
  *
  * @author Jan Zmatlik
  */
+@Annotations.AlgorithmId("SimulatedAnnealing")
+@Annotations.AlgorithmName("Simulated Annealing")
 public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 {
     private TspSolution _tspSolution;
@@ -43,7 +49,15 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
             _tspSolution = new TspSortedSolution( cities );
     }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public void setProblemProvider(IProblemProvider provider) throws Exception {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Class getAlgorithmClass() {
+        return SimulatedAnnealingAdapter.class;
+    }
+
+    public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
 

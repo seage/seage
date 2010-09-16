@@ -6,13 +6,17 @@
  * http://seage.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Jan Zmatlik
+ *     Karel Durkota
  *     - Initial implementation
+ *     Richard Malek
+ *     - Added algorithm annotations
  */
 package org.seage.problem.qap.sannealing;
 
+import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
+import org.seage.aal.IProblemProvider;
 import org.seage.aal.sannealing.SimulatedAnnealingAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.sannealing.Solution;
@@ -22,6 +26,8 @@ import org.seage.problem.qap.QapProblemProvider;
  *
  * @author Karel Durkota
  */
+@Annotations.AlgorithmId("SimulatedAnnealing")
+@Annotations.AlgorithmName("Simulated Annealing")
 public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
 {
     private QapSolution _qapSolution;
@@ -42,7 +48,15 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
             _qapSolution = new QapSortedSolution( facilityLocation );
     }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public void setProblemProvider(IProblemProvider provider) throws Exception {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Class getAlgorithmClass() {
+        return SimulatedAnnealingAdapter.class;
+    }
+
+    public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
 
