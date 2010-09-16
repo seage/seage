@@ -1,0 +1,65 @@
+<config xmlns='http://xml.seage.org/schema'>
+
+    <agent name="TSPProblem" mainClass="ailibrary.ael.agent.ProblemAgent">
+        <problem timeoutMS="60" numberOfRuns="2" outputDir="Output" problemProvider="tsp.aal.TspProblemProvider">
+            <evaluator factoryClass="tsp.aal.TspPhenotypeEvaluatorFactory"/>
+	    <instance name="eil51"  path="Data/EUC_2D/eil51.tsp"/>
+	    <instance name="eil101" path="Data/EUC_2D/eil101.tsp"/>
+        </problem>
+    </agent>
+    
+    <agent name="TSPSolutionPool" 
+           mainClass="ailibrary.ael.agent.SolutionPoolAgent">
+        <solutionPool capacity="10000"/>
+    </agent>
+
+    <agent name="TSPGeneticSearchRandomAdviser" mainClass="ailibrary.ael.agent.AdviserAgent">
+         <adviser id="GeneticSearchRandomAdviser" factoryClass="ailibrary.reasoning.algparams.dummyrandom.DummyRandomReasonerFactory">
+             <randomReasoner runtimeEvaluator="ailibrary.aal.algorithm.genetics.GeneticSearchRuntimeEvaluator">
+                      <parameters>
+                          <param name="numSolution" min="50" max="300" default="200"/>
+                          <param name="iterationCount" min="100" max="2000" default="1000"/>
+                          <param name="eliteSubjectPct" min="5" max="10" default="10"/>
+                          <param name="mutateSubjectPct" min="10" max="20" default="10"/>
+                          <param name="mutateLengthPct" min="5" max="25" default="20"/>
+                          <param name="crossLengthPct" min="30" max="40" default="30"/>
+                          <param name="randomSubjectPct" min="3" max="5" default="10"/>
+                      </parameters>
+             </randomReasoner>
+         </adviser>
+    </agent>
+
+    <agent name="TSPTabuSearchRandomAdviser" mainClass="ailibrary.ael.agent.AdviserAgent">
+         <adviser id="TabuSearchRandomAdviser" factoryClass="ailibrary.reasoning.algparams.dummyrandom.DummyRandomReasonerFactory">
+             <randomReasoner runtimeEvaluator="ailibrary.aal.algorithm.tabusearch.TabuSearchRuntimeEvaluator">
+                      <parameters>
+                          <param name="numIteration" min="1000" max="10000" default="2000"/>
+                          <param name="tabuListLength" min="10" max="100" default="30"/>
+                          <param name="numSolution" min="5" max="10" default="10"/>
+                          <param name="numIterDivers" min="1" max="1" default="1"/>
+                      </parameters>
+             </randomReasoner>
+         </adviser>
+    </agent>
+
+    <agent name="TSPGeneticSearch01" mainClass="ailibrary.ael.agent.AlgorithmAgent" instances="2">
+	<algorithm factoryClass="tsp.aal.algorithm.genetics.TspGeneticSearchFactory" adviserID="GeneticSearchRandomAdviser">
+	    <paramGeneticAlgorithm 
+		numSolution="100" iterationCount="100"  crossLengthPct="40" 
+		eliteSubjectPct="10" mutateSubjectPct="5" mutateLengthPct="20"
+		randomSubjectPct="5"/>
+	</algorithm>
+    </agent>
+    
+    <agent name="TSPTabuSearch01" mainClass="ailibrary.ael.agent.AlgorithmAgent" instances="2">
+	<algorithm factoryClass="tsp.aal.algorithm.tabusearch.TspTabuSearchFactory" adviserID="TabuSearchRandomAdviser">
+	    <paramTabuSearch
+                numIteration="1000"
+                tabuListLength="30"
+                numSolution="1"
+                numIterDivers="1"/>
+	</algorithm>
+    </agent>
+
+
+</config>
