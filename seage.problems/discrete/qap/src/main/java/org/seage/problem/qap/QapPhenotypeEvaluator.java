@@ -10,6 +10,7 @@ import org.seage.aal.IPhenotypeEvaluator;
 /**
  *
  * @author Karel Durkota
+ * student
  */
 public class QapPhenotypeEvaluator implements IPhenotypeEvaluator
 {
