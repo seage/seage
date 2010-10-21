@@ -11,6 +11,8 @@
  */
 package org.seage.problem.qap.tabusearch;
 
+import org.seage.problem.qap.AssignmentProvider;
+
 /**
  *
  * @author Karel Durkota
@@ -21,31 +23,11 @@ public class QapGreedyStartSolution extends QapSolution
     
     public QapGreedyStartSolution(){} // Appease clone()
 
-    public QapGreedyStartSolution(Double[][] customers)
+    public QapGreedyStartSolution(Double[][][] customers) throws Exception
     {
-
-        _assign = new int[customers.length];
-
-        // Greedy cheapset initialize
-        int[] avail = new int[ customers.length ];
-
-        for( int i = 0; i < avail.length; i++ )
-        {
-            _assign[i] = -1;
-            avail[i] = i;
-        }
-
-        for(int i=0;i<_assign.length;i++){
-            int location = -1;
-            double price = Double.MAX_VALUE;
-            for( int j=0;j<avail.length;j++)
-                if(customers[i][j] < price && avail[j] >= 0){
-                    price = customers[i][j];
-                    location = j;
-                }
-            _assign[i]=location;
-            avail[location] = -1;
-        }
+        super( customers );
+        _assign = AssignmentProvider.createGreedyAssignment( customers );
+        
     }   // end constructor
 
 }   // end class TspGreedyStartSolution

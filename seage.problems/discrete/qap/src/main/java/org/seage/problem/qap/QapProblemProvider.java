@@ -31,7 +31,7 @@ public class QapProblemProvider extends ProblemProvider
 {
     //private static City[] _cities;
 
-    private static Double[][] _facilityLocation;
+    private static Double[][][] _facilityLocation;
     private int currentInstanceIx = -1;
 
     @Override
@@ -113,7 +113,7 @@ public class QapProblemProvider extends ProblemProvider
 //        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
     }
 
-    public static Double[][] getFacilityLocation()
+    public static Double[][][] getFacilityLocation()
     {
         return _facilityLocation;
     }

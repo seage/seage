@@ -37,7 +37,7 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
     }
 
 
-    public QapSimulatedAnnealingFactory(DataNode params, Double[][] facilityLocation) throws Exception
+    public QapSimulatedAnnealingFactory(DataNode params, Double[][][] facilityLocation) throws Exception
     {
         String solutionType = params.getValueStr("initSolutionType");
         if( solutionType.toLowerCase().equals("greedy") )
