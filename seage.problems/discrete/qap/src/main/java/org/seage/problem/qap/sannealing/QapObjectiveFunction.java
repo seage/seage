@@ -29,9 +29,24 @@ public class QapObjectiveFunction implements IObjectiveFunction
         double price = 0.0;
         int assignLength = _currrentQapSolution.getAssign().length;
 
-        for (int i = 1; i < assignLength; i++){
-                price += _currrentQapSolution.getFacilityLocation()[i][_currrentQapSolution.getAssign()[i]];
+
+        double assignPrice = 0;
+        Double[][][] facilityLocation = _currrentQapSolution.getFacilityLocation();
+        int numFacilities = facilityLocation[0][0].length;
+        //System.out.println("My world:["+facilityLocation.length+","+facilityLocation[0].length+","+facilityLocation[0][0].length+"or"+numFacilities+"]");
+        for(int i=0;i<facilityLocation[0][0].length;i++){
+            for(int j=0;j<facilityLocation[0][0].length;j++){
+                double a = facilityLocation[0][i][j];
+                int b = _currrentQapSolution.getAssign()[i];
+                int c = _currrentQapSolution.getAssign()[i];
+                //System.out.println(a+","+b+","+c);
+                price+=a*facilityLocation[1][b][c];
+            }
         }
-        solution.setObjectiveValue( price );
+        double addition=0;
+        for(int i=0;i<facilityLocation[0][0].length;i++){
+            addition+=facilityLocation[2][i][_currrentQapSolution.getAssign()[i]];
+        }
+        solution.setObjectiveValue( price+addition );
     }
 }

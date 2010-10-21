@@ -25,13 +25,13 @@ import org.seage.metaheuristic.particles.Particle;
  */
 public class QapParticleSwarmFactory implements IAlgorithmFactory
 {
-    private Double[][] _facilityLocation;
+    private Double[][][] _facilityLocation;
 
     private int _numParticles;
 
     private QapObjectiveFunction _objectiveFunction;
 
-    public QapParticleSwarmFactory(DataNode params, Double[][] facilityLocation) throws Exception
+    public QapParticleSwarmFactory(DataNode params, Double[][][] facilityLocation) throws Exception
     {
         _facilityLocation = facilityLocation;
         _numParticles = params.getValueInt("numSolutions");

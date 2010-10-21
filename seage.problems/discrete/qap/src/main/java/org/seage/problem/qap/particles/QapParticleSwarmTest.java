@@ -23,8 +23,8 @@ import org.seage.problem.qap.FacilityLocationProvider;
  */
 public class QapParticleSwarmTest implements IParticleSwarmListener
 {
-    private Double[][] _facilityLocation;
-    private static String _dataPath = "data/qapData1.txt";
+    private Double[][][] _facilityLocation;
+    private static String _dataPath = "D:/esc16i.dat";
 
     public static void main(String[] args)
     {
@@ -43,7 +43,7 @@ public class QapParticleSwarmTest implements IParticleSwarmListener
     {
         _facilityLocation = FacilityLocationProvider.readFacilityLocations( path );
         System.out.println("Loading cities from path: " + path);
-        System.out.println("Number of cities: " + _facilityLocation.length);
+        System.out.println("Number of cities: " + _facilityLocation[0][0].length);
 
         ParticleSwarm pso = new ParticleSwarm( new QapObjectiveFunction(_facilityLocation) );
 

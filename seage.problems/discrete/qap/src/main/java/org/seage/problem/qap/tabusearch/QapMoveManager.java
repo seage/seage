@@ -24,7 +24,7 @@ public class QapMoveManager implements MoveManager
     @Override
     public Move[] getAllMoves( Solution solution )
     {
-        int[] assign = ((QapSolution)solution)._assign;
+        Integer[] assign = ((QapSolution)solution)._assign;
         Move[] buffer = new Move[ assign.length*assign.length ];
         int nextBufferPos = 0;
         

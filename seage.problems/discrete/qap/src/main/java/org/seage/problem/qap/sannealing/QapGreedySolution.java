@@ -19,7 +19,7 @@ import org.seage.problem.qap.AssignmentProvider;
  */
 public class QapGreedySolution extends QapSolution {
 
-    public QapGreedySolution(Double[][] facilityLocation) throws Exception
+    public QapGreedySolution(Double[][][] facilityLocation) throws Exception
     {
         super( facilityLocation );
         _assign = AssignmentProvider.createGreedyAssignment( facilityLocation );
