@@ -50,7 +50,7 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
     public IAlgorithmAdapter createAlgorithm() throws Exception
     {
         IAlgorithmAdapter algorithm;
-        Double[][] facilityLocation = QapProblemProvider.getFacilityLocation();
+        Double[][][] facilityLocation = QapProblemProvider.getFacilityLocation();
 
         algorithm = new TabuSearchAdapter(new QapMoveManager(), new QapObjectiveFunction(facilityLocation), new QapLongTermMemory(), "" ) {
 
@@ -60,7 +60,7 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
                 for(int i=0;i<source.length;i++)
                 {
                     QapSolution s = new QapSolution();
-                    int[] assign = new int[source[i].length];
+                    Integer[] assign = new Integer[source[i].length];
                     for(int j=0;j<assign.length;j++)
                         assign[j] = (Integer)source[i][j];
                     s.setAssign(assign);

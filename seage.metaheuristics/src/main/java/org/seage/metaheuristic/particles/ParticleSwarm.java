@@ -158,7 +158,7 @@ public class ParticleSwarm implements IParticleSwarm
           }
       }
       
-      return minParticle.clone();
+    return minParticle.clone();
   }
 
   public final void addParticleSwarmOptimizationListener( IParticleSwarmListener listener )

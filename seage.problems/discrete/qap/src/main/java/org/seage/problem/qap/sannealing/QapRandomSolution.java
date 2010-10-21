@@ -19,7 +19,7 @@ import org.seage.problem.qap.AssignmentProvider;
  */
 public class QapRandomSolution extends QapSolution {
 
-    public QapRandomSolution(Double[][] facilityLocation)
+    public QapRandomSolution(Double[][][] facilityLocation)
     {
         super( facilityLocation );
         _assign = AssignmentProvider.createRandomAssignment( facilityLocation );
