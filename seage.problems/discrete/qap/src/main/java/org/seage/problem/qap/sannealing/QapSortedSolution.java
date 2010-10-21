@@ -19,7 +19,7 @@ import org.seage.problem.qap.AssignmentProvider;
  */
 public class QapSortedSolution extends QapSolution{
     
-    public QapSortedSolution(Double[][] facilityLocation)
+    public QapSortedSolution(Double[][][] facilityLocation)
     {
         super( facilityLocation );
         _assign = AssignmentProvider.createSortedAssignment( facilityLocation );

@@ -32,7 +32,7 @@ public class QapSwapMove implements Move
     
     public void operateOn( Solution soln )
     {
-		int[] assign = ((QapSolution)soln)._assign;
+        Integer[] assign = ((QapSolution)soln)._assign;
         int   pos1 = -1;
         int   pos2 = -1;
         

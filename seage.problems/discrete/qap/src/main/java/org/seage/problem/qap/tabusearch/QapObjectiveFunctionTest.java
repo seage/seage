@@ -14,6 +14,7 @@ package org.seage.problem.qap.tabusearch;
 import org.seage.problem.qap.FacilityLocationProvider;
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
 import org.seage.metaheuristic.tabusearch.SimpleTabuList;
+import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.metaheuristic.tabusearch.TabuSearch;
 import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
 import org.seage.metaheuristic.tabusearch.TabuSearchListener;
@@ -22,10 +23,11 @@ import org.seage.metaheuristic.tabusearch.TabuSearchListener;
  *
  * @author Karel Durkota
  */
-public class QapTabuSearchTest implements TabuSearchListener
+public class QapObjectiveFunctionTest implements TabuSearchListener
 {
 
     private static String _dataPath = "D:/esc16i.dat";
+    private static Integer[] assign = {0, 1, 2, 3, 7, 5, 6, 4 ,8, 9, 10, 11, 12, 13, 14, 15 };
 
     public static void main(String[] args)
     {
@@ -45,22 +47,8 @@ public class QapTabuSearchTest implements TabuSearchListener
         System.out.println("Loading an instance from path: " + path);
         System.out.println("Number of cities: " + facilityLocation[0].length);
 
-        TabuSearch ts = new TabuSearch(new QapGreedyStartSolution(facilityLocation),
-                new QapMoveManager(),
-                new QapObjectiveFunction(facilityLocation),
-                new SimpleTabuList(50),
-                new BestEverAspirationCriteria(),
-                new QapLongTermMemory(), false);
-
-        ts.addTabuSearchListener(this);
-        ts.setIterationsToGo(100000);
-        ts.startSolving();
-        Integer[] r = ((QapSolution)ts.getBestSolution()).getAssign();
-        System.out.println(ts.getBestSolution().getObjectiveValue()[0]);
-        for(int i=0;i<r.length;i++){
-            System.out.print(r[i]+",");
-        }
-
+        QapObjectiveFunction qof = new QapObjectiveFunction(facilityLocation);
+        System.out.println(qof.evaluate(new QapSolution(assign), null)[0]);
     }
 
     public void newBestSolutionFound(TabuSearchEvent e) {
