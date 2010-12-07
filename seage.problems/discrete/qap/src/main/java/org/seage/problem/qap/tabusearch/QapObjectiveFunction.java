@@ -47,18 +47,12 @@ public class QapObjectiveFunction implements ObjectiveFunction
             int len = assign.length;
 
             // If move is null, calculate distance from scratch
-            for(int i=0;i<assign.length;i++)
-                System.out.print(assign[i]+" ");
-            System.out.println("");
             if (move == null)
             {
                 double price = 0;
                 for(int i=0;i<len;i++){
                     for(int j=0;j<len;j++){
                         double a = _matrix[0][i][j];
-//                        int b1=assign[i];
-//                        int b2=assign[j];
-//                        double b = _matrix[1][b1][b2];
                         price+=_matrix[0][i][j]*_matrix[1][assign[i]][assign[j]];
                     }
                 }
@@ -87,91 +81,39 @@ public class QapObjectiveFunction implements ObjectiveFunction
                 }
                 pos2 = pos1 + mv.movement;
 
+
                 // Prior objective value
                 double price = solution.getObjectiveValue()[0];
 
                 // Treat a pair swap move differently
-                // NOT SURE IF CORRECT TREATMENTS
-                // subtract sum of row of pos1
-                System.out.println("price1="+price);
-                for(int i=0;i<len;i++){
-                    price -= _matrix[0][pos1][i]*_matrix[1][assign[pos1]][assign[i]];
-                    price += _matrix[0][pos1][i]*_matrix[1][assign[pos2]][assign[i]];
+                // COUNT DELTA according to http://iridia0.ulb.ac.be/~stuetzle/publications/AIDA-99-03.pdf page 5
+                // b = _matrix[0][i][j]
+                // a = _matrix[1][i][j]
+                double delta = 0;
+                delta += _matrix[0][pos1][pos1]*(_matrix[1][assign[pos2]][assign[pos2]]-_matrix[1][assign[pos1]][assign[pos1]]);
+                delta += _matrix[0][pos1][pos2]*(_matrix[1][assign[pos2]][assign[pos1]]-_matrix[1][assign[pos1]][assign[pos2]]);
+                delta += _matrix[0][pos2][pos1]*(_matrix[1][assign[pos1]][assign[pos2]]-_matrix[1][assign[pos2]][assign[pos1]]);
+                delta += _matrix[0][pos2][pos2]*(_matrix[1][assign[pos1]][assign[pos1]]-_matrix[1][assign[pos2]][assign[pos2]]);
+                double temp=0;
+                for(int i=0;i<_matrix[0][0].length;i++){
+                    if(i==pos1 || i==pos2)
+                        continue;
+                temp += _matrix[0][i][pos1]*(_matrix[1][assign[i]][assign[pos2]]-_matrix[1][assign[i]][assign[pos1]]);
+                temp += _matrix[0][i][pos2]*(_matrix[1][assign[i]][assign[pos1]]-_matrix[1][assign[i]][assign[pos2]]);
+                temp += _matrix[0][pos1][i]*(_matrix[1][assign[pos2]][assign[i]]-_matrix[1][assign[pos1]][assign[i]]);
+                temp += _matrix[0][pos2][i]*(_matrix[1][assign[pos1]][assign[i]]-_matrix[1][assign[pos2]][assign[i]]);
                 }
-                for(int i=0;i<len;i++){
-                    price -= _matrix[0][i][pos1]*_matrix[1][assign[i]][assign[pos1]];
-                    price += _matrix[0][i][pos1]*_matrix[1][assign[i]][assign[pos2]];
-                }
-                for(int i=0;i<len;i++){
-                    price -= _matrix[0][pos2][i]*_matrix[1][assign[pos2]][assign[i]];
-                    price += _matrix[0][pos2][i]*_matrix[1][assign[pos1]][assign[i]];
-                }
-                for(int i=0;i<len;i++){
-                    price -= _matrix[0][i][pos2]*_matrix[1][assign[i]][assign[pos2]];
-                    price += _matrix[0][i][pos2]*_matrix[1][assign[i]][assign[pos1]];
-                }
-                price -= _matrix[0][pos1][pos1]*_matrix[1][assign[pos1]][assign[pos1]];
-                price -= _matrix[0][pos2][pos2]*_matrix[1][assign[pos2]][assign[pos2]];
-                price -= _matrix[0][pos1][pos2]*_matrix[1][assign[pos1]][assign[pos2]];
-                price -= _matrix[0][pos2][pos1]*_matrix[1][assign[pos2]][assign[pos1]];
+                delta += temp; 
 
-                price += _matrix[0][pos1][pos1]*_matrix[1][assign[pos2]][assign[pos2]];
-                price += _matrix[0][pos2][pos2]*_matrix[1][assign[pos1]][assign[pos1]];
-                price += _matrix[0][pos1][pos2]*_matrix[1][assign[pos2]][assign[pos1]];
-                price += _matrix[0][pos2][pos1]*_matrix[1][assign[pos1]][assign[pos2]];
-                System.out.println("price3="+price);
 
-                /*
-                for(int i=0;i<_matrix[0][0].length;i++){
-                    price -= _matrix[0][pos1][i]*_matrix[1][assign[pos1]][assign[i]];
-                }
-                // subtract sum of row of pos2
-                for(int i=0;i<_matrix[0][0].length;i++){
-                    price -= _matrix[0][pos2][i]*_matrix[1][assign[pos2]][assign[i]];
-                }
-                // subtract sum of column of pos1
-                for(int i=0;i<_matrix[0][0].length;i++){
-                    price -= _matrix[0][i][pos1]*_matrix[1][assign[i]][assign[pos1]];
-                }
-                // subtract sum of column of pos2
-                for(int i=0;i<_matrix[0][0].length;i++){
-                    price -= _matrix[0][i][pos2]*_matrix[1][assign[i]][assign[pos2]];
-                }
-                // return four intersections of columns and row of pos1 and pos2
-                price += _matrix[0][pos1][pos2]*_matrix[1][assign[pos1]][assign[pos2]];
-                price += _matrix[0][pos1][pos1]*_matrix[1][assign[pos1]][assign[pos1]];
-                price += _matrix[0][pos2][pos2]*_matrix[1][assign[pos2]][assign[pos2]];
-                price += _matrix[0][pos2][pos1]*_matrix[1][assign[pos2]][assign[pos1]];
-               
-                
-                // add sum of row of pos1
-                for(int i=0;i<_matrix[0][0].length;i++){
-                    price += _matrix[0][pos1][i]*_matrix[1][assign[pos2]][assign[i]];
-                }
-                // add sum of row of pos2
-                for(int i=0;i<_matrix[0][0].length;i++){
-                    price += _matrix[0][pos2][i]*_matrix[1][assign[pos1]][assign[i]];
-                }
-                // add sum of column of pos1
-                for(int i=0;i<_matrix[0][0].length;i++){
-                    price += _matrix[0][i][pos1]*_matrix[1][assign[i]][assign[pos2]];
-                }
-                // add sum of column of pos2
-                for(int i=0;i<_matrix[0][0].length;i++){
-                    price += _matrix[0][i][pos2]*_matrix[1][assign[i]][assign[pos1]];
-                }
-                // return four intersections of columns and row of pos1 and pos2
-                price -= _matrix[0][pos1][pos2]*_matrix[1][assign[pos2]][assign[pos1]];
-                price -= _matrix[0][pos1][pos1]*_matrix[1][assign[pos2]][assign[pos2]];
-                price -= _matrix[0][pos2][pos2]*_matrix[1][assign[pos1]][assign[pos1]];
-                price -= _matrix[0][pos2][pos1]*_matrix[1][assign[pos1]][assign[pos2]];
-                */
-                return new double[] { price };
+
+                return new double[] { price+delta };
             }   // end else: calculate incremental
         } catch (Exception ex)
         {
             throw ex;
         }
     }   // end evaluate
+
 }   // end class MyObjectiveFunction
 

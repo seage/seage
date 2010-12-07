@@ -25,7 +25,7 @@ import org.seage.metaheuristic.tabusearch.TabuSearchListener;
 public class QapTabuSearchTest implements TabuSearchListener
 {
 
-    private static String _dataPath = "D:/esc16i.dat";
+    private static String _dataPath = "D:/tai12b.dat";
 
     public static void main(String[] args)
     {
@@ -53,12 +53,12 @@ public class QapTabuSearchTest implements TabuSearchListener
                 new QapLongTermMemory(), false);
 
         ts.addTabuSearchListener(this);
-        ts.setIterationsToGo(100000);
+        ts.setIterationsToGo(1000000);
         ts.startSolving();
         Integer[] r = ((QapSolution)ts.getBestSolution()).getAssign();
         System.out.println(ts.getBestSolution().getObjectiveValue()[0]);
         for(int i=0;i<r.length;i++){
-            System.out.print(r[i]+",");
+            System.out.print((r[i]+1)+",");
         }
 
     }

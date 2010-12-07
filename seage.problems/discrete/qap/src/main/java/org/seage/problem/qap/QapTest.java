@@ -11,10 +11,12 @@ package org.seage.problem.qap;
  */
 public class QapTest {
 
-    public static String _dataPath = "D:/esc16i.dat";
+    public static String _dataPath = "D:/esc16a.dat";
     public static Double[][][] facilityLocation;
     ///public static Object[] assign = {3,13,6,4,18,12,10,5,1,11,8,7,17,14,9,16,15,2};
-    public static Object[] assign = {13,9,11,3,7,5,6,2,1,15,4,14,12,10,8,16};
+//    public static Object[] assign ={1,2,6,4,8,3,7,5,14,13,16,15,9,11,10,12};
+    private static Object[] assign = {1,5,7,6,9,11,10,3,4,2,14,15,16,13,8,12};
+//    public static Object[] assign = {13,9,11,3,7,5,6,2,1,15,4,14,12,10,8,16};
     public static void main(String[] arg) throws Exception{
         facilityLocation = FacilityLocationProvider.readFacilityLocations(_dataPath);
         System.out.println(evaluate(QapTest.assign)[0]);
