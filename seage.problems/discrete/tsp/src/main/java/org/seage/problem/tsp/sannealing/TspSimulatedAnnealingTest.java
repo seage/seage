@@ -26,13 +26,13 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class TspSimulatedAnnealingTest implements ISimulatedAnnealingListener
 {
     private City[] _cities;
-    private static String _dataPath = "data/eil101.tsp";
+    private static String _dataPath = "D:\\dj38.tsp";
 
     public static void main(String[] args)
     {
         try
         {
-            new TspSimulatedAnnealingTest().run( args[0] );
+            new TspSimulatedAnnealingTest().run( _dataPath );
         }
         catch(Exception ex)
         {

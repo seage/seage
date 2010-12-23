@@ -25,7 +25,7 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class QapSimulatedAnnealingTest implements ISimulatedAnnealingListener
 {
     private Double[][][] _facilityLocation;
-    private static String _dataPath = "D:/esc16i.dat";
+    private static String _dataPath = "D:/tai12a.dat";
 
     public static void main(String[] args)
     {
@@ -58,6 +58,10 @@ public class QapSimulatedAnnealingTest implements ISimulatedAnnealingListener
         sa.startSearching( (Solution) new QapGreedySolution( _facilityLocation ) );
 
         System.out.println(((QapSolution)sa.getBestSolution()).toString());
+        for(int i=0;i<((QapSolution)sa.getBestSolution())._assign.length;i++){
+            System.out.print(((QapSolution)sa.getBestSolution())._assign[i]+", ");
+        }
+        System.out.println("\nEVAL: "+((QapSolution)sa.getBestSolution()).getObjectiveValue());
     }
 
     public void simulatedAnnealingStarted(SimulatedAnnealingEvent e) {
