@@ -26,27 +26,47 @@ public class QapObjectiveFunction implements IObjectiveFunction
     {
         _currrentQapSolution = (QapSolution)solution;
 
-        double price = 0.0;
-        int assignLength = _currrentQapSolution.getAssign().length;
+        Integer[] assign = ((QapSolution) solution)._assign;
+        int len = assign.length;
+        Double[][][] _matrix = ((QapSolution)solution)._facilityLocation;
 
-
-        double assignPrice = 0;
-        Double[][][] facilityLocation = _currrentQapSolution.getFacilityLocation();
-        int numFacilities = facilityLocation[0][0].length;
-        //System.out.println("My world:["+facilityLocation.length+","+facilityLocation[0].length+","+facilityLocation[0][0].length+"or"+numFacilities+"]");
-        for(int i=0;i<facilityLocation[0][0].length;i++){
-            for(int j=0;j<facilityLocation[0][0].length;j++){
-                double a = facilityLocation[0][i][j];
-                int b = _currrentQapSolution.getAssign()[i];
-                int c = _currrentQapSolution.getAssign()[i];
-                //System.out.println(a+","+b+","+c);
-                price+=a*facilityLocation[1][b][c];
+        double price = 0;
+        for(int i=0;i<len;i++){
+            for(int j=0;j<len;j++){
+                double a = _matrix[0][i][j];
+                price+=_matrix[0][i][j]*_matrix[1][assign[i]][assign[j]];
             }
         }
         double addition=0;
-        for(int i=0;i<facilityLocation[0][0].length;i++){
-            addition+=facilityLocation[2][i][_currrentQapSolution.getAssign()[i]];
+        for(int i=0;i<_matrix[0][0].length;i++){
+            addition+=_matrix[2][i][assign[i]];
         }
+
+//        return new double[]{ price+addition };
+
+
+//        double price = 0.0;
+//        int assignLength = _currrentQapSolution.getAssign().length;
+//
+//
+//        double assignPrice = 0;
+//        Double[][][] facilityLocation = _currrentQapSolution.getFacilityLocation();
+//        int numFacilities = facilityLocation[0][0].length;
+//        //System.out.println("My world:["+facilityLocation.length+","+facilityLocation[0].length+","+facilityLocation[0][0].length+"or"+numFacilities+"]");
+//        for(int i=0;i<facilityLocation[0][0].length;i++){
+//            for(int j=0;j<facilityLocation[0][0].length;j++){
+//                double a = facilityLocation[0][i][j];
+//                int b = _currrentQapSolution.getAssign()[i];
+//                int c = _currrentQapSolution.getAssign()[i];
+//                //System.out.println(a+","+b+","+c);
+//                price+=a*facilityLocation[1][b][c];
+//            }
+//        }
+//        double addition=0;
+//        for(int i=0;i<facilityLocation[0][0].length;i++){
+//            addition+=facilityLocation[2][i][_currrentQapSolution.getAssign()[i]];
+//        }
+//        System.out.println("Just calculated fitness is "+(price+addition));
         solution.setObjectiveValue( price+addition );
     }
 }

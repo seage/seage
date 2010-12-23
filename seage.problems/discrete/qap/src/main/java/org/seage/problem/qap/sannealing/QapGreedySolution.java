@@ -22,7 +22,7 @@ public class QapGreedySolution extends QapSolution {
     public QapGreedySolution(Double[][][] facilityLocation) throws Exception
     {
         super( facilityLocation );
-        _assign = AssignmentProvider.createGreedyAssignment( facilityLocation );
+        this._assign = AssignmentProvider.createGreedyAssignment( facilityLocation );
     }
 
 }

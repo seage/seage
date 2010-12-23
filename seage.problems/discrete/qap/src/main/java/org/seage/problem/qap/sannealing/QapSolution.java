@@ -74,4 +74,12 @@ public abstract class QapSolution extends Solution
         return tspSolution;
     }
 
+    public String toString(){
+        String s="";
+        for(int i=0;i<_assign.length;i++){
+            s+=_assign[i]+", ";
+        }
+        return s;
+    }
+
 }

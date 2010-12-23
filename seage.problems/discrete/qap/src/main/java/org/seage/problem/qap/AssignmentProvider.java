@@ -88,6 +88,8 @@ public class AssignmentProvider
         sumMat[0] = sumOfRows(facilityLocation[0]);
         sumMat[1] = sumOfRows(facilityLocation[1]);
 
+        System.out.println("facilityLoaction.size=["+facilityLocation.length+","+facilityLocation[0].length+","+facilityLocation[0][0].length+"]");
+
         for(int i=0;i<assignment.length;i++){
             int location = -1;
             double price = Double.MAX_VALUE;
@@ -106,7 +108,6 @@ public class AssignmentProvider
             assignment[i]=location;
             avail[location] = -1;
         }
-
         return assignment;
     }
 
