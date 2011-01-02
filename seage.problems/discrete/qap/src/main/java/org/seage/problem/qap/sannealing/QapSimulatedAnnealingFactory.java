@@ -56,7 +56,7 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
         return SimulatedAnnealingAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm() throws Exception
+    public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
 

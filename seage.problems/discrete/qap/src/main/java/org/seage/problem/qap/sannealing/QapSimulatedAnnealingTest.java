@@ -25,7 +25,7 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class QapSimulatedAnnealingTest implements ISimulatedAnnealingListener
 {
     private Double[][][] _facilityLocation;
-    private static String _dataPath = "D:/tai12a.dat";
+    private static String _dataPath = "data/tai12a.dat";
 
     public static void main(String[] args)
     {
@@ -48,10 +48,10 @@ public class QapSimulatedAnnealingTest implements ISimulatedAnnealingListener
 
         SimulatedAnnealing sa = new SimulatedAnnealing( new QapObjectiveFunction() , new QapMoveManager() );
 
-        sa.setMaximalTemperature( 200 );
+        sa.setMaximalTemperature( 2000 );
         sa.setMinimalTemperature( 0.1 );
         sa.setAnnealingCoefficient( 0.99 );
-        sa.setMaximalIterationCount(1500);
+        sa.setMaximalIterationCount(2500);
         sa.setMaximalSuccessIterationCount(100);
 
         sa.addSimulatedAnnealingListener( this );

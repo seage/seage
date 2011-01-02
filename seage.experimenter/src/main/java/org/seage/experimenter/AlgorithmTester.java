@@ -45,7 +45,7 @@ public class AlgorithmTester {
                         System.out.println("\t" + factoryName);
 
                         IAlgorithmFactory f = (IAlgorithmFactory) Class.forName(factoryName).newInstance();
-                        f.createAlgorithm();
+                        f.createAlgorithm(null);
                     } catch (Exception ex) {
                         //ex.printStackTrace();
                         System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
@@ -80,7 +80,7 @@ public class AlgorithmTester {
                 System.out.println("\t" + factoryName);
 
                 IAlgorithmFactory f = (IAlgorithmFactory) Class.forName(factoryName).newInstance();
-                f.createAlgorithm();
+                f.createAlgorithm(null);
             } catch (Exception ex) {
                 //ex.printStackTrace();
                 System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());

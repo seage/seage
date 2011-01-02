@@ -17,6 +17,7 @@ import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.IProblemProvider;
 import org.seage.aal.genetics.GeneticAlgorithmAdapter;
+import org.seage.data.DataNode;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspProblemProvider;
 
@@ -46,7 +47,7 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
         return GeneticAlgorithmAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm() throws Exception
+    public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
         City[] cities = TspProblemProvider.getCities();
