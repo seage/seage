@@ -18,6 +18,7 @@ import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.IProblemProvider;
 import org.seage.aal.particles.ParticleSwarmAdapter;
+import org.seage.data.DataNode;
 
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.tsp.City;
@@ -52,7 +53,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
         return ParticleSwarmAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm() throws Exception
+    public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
         _objectiveFunction = new TspObjectiveFunction(_cities);

@@ -117,8 +117,8 @@ public abstract class ProblemProvider implements IProblemProvider
             }
             catch(Exception ex)
             {
-                System.err.println(ci.getClassName()+": "+ex.getMessage());
-                //ex.printStackTrace();
+                //System.err.println(ci.getClassName()+": "+ex.getMessage());
+                ex.printStackTrace();
             }
         }
         result.putDataNode(algorithms);

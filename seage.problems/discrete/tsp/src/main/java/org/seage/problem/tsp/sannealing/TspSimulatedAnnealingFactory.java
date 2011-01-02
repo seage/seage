@@ -38,16 +38,16 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
     }
 
 
-    public TspSimulatedAnnealingFactory(DataNode params, City[] cities) throws Exception
-    {
-        String solutionType = params.getValueStr("initSolutionType");
-        if( solutionType.toLowerCase().equals("greedy") )
-            _tspSolution = new TspGreedySolution( cities );
-        else if( solutionType.toLowerCase().equals("random") )
-            _tspSolution = new TspRandomSolution( cities );
-        else if( solutionType.toLowerCase().equals("sorted") )
-            _tspSolution = new TspSortedSolution( cities );
-    }
+//    public TspSimulatedAnnealingFactory(DataNode params, City[] cities) throws Exception
+//    {
+//        String solutionType = params.getValueStr("initSolutionType");
+//        if( solutionType.toLowerCase().equals("greedy") )
+//            _tspSolution = new TspGreedySolution( cities );
+//        else if( solutionType.toLowerCase().equals("random") )
+//            _tspSolution = new TspRandomSolution( cities );
+//        else if( solutionType.toLowerCase().equals("sorted") )
+//            _tspSolution = new TspSortedSolution( cities );
+//    }
 
     public void setProblemProvider(IProblemProvider provider) throws Exception {
         //throw new UnsupportedOperationException("Not supported yet.");
@@ -57,7 +57,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
         return SimulatedAnnealingAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm() throws Exception
+    public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
 

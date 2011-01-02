@@ -46,7 +46,7 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
         return TabuSearchAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm() throws Exception
+    public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
         City[] cities = TspProblemProvider.getCities();

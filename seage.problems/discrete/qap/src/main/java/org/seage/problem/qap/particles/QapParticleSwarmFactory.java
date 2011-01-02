@@ -37,6 +37,10 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
 
     private QapObjectiveFunction _objectiveFunction;
 
+    public QapParticleSwarmFactory() throws Exception
+    {
+
+    }
     public QapParticleSwarmFactory(DataNode params, Double[][][] facilityLocation) throws Exception
     {
 //        _facilityLocation = facilityLocation;
@@ -51,7 +55,7 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
         return ParticleSwarmAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm() throws Exception
+    public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
         _objectiveFunction = new QapObjectiveFunction(_facilityLocation);
