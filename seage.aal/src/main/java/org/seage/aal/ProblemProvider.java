@@ -11,6 +11,7 @@
  */
 package org.seage.aal;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -18,21 +19,16 @@ import java.util.Map;
 import org.seage.classutil.ClassUtil;
 import org.seage.classutil.ClassInfo;
 import org.seage.data.DataNode;
+import org.seage.data.ObjectCloner;
 
 /**
  * Implementation of IProblemProvider interface
  *
  * @author Richard Malek
  */
-public abstract class ProblemProvider implements IProblemProvider
+public abstract class ProblemProvider implements IProblemProvider, Serializable
 {
     private HashMap<String, IAlgorithmFactory> _algFactories;
-
-    @Override
-    public Object[][] generateInitialSolutions(int numSolutions) throws Exception
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     @Override
     public DataNode getProblemInfo() throws Exception
@@ -94,7 +90,7 @@ public abstract class ProblemProvider implements IProblemProvider
                 algorithm.putValue("factoryClass", ci.getClassName());
 
                 IAlgorithmFactory factory = (IAlgorithmFactory)algFactoryClass.newInstance();
-                factory.setProblemProvider(this);
+                //factory.setProblemProvider((IProblemProvider)ObjectCloner.deepCopy(this));
                 _algFactories.put(algId, factory);                
 
                 // Algorithm parameters                

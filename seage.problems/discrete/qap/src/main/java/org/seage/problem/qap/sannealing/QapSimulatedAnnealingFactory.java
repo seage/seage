@@ -16,11 +16,11 @@ package org.seage.problem.qap.sannealing;
 import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.IProblemProvider;
+import org.seage.aal.ProblemInstance;
 import org.seage.aal.sannealing.SimulatedAnnealingAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.sannealing.Solution;
-import org.seage.problem.qap.QapProblemProvider;
+import org.seage.problem.qap.QapProblemInstance;
 
 /**
  *
@@ -31,7 +31,6 @@ import org.seage.problem.qap.QapProblemProvider;
 public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
 {
     private QapSolution _qapSolution;
-    private QapProblemProvider _provider;
 
 //    public QapSimulatedAnnealingFactory(DataNode params, Double[][][] facilityLocation) throws Exception
 //    {
@@ -44,19 +43,15 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
 //            _qapSolution = new QapSortedSolution( facilityLocation );
 //    }
 
-    public void setProblemProvider(IProblemProvider provider) throws Exception {
-        _provider = (QapProblemProvider)provider;
-    }
-
     public Class getAlgorithmClass() {
         return SimulatedAnnealingAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
     {
+        final Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
+        
         IAlgorithmAdapter algorithm;
-
-        _provider.initProblemInstance(config);
 
         algorithm = new SimulatedAnnealingAdapter((Solution) _qapSolution,
                 new QapObjectiveFunction(),
@@ -64,7 +59,7 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception 
             {
-                QapSolution initialSolution = new QapGreedySolution(QapProblemProvider.getFacilityLocation());
+                QapSolution initialSolution = new QapGreedySolution(facilityLocation);
                 Integer[] assign = initialSolution.getAssign();
 
                 for(int i = 0; i < assign.length; i++)

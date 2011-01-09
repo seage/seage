@@ -12,11 +12,12 @@
  */
 package org.seage.problem.tsp;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Random;
 import org.seage.aal.Annotations;
-import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IPhenotypeEvaluator;
+import org.seage.aal.ProblemInstance;
 import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
 
@@ -29,43 +30,40 @@ import org.seage.data.DataNode;
 @Annotations.ProblemName("Travelling Salesman Problem")
 public class TspProblemProvider extends ProblemProvider
 {
-    private City[] _cities;
-    private int currentInstanceIx = -1;
 
     @Override
-    public void initProblemInstance(DataNode params) throws Exception
+    public ProblemInstance initProblemInstance(DataNode params) throws Exception
     {
-        if(currentInstanceIx != 0)
-        {
-            currentInstanceIx = 0;
-            DataNode info = params.getDataNode("Instance", 0);
-            String type = info.getValueStr("type");
+        City[] cities;
+        DataNode info = params.getDataNode("Instance", 0);
+        String type = info.getValueStr("type");
 
 //            if(path.equals("[circle]"))
 //                _cities = CityProvider.generateCircleCities(info.getValueInt("numberOfCities"));
 //            else
 //                _cities = CityProvider.readCities(info.getValueStr("path"));
-            if(type.equals("resource"))
-            {
-                InputStream stream = getClass().getResourceAsStream(info.getValueStr("path"));
-                _cities = CityProvider.readCities(stream);
-            }
+        InputStream stream;
+        if(type.equals("resource"))        
+            stream = getClass().getResourceAsStream(info.getValueStr("path"));
+        else
+            stream = new FileInputStream(info.getValueStr("path")); 
 
-            //params.getDataNode("evaluator").putValue("cities", _cities);
-
-        }
+        //params.getDataNode("evaluator").putValue("cities", _cities);
+        return new TspProblemInstance(CityProvider.readCities(stream));
+ 
     }
 
     @Override
-    public Object[][] generateInitialSolutions(int numSolutions) throws Exception
+    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstance instance) throws Exception
     {
         int numTours = numSolutions;
-        int tourLenght = _cities.length;
+        City[] cities = ((TspProblemInstance)instance).getCities();
+        int tourLenght = cities.length;
         Object[][] result = new Object[numTours][];
 
 	Random r = new Random();
 
-        result[0] = TourProvider.createGreedyTour(_cities);
+        result[0] = TourProvider.createGreedyTour(cities);
         
         for(int k=1;k<numTours;k++)
         {
@@ -106,7 +104,7 @@ public class TspProblemProvider extends ProblemProvider
 //    }
 
     @Override
-    public void visualizeSolution(Object[] solution) throws Exception
+    public void visualizeSolution(Object[] solution, ProblemInstance instance) throws Exception
     {
         Integer[] tour = (Integer[])solution;
 
@@ -116,11 +114,6 @@ public class TspProblemProvider extends ProblemProvider
 //        int height = _problemParams.getDataNode("visualizer").getValueInt("height");
 //
 //        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
-    }
-
-    public City[] getCities()
-    {
-        return _cities;
     }
 
     public IPhenotypeEvaluator initPhenotypeEvaluator() throws Exception {

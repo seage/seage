@@ -12,15 +12,15 @@
 
 package org.seage.aal;
 
+import java.io.Serializable;
 import org.seage.data.DataNode;
 
 /**
  *
  * @author Richard Malek
  */
-public interface IAlgorithmFactory
+public interface IAlgorithmFactory extends Serializable
 {
-    void setProblemProvider(IProblemProvider provider) throws Exception;
     Class getAlgorithmClass();
 
     /**
@@ -35,6 +35,6 @@ public interface IAlgorithmFactory
      * @return IAlgorithmAdapter
      * @throws Exception
      */
-    IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception;
+    IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception;
     //DataNode getAlgorithmParameters(DataNode params) throws Exception;
 }

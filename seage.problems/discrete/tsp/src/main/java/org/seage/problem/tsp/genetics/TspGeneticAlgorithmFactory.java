@@ -15,11 +15,12 @@ package org.seage.problem.tsp.genetics;
 import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.IProblemProvider;
+import org.seage.aal.ProblemInstance;
 import org.seage.aal.genetics.GeneticAlgorithmAdapter;
 import org.seage.data.DataNode;
 import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.TspProblemProvider;
+import org.seage.problem.tsp.TspProblemInstance;
+
 
 
 /**
@@ -30,22 +31,15 @@ import org.seage.problem.tsp.TspProblemProvider;
 @Annotations.AlgorithmName("GeneticAlgorithm")
 public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 {
-//    private DataNode _algParams;
-    private TspProblemProvider _provider;
-
-    public void setProblemProvider(IProblemProvider provider) throws Exception {
-        _provider = (TspProblemProvider)provider;
-    }
 
     public Class getAlgorithmClass() {
         return GeneticAlgorithmAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
-    {
-        _provider.initProblemInstance(config);
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
+    {        
         IAlgorithmAdapter algorithm;
-        City[] cities = _provider.getCities();
+        City[] cities = ((TspProblemInstance)instance).getCities();
         algorithm = new GeneticAlgorithmAdapter(new TspGeneticOperator(), new TspEvaluator(cities), false, "");
 
         return algorithm;

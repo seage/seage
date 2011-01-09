@@ -59,9 +59,14 @@ public class Launcher {
                 new AlgorithmTester().test();
                 return;
             }
-            if(args.length==3 && args[1].equals("-problem"))
+            if(args.length==2 )
             {
-                new AlgorithmTester().test(args[2]);
+                new AlgorithmTester().test(args[1]);
+                return;
+            }
+            if(args.length==3 )
+            {
+                new AlgorithmTester().test(args[1], args[2]);
                 return;
             }
             usage();
@@ -80,7 +85,7 @@ public class Launcher {
         System.out.println("java -jar seage.launcher.jar {params}\n");
         System.out.println("params:");
         System.out.println("\t-list");
-        System.out.println("\t-test [-problem problem-id]");
+        System.out.println("\t-test [problem-id [algorithm-id]]");
         System.out.println("\t-agents path-to-agent-config-xml");
     }
 
