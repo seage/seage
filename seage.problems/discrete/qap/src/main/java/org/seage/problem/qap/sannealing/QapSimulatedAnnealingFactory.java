@@ -32,21 +32,17 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
 {
     private QapSolution _qapSolution;
 
-    public QapSimulatedAnnealingFactory()
-    {
-    }
 
-
-    public QapSimulatedAnnealingFactory(DataNode params, Double[][][] facilityLocation) throws Exception
-    {
-        String solutionType = params.getValueStr("initSolutionType");
-        if( solutionType.toLowerCase().equals("greedy") )
-            _qapSolution = new QapGreedySolution( facilityLocation );
-        else if( solutionType.toLowerCase().equals("random") )
-            _qapSolution = new QapRandomSolution( facilityLocation );
-        else if( solutionType.toLowerCase().equals("sorted") )
-            _qapSolution = new QapSortedSolution( facilityLocation );
-    }
+//    public QapSimulatedAnnealingFactory(DataNode params, Double[][][] facilityLocation) throws Exception
+//    {
+//        String solutionType = params.getValueStr("initSolutionType");
+//        if( solutionType.toLowerCase().equals("greedy") )
+//            _qapSolution = new QapGreedySolution( facilityLocation );
+//        else if( solutionType.toLowerCase().equals("random") )
+//            _qapSolution = new QapRandomSolution( facilityLocation );
+//        else if( solutionType.toLowerCase().equals("sorted") )
+//            _qapSolution = new QapSortedSolution( facilityLocation );
+//    }
 
     public void setProblemProvider(IProblemProvider provider) throws Exception {
         //throw new UnsupportedOperationException("Not supported yet.");

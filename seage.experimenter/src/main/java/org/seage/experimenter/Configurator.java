@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.seage.aal;
+package org.seage.experimenter;
 
 import org.seage.data.DataNode;
 
@@ -11,6 +11,6 @@ import org.seage.data.DataNode;
  *
  * @author rick
  */
-public class Configurator {
-    public DataNode[] prepareConfig(String xmlCfgPath){return null;}
+public abstract class Configurator {
+    public abstract DataNode[] prepareConfigs(DataNode problemInfo)  throws Exception;
 }

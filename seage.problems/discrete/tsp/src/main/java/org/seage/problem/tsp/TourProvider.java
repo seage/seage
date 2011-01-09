@@ -11,6 +11,8 @@
  */
 package org.seage.problem.tsp;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -32,7 +34,7 @@ public class TourProvider
             
             System.out.println("Instance: "+args[0]);
 
-            City[] cities = CityProvider.readCities(args[0]);
+            City[] cities = CityProvider.readCities(new FileInputStream(args[0]));
 
             System.out.println("Cities: "+cities.length);
             System.out.println();

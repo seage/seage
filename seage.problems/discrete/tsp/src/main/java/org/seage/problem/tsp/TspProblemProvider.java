@@ -12,6 +12,7 @@
  */
 package org.seage.problem.tsp;
 
+import java.io.InputStream;
 import java.util.Random;
 import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
@@ -28,7 +29,7 @@ import org.seage.data.DataNode;
 @Annotations.ProblemName("Travelling Salesman Problem")
 public class TspProblemProvider extends ProblemProvider
 {
-    private static City[] _cities;
+    private City[] _cities;
     private int currentInstanceIx = -1;
 
     @Override
@@ -37,14 +38,18 @@ public class TspProblemProvider extends ProblemProvider
         if(currentInstanceIx != 0)
         {
             currentInstanceIx = 0;
-            DataNode info = params.getDataNode("instance", 0);
-            String path = info.getValueStr("path");
+            DataNode info = params.getDataNode("Instance", 0);
+            String type = info.getValueStr("type");
 
-            if(path.equals("[circle]"))
-                _cities = CityProvider.generateCircleCities(info.getValueInt("numberOfCities"));
-            else
-                _cities = CityProvider.readCities(info.getValueStr("path"));
-
+//            if(path.equals("[circle]"))
+//                _cities = CityProvider.generateCircleCities(info.getValueInt("numberOfCities"));
+//            else
+//                _cities = CityProvider.readCities(info.getValueStr("path"));
+            if(type.equals("resource"))
+            {
+                InputStream stream = getClass().getResourceAsStream(info.getValueStr("path"));
+                _cities = CityProvider.readCities(stream);
+            }
 
             //params.getDataNode("evaluator").putValue("cities", _cities);
 
@@ -113,13 +118,9 @@ public class TspProblemProvider extends ProblemProvider
 //        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
     }
 
-    public static City[] getCities()
+    public City[] getCities()
     {
         return _cities;
-    }
-
-    public IAlgorithmAdapter initAlgorithm(DataNode params) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public IPhenotypeEvaluator initPhenotypeEvaluator() throws Exception {

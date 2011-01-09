@@ -33,20 +33,15 @@ import org.seage.problem.tsp.TspProblemProvider;
 @Annotations.AlgorithmName("Particle Swarm")
 public class TspParticleSwarmFactory implements IAlgorithmFactory
 {
-    private City[] _cities;
+    private TspProblemProvider _provider;
 
     private int _numParticles;
 
     private TspObjectiveFunction _objectiveFunction;
 
-    public TspParticleSwarmFactory() throws Exception
-    {
-        _cities = TspProblemProvider.getCities();
-        _numParticles = 0;//params.getValueInt("numSolutions");
-    }
-
+ 
     public void setProblemProvider(IProblemProvider provider) throws Exception {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        _provider = (TspProblemProvider)provider;
     }
 
     public Class getAlgorithmClass() {
@@ -56,7 +51,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
     public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
-        _objectiveFunction = new TspObjectiveFunction(_cities);
+        _objectiveFunction = new TspObjectiveFunction(_provider.getCities());
 
         algorithm = new ParticleSwarmAdapter(
                 generateInitialSolutions(),
@@ -79,11 +74,11 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 int numOfParticles = _particleSwarm.getParticles().length;
-                Object[][] source = new Object[ numOfParticles ][ _cities.length ];
+                Object[][] source = new Object[ numOfParticles ][ _provider.getCities().length ];
 
                 for(int i = 0; i < source.length; i++)
                 {
-                    source[i] = new Integer[ _cities.length ];
+                    source[i] = new Integer[ _provider.getCities().length ];
                     Integer[] tour = ((TspParticle)_particleSwarm.getParticles()[i]).getTour();
                     for(int j = 0; j < source[i].length; j++)
                     {
@@ -107,11 +102,11 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
         for(Particle particle : particles)
         {
             // Initial coords
-            for(int i = 0; i < _cities.length; i++)
+            for(int i = 0; i < _provider.getCities().length; i++)
                 particle.getCoords()[i] = Math.random();
 
             // Initial velocity
-            for(int i = 0; i < _cities.length; i++)
+            for(int i = 0; i < _provider.getCities().length; i++)
                 particle.getVelocity()[i] = Math.random();
 
             // Evaluate
@@ -131,7 +126,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
     {
         TspRandomParticle[] particles = new TspRandomParticle[count];
         for(int i = 0; i < count; i++)
-            particles[i] = new TspRandomParticle( _cities.length );
+            particles[i] = new TspRandomParticle( _provider.getCities().length );
 
         return particles;
     }

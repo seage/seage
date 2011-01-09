@@ -11,6 +11,7 @@
  */
 package org.seage.problem.tsp.particles;
 
+import java.io.FileInputStream;
 import org.seage.metaheuristic.particles.IParticleSwarmListener;
 import org.seage.metaheuristic.particles.ParticleSwarm;
 import org.seage.metaheuristic.particles.ParticleSwarmEvent;
@@ -42,7 +43,7 @@ public class TspParticleSwarmTest implements IParticleSwarmListener
 
     public void run(String path) throws Exception
     {
-        _cities = CityProvider.readCities( path );
+        _cities = CityProvider.readCities( new FileInputStream(path) );
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 

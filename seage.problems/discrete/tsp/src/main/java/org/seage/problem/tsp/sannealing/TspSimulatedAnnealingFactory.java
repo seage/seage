@@ -32,6 +32,7 @@ import org.seage.problem.tsp.TspProblemProvider;
 public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 {
     private TspSolution _tspSolution;
+    private TspProblemProvider _provider;
 
     public TspSimulatedAnnealingFactory()
     {
@@ -50,7 +51,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 //    }
 
     public void setProblemProvider(IProblemProvider provider) throws Exception {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        _provider = (TspProblemProvider)provider;
     }
 
     public Class getAlgorithmClass() {
@@ -67,7 +68,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception 
             {
-                TspSolution initialSolution = new TspGreedySolution(TspProblemProvider.getCities());
+                TspSolution initialSolution = new TspGreedySolution(_provider.getCities());
                 Integer[] tour = initialSolution.getTour();
 
                 for(int i = 0; i < tour.length; i++)

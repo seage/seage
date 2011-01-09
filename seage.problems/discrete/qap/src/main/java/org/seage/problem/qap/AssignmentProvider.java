@@ -11,10 +11,10 @@
  */
 package org.seage.problem.qap;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /**
  *
@@ -33,7 +33,7 @@ public class AssignmentProvider
             
             System.out.println("Instance: "+args[0]);
 
-            Double[][][] facilityLocation = FacilityLocationProvider.readFacilityLocations(args[0]);
+            Double[][][] facilityLocation = FacilityLocationProvider.readFacilityLocations(new FileInputStream(args[0]) );
 
             System.out.println("Facilities & Locations: "+facilityLocation.length);
             System.out.println();

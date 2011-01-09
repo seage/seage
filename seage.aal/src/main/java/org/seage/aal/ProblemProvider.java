@@ -59,7 +59,8 @@ public abstract class ProblemProvider implements IProblemProvider
         for(String in : ClassUtil.searchForInstancesInJar("instances", this.getClass()))
         {
             DataNode instance = new DataNode("Instance");
-            instance.putValue("resource", in);
+            instance.putValue("type", "resource");
+            instance.putValue("path", in);
             instances.putDataNode(instance);
         }
         result.putDataNode(instances);
