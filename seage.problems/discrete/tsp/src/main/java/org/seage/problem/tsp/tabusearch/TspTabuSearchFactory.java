@@ -30,7 +30,7 @@ import org.seage.problem.tsp.TspProblemProvider;
 public class TspTabuSearchFactory implements IAlgorithmFactory
 {
 //    private DataNode _algParams;
-//    private TspProblemProvider _provider;
+    private TspProblemProvider _provider;
 //
 //    public TspTabuSearchFactory(DataNode algParams, TspProblemProvider provider)
 //    {
@@ -39,7 +39,7 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
 //    }
 
     public void setProblemProvider(IProblemProvider provider) throws Exception {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        _provider = (TspProblemProvider)provider;
     }
 
     public Class getAlgorithmClass() {
@@ -49,7 +49,7 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
     public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
-        City[] cities = TspProblemProvider.getCities();
+        City[] cities = _provider.getCities();
 
         algorithm = new TabuSearchAdapter(new TspMoveManager(), new TspObjectiveFunction(cities), new TspLongTermMemory(), "" ) {
 

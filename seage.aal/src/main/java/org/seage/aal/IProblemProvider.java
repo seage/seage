@@ -29,9 +29,9 @@ public interface IProblemProvider
     //      |   |_ id
     //      |   |_ name
     //      |   |_ factoryClass
-    //      |   |_Parameter
+    //      |   |_ Parameter
     //      |   |_ ...
-    //      |   |_Parameter
+    //      |   |_ Parameter
     //      |_ Algorithm
     //          |_ ...
     DataNode getProblemInfo() throws Exception;

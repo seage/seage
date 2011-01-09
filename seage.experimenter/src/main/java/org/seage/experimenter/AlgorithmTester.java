@@ -35,27 +35,30 @@ public class AlgorithmTester {
             {
                 IProblemProvider pp = providers.get(problemId);
                 DataNode pi = pp.getProblemInfo();
-                String name = pi.getValueStr("name");
-                System.out.println(name);
+                String problemName = pi.getValueStr("name");
+                //String problemID = pi.getValueStr("id");
+                System.out.println(problemName);
 
                 for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
                 {
                     try {
-                        String factoryName = alg.getValueStr("factoryClass");
-                        System.out.println("\t" + factoryName);
+                        //String factoryName = alg.getValueStr("factoryClass");
+                        IAlgorithmFactory f = pp.getAlgorithmFactory(alg.getValueStr("id"));
+                        System.out.println("\t" + alg.getValueStr("factoryClass"));
 
-                        IAlgorithmFactory f = (IAlgorithmFactory) Class.forName(factoryName).newInstance();
-                        f.createAlgorithm(null);
+                        
+                        f.createAlgorithm(new DummyConfigurator( alg.getValueStr("id")).prepareConfigs(pi)[0]);
                     } catch (Exception ex) {
-                        //ex.printStackTrace();
-                        System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
+                        ex.printStackTrace();
+                        //System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
                     }
                     //System.out.println("\t"+alg.getValueStr("id")/*+" ("+alg.getValueStr("id")+")"*/);
                 }
             }
             catch(Exception ex)
             {
-                System.err.println(problemId+": "+ex.getLocalizedMessage());
+                //System.err.println(problemId+": "+ex.getLocalizedMessage());
+                ex.printStackTrace();
             }
         }
     }

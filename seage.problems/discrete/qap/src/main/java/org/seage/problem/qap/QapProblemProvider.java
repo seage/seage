@@ -14,6 +14,7 @@
 
 package org.seage.problem.qap;
 
+import java.io.InputStream;
 import java.util.Random;
 import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
@@ -32,23 +33,27 @@ public class QapProblemProvider extends ProblemProvider
     //private static City[] _cities;
 
     private static Double[][][] _facilityLocation;
-    private int currentInstanceIx = -1;
+//    private int currentInstanceIx = -1;
 
     @Override
     public void initProblemInstance(DataNode params) throws Exception
     {
 //        if(currentInstanceIx != instanceIx)
-//        {
+        {
 //            currentInstanceIx = instanceIx;
-//            DataNode info = params.getDataNode("instance", instanceIx);
-//            String path = info.getValueStr("path");
-//
-//            _facilityLocation = FacilityLocationProvider.readFacilityLocations(info.getValueStr("path"));
-//
-//
-//            //params.getDataNode("evaluator").putValue("cities", _cities);
-//
-//        }
+            DataNode info = params.getDataNode("Instance", 0);
+            String type = info.getValueStr("type");
+
+            
+            if(type.equals("resource"))
+            {
+                InputStream stream = getClass().getResourceAsStream(info.getValueStr("path"));
+                _facilityLocation = FacilityLocationProvider.readFacilityLocations(stream);
+            }
+
+            //params.getDataNode("evaluator").putValue("cities", _cities);
+
+        }
     }
 
     @Override

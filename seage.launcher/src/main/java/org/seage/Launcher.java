@@ -118,7 +118,7 @@ public class Launcher {
                 }
                 System.out.println("\tinstances:");
                 for(DataNode inst : pi.getDataNode("Instances").getDataNodes())
-                    System.out.println("\t\t"+inst.getValueStr("resource")/*+" ("+alg.getValueStr("id")+")"*/);
+                    System.out.println("\t\t"+inst.getValueStr("type")+"="+inst.getValueStr("path")/*+" ("+alg.getValueStr("id")+")"*/);
 
                 System.out.println();
             }

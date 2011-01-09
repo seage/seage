@@ -31,16 +31,10 @@ import org.seage.problem.tsp.TspProblemProvider;
 public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 {
 //    private DataNode _algParams;
-//    private TspProblemProvider _provider;
-//
-//    public TspGeneticAlgorithmFactory(DataNode algParams, TspProblemProvider provider) throws Exception
-//    {
-//        _algParams = algParams;
-//        _provider = provider;
-//    }
+    private TspProblemProvider _provider;
 
     public void setProblemProvider(IProblemProvider provider) throws Exception {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        _provider = (TspProblemProvider)provider;
     }
 
     public Class getAlgorithmClass() {
@@ -49,12 +43,11 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 
     public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
+        _provider.initProblemInstance(config);
         IAlgorithmAdapter algorithm;
-        City[] cities = TspProblemProvider.getCities();
+        City[] cities = _provider.getCities();
         algorithm = new GeneticAlgorithmAdapter(new TspGeneticOperator(), new TspEvaluator(cities), false, "");
 
-//        Object[][] solutions = _provider.generateInitialSolutions(_algParams.getValueInt("numSolution"));
-//        algorithm.solutionsFromPhenotype(solutions);
         return algorithm;
     }
 

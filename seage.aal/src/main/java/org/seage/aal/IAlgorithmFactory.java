@@ -22,6 +22,19 @@ public interface IAlgorithmFactory
 {
     void setProblemProvider(IProblemProvider provider) throws Exception;
     Class getAlgorithmClass();
+
+    /**
+     *
+     * @param config
+     *  Config
+     *      |_ Algorithm
+     *      |   |_ Parameter
+     *      |   |_ ...
+     *      |   |_ Parameter
+     *      |_ Instance
+     * @return IAlgorithmAdapter
+     * @throws Exception
+     */
     IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception;
     //DataNode getAlgorithmParameters(DataNode params) throws Exception;
 }

@@ -18,17 +18,17 @@ import java.io.*;
  */
 public class FacilityLocationProvider
 {
-    synchronized public static Double[][][] readFacilityLocations(String path) throws Exception
+    synchronized public static Double[][][] readFacilityLocations(InputStream stream) throws Exception
     {
         Double[][] res1,res2,res3;
-        Scanner scanner = new Scanner(new File(path));
+        Scanner scanner = new Scanner(stream);
         final int n;
         try {
             
             String line = scanner.nextLine();
             //size of matrix
             n=Integer.valueOf(line.trim());
-            System.out.println("N = "+n);
+            //System.out.println("N = "+n);
             
             res1 = new Double[n][n];
             res2 = new Double[n][n];
@@ -43,7 +43,7 @@ public class FacilityLocationProvider
                 }
                 if(line.equals("EOF"))
                     break;
-                System.out.println(line);
+                //System.out.println(line);
                 Double[] dataLine = readLine( line );
                 res1[i] = dataLine;
             }
@@ -58,7 +58,7 @@ public class FacilityLocationProvider
                     if(line.trim().isEmpty()){
                         line = scanner.nextLine();
                     }
-                    System.out.println(line);
+                    //System.out.println(line);
                     Double[] dataLine = readLine( line );
                     res2[i] = dataLine;
                 }

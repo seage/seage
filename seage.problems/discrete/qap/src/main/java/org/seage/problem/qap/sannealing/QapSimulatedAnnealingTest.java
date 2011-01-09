@@ -11,6 +11,7 @@
  */
 package org.seage.problem.qap.sannealing;
 
+import java.io.FileInputStream;
 import org.seage.problem.qap.FacilityLocationProvider;
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealingListener;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
@@ -42,7 +43,7 @@ public class QapSimulatedAnnealingTest implements ISimulatedAnnealingListener
 
     public void run(String path) throws Exception
     {
-        _facilityLocation = FacilityLocationProvider.readFacilityLocations( path );
+        _facilityLocation = FacilityLocationProvider.readFacilityLocations( new FileInputStream(path)  );
         System.out.println("Loading Facilities & Locations from path: " + path);
         System.out.println("Number of facilities and locations: " + _facilityLocation.length);
 

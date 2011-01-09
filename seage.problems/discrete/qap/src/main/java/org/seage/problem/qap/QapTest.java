@@ -5,6 +5,8 @@
 
 package org.seage.problem.qap;
 
+import java.io.FileInputStream;
+
 /**
  *
  * @author Administrator
@@ -18,7 +20,7 @@ public class QapTest {
     private static Object[] assign = {1,5,7,6,9,11,10,3,4,2,14,15,16,13,8,12};
 //    public static Object[] assign = {13,9,11,3,7,5,6,2,1,15,4,14,12,10,8,16};
     public static void main(String[] arg) throws Exception{
-        facilityLocation = FacilityLocationProvider.readFacilityLocations(_dataPath);
+        facilityLocation = FacilityLocationProvider.readFacilityLocations(new FileInputStream(_dataPath) );
         System.out.println(evaluate(QapTest.assign)[0]);
     }
 

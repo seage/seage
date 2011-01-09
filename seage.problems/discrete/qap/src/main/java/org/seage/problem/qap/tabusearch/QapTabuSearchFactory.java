@@ -31,16 +31,10 @@ import org.seage.problem.qap.QapProblemProvider;
 public class QapTabuSearchFactory implements IAlgorithmFactory
 {
 //    private DataNode _algParams;
-//    private TspProblemProvider _provider;
-//
-//    public TspTabuSearchFactory(DataNode algParams, TspProblemProvider provider)
-//    {
-//        _algParams = algParams;
-//        _provider = provider;
-//    }
+    private QapProblemProvider _provider;
     
     public void setProblemProvider(IProblemProvider provider) throws Exception {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        _provider = (QapProblemProvider)provider;
     }
 
     public Class getAlgorithmClass() {
@@ -50,7 +44,10 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
     public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
-        Double[][][] facilityLocation = QapProblemProvider.getFacilityLocation();
+
+        _provider.initProblemInstance(config);
+
+        Double[][][] facilityLocation = _provider.getFacilityLocation();
 
         algorithm = new TabuSearchAdapter(new QapMoveManager(), new QapObjectiveFunction(facilityLocation), new QapLongTermMemory(), "" ) {
 
