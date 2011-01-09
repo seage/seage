@@ -31,7 +31,7 @@ import org.seage.problem.qap.QapProblemProvider;
 public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
 {
     private QapSolution _qapSolution;
-
+    private QapProblemProvider _provider;
 
 //    public QapSimulatedAnnealingFactory(DataNode params, Double[][][] facilityLocation) throws Exception
 //    {
@@ -45,7 +45,7 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
 //    }
 
     public void setProblemProvider(IProblemProvider provider) throws Exception {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        _provider = (QapProblemProvider)provider;
     }
 
     public Class getAlgorithmClass() {
@@ -55,6 +55,8 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
     public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
+
+        _provider.initProblemInstance(config);
 
         algorithm = new SimulatedAnnealingAdapter((Solution) _qapSolution,
                 new QapObjectiveFunction(),

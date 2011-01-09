@@ -21,6 +21,7 @@ import org.seage.aal.particles.ParticleSwarmAdapter;
 import org.seage.data.DataNode;
 
 import org.seage.metaheuristic.particles.Particle;
+import org.seage.problem.qap.QapProblemProvider;
 
 
 /**
@@ -31,7 +32,8 @@ import org.seage.metaheuristic.particles.Particle;
 @Annotations.AlgorithmName("Particle Swarm")
 public class QapParticleSwarmFactory implements IAlgorithmFactory
 {
-    private Double[][][] _facilityLocation;
+    private QapProblemProvider _provider;
+    //private Double[][][] _facilityLocation;
 
     private int _numParticles;
 
@@ -39,16 +41,10 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
 
     public QapParticleSwarmFactory() throws Exception
     {
-
-    }
-    public QapParticleSwarmFactory(DataNode params, Double[][][] facilityLocation) throws Exception
-    {
-//        _facilityLocation = facilityLocation;
-//        _numParticles = params.getValueInt("numSolutions");
     }
 
     public void setProblemProvider(IProblemProvider provider) throws Exception {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        _provider = (QapProblemProvider)provider;
     }
 
     public Class getAlgorithmClass() {
@@ -57,8 +53,15 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
 
     public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
+            throw new UnsupportedOperationException();
+    }
+    
+    public IAlgorithmAdapter createAlgorithm2(DataNode config) throws Exception
+    {    
         IAlgorithmAdapter algorithm;
-        _objectiveFunction = new QapObjectiveFunction(_facilityLocation);
+
+        _provider.initProblemInstance(config);
+        _objectiveFunction = new QapObjectiveFunction(_provider.getFacilityLocation());
 
         algorithm = new ParticleSwarmAdapter(
                 generateInitialSolutions(),
@@ -67,25 +70,26 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-//                Particle[] particles = generateInitialSolutions();
-//                for(int i = 0; i < source.length; i++)
-//                {
-//                    Integer[] tour = ((TspParticle)particles[i]).getTour();
-//                    for(int j = 0; j < source[i].length; j++)
-//                    {
-//                        tour[j] = (Integer)source[i][j];
-//                    }
-//                }
+                _numParticles = source.length;
+                _initialParticles = generateInitialSolutions();
+                for(int i = 0; i < source.length; i++)
+                {
+                    Integer[] tour = ((QapParticle)_initialParticles[i]).getAssign();
+                    for(int j = 0; j < source[i].length; j++)
+                    {
+                        tour[j] = (Integer)source[i][j];
+                    }
+                }
             }
 
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 int numOfParticles = _particleSwarm.getParticles().length;
-                Object[][] source = new Object[ numOfParticles ][ _facilityLocation.length ];
+                Object[][] source = new Object[ numOfParticles ][ _provider.getFacilityLocation().length ];
 
                 for(int i = 0; i < source.length; i++)
                 {
-                    source[i] = new Integer[ _facilityLocation.length ];
+                    source[i] = new Integer[ _provider.getFacilityLocation().length ];
                     Integer[] tour = ((QapParticle)_particleSwarm.getParticles()[i]).getAssign();
                     for(int j = 0; j < source[i].length; j++)
                     {
@@ -109,11 +113,11 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
         for(Particle particle : particles)
         {
             // Initial coords
-            for(int i = 0; i < _facilityLocation.length; i++)
+            for(int i = 0; i < _provider.getFacilityLocation().length; i++)
                 particle.getCoords()[i] = Math.random();
 
             // Initial velocity
-            for(int i = 0; i < _facilityLocation.length; i++)
+            for(int i = 0; i < _provider.getFacilityLocation().length; i++)
                 particle.getVelocity()[i] = Math.random();
 
             // Evaluate
@@ -123,17 +127,17 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
         return particles;
     }
 
-    void printArray(Integer[] array)
-    {
-        for(int i = 0; i< array.length; i++)
-            System.out.print(" " + array[i]);
-    }
+//    void printArray(Integer[] array)
+//    {
+//        for(int i = 0; i< array.length; i++)
+//            System.out.print(" " + array[i]);
+//    }
 
     private Particle[] generateQapRandomParticles(int count)
     {
         QapRandomParticle[] particles = new QapRandomParticle[count];
         for(int i = 0; i < count; i++)
-            particles[i] = new QapRandomParticle( _facilityLocation.length );
+            particles[i] = new QapRandomParticle( _provider.getFacilityLocation().length );
 
         return particles;
     }

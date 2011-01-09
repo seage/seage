@@ -32,6 +32,7 @@ import org.seage.metaheuristic.particles.ParticleSwarmEvent;
  */
 @AlgorithmParameters({
     @Parameter(name="maxIterationCount", min=0, max=1000000, init=1000),
+    @Parameter(name="numSolutions", min=1, max=1000000, init=100),
     @Parameter(name="maxVelocity", min=0, max=10000, init=1),
     @Parameter(name="minVelocity", min=0, max=10000, init=1),
     @Parameter(name="inertia", min=0, max=10000, init=10),

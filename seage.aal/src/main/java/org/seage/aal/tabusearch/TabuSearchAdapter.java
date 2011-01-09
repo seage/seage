@@ -252,7 +252,7 @@ public abstract class TabuSearchAdapter implements IAlgorithmAdapter
                 if (_bestEverSolution.getObjectiveValue() == null)
                 {
                     _bestEverSolution = (Solution) newBest.clone();
-                    System.out.println(_searchID + "  " + newBest.getObjectiveValue()[0]);
+                    //System.out.println(_searchID + "  " + newBest.getObjectiveValue()[0]);
 
                     //addSolutionToGraph(e.getTabuSearch().getIterationsCompleted(), _bestEverSolution);
                     _statEndObjVal = _bestEverSolution.getObjectiveValue()[0];
@@ -266,7 +266,7 @@ public abstract class TabuSearchAdapter implements IAlgorithmAdapter
                 else if (_tabuSearch.firstIsBetterThanSecond(newBest.getObjectiveValue(), _bestEverSolution.getObjectiveValue(), _maximizing))
                 {
                     _bestEverSolution = (Solution) newBest.clone();
-                    System.out.println(_searchID + "  " + newBest.getObjectiveValue()[0]);
+                    //System.out.println(_searchID + "  " + newBest.getObjectiveValue()[0]);
                     //addSolutionToGraph(e.getTabuSearch().getIterationsCompleted(), _bestEverSolution);
                     _statEndObjVal = _bestEverSolution.getObjectiveValue()[0];
                     _statNumNewSol++;

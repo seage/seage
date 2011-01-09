@@ -136,8 +136,13 @@ public class DataNode implements Serializable
             return ((Long)o).longValue();
         }
         else
+        if (o instanceof Double)
         {
-            return Long.parseLong((String)o);
+            return ((Double)o).intValue();
+        }
+        else
+        {
+            return Long.parseLong(o.toString());
         }
     }
     
