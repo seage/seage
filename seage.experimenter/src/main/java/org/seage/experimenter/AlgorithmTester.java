@@ -12,6 +12,7 @@
 package org.seage.experimenter;
 
 import java.util.Map;
+import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.IProblemProvider;
 import org.seage.aal.ProblemProvider;
@@ -23,71 +24,65 @@ import org.seage.data.DataNode;
  */
 public class AlgorithmTester {
 
-    public void test() throws Exception {
+    private Map<String, IProblemProvider> _providers ;
+    
+    public AlgorithmTester() throws Exception
+    {
+        _providers = ProblemProvider.getProblemProviders();
+    }
+
+    public void test() throws Exception
+    {
         System.out.println("Testing algorithms:");
-        System.out.println("-------------------");
+        System.out.println("-------------------");        
 
-        Map<String, IProblemProvider> providers = ProblemProvider.getProblemProviders();
-
-        for(String problemId : providers.keySet())
-        {
-            try
-            {
-                IProblemProvider pp = providers.get(problemId);
-                DataNode pi = pp.getProblemInfo();
-                String problemName = pi.getValueStr("name");
-                //String problemID = pi.getValueStr("id");
-                System.out.println(problemName);
-
-                for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
-                {
-                    try {
-                        //String factoryName = alg.getValueStr("factoryClass");
-                        IAlgorithmFactory f = pp.getAlgorithmFactory(alg.getValueStr("id"));
-                        System.out.println("\t" + alg.getValueStr("factoryClass"));
-
-                        
-                        f.createAlgorithm(new DummyConfigurator( alg.getValueStr("id")).prepareConfigs(pi)[0]);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        //System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
-                    }
-                    //System.out.println("\t"+alg.getValueStr("id")/*+" ("+alg.getValueStr("id")+")"*/);
-                }
-            }
-            catch(Exception ex)
-            {
-                //System.err.println(problemId+": "+ex.getLocalizedMessage());
-                ex.printStackTrace();
-            }
+        for(String problemId : _providers.keySet())
+        {          
+            testProblem(_providers.get(problemId));
         }
     }
 
-    public void test(String problemId) throws Exception
+    public void test(String problemId)
     {
         System.out.println("Testing algorithms:");
         System.out.println("-------------------");
 
-        Map<String, IProblemProvider> providers = ProblemProvider.getProblemProviders();
+        testProblem(_providers.get(problemId));
+    }
 
+    private void testProblem( IProblemProvider provider)
+    {
+        try
+        {            
+            DataNode pi = provider.getProblemInfo();
+            String problemName = pi.getValueStr("name");
+            System.out.println(problemName);
 
-        IProblemProvider pp = providers.get(problemId);
-        DataNode pi = pp.getProblemInfo();
-        String name = pi.getValueStr("name");
-        System.out.println(name);
+            for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
+            {
+                try {
+                    System.out.print("\t" + alg.getValueStr("name"));
+                    IAlgorithmFactory factory = provider.getAlgorithmFactory(alg.getValueStr("id"));
+                    
+                    DataNode config = new DummyConfigurator( alg.getValueStr("id")).prepareConfigs(pi)[0];
+                    IAlgorithmAdapter algorithm = factory.createAlgorithm(config);
+                    algorithm.solutionsFromPhenotype(provider.generateInitialSolutions(config.getDataNode("Parameters").getValueInt("numSolutions")));
+                    algorithm.startSearching(config.getDataNode("Parameters"));
 
-        for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
-        {
-            try {
-                String factoryName = alg.getValueStr("factoryClass");
-                System.out.println("\t" + factoryName);
+                    System.out.println("\t"+"OK");
 
-                IAlgorithmFactory f = (IAlgorithmFactory) Class.forName(factoryName).newInstance();
-                f.createAlgorithm(null);
-            } catch (Exception ex) {
-                //ex.printStackTrace();
-                System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
+                } catch (Exception ex) {
+                    System.out.println("\t"+"FAIL");
+                    ex.printStackTrace();
+                    //System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
+                }
+                //System.out.println("\t"+alg.getValueStr("id")/*+" ("+alg.getValueStr("id")+")"*/);
             }
+        }
+        catch(Exception ex)
+        {
+            //System.err.println(problemId+": "+ex.getLocalizedMessage());
+            ex.printStackTrace();
         }
     }
 }

@@ -131,7 +131,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     {
 //        System.out.println("(CurrentTemperature = "+_currentTemperature+" >= "+_minimalTemperature+" = minimalTemperature");
         innerIterationCount = successIterationCount = 0;
-        System.out.println(_bestSolution.getObjectiveValue());
+        //System.out.println(_bestSolution.getObjectiveValue());
 
         while(( innerIterationCount < _maximalIterationCount ) && ( successIterationCount < _maximalSuccessIterationCount ))
             {

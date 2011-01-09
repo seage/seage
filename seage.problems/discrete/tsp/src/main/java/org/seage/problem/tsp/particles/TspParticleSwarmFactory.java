@@ -51,6 +51,9 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
     public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
+
+        _provider.initProblemInstance(config);
+
         _objectiveFunction = new TspObjectiveFunction(_provider.getCities());
 
         algorithm = new ParticleSwarmAdapter(
@@ -60,15 +63,16 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-//                Particle[] particles = generateInitialSolutions();
-//                for(int i = 0; i < source.length; i++)
-//                {
-//                    Integer[] tour = ((TspParticle)particles[i]).getTour();
-//                    for(int j = 0; j < source[i].length; j++)
-//                    {
-//                        tour[j] = (Integer)source[i][j];
-//                    }
-//                }
+                _numParticles = source.length;
+                _initialParticles = generateInitialSolutions();
+                for(int i = 0; i < source.length; i++)
+                {
+                    Integer[] tour = ((TspParticle)_initialParticles[i]).getTour();
+                    for(int j = 0; j < source[i].length; j++)
+                    {
+                        tour[j] = (Integer)source[i][j];
+                    }
+                }
             }
 
             public Object[][] solutionsToPhenotype() throws Exception
