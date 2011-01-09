@@ -17,10 +17,12 @@ import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.IProblemProvider;
+import org.seage.aal.ProblemInstance;
 import org.seage.aal.sannealing.SimulatedAnnealingAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspProblemInstance;
 import org.seage.problem.tsp.TspProblemProvider;
 
 /**
@@ -50,25 +52,23 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 //            _tspSolution = new TspSortedSolution( cities );
 //    }
 
-    public void setProblemProvider(IProblemProvider provider) throws Exception {
-        _provider = (TspProblemProvider)provider;
-    }
 
     public Class getAlgorithmClass() {
         return SimulatedAnnealingAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
-
+        final City[] cities = ((TspProblemInstance)instance).getCities();
+        
         algorithm = new SimulatedAnnealingAdapter((Solution) _tspSolution,
                 new TspObjectiveFunction(),
                 new TspMoveManager(), false, "")
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception 
             {
-                TspSolution initialSolution = new TspGreedySolution(_provider.getCities());
+                TspSolution initialSolution = new TspGreedySolution(cities);
                 Integer[] tour = initialSolution.getTour();
 
                 for(int i = 0; i < tour.length; i++)

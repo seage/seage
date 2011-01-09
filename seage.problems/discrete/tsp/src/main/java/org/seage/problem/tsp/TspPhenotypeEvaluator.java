@@ -6,6 +6,7 @@
 package org.seage.problem.tsp;
 
 import org.seage.aal.IPhenotypeEvaluator;
+import org.seage.aal.ProblemInstance;
 
 /**
  *
@@ -13,19 +14,13 @@ import org.seage.aal.IPhenotypeEvaluator;
  */
 public class TspPhenotypeEvaluator implements IPhenotypeEvaluator
 {
-    private City[] _cities;
-    public TspPhenotypeEvaluator(City[] cities)
-    {
-        _cities = cities;
-    }
-
     
     @Override
-    public double[] evaluate(Object[] phenotypeSubject) throws Exception
+    public double[] evaluate(Object[] phenotypeSubject, ProblemInstance instance) throws Exception
     {
         double tourLength = 0;
-
-        int numCities = _cities.length;
+        City[] cities = ((TspProblemInstance)instance).getCities();
+        int numCities = cities.length;
 
         for (int i = 0; i < numCities; i++)
         {				
@@ -35,10 +30,10 @@ public class TspPhenotypeEvaluator implements IPhenotypeEvaluator
 
             int ix1 = (Integer)phenotypeSubject[i];
             int ix2 = (Integer)phenotypeSubject[k];
-            double x1 = _cities[ix1].X;
-            double y1 = _cities[ix1].Y;
-            double x2 = _cities[ix2].X;
-            double y2 = _cities[ix2].Y;
+            double x1 = cities[ix1].X;
+            double y1 = cities[ix1].Y;
+            double x2 = cities[ix2].X;
+            double y2 = cities[ix2].Y;
             tourLength += Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
         }
         return new double[] {tourLength };		

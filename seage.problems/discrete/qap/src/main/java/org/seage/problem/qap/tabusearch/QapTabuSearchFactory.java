@@ -16,11 +16,11 @@ package org.seage.problem.qap.tabusearch;
 import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.IProblemProvider;
+import org.seage.aal.ProblemInstance;
 import org.seage.aal.tabusearch.TabuSearchAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.Solution;
-import org.seage.problem.qap.QapProblemProvider;
+import org.seage.problem.qap.QapProblemInstance;
 
 /**
  *
@@ -30,26 +30,16 @@ import org.seage.problem.qap.QapProblemProvider;
 @Annotations.AlgorithmName("Tabu Search")
 public class QapTabuSearchFactory implements IAlgorithmFactory
 {
-//    private DataNode _algParams;
-    private QapProblemProvider _provider;
-    
-    public void setProblemProvider(IProblemProvider provider) throws Exception {
-        _provider = (QapProblemProvider)provider;
-    }
 
     public Class getAlgorithmClass() {
         return TabuSearchAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode config) throws Exception
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
     {
-        IAlgorithmAdapter algorithm;
-
-        _provider.initProblemInstance(config);
-
-        Double[][][] facilityLocation = _provider.getFacilityLocation();
-
-        algorithm = new TabuSearchAdapter(new QapMoveManager(), new QapObjectiveFunction(facilityLocation), new QapLongTermMemory(), "" ) {
+        final Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
+        
+        IAlgorithmAdapter algorithm = new TabuSearchAdapter(new QapMoveManager(), new QapObjectiveFunction(facilityLocation), new QapLongTermMemory(), "" ) {
 
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
@@ -87,11 +77,5 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
 
         return algorithm;
     }
-
-    public DataNode getAlgorithmParameters(DataNode params) throws Exception
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 
 }

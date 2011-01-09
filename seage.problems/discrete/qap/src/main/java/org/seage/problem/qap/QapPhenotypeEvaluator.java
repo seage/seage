@@ -6,6 +6,7 @@
 package org.seage.problem.qap;
 
 import org.seage.aal.IPhenotypeEvaluator;
+import org.seage.aal.ProblemInstance;
 
 /**
  *
@@ -16,10 +17,10 @@ public class QapPhenotypeEvaluator implements IPhenotypeEvaluator
 {
     
     @Override
-    public double[] evaluate(Object[] phenotypeSubject) throws Exception
+    public double[] evaluate(Object[] phenotypeSubject, ProblemInstance instance) throws Exception
     {
         double assignPrice = 0;
-        Double[][][] facilityLocation = QapProblemProvider.getFacilityLocation();
+        Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
         int numFacilities = facilityLocation[0][0].length;
 
         double price = 0;

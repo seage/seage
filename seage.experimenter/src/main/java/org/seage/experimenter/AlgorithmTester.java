@@ -15,6 +15,7 @@ import java.util.Map;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.IProblemProvider;
+import org.seage.aal.ProblemInstance;
 import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
 
@@ -49,6 +50,19 @@ public class AlgorithmTester {
 
         testProblem(_providers.get(problemId));
     }
+    
+    public void test(String problemId, String algorithmId) throws Exception
+    {
+        System.out.println("Testing algorithms:");
+        System.out.println("-------------------");
+        
+        IProblemProvider provider = _providers.get(problemId);
+        DataNode pi = provider.getProblemInfo();
+        String problemName = pi.getValueStr("name");
+        System.out.println(problemName);
+
+        testProblem(provider, pi, pi.getDataNode("Algorithms").getDataNodeById(algorithmId));
+    }
 
     private void testProblem( IProblemProvider provider)
     {
@@ -60,22 +74,7 @@ public class AlgorithmTester {
 
             for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
             {
-                try {
-                    System.out.print("\t" + alg.getValueStr("name"));
-                    IAlgorithmFactory factory = provider.getAlgorithmFactory(alg.getValueStr("id"));
-                    
-                    DataNode config = new DummyConfigurator( alg.getValueStr("id")).prepareConfigs(pi)[0];
-                    IAlgorithmAdapter algorithm = factory.createAlgorithm(config);
-                    algorithm.solutionsFromPhenotype(provider.generateInitialSolutions(config.getDataNode("Parameters").getValueInt("numSolutions")));
-                    algorithm.startSearching(config.getDataNode("Parameters"));
-
-                    System.out.println("\t"+"OK");
-
-                } catch (Exception ex) {
-                    System.out.println("\t"+"FAIL");
-                    ex.printStackTrace();
-                    //System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
-                }
+                testProblem(provider, pi, alg);
                 //System.out.println("\t"+alg.getValueStr("id")/*+" ("+alg.getValueStr("id")+")"*/);
             }
         }
@@ -83,6 +82,36 @@ public class AlgorithmTester {
         {
             //System.err.println(problemId+": "+ex.getLocalizedMessage());
             ex.printStackTrace();
+        }
+    }
+    
+    private void testProblem(IProblemProvider provider, DataNode pi, DataNode alg)
+    {
+        String algName = "";
+        try {
+            algName = alg.getValueStr("name");
+            System.out.print("\t" + algName);
+            
+            DataNode config = new DummyConfigurator( alg.getValueStr("id")).prepareConfigs(pi)[0];
+            
+            IAlgorithmFactory factory = provider.getAlgorithmFactory(alg.getValueStr("id"));
+            
+            ProblemInstance instance = provider.initProblemInstance(config);
+            IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, config);
+            Object[][] solutions = provider.generateInitialSolutions(config.getDataNode("Parameters").getValueInt("numSolutions"), instance);
+            algorithm.solutionsFromPhenotype(solutions);
+            algorithm.startSearching(config.getDataNode("Parameters"));
+            solutions = algorithm.solutionsToPhenotype();
+            algorithm.solutionsFromPhenotype(solutions);
+            algorithm.startSearching(config.getDataNode("Parameters"));
+
+            System.out.printf("%"+(50-algName.length())+"s","OK\n");
+
+        } catch (Exception ex) {
+            System.out.printf("%"+(52-algName.length())+"s","FAIL\n");
+            //System.out.println("\t"+"FAIL");
+            ex.printStackTrace();
+            //System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
         }
     }
 }

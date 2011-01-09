@@ -14,5 +14,5 @@ import java.util.Comparator;
  */
 public interface IPhenotypeEvaluator extends Comparator<double[]>, Serializable
 {
-    double[] evaluate(Object[] phenotypeSubject) throws Exception;
+    double[] evaluate(Object[] phenotypeSubject, ProblemInstance instance) throws Exception;
 }
