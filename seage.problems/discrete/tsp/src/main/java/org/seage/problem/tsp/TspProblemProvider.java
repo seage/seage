@@ -35,7 +35,7 @@ public class TspProblemProvider extends ProblemProvider
     public ProblemInstance initProblemInstance(DataNode params) throws Exception
     {
         City[] cities;
-        DataNode info = params.getDataNode("Instance", 0);
+        DataNode info = params.getDataNode("Problem").getDataNode("Instance", 0);
         String type = info.getValueStr("type");
 
 //            if(path.equals("[circle]"))
@@ -117,7 +117,7 @@ public class TspProblemProvider extends ProblemProvider
     }
 
     public IPhenotypeEvaluator initPhenotypeEvaluator() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new TspPhenotypeEvaluator();
     }
 
 

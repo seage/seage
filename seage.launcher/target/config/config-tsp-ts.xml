@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Config  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+   xmlns='http://xml.seage.org/schema'
+   xsi:schemaLocation='http://xml.seage.org/schema config.xsd'>
+
+    <Problem id="TSP">
+	<Instance name="eil51" type="file" path="data/tsp/eil51.tsp"/>
+        <Visualizer outPath="output/eil51.png" width="800" height="600"/>
+    </Problem>
+
+    <Algorithm id="TabuSearch">
+        <Parameters
+            numIteration="1000"
+            numIterDivers="1"
+            numSolutions="1"
+            tabuListLength="30"/>
+    </Algorithm>
+
+</Config>
