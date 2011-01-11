@@ -9,7 +9,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.experimenter;
+package org.seage;
 
 import java.util.Map;
 import org.seage.aal.IAlgorithmAdapter;
@@ -18,6 +18,7 @@ import org.seage.aal.IProblemProvider;
 import org.seage.aal.ProblemInstance;
 import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
+import org.seage.experimenter.DummyConfigurator;
 
 /**
  *
@@ -98,12 +99,13 @@ public class AlgorithmTester {
             
             ProblemInstance instance = provider.initProblemInstance(config);
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, config);
-            Object[][] solutions = provider.generateInitialSolutions(config.getDataNode("Parameters").getValueInt("numSolutions"), instance);
+            DataNode algNode = config.getDataNode("Algorithm");
+            Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
             algorithm.solutionsFromPhenotype(solutions);
-            algorithm.startSearching(config.getDataNode("Parameters"));
+            algorithm.startSearching(algNode.getDataNode("Parameters"));
             solutions = algorithm.solutionsToPhenotype();
             algorithm.solutionsFromPhenotype(solutions);
-            algorithm.startSearching(config.getDataNode("Parameters"));
+            algorithm.startSearching(algNode.getDataNode("Parameters"));
 
             System.out.printf("%"+(50-algName.length())+"s","OK\n");
 

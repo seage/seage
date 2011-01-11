@@ -13,13 +13,12 @@ package org.seage.aal;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import org.seage.classutil.ClassUtil;
 import org.seage.classutil.ClassInfo;
 import org.seage.data.DataNode;
-import org.seage.data.ObjectCloner;
+
 
 /**
  * Implementation of IProblemProvider interface
@@ -28,12 +27,17 @@ import org.seage.data.ObjectCloner;
  */
 public abstract class ProblemProvider implements IProblemProvider, Serializable
 {
+    private static HashMap<String, IProblemProvider> _providers;
+    private DataNode _problemInfo;
     private HashMap<String, IAlgorithmFactory> _algFactories;
 
     @Override
     public DataNode getProblemInfo() throws Exception
     {
-        DataNode result = new DataNode("ProblemInfo");
+        if(_problemInfo != null)
+            return _problemInfo;
+
+        _problemInfo = new DataNode("ProblemInfo");
         
         Class problemClass = this.getClass();
         Annotation an = null;
@@ -46,9 +50,9 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
         if(an == null) throw new Exception("Unable to get annotation ProblemName");
         String problemName = ((Annotations.ProblemName)an).value();
 
-        result.putValue("id", problemId);
-        result.putValue("name", problemName);
-        result.putValue("class", getClass().getCanonicalName());
+        _problemInfo.putValue("id", problemId);
+        _problemInfo.putValue("name", problemName);
+        _problemInfo.putValue("class", getClass().getCanonicalName());
 
         // Instances
         DataNode instances = new DataNode("Instances");
@@ -59,7 +63,7 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
             instance.putValue("path", in);
             instances.putDataNode(instance);
         }
-        result.putDataNode(instances);
+        _problemInfo.putDataNode(instances);
 
         // Algorithms
         DataNode algorithms = new DataNode("Algorithms");
@@ -118,9 +122,9 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
                 ex.printStackTrace();
             }
         }
-        result.putDataNode(algorithms);
+        _problemInfo.putDataNode(algorithms);
 
-        return result;
+        return _problemInfo;
     }
 
     public IAlgorithmFactory getAlgorithmFactory(String algId) throws Exception
@@ -134,7 +138,10 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
 
     public static Map<String, IProblemProvider> getProblemProviders() throws Exception
     {
-        HashMap<String, IProblemProvider> result = new HashMap<String, IProblemProvider>();
+        if(_providers != null)
+            return _providers;
+        
+        _providers = new HashMap<String, IProblemProvider>();
 
         for(ClassInfo ci : ClassUtil.searchForClasses(IProblemProvider.class, "seage.problem"))
         {
@@ -142,7 +149,7 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
             {
                 IProblemProvider pp = (IProblemProvider)Class.forName(ci.getClassName()).newInstance();
 
-                result.put(pp.getProblemInfo().getValueStr("id"), pp);
+                _providers.put(pp.getProblemInfo().getValueStr("id"), pp);
             }
             catch(Exception ex)
             {
@@ -150,7 +157,7 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
             }
         }
 
-        return result;
+        return _providers;
     }
 
 }

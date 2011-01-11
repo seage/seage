@@ -38,7 +38,7 @@ public class QapProblemProvider extends ProblemProvider
 //        if(currentInstanceIx != instanceIx)
         {
 //            currentInstanceIx = instanceIx;
-            DataNode info = params.getDataNode("Instance", 0);
+            DataNode info = params.getDataNode("Problem").getDataNode("Instance", 0);
             String type = info.getValueStr("type");
 
             InputStream stream;            
