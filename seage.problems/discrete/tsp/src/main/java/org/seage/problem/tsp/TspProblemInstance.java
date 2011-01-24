@@ -14,7 +14,8 @@ import org.seage.aal.ProblemInstance;
 public class TspProblemInstance extends ProblemInstance{
 
     private City[] _cities;
-    public TspProblemInstance(City[] cities) {
+    public TspProblemInstance(String instanceName, City[] cities) {
+        super(instanceName);
         _cities = cities;
     }
     

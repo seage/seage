@@ -10,5 +10,18 @@ package org.seage.aal;
  * @author rick
  */
 public class ProblemInstance {
+    
+    protected String _instanceName;
+    
+    public ProblemInstance(String instanceName)
+    {
+        _instanceName = instanceName;
+    }
 
+    @Override
+    public String toString() {
+        return _instanceName;
+    }
+    
+    
 }

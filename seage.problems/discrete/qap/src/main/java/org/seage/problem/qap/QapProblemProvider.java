@@ -35,21 +35,20 @@ public class QapProblemProvider extends ProblemProvider
     @Override
     public ProblemInstance initProblemInstance(DataNode params) throws Exception
     {
-//        if(currentInstanceIx != instanceIx)
-        {
-//            currentInstanceIx = instanceIx;
-            DataNode info = params.getDataNode("Problem").getDataNode("Instance", 0);
-            String type = info.getValueStr("type");
+        DataNode info = params.getDataNode("Problem").getDataNode("Instance", 0);
+        String type = info.getValueStr("type");
+        String path = info.getValueStr("path");
+        String instanceName = path.substring(path.lastIndexOf('/')+1);
+        InputStream stream;            
+        if(type.equals("resource"))             
+            stream = getClass().getResourceAsStream(path);
+        else            
+            stream = new FileInputStream(path);
 
-            InputStream stream;            
-            if(type.equals("resource"))            
-                stream = getClass().getResourceAsStream(info.getValueStr("path"));
-            else
-                stream = new FileInputStream(info.getValueStr("path"));
 
-            //params.getDataNode("evaluator").putValue("cities", _cities);
-            return new QapProblemInstance(FacilityLocationProvider.readFacilityLocations(stream));
-        }
+        //params.getDataNode("evaluator").putValue("cities", _cities);
+        return new QapProblemInstance(instanceName, FacilityLocationProvider.readFacilityLocations(stream));
+        
     }
 
     @Override
