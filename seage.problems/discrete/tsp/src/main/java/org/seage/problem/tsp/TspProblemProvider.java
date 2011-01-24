@@ -37,19 +37,17 @@ public class TspProblemProvider extends ProblemProvider
         City[] cities;
         DataNode info = params.getDataNode("Problem").getDataNode("Instance", 0);
         String type = info.getValueStr("type");
+        String path = info.getValueStr("path");
+        String instanceName = path.substring(path.lastIndexOf('/')+1);
 
-//            if(path.equals("[circle]"))
-//                _cities = CityProvider.generateCircleCities(info.getValueInt("numberOfCities"));
-//            else
-//                _cities = CityProvider.readCities(info.getValueStr("path"));
         InputStream stream;
         if(type.equals("resource"))        
-            stream = getClass().getResourceAsStream(info.getValueStr("path"));
+            stream = getClass().getResourceAsStream(path);
         else
-            stream = new FileInputStream(info.getValueStr("path")); 
+            stream = new FileInputStream(path); 
 
         //params.getDataNode("evaluator").putValue("cities", _cities);
-        return new TspProblemInstance(CityProvider.readCities(stream));
+        return new TspProblemInstance(instanceName, CityProvider.readCities(stream));
  
     }
 

@@ -26,9 +26,7 @@ public class ExperimentRunner {
         DataNode config = XmlHelper.readXml(new File(configPath));
 
         String problemID = config.getDataNode("Problem").getValueStr("id");
-        String algorithmID = config.getDataNode("Algorithm").getValueStr("id");
-
-        System.out.println("Running "+algorithmID+" algorithm on "+problemID+" problem ...");
+        String algorithmID = config.getDataNode("Algorithm").getValueStr("id");    
 
         // provider and factory
         IProblemProvider provider = ProblemProvider.getProblemProviders().get(problemID);
@@ -43,6 +41,8 @@ public class ExperimentRunner {
         DataNode algNode = config.getDataNode("Algorithm");
         Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
 
+        System.out.println("Running "+algorithmID+" algorithm on "+problemID+" problem instance "+ instance.toString().toUpperCase()+" ...");
+        
         algorithm.solutionsFromPhenotype(solutions);
         algorithm.startSearching(algNode.getDataNode("Parameters"));
         solutions = algorithm.solutionsToPhenotype();
@@ -52,5 +52,10 @@ public class ExperimentRunner {
         double[] result = evaluator.evaluate(solutions[0], instance);
 
         System.out.println("Result: " + result[0]);
+        
+        System.out.print("Solution: ");
+        for(int i=0;i<solutions[0].length;i++)
+            System.out.print(solutions[0][i]+" ");
+        System.out.println();
     }
 }

@@ -14,7 +14,8 @@ import org.seage.aal.ProblemInstance;
 public class QapProblemInstance extends ProblemInstance{
     private Double[][][] _facilityLocation;
 
-    public QapProblemInstance(Double[][][] facilityLocation) {
+    public QapProblemInstance(String instanceName, Double[][][] facilityLocation) {
+        super(instanceName);
         _facilityLocation = facilityLocation;
     }
 
