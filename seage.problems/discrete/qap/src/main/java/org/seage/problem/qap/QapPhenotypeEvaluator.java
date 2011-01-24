@@ -25,7 +25,7 @@ public class QapPhenotypeEvaluator implements IPhenotypeEvaluator
 
         double price = 0;
         for(int i=0;i<facilityLocation[0][0].length;i++){
-            for(int j=0;j<facilityLocation[0][0].length;i++){
+            for(int j=0;j<facilityLocation[0][0].length;j++){
                 price+=facilityLocation[0][i][j]*facilityLocation[1][(Integer)phenotypeSubject[i]][(Integer)phenotypeSubject[j]];
             }
         }

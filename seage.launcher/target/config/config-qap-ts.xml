@@ -9,15 +9,12 @@
         <Visualizer outPath="output/tai12a.png" width="800" height="600"/>
     </Problem>
 
-    <Algorithm id="SimulatedAnnealing">
+    <Algorithm id="TabuSearch">
         <Parameters
-            annealCoeficient="0.99"
-            initSolutionType="random"
-            maxInnerIterations="2000"
-            maxTemperature="1000"
-            minTemperature="10"
-            numInnerSuccesses="20"
-            numSolutions="1"/>
+            numIteration="15000"
+            numIterDivers="1"
+            numSolutions="1"
+            tabuListLength="30"/>
     </Algorithm>
 
 </Config>
