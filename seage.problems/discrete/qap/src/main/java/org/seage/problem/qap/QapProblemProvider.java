@@ -115,7 +115,7 @@ public class QapProblemProvider extends ProblemProvider
     }
 
     public IPhenotypeEvaluator initPhenotypeEvaluator() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new QapPhenotypeEvaluator();
     }
 
 
