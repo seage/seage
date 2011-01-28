@@ -147,7 +147,7 @@ public class ParticleSwarm implements IParticleSwarm
   private Particle findMinimum(Particle[] particles)
   {
       double minEvaluation = Double.MAX_VALUE;
-      Particle minParticle = null;
+      Particle minParticle = particles[0];
 
       for(Particle particle : particles)
       {
