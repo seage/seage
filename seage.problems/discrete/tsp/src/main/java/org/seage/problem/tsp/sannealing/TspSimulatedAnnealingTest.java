@@ -26,7 +26,7 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class TspSimulatedAnnealingTest implements ISimulatedAnnealingListener
 {
     private City[] _cities;
-    private static String _dataPath = "D:\\dj38.tsp";
+    private static String _dataPath = "D:\\eil51.tsp";
 
     public static void main(String[] args)
     {

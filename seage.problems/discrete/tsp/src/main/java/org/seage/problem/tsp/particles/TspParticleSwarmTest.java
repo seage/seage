@@ -25,13 +25,14 @@ import org.seage.problem.tsp.City;
 public class TspParticleSwarmTest implements IParticleSwarmListener
 {
     private City[] _cities;
-    //private static String _dataPath = "data/eil101.tsp";
+    private static String _dataPath = "D:\\eil51.tsp";
 
     public static void main(String[] args)
     {
         try
         {
-            new TspParticleSwarmTest().run( args[0] );
+//            new TspParticleSwarmTest().run( args[0] );
+              new TspParticleSwarmTest().run( _dataPath );
         }
         catch(Exception ex)
         {
