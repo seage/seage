@@ -59,4 +59,5 @@ public interface Solution extends java.lang.Cloneable, java.io.Serializable{
      * @since 1.0
      */
     public abstract Object clone();
+    public abstract boolean equals(Solution s);
 }

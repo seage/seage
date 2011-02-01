@@ -34,7 +34,7 @@ public class QapSolution extends SolutionAdapter
     public QapSolution(Integer[] assign){
         _assign = assign;
     }
-    
+
     public Object clone()
     {
 		QapSolution copy = (QapSolution)super.clone();
@@ -58,8 +58,8 @@ public class QapSolution extends SolutionAdapter
 
         //s.append( new Double(getObjectiveValue()[0]).toString().substring(0,new Double(getObjectiveValue()[0]).toString().length()) +"\t" + hashCode());
         s.append("[");
-        for(int i=0;i<_assign.length;i++){
-            s.append(_assign[i]);
+        for(int i=_assign.length-1;i>=0;i--){
+            s.append((_assign[i]+1));
             s.append(",");
         }
         s.append("] - ");
@@ -74,5 +74,16 @@ public class QapSolution extends SolutionAdapter
         
         return s.toString();
     }   // end toString
+
+    @Override
+    public boolean equals(Solution in){
+        QapSolution q = (QapSolution)in;
+        for(int i=0;i<_assign.length;i++){
+            if(_assign[i]!=q.getAssign()[i])
+                return false;
+        }
+        return true;
+    }
+
     
 }   // end class MySolution

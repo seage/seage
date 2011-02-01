@@ -21,7 +21,7 @@ import org.seage.problem.qap.*;
 public class QapFireflyAlgorithmTest implements FireflySearchListener
 {
 
-    private static String _dataPath = "D:\\chr12a.dat";
+    private static String _dataPath = "D:\\qap\\nug12.dat";
 
     public static void main(String[] args)
     {
@@ -44,14 +44,16 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
 
         boolean _withDecreasingRandomness=false;
         double _initialIntensity=1;
-        double _initialRandomness=1;
+        double _initialRandomness=.5;
         double _finalRandomness=0.2;
-        double _absorption=0.1;
-        double _timeStep=0.5;
-        int populationSize = 5;
+        double _absorption=0.01;
+        double _timeStep=0.1;
+        int populationSize = 100;
         boolean _maximizing = false;
+        int iterationsToGo = 200;
 
         QapFireflyOperator qfo = new QapFireflyOperator(_initialIntensity,_initialRandomness,_finalRandomness,_absorption,_timeStep,_withDecreasingRandomness);
+        QapFireflyOperator._facilityLocations=facilityLocations;
         QapObjectiveFunction qof = new QapObjectiveFunction(facilityLocations);
 
         FireflySearch fs = new FireflySearch(qfo, qof);
@@ -64,7 +66,7 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
         fs.setTimeStep(_timeStep);
         fs.setPopulationCount(populationSize);
         fs.setMaximizing(_maximizing);
-        fs.setIterationsToGo(500);
+        fs.setIterationsToGo(iterationsToGo);
         System.out.println("Length of solution"+(new QapRandomSolution(facilityLocations)._assign.length));
         fs.startSolving(generateInitialSolutions(facilityLocations,populationSize));
     }
@@ -73,13 +75,12 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
     {
 
         Solution[] result = new Solution[count];
-
+        result[0]=new QapGreedyStartSolution(fl);
         for(int i=0;i<count;i++){
             result[i]=new QapRandomSolution(fl);
         }
         return result;
     }
-
 
     public void fireflySearchStarted(FireflySearchEvent e) {
         System.out.println("Firelfy Algorithm for QAP started.");

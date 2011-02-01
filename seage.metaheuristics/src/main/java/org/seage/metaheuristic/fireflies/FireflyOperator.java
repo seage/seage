@@ -10,7 +10,7 @@ package org.seage.metaheuristic.fireflies;
  * @author Administrator
  */
 public abstract class FireflyOperator {
-//        abstract public double getDistance(Solution s1, Solution s2);
+        abstract public double getDistance(Solution s1, Solution s2);
 
     /**
      * Attracts the solution s0 to solution s1 by formula:
@@ -40,4 +40,10 @@ public abstract class FireflyOperator {
         public double decreaseRandomness(FireflyParameters para, int iter){
             return (para.initialRandomness + (para.initialRandomness - para.finalRandomness)*Math.exp(-para.timeStep*iter));
         }
+
+        public abstract Solution randomSolution();
+
+    public abstract void randomSolution(Solution solution);
+
+    public abstract void modifySolution(Solution solution);
 }

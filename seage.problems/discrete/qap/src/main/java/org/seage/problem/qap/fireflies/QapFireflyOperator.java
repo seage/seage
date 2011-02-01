@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import org.seage.metaheuristic.fireflies.FireflyOperator;
 import org.seage.metaheuristic.fireflies.Solution;
+import org.seage.problem.qap.AssignmentProvider;
 
 /**
  *
@@ -22,6 +23,7 @@ public class QapFireflyOperator extends FireflyOperator {
     static double _finalRandomness;
     static double _absorption;
     static double _timeStep;
+    public static Double[][][] _facilityLocations;
 
     public QapFireflyOperator(){
         _withDecreasingRandomness=false;
@@ -41,7 +43,7 @@ public class QapFireflyOperator extends FireflyOperator {
         _timeStep=timeStep;
     }
 
-    public static double getDistance(Solution s1, Solution s2) {
+    public double getDistance(Solution s1, Solution s2) {
         // for QAP distance of two solution will be their hammings distance
         double distance = 0;
         QapSolution qaps1=(QapSolution)s1,qaps2=(QapSolution)s2;
@@ -69,10 +71,14 @@ public class QapFireflyOperator extends FireflyOperator {
     @Override
     public void attract(Solution s0, Solution s1, int iter) {
         double randomness = _finalRandomness + (_initialRandomness - _finalRandomness)*Math.exp(-iter*_timeStep);
-        double distance = QapFireflyOperator.getDistance(s0,s1);
-        double beta = _initialIntensity/(1 + _absorption*Math.pow(distance,2));
-        double alfa = randomness*(Math.random());
+        double distance = 0;
         QapSolution qaps0 = (QapSolution)s0,qaps1 = (QapSolution)s1;
+        for(int i=0;i<qaps1.getAssign().length;i++){
+            if(qaps1.getAssign()[i]!=qaps0.getAssign()[i])
+                distance++;
+        }
+        double beta = _initialIntensity/(1 + _absorption*Math.pow(distance,2));
+        double alfa = randomness*(Math.random()-.5);
         // MUTATE TWO SOLUTIONS
         /**
          * find out what s0 and s1 has common, that we want to keep in a mutant
@@ -81,40 +87,46 @@ public class QapFireflyOperator extends FireflyOperator {
         int[] pos = new int[qaps0.getAssign().length];
         int[] perm = new int[qaps0.getAssign().length];
 
-        System.out.println("\n***Attracting "+s0.getObjectiveValue()[0]+" to "+s1.getObjectiveValue()[0]);
-        System.out.println("beta = "+beta+"; alfa = "+alfa+"; (r = "+distance+"; randomness = "+randomness);;
-        for(int i=0;i<qaps0.getAssign().length;i++){
-            System.out.print(qaps0.getAssign()[i]+", ");
-        }
-        System.out.println("");
-        for(int i=0;i<qaps0.getAssign().length;i++){
-            System.out.print(qaps1.getAssign()[i]+", ");
-        }
-        System.out.println("");
+//        System.out.println("\n***Attracting "+s0.getObjectiveValue()[0]+" to "+s1.getObjectiveValue()[0]);
+//        if(Math.random()<0.05)
+//            System.out.println("beta = "+beta+"; alfa = "+alfa+"; (r = "+distance+"; randomness = "+randomness);;
+//        for(int i=0;i<qaps0.getAssign().length;i++){
+//            System.out.print(qaps0.getAssign()[i]+", ");
+//        }
+//        System.out.println("");
+//        for(int i=0;i<qaps0.getAssign().length;i++){
+//            System.out.print(qaps1.getAssign()[i]+", ");
+//        }
+//        System.out.println("");
         Integer[] newSol = new Integer[qaps0.getAssign().length];
+
+        /**
+         * set what they have the same in random order!
+         */
+        for(int i=0;i<pos.length;i++)
+            temp2.add(i);
+        Collections.shuffle(temp2);
         for(int i=0;i<qaps0.getAssign().length;i++){
-            if((int)(qaps0.getAssign()[i])==(int)(qaps1.getAssign()[i])){
+            if((int)(qaps0.getAssign()[i])==(int)(qaps1.getAssign()[i]) && Math.random()<beta){
                 newSol[i]=qaps0.getAssign()[i];
-//                System.out.print(newSol[i]);
                 pos[i]=-1;
                 perm[newSol[i]]=-1;
-//                leftNumberss.remove((int)newSol[i]);
             }
         }
         /**
          * fill out the missing fields in new solution in a random way
          */
-        for(int i=0;i<pos.length;i++)
-            temp2.add(i);
         Collections.shuffle(temp2);
         for(Integer i : temp2){
             if(pos[i]==-1)
                 continue;
             double r = Math.random();
+            // with beta probability put there gene from s1
             if(r<beta && perm[qaps1.getAssign()[i]]!=-1){
                 newSol[i]=qaps1.getAssign()[i];
                 perm[newSol[i]]=-1;
             }
+            // with alfa probability put there random gene
             else if(r<beta+alfa){
                 temp.clear();
                 for(int j=0;j<pos.length;j++){
@@ -124,12 +136,12 @@ public class QapFireflyOperator extends FireflyOperator {
                 Collections.shuffle(temp);
                 newSol[i]=temp.get(0);
                 perm[newSol[i]]=-1;
-            }
+            }// else put there original gene
             else if(perm[qaps0.getAssign()[i]]!=-1){
                 newSol[i]=qaps0.getAssign()[i];
                 perm[qaps0.getAssign()[i]]=-1;
             }
-            else{
+            else{// in case all latter genes were used, put there again the random one
                 temp.clear();
                 for(int j=0;j<pos.length;j++){
                     if(perm[j]!=-1)
@@ -143,11 +155,54 @@ public class QapFireflyOperator extends FireflyOperator {
             pos[i]=-1;
         }
 
-        for(int i=0;i<qaps0.getAssign().length;i++){
-            System.out.print(newSol[i]+", ");
+//        for(int i=0;i<qaps0.getAssign().length;i++){
+//            System.out.print(newSol[i]+", ");
+//        }
+//        System.out.println("end attraction");
+        boolean equal=true;
+        for(int i=0;i<newSol.length;i++){
+            if(qaps1.getAssign()[i]!=newSol[i])
+                equal=false;
         }
-        System.out.println("end attraction");
+        if(equal){
+            int i1 = (int)(Math.random()*newSol.length);
+            int i2=i1;
+            while(i1==i2){
+                i2 = (int)(Math.random()*newSol.length);
+            }
+            newSol[i1]=newSol[i1]+newSol[i2];
+            newSol[i2]=newSol[i1]-newSol[i2];
+            newSol[i1]=newSol[i1]-newSol[i2];
+        }
         qaps0._assign=newSol;
     }
+
+
+    @Override
+    public Solution randomSolution() {
+        return new QapSolution(AssignmentProvider.createRandomAssignment(QapFireflyOperator._facilityLocations));
+    }
+
+    @Override
+    public void randomSolution(Solution solution) {
+        QapSolution q = (QapSolution)solution;
+        q._assign=AssignmentProvider.createRandomAssignment(_facilityLocations);
+    }
+
+    @Override
+    public void modifySolution(Solution solution) {
+        QapSolution q = (QapSolution)solution;
+        int i1 = (int)(Math.random()*q.getAssign().length);
+        int i2=i1;
+        while(i1==i2){
+            i2 = (int)(Math.random()*q.getAssign().length);
+        }
+        q.getAssign()[i1]=q.getAssign()[i1]+q.getAssign()[i2];
+        q.getAssign()[i2]=q.getAssign()[i1]-q.getAssign()[i2];
+        q.getAssign()[i1]=q.getAssign()[i1]-q.getAssign()[i2];
+    }
+
+
+
 
 }

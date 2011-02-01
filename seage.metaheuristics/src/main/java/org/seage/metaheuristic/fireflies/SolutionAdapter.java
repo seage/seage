@@ -53,12 +53,14 @@ import java.util.*;
  * @version 1.0b
  * @since 1.0b
  */
-public class SolutionAdapter implements Solution
+public abstract class SolutionAdapter implements Solution
 {
 
     /** Objective function value. */
     private double[] objectiveValue;
     
+
+    public abstract boolean equals(Solution s);
 
     /**
      * If the value has been set for this solution, then the value will
