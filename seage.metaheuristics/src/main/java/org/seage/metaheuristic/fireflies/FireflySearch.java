@@ -162,13 +162,19 @@ public class FireflySearch extends FireflySearchBase{
                 System.out.println("---------------------------\n"+i+"-th ITERATION");
                 _currentIteration++;
 
-
                 evaluatePopulation(_population);
+                double d = 0;
+                for(int s1=0;s1<_population.getSize()-1;s1++){
+                    for(int s2=s1+1;s2<_population.getSize();s2++){
+                        d=d+_operator.getDistance(_population.getSolutions()[s1],_population.getSolutions()[s2]);
+                    }
+                }
+                System.out.println("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
                 //_population.removeTwins();
 
-                for(int j=0;j<_population.getSize();j++){
-                    System.out.println("\nVypis:"+_population.getSolutions()[j].toString()+" - "+_population.getSolutions()[j].getObjectiveValue()[0]);
-                }
+//                for(int j=0;j<_population.getSize();j++){
+//                    System.out.println("\nVypis:"+_population.getSolutions()[j].toString()+" - "+_population.getSolutions()[j].getObjectiveValue()[0]);
+//                }
 
                 if (_bestSolution == null || _solutionComparator.compare(_population.getBestSolution(), _bestSolution) == -1)
                 {
@@ -187,9 +193,9 @@ public class FireflySearch extends FireflySearchBase{
                 //prevFitness = currFitness;
 
                 Collections.shuffle(_population.getList());
-                for(int j=0;j<_population.getSize();j++){
-                    System.out.println("\nVypis:"+_population.getSolutions()[j].toString()+" - "+_population.getSolutions()[j].getObjectiveValue()[0]);
-                }
+//                for(int j=0;j<_population.getSize();j++){
+//                    System.out.println("\nVypis:"+_population.getSolutions()[j].toString()+" - "+_population.getSolutions()[j].getObjectiveValue()[0]);
+//                }
                 workPopulation.removeAll();
                 workPopulation.mergePopulation(_population);
                 for(int s1=0;s1<_population.getSize();s1++){
@@ -197,19 +203,49 @@ public class FireflySearch extends FireflySearchBase{
                         if(_maximizing){
                             if(workPopulation.getSolution(s1).getObjectiveValue()[0]
                                 < workPopulation.getSolution(s2).getObjectiveValue()[0]){
-                                _operator.attract(_population.getSolution(s1),workPopulation.getSolution(s2),_currentIteration);
+                                _operator.attract(_population.getSolutions()[s1],workPopulation.getSolutions()[s2],_currentIteration);
+
+                                if(_population.getSolutions()[s1].equals(workPopulation.getSolutions()[s2])){
+//                                    System.out.println("EQUALS\nOLD:"+_population.getSolutions()[s1].toString());
+//                                    _operator.randomSolution(_population.getSolutions()[s1]);
+                                    _operator.modifySolution(_population.getSolutions()[s1]);
+//                                    System.out.println("NEW:"+_population.getSolutions()[s1].toString());
+                                }
+//                                else
+//                                    System.out.println("Not equals.");
                             }
                         }
                          else{
                             if(workPopulation.getSolution(s1).getObjectiveValue()[0]
                                 > workPopulation.getSolution(s2).getObjectiveValue()[0]){
-                                _operator.attract(_population.getSolution(s1),workPopulation.getSolution(s2),_currentIteration);
+                                _operator.attract(_population.getSolutions()[s1],workPopulation.getSolutions()[s2],_currentIteration);
+
+                                if(_population.getSolutions()[s1].equals(workPopulation.getSolutions()[s2])){
+//                                    System.out.println("EQUALS\nOLD:"+_population.getSolutions()[s1].toString());
+                                    _operator.randomSolution(_population.getSolutions()[s1]);
+//                                    System.out.println("NEW:"+_population.getSolutions()[s1].toString());
+                                }
+//                                else
+//                                    System.out.println("Not equals.");
                             }
                         }
+                        //temporary solution for not getting in the same solutions
+
                     }
                 }
+
+                //temporary solution for not getting in the same solutions
+//                for(int s1=0;s1<_population.getSize();s1++){
+//                    for(int s2=0;s2<_population.getSize();s2++){
+//                        if(_population.getSolutions()[s1].equals(_population.getSolutions()[s2])){
+//                            _population.getSolutions()[s2]=_operator.randomSolution();
+//                        }
+//                    }
+//                }
             }
+
             evaluatePopulation(_population);
+            System.out.println(_population.getBestSolution().toString());
             fireFireflySearchStopped();
         }
         catch (Exception ex)
