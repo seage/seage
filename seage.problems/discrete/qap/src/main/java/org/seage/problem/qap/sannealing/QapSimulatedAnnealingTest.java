@@ -25,7 +25,7 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class QapSimulatedAnnealingTest implements ISimulatedAnnealingListener
 {
     private Double[][][] _facilityLocation;
-    private static String _dataPath = "D:/tai12a.dat";
+    private static String _dataPath = "D:\\qap\\nug12.dat";
 
     public static void main(String[] args)
     {

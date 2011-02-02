@@ -25,7 +25,7 @@ import org.seage.metaheuristic.tabusearch.TabuSearchListener;
 public class QapTabuSearchTest implements TabuSearchListener
 {
 
-    private static String _dataPath = "D:\\tai17a.dat";
+    private static String _dataPath = "D:\\qap\\nug12.dat";
 
     public static void main(String[] args)
     {

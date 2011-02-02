@@ -9,25 +9,26 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.problem.qap.fireflies;
+package org.seage.problem.qap.EFA;
 
-import org.seage.metaheuristic.fireflies.*;
+import org.seage.problem.qap.EFA.*;
+import org.seage.metaheuristic.EFA.*;
 import org.seage.problem.qap.*;
 
 /**
  *
  * @author Richard Malek
  */
-public class QapFireflyAlgorithmTest implements FireflySearchListener
+public class QapEFAAlgorithmTest implements EFASearchListener
 {
-
-    private static String _dataPath = "D:\\qap\\nug12.dat";
+    
+    private static String _dataPath = "D:\\qap\\lipa20b.dat";
 
     public static void main(String[] args)
     {
         try
         {
-            new QapFireflyAlgorithmTest().run(_dataPath);
+            new QapEFAAlgorithmTest().run(_dataPath);
         }
         catch(Exception ex)
         {
@@ -42,23 +43,25 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
         System.out.println("Loading an instance from path: " + path);
         System.out.println("Number of facilities/location: " + facilityLocations.length+","+facilityLocations[0].length+","+facilityLocations[0][0].length);
 
-        boolean _withDecreasingRandomness=false;
+        boolean _withDecreasingRandomness=true;
+        boolean _withHillClimbingBestSolution=true;
         double _initialIntensity=1;
-        double _initialRandomness=.7;
-        double _finalRandomness=0.2;
-        double _absorption=0.01;
+        double _initialRandomness=0.7;
+        double _finalRandomness=0.1;
+        double _absorption=0.001;
         double _timeStep=0.1;
-        int populationSize = 200;
+        int populationSize = 1000;
         boolean _maximizing = false;
-        int iterationsToGo = 200;
+        int iterationsToGo = 100;
 
-        QapFireflyOperator qfo = new QapFireflyOperator(_initialIntensity,_initialRandomness,_finalRandomness,_absorption,_timeStep,_withDecreasingRandomness);
-        QapFireflyOperator._facilityLocations=facilityLocations;
+        QapEFAOperator qfo = new QapEFAOperator(_initialIntensity,_initialRandomness,_finalRandomness,_absorption,_timeStep,_withDecreasingRandomness);
+        QapEFAOperator._facilityLocations=facilityLocations;
         QapObjectiveFunction qof = new QapObjectiveFunction(facilityLocations);
 
-        FireflySearch fs = new FireflySearch(qfo, qof);
-        fs.addFireflySearchListener(this);
+        EFASearch fs = new EFASearch(qfo, qof);
+        fs.addEFASearchListener(this);
         fs.setWithDecreasingRandomness(_withDecreasingRandomness);
+        fs.setWithHillClimbingBestSolution(_withHillClimbingBestSolution);
         fs.setInitialIntensity(_initialIntensity);
         fs.setInitialRandomness(_initialRandomness);
         fs.setFinalRandomness(_finalRandomness);
@@ -73,45 +76,44 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
 
     private Solution[] generateInitialSolutions(Double[][][] fl, int count) throws Exception
     {
-
         Solution[] result = new Solution[count];
-        result[0]=new QapGreedyStartSolution(fl);
+//        result[0]=new QapGreedyStartSolution(fl);
         for(int i=0;i<count;i++){
             result[i]=new QapRandomSolution(fl);
         }
         return result;
     }
 
-    public void fireflySearchStarted(FireflySearchEvent e) {
-        System.out.println("Firelfy Algorithm for QAP started.");
+    public void EFASearchStarted(EFASearchEvent e) {
+        System.out.println("EFA Algorithm for QAP started.");
     }
 
-    public void fireflySearchStopped(FireflySearchEvent e) {
-        System.out.println("Firefly Algorithm for QAP stopped.");
+    public void EFASearchStopped(EFASearchEvent e) {
+        System.out.println("EFA Algorithm for QAP stopped.");
     }
 
-    public void newBestSolutionFound(FireflySearchEvent e) {
-        System.out.println("New best: " + e.getFireflySearch().getBestSolution().getObjectiveValue()[0]);
+    public void newBestSolutionFound(EFASearchEvent e) {
+        System.out.println("New best: " + e.getEFASearch().getBestSolution().getObjectiveValue()[0]);
     }
 
-    public void noChangeInValueIterationMade(FireflySearchEvent e) {
-        System.out.println("Firefly Algorithm for QAP - no change in value iteration made.");
+    public void noChangeInValueIterationMade(EFASearchEvent e) {
+        System.out.println("EFA Algorithm for QAP - no change in value iteration made.");
     }
 
-    public void newCurrentSolutionFound(FireflySearchEvent e) {
-        System.out.println("Firefly Algorithm for QAP - new current solution found.");
+    public void newCurrentSolutionFound(EFASearchEvent e) {
+        System.out.println("EFA Algorithm for QAP - new current solution found.");
     }
 
-    public void unimprovingMoveMade(FireflySearchEvent e) {
-        System.out.println("Firefly Algorithm for QAP - unimproving move made.");
+    public void unimprovingMoveMade(EFASearchEvent e) {
+        System.out.println("EFA Algorithm for QAP - unimproving move made.");
     }
 
-    public void improvingMoveMade(FireflySearchEvent e) {
-        System.out.println("Firefly Algorithm for QAP - improving move made.");
+    public void improvingMoveMade(EFASearchEvent e) {
+        System.out.println("EFA Algorithm for QAP - improving move made.");
     }
 
-    public void noChangeInValueMoveMade(FireflySearchEvent e) {
-        System.out.println("Firefly Algorithm for QAP - no change in value made.");
+    public void noChangeInValueMoveMade(EFASearchEvent e) {
+        System.out.println("EFA Algorithm for QAP - no change in value made.");
     }
     
     
