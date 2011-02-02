@@ -21,7 +21,7 @@ import org.seage.problem.qap.*;
 public class QapFireflyAlgorithmTest implements FireflySearchListener
 {
 
-    private static String _dataPath = "D:\\qap\\nug12.dat";
+    private static String _dataPath = "data/tai12a.dat";
 
     public static void main(String[] args)
     {
