@@ -22,7 +22,7 @@ import org.seage.problem.qap.*;
 public class QapEFAAlgorithmTest implements EFASearchListener
 {
     
-    private static String _dataPath = "D:\\qap\\lipa20b.dat";
+    private static String _dataPath = "data/tai12a.dat";
 
     public static void main(String[] args)
     {
