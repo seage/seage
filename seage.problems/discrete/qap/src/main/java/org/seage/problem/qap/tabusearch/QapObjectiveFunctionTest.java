@@ -26,7 +26,7 @@ import org.seage.metaheuristic.tabusearch.TabuSearchListener;
 public class QapObjectiveFunctionTest implements TabuSearchListener
 {
 
-    private static String _dataPath = "D:\\esc16i.dat";
+    private static String _dataPath = "data/tai12a.dat";
 //    private static Integer[] assign = {0,1,5,3,7,2,6,4,13,12,15,14,8,10,9,11};
 
     private static Integer[] assign = {1, 3, 2, 4, 6, 8, 7, 8, 6, 5, 14 ,13, 16, 15, 9, 11, 10, 12};
