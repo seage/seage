@@ -35,7 +35,10 @@ public class FacilityLocationProvider
             res3 = new Double[n][n];
             
             // read first matrix
-            for(int i=0;i<n;i++)
+            boolean end=false;
+//            for(int i=0;i<n;i++)
+            int row=0,col=0,last=0;
+            while(!end)
             {
                 line = scanner.nextLine();
                 if(line.trim().isEmpty()){
@@ -45,28 +48,45 @@ public class FacilityLocationProvider
                     break;
                 System.out.println(line);
                 Double[] dataLine = readLine( line );
-                res1[i] = dataLine;
+                for(int i=0;i<dataLine.length;i++){
+                    res1[row][col+i] = dataLine[i];
+                }
+                col+=dataLine.length;
+                if(col>=n-1){
+                    row++;
+                    col=0;
+                }
+                if(row==n)
+                    end=true;
             }
 
             /* read second matrix (optional)
              * if no matrix given, unit matrix is created
              */
-            for(int i=0;i<n;i++)
+            end=false;
+            row=0;
+            col=0;
+            last=0;
+            while(!end)
             {
-                if(scanner.hasNext()){
+                line = scanner.nextLine();
+                if(line.trim().isEmpty()){
                     line = scanner.nextLine();
-                    if(line.trim().isEmpty()){
-                        line = scanner.nextLine();
-                    }
-                    System.out.println(line);
-                    Double[] dataLine = readLine( line );
-                    res2[i] = dataLine;
                 }
-                else{
-                    for(int j=0;j<n;j++){
-                        res2[i][j]=1.0;
-                    }
+                if(line.equals("EOF"))
+                    break;
+                System.out.println(line);
+                Double[] dataLine = readLine( line );
+                for(int i=0;i<dataLine.length;i++){
+                    res2[row][col+i] = dataLine[i];
                 }
+                col+=dataLine.length;
+                if(col>=n-1){
+                    row++;
+                    col=0;
+                }
+                if(row==n)
+                    end=true;
             }
 
             /* read third matrix (optional)
@@ -75,23 +95,44 @@ public class FacilityLocationProvider
             if(scanner.hasNext())
                 scanner.nextLine();
 
-            for(int i=0;i<n;i++)
-            {
-                if(scanner.hasNext()){
+            end=false;
+            row=0;
+            col=0;
+            last=0;
+            if(scanner.hasNext()){
+                while(!end)
+                {
                     line = scanner.nextLine();
                     if(line.trim().isEmpty()){
-                        i--;
-                        continue;
+                        line = scanner.nextLine();
                     }
+                    if(line.equals("EOF"))
+                        break;
+                    System.out.println(line);
                     Double[] dataLine = readLine( line );
-                    res3[i] = dataLine;
+                    for(int i=0;i<dataLine.length;i++){
+                        res2[row][col+i] = dataLine[i];
+                    }
+                    col+=dataLine.length;
+                    if(col>=n-1){
+                        row++;
+                        col=0;
+                    }
+                    if(row==n)
+                        end=true;
                 }
-                else{
+            }
+            else{
+                for(int i=0;i<n;i++)
+                {
                     for(int j=0;j<n;j++){
                         res3[i][j]=0.0;
                     }
                 }
             }
+
+
+
         }
         finally {
           //ensure the underlying stream is always closed

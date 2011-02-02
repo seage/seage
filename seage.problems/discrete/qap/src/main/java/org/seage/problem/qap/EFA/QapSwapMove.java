@@ -9,9 +9,10 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.problem.qap.fireflies;
+package org.seage.problem.qap.EFA;
 
-import org.seage.metaheuristic.fireflies.*;
+import org.seage.problem.qap.EFA.*;
+import org.seage.metaheuristic.EFA.*;
 
 /**
  *
