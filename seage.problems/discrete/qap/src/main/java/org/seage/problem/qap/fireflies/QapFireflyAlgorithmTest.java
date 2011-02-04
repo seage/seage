@@ -21,7 +21,8 @@ import org.seage.problem.qap.*;
 public class QapFireflyAlgorithmTest implements FireflySearchListener
 {
 
-    private static String _dataPath = "data/tai12a.dat";
+//    private static String _dataPath = "data/tai12a.dat";
+    private static String _dataPath = "D:\\qap\\bur26a.dat";
 
     public static void main(String[] args)
     {
@@ -48,9 +49,9 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
         double _finalRandomness=0.2;
         double _absorption=0.01;
         double _timeStep=0.1;
-        int populationSize = 200;
+        int populationSize = 100;
         boolean _maximizing = false;
-        int iterationsToGo = 200;
+        int iterationsToGo = 100;
 
         QapFireflyOperator qfo = new QapFireflyOperator(_initialIntensity,_initialRandomness,_finalRandomness,_absorption,_timeStep,_withDecreasingRandomness);
         QapFireflyOperator._facilityLocations=facilityLocations;

@@ -21,7 +21,7 @@ import org.seage.metaheuristic.EFA.*;
  */
 public class QapObjectiveFunction implements ObjectiveFunction
 {
-
+    public int counter=0;
     public double[][][] _matrix;
 
     public QapObjectiveFunction(Double[][][] facilityLocation)
@@ -43,6 +43,7 @@ public class QapObjectiveFunction implements ObjectiveFunction
     @Override
     public double[] evaluate(Solution solution) throws Exception
     {
+        incrementCounter();
         try
         {
             Integer[] assign = ((QapSolution) solution)._assign;
@@ -119,6 +120,14 @@ public class QapObjectiveFunction implements ObjectiveFunction
 
     public void ObjectiveFunction(Solution soln) {
         throw new UnsupportedOperationException("Not supported yet. - ObjectiveFunction in QapObjectiveFuntion");
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void incrementCounter() {
+        counter++;
     }
 }   // end class MyObjectiveFunction
 

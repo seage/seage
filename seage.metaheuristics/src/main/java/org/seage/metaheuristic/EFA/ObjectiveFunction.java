@@ -27,7 +27,6 @@ import org.seage.metaheuristic.EFA.*;
 public interface ObjectiveFunction extends java.io.Serializable
 {    
 
-
     public void ObjectiveFunction(Solution soln);
     /**
      * The {@link TabuSearch} expects an objective/
@@ -81,6 +80,7 @@ public interface ObjectiveFunction extends java.io.Serializable
 
     public abstract double[] evaluate( Solution soln ) throws Exception;
     
-    
+    public int getCounter();
+    public void incrementCounter();
 }   // end class ObjectiveFunction
 
