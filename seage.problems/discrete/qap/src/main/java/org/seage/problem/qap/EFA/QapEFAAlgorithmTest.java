@@ -22,7 +22,8 @@ import org.seage.problem.qap.*;
 public class QapEFAAlgorithmTest implements EFASearchListener
 {
     
-    private static String _dataPath = "data/tai12a.dat";
+//    private static String _dataPath = "data/tai12a.dat";
+    private static String _dataPath = "D:\\qap\\bur26a.dat";
 
     public static void main(String[] args)
     {
@@ -50,7 +51,7 @@ public class QapEFAAlgorithmTest implements EFASearchListener
         double _finalRandomness=0.1;
         double _absorption=0.001;
         double _timeStep=0.1;
-        int populationSize = 1000;
+        int populationSize = 100;
         boolean _maximizing = false;
         int iterationsToGo = 100;
 

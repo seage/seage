@@ -9,34 +9,24 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.problem.qap.tabusearch;
+package org.seage.problem.tsp.EFA;
 
-import org.seage.problem.qap.FacilityLocationProvider;
-import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
-import org.seage.metaheuristic.tabusearch.SimpleTabuList;
-import org.seage.metaheuristic.tabusearch.Solution;
-import org.seage.metaheuristic.tabusearch.TabuSearch;
-import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
-import org.seage.metaheuristic.tabusearch.TabuSearchListener;
+import org.seage.problem.tsp.EFA.*;
+import org.seage.problem.tsp.CityProvider;
+import org.seage.problem.tsp.City;
+import org.seage.metaheuristic.EFA.*;
 
 /**
  *
- * @author Karel Durkota
+ * @author Richard Malek
  */
-public class QapObjectiveFunctionTest implements TabuSearchListener
+public class TspEFASearchTest implements EFASearchListener
 {
-
-//    private static String _dataPath = "data/tai12a.dat";
-    private static String _dataPath = "D:\\qap\\bur26a.dat";
-//    private static Integer[] assign = {0,1,5,3,7,2,6,4,13,12,15,14,8,10,9,11};
-
-    private static Integer[] assign = {1, 3, 2, 4, 6, 8, 7, 8, 6, 5, 14 ,13, 16, 15, 9, 11, 10, 12};
-
     public static void main(String[] args)
     {
         try
         {
-            new QapTabuSearchTest().run( _dataPath);
+            new TspEFASearchTest().run(args[0]);
         }
         catch(Exception ex)
         {
@@ -46,12 +36,15 @@ public class QapObjectiveFunctionTest implements TabuSearchListener
 
     public void run(String path) throws Exception
     {
-        Double[][][] facilityLocation = FacilityLocationProvider.readFacilityLocations(path);
-        System.out.println("Loading an instance from path: " + path);
-        System.out.println("Number of cities: " + facilityLocation[0].length);
+        City[] cities = CityProvider.readCities(path);
+        System.out.println("Loading cities from path: " + path);
+        System.out.println("Number of cities: " + cities.length);
 
-        QapObjectiveFunction qof = new QapObjectiveFunction(facilityLocation);
-        System.out.println(qof.evaluate(new QapSolution(assign), null)[0]);
+        EFASearch ts = new EFASearch(new TspObjectiveFunction(cities),);
+
+        ts.addTabuSearchListener(this);
+        ts.setIterationsToGo(10000);
+        ts.startSolving();
     }
 
     public void newBestSolutionFound(TabuSearchEvent e) {

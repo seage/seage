@@ -30,6 +30,8 @@ public class Launcher {
      */
     public static void main(String[] args)
     {
+        args = new String[1];
+        args[0]="-list";
         try
         {
             new Launcher().run(args);
