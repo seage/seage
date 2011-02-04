@@ -88,7 +88,7 @@ public class AlgorithmAgent extends AelAgent
         DataNode factoryParams = params.getDataNode("algorithm");
         factoryParams.putValue("agentName", getName());
         IAlgorithmFactory factory = (IAlgorithmFactory)Class.forName(factoryParams.getValueStr("factoryClass")).newInstance();
-        _algorithm = factory.createAlgorithm();
+        _algorithm = factory.createAlgorithm(null, null);
 
        
 

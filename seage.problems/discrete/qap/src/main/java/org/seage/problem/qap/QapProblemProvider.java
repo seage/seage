@@ -14,10 +14,12 @@
 
 package org.seage.problem.qap;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Random;
 import org.seage.aal.Annotations;
-import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IPhenotypeEvaluator;
+import org.seage.aal.ProblemInstance;
 import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
 
@@ -29,38 +31,37 @@ import org.seage.data.DataNode;
 @Annotations.ProblemName("Quadratic Assignment Problem")
 public class QapProblemProvider extends ProblemProvider
 {
-    //private static City[] _cities;
-
-    private static Double[][][] _facilityLocation;
-    private int currentInstanceIx = -1;
 
     @Override
-    public void initProblemInstance(DataNode params) throws Exception
+    public ProblemInstance initProblemInstance(DataNode params) throws Exception
     {
-//        if(currentInstanceIx != instanceIx)
-//        {
-//            currentInstanceIx = instanceIx;
-//            DataNode info = params.getDataNode("instance", instanceIx);
-//            String path = info.getValueStr("path");
-//
-//            _facilityLocation = FacilityLocationProvider.readFacilityLocations(info.getValueStr("path"));
-//
-//
-//            //params.getDataNode("evaluator").putValue("cities", _cities);
-//
-//        }
+        DataNode info = params.getDataNode("Problem").getDataNode("Instance", 0);
+        String type = info.getValueStr("type");
+        String path = info.getValueStr("path");
+        String instanceName = path.substring(path.lastIndexOf('/')+1);
+        InputStream stream;            
+        if(type.equals("resource"))             
+            stream = getClass().getResourceAsStream(path);
+        else            
+            stream = new FileInputStream(path);
+
+
+        //params.getDataNode("evaluator").putValue("cities", _cities);
+        return new QapProblemInstance(instanceName, FacilityLocationProvider.readFacilityLocations(stream));
+        
     }
 
     @Override
-    public Object[][] generateInitialSolutions(int numSolutions) throws Exception
+    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstance instance) throws Exception
     {
         int numAssigns = numSolutions;
-        int assignPrice = _facilityLocation.length;
+        Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
+        int assignPrice = facilityLocation.length;
         Object[][] result = new Object[numAssigns][];
 
 	Random r = new Random();
 
-        result[0] = AssignmentProvider.createGreedyAssignment(_facilityLocation);
+        result[0] = AssignmentProvider.createGreedyAssignment(facilityLocation);
         
         for(int k=1;k<numAssigns;k++)
         {
@@ -101,7 +102,7 @@ public class QapProblemProvider extends ProblemProvider
 //    }
 
     @Override
-    public void visualizeSolution(Object[] solution) throws Exception
+    public void visualizeSolution(Object[] solution, ProblemInstance instance) throws Exception
     {
         Integer[] assign = (Integer[])solution;
 
@@ -113,17 +114,8 @@ public class QapProblemProvider extends ProblemProvider
 //        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
     }
 
-    public static Double[][][] getFacilityLocation()
-    {
-        return _facilityLocation;
-    }
-
-    public IAlgorithmAdapter initAlgorithm(DataNode params) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     public IPhenotypeEvaluator initPhenotypeEvaluator() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new QapPhenotypeEvaluator();
     }
 
 

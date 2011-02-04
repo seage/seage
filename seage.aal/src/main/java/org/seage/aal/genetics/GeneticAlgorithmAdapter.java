@@ -25,7 +25,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
  * GeneticSearchAdapter class
  */
 @AlgorithmParameters({
-    @Parameter(name="iterationCount", min=0, max=1000000, init=1000),
+    @Parameter(name="iterationCount", min=0, max=1000000, init=100),
     @Parameter(name="numSolutions", min=1, max=1000000, init=100),
     @Parameter(name="crossLengthPct", min=0, max=100, init=10),
     @Parameter(name="mutateLengthPct", min=0, max=100, init=10),
@@ -220,7 +220,7 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
                 Subject subject = e.getGeneticSearch().getBestSubject();  // e.getGeneticSearch().getSubjects().length - 1
                 _bestEverSolution = (Subject)e.getGeneticSearch().getBestSubject().clone();
 
-                System.out.println(_searchID+"  "+subject.getFitness()[0] + " \t" + subject.hashCode() + "\t" + subject.toString());
+                //System.out.println(_searchID+"  "+subject.getFitness()[0] + " \t" + subject.hashCode() + "\t" + subject.toString());
 //                DataNode log = new DataNode("newSolution");
 //                log.putValue("time", System.currentTimeMillis());
 //                log.putValue("numIter", e.getGeneticSearch().getCurrentIteration());

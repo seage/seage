@@ -11,6 +11,7 @@
  */
 package org.seage.problem.tsp.grasp;
 
+import java.io.FileInputStream;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.City;
 import org.seage.metaheuristic.grasp.HillClimber;
@@ -54,7 +55,7 @@ public class TspHillClimberTest {
      * @param iteration - Number of iteration algorthm
      */
     public void run(String path, String switcher, int restarts, int iteration) throws Exception {
-        _cities = CityProvider.readCities(path);
+        _cities = CityProvider.readCities(new FileInputStream(path));
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 

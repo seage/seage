@@ -17,7 +17,7 @@ import org.seage.aal.IProblemProvider;
 import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
-import org.seage.experimenter.AlgorithmTester;
+import org.seage.experimenter.ExperimentRunner;
 
 /**
  *
@@ -44,35 +44,44 @@ public class Launcher {
 
     private void run(String[] args) throws Exception
     {
-        if(args.length == 0)
-        {
-            usage();
+        if(args.length == 0){
+            usage();        
             return;
         }
-        if(args[0].equals("-list"))
-        {
+        
+        if(args[0].equals("-list")){        
             list();
             return;
         }
-        if(args[0].equals("-test"))
-        {
-            if(args.length == 1)
-            {
+        
+        if(args[0].equals("-test")){        
+            if(args.length == 1)            
                 new AlgorithmTester().test();
-                return;
-            }
-            if(args.length==3 && args[1].equals("-problem"))
-            {
-                new AlgorithmTester().test(args[2]);
-                return;
-            }
-            usage();
+            else            
+            if(args.length==2 )            
+                new AlgorithmTester().test(args[1]);
+            else            
+            if(args.length==3 )            
+                new AlgorithmTester().test(args[1], args[2]);
+            else            
+                usage();
+            return;
         }
-        if(args[0].equals("-agents"))
-        {
+        
+        if(args[0].equals("-run")){
+            if(args.length==3 && args[1].equals("-config") )            
+                new ExperimentRunner().run(args[2]);                
+            else
+                usage();
+            return;
+        }
+        
+        if(args[0].equals("-agents")){        
             agents(args[1]);
             return;
         }
+        
+        usage();
     }
 
     private void usage()
@@ -82,7 +91,8 @@ public class Launcher {
         System.out.println("java -jar seage.launcher.jar {params}\n");
         System.out.println("params:");
         System.out.println("\t-list");
-        System.out.println("\t-test [-problem problem-id]");
+        System.out.println("\t-test [problem-id [algorithm-id]]");
+        System.out.println("\t-run -config path-to-config");
         System.out.println("\t-agents path-to-agent-config-xml");
     }
 
@@ -120,7 +130,7 @@ public class Launcher {
                 }
                 System.out.println("\tinstances:");
                 for(DataNode inst : pi.getDataNode("Instances").getDataNodes())
-                    System.out.println("\t\t"+inst.getValueStr("resource")/*+" ("+alg.getValueStr("id")+")"*/);
+                    System.out.println("\t\t"+inst.getValueStr("type")+"="+inst.getValueStr("path")/*+" ("+alg.getValueStr("id")+")"*/);
 
                 System.out.println();
             }
@@ -128,7 +138,7 @@ public class Launcher {
             {
                 System.err.println(problemId+": "+ex.getMessage());
             }
-            XmlHelper.writeXml(problems, "problems.xml");
+            //XmlHelper.writeXml(problems, "problems.xml");
         }
     }
 
