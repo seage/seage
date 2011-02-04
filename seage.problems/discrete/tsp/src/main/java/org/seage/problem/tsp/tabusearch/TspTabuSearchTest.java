@@ -11,6 +11,7 @@
  */
 package org.seage.problem.tsp.tabusearch;
 
+import java.io.FileInputStream;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.City;
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
@@ -39,7 +40,7 @@ public class TspTabuSearchTest implements TabuSearchListener
 
     public void run(String path) throws Exception
     {
-        City[] cities = CityProvider.readCities(path);
+        City[] cities = CityProvider.readCities(new FileInputStream(path));
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + cities.length);
 

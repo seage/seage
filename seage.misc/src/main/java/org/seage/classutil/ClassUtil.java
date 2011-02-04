@@ -104,7 +104,7 @@ public class ClassUtil
         for(JarEntry entry : Collections.list(jarFile.entries())){
             String name = entry.getName();            
             if(name.contains(instanceDir) && !entry.isDirectory())
-                result.add(name);
+                result.add("/"+name);
         }
 
         return result.toArray(new String[0]);

@@ -11,6 +11,7 @@
  */
 package org.seage.problem.qap.sannealing;
 
+import java.io.FileInputStream;
 import org.seage.problem.qap.FacilityLocationProvider;
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealingListener;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
@@ -25,8 +26,7 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class QapSimulatedAnnealingTest implements ISimulatedAnnealingListener
 {
     private Double[][][] _facilityLocation;
-//    private static String _dataPath = "data/tai12a.dat";
-    private static String _dataPath = "D:\\qap\\bur26a.dat";
+    private static String _dataPath = "data/tai12a.dat";
 
     public static void main(String[] args)
     {
@@ -43,16 +43,16 @@ public class QapSimulatedAnnealingTest implements ISimulatedAnnealingListener
 
     public void run(String path) throws Exception
     {
-        _facilityLocation = FacilityLocationProvider.readFacilityLocations( path );
+        _facilityLocation = FacilityLocationProvider.readFacilityLocations( new FileInputStream(path)  );
         System.out.println("Loading Facilities & Locations from path: " + path);
         System.out.println("Number of facilities and locations: " + _facilityLocation.length);
 
         SimulatedAnnealing sa = new SimulatedAnnealing( new QapObjectiveFunction() , new QapMoveManager() );
 
-        sa.setMaximalTemperature( 200 );
+        sa.setMaximalTemperature( 2000 );
         sa.setMinimalTemperature( 0.1 );
         sa.setAnnealingCoefficient( 0.99 );
-        sa.setMaximalIterationCount(1500);
+        sa.setMaximalIterationCount(2500);
         sa.setMaximalSuccessIterationCount(100);
 
         sa.addSimulatedAnnealingListener( this );

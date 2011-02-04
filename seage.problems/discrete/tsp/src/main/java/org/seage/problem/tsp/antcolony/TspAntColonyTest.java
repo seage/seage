@@ -11,6 +11,7 @@
  */
 package org.seage.problem.tsp.antcolony;
 
+import java.io.FileInputStream;
 import org.seage.metaheuristic.antcolony.*;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
@@ -42,7 +43,7 @@ public class TspAntColonyTest {
     }
 
     public void run(String path) throws Exception {
-        City[] cities = CityProvider.readCities(path);
+        City[] cities = CityProvider.readCities(new FileInputStream(path));
         int iterations = 100, numAnts = 100;
         double defaultPheromone = 0.0001, localEvaporation = 0.95, qantumPheromone = 10;
         double alpha = 1, beta = 3;

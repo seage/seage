@@ -348,7 +348,7 @@ public class ProblemAgent extends AelAgent
         boolean newBest = false;
         for(int i = 0; i<solutions.length;i++ )
         {
-            double[] solutionQuality = _evaluator.evaluate(solutions[i]);
+            double[] solutionQuality = _evaluator.evaluate(solutions[i], null);
             if(_bestEverFitness == null || _evaluator.compare(solutionQuality, _bestEverFitness) > 0)
             {
                 _bestEverFitness = solutionQuality.clone();
@@ -451,7 +451,7 @@ public class ProblemAgent extends AelAgent
                 if(queryMessage.getContent() instanceof Integer)
                 {
                     agree();
-                    Object[][] population = _problemProvider.generateInitialSolutions((Integer)queryMessage.getContent());
+                    Object[][] population = _problemProvider.generateInitialSolutions((Integer)queryMessage.getContent(), null);
                     handleBestSolution(getName(), population);
                     informResult(population);
                     return;

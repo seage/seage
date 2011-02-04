@@ -11,6 +11,7 @@
  */
 package org.seage.problem.tsp.genetics;
 
+import java.io.FileInputStream;
 import org.seage.metaheuristic.genetics.GeneticSearch;
 import org.seage.metaheuristic.genetics.GeneticSearchEvent;
 import org.seage.metaheuristic.genetics.GeneticSearchListener;
@@ -40,7 +41,7 @@ public class TspGeneticAlgorithmTest implements GeneticSearchListener
 
     public void run(String path) throws Exception
     {
-        City[] cities = CityProvider.readCities(path);
+        City[] cities = CityProvider.readCities(new FileInputStream(path));
         
         GeneticSearch gs = new GeneticSearch(new TspGeneticOperator(), new TspEvaluator(cities));     
         gs.addGeneticSearchListener(this);

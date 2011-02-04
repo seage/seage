@@ -32,6 +32,7 @@ import org.seage.metaheuristic.sannealing.Solution;
  * @author Jan Zmatlik
  */
 @AlgorithmParameters({
+    @Parameter(name="numSolutions", min=1, max=1, init=1),
     @Parameter(name="maxTemperature", min=10, max=1000000, init=100),
     @Parameter(name="minTemperature", min=0, max=100000, init=1),
     @Parameter(name="annealCoeficient", min=0.1, max=1, init=0.99),
@@ -114,7 +115,7 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
     {
         try
         {
-            System.out.println( e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
+            //System.out.println( e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
 
             Solution s = e.getSimulatedAnnealing().getBestSolution();
 

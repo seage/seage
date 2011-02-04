@@ -11,10 +11,10 @@
  */
 package org.seage.problem.qap;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /**
  *
@@ -33,7 +33,7 @@ public class AssignmentProvider
             
             System.out.println("Instance: "+args[0]);
 
-            Double[][][] facilityLocation = FacilityLocationProvider.readFacilityLocations(args[0]);
+            Double[][][] facilityLocation = FacilityLocationProvider.readFacilityLocations(new FileInputStream(args[0]) );
 
             System.out.println("Facilities & Locations: "+facilityLocation.length);
             System.out.println();
@@ -73,10 +73,10 @@ public class AssignmentProvider
 
         // Greedy cheapset initialize
         int[] avail = new int[ facilityLocation[0].length ];
-        System.out.println("in assignmentProfider's begining"+facilityLocation.length);
-        System.out.println(facilityLocation[0].length);
-        System.out.println(facilityLocation[0][0].length);
-        System.out.println("assignment.length is "+assignment.length+" and avail.length is "+avail.length);
+        //System.out.println("in assignmentProfider's begining"+facilityLocation.length);
+        //System.out.println(facilityLocation[0].length);
+        //System.out.println(facilityLocation[0][0].length);
+        //System.out.println("assignment.length is "+assignment.length+" and avail.length is "+avail.length);
         for( int i = 0; i < avail.length; i++ )
         {
             assignment[i] = -1;
@@ -88,7 +88,7 @@ public class AssignmentProvider
         sumMat[0] = sumOfRows(facilityLocation[0]);
         sumMat[1] = sumOfRows(facilityLocation[1]);
 
-        System.out.println("facilityLoaction.size=["+facilityLocation.length+","+facilityLocation[0].length+","+facilityLocation[0][0].length+"]");
+        //System.out.println("facilityLoaction.size=["+facilityLocation.length+","+facilityLocation[0].length+","+facilityLocation[0][0].length+"]");
 
         for(int i=0;i<assignment.length;i++){
             int location = -1;

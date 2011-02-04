@@ -23,21 +23,24 @@ public interface IProblemProvider
     //  |_ id
     //  |_ name
     //  |_ class
-    //  |_ instances
-    //  |_ algorithms
-    //      |_ algorithm
+    //  |_ Instances
+    //  |_ Algorithms
+    //      |_ Algorithm
     //      |   |_ id
     //      |   |_ name
     //      |   |_ factoryClass
-    //      |_ algorithm
+    //      |   |_ Parameter
+    //      |   |_ ...
+    //      |   |_ Parameter
+    //      |_ Algorithm
     //          |_ ...
     DataNode getProblemInfo() throws Exception;
 
-    // Initializes (reads) a problem instance.
-    void initProblemInstance(DataNode params) throws Exception;
-
     // Returns the algorithm factory
     IAlgorithmFactory getAlgorithmFactory(String algId) throws Exception;
+
+    // Initializes (reads) a problem instance.
+    ProblemInstance initProblemInstance(DataNode params) throws Exception;
 
     //  Initializes an evaluator of solutions in phenotype representation
     // (i.e. in general representation of a problem solution).
@@ -45,8 +48,8 @@ public interface IProblemProvider
 
     // Generates the very first solution(s).
     // Solutions can be random, hungry, or other.
-    Object[][] generateInitialSolutions(int numSolutions) throws Exception;
+    Object[][] generateInitialSolutions(int numSolutions, ProblemInstance instance) throws Exception;
 
     // Visualizes solution, usually produces a picture.
-    public void visualizeSolution(Object[] solution) throws Exception;
+    public void visualizeSolution(Object[] solution, ProblemInstance instance) throws Exception;
 }

@@ -11,11 +11,8 @@
  */
 package org.seage.problem.qap.tabusearch;
 
+import java.io.FileInputStream;
 import org.seage.problem.qap.FacilityLocationProvider;
-import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
-import org.seage.metaheuristic.tabusearch.SimpleTabuList;
-import org.seage.metaheuristic.tabusearch.Solution;
-import org.seage.metaheuristic.tabusearch.TabuSearch;
 import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
 import org.seage.metaheuristic.tabusearch.TabuSearchListener;
 
@@ -46,7 +43,7 @@ public class QapObjectiveFunctionTest implements TabuSearchListener
 
     public void run(String path) throws Exception
     {
-        Double[][][] facilityLocation = FacilityLocationProvider.readFacilityLocations(path);
+        Double[][][] facilityLocation = FacilityLocationProvider.readFacilityLocations(new FileInputStream(path) );
         System.out.println("Loading an instance from path: " + path);
         System.out.println("Number of cities: " + facilityLocation[0].length);
 

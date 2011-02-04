@@ -15,10 +15,12 @@ package org.seage.problem.tsp.genetics;
 import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.IProblemProvider;
+import org.seage.aal.ProblemInstance;
 import org.seage.aal.genetics.GeneticAlgorithmAdapter;
+import org.seage.data.DataNode;
 import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.TspProblemProvider;
+import org.seage.problem.tsp.TspProblemInstance;
+
 
 
 /**
@@ -29,31 +31,17 @@ import org.seage.problem.tsp.TspProblemProvider;
 @Annotations.AlgorithmName("GeneticAlgorithm")
 public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 {
-//    private DataNode _algParams;
-//    private TspProblemProvider _provider;
-//
-//    public TspGeneticAlgorithmFactory(DataNode algParams, TspProblemProvider provider) throws Exception
-//    {
-//        _algParams = algParams;
-//        _provider = provider;
-//    }
-
-    public void setProblemProvider(IProblemProvider provider) throws Exception {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     public Class getAlgorithmClass() {
         return GeneticAlgorithmAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm() throws Exception
-    {
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
+    {        
         IAlgorithmAdapter algorithm;
-        City[] cities = TspProblemProvider.getCities();
+        City[] cities = ((TspProblemInstance)instance).getCities();
         algorithm = new GeneticAlgorithmAdapter(new TspGeneticOperator(), new TspEvaluator(cities), false, "");
 
-//        Object[][] solutions = _provider.generateInitialSolutions(_algParams.getValueInt("numSolution"));
-//        algorithm.solutionsFromPhenotype(solutions);
         return algorithm;
     }
 
