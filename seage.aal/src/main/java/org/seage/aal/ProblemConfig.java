@@ -17,4 +17,7 @@ public class ProblemConfig extends DataNode{
         super(name);
     }
 
+    public ProblemConfig(DataNode dn) {
+        super(dn);
+    }
 }

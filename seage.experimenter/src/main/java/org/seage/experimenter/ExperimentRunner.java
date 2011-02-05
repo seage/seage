@@ -32,7 +32,7 @@ class ExperimentRunner {
 
     public void run(String configPath) throws Exception
     {
-        ProblemConfig config = (ProblemConfig)XmlHelper.readXml(new File(configPath));
+        ProblemConfig config = new ProblemConfig(XmlHelper.readXml(new File(configPath)));
         run(config);
     }
 
