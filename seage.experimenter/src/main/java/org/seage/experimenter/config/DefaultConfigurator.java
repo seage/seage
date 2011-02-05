@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package org.seage.experimenter;
+package org.seage.experimenter.config;
 
+import org.seage.experimenter.config.Configurator;
 import org.seage.aal.ProblemConfig;
 import org.seage.aal.ProblemInfo;
 import org.seage.data.DataNode;

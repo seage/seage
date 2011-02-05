@@ -67,7 +67,7 @@ public class Launcher {
         
         if(args[0].equals("-config")){
             if(args.length==2 )
-                new Experimenter().runFromConfigFile(args[1]);
+                new AlgorithmTester().runFromConfigFile(args[1]);
             else
                 usage();
             return;
@@ -75,7 +75,7 @@ public class Launcher {
 
         if(args[0].equals("-experiment")){
             if(args.length==2 )
-                new Experimenter().runExperiments(args[2]);
+                new Experimenter().runExperiments(args[1]);
             else
             if(args.length==3 )
                 new Experimenter().runExperiments(args[1], args[2]);
@@ -101,7 +101,7 @@ public class Launcher {
         System.out.println("\t-list");
         System.out.println("\t-test [problem-id [algorithm-id]]");
         System.out.println("\t-config path-to-config");
-        System.out.println("\t-experiment [problem-id [algorithm-id]]");
+        System.out.println("\t-experiment problem-id [algorithm-id]");
         System.out.println("\t-agents path-to-agent-config-xml");
     }
 
