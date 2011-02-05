@@ -15,6 +15,7 @@ import java.util.Map;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.IProblemProvider;
+import org.seage.aal.ProblemConfig;
 import org.seage.aal.ProblemInstance;
 import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
@@ -93,7 +94,7 @@ public class AlgorithmTester {
             algName = alg.getValueStr("name");
             System.out.print("\t" + algName);
             
-            DataNode config = new DummyConfigurator( alg.getValueStr("id")).prepareConfigs(pi)[0];
+            ProblemConfig config = new DummyConfigurator( alg.getValueStr("id")).prepareConfigs(pi)[0];
             
             IAlgorithmFactory factory = provider.getAlgorithmFactory(alg.getValueStr("id"));
             

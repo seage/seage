@@ -15,6 +15,7 @@ package org.seage.problem.sat;
 import org.seage.aal.Annotations;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IPhenotypeEvaluator;
+import org.seage.aal.ProblemConfig;
 import org.seage.aal.ProblemInstance;
 import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
@@ -28,7 +29,7 @@ import org.seage.data.DataNode;
 public class SatProblemProvider extends ProblemProvider
 {
 
-    public ProblemInstance initProblemInstance(DataNode params) throws Exception {
+    public ProblemInstance initProblemInstance(ProblemConfig params) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

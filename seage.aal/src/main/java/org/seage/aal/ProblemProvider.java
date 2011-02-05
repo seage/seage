@@ -28,16 +28,16 @@ import org.seage.data.DataNode;
 public abstract class ProblemProvider implements IProblemProvider, Serializable
 {
     private static HashMap<String, IProblemProvider> _providers;
-    private DataNode _problemInfo;
+    private ProblemInfo _problemInfo;
     private HashMap<String, IAlgorithmFactory> _algFactories;
 
     @Override
-    public DataNode getProblemInfo() throws Exception
+    public ProblemInfo getProblemInfo() throws Exception
     {
         if(_problemInfo != null)
             return _problemInfo;
 
-        _problemInfo = new DataNode("ProblemInfo");
+        _problemInfo = new ProblemInfo("ProblemInfo");
         
         Class problemClass = this.getClass();
         Annotation an = null;
