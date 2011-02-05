@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import org.seage.aal.ProblemConfig;
 
 public class ProblemAgent extends AelAgent
 {
@@ -161,7 +162,7 @@ public class ProblemAgent extends AelAgent
             case stINSTANCING:
                 if(currentStateInfo(StateInfo.Ready))
                 {
-                    _problemProvider.initProblemInstance(_params.getDataNode("problem"));
+                    _problemProvider.initProblemInstance((ProblemConfig)_params.getDataNode("problem"));
                 
                     DataNode evaluatorParams = _params.getDataNode("problem").getDataNode("evaluator");
                     //IProblemFactory factory = (IProblemFactory)Class.forName(evaluatorParams.getValueStr("factoryClass")).newInstance();

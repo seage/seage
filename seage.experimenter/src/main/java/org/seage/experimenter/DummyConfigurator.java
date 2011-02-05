@@ -5,6 +5,7 @@
 
 package org.seage.experimenter;
 
+import org.seage.aal.ProblemConfig;
 import org.seage.data.DataNode;
 
 /**
@@ -23,8 +24,8 @@ public class DummyConfigurator extends Configurator{
 
 
     @Override
-    public DataNode[] prepareConfigs(DataNode problemInfo) throws Exception {
-        DataNode result = new DataNode("Config");
+    public ProblemConfig[] prepareConfigs(DataNode problemInfo) throws Exception {
+        ProblemConfig result = new ProblemConfig("Config");
         //result.putDataNode(problemInfo.getDataNode("Algorithms").getDataNodeById(_algID));
         DataNode problem = new DataNode("Problem");
         problem.putValue("id", problemInfo.getValue("id"));
@@ -42,7 +43,7 @@ public class DummyConfigurator extends Configurator{
         result.putDataNode(problem);
         result.putDataNode(algorithm);
 
-        return new DataNode[]{result};
+        return new ProblemConfig[]{result};
     }
 
 }

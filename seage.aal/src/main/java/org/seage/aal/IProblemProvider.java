@@ -20,27 +20,37 @@ import org.seage.data.DataNode;
 public interface IProblemProvider
 {
     // Returns meta-data on the problem to be solved
+    // ProblemInfo
     //  |_ id
     //  |_ name
     //  |_ class
-    //  |_ Instances
     //  |_ Algorithms
-    //      |_ Algorithm
-    //      |   |_ id
-    //      |   |_ name
-    //      |   |_ factoryClass
-    //      |   |_ Parameter
-    //      |   |_ ...
-    //      |   |_ Parameter
-    //      |_ Algorithm
-    //          |_ ...
-    DataNode getProblemInfo() throws Exception;
+    //  |   |_ Algorithm
+    //  |   |   |_ id
+    //  |   |   |_ name
+    //  |   |   |_ factoryClass
+    //  |   |   |_ Parameter
+    //  |   |   |   |_ name
+    //  |   |   |   |_ max
+    //  |   |   |   |_ min
+    //  |   |   |   |_ init
+    //  |   |   |_ ...
+    //  |   |   |_ Parameter
+    //  |   |_ Algorithm
+    //  |       |_ ...
+    //  |_ Instances
+    //      |_ Instance
+    //      |   |_ type ("file" | "resource")
+    //      |   |_ path
+    //      |_ ...
+    //      |_ Instance
+    ProblemInfo getProblemInfo() throws Exception;
 
     // Returns the algorithm factory
     IAlgorithmFactory getAlgorithmFactory(String algId) throws Exception;
 
     // Initializes (reads) a problem instance.
-    ProblemInstance initProblemInstance(DataNode params) throws Exception;
+    ProblemInstance initProblemInstance(ProblemConfig params) throws Exception;
 
     //  Initializes an evaluator of solutions in phenotype representation
     // (i.e. in general representation of a problem solution).

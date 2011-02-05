@@ -5,12 +5,13 @@
 
 package org.seage.experimenter;
 
+import org.seage.aal.ProblemConfig;
 import org.seage.data.DataNode;
 
 /**
  *
  * @author rick
  */
-public abstract class Configurator {
-    public abstract DataNode[] prepareConfigs(DataNode problemInfo)  throws Exception;
+abstract class Configurator {
+    public abstract ProblemConfig[] prepareConfigs(DataNode problemInfo)  throws Exception;
 }
