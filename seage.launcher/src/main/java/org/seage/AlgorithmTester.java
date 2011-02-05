@@ -16,10 +16,11 @@ import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.IProblemProvider;
 import org.seage.aal.ProblemConfig;
+import org.seage.aal.ProblemInfo;
 import org.seage.aal.ProblemInstance;
 import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
-import org.seage.experimenter.DummyConfigurator;
+import org.seage.experimenter.DefaultConfigurator;
 
 /**
  *
@@ -59,7 +60,7 @@ public class AlgorithmTester {
         System.out.println("-------------------");
         
         IProblemProvider provider = _providers.get(problemId);
-        DataNode pi = provider.getProblemInfo();
+        ProblemInfo pi = provider.getProblemInfo();
         String problemName = pi.getValueStr("name");
         System.out.println(problemName);
 
@@ -70,7 +71,7 @@ public class AlgorithmTester {
     {
         try
         {            
-            DataNode pi = provider.getProblemInfo();
+            ProblemInfo pi = provider.getProblemInfo();
             String problemName = pi.getValueStr("name");
             System.out.println(problemName);
 
@@ -87,14 +88,14 @@ public class AlgorithmTester {
         }
     }
     
-    private void testProblem(IProblemProvider provider, DataNode pi, DataNode alg)
+    private void testProblem(IProblemProvider provider, ProblemInfo pi, DataNode alg)
     {
         String algName = "";
         try {
             algName = alg.getValueStr("name");
             System.out.print("\t" + algName);
             
-            ProblemConfig config = new DummyConfigurator( alg.getValueStr("id")).prepareConfigs(pi)[0];
+            ProblemConfig config = new DefaultConfigurator( alg.getValueStr("id")).prepareConfigs(pi)[0];
             
             IAlgorithmFactory factory = provider.getAlgorithmFactory(alg.getValueStr("id"));
             
