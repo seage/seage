@@ -47,8 +47,14 @@ public class TspProblemProvider extends ProblemProvider
         else
             stream = new FileInputStream(path); 
 
-        //params.getDataNode("evaluator").putValue("cities", _cities);
-        return new TspProblemInstance(instanceName, CityProvider.readCities(stream));
+        try{
+            cities = CityProvider.readCities(stream);
+        }catch(Exception ex){
+            System.err.println("TspProblemProvider.initProblemInstance - readCities failed, path: " + path);
+            throw ex;
+        }
+
+        return new TspProblemInstance(instanceName, cities);
  
     }
 

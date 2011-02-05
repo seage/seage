@@ -5,6 +5,7 @@
 
 package org.seage.experimenter;
 
+import org.seage.aal.AlgorithmReport;
 import org.seage.aal.IAlgorithmAdapter;
 import org.seage.aal.IAlgorithmFactory;
 import org.seage.aal.IPhenotypeEvaluator;
@@ -13,6 +14,7 @@ import org.seage.aal.ProblemConfig;
 import org.seage.aal.ProblemInstance;
 import org.seage.aal.ProblemProvider;
 import org.seage.data.DataNode;
+import org.seage.data.xml.XmlHelper;
 
 /**
  *
@@ -43,11 +45,6 @@ class ExperimentTask implements Runnable{
             DataNode algNode = _config.getDataNode("Algorithm");
             Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
 
-
-            System.out.printf("%s: %4s %s\n", "Problem","", problemID);
-            System.out.printf("%s: %2s %s\n", "Algorithm","", algorithmID);
-            System.out.printf("%s: %3s %s\n", "Instance","", instance);
-            System.out.println("Running ...");
             algorithm.solutionsFromPhenotype(solutions);
             algorithm.startSearching(algNode.getDataNode("Parameters"));
             solutions = algorithm.solutionsToPhenotype();
@@ -56,13 +53,10 @@ class ExperimentTask implements Runnable{
             IPhenotypeEvaluator evaluator = provider.initPhenotypeEvaluator();
             double[] result = evaluator.evaluate(solutions[0], instance);
 
-            System.out.printf("%s: %5s %s\n", "Result","", result[0]);
-            //System.out.println(": " + result[0]);
+            AlgorithmReport report = algorithm.getReport();
+            XmlHelper.writeXml(report, "output/"+System.currentTimeMillis()+".xml");
 
-            System.out.printf("%s: %3s ", "Solution","");
-            for(int i=0;i<solutions[0].length;i++)
-                System.out.print(solutions[0][i]+" ");
-            System.out.println();
+            System.out.printf("%s %15s\t %s\n", algorithmID, instance.toString(), result[0]);
         }
         catch(Exception ex){
             ex.printStackTrace();

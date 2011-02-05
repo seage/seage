@@ -16,12 +16,14 @@ import org.seage.data.xml.XmlHelper;
  */
 class ExperimentRunner {
 
-    public void run(ProblemConfig config) throws Exception
+    private ExperimentRunner(){}
+    
+    public static void run(ProblemConfig config) throws Exception
     {
         runRunnableTasks(new Runnable[]{new ExperimentTask(config)});
     }
 
-    public void run(ProblemConfig[] configs) throws Exception
+    public static void run(ProblemConfig[] configs) throws Exception
     {
         ExperimentTask[] tasks = new ExperimentTask[configs.length];
         for(int i=0;i<configs.length;i++)
@@ -30,13 +32,13 @@ class ExperimentRunner {
         runRunnableTasks(tasks);
     }
 
-    public void run(String configPath) throws Exception
+    public static void run(String configPath) throws Exception
     {
         ProblemConfig config = new ProblemConfig(XmlHelper.readXml(new File(configPath)));
         run(config);
     }
 
-     public void runRunnableTasks(Runnable[] tasks) throws Exception
+    private static void runRunnableTasks(Runnable[] tasks) throws Exception
     {
         int nrOfProcessors = Runtime.getRuntime().availableProcessors();
 
