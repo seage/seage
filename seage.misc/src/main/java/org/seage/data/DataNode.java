@@ -56,6 +56,17 @@ public class DataNode implements Serializable
         _xslPath = "";
     }
 
+    protected DataNode(DataNode dn)
+    {
+        _name = dn._name;
+        _dataNodes = dn._dataNodes;
+        _values = dn._values;
+        _ids = dn._ids;
+
+        _listeners = dn._listeners;
+        _xslPath = dn._xslPath;
+    }
+
     public String getName()
     {
         return _name;
