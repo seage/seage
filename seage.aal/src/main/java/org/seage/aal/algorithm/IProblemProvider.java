@@ -9,8 +9,10 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.aal;
+package org.seage.aal.algorithm;
 
+import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
 
 /**

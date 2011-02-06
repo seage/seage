@@ -18,10 +18,10 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Random;
 import org.seage.aal.Annotations;
-import org.seage.aal.IPhenotypeEvaluator;
-import org.seage.aal.ProblemConfig;
-import org.seage.aal.ProblemInstance;
-import org.seage.aal.ProblemProvider;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 
 /**

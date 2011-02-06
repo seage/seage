@@ -9,7 +9,7 @@ import org.seage.data.DataNode;
 import org.seage.reasoning.algparams.Policy.Attribute;
 import org.seage.reasoning.algparams.Reasoner;
 import org.seage.reasoning.algparams.ReasonerFactory;
-import org.seage.aal.AlgorithmReportEvaluator;
+import org.seage.aal.reporting.AlgorithmReportEvaluator;
 import java.util.Vector;
 
 /**

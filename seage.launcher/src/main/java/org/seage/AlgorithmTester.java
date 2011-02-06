@@ -13,14 +13,16 @@ package org.seage;
 
 import java.io.File;
 import java.util.Map;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.IPhenotypeEvaluator;
-import org.seage.aal.IProblemProvider;
-import org.seage.aal.ProblemConfig;
-import org.seage.aal.ProblemInfo;
-import org.seage.aal.ProblemInstance;
-import org.seage.aal.ProblemProvider;
+import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.IProblemProvider;
+import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.data.ProblemInfo;
+import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.algorithm.ProblemProvider;
+import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.config.DefaultConfigurator;
@@ -104,13 +106,13 @@ public class AlgorithmTester {
             
             ProblemInstance instance = provider.initProblemInstance(config);
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, config);
-            DataNode algNode = config.getDataNode("Algorithm");
+            AlgorithmParams algNode = config.getAlgorithmParams();
             Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
             algorithm.solutionsFromPhenotype(solutions);
-            algorithm.startSearching(algNode.getDataNode("Parameters"));
+            algorithm.startSearching(algNode);
             solutions = algorithm.solutionsToPhenotype();
             algorithm.solutionsFromPhenotype(solutions);
-            algorithm.startSearching(algNode.getDataNode("Parameters"));
+            algorithm.startSearching(algNode);
 
             System.out.printf("%"+(50-algName.length())+"s","OK\n");
 
@@ -138,7 +140,7 @@ public class AlgorithmTester {
         // algorithm
         IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, config);
 
-        DataNode algNode = config.getDataNode("Algorithm");
+        AlgorithmParams algNode = config.getAlgorithmParams();
         Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
 
 
@@ -147,7 +149,7 @@ public class AlgorithmTester {
         System.out.printf("%s: %3s %s\n", "Instance","", instance);
         System.out.println("Running ...");
         algorithm.solutionsFromPhenotype(solutions);
-        algorithm.startSearching(algNode.getDataNode("Parameters"));
+        algorithm.startSearching(algNode);
         solutions = algorithm.solutionsToPhenotype();
 
         // phenotype evaluator
@@ -161,5 +163,8 @@ public class AlgorithmTester {
         for(int i=0;i<solutions[0].length;i++)
             System.out.print(solutions[0][i]+" ");
         System.out.println();
+
+        AlgorithmReport report = algorithm.getReport();
+        XmlHelper.writeXml(report, "output/"+System.currentTimeMillis()+".xml");
     }
 }

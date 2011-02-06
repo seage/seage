@@ -7,8 +7,8 @@ package org.seage.experimenter;
 
 import org.seage.experimenter.config.DefaultConfigurator;
 import org.seage.experimenter.config.Configurator;
-import org.seage.aal.ProblemInfo;
-import org.seage.aal.ProblemProvider;
+import org.seage.aal.data.ProblemInfo;
+import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.experimenter.config.IntervalConfigurator;
 
 /**

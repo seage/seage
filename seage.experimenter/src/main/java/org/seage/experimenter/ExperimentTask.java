@@ -5,14 +5,15 @@
 
 package org.seage.experimenter;
 
-import org.seage.aal.AlgorithmReport;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.IPhenotypeEvaluator;
-import org.seage.aal.IProblemProvider;
-import org.seage.aal.ProblemConfig;
-import org.seage.aal.ProblemInstance;
-import org.seage.aal.ProblemProvider;
+import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.IProblemProvider;
+import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 
@@ -42,11 +43,11 @@ class ExperimentTask implements Runnable{
             // algorithm
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, _config);
 
-            DataNode algNode = _config.getDataNode("Algorithm");
+            AlgorithmParams algNode = _config.getAlgorithmParams();
             Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
 
             algorithm.solutionsFromPhenotype(solutions);
-            algorithm.startSearching(algNode.getDataNode("Parameters"));
+            algorithm.startSearching(algNode);
             solutions = algorithm.solutionsToPhenotype();
 
             // phenotype evaluator

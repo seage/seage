@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.seage.aal;
+package org.seage.aal.reporting;
 
 import java.io.Serializable;
 import java.util.Comparator;

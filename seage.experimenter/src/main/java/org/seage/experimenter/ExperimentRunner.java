@@ -6,7 +6,7 @@
 package org.seage.experimenter;
 
 import java.io.File;
-import org.seage.aal.ProblemConfig;
+import org.seage.aal.data.ProblemConfig;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 

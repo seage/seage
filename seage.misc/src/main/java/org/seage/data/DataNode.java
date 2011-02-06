@@ -24,6 +24,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.seage.data.file.FileHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -304,28 +305,23 @@ public class DataNode implements Serializable
     
     private void toXmlElement(Element parent, List<DataNode> dataNodes) throws Exception
     {
-//        Element elem = xmlDoc.createElement("");
-//
-//        for(Entry<String, Object> e : _values.entrySet())
-//            elem.setAttribute(e.getKey(), e.getValue().toString());
-        
-        //for(Entry<String, List<DataNode>> e : dataNodes)
-        //{
-            for(DataNode dn : dataNodes)
+        for(DataNode dn : dataNodes)
+        {
+            Element elem = parent.getOwnerDocument().createElement(dn.getName());
+            for(String an : dn.getValueNames())
             {
-                Element elem = parent.getOwnerDocument().createElement(dn.getName());
-                for(String an : dn.getValueNames())
-                {
-                    Attr a = parent.getOwnerDocument().createAttribute(an);
-                    a.setValue(dn.getValueStr(an));
-                    elem.getAttributes().setNamedItem(a);
-                }
-                parent.appendChild(elem);
-
-                toXmlElement(elem, dn.getDataNodes());
+                Attr a = parent.getOwnerDocument().createAttribute(an);
+                a.setValue(dn.getValueStr(an));
+                elem.getAttributes().setNamedItem(a);
             }
-        //}
-        //return elem;
+            parent.appendChild(elem);
+
+            toXmlElement(elem, dn.getDataNodes());
+        }
+    }
+
+    public String hash() throws Exception {
+        return FileHelper.md5fromString(toString());
     }
 
     @Override

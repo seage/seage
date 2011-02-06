@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.seage.aal;
+package org.seage.aal.algorithm;
 
 /**
  *

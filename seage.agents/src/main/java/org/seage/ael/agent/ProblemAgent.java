@@ -13,8 +13,8 @@ import aglobe.ontology.*;
 
 import aglobex.protocol.queryref.QueryRefParticipantTask;
 import aglobex.protocol.request.RequestInitiatorTask;
-import org.seage.aal.IPhenotypeEvaluator;
-import org.seage.aal.IProblemProvider;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import org.seage.aal.ProblemConfig;
+import org.seage.aal.data.ProblemConfig;
 
 public class ProblemAgent extends AelAgent
 {
@@ -91,7 +91,7 @@ public class ProblemAgent extends AelAgent
 
             _params = param.get(0);
 
-            initInputOutput(FileHelper.md5fromString(config.toString()));
+            initInputOutput(config.hash());
              XmlHelper.writeXml(config, _outputPath+"/config.xml");
 
             _problemProvider = (IProblemProvider)Class.forName(_params.getDataNode("problem").getValueStr("problemProvider")).newInstance();

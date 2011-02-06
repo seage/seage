@@ -10,7 +10,7 @@
  *     - Initial implementation
  */
 
-package org.seage.aal;
+package org.seage.aal.algorithm;
 
 import java.io.Serializable;
 import org.seage.data.DataNode;
