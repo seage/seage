@@ -6,8 +6,8 @@
 package org.seage.experimenter.config;
 
 import org.seage.experimenter.config.Configurator;
-import org.seage.aal.ProblemConfig;
-import org.seage.aal.ProblemInfo;
+import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
 
 /**

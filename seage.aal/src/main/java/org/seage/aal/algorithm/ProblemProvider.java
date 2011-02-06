@@ -9,12 +9,14 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.aal;
+package org.seage.aal.algorithm;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
+import org.seage.aal.Annotations;
+import org.seage.aal.data.ProblemInfo;
 import org.seage.classutil.ClassUtil;
 import org.seage.classutil.ClassInfo;
 import org.seage.data.DataNode;

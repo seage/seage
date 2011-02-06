@@ -12,13 +12,14 @@
  *     - Added annotations
  */
 
-package org.seage.aal.particles;
+package org.seage.aal.algorithm.particles;
 
-import org.seage.aal.AlgorithmReport;
-import org.seage.aal.AlgorithmReporter;
+import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReporter;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
-import org.seage.aal.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.particles.IObjectiveFunction;
 import org.seage.metaheuristic.particles.IParticleSwarmListener;
@@ -66,7 +67,7 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
         _reporter = new AlgorithmReporter( searchID );
     }
 
-    public void startSearching(DataNode params) throws Exception {
+    public void startSearching(AlgorithmParams params) throws Exception {
         _reporter = new AlgorithmReporter( _searchID );
         _reporter.putParameters( params );
 

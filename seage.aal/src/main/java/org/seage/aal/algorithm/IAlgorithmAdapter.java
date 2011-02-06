@@ -9,9 +9,10 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.aal;
+package org.seage.aal.algorithm;
 
-import org.seage.data.DataNode;
+import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.reporting.AlgorithmReport;
 
 /**
  * IAlgorithmAdapter interface.
@@ -31,7 +32,7 @@ public interface IAlgorithmAdapter
     //void init(DataNode params);
 
     // Runs the algorithm.
-    void startSearching(DataNode params) throws Exception;
+    void startSearching(AlgorithmParams params) throws Exception;
 
     // Stops the algorithm.
     void stopSearching() throws Exception;

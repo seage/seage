@@ -9,14 +9,15 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.aal.tabusearch;
+package org.seage.aal.algorithm.tabusearch;
 
 import java.util.*;
-import org.seage.aal.AlgorithmReporter;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReporter;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
+import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.*;
 
@@ -71,7 +72,7 @@ public abstract class TabuSearchAdapter implements IAlgorithmAdapter
     }
 
     @Override
-    public void startSearching(DataNode params) throws Exception
+    public void startSearching(AlgorithmParams params) throws Exception
     {
         _reporter = new AlgorithmReporter(_searchID);
         _reporter.putParameters(params);
@@ -152,13 +153,13 @@ public abstract class TabuSearchAdapter implements IAlgorithmAdapter
 
     private void setParameters(DataNode param) throws Exception
     {
-        _iterationToGo = _statNumIter = param.getValueInt("numIteration");
+        DataNode p = param.getDataNode("Parameters");
+        _iterationToGo = _statNumIter = p.getValueInt("numIteration");
 
-        _tabuListLength = param.getValueInt("tabuListLength");
-        _iterationDivers = param.getValueInt("numIterDivers");
-        _solutionsToExplore = param.getValueInt("numSolutions");
+        _tabuListLength = p.getValueInt("tabuListLength");
+        _iterationDivers = p.getValueInt("numIterDivers");
+        _solutionsToExplore = p.getValueInt("numSolutions");
 
-        //_paramID = param.getParam("ID");
     }
 
     public AlgorithmReport getReport() throws Exception

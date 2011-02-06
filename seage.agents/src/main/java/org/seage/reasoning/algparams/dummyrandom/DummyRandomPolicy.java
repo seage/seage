@@ -1,9 +1,9 @@
 package org.seage.reasoning.algparams.dummyrandom;
 
-import org.seage.aal.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.data.DataNode;
 import org.seage.reasoning.algparams.Policy.Attribute;
-import org.seage.aal.AlgorithmReportEvaluator;
+import org.seage.aal.reporting.AlgorithmReportEvaluator;
 import org.seage.reasoning.algparams.Policy;
 import java.util.HashMap;
 

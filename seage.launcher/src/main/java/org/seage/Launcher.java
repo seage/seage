@@ -13,8 +13,8 @@ package org.seage;
 
 import aglobe.platform.Platform;
 import java.util.Map;
-import org.seage.aal.IProblemProvider;
-import org.seage.aal.ProblemProvider;
+import org.seage.aal.algorithm.IProblemProvider;
+import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.experimenter.Experimenter;
 

@@ -12,11 +12,11 @@
 package org.seage.problem.tsp.tabusearch;
 
 import org.seage.aal.Annotations;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.IProblemProvider;
-import org.seage.aal.ProblemInstance;
-import org.seage.aal.tabusearch.TabuSearchAdapter;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IProblemProvider;
+import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.tsp.City;
