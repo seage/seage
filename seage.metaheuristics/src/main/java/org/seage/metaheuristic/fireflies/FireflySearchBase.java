@@ -98,7 +98,7 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @see FireflySearchListener
      * @since 1.0
      */
-     public final synchronized void addFireflySearchListener( FireflySearchListener listener )
+     public final synchronized void addEFASearchListener( FireflySearchListener listener )
      {  
         FireflySearchListener[] list = new FireflySearchListener[
             fireflySearchListenerList.length + 1 ];
@@ -122,7 +122,7 @@ public abstract class FireflySearchBase implements IFireflySearch
       * @see FireflySearchListener
       * @since 1.0
       */
-     public final synchronized void removeFireflySearchListener( FireflySearchListener listener )
+     public final synchronized void removeEFASearchListener( FireflySearchListener listener )
      {  // Find location of listener to remove
         int index = -1;
         int j = 0;
@@ -242,12 +242,12 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @see FireflySearchEvent
      * @since 1.0
      */
-    protected synchronized final void fireFireflySearchStopped()
+    protected synchronized final void fireEFASearchStopped()
     {
         int len = fireflySearchListenerList.length;
 
         for( int i = 0; i < len; i++ )
-            fireflySearchListenerList[i].fireflySearchStopped( fireflyEvent );
+            fireflySearchListenerList[i].EFASearchStopped( fireflyEvent );
 
     }   // end fireFireflySearchStopped
 
@@ -261,11 +261,11 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @see FireflySearchEvent
      * @since 1.0
      */
-    protected synchronized final void fireFireflySearchStarted()
+    protected synchronized final void fireEFASearchStarted()
     {
         int len = fireflySearchListenerList.length;
         for( int i = 0; i < len; i++ )
-            fireflySearchListenerList[i].fireflySearchStarted( fireflyEvent );
+            fireflySearchListenerList[i].EFASearchStarted( fireflyEvent );
     }   // end fireFireflySearchStarted
 
 }   // end class FireflySearchBase

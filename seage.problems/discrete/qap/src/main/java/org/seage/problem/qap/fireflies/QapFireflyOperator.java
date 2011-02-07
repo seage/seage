@@ -5,17 +5,17 @@
 
 package org.seage.problem.qap.fireflies;
 
+import org.seage.problem.qap.fireflies.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import org.seage.metaheuristic.fireflies.FireflyOperator;
-import org.seage.metaheuristic.fireflies.Solution;
+import org.seage.metaheuristic.fireflies.*;
 import org.seage.problem.qap.AssignmentProvider;
 
 /**
  *
  * @author Administrator
  */
-public class QapFireflyOperator extends FireflyOperator { 
+public class QapFireflyOperator extends FireflyOperator {
 
     static boolean _withDecreasingRandomness;
     static double _initialIntensity;
@@ -127,16 +127,16 @@ public class QapFireflyOperator extends FireflyOperator {
                 perm[newSol[i]]=-1;
             }
             // with alfa probability put there random gene
-            else if(r<beta+alfa){
-                temp.clear();
-                for(int j=0;j<pos.length;j++){
-                    if(perm[j]!=-1)
-                        temp.add(j);
-                }
-                Collections.shuffle(temp);
-                newSol[i]=temp.get(0);
-                perm[newSol[i]]=-1;
-            }// else put there original gene
+//            else if(r<beta+alfa){
+//                temp.clear();
+//                for(int j=0;j<pos.length;j++){
+//                    if(perm[j]!=-1)
+//                        temp.add(j);
+//                }
+//                Collections.shuffle(temp);
+//                newSol[i]=temp.get(0);
+//                perm[newSol[i]]=-1;
+//            }// else put there original gene
             else if(perm[qaps0.getAssign()[i]]!=-1){
                 newSol[i]=qaps0.getAssign()[i];
                 perm[qaps0.getAssign()[i]]=-1;
@@ -155,6 +155,16 @@ public class QapFireflyOperator extends FireflyOperator {
             pos[i]=-1;
         }
 
+        //make random step
+        int i1 = (int)(Math.random()*newSol.length);
+        int i2=i1;
+        while(i1==i2){
+            i2 = (int)(Math.random()*newSol.length);
+        }
+        newSol[i1]=newSol[i1]+newSol[i2];
+        newSol[i2]=newSol[i1]-newSol[i2];
+        newSol[i1]=newSol[i1]-newSol[i2];
+
 //        for(int i=0;i<qaps0.getAssign().length;i++){
 //            System.out.print(newSol[i]+", ");
 //        }
@@ -165,8 +175,8 @@ public class QapFireflyOperator extends FireflyOperator {
                 equal=false;
         }
         if(equal){
-            int i1 = (int)(Math.random()*newSol.length);
-            int i2=i1;
+            i1 = (int)(Math.random()*newSol.length);
+            i2=i1;
             while(i1==i2){
                 i2 = (int)(Math.random()*newSol.length);
             }
