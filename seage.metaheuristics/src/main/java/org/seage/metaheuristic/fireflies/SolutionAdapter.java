@@ -14,6 +14,7 @@
  *     Karel Durkota
  */
 package org.seage.metaheuristic.fireflies;
+import org.seage.metaheuristic.fireflies.*;
 import java.text.*;
 import java.util.*;
 

@@ -4,7 +4,7 @@
  */
 
 package org.seage.aal.fireflies;
-import org.seage.aal.genetics.*;
+import org.seage.aal.fireflies.*;
 import org.seage.aal.AlgorithmReport;
 import org.seage.aal.AlgorithmReportEvaluator;
 

@@ -5,6 +5,8 @@
 
 package org.seage.metaheuristic.fireflies;
 
+import org.seage.metaheuristic.fireflies.*;
+
 /**
  *
  * @author Administrator
@@ -37,11 +39,8 @@ public abstract class FireflyOperator {
      * @param time
      * @return decreased randomness
      */
-        public double decreaseRandomness(FireflyParameters para, int iter){
-            return (para.initialRandomness + (para.initialRandomness - para.finalRandomness)*Math.exp(-para.timeStep*iter));
-        }
 
-        public abstract Solution randomSolution();
+    public abstract Solution randomSolution();
 
     public abstract void randomSolution(Solution solution);
 

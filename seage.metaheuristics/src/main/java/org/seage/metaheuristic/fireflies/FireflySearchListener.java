@@ -15,6 +15,8 @@
  */
 package org.seage.metaheuristic.fireflies;
 
+import org.seage.metaheuristic.fireflies.*;
+
 /**
  * An object that will listen for the firefly search to start.
  * 
@@ -35,7 +37,7 @@ public interface FireflySearchListener extends java.io.Serializable, java.util.E
      * @see FireflySearch
      * @since 1.0
      */
-    public void fireflySearchStarted( FireflySearchEvent e );
+    public void EFASearchStarted( FireflySearchEvent e );
     
     
     /**
@@ -48,7 +50,7 @@ public interface FireflySearchListener extends java.io.Serializable, java.util.E
      * @see FireflySearch
      * @since 1.0
      */
-    public void fireflySearchStopped( FireflySearchEvent e );
+    public void EFASearchStopped( FireflySearchEvent e );
     
     
     

@@ -121,4 +121,8 @@ public class FacilityLocationProvider
         scanner.close();
         return (Double[])result.toArray(new Double[0]);
     }
+
+    public static Double[][][] readFacilityLocations(String path) throws Exception {
+        return FacilityLocationProvider.readFacilityLocations(new FileInputStream(path));
+    }
 }

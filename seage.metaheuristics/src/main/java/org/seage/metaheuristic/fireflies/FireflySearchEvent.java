@@ -52,7 +52,7 @@ public class FireflySearchEvent extends java.util.EventObject
      * @return source as {@link FireflySearch}
      * @since 1.0
      */
-    public final IFireflySearch getFireflySearch()
+    public final IFireflySearch getEFASearch()
     {   return (IFireflySearch) source;
     }   // end getFireflySearch
 

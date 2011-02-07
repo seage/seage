@@ -13,7 +13,7 @@
  */
 package org.seage.metaheuristic.fireflies;
 
-import org.seage.metaheuristic.tabusearch.*;
+import org.seage.metaheuristic.fireflies.*;
 
 
 /**
@@ -26,7 +26,6 @@ import org.seage.metaheuristic.tabusearch.*;
  */
 public interface ObjectiveFunction extends java.io.Serializable
 {    
-
 
     public void ObjectiveFunction(Solution soln);
     /**
@@ -77,10 +76,11 @@ public interface ObjectiveFunction extends java.io.Serializable
      * @see Move
      * @since 1.0
      */
-    public abstract double[] evaluate( Solution soln, Move move ) throws Exception;
+//    public abstract double[] evaluate( Solution soln, Move move ) throws Exception;
 
     public abstract double[] evaluate( Solution soln ) throws Exception;
     
-    
+    public int getCounter();
+    public void incrementCounter();
 }   // end class ObjectiveFunction
 

@@ -16,6 +16,7 @@
 
 package org.seage.metaheuristic.fireflies;
 
+import org.seage.metaheuristic.fireflies.*;
 import java.util.Collections;
 import java.util.Random;
 
@@ -33,6 +34,7 @@ public class FireflySearch extends FireflySearchBase{
     private int _populationCount;
 
     private boolean _withDecreasingRandomness;
+    private boolean _withHillClimbingBestSolution;
     private double _initialIntensity;
     private double _initialRandomness;
     private double _finalRandomness;
@@ -56,7 +58,6 @@ public class FireflySearch extends FireflySearchBase{
     private Random _random;
     private boolean _maximizing;
     private int _iterationsToGo;
-    private MoveManager _moveManager;
 
     /**
      * CONSTRUCTOR
@@ -113,7 +114,7 @@ public class FireflySearch extends FireflySearchBase{
             for (int i = 0; i < population.getSize(); i++)
             {
                 Solution solution = population.getSolution(i);
-                solution.setObjectiveValue(_objectiveFunction.evaluate(solution,null));
+                solution.setObjectiveValue(_objectiveFunction.evaluate(solution));
             }
             Collections.sort(population.getList(), _solutionComparator);
         }
@@ -130,7 +131,7 @@ public class FireflySearch extends FireflySearchBase{
             
             _keepSearching = true;
             long startTime = System.currentTimeMillis();
-            fireFireflySearchStarted();
+            fireEFASearchStarted();
 
             _bestSolution = null;
             _currentIteration = 0;
@@ -222,7 +223,7 @@ public class FireflySearch extends FireflySearchBase{
 
                                 if(_population.getSolutions()[s1].equals(workPopulation.getSolutions()[s2])){
 //                                    System.out.println("EQUALS\nOLD:"+_population.getSolutions()[s1].toString());
-                                    _operator.randomSolution(_population.getSolutions()[s1]);
+                                    _operator.modifySolution(_population.getSolutions()[s1]);
 //                                    System.out.println("NEW:"+_population.getSolutions()[s1].toString());
                                 }
 //                                else
@@ -233,6 +234,16 @@ public class FireflySearch extends FireflySearchBase{
 
                     }
                 }
+                // hill climbing of best solution
+//                double bestEval = _population.getBestSolution().getObjectiveValue()[0];
+                if(this.getWithHillClimbingBestSolution()){
+                    Solution best = (Solution)_population.getBestSolution().clone();
+                    _operator.modifySolution(best);
+                    if(_solutionComparator.compare(best,_population.getBestSolution()) == -1)
+                        _population.addSolution(best);
+                }
+
+
 
                 //temporary solution for not getting in the same solutions
 //                for(int s1=0;s1<_population.getSize();s1++){
@@ -246,7 +257,7 @@ public class FireflySearch extends FireflySearchBase{
 
             evaluatePopulation(_population);
             System.out.println(_population.getBestSolution().toString());
-            fireFireflySearchStopped();
+            fireEFASearchStopped();
         }
         catch (Exception ex)
         {
@@ -256,10 +267,6 @@ public class FireflySearch extends FireflySearchBase{
 
     public void setObjectiveFunction(ObjectiveFunction function) throws Exception {
         _objectiveFunction = function;
-    }
-
-    public void setMoveManager(MoveManager moveManager) {
-        _moveManager = moveManager;
     }
 
     public void setBestSolution(Solution solution) {
@@ -284,10 +291,6 @@ public class FireflySearch extends FireflySearchBase{
 
     public ObjectiveFunction getObjectiveFunction() {
         return _objectiveFunction;
-    }
-
-    public MoveManager getMoveManager() {
-        return _moveManager;
     }
 
     public Solution getBestSolution() {
@@ -373,5 +376,11 @@ public class FireflySearch extends FireflySearchBase{
             this.setWithDecreasingRandomness(false);
     }
 
+    public void setWithHillClimbingBestSolution(boolean _withHillClimbingBestSolution) {
+        this._withHillClimbingBestSolution=_withHillClimbingBestSolution;
+    }
 
+    public boolean getWithHillClimbingBestSolution() {
+        return this._withHillClimbingBestSolution;
+    }
 }

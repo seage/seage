@@ -12,6 +12,7 @@
  */
 package org.seage.problem.qap.fireflies;
 
+import org.seage.problem.qap.fireflies.*;
 import org.seage.metaheuristic.fireflies.*;
 
 /**
@@ -20,7 +21,7 @@ import org.seage.metaheuristic.fireflies.*;
  */
 public class QapObjectiveFunction implements ObjectiveFunction
 {
-
+    public int counter=0;
     public double[][][] _matrix;
 
     public QapObjectiveFunction(Double[][][] facilityLocation)
@@ -40,8 +41,9 @@ public class QapObjectiveFunction implements ObjectiveFunction
     }   // end constructor
 
     @Override
-    public double[] evaluate(Solution solution, Move move) throws Exception
+    public double[] evaluate(Solution solution) throws Exception
     {
+        incrementCounter();
         try
         {
             Integer[] assign = ((QapSolution) solution)._assign;
@@ -120,9 +122,12 @@ public class QapObjectiveFunction implements ObjectiveFunction
         throw new UnsupportedOperationException("Not supported yet. - ObjectiveFunction in QapObjectiveFuntion");
     }
 
-    public double[] evaluate(Solution soln) throws Exception {
-        return evaluate(soln,null);
+    public int getCounter() {
+        return counter;
     }
 
+    public void incrementCounter() {
+        counter++;
+    }
 }   // end class MyObjectiveFunction
 

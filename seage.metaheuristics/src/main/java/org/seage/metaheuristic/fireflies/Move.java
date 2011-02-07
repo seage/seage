@@ -5,6 +5,8 @@
 
 package org.seage.metaheuristic.fireflies;
 
+import org.seage.metaheuristic.fireflies.*;
+
 /**
  *
  * @author Administrator

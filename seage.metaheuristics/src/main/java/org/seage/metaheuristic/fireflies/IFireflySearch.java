@@ -78,7 +78,7 @@ public interface IFireflySearch extends java.io.Serializable
      * @see FireflySearchListener
      * @since 1.0
      */
-    public abstract void addFireflySearchListener( FireflySearchListener listener );
+    public abstract void addEFASearchListener( FireflySearchListener listener );
     
     
     
@@ -91,7 +91,7 @@ public interface IFireflySearch extends java.io.Serializable
      * @see FireflySearchListener
      * @since 1.0
      */
-    public abstract void removeFireflySearchListener( FireflySearchListener listener );
+    public abstract void removeEFASearchListener( FireflySearchListener listener );
     
     
     
@@ -112,20 +112,6 @@ public interface IFireflySearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract void setObjectiveFunction(ObjectiveFunction function) throws Exception;
-    
-    
-    
-    /**
-     * Sets the move manager effective at the start of the next iteration.
-     *
-     * <p><em>Implementations of <tt>FireflySearch</tt> should synchronize this method.</em></p>
-     *
-     * @param moveManager The new move manager
-     * @see MoveManager
-     * @since 1.0
-     */
-    public abstract void setMoveManager( MoveManager moveManager );
-    
     
     
     
@@ -185,18 +171,6 @@ public interface IFireflySearch extends java.io.Serializable
      */
     public abstract ObjectiveFunction getObjectiveFunction();
     
-    
-    
-    /**
-     * Returns the move manager.
-     *
-     * <p><em>Implementations of <tt>FireflySearch</tt> should synchronize this method.</em></p>
-     *
-     * @return The move manager.
-     * @see MoveManager
-     * @since 1.0
-     */
-    public abstract MoveManager getMoveManager();
     
     /**
      * Returns the best solution found so far.
