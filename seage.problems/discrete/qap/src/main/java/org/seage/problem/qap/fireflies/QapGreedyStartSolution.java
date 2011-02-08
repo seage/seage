@@ -31,4 +31,4 @@ public class QapGreedyStartSolution extends QapSolution
         
     }   // end constructor
 
-}   // end class TspGreedyStartSolution
+}   // end class QapGreedyStartSolution

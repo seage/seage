@@ -37,7 +37,7 @@ public interface FireflySearchListener extends java.io.Serializable, java.util.E
      * @see FireflySearch
      * @since 1.0
      */
-    public void EFASearchStarted( FireflySearchEvent e );
+    public void FireflySearchStarted( FireflySearchEvent e );
     
     
     /**
@@ -50,7 +50,7 @@ public interface FireflySearchListener extends java.io.Serializable, java.util.E
      * @see FireflySearch
      * @since 1.0
      */
-    public void EFASearchStopped( FireflySearchEvent e );
+    public void FireflySearchStopped( FireflySearchEvent e );
     
     
     

@@ -29,21 +29,22 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 
 @AlgorithmParameters({
     @Parameter(name="iterationCount", min=0, max=1000000, init=1000),
-//    @Parameter(name="numSolutions", min=2, max=1000000, init=100),
-//    @Parameter(name="withDecreasingRandomness", min=0, max=1, init=0),
+    @Parameter(name="numSolutions", min=2, max=1000000, init=100),
+    @Parameter(name="timeStep", min=0.1, max=1000, init=0.5),
+    @Parameter(name="withDecreasingRandomness", min=0, max=1, init=1),
 //    @Parameter(name="initialIntensity", min=0, max=100000, init=1),
 //    @Parameter(name="initialRandomness", min=0, max=100000, init=1),
 //    @Parameter(name="finalRandomness", min=0, max=100000, init=0.2),
-    @Parameter(name="absorption", min=0, max=10000, init=0.1),
-    @Parameter(name="populationSize", min=0, max=10000, init=0.1)
+    @Parameter(name="absorption", min=0, max=10000, init=0.1)
+//    @Parameter(name="populationSize", min=0, max=10000, init=0.1)
 })
-public class FirefliyAlgorithmAdapter implements  IAlgorithmAdapter
+public abstract class FireflyAlgorithmAdapter implements  IAlgorithmAdapter
 {
     protected Solution[] _solutions;
     private FireflySearch _FireflySearch;
     private ObjectiveFunction _evaluator;
     private SolutionComparator _comparator;
-    private EFASearchObserver _observer;
+    private FireflySearchObserver _observer;
     private Solution _bestEverSolution;
     private boolean _maximizing;
 
@@ -60,13 +61,13 @@ public class FirefliyAlgorithmAdapter implements  IAlgorithmAdapter
     //private DataNode _minutes;
 
 
-    public FirefliyAlgorithmAdapter(FireflyOperator operator,
+    public FireflyAlgorithmAdapter(FireflyOperator operator,
                                 ObjectiveFunction evaluator,
                                 boolean maximizing,
                                 String  searchID)
     {
         _evaluator = evaluator;
-        _observer = new EFASearchObserver();
+        _observer = new FireflySearchObserver();
         _comparator = new SolutionComparator();
         _FireflySearch = new FireflySearch(operator, evaluator);
         _FireflySearch.addEFASearchListener(_observer);
@@ -109,14 +110,14 @@ public class FirefliyAlgorithmAdapter implements  IAlgorithmAdapter
         _FireflySearch.setIterationsToGo(param.getValueInt("iterationCount"));
         _statNumIter = param.getValueInt("iterationCount");
 //        _geneticSearch.setSolutionCount(param.getValueInt("numSolution"));
-        _FireflySearch.setPopulationCount(param.getValueInt("populationSize"));
+        _FireflySearch.setPopulationCount(param.getValueInt("numSolutions"));
         _FireflySearch.setAbsorption(param.getValueDouble("absorption"));
 //        _EFASearch.setInitialIntensity(param.getValueDouble("initialIntensity"));
 //        _EFASearch.setInitialRandomness(param.getValueDouble("initialRandomness"));
 //        _EFASearch.setFinalRandomness(param.getValueDouble("finalRandomness"));
 //        _EFASearch.setAbsorption(param.getValueDouble("absorption"));
         _FireflySearch.setTimeStep(param.getValueDouble("timeStep"));
-        _FireflySearch.setWithDecreasingRandomness(param.getValueBool("withDecreasingRandomness"));
+        _FireflySearch.setWithDecreasingRandomness(((param.getValueDouble("withDecreasingRandomness")>0)?true:false));
         // EDD OWN PARAMETERS
 
         //_paramID = param.getValue("ID");
@@ -124,6 +125,8 @@ public class FirefliyAlgorithmAdapter implements  IAlgorithmAdapter
 
     private void setBestEverSolution() throws Exception
     {
+        if(_solutions==null || _solutions.length==0)
+            return;
         try
         {
             if (_solutions[0].getObjectiveValue()!=null &&_solutions[0].getObjectiveValue().length==0)
@@ -166,22 +169,14 @@ public class FirefliyAlgorithmAdapter implements  IAlgorithmAdapter
         return _reporter.getReport();
     }
 
-    public void solutionsFromPhenotype(Object[][] source) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public Object[][] solutionsToPhenotype() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    private class EFASearchObserver implements FireflySearchListener
+    private class FireflySearchObserver implements FireflySearchListener
     { 
-        public void EFASearchStarted(FireflySearchEvent e)
+        public void FireflySearchStarted(FireflySearchEvent e)
         {
             _statNumNewSol = _statLastIterNewSol = 0;
         }
 
-        public void EFASearchStopped(FireflySearchEvent e)
+        public void FireflySearchStopped(FireflySearchEvent e)
         {
             _statEndObjVal = e.getEFASearch().getBestSolution().getObjectiveValue()[0];
         }

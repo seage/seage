@@ -247,10 +247,9 @@ public abstract class FireflySearchBase implements IFireflySearch
         int len = fireflySearchListenerList.length;
 
         for( int i = 0; i < len; i++ )
-            fireflySearchListenerList[i].EFASearchStopped( fireflyEvent );
+            fireflySearchListenerList[i].FireflySearchStopped( fireflyEvent );
 
     }   // end fireFireflySearchStopped
-
 
     /**
      * This quick method is called when the fireflySearch starts.
@@ -265,7 +264,7 @@ public abstract class FireflySearchBase implements IFireflySearch
     {
         int len = fireflySearchListenerList.length;
         for( int i = 0; i < len; i++ )
-            fireflySearchListenerList[i].EFASearchStarted( fireflyEvent );
+            fireflySearchListenerList[i].FireflySearchStarted( fireflyEvent );
     }   // end fireFireflySearchStarted
 
 }   // end class FireflySearchBase

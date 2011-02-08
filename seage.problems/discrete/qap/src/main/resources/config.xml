@@ -4,7 +4,7 @@
    xmlns='http://xml.seage.org/schema'
    xsi:schemaLocation='http://xml.seage.org/schema config.xsd'>
 
-    <problem problemName="TSP" runAlgorithmId="SimulatedAnnealing">
+    <problem problemName="QAP" runAlgorithmId="SimulatedAnnealing">
         <instance name="eil101" path="data2/pcb3038.tsp"/>
         <visualizer outPath="output/eil51.png" width="800" height="800"/>
     </problem>

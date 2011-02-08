@@ -85,11 +85,11 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
         return result;
     }
 
-    public void EFASearchStarted(FireflySearchEvent e) {
+    public void FireflySearchStarted(FireflySearchEvent e) {
         System.out.println("EFA Algorithm for QAP started.");
     }
 
-    public void EFASearchStopped(FireflySearchEvent e) {
+    public void FireflySearchStopped(FireflySearchEvent e) {
         System.out.println("EFA Algorithm for QAP stopped.");
     }
 
@@ -116,6 +116,4 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
     public void noChangeInValueMoveMade(FireflySearchEvent e) {
         System.out.println("EFA Algorithm for QAP - no change in value made.");
     }
-    
-    
 }
