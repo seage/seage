@@ -10,18 +10,19 @@
  *     - Initial implementation
  *     Karel Durkota
  */
-package org.seage.aal.fireflies;
+package org.seage.aal.algorithm.fireflies;
 
 
-import org.seage.aal.fireflies.*;
+import org.seage.aal.algorithm.fireflies.*;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.fireflies.*;
 import java.util.Arrays;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.AlgorithmReport;
-import org.seage.aal.AlgorithmReporter;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReporter;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.Annotations.AlgorithmParameters;
+import org.seage.aal.data.AlgorithmParams;
 
 /**
  * FireflySearchAdapter class
@@ -37,16 +38,16 @@ import org.seage.aal.Annotations.AlgorithmParameters;
     @Parameter(name="absorption", min=0, max=10000, init=0.1),
     @Parameter(name="populationSize", min=0, max=10000, init=0.1)
 })
-public class FirefliyAlgorithmAdapter implements  IAlgorithmAdapter
+public class FireflyAlgorithmAdapter implements  IAlgorithmAdapter
 {
     protected Solution[] _solutions;
-    private FireflySearch _FireflySearch;
+    private FireflySearch _fireflySearch;
     private ObjectiveFunction _evaluator;
     private SolutionComparator _comparator;
     private EFASearchObserver _observer;
     private Solution _bestEverSolution;
     private boolean _maximizing;
-
+    private AlgorithmParams _params;
     private String _searchID;
     //private String _paramID;
 
@@ -60,7 +61,7 @@ public class FirefliyAlgorithmAdapter implements  IAlgorithmAdapter
     //private DataNode _minutes;
 
 
-    public FirefliyAlgorithmAdapter(FireflyOperator operator,
+    public FireflyAlgorithmAdapter(FireflyOperator operator,
                                 ObjectiveFunction evaluator,
                                 boolean maximizing,
                                 String  searchID)
@@ -68,12 +69,19 @@ public class FirefliyAlgorithmAdapter implements  IAlgorithmAdapter
         _evaluator = evaluator;
         _observer = new EFASearchObserver();
         _comparator = new SolutionComparator();
-        _FireflySearch = new FireflySearch(operator, evaluator);
-        _FireflySearch.addEFASearchListener(_observer);
+        _fireflySearch = new FireflySearch(operator, evaluator);
+        _fireflySearch.addEFASearchListener(_observer);
         _searchID = searchID;
         _maximizing=maximizing;
     }
 
+    public void run() {
+        try{
+            startSearching();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
 
     /**
      * <running>
@@ -85,38 +93,39 @@ public class FirefliyAlgorithmAdapter implements  IAlgorithmAdapter
      * @throws java.lang.Exception
      */
 
-    public void startSearching(DataNode param) throws Exception
+    public void startSearching() throws Exception
     {
         _reporter = new AlgorithmReporter(_searchID);
-        _reporter.putParameters(param);
+        _reporter.putParameters(_params);
 
-        setParameters(param);
         setBestEverSolution();
 
-        _FireflySearch.startSolving(_solutions);
-        _solutions = _FireflySearch.getSolutions();
+        _fireflySearch.startSolving(_solutions);
+        _solutions = _fireflySearch.getSolutions();
         if(_solutions == null)
             throw new Exception("Solutions null");
     }
 
     public void stopSearching() throws Exception
     {
-        _FireflySearch.stopSolving();
+        _fireflySearch.stopSolving();
     }
 
-    private void setParameters(DataNode param) throws Exception
+    public void setParameters(AlgorithmParams params) throws Exception
     {
-        _FireflySearch.setIterationsToGo(param.getValueInt("iterationCount"));
-        _statNumIter = param.getValueInt("iterationCount");
+        _params = params;
+        DataNode p = params.getDataNode("Parameters");
+        _fireflySearch.setIterationsToGo(p.getValueInt("iterationCount"));
+        _statNumIter = p.getValueInt("iterationCount");
 //        _geneticSearch.setSolutionCount(param.getValueInt("numSolution"));
-        _FireflySearch.setPopulationCount(param.getValueInt("populationSize"));
-        _FireflySearch.setAbsorption(param.getValueDouble("absorption"));
+        _fireflySearch.setPopulationCount(p.getValueInt("populationSize"));
+        _fireflySearch.setAbsorption(p.getValueDouble("absorption"));
 //        _EFASearch.setInitialIntensity(param.getValueDouble("initialIntensity"));
 //        _EFASearch.setInitialRandomness(param.getValueDouble("initialRandomness"));
 //        _EFASearch.setFinalRandomness(param.getValueDouble("finalRandomness"));
 //        _EFASearch.setAbsorption(param.getValueDouble("absorption"));
-        _FireflySearch.setTimeStep(param.getValueDouble("timeStep"));
-        _FireflySearch.setWithDecreasingRandomness(param.getValueBool("withDecreasingRandomness"));
+        _fireflySearch.setTimeStep(p.getValueDouble("timeStep"));
+        _fireflySearch.setWithDecreasingRandomness(p.getValueBool("withDecreasingRandomness"));
         // EDD OWN PARAMETERS
 
         //_paramID = param.getValue("ID");
