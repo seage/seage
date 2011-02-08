@@ -12,14 +12,14 @@
 
 package org.seage.problem.qap.fireflies;
 
-import org.seage.aal.ProblemInstance;
+import org.seage.aal.algorithm.ProblemInstance;
 import org.seage.data.DataNode;
 import org.seage.problem.qap.fireflies.*;
 import org.seage.aal.Annotations;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.IProblemProvider;
-import org.seage.aal.fireflies.FirefliyAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IProblemProvider;
+import org.seage.aal.algorithm.fireflies.FireflyAlgorithmAdapter;
 import org.seage.metaheuristic.fireflies.*;
 import org.seage.problem.qap.*;
 
@@ -46,14 +46,14 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
     }
 
     public Class getAlgorithmClass() {
-        return FirefliyAlgorithmAdapter.class;
+        return FireflyAlgorithmAdapter.class;
     }
 
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
         Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
-        algorithm = new FirefliyAlgorithmAdapter((FireflyOperator)(new QapFireflyOperator()), (ObjectiveFunction)(new QapObjectiveFunction(facilityLocation)), false, "");
+        algorithm = new FireflyAlgorithmAdapter((FireflyOperator)(new QapFireflyOperator()), (ObjectiveFunction)(new QapObjectiveFunction(facilityLocation)), false, "");
 
 //        Object[][] solutions = _provider.generateInitialSolutions(_algParams.getValueInt("numSolution"));
 //        algorithm.solutionsFromPhenotype(solutions);
