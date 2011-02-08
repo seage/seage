@@ -6,12 +6,7 @@
 package org.seage.experimenter;
 
 import java.io.File;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.IPhenotypeEvaluator;
-import org.seage.aal.IProblemProvider;
-import org.seage.aal.ProblemInstance;
-import org.seage.aal.ProblemProvider;
+import org.seage.aal.data.ProblemConfig;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 
@@ -19,47 +14,61 @@ import org.seage.data.xml.XmlHelper;
  *
  * @author rick
  */
-public class ExperimentRunner {
+class ExperimentRunner {
 
-    public void run(String configPath) throws Exception
+    private ExperimentRunner(){}
+    
+    public static void run(ProblemConfig config) throws Exception
     {
-        DataNode config = XmlHelper.readXml(new File(configPath));
+        runRunnableTasks(new Runnable[]{new ExperimentTask(config)});
+    }
 
-        String problemID = config.getDataNode("Problem").getValueStr("id");
-        String algorithmID = config.getDataNode("Algorithm").getValueStr("id");    
+    public static void run(ProblemConfig[] configs) throws Exception
+    {
+        ExperimentTask[] tasks = new ExperimentTask[configs.length];
+        for(int i=0;i<configs.length;i++)
+            tasks[i] = new ExperimentTask(configs[i]);
 
-        // provider and factory
-        IProblemProvider provider = ProblemProvider.getProblemProviders().get(problemID);
-        IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
+        runRunnableTasks(tasks);
+    }
 
-        // problem instance
-        ProblemInstance instance = provider.initProblemInstance(config);
+    public static void run(String configPath) throws Exception
+    {
+        ProblemConfig config = new ProblemConfig(XmlHelper.readXml(new File(configPath)));
+        run(config);
+    }
 
-        // algorithm
-        IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, config);
+    private static void runRunnableTasks(Runnable[] tasks) throws Exception
+    {
+        int nrOfProcessors = Runtime.getRuntime().availableProcessors();
 
-        DataNode algNode = config.getDataNode("Algorithm");
-        Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
+        int last = 0;
+        Thread[] threads = new Thread[nrOfProcessors];
 
-        
-        System.out.printf("%s: %4s %s\n", "Problem","", problemID);
-        System.out.printf("%s: %2s %s\n", "Algorithm","", algorithmID);        
-        System.out.printf("%s: %3s %s\n", "Instance","", instance);
-        System.out.println("Running ...");
-        algorithm.solutionsFromPhenotype(solutions);
-        algorithm.startSearching(algNode.getDataNode("Parameters"));
-        solutions = algorithm.solutionsToPhenotype();
+        while(true)
+        {
+            boolean isRunning = false;
+            for(int i=0;i<threads.length;i++)
+            {
+                if(threads[i]==null)
+                {
+                    if(last < tasks.length)
+                    {
+                        threads[i] = new Thread(tasks[last++]);
+                        threads[i].start();
+                        isRunning = true;
+                    }
+                }
+                else{
+                    if(!threads[i].isAlive())
+                        threads[i] = null;
+                    else
+                        isRunning = true;
+                }
+            }
+            if(!isRunning) break;
 
-        // phenotype evaluator
-        IPhenotypeEvaluator evaluator = provider.initPhenotypeEvaluator();
-        double[] result = evaluator.evaluate(solutions[0], instance);
-
-        System.out.printf("%s: %5s %s\n", "Result","", result[0]);
-        //System.out.println(": " + result[0]);
-        
-        System.out.printf("%s: %3s ", "Solution","");
-        for(int i=0;i<solutions[0].length;i++)
-            System.out.print(solutions[0][i]+" ");
-        System.out.println();
+            Thread.sleep(500);
+        }
     }
 }

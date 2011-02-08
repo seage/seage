@@ -12,7 +12,7 @@
 
 package org.seage.problem.qap.fireflies;
 
-import org.seage.aal.ProblemInstance;
+import org.seage.aal.algorithm.ProblemInstance;
 import org.seage.data.DataNode;
 import org.seage.problem.qap.fireflies.*;
 import org.seage.aal.Annotations;

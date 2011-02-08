@@ -7,7 +7,7 @@ package org.seage.reasoning.algparams.evolution.grammar;
 
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.reasoning.algparams.Policy.Attribute;
-import org.seage.aal.AlgorithmReportEvaluator;
+import org.seage.aal.reporting.AlgorithmReportEvaluator;
 import org.seage.reasoning.algparams.Policy;
 import org.seage.reasoning.algparams.evolution.EvolutionReasoner;
 

@@ -5,7 +5,7 @@
 
 package org.seage.problem.tsp;
 
-import org.seage.aal.ProblemInstance;
+import org.seage.aal.algorithm.ProblemInstance;
 
 /**
  *
