@@ -12,13 +12,14 @@
  *     - Added annotations
  */
 
-package org.seage.aal.sannealing;
+package org.seage.aal.algorithm.sannealing;
 
-import org.seage.aal.AlgorithmReport;
-import org.seage.aal.AlgorithmReporter;
+import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReporter;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
-import org.seage.aal.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
@@ -43,7 +44,7 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
 {
     protected SimulatedAnnealing _simulatedAnnealing;
     protected Solution _initialSolution;
-
+    private AlgorithmParams _params;
     //private Solution _bestSolution;
     private AlgorithmReporter _reporter;
     private String _searchID;    
@@ -64,13 +65,19 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
         _reporter = new AlgorithmReporter( searchID );
     }
 
-    public void startSearching(DataNode params) throws Exception {
+    public void run() {
+        try{
+            startSearching();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void startSearching() throws Exception {
         _reporter = new AlgorithmReporter( _searchID );
-        _reporter.putParameters( params );
+        _reporter.putParameters( _params );
 
         _numberOfIterations = _numberOfNewSolutions = _lastIterationNumberNewSolution = 0;
-
-        setParameters( params );
         _simulatedAnnealing.startSearching( _initialSolution );
     }
 
@@ -96,13 +103,15 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
         this._initialSolution = _initialSolution;
     }
 
-    private void setParameters(DataNode param) throws Exception
+    public void setParameters(AlgorithmParams params) throws Exception
     {
-        _simulatedAnnealing.setMaximalTemperature( param.getValueInt("maxTemperature") );
-        _simulatedAnnealing.setMinimalTemperature( param.getValueDouble("minTemperature") );
-        _simulatedAnnealing.setAnnealingCoefficient( param.getValueDouble("annealCoeficient") );
-        _simulatedAnnealing.setMaximalIterationCount( param.getValueInt("maxInnerIterations") );
-        _simulatedAnnealing.setMaximalSuccessIterationCount( param.getValueInt("numInnerSuccesses" ) );
+        _params = params;
+        DataNode p = params.getDataNode("Parameters");
+        _simulatedAnnealing.setMaximalTemperature( p.getValueInt("maxTemperature") );
+        _simulatedAnnealing.setMinimalTemperature( p.getValueDouble("minTemperature") );
+        _simulatedAnnealing.setAnnealingCoefficient( p.getValueDouble("annealCoeficient") );
+        _simulatedAnnealing.setMaximalIterationCount( p.getValueInt("maxInnerIterations") );
+        _simulatedAnnealing.setMaximalSuccessIterationCount( p.getValueInt("numInnerSuccesses" ) );
         _simulatedAnnealing.addSimulatedAnnealingListener( this );
     }
 

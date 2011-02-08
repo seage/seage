@@ -5,8 +5,8 @@
 
 package org.seage.reasoning.algparams;
 
-import org.seage.aal.AlgorithmReport;
-import org.seage.aal.AlgorithmReportEvaluator;
+import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReportEvaluator;
 import org.seage.data.DataNode;
 import java.io.Serializable;
 
