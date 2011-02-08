@@ -45,7 +45,7 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
     protected ParticleSwarm _particleSwarm;
     protected Particle[] _initialParticles;
     private Particle _bestParticle;
-
+    private AlgorithmParams _params;
     private AlgorithmReporter _reporter;
     private String _searchID;
 
@@ -67,11 +67,17 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
         _reporter = new AlgorithmReporter( searchID );
     }
 
-    public void startSearching(AlgorithmParams params) throws Exception {
-        _reporter = new AlgorithmReporter( _searchID );
-        _reporter.putParameters( params );
+    public void run() {
+        try{
+            startSearching();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
 
-        setParameters( params );
+    public void startSearching() throws Exception {
+        _reporter = new AlgorithmReporter( _searchID );
+        _reporter.putParameters( _params );
         _particleSwarm.startSearching( _initialParticles );
     }
 
@@ -89,14 +95,16 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
         return _reporter.getReport();
     }
 
-    private void setParameters(DataNode param) throws Exception
+    public void setParameters(AlgorithmParams params) throws Exception
     {
-        _particleSwarm.setMaximalIterationCount( param.getValueLong("maxIterationCount") );
-        _particleSwarm.setMaximalVelocity( param.getValueDouble("maxVelocity") );
-        _particleSwarm.setMinimalVelocity( param.getValueDouble("minVelocity") );
-        _particleSwarm.setInertia( param.getValueDouble("inertia") );
-        _particleSwarm.setAlpha( param.getValueDouble("alpha") );
-        _particleSwarm.setBeta( param.getValueDouble("beta") );
+        _params = params;
+        DataNode p = params.getDataNode("Parameters");
+        _particleSwarm.setMaximalIterationCount( p.getValueLong("maxIterationCount") );
+        _particleSwarm.setMaximalVelocity( p.getValueDouble("maxVelocity") );
+        _particleSwarm.setMinimalVelocity( p.getValueDouble("minVelocity") );
+        _particleSwarm.setInertia( p.getValueDouble("inertia") );
+        _particleSwarm.setAlpha( p.getValueDouble("alpha") );
+        _particleSwarm.setBeta( p.getValueDouble("beta") );
 
         _particleSwarm.addParticleSwarmOptimizationListener( this );
     }

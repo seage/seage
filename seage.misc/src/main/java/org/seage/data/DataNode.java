@@ -57,8 +57,9 @@ public class DataNode implements Serializable
         _xslPath = "";
     }
 
-    protected DataNode(DataNode dn)
+    protected DataNode(DataNode node)
     {
+        DataNode dn = (DataNode)node.clone();
         _name = dn._name;
         _dataNodes = dn._dataNodes;
         _values = dn._values;
@@ -71,6 +72,11 @@ public class DataNode implements Serializable
     public String getName()
     {
         return _name;
+    }
+
+    public void setName(String name)
+    {
+        _name = name;
     }
 	
     public void putDataNode(DataNode dataSet0) throws Exception

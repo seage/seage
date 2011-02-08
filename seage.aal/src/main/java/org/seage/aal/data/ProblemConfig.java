@@ -24,6 +24,8 @@ public class ProblemConfig extends DataNode{
     public AlgorithmParams getAlgorithmParams() throws Exception
     {
         AlgorithmParams result = new AlgorithmParams(this.getDataNode("Algorithm"));
+        result.putValue("problemID", this.getDataNode("Problem").getValue("id"));
+        result.putValue("instance", this.getDataNode("Problem").getDataNode("Instance").getValue("name"));
         return result;
     }
 }

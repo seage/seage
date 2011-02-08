@@ -11,6 +11,7 @@
  */
 package org.seage.aal.reporting;
 
+import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 
 /**
@@ -24,18 +25,27 @@ public class AlgorithmReporter
 
     public AlgorithmReporter(String searchID) throws Exception
     {
-        _report = new AlgorithmReport("running");
-        _report.putValue("id", searchID);
-        _report.putDataNode(new DataNode("parameters"));
-        _report.putDataNode(new DataNode("minutes"));
-        _report.putDataNode(new DataNode("statistics"));
+        _report = new AlgorithmReport("Report");
+        //_running.putValue("id", searchID);
+        //_running.putDataNode(new DataNode("Parameters"));
+        _report.putDataNode(new DataNode("Minutes"));
+        _report.putDataNode(new DataNode("Statistics"));
+       
     }
 
-    public void putParameters(DataNode params) throws Exception
+    public void putParameters(AlgorithmParams params) throws Exception
     {
-        DataNode paramNode = _report.getDataNode("parameters");
-        for(String paramName : params.getNames())
-            paramNode.putValue(paramName, params.getValue(paramName));
+        _report.putValue("created", System.currentTimeMillis());
+        _report.putValue("algorithmID", params.getValue("id"));
+        _report.putValue("problemID", params.getValue("problemID"));
+        _report.putValue("instance", params.getValue("instance"));
+        _report.putDataNode(params.getDataNode("Parameters"));
+//        for(String paramName : params.getDataNode("Parameters").getNames())
+//            paramNode.putValue(paramName, params.getDataNode("Parameters").getValue(paramName));
+
+//        DataNode a = new DataNode("a");
+//        a.putDataNode(params);
+//        _report.putDataNode(a);
     }
     public void putNewSolution(long time, long iterNumber, double objVal, String solution) throws  Exception
     {
@@ -45,14 +55,14 @@ public class AlgorithmReporter
         newSol.putValue("objVal", objVal);
         newSol.putValue("solution", solution);
 
-        _report.getDataNode("minutes").putDataNode(newSol);
+        _report.getDataNode("Minutes").putDataNode(newSol);
     }
 
     public void putStatistics(
             long numberOfIter, long numberOfNewSolutions, long lastIterNumberNewSol,
             double initObjVal, double avgObjVal, double bestObjVal) throws Exception
     {
-        DataNode stats = _report.getDataNode("statistics");
+        DataNode stats = _report.getDataNode("Statistics");
         stats.putValue("numberOfIter", numberOfIter);
         stats.putValue("numberOfNewSolutions", numberOfNewSolutions);
         stats.putValue("lastIterNumberNewSol", lastIterNumberNewSol);
@@ -61,5 +71,7 @@ public class AlgorithmReporter
         stats.putValue("bestObjVal", bestObjVal);
     }
 
-    public AlgorithmReport getReport(){return (AlgorithmReport)_report.clone();}
+    public AlgorithmReport getReport() throws Exception{
+        return (AlgorithmReport)_report.clone();
+    }
 }

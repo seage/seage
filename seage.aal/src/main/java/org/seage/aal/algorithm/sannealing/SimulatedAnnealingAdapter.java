@@ -44,7 +44,7 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
 {
     protected SimulatedAnnealing _simulatedAnnealing;
     protected Solution _initialSolution;
-
+    private AlgorithmParams _params;
     //private Solution _bestSolution;
     private AlgorithmReporter _reporter;
     private String _searchID;    
@@ -65,13 +65,19 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
         _reporter = new AlgorithmReporter( searchID );
     }
 
-    public void startSearching(AlgorithmParams params) throws Exception {
+    public void run() {
+        try{
+            startSearching();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void startSearching() throws Exception {
         _reporter = new AlgorithmReporter( _searchID );
-        _reporter.putParameters( params );
+        _reporter.putParameters( _params );
 
         _numberOfIterations = _numberOfNewSolutions = _lastIterationNumberNewSolution = 0;
-
-        setParameters( params );
         _simulatedAnnealing.startSearching( _initialSolution );
     }
 
@@ -97,9 +103,10 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
         this._initialSolution = _initialSolution;
     }
 
-    private void setParameters(DataNode param) throws Exception
+    public void setParameters(AlgorithmParams params) throws Exception
     {
-        DataNode p = param.getDataNode("Parameters");
+        _params = params;
+        DataNode p = params.getDataNode("Parameters");
         _simulatedAnnealing.setMaximalTemperature( p.getValueInt("maxTemperature") );
         _simulatedAnnealing.setMinimalTemperature( p.getValueDouble("minTemperature") );
         _simulatedAnnealing.setAnnealingCoefficient( p.getValueDouble("annealCoeficient") );
