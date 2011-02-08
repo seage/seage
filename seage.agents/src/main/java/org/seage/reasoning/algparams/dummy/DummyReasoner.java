@@ -1,10 +1,10 @@
 package org.seage.reasoning.algparams.dummy;
 
-import org.seage.aal.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.reasoning.algparams.Policy;
 import org.seage.reasoning.algparams.Policy.Attribute;
 import org.seage.reasoning.algparams.Reasoner;
-import org.seage.aal.AlgorithmReportEvaluator;
+import org.seage.aal.reporting.AlgorithmReportEvaluator;
 
 public class DummyReasoner extends  Reasoner
 {

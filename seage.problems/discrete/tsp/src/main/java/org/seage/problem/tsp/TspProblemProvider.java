@@ -16,9 +16,10 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Random;
 import org.seage.aal.Annotations;
-import org.seage.aal.IPhenotypeEvaluator;
-import org.seage.aal.ProblemInstance;
-import org.seage.aal.ProblemProvider;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 
 
@@ -32,7 +33,7 @@ public class TspProblemProvider extends ProblemProvider
 {
 
     @Override
-    public ProblemInstance initProblemInstance(DataNode params) throws Exception
+    public ProblemInstance initProblemInstance(ProblemConfig params) throws Exception
     {
         City[] cities;
         DataNode info = params.getDataNode("Problem").getDataNode("Instance", 0);
@@ -46,8 +47,14 @@ public class TspProblemProvider extends ProblemProvider
         else
             stream = new FileInputStream(path); 
 
-        //params.getDataNode("evaluator").putValue("cities", _cities);
-        return new TspProblemInstance(instanceName, CityProvider.readCities(stream));
+        try{
+            cities = CityProvider.readCities(stream);
+        }catch(Exception ex){
+            System.err.println("TspProblemProvider.initProblemInstance - readCities failed, path: " + path);
+            throw ex;
+        }
+
+        return new TspProblemInstance(instanceName, cities);
  
     }
 

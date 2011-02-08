@@ -3,16 +3,16 @@
  * and open the template in the editor.
  */
 
-package org.seage.aal.tabusearch;
+package org.seage.aal.algorithm.particles;
 
-import org.seage.aal.AlgorithmReport;
-import org.seage.aal.AlgorithmReportEvaluator;
+import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReportEvaluator;
 
 /**
  *
  * @author rick
  */
-public class TabuSearchRuntimeEvaluator extends AlgorithmReportEvaluator{
+public class ParticleSwarmRuntimeEvaluator extends AlgorithmReportEvaluator{
 
     @Override
     public int evaluate(AlgorithmReport statistics) {
