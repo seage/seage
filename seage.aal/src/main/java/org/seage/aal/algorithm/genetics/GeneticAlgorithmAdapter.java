@@ -42,7 +42,7 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
     private SubjectComparator _comparator;
     private GeneticSearchObserver _observer;
     private Subject _bestEverSolution;
-
+    private AlgorithmParams _params;
     private String _searchID;
     //private String _paramID;
 
@@ -69,6 +69,14 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
         _searchID = searchID;
     }
 
+    public void run() {
+        try{
+            startSearching();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
     /**
      * <running>
      *      <parameters/>
@@ -79,12 +87,12 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
      * @throws java.lang.Exception
      */
 
-    public void startSearching(AlgorithmParams param) throws Exception
+
+    public void startSearching() throws Exception
     {
         _reporter = new AlgorithmReporter(_searchID);
-        _reporter.putParameters(param);
-
-        setParameters(param);
+        _reporter.putParameters(_params);
+        
         setBestEverSolution();
 
         _geneticSearch.startSearching(_solutions);		
@@ -98,9 +106,10 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
         _geneticSearch.stopSolving();
     }
 
-    private void setParameters(DataNode param) throws Exception
+    public void setParameters(AlgorithmParams params) throws Exception
     {
-        DataNode p = param.getDataNode("Parameters");
+        _params = params;
+        DataNode p = params.getDataNode("Parameters");
         _geneticSearch.getOperator().setCrossLengthPct(p.getValueInt("crossLengthPct") / 100.0);
         _geneticSearch.getOperator().setMutatePct(p.getValueInt("mutateLengthPct") / 100.0);
         _geneticSearch.setEliteSubjectPct(p.getValueInt("eliteSubjectPct") / 100.0);

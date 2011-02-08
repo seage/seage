@@ -47,7 +47,8 @@ class ExperimentTask implements Runnable{
             Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
 
             algorithm.solutionsFromPhenotype(solutions);
-            algorithm.startSearching(algNode);
+            algorithm.setParameters(algNode);
+            algorithm.startSearching();
             solutions = algorithm.solutionsToPhenotype();
 
             // phenotype evaluator

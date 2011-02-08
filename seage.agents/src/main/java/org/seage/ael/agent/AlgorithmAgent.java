@@ -197,7 +197,8 @@ public class AlgorithmAgent extends AelAgent
                         {
                             logInfo("algorithm run");
                             _algorithm.solutionsFromPhenotype(_solutions);
-                            _algorithm.startSearching(new AlgorithmParams(_algorithmParams));
+                            _algorithm.setParameters(new AlgorithmParams(_algorithmParams));
+                            _algorithm.startSearching();
                             // TODO: A - Handle INIT
                             _report = _algorithm.getReport();
                             _report.setId(_policy.getID());

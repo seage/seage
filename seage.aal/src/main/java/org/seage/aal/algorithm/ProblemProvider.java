@@ -63,6 +63,7 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
             DataNode instance = new DataNode("Instance");
             instance.putValue("type", "resource");
             instance.putValue("path", in);
+            instance.putValue("name", in.substring(in.lastIndexOf('/')+1));
             instances.putDataNode(instance);
         }
         _problemInfo.putDataNode(instances);
