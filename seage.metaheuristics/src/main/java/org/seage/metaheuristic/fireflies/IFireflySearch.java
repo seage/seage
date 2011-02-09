@@ -78,7 +78,7 @@ public interface IFireflySearch extends java.io.Serializable
      * @see FireflySearchListener
      * @since 1.0
      */
-    public abstract void addEFASearchListener( FireflySearchListener listener );
+    public abstract void addFireflySearchListener( FireflySearchListener listener );
     
     
     
@@ -91,7 +91,7 @@ public interface IFireflySearch extends java.io.Serializable
      * @see FireflySearchListener
      * @since 1.0
      */
-    public abstract void removeEFASearchListener( FireflySearchListener listener );
+    public abstract void removeFireflySearchListener( FireflySearchListener listener );
     
     
     

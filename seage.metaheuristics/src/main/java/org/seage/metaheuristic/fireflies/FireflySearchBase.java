@@ -98,7 +98,7 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @see FireflySearchListener
      * @since 1.0
      */
-     public final synchronized void addEFASearchListener( FireflySearchListener listener )
+     public final synchronized void addFireflySearchListener( FireflySearchListener listener )
      {  
         FireflySearchListener[] list = new FireflySearchListener[
             fireflySearchListenerList.length + 1 ];
@@ -122,7 +122,7 @@ public abstract class FireflySearchBase implements IFireflySearch
       * @see FireflySearchListener
       * @since 1.0
       */
-     public final synchronized void removeEFASearchListener( FireflySearchListener listener )
+     public final synchronized void removeFireflySearchListener( FireflySearchListener listener )
      {  // Find location of listener to remove
         int index = -1;
         int j = 0;
@@ -242,7 +242,7 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @see FireflySearchEvent
      * @since 1.0
      */
-    protected synchronized final void fireEFASearchStopped()
+    protected synchronized final void fireFireflySearchStopped()
     {
         int len = fireflySearchListenerList.length;
 
@@ -260,7 +260,7 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @see FireflySearchEvent
      * @since 1.0
      */
-    protected synchronized final void fireEFASearchStarted()
+    protected synchronized final void fireFireflySearchStarted()
     {
         int len = fireflySearchListenerList.length;
         for( int i = 0; i < len; i++ )

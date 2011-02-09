@@ -60,7 +60,7 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
         QapObjectiveFunction qof = new QapObjectiveFunction(facilityLocations);
 
         FireflySearch fs = new FireflySearch(qfo, qof);
-        fs.addEFASearchListener(this);
+        fs.addFireflySearchListener(this);
         fs.setWithDecreasingRandomness(_withDecreasingRandomness);
         fs.setWithHillClimbingBestSolution(_withHillClimbingBestSolution);
         fs.setInitialIntensity(_initialIntensity);
@@ -86,34 +86,34 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
     }
 
     public void FireflySearchStarted(FireflySearchEvent e) {
-        System.out.println("EFA Algorithm for QAP started.");
+        System.out.println("Firefly Algorithm for QAP started.");
     }
 
     public void FireflySearchStopped(FireflySearchEvent e) {
-        System.out.println("EFA Algorithm for QAP stopped.");
+        System.out.println("Firefly Algorithm for QAP stopped.");
     }
 
     public void newBestSolutionFound(FireflySearchEvent e) {
-        System.out.println("New best: " + e.getEFASearch().getBestSolution().getObjectiveValue()[0]);
+        System.out.println("New best: " + e.getFireflySearch().getBestSolution().getObjectiveValue()[0]);
     }
 
     public void noChangeInValueIterationMade(FireflySearchEvent e) {
-        System.out.println("EFA Algorithm for QAP - no change in value iteration made.");
+        System.out.println("Firefly Algorithm for QAP - no change in value iteration made.");
     }
 
     public void newCurrentSolutionFound(FireflySearchEvent e) {
-        System.out.println("EFA Algorithm for QAP - new current solution found.");
+        System.out.println("Firefly Algorithm for QAP - new current solution found.");
     }
 
     public void unimprovingMoveMade(FireflySearchEvent e) {
-        System.out.println("EFA Algorithm for QAP - unimproving move made.");
+        System.out.println("Firefly Algorithm for QAP - unimproving move made.");
     }
 
     public void improvingMoveMade(FireflySearchEvent e) {
-        System.out.println("EFA Algorithm for QAP - improving move made.");
+        System.out.println("Firefly Algorithm for QAP - improving move made.");
     }
 
     public void noChangeInValueMoveMade(FireflySearchEvent e) {
-        System.out.println("EFA Algorithm for QAP - no change in value made.");
+        System.out.println("Firefly Algorithm for QAP - no change in value made.");
     }
 }
