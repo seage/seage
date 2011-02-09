@@ -131,7 +131,7 @@ public class FireflySearch extends FireflySearchBase{
             
             _keepSearching = true;
             long startTime = System.currentTimeMillis();
-            fireEFASearchStarted();
+            fireFireflySearchStarted();
 
             _bestSolution = null;
             _currentIteration = 0;
@@ -257,7 +257,7 @@ public class FireflySearch extends FireflySearchBase{
 
             evaluatePopulation(_population);
             System.out.println(_population.getBestSolution().toString());
-            fireEFASearchStopped();
+            fireFireflySearchStopped();
         }
         catch (Exception ex)
         {
