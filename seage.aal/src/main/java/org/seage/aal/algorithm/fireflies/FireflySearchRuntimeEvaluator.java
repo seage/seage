@@ -3,8 +3,8 @@
  * and open the template in the editor.
  */
 
-package org.seage.aal.fireflies;
-import org.seage.aal.fireflies.*;
+package org.seage.aal.algorithm.fireflies;
+import org.seage.aal.algorithm.fireflies.*;
 import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.aal.reporting.AlgorithmReportEvaluator;
 
