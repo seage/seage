@@ -3,10 +3,10 @@
  * and open the template in the editor.
  */
 
-package org.seage.aal.sannealing;
+package org.seage.aal.algorithm.sannealing;
 
-import org.seage.aal.AlgorithmReport;
-import org.seage.aal.AlgorithmReportEvaluator;
+import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReportEvaluator;
 
 /**
  *

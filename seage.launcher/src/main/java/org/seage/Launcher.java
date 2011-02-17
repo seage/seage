@@ -13,11 +13,10 @@ package org.seage;
 
 import aglobe.platform.Platform;
 import java.util.Map;
-import org.seage.aal.IProblemProvider;
-import org.seage.aal.ProblemProvider;
+import org.seage.aal.algorithm.IProblemProvider;
+import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
-import org.seage.data.xml.XmlHelper;
-import org.seage.experimenter.ExperimentRunner;
+import org.seage.experimenter.Experimenter;
 
 /**
  *
@@ -68,9 +67,20 @@ public class Launcher {
             return;
         }
         
-        if(args[0].equals("-run")){
-            if(args.length==3 && args[1].equals("-config") )            
-                new ExperimentRunner().run(args[2]);                
+        if(args[0].equals("-config")){
+            if(args.length==2 )
+                new AlgorithmTester().runFromConfigFile(args[1]);
+            else
+                usage();
+            return;
+        }
+
+        if(args[0].equals("-experiment")){
+            if(args.length==2 )
+                new Experimenter().runExperiments(args[1]);
+            else
+            if(args.length==3 )
+                new Experimenter().runExperiments(args[1], args[2]);
             else
                 usage();
             return;
@@ -92,7 +102,8 @@ public class Launcher {
         System.out.println("params:");
         System.out.println("\t-list");
         System.out.println("\t-test [problem-id [algorithm-id]]");
-        System.out.println("\t-run -config path-to-config");
+        System.out.println("\t-config path-to-config");
+        System.out.println("\t-experiment problem-id [algorithm-id]");
         System.out.println("\t-agents path-to-agent-config-xml");
     }
 

@@ -5,8 +5,8 @@
 
 package org.seage.problem.qap;
 
-import org.seage.aal.IPhenotypeEvaluator;
-import org.seage.aal.ProblemInstance;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.ProblemInstance;
 
 /**
  *

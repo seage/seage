@@ -3,9 +3,11 @@
  * and open the template in the editor.
  */
 
-package org.seage.aal;
+package org.seage.aal.reporting;
 
+import java.io.File;
 import org.seage.data.DataNode;
+import org.seage.data.xml.XmlHelper;
 
 /**
  *
@@ -29,4 +31,11 @@ public class AlgorithmReport extends DataNode
         putValue("id", id);
     }
 
+    public void save(String path)
+    {
+        File f = new File(path);
+        if(!f.getParentFile().exists())
+            f.getParentFile().mkdirs();
+        XmlHelper.writeXml(this, path);
+    }
 }

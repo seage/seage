@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.seage.experimenter;
+package org.seage.aal.data;
 
 import org.seage.data.DataNode;
 
@@ -11,6 +11,10 @@ import org.seage.data.DataNode;
  *
  * @author rick
  */
-public abstract class Configurator {
-    public abstract DataNode[] prepareConfigs(DataNode problemInfo)  throws Exception;
+public class ProblemInfo extends DataNode{
+
+    public ProblemInfo(String name) {
+        super(name);
+    }
+
 }
