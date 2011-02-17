@@ -24,7 +24,7 @@ import org.seage.metaheuristic.fireflies.*;
 import org.seage.problem.qap.*;
 
  
-/**
+/** 
  *
  * @author Richard Malek
  */
@@ -58,7 +58,7 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
                     }
                     sols[i]=new QapSolution(result);
                 }
-                this._solutions=sols;
+                this._solutions=sols; 
             }
 
             public Object[][] solutionsToPhenotype() throws Exception {
