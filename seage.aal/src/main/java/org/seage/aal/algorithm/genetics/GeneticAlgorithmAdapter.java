@@ -9,17 +9,18 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.aal.genetics;
+package org.seage.aal.algorithm.genetics;
 
 
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.genetics.*;
 import java.util.Arrays;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.AlgorithmReport;
-import org.seage.aal.AlgorithmReporter;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReporter;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.Annotations.AlgorithmParameters;
+import org.seage.aal.data.AlgorithmParams;
 
 /**
  * GeneticSearchAdapter class
@@ -41,7 +42,7 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
     private SubjectComparator _comparator;
     private GeneticSearchObserver _observer;
     private Subject _bestEverSolution;
-
+    private AlgorithmParams _params;
     private String _searchID;
     //private String _paramID;
 
@@ -68,6 +69,14 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
         _searchID = searchID;
     }
 
+    public void run() {
+        try{
+            startSearching();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
     /**
      * <running>
      *      <parameters/>
@@ -78,12 +87,12 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
      * @throws java.lang.Exception
      */
 
-    public void startSearching(DataNode param) throws Exception
+
+    public void startSearching() throws Exception
     {
         _reporter = new AlgorithmReporter(_searchID);
-        _reporter.putParameters(param);
-
-        setParameters(param);
+        _reporter.putParameters(_params);
+        
         setBestEverSolution();
 
         _geneticSearch.startSearching(_solutions);		
@@ -97,17 +106,19 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
         _geneticSearch.stopSolving();
     }
 
-    private void setParameters(DataNode param) throws Exception
+    public void setParameters(AlgorithmParams params) throws Exception
     {
-        _geneticSearch.getOperator().setCrossLengthPct(param.getValueInt("crossLengthPct") / 100.0);
-        _geneticSearch.getOperator().setMutatePct(param.getValueInt("mutateLengthPct") / 100.0);
-        _geneticSearch.setEliteSubjectPct(param.getValueInt("eliteSubjectPct") / 100.0);
-        _geneticSearch.setIterationToGo(param.getValueInt("iterationCount"));
-        _statNumIter = param.getValueInt("iterationCount");
+        _params = params;
+        DataNode p = params.getDataNode("Parameters");
+        _geneticSearch.getOperator().setCrossLengthPct(p.getValueInt("crossLengthPct") / 100.0);
+        _geneticSearch.getOperator().setMutatePct(p.getValueInt("mutateLengthPct") / 100.0);
+        _geneticSearch.setEliteSubjectPct(p.getValueInt("eliteSubjectPct") / 100.0);
+        _geneticSearch.setIterationToGo(p.getValueInt("iterationCount"));
+        _statNumIter = p.getValueInt("iterationCount");
 //        _geneticSearch.setSolutionCount(param.getValueInt("numSolution"));
-        _geneticSearch.setMutateSubjectPct(param.getValueInt("mutateSubjectPct") / 100.0);
-        _geneticSearch.setPopulationCount(param.getValueInt("numSolutions"));
-        _geneticSearch.setRandomSubjectPct(param.getValueInt("randomSubjectPct") / 100.0);
+        _geneticSearch.setMutateSubjectPct(p.getValueInt("mutateSubjectPct") / 100.0);
+        _geneticSearch.setPopulationCount(p.getValueInt("numSolutions"));
+        _geneticSearch.setRandomSubjectPct(p.getValueInt("randomSubjectPct") / 100.0);
 
         //_paramID = param.getValue("ID");
     }

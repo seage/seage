@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package org.seage.aal;
+package org.seage.aal.algorithm;
 
+import org.seage.aal.algorithm.ProblemInstance;
 import java.io.Serializable;
 import java.util.Comparator;
 

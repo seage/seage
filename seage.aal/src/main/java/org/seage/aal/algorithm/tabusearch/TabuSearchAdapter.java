@@ -9,14 +9,15 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.aal.tabusearch;
+package org.seage.aal.algorithm.tabusearch;
 
 import java.util.*;
-import org.seage.aal.AlgorithmReporter;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReporter;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
+import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.*;
 
@@ -44,6 +45,8 @@ public abstract class TabuSearchAdapter implements IAlgorithmAdapter
     protected int _solutionsToExplore;
     protected Solution _bestEverSolution;				// best of all solution
     private SolutionComparator _solutionComparator;
+    private AlgorithmParams _params;
+
     private double _statInitObjVal;
     private double _statEndObjVal;
     private int _statNumIter;
@@ -70,13 +73,19 @@ public abstract class TabuSearchAdapter implements IAlgorithmAdapter
         _searchID = searchID;
     }
 
+    public void run() {
+        try{
+            startSearching();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
     @Override
-    public void startSearching(DataNode params) throws Exception
+    public void startSearching() throws Exception
     {
         _reporter = new AlgorithmReporter(_searchID);
-        _reporter.putParameters(params);
-
-        setParameters(params);
+        _reporter.putParameters(_params);
 
         boolean[] mask = new boolean[_solutions.length];
 
@@ -150,15 +159,16 @@ public abstract class TabuSearchAdapter implements IAlgorithmAdapter
         _tabuSearch.stopSolving();
     }
 
-    private void setParameters(DataNode param) throws Exception
+    public void setParameters(AlgorithmParams params) throws Exception
     {
-        _iterationToGo = _statNumIter = param.getValueInt("numIteration");
+        _params = params;
+        DataNode p = params.getDataNode("Parameters");
+        _iterationToGo = _statNumIter = p.getValueInt("numIteration");
 
-        _tabuListLength = param.getValueInt("tabuListLength");
-        _iterationDivers = param.getValueInt("numIterDivers");
-        _solutionsToExplore = param.getValueInt("numSolutions");
+        _tabuListLength = p.getValueInt("tabuListLength");
+        _iterationDivers = p.getValueInt("numIterDivers");
+        _solutionsToExplore = p.getValueInt("numSolutions");
 
-        //_paramID = param.getParam("ID");
     }
 
     public AlgorithmReport getReport() throws Exception

@@ -9,12 +9,14 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.aal;
+package org.seage.aal.algorithm;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
+import org.seage.aal.Annotations;
+import org.seage.aal.data.ProblemInfo;
 import org.seage.classutil.ClassUtil;
 import org.seage.classutil.ClassInfo;
 import org.seage.data.DataNode;
@@ -28,16 +30,16 @@ import org.seage.data.DataNode;
 public abstract class ProblemProvider implements IProblemProvider, Serializable
 {
     private static HashMap<String, IProblemProvider> _providers;
-    private DataNode _problemInfo;
+    private ProblemInfo _problemInfo;
     private HashMap<String, IAlgorithmFactory> _algFactories;
 
     @Override
-    public DataNode getProblemInfo() throws Exception
+    public ProblemInfo getProblemInfo() throws Exception
     {
         if(_problemInfo != null)
             return _problemInfo;
 
-        _problemInfo = new DataNode("ProblemInfo");
+        _problemInfo = new ProblemInfo("ProblemInfo");
         
         Class problemClass = this.getClass();
         Annotation an = null;
@@ -61,6 +63,7 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
             DataNode instance = new DataNode("Instance");
             instance.putValue("type", "resource");
             instance.putValue("path", in);
+            instance.putValue("name", in.substring(in.lastIndexOf('/')+1));
             instances.putDataNode(instance);
         }
         _problemInfo.putDataNode(instances);

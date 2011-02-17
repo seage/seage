@@ -3,7 +3,7 @@ package org.seage.ael.agent;
 import aglobe.ontology.Message;
 import aglobe.ontology.MessageConstants;
 import aglobex.protocol.queryref.QueryRefParticipantTask;
-import org.seage.aal.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.data.DataNode;
 import org.seage.reasoning.algparams.Reasoner;
 import org.seage.reasoning.algparams.ReasonerFactory;

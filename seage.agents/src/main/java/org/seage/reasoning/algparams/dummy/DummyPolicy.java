@@ -5,7 +5,7 @@
 
 package org.seage.reasoning.algparams.dummy;
 
-import org.seage.aal.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.data.DataNode;
 import org.seage.reasoning.algparams.Policy;
 
