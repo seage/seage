@@ -17,11 +17,12 @@ import org.seage.aal.fireflies.*;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.fireflies.*;
 import java.util.Arrays;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.AlgorithmReport;
-import org.seage.aal.AlgorithmReporter;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.reporting.AlgorithmReporter;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.Annotations.AlgorithmParameters;
+import org.seage.aal.data.AlgorithmParams;
 
 /**
  * FireflySearchAdapter class
@@ -47,7 +48,7 @@ public abstract class FireflyAlgorithmAdapter implements  IAlgorithmAdapter
     private FireflySearchObserver _observer;
     private Solution _bestEverSolution;
     private boolean _maximizing;
-
+    private AlgorithmParams _params;
     private String _searchID;
     //private String _paramID;
 
@@ -76,6 +77,13 @@ public abstract class FireflyAlgorithmAdapter implements  IAlgorithmAdapter
     }
 
 
+    public void run() {
+        try{
+            startSearching();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
     /**
      * <running>
      *      <parameters/>
@@ -86,12 +94,11 @@ public abstract class FireflyAlgorithmAdapter implements  IAlgorithmAdapter
      * @throws java.lang.Exception
      */
 
-    public void startSearching(DataNode param) throws Exception
+    public void startSearching() throws Exception
     {
         _reporter = new AlgorithmReporter(_searchID);
-        _reporter.putParameters(param);
+        _reporter.putParameters(_params);
 
-        setParameters(param);
         setBestEverSolution();
 
         _FireflySearch.startSolving(_solutions);
@@ -105,19 +112,21 @@ public abstract class FireflyAlgorithmAdapter implements  IAlgorithmAdapter
         _FireflySearch.stopSolving();
     }
 
-    private void setParameters(DataNode param) throws Exception
+    public void setParameters(AlgorithmParams params) throws Exception
     {
-        _FireflySearch.setIterationsToGo(param.getValueInt("iterationCount"));
-        _statNumIter = param.getValueInt("iterationCount");
+        _params = params;
+        DataNode p = params.getDataNode("Parameters");
+        _FireflySearch.setIterationsToGo(p.getValueInt("iterationCount"));
+        _statNumIter = p.getValueInt("iterationCount");
 //        _geneticSearch.setSolutionCount(param.getValueInt("numSolution"));
-        _FireflySearch.setPopulationCount(param.getValueInt("numSolutions"));
-        _FireflySearch.setAbsorption(param.getValueDouble("absorption"));
+        _FireflySearch.setPopulationCount(p.getValueInt("numSolutions"));
+        _FireflySearch.setAbsorption(p.getValueDouble("absorption"));
 //        _EFASearch.setInitialIntensity(param.getValueDouble("initialIntensity"));
 //        _EFASearch.setInitialRandomness(param.getValueDouble("initialRandomness"));
 //        _EFASearch.setFinalRandomness(param.getValueDouble("finalRandomness"));
 //        _EFASearch.setAbsorption(param.getValueDouble("absorption"));
-        _FireflySearch.setTimeStep(param.getValueDouble("timeStep"));
-        _FireflySearch.setWithDecreasingRandomness(((param.getValueDouble("withDecreasingRandomness")>0)?true:false));
+        _FireflySearch.setTimeStep(p.getValueDouble("timeStep"));
+        _FireflySearch.setWithDecreasingRandomness(((p.getValueDouble("withDecreasingRandomness")>0)?true:false));
         // EDD OWN PARAMETERS
 
         //_paramID = param.getValue("ID");
