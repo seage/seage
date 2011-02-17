@@ -10,10 +10,10 @@
  *     - Initial implementation
  *     Karel Durkota
  */
-package org.seage.aal.fireflies;
+package org.seage.aal.algorithm.fireflies;
 
 
-import org.seage.aal.fireflies.*;
+import org.seage.aal.algorithm.fireflies.*;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.fireflies.*;
 import java.util.Arrays;
