@@ -4,7 +4,7 @@
  */
 
 package org.seage.aal.algorithm.fireflies;
-
+import org.seage.aal.algorithm.fireflies.*;
 import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.aal.reporting.AlgorithmReportEvaluator;
 
