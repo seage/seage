@@ -115,7 +115,6 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
         _geneticSearch.setEliteSubjectPct(p.getValueInt("eliteSubjectPct") / 100.0);
         _geneticSearch.setIterationToGo(p.getValueInt("iterationCount"));
         _statNumIter = p.getValueInt("iterationCount");
-//        _geneticSearch.setSolutionCount(param.getValueInt("numSolution"));
         _geneticSearch.setMutateSubjectPct(p.getValueInt("mutateSubjectPct") / 100.0);
         _geneticSearch.setPopulationCount(p.getValueInt("numSolutions"));
         _geneticSearch.setRandomSubjectPct(p.getValueInt("randomSubjectPct") / 100.0);
@@ -127,13 +126,13 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
     {
         try
         {
-            if (_solutions[0].getObjectiveValue()!=null &&_solutions[0].getObjectiveValue().length==0)
-                    _solutions[0].setObjectiveValue(_evaluator.evaluate(_solutions[0]));
+            if (_solutions[0].getObjectiveValue()==null || _solutions[0].getObjectiveValue().length==0)
+                _solutions[0].setObjectiveValue(_evaluator.evaluate(_solutions[0]));
             _bestEverSolution = (Subject)_solutions[0].clone();
 
             for (int i = 1; i < _solutions.length; i++)
             {
-                if (_solutions[i].getObjectiveValue().length==0)
+                if (_solutions[i].getObjectiveValue()==null || _solutions[0].getObjectiveValue().length==0)
                     _solutions[i].setObjectiveValue(_evaluator.evaluate(_solutions[i]));
 
                 if (_comparator.compare(_solutions[i], _bestEverSolution)==1)
