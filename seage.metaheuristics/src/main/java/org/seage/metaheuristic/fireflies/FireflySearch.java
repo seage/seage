@@ -16,9 +16,9 @@
 
 package org.seage.metaheuristic.fireflies;
 
-import org.seage.metaheuristic.fireflies.*;
 import java.util.Collections;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * This version of the {@link FireflySearch} does not create any new threads, making it
@@ -28,6 +28,7 @@ import java.util.Random;
  * @author Karel Durkota
  */
 public class FireflySearch extends FireflySearchBase{
+    private static final Logger log = Logger.getLogger("org.seage");//FireflySearch.class.getName());
 
     private int _iterationCount;
     private int _currentIteration;
@@ -160,7 +161,7 @@ public class FireflySearch extends FireflySearchBase{
             int i=0;
             while (i++ < _iterationsToGo && _keepSearching)
             {
-                //System.out.println("---------------------------\n"+i+"-th ITERATION");
+                log.finer("---------------------------\n"+i+"-th ITERATION");
                 _currentIteration++;
 
                 evaluatePopulation(_population);
@@ -170,7 +171,7 @@ public class FireflySearch extends FireflySearchBase{
                         d=d+_operator.getDistance(_population.getSolutions()[s1],_population.getSolutions()[s2]);
                     }
                 }
-                //System.out.println("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
+                log.finer("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
                 //_population.removeTwins();
 
 //                for(int j=0;j<_population.getSize();j++){
@@ -256,7 +257,7 @@ public class FireflySearch extends FireflySearchBase{
             }
 
             evaluatePopulation(_population);
-            //System.out.println(_population.getBestSolution().toString());
+            log.finer(_population.getBestSolution().toString());
             fireFireflySearchStopped();
         }
         catch (Exception ex)
