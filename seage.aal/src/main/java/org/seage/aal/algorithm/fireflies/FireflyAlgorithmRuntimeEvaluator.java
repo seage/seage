@@ -1,9 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Richard Malek
+ *     - Initial implementation
+ *     Karel Durkota
  */
 
-package org.seage.aal.algorithm.genetics;
+package org.seage.aal.algorithm.fireflies;
 import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.aal.reporting.AlgorithmReportEvaluator;
 
@@ -12,7 +20,7 @@ import org.seage.aal.reporting.AlgorithmReportEvaluator;
  *
  * @author rick
  */
-public class GeneticSearchRuntimeEvaluator extends AlgorithmReportEvaluator
+public class FireflyAlgorithmRuntimeEvaluator extends AlgorithmReportEvaluator
 {
 
     @Override

@@ -160,7 +160,7 @@ public class FireflySearch extends FireflySearchBase{
             int i=0;
             while (i++ < _iterationsToGo && _keepSearching)
             {
-                System.out.println("---------------------------\n"+i+"-th ITERATION");
+                //System.out.println("---------------------------\n"+i+"-th ITERATION");
                 _currentIteration++;
 
                 evaluatePopulation(_population);
@@ -170,7 +170,7 @@ public class FireflySearch extends FireflySearchBase{
                         d=d+_operator.getDistance(_population.getSolutions()[s1],_population.getSolutions()[s2]);
                     }
                 }
-                System.out.println("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
+                //System.out.println("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
                 //_population.removeTwins();
 
 //                for(int j=0;j<_population.getSize();j++){
@@ -188,7 +188,7 @@ public class FireflySearch extends FireflySearchBase{
 
                     // check a worse solution than previous
                 currBestFitness = _objectiveFunction.evaluate(_population.getBestSolution())[0];//.getObjectiveValue()[0];
-                System.out.println(currBestFitness);
+                //System.out.println(currBestFitness);
 		if(currBestFitness != _population.getBestSolution().getObjectiveValue()[0])     // SOLVED
                     throw new Exception("Fitness function failed");
                 //prevFitness = currFitness;
@@ -256,7 +256,7 @@ public class FireflySearch extends FireflySearchBase{
             }
 
             evaluatePopulation(_population);
-            System.out.println(_population.getBestSolution().toString());
+            //System.out.println(_population.getBestSolution().toString());
             fireFireflySearchStopped();
         }
         catch (Exception ex)

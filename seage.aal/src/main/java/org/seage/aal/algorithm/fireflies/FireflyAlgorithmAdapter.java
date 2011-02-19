@@ -138,13 +138,13 @@ public abstract class FireflyAlgorithmAdapter implements  IAlgorithmAdapter
             return;
         try
         {
-            if (_solutions[0].getObjectiveValue()!=null &&_solutions[0].getObjectiveValue().length==0)
-                    _solutions[0].setObjectiveValue(_evaluator.evaluate(_solutions[0]));
+            if (_solutions[0].getObjectiveValue()==null || _solutions[0].getObjectiveValue().length==0)
+                _solutions[0].setObjectiveValue(_evaluator.evaluate(_solutions[0]));
             _bestEverSolution = (Solution)_solutions[0].clone();
 
             for (int i = 1; i < _solutions.length; i++)
             {
-                if (_solutions[i].getObjectiveValue().length==0)
+                if (_solutions[i].getObjectiveValue()==null)
                     _solutions[i].setObjectiveValue(_evaluator.evaluate(_solutions[i]));
 
                 if (_comparator.compare(_solutions[i], _bestEverSolution)==1)
@@ -196,7 +196,7 @@ public abstract class FireflyAlgorithmAdapter implements  IAlgorithmAdapter
                 Solution solution = e.getFireflySearch().getBestSolution();
                 _bestEverSolution = (Solution)e.getFireflySearch().getBestSolution().clone();
 
-                System.out.println(_searchID+"  "+solution.getObjectiveValue()[0] + " \t" + solution.hashCode() + "\t" + solution.toString());
+                //System.out.println(_searchID+"  "+solution.getObjectiveValue()[0] + " \t" + solution.hashCode() + "\t" + solution.toString());
 //                DataNode log = new DataNode("newSolution");
 //                log.putValue("time", System.currentTimeMillis());
 //                log.putValue("numIter", e.getFireflySearch().getCurrentIteration());
