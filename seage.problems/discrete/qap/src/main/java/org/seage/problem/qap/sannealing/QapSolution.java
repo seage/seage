@@ -60,18 +60,18 @@ public abstract class QapSolution extends Solution
     @Override
     public QapSolution clone()
     {
-        QapSolution tspSolution = null;
+        QapSolution qapSolution = null;
         try
         {
-            tspSolution = (QapSolution)super.clone();
-            tspSolution.setAssign( _assign.clone() );
-            tspSolution.setFacilityLocation( _facilityLocation );
-            tspSolution.setObjectiveValue(getObjectiveValue());
+            qapSolution = (QapSolution)super.clone();
+            qapSolution.setAssign( _assign.clone() );
+            qapSolution.setFacilityLocation( _facilityLocation );
+            qapSolution.setObjectiveValue(getObjectiveValue());
         } catch (Exception ex)
         {
             Logger.getLogger(QapSolution.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return tspSolution;
+        return qapSolution;
     }
 
     public String toString(){

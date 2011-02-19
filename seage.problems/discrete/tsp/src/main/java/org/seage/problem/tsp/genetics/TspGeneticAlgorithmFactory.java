@@ -13,10 +13,10 @@
 package org.seage.problem.tsp.genetics;
 
 import org.seage.aal.Annotations;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.ProblemInstance;
-import org.seage.aal.genetics.GeneticAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
 import org.seage.data.DataNode;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspProblemInstance;

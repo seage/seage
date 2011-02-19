@@ -16,11 +16,14 @@ package org.seage.problem.qap;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import org.seage.aal.Annotations;
-import org.seage.aal.IPhenotypeEvaluator;
-import org.seage.aal.ProblemInstance;
-import org.seage.aal.ProblemProvider;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 
 /**
@@ -33,7 +36,7 @@ public class QapProblemProvider extends ProblemProvider
 {
 
     @Override
-    public ProblemInstance initProblemInstance(DataNode params) throws Exception
+    public ProblemInstance initProblemInstance(ProblemConfig params) throws Exception
     {
         DataNode info = params.getDataNode("Problem").getDataNode("Instance", 0);
         String type = info.getValueStr("type");
@@ -56,33 +59,43 @@ public class QapProblemProvider extends ProblemProvider
     {
         int numAssigns = numSolutions;
         Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
-        int assignPrice = facilityLocation.length;
-        Object[][] result = new Object[numAssigns][];
+        int assignPrice = facilityLocation[0].length;
+        Object[][] result = new Object[numAssigns][assignPrice];
 
-	Random r = new Random();
-
-        result[0] = AssignmentProvider.createGreedyAssignment(facilityLocation);
-        
-        for(int k=1;k<numAssigns;k++)
-        {
-            int[] initAssign = new int[assignPrice];
-
-            result[k] = new Object[assignPrice];
-
-            for (int i = 0; i < assignPrice; i++)
-            {
-                int ix = r.nextInt(assignPrice);
-
-                while (initAssign[ix] != 0)
-                {
-                    ix = (ix + 1) % assignPrice;
-                }
-                initAssign[ix] = 1;
-                result[k][i] = ix;
-            }
-
+//	Random r = new Random();
+        ArrayList al = new ArrayList();
+        for(int i=0;i<assignPrice;i++)
+            al.add(i);
+        for(int i=0;i<numAssigns;i++){
+            Collections.shuffle(al);
+            result[i]=al.toArray();
         }
         return result;
+//        Object result[][]=new Object[numAssigns][assignPrice];
+
+
+//        result[0] = AssignmentProvider.createGreedyAssignment(facilityLocation);
+//
+//        for(int k=1;k<numAssigns;k++)
+//        {
+//            int[] initAssign = new int[assignPrice];
+//
+//            result[k] = new Object[assignPrice];
+//
+//            for (int i = 0; i < assignPrice; i++)
+//            {
+//                int ix = r.nextInt(assignPrice);
+//
+//                while (initAssign[ix] != 0)
+//                {
+//                    ix = (ix + 1) % assignPrice;
+//                }
+//                initAssign[ix] = 1;
+//                result[k][i] = ix;
+//            }
+//
+//        }
+//        return result;
     }
 
 //    @Override
@@ -90,7 +103,7 @@ public class QapProblemProvider extends ProblemProvider
 //    {
 //        String algName = algorithmParams.getName();
 ////        if(algName.equals("geneticAlgorithm"))
-////            return new TspGeneticAlgorithmFactory();
+////           return new QapGeneticAlgorithmFactory();
 //        if(algName.equals("tabuSearch"))
 //            return new QapTabuSearchFactory();
 //        if(algName.equals("simulatedAnnealing"))
