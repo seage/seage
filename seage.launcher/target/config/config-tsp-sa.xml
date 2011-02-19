@@ -13,9 +13,9 @@
         <Parameters
             annealCoeficient="0.99"
             initSolutionType="random"
-            maxInnerIterations="200"
-            maxTemperature="1000"
-            minTemperature="10"
+            maxInnerIterations="500"
+            maxTemperature="100"
+            minTemperature="1"
             numInnerSuccesses="20"
             numSolutions="1"/>
     </Algorithm>

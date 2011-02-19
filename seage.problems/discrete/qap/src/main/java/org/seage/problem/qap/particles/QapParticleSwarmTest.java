@@ -25,7 +25,8 @@ import org.seage.problem.qap.FacilityLocationProvider;
 public class QapParticleSwarmTest implements IParticleSwarmListener
 {
     private Double[][][] _facilityLocation;
-    private static String _dataPath = "D:/esc16i.dat";
+//    private static String _dataPath = "data/tai12a.dat";
+    private static String _dataPath = "D:\\qap\\bur26a.dat";
 
     public static void main(String[] args)
     {

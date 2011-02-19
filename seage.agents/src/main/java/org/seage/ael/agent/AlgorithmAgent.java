@@ -6,9 +6,9 @@ import aglobe.ontology.MessageConstants;
 import aglobe.service.directory.DirectoryRecord;
 import aglobex.protocol.cnp.CNPInitiatorTask;
 import aglobex.protocol.queryref.QueryRefInitiatorTask;
-import org.seage.aal.AlgorithmReport;
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmFactory;
+import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 import org.seage.reasoning.algparams.Policy;
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.seage.aal.data.AlgorithmParams;
 
 /**
  * AlgorithmAgent class
@@ -196,7 +197,8 @@ public class AlgorithmAgent extends AelAgent
                         {
                             logInfo("algorithm run");
                             _algorithm.solutionsFromPhenotype(_solutions);
-                            _algorithm.startSearching(_algorithmParams);
+                            _algorithm.setParameters(new AlgorithmParams(_algorithmParams));
+                            _algorithm.startSearching();
                             // TODO: A - Handle INIT
                             _report = _algorithm.getReport();
                             _report.setId(_policy.getID());

@@ -129,9 +129,9 @@ public class AssignmentProvider
     // TODO: A - create better implementation
     public static Integer[] createRandomAssignment(Double[][][] facilityLocation)
     {
-        Integer[] assign = new Integer[ facilityLocation[0][0].length ];
+//        Integer[] assign = new Integer[ facilityLocation[0][0].length ];
         List<Integer> listAssign = new ArrayList();
-        for (int i = 0; i < facilityLocation.length; i++) {
+        for (int i = 0; i < facilityLocation[0][0].length; i++) {
             listAssign.add(i);
         }
         Collections.shuffle(listAssign);
