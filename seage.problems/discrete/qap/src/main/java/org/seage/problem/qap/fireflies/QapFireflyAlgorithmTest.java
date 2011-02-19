@@ -11,7 +11,9 @@
  */
 package org.seage.problem.qap.fireflies;
 
-import org.seage.problem.qap.fireflies.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.seage.logging.LogHelper;
 import org.seage.metaheuristic.fireflies.*;
 import org.seage.problem.qap.*;
 
@@ -21,7 +23,7 @@ import org.seage.problem.qap.*;
  */
 public class QapFireflyAlgorithmTest implements FireflySearchListener
 {
-    
+    private static final Logger log = Logger.getLogger("org.seage");
     private static String _dataPath = "data/tai12a.dat";
 //    private static String _dataPath = "D:\\qap\\bur26a.dat";
 
@@ -29,6 +31,8 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
     {
         try
         {
+            LogHelper.setConsoleFineLevel(log, Level.ALL);
+            log.finer("Start");
             new QapFireflyAlgorithmTest().run(_dataPath);
         }
         catch(Exception ex)

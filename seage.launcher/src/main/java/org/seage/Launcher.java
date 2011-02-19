@@ -12,17 +12,25 @@
 package org.seage;
 
 import aglobe.platform.Platform;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.experimenter.Experimenter;
+import org.seage.logging.LogHelper;
 
 /**
  *
  * @author rick
  */
 public class Launcher {
+    private static final Logger log = Logger.getLogger(Launcher.class.getPackage().getName());
 
     /**
      * @param args the command line arguments
@@ -31,11 +39,17 @@ public class Launcher {
     {
         try
         {
+            LogHelper.loadConfig("log.properties");
+            
+            log.fine("Start");
+            log.finer("Start2");
+            log.finest("Start3");
+            log.info("Running");
             new Launcher().run(args);
         }
         catch(Exception ex)
         {
-            ex.printStackTrace();
+            log.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -145,7 +159,7 @@ public class Launcher {
             }
             catch(Exception ex)
             {
-                System.err.println(problemId+": "+ex.getMessage());
+                log.log(Level.SEVERE, problemId+": "+ex.getMessage(), ex);
             }
             //XmlHelper.writeXml(problems, "problems.xml");
         }
