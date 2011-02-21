@@ -59,12 +59,14 @@ class ExperimentTask implements Runnable{
             double[] result = evaluator.evaluate(solutions[0], instance);
 
             AlgorithmReport report = algorithm.getReport();
-            XmlHelper.writeXml(report, "output/"+System.currentTimeMillis()+".xml");
+            String path = "output/"+problemID +"-"+InstanceName.split("\\.")[0] +"-"+algorithmID+"-"+System.currentTimeMillis()+".xml";
+            XmlHelper.writeXml(report, path);
 
             System.out.printf("%s %15s\t %s\n", algorithmID, instance.toString(), result[0]);
         }
         catch(Exception ex){
             System.err.println("ERR: " + problemID +"/"+algorithmID+"/"+InstanceName);
+            System.err.println(_config.toString());
             ex.printStackTrace();
         }
     }

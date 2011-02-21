@@ -23,14 +23,15 @@ public class Experimenter {
 
     public void runExperiments(String problemID) throws Exception {
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-        Configurator dc = new IntervalConfigurator("");
+        Configurator dc = new IntervalConfigurator("", 5);
     }
 
     public void runExperiments(String problemID, String algorithmID) throws Exception {
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-        Configurator dc = new IntervalConfigurator(algorithmID);
+        Configurator ic = new IntervalConfigurator(algorithmID, 5);
+        ic.prepareConfigs(pi);
 
-        ExperimentRunner.run(dc.prepareConfigs(pi));
+        //ExperimentRunner.run(ic.prepareConfigs(pi));
     }
 
 }

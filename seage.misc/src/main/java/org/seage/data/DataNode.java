@@ -94,6 +94,11 @@ public class DataNode implements Serializable
         list.add(dataSet);
     }
 
+    public void removeDataNode(String name, Object o)
+    {
+        _dataNodes.get(name).remove(o);
+    }
+
     public void removeDataNode(String name, int index)
     {
         _dataNodes.get(name).remove(index);
@@ -130,66 +135,48 @@ public class DataNode implements Serializable
     {
         checkValueName(name);
         Object o = _values.get(name);
-        if (o instanceof Integer)
-        {
-            return ((Integer)o).intValue();
-        }
-        else
-        if (o instanceof Double)
-        {
-            return ((Double)o).intValue();
-        }
-        else
-        {
-            return Integer.parseInt(o.toString());
-        }
+
+        if(o instanceof Number)
+            return ((Number)o).intValue();
+        else if(o instanceof String)
+            return new Long(Math.round(Double.parseDouble(o.toString()))).intValue();
+        else throw new Exception("Not an integer number");
     }
 
     public long getValueLong(String name) throws Exception
     {
         checkValueName(name);
         Object o = _values.get(name);
-        if (o instanceof Long)
-        {
-            return ((Long)o).longValue();
-        }
-        else
-        if (o instanceof Double)
-        {
-            return ((Double)o).intValue();
-        }
-        else
-        {
-            return Long.parseLong(o.toString());
-        }
+
+        if(o instanceof Number)
+            return ((Number)o).intValue();
+        else if(o instanceof String)
+            return Math.round(Double.parseDouble(o.toString()));
+        else throw new Exception("Not a long number");
     }
     
     public double getValueDouble(String name) throws Exception
     {
         checkValueName(name);
         Object o = _values.get(name);
-        if (o instanceof Number)
-        {
-            return ((Number)o).doubleValue();
-        }
-        else
-        {
-            return Double.parseDouble((String)o);
-        }
+        
+        if (o instanceof Number)        
+            return ((Number)o).doubleValue();        
+        else if(o instanceof String)
+            return Double.parseDouble(o.toString());
+        else throw new Exception("Not a double number");
     }
 
     public boolean getValueBool(String name) throws Exception
     {
         checkValueName(name);
         Object o = _values.get(name);
+        
         if (o instanceof Boolean)
-        {
-            return ((Boolean)o).booleanValue();
-        }
-        else
-        {
-            return Boolean.parseBoolean((String)o);
-        }
+            return ((Boolean)o).booleanValue();        
+        else if(o instanceof String)
+            return Boolean.parseBoolean(o.toString());
+        else throw new Exception("Not a double number");
     }
     
     private void checkValueName(String name) throws Exception
