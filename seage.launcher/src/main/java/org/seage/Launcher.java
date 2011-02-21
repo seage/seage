@@ -40,10 +40,6 @@ public class Launcher {
         try
         {
             LogHelper.loadConfig("log.properties");
-            
-            log.fine("Start");
-            log.finer("Start2");
-            log.finest("Start3");
             log.info("Running");
             new Launcher().run(args);
         }
@@ -88,11 +84,11 @@ public class Launcher {
         }
 
         if(args[0].equals("-experiment")){
-            if(args.length==2 )
-                new Experimenter().runExperiments(args[1]);
-            else
-            if(args.length==3 )
-                new Experimenter().runExperiments(args[1], args[2]);
+//            if(args.length==2 )
+//                new Experimenter().runExperiments(args[1]);
+//            else
+            if(args.length==4 )
+                new Experimenter().runExperiments(args[1], args[2], Integer.parseInt(args[3]));
             else
                 usage();
             return;
@@ -115,7 +111,7 @@ public class Launcher {
         System.out.println("\t-list");
         System.out.println("\t-test [problem-id [algorithm-id]]");
         System.out.println("\t-config path-to-config");
-        System.out.println("\t-experiment problem-id [algorithm-id]");
+        System.out.println("\t-experiment problem-id algorithm-id num-runs");
         System.out.println("\t-agents path-to-agent-config-xml");
     }
 
