@@ -26,8 +26,8 @@ import org.seage.aal.data.AlgorithmParams;
  * GeneticSearchAdapter class
  */
 @AlgorithmParameters({
-    @Parameter(name="iterationCount", min=0, max=1000000, init=100),
-    @Parameter(name="numSolutions", min=1, max=1000000, init=100),
+    @Parameter(name="iterationCount", min=100, max=10000, init=100),
+    @Parameter(name="numSolutions", min=10, max=1000, init=100),
     @Parameter(name="crossLengthPct", min=0, max=100, init=10),
     @Parameter(name="mutateLengthPct", min=0, max=100, init=10),
     @Parameter(name="eliteSubjectPct", min=0, max=100, init=10),
