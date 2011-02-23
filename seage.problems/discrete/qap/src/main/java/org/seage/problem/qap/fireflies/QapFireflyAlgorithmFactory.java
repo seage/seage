@@ -45,7 +45,7 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
     {
         IAlgorithmAdapter algorithm;
         Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
-        algorithm = new FireflyAlgorithmAdapter((FireflyOperator)(new QapFireflyOperator()), (ObjectiveFunction)(new QapObjectiveFunction(facilityLocation)), false, "") {
+        algorithm = new FireflyAlgorithmAdapter(new QapFireflyOperator(), new QapObjectiveFunction(facilityLocation), false, "") {
 
             public void solutionsFromPhenotype(Object[][] source) throws Exception {
                 int height = source.length;

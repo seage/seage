@@ -29,9 +29,12 @@ class ExperimentTask implements Runnable{
     }
     
     public void run() {
+        String problemID = "";
+        String algorithmID = "";
+        String InstanceName = "";
         try{
-            String problemID = _config.getDataNode("Problem").getValueStr("id");
-            String algorithmID = _config.getDataNode("Algorithm").getValueStr("id");
+            problemID = _config.getDataNode("Problem").getValueStr("id");
+            algorithmID = _config.getDataNode("Algorithm").getValueStr("id");
 
             // provider and factory
             IProblemProvider provider = ProblemProvider.getProblemProviders().get(problemID);
@@ -39,7 +42,7 @@ class ExperimentTask implements Runnable{
 
             // problem instance
             ProblemInstance instance = provider.initProblemInstance(_config);
-
+            InstanceName = instance.toString();
             // algorithm
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, _config);
 
@@ -61,6 +64,7 @@ class ExperimentTask implements Runnable{
             System.out.printf("%s %15s\t %s\n", algorithmID, instance.toString(), result[0]);
         }
         catch(Exception ex){
+            System.err.println("ERR: " + problemID +"/"+algorithmID+"/"+InstanceName);
             ex.printStackTrace();
         }
     }
