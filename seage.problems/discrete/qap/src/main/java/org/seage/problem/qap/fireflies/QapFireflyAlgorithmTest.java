@@ -22,14 +22,25 @@ import org.seage.problem.qap.*;
 public class QapFireflyAlgorithmTest implements FireflySearchListener
 {
     
-    private static String _dataPath = "data/tai12a.dat";
+    private static String _dataPath = "data/esc128.dat";
 //    private static String _dataPath = "D:\\qap\\bur26a.dat";
+    public FireflySearch fs;
+    public static int iters = 2;
 
     public static void main(String[] args)
     {
         try
         {
-            new QapFireflyAlgorithmTest().run(_dataPath);
+            double sum=0;
+            String str = "";
+            for(int i=0;i<iters;i++){
+                QapFireflyAlgorithmTest q = new QapFireflyAlgorithmTest();
+                q.run(_dataPath);
+                str+=q.fs.getBestSolution().getObjectiveValue()[0]+"\n";
+                sum+=q.fs.getBestSolution().getObjectiveValue()[0];
+            }
+            System.out.println(str);
+            System.out.println("Average:"+(double)sum/(double)iters);
         }
         catch(Exception ex)
         {
@@ -46,26 +57,28 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
 
         boolean _withDecreasingRandomness=true;
         boolean _withHillClimbingBestSolution=true;
+        boolean _bestSolutionNoMove=false;
         double _initialIntensity=1;
-        double _initialRandomness=0.7;
-        double _finalRandomness=0.1;
-        double _absorption=0.001;
-        double _timeStep=0.1;
+        double _initialRandomness=5;
+        double _finalRandomness=2;
+        double _absorption=0.025;
+        double _timeStep=0.15;
         int populationSize = 100;
         boolean _maximizing = false;
-        int iterationsToGo = 100;
+        int iterationsToGo = 1000;
 
         QapFireflyOperator qfo = new QapFireflyOperator(_initialIntensity,_initialRandomness,_finalRandomness,_absorption,_timeStep,_withDecreasingRandomness);
         QapFireflyOperator._facilityLocations=facilityLocations;
         QapObjectiveFunction qof = new QapObjectiveFunction(facilityLocations);
 
-        FireflySearch fs = new FireflySearch(qfo, qof);
+        fs = new FireflySearch(qfo, qof);
         fs.addFireflySearchListener(this);
         fs.setWithDecreasingRandomness(_withDecreasingRandomness);
         fs.setWithHillClimbingBestSolution(_withHillClimbingBestSolution);
         fs.setInitialIntensity(_initialIntensity);
         fs.setInitialRandomness(_initialRandomness);
         fs.setFinalRandomness(_finalRandomness);
+        fs.setBestSolutionNoMove(_bestSolutionNoMove);
         fs.setAbsorption(_absorption);
         fs.setTimeStep(_timeStep);
         fs.setPopulationCount(populationSize);
