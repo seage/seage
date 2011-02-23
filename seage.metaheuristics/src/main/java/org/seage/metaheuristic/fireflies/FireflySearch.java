@@ -59,6 +59,7 @@ public class FireflySearch extends FireflySearchBase{
     private Random _random;
     private boolean _maximizing;
     private int _iterationsToGo;
+    private boolean _bestSolutionNoMove;
 
     /**
      * CONSTRUCTOR
@@ -161,8 +162,9 @@ public class FireflySearch extends FireflySearchBase{
             int i=0;
             while (i++ < _iterationsToGo && _keepSearching)
             {
-                log.finer("---------------------------\n"+i+"-th ITERATION");
-                _currentIteration++;
+<<<<<<< .mine//                System.out.println("---------------------------\n"+i+"-th ITERATION");
+=======                log.finer("---------------------------\n"+i+"-th ITERATION");
+>>>>>>> .theirs                _currentIteration++;
 
                 evaluatePopulation(_population);
                 double d = 0;
@@ -171,8 +173,9 @@ public class FireflySearch extends FireflySearchBase{
                         d=d+_operator.getDistance(_population.getSolutions()[s1],_population.getSolutions()[s2]);
                     }
                 }
-                log.finer("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
-                //_population.removeTwins();
+<<<<<<< .mine//                System.out.println("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
+=======                log.finer("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
+>>>>>>> .theirs                //_population.removeTwins();
 
 //                for(int j=0;j<_population.getSize();j++){
 //                    System.out.println("\nVypis:"+_population.getSolutions()[j].toString()+" - "+_population.getSolutions()[j].getObjectiveValue()[0]);
@@ -201,38 +204,25 @@ public class FireflySearch extends FireflySearchBase{
                 workPopulation.removeAll();
                 workPopulation.mergePopulation(_population);
                 for(int s1=0;s1<_population.getSize();s1++){
+                    boolean isBest=true;
                     for(int s2=0;s2<_population.getSize();s2++){
-                        if(_maximizing){
-                            if(workPopulation.getSolution(s1).getObjectiveValue()[0]
-                                < workPopulation.getSolution(s2).getObjectiveValue()[0]){
-                                _operator.attract(_population.getSolutions()[s1],workPopulation.getSolutions()[s2],_currentIteration);
+                        if((_maximizing && workPopulation.getSolution(s1).getObjectiveValue()[0]
+                                < workPopulation.getSolution(s2).getObjectiveValue()[0]) || 
+                           (!_maximizing && workPopulation.getSolution(s1).getObjectiveValue()[0]
+                                > workPopulation.getSolution(s2).getObjectiveValue()[0])){
+                            isBest=false;
+                            _operator.attract(_population.getSolutions()[s1],workPopulation.getSolutions()[s2],_currentIteration);
 
-                                if(_population.getSolutions()[s1].equals(workPopulation.getSolutions()[s2])){
+                            if(_population.getSolutions()[s1].equals(workPopulation.getSolutions()[s2])){
 //                                    System.out.println("EQUALS\nOLD:"+_population.getSolutions()[s1].toString());
 //                                    _operator.randomSolution(_population.getSolutions()[s1]);
-                                    _operator.modifySolution(_population.getSolutions()[s1]);
+                                _operator.modifySolution(_population.getSolutions()[s1]);
 //                                    System.out.println("NEW:"+_population.getSolutions()[s1].toString());
-                                }
-//                                else
-//                                    System.out.println("Not equals.");
                             }
-                        }
-                         else{
-                            if(workPopulation.getSolution(s1).getObjectiveValue()[0]
-                                > workPopulation.getSolution(s2).getObjectiveValue()[0]){
-                                _operator.attract(_population.getSolutions()[s1],workPopulation.getSolutions()[s2],_currentIteration);
-
-                                if(_population.getSolutions()[s1].equals(workPopulation.getSolutions()[s2])){
-//                                    System.out.println("EQUALS\nOLD:"+_population.getSolutions()[s1].toString());
-                                    _operator.modifySolution(_population.getSolutions()[s1]);
-//                                    System.out.println("NEW:"+_population.getSolutions()[s1].toString());
-                                }
-//                                else
-//                                    System.out.println("Not equals.");
-                            }
-                        }
-                        //temporary solution for not getting in the same solutions
-
+                        }                        
+                    }
+                    if(!getBestSolutionNoMove() && isBest==true){
+                        _operator.modifySolution(_population.getSolutions()[s1]);
                     }
                 }
                 // hill climbing of best solution
@@ -258,6 +248,7 @@ public class FireflySearch extends FireflySearchBase{
 
             evaluatePopulation(_population);
             log.finer(_population.getBestSolution().toString());
+            System.out.println(_bestSolution.toString());
             fireFireflySearchStopped();
         }
         catch (Exception ex)
@@ -383,5 +374,13 @@ public class FireflySearch extends FireflySearchBase{
 
     public boolean getWithHillClimbingBestSolution() {
         return this._withHillClimbingBestSolution;
+    }
+
+    public void setBestSolutionNoMove(boolean _bestSolutionNoMove) {
+        this._bestSolutionNoMove=_bestSolutionNoMove;
+    }
+
+    public boolean getBestSolutionNoMove() {
+        return this._bestSolutionNoMove;
     }
 }
