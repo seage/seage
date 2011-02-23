@@ -16,9 +16,9 @@
 
 package org.seage.metaheuristic.fireflies;
 
-import org.seage.metaheuristic.fireflies.*;
 import java.util.Collections;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * This version of the {@link FireflySearch} does not create any new threads, making it
@@ -28,6 +28,7 @@ import java.util.Random;
  * @author Karel Durkota
  */
 public class FireflySearch extends FireflySearchBase{
+    private static final Logger log = Logger.getLogger("org.seage");//FireflySearch.class.getName());
 
     private int _iterationCount;
     private int _currentIteration;
@@ -161,8 +162,9 @@ public class FireflySearch extends FireflySearchBase{
             int i=0;
             while (i++ < _iterationsToGo && _keepSearching)
             {
-//                System.out.println("---------------------------\n"+i+"-th ITERATION");
-                _currentIteration++;
+<<<<<<< .mine//                System.out.println("---------------------------\n"+i+"-th ITERATION");
+=======                log.finer("---------------------------\n"+i+"-th ITERATION");
+>>>>>>> .theirs                _currentIteration++;
 
                 evaluatePopulation(_population);
                 double d = 0;
@@ -171,8 +173,9 @@ public class FireflySearch extends FireflySearchBase{
                         d=d+_operator.getDistance(_population.getSolutions()[s1],_population.getSolutions()[s2]);
                     }
                 }
-//                System.out.println("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
-                //_population.removeTwins();
+<<<<<<< .mine//                System.out.println("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
+=======                log.finer("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
+>>>>>>> .theirs                //_population.removeTwins();
 
 //                for(int j=0;j<_population.getSize();j++){
 //                    System.out.println("\nVypis:"+_population.getSolutions()[j].toString()+" - "+_population.getSolutions()[j].getObjectiveValue()[0]);
@@ -189,7 +192,7 @@ public class FireflySearch extends FireflySearchBase{
 
                     // check a worse solution than previous
                 currBestFitness = _objectiveFunction.evaluate(_population.getBestSolution())[0];//.getObjectiveValue()[0];
-//                System.out.println(currBestFitness);
+                //System.out.println(currBestFitness);
 		if(currBestFitness != _population.getBestSolution().getObjectiveValue()[0])     // SOLVED
                     throw new Exception("Fitness function failed");
                 //prevFitness = currFitness;
@@ -244,7 +247,7 @@ public class FireflySearch extends FireflySearchBase{
             }
 
             evaluatePopulation(_population);
-            System.out.println(_population.getBestSolution().toString());
+            log.finer(_population.getBestSolution().toString());
             System.out.println(_bestSolution.toString());
             fireFireflySearchStopped();
         }

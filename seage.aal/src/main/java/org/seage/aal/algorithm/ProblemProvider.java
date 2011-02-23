@@ -132,6 +132,8 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
 
     public IAlgorithmFactory getAlgorithmFactory(String algId) throws Exception
     {
+        if(!_algFactories.containsKey(algId))
+            throw new Exception("Unknown algorithm id: " + algId);
         return _algFactories.get(algId);
     }
 
