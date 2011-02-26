@@ -162,9 +162,7 @@ public class FireflySearch extends FireflySearchBase{
             int i=0;
             while (i++ < _iterationsToGo && _keepSearching)
             {
-<<<<<<< .mine//                System.out.println("---------------------------\n"+i+"-th ITERATION");
-=======                log.finer("---------------------------\n"+i+"-th ITERATION");
->>>>>>> .theirs                _currentIteration++;
+        _currentIteration++;
 
                 evaluatePopulation(_population);
                 double d = 0;
@@ -172,10 +170,7 @@ public class FireflySearch extends FireflySearchBase{
                     for(int s2=s1+1;s2<_population.getSize();s2++){
                         d=d+_operator.getDistance(_population.getSolutions()[s1],_population.getSolutions()[s2]);
                     }
-                }
-<<<<<<< .mine//                System.out.println("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
-=======                log.finer("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
->>>>>>> .theirs                //_population.removeTwins();
+                }             //_population.removeTwins();
 
 //                for(int j=0;j<_population.getSize();j++){
 //                    System.out.println("\nVypis:"+_population.getSolutions()[j].toString()+" - "+_population.getSolutions()[j].getObjectiveValue()[0]);
