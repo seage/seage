@@ -52,19 +52,17 @@ public class QapSolution extends SolutionAdapter
             _assign = assign;
     }
     
-    public String toString()
+ public String toString()
     {
         StringBuffer s = new StringBuffer();
 
-        s.append( new Double(getObjectiveValue()[0]).toString().substring(0,new Double(getObjectiveValue()[0]).toString().length()) +"\t" + hashCode());
-		//s.append( "Sequence: [ " );
-        
-		//for( int i = 0; i < tour.length - 1; i++ )
-		  //  s.append( tour[i] ).append( ", " );
-        
-		//s.append( tour[ tour.length - 1 ] );
-		//s.append( " ]" );
-        
+        s.append("[");
+        for(int i=_assign.length-1;i>=1;i--){
+            s.append((_assign[i]+1));
+            s.append(",");
+        }
+        s.append((_assign[_assign[0]]+1)+"]");
+
         return s.toString();
     }   // end toString
     

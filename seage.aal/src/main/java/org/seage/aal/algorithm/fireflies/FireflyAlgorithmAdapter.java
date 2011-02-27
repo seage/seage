@@ -29,14 +29,14 @@ import org.seage.aal.data.AlgorithmParams;
  */
 
 @AlgorithmParameters({
-    @Parameter(name="iterationCount", min=0, max=1000000, init=1000),
-    @Parameter(name="numSolutions", min=2, max=1000000, init=100),
-    @Parameter(name="timeStep", min=0.1, max=1000, init=0.5),
+    @Parameter(name="iterationCount", min=10, max=100000, init=1000),
+    @Parameter(name="numSolutions", min=2, max=1000, init=100),
+    @Parameter(name="timeStep", min=0.1, max=10, init=0.5),
     @Parameter(name="withDecreasingRandomness", min=0, max=1, init=1),
 //    @Parameter(name="initialIntensity", min=0, max=100000, init=1),
 //    @Parameter(name="initialRandomness", min=0, max=100000, init=1),
 //    @Parameter(name="finalRandomness", min=0, max=100000, init=0.2),
-    @Parameter(name="absorption", min=0, max=10000, init=0.1)
+    @Parameter(name="absorption", min=0, max=10, init=0.1)
 //    @Parameter(name="populationSize", min=0, max=10000, init=0.1)
 })
 public abstract class FireflyAlgorithmAdapter implements  IAlgorithmAdapter
