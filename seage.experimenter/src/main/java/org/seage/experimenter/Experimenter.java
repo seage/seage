@@ -10,6 +10,7 @@ import org.seage.experimenter.config.Configurator;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.experimenter.config.IntervalConfigurator;
+import org.seage.experimenter.config.RandomConfigurator;
 
 /**
  *
@@ -28,7 +29,7 @@ public class Experimenter {
 
     public void runExperiments(String problemID, String algorithmID) throws Exception {
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-        Configurator dc = new IntervalConfigurator(algorithmID);
+        Configurator dc = new RandomConfigurator(algorithmID);
 
         ExperimentRunner.run(dc.prepareConfigs(pi));
     }

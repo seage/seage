@@ -58,11 +58,11 @@ public class QapSolution extends SolutionAdapter
         StringBuffer s = new StringBuffer();
 
         s.append("[");
-        for(int i=_assign.length-1;i>=1;i--){
+        for(int i=0;i<_assign.length-1;i++){
             s.append((_assign[i]+1));
             s.append(",");
         }
-        s.append((_assign[_assign[0]]+1)+"]");
+        s.append((_assign[_assign.length-1]+1)+"]");
         
         return s.toString();
     }   // end toString

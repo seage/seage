@@ -26,6 +26,7 @@ import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.config.DefaultConfigurator;
+import org.seage.experimenter.config.IntervalConfigurator;
 
 /**
  *
@@ -100,7 +101,7 @@ public class AlgorithmTester {
             algName = alg.getValueStr("name");
             System.out.print("\t" + algName);
             
-            ProblemConfig config = new DefaultConfigurator( alg.getValueStr("id")).prepareConfigs(pi)[0];
+            ProblemConfig config = new IntervalConfigurator( alg.getValueStr("id")).prepareConfigs(pi)[0];
             
             IAlgorithmFactory factory = provider.getAlgorithmFactory(alg.getValueStr("id"));
             
