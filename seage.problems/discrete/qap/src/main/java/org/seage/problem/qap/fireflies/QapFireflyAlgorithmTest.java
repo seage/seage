@@ -24,7 +24,7 @@ import org.seage.problem.qap.*;
 public class QapFireflyAlgorithmTest implements FireflySearchListener
 {
     private static final Logger log = Logger.getLogger("org.seage");
-    private static String _dataPath = "data/esc128.dat";
+    private static String _dataPath = "data/chr12a.dat";
 //    private static String _dataPath = "D:\\qap\\bur26a.dat";
     public FireflySearch fs;
     public static int iters = 2;
@@ -63,9 +63,9 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
         double _initialIntensity=1;
         double _initialRandomness=5;
         double _finalRandomness=2;
-        double _absorption=0.025;
-        double _timeStep=0.15;
-        int populationSize = 100;
+        double _absorption=0.4;//0.025;
+        double _timeStep=1.7;//0.15;
+        int populationSize = 1000;
         boolean _maximizing = false;
         int iterationsToGo = 1000;
 
