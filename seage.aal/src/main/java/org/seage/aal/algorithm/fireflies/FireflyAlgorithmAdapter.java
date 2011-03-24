@@ -29,8 +29,8 @@ import org.seage.aal.data.AlgorithmParams;
  */
 
 @AlgorithmParameters({
-    @Parameter(name="iterationCount", min=100, max=100, init=100),
-    @Parameter(name="numSolutions", min=100, max=300, init=100),
+    @Parameter(name="iterationCount", min=500, max=500, init=500),
+    @Parameter(name="numSolutions", min=500, max=500, init=500),
     @Parameter(name="timeStep", min=0.1, max=2, init=0.15),
     @Parameter(name="withDecreasingRandomness", min=1, max=1, init=1),
 //    @Parameter(name="initialIntensity", min=0, max=100000, init=1),
