@@ -17,7 +17,7 @@ import org.seage.data.DataNode;
 public class RandomConfigurator extends Configurator{
 
     private String _algID;
-    public static int numberOfExperiments = 100;
+    public static int numberOfExperiments = 10;
 
     public RandomConfigurator(String algID) {
         _algID = algID;
