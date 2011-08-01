@@ -7,18 +7,18 @@
  * http://seage.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Robert Harder
+ *     Karel Durkota
  *     - Initial implementation
  *     Richard Malek
  *     - Merge with SEAGE
- *     Karel Durkota
+ *
  */
 
 package org.seage.metaheuristic.fireflies;
 
+import org.seage.metaheuristic.fireflies.*;
 import java.util.Collections;
 import java.util.Random;
-import java.util.logging.Logger;
 
 /**
  * This version of the {@link FireflySearch} does not create any new threads, making it
@@ -28,7 +28,6 @@ import java.util.logging.Logger;
  * @author Karel Durkota
  */
 public class FireflySearch extends FireflySearchBase{
-    private static final Logger log = Logger.getLogger("org.seage");//FireflySearch.class.getName());
 
     private int _iterationCount;
     private int _currentIteration;
@@ -41,7 +40,7 @@ public class FireflySearch extends FireflySearchBase{
     private double _finalRandomness;
     private double _absorption;
     private double _timeStep;
-    
+
 //    private double _randomSubjectPct;
 //    private double _mutateSubjectPct;
 //    private double _eliteSubjectPct;
@@ -130,7 +129,7 @@ public class FireflySearch extends FireflySearchBase{
     public void startSolving(Solution[] solutions) throws Exception
     {
         try{
-            
+
             _keepSearching = true;
             long startTime = System.currentTimeMillis();
             fireFireflySearchStarted();
@@ -162,9 +161,8 @@ public class FireflySearch extends FireflySearchBase{
             int i=0;
             while (i++ < _iterationsToGo && _keepSearching)
             {
-<<<<<<< .mine//                System.out.println("---------------------------\n"+i+"-th ITERATION");
-=======                log.finer("---------------------------\n"+i+"-th ITERATION");
->>>>>>> .theirs                _currentIteration++;
+//                System.out.println("---------------------------\n"+i+"-th ITERATION");
+                _currentIteration++;
 
                 evaluatePopulation(_population);
                 double d = 0;
@@ -173,9 +171,8 @@ public class FireflySearch extends FireflySearchBase{
                         d=d+_operator.getDistance(_population.getSolutions()[s1],_population.getSolutions()[s2]);
                     }
                 }
-<<<<<<< .mine//                System.out.println("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
-=======                log.finer("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
->>>>>>> .theirs                //_population.removeTwins();
+//                System.out.println("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
+                //_population.removeTwins();
 
 //                for(int j=0;j<_population.getSize();j++){
 //                    System.out.println("\nVypis:"+_population.getSolutions()[j].toString()+" - "+_population.getSolutions()[j].getObjectiveValue()[0]);
@@ -192,7 +189,7 @@ public class FireflySearch extends FireflySearchBase{
 
                     // check a worse solution than previous
                 currBestFitness = _objectiveFunction.evaluate(_population.getBestSolution())[0];//.getObjectiveValue()[0];
-                //System.out.println(currBestFitness);
+//                System.out.println(currBestFitness);
 		if(currBestFitness != _population.getBestSolution().getObjectiveValue()[0])     // SOLVED
                     throw new Exception("Fitness function failed");
                 //prevFitness = currFitness;
@@ -207,7 +204,7 @@ public class FireflySearch extends FireflySearchBase{
                     boolean isBest=true;
                     for(int s2=0;s2<_population.getSize();s2++){
                         if((_maximizing && workPopulation.getSolution(s1).getObjectiveValue()[0]
-                                < workPopulation.getSolution(s2).getObjectiveValue()[0]) || 
+                                < workPopulation.getSolution(s2).getObjectiveValue()[0]) ||
                            (!_maximizing && workPopulation.getSolution(s1).getObjectiveValue()[0]
                                 > workPopulation.getSolution(s2).getObjectiveValue()[0])){
                             isBest=false;
@@ -219,7 +216,7 @@ public class FireflySearch extends FireflySearchBase{
                                 _operator.modifySolution(_population.getSolutions()[s1]);
 //                                    System.out.println("NEW:"+_population.getSolutions()[s1].toString());
                             }
-                        }                        
+                        }
                     }
                     if(!getBestSolutionNoMove() && isBest==true){
                         _operator.modifySolution(_population.getSolutions()[s1]);
@@ -247,7 +244,7 @@ public class FireflySearch extends FireflySearchBase{
             }
 
             evaluatePopulation(_population);
-            log.finer(_population.getBestSolution().toString());
+            System.out.println(_population.getBestSolution().toString());
             System.out.println(_bestSolution.toString());
             fireFireflySearchStopped();
         }
