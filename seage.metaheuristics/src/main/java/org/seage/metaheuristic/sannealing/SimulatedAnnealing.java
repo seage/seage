@@ -79,6 +79,8 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   private long _maximalSuccessIterationCount;
 
   private boolean _stopSearching = false;
+  
+  private boolean _isRunning = false;
 
   /**
    * Constructor
@@ -100,6 +102,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   {
     // Searching is starting
     _stopSearching = false;
+    _isRunning = true;
 
     // Initial number of iteration
     long innerIterationCount = 1;
@@ -168,6 +171,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
         // Anneal temperature
         _currentTemperature = _annealCoefficient * _currentTemperature;
     }
+    _isRunning = false;
     // Fire event to listeners about that algorithm was stopped
     _listenerProvider.fireSimulatedAnnealingStopped();
   }
@@ -242,6 +246,11 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
   public void setMaximalSuccessIterationCount(long _maximalSuccessIterationCount) {
       this._maximalSuccessIterationCount = _maximalSuccessIterationCount;
+  }
+  
+  public boolean isRunning()
+  {
+      return _isRunning;
   }
 
 }

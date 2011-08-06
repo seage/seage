@@ -48,6 +48,8 @@ public class ParticleSwarm implements IParticleSwarm
   private boolean _stopSearching = false;
 
   private Particle[] _particles = null;
+  
+  private boolean _isRunning = false;
 
   /**
    * Constructor
@@ -66,6 +68,7 @@ public class ParticleSwarm implements IParticleSwarm
   {
       // Searching is starting
       _stopSearching = false;
+      _isRunning = true;
 
       // Initial number of iteration
       long iterationCount = 0;
@@ -120,6 +123,7 @@ public class ParticleSwarm implements IParticleSwarm
 
       _listenerProvider.fireParticleSwarmStopped();
 
+      _isRunning = false;
       //System.out.println("Global MINIMUM: " + _globalMinimum.getEvaluation());
       //System.out.print("Global Coords: ");
       //printArray(_globalMinimum.getCoords());
@@ -229,6 +233,11 @@ public class ParticleSwarm implements IParticleSwarm
 
   public void setParticles(Particle[] particles) {
       this._particles = particles;
+  }
+  
+  public boolean isRunning()
+  {
+      return _isRunning;
   }
   
 }

@@ -15,11 +15,11 @@ package org.seage.aal.algorithm.genetics;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.genetics.*;
 import java.util.Arrays;
-import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.aal.reporting.AlgorithmReporter;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.Annotations.AlgorithmParameters;
+import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.data.AlgorithmParams;
 
 /**
@@ -34,7 +34,7 @@ import org.seage.aal.data.AlgorithmParams;
     @Parameter(name="mutateSubjectPct", min=0, max=100, init=10),
     @Parameter(name="randomSubjectPct", min=0, max=100, init=10)
 })
-public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
+public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
 {
     protected Subject[] _solutions;
     private GeneticSearch _geneticSearch;
@@ -45,6 +45,8 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
     private AlgorithmParams _params;
     private String _searchID;
     //private String _paramID;
+    
+    private boolean _isRunning;
 
     private double _statInitObjVal;
     private double _statEndObjVal;
@@ -69,14 +71,6 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
         _searchID = searchID;
     }
 
-    public void run() {
-        try{
-            startSearching();
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
     /**
      * <running>
      *      <parameters/>
@@ -95,15 +89,23 @@ public class GeneticAlgorithmAdapter implements  IAlgorithmAdapter
         
         setBestEverSolution();
 
-        _geneticSearch.startSearching(_solutions);		
+        _geneticSearch.startSearching(_solutions);
+
         _solutions = _geneticSearch.getSubjects();
         if(_solutions == null)
             throw new Exception("Solutions null");
+    }
+    
+    public boolean isRunning() {
+        return _geneticSearch.isRunning();
     }
 
     public void stopSearching() throws Exception
     {
         _geneticSearch.stopSolving();
+        
+        while(isRunning())
+            Thread.sleep(100);
     }
 
     public void setParameters(AlgorithmParams params) throws Exception

@@ -23,6 +23,7 @@ import org.seage.data.xml.XmlHelper;
  */
 class ExperimentRunner {
 
+    private static int _numExperimentAttempts = 5;
     private ExperimentRunner(){}
     
     public static void run(ProblemConfig config) throws Exception
@@ -32,9 +33,15 @@ class ExperimentRunner {
 
     public static void run(ProblemConfig[] configs) throws Exception
     {
-        ExperimentTask[] tasks = new ExperimentTask[configs.length];
+        int ix=0;
+        long runID = System.currentTimeMillis();
+        ExperimentTask[] tasks = new ExperimentTask[configs.length*_numExperimentAttempts];
         for(int i=0;i<configs.length;i++)
-            tasks[i] = new ExperimentTask(configs[i]);
+            for(int j=0;j<_numExperimentAttempts;j++)
+            {
+                configs[i].putValue("runID", runID);
+                tasks[ix++] = new ExperimentTask(configs[i]);
+            }
 
         runRunnableTasks(tasks);
     }
@@ -73,7 +80,7 @@ class ExperimentRunner {
                         isRunning = true;
                 }
             }
-            if(!isRunning) break;
+            if(!isRunning && last==tasks.length) break;
 
             Thread.sleep(500);
         }

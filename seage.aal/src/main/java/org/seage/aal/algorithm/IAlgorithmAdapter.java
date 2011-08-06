@@ -19,7 +19,7 @@ import org.seage.aal.reporting.AlgorithmReport;
  *
  * @author Richard Malek
  */
-public interface IAlgorithmAdapter extends Runnable
+public interface IAlgorithmAdapter
 {
 //    // Returns meta-data on the algorithm
 //    //  |_ id
@@ -36,9 +36,15 @@ public interface IAlgorithmAdapter extends Runnable
 
     // Runs the algorithm.
     void startSearching() throws Exception;
+    
+    // Runs the algorithm.
+    void startSearching(boolean async) throws Exception;
 
     // Stops the algorithm.
     void stopSearching() throws Exception;
+    
+    // Checks if the algorithm is running
+    boolean isRunning();
 
     // Returns the runtime report collected during the algorithm run.
     AlgorithmReport getReport() throws Exception;

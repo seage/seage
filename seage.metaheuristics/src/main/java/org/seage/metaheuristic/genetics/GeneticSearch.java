@@ -27,6 +27,7 @@ public class GeneticSearch extends GeneticSearchBase
     private double _crossLengthPct;
 
     private boolean _keepSearching;
+    private boolean _isRunning;
 
     private Population _population;
     private GeneticOperator _operator;
@@ -48,7 +49,7 @@ public class GeneticSearch extends GeneticSearchBase
         _bestSubject = null;
         _subjectComparator = new SubjectComparator();
 
-        _keepSearching = false;
+        _keepSearching = _isRunning = false;
     }
 
     public GeneticOperator getOperator()
@@ -73,7 +74,7 @@ public class GeneticSearch extends GeneticSearchBase
         _keepSearching = false;
     }
 
-    public boolean isSolving() { return true; }
+    public boolean isRunning() { return _isRunning; }
 
     public Subject getBestSubject()
     {
@@ -84,7 +85,7 @@ public class GeneticSearch extends GeneticSearchBase
     {
         try
         {
-            _keepSearching = true;
+            _keepSearching = _isRunning = true;
             long startTime = System.currentTimeMillis();
             fireGeneticSearchStarted();
 
@@ -159,6 +160,7 @@ public class GeneticSearch extends GeneticSearchBase
 
             }
             evaluatePopulation(_population);
+            _isRunning = false;
             fireGeneticSearchStopped();
         }        
         catch (Exception ex)
