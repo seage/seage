@@ -16,6 +16,7 @@ import java.util.List;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
+import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
 
 /**
@@ -93,6 +94,7 @@ public class RandomConfigurator extends Configurator{
                     //paramList.add(val);
                 }
                 //values.add(paramList);
+                r.putValue("configID", FileHelper.md5fromString(XmlHelper.getStringFromDocument(r.toXml())));
                 results.add(r);
             }
 

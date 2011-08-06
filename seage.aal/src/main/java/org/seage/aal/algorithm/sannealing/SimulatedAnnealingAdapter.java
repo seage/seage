@@ -18,7 +18,7 @@ import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.aal.reporting.AlgorithmReporter;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
-import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.sannealing.IMoveManager;
@@ -40,7 +40,7 @@ import org.seage.metaheuristic.sannealing.Solution;
     @Parameter(name="maxInnerIterations", min=1, max=1000000, init=100),
     @Parameter(name="numInnerSuccesses", min=0, max=100000, init=100)
 })
-public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, ISimulatedAnnealingListener
+public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl implements ISimulatedAnnealingListener
 {
     protected SimulatedAnnealing _simulatedAnnealing;
     protected Solution _initialSolution;
@@ -65,20 +65,23 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
         _reporter = new AlgorithmReporter( searchID );
     }
 
-    public void run() {
-        try{
-            startSearching();
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
     public void startSearching() throws Exception {
         _reporter = new AlgorithmReporter( _searchID );
         _reporter.putParameters( _params );
 
         _numberOfIterations = _numberOfNewSolutions = _lastIterationNumberNewSolution = 0;
         _simulatedAnnealing.startSearching( _initialSolution );
+    }
+    
+    public void stopSearching() throws Exception {
+        _simulatedAnnealing.stopSearching();
+        
+        while(isRunning())
+            Thread.sleep(100);
+    }
+    
+    public boolean isRunning() {
+        return _simulatedAnnealing.isRunning();
     }
 
     public AlgorithmReport getReport() throws Exception
@@ -115,9 +118,6 @@ public abstract class SimulatedAnnealingAdapter implements IAlgorithmAdapter, IS
         _simulatedAnnealing.addSimulatedAnnealingListener( this );
     }
 
-    public void stopSearching() throws Exception {
-        _simulatedAnnealing.stopSearching();
-    }
 
     //############################ EVENTS ###############################//
     public void newBestSolutionFound(SimulatedAnnealingEvent e) 

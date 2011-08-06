@@ -13,10 +13,10 @@ package org.seage.aal.algorithm.tabusearch;
 
 import java.util.*;
 import org.seage.aal.reporting.AlgorithmReporter;
-import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
+import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.*;
@@ -25,12 +25,12 @@ import org.seage.metaheuristic.tabusearch.*;
  *  TabuSearchAdapter interface.
  */
 @AlgorithmParameters({
-    @Parameter(name="numIteration", min=1, max=1000000, init=1000),
+    @Parameter(name="numIteration", min=1, max=1000, init=1000),
     @Parameter(name="numSolutions", min=1, max=1, init=1),
     @Parameter(name="numIterDivers", min=1, max=1, init=1),
-    @Parameter(name="tabuListLength", min=1, max=10000, init=30)    
+    @Parameter(name="tabuListLength", min=1, max=100, init=30)    
 })
-public abstract class TabuSearchAdapter implements IAlgorithmAdapter
+public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 {
 
     private TabuSearch _tabuSearch;
@@ -157,7 +157,13 @@ public abstract class TabuSearchAdapter implements IAlgorithmAdapter
     public void stopSearching() throws Exception
     {
         _tabuSearch.stopSolving();
+
+        while(isRunning())
+            Thread.sleep(100);
+        
     }
+    
+    public boolean isRunning() { return _tabuSearch.isSolving(); }
 
     public void setParameters(AlgorithmParams params) throws Exception
     {

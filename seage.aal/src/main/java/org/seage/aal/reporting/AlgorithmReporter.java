@@ -25,7 +25,7 @@ public class AlgorithmReporter
 
     public AlgorithmReporter(String searchID) throws Exception
     {
-        _report = new AlgorithmReport("Report");
+        _report = new AlgorithmReport("AlgorithmReport");
         //_running.putValue("id", searchID);
         //_running.putDataNode(new DataNode("Parameters"));
         _report.putDataNode(new DataNode("Minutes"));

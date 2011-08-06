@@ -58,18 +58,30 @@ class ExperimentTask implements Runnable{
 
             algorithm.solutionsFromPhenotype(solutions);
             algorithm.setParameters(algNode);
-            algorithm.startSearching();
+            algorithm.startSearching(true);
+            Thread.sleep(100);
+            algorithm.stopSearching();
+            
             solutions = algorithm.solutionsToPhenotype();
 
             // phenotype evaluator
             IPhenotypeEvaluator evaluator = provider.initPhenotypeEvaluator();
             double[] result = evaluator.evaluate(solutions[0], instance);
 
-            AlgorithmReport report = algorithm.getReport();
-            String path = "output/"+problemID +"-"+InstanceName.split("\\.")[0] +"-"+algorithmID+"-"+System.currentTimeMillis()+".xml";
-            XmlHelper.writeXml(report, path);
+            AlgorithmReport algReport = algorithm.getReport();
+            
+            DataNode expReport = new DataNode("ExperimentReport");             
+            expReport.putDataNode(algReport);
+            expReport.putDataNode(_config);
+            
+            String runID = _config.getValueStr("runID");
+            String configID = _config.getValueStr("configID");
+            //report.putValue("runID", runID);
+            //report.putValue("configID", configID);
+            String path = "output/"+runID+"-"+problemID +"-"+InstanceName.split("\\.")[0] +"-"+algorithmID+"-"+System.currentTimeMillis()+".xml";
+            XmlHelper.writeXml(expReport, path);
 
-            System.out.printf("%s %15s\t %s\n", algorithmID, instance.toString(), result[0]);
+            System.out.printf("%s %15s\t %20s\t %20s\n", algorithmID, instance.toString(), result[0], configID);
         }
         catch(Exception ex){
             System.err.println("ERR: " + problemID +"/"+algorithmID+"/"+InstanceName);

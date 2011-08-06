@@ -47,6 +47,7 @@ public class FireflySearch extends FireflySearchBase{
 //    private double _crossLengthPct;
 
     private boolean _keepSearching;
+    private boolean _isRunning;
 
     private Population _population;
     private FireflyOperator _operator;
@@ -75,7 +76,7 @@ public class FireflySearch extends FireflySearchBase{
         _bestSolution = null;
         _solutionComparator = new SolutionComparator();
 
-        _keepSearching = false;
+        _keepSearching = _isRunning = false;
     }
 
     public FireflyOperator getOperator()
@@ -100,7 +101,7 @@ public class FireflySearch extends FireflySearchBase{
         _keepSearching = false;
     }
 
-    public boolean isSolving() { return true; }
+    public boolean isSolving() { return _isRunning; }
 
     public Solution getBestSubject()
     {
@@ -129,7 +130,7 @@ public class FireflySearch extends FireflySearchBase{
     public void startSolving(Solution[] solutions) throws Exception
     {
         try{
-
+            _isRunning = true;
             _keepSearching = true;
             long startTime = System.currentTimeMillis();
             fireFireflySearchStarted();
@@ -247,6 +248,7 @@ public class FireflySearch extends FireflySearchBase{
             System.out.println(_population.getBestSolution().toString());
             System.out.println(_bestSolution.toString());
             fireFireflySearchStopped();
+            _isRunning = false;
         }
         catch (Exception ex)
         {
@@ -380,4 +382,6 @@ public class FireflySearch extends FireflySearchBase{
     public boolean getBestSolutionNoMove() {
         return this._bestSolutionNoMove;
     }
+    
+    public boolean isRunning() { return _isRunning; }
 }

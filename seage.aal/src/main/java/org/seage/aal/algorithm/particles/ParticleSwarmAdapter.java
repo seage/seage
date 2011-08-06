@@ -18,7 +18,7 @@ import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.aal.reporting.AlgorithmReporter;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
-import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.particles.IObjectiveFunction;
@@ -40,7 +40,7 @@ import org.seage.metaheuristic.particles.ParticleSwarmEvent;
     @Parameter(name="alpha", min=0, max=100, init=1),
     @Parameter(name="beta", min=0, max=100, init=1)
 })
-public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IParticleSwarmListener
+public abstract class ParticleSwarmAdapter  extends AlgorithmAdapterImpl implements IParticleSwarmListener
 {
     protected ParticleSwarm _particleSwarm;
     protected Particle[] _initialParticles;
@@ -67,18 +67,21 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
         _reporter = new AlgorithmReporter( searchID );
     }
 
-    public void run() {
-        try{
-            startSearching();
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
     public void startSearching() throws Exception {
         _reporter = new AlgorithmReporter( _searchID );
         _reporter.putParameters( _params );
         _particleSwarm.startSearching( _initialParticles );
+    }
+    
+    public void stopSearching() throws Exception {
+        _particleSwarm.stopSearching();
+        
+        while(isRunning())
+            Thread.sleep(100);
+    }
+    
+    public boolean isRunning() {
+        return _particleSwarm.isRunning();
     }
 
     public AlgorithmReport getReport() throws Exception
@@ -107,10 +110,6 @@ public abstract class ParticleSwarmAdapter implements IAlgorithmAdapter, IPartic
         _particleSwarm.setBeta( p.getValueDouble("beta") );
 
         _particleSwarm.addParticleSwarmOptimizationListener( this );
-    }
-
-    public void stopSearching() {
-        _particleSwarm.stopSearching();
     }
 
     //############################ EVENTS ###############################//
