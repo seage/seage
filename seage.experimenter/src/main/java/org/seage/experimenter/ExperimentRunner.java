@@ -70,7 +70,7 @@ class ExperimentRunner {
                     {
                         threads[i] = new Thread(tasks[last++]);
                         threads[i].start();
-                        System.out.println(threads[i].toString()+": "+tasks[last-1].toString());
+                        System.out.println("\tT"+i+"-"+threads[i].toString()+": "+tasks[last-1].toString());
                         isRunning = true;
                     }
                 }
