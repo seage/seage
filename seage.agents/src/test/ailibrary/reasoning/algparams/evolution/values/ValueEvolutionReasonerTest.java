@@ -6,7 +6,7 @@
 package ailibrary.reasoning.algparams.evolution.values;
 
 import org.seage.reasoning.algparams.evolution.values.ValueEvolutionReasonerFactory;
-import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.data.DataNode;
 import org.seage.reasoning.algparams.Policy;
 import org.seage.reasoning.algparams.Reasoner;

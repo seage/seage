@@ -6,7 +6,7 @@ import aglobe.ontology.MessageConstants;
 import aglobe.service.directory.DirectoryRecord;
 import aglobex.protocol.cnp.CNPInitiatorTask;
 import aglobex.protocol.queryref.QueryRefInitiatorTask;
-import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.data.DataNode;

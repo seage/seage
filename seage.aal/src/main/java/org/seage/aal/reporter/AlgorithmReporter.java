@@ -9,7 +9,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.aal.reporting;
+package org.seage.aal.reporter;
 
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;

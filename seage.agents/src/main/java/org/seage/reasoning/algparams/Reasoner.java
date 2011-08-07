@@ -5,8 +5,8 @@
 
 package org.seage.reasoning.algparams;
 
-import org.seage.aal.reporting.AlgorithmReport;
-import org.seage.aal.reporting.AlgorithmReportEvaluator;
+import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReportEvaluator;
 
 /**
  * Reasoner interface hides an implementation of policy evolution
