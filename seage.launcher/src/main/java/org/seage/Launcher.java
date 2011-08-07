@@ -102,7 +102,7 @@ public class Launcher {
         }
         
         if(args[0].equals("-report")){        
-            LogReportCreator.report();
+            new LogReportCreator().report();
             return;
         }
         
