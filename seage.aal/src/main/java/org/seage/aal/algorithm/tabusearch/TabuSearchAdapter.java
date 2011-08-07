@@ -151,7 +151,10 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
         _tabuSearch.stopSolving();
 
         while(isRunning())
+        {
             Thread.sleep(100);
+            System.out.print("-");
+        }
         
     }
     
@@ -243,11 +246,13 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 
         public void tabuSearchStarted(TabuSearchEvent e)
         {
+            _algorithmStarted = true;
             _statLastIterNewSol = 0;
         }
 
         public void tabuSearchStopped(TabuSearchEvent e)
         {
+            _algorithmStopped = true;
         }
 
         public void newBestSolutionFound(TabuSearchEvent e)
