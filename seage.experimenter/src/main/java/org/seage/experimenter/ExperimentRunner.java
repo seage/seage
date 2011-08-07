@@ -26,12 +26,12 @@ class ExperimentRunner {
     private static int _numExperimentAttempts = 5;
     private ExperimentRunner(){}
     
-    public static void run(ProblemConfig config) throws Exception
+    public static void run(ProblemConfig config, long timeoutS) throws Exception
     {
-        runRunnableTasks(new Runnable[]{new ExperimentTask(config)});
+        runRunnableTasks(new Runnable[]{new ExperimentTask(config, timeoutS)});
     }
 
-    public static void run(ProblemConfig[] configs) throws Exception
+    public static void run(ProblemConfig[] configs, long timeoutS) throws Exception
     {
         int ix=0;
         long runID = System.currentTimeMillis();
@@ -40,16 +40,16 @@ class ExperimentRunner {
             for(int j=0;j<_numExperimentAttempts;j++)
             {
                 configs[i].putValue("runID", runID);
-                tasks[ix++] = new ExperimentTask(configs[i]);
+                tasks[ix++] = new ExperimentTask(configs[i], timeoutS);
             }
 
         runRunnableTasks(tasks);
     }
 
-    public static void run(String configPath) throws Exception
+    public static void run(String configPath, long timeoutS) throws Exception
     {
         ProblemConfig config = new ProblemConfig(XmlHelper.readXml(new File(configPath)));
-        run(config);
+        run(config, timeoutS);
     }
 
     private static void runRunnableTasks(Runnable[] tasks) throws Exception
@@ -70,6 +70,7 @@ class ExperimentRunner {
                     {
                         threads[i] = new Thread(tasks[last++]);
                         threads[i].start();
+                        System.out.println(threads[i].toString()+": "+tasks[last-1].toString());
                         isRunning = true;
                     }
                 }

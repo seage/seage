@@ -25,20 +25,20 @@ import org.seage.experimenter.config.RandomConfigurator;
 public class Experimenter {
 
     public void runFromConfigFile(String configPath) throws Exception {
-        ExperimentRunner.run(configPath);
+        ExperimentRunner.run(configPath, Long.MAX_VALUE);
     }
 
-    public void runExperiments(String problemID) throws Exception {
+    public void runExperiments(String problemID, long timeoutS) throws Exception {
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
         Configurator dc = new IntervalConfigurator("", 5);
     }
 
-    public void runExperiments(String problemID, String algorithmID, int numRuns) throws Exception {
+    public void runExperiments(String problemID, String algorithmID, int numRuns, long timeoutS) throws Exception {
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
         Configurator ic = new RandomConfigurator(algorithmID, numRuns);
         //ic.prepareConfigs(pi);
 
-        ExperimentRunner.run(ic.prepareConfigs(pi));
+        ExperimentRunner.run(ic.prepareConfigs(pi), timeoutS);
     }
 
 }

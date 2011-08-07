@@ -12,6 +12,7 @@
 
 package org.seage.experimenter;
 
+import java.io.File;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
@@ -32,14 +33,15 @@ class ExperimentTask implements Runnable{
     private ProblemConfig _config;
     private long _timeout = 9000;
 
-    public ExperimentTask(ProblemConfig config){
+    public ExperimentTask(ProblemConfig config, long timeoutS){
         _config = config;
+        _timeout = timeoutS*1000;
     }
     
     public void run() {
         String problemID = "";
         String algorithmID = "";
-        String InstanceName = "";
+        String instanceName = "";
         try{
             problemID = _config.getDataNode("Problem").getValueStr("id");
             algorithmID = _config.getDataNode("Algorithm").getValueStr("id");
@@ -50,7 +52,7 @@ class ExperimentTask implements Runnable{
 
             // problem instance
             ProblemInstance instance = provider.initProblemInstance(_config);
-            InstanceName = instance.toString();
+            instanceName = instance.toString();
             // algorithm
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, _config);
 
@@ -77,15 +79,19 @@ class ExperimentTask implements Runnable{
             
             String runID = _config.getValueStr("runID");
             String configID = _config.getValueStr("configID");
-            //report.putValue("runID", runID);
-            //report.putValue("configID", configID);
-            String path = "output/"+runID+"-"+problemID +"-"+InstanceName.split("\\.")[0] +"-"+algorithmID+"-"+System.currentTimeMillis()+".xml";
+            
+            long time = System.currentTimeMillis();
+            
+            File dir = new File("output/"+runID);
+            if(!dir.exists()) dir.mkdirs();
+
+            String path = dir.getPath()+"/"+problemID +"-"+instanceName.split("\\.")[0] +"-"+algorithmID+"-"+time+".xml";
             XmlHelper.writeXml(expReport, path);
 
             System.out.printf("%s %15s\t %20s\t %20s\n", algorithmID, instance.toString(), result[0], configID);
         }
         catch(Exception ex){
-            System.err.println("ERR: " + problemID +"/"+algorithmID+"/"+InstanceName);
+            System.err.println("ERR: " + problemID +"/"+algorithmID+"/"+instanceName);
             System.err.println(_config.toString());
             ex.printStackTrace();
         }

@@ -11,6 +11,7 @@
  */
 package org.seage.experimenter.config;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.seage.aal.data.ProblemConfig;
@@ -109,16 +110,16 @@ public class RandomConfigurator extends Configurator{
             System.out.println("Mem: " +Runtime.getRuntime().totalMemory()/(1024*1024));
          }
 
-        System.out.println("Saving ...");
-
-        int i=0;
-        for(ProblemConfig cfg : results)
-            XmlHelper.writeXml(cfg, "tmp/"+System.currentTimeMillis()+"-"+(i++));
+//        System.out.println("Saving ...");
+//        new File("tmp").mkdirs();
+//        int i=0;
+//        for(ProblemConfig cfg : results)
+//            XmlHelper.writeXml(cfg, "tmp/"+System.currentTimeMillis()+"-"+(i++));
 
         int num = results.size();
         //int num = values.size();
-        System.out.println("Total: " +num);
-        System.out.println("Per core: " +num/8);
+        System.out.println("Total: " +5*num);
+        System.out.println("Per core: " +5*num/Runtime.getRuntime().availableProcessors());
         return results.toArray(new ProblemConfig[0]);
     }
 
