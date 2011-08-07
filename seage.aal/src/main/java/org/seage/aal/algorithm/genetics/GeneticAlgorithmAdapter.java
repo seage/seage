@@ -218,11 +218,13 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
     { 
         public void geneticSearchStarted(GeneticSearchEvent e)
         {
+            _algorithmStarted = true;
             _statNumNewSol = _statLastIterNewSol = 0;
         }
 
         public void geneticSearchStopped(GeneticSearchEvent e)
         {
+            _algorithmStopped = true;
             _statEndObjVal = e.getGeneticSearch().getBestSubject().getObjectiveValue()[0];
         }
         public void newBestSolutionFound(GeneticSearchEvent e)

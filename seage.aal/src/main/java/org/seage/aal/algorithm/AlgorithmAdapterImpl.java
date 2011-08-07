@@ -10,12 +10,18 @@ package org.seage.aal.algorithm;
  */
 public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter{
     
+    protected boolean _algorithmStarted = false;
+    protected boolean _algorithmStopped = false;
+    
     public void startSearching(boolean async) throws Exception {
-        if(isRunning())
-            throw new Exception("Algorithm already running.");
+        if(_algorithmStarted && !_algorithmStopped)
+            throw new Exception("Algorithm already started, running.");
+        
+        _algorithmStarted = false;
         
         if(async == true)
         {
+            
             new Thread(new Runnable() {
                 public void run() {
                     try
@@ -28,9 +34,12 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter{
                     }
                 }
             }).start();
-            
-            while(!isRunning())
+
+            while(!_algorithmStarted)
+            {
                 Thread.sleep(100);
+                System.out.print("+");
+            }
         }
         else
             startSearching();
