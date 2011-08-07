@@ -15,11 +15,12 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter{
             throw new Exception("Algorithm already running.");
         
         if(async == true)
+        {
             new Thread(new Runnable() {
                 public void run() {
                     try
                     {
-                        startSearching();
+                        startSearching();                        
                     }
                     catch(Exception ex)
                     {
@@ -27,6 +28,10 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter{
                     }
                 }
             }).start();
+            
+            while(!isRunning())
+                Thread.sleep(100);
+        }
         else
             startSearching();
     }

@@ -29,7 +29,8 @@ import org.seage.data.xml.XmlHelper;
  * @author rick
  */
 class ExperimentTask implements Runnable{
-    ProblemConfig _config;
+    private ProblemConfig _config;
+    private long _timeout = 9000;
 
     public ExperimentTask(ProblemConfig config){
         _config = config;
@@ -59,7 +60,7 @@ class ExperimentTask implements Runnable{
             algorithm.solutionsFromPhenotype(solutions);
             algorithm.setParameters(algNode);
             algorithm.startSearching(true);
-            Thread.sleep(100);
+            waitForTimeout(algorithm);
             algorithm.stopSearching();
             
             solutions = algorithm.solutionsToPhenotype();
@@ -88,6 +89,13 @@ class ExperimentTask implements Runnable{
             System.err.println(_config.toString());
             ex.printStackTrace();
         }
+    }
+    
+    private void waitForTimeout(IAlgorithmAdapter alg) throws Exception
+    {
+        long time = System.currentTimeMillis();
+        while(alg.isRunning() && ((System.currentTimeMillis()-time)<_timeout))
+            Thread.sleep(300);
     }
 
 }
