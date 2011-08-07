@@ -5,11 +5,11 @@
 
 package org.seage.reasoning.algparams.dummyrandom;
 
-import org.seage.aal.reporting.AlgorithmReport;
 import org.seage.reasoning.algparams.Policy;
 import org.seage.reasoning.algparams.Policy.Attribute;
 import org.seage.reasoning.algparams.Reasoner;
-import org.seage.aal.reporting.AlgorithmReportEvaluator;
+import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReportEvaluator;
 
 /**
  *

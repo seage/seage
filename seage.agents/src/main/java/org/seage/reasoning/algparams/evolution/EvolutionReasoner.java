@@ -1,13 +1,13 @@
 package org.seage.reasoning.algparams.evolution;
 
-import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.metaheuristic.genetics.Evaluator;
 import org.seage.metaheuristic.genetics.GeneticOperator;
 import org.seage.metaheuristic.genetics.Genome;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.reasoning.algparams.Policy;
 import org.seage.reasoning.algparams.Reasoner;
-import org.seage.aal.reporting.AlgorithmReportEvaluator;
+import org.seage.aal.reporter.AlgorithmReportEvaluator;
 import org.seage.metaheuristic.genetics.Gene;
 import java.util.ArrayList;
 import java.util.Collections;

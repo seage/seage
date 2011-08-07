@@ -11,6 +11,7 @@
  */
 package org.seage;
 
+import org.seage.temp.AlgorithmTester;
 import aglobe.platform.Platform;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.experimenter.Experimenter;
 import org.seage.logging.LogHelper;
+import org.seage.reporting.LogReportCreator;
 
 /**
  *
@@ -99,6 +101,11 @@ public class Launcher {
             return;
         }
         
+        if(args[0].equals("-report")){        
+            LogReportCreator.report();
+            return;
+        }
+        
         usage();
     }
 
@@ -113,6 +120,7 @@ public class Launcher {
         System.out.println("\t-config path-to-config");
         System.out.println("\t-experiment problem-id algorithm-id num-runs timeoutS");
         System.out.println("\t-agents path-to-agent-config-xml");
+        System.out.println("\t-report");
     }
 
     private void list() throws Exception

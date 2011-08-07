@@ -14,8 +14,8 @@
 
 package org.seage.aal.algorithm.particles;
 
-import org.seage.aal.reporting.AlgorithmReport;
-import org.seage.aal.reporting.AlgorithmReporter;
+import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;

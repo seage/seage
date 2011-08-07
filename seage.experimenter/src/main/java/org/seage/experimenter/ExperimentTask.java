@@ -14,7 +14,7 @@ package org.seage.experimenter;
 
 import java.io.File;
 import org.seage.aal.data.AlgorithmParams;
-import org.seage.aal.reporting.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
