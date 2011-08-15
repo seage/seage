@@ -88,7 +88,7 @@ public class DataNode implements Serializable
             _dataNodes.put(dataSet.getName(), new ArrayList<DataNode>());
 
         if(dataSet.containsValue("id"))
-            _ids.put(dataSet.getValueStr("id"), dataSet0);
+            _ids.put(dataSet.getValueStr("id"), dataSet);
 
         List<DataNode> list = _dataNodes.get(dataSet.getName());
         list.add(dataSet);
