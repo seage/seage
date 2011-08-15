@@ -71,8 +71,7 @@ public class LogReportCreator {
                     DataNode report = XmlHelper.readXml(xmlFile); 
                     
                     String experimentID = getExperimentID(report);                    
-                    DataNode experiment = touchDataNode(xmlDoc, "Experiment", experimentID);
-                    
+                    DataNode experiment = touchDataNode(xmlDoc, "Experiment", experimentID);                    
                     
                     String problemID = report.getDataNode("Config").getDataNode("Problem").getValueStr("id");
                     DataNode problem = touchDataNode(experiment, "Problem", problemID);
@@ -80,11 +79,15 @@ public class LogReportCreator {
                     String instanceID = report.getDataNode("Config").getDataNode("Problem").getDataNode("Instance").getValueStr("name");
                     DataNode instance = touchDataNode(problem, "Instance", instanceID);
                     
-                    String algorithmID = report.getDataNode("Config").getDataNode("Algorithm").getValueStr("id");
-                    DataNode algorithm = touchDataNode(instance, "Algorithm", algorithmID);
+                    //String algorithmID = report.getDataNode("Config").getDataNode("Algorithm").getValueStr("id");
+                    //DataNode algorithm = touchDataNode(instance, "Algorithm", algorithmID);
                     
-                    String runID = report.getDataNode("Config").getValueStr("configID");
-                    DataNode run = touchDataNode(algorithm, "Run", runID);
+                    String configID = report.getDataNode("Config").getValueStr("configID");
+                    DataNode config = touchDataNode(instance, "Config", configID);
+                    config.putValue("algorithmID", report.getDataNode("Config").getDataNode("Algorithm").getValueStr("id"));
+                    
+                    String runID = getRuntID(report);
+                    DataNode run = touchDataNode(config, "Run", runID);
                     
                     
                     //experiment.putDataNode(problem);
@@ -118,10 +121,18 @@ public class LogReportCreator {
     
     private String getExperimentID(DataNode report) throws Exception
     {
-        if(report.getDataNode("Config").containsValue("experimentID"))
-            return report.getDataNode("Config").getValueStr("experimentID");
+        if(report.containsValue("experimentID"))
+            return report.getValueStr("experimentID");
         else
             return report.getDataNode("Config").getValueStr("runID");
+    }
+    
+    private String getRuntID(DataNode report) throws Exception
+    {
+        if(report.containsValue("runID"))
+            return report.getValueStr("runID");
+        else
+            return report.getDataNode("AlgorithmReport").getValueStr("created");
     }
     
     private DataNode touchDataNode(DataNode parent, String elemName, String elemID) throws Exception

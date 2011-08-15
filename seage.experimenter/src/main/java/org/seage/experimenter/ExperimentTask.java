@@ -31,9 +31,14 @@ import org.seage.data.xml.XmlHelper;
  */
 class ExperimentTask implements Runnable{
     private ProblemConfig _config;
+    private long _experimentID;
+    private long _runID;
     private long _timeout = 9000;
+    private static long _runOrder=100000;
 
-    public ExperimentTask(ProblemConfig config, long timeoutS){
+    public ExperimentTask(long experimentID, long runID, long timeoutS, ProblemConfig config){
+        _experimentID = experimentID;
+        _runID = runID;
         _config = config;
         _timeout = timeoutS*1000;
     }
@@ -73,19 +78,19 @@ class ExperimentTask implements Runnable{
 
             AlgorithmReport algReport = algorithm.getReport();
             
-            DataNode expReport = new DataNode("ExperimentReport");             
+            DataNode expReport = new DataNode("ExperimentTask");
+            expReport.putValue("experimentID", _experimentID);
+            expReport.putValue("runID", _runID);
             expReport.putDataNode(algReport);
             expReport.putDataNode(_config);
             
-            String experimentID = _config.getValueStr("experimentID");
+            //String experimentID = _config.getValueStr("experimentID");
             String configID = _config.getValueStr("configID");
-            
-            long time = System.currentTimeMillis();
-            
-            File dir = new File("output/"+experimentID);
+                       
+            File dir = new File("output/"+_experimentID);
             if(!dir.exists()) dir.mkdirs();
 
-            String path = dir.getPath()+"/"+problemID +"-"+instanceName.split("\\.")[0] +"-"+algorithmID+"-"+time+".xml";
+            String path = dir.getPath()+"/"+problemID +"-"+instanceName.split("\\.")[0] +"-"+algorithmID+"-"+getRunOrder()+"-"+_experimentID+".xml";
             XmlHelper.writeXml(expReport, path);
 
             System.out.printf("%s %15s\t %20s\t %20s\n", algorithmID, instance.toString(), result[0], configID);
@@ -102,6 +107,11 @@ class ExperimentTask implements Runnable{
         long time = System.currentTimeMillis();
         while(alg.isRunning() && ((System.currentTimeMillis()-time)<_timeout))
             Thread.sleep(300);
+    }
+    
+    synchronized private static long getRunOrder()
+    {
+        return _runOrder++;
     }
 
 }

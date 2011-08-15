@@ -28,7 +28,7 @@ class ExperimentRunner {
     
     public static void run(ProblemConfig config, long timeoutS) throws Exception
     {
-        runRunnableTasks(new Runnable[]{new ExperimentTask(config, timeoutS)});
+        run(new ProblemConfig[]{config}, timeoutS);
     }
 
     public static void run(ProblemConfig[] configs, long timeoutS) throws Exception
@@ -39,8 +39,7 @@ class ExperimentRunner {
         for(int i=0;i<configs.length;i++)
             for(int j=0;j<_numExperimentAttempts;j++)
             {
-                configs[i].putValue("experimentID", experimentID);
-                tasks[ix++] = new ExperimentTask(configs[i], timeoutS);
+                tasks[ix++] = new ExperimentTask(experimentID, j+1, timeoutS, configs[i]);
             }
 
         runRunnableTasks(tasks);
