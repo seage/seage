@@ -82,6 +82,11 @@ public class DataNode implements Serializable
     public void putDataNode(DataNode dataSet0) throws Exception
     {
         DataNode dataSet = (DataNode)dataSet0.clone();
+        putDataNodeRef(dataSet);        
+    }
+    
+    public void putDataNodeRef(DataNode dataSet) throws Exception
+    {
         dataSet.setListeners(_listeners);
 
         if(!_dataNodes.containsKey(dataSet.getName()))

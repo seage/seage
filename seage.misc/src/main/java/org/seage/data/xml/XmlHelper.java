@@ -107,7 +107,7 @@ public class XmlHelper
                 if (nodeList.item(i).getNodeType() == Element.ELEMENT_NODE)
                 {
                     Element elem = (Element)nodeList.item(i);
-                    result.putDataNode(readElement(elem));
+                    result.putDataNodeRef(readElement(elem));
                 }
             }
 
