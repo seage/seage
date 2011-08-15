@@ -77,12 +77,12 @@ class ExperimentTask implements Runnable{
             expReport.putDataNode(algReport);
             expReport.putDataNode(_config);
             
-            String runID = _config.getValueStr("runID");
+            String experimentID = _config.getValueStr("experimentID");
             String configID = _config.getValueStr("configID");
             
             long time = System.currentTimeMillis();
             
-            File dir = new File("output/"+runID);
+            File dir = new File("output/"+experimentID);
             if(!dir.exists()) dir.mkdirs();
 
             String path = dir.getPath()+"/"+problemID +"-"+instanceName.split("\\.")[0] +"-"+algorithmID+"-"+time+".xml";
