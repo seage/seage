@@ -34,12 +34,12 @@ class ExperimentRunner {
     public static void run(ProblemConfig[] configs, long timeoutS) throws Exception
     {
         int ix=0;
-        long runID = System.currentTimeMillis();
+        long experimentID = System.currentTimeMillis();
         ExperimentTask[] tasks = new ExperimentTask[configs.length*_numExperimentAttempts];
         for(int i=0;i<configs.length;i++)
             for(int j=0;j<_numExperimentAttempts;j++)
             {
-                configs[i].putValue("runID", runID);
+                configs[i].putValue("experimentID", experimentID);
                 tasks[ix++] = new ExperimentTask(configs[i], timeoutS);
             }
 
