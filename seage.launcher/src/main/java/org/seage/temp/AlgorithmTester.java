@@ -100,7 +100,7 @@ public class AlgorithmTester {
             algName = alg.getValueStr("name");
             System.out.print("\t" + algName);
             
-            ProblemConfig config = new DefaultConfigurator( alg.getValueStr("id")).prepareConfigs(pi)[0];
+            ProblemConfig config = new DefaultConfigurator().prepareConfigs(pi, alg.getValueStr("id"), 1)[0];
             
             IAlgorithmFactory factory = provider.getAlgorithmFactory(alg.getValueStr("id"));
             

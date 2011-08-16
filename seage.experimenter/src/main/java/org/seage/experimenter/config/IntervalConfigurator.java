@@ -25,17 +25,17 @@ import org.seage.data.xml.XmlHelper;
  */
 public class IntervalConfigurator extends Configurator{
 
-    private String _algID;
+   // private String _algID;
     private int _granularity;
     private DataNode _paramInfo;
 
-    public IntervalConfigurator(String algID, int granularity) {
-        _algID = algID;
+    public IntervalConfigurator(int granularity) {
+        //_algID = algID;
         _granularity = granularity;
     }
 
     @Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo) throws Exception {
+    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception {
 
 
         List<ProblemConfig> results = new ArrayList<ProblemConfig>();
@@ -53,7 +53,7 @@ public class IntervalConfigurator extends Configurator{
         DataNode params = new DataNode("Parameters");
 
         problem.putValue("id", problemInfo.getValue("id"));
-        algorithm.putValue("id", _algID);
+        algorithm.putValue("id", algID);
 
         algorithm.putDataNode(params);
         problem.putDataNode(instance);
@@ -75,7 +75,7 @@ public class IntervalConfigurator extends Configurator{
             ArrayList<String> paramsToAdd = new ArrayList<String>();
             _paramInfo = new DataNode("ParamInfo");
 
-            for(DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(_algID).getDataNodes("Parameter"))
+            for(DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
             {
                 String name = paramNode.getValueStr("name");
                 paramsToAdd.add(name);

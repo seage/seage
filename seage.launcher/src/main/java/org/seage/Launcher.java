@@ -15,6 +15,9 @@ import org.seage.temp.AlgorithmTester;
 import aglobe.platform.Platform;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -89,8 +92,15 @@ public class Launcher {
 //            if(args.length==2 )
 //                new Experimenter().runExperiments(args[1]);
 //            else
-            if(args.length==5 )
-                new Experimenter().runExperiments(args[1], args[2], Integer.parseInt(args[3]), Long.parseLong(args[4]));
+            if(args.length>=5 )
+            {
+//                List<String> algIDs = new ArrayList<String>();
+//                for(int i=5;i<)
+                new Experimenter().runExperiments(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]), Arrays.copyOfRange(args, 4, args.length));
+            
+            }
+            else if(args.length==4 )
+                new Experimenter().runExperiments(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]));
             else
                 usage();
             return;
@@ -118,7 +128,7 @@ public class Launcher {
         System.out.println("\t-list");
         System.out.println("\t-test [problem-id [algorithm-id]]");
         System.out.println("\t-config path-to-config");
-        System.out.println("\t-experiment problem-id algorithm-id num-runs timeoutS");
+        System.out.println("\t-experiment problem-id num-runs timeoutS [algorithm-id [algorithm-id]*] ");
         System.out.println("\t-agents path-to-agent-config-xml");
         System.out.println("\t-report");
     }
