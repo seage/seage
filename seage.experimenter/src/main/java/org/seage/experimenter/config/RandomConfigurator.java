@@ -26,17 +26,17 @@ import org.seage.data.xml.XmlHelper;
  */
 public class RandomConfigurator extends Configurator{
 
-    private String _algID;
-    private int _numConfigs;
+    //private String _algID;
+    //private int _numConfigs;
     private DataNode _paramInfo;
 
-    public RandomConfigurator(String algID, int numConfigs) {
-        _algID = algID;
-        _numConfigs = numConfigs;
-    }
+//    public RandomConfigurator() {
+//        _algID = algID;
+//        _numConfigs = numConfigs;
+//    }
 
     @Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo) throws Exception {
+    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception {
 
         List<ProblemConfig> results = new ArrayList<ProblemConfig>();
         List<List<Double>> values = new ArrayList<List<Double>>();
@@ -53,7 +53,7 @@ public class RandomConfigurator extends Configurator{
         DataNode params = new DataNode("Parameters");
 
         problem.putValue("id", problemInfo.getValue("id"));
-        algorithm.putValue("id", _algID);
+        algorithm.putValue("id", algID);
 
         algorithm.putDataNode(params);
         problem.putDataNode(instance);
@@ -72,7 +72,7 @@ public class RandomConfigurator extends Configurator{
 
             _paramInfo = new DataNode("ParamInfo");
 
-            for(DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(_algID).getDataNodes("Parameter"))
+            for(DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
             {
                 String name = paramNode.getValueStr("name");
                 DataNode p = new DataNode(name);
@@ -81,7 +81,7 @@ public class RandomConfigurator extends Configurator{
                 _paramInfo.putDataNode(p);
             }
 
-            for(int i=0;i<_numConfigs;i++)
+            for(int i=0;i<numConfigs;i++)
             {
                 //ArrayList<Double> paramList = new ArrayList<Double>();
                 ProblemConfig r = (ProblemConfig) instanceCfg.clone();

@@ -11,10 +11,15 @@
  */
 package org.seage.experimenter;
 
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import org.seage.experimenter.config.DefaultConfigurator;
 import org.seage.experimenter.config.Configurator;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.aal.algorithm.ProblemProvider;
+import org.seage.aal.data.ProblemConfig;
+import org.seage.data.DataNode;
 import org.seage.experimenter.config.IntervalConfigurator;
 import org.seage.experimenter.config.RandomConfigurator;
 
@@ -24,21 +29,37 @@ import org.seage.experimenter.config.RandomConfigurator;
  */
 public class Experimenter {
 
+    Configurator _configurator;
+    
+    public Experimenter()
+    {
+        _configurator = new RandomConfigurator();
+    }
+    
     public void runFromConfigFile(String configPath) throws Exception {
         ExperimentRunner.run(configPath, Long.MAX_VALUE);
+        
     }
 
-    public void runExperiments(String problemID, long timeoutS) throws Exception {
+    public void runExperiments(String problemID, int numRuns, long timeoutS) throws Exception {
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-        Configurator dc = new IntervalConfigurator("", 5);
+        
+        List<String> algIDs = new ArrayList<String>();
+        for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes("Algorithm"))
+            algIDs.add(alg.getValueStr("id"));
+        
+        runExperiments(problemID, numRuns, timeoutS, algIDs.toArray(new String[]{}));
     }
 
-    public void runExperiments(String problemID, String algorithmID, int numRuns, long timeoutS) throws Exception {
+    public void runExperiments(String problemID, int numRuns, long timeoutS, String[] algorithmIDs) throws Exception {
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-        Configurator ic = new RandomConfigurator(algorithmID, numRuns);
+        
         //ic.prepareConfigs(pi);
-
-        ExperimentRunner.run(ic.prepareConfigs(pi), timeoutS);
+        List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
+        for(String algID : algorithmIDs)
+            configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
+                
+        ExperimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
     }
 
 }

@@ -84,10 +84,21 @@ public class LogReportCreator {
                     
                     String configID = report.getDataNode("Config").getValueStr("configID");
                     DataNode config = touchDataNode(instance, "Config", configID);
-                    config.putValue("algorithmID", report.getDataNode("Config").getDataNode("Algorithm").getValueStr("id"));
+                    
+                    //config.putValue("algorithmID", algorithm.getValue("id"));
+                    DataNode algorithm = report.getDataNode("Config").getDataNode("Algorithm");
+                    if(!config.containsNode("Algorithm"))
+                        config.putDataNodeRef(algorithm);
                     
                     String runID = getRuntID(report);
+                    //touchDataNode(config, "Algorithm", runID);
                     DataNode run = touchDataNode(config, "Run", runID);
+                    
+                    DataNode algReport = report.getDataNode("AlgorithmReport");
+                    String algID = algReport.getValueStr("algorithmID");
+                    DataNode algReport2 = touchDataNode(run, "AlgorithmReport", algID);
+                    algReport2.putDataNodeRef(algReport.getDataNode("Statistics"));
+
                     
                     
                     //experiment.putDataNode(problem);

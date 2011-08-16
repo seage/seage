@@ -19,7 +19,7 @@ import org.seage.aal.data.ProblemInfo;
  * @author rick
  */
 public abstract class Configurator {
-    public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo)  throws Exception;
+    public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs)  throws Exception;
 
     // TODO: A - modify the class to be a config stream ...
     // - to provide (generate) configs through a method 'next'
