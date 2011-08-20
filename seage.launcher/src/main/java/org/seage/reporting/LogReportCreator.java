@@ -110,24 +110,29 @@ public class LogReportCreator {
             }
             //XmlHelper.writeXml(xmlDoc, reportDirDir.getPath()+"/report.xml");
             
-//            try
-//            {                
-//                TransformerFactory tFactory = TransformerFactory.newInstance();
-//                Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream("report.xsl")));
-//
-//                transformer.transform
-//                  (new javax.xml.transform.stream.StreamSource
-//                        (reportDirDir.getPath()+"/report.xml"),
-//                   new javax.xml.transform.stream.StreamResult
-//                        ( new FileOutputStream(reportDirDir.getPath()+"/report2.xml")));
-//            }
-//            catch(Exception e)
-//            {
-//                e.printStackTrace();
-//            } 
+            
         }
         
         XmlHelper.writeXml(xmlDoc, reportDir.getPath()+"/report.xml");
+        
+        try
+            {          
+                System.setProperty("javax.xml.transform.TransformerFactory",
+                    "net.sf.saxon.TransformerFactoryImpl");
+
+                TransformerFactory tFactory = TransformerFactory.newInstance();
+                Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream("report.xsl")));
+
+                transformer.transform
+                  (new javax.xml.transform.stream.StreamSource
+                        (reportDir.getPath()+"/report.xml"),
+                   new javax.xml.transform.stream.StreamResult
+                        ( new FileOutputStream(reportDir.getPath()+"/report.html")));
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            } 
     }
     
     private String getExperimentID(DataNode report) throws Exception
