@@ -16,9 +16,11 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import org.seage.data.DataNode;
 import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -29,7 +31,7 @@ public class LogReportCreator {
     private static String _logPath = "output";
     private static String _reportPath = "report";
    
-    public void report()
+    public void report() throws Exception
     {
         report0();
         report1();
@@ -37,17 +39,18 @@ public class LogReportCreator {
     
     
     
-    private void report0()
+    private void report0() throws Exception
     {
         System.out.println("Creating reports 0...");
         
         File logDir = new File(_logPath);
         
         File reportDir = new File(_reportPath+"0");
-        if(!reportDir.exists())
-            reportDir.mkdirs();
-        else
+        
+        if(reportDir.exists())
             FileHelper.deleteDirectory(reportDir);
+        
+        reportDir.mkdirs();
         
         FilenameFilter filter = new FilenameFilter() {
             public boolean accept(File arg0, String arg1) {
@@ -82,12 +85,18 @@ public class LogReportCreator {
                 }                
             }            
             
-            
+            transform0(xmlDoc.toXml(), reportDir);
         }
         
+        
+        
+    }
+    
+    private void transform0(Document xmlDoc, File reportDir)
+    {
         try
             {
-                XmlHelper.writeXml(xmlDoc, reportDir.getPath()+"/report.xml");
+                //XmlHelper.writeXml(xmlDoc, reportDir.getPath()+"/report.xml");
                 
                 System.setProperty("javax.xml.transform.TransformerFactory",
                     "net.sf.saxon.TransformerFactoryImpl");
@@ -96,8 +105,9 @@ public class LogReportCreator {
                 Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream("report0.xsl")));
 
                 transformer.transform
-                  (new javax.xml.transform.stream.StreamSource
-                        (reportDir.getPath()+"/report.xml"),
+                  (new DOMSource(xmlDoc),
+                   //new javax.xml.transform.stream.StreamSource
+                   //     (reportDir.getPath()+"/report.xml"),
                    new javax.xml.transform.stream.StreamResult
                         ( new FileOutputStream(reportDir.getPath()+"/report.html")));
             }
@@ -105,7 +115,6 @@ public class LogReportCreator {
             {
                 e.printStackTrace();
             } 
-        
     }
     
     private void report1()
@@ -192,7 +201,7 @@ public class LogReportCreator {
             
         }
         
-        XmlHelper.writeXml(xmlDoc, reportDir.getPath()+"/report.xml");
+        //XmlHelper.writeXml(xmlDoc, reportDir.getPath()+"/report.xml");
         
         try
             {          
@@ -203,8 +212,9 @@ public class LogReportCreator {
                 Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream("report1.xsl")));
 
                 transformer.transform
-                  (new javax.xml.transform.stream.StreamSource
-                        (reportDir.getPath()+"/report.xml"),
+                  (new DOMSource(xmlDoc.toXml()),
+                   //new javax.xml.transform.stream.StreamSource
+                   //     (reportDir.getPath()+"/report.xml"),
                    new javax.xml.transform.stream.StreamResult
                         ( new FileOutputStream(reportDir.getPath()+"/report.html")));
             }
