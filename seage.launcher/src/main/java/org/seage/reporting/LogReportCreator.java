@@ -28,14 +28,93 @@ public class LogReportCreator {
     
     private static String _logPath = "output";
     private static String _reportPath = "report";
-    
+   
     public void report()
     {
-        System.out.println("Creating reports...");
+        report0();
+        report1();
+    }
+    
+    
+    
+    private void report0()
+    {
+        System.out.println("Creating reports 0...");
         
         File logDir = new File(_logPath);
         
-        File reportDir = new File(_reportPath);
+        File reportDir = new File(_reportPath+"0");
+        if(!reportDir.exists())
+            reportDir.mkdirs();
+        else
+            FileHelper.deleteDirectory(reportDir);
+        
+        FilenameFilter filter = new FilenameFilter() {
+            public boolean accept(File arg0, String arg1) {
+                if(arg0.isDirectory()) 
+                    return true;
+                else 
+                    return false;
+            }
+        };
+        DataNode xmlDoc = new DataNode("xml");
+        
+        for(String dirName : logDir.list(filter))
+        {
+            //System.out.println(dirName);
+            
+            //File reportDirDir = new File(reportDir.getPath()+"/"+dirName);
+            //reportDirDir.mkdirs();
+            
+            File logDirDir = new File(logDir.getPath()+"/"+dirName);
+            
+            
+            for(String xmlFileName : logDirDir.list())
+            {
+                //System.out.println("\t"+xmlFileName);
+                File xmlFile = new File(logDir.getPath()+"/"+dirName+"/"+xmlFileName);
+                try{
+                    DataNode dn = XmlHelper.readXml(xmlFile); 
+                    xmlDoc.putDataNodeRef(dn);
+                }catch(Exception e)
+                {
+                    e.printStackTrace();
+                }                
+            }            
+            
+            
+        }
+        
+        try
+            {
+                XmlHelper.writeXml(xmlDoc, reportDir.getPath()+"/report.xml");
+                
+                System.setProperty("javax.xml.transform.TransformerFactory",
+                    "net.sf.saxon.TransformerFactoryImpl");
+                
+                TransformerFactory tFactory = TransformerFactory.newInstance();
+                Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream("report0.xsl")));
+
+                transformer.transform
+                  (new javax.xml.transform.stream.StreamSource
+                        (reportDir.getPath()+"/report.xml"),
+                   new javax.xml.transform.stream.StreamResult
+                        ( new FileOutputStream(reportDir.getPath()+"/report.html")));
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            } 
+        
+    }
+    
+    private void report1()
+    {
+        System.out.println("Creating reports 1...");
+        
+        File logDir = new File(_logPath);
+        
+        File reportDir = new File(_reportPath+"1");
         
         if(reportDir.exists())
             FileHelper.deleteDirectory(reportDir);
@@ -121,7 +200,7 @@ public class LogReportCreator {
                     "net.sf.saxon.TransformerFactoryImpl");
 
                 TransformerFactory tFactory = TransformerFactory.newInstance();
-                Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream("report.xsl")));
+                Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream("report1.xsl")));
 
                 transformer.transform
                   (new javax.xml.transform.stream.StreamSource
