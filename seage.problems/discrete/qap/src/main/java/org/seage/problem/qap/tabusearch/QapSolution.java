@@ -19,32 +19,35 @@ import org.seage.metaheuristic.tabusearch.*;
  */
 public class QapSolution extends SolutionAdapter
 {
-    protected int[] _assign;
+    protected Integer[] _assign;
     
     public QapSolution(){} // Appease clone()
 
-    public QapSolution(Double[][] customers)
+    public QapSolution(Double[][][] customers)
     {
         // Crudely initialize solution
-        _assign = new int[ customers.length ];
+        _assign = new Integer[ customers.length ];
         for( int i = 0; i < customers.length; i++ )
             _assign[i] = i;
     }   // end constructor
     
+    public QapSolution(Integer[] assign){
+        _assign = assign;
+    }
     
     public Object clone()
     {
 		QapSolution copy = (QapSolution)super.clone();
-		copy._assign = (int[])this._assign.clone();
+		copy._assign = (Integer[])this._assign.clone();
         return copy;
     }   // end clone
 
-    public int[] getAssign()
+    public Integer[] getAssign()
     {
             return _assign;
     }
 
-    public void setAssign(int[] assign)
+    public void setAssign(Integer[] assign)
     {
             _assign = assign;
     }
@@ -53,11 +56,11 @@ public class QapSolution extends SolutionAdapter
     {
         StringBuffer s = new StringBuffer();
 
-        s.append( new Double(getObjectiveValue()[0]).toString().substring(0,10) +"\t" + hashCode());
+        s.append( new Double(getObjectiveValue()[0]).toString().substring(0,new Double(getObjectiveValue()[0]).toString().length()) +"\t" + hashCode());
 		//s.append( "Sequence: [ " );
         
 		//for( int i = 0; i < tour.length - 1; i++ )
-		//    s.append( tour[i] ).append( ", " );
+		  //  s.append( tour[i] ).append( ", " );
         
 		//s.append( tour[ tour.length - 1 ] );
 		//s.append( " ]" );

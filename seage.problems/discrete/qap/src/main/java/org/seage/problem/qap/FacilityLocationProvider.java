@@ -18,38 +18,90 @@ import java.io.*;
  */
 public class FacilityLocationProvider
 {
-    synchronized public static Double[][] readFacilityLocations(String path) throws Exception
+    synchronized public static Double[][][] readFacilityLocations(InputStream stream) throws Exception
     {
-        TreeMap<Integer,TreeMap<Integer,Double>> result = new TreeMap<Integer,TreeMap<Integer,Double>>();
-        Scanner scanner = new Scanner(new File(path));
+        Double[][] res1,res2,res3;
+        Scanner scanner = new Scanner(stream);
+        final int n;
         try {
             
-            while ( scanner.hasNextLine() )
+            String line = scanner.nextLine();
+            //size of matrix
+            n=Integer.valueOf(line.trim());
+            //System.out.println("N = "+n);
+            
+            res1 = new Double[n][n];
+            res2 = new Double[n][n];
+            res3 = new Double[n][n];
+            
+            // read first matrix
+            for(int i=0;i<n;i++)
             {
-                String line = scanner.nextLine();
-                if(line.equals("EOF") || line.trim().startsWith("FACILITY_LOCATION_PRICE"))
-                    break;
-            }
-
-            while ( scanner.hasNextLine() )
-            {
-                String line = scanner.nextLine();
+                line = scanner.nextLine();
+                if(line.trim().isEmpty()){
+                    line = scanner.nextLine();
+                }
                 if(line.equals("EOF"))
                     break;
+                //System.out.println(line);
                 Double[] dataLine = readLine( line );
-                if(!result.containsKey(dataLine[0].intValue()))
-                	result.put(dataLine[0].intValue(), new TreeMap<Integer,Double>());
-                result.get(dataLine[0].intValue()).put(dataLine[1].intValue(), dataLine[2]);
+                res1[i] = dataLine;
+            }
+
+            /* read second matrix (optional)
+             * if no matrix given, unit matrix is created
+             */
+            for(int i=0;i<n;i++)
+            {
+                if(scanner.hasNext()){
+                    line = scanner.nextLine();
+                    if(line.trim().isEmpty()){
+                        line = scanner.nextLine();
+                    }
+                    //System.out.println(line);
+                    Double[] dataLine = readLine( line );
+                    res2[i] = dataLine;
                 }
+                else{
+                    for(int j=0;j<n;j++){
+                        res2[i][j]=1.0;
+                    }
+                }
+            }
+
+            /* read third matrix (optional)
+             * if no matrix given, zero matrix is created
+             */
+            if(scanner.hasNext())
+                scanner.nextLine();
+
+            for(int i=0;i<n;i++)
+            {
+                if(scanner.hasNext()){
+                    line = scanner.nextLine();
+                    if(line.trim().isEmpty()){
+                        i--;
+                        continue;
+                    }
+                    Double[] dataLine = readLine( line );
+                    res3[i] = dataLine;
+                }
+                else{
+                    for(int j=0;j<n;j++){
+                        res3[i][j]=0.0;
+                    }
+                }
+            }
         }
         finally {
           //ensure the underlying stream is always closed
           scanner.close();
         }
-        Double[][] res = new Double[result.size()][result.size()];
-        for(int i=0;i<res.length;i++){
-        	res[i] = result.get(i).values().toArray(new Double[0]);
-        }
+        Double[][][] res = new Double[3][n][n];
+        res[0]=res1;
+        res[1]=res2;
+        res[2]=res3;
+
         return res;
     }
 
@@ -58,25 +110,19 @@ public class FacilityLocationProvider
         ArrayList<Double> result = new ArrayList<Double>();
         Scanner scanner = new Scanner(line);
         scanner.useDelimiter(" ");
-        //while ( scanner.hasNext() )
-        for(int i=0;i<3;i++)
+        while ( scanner.hasNext() )
         {
-            result.add(Double.parseDouble(scanner.next()));
+            try{
+                result.add(Double.parseDouble(scanner.next()));
+            }catch(NumberFormatException e){
+                
+            }
         }
         scanner.close();
         return (Double[])result.toArray(new Double[0]);
     }
 
-//    public static City[] generateCircleCities(int numCircleCities)
-//    {
-//        City[] result = new City[numCircleCities];
-//
-//		for (int i = 0; i < result.length; i++)
-//		{
-//			double angle = 6.28 * i * (1.0 / numCircleCities);
-//            result[i] = new City(i, Math.cos(angle), Math.sin(angle));
-//		}
-//
-//        return result;
-//    }
+    public static Double[][][] readFacilityLocations(String path) throws Exception {
+        return FacilityLocationProvider.readFacilityLocations(new FileInputStream(path));
+    }
 }

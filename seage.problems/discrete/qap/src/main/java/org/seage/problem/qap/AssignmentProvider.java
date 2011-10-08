@@ -11,10 +11,10 @@
  */
 package org.seage.problem.qap;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /**
  *
@@ -33,7 +33,7 @@ public class AssignmentProvider
             
             System.out.println("Instance: "+args[0]);
 
-            Double[][] facilityLocation = FacilityLocationProvider.readFacilityLocations(args[0]);
+            Double[][][] facilityLocation = FacilityLocationProvider.readFacilityLocations(new FileInputStream(args[0]) );
 
             System.out.println("Facilities & Locations: "+facilityLocation.length);
             System.out.println();
@@ -66,64 +66,100 @@ public class AssignmentProvider
         }
     }
 
-    public static Integer[] createGreedyAssignment(Double[][] facilityLocation) throws Exception
+    public static Integer[] createGreedyAssignment(Double[][][] facilityLocation) throws Exception
     {
 
-        Integer[] assignment = new Integer[facilityLocation.length];
+        Integer[] assignment = new Integer[facilityLocation[0].length];
 
         // Greedy cheapset initialize
-        int[] avail = new int[ facilityLocation.length ];
-
+        int[] avail = new int[ facilityLocation[0].length ];
+        //System.out.println("in assignmentProfider's begining"+facilityLocation.length);
+        //System.out.println(facilityLocation[0].length);
+        //System.out.println(facilityLocation[0][0].length);
+        //System.out.println("assignment.length is "+assignment.length+" and avail.length is "+avail.length);
         for( int i = 0; i < avail.length; i++ )
         {
             assignment[i] = -1;
             avail[i] = i;
         }
 
+        // count sums of all rows
+        double[][] sumMat = new double[2][facilityLocation[0].length];
+        sumMat[0] = sumOfRows(facilityLocation[0]);
+        sumMat[1] = sumOfRows(facilityLocation[1]);
+
+        //System.out.println("facilityLoaction.size=["+facilityLocation.length+","+facilityLocation[0].length+","+facilityLocation[0][0].length+"]");
+
         for(int i=0;i<assignment.length;i++){
             int location = -1;
             double price = Double.MAX_VALUE;
-            for( int j=0;j<avail.length;j++)
-                if(facilityLocation[i][j] < price && avail[j] >= 0){
-                    price = facilityLocation[i][j];
+            for( int j=0;j<avail.length;j++){
+                double newPrice=0;
+                double a=sumMat[0][i];
+                double b=sumMat[1][j];
+                double add=facilityLocation[2][i][j];
+
+                if(sumMat[0][i]*sumMat[1][j] + facilityLocation[2][i][j] < price)
+                    if(avail[j] >= 0){
+                    price = sumMat[0][i]*sumMat[1][j] + facilityLocation[2][i][j];
                     location = j;
                 }
+            }
             assignment[i]=location;
             avail[location] = -1;
         }
-
-
         return assignment;
     }
 
+    public static double[] sumOfRows(Double[][] matrix){
+        double[] res = new double[matrix.length];
+        for(int i=0;i<matrix.length;i++){
+            res[i]=addArray(matrix[i]);
+        }
+        return res;
+    }
+
+    public static double addArray(Double[] row){
+        double res = 0;
+        for(int i=0;i<row.length;i++)
+            res+=row[i];
+        return res;
+    }
+
     // TODO: A - create better implementation
-    public static Integer[] createRandomAssignment(Double[][] facilityLocation)
+    public static Integer[] createRandomAssignment(Double[][][] facilityLocation)
     {
-        Integer[] assign = new Integer[ facilityLocation.length ];
+//        Integer[] assign = new Integer[ facilityLocation[0][0].length ];
         List<Integer> listAssign = new ArrayList();
-        for (int i = 0; i < facilityLocation.length; i++) {
+        for (int i = 0; i < facilityLocation[0][0].length; i++) {
             listAssign.add(i);
         }
         Collections.shuffle(listAssign);
         return listAssign.toArray(new Integer[0]);
     }
 
-    public static Integer[] createSortedAssignment(Double[][] facilityLocation)
+    public static Integer[] createSortedAssignment(Double[][][] facilityLocation)
     {
-        Integer[] tour = new Integer[ facilityLocation.length ];
+        Integer[] tour = new Integer[ facilityLocation[0].length ];
         for(int i = 0; i < tour.length; i++)
             tour[i] = i;
 
         return tour;
     }
 
-    public static double getTotalPrice(Integer[] assignment, Double[][] facilityLocation) throws Exception
+    public static double getTotalPrice(Integer[] assignment, Double[][][] facilityLocation) throws Exception
     {
         double price = 0;
-        for(int i=0;i<facilityLocation.length;i++){
-            price+=facilityLocation[i][assignment[i]];
+        for(int i=0;i<facilityLocation[0][0].length;i++){
+            for(int j=0;j<facilityLocation[0][0].length;i++){
+                price+=facilityLocation[0][i][j]*facilityLocation[1][assignment[i]][assignment[j]];
+            }
+        }
+        double addition=0;
+        for(int i=0;i<facilityLocation[0][0].length;i++){
+            addition+=facilityLocation[2][i][assignment[i]];
         }
 
-        return price;
+        return price+addition;
     }
 }

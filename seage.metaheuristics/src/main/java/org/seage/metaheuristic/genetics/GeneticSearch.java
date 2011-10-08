@@ -92,7 +92,7 @@ public class GeneticSearch extends GeneticSearchBase
             _currentIteration = 0;
 
             Population workPopulation = new Population();			
-            int numEliteSubject = (int)(_eliteSubjectPct * _populationCount)+1;
+            int numEliteSubject = (int)Math.max(_eliteSubjectPct * _populationCount,1);
             int numMutateSubject = (int)(_mutateSubjectPct * _populationCount);
             int numCrossSubject = _populationCount - numEliteSubject - numMutateSubject;
             int numRandomSubject = (int)(_randomSubjectPct * _populationCount);

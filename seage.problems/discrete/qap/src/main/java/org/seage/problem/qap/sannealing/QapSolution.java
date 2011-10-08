@@ -29,9 +29,9 @@ public abstract class QapSolution extends Solution
     /**
      * Array of cities
      */
-    protected static Double[][] _facilityLocation;
+    protected static Double[][][] _facilityLocation;
 
-    public QapSolution(Double[][] facilityLocation)
+    public QapSolution(Double[][][] facilityLocation)
     {
         _assign = new Integer[ facilityLocation.length ];
         _facilityLocation = facilityLocation;
@@ -47,12 +47,12 @@ public abstract class QapSolution extends Solution
         _assign = assign;
     }
 
-    public Double[][] getFacilityLocation()
+    public Double[][][] getFacilityLocation()
     {
         return _facilityLocation;
     }
     
-    public void setFacilityLocation(Double[][] facilityLocation)
+    public void setFacilityLocation(Double[][][] facilityLocation)
     {
         _facilityLocation = facilityLocation;
     }
@@ -60,18 +60,26 @@ public abstract class QapSolution extends Solution
     @Override
     public QapSolution clone()
     {
-        QapSolution tspSolution = null;
+        QapSolution qapSolution = null;
         try
         {
-            tspSolution = (QapSolution)super.clone();
-            tspSolution.setAssign( _assign.clone() );
-            tspSolution.setFacilityLocation( _facilityLocation );
-            tspSolution.setObjectiveValue(getObjectiveValue());
+            qapSolution = (QapSolution)super.clone();
+            qapSolution.setAssign( _assign.clone() );
+            qapSolution.setFacilityLocation( _facilityLocation );
+            qapSolution.setObjectiveValue(getObjectiveValue());
         } catch (Exception ex)
         {
             Logger.getLogger(QapSolution.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return tspSolution;
+        return qapSolution;
+    }
+
+    public String toString(){
+        String s="";
+        for(int i=0;i<_assign.length;i++){
+            s+=_assign[i]+", ";
+        }
+        return s;
     }
 
 }

@@ -12,38 +12,36 @@
 
 package org.seage.problem.tsp.genetics;
 
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.genetics.GeneticAlgorithmAdapter;
+import org.seage.aal.Annotations;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
 import org.seage.data.DataNode;
-import org.seage.problem.tsp.TspProblemSolver;
 import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.TspProblemProvider;
+import org.seage.problem.tsp.TspProblemInstance;
+
 
 
 /**
  *
  * @author Richard Malek
  */
+@Annotations.AlgorithmId("GeneticAlgorithm")
+@Annotations.AlgorithmName("GeneticAlgorithm")
 public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 {
-//    private DataNode _algParams;
-//    private TspProblemProvider _provider;
-//
-//    public TspGeneticAlgorithmFactory(DataNode algParams, TspProblemProvider provider) throws Exception
-//    {
-//        _algParams = algParams;
-//        _provider = provider;
-//    }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
-    {
+    public Class getAlgorithmClass() {
+        return GeneticAlgorithmAdapter.class;
+    }
+
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
+    {        
         IAlgorithmAdapter algorithm;
-        City[] cities = TspProblemProvider.getCities();
+        City[] cities = ((TspProblemInstance)instance).getCities();
         algorithm = new GeneticAlgorithmAdapter(new TspGeneticOperator(), new TspEvaluator(cities), false, "");
 
-//        Object[][] solutions = _provider.generateInitialSolutions(_algParams.getValueInt("numSolution"));
-//        algorithm.solutionsFromPhenotype(solutions);
         return algorithm;
     }
 

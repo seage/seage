@@ -21,9 +21,9 @@ import org.seage.problem.qap.AssignmentProvider;
  */
 public class QapObjectiveFunction implements IObjectiveFunction
 {
-    private Double[][] _facilityLocation;
+    private Double[][][] _facilityLocation;
 
-    public QapObjectiveFunction(Double[][] facilityLocation)
+    public QapObjectiveFunction(Double[][][] facilityLocation)
     {
         _facilityLocation = facilityLocation;
     }

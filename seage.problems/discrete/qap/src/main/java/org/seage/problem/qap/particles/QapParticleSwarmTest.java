@@ -11,6 +11,7 @@
  */
 package org.seage.problem.qap.particles;
 
+import java.io.FileInputStream;
 import org.seage.metaheuristic.particles.IParticleSwarmListener;
 import org.seage.metaheuristic.particles.ParticleSwarm;
 import org.seage.metaheuristic.particles.ParticleSwarmEvent;
@@ -23,8 +24,9 @@ import org.seage.problem.qap.FacilityLocationProvider;
  */
 public class QapParticleSwarmTest implements IParticleSwarmListener
 {
-    private Double[][] _facilityLocation;
-    private static String _dataPath = "data/qapData1.txt";
+    private Double[][][] _facilityLocation;
+//    private static String _dataPath = "data/tai12a.dat";
+    private static String _dataPath = "D:\\qap\\bur26a.dat";
 
     public static void main(String[] args)
     {
@@ -41,9 +43,9 @@ public class QapParticleSwarmTest implements IParticleSwarmListener
 
     public void run(String path) throws Exception
     {
-        _facilityLocation = FacilityLocationProvider.readFacilityLocations( path );
+        _facilityLocation = FacilityLocationProvider.readFacilityLocations( new FileInputStream(path)  );
         System.out.println("Loading cities from path: " + path);
-        System.out.println("Number of cities: " + _facilityLocation.length);
+        System.out.println("Number of cities: " + _facilityLocation[0][0].length);
 
         ParticleSwarm pso = new ParticleSwarm( new QapObjectiveFunction(_facilityLocation) );
 

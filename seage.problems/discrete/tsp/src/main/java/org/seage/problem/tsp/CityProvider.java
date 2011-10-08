@@ -11,7 +11,6 @@
  */
 package org.seage.problem.tsp;
 
-import org.seage.problem.tsp.City;
 import java.util.*;
 import java.io.*;
 /**
@@ -19,10 +18,10 @@ import java.io.*;
  */
 public class CityProvider
 {
-    synchronized public static City[] readCities(String path) throws Exception
+    synchronized public static City[] readCities(InputStream stream) throws Exception
     {
         ArrayList<City> result = new ArrayList<City>();
-        Scanner scanner = new Scanner(new File(path));
+        Scanner scanner = new Scanner(stream);
         try {
             
             while ( scanner.hasNextLine() )

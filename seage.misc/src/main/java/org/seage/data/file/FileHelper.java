@@ -42,42 +42,26 @@ public class FileHelper
     
     public static String md5fromFile(File file) throws Exception
     {
-        MessageDigest digest = MessageDigest.getInstance("MD5");
-        InputStream is = new FileInputStream(file);
-        byte[] buffer = new byte[16384];
-        int read = 0;
-
-		while( (read = is.read(buffer)) > 0) {
-			digest.update(buffer, 0, read);
-		}
-		byte[] md5sum = digest.digest();
-		BigInteger bigInt = new BigInteger(1, md5sum);
-		String output = bigInt.toString(16);
-
-        is.close();
-
-        return output;
+        return md5(new FileInputStream(file));
     }
 
-    /**
-    * This function is passed a File name and it returns a md5 hash of
-    * this file.
-    * @param FileToMd5
-    * @return The md5 string
-    */
     public static String md5fromString(String stringToMd5) throws Exception
+    {        
+        return md5(new ByteArrayInputStream(stringToMd5.getBytes()));
+    }
+
+    private static String md5(InputStream is) throws Exception
     {
         MessageDigest digest = MessageDigest.getInstance("MD5");
-        InputStream is = new ByteArrayInputStream(stringToMd5.getBytes());
         byte[] buffer = new byte[8192];
         int read = 0;
 
-		while( (read = is.read(buffer)) > 0) {
-			digest.update(buffer, 0, read);
-		}
-		byte[] md5sum = digest.digest();
-		BigInteger bigInt = new BigInteger(1, md5sum);
-		String output = bigInt.toString(16);
+        while( (read = is.read(buffer)) > 0) {
+                digest.update(buffer, 0, read);
+        }
+        byte[] md5sum = digest.digest();
+        BigInteger bigInt = new BigInteger(1, md5sum);
+        String output = bigInt.toString(16);
 
         is.close();
 

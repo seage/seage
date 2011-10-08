@@ -11,33 +11,36 @@
  */
 package org.seage.problem.tsp.tabusearch;
 
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.tabusearch.TabuSearchAdapter;
+import org.seage.aal.Annotations;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IProblemProvider;
+import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspProblemInstance;
 import org.seage.problem.tsp.TspProblemProvider;
 
 /**
  *
  * @author Richard Malek
  */
+@Annotations.AlgorithmId("TabuSearch")
+@Annotations.AlgorithmName("Tabu Search")
 public class TspTabuSearchFactory implements IAlgorithmFactory
 {
-//    private DataNode _algParams;
-//    private TspProblemProvider _provider;
-//
-//    public TspTabuSearchFactory(DataNode algParams, TspProblemProvider provider)
-//    {
-//        _algParams = algParams;
-//        _provider = provider;
-//    }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public Class getAlgorithmClass() {
+        return TabuSearchAdapter.class;
+    }
+
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
-        City[] cities = TspProblemProvider.getCities();
+
+        final City[] cities = ((TspProblemInstance)instance).getCities();
 
         algorithm = new TabuSearchAdapter(new TspMoveManager(), new TspObjectiveFunction(cities), new TspLongTermMemory(), "" ) {
 

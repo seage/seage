@@ -11,7 +11,9 @@
  */
 package org.seage.problem.tsp.particles;
 
+import java.io.FileInputStream;
 import org.seage.metaheuristic.particles.IParticleSwarmListener;
+import org.seage.metaheuristic.particles.Particle;
 import org.seage.metaheuristic.particles.ParticleSwarm;
 import org.seage.metaheuristic.particles.ParticleSwarmEvent;
 import org.seage.problem.tsp.CityProvider;
@@ -25,13 +27,15 @@ import org.seage.problem.tsp.City;
 public class TspParticleSwarmTest implements IParticleSwarmListener
 {
     private City[] _cities;
-    //private static String _dataPath = "data/eil101.tsp";
+    private static String _dataPath = "data/eil101.tsp";
 
     public static void main(String[] args)
     {
         try
         {
-            new TspParticleSwarmTest().run( args[0] );
+            if(args.length != 0)
+                _dataPath = args[0];
+            new TspParticleSwarmTest().run( _dataPath );
         }
         catch(Exception ex)
         {
@@ -42,7 +46,7 @@ public class TspParticleSwarmTest implements IParticleSwarmListener
 
     public void run(String path) throws Exception
     {
-        _cities = CityProvider.readCities( path );
+        _cities = CityProvider.readCities( new FileInputStream(path) );
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 
@@ -55,7 +59,7 @@ public class TspParticleSwarmTest implements IParticleSwarmListener
         pso.setBeta(0.9);
 
         pso.addParticleSwarmOptimizationListener( this );
-        pso.startSearching( null );
+        pso.startSearching( new Particle[] {new TspSortedParticle(_cities.length), new TspGreedyParticle(_cities.length)} );
     }
 
     public void newBestSolutionFound(ParticleSwarmEvent e) {

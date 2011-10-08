@@ -8,67 +8,77 @@
  * Contributors:
  *     Jan Zmatlik
  *     - Initial implementation
+ *     Richard Malek
+ *     - Added algorithm annotations
  */
 package org.seage.problem.tsp.particles;
 
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.particles.ParticleSwarmAdapter;
+import org.seage.aal.Annotations;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IProblemProvider;
+import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.algorithm.particles.ParticleSwarmAdapter;
 import org.seage.data.DataNode;
 
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspProblemInstance;
+import org.seage.problem.tsp.TspProblemProvider;
 
 
 /**
  *
  * @author Jan Zmatlik
  */
+@Annotations.AlgorithmId("ParticleSwarm")
+@Annotations.AlgorithmName("Particle Swarm")
 public class TspParticleSwarmFactory implements IAlgorithmFactory
 {
-    private City[] _cities;
-
     private int _numParticles;
 
     private TspObjectiveFunction _objectiveFunction;
 
-    public TspParticleSwarmFactory(DataNode params, City[] cities) throws Exception
-    {
-        _cities = cities;
-        _numParticles = params.getValueInt("numSolutions");
+
+    public Class getAlgorithmClass() {
+        return ParticleSwarmAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
     {
         IAlgorithmAdapter algorithm;
-        _objectiveFunction = new TspObjectiveFunction(_cities);
+
+        final City[] cities = ((TspProblemInstance)instance).getCities();
+
+        _objectiveFunction = new TspObjectiveFunction(cities);
 
         algorithm = new ParticleSwarmAdapter(
-                generateInitialSolutions(),
+                generateInitialSolutions(cities),
                 _objectiveFunction,
                 false, "")
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-//                Particle[] particles = generateInitialSolutions();
-//                for(int i = 0; i < source.length; i++)
-//                {
-//                    Integer[] tour = ((TspParticle)particles[i]).getTour();
-//                    for(int j = 0; j < source[i].length; j++)
-//                    {
-//                        tour[j] = (Integer)source[i][j];
-//                    }
-//                }
+                _numParticles = source.length;
+                _initialParticles = generateInitialSolutions(cities);
+                for(int i = 0; i < source.length; i++)
+                {
+                    Integer[] tour = ((TspParticle)_initialParticles[i]).getTour();
+                    for(int j = 0; j < source[i].length; j++)
+                    {
+                        tour[j] = (Integer)source[i][j];
+                    }
+                }
             }
 
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 int numOfParticles = _particleSwarm.getParticles().length;
-                Object[][] source = new Object[ numOfParticles ][ _cities.length ];
+                Object[][] source = new Object[ numOfParticles ][ cities.length ];
 
                 for(int i = 0; i < source.length; i++)
                 {
-                    source[i] = new Integer[ _cities.length ];
+                    source[i] = new Integer[ cities.length ];
                     Integer[] tour = ((TspParticle)_particleSwarm.getParticles()[i]).getTour();
                     for(int j = 0; j < source[i].length; j++)
                     {
@@ -85,18 +95,18 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
         return algorithm;
     }
 
-    private Particle[] generateInitialSolutions() throws Exception
+    private Particle[] generateInitialSolutions(City[] cities) throws Exception
     {
-        Particle[] particles = generateTspRandomParticles( _numParticles );
+        Particle[] particles = generateTspRandomParticles( _numParticles, cities );
 
         for(Particle particle : particles)
         {
             // Initial coords
-            for(int i = 0; i < _cities.length; i++)
+            for(int i = 0; i < cities.length; i++)
                 particle.getCoords()[i] = Math.random();
 
             // Initial velocity
-            for(int i = 0; i < _cities.length; i++)
+            for(int i = 0; i < cities.length; i++)
                 particle.getVelocity()[i] = Math.random();
 
             // Evaluate
@@ -112,11 +122,11 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
             System.out.print(" " + array[i]);
     }
 
-    private Particle[] generateTspRandomParticles(int count)
+    private Particle[] generateTspRandomParticles(int count, City[] cities)
     {
         TspRandomParticle[] particles = new TspRandomParticle[count];
         for(int i = 0; i < count; i++)
-            particles[i] = new TspRandomParticle( _cities.length );
+            particles[i] = new TspRandomParticle( cities.length );
 
         return particles;
     }
