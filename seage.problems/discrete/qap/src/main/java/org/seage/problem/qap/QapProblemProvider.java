@@ -1,98 +1,121 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://seage.sourceforge.net/license/cpl-v10.html
+ *
+ * Contributors:
+ *     Karel Durkota
+ *     - Initial implementation
+ *     Richard Malek
+ *     - Added problem annotations
  */
 
 package org.seage.problem.qap;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.IProblemProvider;
+import org.seage.aal.Annotations;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
-//import org.seage.problem.qap.genetics.QapGeneticAlgorithmFactory;
-import org.seage.problem.qap.particles.QapParticleSwarmFactory;
-import org.seage.problem.qap.sannealing.QapSimulatedAnnealingFactory;
-import org.seage.problem.qap.tabusearch.QapTabuSearchFactory;
 
 /**
  *
  * @author Karel Durkota
  */
-public class QapProblemProvider implements IProblemProvider
+@Annotations.ProblemId("QAP")
+@Annotations.ProblemName("Quadratic Assignment Problem")
+public class QapProblemProvider extends ProblemProvider
 {
-    //private static City[] _cities;
-
-    private static Double[][] _facilityLocation;
-    private int currentInstanceIx = -1;
 
     @Override
-    public void initProblemInstance(DataNode params, int instanceIx) throws Exception
+    public ProblemInstance initProblemInstance(ProblemConfig params) throws Exception
     {
-        if(currentInstanceIx != instanceIx)
-        {
-            currentInstanceIx = instanceIx;
-            DataNode info = params.getDataNode("instance", instanceIx);
-            String path = info.getValueStr("path");
+        DataNode info = params.getDataNode("Problem").getDataNode("Instance", 0);
+        String type = info.getValueStr("type");
+        String path = info.getValueStr("path");
+        String instanceName = path.substring(path.lastIndexOf('/')+1);
+        InputStream stream;            
+        if(type.equals("resource"))             
+            stream = getClass().getResourceAsStream(path);
+        else            
+            stream = new FileInputStream(path);
 
-            _facilityLocation = FacilityLocationProvider.readFacilityLocations(info.getValueStr("path"));
 
-
-            //params.getDataNode("evaluator").putValue("cities", _cities);
-
-        }
+        //params.getDataNode("evaluator").putValue("cities", _cities);
+        return new QapProblemInstance(instanceName, FacilityLocationProvider.readFacilityLocations(stream));
+        
     }
 
     @Override
-    public Object[][] generateInitialSolutions(int numSolutions) throws Exception
+    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstance instance) throws Exception
     {
         int numAssigns = numSolutions;
-        int assignPrice = _facilityLocation.length;
-        Object[][] result = new Object[numAssigns][];
+        Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
+        int assignPrice = facilityLocation[0].length;
+        Object[][] result = new Object[numAssigns][assignPrice];
 
-	Random r = new Random();
-
-        result[0] = AssignmentProvider.createGreedyAssignment(_facilityLocation);
-        
-        for(int k=1;k<numAssigns;k++)
-        {
-            int[] initAssign = new int[assignPrice];
-
-            result[k] = new Object[assignPrice];
-
-            for (int i = 0; i < assignPrice; i++)
-            {
-                int ix = r.nextInt(assignPrice);
-
-                while (initAssign[ix] != 0)
-                {
-                    ix = (ix + 1) % assignPrice;
-                }
-                initAssign[ix] = 1;
-                result[k][i] = ix;
-            }
-
+//	Random r = new Random();
+        ArrayList al = new ArrayList();
+        for(int i=0;i<assignPrice;i++)
+            al.add(i);
+        for(int i=0;i<numAssigns;i++){
+            Collections.shuffle(al);
+            result[i]=al.toArray();
         }
         return result;
+//        Object result[][]=new Object[numAssigns][assignPrice];
+
+
+//        result[0] = AssignmentProvider.createGreedyAssignment(facilityLocation);
+//
+//        for(int k=1;k<numAssigns;k++)
+//        {
+//            int[] initAssign = new int[assignPrice];
+//
+//            result[k] = new Object[assignPrice];
+//
+//            for (int i = 0; i < assignPrice; i++)
+//            {
+//                int ix = r.nextInt(assignPrice);
+//
+//                while (initAssign[ix] != 0)
+//                {
+//                    ix = (ix + 1) % assignPrice;
+//                }
+//                initAssign[ix] = 1;
+//                result[k][i] = ix;
+//            }
+//
+//        }
+//        return result;
     }
 
-    @Override
-    public IAlgorithmFactory createAlgorithmFactory(DataNode algorithmParams) throws Exception
-    {
-        String algName = algorithmParams.getName();
-//        if(algName.equals("geneticAlgorithm"))
-//            return new TspGeneticAlgorithmFactory();
-        if(algName.equals("tabuSearch"))
-            return new QapTabuSearchFactory();
-        if(algName.equals("simulatedAnnealing"))
-            return new QapSimulatedAnnealingFactory(algorithmParams, _facilityLocation);
-        if(algName.equals("particleSwarm"))
-            return new QapParticleSwarmFactory(algorithmParams, _facilityLocation);
+//    @Override
+//    public IAlgorithmFactory createAlgorithmFactory(DataNode algorithmParams) throws Exception
+//    {
+//        String algName = algorithmParams.getName();
+////        if(algName.equals("geneticAlgorithm"))
+////           return new QapGeneticAlgorithmFactory();
+//        if(algName.equals("tabuSearch"))
+//            return new QapTabuSearchFactory();
+//        if(algName.equals("simulatedAnnealing"))
+//            return new QapSimulatedAnnealingFactory(algorithmParams, _facilityLocation);
+//        if(algName.equals("particleSwarm"))
+//            return new QapParticleSwarmFactory(algorithmParams, _facilityLocation);
+//
+//        throw new Exception("No algorithm factory for name: " + algName);
+//    }
 
-        throw new Exception("No algorithm factory for name: " + algName);
-    }
-
     @Override
-    public void visualize(Object[] solution) throws Exception
+    public void visualizeSolution(Object[] solution, ProblemInstance instance) throws Exception
     {
         Integer[] assign = (Integer[])solution;
 
@@ -104,9 +127,10 @@ public class QapProblemProvider implements IProblemProvider
 //        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
     }
 
-    public static Double[][] getFacilityLocation()
-    {
-        return _facilityLocation;
+    public IPhenotypeEvaluator initPhenotypeEvaluator() throws Exception {
+        return new QapPhenotypeEvaluator();
     }
+
+
     
 }

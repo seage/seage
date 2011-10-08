@@ -117,20 +117,26 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
     // The best solution is same as current solution
     _bestSolution = _currentSolution = solution;
-    _objectiveFunction.setObjectiveValue( solution );
+//    System.out.println("STARTING FITNESS: "+_bestSolution.getObjectiveValue());
+    _objectiveFunction.setObjectiveValue( solution ); // <= ERROR
 
 
+//    System.out.println("STARTING FITNESS: "+_bestSolution.getObjectiveValue());
     // Fire event to listeners about that algorithm has started
     _listenerProvider.fireSimulatedAnnealingStarted();
 
     // Iterates until current temperature is equal or greather than minimal temperature
     // and successful iteration count is less than zero
     while (( _currentTemperature >= _minimalTemperature ) && ( successIterationCount > 0 ))
-    {        
+    {
+//        System.out.println("(CurrentTemperature = "+_currentTemperature+" >= "+_minimalTemperature+" = minimalTemperature");
         innerIterationCount = successIterationCount = 0;
+        //System.out.println(_bestSolution.getObjectiveValue());
 
         while(( innerIterationCount < _maximalIterationCount ) && ( successIterationCount < _maximalSuccessIterationCount ))
-        {
+            {
+//            System.out.println("(innderIteration = "+innerIterationCount+" >= "+_maximalIterationCount+" = _maximalIterationCount");
+//            System.out.println("BEST SOLUTION="+_bestSolution.getObjectiveValue());;
             if( _stopSearching ) return;
             _listenerProvider.fireNewIterationStarted();
 

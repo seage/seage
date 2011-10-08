@@ -5,32 +5,36 @@
 
 package org.seage.problem.qap;
 
-import org.seage.aal.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.ProblemInstance;
 
 /**
  *
  * @author Karel Durkota
+ * student
  */
 public class QapPhenotypeEvaluator implements IPhenotypeEvaluator
 {
     
     @Override
-    public double[] evaluate(Object[] phenotypeSubject) throws Exception
+    public double[] evaluate(Object[] phenotypeSubject, ProblemInstance instance) throws Exception
     {
         double assignPrice = 0;
-        Double[][] facilityLocation = QapProblemProvider.getFacilityLocation();
-        int numFacilities = facilityLocation.length;
+        Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
+        int numFacilities = facilityLocation[0][0].length;
 
-        for (int i = 0; i < numFacilities; i++)
-        {				
-            int k = i + 1;
-            if (i == numFacilities - 1)
-                k = 0;
-
-            int location = (Integer)phenotypeSubject[i];
-            assignPrice += facilityLocation[i][location];
+        double price = 0;
+        for(int i=0;i<facilityLocation[0][0].length;i++){
+            for(int j=0;j<facilityLocation[0][0].length;j++){
+                price+=facilityLocation[0][i][j]*facilityLocation[1][(Integer)phenotypeSubject[i]][(Integer)phenotypeSubject[j]];
+            }
         }
-        return new double[] {assignPrice };
+        double addition=0;
+        for(int i=0;i<facilityLocation[0][0].length;i++){
+            addition+=facilityLocation[2][i][(Integer)phenotypeSubject[i]];
+        }
+
+        return new double[] {price+addition};
     }
     
     @Override

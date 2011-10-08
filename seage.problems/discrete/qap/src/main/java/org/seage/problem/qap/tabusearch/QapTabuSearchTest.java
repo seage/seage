@@ -11,6 +11,7 @@
  */
 package org.seage.problem.qap.tabusearch;
 
+import java.io.FileInputStream;
 import org.seage.problem.qap.FacilityLocationProvider;
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
 import org.seage.metaheuristic.tabusearch.SimpleTabuList;
@@ -25,7 +26,7 @@ import org.seage.metaheuristic.tabusearch.TabuSearchListener;
 public class QapTabuSearchTest implements TabuSearchListener
 {
 
-    private static String _dataPath = "data/qapData1.txt";
+    private static String _dataPath = "data/tai12a.dat";
 
     public static void main(String[] args)
     {
@@ -41,20 +42,26 @@ public class QapTabuSearchTest implements TabuSearchListener
 
     public void run(String path) throws Exception
     {
-        Double[][] facilityLocation = FacilityLocationProvider.readFacilityLocations(path);
+        Double[][][] facilityLocation = FacilityLocationProvider.readFacilityLocations(new FileInputStream(path) );
         System.out.println("Loading an instance from path: " + path);
-        System.out.println("Number of cities: " + facilityLocation.length);
+        System.out.println("Number of cities: " + facilityLocation[0].length);
 
         TabuSearch ts = new TabuSearch(new QapGreedyStartSolution(facilityLocation),
                 new QapMoveManager(),
                 new QapObjectiveFunction(facilityLocation),
-                new SimpleTabuList(50),
+                new SimpleTabuList(100),
                 new BestEverAspirationCriteria(),
                 new QapLongTermMemory(), false);
 
         ts.addTabuSearchListener(this);
-        ts.setIterationsToGo(100000);
+        ts.setIterationsToGo(1000000);
         ts.startSolving();
+        Integer[] r = ((QapSolution)ts.getBestSolution()).getAssign();
+        System.out.println(ts.getBestSolution().getObjectiveValue()[0]);
+        for(int i=0;i<r.length;i++){
+            System.out.print((r[i]+1)+",");
+        }
+
     }
 
     public void newBestSolutionFound(TabuSearchEvent e) {

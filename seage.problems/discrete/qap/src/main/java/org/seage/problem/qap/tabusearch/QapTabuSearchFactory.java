@@ -6,39 +6,40 @@
  * http://seage.sourceforge.net/license/cpl-v10.html
  *
  * Contributors:
- *     Richard Malek
+ *     Karel Durkota
  *     - Initial implementation
+ *     Richard Malek
+ *     - Added algorithm annotations
  */
 package org.seage.problem.qap.tabusearch;
 
-import org.seage.aal.IAlgorithmAdapter;
-import org.seage.aal.IAlgorithmFactory;
-import org.seage.aal.tabusearch.TabuSearchAdapter;
+import org.seage.aal.Annotations;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.Solution;
-import org.seage.problem.qap.QapProblemProvider;
+import org.seage.problem.qap.QapProblemInstance;
 
 /**
  *
  * @author Karel Durkota
  */
+@Annotations.AlgorithmId("TabuSearch")
+@Annotations.AlgorithmName("Tabu Search")
 public class QapTabuSearchFactory implements IAlgorithmFactory
 {
-//    private DataNode _algParams;
-//    private TspProblemProvider _provider;
-//
-//    public TspTabuSearchFactory(DataNode algParams, TspProblemProvider provider)
-//    {
-//        _algParams = algParams;
-//        _provider = provider;
-//    }
 
-    public IAlgorithmAdapter createAlgorithm(DataNode algorithmParams) throws Exception
+    public Class getAlgorithmClass() {
+        return TabuSearchAdapter.class;
+    }
+
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
     {
-        IAlgorithmAdapter algorithm;
-        Double[][] facilityLocation = QapProblemProvider.getFacilityLocation();
-
-        algorithm = new TabuSearchAdapter(new QapMoveManager(), new QapObjectiveFunction(facilityLocation), new QapLongTermMemory(), "" ) {
+        final Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
+        
+        IAlgorithmAdapter algorithm = new TabuSearchAdapter(new QapMoveManager(), new QapObjectiveFunction(facilityLocation), new QapLongTermMemory(), "" ) {
 
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
@@ -46,7 +47,7 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
                 for(int i=0;i<source.length;i++)
                 {
                     QapSolution s = new QapSolution();
-                    int[] assign = new int[source[i].length];
+                    Integer[] assign = new Integer[source[i].length];
                     for(int j=0;j<assign.length;j++)
                         assign[j] = (Integer)source[i][j];
                     s.setAssign(assign);
@@ -76,11 +77,5 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
 
         return algorithm;
     }
-
-    public DataNode getAlgorithmParameters(DataNode params) throws Exception
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 
 }

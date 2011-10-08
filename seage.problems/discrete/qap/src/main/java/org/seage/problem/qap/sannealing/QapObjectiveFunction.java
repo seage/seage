@@ -26,12 +26,21 @@ public class QapObjectiveFunction implements IObjectiveFunction
     {
         _currrentQapSolution = (QapSolution)solution;
 
-        double price = 0.0;
-        int assignLength = _currrentQapSolution.getAssign().length;
+        Integer[] assign = ((QapSolution) solution)._assign;
+        int len = assign.length;
+        Double[][][] _matrix = ((QapSolution)solution)._facilityLocation;
 
-        for (int i = 1; i < assignLength; i++){
-                price += _currrentQapSolution.getFacilityLocation()[i][_currrentQapSolution.getAssign()[i]];
+        double price = 0;
+        for(int i=0;i<len;i++){
+            for(int j=0;j<len;j++){
+                double a = _matrix[0][i][j];
+                price+=_matrix[0][i][j]*_matrix[1][assign[i]][assign[j]];
+            }
         }
-        solution.setObjectiveValue( price );
+        double addition=0;
+        for(int i=0;i<_matrix[0][0].length;i++){
+            addition+=_matrix[2][i][assign[i]];
+        }
+        solution.setObjectiveValue( price+addition );
     }
 }

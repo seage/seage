@@ -11,6 +11,7 @@
  */
 package org.seage.problem.tsp.sannealing;
 
+import java.io.FileInputStream;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.City;
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealingListener;
@@ -26,13 +27,13 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class TspSimulatedAnnealingTest implements ISimulatedAnnealingListener
 {
     private City[] _cities;
-    private static String _dataPath = "data/eil101.tsp";
+    private static String _dataPath = "D:\\eil51.tsp";
 
     public static void main(String[] args)
     {
         try
         {
-            new TspSimulatedAnnealingTest().run( args[0] );
+            new TspSimulatedAnnealingTest().run( _dataPath );
         }
         catch(Exception ex)
         {
@@ -43,7 +44,7 @@ public class TspSimulatedAnnealingTest implements ISimulatedAnnealingListener
 
     public void run(String path) throws Exception
     {
-        _cities = CityProvider.readCities( path );
+        _cities = CityProvider.readCities( new FileInputStream(path) );
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 

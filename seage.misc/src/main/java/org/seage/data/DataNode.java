@@ -24,6 +24,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.seage.data.file.FileHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -56,9 +57,26 @@ public class DataNode implements Serializable
         _xslPath = "";
     }
 
+    protected DataNode(DataNode node)
+    {
+        DataNode dn = (DataNode)node.clone();
+        _name = dn._name;
+        _dataNodes = dn._dataNodes;
+        _values = dn._values;
+        _ids = dn._ids;
+
+        _listeners = dn._listeners;
+        _xslPath = dn._xslPath;
+    }
+
     public String getName()
     {
         return _name;
+    }
+
+    public void setName(String name)
+    {
+        _name = name;
     }
 	
     public void putDataNode(DataNode dataSet0) throws Exception
@@ -74,6 +92,11 @@ public class DataNode implements Serializable
 
         List<DataNode> list = _dataNodes.get(dataSet.getName());
         list.add(dataSet);
+    }
+
+    public void removeDataNode(String name, Object o)
+    {
+        _dataNodes.get(name).remove(o);
     }
 
     public void removeDataNode(String name, int index)
@@ -112,61 +135,48 @@ public class DataNode implements Serializable
     {
         checkValueName(name);
         Object o = _values.get(name);
-        if (o instanceof Integer)
-        {
-            return ((Integer)o).intValue();
-        }
-        else
-        if (o instanceof Double)
-        {
-            return ((Double)o).intValue();
-        }
-        else
-        {
-            return Integer.parseInt(o.toString());
-        }
+
+        if(o instanceof Number)
+            return ((Number)o).intValue();
+        else if(o instanceof String)
+            return new Long(Math.round(Double.parseDouble(o.toString()))).intValue();
+        else throw new Exception("Not an integer number");
     }
 
     public long getValueLong(String name) throws Exception
     {
         checkValueName(name);
         Object o = _values.get(name);
-        if (o instanceof Long)
-        {
-            return ((Long)o).longValue();
-        }
-        else
-        {
-            return Long.parseLong((String)o);
-        }
+
+        if(o instanceof Number)
+            return ((Number)o).intValue();
+        else if(o instanceof String)
+            return Math.round(Double.parseDouble(o.toString()));
+        else throw new Exception("Not a long number");
     }
     
     public double getValueDouble(String name) throws Exception
     {
         checkValueName(name);
         Object o = _values.get(name);
-        if (o instanceof Number)
-        {
-            return ((Number)o).doubleValue();
-        }
-        else
-        {
-            return Double.parseDouble((String)o);
-        }
+        
+        if (o instanceof Number)        
+            return ((Number)o).doubleValue();        
+        else if(o instanceof String)
+            return Double.parseDouble(o.toString());
+        else throw new Exception("Not a double number");
     }
 
     public boolean getValueBool(String name) throws Exception
     {
         checkValueName(name);
         Object o = _values.get(name);
+        
         if (o instanceof Boolean)
-        {
-            return ((Boolean)o).booleanValue();
-        }
-        else
-        {
-            return Boolean.parseBoolean((String)o);
-        }
+            return ((Boolean)o).booleanValue();        
+        else if(o instanceof String)
+            return Boolean.parseBoolean(o.toString());
+        else throw new Exception("Not a double number");
     }
     
     private void checkValueName(String name) throws Exception
@@ -288,28 +298,23 @@ public class DataNode implements Serializable
     
     private void toXmlElement(Element parent, List<DataNode> dataNodes) throws Exception
     {
-//        Element elem = xmlDoc.createElement("");
-//
-//        for(Entry<String, Object> e : _values.entrySet())
-//            elem.setAttribute(e.getKey(), e.getValue().toString());
-        
-        //for(Entry<String, List<DataNode>> e : dataNodes)
-        //{
-            for(DataNode dn : dataNodes)
+        for(DataNode dn : dataNodes)
+        {
+            Element elem = parent.getOwnerDocument().createElement(dn.getName());
+            for(String an : dn.getValueNames())
             {
-                Element elem = parent.getOwnerDocument().createElement(dn.getName());
-                for(String an : dn.getValueNames())
-                {
-                    Attr a = parent.getOwnerDocument().createAttribute(an);
-                    a.setValue(dn.getValueStr(an));
-                    elem.getAttributes().setNamedItem(a);
-                }
-                parent.appendChild(elem);
-
-                toXmlElement(elem, dn.getDataNodes());
+                Attr a = parent.getOwnerDocument().createAttribute(an);
+                a.setValue(dn.getValueStr(an));
+                elem.getAttributes().setNamedItem(a);
             }
-        //}
-        //return elem;
+            parent.appendChild(elem);
+
+            toXmlElement(elem, dn.getDataNodes());
+        }
+    }
+
+    public String hash() throws Exception {
+        return FileHelper.md5fromString(toString());
     }
 
     @Override

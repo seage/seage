@@ -1,5 +1,10 @@
-.svn
+*~
+.svn*
 *.class
-nbproject/private/*
-dist/*
-build/*
+private/
+dist/
+build/
+*~
+aglobe*.log*
+seage.launcher/target/bin/
+seage.launcher/target/output/
