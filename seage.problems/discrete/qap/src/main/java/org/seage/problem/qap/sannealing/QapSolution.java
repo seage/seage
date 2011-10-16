@@ -74,12 +74,18 @@ public abstract class QapSolution extends Solution
         return qapSolution;
     }
 
-    public String toString(){
-        String s="";
-        for(int i=0;i<_assign.length;i++){
-            s+=_assign[i]+", ";
+ public String toString()
+    {
+        StringBuffer s = new StringBuffer();
+
+        s.append("[");
+        for(int i=_assign.length-1;i>=1;i--){
+            s.append((_assign[i]+1));
+            s.append(",");
         }
-        return s;
-    }
+        s.append((_assign[_assign[0]]+1)+"]");
+
+        return s.toString();
+    }   // end toString
 
 }
