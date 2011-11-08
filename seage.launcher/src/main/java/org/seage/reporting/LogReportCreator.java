@@ -85,14 +85,17 @@ public class LogReportCreator {
                 }                
             }            
             
-            transform0(xmlDoc.toXml(), reportDir);
+            
         }
         
+        XmlHelper.writeXml(xmlDoc, _reportPath+"/data.xml");
         
+        transform0(xmlDoc.toXml(), "report0.xsl", reportDir.getPath()+"/report.html");
+        transform0(xmlDoc.toXml(), "report2csv.xsl", reportDir.getPath()+"/report.csv");
         
     }
     
-    private void transform0(Document xmlDoc, File reportDir)
+    private void transform0(Document xmlDoc, String xsltName, String outputPath)
     {
         try
             {
@@ -102,14 +105,14 @@ public class LogReportCreator {
                     "net.sf.saxon.TransformerFactoryImpl");
                 
                 TransformerFactory tFactory = TransformerFactory.newInstance();
-                Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream("report0.xsl")));
+                Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));
 
                 transformer.transform
                   (new DOMSource(xmlDoc),
                    //new javax.xml.transform.stream.StreamSource
                    //     (reportDir.getPath()+"/report.xml"),
                    new javax.xml.transform.stream.StreamResult
-                        ( new FileOutputStream(reportDir.getPath()+"/report.html")));
+                        ( new FileOutputStream(outputPath)));
             }
             catch(Exception e)
             {
