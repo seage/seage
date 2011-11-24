@@ -34,7 +34,7 @@ public class LogReportCreator {
     public void report() throws Exception
     {
         report0();
-        report1();
+        //report1();
     }
     
     
@@ -45,7 +45,7 @@ public class LogReportCreator {
         
         File logDir = new File(_logPath);
         
-        File reportDir = new File(_reportPath+"0");
+        File reportDir = new File(_reportPath);
         
         if(reportDir.exists())
             FileHelper.deleteDirectory(reportDir);
@@ -90,7 +90,7 @@ public class LogReportCreator {
         
         XmlHelper.writeXml(xmlDoc, _reportPath+"/data.xml");
         
-        transform0(xmlDoc.toXml(), "report0.xsl", reportDir.getPath()+"/report.html");
+        //transform0(xmlDoc.toXml(), "report0.xsl", reportDir.getPath()+"/report.html");
         transform0(xmlDoc.toXml(), "report2csv.xsl", reportDir.getPath()+"/report.csv");
         
     }
