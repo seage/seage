@@ -12,8 +12,10 @@
 package org.seage.reporting;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.util.Arrays;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -21,6 +23,7 @@ import org.seage.data.DataNode;
 import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
 import org.w3c.dom.Document;
+import javax.xml.transform.stream.*;
 
 /**
  *
@@ -49,8 +52,14 @@ public class LogReportCreator {
         
         if(reportDir.exists())
             FileHelper.deleteDirectory(reportDir);
-        
+
         reportDir.mkdirs();
+        
+        File output = new File(reportDir.getPath()+"/report.csv");
+        output.createNewFile();
+        
+        StreamResult outputStream = new StreamResult
+                        ( new FileOutputStream(output));
         
         FilenameFilter filter = new FilenameFilter() {
             public boolean accept(File arg0, String arg1) {
@@ -60,45 +69,47 @@ public class LogReportCreator {
                     return false;
             }
         };
-        DataNode xmlDoc = new DataNode("xml");
+        //DataNode xmlDoc = new DataNode("xml");
         
         for(String dirName : logDir.list(filter))
         {
-            //System.out.println(dirName);
+            System.err.println(dirName);
             
             //File reportDirDir = new File(reportDir.getPath()+"/"+dirName);
             //reportDirDir.mkdirs();
             
             File logDirDir = new File(logDir.getPath()+"/"+dirName);
-            
+            Arrays.sort(logDirDir.list());
             
             for(String xmlFileName : logDirDir.list())
             {
                 //System.out.println("\t"+xmlFileName);
-                File xmlFile = new File(logDir.getPath()+"/"+dirName+"/"+xmlFileName);
+                String xmlPath = logDir.getPath()+"/"+dirName+"/"+xmlFileName;
+                //File xmlFile = new File();
                 try{
-                    DataNode dn = XmlHelper.readXml(xmlFile); 
-                    xmlDoc.putDataNodeRef(dn);
+                    //DataNode dn = XmlHelper.readXml(xmlFile); 
+                    //xmlDoc.putDataNodeRef(dn);
+                    transform0(xmlPath, "report2csv_1.xsl", outputStream);
                 }catch(Exception e)
                 {
-                    e.printStackTrace();
+                    System.out.println(xmlPath);
+                    //e.printStackTrace();
                 }                
             }            
             
             
         }
         
-        XmlHelper.writeXml(xmlDoc, _reportPath+"/data.xml");
+        //XmlHelper.writeXml(xmlDoc, _reportPath+"/data.xml");
         
         //transform0(xmlDoc.toXml(), "report0.xsl", reportDir.getPath()+"/report.html");
-        transform0(xmlDoc.toXml(), "report2csv.xsl", reportDir.getPath()+"/report.csv");
+        //transform0(xmlDoc.toXml(), "report2csv.xsl", reportDir.getPath()+"/report.csv");
         
     }
     
-    private void transform0(Document xmlDoc, String xsltName, String outputPath)
+    private void transform0(String xmlPath, String xsltName, StreamResult outputStream) throws Exception
     {
-        try
-            {
+
                 //XmlHelper.writeXml(xmlDoc, reportDir.getPath()+"/report.xml");
                 
                 System.setProperty("javax.xml.transform.TransformerFactory",
@@ -107,17 +118,11 @@ public class LogReportCreator {
                 TransformerFactory tFactory = TransformerFactory.newInstance();
                 Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));
 
-                transformer.transform
-                  (new DOMSource(xmlDoc),
+                transformer.transform (new StreamSource(new FileInputStream(xmlPath)), outputStream);
                    //new javax.xml.transform.stream.StreamSource
                    //     (reportDir.getPath()+"/report.xml"),
-                   new javax.xml.transform.stream.StreamResult
-                        ( new FileOutputStream(outputPath)));
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            } 
+                   
+
     }
     
     private void report1()
