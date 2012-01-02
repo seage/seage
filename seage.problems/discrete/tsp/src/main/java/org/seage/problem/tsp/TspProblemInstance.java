@@ -5,13 +5,13 @@
 
 package org.seage.problem.tsp;
 
-import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.data.ProblemInstanceInfo;
 
 /**
  *
  * @author rick
  */
-public class TspProblemInstance extends ProblemInstance{
+public class TspProblemInstance extends ProblemInstanceInfo{
 
     private City[] _cities;
     public TspProblemInstance(String instanceName, City[] cities) {

@@ -16,10 +16,9 @@ package org.seage.problem.tsp.sannealing;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
-import org.seage.aal.algorithm.IProblemProvider;
-import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
-import org.seage.data.DataNode;
+import org.seage.aal.data.ProblemConfig;
 import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspProblemInstance;
@@ -57,7 +56,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
         return SimulatedAnnealingAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
+    public IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, ProblemConfig config) throws Exception
     {
         IAlgorithmAdapter algorithm;
         final City[] cities = ((TspProblemInstance)instance).getCities();

@@ -14,14 +14,13 @@ package org.seage.problem.tsp.tabusearch;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
-import org.seage.aal.algorithm.IProblemProvider;
-import org.seage.aal.algorithm.ProblemInstance;
 import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
+import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspProblemInstance;
-import org.seage.problem.tsp.TspProblemProvider;
 
 /**
  *
@@ -36,7 +35,7 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
         return TabuSearchAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
+    public IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, ProblemConfig  config) throws Exception
     {
         IAlgorithmAdapter algorithm;
 

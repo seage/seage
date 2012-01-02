@@ -6,7 +6,7 @@
 package org.seage.problem.tsp;
 
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.data.ProblemInstanceInfo;
 
 /**
  *
@@ -16,7 +16,7 @@ public class TspPhenotypeEvaluator implements IPhenotypeEvaluator
 {
     
     @Override
-    public double[] evaluate(Object[] phenotypeSubject, ProblemInstance instance) throws Exception
+    public double[] evaluate(Object[] phenotypeSubject, ProblemInstanceInfo instance) throws Exception
     {
         double tourLength = 0;
         City[] cities = ((TspProblemInstance)instance).getCities();
