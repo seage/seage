@@ -27,7 +27,7 @@ import org.seage.data.DataNode;
  *
  * @author Richard Malek
  */
-public abstract class ProblemProvider implements IProblemProvider, Serializable
+public abstract class ProblemProviderImpl implements IProblemProvider, Serializable
 {
     private static HashMap<String, IProblemProvider> _providers;
     private ProblemInfo _problemInfo;
@@ -74,8 +74,6 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
 
         for(ClassInfo ci : ClassUtil.searchForClassesInJar(IAlgorithmFactory.class, this.getClass()))
         {
-                        
-            
             try
             {
                 Class algFactoryClass = Class.forName(ci.getClassName());

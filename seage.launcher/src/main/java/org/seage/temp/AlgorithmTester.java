@@ -20,8 +20,8 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInfo;
-import org.seage.aal.algorithm.ProblemInstance;
-import org.seage.aal.algorithm.ProblemProvider;
+import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.aal.algorithm.ProblemProviderImpl;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
@@ -37,7 +37,7 @@ public class AlgorithmTester {
     
     public AlgorithmTester() throws Exception
     {
-        _providers = ProblemProvider.getProblemProviders();
+        _providers = ProblemProviderImpl.getProblemProviders();
     }
 
     public void test() throws Exception
@@ -104,7 +104,7 @@ public class AlgorithmTester {
             
             IAlgorithmFactory factory = provider.getAlgorithmFactory(alg.getValueStr("id"));
             
-            ProblemInstance instance = provider.initProblemInstance(config);
+            ProblemInstanceInfo instance = provider.initProblemInstance(config);
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, config);
             AlgorithmParams algNode = config.getAlgorithmParams();
             Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
@@ -132,11 +132,11 @@ public class AlgorithmTester {
         String algorithmID = config.getDataNode("Algorithm").getValueStr("id");
 
         // provider and factory
-        IProblemProvider provider = ProblemProvider.getProblemProviders().get(problemID);
+        IProblemProvider provider = ProblemProviderImpl.getProblemProviders().get(problemID);
         IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
 
         // problem instance
-        ProblemInstance instance = provider.initProblemInstance(config);
+        ProblemInstanceInfo instance = provider.initProblemInstance(config);
 
         // algorithm
         IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, config);

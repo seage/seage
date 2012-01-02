@@ -12,21 +12,23 @@
 
 package org.seage.aal.data;
 
-import org.seage.data.DataNode;
-
 /**
- * Algorithm parameters
+ *
  * @author Richard Malek
- * 
  */
-public class AlgorithmParams extends DataNode{
-
-    public AlgorithmParams(DataNode dn) {
-        super(dn);
+public class ProblemInstanceInfo {
+    
+    protected String _instanceName;
+    
+    public ProblemInstanceInfo(String instanceName)
+    {
+        _instanceName = instanceName;
     }
 
-    public AlgorithmParams(String name) {
-        super(name);
+    @Override
+    public String toString() {
+        return _instanceName;
     }
-
+    
+    
 }

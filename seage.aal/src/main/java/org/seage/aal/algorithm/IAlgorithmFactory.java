@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
- * http://seage.sourceforge.net/license/cpl-v10.html
+ * http://www.seage.org/license/cpl-v10.html
  *
  * Contributors:
  *     Richard Malek
@@ -13,7 +13,8 @@
 package org.seage.aal.algorithm;
 
 import java.io.Serializable;
-import org.seage.data.DataNode;
+import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.aal.data.ProblemConfig;
 
 /**
  *
@@ -35,6 +36,6 @@ public interface IAlgorithmFactory extends Serializable
      * @return IAlgorithmAdapter
      * @throws Exception
      */
-    IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception;
+    IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, ProblemConfig config) throws Exception;
     //DataNode getAlgorithmParameters(DataNode params) throws Exception;
 }

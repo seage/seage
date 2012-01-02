@@ -16,7 +16,7 @@ package org.seage.problem.qap.particles;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
-import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.aal.algorithm.particles.ParticleSwarmAdapter;
 import org.seage.data.DataNode;
 
@@ -42,12 +42,12 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
         return ParticleSwarmAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, DataNode config) throws Exception
+    public IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, DataNode config) throws Exception
     {
             throw new UnsupportedOperationException();
     }
     
-    public IAlgorithmAdapter createAlgorithm2(ProblemInstance instance, DataNode config) throws Exception
+    public IAlgorithmAdapter createAlgorithm2(ProblemInstanceInfo instance, DataNode config) throws Exception
     {    
         IAlgorithmAdapter algorithm;
         final Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();

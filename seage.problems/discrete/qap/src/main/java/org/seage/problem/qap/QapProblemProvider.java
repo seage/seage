@@ -22,8 +22,8 @@ import java.util.Random;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.algorithm.ProblemInstance;
-import org.seage.aal.algorithm.ProblemProvider;
+import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.aal.algorithm.ProblemProviderImpl;
 import org.seage.data.DataNode;
 
 /**
@@ -32,11 +32,11 @@ import org.seage.data.DataNode;
  */
 @Annotations.ProblemId("QAP")
 @Annotations.ProblemName("Quadratic Assignment Problem")
-public class QapProblemProvider extends ProblemProvider
+public class QapProblemProvider extends ProblemProviderImpl
 {
 
     @Override
-    public ProblemInstance initProblemInstance(ProblemConfig params) throws Exception
+    public ProblemInstanceInfo initProblemInstance(ProblemConfig params) throws Exception
     {
         DataNode info = params.getDataNode("Problem").getDataNode("Instance", 0);
         String type = info.getValueStr("type");
@@ -55,7 +55,7 @@ public class QapProblemProvider extends ProblemProvider
     }
 
     @Override
-    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstance instance) throws Exception
+    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance) throws Exception
     {
         int numAssigns = numSolutions;
         Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
@@ -115,7 +115,7 @@ public class QapProblemProvider extends ProblemProvider
 //    }
 
     @Override
-    public void visualizeSolution(Object[] solution, ProblemInstance instance) throws Exception
+    public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception
     {
         Integer[] assign = (Integer[])solution;
 
