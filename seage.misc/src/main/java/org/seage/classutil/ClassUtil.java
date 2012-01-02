@@ -74,6 +74,10 @@ public class ClassUtil
                         result.add(new ClassInfo(c.getCanonicalName(), null));
 
                 }
+                catch(Exception ex)
+                {
+                    System.err.println(f.getCanonicalPath()+" - "+s +" - " + ex.toString());
+                }
                 catch(Error er)
                 {
                     System.err.println(f.getCanonicalPath()+" - "+s +" - " + er.toString());
