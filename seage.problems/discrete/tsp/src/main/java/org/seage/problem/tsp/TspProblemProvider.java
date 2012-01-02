@@ -18,7 +18,7 @@ import java.util.Random;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.algorithm.ProblemInstance;
+import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 
@@ -33,7 +33,7 @@ public class TspProblemProvider extends ProblemProvider
 {
 
     @Override
-    public ProblemInstance initProblemInstance(ProblemConfig params) throws Exception
+    public ProblemInstanceInfo initProblemInstance(ProblemConfig params) throws Exception
     {
         City[] cities;
         DataNode info = params.getDataNode("Problem").getDataNode("Instance", 0);
@@ -59,7 +59,7 @@ public class TspProblemProvider extends ProblemProvider
     }
 
     @Override
-    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstance instance) throws Exception
+    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance) throws Exception
     {
         int numTours = numSolutions;
         City[] cities = ((TspProblemInstance)instance).getCities();
@@ -109,7 +109,7 @@ public class TspProblemProvider extends ProblemProvider
 //    }
 
     @Override
-    public void visualizeSolution(Object[] solution, ProblemInstance instance) throws Exception
+    public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception
     {
         Integer[] tour = (Integer[])solution;
 

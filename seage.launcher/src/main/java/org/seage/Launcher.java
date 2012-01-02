@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.seage.aal.algorithm.IProblemProvider;
-import org.seage.aal.algorithm.ProblemProviderImpl;
+import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.experimenter.Experimenter;
 import org.seage.logging.LogHelper;
@@ -124,7 +124,7 @@ public class Launcher {
         System.out.println("--------------------------------------------");
 
         DataNode problems = new DataNode("Problems");
-        Map<String, IProblemProvider> providers = ProblemProviderImpl.getProblemProviders();
+        Map<String, IProblemProvider> providers = ProblemProvider.getProblemProviders();
 
         for (String problemId : providers.keySet()) {
             try {

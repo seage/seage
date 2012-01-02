@@ -14,13 +14,12 @@ package org.seage.experimenter;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
-import org.seage.experimenter.config.DefaultConfigurator;
+
+import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.experimenter.config.Configurator;
 import org.seage.aal.data.ProblemInfo;
-import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.data.DataNode;
-import org.seage.experimenter.config.IntervalConfigurator;
 import org.seage.experimenter.config.RandomConfigurator;
 
 /**

@@ -19,9 +19,9 @@ import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.IProblemProvider;
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.algorithm.ProblemInstance;
 import org.seage.aal.algorithm.ProblemProvider;
+import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 
@@ -56,7 +56,7 @@ class ExperimentTask implements Runnable{
             IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
 
             // problem instance
-            ProblemInstance instance = provider.initProblemInstance(_config);
+            ProblemInstanceInfo instance = provider.initProblemInstance(_config);
             instanceName = instance.toString();
             // algorithm
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, _config);
