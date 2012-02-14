@@ -18,6 +18,7 @@ import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
+import org.seage.aal.data.ProblemConfig;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.qap.QapProblemInstance;
@@ -47,7 +48,7 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
         return SimulatedAnnealingAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, DataNode config) throws Exception
+    public IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, ProblemConfig config) throws Exception
     {
         final Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
         

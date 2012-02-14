@@ -16,8 +16,8 @@ import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.algorithm.ProblemInstance;
 import org.seage.aal.algorithm.ProblemProvider;
+import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.data.DataNode;
 
 /**
@@ -29,7 +29,7 @@ import org.seage.data.DataNode;
 public class SatProblemProvider extends ProblemProvider
 {
 
-    public ProblemInstance initProblemInstance(ProblemConfig params) throws Exception {
+    public ProblemInstanceInfo initProblemInstance(ProblemConfig params) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -37,11 +37,11 @@ public class SatProblemProvider extends ProblemProvider
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstance instance) throws Exception {
+    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void visualizeSolution(Object[] solution, ProblemInstance instance) throws Exception {
+    public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

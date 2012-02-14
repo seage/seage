@@ -23,7 +23,7 @@ import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInstanceInfo;
-import org.seage.aal.algorithm.ProblemProviderImpl;
+import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 
 /**
@@ -32,7 +32,7 @@ import org.seage.data.DataNode;
  */
 @Annotations.ProblemId("QAP")
 @Annotations.ProblemName("Quadratic Assignment Problem")
-public class QapProblemProvider extends ProblemProviderImpl
+public class QapProblemProvider extends ProblemProvider
 {
 
     @Override
