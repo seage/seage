@@ -18,6 +18,7 @@ import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.aal.algorithm.particles.ParticleSwarmAdapter;
+import org.seage.aal.data.ProblemConfig;
 import org.seage.data.DataNode;
 
 import org.seage.metaheuristic.particles.Particle;
@@ -42,7 +43,7 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
         return ParticleSwarmAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, DataNode config) throws Exception
+    public IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, ProblemConfig config) throws Exception
     {
             throw new UnsupportedOperationException();
     }
