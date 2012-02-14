@@ -151,7 +151,13 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
             // Calculate objective function and set value to modified solution
             _objectiveFunction.setObjectiveValue( modifiedSolution );
+//
+            System.out.println("Soool " + modifiedSolution.getObjectiveValue());
+            System.out.println("Temp " + _currentTemperature);
+            System.out.println("min Temp " + _minimalTemperature);
+            System.out.println("Best " + _bestSolution.getObjectiveValue());
 
+            
             if(modifiedSolution.getObjectiveValue() < _currentSolution.getObjectiveValue())
                 probability = 1;
             else
