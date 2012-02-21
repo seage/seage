@@ -93,7 +93,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
       _objectiveFunction = objectiveFunction;
       _moveManager = moveManager;
   }  
-
+final Object lock = new Object();
   /**
    * This method is called to
    * perform the simulated annealing.

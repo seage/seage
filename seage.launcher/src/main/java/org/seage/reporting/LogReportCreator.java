@@ -57,10 +57,6 @@ public class LogReportCreator implements ILogReport {
         System.out.println(process.getRootOperator().createProcessTree(0));
                         
         process.run();
-        
-        System.out.println(process.getRootOperator().createProcessTree(0));
-                        
-        process.run();
 
 //        Collection<Operator> ops = process.getAllOperators();
 //        ExampleSet ex = null;
