@@ -68,7 +68,7 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
     public void startSearching() throws Exception {
         _reporter = new AlgorithmReporter( _searchID );
         _reporter.putParameters( _params );
-
+        
         _numberOfIterations = _numberOfNewSolutions = _lastIterationNumberNewSolution = 0;
         _simulatedAnnealing.startSearching( _initialSolution );
     }
@@ -145,6 +145,7 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
     }
 
     public void simulatedAnnealingStarted(SimulatedAnnealingEvent e) {
+        _algorithmStarted = true;
         _initObjectiveValue = e.getSimulatedAnnealing().getCurrentSolution().getObjectiveValue();
     }
 
