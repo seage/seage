@@ -8,6 +8,8 @@
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
+ *     Jan Zmatlik
+ *     - Modified 
  */
 package org.seage.experimenter.reporting;
 
@@ -34,14 +36,14 @@ public class LogReportCreator implements ILogReport {
     
     public LogReportCreator()
     {
-        //RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
-        //RapidMiner.init();
+        RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
+        RapidMiner.init();
     }    
    
     public void report() throws Exception
     {
         createReport();
-        //reportRapidMiner();
+        reportRapidMiner();
     }
     
     private void reportRapidMiner() throws Exception
