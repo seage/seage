@@ -20,8 +20,8 @@ import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.experimenter.Experimenter;
 import org.seage.logging.LogHelper;
-import org.seage.reporting.ILogReport;
-import org.seage.reporting.LogReportCreator;
+import org.seage.experimenter.reporting.ILogReport;
+import org.seage.experimenter.reporting.LogReportCreator;
 import org.seage.temp.AlgorithmTester;
 /**
  *
