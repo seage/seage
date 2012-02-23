@@ -13,8 +13,8 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <parameter key="parallelize_main_process" value="false"/>
-    <process expanded="true" height="296" width="748">
-      <operator activated="true" class="read_csv" compatibility="5.1.014" expanded="true" height="60" name="Read CSV" width="90" x="56" y="67">
+    <process expanded="true" height="476" width="1083">
+      <operator activated="true" class="read_csv" compatibility="5.1.014" expanded="true" height="60" name="Read CSV" width="90" x="45" y="120">
         <parameter key="csv_file" value="report/report.csv"/>
         <parameter key="column_separators" value=";"/>
         <parameter key="trim_lines" value="false"/>
@@ -36,9 +36,9 @@
         <parameter key="locale" value="English (United States)"/>
         <parameter key="encoding" value="windows-1250"/>
         <list key="data_set_meta_data_information">
-          <parameter key="0" value="experimentID.true.binominal.attribute"/>
-          <parameter key="1" value="problemID.true.binominal.attribute"/>
-          <parameter key="2" value="algorithmID.true.binominal.attribute"/>
+          <parameter key="0" value="experimentID.true.polynominal.attribute"/>
+          <parameter key="1" value="problemID.true.polynominal.attribute"/>
+          <parameter key="2" value="algorithmID.true.polynominal.attribute"/>
           <parameter key="3" value="instanceID.true.polynominal.attribute"/>
           <parameter key="4" value="configID.true.polynominal.attribute"/>
           <parameter key="5" value="value.true.real.attribute"/>
@@ -46,7 +46,7 @@
         <parameter key="read_not_matching_values_as_missings" value="true"/>
         <parameter key="datamanagement" value="double_array"/>
       </operator>
-      <operator activated="true" class="aggregate" compatibility="5.1.014" expanded="true" height="76" name="Aggregate" width="90" x="246" y="75">
+      <operator activated="true" class="aggregate" compatibility="5.1.014" expanded="true" height="76" name="Aggregate" width="90" x="179" y="30">
         <parameter key="use_default_aggregation" value="false"/>
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
@@ -69,7 +69,12 @@
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
-      <operator activated="true" class="aggregate" compatibility="5.1.014" expanded="true" height="76" name="Aggregate (2)" width="90" x="447" y="75">
+      <operator activated="true" class="rename" compatibility="5.1.014" expanded="true" height="76" name="Rename" width="90" x="313" y="120">
+        <parameter key="old_name" value="average(value)"/>
+        <parameter key="new_name" value="AVGByValue"/>
+        <list key="rename_additional_attributes"/>
+      </operator>
+      <operator activated="true" class="aggregate" compatibility="5.1.014" expanded="true" height="76" name="SecondAggregate" width="90" x="447" y="30">
         <parameter key="use_default_aggregation" value="false"/>
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
@@ -85,15 +90,24 @@
         <parameter key="include_special_attributes" value="false"/>
         <parameter key="default_aggregation_function" value="average"/>
         <list key="aggregation_attributes">
-          <parameter key="average(value)" value="average"/>
+          <parameter key="AVGByValue" value="average"/>
         </list>
         <parameter key="group_by_attributes" value="|problemID|instanceID|algorithmID"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
-      <operator activated="true" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV" width="90" x="648" y="75">
-        <parameter key="csv_file" value="report/reportRM_OUT.csv"/>
+      <operator activated="true" class="rename" compatibility="5.1.014" expanded="true" height="76" name="RenameAVG" width="90" x="581" y="120">
+        <parameter key="old_name" value="average(AVGByValue)"/>
+        <parameter key="new_name" value="SecondAVGByValue"/>
+        <list key="rename_additional_attributes"/>
+      </operator>
+      <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="SortByAVGValue" width="90" x="715" y="30">
+        <parameter key="attribute_name" value="SecondAVGByValue"/>
+        <parameter key="sorting_direction" value="increasing"/>
+      </operator>
+      <operator activated="true" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV" width="90" x="849" y="120">
+        <parameter key="csv_file" value="C:\Users\Zis\Documents\NetBeansProjects\seage\seage.launcher\target\report\reportRM_OUT.csv"/>
         <parameter key="column_separator" value=";"/>
         <parameter key="write_attribute_names" value="true"/>
         <parameter key="quote_nominal_values" value="true"/>
@@ -101,8 +115,11 @@
         <parameter key="encoding" value="SYSTEM"/>
       </operator>
       <connect from_op="Read CSV" from_port="output" to_op="Aggregate" to_port="example set input"/>
-      <connect from_op="Aggregate" from_port="example set output" to_op="Aggregate (2)" to_port="example set input"/>
-      <connect from_op="Aggregate (2)" from_port="example set output" to_op="Write CSV" to_port="input"/>
+      <connect from_op="Aggregate" from_port="example set output" to_op="Rename" to_port="example set input"/>
+      <connect from_op="Rename" from_port="example set output" to_op="SecondAggregate" to_port="example set input"/>
+      <connect from_op="SecondAggregate" from_port="example set output" to_op="RenameAVG" to_port="example set input"/>
+      <connect from_op="RenameAVG" from_port="example set output" to_op="SortByAVGValue" to_port="example set input"/>
+      <connect from_op="SortByAVGValue" from_port="example set output" to_op="Write CSV" to_port="input"/>
       <connect from_op="Write CSV" from_port="through" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
