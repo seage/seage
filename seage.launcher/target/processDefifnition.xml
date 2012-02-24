@@ -36,12 +36,14 @@
         <parameter key="locale" value="English (United States)"/>
         <parameter key="encoding" value="windows-1250"/>
         <list key="data_set_meta_data_information">
-          <parameter key="0" value="experimentID.true.polynominal.attribute"/>
-          <parameter key="1" value="problemID.true.polynominal.attribute"/>
-          <parameter key="2" value="algorithmID.true.polynominal.attribute"/>
-          <parameter key="3" value="instanceID.true.polynominal.attribute"/>
-          <parameter key="4" value="configID.true.polynominal.attribute"/>
-          <parameter key="5" value="value.true.real.attribute"/>
+          <parameter key="0" value="ExperimentID.true.real.attribute"/>
+          <parameter key="1" value="ProblemID.true.polynominal.attribute"/>
+          <parameter key="2" value="AlgorithmID.true.polynominal.attribute"/>
+          <parameter key="3" value="InstanceID.true.polynominal.attribute"/>
+          <parameter key="4" value="ConfigID.true.polynominal.attribute"/>
+          <parameter key="5" value="SolutionValue.true.real.attribute"/>
+          <parameter key="6" value="Parameters.true.polynominal.attribute"/>
+          <parameter key="7" value="att8.false.attribute_value.attribute"/>
         </list>
         <parameter key="read_not_matching_values_as_missings" value="true"/>
         <parameter key="datamanagement" value="double_array"/>
@@ -62,16 +64,16 @@
         <parameter key="include_special_attributes" value="false"/>
         <parameter key="default_aggregation_function" value="average"/>
         <list key="aggregation_attributes">
-          <parameter key="value" value="average"/>
+          <parameter key="SolutionValue" value="average"/>
         </list>
-        <parameter key="group_by_attributes" value="|problemID|instanceID|algorithmID|configID"/>
+        <parameter key="group_by_attributes" value="AlgorithmID|ConfigID|InstanceID|ProblemID|"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
       <operator activated="true" class="rename" compatibility="5.1.014" expanded="true" height="76" name="Rename" width="90" x="313" y="120">
-        <parameter key="old_name" value="average(value)"/>
-        <parameter key="new_name" value="AVGByValue"/>
+        <parameter key="old_name" value="average(SolutionValue)"/>
+        <parameter key="new_name" value="AVGSolutionValue"/>
         <list key="rename_additional_attributes"/>
       </operator>
       <operator activated="true" class="aggregate" compatibility="5.1.014" expanded="true" height="76" name="SecondAggregate" width="90" x="447" y="30">
@@ -90,20 +92,20 @@
         <parameter key="include_special_attributes" value="false"/>
         <parameter key="default_aggregation_function" value="average"/>
         <list key="aggregation_attributes">
-          <parameter key="AVGByValue" value="average"/>
+          <parameter key="AVGSolutionValue" value="average"/>
         </list>
-        <parameter key="group_by_attributes" value="|problemID|instanceID|algorithmID"/>
+        <parameter key="group_by_attributes" value="|ProblemID|InstanceID|AlgorithmID"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
       <operator activated="true" class="rename" compatibility="5.1.014" expanded="true" height="76" name="RenameAVG" width="90" x="581" y="120">
-        <parameter key="old_name" value="average(AVGByValue)"/>
-        <parameter key="new_name" value="SecondAVGByValue"/>
+        <parameter key="old_name" value="average(AVGSolutionValue)"/>
+        <parameter key="new_name" value="AVGSolutionValue"/>
         <list key="rename_additional_attributes"/>
       </operator>
       <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="SortByAVGValue" width="90" x="715" y="30">
-        <parameter key="attribute_name" value="SecondAVGByValue"/>
+        <parameter key="attribute_name" value="AVGSolutionValue"/>
         <parameter key="sorting_direction" value="increasing"/>
       </operator>
       <operator activated="true" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV" width="90" x="916" y="120">
