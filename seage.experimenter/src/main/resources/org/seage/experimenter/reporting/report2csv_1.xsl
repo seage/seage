@@ -39,7 +39,7 @@
     </xsl:template>
     
     <xsl:template name="parameters">
-        <xsl:for-each select="Config/Algorithm/Parameters/@*"><xsl:value-of select="." />:</xsl:for-each>
+        <xsl:for-each select="Config/Algorithm/Parameters/@*"><xsl:value-of select="." />;</xsl:for-each>
     </xsl:template>
     
     <!--<xsl:template name="parametersheader">
