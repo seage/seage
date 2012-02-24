@@ -24,7 +24,6 @@ import javax.xml.transform.TransformerFactory;
 import org.seage.data.file.FileHelper;
 import javax.xml.transform.stream.*;
 import com.rapidminer.Process;
-import java.io.Writer;
 
 /**
  *
@@ -34,6 +33,10 @@ public class LogReportCreator implements ILogReport {
     
     private static String _logPath = "output";
     private static String _reportPath = "report";
+    private static final String CSV_HEADER = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;Parameters;\n";
+    private static final String XSL_TEMPLATE = "report2csv_1.xsl";
+    private static final String RAPIDMINER_PROCESS_FILE = "processDefifnition.xml";
+    private static final String OUTPUT_CSV_FILE = "report.csv";
     
     public LogReportCreator()
     {
@@ -49,7 +52,7 @@ public class LogReportCreator implements ILogReport {
     
     private void reportRapidMiner() throws Exception
     {
-        Process process = new Process(new File("processDefifnition.xml"));
+        Process process = new Process( new File( RAPIDMINER_PROCESS_FILE ) );
         
         System.out.println(process.getRootOperator().createProcessTree(0));
                         
@@ -82,11 +85,9 @@ public class LogReportCreator implements ILogReport {
 
         reportDir.mkdirs();
         
-        File output = new File(reportDir.getPath()+"/report.csv");
+        File output = new File(reportDir.getPath() + "/" + OUTPUT_CSV_FILE);
         output.createNewFile();
-        
-        FileOutputStream fos = new FileOutputStream(output);
-        
+
         StreamResult outputStream = new StreamResult
                         ( new FileOutputStream(output));
         
@@ -99,23 +100,22 @@ public class LogReportCreator implements ILogReport {
             }
         };
 
-        String header = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;Parameters;\n";
-        outputStream.getOutputStream().write( header.getBytes() );
+        outputStream.getOutputStream().write( CSV_HEADER.getBytes() );
 
         for(String dirName : logDir.list(filter))
         {
             System.err.println(dirName);
             
-            File logDirDir = new File(logDir.getPath()+"/"+dirName);
+            File logDirDir = new File(logDir.getPath() + "/" + dirName);
             Arrays.sort(logDirDir.list());
             
             for(String xmlFileName : logDirDir.list())
             {
-                String xmlPath = logDir.getPath()+"/"+dirName+"/"+xmlFileName;
+                String xmlPath = logDir.getPath() + "/" + dirName + "/" + xmlFileName;
 
                 try
                 {
-                    transform(xmlPath, "report2csv_1.xsl", outputStream);
+                    transform(xmlPath, XSL_TEMPLATE, outputStream);
                 }
                 catch(Exception e)
                 {
