@@ -20,7 +20,7 @@
     </xsl:template>
     
     <xsl:template match="/kkk">
-        <![CDATA[experimentID;problemID;algorithmID;instanceID;configID;value]]> 
+        <![CDATA[experimentID;problemID;algorithmID;instanceID;configID;value]]>
                 <xsl:apply-templates select="ExperimentReport">
                     <!--xsl:sort select="@id" order="descending"/-->
                 </xsl:apply-templates>
@@ -39,12 +39,13 @@
     </xsl:template>
     
     <xsl:template name="parameters">
-        <xsl:for-each select="Config/Algorithm/Parameters/@*"><xsl:value-of select="." />;</xsl:for-each>        
+        <xsl:for-each select="Config/Algorithm/Parameters/@*"><xsl:value-of select="." />:</xsl:for-each>
     </xsl:template>
     
-    
-    
-    
+    <!--<xsl:template name="parametersheader">
+        <xsl:for-each select="Config/Algorithm/Parameters/@*">param<xsl:value-of select="position()"/>;</xsl:for-each>
+    </xsl:template>-->
+
     <!--xsl:template match="batch">
 
     </xsl:template>
