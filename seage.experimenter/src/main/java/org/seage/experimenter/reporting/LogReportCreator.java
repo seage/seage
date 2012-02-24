@@ -24,6 +24,7 @@ import javax.xml.transform.TransformerFactory;
 import org.seage.data.file.FileHelper;
 import javax.xml.transform.stream.*;
 import com.rapidminer.Process;
+import java.io.Writer;
 
 /**
  *
@@ -84,6 +85,8 @@ public class LogReportCreator implements ILogReport {
         File output = new File(reportDir.getPath()+"/report.csv");
         output.createNewFile();
         
+        FileOutputStream fos = new FileOutputStream(output);
+        
         StreamResult outputStream = new StreamResult
                         ( new FileOutputStream(output));
         
@@ -95,7 +98,10 @@ public class LogReportCreator implements ILogReport {
                     return false;
             }
         };
-        
+
+        String header = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;Parameters;\n";
+        outputStream.getOutputStream().write( header.getBytes() );
+
         for(String dirName : logDir.list(filter))
         {
             System.err.println(dirName);
@@ -115,8 +121,7 @@ public class LogReportCreator implements ILogReport {
                 {
                     System.out.println(xmlPath);
                 }                
-            }
-            
+            }            
             
         }
         
@@ -128,8 +133,8 @@ public class LogReportCreator implements ILogReport {
                     "net.sf.saxon.TransformerFactoryImpl");
                 
         TransformerFactory tFactory = TransformerFactory.newInstance();
-        Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));
-
+        Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));      
+        
         transformer.transform (new StreamSource(new FileInputStream(xmlPath)), outputStream);
     }        
 }
