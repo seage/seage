@@ -33,14 +33,14 @@ public class LogReportCreator implements ILogReport {
     
     private static String _logPath = "output";
     private static String _reportPath = "report";
-    private static final String CSV_HEADER = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;Parameters;\n";
+    private static String _csvHeader = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;";
     private static final String XSL_TEMPLATE = "report2csv_1.xsl";
     private static final String RAPIDMINER_PROCESS_FILE = "processDefifnition.xml";
     private static final String OUTPUT_CSV_FILE = "report.csv";
     
     public LogReportCreator()
     {
-        RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
+        RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI);
         RapidMiner.init();
     }    
    
@@ -99,8 +99,17 @@ public class LogReportCreator implements ILogReport {
                     return false;
             }
         };
+        
+        // TODO: B Number of names of parameters is fixed, for future will be good to create a floating number of names of parameters 
+        
+        int numberOfParameters = 10;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 1; i < numberOfParameters + 1; ++i)
+        {
+            sb.append("p").append(i).append(";");
+        }        
 
-        outputStream.getOutputStream().write( CSV_HEADER.getBytes() );
+        outputStream.getOutputStream().write( ( _csvHeader + sb.append("\n").toString() ).getBytes() );
 
         for(String dirName : logDir.list(filter))
         {
