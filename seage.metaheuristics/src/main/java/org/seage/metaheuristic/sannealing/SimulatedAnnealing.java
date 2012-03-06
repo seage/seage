@@ -93,7 +93,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
       _objectiveFunction = objectiveFunction;
       _moveManager = moveManager;
   }  
-final Object lock = new Object();
+
   /**
    * This method is called to
    * perform the simulated annealing.
@@ -121,7 +121,7 @@ final Object lock = new Object();
     // The best solution is same as current solution
     _bestSolution = _currentSolution = solution;
 
-    _objectiveFunction.setObjectiveValue( solution ); // <= ERROR
+    _objectiveFunction.setObjectiveValue( solution );
 
     // Fire event to listeners about that algorithm has started
     _listenerProvider.fireSimulatedAnnealingStarted();
@@ -164,7 +164,6 @@ final Object lock = new Object();
         // Anneal temperature
         _currentTemperature = _annealCoefficient * _currentTemperature;
     }
-      //System.out.println(_bestSolution.getObjectiveValue() + " *");
     _isRunning = false;
     // Fire event to listeners about that algorithm was stopped
     _listenerProvider.fireSimulatedAnnealingStopped();
