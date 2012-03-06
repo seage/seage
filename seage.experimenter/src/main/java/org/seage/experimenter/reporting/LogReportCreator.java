@@ -13,6 +13,7 @@
  */
 package org.seage.experimenter.reporting;
 
+import com.rapidminer.FileProcessLocation;
 import com.rapidminer.RapidMiner;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +25,10 @@ import javax.xml.transform.TransformerFactory;
 import org.seage.data.file.FileHelper;
 import javax.xml.transform.stream.*;
 import com.rapidminer.Process;
+import com.rapidminer.example.ExampleSet;
+import com.rapidminer.operator.Operator;
+import java.util.Collection;
+import org.seage.experimenter.ExampleSetConverter;
 
 /**
  *
@@ -40,7 +45,7 @@ public class LogReportCreator implements ILogReport {
     
     public LogReportCreator()
     {
-        RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI);
+        RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI );
         RapidMiner.init();
     }    
    
@@ -52,10 +57,11 @@ public class LogReportCreator implements ILogReport {
     
     private void reportRapidMiner() throws Exception
     {
-        Process process = new Process( new File( RAPIDMINER_PROCESS_FILE ) );
+        Process process = new Process( getClass().getResourceAsStream(RAPIDMINER_PROCESS_FILE ));        
+        process.setProcessLocation(new FileProcessLocation(new File(".")));
         
         System.out.println(process.getRootOperator().createProcessTree(0));
-                        
+        
         process.run();
 
 //        Collection<Operator> ops = process.getAllOperators();
@@ -64,9 +70,11 @@ public class LogReportCreator implements ILogReport {
 //        for(Operator op : ops)
 //        {
 //            System.out.println(op.getName());
-//            if(op.getName().equals("Aggregate (2)"))
+//            if(op.getName().equals("Sort (2)"))
 //                ex = op.getOutputPorts().getPortByName("example set output").getData();
 //        }
+//        
+//        //ExampleSetConverter.convertToDataNode(null);
 //
 //
 //        System.out.println(ex);
