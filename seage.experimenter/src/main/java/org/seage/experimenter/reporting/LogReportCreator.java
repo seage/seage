@@ -28,7 +28,7 @@ import com.rapidminer.Process;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.Operator;
 import java.util.Collection;
-import org.seage.experimenter.ExampleSetConverter;
+//import org.seage.experimenter.ExampleSetConverter;
 
 /**
  *
@@ -39,7 +39,7 @@ public class LogReportCreator implements ILogReport {
     private static String _logPath = "output";
     private static String _reportPath = "report";
     private static String _csvHeader = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;";
-    private static final String XSL_TEMPLATE = "report2csv_1.xsl";
+    private static final String XSL_TEMPLATE = "report2csv.xsl";
     private static final String RAPIDMINER_PROCESS_FILE = "processDefifnition.xml";
     private static final String OUTPUT_CSV_FILE = "report.csv";
     
@@ -56,12 +56,11 @@ public class LogReportCreator implements ILogReport {
     }
     
     private void reportRapidMiner() throws Exception
-    {
-        Process process = new Process( getClass().getResourceAsStream(RAPIDMINER_PROCESS_FILE ));        
+    {        
+        Process process = new Process( getClass().getResourceAsStream(RAPIDMINER_PROCESS_FILE ));
         process.setProcessLocation(new FileProcessLocation(new File(".")));
-        
         System.out.println(process.getRootOperator().createProcessTree(0));
-        
+                        
         process.run();
 
 //        Collection<Operator> ops = process.getAllOperators();
@@ -145,10 +144,7 @@ public class LogReportCreator implements ILogReport {
     }
     
     private void transform(String xmlPath, String xsltName, StreamResult outputStream) throws Exception
-    {
-        System.setProperty("javax.xml.transform.TransformerFactory",
-                    "net.sf.saxon.TransformerFactoryImpl");
-                
+    {         
         TransformerFactory tFactory = TransformerFactory.newInstance();
         Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));      
         

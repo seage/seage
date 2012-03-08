@@ -15,7 +15,7 @@
     <parameter key="parallelize_main_process" value="false"/>
     <process expanded="true" height="476" width="1083">
       <operator activated="true" class="read_csv" compatibility="5.1.014" expanded="true" height="60" name="Read CSV" width="90" x="45" y="120">
-        <parameter key="csv_file" value="report/report.csv"/>
+	<parameter key="csv_file" value="report/report.csv"/>
         <parameter key="column_separators" value=";"/>
         <parameter key="trim_lines" value="false"/>
         <parameter key="use_quotes" value="true"/>
@@ -96,7 +96,7 @@
         <parameter key="sorting_direction" value="increasing"/>
       </operator>
       <operator activated="true" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV (2)" width="90" x="581" y="345">
-        <parameter key="csv_file" value="report/reportRM_OUT.csv"/>
+	<parameter key="csv_file" value="report/reportRM_OUT.csv"/>
         <parameter key="column_separator" value=";"/>
         <parameter key="write_attribute_names" value="true"/>
         <parameter key="quote_nominal_values" value="true"/>

@@ -11,40 +11,41 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
      version="1.0">
 
-    <xsl:output method="text"/>
+    <xsl:output method="text" indent="no"/>
     <!--xsl:key name="problems" match="/xml/ExperimentReport/Config/Problem" use="@id"/>
     <xsl:key name="instances" match="/xml/ExperimentReport/Config/Problem/Instance" use="@name"/--> 
 
-    <xsl:template match="/xml">
-      experimentID;problemID;algorithmID;instanceID;configID;value               
-                <xsl:apply-templates select="ExperimentTask">
+    <xsl:template match="/">
+        <xsl:apply-templates/>
+    </xsl:template>
+    
+    <xsl:template match="/kkk">
+        <![CDATA[experimentID;problemID;algorithmID;instanceID;configID;value]]>
+                <xsl:apply-templates select="ExperimentReport">
                     <!--xsl:sort select="@id" order="descending"/-->
                 </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="Experiment">    
-        
-        <tr><td><h1><xsl:value-of select="@id"/></h1></td></tr>
-        <xsl:apply-templates/>        
+     <xsl:template match="ExperimentReport">
+        <xsl:call-template name="asdf"/>
     </xsl:template>
     
-    <xsl:template match="Problem/Instance">                
-        <tr><td/><td><h2><xsl:value-of select="@id"/></h2></td></tr>
-        <xsl:apply-templates/>        
-    </xsl:template>
-    
-    <xsl:template match="Config">
-        <xsl:variable name="stats" select="Run/AlgorithmReport/Statistics"/>
-        <tr><td/><td/><td><xsl:value-of select="Algorithm/@id"/></td><td><xsl:value-of select="sum($stats/@bestObjVal) div count($stats)"/></td></tr>
-        <xsl:apply-templates/>
+     <xsl:template match="ExperimentTask">
+        <xsl:call-template name="asdf"/>
     </xsl:template>
 
-
-    <xsl:template match="ExperimentTask">    
-        <xsl:value-of select="@experimentID"/>;<xsl:value-of select="Config/Problem/@id"/>;<xsl:value-of select="Config/Algorithm/@id"/>;<xsl:value-of select="Config/Problem/Instance/@name"/>;<xsl:value-of select="Config/@configID"/>;<xsl:value-of select="AlgorithmReport/Statistics/@bestObjVal"/>;
+    <xsl:template name="asdf">
+        <xsl:value-of select="@experimentID"/>;<xsl:value-of select="Config/Problem/@id"/>;<xsl:value-of select="Config/Algorithm/@id"/>;<xsl:value-of select="Config/Problem/Instance/@name"/>;<xsl:value-of select="Config/@configID"/>;<xsl:value-of select="AlgorithmReport/Statistics/@bestObjVal"/>;<xsl:call-template name="parameters"/>;
     </xsl:template>
     
+    <xsl:template name="parameters">
+        <xsl:for-each select="Config/Algorithm/Parameters/@*"><xsl:value-of select="." />;</xsl:for-each>
+    </xsl:template>
     
+    <!--<xsl:template name="parametersheader">
+        <xsl:for-each select="Config/Algorithm/Parameters/@*">param<xsl:value-of select="position()"/>;</xsl:for-each>
+    </xsl:template>-->
+
     <!--xsl:template match="batch">
 
     </xsl:template>
