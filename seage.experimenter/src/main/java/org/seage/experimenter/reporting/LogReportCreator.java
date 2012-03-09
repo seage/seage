@@ -45,7 +45,7 @@ public class LogReportCreator implements ILogReport {
     
     public LogReportCreator()
     {
-        RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI );
+        RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI );//RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI
         RapidMiner.init();
     }    
    
@@ -57,10 +57,10 @@ public class LogReportCreator implements ILogReport {
     
     private void reportRapidMiner() throws Exception
     {        
-        Process process = new Process( getClass().getResourceAsStream(RAPIDMINER_PROCESS_FILE ));
-        process.setProcessLocation(new FileProcessLocation(new File(".")));
+        Process process = new Process( getClass().getResourceAsStream( RAPIDMINER_PROCESS_FILE ) );
+        process.setProcessLocation( new FileProcessLocation( new File(".") ) );
         System.out.println(process.getRootOperator().createProcessTree(0));
-                        
+                       System.out.println("RUN"); 
         process.run();
 
 //        Collection<Operator> ops = process.getAllOperators();
