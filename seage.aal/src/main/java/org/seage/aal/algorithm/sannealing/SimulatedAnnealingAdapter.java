@@ -35,7 +35,7 @@ import org.seage.metaheuristic.sannealing.Solution;
 @AlgorithmParameters({
     @Parameter(name="numSolutions", min=1, max=1, init=1),
     @Parameter(name="maxTemperature", min=10, max=1000000, init=100),
-    @Parameter(name="minTemperature", min=0, max=100000, init=1),
+    @Parameter(name="minTemperature", min=0, max=10000, init=1),
     @Parameter(name="annealCoeficient", min=0.1, max=1, init=0.99),
     @Parameter(name="maxInnerIterations", min=1, max=1000000, init=100),
     @Parameter(name="numInnerSuccesses", min=0, max=100000, init=100)
@@ -68,7 +68,7 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
     public void startSearching() throws Exception {
         _reporter = new AlgorithmReporter( _searchID );
         _reporter.putParameters( _params );
-
+        
         _numberOfIterations = _numberOfNewSolutions = _lastIterationNumberNewSolution = 0;
         _simulatedAnnealing.startSearching( _initialSolution );
     }
@@ -109,7 +109,9 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
     public void setParameters(AlgorithmParams params) throws Exception
     {
         _params = params;
+
         DataNode p = params.getDataNode("Parameters");
+        
         _simulatedAnnealing.setMaximalTemperature( p.getValueInt("maxTemperature") );
         _simulatedAnnealing.setMinimalTemperature( p.getValueDouble("minTemperature") );
         _simulatedAnnealing.setAnnealingCoefficient( p.getValueDouble("annealCoeficient") );
@@ -143,6 +145,7 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
     }
 
     public void simulatedAnnealingStarted(SimulatedAnnealingEvent e) {
+        _algorithmStarted = true;
         _initObjectiveValue = e.getSimulatedAnnealing().getCurrentSolution().getObjectiveValue();
     }
 

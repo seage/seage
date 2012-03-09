@@ -9,8 +9,9 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.reporting;
+package org.seage.experimenter.reporting;
 
+import com.rapidminer.RapidMiner;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,20 +25,51 @@ import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
 import org.w3c.dom.Document;
 import javax.xml.transform.stream.*;
+import com.rapidminer.Process;
 
 /**
  *
  * @author rick
  */
-public class LogReportCreator {
+public class LogReportCreatorOld implements ILogReport {
     
     private static String _logPath = "output";
     private static String _reportPath = "report";
+    
+    public LogReportCreatorOld()
+    {
+        RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
+        RapidMiner.init();
+    }
+    
    
     public void report() throws Exception
     {
         report0();
+        reportRapidMiner();
         //report1();
+    }
+    
+    private void reportRapidMiner() throws Exception
+    {
+        Process process = new Process(new File("processDefifnition.xml"));
+        
+        System.out.println(process.getRootOperator().createProcessTree(0));
+                        
+        process.run();
+
+//        Collection<Operator> ops = process.getAllOperators();
+//        ExampleSet ex = null;
+//
+//        for(Operator op : ops)
+//        {
+//            System.out.println(op.getName());
+//            if(op.getName().equals("Aggregate (2)"))
+//                ex = op.getOutputPorts().getPortByName("example set output").getData();
+//        }
+//
+//
+//        System.out.println(ex);
     }
     
     
@@ -87,7 +119,7 @@ public class LogReportCreator {
                 String xmlPath = logDir.getPath()+"/"+dirName+"/"+xmlFileName;
                 //File xmlFile = new File();
                 try{
-                    //DataNode dn = XmlHelper.readXml(xmlFile); 
+                    //DataNode dn = XmlHelper.readXml(xmlFile);
                     //xmlDoc.putDataNodeRef(dn);
                     transform0(xmlPath, "report2csv_1.xsl", outputStream);
                 }catch(Exception e)

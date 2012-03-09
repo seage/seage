@@ -8,3 +8,8 @@ build/
 *.log*
 seage.launcher/target/bin/
 seage.launcher/target/output/
+
+/seage.launcher/lib/rapidminerlib
+/seage.experimenter/output
+/seage.experimenter/report
+/seage.experimenter/lib/rapidminerlib

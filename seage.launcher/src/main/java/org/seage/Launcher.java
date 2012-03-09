@@ -20,7 +20,8 @@ import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.experimenter.Experimenter;
 import org.seage.logging.LogHelper;
-import org.seage.reporting.LogReportCreator;
+import org.seage.experimenter.reporting.ILogReport;
+import org.seage.experimenter.reporting.LogReportCreator;
 import org.seage.temp.AlgorithmTester;
 /**
  *
@@ -98,8 +99,9 @@ public class Launcher {
             return;
         }
 
+        ILogReport reporter = new LogReportCreator();
         if (args[0].equals("-report")) {
-            new LogReportCreator().report();
+            reporter.report();
             return;
         }
 

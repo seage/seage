@@ -20,7 +20,7 @@
     </xsl:template>
     
     <xsl:template match="/kkk">
-        <![CDATA[experimentID;problemID;algorithmID;instanceID;configID;value]]> 
+        <![CDATA[experimentID;problemID;algorithmID;instanceID;configID;value]]>
                 <xsl:apply-templates select="ExperimentReport">
                     <!--xsl:sort select="@id" order="descending"/-->
                 </xsl:apply-templates>
@@ -35,12 +35,17 @@
     </xsl:template>
 
     <xsl:template name="asdf">
-        <xsl:value-of select="@experimentID"/>;<xsl:value-of select="Config/Problem/@id"/>;<xsl:value-of select="Config/Algorithm/@id"/>;<xsl:value-of select="Config/Problem/Instance/@name"/>;<xsl:value-of select="Config/@configID"/>;<xsl:value-of select="AlgorithmReport/Statistics/@bestObjVal"/>;
+        <xsl:value-of select="@experimentID"/>;<xsl:value-of select="Config/Problem/@id"/>;<xsl:value-of select="Config/Algorithm/@id"/>;<xsl:value-of select="Config/Problem/Instance/@name"/>;<xsl:value-of select="Config/@configID"/>;<xsl:value-of select="AlgorithmReport/Statistics/@bestObjVal"/>;<xsl:call-template name="parameters"/>;
     </xsl:template>
     
+    <xsl:template name="parameters">
+        <xsl:for-each select="Config/Algorithm/Parameters/@*"><xsl:value-of select="." />;</xsl:for-each>
+    </xsl:template>
     
-    
-    
+    <!--<xsl:template name="parametersheader">
+        <xsl:for-each select="Config/Algorithm/Parameters/@*">param<xsl:value-of select="position()"/>;</xsl:for-each>
+    </xsl:template>-->
+
     <!--xsl:template match="batch">
 
     </xsl:template>
