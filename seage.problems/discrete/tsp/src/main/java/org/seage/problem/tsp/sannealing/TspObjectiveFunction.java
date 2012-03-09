@@ -48,7 +48,7 @@ public class TspObjectiveFunction implements IObjectiveFunction
   {
     int a = _currrentTspSolution.getTour()[i];
     int b = _currrentTspSolution.getTour()[j];
-
+      
     return getEuclideanDistance (
                 _currrentTspSolution.getCities()[a].X,
                 _currrentTspSolution.getCities()[a].Y,

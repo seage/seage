@@ -30,7 +30,7 @@ public abstract class TspSolution extends Solution
     /**
      * Array of cities
      */
-    protected static City[] _cities;
+    protected City[] _cities;
 
     public TspSolution(City[] cities)
     {

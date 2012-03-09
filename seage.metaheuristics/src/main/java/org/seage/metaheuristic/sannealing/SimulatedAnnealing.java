@@ -120,27 +120,20 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
     // The best solution is same as current solution
     _bestSolution = _currentSolution = solution;
-//    System.out.println("STARTING FITNESS: "+_bestSolution.getObjectiveValue());
-    _objectiveFunction.setObjectiveValue( solution ); // <= ERROR
 
+    _objectiveFunction.setObjectiveValue( solution );
 
-//    System.out.println("STARTING FITNESS: "+_bestSolution.getObjectiveValue());
     // Fire event to listeners about that algorithm has started
     _listenerProvider.fireSimulatedAnnealingStarted();
 
     // Iterates until current temperature is equal or greather than minimal temperature
     // and successful iteration count is less than zero
-    while (( _currentTemperature >= _minimalTemperature ) && ( successIterationCount > 0 ))
+    while (( _currentTemperature >= _minimalTemperature ) && ( successIterationCount > 0 ) && !_stopSearching)
     {
-//        System.out.println("(CurrentTemperature = "+_currentTemperature+" >= "+_minimalTemperature+" = minimalTemperature");
         innerIterationCount = successIterationCount = 0;
-        //System.out.println(_bestSolution.getObjectiveValue());
 
-        while(( innerIterationCount < _maximalIterationCount ) && ( successIterationCount < _maximalSuccessIterationCount ))
-            {
-//            System.out.println("(innderIteration = "+innerIterationCount+" >= "+_maximalIterationCount+" = _maximalIterationCount");
-//            System.out.println("BEST SOLUTION="+_bestSolution.getObjectiveValue());;
-            if( _stopSearching ) return;
+        while(( innerIterationCount < _maximalIterationCount ) && ( successIterationCount < _maximalSuccessIterationCount ) && !_stopSearching)
+        {
             _listenerProvider.fireNewIterationStarted();
 
             _currentIteration++;
@@ -151,7 +144,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
             // Calculate objective function and set value to modified solution
             _objectiveFunction.setObjectiveValue( modifiedSolution );
-
+            
             if(modifiedSolution.getObjectiveValue() < _currentSolution.getObjectiveValue())
                 probability = 1;
             else
