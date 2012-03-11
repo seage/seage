@@ -3,13 +3,13 @@
  * and open the template in the editor.
  */
 
-package ailibrary.grammar.iif;
+package org.seage.grammar.iif;
 
 import org.seage.data.DataNode;
-import ailibrary.grammar.Symbol;
-import ailibrary.grammar.GrammarRule;
-import ailibrary.grammar.IntTerminalSymbol;
-import ailibrary.grammar.NonterminalSymbol;
+import org.seage.grammar.Symbol;
+import org.seage.grammar.GrammarRule;
+import org.seage.grammar.IntTerminalSymbol;
+import org.seage.grammar.NonterminalSymbol;
 import java.util.*;
 
 /**
