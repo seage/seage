@@ -28,6 +28,8 @@ import com.rapidminer.Process;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.Operator;
 import java.util.Collection;
+import org.seage.data.DataNode;
+import org.seage.experimenter.ExampleSetConverter;
 //import org.seage.experimenter.ExampleSetConverter;
 
 /**
@@ -63,20 +65,21 @@ public class LogReportCreator implements ILogReport {
                        System.out.println("RUN"); 
         process.run();
 
-//        Collection<Operator> ops = process.getAllOperators();
-//        ExampleSet ex = null;
-//
-//        for(Operator op : ops)
-//        {
-//            System.out.println(op.getName());
-//            if(op.getName().equals("Sort (2)"))
-//                ex = op.getOutputPorts().getPortByName("example set output").getData();
-//        }
-//        
-//        //ExampleSetConverter.convertToDataNode(null);
-//
-//
-//        System.out.println(ex);
+        Collection<Operator> ops = process.getAllOperators();
+        ExampleSet ex = null;
+
+        for(Operator op : ops)
+        {
+            System.out.println(op.getName());
+            if(op.getName().equals("Sort (2)"))
+                ex = op.getOutputPorts().getPortByName("example set output").getData();
+        }
+        
+        DataNode dn = ExampleSetConverter.convertToDataNode(ex);
+        
+
+
+        System.out.println(ex);
     }
 
     private void createReport() throws Exception
