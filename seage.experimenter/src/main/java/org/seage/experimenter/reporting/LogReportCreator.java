@@ -83,7 +83,7 @@ public class LogReportCreator implements ILogReport {
 
         ExampleSet exampleSet1 = ExampleSetConverter.convertToExampleSet(dn1);
 
-        System.out.println(exampleSet);
+        System.out.println(exampleSet1);
     }
 
     private void createReport() throws Exception
