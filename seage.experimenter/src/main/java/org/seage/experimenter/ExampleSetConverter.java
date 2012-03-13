@@ -14,7 +14,6 @@ package org.seage.experimenter;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Attributes;
 import com.rapidminer.example.ExampleSet;
-import com.rapidminer.example.set.SimpleExampleSet;
 import com.rapidminer.example.table.*;
 import com.rapidminer.tools.Ontology;
 import java.util.ArrayList;
@@ -29,9 +28,16 @@ import org.seage.data.xml.XmlHelper;
  */
 public class ExampleSetConverter {
     
-    private static final String ROOT_NODE = "ExampleSet";
-    private static final String ATTRIBUTES_NODE = "Attributes";
-    private static final String EXAMPLES_NODE = "Examples";
+    private static final String ROOT_NODE           = "ExampleSet";
+    private static final String ATTRIBUTES_NODE     = "Attributes";
+    private static final String EXAMPLES_NODE       = "Examples";
+    private static final String ATTRIBUTE_NODE      = "Attribute";
+    private static final String EXAMPLE_NODE        = "Example";
+    private static final String RESULT_NODE         = "Result";
+    private static final String NAME_ATTRIBUTE      = "name";
+    private static final String VALUE_ATTRIBUTE     = "value";
+    private static final String ISNOMINAL_ATTRIBUTE = "isnominal";
+    private static final String NOT_A_NUMBER        = "NaN";
     
     /**
      * Method performs a conversion from ExampleSet to DataNode.
@@ -51,9 +57,9 @@ public class ExampleSetConverter {
         {
             Attribute attribute = attributeIterator.next();
             
-            DataNode attributeNode = new DataNode("Attribute");
-            attributeNode.putValue("name", attribute.getName());
-            attributeNode.putValue("isnominal", attribute.isNominal());
+            DataNode attributeNode = new DataNode( ATTRIBUTE_NODE );
+            attributeNode.putValue(NAME_ATTRIBUTE,      attribute.getName());
+            attributeNode.putValue(ISNOMINAL_ATTRIBUTE, attribute.isNominal());
 
             attributesNode.putDataNode( attributeNode );
         }
@@ -66,7 +72,7 @@ public class ExampleSetConverter {
         {
             DataRow dr = dataRowReader.next();
             
-            DataNode exampleNode = new DataNode("Example");            
+            DataNode exampleNode = new DataNode( EXAMPLE_NODE );            
             
             attributeIterator = attributes.allAttributes(); 
             
@@ -74,19 +80,20 @@ public class ExampleSetConverter {
             {
                 Attribute attribute = attributeIterator.next();
                 
-                DataNode resultNode = new DataNode("Result");
+                DataNode resultNode = new DataNode( RESULT_NODE );
                 
                 // According to a javadoc of method get( attribute ), the method returns Double.NaN if a value is not a number (i.e. is null)
                 // But this condition is not true, you can see on the line under this
                 // if(dr.get( attribute ) == Double.NaN) System.out.println("Never reach");
                 
-                // If i retype a value to the String, its working fine
-                if(String.valueOf( dr.get( attribute ) ).equals("NaN") ) continue;
+                // If I retype a value to the String, its working fine
+                if(String.valueOf( dr.get( attribute ) ).equals( NOT_A_NUMBER ) ) continue;
                 
+                // Check a nominal values
                 if( attribute.isNominal() )
-                    resultNode.putValue("value", attribute.getMapping().mapIndex( (int)dr.get( attribute ) ) );
+                    resultNode.putValue(VALUE_ATTRIBUTE, attribute.getMapping().mapIndex( (int)dr.get( attribute ) ) );
                 else
-                    resultNode.putValue("value", dr.get( attribute ) );
+                    resultNode.putValue(VALUE_ATTRIBUTE, dr.get( attribute ) );
                 
                 exampleNode.putDataNode( resultNode );
             }
@@ -117,10 +124,10 @@ public class ExampleSetConverter {
         {
             Attribute concreteAttribute; 
             
-            if( attribute.getValueBool( "isnominal" ) )
-                concreteAttribute = AttributeFactory.createAttribute(attribute.getValueStr("name"), Ontology.NOMINAL);
+            if( attribute.getValueBool( ISNOMINAL_ATTRIBUTE ) )
+                concreteAttribute = AttributeFactory.createAttribute(attribute.getValueStr( NAME_ATTRIBUTE ), Ontology.NOMINAL);
             else
-                concreteAttribute = AttributeFactory.createAttribute(attribute.getValueStr("name"), Ontology.REAL);
+                concreteAttribute = AttributeFactory.createAttribute(attribute.getValueStr( NAME_ATTRIBUTE ), Ontology.REAL);
             
             attributes.add( concreteAttribute );
         }
@@ -132,16 +139,22 @@ public class ExampleSetConverter {
         
         for(int i = 0; i < numOfExamples; i++)
         {
-            DataNode exampleNode = examplesNode.getDataNode("Example", i);
+            DataNode exampleNode = examplesNode.getDataNode(EXAMPLE_NODE, i);
 
-            double data[] = new double[ exampleNode.getDataNodes().size() ];
-            for (int j = 0; j < exampleNode.getDataNodes().size(); j++)
-            {                
-                DataNode resultNode = exampleNode.getDataNode("Result", j);
+            double data[] = new double[ attributes.size() ];
+            for (int j = 0; j < attributes.size(); j++)
+            {
+                if(exampleNode.getDataNodes().size() <= j)
+                {
+                    data[j] = Double.NaN;
+                    continue;
+                }
+                DataNode resultNode = exampleNode.getDataNode(RESULT_NODE, j);
+                
                 if( attributes.get(j).isNominal() )
-                    data[j] = attributes.get(j).getMapping().mapString( resultNode.getValueStr("value") );
+                    data[j] = attributes.get(j).getMapping().mapString( resultNode.getValueStr( VALUE_ATTRIBUTE ) );
                 else
-                    data[j] = resultNode.getValueDouble("value");
+                    data[j] = resultNode.getValueDouble( VALUE_ATTRIBUTE );
             }
             
             memoryExampleTable.addDataRow( new DoubleArrayDataRow( data ) );
