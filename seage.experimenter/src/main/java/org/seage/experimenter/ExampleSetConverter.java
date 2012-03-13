@@ -43,7 +43,7 @@ public class ExampleSetConverter {
      * @param ExampleSet exampleSet is a data structure from RapidMiner API
      * @return DataNode
      */
-    public static DataNode convertToDataNode(ExampleSet exampleSet, String file) throws Exception
+    public static DataNode convertToDataNode(ExampleSet exampleSet) throws Exception
     {
         DataNode exampleSetNode = new DataNode( ROOT_NODE );
         DataNode attributesNode = new DataNode( ATTRIBUTES_NODE );

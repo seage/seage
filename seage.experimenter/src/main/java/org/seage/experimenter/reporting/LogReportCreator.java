@@ -75,11 +75,11 @@ public class LogReportCreator implements ILogReport {
                 ex = op.getOutputPorts().getPortByName("example set output").getData();
         }
         
-        DataNode dn = ExampleSetConverter.convertToDataNode(ex, "test.xml");
+        DataNode dn = ExampleSetConverter.convertToDataNode(ex);
         
         ExampleSet exampleSet = ExampleSetConverter.convertToExampleSet(dn);
         
-        DataNode dn1 = ExampleSetConverter.convertToDataNode(exampleSet, "test1.xml");
+        DataNode dn1 = ExampleSetConverter.convertToDataNode(exampleSet);
 
         ExampleSet exampleSet1 = ExampleSetConverter.convertToExampleSet(dn1);
 
