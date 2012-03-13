@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.seage.data.DataNode;
-import org.seage.data.xml.XmlHelper;
 
 /**
  *
@@ -103,9 +102,7 @@ public class ExampleSetConverter {
         
         exampleSetNode.putDataNode( attributesNode );
         exampleSetNode.putDataNode( examplesNode );
-        
-        XmlHelper.writeXml(exampleSetNode, "C:\\wamp\\"+file);
-        
+
         return exampleSetNode;
     }
     
