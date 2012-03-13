@@ -14,11 +14,14 @@ package org.seage.experimenter;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Attributes;
 import com.rapidminer.example.ExampleSet;
-import com.rapidminer.example.table.DataRow;
-import com.rapidminer.example.table.DataRowReader;
-import com.rapidminer.example.table.ExampleTable;
+import com.rapidminer.example.set.SimpleExampleSet;
+import com.rapidminer.example.table.*;
+import com.rapidminer.tools.Ontology;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import org.seage.data.DataNode;
+import org.seage.data.xml.XmlHelper;
 
 /**
  *
@@ -26,16 +29,20 @@ import org.seage.data.DataNode;
  */
 public class ExampleSetConverter {
     
+    private static final String ROOT_NODE = "ExampleSet";
+    private static final String ATTRIBUTES_NODE = "Attributes";
+    private static final String EXAMPLES_NODE = "Examples";
+    
     /**
      * Method performs a conversion from ExampleSet to DataNode.
      * @param ExampleSet exampleSet is a data structure from RapidMiner API
      * @return DataNode
      */
-    public static DataNode convertToDataNode(ExampleSet exampleSet) throws Exception
+    public static DataNode convertToDataNode(ExampleSet exampleSet, String file) throws Exception
     {
-        DataNode exampleSetNode = new DataNode("ExampleSet");
-        DataNode attributesNode = new DataNode("Attributes");        
-        DataNode examplesNode = new DataNode("Examples");
+        DataNode exampleSetNode = new DataNode( ROOT_NODE );
+        DataNode attributesNode = new DataNode( ATTRIBUTES_NODE );
+        DataNode examplesNode   = new DataNode( EXAMPLES_NODE );
 
         // Extracting all of attributes from ExampleSet
         Attributes attributes = exampleSet.getAttributes();
@@ -46,6 +53,8 @@ public class ExampleSetConverter {
             
             DataNode attributeNode = new DataNode("Attribute");
             attributeNode.putValue("name", attribute.getName());
+            attributeNode.putValue("isnominal", attribute.isNominal());
+
             attributesNode.putDataNode( attributeNode );
         }
                
@@ -88,6 +97,8 @@ public class ExampleSetConverter {
         exampleSetNode.putDataNode( attributesNode );
         exampleSetNode.putDataNode( examplesNode );
         
+        XmlHelper.writeXml(exampleSetNode, "C:\\wamp\\"+file);
+        
         return exampleSetNode;
     }
     
@@ -96,9 +107,47 @@ public class ExampleSetConverter {
      * @param DataNode dataNode is a internal data structure from SEAGE framework
      * @return ExampleSet
      */
-    public static ExampleSet convertToExampleSet(DataNode dataNode)
-    {
-        return null;
+    public static ExampleSet convertToExampleSet(DataNode dataNode) throws Exception
+    {        
+        DataNode attributesNode = dataNode.getDataNode( ATTRIBUTES_NODE );
+        
+        List<Attribute> attributes = new ArrayList<Attribute>();
+
+        for(DataNode attribute : attributesNode.getDataNodes())
+        {
+            Attribute concreteAttribute; 
+            
+            if( attribute.getValueBool( "isnominal" ) )
+                concreteAttribute = AttributeFactory.createAttribute(attribute.getValueStr("name"), Ontology.NOMINAL);
+            else
+                concreteAttribute = AttributeFactory.createAttribute(attribute.getValueStr("name"), Ontology.REAL);
+            
+            attributes.add( concreteAttribute );
+        }
+        
+        DataNode examplesNode = dataNode.getDataNode( EXAMPLES_NODE );
+        int numOfExamples = examplesNode.getDataNodes().size();
+        
+        MemoryExampleTable memoryExampleTable = new MemoryExampleTable( attributes );
+        
+        for(int i = 0; i < numOfExamples; i++)
+        {
+            DataNode exampleNode = examplesNode.getDataNode("Example", i);
+
+            double data[] = new double[ exampleNode.getDataNodes().size() ];
+            for (int j = 0; j < exampleNode.getDataNodes().size(); j++)
+            {                
+                DataNode resultNode = exampleNode.getDataNode("Result", j);
+                if( attributes.get(j).isNominal() )
+                    data[j] = attributes.get(j).getMapping().mapString( resultNode.getValueStr("value") );
+                else
+                    data[j] = resultNode.getValueDouble("value");
+            }
+            
+            memoryExampleTable.addDataRow( new DoubleArrayDataRow( data ) );
+        }
+        
+        return memoryExampleTable.createExampleSet();
     }
     
 }
