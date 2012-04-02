@@ -13,9 +13,9 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <parameter key="parallelize_main_process" value="false"/>
-    <process expanded="true" height="476" width="1083">
+    <process expanded="true" height="521" width="1083">
       <operator activated="true" class="read_csv" compatibility="5.1.014" expanded="true" height="60" name="Read CSV" width="90" x="45" y="120">
-	<parameter key="csv_file" value="report/report.csv"/>
+        <parameter key="csv_file" value="report/report.csv"/>
         <parameter key="column_separators" value=";"/>
         <parameter key="trim_lines" value="false"/>
         <parameter key="use_quotes" value="true"/>
@@ -57,7 +57,20 @@
         <parameter key="read_not_matching_values_as_missings" value="true"/>
         <parameter key="datamanagement" value="double_array"/>
       </operator>
-      <operator activated="true" class="aggregate" compatibility="5.1.014" expanded="true" height="76" name="AggregateParameters" width="90" x="179" y="345">
+      <operator activated="true" class="multiply" compatibility="5.1.014" expanded="true" height="94" name="Multiply" width="90" x="179" y="255"/>
+      <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="Sort (3)" width="90" x="313" y="75">
+        <parameter key="attribute_name" value="SolutionValue"/>
+        <parameter key="sorting_direction" value="increasing"/>
+      </operator>
+      <operator activated="true" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV" width="90" x="514" y="75">
+        <parameter key="csv_file" value="report/reportRM_OUT1.csv"/>
+        <parameter key="column_separator" value=";"/>
+        <parameter key="write_attribute_names" value="true"/>
+        <parameter key="quote_nominal_values" value="true"/>
+        <parameter key="format_date_attributes" value="true"/>
+        <parameter key="encoding" value="SYSTEM"/>
+      </operator>
+      <operator activated="true" class="aggregate" compatibility="5.1.014" expanded="true" height="76" name="AggregateParameters" width="90" x="313" y="390">
         <parameter key="use_default_aggregation" value="false"/>
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
@@ -87,30 +100,35 @@
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
-      <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="Sort" width="90" x="313" y="345">
+      <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="Sort" width="90" x="447" y="390">
         <parameter key="attribute_name" value="InstanceID"/>
         <parameter key="sorting_direction" value="increasing"/>
       </operator>
-      <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="Sort (2)" width="90" x="447" y="210">
+      <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="Sort (2)" width="90" x="581" y="390">
         <parameter key="attribute_name" value="average(SolutionValue)"/>
         <parameter key="sorting_direction" value="increasing"/>
       </operator>
-      <operator activated="true" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV (2)" width="90" x="581" y="345">
-	<parameter key="csv_file" value="report/reportRM_OUT.csv"/>
+      <operator activated="true" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV (2)" width="90" x="715" y="390">
+        <parameter key="csv_file" value="report/reportRM_OUT.csv"/>
         <parameter key="column_separator" value=";"/>
         <parameter key="write_attribute_names" value="true"/>
         <parameter key="quote_nominal_values" value="true"/>
         <parameter key="format_date_attributes" value="true"/>
         <parameter key="encoding" value="SYSTEM"/>
       </operator>
-      <connect from_op="Read CSV" from_port="output" to_op="AggregateParameters" to_port="example set input"/>
+      <connect from_op="Read CSV" from_port="output" to_op="Multiply" to_port="input"/>
+      <connect from_op="Multiply" from_port="output 1" to_op="Sort (3)" to_port="example set input"/>
+      <connect from_op="Multiply" from_port="output 2" to_op="AggregateParameters" to_port="example set input"/>
+      <connect from_op="Sort (3)" from_port="example set output" to_op="Write CSV" to_port="input"/>
+      <connect from_op="Write CSV" from_port="through" to_port="result 1"/>
       <connect from_op="AggregateParameters" from_port="example set output" to_op="Sort" to_port="example set input"/>
       <connect from_op="Sort" from_port="example set output" to_op="Sort (2)" to_port="example set input"/>
       <connect from_op="Sort (2)" from_port="example set output" to_op="Write CSV (2)" to_port="input"/>
-      <connect from_op="Write CSV (2)" from_port="through" to_port="result 1"/>
+      <connect from_op="Write CSV (2)" from_port="through" to_port="result 2"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
     </process>
   </operator>
 </process>
