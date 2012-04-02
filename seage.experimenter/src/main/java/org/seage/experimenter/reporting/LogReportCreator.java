@@ -42,7 +42,7 @@ public class LogReportCreator implements ILogReport {
     private static String _reportPath = "report";
     private static String _csvHeader = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;";
     private static final String XSL_TEMPLATE = "report2csv.xsl";
-    private static final String RAPIDMINER_PROCESS_FILE = "processDefifnition.xml";
+    private static final String RAPIDMINER_PROCESS_FILE = "parallelReport2Report3.xml";
     private static final String OUTPUT_CSV_FILE = "report.csv";
     
     public LogReportCreator()
