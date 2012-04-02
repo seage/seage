@@ -21,6 +21,7 @@ import com.rapidminer.tools.Ontology;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.seage.data.xml.XmlHelper;
 
 /**
  *
@@ -77,7 +78,7 @@ public class DataNodeToExampleSetTest {
         
         MemoryExampleTable memoryExampleTable = new MemoryExampleTable( attributes );
         
-        int numOfExamples = 5;
+        int numOfExamples = dataAsString.length;
         
         for(int i = 0; i < numOfExamples; i++)
         {
@@ -122,6 +123,8 @@ public class DataNodeToExampleSetTest {
         {
             DataRow dr = dataRowReader.next();
 
+            attributeIterator = convertedSet.getAttributes().allAttributes();
+            j = 0;
             while( attributeIterator.hasNext() )
             {
                 Attribute attribute = attributeIterator.next();
@@ -216,13 +219,13 @@ public class DataNodeToExampleSetTest {
         exampleSetNode.putDataNode( examplesNode );
         
         DataNode dataNode = exampleSetNode;
-        
+
         // DataNode -> ExampleSet
         ExampleSet exampleSet = ExampleSetConverter.convertToExampleSet( dataNode );
         
         // ExampleSet -> DataNode
         DataNode convertedNode = ExampleSetConverter.convertToDataNode( exampleSet );
-        
+
         DataNode convertedAttributesNode = convertedNode.getDataNode( ATTRIBUTES_NODE );
         
         // DataNodes Attributes comparison
@@ -248,9 +251,9 @@ public class DataNodeToExampleSetTest {
             // Comparison of data values
             for(int j = 0; j < convertedExampleNode.getDataNodes().size(); j++)
             {
-                DataNode convertedResultNode = convertedExampleNode.getDataNodes().get(i);
+                DataNode convertedResultNode = convertedExampleNode.getDataNodes().get(j);
                 
-                assertEquals(convertedResultNode.getValueStr( VALUE_ATTRIBUTE ), examplesNode.getDataNodes().get(i).getValueStr( VALUE_ATTRIBUTE ) );
+                assertEquals(convertedResultNode.getValueStr( VALUE_ATTRIBUTE ), examplesNode.getDataNodes().get(i).getDataNodes().get(j).getValueStr( VALUE_ATTRIBUTE ) );
             }
         }
     }
