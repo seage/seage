@@ -42,7 +42,7 @@ public class LogReportCreator implements ILogReport {
     private static String _reportPath = "report";
     private static String _csvHeader = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;Time;";
     private static final String XSL_TEMPLATE = "report2csv.xsl";
-    private static final String RAPIDMINER_PROCESS_FILE = "processDefifnition.xml";
+    private static final String RAPIDMINER_PROCESS_FILE = "rm-p1-report1.rmp";
     private static final String OUTPUT_CSV_FILE = "report.csv";
     
     public LogReportCreator()
@@ -65,25 +65,25 @@ public class LogReportCreator implements ILogReport {
                        System.out.println("RUN"); 
         process.run();
 
-        Collection<Operator> ops = process.getAllOperators();
-        ExampleSet ex = null;
-
-        for(Operator op : ops)
-        {
-            System.out.println(op.getName());
-            if(op.getName().equals("Sort (2)"))
-                ex = op.getOutputPorts().getPortByName("example set output").getData();
-        }
-        
-        DataNode dn = ExampleSetConverter.convertToDataNode(ex);
-        
-        ExampleSet exampleSet = ExampleSetConverter.convertToExampleSet(dn);
-        
-        DataNode dn1 = ExampleSetConverter.convertToDataNode(exampleSet);
-
-        ExampleSet exampleSet1 = ExampleSetConverter.convertToExampleSet(dn1);
-
-        System.out.println(exampleSet1);
+//        Collection<Operator> ops = process.getAllOperators();
+//        ExampleSet ex = null;
+//
+//        for(Operator op : ops)
+//        {
+//            System.out.println(op.getName());
+//            if(op.getName().equals("Sort (2)"))
+//                ex = op.getOutputPorts().getPortByName("example set output").getData();
+//        }
+//        
+//        DataNode dn = ExampleSetConverter.convertToDataNode(ex);
+//        
+//        ExampleSet exampleSet = ExampleSetConverter.convertToExampleSet(dn);
+//        
+//        DataNode dn1 = ExampleSetConverter.convertToDataNode(exampleSet);
+//
+//        ExampleSet exampleSet1 = ExampleSetConverter.convertToExampleSet(dn1);
+//
+//        System.out.println(exampleSet1);
     }
 
     private void createReport() throws Exception
