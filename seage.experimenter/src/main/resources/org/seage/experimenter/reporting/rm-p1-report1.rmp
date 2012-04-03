@@ -97,7 +97,8 @@
         <parameter key="include_special_attributes" value="false"/>
         <parameter key="default_aggregation_function" value="average"/>
         <list key="aggregation_attributes">
-          <parameter key="Time" value="average"/>
+          <parameter key="Time" value="minimum"/>
+          <parameter key="Time" value="maximum"/>
           <parameter key="p1" value="minimum"/>
           <parameter key="p1" value="maximum"/>
           <parameter key="p2" value="minimum"/>
@@ -119,7 +120,7 @@
           <parameter key="p10" value="minimum"/>
           <parameter key="p10" value="maximum"/>
         </list>
-        <parameter key="group_by_attributes" value="AlgorithmID|ExperimentID|"/>
+        <parameter key="group_by_attributes" value="AlgorithmID|ExperimentID|ProblemID"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
