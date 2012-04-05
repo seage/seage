@@ -10,7 +10,7 @@
 package org.seage;
 
 
-import aglobe.platform.Platform;
+//import aglobe.platform.Platform;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
@@ -174,6 +174,6 @@ public class Launcher {
     }
 
     private void agents(String config) {
-        Platform.main(new String[]{"-name", "SEAGE", "-topics", "-gui", "-p", "config=" + config, "ProblemAgent:org.seage.ael.agent.ProblemAgent"});
+        //Platform.main(new String[]{"-name", "SEAGE", "-topics", "-gui", "-p", "config=" + config, "ProblemAgent:org.seage.ael.agent.ProblemAgent"});
     }
 }
