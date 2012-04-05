@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.seage.temp;
+package org.seage.classutil;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,11 +20,24 @@ import java.util.zip.ZipException;
  */
 public class ClassPathAnalyzer {
     
+    String _filter = "";
     private List<String> _classNames;
+    
     
     public ClassPathAnalyzer()
     {
         _classNames = new ArrayList<String>();
+    }
+    
+    public ClassPathAnalyzer(String filter)
+    {
+        this();
+        _filter = filter;
+    }     
+    
+    private boolean isFiltered(String s)
+    {
+        return s.replace('/', '.').contains(_filter);
     }
     
     public List<String> analyzeClassPath()
@@ -36,10 +49,10 @@ public class ClassPathAnalyzer {
         
         for (String s : paths) {
             try
-            {
+            {                
                 File f = new File(s);
                 if(f.isDirectory())
-                    analyzeDir(f);
+                    ;//analyzeDir(f);
                 if(f.isFile() && f.getName().endsWith(".jar"))
                     analyzeJar(f);
             }
@@ -54,16 +67,19 @@ public class ClassPathAnalyzer {
     
     private void analyzeDir(File dir)
     {
+        // if filter
+        if(!isFiltered(dir.getAbsolutePath()))
+            return;
         analyzeDir(dir, dir.getAbsolutePath()+"/");
     }
     private void analyzeDir(File dir, String prefix)
     {
-        for(File f : dir.listFiles())
+        for(File f : dir.listFiles()){
             if(f.isDirectory())
-                analyzeDir(f, prefix);
-            else
-                if(f.isFile() && f.getName().endsWith(".class"))
-                    addClassPath(f.getAbsolutePath().replace(prefix, ""));
+                analyzeDir(f, prefix);   
+            if(f.isFile())
+                addClassPath(f.getAbsolutePath().replace(prefix, ""));
+        }
     }
     
     private void analyzeJar(File f) throws IOException
@@ -75,23 +91,38 @@ public class ClassPathAnalyzer {
         jars.add(jf);
         
         Object o = mf.getMainAttributes().get(new java.util.jar.Attributes.Name("Class-Path"));
-        if(o != null)            
+        if(o != null)
+        {
             for(String p : o.toString().split(" "))
-            {
-                File f2 = new File(f.getParent() + "/" +p); 
-                if(f2.exists())
-                    jars.add(new JarFile(f2));
+            {                
+                if(!p.endsWith(".jar"))
+                    continue;
+                try{
+                    File f2 = new File(f.getAbsoluteFile().getParentFile().getAbsolutePath() + "/" +p);                     
+                    if(f2.isFile() && f2.exists())
+                        jars.add(new JarFile(f2));
+                }
+                catch(ZipException ex)
+                {
+                    System.err.println("'"+p+"'");
+                    ex.printStackTrace();
+                }
             }
+        }
         
         for(JarFile jar : jars)
         {
-            //System.out.println(jar.getName());
+            // if filter
+                  
+            if(!isFiltered(jar.getName()))                
+                continue;
+//            else
+//                System.out.println("+++"+jar.getName());      
             
             for (Enumeration entries = jar.entries(); entries.hasMoreElements();) {                
                 JarEntry entry = (JarEntry) entries.nextElement();
                 String entryName = entry.getName();
-                if(entryName.endsWith(".class"))
-                    addClassPath(entryName);
+                addClassPath(entryName);
                                    
             }
         }   
@@ -99,7 +130,7 @@ public class ClassPathAnalyzer {
     
     private void addClassPath(String path)
     {
-        String className = path.replace(".class", "").replace('/', '.');
+        String className = path;//.replace(".class", "").replace('/', '.');
                 
         if(!_classNames.contains(className))        
             _classNames.add(className);

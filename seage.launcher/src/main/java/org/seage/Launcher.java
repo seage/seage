@@ -23,6 +23,7 @@ import org.seage.logging.LogHelper;
 import org.seage.experimenter.reporting.ILogReport;
 import org.seage.experimenter.reporting.LogReportCreator;
 import org.seage.temp.AlgorithmTester;
+import org.seage.temp.ClasspathTest;
 /**
  *
  * @author rick
@@ -98,10 +99,15 @@ public class Launcher {
             agents(args[1]);
             return;
         }
-
-        ILogReport reporter = new LogReportCreator();
+        
         if (args[0].equals("-report")) {
+            ILogReport reporter = new LogReportCreator();
             reporter.report();
+            return;
+        }
+        
+        if (args[0].equals("-cp")) {
+            new ClasspathTest().main(args);
             return;
         }
 
