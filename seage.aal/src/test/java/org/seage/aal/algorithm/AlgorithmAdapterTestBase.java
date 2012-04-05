@@ -17,11 +17,11 @@ public class AlgorithmAdapterTestBase {
     
     protected void runAlgorithmTest() throws Exception
     {             
-        algorithm.solutionsFromPhenotype(solutions);
-        algorithm.setParameters(algParams);
-        algorithm.startSearching();
-        solutions = algorithm.solutionsToPhenotype();
-        algorithm.solutionsFromPhenotype(solutions);
-        algorithm.startSearching();
+//        algorithm.solutionsFromPhenotype(solutions);
+//        algorithm.setParameters(algParams);
+//        algorithm.startSearching();
+//        solutions = algorithm.solutionsToPhenotype();
+//        algorithm.solutionsFromPhenotype(solutions);
+//        algorithm.startSearching();
     }
 }
