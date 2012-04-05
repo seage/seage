@@ -58,7 +58,7 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
 
         // Instances
         DataNode instances = new DataNode("Instances");
-        for(String in : ClassUtil.searchForInstancesInJar("instances", this.getClass()))
+        for(String in : ClassUtil.searchForInstancesInJar("instances", this.getClass().getPackage().getName()))
         {
             DataNode instance = new DataNode("Instance");
             instance.putValue("type", "resource");
@@ -72,7 +72,7 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
         DataNode algorithms = new DataNode("Algorithms");
         _algFactories = new HashMap<String, IAlgorithmFactory>();
 
-        for(ClassInfo ci : ClassUtil.searchForClassesInJar(IAlgorithmFactory.class, this.getClass()))
+        for(ClassInfo ci : ClassUtil.searchForClasses(IAlgorithmFactory.class, this.getClass().getPackage().getName()))
         {
             try
             {
@@ -146,7 +146,7 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
         
         _providers = new HashMap<String, IProblemProvider>();
 
-        for(ClassInfo ci : ClassUtil.searchForClasses(IProblemProvider.class, "seage.problem"))
+        for(ClassInfo ci : ClassUtil.searchForClasses(IProblemProvider.class, "org.seage.problem"))
         {
             try
             {
