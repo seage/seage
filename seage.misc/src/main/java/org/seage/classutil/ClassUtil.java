@@ -142,15 +142,20 @@ public class ClassUtil
     public static String[] searchForInstancesInJar(final String instanceDir, String pkgName) throws Exception
     {
         List<String> result = new ArrayList<String>();
-        for(String p : paths)
+        pkgName = pkgName.replace('.', '/');
+        for(String resName : paths)
         {
-            if(p.contains(".class"))
-                continue;
+            if(resName.contains(".class"))
+                continue;  
             
-            String resName = p.replace('/', '.');
-            
-            if(resName.startsWith(pkgName) && resName.contains(instanceDir))
+            if(resName.startsWith(pkgName) && resName.contains(instanceDir) && !resName.endsWith(instanceDir+"/"))
+            {
+                if(!resName.startsWith("/"))
+                    resName="/"+resName ;
+                
                 result.add(resName);
+            }
+                
             
             //Class c = Class.forName(className);
                 
