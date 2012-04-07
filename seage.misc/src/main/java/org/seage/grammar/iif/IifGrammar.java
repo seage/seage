@@ -3,10 +3,10 @@
  * and open the template in the editor.
  */
 
-package ailibrary.grammar.iif;
+package org.seage.grammar.iif;
 
-import ailibrary.grammar.Grammar;
-import ailibrary.grammar.NonterminalSymbol;
+import org.seage.grammar.Grammar;
+import org.seage.grammar.NonterminalSymbol;
 import java.util.Vector;
 
 /**

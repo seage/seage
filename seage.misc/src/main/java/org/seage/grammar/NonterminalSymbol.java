@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package ailibrary.grammar;
+package org.seage.grammar;
 
 import org.seage.data.DataNode;
 import java.util.*;

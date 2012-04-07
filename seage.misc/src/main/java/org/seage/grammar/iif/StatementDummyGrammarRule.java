@@ -3,11 +3,11 @@
  * and open the template in the editor.
  */
 
-package ailibrary.grammar.iif;
+package org.seage.grammar.iif;
 
-import ailibrary.grammar.Symbol;
-import ailibrary.grammar.GrammarRule;
-import ailibrary.grammar.NonterminalSymbol;
+import org.seage.grammar.Symbol;
+import org.seage.grammar.GrammarRule;
+import org.seage.grammar.NonterminalSymbol;
 import java.util.*;
 
 /**
