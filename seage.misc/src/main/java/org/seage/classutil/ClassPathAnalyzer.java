@@ -52,7 +52,7 @@ public class ClassPathAnalyzer {
             {                
                 File f = new File(s);
                 if(f.isDirectory())
-                    ;//analyzeDir(f);
+                    analyzeDir(f);
                 if(f.isFile() && f.getName().endsWith(".jar"))
                     analyzeJar(f);
             }

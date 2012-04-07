@@ -22,12 +22,12 @@ import java.util.zip.ZipException;
 public class ClasspathTest {
 
     public static void main(String[] args) throws Exception{
-        //new ClasspathTest().foo();
+        new ClasspathTest().foo();
         List<String> classes = new ClassPathAnalyzer().analyzeClassPath();
         
         for(String c : classes)
         {
-            System.out.println(c);
+            //System.out.println(c);
             
             //Class.forName(c);
         }
@@ -50,7 +50,7 @@ public class ClasspathTest {
             //List<String> jarPaths = new ArrayList<String>();
 
             for (String s : paths) {
-                //System.out.println(s);
+                System.out.println(s);
 
                 File f = new File(s);
                 if (f.isDirectory()) {
