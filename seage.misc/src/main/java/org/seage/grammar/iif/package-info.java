@@ -1,4 +1,4 @@
 /**
  * Grammar for Metataheuristic's rules.
  */
-package ailibrary.grammar.iif;
+package org.seage.grammar.iif;
