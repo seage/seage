@@ -28,6 +28,8 @@ import java.util.jar.JarFile;
  *
  * @author rick
  */
+@Deprecated
+@SuppressWarnings(value = { "all" })
 public class ClassFinderOld
 {
     public static ClassInfo[] searchForClasses(String rootDir, String jarPrefix, String packagePrefix, Class classObj) throws Exception

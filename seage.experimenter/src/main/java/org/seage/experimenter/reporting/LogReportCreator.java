@@ -28,6 +28,8 @@ import com.rapidminer.Process;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.Operator;
 import java.util.Collection;
+import org.seage.data.DataNode;
+import org.seage.experimenter.ExampleSetConverter;
 //import org.seage.experimenter.ExampleSetConverter;
 
 /**
@@ -38,9 +40,9 @@ public class LogReportCreator implements ILogReport {
     
     private static String _logPath = "output";
     private static String _reportPath = "report";
-    private static String _csvHeader = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;";
+    private static String _csvHeader = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;Time;";
     private static final String XSL_TEMPLATE = "report2csv.xsl";
-    private static final String RAPIDMINER_PROCESS_FILE = "processDefifnition.xml";
+    private static final String RAPIDMINER_PROCESS_FILE = "rm-p2-report1.rmp";
     private static final String OUTPUT_CSV_FILE = "report.csv";
     
     public LogReportCreator()
@@ -73,10 +75,15 @@ public class LogReportCreator implements ILogReport {
 //                ex = op.getOutputPorts().getPortByName("example set output").getData();
 //        }
 //        
-//        //ExampleSetConverter.convertToDataNode(null);
+//        DataNode dn = ExampleSetConverter.convertToDataNode(ex);
+//        
+//        ExampleSet exampleSet = ExampleSetConverter.convertToExampleSet(dn);
+//        
+//        DataNode dn1 = ExampleSetConverter.convertToDataNode(exampleSet);
 //
+//        ExampleSet exampleSet1 = ExampleSetConverter.convertToExampleSet(dn1);
 //
-//        System.out.println(ex);
+//        System.out.println(exampleSet1);
     }
 
     private void createReport() throws Exception
