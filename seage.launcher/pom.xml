@@ -14,14 +14,14 @@
 		<dependency>
 			<groupId>org.seage</groupId>
 			<artifactId>seage.misc</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.seage</groupId>
 			<artifactId>seage.aal</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -30,49 +30,6 @@
 			<artifactId>seage.experimenter</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<!--dependency>
-			<groupId>rapidminer</groupId>
-			<artifactId>rapidminer-launcher</artifactId>
-			<version>5.1.014</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>rapidminer</groupId>
-			<artifactId>rapidminer</artifactId>
-			<version>5.1.014</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>encog</groupId>
-			<artifactId>encog</artifactId>
-			<version>1.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>jxl</groupId>
-			<artifactId>jxl</artifactId>
-			<version>1.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>jep</groupId>
-			<artifactId>jep</artifactId>
-			<version>1.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>joone-engine</groupId>
-			<artifactId>joone-engine</artifactId>
-			<version>1.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency-->
-
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>seage.problem.tsp</artifactId>
@@ -80,12 +37,12 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<directory>build</directory>
+		<!-- <directory>build</directory> -->
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-                                <version>2.3.1</version>
+				<version>2.3.1</version>
 				<configuration>
 					<archive>
 						<manifest>
@@ -103,11 +60,11 @@
 					<!-- <descriptorRef>jar-with-dependencies</descriptorRef> -->
 					<!-- </descriptorRefs> -->
 					<descriptors>
-						<descriptor>assembly/assembly.xml</descriptor>
+						<descriptor>src/main/assembly/assembly.xml</descriptor>
 					</descriptors>
 					<finalName>bin</finalName>
 					<appendAssemblyId>false</appendAssemblyId>
-					<outputDirectory>target</outputDirectory>
+					<outputDirectory>../target</outputDirectory>
 				</configuration>
 				<executions>
 					<execution>
@@ -126,7 +83,7 @@
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>target</directory>
+							<directory>../target</directory>
 							<includes>
 								<include>bin/</include>
 							</includes>
@@ -138,16 +95,19 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.1.1</version>
+				<version>1.2</version>
 				<configuration>
+					<skip>false</skip>
 					<executable>java</executable>
 					<arguments>
 						<argument>-jar</argument>
-						<argument>target/bin/seage.launcher-0.0.1-SNAPSHOT.jar</argument>
+						<argument>../target/bin/seage.launcher-0.0.1-SNAPSHOT.jar</argument>
 					</arguments>
 				</configuration>
 				<executions>
 					<execution>
+						<id>default-cli</id>
+
 						<goals>
 							<goal>exec</goal>
 						</goals>
