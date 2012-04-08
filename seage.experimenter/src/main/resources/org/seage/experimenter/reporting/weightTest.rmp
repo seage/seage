@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.1.014">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.1.014" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <parameter key="parallelize_main_process" value="false"/>
+    <process expanded="true" height="663" width="1094">
+      <operator activated="true" class="read_csv" compatibility="5.1.014" expanded="true" height="60" name="Read CSV" width="90" x="67" y="187">
+        <parameter key="csv_file" value="C:\Users\Zis\Documents\NetBeansProjects\seage\seage.launcher\target\report\report.csv"/>
+        <parameter key="column_separators" value=";"/>
+        <parameter key="trim_lines" value="false"/>
+        <parameter key="use_quotes" value="true"/>
+        <parameter key="quotes_character" value="&quot;"/>
+        <parameter key="escape_character_for_quotes" value="\"/>
+        <parameter key="skip_comments" value="false"/>
+        <parameter key="comment_characters" value="#"/>
+        <parameter key="parse_numbers" value="true"/>
+        <parameter key="decimal_character" value="."/>
+        <parameter key="grouped_digits" value="false"/>
+        <parameter key="grouping_character" value=","/>
+        <parameter key="date_format" value=""/>
+        <parameter key="first_row_as_names" value="false"/>
+        <list key="annotations">
+          <parameter key="0" value="Name"/>
+        </list>
+        <parameter key="time_zone" value="SYSTEM"/>
+        <parameter key="locale" value="English (United States)"/>
+        <parameter key="encoding" value="windows-1250"/>
+        <list key="data_set_meta_data_information">
+          <parameter key="0" value="ExperimentID.true.real.attribute"/>
+          <parameter key="1" value="ProblemID.true.polynominal.attribute"/>
+          <parameter key="2" value="AlgorithmID.true.polynominal.attribute"/>
+          <parameter key="3" value="InstanceID.true.polynominal.attribute"/>
+          <parameter key="4" value="ConfigID.true.polynominal.attribute"/>
+          <parameter key="5" value="SolutionValue.true.real.attribute"/>
+          <parameter key="6" value="p1.true.real.attribute"/>
+          <parameter key="7" value="p2.true.real.attribute"/>
+          <parameter key="8" value="p3.true.real.attribute"/>
+          <parameter key="9" value="p4.true.real.attribute"/>
+          <parameter key="10" value="p5.true.real.attribute"/>
+          <parameter key="11" value="p6.true.real.attribute"/>
+          <parameter key="12" value="p7.true.real.attribute"/>
+          <parameter key="13" value="p8.false.attribute_value.attribute"/>
+          <parameter key="14" value="p9.false.attribute_value.attribute"/>
+          <parameter key="15" value="p10.false.attribute_value.attribute"/>
+          <parameter key="16" value="att17.false.attribute_value.attribute"/>
+        </list>
+        <parameter key="read_not_matching_values_as_missings" value="true"/>
+        <parameter key="datamanagement" value="double_array"/>
+      </operator>
+      <operator activated="true" class="replace_missing_values" compatibility="5.1.014" expanded="true" height="94" name="Replace Missing Values" width="90" x="246" y="30">
+        <parameter key="return_preprocessing_model" value="false"/>
+        <parameter key="create_view" value="false"/>
+        <parameter key="attribute_filter_type" value="all"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="attribute_value"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="time"/>
+        <parameter key="block_type" value="attribute_block"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_matrix_row_start"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <parameter key="default" value="average"/>
+        <list key="columns"/>
+      </operator>
+      <operator activated="true" class="discretize_by_bins" compatibility="5.1.014" expanded="true" height="94" name="Discretize" width="90" x="380" y="120">
+        <parameter key="return_preprocessing_model" value="false"/>
+        <parameter key="create_view" value="false"/>
+        <parameter key="attribute_filter_type" value="all"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="numeric"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="real"/>
+        <parameter key="block_type" value="value_series"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_series_end"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <parameter key="number_of_bins" value="2"/>
+        <parameter key="define_boundaries" value="false"/>
+        <parameter key="range_name_type" value="long"/>
+        <parameter key="automatic_number_of_digits" value="true"/>
+        <parameter key="number_of_digits" value="3"/>
+      </operator>
+      <operator activated="true" class="set_role" compatibility="5.1.014" expanded="true" height="76" name="Set Role" width="90" x="514" y="30">
+        <parameter key="name" value="SolutionValue"/>
+        <parameter key="target_role" value="label"/>
+        <list key="set_additional_roles"/>
+      </operator>
+      <operator activated="true" class="nominal_to_numerical" compatibility="5.1.014" expanded="true" height="94" name="Nominal to Numerical" width="90" x="514" y="165">
+        <parameter key="return_preprocessing_model" value="false"/>
+        <parameter key="create_view" value="false"/>
+        <parameter key="attribute_filter_type" value="all"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="nominal"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="file_path"/>
+        <parameter key="block_type" value="single_value"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="single_value"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <parameter key="coding_type" value="unique integers"/>
+        <parameter key="use_comparison_groups" value="false"/>
+        <list key="comparison_groups"/>
+        <parameter key="unexpected_value_handling" value="all 0 and warning"/>
+        <parameter key="use_underscore_in_name" value="false"/>
+      </operator>
+      <operator activated="true" class="weight_by_relief" compatibility="5.1.014" expanded="true" height="76" name="Weight by Relief" width="90" x="648" y="30">
+        <parameter key="normalize_weights" value="true"/>
+        <parameter key="sort_weights" value="true"/>
+        <parameter key="sort_direction" value="ascending"/>
+        <parameter key="number_of_neighbors" value="10"/>
+        <parameter key="sample_ratio" value="1.0"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+      </operator>
+      <operator activated="true" class="weight_by_information_gain" compatibility="5.1.014" expanded="true" height="76" name="Weight by Information Gain" width="90" x="581" y="255">
+        <parameter key="normalize_weights" value="true"/>
+        <parameter key="sort_weights" value="true"/>
+        <parameter key="sort_direction" value="ascending"/>
+      </operator>
+      <operator activated="true" class="multiply" compatibility="5.1.014" expanded="true" height="94" name="Multiply" width="90" x="715" y="300"/>
+      <operator activated="true" class="discretize_by_bins" compatibility="5.1.014" expanded="true" height="94" name="Discretize (2)" width="90" x="782" y="120">
+        <parameter key="return_preprocessing_model" value="false"/>
+        <parameter key="create_view" value="false"/>
+        <parameter key="attribute_filter_type" value="all"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="numeric"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="real"/>
+        <parameter key="block_type" value="value_series"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_series_end"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <parameter key="number_of_bins" value="2"/>
+        <parameter key="define_boundaries" value="false"/>
+        <parameter key="range_name_type" value="long"/>
+        <parameter key="automatic_number_of_digits" value="true"/>
+        <parameter key="number_of_digits" value="3"/>
+      </operator>
+      <operator activated="true" class="k_means" compatibility="5.1.014" expanded="true" height="76" name="Clustering" width="90" x="916" y="210">
+        <parameter key="add_cluster_attribute" value="true"/>
+        <parameter key="add_as_label" value="false"/>
+        <parameter key="remove_unlabeled" value="false"/>
+        <parameter key="k" value="2"/>
+        <parameter key="max_runs" value="10"/>
+        <parameter key="max_optimization_steps" value="100"/>
+        <parameter key="use_local_random_seed" value="false"/>
+        <parameter key="local_random_seed" value="1992"/>
+      </operator>
+      <operator activated="true" class="parallel:decision_tree_weight_based_parallel" compatibility="5.1.000" expanded="true" height="60" name="DecisionTree (Weight-Based)" width="90" x="916" y="75">
+        <parameter key="minimal_size_for_split" value="4"/>
+        <parameter key="minimal_leaf_size" value="2"/>
+        <parameter key="maximal_depth" value="10"/>
+        <parameter key="confidence" value="0.25"/>
+        <parameter key="no_pruning" value="false"/>
+        <parameter key="number_of_prepruning_alternatives" value="3"/>
+        <parameter key="number_of_threads" value="2"/>
+        <parameter key="parallelize_weighting" value="false"/>
+        <process expanded="true">
+          <portSpacing port="source_training set" spacing="0"/>
+          <portSpacing port="sink_weights" spacing="0"/>
+        </process>
+      </operator>
+      <connect from_op="Read CSV" from_port="output" to_op="Replace Missing Values" to_port="example set input"/>
+      <connect from_op="Replace Missing Values" from_port="example set output" to_op="Discretize" to_port="example set input"/>
+      <connect from_op="Discretize" from_port="example set output" to_op="Set Role" to_port="example set input"/>
+      <connect from_op="Set Role" from_port="example set output" to_op="Nominal to Numerical" to_port="example set input"/>
+      <connect from_op="Nominal to Numerical" from_port="example set output" to_op="Weight by Relief" to_port="example set"/>
+      <connect from_op="Weight by Relief" from_port="weights" to_port="result 2"/>
+      <connect from_op="Weight by Relief" from_port="example set" to_op="Weight by Information Gain" to_port="example set"/>
+      <connect from_op="Weight by Information Gain" from_port="weights" to_port="result 4"/>
+      <connect from_op="Weight by Information Gain" from_port="example set" to_op="Multiply" to_port="input"/>
+      <connect from_op="Multiply" from_port="output 1" to_op="Clustering" to_port="example set"/>
+      <connect from_op="Multiply" from_port="output 2" to_op="Discretize (2)" to_port="example set input"/>
+      <connect from_op="Discretize (2)" from_port="example set output" to_op="DecisionTree (Weight-Based)" to_port="training set"/>
+      <connect from_op="Clustering" from_port="cluster model" to_port="result 3"/>
+      <connect from_op="DecisionTree (Weight-Based)" from_port="model" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
+      <portSpacing port="sink_result 4" spacing="0"/>
+      <portSpacing port="sink_result 5" spacing="0"/>
+    </process>
+  </operator>
+</process>
