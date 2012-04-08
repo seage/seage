@@ -6,15 +6,16 @@ dist/
 build/
 *~
 *.log*
-seage.launcher/target/bin/
-seage.launcher/target/output/
+target/bin/
+target/output/
+target/report/
 
-/seage.launcher/lib/rapidminerlib
-/seage.experimenter/output
-/seage.experimenter/report
-/seage.experimenter/lib/rapidminerlib
 /seage.misc/target/
 /seage.metaheuristics/target/
 /seage.aal/target/
 /seage.problems/discrete/tsp/target/
 /seage.experimenter/target/
+
+.classpath
+.project
+.settings/
