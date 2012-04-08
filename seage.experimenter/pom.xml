@@ -2,7 +2,7 @@
 	<parent>
 		<artifactId>seage</artifactId>
 		<groupId>org</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.5.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<name>seage.experimenter</name>
@@ -11,16 +11,16 @@
 	 <packaging>jar</packaging>
 	 <dependencies>
 	 	<dependency>
-	 		<groupId>org.seage</groupId>
+	 		<groupId>${project.groupId}</groupId>
 	 		<artifactId>seage.misc</artifactId>
-	 		<version>0.0.1-SNAPSHOT</version>
+	 		<version>${project.version}</version>
 	 		<type>jar</type>
 	 		<scope>compile</scope>
 	 	</dependency>
 	 	<dependency>
-	 		<groupId>org.seage</groupId>
+	 		<groupId>${project.groupId}</groupId>
 	 		<artifactId>seage.aal</artifactId>
-	 		<version>0.0.1-SNAPSHOT</version>
+	 		<version>${project.version}</version>
 	 		<type>jar</type>
 	 		<scope>compile</scope>
 	 	</dependency>
@@ -67,11 +67,4 @@
 			<scope>compile</scope>
 		</dependency>
 	 </dependencies>
-	 <repositories>
-	  <repository>
-	    <id>seage-repo1</id>
-	    <name>seage repo</name>
-	    <url>http://www.seage.org/repo</url>
-	  </repository>
-	</repositories>
 </project>
