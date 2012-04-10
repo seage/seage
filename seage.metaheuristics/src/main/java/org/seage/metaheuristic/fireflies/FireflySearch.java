@@ -231,17 +231,7 @@ public class FireflySearch extends FireflySearchBase{
                     if(_solutionComparator.compare(best,_population.getBestSolution()) == -1)
                         _population.addSolution(best);
                 }
-
-
-
-                //temporary solution for not getting in the same solutions
-//                for(int s1=0;s1<_population.getSize();s1++){
-//                    for(int s2=0;s2<_population.getSize();s2++){
-//                        if(_population.getSolutions()[s1].equals(_population.getSolutions()[s2])){
-//                            _population.getSolutions()[s2]=_operator.randomSolution();
-//                        }
-//                    }
-//                }
+                System.out.println(_bestSolution.getObjectiveValue()[0]);
             }
 
             evaluatePopulation(_population);

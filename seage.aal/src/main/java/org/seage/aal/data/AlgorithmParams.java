@@ -21,7 +21,12 @@ import org.seage.data.DataNode;
  */
 public class AlgorithmParams extends DataNode{
 
-    public AlgorithmParams(DataNode dn) {
+    /**
+	 * A generated value
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public AlgorithmParams(DataNode dn) {
         super(dn);
     }
 

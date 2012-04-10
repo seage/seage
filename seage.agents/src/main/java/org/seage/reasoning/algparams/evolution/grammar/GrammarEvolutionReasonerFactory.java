@@ -6,8 +6,8 @@
 package org.seage.reasoning.algparams.evolution.grammar;
 
 import org.seage.data.DataNode;
-import ailibrary.grammar.Grammar;
-import ailibrary.grammar.iif.IifGrammar;
+import org.seage.grammar.Grammar;
+import org.seage.grammar.iif.IifGrammar;
 import org.seage.reasoning.algparams.Policy.Attribute;
 import org.seage.reasoning.algparams.Reasoner;
 import org.seage.reasoning.algparams.ReasonerFactory;
