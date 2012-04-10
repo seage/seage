@@ -6,7 +6,7 @@
 package org.seage.reasoning.algparams.evolution.grammar;
 
 import org.seage.data.DataNode;
-import ailibrary.grammar.NonterminalSymbol;
+import org.seage.grammar.NonterminalSymbol;
 import org.seage.reasoning.algparams.Policy;
 import org.seage.reasoning.algparams.Policy.Attribute;
 import org.seage.aal.reporter.AlgorithmReportEvaluator;
