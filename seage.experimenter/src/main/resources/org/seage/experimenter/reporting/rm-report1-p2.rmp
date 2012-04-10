@@ -125,7 +125,7 @@
         <parameter key="sorting_direction" value="increasing"/>
       </operator>
       <operator activated="true" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV" width="90" x="648" y="75">
-        <parameter key="csv_file" value="report/rm-p2-report1.csv"/>
+        <parameter key="csv_file" value="report/rm-report1-p2.csv"/>
         <parameter key="column_separator" value=";"/>
         <parameter key="write_attribute_names" value="true"/>
         <parameter key="quote_nominal_values" value="true"/>
