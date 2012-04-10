@@ -20,7 +20,7 @@ public class ProcessPerformer {
     
     public void addXSLTemplate(String path){}
     
-    public void addRapidMinerTemplate(String path){}
+    public void addRapidMinerProcess(String path){}
     
     public void addTransformationOutput(){}
     
