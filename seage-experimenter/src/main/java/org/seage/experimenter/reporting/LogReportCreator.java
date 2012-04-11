@@ -138,23 +138,13 @@ public class LogReportCreator implements ILogReport {
 
                 try
                 {
-                    transform(xmlPath, XSL_TEMPLATE, outputStream);
+                    XSLTransformer.getInstance().transformFromXML(xmlPath, XSL_TEMPLATE, outputStream);
                 }
                 catch(Exception e)
                 {
                     System.out.println(xmlPath);
-                }                
+                }
             }            
-            
-        }
-        
-    }
-    
-    private void transform(String xmlPath, String xsltName, StreamResult outputStream) throws Exception
-    {         
-        TransformerFactory tFactory = TransformerFactory.newInstance();
-        Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));      
-        
-        transformer.transform (new StreamSource(new FileInputStream(xmlPath)), outputStream);
-    }        
+        }        
+    }   
 }
