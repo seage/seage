@@ -6,7 +6,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	 <groupId>org.seage</groupId>
-	 <name>seage.metaheuristics</name>
-	 <artifactId>seage.metaheuristics</artifactId>
+	 <name>seage-metaheuristics</name>
+	 <artifactId>seage-metaheuristics</artifactId>
 	 <packaging>jar</packaging>
 </project>

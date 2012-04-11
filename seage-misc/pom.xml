@@ -5,8 +5,8 @@
 		<version>0.5.0-SNAPSHOT</version>
 	</parent>
 	 <modelVersion>4.0.0</modelVersion>
-	 <name>seage.misc</name>
+	 <name>seage-misc</name>
 	 <groupId>org.seage</groupId>
-	 <artifactId>seage.misc</artifactId>
+	 <artifactId>seage-misc</artifactId>
 	 <packaging>jar</packaging>
 </project>

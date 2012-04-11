@@ -7,32 +7,32 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.seage</groupId>
-	<name>seage.launcher</name>
-	<artifactId>seage.launcher</artifactId>
+	<name>seage-launcher</name>
+	<artifactId>seage-launcher</artifactId>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>seage.misc</artifactId>
+			<artifactId>seage-misc</artifactId>
 			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>seage.aal</artifactId>
+			<artifactId>seage-aal</artifactId>
 			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>seage.experimenter</artifactId>
+			<artifactId>seage-experimenter</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>seage.problem.tsp</artifactId>
+			<artifactId>seage-problem-tsp</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
@@ -101,7 +101,7 @@
 					<executable>java</executable>
 					<arguments>
 						<argument>-jar</argument>
-						<argument>../target/bin/seage.launcher-0.0.1-SNAPSHOT.jar</argument>
+						<argument>../target/bin/seage-launcher-0.0.1-SNAPSHOT.jar</argument>
 					</arguments>
 				</configuration>
 				<executions>

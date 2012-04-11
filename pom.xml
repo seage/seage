@@ -8,12 +8,12 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>seage.aal</module>
-		<module>seage.misc</module>
-		<module>seage.metaheuristics</module>
-		<module>seage.experimenter</module>
-		<module>seage.problems/discrete/tsp</module>
-		<module>seage.launcher</module>
+		<module>seage-aal</module>
+		<module>seage-misc</module>
+		<module>seage-metaheuristics</module>
+		<module>seage-experimenter</module>
+		<module>seage-problems/discrete/tsp</module>
+		<module>seage-launcher</module>
 	</modules>
 
 	<build>

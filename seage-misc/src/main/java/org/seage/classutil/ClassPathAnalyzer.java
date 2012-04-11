@@ -37,7 +37,7 @@ public class ClassPathAnalyzer {
     
     private boolean isFiltered(String s)
     {
-        return s.replace('/', '.').contains(_filter);
+        return s.replace('-', '.').replace('/', '.').contains(_filter);
     }
     
     public List<String> analyzeClassPath()

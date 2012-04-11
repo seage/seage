@@ -10,11 +10,12 @@ target/bin/
 target/output/
 target/report/
 
-/seage.misc/target/
-/seage.metaheuristics/target/
-/seage.aal/target/
-/seage.problems/discrete/tsp/target/
-/seage.experimenter/target/
+/seage-misc/target/
+/seage-metaheuristics/target/
+/seage-aal/target/
+/seage-problems/discrete/tsp/target/
+/seage-experimenter/target/
+/seage-launcher/target/
 
 .classpath
 .project
