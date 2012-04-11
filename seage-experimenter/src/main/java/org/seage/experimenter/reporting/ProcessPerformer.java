@@ -11,21 +11,68 @@
  */
 package org.seage.experimenter.reporting;
 
+import com.rapidminer.FileProcessLocation;
+import com.rapidminer.RapidMiner;
+import com.rapidminer.Process;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  *
  * @author zmatlja1
  */
 public class ProcessPerformer {
     
+    private HashMap<String, RMProcess> processes;
     
-    public void addXSLTemplate(String path){}
+    public ProcessPerformer()
+    {
+        processes = new HashMap<String, RMProcess>();
+        RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI );
+        RapidMiner.init();
+    } 
     
-    public void addRapidMinerProcess(String path){}
+    public void addProcess(RMProcess process)
+    {
+        if(processes.containsKey(process.getResourceName()))
+        {
+            //vyhodit vyjimku
+        }
+        
+        processes.put(process.getResourceName(), process);
+    }
     
-    public void addTransformationOutput(){}
+    public RMProcess getProcess(String name)
+    {
+        return processes.get(name);
+    }
     
-    public void performProcesses(){}
+    public List<RMProcess> getProcesses()
+    {
+        return new ArrayList<RMProcess>(processes.values());
+    }
     
-    public void performProcess(String name){}
+    public void performProcess(String resourceName) throws Exception
+    {
+        Process process = new Process( getClass().getResourceAsStream( resourceName ) );
+        process.setProcessLocation( new FileProcessLocation( new File(".") ) );        
+        
+        // TODO: B - Info only for debug, after that they'll be removed
+        System.out.println(process.getRootOperator().createProcessTree(0));
+        System.out.println("RUN"); 
+        
+        process.run();
+    }
+    
+    public void performProcesses() throws Exception
+    {
+        for(RMProcess process : processes.values())
+        {
+            this.performProcess( process.getResourceName() );
+        }
+    }
+    
     
 }

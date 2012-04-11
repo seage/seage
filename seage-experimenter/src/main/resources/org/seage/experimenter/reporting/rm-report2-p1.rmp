@@ -15,7 +15,7 @@
     <parameter key="parallelize_main_process" value="false"/>
     <process expanded="true" height="663" width="1094">
       <operator activated="true" class="read_csv" compatibility="5.1.014" expanded="true" height="60" name="Read CSV" width="90" x="45" y="120">
-        <parameter key="csv_file" value="C:\Users\Zis\Documents\NetBeansProjects\seage\seage.launcher\report\report.csv"/>
+        <parameter key="csv_file" value="report/report.csv"/>
         <parameter key="column_separators" value=";"/>
         <parameter key="trim_lines" value="false"/>
         <parameter key="use_quotes" value="true"/>
