@@ -54,16 +54,16 @@ public class LogReportCreator implements ILogReport {
     public void report() throws Exception
     {
         createReport();
-        reportRapidMiner();
+//        reportRapidMiner();
     }
     
     private void reportRapidMiner() throws Exception
     {        
-        Process process = new Process( getClass().getResourceAsStream( RAPIDMINER_PROCESS_FILE ) );
-        process.setProcessLocation( new FileProcessLocation( new File(".") ) );
-        System.out.println(process.getRootOperator().createProcessTree(0));
-                       System.out.println("RUN"); 
-        process.run();
+//        Process process = new Process( getClass().getResourceAsStream( RAPIDMINER_PROCESS_FILE ) );
+//        process.setProcessLocation( new FileProcessLocation( new File(".") ) );
+//        System.out.println(process.getRootOperator().createProcessTree(0));
+//                       System.out.println("RUN"); 
+//        process.run();
 
 //        Collection<Operator> ops = process.getAllOperators();
 //        ExampleSet ex = null;
