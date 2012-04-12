@@ -13,15 +13,11 @@
  */
 package org.seage.experimenter.reporting;
 
-import com.rapidminer.FileProcessLocation;
 import com.rapidminer.RapidMiner;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.util.Arrays;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import org.seage.data.file.FileHelper;
 import javax.xml.transform.stream.*;
 import com.rapidminer.Process;
@@ -30,6 +26,7 @@ import com.rapidminer.operator.Operator;
 import java.util.Collection;
 import org.seage.data.DataNode;
 import org.seage.experimenter.ExampleSetConverter;
+import org.seage.logging.LogHelper;
 //import org.seage.experimenter.ExampleSetConverter;
 
 /**
@@ -126,7 +123,7 @@ public class LogReportCreator implements ILogReport {
         outputStream.getOutputStream().write( ( _csvHeader + sb.append("\n").toString() ).getBytes() );
 
         for(String dirName : logDir.list(filter))
-        {
+        {            
             System.err.println(dirName);
             
             File logDirDir = new File(logDir.getPath() + "/" + dirName);
@@ -138,7 +135,7 @@ public class LogReportCreator implements ILogReport {
 
                 try
                 {
-                    XSLTransformer.getInstance().transformFromXML(xmlPath, XSL_TEMPLATE, outputStream);
+                    Transformer.getInstance().transformByXSLT(xmlPath, XSL_TEMPLATE, outputStream);
                 }
                 catch(Exception e)
                 {
