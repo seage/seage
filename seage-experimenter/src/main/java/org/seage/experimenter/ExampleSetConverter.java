@@ -86,7 +86,7 @@ public class ExampleSetConverter {
                 // if(dr.get( attribute ) == Double.NaN) System.out.println("Never reach");
                 
                 // If I retype a value to the String, its working fine
-                if(String.valueOf( dr.get( attribute ) ).equals( NOT_A_NUMBER ) ) continue;
+                if( String.valueOf( dr.get( attribute ) ).equals( NOT_A_NUMBER ) ) continue;
                 
                 // Check a nominal values
                 if( attribute.isNominal() )
