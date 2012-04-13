@@ -34,36 +34,27 @@ public class ProcessPerformer {
     
     private String EXAMPLESET_OUTPUT_PORT = "example set output";
     
-    private HashMap<String, RMProcess> _processes;
+    private List<RMProcess> _processes;
     
     private List<ExampleSet> _exampleSets;
     
     public ProcessPerformer()
     {
-        _processes = new HashMap<String, RMProcess>();
+        _processes = new ArrayList<RMProcess>();
         _exampleSets = new ArrayList<ExampleSet>();
+        
         RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI );
         RapidMiner.init();
     } 
     
     public void addProcess(RMProcess process)
     {
-        if(_processes.containsKey(process.getResourceName()))
-        {
-            //vyhodit vyjimku
-        }
-        
-        _processes.put(process.getResourceName(), process);
-    }
-    
-    public RMProcess getProcess(String name)
-    {
-        return _processes.get(name);
+        _processes.add( process );
     }
     
     public List<RMProcess> getProcesses()
     {
-        return new ArrayList<RMProcess>(_processes.values());
+        return _processes;
     }
     
     public ExampleSet performProcess(String resourceName) throws Exception
@@ -74,31 +65,23 @@ public class ProcessPerformer {
         // TODO: B - Info only for debug, after that they'll be removed
         System.out.println(process.getRootOperator().createProcessTree(0));
         
-        Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, "RUN");
+        Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, "RapidMiner Process RUNS");
         Logger.getLogger(ProcessPerformer.class.getName()).fine("RapidMiner Process RUNS");
         process.run();
-        
+       
         Collection<Operator> operators = process.getAllOperators();
         
         ExampleSet exampleSet = null;
-
         
         // TODO: B - Always is taken next to last operator
         int counter = 1;
         for(Operator operator : operators)
         {
-            System.out.println(operator.getName());
-            System.out.println(operators.size() +" - " + counter);
-            if( (operators.size() - 1) == counter)
+            if( ( operators.size() - 1 ) == counter)
             {
-                System.out.println(operator.getName()+"-----");
                 exampleSet = operator.getOutputPorts().getPortByName( EXAMPLESET_OUTPUT_PORT ).getData( ExampleSet.class );
                 _exampleSets.add( exampleSet );
-                break;
             }
-//            
-//            if(operator.getName().equals("Sort (2)"))
-//                ex = operator.getOutputPorts().getPortByName("example set output").getData();
             
             ++counter;
         }
@@ -107,7 +90,7 @@ public class ProcessPerformer {
     
     public void performProcesses() throws Exception
     {
-        for(RMProcess process : _processes.values())
+        for(RMProcess process : _processes)
         {
             this.performProcess( process.getResourceName() );
         }

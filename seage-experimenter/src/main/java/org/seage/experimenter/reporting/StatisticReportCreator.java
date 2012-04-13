@@ -73,9 +73,10 @@ public class StatisticReportCreator implements ILogReport
         File inputDataDir = new File( INPUT_DATA_PATH );
         inputDataDir.mkdir();
         
+        int k = 0;
         for(DataNode dataNode : _processPerformer.getProcessesDataNodes())
         {
-            XmlHelper.writeXml(dataNode, inputDataDir.getPath() + "/" + dataNode.getValueStr("name") + ".xml");
+//            XmlHelper.writeXml(dataNode, inputDataDir.getPath() + "/" + (++k) + ".xml");
         }
         
         File reportDir = new File( REPORT_PATH );
@@ -86,10 +87,10 @@ public class StatisticReportCreator implements ILogReport
 
         StreamResult outputStream = new StreamResult( new FileOutputStream( outputDir ) );
   
-//        for(String fileName : inputDataDir.list())
-//        {
-//            Transformer.getInstance().transformByXSLT(inputDataDir.getPath() + "/" + fileName, XSLTEMPLATE, outputStream);
-//        }
+        for(String fileName : inputDataDir.list())
+        {
+            Transformer.getInstance().transformByXSLT(inputDataDir.getPath() + "/" + fileName, XSLTEMPLATE, outputStream);
+        }
         
     } 
     
