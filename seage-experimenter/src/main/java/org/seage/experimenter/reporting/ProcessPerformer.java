@@ -14,10 +14,17 @@ package org.seage.experimenter.reporting;
 import com.rapidminer.FileProcessLocation;
 import com.rapidminer.RapidMiner;
 import com.rapidminer.Process;
+import com.rapidminer.example.ExampleSet;
+import com.rapidminer.operator.Operator;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.seage.data.DataNode;
+import org.seage.experimenter.ExampleSetConverter;
 
 /**
  *
@@ -25,53 +32,95 @@ import java.util.List;
  */
 public class ProcessPerformer {
     
-    private HashMap<String, RMProcess> processes;
+    private String EXAMPLESET_OUTPUT_PORT = "example set output";
+    
+    private HashMap<String, RMProcess> _processes;
+    
+    private List<ExampleSet> _exampleSets;
     
     public ProcessPerformer()
     {
-        processes = new HashMap<String, RMProcess>();
+        _processes = new HashMap<String, RMProcess>();
+        _exampleSets = new ArrayList<ExampleSet>();
         RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI );
         RapidMiner.init();
     } 
     
     public void addProcess(RMProcess process)
     {
-        if(processes.containsKey(process.getResourceName()))
+        if(_processes.containsKey(process.getResourceName()))
         {
             //vyhodit vyjimku
         }
         
-        processes.put(process.getResourceName(), process);
+        _processes.put(process.getResourceName(), process);
     }
     
     public RMProcess getProcess(String name)
     {
-        return processes.get(name);
+        return _processes.get(name);
     }
     
     public List<RMProcess> getProcesses()
     {
-        return new ArrayList<RMProcess>(processes.values());
+        return new ArrayList<RMProcess>(_processes.values());
     }
     
-    public void performProcess(String resourceName) throws Exception
+    public ExampleSet performProcess(String resourceName) throws Exception
     {
         Process process = new Process( getClass().getResourceAsStream( resourceName ) );
         process.setProcessLocation( new FileProcessLocation( new File(".") ) );        
         
         // TODO: B - Info only for debug, after that they'll be removed
         System.out.println(process.getRootOperator().createProcessTree(0));
-        System.out.println("RUN"); 
         
+        Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, "RUN");
+        Logger.getLogger(ProcessPerformer.class.getName()).fine("RapidMiner Process RUNS");
         process.run();
+        
+        Collection<Operator> operators = process.getAllOperators();
+        
+        ExampleSet exampleSet = null;
+
+        
+        // TODO: B - Always is taken next to last operator
+        int counter = 1;
+        for(Operator operator : operators)
+        {
+            System.out.println(operator.getName());
+            System.out.println(operators.size() +" - " + counter);
+            if( (operators.size() - 1) == counter)
+            {
+                System.out.println(operator.getName()+"-----");
+                exampleSet = operator.getOutputPorts().getPortByName( EXAMPLESET_OUTPUT_PORT ).getData( ExampleSet.class );
+                _exampleSets.add( exampleSet );
+                break;
+            }
+//            
+//            if(operator.getName().equals("Sort (2)"))
+//                ex = operator.getOutputPorts().getPortByName("example set output").getData();
+            
+            ++counter;
+        }
+        return exampleSet;
     }
     
     public void performProcesses() throws Exception
     {
-        for(RMProcess process : processes.values())
+        for(RMProcess process : _processes.values())
         {
             this.performProcess( process.getResourceName() );
         }
+    }
+    
+    public List<DataNode> getProcessesDataNodes() throws Exception
+    {
+        List<DataNode> dataNodes = new ArrayList<DataNode>();
+        
+        for(ExampleSet exampleSet : _exampleSets)
+            dataNodes.add( ExampleSetConverter.convertToDataNode( exampleSet ) );
+        
+        return dataNodes;
     }
     
     
