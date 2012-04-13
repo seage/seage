@@ -32,7 +32,7 @@ public class StatisticReportCreator implements ILogReport
     private static final String INPUT_DATA_PATH     = "statistics";    
     private static final String REPORT_PATH         = "htmlreport";    
     private static final String OUTPUT_FILE         = "statistics.html";    
-    private static final String XSLTEMPLATE         = "report2html.xsl";
+    private static final String XSLTEMPLATE         = "rm-report1-html.xsl";
     
     private String[] _resourceRMProcesses;
     
@@ -57,17 +57,8 @@ public class StatisticReportCreator implements ILogReport
     public void report() throws Exception
     {
         _processPerformer.performProcesses();
-        
-        List<RMProcess> processes = _processPerformer.getProcesses();
-        
-        List<DataNode> dataNodes = new ArrayList<DataNode>( processes.size() );
 
-        for(RMProcess process : processes)
-        {
-            dataNodes.add( Transformer.getInstance().transformCSVToDataNode( new File("report/" + process.getResourceName().substring(0,process.getResourceName().lastIndexOf(".")) + ".csv" ) ) );
-        }
-        
-        this.createHTMLReport(dataNodes);
+        this.createHTMLReport();
         
         /**
          * 
@@ -77,14 +68,14 @@ public class StatisticReportCreator implements ILogReport
          */
     }
     
-    private void createHTMLReport(List<DataNode> dataNodes) throws Exception
+    private void createHTMLReport() throws Exception
     {
         File inputDataDir = new File( INPUT_DATA_PATH );
         inputDataDir.mkdir();
         
-        for(DataNode dataNode : dataNodes)
+        for(DataNode dataNode : _processPerformer.getProcessesDataNodes())
         {
-            XmlHelper.writeXml(dataNode, inputDataDir.getPath() + "/" + dataNode.getValueStr("report") + ".xml");
+            XmlHelper.writeXml(dataNode, inputDataDir.getPath() + "/" + dataNode.getValueStr("name") + ".xml");
         }
         
         File reportDir = new File( REPORT_PATH );
@@ -95,10 +86,10 @@ public class StatisticReportCreator implements ILogReport
 
         StreamResult outputStream = new StreamResult( new FileOutputStream( outputDir ) );
   
-        for(String fileName : inputDataDir.list())
-        {
-            Transformer.getInstance().transformByXSLT(inputDataDir.getPath() + "/" + fileName, XSLTEMPLATE, outputStream);
-        }
+//        for(String fileName : inputDataDir.list())
+//        {
+//            Transformer.getInstance().transformByXSLT(inputDataDir.getPath() + "/" + fileName, XSLTEMPLATE, outputStream);
+//        }
         
     } 
     

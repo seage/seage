@@ -11,13 +11,10 @@
  */
 package org.seage.experimenter.reporting;
 
-import com.csvreader.CsvReader;
-import java.io.File;
 import java.io.FileInputStream;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import org.seage.data.DataNode;
 
 /**
  *
@@ -35,55 +32,6 @@ public class Transformer {
             _transformer = new Transformer();
         
         return _transformer;
-    }
-    
-    /**
-     * Method transforms a CSV file into DataNode data structure
-     * 
-     * @param File path - Path to a CSV file
-     * @return DataNode - SEAGE data structure
-     */
-    public DataNode transformCSVToDataNode(File path) throws Exception
-    {
-        CsvReader csvReader = new CsvReader( path.toString() );
-        csvReader.setDelimiter(';');
-        csvReader.readHeaders();
-        
-        DataNode statistics = new DataNode("Statistics");
-        
-        statistics.putValue("report", path.getName().substring(0, path.getName().lastIndexOf('.')));
-        
-        DataNode headers = new DataNode("Headers");
-        DataNode records = new DataNode("Records");
-        
-        for(int i = 0; i < csvReader.getHeaderCount(); i++)
-        {
-            DataNode header = new DataNode("Header");
-            header.putValue("number", i);
-            header.putValue("name", csvReader.getHeader(i));
-            headers.putDataNode(header);
-        }
-        
-        while(csvReader.readRecord())
-        {
-            DataNode record = new DataNode("Record");
-            
-            for (int i = 0; i < csvReader.getHeaderCount(); i++)
-            {
-                DataNode value = new DataNode("Value");
-                value.putValue("value", csvReader.get(i));
-                record.putDataNode(value);
-            }
-     
-            records.putDataNode(record);
-        }
-        
-        statistics.putDataNode(headers);
-        statistics.putDataNode(records);
-        
-        csvReader.close();
-        
-        return statistics;
     }
     
     /**
