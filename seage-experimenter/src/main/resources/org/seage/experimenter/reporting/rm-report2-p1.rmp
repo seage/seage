@@ -5,7 +5,7 @@
     <output/>
     <macros/>
   </context>
-  <operator activated="true" class="process" compatibility="5.1.014" expanded="true" name="Process">
+  <operator activated="true" class="process" compatibility="5.1.014" expanded="true" name="rm-report2-p1">
     <parameter key="logverbosity" value="init"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
@@ -116,7 +116,7 @@
           <parameter key="p10" value="minimum"/>
           <parameter key="p10" value="maximum"/>
         </list>
-        <parameter key="group_by_attributes" value="ProblemID||AlgorithmID"/>
+        <parameter key="group_by_attributes" value="ProblemID|"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
