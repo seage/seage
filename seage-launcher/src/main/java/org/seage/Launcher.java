@@ -22,6 +22,7 @@ import org.seage.experimenter.Experimenter;
 import org.seage.logging.LogHelper;
 import org.seage.experimenter.reporting.ILogReport;
 import org.seage.experimenter.reporting.LogReportCreator;
+import org.seage.experimenter.reporting.ReportManager;
 import org.seage.experimenter.reporting.StatisticReportCreator;
 import org.seage.temp.AlgorithmTester;
 import org.seage.temp.ClasspathTest;
@@ -102,11 +103,17 @@ public class Launcher {
         }
         
         if (args[0].equals("-report")) {
-            ILogReport reporter = new LogReportCreator();
-            reporter.report();
             
-            reporter = new StatisticReportCreator();
-            reporter.report();
+            ReportManager reportManager = new ReportManager();
+            reportManager.addReporter(new LogReportCreator());
+            reportManager.addReporter(new StatisticReportCreator());
+            
+            reportManager.executeAllReporters();
+//            ILogReport reporter = new LogReportCreator();
+//            reporter.report();
+//            
+//            reporter = new StatisticReportCreator();
+//            reporter.report();
             
             return;
         }

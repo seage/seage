@@ -13,20 +13,14 @@
  */
 package org.seage.experimenter.reporting;
 
-import com.rapidminer.RapidMiner;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.util.Arrays;
 import org.seage.data.file.FileHelper;
 import javax.xml.transform.stream.*;
-import com.rapidminer.Process;
-import com.rapidminer.example.ExampleSet;
-import com.rapidminer.operator.Operator;
-import java.util.Collection;
-import org.seage.data.DataNode;
-import org.seage.experimenter.ExampleSetConverter;
-import org.seage.logging.LogHelper;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import org.seage.experimenter.ExampleSetConverter;
 
 /**
@@ -35,61 +29,28 @@ import org.seage.logging.LogHelper;
  */
 public class LogReportCreator implements ILogReport {
     
-    private static String _logPath = "output";
-    private static String _reportPath = "report";
-    private static String _csvHeader = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;Time;";
-    private static final String XSL_TEMPLATE = "report2csv.xsl";
-    private static final String RAPIDMINER_PROCESS_FILE = "rm-report1-p1.rmp";
-    private static final String OUTPUT_CSV_FILE = "report.csv";
+    private static final String LOG_PATH            = "output";
+    private static final String REPORT_PATH         = "report";
+    private static final String XSL_TEMPLATE        = "report2csv.xsl";
+    private static final String OUTPUT_CSV_FILE     = "report.csv";    
+    private static final String CSV_HEADER          = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;Time;";
+
+    public LogReportCreator() {}
     
-    public LogReportCreator()
-    {
-        RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI );//RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI
-        RapidMiner.init();
-    }    
-   
+    @Override
     public void report() throws Exception
     {
         createReport();
-//        reportRapidMiner();
     }
     
-    private void reportRapidMiner() throws Exception
-    {        
-//        Process process = new Process( getClass().getResourceAsStream( RAPIDMINER_PROCESS_FILE ) );
-//        process.setProcessLocation( new FileProcessLocation( new File(".") ) );
-//        System.out.println(process.getRootOperator().createProcessTree(0));
-//                       System.out.println("RUN"); 
-//        process.run();
-
-//        Collection<Operator> ops = process.getAllOperators();
-//        ExampleSet ex = null;
-//
-//        for(Operator op : ops)
-//        {
-//            System.out.println(op.getName());
-//            if(op.getName().equals("Sort (2)"))
-//                ex = op.getOutputPorts().getPortByName("example set output").getData();
-//        }
-//        
-//        DataNode dn = ExampleSetConverter.convertToDataNode(ex);
-//        
-//        ExampleSet exampleSet = ExampleSetConverter.convertToExampleSet(dn);
-//        
-//        DataNode dn1 = ExampleSetConverter.convertToDataNode(exampleSet);
-//
-//        ExampleSet exampleSet1 = ExampleSetConverter.convertToExampleSet(dn1);
-//
-//        System.out.println(exampleSet1);
-    }
-
     private void createReport() throws Exception
     {
-        System.out.println("Creating reports ...");
+        Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, "Creating reports ...");
+        Logger.getLogger(ProcessPerformer.class.getName()).fine("Creating reports ...");
         
-        File logDir = new File(_logPath);
+        File logDir = new File(LOG_PATH);
         
-        File reportDir = new File(_reportPath);
+        File reportDir = new File(REPORT_PATH);
         
         if(reportDir.exists())
             FileHelper.deleteDirectory(reportDir);
@@ -120,7 +81,7 @@ public class LogReportCreator implements ILogReport {
             sb.append("p").append(i).append(";");
         }        
 
-        outputStream.getOutputStream().write( ( _csvHeader + sb.append("\n").toString() ).getBytes() );
+        outputStream.getOutputStream().write( ( CSV_HEADER + sb.append("\n").toString() ).getBytes() );
 
         for(String dirName : logDir.list(filter))
         {            
@@ -139,7 +100,7 @@ public class LogReportCreator implements ILogReport {
                 }
                 catch(Exception e)
                 {
-                    System.out.println(xmlPath);
+                    Logger.getLogger(ProcessPerformer.class.getName()).fine(xmlPath);
                 }
             }            
         }        

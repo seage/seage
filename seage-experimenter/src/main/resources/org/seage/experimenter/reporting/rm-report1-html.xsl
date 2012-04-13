@@ -17,22 +17,23 @@
         <xsl:apply-templates/>  
     </xsl:template>
 
-    <xsl:template match="Statistics">
+    <xsl:template match="ExampleSet">
         <h1>Report 1</h1>
         
         <table border="1">
-        <xsl:for-each select="Records/Record">
-            <tr><td><h2><xsl:value-of select="Value/@value" /></h2></td></tr>
-            <tr><td> </td><td><h3><xsl:value-of select="Value[2]/@value" />-</h3></td></tr>
-            <tr><td> </td><td> </td><td><h3><xsl:value-of select="Value[3]/@value" />:</h3></td><td>Time <xsl:value-of select="Value[4]/@value" /> - <xsl:value-of select="Value[5]/@value" /></td></tr>
+        <xsl:for-each select="Examples/Example">
+            <tr><td><h2><xsl:value-of select="Result/@value" /></h2></td></tr>
+            <tr><td> </td><td><h3><xsl:value-of select="Result[2]/@value" />-</h3></td></tr>
+            <tr><td> </td><td> </td><td><h3><xsl:value-of select="Result[3]/@value" />:</h3></td><td>Time <xsl:value-of select="Result[4]/@value" /> - <xsl:value-of select="Result[5]/@value" /></td></tr>
             
-            cout <xsl:value-of select="count(/Statistics/Records/Record[1]/Value)" /> - <xsl:value-of select="count(/Statistics/Headers/Header)" />
-            <xsl:for-each select="Value">
+            count <xsl:value-of select="count(/ExampleSet/Examples/Example[1]/Result)" /> - <xsl:value-of select="count(/ExampleSet/Attributes/Attribute)" />
+            <xsl:for-each select="Result">
                 <xsl:choose>
                     <xsl:when test="position()&lt;6"></xsl:when>
                     <xsl:when test="last()=position()"></xsl:when>
+                    <xsl:when test="position() mod 2 = 0"></xsl:when>
                     <xsl:otherwise>
-                        <tr><td> </td><td> <xsl:value-of select="position()" /></td><td><h3><xsl:value-of select="/Statistics/Headers/Header[3]/@name" />:</h3></td><td><xsl:value-of select="@value" /> - <xsl:value-of select="following-sibling::Value/@value" /></td></tr>
+                        <tr><td> </td><td> <xsl:value-of select="position()" /></td><td><h3><xsl:value-of select="/ExampleSet/Attributes/Attribute[3]/@name" />:</h3></td><td><xsl:value-of select="@value" /> - <xsl:value-of select="following-sibling::Result/@value" /></td></tr>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:for-each>
