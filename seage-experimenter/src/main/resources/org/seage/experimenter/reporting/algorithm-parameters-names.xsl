@@ -3,7 +3,7 @@
 <!--
     Document   : algorithm-parameters.xsl
     Created on : 15. duben 2012, 20:58
-    Author     : Zis
+    Author     : zmatlja1
     Description:
         Purpose of transformation follows.
 -->
@@ -14,20 +14,32 @@
     <xsl:template name="GetParametresByAlgorithmAndPosition">
         <xsl:param name="algorithm" />
         <xsl:param name="position" />
+        
+        <xsl:variable name="newPosition">        
+            <xsl:choose>
+                <xsl:when test="$position mod 2 != 0">                  
+                <xsl:value-of select="$position+1" />
+                </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$position" />
+            </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
 
         <xsl:choose>
-            <xsl:when test="$algorithm='SimulatedAnnealing'"><xsl:call-template name="SimulatedAnnealing"><xsl:with-param name="position" select="$position" /></xsl:call-template></xsl:when>
-            <xsl:when test="$algorithm='TabuSearch'"><xsl:call-template name="TabuSearch"><xsl:with-param name="position" select="$position" /></xsl:call-template></xsl:when>
-            <xsl:when test="$algorithm='GeneticAlgorithm'"><xsl:call-template name="GeneticAlgorithm"><xsl:with-param name="position" select="$position" /></xsl:call-template></xsl:when>
-<!--            <xsl:when test="$algorithm='FireflySearch'"><xsl:call-template name="FireflySearch"><xsl:with-param name="position" select="$position" /></xsl:call-template></xsl:when>
-            <xsl:when test="$algorithm='AntColony'"><xsl:call-template name="AntColony"><xsl:with-param name="position" select="$position" /></xsl:call-template></xsl:when>
-            <xsl:when test="$algorithm='HillClimber'"><xsl:call-template name="HillClimber"><xsl:with-param name="position" select="$position" /></xsl:call-template></xsl:when>
-            <xsl:when test="$algorithm='ParticleSwarm'"><xsl:call-template name="ParticleSwarm"><xsl:with-param name="position" select="$position" /></xsl:call-template></xsl:when>-->
+            <xsl:when test="$algorithm='SimulatedAnnealing'"><xsl:call-template name="SimulatedAnnealing"><xsl:with-param name="position" select="$newPosition" /></xsl:call-template></xsl:when>
+            <xsl:when test="$algorithm='TabuSearch'"><xsl:call-template name="TabuSearch"><xsl:with-param name="position" select="$newPosition" /></xsl:call-template></xsl:when>
+            <xsl:when test="$algorithm='GeneticAlgorithm'"><xsl:call-template name="GeneticAlgorithm"><xsl:with-param name="position" select="$newPosition" /></xsl:call-template></xsl:when>
+<!--            <xsl:when test="$algorithm='FireflySearch'"><xsl:call-template name="FireflySearch"><xsl:with-param name="position" select="$newPosition" /></xsl:call-template></xsl:when>
+            <xsl:when test="$algorithm='AntColony'"><xsl:call-template name="AntColony"><xsl:with-param name="position" select="$newPosition" /></xsl:call-template></xsl:when>
+            <xsl:when test="$algorithm='HillClimber'"><xsl:call-template name="HillClimber"><xsl:with-param name="position" select="$newPosition" /></xsl:call-template></xsl:when>
+            <xsl:when test="$algorithm='ParticleSwarm'"><xsl:call-template name="ParticleSwarm"><xsl:with-param name="position" select="$newPosition" /></xsl:call-template></xsl:when>-->
         </xsl:choose>            
     </xsl:template>
     
     <xsl:template name="SimulatedAnnealing">
         <xsl:param name="position" />
+
         <xsl:choose>
             <xsl:when test="$position=6">annealCoeficient</xsl:when>
             <xsl:when test="$position=8">maxInnerIterations</xsl:when>
