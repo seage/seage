@@ -64,12 +64,14 @@ class ExperimentTask implements Runnable{
             AlgorithmParams algNode = _config.getAlgorithmParams();
             Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
 
+            long startTime = System.currentTimeMillis();
             algorithm.solutionsFromPhenotype(solutions);
             algorithm.setParameters(algNode);
             algorithm.startSearching(true);
             waitForTimeout(algorithm);
             algorithm.stopSearching();
-            
+            long endTime = System.currentTimeMillis();
+
             solutions = algorithm.solutionsToPhenotype();
 
             // phenotype evaluator
@@ -81,6 +83,7 @@ class ExperimentTask implements Runnable{
             DataNode expReport = new DataNode("ExperimentTask");
             expReport.putValue("experimentID", _experimentID);
             expReport.putValue("runID", _runID);
+            expReport.putValue("duration", endTime - startTime);
             expReport.putDataNode(algReport);
             expReport.putDataNode(_config);
             
