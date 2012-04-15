@@ -19,7 +19,6 @@ import com.rapidminer.operator.Operator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,12 +35,12 @@ public class ProcessPerformer {
     
     private List<RMProcess> _processes;
     
-    private List<ExampleSet> _exampleSets;
-    
+    private List<NamedExampleSetNode> _exampleSetNodes;
+        
     public ProcessPerformer()
     {
         _processes = new ArrayList<RMProcess>();
-        _exampleSets = new ArrayList<ExampleSet>();
+        _exampleSetNodes = new ArrayList<NamedExampleSetNode>();
         
         RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI );
         RapidMiner.init();
@@ -57,18 +56,57 @@ public class ProcessPerformer {
         return _processes;
     }
     
+    private class NamedExampleSetNode
+    {
+        private ExampleSet exampleSet;
+        private DataNode dataNode;
+        private String name;
+
+        public NamedExampleSetNode(ExampleSet exampleSet, String name, DataNode dataNode) {
+            this.exampleSet = exampleSet;
+            this.dataNode = dataNode;
+            this.name = name;
+        }
+
+        public ExampleSet getExampleSet() {
+            return exampleSet;
+        }
+
+        public void setExampleSet(ExampleSet exampleSet) {
+            this.exampleSet = exampleSet;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public DataNode getDataNode() {
+            return dataNode;
+        }
+
+        public void setDataNode(DataNode dataNode) {
+            this.dataNode = dataNode;
+        }
+        
+    }
+    
     public ExampleSet performProcess(String resourceName) throws Exception
     {
         Process process = new Process( getClass().getResourceAsStream( resourceName ) );
         process.setProcessLocation( new FileProcessLocation( new File(".") ) );        
         
         // TODO: B - Info only for debug, after that they'll be removed
-        System.out.println(process.getRootOperator().createProcessTree(0));
+        
+        Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, process.getRootOperator().createProcessTree(0));
         
         Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, "RapidMiner Process RUNS");
         Logger.getLogger(ProcessPerformer.class.getName()).fine("RapidMiner Process RUNS");
         process.run();
-       
+
         Collection<Operator> operators = process.getAllOperators();
         
         ExampleSet exampleSet = null;
@@ -80,7 +118,7 @@ public class ProcessPerformer {
             if( ( operators.size() - 1 ) == counter)
             {
                 exampleSet = operator.getOutputPorts().getPortByName( EXAMPLESET_OUTPUT_PORT ).getData( ExampleSet.class );
-                _exampleSets.add( exampleSet );
+                _exampleSetNodes.add( new NamedExampleSetNode( exampleSet , resourceName , null ) );
             }
             
             ++counter;
@@ -97,14 +135,44 @@ public class ProcessPerformer {
     }
     
     public List<DataNode> getProcessesDataNodes() throws Exception
+    {        
+        for(NamedExampleSetNode exampleSetNode : _exampleSetNodes)
+        {            
+            DataNode dataNode = ExampleSetConverter.convertToDataNode( exampleSetNode.getExampleSet() );
+            exampleSetNode.setDataNode(dataNode);
+        }
+        
+        return mergeDataNodes();
+    }
+    
+    private List<DataNode> mergeDataNodes() throws Exception
     {
         List<DataNode> dataNodes = new ArrayList<DataNode>();
         
-        for(ExampleSet exampleSet : _exampleSets)
-            dataNodes.add( ExampleSetConverter.convertToDataNode( exampleSet ) );
+        DataNode dataNode = new DataNode("Report");
+        String lastReportName = null;
         
+        int counter = 0;
+        for(NamedExampleSetNode exampleSetNode : _exampleSetNodes)
+        {
+            String reportName = exampleSetNode.getName().substring( 0 , exampleSetNode.getName().lastIndexOf('-') );
+
+            if( lastReportName != null && !lastReportName.equals( reportName ) )
+            {
+                dataNodes.add(dataNode);
+                dataNode = new DataNode("Report");
+            }
+            counter++;
+            
+            dataNode.putDataNode( exampleSetNode.getDataNode() );
+            
+            if(counter == _exampleSetNodes.size() )
+                dataNodes.add(dataNode);
+            
+            lastReportName = reportName;
+        }
+
         return dataNodes;
-    }
-    
+    }    
     
 }
