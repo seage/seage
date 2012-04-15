@@ -35,7 +35,7 @@
     </xsl:template>
 
     <xsl:template name="asdf">
-        <xsl:value-of select="@experimentID"/>;<xsl:value-of select="Config/Problem/@id"/>;<xsl:value-of select="Config/Algorithm/@id"/>;<xsl:value-of select="Config/Problem/Instance/@name"/>;<xsl:value-of select="Config/@configID"/>;<xsl:value-of select="AlgorithmReport/Statistics/@bestObjVal"/>;<xsl:value-of select="AlgorithmReport/Minutes/newSolution/@time"/>;<xsl:call-template name="parameters"/>;
+        <xsl:value-of select="@experimentID"/>;<xsl:value-of select="Config/Problem/@id"/>;<xsl:value-of select="Config/Algorithm/@id"/>;<xsl:value-of select="Config/Problem/Instance/@name"/>;<xsl:value-of select="Config/@configID"/>;<xsl:value-of select="AlgorithmReport/Statistics/@bestObjVal"/>;<xsl:value-of select="@duration"/>;<xsl:call-template name="parameters"/>;
     </xsl:template>
     
     <xsl:template name="parameters">
