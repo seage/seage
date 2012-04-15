@@ -31,10 +31,9 @@ public class StatisticReportCreator implements ILogReport
     
     private static final String INPUT_DATA_PATH     = "statistics";    
     private static final String REPORT_PATH         = "htmlreport";    
-    private static final String OUTPUT_FILE         = "statistics.html";    
-    private static final String XSLTEMPLATE         = "rm-report1-html.xsl";
     
     private String[] _resourceRMProcesses;
+    private String[] _xslTemplates;
     
     public StatisticReportCreator()
     {
@@ -45,6 +44,12 @@ public class StatisticReportCreator implements ILogReport
             "rm-report2-p1.rmp",
             "rm-report2-p2.rmp",
             "rm-report3-p1.rmp"        
+        };
+        
+        _xslTemplates = new String[] {
+            "rm-report1-html.xsl",  
+            "rm-report1-html.xsl", 
+            "rm-report1-html.xsl"
         };
         
         for (int i = 0; i < _resourceRMProcesses.length; i++)
@@ -76,20 +81,23 @@ public class StatisticReportCreator implements ILogReport
         int k = 0;
         for(DataNode dataNode : _processPerformer.getProcessesDataNodes())
         {
-//            XmlHelper.writeXml(dataNode, inputDataDir.getPath() + "/" + (++k) + ".xml");
+            XmlHelper.writeXml(dataNode, inputDataDir.getPath() + "/" + (++k) + ".xml");
         }
         
         File reportDir = new File( REPORT_PATH );
         reportDir.mkdir();
         
-        File outputDir = new File( REPORT_PATH + "/" + OUTPUT_FILE );
+        File outputDir = new File( REPORT_PATH + "/" + _xslTemplates[0] + ".html" );
         outputDir.createNewFile();
-
+        
         StreamResult outputStream = new StreamResult( new FileOutputStream( outputDir ) );
-  
+
+        int counter = 0;
         for(String fileName : inputDataDir.list())
         {
-            Transformer.getInstance().transformByXSLT(inputDataDir.getPath() + "/" + fileName, XSLTEMPLATE, outputStream);
+            Transformer.getInstance().transformByXSLT(inputDataDir.getPath() + "/" + fileName, _xslTemplates[0], outputStream);
+            counter++;
+            break;
         }
         
     } 
