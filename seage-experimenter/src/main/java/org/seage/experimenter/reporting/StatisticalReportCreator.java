@@ -79,9 +79,7 @@ public class StatisticalReportCreator implements ILogReport
             outputDir.createNewFile();
 
             StreamResult outputStream = new StreamResult( new FileOutputStream( outputDir ) );
-            
-            System.out.println(dataNode.toXml());
-        
+
             Transformer.getInstance().transformByXSLTFromDOMSource(dataNode.toXml(), _xslTemplates[counter], outputStream);
             
             counter++;
