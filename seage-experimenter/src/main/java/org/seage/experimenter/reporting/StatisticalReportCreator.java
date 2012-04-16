@@ -25,7 +25,7 @@ import org.seage.data.xml.XmlHelper;
  *
  * @author zmatlja1
  */
-public class StatisticReportCreator implements ILogReport
+public class StatisticalReportCreator implements ILogReport
 {
     private ProcessPerformer _processPerformer;
     
@@ -35,7 +35,7 @@ public class StatisticReportCreator implements ILogReport
     private String[] _resourceRMProcesses;
     private String[] _xslTemplates;
     
-    public StatisticReportCreator()
+    public StatisticalReportCreator()
     {
         _processPerformer = new ProcessPerformer();
         _resourceRMProcesses = new String[] {
@@ -48,8 +48,8 @@ public class StatisticReportCreator implements ILogReport
         
         _xslTemplates = new String[] {
             "rm-report1-html.xsl",  
-            "rm-report1-html.xsl", 
-            "rm-report1-html.xsl"
+            "rm-report2-html.xsl", 
+            "rm-report3-html.xsl"
         };
         
         for (int i = 0; i < _resourceRMProcesses.length; i++)
@@ -87,17 +87,20 @@ public class StatisticReportCreator implements ILogReport
         File reportDir = new File( REPORT_PATH );
         reportDir.mkdir();
         
-        File outputDir = new File( REPORT_PATH + "/" + _xslTemplates[0] + ".html" );
-        outputDir.createNewFile();
         
-        StreamResult outputStream = new StreamResult( new FileOutputStream( outputDir ) );
 
         int counter = 0;
         for(String fileName : inputDataDir.list())
         {
-            Transformer.getInstance().transformByXSLT(inputDataDir.getPath() + "/" + fileName, _xslTemplates[0], outputStream);
+            File outputDir = new File( REPORT_PATH + "/" + _xslTemplates[counter] + ".html" );
+            outputDir.createNewFile();
+
+            StreamResult outputStream = new StreamResult( new FileOutputStream( outputDir ) );
+        
+            Transformer.getInstance().transformByXSLT(inputDataDir.getPath() + "/" + fileName, _xslTemplates[counter], outputStream);
+            
             counter++;
-            break;
+            if(counter>1) break;
         }
         
     } 
