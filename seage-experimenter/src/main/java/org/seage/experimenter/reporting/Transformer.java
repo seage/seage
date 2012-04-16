@@ -12,9 +12,12 @@
 package org.seage.experimenter.reporting;
 
 import java.io.FileInputStream;
+import java.io.StringReader;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -49,6 +52,13 @@ public class Transformer {
         javax.xml.transform.Transformer xmlTransformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));      
         
         xmlTransformer.transform(new StreamSource(new FileInputStream(xmlPath)), outputStream);
+    }
+    
+    public void transformByXSLTFromDOMSource(Document xmlDocument, String xsltName, StreamResult outputStream) throws Exception
+    {         
+        javax.xml.transform.Transformer xmlTransformer = TransformerFactory.newInstance().newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));     
+      
+        xmlTransformer.transform( new DOMSource(xmlDocument) , outputStream );        
     }
     
 }
