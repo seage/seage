@@ -20,10 +20,9 @@ import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.experimenter.Experimenter;
 import org.seage.logging.LogHelper;
-import org.seage.experimenter.reporting.ILogReport;
 import org.seage.experimenter.reporting.LogReportCreator;
 import org.seage.experimenter.reporting.ReportManager;
-import org.seage.experimenter.reporting.StatisticReportCreator;
+import org.seage.experimenter.reporting.StatisticalReportCreator;
 import org.seage.temp.AlgorithmTester;
 import org.seage.temp.ClasspathTest;
 /**
@@ -106,14 +105,9 @@ public class Launcher {
             
             ReportManager reportManager = new ReportManager();
             reportManager.addReporter(new LogReportCreator());
-            reportManager.addReporter(new StatisticReportCreator());
+            reportManager.addReporter(new StatisticalReportCreator());
             
             reportManager.executeAllReporters();
-//            ILogReport reporter = new LogReportCreator();
-//            reporter.report();
-//            
-//            reporter = new StatisticReportCreator();
-//            reporter.report();
             
             return;
         }
