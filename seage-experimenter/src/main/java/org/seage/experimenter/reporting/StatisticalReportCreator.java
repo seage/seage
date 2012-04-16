@@ -13,13 +13,8 @@ package org.seage.experimenter.reporting;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.transform.stream.StreamResult;
 import org.seage.data.DataNode;
-import org.seage.data.xml.XmlHelper;
 
 /**
  *
@@ -28,8 +23,7 @@ import org.seage.data.xml.XmlHelper;
 public class StatisticalReportCreator implements ILogReport
 {
     private ProcessPerformer _processPerformer;
-    
-    private static final String INPUT_DATA_PATH     = "statistics";    
+ 
     private static final String REPORT_PATH         = "htmlreport";    
     
     private String[] _resourceRMProcesses;
@@ -75,29 +69,20 @@ public class StatisticalReportCreator implements ILogReport
     
     private void createHTMLReport() throws Exception
     {
-        File inputDataDir = new File( INPUT_DATA_PATH );
-        inputDataDir.mkdir();
-        
-        int k = 0;
-        for(DataNode dataNode : _processPerformer.getProcessesDataNodes())
-        {
-            XmlHelper.writeXml(dataNode, inputDataDir.getPath() + "/" + (++k) + ".xml");
-        }
-        
         File reportDir = new File( REPORT_PATH );
         reportDir.mkdir();
-        
-        
 
         int counter = 0;
-        for(String fileName : inputDataDir.list())
+        for(DataNode dataNode : _processPerformer.getProcessesDataNodes())
         {
             File outputDir = new File( REPORT_PATH + "/" + _xslTemplates[counter] + ".html" );
             outputDir.createNewFile();
 
             StreamResult outputStream = new StreamResult( new FileOutputStream( outputDir ) );
+            
+            System.out.println(dataNode.toXml());
         
-            Transformer.getInstance().transformByXSLT(inputDataDir.getPath() + "/" + fileName, _xslTemplates[counter], outputStream);
+            Transformer.getInstance().transformByXSLTFromDOMSource(dataNode.toXml(), _xslTemplates[counter], outputStream);
             
             counter++;
             if(counter>1) break;
