@@ -13,7 +13,10 @@ package org.seage.experimenter;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Attributes;
+import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
+import com.rapidminer.example.set.SortedExampleReader;
+import com.rapidminer.example.set.SortedExampleSet;
 import com.rapidminer.example.table.*;
 import com.rapidminer.tools.Ontology;
 import java.util.ArrayList;
@@ -63,13 +66,24 @@ public class ExampleSetConverter {
             attributesNode.putDataNode( attributeNode );
         }
                
-        ExampleTable exampleTable = exampleSet.getExampleTable();
-        DataRowReader dataRowReader = exampleTable.getDataRowReader();
+        ExampleTable exampleTable = exampleSet.getExampleTable();        
         
+        Iterator dataRowReader;
+
+        if(exampleSet instanceof SortedExampleSet)            
+            dataRowReader = new SortedExampleReader( exampleSet );
+        else
+            dataRowReader = exampleTable.getDataRowReader();
+
         // Iteration over all examples and over all attributes
         while( dataRowReader.hasNext() )
         {
-            DataRow dr = dataRowReader.next();
+            DataRow dr;
+            
+            if(exampleSet instanceof SortedExampleSet)           
+                dr = ((Example)dataRowReader.next()).getDataRow();
+            else
+                dr = (DataRow)dataRowReader.next();
             
             DataNode exampleNode = new DataNode( EXAMPLE_NODE );            
             
