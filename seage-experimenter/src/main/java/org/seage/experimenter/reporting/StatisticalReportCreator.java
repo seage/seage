@@ -13,6 +13,7 @@ package org.seage.experimenter.reporting;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 import javax.xml.transform.stream.StreamResult;
 import org.seage.data.DataNode;
 
@@ -24,7 +25,7 @@ public class StatisticalReportCreator implements ILogReport
 {
     private ProcessPerformer _processPerformer;
  
-    private static final String REPORT_PATH         = "htmlreport";    
+    private static final String REPORT_PATH = "htmlreport";    
     
     private String[] _resourceRMProcesses;
     private String[] _xslTemplates;
@@ -37,13 +38,15 @@ public class StatisticalReportCreator implements ILogReport
             "rm-report1-p2.rmp",
             "rm-report2-p1.rmp",
             "rm-report2-p2.rmp",
-            "rm-report3-p1.rmp"        
+            "rm-report3-p1.rmp",
+            "rm-report4-p1.rmp"
         };
         
         _xslTemplates = new String[] {
-            "rm-report1-html.xsl",  
-            "rm-report2-html.xsl", 
-            "rm-report3-html.xsl"
+            "html-rm-report1.xsl",  
+            "html-rm-report2.xsl", 
+            "html-rm-report3.xsl",
+            "html-rm-report4.xsl"
         };
         
         for (int i = 0; i < _resourceRMProcesses.length; i++)
@@ -58,13 +61,6 @@ public class StatisticalReportCreator implements ILogReport
         _processPerformer.performProcesses();
 
         this.createHTMLReport();
-        
-        /**
-         * 
-         * Vytvorene datanody lze transformovat do HTMl, PDF, ... pomoci xslTransformeru
-         * 
-         * nebo je lze vyuzit ke zpetne vazbe
-         */
     }
     
     private void createHTMLReport() throws Exception
@@ -73,7 +69,8 @@ public class StatisticalReportCreator implements ILogReport
         reportDir.mkdir();
 
         int counter = 0;
-        for(DataNode dataNode : _processPerformer.getProcessesDataNodes())
+        List<DataNode> dataNodes = _processPerformer.getProcessesDataNodes();
+        for(DataNode dataNode : dataNodes)
         {
             File outputDir = new File( REPORT_PATH + "/" + _xslTemplates[counter] + ".html" );
             outputDir.createNewFile();
@@ -83,7 +80,6 @@ public class StatisticalReportCreator implements ILogReport
             Transformer.getInstance().transformByXSLTFromDOMSource(dataNode.toXml(), _xslTemplates[counter], outputStream);
             
             counter++;
-            if(counter>1) break;
         }
         
     } 

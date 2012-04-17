@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-    Document   : rm-report1-html.xsl
+    Document   : html-rm-report1.xsl
     Created on : 12. duben 2012, 15:58
     Author     : zmatlja1
     Description:

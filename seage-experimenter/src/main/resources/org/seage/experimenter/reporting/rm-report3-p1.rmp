@@ -93,6 +93,7 @@
         <parameter key="include_special_attributes" value="false"/>
         <parameter key="default_aggregation_function" value="average"/>
         <list key="aggregation_attributes">
+          <parameter key="SolutionValue" value="average"/>
           <parameter key="Time" value="minimum"/>
           <parameter key="Time" value="maximum"/>
           <parameter key="p1" value="minimum"/>
@@ -116,13 +117,14 @@
           <parameter key="p10" value="minimum"/>
           <parameter key="p10" value="maximum"/>
         </list>
-        <parameter key="group_by_attributes" value="AlgorithmID|ProblemID"/>
+        <parameter key="group_by_attributes" value="AlgorithmID|ProblemID|"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
-      <operator activated="true" class="sort_by_pareto_rank" compatibility="5.1.014" expanded="true" height="76" name="Sort by Pareto Rank" width="90" x="447" y="30">
-        <parameter key="attributes" value="AlgorithmID|"/>
+      <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="Sort" width="90" x="447" y="30">
+        <parameter key="attribute_name" value="AlgorithmID"/>
+        <parameter key="sorting_direction" value="increasing"/>
       </operator>
       <operator activated="true" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV" width="90" x="581" y="120">
         <parameter key="csv_file" value="report/rm-report3-p1.csv"/>
@@ -134,8 +136,8 @@
       </operator>
       <connect from_op="Read CSV" from_port="output" to_op="Replace Missing Values" to_port="example set input"/>
       <connect from_op="Replace Missing Values" from_port="example set output" to_op="Aggregate" to_port="example set input"/>
-      <connect from_op="Aggregate" from_port="example set output" to_op="Sort by Pareto Rank" to_port="example set input"/>
-      <connect from_op="Sort by Pareto Rank" from_port="example set output" to_op="Write CSV" to_port="input"/>
+      <connect from_op="Aggregate" from_port="example set output" to_op="Sort" to_port="example set input"/>
+      <connect from_op="Sort" from_port="example set output" to_op="Write CSV" to_port="input"/>
       <connect from_op="Write CSV" from_port="through" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>

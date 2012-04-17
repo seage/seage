@@ -12,10 +12,8 @@
     <xsl:output method="html"/>
 
     <xsl:template name="MillisecondsToSeconds">
-        <xsl:param name="miliseconds" />
-        
-        <xsl:value-of select="$miliseconds div 1000" />
-                  
+        <xsl:param name="miliseconds" />        
+        <xsl:value-of select="$miliseconds div 1000" />                  
     </xsl:template>
 
 </xsl:stylesheet>
