@@ -25,7 +25,7 @@ public class StatisticalReportCreator implements ILogReport
 {
     private ProcessPerformer _processPerformer;
  
-    private static final String REPORT_PATH = "htmlreport";    
+    private static final String REPORT_PATH = "report";    
     
     private String[] _resourceRMProcesses;
     private String[] _xslTemplates;
@@ -72,7 +72,7 @@ public class StatisticalReportCreator implements ILogReport
         List<DataNode> dataNodes = _processPerformer.getProcessesDataNodes();
         for(DataNode dataNode : dataNodes)
         {
-            File outputDir = new File( REPORT_PATH + "/" + _xslTemplates[counter] + ".html" );
+            File outputDir = new File( REPORT_PATH + "/" + _xslTemplates[counter].substring(0,_xslTemplates[counter].lastIndexOf('.')) + ".html" );
             outputDir.createNewFile();
 
             StreamResult outputStream = new StreamResult( new FileOutputStream( outputDir ) );
