@@ -116,7 +116,7 @@
           <parameter key="p10" value="minimum"/>
           <parameter key="p10" value="maximum"/>
         </list>
-        <parameter key="group_by_attributes" value="ProblemID|"/>
+        <parameter key="group_by_attributes" value="ProblemID|AlgorithmID"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>

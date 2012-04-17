@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-    Document   : rm-report2-html.xsl
+    Document   : html-rm-report2.xsl
     Created on : 15. duben 2012, 22:50
     Author     : zmatlja1
     Description:
@@ -25,37 +25,45 @@
 
     <xsl:template match="Report">
         <h1>Report 2</h1>
-
+        
         <xsl:import href="../seage-experimenter/src/main/resources/org/seage/experimenter/reporting/algorithm-parameters-names.xsl"/>
         <xsl:import href="../seage-experimenter/src/main/resources/org/seage/experimenter/reporting/algorithm-parameters-values.xsl"/>
-        <xsl:import href="../seage-experimenter/src/main/resources/org/seage/experimenter/reporting/milis-to-sec.xsl"/>        
+        <xsl:import href="../seage-experimenter/src/main/resources/org/seage/experimenter/reporting/milis-to-sec.xsl"/>
         
         <table border="1">
         <xsl:for-each select="ExampleSet[1]/Examples/Example">
-            <xsl:variable name="Algorithm" select="Result[3]/@value" />
-            <xsl:variable name="ExperimetnID" select="Result/@value" />
+            <xsl:variable name="Algorithm" select="Result[2]/@value" />
+            <xsl:variable name="ProblemID" select="Result/@value" />
             
-            <tr><td><h2><xsl:value-of select="Result/@value" /></h2></td></tr>            
-<!--            <tr><td></td><td><h3><xsl:value-of select="Result[2]/@value" /></h3></td></tr>-->
+            
+            <xsl:choose>
+                <xsl:when test="preceding-sibling::Example/Result[1]/@value=$ProblemID">
+                    <tr><td></td></tr>
+                </xsl:when>
+                <xsl:otherwise>
+                    <tr><td><h2><xsl:value-of select="Result/@value" /></h2></td></tr>
+                </xsl:otherwise>
+            </xsl:choose>            
+
             <tr>
                 <td></td><td></td>
                 <td>
-<!--                    <h3><xsl:value-of select="Result[3]/@value" />:</h3>-->
+                    <h3><xsl:value-of select="Result[2]/@value" />:</h3>
                 </td>
                 <td>
-                    Time <xsl:call-template name="MillisecondsToSeconds"><xsl:with-param name="miliseconds" select="Result[2]/@value" /></xsl:call-template> s - 
-                    <xsl:call-template name="MillisecondsToSeconds"><xsl:with-param name="miliseconds" select="Result[3]/@value" /></xsl:call-template> s
+                    Time <xsl:call-template name="MillisecondsToSeconds"><xsl:with-param name="miliseconds" select="Result[3]/@value" /></xsl:call-template> s - 
+                    <xsl:call-template name="MillisecondsToSeconds"><xsl:with-param name="miliseconds" select="Result[4]/@value" /></xsl:call-template> s
                 </td>
             </tr>
             
             <xsl:call-template name="GetParametersValues">
                 <xsl:with-param name="Algorithm" select="$Algorithm" />
-                <xsl:with-param name="FirstParameterStartPosition" select="4" />
+                <xsl:with-param name="FirstParameterStartPosition" select="5" />
             </xsl:call-template>
             
             <tr><td colspan="4"> </td></tr>
             <tr><td></td><td><h2><xsl:value-of select="$Algorithm" /></h2></td></tr>
-            <xsl:for-each select="/Report/ExampleSet[2]/Examples/Example[Result[1]/@value=$ExperimetnID]">
+            <xsl:for-each select="/Report/ExampleSet[2]/Examples/Example[Result[1]/@value=$ProblemID and Result[2]/@value=$Algorithm]">
                 <tr><td></td><td></td>
                     <td align="center"><font size="5"><strong><xsl:value-of select="Result[3]/@value" /></strong></font></td>
                     <td>Average Solution Value: <strong><xsl:value-of select="Result[4]/@value" /></strong></td>
