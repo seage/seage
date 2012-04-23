@@ -13,9 +13,13 @@ package org.seage.experimenter.reporting;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.transform.stream.StreamResult;
 import org.seage.data.DataNode;
+import org.seage.data.xml.XmlHelper;
 
 /**
  *
@@ -25,34 +29,35 @@ public class StatisticalReportCreator implements ILogReport
 {
     private ProcessPerformer _processPerformer;
  
-    private static final String REPORT_PATH = "report";    
+    private static final String REPORT_PATH = "report";
     
-    private String[] _resourceRMProcesses;
+    private RMProcess[] rmProcesses;
     private String[] _xslTemplates;
     
     public StatisticalReportCreator()
     {
-        _processPerformer = new ProcessPerformer();
-        _resourceRMProcesses = new String[] {
-            "rm-report1-p1.rmp",
-            "rm-report1-p2.rmp",
-            "rm-report2-p1.rmp",
-            "rm-report2-p2.rmp",
-            "rm-report3-p1.rmp",
-            "rm-report4-p1.rmp"
+        try {
+            _processPerformer = new ProcessPerformer();
+        } catch (Exception ex) {
+            Logger.getLogger(StatisticalReportCreator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        rmProcesses = new RMProcess[] {
+            new RMProcess( "rm-report1-p1.rmp" , "Aggregate"        , "Report 1" , Arrays.asList( "example set output" ) ),
+            new RMProcess( "rm-report1-p2.rmp" , "Sort"             , "Report 1" , Arrays.asList( "example set output" ) ),
+            new RMProcess( "rm-report1-p3.rmp" , "Loop Examples"    , "Report 1" , Arrays.asList( "output 1" ) )//, "output 2"
         };
         
         _xslTemplates = new String[] {
-            "html-rm-report1.xsl",  
-            "html-rm-report2.xsl", 
-            "html-rm-report3.xsl",
-            "html-rm-report4.xsl"
+            "html-rm-report1.v2.xsl",
+//            "html-rm-report2.xsl",
+//            "html-rm-report3.xsl",
+//            "html-rm-report4.xsl"
         };
+
+        for(RMProcess process : rmProcesses)
+            _processPerformer.addProcess( process );
         
-        for (int i = 0; i < _resourceRMProcesses.length; i++)
-        {
-            _processPerformer.addProcess( new RMProcess( _resourceRMProcesses[i] ) );
-        }     
     }    
 
     @Override
@@ -72,6 +77,8 @@ public class StatisticalReportCreator implements ILogReport
         List<DataNode> dataNodes = _processPerformer.getProcessesDataNodes();
         for(DataNode dataNode : dataNodes)
         {
+            XmlHelper.writeXml(dataNode, "C:/wamp/apps/a7.xml");
+            System.out.println(REPORT_PATH + "/" + _xslTemplates[counter].substring(0,_xslTemplates[counter].lastIndexOf('.')) + ".html");
             File outputDir = new File( REPORT_PATH + "/" + _xslTemplates[counter].substring(0,_xslTemplates[counter].lastIndexOf('.')) + ".html" );
             outputDir.createNewFile();
 
