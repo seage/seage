@@ -11,18 +11,22 @@
  */
 package org.seage.experimenter.reporting;
 
+import com.rapid_i.repository.wsimport.StoreProcess;
 import com.rapidminer.FileProcessLocation;
 import com.rapidminer.RapidMiner;
 import com.rapidminer.Process;
 import com.rapidminer.example.ExampleSet;
+import com.rapidminer.operator.IOObject;
+import com.rapidminer.operator.IOObjectCollection;
 import com.rapidminer.operator.Operator;
+import com.rapidminer.repository.RepositoryManager;
+import com.rapidminer.repository.local.LocalRepository;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.seage.data.DataNode;
+import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.ExampleSetConverter;
 
 /**
@@ -31,19 +35,25 @@ import org.seage.experimenter.ExampleSetConverter;
  */
 public class ProcessPerformer {
     
-    private String EXAMPLESET_OUTPUT_PORT = "example set output";
+    private String REPORT_NODE_NAME = "Report";
     
     private List<RMProcess> _processes;
     
-    private List<NamedExampleSetNode> _exampleSetNodes;
+    private List<NamedIOObjectNode> _exampleSetNodes;
         
-    public ProcessPerformer()
+    public ProcessPerformer() throws Exception
     {
         _processes = new ArrayList<RMProcess>();
-        _exampleSetNodes = new ArrayList<NamedExampleSetNode>();
-        
+        _exampleSetNodes = new ArrayList<NamedIOObjectNode>();
+
         RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI );
-        RapidMiner.init();
+        
+        
+        //RepositoryManager.getInstance(new RepositoryAccessor() {}).addRepository(new LocalRepository("SEAGE", new File("../SREPO")));        
+        RepositoryManager.getInstance(null).addRepository(new LocalRepository("MyRepo1", new File("SREPO")));
+
+        
+        RapidMiner.init();        
     } 
     
     public void addProcess(RMProcess process)
@@ -55,124 +65,103 @@ public class ProcessPerformer {
     {
         return _processes;
     }
-    
-    private class NamedExampleSetNode
+
+    public void performProcess(RMProcess rmProcess) throws Exception
     {
-        private ExampleSet exampleSet;
-        private DataNode dataNode;
-        private String name;
-
-        public NamedExampleSetNode(ExampleSet exampleSet, String name, DataNode dataNode) {
-            this.exampleSet = exampleSet;
-            this.dataNode = dataNode;
-            this.name = name;
-        }
-
-        public ExampleSet getExampleSet() {
-            return exampleSet;
-        }
-
-        public void setExampleSet(ExampleSet exampleSet) {
-            this.exampleSet = exampleSet;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public DataNode getDataNode() {
-            return dataNode;
-        }
-
-        public void setDataNode(DataNode dataNode) {
-            this.dataNode = dataNode;
-        }
-        
-    }
-    
-    public ExampleSet performProcess(String resourceName) throws Exception
-    {
-        Process process = new Process( getClass().getResourceAsStream( resourceName ) );
+        Process process = new Process( getClass().getResourceAsStream( rmProcess.getResourceName() ) );
         process.setProcessLocation( new FileProcessLocation( new File(".") ) );        
         
-        // TODO: B - Info only for debug, after that they'll be removed
-        
+        // TODO: B - Info only for debug, after that they'll be removed        
         Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, process.getRootOperator().createProcessTree(0));
-        
-        Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, "RapidMiner Process RUNS");
-        Logger.getLogger(ProcessPerformer.class.getName()).fine("RapidMiner Process RUNS");
+
         process.run();
 
         Collection<Operator> operators = process.getAllOperators();
-        
-        ExampleSet exampleSet = null;
-        
-        // TODO: B - Always is taken next to last operator
-        int counter = 1;
+
         for(Operator operator : operators)
         {
-            if( ( operators.size() - 1 ) == counter)
+            if(operator.getName().equals( rmProcess.getOperatorName() ) )
             {
-                exampleSet = operator.getOutputPorts().getPortByName( EXAMPLESET_OUTPUT_PORT ).getData( ExampleSet.class );
-                _exampleSetNodes.add( new NamedExampleSetNode( exampleSet , resourceName , null ) );
+                NamedIOObjectNode namedNode = new NamedIOObjectNode();
+                namedNode.setRmProcess( rmProcess );
+                
+                for(String port : rmProcess.getOperatorOutputPorts())
+                    namedNode.addDataFromOutputPort( port , operator.getOutputPorts().getPortByName( port ).getAnyDataOrNull() );
+   
+                _exampleSetNodes.add( namedNode );
             }
-            
-            ++counter;
         }
-        return exampleSet;
     }
     
     public void performProcesses() throws Exception
     {
         for(RMProcess process : _processes)
         {
-            this.performProcess( process.getResourceName() );
+            this.performProcess( process );
         }
     }
     
     public List<DataNode> getProcessesDataNodes() throws Exception
     {        
-        for(NamedExampleSetNode exampleSetNode : _exampleSetNodes)
-        {            
-            DataNode dataNode = ExampleSetConverter.convertToDataNode( exampleSetNode.getExampleSet() );
-            exampleSetNode.setDataNode(dataNode);
+        for(NamedIOObjectNode exampleSetNode : _exampleSetNodes)
+        {
+            Set set = exampleSetNode.getMap().entrySet();            
+            Iterator<IOObject> iterator = set.iterator();
+            DataNode dataNode = null;
+            
+            while( iterator.hasNext() )
+            {
+                Map.Entry<String, IOObject> entry = (Map.Entry)iterator.next();
+                
+                IOObject obj = entry.getValue();
+                if(obj instanceof IOObjectCollection)
+                    dataNode = ExampleSetConverter.convertToDataNodeFromCollection( (IOObjectCollection)obj );
+                else if(obj instanceof ExampleSet)
+                    dataNode = ExampleSetConverter.convertToDataNode( (ExampleSet)obj );
+                
+                exampleSetNode.addDataNode( dataNode );
+            }            
+
         }
         
         return mergeDataNodes();
     }
-    
     private List<DataNode> mergeDataNodes() throws Exception
     {
-        List<DataNode> dataNodes = new ArrayList<DataNode>();
-        
-        DataNode dataNode = new DataNode("Report");
-        String lastReportName = null;
-        
-        int counter = 0;
-        for(NamedExampleSetNode exampleSetNode : _exampleSetNodes)
+        // Sort Nodes by RMProces Report name
+        Collections.sort( _exampleSetNodes , new Comparator<NamedIOObjectNode>()
         {
-            String reportName = exampleSetNode.getName().substring( 0 , exampleSetNode.getName().lastIndexOf('-') );
-
-            if( lastReportName != null && !lastReportName.equals( reportName ) )
+            @Override
+            public int compare(NamedIOObjectNode obj1, NamedIOObjectNode obj2)
+            {
+                return obj1.getRmProcess().getReportName().compareTo(obj2.getRmProcess().getReportName());
+            }
+        });
+        
+        DataNode dataNode = new DataNode( REPORT_NODE_NAME );
+        String lastReportName = null;
+        List<DataNode> dataNodes = new ArrayList<DataNode>();
+        int counter = 0;
+        
+        for(NamedIOObjectNode objectNode : _exampleSetNodes)
+        {
+            if( lastReportName != null && !lastReportName.equals( objectNode.getRmProcess().getReportName() ) )
             {
                 dataNodes.add(dataNode);
-                dataNode = new DataNode("Report");
+                dataNode = new DataNode( REPORT_NODE_NAME );
             }
             counter++;
             
-            dataNode.putDataNode( exampleSetNode.getDataNode() );
+            for(DataNode dn : objectNode.getDataNodes())
+                dataNode.putDataNode( dn );
             
             if(counter == _exampleSetNodes.size() )
                 dataNodes.add(dataNode);
             
-            lastReportName = reportName;
+            lastReportName = objectNode.getRmProcess().getReportName();
         }
-
+        
         return dataNodes;
-    }    
-    
+    }
+
 }
