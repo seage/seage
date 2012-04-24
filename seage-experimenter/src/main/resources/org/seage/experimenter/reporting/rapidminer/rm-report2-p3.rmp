@@ -155,7 +155,7 @@
         <parameter key="parallelize_example_process" value="false"/>
         <process expanded="true" height="674" width="1094">
           <operator activated="true" class="retrieve" compatibility="5.1.014" expanded="true" height="60" name="Retrieve" width="90" x="45" y="210">
-            <parameter key="repository_entry" value="//SEAGE/rm-report2-p3"/>
+            <parameter key="repository_entry" value="//SEAGE-RM-REPO/rm-report2-p3"/>
           </operator>
           <operator activated="true" class="set_role" compatibility="5.1.014" expanded="true" height="76" name="Set Role (3)" width="90" x="246" y="210">
             <parameter key="name" value="id"/>
