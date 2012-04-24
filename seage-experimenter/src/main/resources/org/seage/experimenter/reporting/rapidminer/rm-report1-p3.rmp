@@ -124,7 +124,7 @@
         <parameter key="ignore_missings" value="true"/>
       </operator>
       <operator activated="true" class="store" compatibility="5.1.014" expanded="true" height="60" name="Store" width="90" x="849" y="30">
-        <parameter key="repository_entry" value="//SEAGE/rm-report1-p3"/>
+        <parameter key="repository_entry" value="//SEAGE-RM-REPO/rm-report1-p3"/>
       </operator>
       <operator activated="true" class="aggregate" compatibility="5.1.014" expanded="true" height="76" name="Aggregate (2)" width="90" x="715" y="165">
         <parameter key="use_default_aggregation" value="false"/>
