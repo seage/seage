@@ -15,7 +15,7 @@
     <parameter key="parallelize_main_process" value="false"/>
     <process expanded="true" height="645" width="1083">
       <operator activated="true" class="read_csv" compatibility="5.1.014" expanded="true" height="60" name="Read CSV" width="90" x="45" y="75">
-        <parameter key="csv_file" value="C:\Users\Zis\Documents\NetBeansProjects\seage\seage-launcher\report\report.csv"/>
+        <parameter key="csv_file" value="report/report.csv"/>
         <parameter key="column_separators" value=";"/>
         <parameter key="trim_lines" value="false"/>
         <parameter key="use_quotes" value="true"/>
@@ -107,6 +107,7 @@
         <parameter key="default_aggregation_function" value="average"/>
         <list key="aggregation_attributes">
           <parameter key="SolutionValue" value="minimum"/>
+          <parameter key="Time" value="minimum"/>
           <parameter key="p1" value="minimum"/>
           <parameter key="p2" value="minimum"/>
           <parameter key="p3" value="minimum"/>
@@ -116,14 +117,15 @@
           <parameter key="p7" value="minimum"/>
           <parameter key="p8" value="minimum"/>
           <parameter key="p9" value="minimum"/>
-          <parameter key="p10" value="minimum"/>
+          <parameter key="p10" value="minimum"/>          
         </list>
         <parameter key="group_by_attributes" value="id|AlgorithmID|ConfigID|ExperimentID|InstanceID|ProblemID"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
-      <operator activated="true" class="store" compatibility="5.1.014" expanded="true" height="60" name="Store" width="90" x="849" y="30">
+      <operator activated="true" class="multiply" compatibility="5.1.014" expanded="true" height="94" name="Multiply (3)" width="90" x="709" y="29"/>
+      <operator activated="true" class="store" compatibility="5.1.014" expanded="true" height="60" name="Store" width="90" x="916" y="30">
         <parameter key="repository_entry" value="//SEAGE-RM-REPO/rm-report1-p3"/>
       </operator>
       <operator activated="true" class="aggregate" compatibility="5.1.014" expanded="true" height="76" name="Aggregate (2)" width="90" x="715" y="165">
@@ -154,7 +156,7 @@
         <parameter key="parallelize_example_process" value="false"/>
         <process expanded="true" height="674" width="1094">
           <operator activated="true" class="retrieve" compatibility="5.1.014" expanded="true" height="60" name="Retrieve" width="90" x="45" y="210">
-            <parameter key="repository_entry" value="//SEAGE/rm-report1-p3"/>
+            <parameter key="repository_entry" value="//SEAGE-RM-REPO/rm-report1-p3"/>
           </operator>
           <operator activated="true" class="set_role" compatibility="5.1.014" expanded="true" height="76" name="Set Role (3)" width="90" x="246" y="210">
             <parameter key="name" value="id"/>
@@ -204,13 +206,16 @@
       <connect from_op="Set Role" from_port="example set output" to_op="Replace Missing Values" to_port="example set input"/>
       <connect from_op="Replace Missing Values" from_port="example set output" to_op="Multiply" to_port="input"/>
       <connect from_op="Multiply" from_port="output 1" to_op="Aggregate" to_port="example set input"/>
-      <connect from_op="Aggregate" from_port="example set output" to_op="Store" to_port="input"/>
+      <connect from_op="Aggregate" from_port="example set output" to_op="Multiply (3)" to_port="input"/>
       <connect from_op="Aggregate" from_port="original" to_op="Aggregate (2)" to_port="example set input"/>
+      <connect from_op="Multiply (3)" from_port="output 1" to_op="Store" to_port="input"/>
+      <connect from_op="Multiply (3)" from_port="output 2" to_port="result 2"/>
       <connect from_op="Aggregate (2)" from_port="example set output" to_op="Loop Examples" to_port="example set"/>
       <connect from_op="Loop Examples" from_port="output 1" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="72"/>
       <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
     </process>
   </operator>
 </process>

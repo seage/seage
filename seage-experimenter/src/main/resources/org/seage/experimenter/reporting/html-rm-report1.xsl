@@ -73,25 +73,23 @@
                     <xsl:for-each select="/Report/Collection//ExampleSet/Examples/Example[Result[1]/@value=$ExperimetnID and Result[4]/@value=$InstanceID][1]/Result">
                                 
                         <xsl:choose>
-                            <xsl:when test="position()&lt;7"></xsl:when>
+                            <xsl:when test="position()&lt;8"></xsl:when>
                             <xsl:when test="@value=-1.0"></xsl:when>
-                            <xsl:when test="position()=17"></xsl:when>
+                            <xsl:when test="position()=18"></xsl:when>
                             <xsl:otherwise>
                                 
                                 <xsl:variable name="position">
                                     <xsl:choose>
-                                        <xsl:when test="position() = 7"><xsl:value-of select="position()-1" /></xsl:when>
-                                        <xsl:when test="position() = 9"><xsl:value-of select="position()+1" /></xsl:when>
-                                        <xsl:when test="position() = 10"><xsl:value-of select="position()+2" /></xsl:when>
-                                        <xsl:when test="position() = 11"><xsl:value-of select="position()+3" /></xsl:when>
-                                        <xsl:when test="position() = 12"><xsl:value-of select="position()+4" /></xsl:when>
-                                        <xsl:when test="position() = 13"><xsl:value-of select="position()+5" /></xsl:when>
-                                        <xsl:when test="position() = 14"><xsl:value-of select="position()+6" /></xsl:when>
-                                        <xsl:when test="position() = 15"><xsl:value-of select="position()+7" /></xsl:when>
-                                        <xsl:when test="position() = 16"><xsl:value-of select="position()+8" /></xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:value-of select="position()" />
-                                        </xsl:otherwise>
+                                        <xsl:when test="position() = 8"><xsl:value-of select="position()-2" /></xsl:when>
+                                        <xsl:when test="position() = 9"><xsl:value-of select="position()-1" /></xsl:when>
+                                        <xsl:when test="position() = 10"><xsl:value-of select="position()" /></xsl:when>
+                                        <xsl:when test="position() = 11"><xsl:value-of select="position()+1" /></xsl:when>
+                                        <xsl:when test="position() = 12"><xsl:value-of select="position()+2" /></xsl:when>
+                                        <xsl:when test="position() = 13"><xsl:value-of select="position()+3" /></xsl:when>
+                                        <xsl:when test="position() = 14"><xsl:value-of select="position()+4" /></xsl:when>
+                                        <xsl:when test="position() = 15"><xsl:value-of select="position()+5" /></xsl:when>
+                                        <xsl:when test="position() = 16"><xsl:value-of select="position()+6" /></xsl:when>
+                                        <xsl:when test="position() = 17"><xsl:value-of select="position()+7" /></xsl:when>
                                     </xsl:choose>
                                 </xsl:variable>
                                 
@@ -112,11 +110,11 @@
                     <tr><td></td><td></td>
                     <td><xsl:value-of select="position()" /></td>
                     <td><xsl:value-of select="Result[6]/@value" /></td>
-                    <td>x</td>
+                    <td><xsl:call-template name="MillisecondsToSeconds"><xsl:with-param name="miliseconds" select="Result[7]/@value" /></xsl:call-template> s</td>
                     <xsl:for-each select="Result">
                         <xsl:choose>
-                            <xsl:when test="position()&lt;7"></xsl:when>
-                            <xsl:when test="position()=17"></xsl:when>
+                            <xsl:when test="position()&lt;8"></xsl:when>
+                            <xsl:when test="position()=18"></xsl:when>
                             <xsl:when test="@value=-1.0"></xsl:when>
                             <xsl:otherwise>
                                 <td><xsl:value-of select="@value" /></td>
