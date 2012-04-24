@@ -60,7 +60,7 @@
       </operator>
       <operator activated="true" class="generate_attributes" compatibility="5.1.014" expanded="true" height="76" name="Generate Attributes" width="90" x="112" y="210">
         <list key="function_descriptions">
-          <parameter key="id" value="concat(ExperimentID,&quot;-&quot;,ProblemID,&quot;-&quot;,AlgorithmID,&quot;-&quot;,InstanceID)"/>
+          <parameter key="id" value="concat(ProblemID,&quot;-&quot;,AlgorithmID,&quot;-&quot;,InstanceID)"/>
         </list>
         <parameter key="use_standard_constants" value="true"/>
         <parameter key="keep_all" value="true"/>
@@ -119,13 +119,13 @@
           <parameter key="p9" value="minimum"/>
           <parameter key="p10" value="minimum"/>
         </list>
-        <parameter key="group_by_attributes" value="id|AlgorithmID|ConfigID|ExperimentID|InstanceID|ProblemID"/>
+        <parameter key="group_by_attributes" value="id|AlgorithmID|ConfigID|InstanceID|ProblemID"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
       <operator activated="true" class="store" compatibility="5.1.014" expanded="true" height="60" name="Store" width="90" x="916" y="30">
-        <parameter key="repository_entry" value="//SEAGE-RM-REPO/rm-report1-p3"/>
+        <parameter key="repository_entry" value="//SEAGE-RM-REPO/rm-report2-p3"/>
       </operator>
       <operator activated="true" class="aggregate" compatibility="5.1.014" expanded="true" height="76" name="Aggregate (2)" width="90" x="715" y="165">
         <parameter key="use_default_aggregation" value="false"/>
@@ -155,7 +155,7 @@
         <parameter key="parallelize_example_process" value="false"/>
         <process expanded="true" height="674" width="1094">
           <operator activated="true" class="retrieve" compatibility="5.1.014" expanded="true" height="60" name="Retrieve" width="90" x="45" y="210">
-            <parameter key="repository_entry" value="//SEAGE-RM-REPO/rm-report1-p3"/>
+            <parameter key="repository_entry" value="//SEAGE/rm-report2-p3"/>
           </operator>
           <operator activated="true" class="set_role" compatibility="5.1.014" expanded="true" height="76" name="Set Role (3)" width="90" x="246" y="210">
             <parameter key="name" value="id"/>
