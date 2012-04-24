@@ -11,6 +11,8 @@
  */
 package org.seage.experimenter.reporting;
 
+import org.seage.experimenter.reporting.rapidminer.RMProcess;
+import org.seage.experimenter.reporting.rapidminer.ProcessPerformer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Arrays;
@@ -77,8 +79,8 @@ public class StatisticalReportCreator implements ILogReport
         List<DataNode> dataNodes = _processPerformer.getProcessesDataNodes();
         for(DataNode dataNode : dataNodes)
         {
-            XmlHelper.writeXml(dataNode, "C:/wamp/apps/a7.xml");
-            System.out.println(REPORT_PATH + "/" + _xslTemplates[counter].substring(0,_xslTemplates[counter].lastIndexOf('.')) + ".html");
+//            XmlHelper.writeXml(dataNode, "C:/wamp/apps/a7.xml");
+//            System.out.println(REPORT_PATH + "/" + _xslTemplates[counter].substring(0,_xslTemplates[counter].lastIndexOf('.')) + ".html");
             File outputDir = new File( REPORT_PATH + "/" + _xslTemplates[counter].substring(0,_xslTemplates[counter].lastIndexOf('.')) + ".html" );
             outputDir.createNewFile();
 

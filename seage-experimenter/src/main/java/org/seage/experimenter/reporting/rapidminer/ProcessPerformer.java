@@ -9,7 +9,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
-package org.seage.experimenter.reporting;
+package org.seage.experimenter.reporting.rapidminer;
 
 import com.rapid_i.repository.wsimport.StoreProcess;
 import com.rapidminer.FileProcessLocation;
@@ -27,7 +27,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
-import org.seage.experimenter.ExampleSetConverter;
 
 /**
  *

@@ -9,7 +9,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
-package org.seage.experimenter;
+package org.seage.experimenter.reporting.rapidminer;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Attributes;
