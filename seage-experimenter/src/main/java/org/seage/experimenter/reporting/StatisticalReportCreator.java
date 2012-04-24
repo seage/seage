@@ -11,8 +11,6 @@
  */
 package org.seage.experimenter.reporting;
 
-import org.seage.experimenter.reporting.rapidminer.RMProcess;
-import org.seage.experimenter.reporting.rapidminer.ProcessPerformer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Arrays;
@@ -21,7 +19,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.transform.stream.StreamResult;
 import org.seage.data.DataNode;
-import org.seage.data.xml.XmlHelper;
+import org.seage.experimenter.reporting.rapidminer.ProcessPerformer;
+import org.seage.experimenter.reporting.rapidminer.RMProcess;
+//import org.seage.data.xml.XmlHelper;
 
 /**
  *
@@ -51,7 +51,7 @@ public class StatisticalReportCreator implements ILogReport
         };
         
         _xslTemplates = new String[] {
-            "html-rm-report1.v2.xsl",
+            "html-rm-report1.xsl",
 //            "html-rm-report2.xsl",
 //            "html-rm-report3.xsl",
 //            "html-rm-report4.xsl"

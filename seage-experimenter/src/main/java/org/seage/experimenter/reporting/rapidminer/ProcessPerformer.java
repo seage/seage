@@ -45,13 +45,10 @@ public class ProcessPerformer {
         _processes = new ArrayList<RMProcess>();
         _exampleSetNodes = new ArrayList<NamedIOObjectNode>();
 
-        RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI );
+        RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI ); 
         
-        
-        //RepositoryManager.getInstance(new RepositoryAccessor() {}).addRepository(new LocalRepository("SEAGE", new File("../SREPO")));        
-        RepositoryManager.getInstance(null).addRepository(new LocalRepository("MyRepo1", new File("SREPO")));
+        RepositoryManager.getInstance(null).addRepository(new LocalRepository("SEAGE-RM-REPO", new File("SEAGE-RM-REPO")));
 
-        
         RapidMiner.init();        
     } 
     
