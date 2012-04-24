@@ -11,10 +11,9 @@
  */
 package org.seage.experimenter.reporting.rapidminer;
 
-import com.rapid_i.repository.wsimport.StoreProcess;
 import com.rapidminer.FileProcessLocation;
-import com.rapidminer.RapidMiner;
 import com.rapidminer.Process;
+import com.rapidminer.RapidMiner;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.IOObject;
 import com.rapidminer.operator.IOObjectCollection;
@@ -26,7 +25,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.seage.data.DataNode;
-import org.seage.data.xml.XmlHelper;
 
 /**
  *
@@ -34,7 +32,9 @@ import org.seage.data.xml.XmlHelper;
  */
 public class ProcessPerformer {
     
-    private String REPORT_NODE_NAME = "Report";
+    private final String REPORT_NODE_NAME = "Report";    
+    private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "SEAGE-RM-REPO";
+    private final String RAPIDMINER_LOCAL_REPOSITORY_PATH = "SEAGE-RM-REPO";
     
     private List<RMProcess> _processes;
     
@@ -45,10 +45,8 @@ public class ProcessPerformer {
         _processes = new ArrayList<RMProcess>();
         _exampleSetNodes = new ArrayList<NamedIOObjectNode>();
 
-        RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI ); 
-        
-        RepositoryManager.getInstance(null).addRepository(new LocalRepository("SEAGE-RM-REPO", new File("SEAGE-RM-REPO")));
-
+        RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI );        
+        RepositoryManager.getInstance(null).addRepository(new LocalRepository( RAPIDMINER_LOCAL_REPOSITORY_NAME , new File( RAPIDMINER_LOCAL_REPOSITORY_PATH )));
         RapidMiner.init();        
     } 
     
