@@ -5,7 +5,7 @@
     <output/>
     <macros/>
   </context>
-  <operator activated="true" class="process" compatibility="5.1.014" expanded="true" name="Process">
+  <operator activated="true" class="process" compatibility="5.1.014" expanded="true" name="rm-report2-p1">
     <parameter key="logverbosity" value="init"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
@@ -15,7 +15,7 @@
     <parameter key="parallelize_main_process" value="false"/>
     <process expanded="true" height="663" width="1094">
       <operator activated="true" class="read_csv" compatibility="5.1.014" expanded="true" height="60" name="Read CSV" width="90" x="45" y="120">
-        <parameter key="csv_file" value="C:\Users\Zis\Documents\NetBeansProjects\seage\seage.launcher\report\report.csv"/>
+        <parameter key="csv_file" value="report/report.csv"/>
         <parameter key="column_separators" value=";"/>
         <parameter key="trim_lines" value="false"/>
         <parameter key="use_quotes" value="true"/>
@@ -116,7 +116,7 @@
           <parameter key="p10" value="minimum"/>
           <parameter key="p10" value="maximum"/>
         </list>
-        <parameter key="group_by_attributes" value="ProblemID||AlgorithmID"/>
+        <parameter key="group_by_attributes" value="ProblemID|AlgorithmID"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
@@ -124,7 +124,7 @@
       <operator activated="true" class="sort_by_pareto_rank" compatibility="5.1.014" expanded="true" height="76" name="Sort by Pareto Rank" width="90" x="447" y="30">
         <parameter key="attributes" value="|InstanceID|AlgorithmID"/>
       </operator>
-      <operator activated="true" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV" width="90" x="581" y="120">
+      <operator activated="false" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV" width="90" x="581" y="120">
         <parameter key="csv_file" value="report/rm-report2-p1.csv"/>
         <parameter key="column_separator" value=";"/>
         <parameter key="write_attribute_names" value="true"/>
@@ -135,8 +135,7 @@
       <connect from_op="Read CSV" from_port="output" to_op="Replace Missing Values" to_port="example set input"/>
       <connect from_op="Replace Missing Values" from_port="example set output" to_op="Aggregate" to_port="example set input"/>
       <connect from_op="Aggregate" from_port="example set output" to_op="Sort by Pareto Rank" to_port="example set input"/>
-      <connect from_op="Sort by Pareto Rank" from_port="example set output" to_op="Write CSV" to_port="input"/>
-      <connect from_op="Write CSV" from_port="through" to_port="result 1"/>
+      <connect from_op="Sort by Pareto Rank" from_port="example set output" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
