@@ -36,7 +36,7 @@
         <parameter key="locale" value="English (United States)"/>
         <parameter key="encoding" value="windows-1250"/>
         <list key="data_set_meta_data_information">
-          <parameter key="0" value="ExperimentID.true.real.attribute"/>
+          <parameter key="0" value="ExperimentID.true.text.attribute"/>
           <parameter key="1" value="ProblemID.true.polynominal.attribute"/>
           <parameter key="2" value="AlgorithmID.true.polynominal.attribute"/>
           <parameter key="3" value="InstanceID.true.polynominal.attribute"/>

@@ -13,6 +13,7 @@
  */
 package org.seage.experimenter.reporting;
 
+import org.seage.experimenter.reporting.rapidminer.ProcessPerformer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;

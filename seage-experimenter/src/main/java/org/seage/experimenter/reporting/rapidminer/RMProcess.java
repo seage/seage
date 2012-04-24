@@ -9,7 +9,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
-package org.seage.experimenter.reporting;
+package org.seage.experimenter.reporting.rapidminer;
 
 import java.util.ArrayList;
 import java.util.List;

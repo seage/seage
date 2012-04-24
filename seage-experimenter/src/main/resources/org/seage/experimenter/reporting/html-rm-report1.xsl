@@ -55,14 +55,77 @@
             <tr><td colspan="4"> </td></tr>
             <tr><td></td><td><h2><xsl:value-of select="$Algorithm" /></h2></td></tr>
             <xsl:for-each select="/Report/ExampleSet[2]/Examples/Example[Result[1]/@value=$ExperimetnID]">
+                <xsl:variable name="InstanceID" select="Result[3]/@value" />
                 <tr><td></td><td></td>
                     <td align="center"><font size="5"><strong><xsl:value-of select="Result[3]/@value" /></strong></font></td>
                     <td>Average Solution Value: <strong><xsl:value-of select="Result[4]/@value" /></strong></td>
                     <xsl:call-template name="GetParametersValues">
                         <xsl:with-param name="Algorithm" select="$Algorithm" />
                         <xsl:with-param name="FirstParameterStartPosition" select="5" />
-                    </xsl:call-template>
+                    </xsl:call-template>            
                 </tr>
+                <tr>
+                    <td></td><td></td><td></td>
+                    <th>Minimal SolutionValue</th>
+                    <th>Time</th>
+                    
+                    <xsl:variable name="position" select="0" />
+                    <xsl:for-each select="/Report/Collection//ExampleSet/Examples/Example[Result[1]/@value=$ExperimetnID and Result[4]/@value=$InstanceID][1]/Result">
+                                
+                        <xsl:choose>
+                            <xsl:when test="position()&lt;7"></xsl:when>
+                            <xsl:when test="@value=-1.0"></xsl:when>
+                            <xsl:when test="position()=17"></xsl:when>
+                            <xsl:otherwise>
+                                
+                                <xsl:variable name="position">
+                                    <xsl:choose>
+                                        <xsl:when test="position() = 7"><xsl:value-of select="position()-1" /></xsl:when>
+                                        <xsl:when test="position() = 9"><xsl:value-of select="position()+1" /></xsl:when>
+                                        <xsl:when test="position() = 10"><xsl:value-of select="position()+2" /></xsl:when>
+                                        <xsl:when test="position() = 11"><xsl:value-of select="position()+3" /></xsl:when>
+                                        <xsl:when test="position() = 12"><xsl:value-of select="position()+4" /></xsl:when>
+                                        <xsl:when test="position() = 13"><xsl:value-of select="position()+5" /></xsl:when>
+                                        <xsl:when test="position() = 14"><xsl:value-of select="position()+6" /></xsl:when>
+                                        <xsl:when test="position() = 15"><xsl:value-of select="position()+7" /></xsl:when>
+                                        <xsl:when test="position() = 16"><xsl:value-of select="position()+8" /></xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:value-of select="position()" />
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:variable>
+                                
+                                <th>
+                                    <xsl:call-template name="GetParametresByAlgorithmAndPosition">
+                                        <xsl:with-param name="algorithm" select="$Algorithm" />
+                                        <xsl:with-param name="position" select="$position" />
+                                    </xsl:call-template>
+                                </th>
+
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        
+                    </xsl:for-each>
+
+                </tr>
+                <xsl:for-each select="/Report/Collection//ExampleSet/Examples/Example[Result[1]/@value=$ExperimetnID and Result[4]/@value=$InstanceID]">
+                    <tr><td></td><td></td>
+                    <td><xsl:value-of select="position()" /></td>
+                    <td><xsl:value-of select="Result[6]/@value" /></td>
+                    <td>x</td>
+                    <xsl:for-each select="Result">
+                        <xsl:choose>
+                            <xsl:when test="position()&lt;7"></xsl:when>
+                            <xsl:when test="position()=17"></xsl:when>
+                            <xsl:when test="@value=-1.0"></xsl:when>
+                            <xsl:otherwise>
+                                <td><xsl:value-of select="@value" /></td>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:for-each>
+                    </tr>
+                </xsl:for-each>
+                
                 <tr><td colspan="4"> </td></tr>
             </xsl:for-each> 
         </xsl:for-each>
