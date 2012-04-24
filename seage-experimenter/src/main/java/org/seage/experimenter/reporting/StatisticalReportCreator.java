@@ -49,11 +49,14 @@ public class StatisticalReportCreator implements ILogReport
             new RMProcess( "rm-report1-p1.rmp" , "Aggregate"            , "Report 1" , Arrays.asList( "example set output" ) ),
             new RMProcess( "rm-report1-p2.rmp" , "Sort"                 , "Report 1" , Arrays.asList( "example set output" ) ),
             new RMProcess( "rm-report1-p3.rmp" , "Loop Examples"        , "Report 1" , Arrays.asList( "output 1" ) ),//, "output 2"
+            
             new RMProcess( "rm-report2-p1.rmp" , "Sort by Pareto Rank"  , "Report 2" , Arrays.asList( "example set output" ) ),
             new RMProcess( "rm-report2-p2.rmp" , "Sort by Pareto Rank"  , "Report 2" , Arrays.asList( "example set output" ) ),
             new RMProcess( "rm-report2-p3.rmp" , "Loop Examples"        , "Report 2" , Arrays.asList( "output 1" ) ),
-            new RMProcess( "rm-report3-p1.rmp" , "Sort"                 , "Report 3" , Arrays.asList( "example set output" ) ),
-            //new RMProcess( "rm-report3-p2.rmp" , "Loop Examples"        , "Report 3" , Arrays.asList( "output 1" ) ),
+            
+            new RMProcess( "rm-report2-p1.rmp" , "Sort by Pareto Rank"  , "Report 3" , Arrays.asList( "example set output" ) ),
+            new RMProcess( "rm-report2-p2.rmp" , "Sort by Pareto Rank"  , "Report 3" , Arrays.asList( "example set output" ) ),
+            new RMProcess( "rm-report2-p3.rmp" , "Loop Examples"        , "Report 3" , Arrays.asList( "output 1" ) )
         };
         
         _xslTemplates = new String[] {
@@ -84,7 +87,7 @@ public class StatisticalReportCreator implements ILogReport
         List<DataNode> dataNodes = _processPerformer.getProcessesDataNodes();
         for(DataNode dataNode : dataNodes)
         {
-            XmlHelper.writeXml(dataNode, "C:/wamp/apps/"+_xslTemplates[counter].substring(0,_xslTemplates[counter].lastIndexOf('.'))+".xml");
+//            XmlHelper.writeXml(dataNode, "C:/wamp/apps/"+_xslTemplates[counter].substring(0,_xslTemplates[counter].lastIndexOf('.'))+".xml");
 
             File outputDir = new File( REPORT_PATH + "/" + _xslTemplates[counter].substring(0,_xslTemplates[counter].lastIndexOf('.')) + ".html" );
             outputDir.createNewFile();
