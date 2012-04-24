@@ -80,7 +80,7 @@ public class StatisticalReportCreator implements ILogReport
         List<DataNode> dataNodes = _processPerformer.getProcessesDataNodes();
         for(DataNode dataNode : dataNodes)
         {
-            XmlHelper.writeXml(dataNode, "C:/wamp/apps/a7.xml");
+            //XmlHelper.writeXml(dataNode, "C:/wamp/apps/a7.xml");
 
             File outputDir = new File( REPORT_PATH + "/" + _xslTemplates[counter].substring(0,_xslTemplates[counter].lastIndexOf('.')) + ".html" );
             outputDir.createNewFile();
