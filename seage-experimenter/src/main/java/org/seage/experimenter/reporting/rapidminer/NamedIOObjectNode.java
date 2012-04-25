@@ -11,7 +11,6 @@
  */
 package org.seage.experimenter.reporting.rapidminer;
 
-import org.seage.experimenter.reporting.rapidminer.RMProcess;
 import com.rapidminer.operator.IOObject;
 import java.util.ArrayList;
 import java.util.HashMap;
