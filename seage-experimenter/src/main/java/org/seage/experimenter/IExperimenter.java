@@ -17,24 +17,13 @@
  * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ * 	   Richard Malek
+ * 	   - Interface definition
  */
-package org.seage.problem.tsp.sannealing;
+package org.seage.experimenter;
 
-import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.TourProvider;
-
-/**
- *
- * @author Jan Zmatlik
- */
-public class TspRandomSolution extends TspSolution {
-
-    public TspRandomSolution(City[] cities)
-    {
-        super( cities );
-        _tour = TourProvider.createRandomTour( cities );
-    }
-
+public interface IExperimenter {
+	public void runFromConfigFile(String configPath) throws Exception;
+    public void runExperiments(String problemID, int numRuns, long timeoutS) throws Exception ;
+    public void runExperiments(String problemID, int numRuns, long timeoutS, String[] algorithmIDs) throws Exception ;
 }
