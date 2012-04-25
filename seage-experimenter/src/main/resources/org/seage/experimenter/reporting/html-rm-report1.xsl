@@ -31,11 +31,21 @@
         <xsl:import href="../seage-experimenter/src/main/resources/org/seage/experimenter/reporting/milis-to-sec.xsl"/>        
         
         <table border="1">
-        <xsl:for-each select="ExampleSet[1]/Examples/Example">
-            <tr><td><h2><xsl:value-of select="Result/@value" /></h2></td></tr>
+        <xsl:for-each select="ExampleSet[1]/Examples/Example">            
             <xsl:variable name="Algorithm" select="Result[3]/@value" />
             <xsl:variable name="ExperimetnID" select="Result/@value" />
-            <tr><td></td><td><h3><xsl:value-of select="Result[2]/@value" /></h3></td></tr>
+            <xsl:variable name="ProblemID" select="Result[2]/@value" />
+            
+            <xsl:choose>
+                <xsl:when test="preceding-sibling::Example/Result[1]/@value=$ExperimetnID">
+                    <tr><td></td></tr>
+                </xsl:when>
+                <xsl:otherwise>
+                    <tr><td><h2><xsl:value-of select="Result/@value" /></h2></td></tr>
+                </xsl:otherwise>
+            </xsl:choose>  
+            
+            <tr><td></td><td><h2><xsl:value-of select="Result[2]/@value" /></h2></td></tr>
             <tr>
                 <td></td><td></td>
                 <td>
@@ -54,14 +64,14 @@
             
             <tr><td colspan="4"> </td></tr>
             <tr><td></td><td><h2><xsl:value-of select="$Algorithm" /></h2></td></tr>
-            <xsl:for-each select="/Report/ExampleSet[2]/Examples/Example[Result[1]/@value=$ExperimetnID]">
-                <xsl:variable name="InstanceID" select="Result[3]/@value" />
+            <xsl:for-each select="/Report/ExampleSet[2]/Examples/Example[Result[1]/@value=$ExperimetnID and Result[2]/@value=$ProblemID]">
+                <xsl:variable name="InstanceID" select="Result[4]/@value" />
                 <tr><td></td><td></td>
-                    <td align="center"><font size="5"><strong><xsl:value-of select="Result[3]/@value" /></strong></font></td>
-                    <td>Average Solution Value: <strong><xsl:value-of select="Result[4]/@value" /></strong></td>
+                    <td align="center"><h3><xsl:value-of select="Result[4]/@value" /></h3></td>
+                    <td>Average Solution Value: <strong><xsl:value-of select="Result[5]/@value" /></strong></td>
                     <xsl:call-template name="GetParametersValues">
                         <xsl:with-param name="Algorithm" select="$Algorithm" />
-                        <xsl:with-param name="FirstParameterStartPosition" select="5" />
+                        <xsl:with-param name="FirstParameterStartPosition" select="6" />
                     </xsl:call-template>            
                 </tr>
                 <tr>
@@ -70,7 +80,7 @@
                     <th>Time</th>
                     
                     <xsl:variable name="position" select="0" />
-                    <xsl:for-each select="/Report/Collection//ExampleSet/Examples/Example[Result[1]/@value=$ExperimetnID and Result[4]/@value=$InstanceID][1]/Result">
+                    <xsl:for-each select="/Report/Collection//ExampleSet/Examples/Example[Result[1]/@value=$ExperimetnID and Result[4]/@value=$InstanceID and Result[2]/@value=$ProblemID][1]/Result">
                                 
                         <xsl:choose>
                             <xsl:when test="position()&lt;8"></xsl:when>
@@ -106,7 +116,7 @@
                     </xsl:for-each>
 
                 </tr>
-                <xsl:for-each select="/Report/Collection//ExampleSet/Examples/Example[Result[1]/@value=$ExperimetnID and Result[4]/@value=$InstanceID]">
+                <xsl:for-each select="/Report/Collection//ExampleSet/Examples/Example[Result[1]/@value=$ExperimetnID and Result[4]/@value=$InstanceID and Result[2]/@value=$ProblemID]">
                     <tr><td></td><td></td>
                     <td><xsl:value-of select="position()" /></td>
                     <td><xsl:value-of select="Result[6]/@value" /></td>

@@ -40,7 +40,7 @@ public class LogReportCreator implements ILogReport {
     @Override
     public void report() throws Exception
     {
-        createReport();
+        //createReport();
     }
     
     private void createReport() throws Exception

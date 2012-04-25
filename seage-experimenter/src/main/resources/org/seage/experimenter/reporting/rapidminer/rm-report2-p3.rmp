@@ -15,7 +15,7 @@
     <parameter key="parallelize_main_process" value="false"/>
     <process expanded="true" height="645" width="1083">
       <operator activated="true" class="read_csv" compatibility="5.1.014" expanded="true" height="60" name="Read CSV" width="90" x="45" y="75">
-        <parameter key="csv_file" value="report/report.csv"/>
+        <parameter key="csv_file" value="C:\Users\Zis\Documents\NetBeansProjects\seage\seage-launcher\report\report.csv"/>
         <parameter key="column_separators" value=";"/>
         <parameter key="trim_lines" value="false"/>
         <parameter key="use_quotes" value="true"/>
@@ -183,13 +183,9 @@
             <parameter key="attribute_name" value="minimum(SolutionValue)"/>
             <parameter key="sorting_direction" value="increasing"/>
           </operator>
-          <operator activated="true" class="execute_script" compatibility="5.1.014" expanded="true" height="76" name="Execute Script" width="90" x="313" y="300">
-            <parameter key="script" value="ExampleSet exampleSet = operator.getInput(ExampleSet.class);&#10;&#10;int instanceCounter = 0;&#10;String lastValue;&#10;for(Example example : exampleSet)&#10;{&#9;&#10;&#9;String value = example[&quot;InstanceID&quot;];&#10;&#10;&#9;if(lastValue == value)&#10;&#9;&#9;instanceCounter++;&#10;&#9;else&#10;&#9;&#9;instanceCounter = 0;&#10;&#10;&#9;if(instanceCounter &gt;= 10)&#10;&#9;&#9;example[&quot;InstanceID&quot;] = -1;&#10;&#9;&#9;&#10;&#9;lastValue = value;&#10;}&#10;&#10;return exampleSet;"/>
-            <parameter key="standard_imports" value="true"/>
-          </operator>
-          <operator activated="true" class="filter_examples" compatibility="5.1.014" expanded="true" height="76" name="Filter Examples (2)" width="90" x="447" y="300">
-            <parameter key="condition_class" value="attribute_value_filter"/>
-            <parameter key="parameter_string" value="InstanceID!=-1"/>
+          <operator activated="true" class="filter_example_range" compatibility="5.1.014" expanded="true" height="76" name="Filter Example Range" width="90" x="380" y="300">
+            <parameter key="first_example" value="1"/>
+            <parameter key="last_example" value="10"/>
             <parameter key="invert_filter" value="false"/>
           </operator>
           <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="Sort (2)" width="90" x="581" y="300">
@@ -204,9 +200,8 @@
           <connect from_op="Filter Examples" from_port="example set output" to_op="Set Role (2)" to_port="example set input"/>
           <connect from_op="Set Role (2)" from_port="example set output" to_op="Intersect" to_port="second"/>
           <connect from_op="Intersect" from_port="example set output" to_op="Sort" to_port="example set input"/>
-          <connect from_op="Sort" from_port="example set output" to_op="Execute Script" to_port="input 1"/>
-          <connect from_op="Execute Script" from_port="output 1" to_op="Filter Examples (2)" to_port="example set input"/>
-          <connect from_op="Filter Examples (2)" from_port="example set output" to_op="Sort (2)" to_port="example set input"/>
+          <connect from_op="Sort" from_port="example set output" to_op="Filter Example Range" to_port="example set input"/>
+          <connect from_op="Filter Example Range" from_port="example set output" to_op="Sort (2)" to_port="example set input"/>
           <connect from_op="Sort (2)" from_port="example set output" to_op="Multiply (2)" to_port="input"/>
           <connect from_op="Multiply (2)" from_port="output 1" to_port="output 1"/>
           <portSpacing port="source_example set" spacing="0"/>

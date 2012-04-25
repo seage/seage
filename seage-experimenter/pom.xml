@@ -66,10 +66,5 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-	   <dependency>
-	     <groupId>org.codehaus.groovy</groupId>
-	     <artifactId>groovy-all</artifactId>
-	     <version>1.8.6</version>
-	   </dependency>
 	 </dependencies>
 </project>
