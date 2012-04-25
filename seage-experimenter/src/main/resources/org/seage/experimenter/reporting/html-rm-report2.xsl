@@ -45,10 +45,7 @@
             </xsl:choose>            
 
             <tr>
-                <td></td><td></td>
-                <td>
-                    <h3><xsl:value-of select="Result[2]/@value" />:</h3>
-                </td>
+                <td></td><td><h2><xsl:value-of select="$Algorithm" /></h2></td>
                 <td>
                     Time <xsl:call-template name="MillisecondsToSeconds"><xsl:with-param name="miliseconds" select="Result[3]/@value" /></xsl:call-template> s - 
                     <xsl:call-template name="MillisecondsToSeconds"><xsl:with-param name="miliseconds" select="Result[4]/@value" /></xsl:call-template> s
@@ -61,11 +58,10 @@
             </xsl:call-template>
             
             <tr><td colspan="4"> </td></tr>
-            <tr><td></td><td><h2><xsl:value-of select="$Algorithm" /></h2></td></tr>
             <xsl:for-each select="/Report/ExampleSet[2]/Examples/Example[Result[1]/@value=$ProblemID and Result[2]/@value=$Algorithm]">
                 <xsl:variable name="InstanceID" select="Result[3]/@value" />  
                 <tr><td></td><td></td>
-                    <td align="center"><font size="5"><strong><xsl:value-of select="Result[3]/@value" /></strong></font></td>
+                    <td align="center"><h3><xsl:value-of select="Result[3]/@value" /></h3></td>
                     <td>Average Solution Value: <strong><xsl:value-of select="Result[4]/@value" /></strong></td>
                     <xsl:call-template name="GetParametersValues">
                         <xsl:with-param name="Algorithm" select="$Algorithm" />

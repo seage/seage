@@ -19,10 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.transform.stream.StreamResult;
 import org.seage.data.DataNode;
-import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.reporting.rapidminer.ProcessPerformer;
 import org.seage.experimenter.reporting.rapidminer.RMProcess;
-//import org.seage.data.xml.XmlHelper;
 
 /**
  *
@@ -54,7 +52,7 @@ public class StatisticalReportCreator implements ILogReport
             new RMProcess( "rm-report2-p2.rmp" , "Sort by Pareto Rank"  , "Report 2" , Arrays.asList( "example set output" ) ),
             new RMProcess( "rm-report2-p3.rmp" , "Loop Examples"        , "Report 2" , Arrays.asList( "output 1" ) ),
             
-            new RMProcess( "rm-report2-p1.rmp" , "Sort by Pareto Rank"  , "Report 3" , Arrays.asList( "example set output" ) ),
+            new RMProcess( "rm-report3-p1.rmp" , "Sort (2)"             , "Report 3" , Arrays.asList( "example set output" ) ),
             new RMProcess( "rm-report2-p2.rmp" , "Sort by Pareto Rank"  , "Report 3" , Arrays.asList( "example set output" ) ),
             new RMProcess( "rm-report2-p3.rmp" , "Loop Examples"        , "Report 3" , Arrays.asList( "output 1" ) )
         };
@@ -87,8 +85,6 @@ public class StatisticalReportCreator implements ILogReport
         List<DataNode> dataNodes = _processPerformer.getProcessesDataNodes();
         for(DataNode dataNode : dataNodes)
         {
-//            XmlHelper.writeXml(dataNode, "C:/wamp/apps/"+_xslTemplates[counter].substring(0,_xslTemplates[counter].lastIndexOf('.'))+".xml");
-
             File outputDir = new File( REPORT_PATH + "/" + _xslTemplates[counter].substring(0,_xslTemplates[counter].lastIndexOf('.')) + ".html" );
             outputDir.createNewFile();
 

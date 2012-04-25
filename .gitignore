@@ -20,3 +20,18 @@ target/report/
 .classpath
 .project
 .settings/
+/seage-launcher/output
+/seage-launcher/report
+/seage-launcher/statistics
+/seage-launcher/target
+/seage-launcher/nb-configuration.xml
+/seage-launcher/nbactions.xml
+/seage-launcher/nbactions-experimenter FireflySearch.xml
+/seage-launcher/nbactions-experimenter genetic.xml
+/seage-launcher/nbactions-experimenter SAT Ant.xml
+/seage-launcher/nbactions-experimenter simaneal qap.xml
+/seage-launcher/nbactions-experimenter tabu QAP.xml
+/seage-launcher/nbactions-experimenter-tsp-1-10-sa.xml
+/seage-launcher/nbactions-experimetner tabusearch.xml
+/seage-launcher/nbactions-reporter.xml
+/seage-launcher/SEAGE-RM-REPO
