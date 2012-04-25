@@ -69,6 +69,9 @@ public class ProcessPerformer {
         Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, process.getRootOperator().createProcessTree(0));
 
         process.run();
+        
+        // Sinks are the results from process
+        // process.getRootOperator().getSubprocess(0).getInnerSinks().getPortByName("NAME OF PORT");
 
         Collection<Operator> operators = process.getAllOperators();
 
@@ -85,6 +88,7 @@ public class ProcessPerformer {
                 _exampleSetNodes.add( namedNode );
             }
         }
+        
     }
     
     public void performProcesses() throws Exception
