@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
-import org.seage.experimenter.Experimenter;
+import org.seage.experimenter.BasicExperimenter;
 import org.seage.logging.LogHelper;
 import org.seage.experimenter.reporting.LogReportCreator;
 import org.seage.experimenter.reporting.ReportManager;
@@ -86,10 +86,10 @@ public class Launcher {
             if (args.length >= 5) {
 //                List<String> algIDs = new ArrayList<String>();
 //                for(int i=5;i<)
-                new Experimenter().runExperiments(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]), Arrays.copyOfRange(args, 4, args.length));
+                new BasicExperimenter().runExperiments(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]), Arrays.copyOfRange(args, 4, args.length));
 
             } else if (args.length == 4) {
-                new Experimenter().runExperiments(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]));
+                new BasicExperimenter().runExperiments(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]));
             } else {
                 usage();
             }

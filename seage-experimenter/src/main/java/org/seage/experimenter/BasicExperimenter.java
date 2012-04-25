@@ -37,11 +37,11 @@ import org.seage.experimenter.config.RandomConfigurator;
  *
  * @author rick
  */
-public class Experimenter {
+public class BasicExperimenter implements IExperimenter {
 
     Configurator _configurator;
     
-    public Experimenter()
+    public BasicExperimenter()
     {
         _configurator = new RandomConfigurator();
     }
