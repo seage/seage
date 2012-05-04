@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
+import org.seage.experimenter.AdaptiveExperimenter;
 import org.seage.experimenter.BasicExperimenter;
 import org.seage.logging.LogHelper;
 import org.seage.experimenter.reporting.LogReportCreator;
@@ -83,15 +84,37 @@ public class Launcher {
 //            if(args.length==2 )
 //                new Experimenter().runExperiments(args[1]);
 //            else
-            if (args.length >= 5) {
-//                List<String> algIDs = new ArrayList<String>();
-//                for(int i=5;i<)
-                new BasicExperimenter().runExperiments(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]), Arrays.copyOfRange(args, 4, args.length));
+            
+            int indexCounter = 0;
+            if(args[1].equals("-a"))
+            {
+                indexCounter++;
+                if (args.length >= (5+indexCounter))
+                {
+                    new AdaptiveExperimenter().runExperiments(args[1+indexCounter], Integer.parseInt(args[2+indexCounter]), Long.parseLong(args[3+indexCounter]), Arrays.copyOfRange(args, 4+indexCounter, args.length));
 
-            } else if (args.length == 4) {
-                new BasicExperimenter().runExperiments(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]));
-            } else {
-                usage();
+                } else if (args.length == (4+indexCounter))
+                {
+                    new AdaptiveExperimenter().runExperiments(args[1+indexCounter], Integer.parseInt(args[2+indexCounter]), Long.parseLong(args[3+indexCounter]));
+                } 
+                else
+                {
+                    usage();
+                }
+            }
+            else
+            {            
+                if (args.length >= (5+indexCounter))
+                {
+    //                List<String> algIDs = new ArrayList<String>();
+    //                for(int i=5;i<)
+                    new BasicExperimenter().runExperiments(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]), Arrays.copyOfRange(args, 4, args.length));
+
+                } else if (args.length == (4+indexCounter)) {
+                    new BasicExperimenter().runExperiments(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]));
+                } else {
+                    usage();
+                }
             }
             return;
         }
@@ -128,7 +151,7 @@ public class Launcher {
         System.out.println("\t-list");
         System.out.println("\t-test [problem-id [algorithm-id]]");
         System.out.println("\t-config path-to-config");
-        System.out.println("\t-experiment problem-id num-runs timeoutS [algorithm-id [algorithm-id]*] ");
+        System.out.println("\t-experiment [-a]? problem-id num-runs timeoutS [algorithm-id [algorithm-id]*] ");
         System.out.println("\t-agents path-to-agent-config-xml");
         System.out.println("\t-report");
     }

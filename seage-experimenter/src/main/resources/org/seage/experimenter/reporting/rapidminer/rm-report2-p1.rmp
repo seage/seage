@@ -13,7 +13,7 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <parameter key="parallelize_main_process" value="false"/>
-    <process expanded="true" height="663" width="1094">
+    <process expanded="true" height="525" width="681">
       <operator activated="true" class="read_csv" compatibility="5.1.014" expanded="true" height="60" name="Read CSV" width="90" x="45" y="120">
         <parameter key="csv_file" value="report/report.csv"/>
         <parameter key="column_separators" value=";"/>
@@ -58,7 +58,7 @@
         <parameter key="read_not_matching_values_as_missings" value="true"/>
         <parameter key="datamanagement" value="double_array"/>
       </operator>
-      <operator activated="true" class="replace_missing_values" compatibility="5.1.014" expanded="true" height="94" name="Replace Missing Values" width="90" x="179" y="30">
+      <operator activated="true" class="replace_missing_values" compatibility="5.1.014" expanded="true" height="94" name="Replace Missing Values" width="90" x="180" y="30">
         <parameter key="return_preprocessing_model" value="false"/>
         <parameter key="create_view" value="false"/>
         <parameter key="attribute_filter_type" value="subset"/>
@@ -121,10 +121,15 @@
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
-      <operator activated="true" class="sort_by_pareto_rank" compatibility="5.1.014" expanded="true" height="76" name="Sort by Pareto Rank" width="90" x="447" y="30">
-        <parameter key="attributes" value="|InstanceID|AlgorithmID"/>
+      <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="Sort" width="90" x="447" y="30">
+        <parameter key="attribute_name" value="AlgorithmID"/>
+        <parameter key="sorting_direction" value="increasing"/>
       </operator>
-      <operator activated="false" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV" width="90" x="581" y="120">
+      <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="Sort (2)" width="90" x="581" y="120">
+        <parameter key="attribute_name" value="ProblemID"/>
+        <parameter key="sorting_direction" value="increasing"/>
+      </operator>
+      <operator activated="false" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV" width="90" x="447" y="345">
         <parameter key="csv_file" value="report/rm-report2-p1.csv"/>
         <parameter key="column_separator" value=";"/>
         <parameter key="write_attribute_names" value="true"/>
@@ -134,8 +139,9 @@
       </operator>
       <connect from_op="Read CSV" from_port="output" to_op="Replace Missing Values" to_port="example set input"/>
       <connect from_op="Replace Missing Values" from_port="example set output" to_op="Aggregate" to_port="example set input"/>
-      <connect from_op="Aggregate" from_port="example set output" to_op="Sort by Pareto Rank" to_port="example set input"/>
-      <connect from_op="Sort by Pareto Rank" from_port="example set output" to_port="result 1"/>
+      <connect from_op="Aggregate" from_port="example set output" to_op="Sort" to_port="example set input"/>
+      <connect from_op="Sort" from_port="example set output" to_op="Sort (2)" to_port="example set input"/>
+      <connect from_op="Sort (2)" from_port="example set output" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>

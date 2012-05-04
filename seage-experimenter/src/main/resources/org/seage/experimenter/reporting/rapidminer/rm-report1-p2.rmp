@@ -13,7 +13,7 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <parameter key="parallelize_main_process" value="false"/>
-    <process expanded="true" height="663" width="1094">
+    <process expanded="true" height="551" width="614">
       <operator activated="true" class="read_csv" compatibility="5.1.014" expanded="true" height="60" name="Read CSV" width="90" x="45" y="75">
         <parameter key="csv_file" value="report/report.csv"/>
         <parameter key="column_separators" value=";"/>
@@ -120,11 +120,11 @@
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
-      <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="Sort" width="90" x="447" y="210">
+      <operator activated="true" class="sort" compatibility="5.1.014" expanded="true" height="76" name="Sort" width="90" x="447" y="165">
         <parameter key="attribute_name" value="ExperimentID"/>
         <parameter key="sorting_direction" value="increasing"/>
       </operator>
-      <operator activated="false" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV" width="90" x="581" y="75">
+      <operator activated="false" class="write_csv" compatibility="5.1.014" expanded="true" height="60" name="Write CSV" width="90" x="447" y="30">
         <parameter key="csv_file" value="report/rm-report1-p2.csv"/>
         <parameter key="column_separator" value=";"/>
         <parameter key="write_attribute_names" value="true"/>

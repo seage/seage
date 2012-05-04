@@ -24,45 +24,79 @@
  */
 package org.seage.experimenter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import org.seage.aal.algorithm.ProblemProvider;
+import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
+import org.seage.experimenter.config.Configurator;
+import org.seage.experimenter.config.RandomConfigurator;
 import org.seage.experimenter.config.RandomConfiguratorEx;
 
 public class AdaptiveExperimenter implements IExperimenter {
     
+    Configurator _configurator;
+    
     public AdaptiveExperimenter()
     {
+        //########### BASIC EXPERIMENTER ############
+        _configurator = new RandomConfigurator();
+        //########### BASIC EXPERIMENTER ############
     }
     
-	@Override
-	public void runFromConfigFile(String configPath) throws Exception {
-		// TODO Auto-generated method stub
+    @Override
+    public void runFromConfigFile(String configPath) throws Exception
+    {
+        //########### BASIC EXPERIMENTER ############
+        ExperimentRunner.run(configPath, Long.MAX_VALUE);
+        //########### BASIC EXPERIMENTER ############
+    }
+    
+    @Override
+    public void runExperiments(String problemID, int numRuns, long timeoutS) throws Exception
+    {
+        //########### BASIC EXPERIMENTER ############
+        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
+        
+        List<String> algIDs = new ArrayList<String>();
+        for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes("Algorithm"))
+            algIDs.add(alg.getValueStr("id"));
+        
+        runExperiments(problemID, numRuns, timeoutS, algIDs.toArray(new String[]{}));
+        
+        //########### BASIC EXPERIMENTER ############
+    }
 
-	}
+    @Override
+    public void runExperiments(String problemID, int numRuns, long timeoutS,
+                    String[] algorithmIDs) throws Exception 
+    {
+        //########### BASIC EXPERIMENTER ############
+        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
+        
+        //ic.prepareConfigs(pi);
+        List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
+        for(String algID : algorithmIDs)
+            configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
+                
+        ExperimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
+        //########### BASIC EXPERIMENTER ############
+        
+//            DataNode stats = null;
+//            for(int i=0;i<5/*10,15 ?*/;i++)
+//            {			
+//                    RandomConfiguratorEx configurator = new RandomConfiguratorEx(stats);
+//
+//                    // run experiments
+//                    // ...
+//
+//                    stats = null; // getStatistics(...);
+//            }
 
-	@Override
-	public void runExperiments(String problemID, int numRuns, long timeoutS)
-			throws Exception {
-		// TODO Auto-generated method stub
+            // generate report
 
-	}
-
-	@Override
-	public void runExperiments(String problemID, int numRuns, long timeoutS,
-			String[] algorithmIDs) throws Exception 
-	{
-		DataNode stats = null;
-		for(int i=0;i<5/*10,15 ?*/;i++)
-		{			
-			RandomConfiguratorEx configurator = new RandomConfiguratorEx(stats);
-			
-			// run experiments
-			// ...
-			
-			stats = null; // getStatistics(...);
-		}
-		
-		// generate report
-
-	}
+    }
 
 }

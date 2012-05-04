@@ -48,7 +48,7 @@ public class StatisticalReportCreator implements ILogReport
             new RMProcess( "rm-report1-p2.rmp" , "Sort"                 , "Report 1" , Arrays.asList( "example set output" ) ),
             new RMProcess( "rm-report1-p3.rmp" , "Loop Examples"        , "Report 1" , Arrays.asList( "output 1" ) ),//, "output 2"
             
-            new RMProcess( "rm-report2-p1.rmp" , "Sort by Pareto Rank"  , "Report 2" , Arrays.asList( "example set output" ) ),
+            new RMProcess( "rm-report2-p1.rmp" , "Sort (2)"             , "Report 2" , Arrays.asList( "example set output" ) ),
             new RMProcess( "rm-report2-p2.rmp" , "Sort by Pareto Rank"  , "Report 2" , Arrays.asList( "example set output" ) ),
             new RMProcess( "rm-report2-p3.rmp" , "Loop Examples"        , "Report 2" , Arrays.asList( "output 1" ) ),
             
