@@ -38,10 +38,14 @@ public class RandomConfiguratorEx extends Configurator
     // Statistical data on previous run
     private DataNode _statistics;
 
-    public RandomConfiguratorEx(DataNode statistics)
+    public RandomConfiguratorEx()
     {
             super();
-            _statistics = statistics;
+    }
+    
+    public void setStatistics(DataNode statistics)
+    {
+        _statistics = statistics;
     }
 
     @Override
