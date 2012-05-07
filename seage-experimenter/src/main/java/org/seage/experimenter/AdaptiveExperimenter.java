@@ -34,7 +34,6 @@ import org.seage.data.DataNode;
 import org.seage.experimenter.config.Configurator;
 import org.seage.experimenter.config.RandomConfigurator;
 import org.seage.experimenter.config.RandomConfiguratorEx;
-import org.seage.experimenter.reporting.ILogReport;
 import org.seage.experimenter.reporting.LogReportCreator;
 import org.seage.experimenter.reporting.rapidminer.ProcessPerformer;
 import org.seage.experimenter.reporting.rapidminer.RMProcess;
@@ -42,6 +41,7 @@ import org.seage.experimenter.reporting.rapidminer.RMProcess;
 public class AdaptiveExperimenter implements IExperimenter {
     
     Configurator _configurator;
+    Configurator _configuratorAdaptive;
     ProcessPerformer _processPerformer;
     
     public AdaptiveExperimenter ()throws Exception
@@ -81,26 +81,32 @@ public class AdaptiveExperimenter implements IExperimenter {
                     String[] algorithmIDs) throws Exception 
     {
         //########### BASIC EXPERIMENTER ############
-//        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-//        
-//        //ic.prepareConfigs(pi);
-//        List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
-//        for(String algID : algorithmIDs)
-//            configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
+        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
+        
+        //ic.prepareConfigs(pi);
+        List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
+        for(String algID : algorithmIDs)
+            configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
 //                
 //        ExperimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
-        //########### BASIC EXPERIMENTER ############
-        
+        //########### BASIC EXPERIMENTER ############        
         
         LogReportCreator reporter = new LogReportCreator();
         reporter.report("1336133780575");
         
-        RMProcess process = new RMProcess("rm-report1-p4.rmp", "Aggregate (3)", "Report 1", Arrays.asList( "example set output" ));
+        RMProcess process = new RMProcess("rm-report1-p4.rmp", "AggregateOutput", "Report 1", Arrays.asList( "example set output" ));
         _processPerformer.addProcess( process );
         _processPerformer.performProcesses();
         
         List<DataNode> dataNodes = _processPerformer.getProcessesDataNodes();
         
+        _configuratorAdaptive = new RandomConfiguratorEx( dataNodes.get(0) );
+        
+        for(String algID : algorithmIDs)
+            _configuratorAdaptive.prepareConfigs(pi, algID, numRuns);
+        
+        configs = new ArrayList<ProblemConfig>();
+//        ExperimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
         
 //            DataNode stats = null;
 //            for(int i=0;i<5/*10,15 ?*/;i++)
