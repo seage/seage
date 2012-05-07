@@ -34,35 +34,39 @@ import org.seage.data.xml.XmlHelper;
  */
 class ExperimentRunner {
 
-    private static int _numExperimentAttempts = 5;
-    private ExperimentRunner(){}
+    private int _numExperimentAttempts = 5;
+    private long _experimentID;
     
-    public static void run(ProblemConfig config, long timeoutS) throws Exception
+    public ExperimentRunner(long experimentID)
+    {
+        _experimentID = experimentID;
+    }
+    
+    public void run(ProblemConfig config, long timeoutS) throws Exception
     {
         run(new ProblemConfig[]{config}, timeoutS);
     }
 
-    public static void run(ProblemConfig[] configs, long timeoutS) throws Exception
+    public void run(ProblemConfig[] configs, long timeoutS) throws Exception
     {
-        int ix=0;
-        long experimentID = System.currentTimeMillis();
+        int ix=0;        
         ExperimentTask[] tasks = new ExperimentTask[configs.length*_numExperimentAttempts];
         for(int i=0;i<configs.length;i++)
             for(int j=0;j<_numExperimentAttempts;j++)
             {
-                tasks[ix++] = new ExperimentTask(experimentID, j+1, timeoutS, configs[i]);
+                tasks[ix++] = new ExperimentTask(_experimentID, j+1, timeoutS, configs[i]);
             }
 
         runRunnableTasks(tasks);
     }
 
-    public static void run(String configPath, long timeoutS) throws Exception
+    public void run(String configPath, long timeoutS) throws Exception
     {
         ProblemConfig config = new ProblemConfig(XmlHelper.readXml(new File(configPath)));
         run(config, timeoutS);
     }
 
-    private static void runRunnableTasks(Runnable[] tasks) throws Exception
+    private void runRunnableTasks(Runnable[] tasks) throws Exception
     {
         int nrOfProcessors = Runtime.getRuntime().availableProcessors();
 

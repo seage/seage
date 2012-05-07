@@ -40,14 +40,17 @@ import org.seage.experimenter.config.RandomConfigurator;
 public class BasicExperimenter implements IExperimenter {
 
     Configurator _configurator;
+    ExperimentRunner _experimentRunner;
     
     public BasicExperimenter()
     {
         _configurator = new RandomConfigurator();
+        long experimentID = System.currentTimeMillis();
+        _experimentRunner = new ExperimentRunner( experimentID );
     }
     
     public void runFromConfigFile(String configPath) throws Exception {
-        ExperimentRunner.run(configPath, Long.MAX_VALUE);
+        _experimentRunner.run(configPath, Long.MAX_VALUE);
         
     }
 
@@ -69,7 +72,7 @@ public class BasicExperimenter implements IExperimenter {
         for(String algID : algorithmIDs)
             configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
                 
-        ExperimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
+        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
     }
 
 }

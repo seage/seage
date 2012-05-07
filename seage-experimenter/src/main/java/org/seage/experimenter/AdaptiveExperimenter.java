@@ -43,11 +43,15 @@ public class AdaptiveExperimenter implements IExperimenter {
     Configurator _configurator;
     Configurator _configuratorAdaptive;
     ProcessPerformer _processPerformer;
+    ExperimentRunner _experimentRunner;
+    private long _experimentID;
     
     public AdaptiveExperimenter ()throws Exception
     {
         //########### BASIC EXPERIMENTER ############
         _configurator = new RandomConfigurator();
+        _experimentID = System.currentTimeMillis();
+        _experimentRunner = new ExperimentRunner( _experimentID );
         //########### BASIC EXPERIMENTER ############
         
         _processPerformer = new ProcessPerformer();
@@ -57,7 +61,7 @@ public class AdaptiveExperimenter implements IExperimenter {
     public void runFromConfigFile(String configPath) throws Exception
     {
         //########### BASIC EXPERIMENTER ############
-        ExperimentRunner.run(configPath, Long.MAX_VALUE);
+        _experimentRunner.run(configPath, Long.MAX_VALUE);
         //########### BASIC EXPERIMENTER ############
     }
     
@@ -65,14 +69,13 @@ public class AdaptiveExperimenter implements IExperimenter {
     public void runExperiments(String problemID, int numRuns, long timeoutS) throws Exception
     {
         //########### BASIC EXPERIMENTER ############
-//        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-//        
-//        List<String> algIDs = new ArrayList<String>();
-//        for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes("Algorithm"))
-//            algIDs.add(alg.getValueStr("id"));
-//        
-//        runExperiments(problemID, numRuns, timeoutS, algIDs.toArray(new String[]{}));
+        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
         
+        List<String> algIDs = new ArrayList<String>();
+        for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes("Algorithm"))
+            algIDs.add(alg.getValueStr("id"));
+        
+        runExperiments(problemID, numRuns, timeoutS, algIDs.toArray(new String[]{}));        
         //########### BASIC EXPERIMENTER ############
     }
 
@@ -82,17 +85,16 @@ public class AdaptiveExperimenter implements IExperimenter {
     {
         //########### BASIC EXPERIMENTER ############
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-        
-        //ic.prepareConfigs(pi);
+
         List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
         for(String algID : algorithmIDs)
             configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
-//                
-//        ExperimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
-        //########### BASIC EXPERIMENTER ############        
+                
+        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
+        //########### BASIC EXPERIMENTER ############
         
         LogReportCreator reporter = new LogReportCreator();
-        reporter.report("1336133780575");
+        reporter.report( String.valueOf( _experimentID ) );
         
         RMProcess process = new RMProcess("rm-report1-p4.rmp", "AggregateOutput", "Report 1", Arrays.asList( "example set output" ));
         _processPerformer.addProcess( process );
@@ -102,24 +104,12 @@ public class AdaptiveExperimenter implements IExperimenter {
         
         _configuratorAdaptive = new RandomConfiguratorEx( dataNodes.get(0) );
         
-        for(String algID : algorithmIDs)
-            _configuratorAdaptive.prepareConfigs(pi, algID, numRuns);
-        
         configs = new ArrayList<ProblemConfig>();
-//        ExperimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
         
-//            DataNode stats = null;
-//            for(int i=0;i<5/*10,15 ?*/;i++)
-//            {			
-//                    RandomConfiguratorEx configurator = new RandomConfiguratorEx(stats);
-//
-//                    // run experiments
-//                    // ...
-//
-//                    stats = null; // getStatistics(...);
-//            }
-
-            // generate report
+        for(String algID : algorithmIDs)
+            configs.addAll(Arrays.asList(_configuratorAdaptive.prepareConfigs(pi, algID, numRuns)));
+        
+        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
 
     }
 

@@ -95,8 +95,8 @@ public class RandomConfiguratorEx extends Configurator
                 paramInfo.putValue("configID", FileHelper.md5fromString(XmlHelper.getStringFromDocument(paramInfo.toXml())));
                 results.add(paramInfo);  
             }
-        }        
-
+        }
+        
         return results.toArray(new ProblemConfig[0]);
     }
 
