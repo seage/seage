@@ -38,18 +38,18 @@ class ExperimentRunner {
 
     private int _numExperimentAttempts = 5;
     
-    public ExperimentRunner()
-    {    }
+    public ExperimentRunner() {}
     
-    public void run(ProblemConfig config, long timeoutS, long experimentID) throws Exception
+    public long run(ProblemConfig config, long timeoutS) throws Exception
     {
-        run(new ProblemConfig[]{config}, timeoutS, experimentID);
+        return run(new ProblemConfig[]{config}, timeoutS);
     }
 
-    public void run(ProblemConfig[] configs, long timeoutS, long experimentID) throws Exception
+    public long run(ProblemConfig[] configs, long timeoutS) throws Exception
     {
         int ix=0;        
         ExperimentTask[] tasks = new ExperimentTask[configs.length*_numExperimentAttempts];
+        long experimentID = System.currentTimeMillis();
         for(int i=0;i<configs.length;i++)
             for(int j=0;j<_numExperimentAttempts;j++)
             {
@@ -57,12 +57,14 @@ class ExperimentRunner {
             }
 
         runRunnableTasks(tasks);
+        
+        return experimentID;
     }
 
-    public void run(String configPath, long timeoutS, long experimentID) throws Exception
+    public long run(String configPath, long timeoutS) throws Exception
     {
         ProblemConfig config = new ProblemConfig(XmlHelper.readXml(new File(configPath)));
-        run(config, timeoutS, experimentID);
+        return run(config, timeoutS);        
     }
 
     private void runRunnableTasks(Runnable[] tasks) throws Exception

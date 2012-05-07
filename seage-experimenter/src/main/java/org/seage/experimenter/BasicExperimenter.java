@@ -43,7 +43,6 @@ public class BasicExperimenter implements IExperimenter {
 
     Configurator _configurator;
     ExperimentRunner _experimentRunner;
-    long _experimentID;
     
     public BasicExperimenter()
     {
@@ -53,8 +52,7 @@ public class BasicExperimenter implements IExperimenter {
     }
     
     public void runFromConfigFile(String configPath) throws Exception {
-        _experimentID = System.currentTimeMillis();
-        _experimentRunner.run(configPath, Long.MAX_VALUE, _experimentID);        
+        _experimentRunner.run(configPath, Long.MAX_VALUE);        
     }
 
     public void runExperiments(String problemID, int numRuns, long timeoutS) throws Exception {
@@ -74,9 +72,8 @@ public class BasicExperimenter implements IExperimenter {
         List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
         for(String algID : algorithmIDs)
             configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
-                
-        _experimentID = System.currentTimeMillis();
-        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS, _experimentID);
+
+        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
     }
 
 }

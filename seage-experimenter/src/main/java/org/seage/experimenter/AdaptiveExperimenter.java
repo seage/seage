@@ -59,9 +59,8 @@ public class AdaptiveExperimenter implements IExperimenter {
     @Override
     public void runFromConfigFile(String configPath) throws Exception
     {
-        _experimentID = System.currentTimeMillis();
         //########### BASIC EXPERIMENTER ############
-        _experimentRunner.run(configPath, Long.MAX_VALUE, _experimentID);
+        _experimentRunner.run(configPath, Long.MAX_VALUE);
         //########### BASIC EXPERIMENTER ############
     }
     
@@ -89,9 +88,8 @@ public class AdaptiveExperimenter implements IExperimenter {
         List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
         for(String algID : algorithmIDs)
             configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
-                
-        _experimentID = System.currentTimeMillis();
-        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS, _experimentID);
+
+        _experimentID = _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
         //########### BASIC EXPERIMENTER ############
         
         LogReportCreator reporter = new LogReportCreator();
@@ -102,16 +100,20 @@ public class AdaptiveExperimenter implements IExperimenter {
         _processPerformer.performProcesses();
         
         List<DataNode> dataNodes = _processPerformer.getProcessesDataNodes();
-        
-        _configuratorAdaptive = new RandomConfiguratorEx( dataNodes.get(0) );
+
+        _configuratorAdaptive = new RandomConfiguratorEx( prepareDataForConfig( dataNodes.get(0) ) );
         
         configs = new ArrayList<ProblemConfig>();
         
         for(String algID : algorithmIDs)
             configs.addAll(Arrays.asList(_configuratorAdaptive.prepareConfigs(pi, algID, numRuns)));
-        
-        _experimentID = System.currentTimeMillis();
-        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS, _experimentID);
+
+        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
+    }
+    
+    private DataNode prepareDataForConfig(DataNode statistics)
+    {
+        return statistics;
     }
 
 }
