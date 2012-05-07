@@ -19,6 +19,8 @@
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
+ *     Jan Zmatlik
+ *     - Modified
  */
 
 package org.seage.experimenter;
@@ -35,35 +37,32 @@ import org.seage.data.xml.XmlHelper;
 class ExperimentRunner {
 
     private int _numExperimentAttempts = 5;
-    private long _experimentID;
     
-    public ExperimentRunner(long experimentID)
-    {
-        _experimentID = experimentID;
-    }
+    public ExperimentRunner()
+    {    }
     
-    public void run(ProblemConfig config, long timeoutS) throws Exception
+    public void run(ProblemConfig config, long timeoutS, long experimentID) throws Exception
     {
-        run(new ProblemConfig[]{config}, timeoutS);
+        run(new ProblemConfig[]{config}, timeoutS, experimentID);
     }
 
-    public void run(ProblemConfig[] configs, long timeoutS) throws Exception
+    public void run(ProblemConfig[] configs, long timeoutS, long experimentID) throws Exception
     {
         int ix=0;        
         ExperimentTask[] tasks = new ExperimentTask[configs.length*_numExperimentAttempts];
         for(int i=0;i<configs.length;i++)
             for(int j=0;j<_numExperimentAttempts;j++)
             {
-                tasks[ix++] = new ExperimentTask(_experimentID, j+1, timeoutS, configs[i]);
+                tasks[ix++] = new ExperimentTask(experimentID, j+1, timeoutS, configs[i]);
             }
 
         runRunnableTasks(tasks);
     }
 
-    public void run(String configPath, long timeoutS) throws Exception
+    public void run(String configPath, long timeoutS, long experimentID) throws Exception
     {
         ProblemConfig config = new ProblemConfig(XmlHelper.readXml(new File(configPath)));
-        run(config, timeoutS);
+        run(config, timeoutS, experimentID);
     }
 
     private void runRunnableTasks(Runnable[] tasks) throws Exception

@@ -50,8 +50,7 @@ public class AdaptiveExperimenter implements IExperimenter {
     {
         //########### BASIC EXPERIMENTER ############
         _configurator = new RandomConfigurator();
-        _experimentID = System.currentTimeMillis();
-        _experimentRunner = new ExperimentRunner( _experimentID );
+        _experimentRunner = new ExperimentRunner();
         //########### BASIC EXPERIMENTER ############
         
         _processPerformer = new ProcessPerformer();
@@ -60,8 +59,9 @@ public class AdaptiveExperimenter implements IExperimenter {
     @Override
     public void runFromConfigFile(String configPath) throws Exception
     {
+        _experimentID = System.currentTimeMillis();
         //########### BASIC EXPERIMENTER ############
-        _experimentRunner.run(configPath, Long.MAX_VALUE);
+        _experimentRunner.run(configPath, Long.MAX_VALUE, _experimentID);
         //########### BASIC EXPERIMENTER ############
     }
     
@@ -90,7 +90,8 @@ public class AdaptiveExperimenter implements IExperimenter {
         for(String algID : algorithmIDs)
             configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
                 
-        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
+        _experimentID = System.currentTimeMillis();
+        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS, _experimentID);
         //########### BASIC EXPERIMENTER ############
         
         LogReportCreator reporter = new LogReportCreator();
@@ -109,8 +110,8 @@ public class AdaptiveExperimenter implements IExperimenter {
         for(String algID : algorithmIDs)
             configs.addAll(Arrays.asList(_configuratorAdaptive.prepareConfigs(pi, algID, numRuns)));
         
-        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
-
+        _experimentID = System.currentTimeMillis();
+        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS, _experimentID);
     }
 
 }

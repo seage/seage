@@ -19,6 +19,8 @@
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
+ *     Jan Zmatlik
+ *     - Modified
  */
 package org.seage.experimenter;
 
@@ -41,17 +43,18 @@ public class BasicExperimenter implements IExperimenter {
 
     Configurator _configurator;
     ExperimentRunner _experimentRunner;
+    long _experimentID;
     
     public BasicExperimenter()
     {
         _configurator = new RandomConfigurator();
-        long experimentID = System.currentTimeMillis();
-        _experimentRunner = new ExperimentRunner( experimentID );
+        
+        _experimentRunner = new ExperimentRunner();
     }
     
     public void runFromConfigFile(String configPath) throws Exception {
-        _experimentRunner.run(configPath, Long.MAX_VALUE);
-        
+        _experimentID = System.currentTimeMillis();
+        _experimentRunner.run(configPath, Long.MAX_VALUE, _experimentID);        
     }
 
     public void runExperiments(String problemID, int numRuns, long timeoutS) throws Exception {
@@ -72,7 +75,8 @@ public class BasicExperimenter implements IExperimenter {
         for(String algID : algorithmIDs)
             configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
                 
-        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
+        _experimentID = System.currentTimeMillis();
+        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS, _experimentID);
     }
 
 }
