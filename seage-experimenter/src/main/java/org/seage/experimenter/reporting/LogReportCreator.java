@@ -45,12 +45,20 @@ public class LogReportCreator implements ILogReport {
     private static final String XSL_TEMPLATE        = "report2csv.xsl";
     private static final String OUTPUT_CSV_FILE     = "report.csv";    
     private static final String CSV_HEADER          = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;Time;";
+    
+    private String _experimentID;
 
     public LogReportCreator() {}
     
     @Override
     public void report() throws Exception
     {
+        createReport();
+    }
+    
+    public void report(String experimentID) throws Exception
+    {
+        _experimentID = experimentID;
         createReport();
     }
     
@@ -75,9 +83,20 @@ public class LogReportCreator implements ILogReport {
                         ( new FileOutputStream(output));
         
         FilenameFilter filter = new FilenameFilter() {
+            @Override
             public boolean accept(File arg0, String arg1) {
                 if(arg0.isDirectory()) 
-                    return true;
+                {
+                    if(_experimentID == null)
+                        return true;
+                    else
+                    {
+                        if(!arg1.equals( _experimentID ))
+                            return false;
+                        else
+                            return true;
+                    }
+                }
                 else 
                     return false;
             }
@@ -95,7 +114,7 @@ public class LogReportCreator implements ILogReport {
         outputStream.getOutputStream().write( ( CSV_HEADER + sb.append("\n").toString() ).getBytes() );
 
         for(String dirName : logDir.list(filter))
-        {            
+        {
             System.err.println(dirName);
             
             File logDirDir = new File(logDir.getPath() + "/" + dirName);

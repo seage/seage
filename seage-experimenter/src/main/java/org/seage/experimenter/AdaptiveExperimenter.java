@@ -34,16 +34,23 @@ import org.seage.data.DataNode;
 import org.seage.experimenter.config.Configurator;
 import org.seage.experimenter.config.RandomConfigurator;
 import org.seage.experimenter.config.RandomConfiguratorEx;
+import org.seage.experimenter.reporting.ILogReport;
+import org.seage.experimenter.reporting.LogReportCreator;
+import org.seage.experimenter.reporting.rapidminer.ProcessPerformer;
+import org.seage.experimenter.reporting.rapidminer.RMProcess;
 
 public class AdaptiveExperimenter implements IExperimenter {
     
     Configurator _configurator;
+    ProcessPerformer _processPerformer;
     
-    public AdaptiveExperimenter()
+    public AdaptiveExperimenter ()throws Exception
     {
         //########### BASIC EXPERIMENTER ############
         _configurator = new RandomConfigurator();
         //########### BASIC EXPERIMENTER ############
+        
+        _processPerformer = new ProcessPerformer();
     }
     
     @Override
@@ -58,13 +65,13 @@ public class AdaptiveExperimenter implements IExperimenter {
     public void runExperiments(String problemID, int numRuns, long timeoutS) throws Exception
     {
         //########### BASIC EXPERIMENTER ############
-        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-        
-        List<String> algIDs = new ArrayList<String>();
-        for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes("Algorithm"))
-            algIDs.add(alg.getValueStr("id"));
-        
-        runExperiments(problemID, numRuns, timeoutS, algIDs.toArray(new String[]{}));
+//        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
+//        
+//        List<String> algIDs = new ArrayList<String>();
+//        for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes("Algorithm"))
+//            algIDs.add(alg.getValueStr("id"));
+//        
+//        runExperiments(problemID, numRuns, timeoutS, algIDs.toArray(new String[]{}));
         
         //########### BASIC EXPERIMENTER ############
     }
@@ -74,15 +81,26 @@ public class AdaptiveExperimenter implements IExperimenter {
                     String[] algorithmIDs) throws Exception 
     {
         //########### BASIC EXPERIMENTER ############
-        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-        
-        //ic.prepareConfigs(pi);
-        List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
-        for(String algID : algorithmIDs)
-            configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
-                
-        ExperimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
+//        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
+//        
+//        //ic.prepareConfigs(pi);
+//        List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
+//        for(String algID : algorithmIDs)
+//            configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
+//                
+//        ExperimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
         //########### BASIC EXPERIMENTER ############
+        
+        
+        LogReportCreator reporter = new LogReportCreator();
+        reporter.report("1336133780575");
+        
+        RMProcess process = new RMProcess("rm-report1-p4.rmp", "Aggregate (3)", "Report 1", Arrays.asList( "example set output" ));
+        _processPerformer.addProcess( process );
+        _processPerformer.performProcesses();
+        
+        List<DataNode> dataNodes = _processPerformer.getProcessesDataNodes();
+        
         
 //            DataNode stats = null;
 //            for(int i=0;i<5/*10,15 ?*/;i++)
