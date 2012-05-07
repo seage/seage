@@ -38,15 +38,16 @@ public class RandomConfiguratorEx extends Configurator
     // Statistical data on previous run
     private DataNode _statistics;
 
-    public RandomConfiguratorEx()
+    public RandomConfiguratorEx(DataNode statistics)
     {
             super();
+            _statistics = statistics;
     }
     
-    public void setStatistics(DataNode statistics)
-    {
-        _statistics = statistics;
-    }
+//    public void setStatistics(DataNode statistics)
+//    {
+//        _statistics = statistics;
+//    }
 
     @Override
     public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception

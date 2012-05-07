@@ -101,18 +101,35 @@ public class AdaptiveExperimenter implements IExperimenter {
         
         List<DataNode> dataNodes = _processPerformer.getProcessesDataNodes();
 
-        _configuratorAdaptive = new RandomConfiguratorEx( prepareDataForConfig( dataNodes.get(0) ) );
+        _configuratorAdaptive = new RandomConfiguratorEx(dataNodes.get(0));
         
         configs = new ArrayList<ProblemConfig>();
         
         for(String algID : algorithmIDs)
+        {
+            //prepareDataForConfig( pi , dataNodes.get(0) , algID )
             configs.addAll(Arrays.asList(_configuratorAdaptive.prepareConfigs(pi, algID, numRuns)));
+        }
 
         _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
     }
     
-    private DataNode prepareDataForConfig(DataNode statistics)
+    private DataNode prepareDataForConfig(ProblemInfo problemInfo, DataNode statistics, String algID) throws Exception
     {
+        DataNode paramIntervals = new DataNode("ParamIntervals");
+        
+        for(DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
+        {
+            DataNode param = new DataNode("Parameter");
+            String parameterName = paramNode.getValueStr("name");
+            param.putValue("name", parameterName);
+            
+            param.putValue(parameterName, "min");
+            param.putValue(parameterName, "max");
+            
+            paramIntervals.putDataNode( param );
+        }
+        
         return statistics;
     }
 
