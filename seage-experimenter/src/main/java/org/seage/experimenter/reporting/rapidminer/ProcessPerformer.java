@@ -72,6 +72,9 @@ public class ProcessPerformer {
         
         // Sinks are the results from process
         // process.getRootOperator().getSubprocess(0).getInnerSinks().getPortByName("NAME OF PORT");
+        
+//        for(String s : process.getRootOperator().getSubprocess(0).getInnerSinks().getPortNames())
+//            System.out.println(s);
 
         Collection<Operator> operators = process.getAllOperators();
 

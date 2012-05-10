@@ -89,12 +89,13 @@ public class AdaptiveExperimenter implements IExperimenter {
         for(String algID : algorithmIDs)
             configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
 
-        _experimentID = _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
+        //_experimentID = _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
         //########### BASIC EXPERIMENTER ############
         
         LogReportCreator reporter = new LogReportCreator();
-        reporter.report( String.valueOf( _experimentID ) );
-        
+        //reporter.report( String.valueOf( _experimentID ) );        
+        reporter.report( "1336427846038" );
+                
         RMProcess process = new RMProcess("rm-report1-p4.rmp", "AggregateOutput", "Report 1", Arrays.asList( "example set output" ));
         _processPerformer.addProcess( process );
         _processPerformer.performProcesses();
@@ -111,7 +112,7 @@ public class AdaptiveExperimenter implements IExperimenter {
             configs.addAll(Arrays.asList(_configuratorAdaptive.prepareConfigs(pi, algID, numRuns)));
         }
 
-        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
+        //_experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
     }
     
     private DataNode prepareDataForConfig(ProblemInfo problemInfo, DataNode statistics, String algID) throws Exception
@@ -122,10 +123,12 @@ public class AdaptiveExperimenter implements IExperimenter {
         {
             DataNode param = new DataNode("Parameter");
             String parameterName = paramNode.getValueStr("name");
-            param.putValue("name", parameterName);
             
-            param.putValue(parameterName, "min");
-            param.putValue(parameterName, "max");
+            param.putValue("name", parameterName);            
+            param.putValue("min", 0);
+            param.putValue("max", 0);
+            param.putValue("average", 0);
+            param.putValue("deviation", 0);
             
             paramIntervals.putDataNode( param );
         }

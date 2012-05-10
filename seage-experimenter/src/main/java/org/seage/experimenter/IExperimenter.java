@@ -23,7 +23,7 @@
 package org.seage.experimenter;
 
 public interface IExperimenter {
-	public void runFromConfigFile(String configPath) throws Exception;
+    public void runFromConfigFile(String configPath) throws Exception;
     public void runExperiments(String problemID, int numRuns, long timeoutS) throws Exception ;
     public void runExperiments(String problemID, int numRuns, long timeoutS, String[] algorithmIDs) throws Exception ;
 }
