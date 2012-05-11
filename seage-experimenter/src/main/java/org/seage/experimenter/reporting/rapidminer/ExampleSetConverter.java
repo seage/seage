@@ -101,6 +101,11 @@ public class ExampleSetConverter {
         return attributesNode;
     }
     
+    /**
+     * Method performs a conversion from ExampleSet to DataNode without generating Attributes
+     * @param ExampleSet exampleSet is a data structure from RapidMiner API
+     * @return DataNode
+     */
     private static DataNode convertToDataNodeWithoutAttributes(ExampleSet exampleSet) throws Exception
     {
         DataNode exampleSetNode = new DataNode( ROOT_NODE );

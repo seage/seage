@@ -59,22 +59,45 @@ public class ProcessPerformer {
     {
         return _processes;
     }
+    
+    /**
+     * @param RMProcess rmProcess - instance of RMProcess
+     * 
+     * Method performs a defined RapidMiner proces. Output is setted from process sinks.
+     */
+    public void performProcessThroughSinks(RMProcess rmProcess) throws Exception
+    {
+        // RapidMiner process inicialization
+        Process process = new Process( getClass().getResourceAsStream( rmProcess.getResourceName() ) );
+        process.setProcessLocation( new FileProcessLocation( new File(".") ) );
+        
+        process.run();
+        
+        NamedIOObjectNode namedNode = new NamedIOObjectNode();
+        namedNode.setRmProcess( rmProcess );
+        
+        for(String port : rmProcess.getOperatorOutputPorts())
+        {
+            namedNode.addDataFromOutputPort( port , process.getRootOperator().getSubprocess(0).getInnerSinks().getPortByName( port ).getAnyDataOrNull() );
+        }
+        
+        _exampleSetNodes.add( namedNode );
+    }
 
+    /**
+     * @param RMProcess rmProcess - instance of RMProcess
+     * 
+     * Method performs a defined RapidMiner proces. Output is setted from defined operator and his ports
+     */
     public void performProcess(RMProcess rmProcess) throws Exception
     {
+        // RapidMiner process inicialization
         Process process = new Process( getClass().getResourceAsStream( rmProcess.getResourceName() ) );
-        process.setProcessLocation( new FileProcessLocation( new File(".") ) );        
-        
-        // TODO: B - Info only for debug, after that they'll be removed        
+        process.setProcessLocation( new FileProcessLocation( new File(".") ) );   
+    
         Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, process.getRootOperator().createProcessTree(0));
 
         process.run();
-        
-        // Sinks are the results from process
-        // process.getRootOperator().getSubprocess(0).getInnerSinks().getPortByName("NAME OF PORT");
-        
-//        for(String s : process.getRootOperator().getSubprocess(0).getInnerSinks().getPortNames())
-//            System.out.println(s);
 
         Collection<Operator> operators = process.getAllOperators();
 
@@ -90,10 +113,12 @@ public class ProcessPerformer {
    
                 _exampleSetNodes.add( namedNode );
             }
-        }
-        
+        }        
     }
     
+    /**
+     * Iterates over all defined RMProcesses and preform them.
+     */
     public void performProcesses() throws Exception
     {
         for(RMProcess process : _processes)

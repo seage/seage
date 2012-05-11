@@ -44,10 +44,12 @@ public class RandomConfiguratorEx extends Configurator
             _statistics = statistics;
     }
     
-//    public void setStatistics(DataNode statistics)
-//    {
-//        _statistics = statistics;
-//    }
+    public ProblemConfig[] prepareConfigs(DataNode paramInfo, ProblemInfo problemInfo, String algID, int numConfigs) throws Exception
+    {
+        _statistics = paramInfo;        
+        
+        return prepareConfigs(problemInfo, algID, numConfigs);
+    }
 
     @Override
     public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception
@@ -80,17 +82,17 @@ public class RandomConfiguratorEx extends Configurator
             instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("name", inst.getValue("name"));
             instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("type", inst.getValue("type"));
             instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("path", inst.getValue("path"));
-            
-            // Spatny poradi parametru
-            //Collections.reverse(problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"));
-            
+
             for(int i = 0; i < numConfigs; i++)
             {
                 ProblemConfig paramInfo = (ProblemConfig) instanceCfg.clone();            
                 for(DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
                 {
                     String parameterName = paramNode.getValueStr("name");
-                    String parameterValue = _statistics.getDataNode("ExampleSet").getDataNode("Examples").getDataNode("Example").getDataNodes().get(j).getValueStr( "value" );
+                    
+                    double min = _statistics.getDataNodes().get(j).getValueDouble("min");
+                    double max = _statistics.getDataNodes().get(j).getValueDouble("max");
+                    double parameterValue =  min + (max-min)*Math.random();
 
                     paramInfo.getDataNode("Algorithm").getDataNode("Parameters").putValue(parameterName, parameterValue);
                     j++;
@@ -100,8 +102,7 @@ public class RandomConfiguratorEx extends Configurator
                 paramInfo.putValue("configID", FileHelper.md5fromString(XmlHelper.getStringFromDocument(paramInfo.toXml())));
                 results.add(paramInfo);  
             }
-        }
-        
+        }        
         return results.toArray(new ProblemConfig[0]);
     }
 

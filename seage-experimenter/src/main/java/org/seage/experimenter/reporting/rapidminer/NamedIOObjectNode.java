@@ -21,6 +21,9 @@ import org.seage.data.DataNode;
  *
  * @author zmatlja1
  */
+/**
+ * Internal structure for RapidMiner proces, that holds a data from output ports and converted DataNode made from them
+ */
 public class NamedIOObjectNode
 {
     private HashMap<String, IOObject> map;
@@ -31,7 +34,7 @@ public class NamedIOObjectNode
         this.map = new HashMap<String, IOObject>();
         this.dataNodes = new ArrayList<DataNode>();
     }
-
+    
     public void addDataFromOutputPort(String port, IOObject data)
     {
         this.map.put( port , data );
