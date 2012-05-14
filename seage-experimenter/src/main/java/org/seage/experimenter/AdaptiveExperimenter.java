@@ -151,7 +151,7 @@ public class AdaptiveExperimenter implements IExperimenter
     private DataNode prepareDataForConfig(ProblemInfo problemInfo, DataNode statistics, String algID) throws Exception
     {        
         DataNode paramIntervals = new DataNode( PARAM_INTERVALS );       
-        
+
         int i = 0;
         for(DataNode paramNode : problemInfo.getDataNode( ALGORITHMS ).getDataNodeById(algID).getDataNodes( PARAMETER ))
         {
@@ -159,7 +159,7 @@ public class AdaptiveExperimenter implements IExperimenter
             String parameterName = paramNode.getValueStr( ATTRIBUTE_NAME );
 
             double avgValue = statistics.getDataNode( EXAMPLE_SET , 0 ).getDataNode( EXAMPLES ).getDataNode( EXAMPLE ).getDataNode( RESULT , i).getValueDouble( ATTRIBUTE_VALUE );
-            double devValue = statistics.getDataNode( EXAMPLE_SET , 1 ).getDataNode( EXAMPLES ).getDataNode( EXAMPLES ).getDataNode( RESULT , i).getValueDouble( ATTRIBUTE_VALUE );
+            double devValue = statistics.getDataNode( EXAMPLE_SET , 1 ).getDataNode( EXAMPLES ).getDataNode( EXAMPLE ).getDataNode( RESULT , i).getValueDouble( ATTRIBUTE_VALUE );
             
             param.putValue(ATTRIBUTE_NAME, parameterName);            
             param.putValue(ATTRIBUTE_MIN, avgValue - devValue);
