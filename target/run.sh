@@ -1,1 +1,2 @@
-java -jar "bin/seage.launcher.jar" $@
+LAUNCHER="`ls bin/seage-launcher*.jar`"
+java -jar $LAUNCHER $@
