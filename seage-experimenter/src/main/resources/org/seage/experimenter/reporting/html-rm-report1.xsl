@@ -16,6 +16,17 @@
         <html>
             <head>
                 <title>Report 1</title>
+                <style>
+                	table
+					{
+					border-collapse:collapse;
+					empty-cells: show;
+					}
+					table,th, td
+					{
+					border: 1px solid black;
+					}
+                </style>
             </head>
             <body>
                 <xsl:apply-templates /> 

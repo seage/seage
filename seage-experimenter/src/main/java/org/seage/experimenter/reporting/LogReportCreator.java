@@ -44,7 +44,7 @@ public class LogReportCreator implements ILogReport {
     private static final String REPORT_PATH         = "report";
     private static final String XSL_TEMPLATE        = "report2csv.xsl";
     private static final String OUTPUT_CSV_FILE     = "report.csv";    
-    private static final String CSV_HEADER          = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;SolutionValue;Time;";
+    //private static final String CSV_HEADER          = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;InitSolutionValue;SolutionValue;Time;";
     
     private String _experimentID;
 
@@ -111,7 +111,7 @@ public class LogReportCreator implements ILogReport {
             sb.append("p").append(i).append(";");
         }        
 
-        outputStream.getOutputStream().write( ( CSV_HEADER + sb.append("\n").toString() ).getBytes() );
+        //outputStream.getOutputStream().write( ( CSV_HEADER + sb.append("\n").toString() ).getBytes() );
 
         for(String dirName : logDir.list(filter))
         {
