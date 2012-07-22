@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<name>seage-problem-tsp</name>
+	<name>seage-problem-qap</name>
 	<groupId>org.seage</groupId>
-	<artifactId>seage-problem-tsp</artifactId>
+	<artifactId>seage-problem-qap</artifactId>
 	<packaging>jar</packaging>
 
 	<parent>
