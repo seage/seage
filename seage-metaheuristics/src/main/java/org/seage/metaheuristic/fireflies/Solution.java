@@ -1,5 +1,4 @@
-/*
-  * Copyright (c) 2001 Robert Harder
+/*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
 
  * This file is part of SEAGE.
