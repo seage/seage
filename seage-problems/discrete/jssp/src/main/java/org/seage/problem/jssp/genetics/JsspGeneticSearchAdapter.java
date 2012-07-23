@@ -1,4 +1,4 @@
-package jssp.algorithm;
+package org.seage.problem.jssp.genetics;
 
 import ailibrary.algorithm.GeneticSearchAdapter;
 import ailibrary.algorithm.genetics.*;

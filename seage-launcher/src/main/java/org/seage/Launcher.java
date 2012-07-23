@@ -5,6 +5,9 @@
  * terms of the Common Public License v1.0 which accompanies this distribution,
  * and is available at http://seage.sourceforge.net/license/cpl-v10.html
  *
+ */
+
+/**
  * Contributors: Richard Malek - Initial implementation
  */
 package org.seage;

@@ -1,4 +1,4 @@
-package jssp.data;
+package org.seage.problem.jssp;
 import ailibrary.data.*;
 
 /**

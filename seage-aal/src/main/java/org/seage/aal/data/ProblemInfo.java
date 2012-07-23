@@ -5,6 +5,9 @@
  * which accompanies this distribution, and is available at
  * http://www.seage.org/license/cpl-v10.html
  *
+ */
+
+/**
  * Contributors:
  *     Richard Malek
  *     - Initial implementation

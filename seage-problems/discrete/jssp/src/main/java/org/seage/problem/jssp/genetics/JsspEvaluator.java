@@ -1,4 +1,4 @@
-package jssp.algorithm.genetics;
+package org.seage.problem.jssp.genetics;
 
 import jssp.data.*;
 

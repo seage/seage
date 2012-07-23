@@ -16,6 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
+ */
+
+/**
  * Contributors:
  *         Richard Malek
  * 	   - Created the class 
