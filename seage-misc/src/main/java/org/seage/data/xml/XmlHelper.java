@@ -28,6 +28,7 @@ package org.seage.data.xml;
 import org.seage.data.DataNode;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
 import javax.xml.XMLConstants;
@@ -65,10 +66,15 @@ public class XmlHelper
     
     public static DataNode readXml(File file) throws Exception
     {
-        return readXml(file, null);
+        return readXml(new FileInputStream(file), null);
+    }
+    
+    public static DataNode readXml(InputStream is) throws Exception
+    {
+    	return readXml(is, null);
     }
 
-    public static DataNode readXml(File file, InputStream schema) throws Exception
+    public static DataNode readXml(InputStream is, InputStream schema) throws Exception
     {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         if(schema != null)
@@ -77,16 +83,9 @@ public class XmlHelper
             factory.setNamespaceAware(false);
         
         DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse(file);
+        Document doc = builder.parse(is);
 
-        if(doc.getDocumentElement().hasAttribute("redirect"))
-        {
-            String path = doc.getDocumentElement().getAttribute("redirect");
-            if(!path.startsWith("/") && file.getParent() != null)
-                path = file.getParent()+"/"+path;
-            return readXml(new File(path), schema);
-        }
-        else if(schema != null)
+        if(schema != null)
         {
             // get validation driver:
             SchemaFactory factory2 = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
