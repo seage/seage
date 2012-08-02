@@ -36,7 +36,11 @@ import org.seage.data.xml.XmlHelper;
  */
 public class AlgorithmReport extends DataNode
 {
-    private int _id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2598529749932239606L;
+	private int _id;
     public AlgorithmReport(String name) {
         super(name);
     }

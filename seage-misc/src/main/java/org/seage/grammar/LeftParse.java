@@ -83,7 +83,7 @@ public class LeftParse {
     }
         
     public String toString() {
-        Iterator it = _ruleNums.iterator();
+        Iterator<Integer> it = _ruleNums.iterator();
         String ret = new String();
         boolean comma = false;
         while (it.hasNext()) {

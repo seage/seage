@@ -34,7 +34,12 @@ import org.seage.problem.tsp.TourProvider;
  */
 public class TspGreedySolution extends TspSolution {
 
-    public TspGreedySolution(City[] cities) throws Exception
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2535975643109931138L;
+
+	public TspGreedySolution(City[] cities) throws Exception
     {
         super( cities );
         _tour = TourProvider.createGreedyTour( cities );

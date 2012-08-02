@@ -40,7 +40,12 @@ import java.util.*;
  */
 public class TernaryGrammarRule extends GrammarRule {
     
-    public TernaryGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4817218077095377037L;
+
+	public TernaryGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("TERNARY"), new Vector<Symbol> (), uniqueId);
         Vector<Symbol> left = getRight();
 /*        left.add(new NonterminalSymbol("COND"));

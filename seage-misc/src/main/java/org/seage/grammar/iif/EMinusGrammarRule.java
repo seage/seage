@@ -40,7 +40,12 @@ import java.util.*;
  */
 public class EMinusGrammarRule extends GrammarRule {
     
-    public EMinusGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3126261196088209106L;
+
+	public EMinusGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("E"), new Vector<Symbol> (), uniqueId);
         Vector<Symbol> left = getRight();
         left.add(new NonterminalSymbol("E"));

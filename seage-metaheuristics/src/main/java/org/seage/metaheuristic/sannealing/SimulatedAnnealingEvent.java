@@ -31,7 +31,12 @@ package org.seage.metaheuristic.sannealing;
  */
 public class SimulatedAnnealingEvent extends java.util.EventObject {
 
-    public SimulatedAnnealingEvent(Object source)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4881075819649384756L;
+
+	public SimulatedAnnealingEvent(Object source)
     {
         super( source );
     }

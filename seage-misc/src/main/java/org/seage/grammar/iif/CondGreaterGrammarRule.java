@@ -40,7 +40,12 @@ import java.util.*;
  */
 public class CondGreaterGrammarRule extends GrammarRule {
     
-    public CondGreaterGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 928653970938200734L;
+
+	public CondGreaterGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("COND"), new Vector<Symbol> (), uniqueId);
         Vector<Symbol> left = getRight();
         left.add(new NonterminalSymbol("E"));

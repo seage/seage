@@ -32,6 +32,10 @@ import java.io.Serializable;
  */
 public class Gene implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2263063124222499089L;
 	protected int _value;
 
 	private Gene()

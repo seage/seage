@@ -27,9 +27,10 @@
  *     Karel Durkota
  */
 package org.seage.metaheuristic.fireflies;
-import org.seage.metaheuristic.fireflies.*;
-import java.text.*;
-import java.util.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 
 /**
@@ -70,7 +71,11 @@ import java.util.*;
 public abstract class SolutionAdapter implements Solution
 {
 
-    /** Objective function value. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4325320090356824935L;
+	/** Objective function value. */
     private double[] objectiveValue;
     
 

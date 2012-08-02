@@ -55,7 +55,7 @@ public class Grammar {
         }
         r.add(rule);
         //add symbols to sets
-        Iterator it = right.iterator();
+        Iterator<Symbol> it = right.iterator();
         while (it.hasNext()) {
             Symbol s = (Symbol)it.next();
             if (s.getType() == Symbol.Type.TERMINAL)
@@ -106,14 +106,14 @@ public class Grammar {
         while (added) {
             terminatable.addAll(addTerminatable);
             added = false;
-            Iterator it = rSet.iterator();
+            Iterator<GrammarRule> it = rSet.iterator();
             while (it.hasNext()) {
                 GrammarRule rule = (GrammarRule)it.next();
                 /** skip in order to prevent the cycles */
                 if (terminatable.contains(rule.getLeft()))
                     continue;
                 Vector<Symbol> right = rule.getRight();
-                Iterator rit = right.iterator();
+                Iterator<Symbol> rit = right.iterator();
                 boolean thisTerminatable = true;
                 while (rit.hasNext()) {
                     Symbol s = (Symbol)rit.next();

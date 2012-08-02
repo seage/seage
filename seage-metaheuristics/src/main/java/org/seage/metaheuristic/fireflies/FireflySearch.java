@@ -29,7 +29,6 @@
 
 package org.seage.metaheuristic.fireflies;
 
-import org.seage.metaheuristic.fireflies.*;
 import java.util.Collections;
 import java.util.Random;
 
@@ -42,7 +41,11 @@ import java.util.Random;
  */
 public class FireflySearch extends FireflySearchBase{
 
-    private int _iterationCount;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4308076927795750198L;
+	private int _iterationCount;
     private int _currentIteration;
     private int _populationCount;
 

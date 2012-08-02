@@ -45,6 +45,12 @@ public class NoMovesGeneratedException extends java.lang.Exception
 {
     
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4796075708422074369L;
+
+
+	/**
      * Constructs generic <tt>NoMovesGeneratedException</tt>.
      * This constructor only calls <code>super()</code> and quits.
      *

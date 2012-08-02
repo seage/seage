@@ -43,7 +43,11 @@ import org.seage.data.DataNode;
  */
 public abstract class ProblemProvider implements IProblemProvider, Serializable
 {
-    private static HashMap<String, IProblemProvider> _providers;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6411298239768735782L;
+	private static HashMap<String, IProblemProvider> _providers;
     private ProblemInfo _problemInfo;
     private HashMap<String, IAlgorithmFactory> _algFactories;
 
@@ -55,7 +59,7 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
 
         _problemInfo = new ProblemInfo("ProblemInfo");
         
-        Class problemClass = this.getClass();
+        Class<? extends ProblemProvider> problemClass = this.getClass();
         Annotation an = null;
 
         an = problemClass.getAnnotation(Annotations.ProblemId.class);
@@ -90,7 +94,7 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
         {
             try
             {
-                Class algFactoryClass = Class.forName(ci.getClassName());
+                Class<?> algFactoryClass = Class.forName(ci.getClassName());
                 Annotation an2 = null;
 
                 // Algorithm adapters
@@ -114,7 +118,7 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
 
                 // Algorithm parameters                
 
-                Class algAdapterClass = ((IAlgorithmFactory)algFactoryClass.newInstance()).getAlgorithmClass();
+                Class<?> algAdapterClass = ((IAlgorithmFactory)algFactoryClass.newInstance()).getAlgorithmClass();
                 an2 = algAdapterClass.getAnnotation(Annotations.AlgorithmParameters.class);
                 if(an2 == null) throw new Exception("Unable to get annotation AlgorithmParameters");
                 Annotations.Parameter[] params = ((Annotations.AlgorithmParameters)an2).value();

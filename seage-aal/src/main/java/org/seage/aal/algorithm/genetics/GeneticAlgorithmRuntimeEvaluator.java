@@ -36,7 +36,12 @@ import org.seage.aal.reporter.AlgorithmReportEvaluator;
 public class GeneticAlgorithmRuntimeEvaluator extends AlgorithmReportEvaluator
 {
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2908274605434683758L;
+
+	@Override
     public int evaluate(AlgorithmReport report)
     {
         //InputStream is = AlgorithmAdapter.class.getResourceAsStream("reportSchema.xsd");

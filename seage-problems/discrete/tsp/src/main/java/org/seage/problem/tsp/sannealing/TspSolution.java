@@ -37,6 +37,11 @@ import org.seage.problem.tsp.City;
 public abstract class TspSolution extends Solution
 {
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4173080402778315756L;
+
+	/**
      * Represent order of cities
      */
     protected Integer[] _tour;

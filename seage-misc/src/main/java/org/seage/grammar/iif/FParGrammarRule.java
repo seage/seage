@@ -40,7 +40,12 @@ import java.util.*;
  */
 public class FParGrammarRule extends GrammarRule {
     
-    public FParGrammarRule(int uniquId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 18832664704801847L;
+
+	public FParGrammarRule(int uniquId) {
         super (new NonterminalSymbol("F"), new Vector<Symbol> (), uniquId);
         Vector<Symbol> right = getRight();
         right.add(new TerminalSymbol("(", null));

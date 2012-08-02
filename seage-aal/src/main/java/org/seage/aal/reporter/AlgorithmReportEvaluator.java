@@ -38,6 +38,11 @@ public abstract class AlgorithmReportEvaluator implements Serializable, Comparat
 
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7128431164404468045L;
+
+	/**
      * Evaluates statistics of previous algorithm run
      * @param statistics
      * @return A number between 0 and 100 (0 is the best, 100 is the worst)

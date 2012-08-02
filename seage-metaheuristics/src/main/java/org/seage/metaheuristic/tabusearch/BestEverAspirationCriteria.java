@@ -49,6 +49,11 @@ package org.seage.metaheuristic.tabusearch;
 public class BestEverAspirationCriteria implements AspirationCriteria
 {    
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8050033847751573251L;
+
+	/**
      * Determine if the proposed tabu move should in fact be allowed
      * because it results in a value better than the current
      * best solution's value.

@@ -31,7 +31,12 @@ package org.seage.problem.tsp.particles;
  */
 public class TspSortedParticle extends TspParticle {
     
-    public TspSortedParticle(int dimension)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6649581422758326190L;
+
+	public TspSortedParticle(int dimension)
     {
         super( dimension );
 //        _tour = TourProvider.createSortedTour( cities );

@@ -34,7 +34,11 @@ import org.seage.problem.tsp.City;
  */
 public class TspSolution extends SolutionAdapter 
 {
-    protected int[] _tour;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3688124719557679451L;
+	protected int[] _tour;
     
     public TspSolution(){} // Appease clone()
 

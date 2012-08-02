@@ -34,7 +34,7 @@ import java.util.*;
  *
  * @author Richard Malek
  */
-public class SolutionComparator implements Comparator
+public class SolutionComparator implements Comparator<Object>
 {
 	private boolean _maximizing;
 

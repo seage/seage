@@ -42,6 +42,12 @@ public class NoCurrentSolutionException extends java.lang.Exception
 {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 9040891795653606861L;
+
+
+	/**
      * Constructs generic <tt>NoCurrentSolutionException</tt>.
      * This constructor only calls <tt>super()</tt>.
      *

@@ -116,7 +116,7 @@ public class ExampleSetConverter {
 
         ExampleTable exampleTable = exampleSet.getExampleTable();        
         
-        Iterator dataRowReader;
+        Iterator<?> dataRowReader;
 
         if(exampleSet instanceof SortedExampleSet)            
             dataRowReader = new SortedExampleReader( exampleSet );
@@ -197,7 +197,7 @@ public class ExampleSetConverter {
                
         ExampleTable exampleTable = exampleSet.getExampleTable();        
         
-        Iterator dataRowReader;
+        Iterator<?> dataRowReader;
 
         if(exampleSet instanceof SortedExampleSet)            
             dataRowReader = new SortedExampleReader( exampleSet );

@@ -36,7 +36,11 @@ import java.util.*;
  */
 abstract public class GrammarRule implements Serializable{
     
-    /** @brief constructor
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7516159647835424252L;
+	/** @brief constructor
          @param left left side of rule
          @param right right side of rule
          @param uniqueId specifies id to compare grammar rules one to another
@@ -69,7 +73,7 @@ abstract public class GrammarRule implements Serializable{
       * @param constants chromosome to generate constants
       */
     public Object eval(DataNode symbolTable, NonterminalSymbol treePos) throws Exception {
-        Iterator it = treePos.getChildren().iterator();
+        Iterator<?> it = treePos.getChildren().iterator();
         while (it.hasNext()) {
             ((Symbol)it.next()).eval(symbolTable);
         }
@@ -89,7 +93,7 @@ abstract public class GrammarRule implements Serializable{
     
     public String toString() {
         String s = left + " -> ";
-        Iterator it = right.iterator();
+        Iterator<Symbol> it = right.iterator();
         while (it.hasNext())
             s += it.next();
         return s;

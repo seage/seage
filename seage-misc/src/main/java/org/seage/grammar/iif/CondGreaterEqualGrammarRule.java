@@ -41,7 +41,12 @@ import java.util.*;
  */
 public class CondGreaterEqualGrammarRule extends GrammarRule {
     
-    public CondGreaterEqualGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5371425420528293918L;
+
+	public CondGreaterEqualGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("COND"), new Vector<Symbol> (), uniqueId);
         Vector<Symbol> left = getRight();
         left.add(new NonterminalSymbol("E"));

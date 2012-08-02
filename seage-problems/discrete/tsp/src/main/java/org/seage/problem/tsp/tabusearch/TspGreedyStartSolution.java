@@ -35,7 +35,13 @@ import org.seage.problem.tsp.City;
 public class TspGreedyStartSolution extends TspSolution 
 {
     
-    public TspGreedyStartSolution(){} // Appease clone()
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5260083820233603440L;
+
+
+	public TspGreedyStartSolution(){} // Appease clone()
 
     public TspGreedyStartSolution(City[] customers)
     {

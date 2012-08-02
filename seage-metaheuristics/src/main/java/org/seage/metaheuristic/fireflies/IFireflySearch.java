@@ -26,7 +26,6 @@
  */
 package org.seage.metaheuristic.fireflies;
 
-import org.seage.metaheuristic.fireflies.*;
 
 /**
  * The <tt>FireFly</tt> is the main source of control

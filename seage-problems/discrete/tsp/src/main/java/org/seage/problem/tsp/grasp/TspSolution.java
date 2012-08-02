@@ -26,8 +26,8 @@
 package org.seage.problem.tsp.grasp;
 
 import java.util.Random;
+
 import org.seage.metaheuristic.grasp.Solution;
-import org.seage.problem.tsp.City;
 
 /**
  *

@@ -40,7 +40,12 @@ import java.util.*;
  */
 public class TernaryDummyGrammarRule extends GrammarRule {
     
-    public TernaryDummyGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3722771261823914549L;
+
+	public TernaryDummyGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("TERNARY"), new Vector<Symbol> (), uniqueId);
         Vector<Symbol> left = getRight();
         left.add(new NonterminalSymbol("E"));

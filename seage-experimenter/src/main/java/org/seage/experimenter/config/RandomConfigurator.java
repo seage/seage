@@ -25,9 +25,9 @@
  */
 package org.seage.experimenter.config;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;

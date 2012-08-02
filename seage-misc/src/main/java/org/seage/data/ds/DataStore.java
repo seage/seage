@@ -26,5 +26,10 @@ import java.util.*;
  */
 public class DataStore extends HashMap<String, DataTable>
 {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6942519066862881337L;
 }
 

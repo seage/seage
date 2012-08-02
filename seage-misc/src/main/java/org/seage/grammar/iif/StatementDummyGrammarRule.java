@@ -38,7 +38,12 @@ import java.util.*;
  */
 public class StatementDummyGrammarRule extends GrammarRule {
     
-    public StatementDummyGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5468523999599985427L;
+
+	public StatementDummyGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("STATEMENT"), new Vector<Symbol> (), uniqueId);
     }
             
@@ -46,7 +51,7 @@ public class StatementDummyGrammarRule extends GrammarRule {
       * @param symbolTable table of symbols
       * @param treePos position in parse tree (reference to left non terminal)
       */
-    public Object eval(HashMap symbolTable, NonterminalSymbol treePos) throws Exception {
+    public Object eval(HashMap<?, ?> symbolTable, NonterminalSymbol treePos) throws Exception {
         //we should have 1 children
         Vector<Symbol> children = treePos.getChildren();
         if (children.size() != 0)

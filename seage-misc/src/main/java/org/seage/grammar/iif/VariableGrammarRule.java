@@ -41,7 +41,13 @@ import java.util.*;
  */
 public class VariableGrammarRule extends GrammarRule {
     
-    public VariableGrammarRule(Vector<String> names, int uniqueId) {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5141651675216468628L;
+
+	public VariableGrammarRule(Vector<String> names, int uniqueId) {
         super (new NonterminalSymbol("VAR"), new Vector<Symbol> (), uniqueId);
 //        Vector<ISymbol> right = getRight();
         TerminalSymbol vt = new TerminalSymbol(names, new IntGeneratorFunctor(uniqueId));

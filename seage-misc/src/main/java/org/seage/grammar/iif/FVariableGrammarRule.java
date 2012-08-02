@@ -39,7 +39,12 @@ import java.util.*;
  */
 public class FVariableGrammarRule extends GrammarRule {
     
-    public FVariableGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4347619039586359678L;
+
+	public FVariableGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("F"), new Vector<Symbol> (), uniqueId);
 //        Vector<ISymbol> right = getRight();
         right.add(new NonterminalSymbol("VAR"));

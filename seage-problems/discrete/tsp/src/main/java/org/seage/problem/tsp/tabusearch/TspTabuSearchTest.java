@@ -40,7 +40,12 @@ import org.seage.metaheuristic.tabusearch.TabuSearchListener;
  */
 public class TspTabuSearchTest implements TabuSearchListener
 {
-    public static void main(String[] args)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6437822073873203681L;
+
+	public static void main(String[] args)
     {
         try
         {

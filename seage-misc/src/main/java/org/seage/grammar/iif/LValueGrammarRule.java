@@ -41,7 +41,12 @@ import java.util.*;
  */
 public class LValueGrammarRule extends GrammarRule {
     
-    public LValueGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5259579139117682571L;
+
+	public LValueGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("L_VALUE"), new Vector<Symbol> (), uniqueId);
 //        Vector<ISymbol> right = getRight();
         TerminalSymbol vt = new TerminalSymbol("l_value", new IntGeneratorFunctor(uniqueId));

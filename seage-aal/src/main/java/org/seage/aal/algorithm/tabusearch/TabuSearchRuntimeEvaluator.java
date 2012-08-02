@@ -35,7 +35,12 @@ import org.seage.aal.reporter.AlgorithmReportEvaluator;
  */
 public class TabuSearchRuntimeEvaluator extends AlgorithmReportEvaluator{
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5125081087472331246L;
+
+	@Override
     public int evaluate(AlgorithmReport statistics) {
         return 0;
     }

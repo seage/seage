@@ -36,7 +36,7 @@ import org.seage.aal.data.ProblemConfig;
  */
 public interface IAlgorithmFactory extends Serializable
 {
-    Class getAlgorithmClass();
+    Class<?> getAlgorithmClass();
 
     /**
      *

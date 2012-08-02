@@ -32,6 +32,10 @@ import java.io.Serializable;
  */
 public class City implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1367579497994814905L;
 	public int ID = 0;
 	public double X = 0;
 	public double Y = 0;

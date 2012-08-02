@@ -39,7 +39,12 @@ import java.util.*;
  */
 public class EDummyGrammarRule extends GrammarRule {
     
-    public EDummyGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7686315034172885477L;
+
+	public EDummyGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("E"), new Vector<Symbol> (), uniqueId);
         Vector<Symbol> left = getRight();
         left.add(new NonterminalSymbol("T"));

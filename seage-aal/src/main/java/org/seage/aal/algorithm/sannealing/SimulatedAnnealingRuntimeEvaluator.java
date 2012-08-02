@@ -35,7 +35,12 @@ import org.seage.aal.reporter.AlgorithmReportEvaluator;
  */
 public class SimulatedAnnealingRuntimeEvaluator extends AlgorithmReportEvaluator{
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5395906920326494209L;
+
+	@Override
     public int evaluate(AlgorithmReport statistics) {
         return 0;
     }

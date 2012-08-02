@@ -42,7 +42,12 @@ public class TabuSearch extends TabuSearchBase
 {
     
     
-    /** Objective function. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 374858976013520618L;
+
+	/** Objective function. */
     protected ObjectiveFunction objectiveFunction;
     
     /** Move manager. */

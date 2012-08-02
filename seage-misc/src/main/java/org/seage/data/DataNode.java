@@ -50,7 +50,12 @@ import org.w3c.dom.ProcessingInstruction;
  */
 public class DataNode implements Serializable
 {
-    private String _name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2193543253630004569L;
+
+	private String _name;
     
     private HashMap<String, List<DataNode>> _dataNodes;
     private HashMap<String, Object> _values;

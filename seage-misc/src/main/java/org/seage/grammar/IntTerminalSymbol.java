@@ -26,8 +26,8 @@
 
 package org.seage.grammar;
 
-import java.util.*;
-import java.math.*;
+import java.util.HashMap;
+import java.util.Vector;
 
 /**
  *
@@ -35,7 +35,11 @@ import java.math.*;
  */
 public class IntTerminalSymbol extends TerminalSymbol {
     
-    public IntTerminalSymbol(Vector<String> names, int id) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2125599928130063879L;
+	public IntTerminalSymbol(Vector<String> names, int id) {
         super(names, new IntGeneratorFunctor(id));
         //value = -1;
     }
@@ -57,7 +61,7 @@ public class IntTerminalSymbol extends TerminalSymbol {
         this.high = high;
     }
     
-    public Object eval(HashMap symbolTable) {
+    public Object eval(HashMap<?, ?> symbolTable) {
         return pick();
     }
 

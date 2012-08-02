@@ -140,7 +140,7 @@ public class ClassPathAnalyzer {
 //            else
 //                System.out.println("+++"+jar.getName());      
             
-            for (Enumeration entries = jar.entries(); entries.hasMoreElements();) {                
+            for (Enumeration<?> entries = jar.entries(); entries.hasMoreElements();) {                
                 JarEntry entry = (JarEntry) entries.nextElement();
                 String entryName = entry.getName();
                 addClassPath(entryName);

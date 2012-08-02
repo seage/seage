@@ -51,14 +51,14 @@ public class TspGreedySolution extends TspSolution {
      * @return - Total distance the initial greedy solution
      */
     private double initGreedyTour(City[] c, int listIndex) {
-        List<City> openList = new ArrayList();
+        List<City> openList = new ArrayList<City>();
 
         /*Moving the cities in ArrayList for a next processing*/
         for (int i = 0; i < c.length; i++) {
             openList.add(c[i]);
         }
 
-        List<City> hungerTour = new ArrayList();
+        List<City> hungerTour = new ArrayList<City>();
         City actCity = openList.get(listIndex);
         hungerTour.add(actCity);
         openList.remove(listIndex);

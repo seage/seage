@@ -31,7 +31,12 @@ package org.seage.metaheuristic.genetics;
 public class GeneticSearchEvent extends java.util.EventObject
 {
 	
-    public GeneticSearchEvent(GeneticSearchBase source)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4063413706590871359L;
+
+	public GeneticSearchEvent(GeneticSearchBase source)
     {   
         super( source );
     }

@@ -32,6 +32,10 @@ import java.io.Serializable;
  */
 public class Chromosome implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3050047980641091757L;
 	//public Gene[] m_gene;
 	private Gene[] _genes;
 

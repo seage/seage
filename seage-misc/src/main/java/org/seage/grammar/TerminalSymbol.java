@@ -34,7 +34,11 @@ import java.util.*;
  */
 public class TerminalSymbol implements Symbol {
 
-    public TerminalSymbol(Vector<String> names, Functor generator) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1649812001103974726L;
+	public TerminalSymbol(Vector<String> names, Functor generator) {
         this.names = names;
         this.generator = generator;
         _value = null;

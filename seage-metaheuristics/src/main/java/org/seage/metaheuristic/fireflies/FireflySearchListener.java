@@ -28,7 +28,6 @@
  */
 package org.seage.metaheuristic.fireflies;
 
-import org.seage.metaheuristic.fireflies.*;
 
 /**
  * An object that will listen for the firefly search to start.

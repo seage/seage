@@ -35,7 +35,12 @@ import org.seage.aal.reporter.AlgorithmReportEvaluator;
  */
 public class ParticleSwarmRuntimeEvaluator extends AlgorithmReportEvaluator{
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8296539910157374484L;
+
+	@Override
     public int evaluate(AlgorithmReport statistics) {
         return 0;
     }

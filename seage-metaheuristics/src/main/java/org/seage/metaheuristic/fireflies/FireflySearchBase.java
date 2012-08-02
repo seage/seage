@@ -28,7 +28,6 @@
  */
 package org.seage.metaheuristic.fireflies;
 
-import org.seage.metaheuristic.fireflies.*;
 
 /**
  * This abstract class implements {@link FireflySearch} and defines the event-handling methods
@@ -44,6 +43,12 @@ import org.seage.metaheuristic.fireflies.*;
 public abstract class FireflySearchBase implements IFireflySearch
 {
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4689450489917508880L;
+
+
+	/**
      * Tracks the number of iterations comleted since the
      * inception of this firefly search.
      *

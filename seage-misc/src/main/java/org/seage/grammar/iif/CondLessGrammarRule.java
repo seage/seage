@@ -40,7 +40,12 @@ import java.util.*;
  */
 public class CondLessGrammarRule extends GrammarRule {
     
-    public CondLessGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -347344278488247881L;
+
+	public CondLessGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("COND"), new Vector<Symbol> (), uniqueId);
         Vector<Symbol> left = getRight();
         left.add(new NonterminalSymbol("E"));

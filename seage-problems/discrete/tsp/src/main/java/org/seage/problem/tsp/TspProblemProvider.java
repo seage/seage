@@ -46,7 +46,12 @@ import org.seage.data.DataNode;
 public class TspProblemProvider extends ProblemProvider
 {
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4674898443536378595L;
+
+	@Override
     public ProblemInstanceInfo initProblemInstance(ProblemConfig params) throws Exception
     {
         City[] cities;

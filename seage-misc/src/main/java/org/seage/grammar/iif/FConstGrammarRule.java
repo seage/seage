@@ -40,7 +40,12 @@ import java.util.*;
  */
 public class FConstGrammarRule extends GrammarRule {
     
-    public FConstGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5052451720529833538L;
+
+	public FConstGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("F"), new Vector<Symbol> (), uniqueId);
 //        Vector<ISymbol> right = getRight();
         IntTerminalSymbol it = new IntTerminalSymbol("const", uniqueId);

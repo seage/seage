@@ -28,7 +28,6 @@
  */
 package org.seage.metaheuristic.fireflies;
 
-import org.seage.metaheuristic.fireflies.*;
 
 /**
  * These events are fired off by the {@link FireflySearch} and are useful
@@ -46,6 +45,13 @@ public class FireflySearchEvent extends java.util.EventObject
 {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3418158366582283978L;
+
+
+
+	/**
      * Constructor that accepts the source of the event.
      * 
      * @param source The source of the event.

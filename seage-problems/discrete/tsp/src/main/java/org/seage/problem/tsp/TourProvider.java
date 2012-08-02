@@ -26,7 +26,6 @@
 package org.seage.problem.tsp;
 
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -116,12 +115,12 @@ public class TourProvider
     {
         Integer[] tour = new Integer[ cities.length ];
         Random random = new Random();
-        List<Integer> listTour = new ArrayList();
+        List<Integer> listTour = new ArrayList<Integer>();
         for (int i = 0; i < cities.length; i++) {
             listTour.add(i);
         }
 
-        List<Integer> randTour = new ArrayList();
+        List<Integer> randTour = new ArrayList<Integer>();
         Integer pom = null;
         for (int i = 0; i < cities.length; i++) {
             pom = listTour.get(random.nextInt(listTour.size()));

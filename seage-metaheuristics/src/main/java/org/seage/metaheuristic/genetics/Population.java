@@ -32,11 +32,11 @@ import java.util.*;
  */
 public class Population
 {
-    private ArrayList _population;
+    private ArrayList<Subject> _population;
 
     public Population()
     {
-        _population = new ArrayList();
+        _population = new ArrayList<Subject>();
     }
 
     public void addSubject(Subject subject)
@@ -66,7 +66,7 @@ public class Population
         return _population.size();
     }
 
-    public List getList()
+    public List<Subject> getList()
     {
         return _population;
     }
@@ -75,7 +75,7 @@ public class Population
     {
         try
         {
-            ArrayList newPopulation = new ArrayList();
+            ArrayList<Subject> newPopulation = new ArrayList<Subject>();
             newPopulation.add(getSubject(0));
             for (int i = 1; i < _population.size(); i++)
             {
@@ -98,7 +98,7 @@ public class Population
     public void resize(int newLength)
     {
         if(getSize() > newLength)
-            _population = new ArrayList(_population.subList(0, newLength));
+            _population = new ArrayList<Subject>(_population.subList(0, newLength));
     }
 
     public Subject getBestSubject()

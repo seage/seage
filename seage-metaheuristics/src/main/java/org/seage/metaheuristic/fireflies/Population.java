@@ -26,19 +26,19 @@
  */
 package org.seage.metaheuristic.fireflies;
 
-import org.seage.metaheuristic.fireflies.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Karel Durkota
  */
 public class Population
 {
-    private ArrayList _population;
+    private ArrayList<Solution> _population;
 
     public Population()
     {
-        _population = new ArrayList();
+        _population = new ArrayList<Solution>();
     }
 
     public void addSolution(Solution solution)
@@ -68,7 +68,7 @@ public class Population
         return _population.size();
     }
 
-    public List getList()
+    public List<Solution> getList()
     {
         return _population;
     }
@@ -77,7 +77,7 @@ public class Population
     {
         try
         {
-            ArrayList newPopulation = new ArrayList();
+            ArrayList<Solution> newPopulation = new ArrayList<Solution>();
             newPopulation.add(getSolution(0));
             for (int i = 1; i < _population.size(); i++)
             {
@@ -100,7 +100,7 @@ public class Population
     public void resize(int newLength)
     {
         if(getSize() > newLength)
-            _population = new ArrayList(_population.subList(0, newLength));
+            _population = new ArrayList<Solution>(_population.subList(0, newLength));
     }
 
     public Solution getBestSolution()

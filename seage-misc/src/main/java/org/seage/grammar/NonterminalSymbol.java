@@ -35,7 +35,12 @@ import java.util.*;
  */
 public class NonterminalSymbol implements Symbol {
 
-    public NonterminalSymbol(String name) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1930442234125327450L;
+
+	public NonterminalSymbol(String name) {
         this.name = name;
         children = new Vector<Symbol>();
         rule = null;
@@ -74,7 +79,7 @@ public class NonterminalSymbol implements Symbol {
         this.rule = rule;
         ///add children        
         Vector<Symbol> right = rule.getRight();
-        Iterator it = right.iterator();
+        Iterator<Symbol> it = right.iterator();
         int i = stack.size();
         while (it.hasNext()) {
             Symbol s = (Symbol)it.next();
@@ -114,8 +119,8 @@ public class NonterminalSymbol implements Symbol {
     }
     
     public String getSymbolTree() {
-        Iterator it = children.iterator();
-        Iterator rit = rule.getRight().iterator();
+        Iterator<Symbol> it = children.iterator();
+        Iterator<?> rit = rule.getRight().iterator();
         String ret = new String();
         while (rit.hasNext()) {
             Symbol s = (Symbol)rit.next();

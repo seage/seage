@@ -41,6 +41,12 @@ package org.seage.metaheuristic.tabusearch;
 public abstract class TabuSearchBase implements ITabuSearch
 {
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6816926175569036255L;
+
+
+	/**
      * Tracks the number of iterations comleted since the
      * inception of this tabu search.
      *

@@ -27,17 +27,20 @@
 package org.seage.aal.algorithm.fireflies;
 
 
-import org.seage.aal.algorithm.fireflies.*;
-import org.seage.data.DataNode;
-import org.seage.metaheuristic.fireflies.*;
-import java.util.Arrays;
-import org.seage.aal.algorithm.IAlgorithmAdapter;
-import org.seage.aal.reporter.AlgorithmReport;
-import org.seage.aal.reporter.AlgorithmReporter;
-import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.Annotations.AlgorithmParameters;
+import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReporter;
+import org.seage.data.DataNode;
+import org.seage.metaheuristic.fireflies.FireflyOperator;
+import org.seage.metaheuristic.fireflies.FireflySearch;
+import org.seage.metaheuristic.fireflies.FireflySearchEvent;
+import org.seage.metaheuristic.fireflies.FireflySearchListener;
+import org.seage.metaheuristic.fireflies.ObjectiveFunction;
+import org.seage.metaheuristic.fireflies.Solution;
+import org.seage.metaheuristic.fireflies.SolutionComparator;
 
 /**
  * FireflySearchAdapter class
@@ -194,7 +197,12 @@ public abstract class FireflyAlgorithmAdapter extends  AlgorithmAdapterImpl
 
     private class FireflySearchObserver implements FireflySearchListener
     { 
-        public void FireflySearchStarted(FireflySearchEvent e)
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 4493187986748464658L;
+
+		public void FireflySearchStarted(FireflySearchEvent e)
         {
             _statNumNewSol = _statLastIterNewSol = 0;
         }

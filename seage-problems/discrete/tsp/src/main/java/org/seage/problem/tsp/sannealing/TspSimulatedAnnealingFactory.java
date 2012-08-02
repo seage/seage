@@ -46,7 +46,11 @@ import org.seage.problem.tsp.TspProblemProvider;
 @Annotations.AlgorithmName("Simulated Annealing")
 public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 {
-    private TspSolution _tspSolution;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8342189368584823663L;
+	private TspSolution _tspSolution;
     private TspProblemProvider _provider;
 
     public TspSimulatedAnnealingFactory()
@@ -66,7 +70,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 //    }
 
 
-    public Class getAlgorithmClass() {
+    public Class<SimulatedAnnealingAdapter> getAlgorithmClass() {
         return SimulatedAnnealingAdapter.class;
     }
 

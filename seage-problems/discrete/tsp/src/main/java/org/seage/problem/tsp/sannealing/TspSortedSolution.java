@@ -34,7 +34,12 @@ import org.seage.problem.tsp.TourProvider;
  */
 public class TspSortedSolution extends TspSolution{
     
-    public TspSortedSolution(City[] cities)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5819925041074672416L;
+
+	public TspSortedSolution(City[] cities)
     {
         super( cities );
         _tour = TourProvider.createSortedTour( cities );

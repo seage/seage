@@ -68,7 +68,11 @@ import java.util.*;
 public class SolutionAdapter implements Solution
 {
 
-    /** Objective function value. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7111455134039448412L;
+	/** Objective function value. */
     private double[] objectiveValue;
     
 

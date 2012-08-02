@@ -145,8 +145,8 @@ public class ProcessPerformer {
     {        
         for(NamedIOObjectNode exampleSetNode : _exampleSetNodes)
         {
-            Set set = exampleSetNode.getMap().entrySet();            
-            Iterator<IOObject> iterator = set.iterator();
+            Set<Map.Entry<String, IOObject>> set = exampleSetNode.getMap().entrySet();            
+            Iterator<Map.Entry<String, IOObject>> iterator = set.iterator();
             DataNode dataNode = null;
             
             while( iterator.hasNext() )
@@ -155,7 +155,7 @@ public class ProcessPerformer {
                 
                 IOObject obj = entry.getValue();
                 if(obj instanceof IOObjectCollection)
-                    dataNode = ExampleSetConverter.convertToDataNodeFromCollection( (IOObjectCollection)obj );
+                    dataNode = ExampleSetConverter.convertToDataNodeFromCollection( (IOObjectCollection<ExampleSet>)obj );
                 else if(obj instanceof ExampleSet)
                     dataNode = ExampleSetConverter.convertToDataNode( (ExampleSet)obj );
                 

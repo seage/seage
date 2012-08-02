@@ -59,6 +59,11 @@ package org.seage.metaheuristic.tabusearch;
 public class SimpleTabuList implements TabuList
 {
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8802613251663659140L;
+
+	/**
      * The value 10 will be used as the tenure if
      * the null constructor is used.
      *

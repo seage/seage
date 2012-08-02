@@ -243,7 +243,11 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
     {
         // params
 
-        public int _newBestSolutionFound;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -4250943156287273367L;
+		public int _newBestSolutionFound;
         private int _newCurrentSolutionFound;
         private int _unimprovingMoveMade;
         private int _improvingMoveMade;

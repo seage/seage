@@ -28,15 +28,14 @@
  */
 package org.seage.metaheuristic.fireflies;
 
-import org.seage.metaheuristic.fireflies.*;
-import java.util.*;
+import java.util.Comparator;
 
 /**
  * SolutionComparator.
  *
  * @author Richard Malek
  */
-public class SolutionComparator implements Comparator
+public class SolutionComparator implements Comparator<Object>
 {
 	private boolean _maximizing;
 

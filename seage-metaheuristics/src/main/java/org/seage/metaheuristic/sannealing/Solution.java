@@ -34,6 +34,10 @@ import java.io.Serializable;
 public class Solution implements Cloneable, Serializable {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8796081540194212352L;
+	/**
      * The value is value of Solution
      */
     private double _value = Double.MAX_VALUE;

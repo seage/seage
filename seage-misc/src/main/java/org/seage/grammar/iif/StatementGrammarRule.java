@@ -40,7 +40,12 @@ import java.util.*;
  */
 public class StatementGrammarRule extends GrammarRule {
     
-        public StatementGrammarRule(int uniqueId) {
+        /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8648379993044517875L;
+
+		public StatementGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("STATEMENT"), new Vector<Symbol> (), uniqueId);
         Vector<Symbol> left = getRight();
         left.add(new NonterminalSymbol("L_VALUE"));

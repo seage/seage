@@ -28,7 +28,6 @@ package org.seage.problem.tsp.grasp;
 import org.seage.metaheuristic.grasp.ISolutionGenerator;
 import org.seage.metaheuristic.grasp.Solution;
 import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.CityProvider;
 
 /**
  *

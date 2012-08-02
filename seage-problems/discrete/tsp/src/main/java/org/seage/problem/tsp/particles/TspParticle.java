@@ -33,7 +33,12 @@ import org.seage.metaheuristic.particles.Particle;
  */
 public abstract class TspParticle extends Particle
 {
-    public TspParticle(int dimension)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3091151599655089827L;
+
+	public TspParticle(int dimension)
     {
         super( dimension );
     }

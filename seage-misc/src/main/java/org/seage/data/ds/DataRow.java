@@ -26,6 +26,10 @@ import java.util.ArrayList;
  */
 public class DataRow extends ArrayList<DataCell>
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1940031810667352202L;
 	protected Object _rowProperty;
 
 	public DataRow()

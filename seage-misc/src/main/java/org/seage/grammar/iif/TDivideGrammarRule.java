@@ -41,7 +41,12 @@ import java.util.*;
  */
 public class TDivideGrammarRule extends GrammarRule {
     
-    public TDivideGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2348023070361175710L;
+
+	public TDivideGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("T"), new Vector<Symbol> (), uniqueId);
         Vector<Symbol> left = getRight();
         left.add(new NonterminalSymbol("T"));

@@ -41,7 +41,12 @@ import java.util.*;
  */
 public class TTimesGrammarRule extends GrammarRule {
     
-    public TTimesGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7324196344717287162L;
+
+	public TTimesGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("T"), new Vector<Symbol> (), uniqueId);
         Vector<Symbol> left = getRight();
         left.add(new NonterminalSymbol("T"));

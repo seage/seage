@@ -35,7 +35,12 @@ import org.seage.metaheuristic.tabusearch.*;
 public class TspMoveManager implements MoveManager
 {
     
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9161711744056093304L;
+
+	@Override
     public Move[] getAllMoves( Solution solution )
     {
         int[] tour = ((TspSolution)solution)._tour;

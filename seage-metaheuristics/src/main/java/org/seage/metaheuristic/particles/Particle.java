@@ -35,7 +35,12 @@ import java.util.Comparator;
  */
 public class Particle implements Cloneable, Serializable{
 
-    private double[] _coords;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -641046029890977230L;
+
+	private double[] _coords;
 
     private double[] _velocity;
 

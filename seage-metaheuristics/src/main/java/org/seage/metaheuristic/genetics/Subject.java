@@ -36,7 +36,11 @@ import java.io.Serializable;
  */
 public class Subject implements Cloneable, Serializable
 {
-        private static int _maxId = 0;
+        /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6762919894478503443L;
+		private static int _maxId = 0;
 	private Genome _genome;
 	private double[] _fitness;
         private int _id;

@@ -18,7 +18,6 @@
  *
  */
 package org.seage.data.ds;
-import java.util.*;
 import java.util.ArrayList;
 
 /**
@@ -26,6 +25,10 @@ import java.util.ArrayList;
  */
 public class DataTable extends ArrayList<DataRow>
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4842401883256968640L;
 	protected Object _tableProperty;
 
 	public DataTable()

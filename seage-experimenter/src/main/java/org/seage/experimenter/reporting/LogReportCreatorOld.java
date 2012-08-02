@@ -25,21 +25,24 @@
  */
 package org.seage.experimenter.reporting;
 
-import com.rapidminer.RapidMiner;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.util.Arrays;
+
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
 import org.seage.data.DataNode;
 import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
-import org.w3c.dom.Document;
-import javax.xml.transform.stream.*;
+
 import com.rapidminer.Process;
+import com.rapidminer.RapidMiner;
 
 /**
  *

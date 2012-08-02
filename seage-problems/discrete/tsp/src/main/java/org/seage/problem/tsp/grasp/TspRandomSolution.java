@@ -49,14 +49,14 @@ public class TspRandomSolution extends TspSolution {
      * @param c - The input list of cities
      */
     private void initRandTour(City[] c) {
-        List<Integer> listTour = new ArrayList();
+        List<Integer> listTour = new ArrayList<Integer>();
 
         /*Moving the cities in ArrayList for a next processing*/
         for (int i = 0; i < c.length; i++) {
             listTour.add(i);
         }
 
-        List<Integer> randTour = new ArrayList();
+        List<Integer> randTour = new ArrayList<Integer>();
         Integer pom = null;
 
         /*Cycle the random algorithm*/

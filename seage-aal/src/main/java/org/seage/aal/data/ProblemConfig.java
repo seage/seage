@@ -42,7 +42,12 @@ import org.seage.data.DataNode;
  */
 public class ProblemConfig extends DataNode{
 
-    public ProblemConfig(String name) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5927850750546609837L;
+
+	public ProblemConfig(String name) {
         super(name);
     }
 

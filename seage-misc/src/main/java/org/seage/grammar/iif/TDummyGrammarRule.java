@@ -40,7 +40,12 @@ import java.util.*;
  */
 public class TDummyGrammarRule extends GrammarRule {
     
-    public TDummyGrammarRule(int uniqueId) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6588516190041107359L;
+
+	public TDummyGrammarRule(int uniqueId) {
         super (new NonterminalSymbol("T"), new Vector<Symbol> (), uniqueId);
         Vector<Symbol> left = getRight();
         left.add(new NonterminalSymbol("F"));

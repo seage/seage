@@ -31,7 +31,12 @@ package org.seage.metaheuristic.particles;
  */
 public class ParticleSwarmEvent extends java.util.EventObject {
 
-    public ParticleSwarmEvent(Object source)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6183156859352794637L;
+
+	public ParticleSwarmEvent(Object source)
     {
         super( source );
     }

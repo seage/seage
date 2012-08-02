@@ -31,7 +31,12 @@ package org.seage.problem.tsp.particles;
  */
 public class TspRandomParticle extends TspParticle {
 
-    public TspRandomParticle(int dimension)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5075477439573174503L;
+
+	public TspRandomParticle(int dimension)
     {
         super(  dimension  );
         //_tour = TourProvider.createRandomTour( cities );

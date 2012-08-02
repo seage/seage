@@ -37,7 +37,12 @@ import org.seage.aal.reporter.AlgorithmReportEvaluator;
 public class FireflyAlgorithmRuntimeEvaluator extends AlgorithmReportEvaluator
 {
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4013948974096657456L;
+
+	@Override
     public int evaluate(AlgorithmReport report)
     {
         //InputStream is = AlgorithmAdapter.class.getResourceAsStream("reportSchema.xsd");
