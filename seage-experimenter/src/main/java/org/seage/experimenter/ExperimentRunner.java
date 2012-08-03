@@ -29,84 +29,78 @@
 package org.seage.experimenter;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.seage.aal.data.ProblemConfig;
 import org.seage.data.xml.XmlHelper;
+import org.seage.thread.TaskRunner;
 
 /**
- *
- * @author rick
+ * 
+ * @author Richard Malek
  */
-class ExperimentRunner {
+class ExperimentRunner
+{
 
-    private int _numExperimentAttempts = 5;
-    
-    public ExperimentRunner() {}
-    
-    public long run(ProblemConfig config, long timeoutS) throws Exception
-    {
-        return run(new ProblemConfig[]{config}, timeoutS);
-    }
+	private static Logger _logger = Logger.getLogger(ExperimentRunner.class.getName());
 
-    public long run(ProblemConfig[] configs, long timeoutS) throws Exception
-    {
-        int ix=0;        
-        ExperimentTask[] tasks = new ExperimentTask[configs.length*_numExperimentAttempts];
-        long experimentID = System.currentTimeMillis();
-        for(int i=0;i<configs.length;i++)
-            for(int j=0;j<_numExperimentAttempts;j++)
-            {
-                tasks[ix++] = new ExperimentTask(experimentID, j+1, timeoutS, configs[i]);
-            }
+	private int _numExperimentAttempts = 5;
 
-        runRunnableTasks(tasks);
-        
-        return experimentID;
-    }
+	/**
+	 * 
+	 * @param config
+	 * @param timeoutS
+	 * @return
+	 * @throws Exception
+	 */
+	public long run(ProblemConfig config, long timeoutS) throws Exception
+	{
+		return run(new ProblemConfig[] { config }, timeoutS);
+	}
 
-    public long run(String configPath, long timeoutS) throws Exception
-    {
-        ProblemConfig config = new ProblemConfig(XmlHelper.readXml(new File(configPath)));
-        return run(config, timeoutS);        
-    }
+	/**
+	 * 
+	 * @param configPath
+	 * @param timeoutS
+	 * @return
+	 * @throws Exception
+	 */
+	public long run(String configPath, long timeoutS) throws Exception
+	{
+		ProblemConfig config = new ProblemConfig(XmlHelper.readXml(new File(configPath)));
+		return run(config, timeoutS);
+	}
 
-    private void runRunnableTasks(Runnable[] tasks) throws Exception
-    {
-        int nrOfProcessors = Runtime.getRuntime().availableProcessors();
+	/**
+	 * 
+	 * @param configs
+	 * @param timeoutS
+	 * @return
+	 * @throws Exception
+	 */
+	public long run(ProblemConfig[] configs, long timeoutS) throws Exception
+	{
+		long experimentID = System.currentTimeMillis();
 
-        int last = 0;
-        Thread[] threads = new Thread[nrOfProcessors];
+		// Create a task queue
+		List<Runnable> taskQueue = new ArrayList<Runnable>();
+		for (int i = 0; i < configs.length; i++)
+		{
+			for (int j = 0; j < _numExperimentAttempts; j++)
+			{
+				taskQueue.add(new ExperimentTask(experimentID, j + 1, timeoutS, configs[i]));
+			}
+		}
 
-        System.out.println("Tasks: " + tasks.length);
-        
-        while(true)
-        {
-            boolean isRunning = false;
-            for(int i=0;i<threads.length;i++)
-            {
-                if(threads[i]==null)
-                {
-                    if(last < tasks.length)
-                    {
-                        threads[i] = new Thread(tasks[last++]);
-                        threads[i].start();
-                        System.out.println("\tTask-"+(last-1)+", Th"+i+"-"+threads[i].toString()+": "+tasks[last-1].toString());
-                        isRunning = true;
-                    }
-                }
-                else{
-                    if(!threads[i].isAlive())
-                        threads[i] = null;
-                    else
-                    {
-                        isRunning = true;
-                        System.out.print(".");
-                    }
-                }
-            }
-            if(!isRunning && last==tasks.length) break;
+		// Run threads for each processor	
+		new TaskRunner().runTasks(taskQueue, Runtime.getRuntime().availableProcessors());
 
-            Thread.sleep(500);
-        }
-    }
+		return experimentID;
+	}
+
+	
 }

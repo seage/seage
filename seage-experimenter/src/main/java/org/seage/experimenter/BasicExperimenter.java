@@ -30,6 +30,8 @@ package org.seage.experimenter;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.experimenter.config.Configurator;
@@ -44,6 +46,8 @@ import org.seage.experimenter.config.RandomConfigurator;
  */
 public class BasicExperimenter implements IExperimenter {
 
+	private static Logger _logger = Logger.getLogger(BasicExperimenter.class.getName());
+	
     Configurator _configurator;
     ExperimentRunner _experimentRunner;
     
@@ -69,6 +73,7 @@ public class BasicExperimenter implements IExperimenter {
     }
 
     public void runExperiments(String problemID, int numRuns, long timeoutS, String[] algorithmIDs) throws Exception {
+    	_logger.log(Level.INFO, "Running the experiment...");
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
         
         //ic.prepareConfigs(pi);
@@ -76,7 +81,8 @@ public class BasicExperimenter implements IExperimenter {
         for(String algID : algorithmIDs)
             configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
 
-        _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
+        long expID = _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
+        _logger.log(Level.INFO, "Experiment [{0}] finished", expID);
     }
 
 }

@@ -59,7 +59,7 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter{
             while(!_algorithmStarted)
             {
                 Thread.sleep(100);
-                System.out.print("+");
+                //System.out.print("+");
             }
         }
         else
