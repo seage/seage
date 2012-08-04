@@ -29,11 +29,14 @@
 package org.seage.experimenter;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.data.ProblemConfig;
 import org.seage.data.xml.XmlHelper;
@@ -85,20 +88,32 @@ class ExperimentRunner
 	public long run(ProblemConfig[] configs, long timeoutS) throws Exception
 	{
 		long experimentID = System.currentTimeMillis();
+		
+		FileOutputStream fos = new FileOutputStream(new File("output/experiment-logs/"+experimentID+".zip"));
+		ZipOutputStream zos = new ZipOutputStream(fos);
 
 		// Create a task queue
 		List<Runnable> taskQueue = new ArrayList<Runnable>();
 		for (int i = 0; i < configs.length; i++)
 		{
-			for (int j = 0; j < _numExperimentAttempts; j++)
-			{
-				taskQueue.add(new ExperimentTask(experimentID, j + 1, timeoutS, configs[i]));
+			String problemID = configs[i].getProblemID();
+			String instanceName = configs[i].getInstanceName().split("\\.")[0];
+			String algorithmID = configs[i].getAlgorithmID();
+			
+			for (int runID = 1; runID <= _numExperimentAttempts; runID++)
+			{				
+				String entryName = experimentID+"-"+problemID +"-"+algorithmID+"-"+instanceName +"-"+runID+".xml";
+				//zos.putNextEntry(new ZipEntry(entryName));
+				taskQueue.add(new ExperimentTask(experimentID, entryName, timeoutS, configs[i], zos));
 			}
 		}
 
 		// Run threads for each processor	
 		new TaskRunner().runTasks(taskQueue, Runtime.getRuntime().availableProcessors());
-
+		
+		zos.close();
+		fos.close();
+		
 		return experimentID;
 	}
 

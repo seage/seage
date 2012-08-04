@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 public class ExperimentLogImporter {
 	private String _logPath;
@@ -36,36 +37,11 @@ public class ExperimentLogImporter {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 
 			for (File f : logDir.listFiles()) {
+				if (!f.getName().endsWith(".zip"))
+					continue;
 				Logger.getLogger(getClass().getName()).log(Level.INFO, f.getName());
 
-				// File logDirDir = new File(logDir.getPath() + "/" +
-				// f.getPath());
-				// Arrays.sort(logDirDir.list());
-//				ZipFile zf = new ZipFile(f.getAbsolutePath());
-//
 				int numFiles = 0;
-//				FileOutputStream fos = new FileOutputStream("/home/rick/Temp/data.xml");
-//				
-//				for (Enumeration<? extends ZipEntry> e = zf.entries(); e
-//						.hasMoreElements();) {
-//					numFiles++;
-//
-//					ZipEntry entry = e.nextElement();
-//					Logger.getLogger(getClass().getName()).log(Level.INFO, ""+zf.getInputStream(entry).available());
-//
-//					// String xmlPath = logDir.getPath() + "/" + dirName;// +
-//					// "/" + xmlFileName;
-//
-//					//Logger.getLogger(ProcessPerformer.class.getName()).log(	Level.INFO, entry.getName());
-//					
-//					// DataNode dn = XmlHelper.readXml(new File(xmlPath));
-//					
-//					
-//					Document doc = builder.parse(zf.getInputStream(entry));
-//					// fos.write(zis.);
-//					
-//
-//				}
 				
 				ZipFile zf = new ZipFile(f);
 				try {
@@ -77,7 +53,12 @@ public class ExperimentLogImporter {
 				    if (name.endsWith(".xml")) {
 				      InputStream in = zf.getInputStream(ze);
 				      // read from 'in'
+				      try{
 				      Document doc = builder.parse(in);
+				      }catch(SAXException ex)
+				      {
+				    	  Logger.getLogger(getClass().getName()).log(Level.WARNING, ex.getMessage());
+				      }
 				      //DataNode dn = XmlHelper.readXml(in);
 				    }
 				  }

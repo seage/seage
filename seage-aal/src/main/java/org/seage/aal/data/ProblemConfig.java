@@ -62,4 +62,20 @@ public class ProblemConfig extends DataNode{
         result.putValue("instance", this.getDataNode("Problem").getDataNode("Instance").getValue("name"));
         return result;
     }
+    
+    public String getProblemID() throws Exception
+    {
+    	return this.getDataNode("Problem").getValueStr("id");
+    }
+    
+    public String getInstanceName() throws Exception
+    {
+    	return this.getDataNode("Algorithm").getValueStr("id");
+    }
+    
+    public String getAlgorithmID() throws Exception
+    {
+    	return this.getDataNode("Problem").getDataNode("Instance").getValueStr("name");
+    }
+    
 }

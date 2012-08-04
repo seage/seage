@@ -27,6 +27,9 @@
 package org.seage.aal.reporter;
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 
@@ -36,6 +39,7 @@ import org.seage.data.xml.XmlHelper;
  */
 public class AlgorithmReport extends DataNode
 {
+	private static Logger _logger = Logger.getLogger(AlgorithmReport.class.getName());
     /**
 	 * 
 	 */
@@ -61,6 +65,13 @@ public class AlgorithmReport extends DataNode
         File f = new File(path);
         if(!f.getParentFile().exists())
             f.getParentFile().mkdirs();
-        XmlHelper.writeXml(this, path);
+        try
+		{
+			XmlHelper.writeXml(this, path);
+		}
+		catch (Exception e)
+		{
+			_logger.log(Level.WARNING, e.getMessage());
+		}
     }
 }
