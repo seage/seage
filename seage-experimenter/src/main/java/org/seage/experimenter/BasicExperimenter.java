@@ -82,7 +82,7 @@ public class BasicExperimenter implements IExperimenter {
             configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
 
         long expID = _experimentRunner.run(configs.toArray(new ProblemConfig[]{}), timeoutS);
-        _logger.log(Level.INFO, "Experiment [{0}] finished", expID);
+        _logger.log(Level.INFO, "Experiment "+expID+" finished");
     }
 
 }

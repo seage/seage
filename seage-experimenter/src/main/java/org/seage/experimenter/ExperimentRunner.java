@@ -94,17 +94,16 @@ class ExperimentRunner
 
 		// Create a task queue
 		List<Runnable> taskQueue = new ArrayList<Runnable>();
-		for (int i = 0; i < configs.length; i++)
+		for (ProblemConfig config : configs)
 		{
-			String problemID = configs[i].getProblemID();
-			String instanceName = configs[i].getInstanceName().split("\\.")[0];
-			String algorithmID = configs[i].getAlgorithmID();
+			String problemID = config.getProblemID();
+			String instanceName = config.getInstanceName().split("\\.")[0];
+			String algorithmID = config.getAlgorithmID();
 			
 			for (int runID = 1; runID <= _numExperimentAttempts; runID++)
 			{				
 				String entryName = experimentID+"-"+problemID +"-"+algorithmID+"-"+instanceName +"-"+runID+".xml";
-				//zos.putNextEntry(new ZipEntry(entryName));
-				taskQueue.add(new ExperimentTask(experimentID, entryName, timeoutS, configs[i], zos));
+				taskQueue.add(new ExperimentTask(experimentID, entryName, timeoutS, config, zos));
 			}
 		}
 
