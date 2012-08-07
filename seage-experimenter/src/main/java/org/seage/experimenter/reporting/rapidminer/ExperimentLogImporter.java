@@ -44,8 +44,8 @@ public class ExperimentLogImporter
 	private String _logPath;
 	private String _repoName;
 	
-	private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "SEAGE-RM-REPO";
-	private final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "/home/rick/Temp/SEAGE-RM-REPO";
+	private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "seage";
+	private final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "repository";
 	
 	MemoryExampleTable _memoryTable;
 	private List<Attribute> _attributes;
@@ -179,7 +179,7 @@ public class ExperimentLogImporter
 				.createOperator(RepositoryStorer.class);
 		modelWriter.setParameter(
 				RepositoryStorer.PARAMETER_REPOSITORY_ENTRY,
-				"//"+RAPIDMINER_LOCAL_REPOSITORY_NAME+"/qqq");
+				"//"+RAPIDMINER_LOCAL_REPOSITORY_NAME+"/databases/algorithm-logs");
 
 		Process process = new Process();
 
