@@ -32,6 +32,7 @@ import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorCreationException;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.io.RepositoryStorer;
+import com.rapidminer.repository.Repository;
 import com.rapidminer.repository.RepositoryException;
 import com.rapidminer.repository.RepositoryManager;
 import com.rapidminer.repository.local.LocalRepository;
@@ -167,9 +168,9 @@ public class ExperimentLogImporter
 	private void writeDataTableToRepository() throws OperatorException, OperatorCreationException, RepositoryException
 	{
 		RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
-		RepositoryManager.getInstance(null).addRepository(new LocalRepository( RAPIDMINER_LOCAL_REPOSITORY_NAME , new File( RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH )));
 		RapidMiner.init();
 		
+		initRepository();
 		
 		_memoryTable = new MemoryExampleTable(_attributes);
 		
@@ -193,5 +194,41 @@ public class ExperimentLogImporter
 		_memoryTable.readExamples(new ListDataRowReader(_rmDataRows.iterator()));
 
 		process.run(new IOContainer(_memoryTable.createExampleSet()));
+		
+	}
+
+	private void initRepository() throws RepositoryException
+	{
+		RepositoryManager rm = RepositoryManager.getInstance(null);
+
+		List<Repository> reposToRemove = new ArrayList<Repository>();
+		
+		for(Repository repo : rm.getRepositories())
+		{
+			if(!(repo instanceof LocalRepository))
+				continue;
+			LocalRepository r = (LocalRepository)repo;
+			if(r.getName().equals(RAPIDMINER_LOCAL_REPOSITORY_NAME))
+			{
+				if(!r.getFile().getPath().equals(RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH))
+					reposToRemove.add(r);
+					
+			}
+		}
+		
+		for(Repository repo : reposToRemove)
+			rm.removeRepository(repo);			
+		
+		try
+		{
+			rm.getRepository(RAPIDMINER_LOCAL_REPOSITORY_NAME);
+		}
+		catch(RepositoryException re)
+		{
+			rm.addRepository(new LocalRepository( RAPIDMINER_LOCAL_REPOSITORY_NAME , new File( RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH )));
+		}
+		
+		rm.save();
+		
 	}
 }
