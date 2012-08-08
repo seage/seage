@@ -15,6 +15,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 
+import org.seage.thread.TaskRunner;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -41,6 +42,7 @@ import com.rapidminer.tools.OperatorService;
 
 public class ExperimentLogImporter
 {
+	private static Logger _logger = Logger.getLogger(ExperimentLogImporter.class.getName());
 	private String _logPath;
 	private String _repoName;
 	
@@ -76,34 +78,31 @@ public class ExperimentLogImporter
 				.createAttribute("SolutionValue", Ontology.REAL));
 		
 	}
-
-	public void processLogs() throws OperatorException, OperatorCreationException, RepositoryException
+	
+	private class ProcessZipTask implements Runnable
 	{
-		Logger.getLogger(getClass().getName()).log(Level.INFO, "Processing experiment logs ...");
-
-		long t0 = System.currentTimeMillis();
-
-		File logDir = new File(_logPath);
-
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
-		try
+		private File _zipFile;
+		
+		private ProcessZipTask(File zipFile)
 		{
-			DocumentBuilder builder = factory.newDocumentBuilder();
 
-			for (File f : logDir.listFiles())
+			_zipFile = zipFile;
+		}
+
+		@Override
+		public void run()
+		{
+			try
 			{
-				if (!f.getName().endsWith(".zip"))
-					continue;
-				Logger.getLogger(getClass().getName()).log(Level.INFO, f.getName());
-
-				int numFiles = 0;
-
-				ZipFile zf = new ZipFile(f);
+				Logger.getLogger(getClass().getName()).log(Level.INFO, Thread.currentThread().getName()+ " - importing file: " + _zipFile.getName());
+				
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder builder = factory.newDocumentBuilder();
+				
+				ZipFile zf = new ZipFile(_zipFile);
 				
 				for (Enumeration<? extends ZipEntry> e = zf.entries(); e.hasMoreElements();)
 				{
-					numFiles++;
 					ZipEntry ze = e.nextElement();
 					String name = ze.getName();
 					if (name.endsWith(".xml"))
@@ -124,9 +123,37 @@ public class ExperimentLogImporter
 				}
 				
 				zf.close();
-				
-				Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, "" + numFiles);
-			}			
+			}
+			catch(Exception ex)
+			{
+				_logger.log(Level.SEVERE, ex.getMessage());
+			}
+			
+		}
+		
+	}
+
+	public void processLogs() throws OperatorException, OperatorCreationException, RepositoryException
+	{
+		Logger.getLogger(getClass().getName()).log(Level.INFO, "Processing experiment logs ...");
+
+		long t0 = System.currentTimeMillis();
+
+		File logDir = new File(_logPath);
+
+		List<Runnable> tasks = new ArrayList<Runnable>();
+
+		try
+		{			
+			for (File f : logDir.listFiles())
+			{
+				if (!f.getName().endsWith(".zip"))
+					continue;				
+
+				tasks.add(new ProcessZipTask(f));				
+			}	
+			
+			new TaskRunner().runTasks(tasks, Runtime.getRuntime().availableProcessors());
 
 		}
 		catch (Exception ex)
@@ -142,7 +169,7 @@ public class ExperimentLogImporter
 				"Processing experiment logs DONE - " + t1 + "s");
 	}
 	
-	private void importDocument(Document doc)
+	private synchronized void importDocument(Document doc)
 	{
 		Element root = doc.getDocumentElement();
 		Element config = (Element)root.getElementsByTagName("Config").item(0);
@@ -165,7 +192,7 @@ public class ExperimentLogImporter
 
 	}
 	
-	private void writeDataTableToRepository() throws OperatorException, OperatorCreationException, RepositoryException
+	private synchronized void writeDataTableToRepository() throws OperatorException, OperatorCreationException, RepositoryException
 	{
 		RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
 		RapidMiner.init();
