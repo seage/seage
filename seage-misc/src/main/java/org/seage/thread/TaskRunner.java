@@ -2,7 +2,9 @@ package org.seage.thread;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,11 +12,11 @@ public class TaskRunner
 {
 	private static Logger _logger = Logger.getLogger(TaskRunner.class.getName());
 
-	List<Runnable> _taskQueue;
+	ConcurrentLinkedQueue<Runnable> _taskQueue;
 
 	public void runTasks(List<Runnable> taskQueue, int nrOfThreads)
 	{
-		_taskQueue = Collections.synchronizedList(new ArrayList<Runnable>(taskQueue));
+		_taskQueue = new ConcurrentLinkedQueue<Runnable>(taskQueue);
 
 		List<Thread> runnerThreads = new ArrayList<Thread>();
 
@@ -44,9 +46,12 @@ public class TaskRunner
 		@Override
 		public void run()
 		{
-			while (!_taskQueue.isEmpty())
+			while (true)
 			{
-				Thread t = new Thread(_taskQueue.remove(0));
+				Runnable task = _taskQueue.poll();
+				if(task == null)
+					return;
+				Thread t = new Thread(task);
 				_logger.log(Level.FINER, t.toString());
 				t.start();
 
