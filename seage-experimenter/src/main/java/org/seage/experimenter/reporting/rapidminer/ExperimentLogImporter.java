@@ -13,11 +13,6 @@ import java.util.zip.ZipFile;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
 import org.seage.thread.TaskRunner;
 import org.w3c.dom.Document;
@@ -55,7 +50,9 @@ public class ExperimentLogImporter
 	
 	private Hashtable<RMDataTableInfo, List<DataRow>> _rmDataTables;
 	
-	public ExperimentLogImporter(String logPath, String repoName) throws RepositoryException, XPathExpressionException
+	private Hashtable<String, Hashtable<String, XPath>> _xPaths;
+	
+	public ExperimentLogImporter(String logPath, String repoName) throws RepositoryException
 	{
 		_logPath = logPath;
 		_repoName = repoName;
@@ -67,6 +64,7 @@ public class ExperimentLogImporter
 		expValues.Attributes.add(new RMAttributeInfo("ProblemID", Ontology.NOMINAL, "/ExperimentTask/Config/Problem/@id"));
 		expValues.Attributes.add(new RMAttributeInfo("AlgorithmID", Ontology.NOMINAL, "/ExperimentTask/Config/Algorithm/@id"));
 		expValues.Attributes.add(new RMAttributeInfo("InstanceID", Ontology.NOMINAL, "/ExperimentTask/Config/Problem/Instance/@name"));
+		expValues.Attributes.add(new RMAttributeInfo("ConfigID", Ontology.NOMINAL, "/ExperimentTask/Config/@configID"));
 		expValues.Attributes.add(new RMAttributeInfo("RunID", Ontology.NOMINAL, "/ExperimentTask/@runID"));
 		expValues.Attributes.add(new RMAttributeInfo("InitSolutionValue", Ontology.REAL, "/ExperimentTask/AlgorithmReport/Statistics/@initObjVal"));
 		expValues.Attributes.add(new RMAttributeInfo("SolutionValue", Ontology.REAL, "/ExperimentTask/AlgorithmReport/Statistics/@bestObjVal"));
@@ -77,6 +75,36 @@ public class ExperimentLogImporter
 		
 		_rmDataTables.put(expValues, new ArrayList<DataRow>());
 		
+		_xPaths = new Hashtable<String, Hashtable<String,XPath>>(); 
+		
+		Hashtable<String, XPath> v01 = new Hashtable<String, XPath>();
+		v01.put("ExperimentID", new XPath("/ExperimentTask/@experimentID"));
+		v01.put("ProblemID", new XPath("/ExperimentTask/Config/Problem/@id"));
+		v01.put("AlgorithmID", new XPath("/ExperimentTask/Config/Algorithm/@id"));
+		v01.put("InstanceID", new XPath("/ExperimentTask/Config/Problem/Instance/@name"));
+		v01.put("ConfigID", new XPath("/ExperimentTask/Config/@configID"));
+		v01.put("RunID", new XPath("/ExperimentTask/@runID"));
+		v01.put("InitSolutionValue", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@initObjVal"));
+		v01.put("SolutionValue", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@bestObjVal"));
+		v01.put("NrOfSolutions", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@numberOfNewSolutions"));
+		v01.put("LastIterNumberNewSol", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
+		v01.put("NrOfIterations", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@numberOfIter"));
+		
+		Hashtable<String, XPath> v02 = new Hashtable<String, XPath>();
+		v02.put("ExperimentID", new XPath("/ExperimentTask/@experimentID"));
+		v02.put("ProblemID", new XPath("/ExperimentTask/Config/Problem/@problemID"));
+		v02.put("AlgorithmID", new XPath("/ExperimentTask/Config/Algorithm/@algorithmID"));
+		v02.put("InstanceID", new XPath("/ExperimentTask/Config/Problem/Instance/@name"));
+		v02.put("ConfigID", new XPath("/ExperimentTask/Config/@configID"));
+		v02.put("RunID", new XPath("/ExperimentTask/Config/@runID"));
+		v02.put("InitSolutionValue", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@initObjVal"));
+		v02.put("SolutionValue", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@bestObjVal"));
+		v02.put("NrOfSolutions", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@numberOfNewSolutions"));
+		v02.put("LastIterNumberNewSol", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
+		v02.put("NrOfIterations", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@numberOfIter"));
+		
+		_xPaths.put("0.1", v01);
+		_xPaths.put("0.2", v02);
 	}
 
 	public void processLogs() throws OperatorException, OperatorCreationException, RepositoryException
@@ -115,7 +143,7 @@ public class ExperimentLogImporter
 				"Processing experiment logs DONE - " + t1 + "s");
 	}
 	
-	private synchronized void importDocument(Document doc) throws XPathExpressionException
+	private synchronized void importDocument(Document doc)
 	{
 		
 		for(RMDataTableInfo tableInfo : _rmDataTables.keySet())
@@ -124,7 +152,11 @@ public class ExperimentLogImporter
 			int i=0;
 			for(RMAttributeInfo attInfo : tableInfo.Attributes)
 			{ 
-				String val = getValueFromDocument(doc.getDocumentElement(), new ArrayList<String>(attInfo.XPath));//(String) xpath.evaluate(attInfo.XPath, doc, XPathConstants.STRING);; //xpath
+				XPath xPath = _xPaths.get("0.1").get(attInfo.Attribute.getName());
+				String version = doc.getDocumentElement().getAttribute("version");
+				if(!version.equals(""))
+					xPath = _xPaths.get(version).get(attInfo.AttributeName);
+				String val = getValueFromDocument(doc.getDocumentElement(), xPath.XPath);//(String) xpath.evaluate(attInfo.XPath, doc, XPathConstants.STRING);; //xpath
 				//String val = (String) attInfo.XPath.evaluate( doc, XPathConstants.STRING);; //xpath
 				if(attInfo.Type == Ontology.NOMINAL)
 					valArray[i++] = attInfo.Attribute.getMapping().mapString(val);
@@ -234,15 +266,37 @@ public class ExperimentLogImporter
 	}
 	private class RMAttributeInfo
 	{
+		public String AttributeName;
 		public List<String> XPath;		// Java's XPath is too slow, this is a hack
 		public int Type;
 		public Attribute Attribute;
 		
-		public RMAttributeInfo(String attributeName, int type, String xPath) throws XPathExpressionException 
+		public RMAttributeInfo(String attributeName, int type, String xPath) 
 		{
+			AttributeName = attributeName;
 			Type = type;
 			Attribute = AttributeFactory.createAttribute(attributeName, type);			
 			
+			XPath = new ArrayList<String>();
+			String[] split = xPath.split("/"); 
+			for(int i=2;i<split.length;i++) // i=2 -> skip '/ExperimentTask'
+			{
+				if(split[i].startsWith("@"))
+					XPath.add(split[i].substring(1));
+				else
+					XPath.add(split[i]);
+				
+			}
+		}
+		
+	}
+	
+	private class XPath
+	{
+		public List<String> XPath;
+
+		public XPath(String xPath)
+		{
 			XPath = new ArrayList<String>();
 			String[] split = xPath.split("/"); 
 			for(int i=2;i<split.length;i++) // i=2 -> skip '/ExperimentTask'

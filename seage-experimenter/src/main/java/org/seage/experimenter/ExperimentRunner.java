@@ -102,8 +102,8 @@ class ExperimentRunner
 			
 			for (int runID = 1; runID <= _numExperimentAttempts; runID++)
 			{				
-				String entryName = experimentID+"-"+problemID +"-"+algorithmID+"-"+instanceName +"-"+runID+".xml";
-				taskQueue.add(new ExperimentTask(experimentID, entryName, timeoutS, config, zos));
+				String reportName = experimentID+"-"+problemID +"-"+algorithmID+"-"+instanceName +"-"+runID+".xml";
+				taskQueue.add(new ExperimentTask(experimentID, runID, reportName, timeoutS, config, zos));
 			}
 		}
 

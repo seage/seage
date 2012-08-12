@@ -26,15 +26,15 @@
 
 package org.seage.experimenter;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.encog.util.SerializeObject;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.aal.Annotations.ProblemName;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
@@ -46,24 +46,95 @@ import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 
 /**
- *
+ * Runs experiment and provides following experiment log:
+ * 
+ * ExperimentTask 			# version 0.1 
+ * |_ ... 
+ * 
+ * ExperimentReport 		# version 0.2
+ *  |_ version (0.2)
+ *  |_ experimentID
+ *  |_ startTimeMS
+ *  |_ timeoutS
+ *  |_ durationS
+ *  |_ machineName
+ *  |_ nrOfCores
+ *  |_ totalRAM
+ *  |_ availRAM 
+ *  |_ Config
+ *  |	|_ configID
+ *  |	|_ runID
+ *  |	|_ Problem
+ *  |	|	|_ problemID
+ *  |	|	|_ Instance
+ *  |	|		|_ name
+ *  |	|_ Algorithm
+ *  |		|_ algorithmID
+ *  |		|_ Parameters
+ *  |_ AlgorithmReport
+ *  	|_ Parameters
+ *  	|_ Statistics
+ *  	|_ Minutes
+ * 
  * @author rick
  */
 class ExperimentTask implements Runnable{
+	private static Logger _logger = Logger.getLogger(ExperimentTask.class.getName());
     private ProblemConfig _config;
-    private long _experimentID;
-    private String _runID;
+    //private long _experimentID;
+    private String _reportName;
+    private int _runID;
     private long _timeout = 9000;
-    private ZipOutputStream _os;
+    private ZipOutputStream _outputStream;
+    
+    private DataNode _experimentReport;
     
     //private static long _runOrder=100000;
 
-    public ExperimentTask(long experimentID, String runID, long timeoutS, ProblemConfig config, ZipOutputStream os){
-        _experimentID = experimentID;
-        _runID = runID;
+    public ExperimentTask(long experimentID, int runID, String reportName, long timeoutS, ProblemConfig config, ZipOutputStream outputStream) throws Exception
+    {
+        //_experimentID = experimentID;
+    	_runID = runID;
+        _reportName = reportName;
         _config = config;
         _timeout = timeoutS*1000;
-        _os = os;
+        _outputStream = outputStream;
+
+        _experimentReport = new DataNode("ExperimentReport");
+        _experimentReport.putValue("version", "0.2");
+        _experimentReport.putValue("experimentID", experimentID);
+        _experimentReport.putValue("timeoutS", timeoutS);
+        try
+		{
+			_experimentReport.putValue("machineName", java.net.InetAddress.getLocalHost().getHostName());
+		}
+		catch (UnknownHostException e)
+		{
+			_logger.log(Level.WARNING, e.getMessage());
+		}
+        _experimentReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
+        _experimentReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());
+        _experimentReport.putValue("availRAM", Runtime.getRuntime().maxMemory());
+        
+        DataNode configNode = new DataNode("Config");        
+		configNode.putValue("configID", _config.getValueStr("configID"));		
+        configNode.putValue("runID", _runID);
+        
+        DataNode problemNode = new DataNode("Problem");
+        problemNode.putValue("problemID", _config.getDataNode("Problem").getValueStr("id"));
+        
+        DataNode instanceNode = new DataNode("Instance");
+        instanceNode.putValue("name", _config.getDataNode("Problem").getDataNode("Instance").getValue("name"));
+        
+        DataNode algorithmNode = new DataNode("Algorithm");
+        algorithmNode.putValue("algorithmID", _config.getDataNode("Algorithm").getValueStr("id"));
+        algorithmNode.putDataNode(_config.getDataNode("Algorithm").getDataNode("Parameters"));
+
+        problemNode.putDataNode(instanceNode);
+        configNode.putDataNode(problemNode);
+        configNode.putDataNode(algorithmNode);
+        _experimentReport.putDataNode(configNode);
+        
     }
     
     public void run() {
@@ -98,35 +169,39 @@ class ExperimentTask implements Runnable{
             solutions = algorithm.solutionsToPhenotype();
 
             // phenotype evaluator
-            IPhenotypeEvaluator evaluator = provider.initPhenotypeEvaluator();
-            double[] result = evaluator.evaluate(solutions[0], instance);
+            //IPhenotypeEvaluator evaluator = provider.initPhenotypeEvaluator();
+            //double[] result = evaluator.evaluate(solutions[0], instance);
 
-            AlgorithmReport algReport = algorithm.getReport();
+            //AlgorithmReport algReport = algorithm.getReport();
+            _experimentReport.putDataNode(algorithm.getReport());
+            _experimentReport.putValue("durationS", (endTime - startTime)/1000);
             
-            DataNode expReport = new DataNode("ExperimentTask");
-            expReport.putValue("experimentID", _experimentID);
-            expReport.putValue("runID", _runID);
-            expReport.putValue("duration", endTime - startTime);
-            expReport.putDataNode(algReport);
-            expReport.putDataNode(_config);
-            
-            //String experimentID = _config.getValueStr("experimentID");
-            String configID = _config.getValueStr("configID");
+//            DataNode expReport = new DataNode("ExperimentTask");
+//            expReport.putValue("version", "0.1");
+//            //expReport.putValue("experimentID", _experimentID);
+//            expReport.putValue("runID", _runID);
+//            expReport.putValue("durationS", (endTime - startTime)/1000);
+//            expReport.putDataNode(algReport);
+//            expReport.putDataNode(_config);
+//            
+//            //String experimentID = _config.getValueStr("experimentID");
+//            String configID = _config.getValueStr("configID");
                        
             //File dir = new File("output/"+_experimentID);
             //if(!dir.exists()) dir.mkdirs();
 
             //String path = dir.getPath()+"/"+problemID +"-"+instanceName.split("\\.")[0] +"-"+algorithmID+"-"+getRunOrder()+"-"+_experimentID+".xml";
             //XmlHelper.writeXml(expReport, _os);
-            XmlHelper.writeXml(expReport, _os, new ZipEntry(_runID));
+            XmlHelper.writeXml(_experimentReport, _outputStream, new ZipEntry(_reportName));
             //serialize(expReport);
 
-            System.out.printf("%s %15s\t %20s\t %20s\n", algorithmID, instance.toString(), result[0], configID);
+            //System.out.printf("%s %15s\t %20s\t %20s\n", algorithmID, instance.toString(), result[0], configID);
         }
         catch(Exception ex){
-            System.err.println("ERR: " + problemID +"/"+algorithmID+"/"+instanceName);
-            System.err.println(_config.toString());
-            ex.printStackTrace();
+            //System.err.println("ERR: " + problemID +"/"+algorithmID+"/"+instanceName);
+            //System.err.println(_config.toString());
+            //ex.printStackTrace();
+        	_logger.log(Level.SEVERE, ex.getMessage());
         }
     }
     
@@ -136,11 +211,5 @@ class ExperimentTask implements Runnable{
         while(alg.isRunning() && ((System.currentTimeMillis()-time)<_timeout))
             Thread.sleep(300);
     }
-    
-//    synchronized private void serialize(DataNode dn) throws Exception
-//    {
-//        _os.putNextEntry(new ZipEntry(_runID));
-//        
-//    }
 
 }
