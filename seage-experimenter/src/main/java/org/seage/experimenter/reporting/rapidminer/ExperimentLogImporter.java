@@ -103,17 +103,30 @@ public class ExperimentLogImporter
 		v02.put("NrOfIterations", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@numberOfIter"));
 		
 		Hashtable<String, XPath> v03 = new Hashtable<String, XPath>();
-		v03.put("ExperimentID", new XPath("/ExperimentTaskReport/@experimentID"));
-		v03.put("ProblemID", new XPath("/ExperimentTaskReport/Config/Problem/@problemID"));
-		v03.put("AlgorithmID", new XPath("/ExperimentTaskReport/Config/Algorithm/@algorithmID"));
-		v03.put("InstanceID", new XPath("/ExperimentTaskReport/Config/Problem/Instance/@name"));
-		v03.put("ConfigID", new XPath("/ExperimentTaskReport/Config/@configID"));
-		v03.put("RunID", new XPath("/ExperimentTaskReport/Config/@runID"));
-		v03.put("InitSolutionValue", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@initObjVal"));
-		v03.put("BestSolutionValue", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@bestObjVal"));
-		v03.put("NrOfNewSolutions", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfNewSolutions"));
-		v03.put("LastIterNumberNewSol", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
-		v03.put("NrOfIterations", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfIter"));
+		v03.put("ExperimentID", new XPath("/ExperimentTask/@experimentID"));
+		v03.put("ProblemID", new XPath("/ExperimentTask/Config/Problem/@id"));
+		v03.put("AlgorithmID", new XPath("/ExperimentTask/Config/Algorithm/@id"));
+		v03.put("InstanceID", new XPath("/ExperimentTask/Config/Problem/Instance/@name"));
+		v03.put("ConfigID", new XPath("/ExperimentTask/Config/@configID"));
+		v03.put("RunID", new XPath("/ExperimentTask/Config/@runID"));
+		v03.put("InitSolutionValue", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@initObjVal"));
+		v03.put("BestSolutionValue", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@bestObjVal"));
+		v03.put("NrOfNewSolutions", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@numberOfNewSolutions"));
+		v03.put("LastIterNumberNewSol", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
+		v03.put("NrOfIterations", new XPath("/ExperimentTask/AlgorithmReport/Statistics/@numberOfIter"));
+		
+		Hashtable<String, XPath> v04 = new Hashtable<String, XPath>();
+		v04.put("ExperimentID", new XPath("/ExperimentTaskReport/@experimentID"));
+		v04.put("ProblemID", new XPath("/ExperimentTaskReport/Config/Problem/@problemID"));
+		v04.put("AlgorithmID", new XPath("/ExperimentTaskReport/Config/Algorithm/@algorithmID"));
+		v04.put("InstanceID", new XPath("/ExperimentTaskReport/Config/Problem/Instance/@name"));
+		v04.put("ConfigID", new XPath("/ExperimentTaskReport/Config/@configID"));
+		v04.put("RunID", new XPath("/ExperimentTaskReport/Config/@runID"));
+		v04.put("InitSolutionValue", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@initObjVal"));
+		v04.put("BestSolutionValue", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@bestObjVal"));
+		v04.put("NrOfNewSolutions", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfNewSolutions"));
+		v04.put("LastIterNumberNewSol", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
+		v04.put("NrOfIterations", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfIter"));
 		
 //		Hashtable<String, XPath> v04 = new Hashtable<String, XPath>();
 //		v04.put("ExperimentID", new XPath("/ExperimentTaskReport/@experimentID"));
@@ -144,7 +157,7 @@ public class ExperimentLogImporter
 		_xPaths.put("0.1", v01);
 		_xPaths.put("0.2", v02);
 		_xPaths.put("0.3", v03);
-//		_xPaths.put("0.4", v04);
+		_xPaths.put("0.4", v04);
 //		_xPaths.put("0.5", v05);
 	}
 
@@ -215,11 +228,13 @@ public class ExperimentLogImporter
 	{	
 		String version = doc.getDocumentElement().getAttribute("version");
 		if(version.equals("0.2"))
-			return "0.3";
+			return "0.4";
 		if(!version.equals(""))
 			return version;
 		if(doc.getDocumentElement().getAttributes().getLength()==0)
 			return "0.1";
+		if(doc.getDocumentElement().getAttributes().getLength()==1)
+			return "0.3";
 		return "0.2";
 	}
 
