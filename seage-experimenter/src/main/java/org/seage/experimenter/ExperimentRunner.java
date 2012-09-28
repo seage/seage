@@ -96,13 +96,14 @@ class ExperimentRunner
 		List<Runnable> taskQueue = new ArrayList<Runnable>();
 		for (ProblemConfig config : configs)
 		{
+			String configID = config.getConfigID();
 			String problemID = config.getProblemID();
 			String instanceName = config.getInstanceName().split("\\.")[0];
 			String algorithmID = config.getAlgorithmID();
 			
 			for (int runID = 1; runID <= _numExperimentAttempts; runID++)
 			{				
-				String reportName = experimentID+"-"+problemID +"-"+algorithmID+"-"+instanceName +"-"+runID+".xml";
+				String reportName = problemID +"-"+algorithmID+"-"+instanceName +"-"+configID+"-"+runID+".xml";
 				taskQueue.add(new ExperimentTask(experimentID, runID, reportName, timeoutS, config, zos));
 			}
 		}
