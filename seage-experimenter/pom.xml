@@ -13,8 +13,8 @@
 	 	<dependency>
 	      <groupId>junit</groupId>
 	      <artifactId>junit</artifactId>
-	      <version>4.10</version>
-	      <scope>test</scope>
+	      <version>4.0</version>
+	      <scope>runtime</scope>
 	    </dependency>
 	 	<dependency>
 	 		<groupId>${project.groupId}</groupId>
@@ -71,6 +71,16 @@
 			<version>1.0</version>
 			<type>jar</type>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.eobjects.sassyreader</groupId>
+		    <artifactId>SassyReader</artifactId>
+		    <version>0.5</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>3.8</version>
 		</dependency>
 	 </dependencies>
 </project>

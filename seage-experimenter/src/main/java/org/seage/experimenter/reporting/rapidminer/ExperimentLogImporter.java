@@ -186,7 +186,7 @@ public class ExperimentLogImporter
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			_logger.severe(ex.getMessage());
 		}
 		
 		writeDataTablesToRepository();
@@ -254,6 +254,7 @@ public class ExperimentLogImporter
 
 	private void writeDataTablesToRepository() throws OperatorException, OperatorCreationException, RepositoryException
 	{
+		System.setProperty("rapidminer.home", ".");
 		RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
 		RapidMiner.init();
 		
@@ -293,6 +294,7 @@ public class ExperimentLogImporter
 
 	private void initRepository() throws RepositoryException
 	{
+		_logger.fine("initRepository");
 		RepositoryManager rm = RepositoryManager.getInstance(null);
 
 		List<Repository> reposToRemove = new ArrayList<Repository>();
@@ -322,8 +324,9 @@ public class ExperimentLogImporter
 			rm.addRepository(new LocalRepository( RAPIDMINER_LOCAL_REPOSITORY_NAME , new File( RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH )));
 		}
 		
+		_logger.fine("initRepository: saving");
 		rm.save();
-		
+		_logger.fine("initRepository: done");
 	}
 	
 	private class RMDataTableInfo
