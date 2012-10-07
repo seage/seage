@@ -81,7 +81,7 @@ import org.seage.data.xml.XmlHelper;
 class ExperimentTask implements Runnable{
 	private static Logger _logger = Logger.getLogger(ExperimentTask.class.getName());
     private ProblemConfig _config;
-    //private long _experimentID;
+    private long _experimentID;
     private String _reportName;
     private int _runID;
     private long _timeout = 9000;
@@ -93,7 +93,7 @@ class ExperimentTask implements Runnable{
 
     public ExperimentTask(long experimentID, int runID, String reportName, long timeoutS, ProblemConfig config, ZipOutputStream outputStream) throws Exception
     {
-        //_experimentID = experimentID;
+        _experimentID = experimentID;
     	_runID = runID;
         _reportName = reportName;
         _config = config;
@@ -156,7 +156,7 @@ class ExperimentTask implements Runnable{
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, _config);
 
             AlgorithmParams algNode = _config.getAlgorithmParams();
-            Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
+            Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance, _experimentID);
 
             long startTime = System.currentTimeMillis();
             algorithm.solutionsFromPhenotype(solutions);

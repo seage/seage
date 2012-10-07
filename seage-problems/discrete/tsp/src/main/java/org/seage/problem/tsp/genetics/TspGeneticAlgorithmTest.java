@@ -77,7 +77,7 @@ public class TspGeneticAlgorithmTest implements GeneticSearchListener
 
         for(int k=0;k<tours.length;k++)
             if(k<tours.length/20)
-                tours[k] = TourProvider.createGreedyTour(cities);
+                tours[k] = TourProvider.createGreedyTour(cities, 1);
             else
                 tours[k] = TourProvider.createRandomTour(cities);
 

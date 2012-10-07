@@ -78,16 +78,16 @@ public class TspProblemProvider extends ProblemProvider
     }
 
     @Override
-    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance) throws Exception
+    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance, long randomSeed) throws Exception
     {
         int numTours = numSolutions;
         City[] cities = ((TspProblemInstance)instance).getCities();
         int tourLenght = cities.length;
         Object[][] result = new Object[numTours][];
 
-	Random r = new Random();
+        Random r = new Random(randomSeed);
 
-        result[0] = TourProvider.createGreedyTour(cities);
+        result[0] = TourProvider.createGreedyTour(cities, randomSeed);
         
         for(int k=1;k<numTours;k++)
         {

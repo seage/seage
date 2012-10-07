@@ -51,7 +51,7 @@ public class SatProblemProvider extends ProblemProvider
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance) throws Exception {
+    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance, long randomSeed) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

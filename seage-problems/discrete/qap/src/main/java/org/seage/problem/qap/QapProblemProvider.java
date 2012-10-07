@@ -69,7 +69,7 @@ public class QapProblemProvider extends ProblemProvider
     }
 
     @Override
-    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance) throws Exception
+    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance, long randomSeed) throws Exception
     {
         int numAssigns = numSolutions;
         Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();

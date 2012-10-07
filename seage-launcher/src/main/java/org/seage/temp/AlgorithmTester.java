@@ -121,7 +121,7 @@ public class AlgorithmTester {
             ProblemInstanceInfo instance = provider.initProblemInstance(config);
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, config);
             AlgorithmParams algNode = config.getAlgorithmParams();
-            Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
+            Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance, 1);
             algorithm.solutionsFromPhenotype(solutions);
             algorithm.setParameters(algNode);
             algorithm.startSearching();
@@ -156,7 +156,7 @@ public class AlgorithmTester {
         IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, config);
 
         AlgorithmParams algNode = config.getAlgorithmParams();
-        Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance);
+        Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance, 1);
 
 
         System.out.printf("%s: %4s %s\n", "Problem","", problemID);

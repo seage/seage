@@ -20,29 +20,31 @@
 
 /**
  * Contributors:
- *     Jan Zmatlik
+ *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.problem.tsp.sannealing;
 
-import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.TourProvider;
+package org.seage.aal.algorithm.antcolony;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.seage.aal.algorithm.*;
 
 /**
  *
- * @author Jan Zmatlik
+ * @author rick
  */
-public class TspGreedySolution extends TspSolution {
-
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -2535975643109931138L;
-
-	public TspGreedySolution(City[] cities) throws Exception
+public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
+    
+    @Before
+    public void initAlgorithm()
     {
-        super( cities );
-        _tour = TourProvider.createGreedyTour( cities , 1);
+        
     }
-
+    
+    @Test
+    public void testAlgorithm() throws Exception
+    {
+        runAlgorithmTest();
+    }
 }

@@ -134,6 +134,16 @@ public class Launcher {
             }
             return;
         }
+        if (args[0].equals("-experiment1")) {
+            if (args.length == 6)
+            {
+                new SingleAlgorithmExperimenter().runExperiment(args[1], Integer.parseInt(args[4]), Long.parseLong(args[5]), args[2], args[3]);
+
+            } else {
+                usage();
+            }
+            return;
+        }
 
         if (args[0].equals("-agents")) {
             agents(args[1]);
@@ -178,6 +188,7 @@ public class Launcher {
         System.out.println("\t-test [problem-id [algorithm-id]]");
         System.out.println("\t-config path-to-config");
         System.out.println("\t-experiment [-a]? problem-id num-runs timeoutS [algorithm-id [algorithm-id]*] ");
+        System.out.println("\t-experiment1 problem-id algorithm-id instance-id num-runs timeoutS");
         System.out.println("\t-agents path-to-agent-config-xml");
         System.out.println("\t-report");
     }

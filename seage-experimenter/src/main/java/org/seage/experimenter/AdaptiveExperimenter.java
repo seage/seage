@@ -180,4 +180,11 @@ public class AdaptiveExperimenter implements IExperimenter
         return paramIntervals;
     }
 
+    @Override
+    public void runExperiment(String problemID, int numRuns, long timeoutS, String algorithmID, String instanceID) throws Exception
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

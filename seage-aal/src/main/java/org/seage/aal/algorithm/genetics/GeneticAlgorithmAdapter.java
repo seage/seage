@@ -42,7 +42,7 @@ import org.seage.aal.data.AlgorithmParams;
 @AlgorithmParameters({
     @Parameter(name="crossLengthPct", min=0, max=100, init=10),
     @Parameter(name="eliteSubjectPct", min=0, max=100, init=10),
-    @Parameter(name="iterationCount", min=100, max=10000, init=100),
+    @Parameter(name="iterationCount", min=100, max=100000, init=100),
     @Parameter(name="mutateLengthPct", min=0, max=100, init=10),   
     @Parameter(name="mutateSubjectPct", min=0, max=100, init=10),
     @Parameter(name="numSolutions", min=10, max=1000, init=100),   
@@ -64,9 +64,10 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
 
     private double _statInitObjVal;
     private double _statEndObjVal;
-    private int _statNumIter;
+    private int _statNrOfIterationsDone;
     private int _statNumNewSol;
     private int _statLastIterNewSol;
+    //private int _nrOfIterationsDone;
     
     private AlgorithmReporter _reporter;
     //private DataNode _minutes;
@@ -130,7 +131,7 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
         _geneticSearch.getOperator().setMutatePct(p.getValueInt("mutateLengthPct") / 100.0);
         _geneticSearch.setEliteSubjectPct(p.getValueInt("eliteSubjectPct") / 100.0);
         _geneticSearch.setIterationToGo(p.getValueInt("iterationCount"));
-        _statNumIter = p.getValueInt("iterationCount");
+        //_statNumIter = p.getValueInt("iterationCount");
         _geneticSearch.setMutateSubjectPct(p.getValueInt("mutateSubjectPct") / 100.0);
         _geneticSearch.setPopulationCount(p.getValueInt("numSolutions"));
         _geneticSearch.setRandomSubjectPct(p.getValueInt("randomSubjectPct") / 100.0);
@@ -177,7 +178,7 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
 //        stats.putValue("avgObjVal", avg);
 //        stats.putValue("bestObjVal", _statEndObjVal);
 
-        _reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);
+        _reporter.putStatistics(_statNrOfIterationsDone, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);
 
         return _reporter.getReport();
     }
@@ -239,6 +240,7 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
         public void geneticSearchStopped(GeneticSearchEvent e)
         {
             _algorithmStopped = true;
+            _statNrOfIterationsDone = e.getGeneticSearch().getCurrentIteration();
             _statEndObjVal = e.getGeneticSearch().getBestSubject().getObjectiveValue()[0];
         }
         public void newBestSolutionFound(GeneticSearchEvent e)

@@ -26,7 +26,8 @@
 package org.seage.experimenter;
 
 public interface IExperimenter {
-    public void runFromConfigFile(String configPath) throws Exception;
-    public void runExperiment(String problemID, int numRuns, long timeoutS) throws Exception ;
-    public void runExperiment(String problemID, int numRuns, long timeoutS, String[] algorithmIDs) throws Exception ;
+    void runFromConfigFile(String configPath) throws Exception;
+    void runExperiment(String problemID, int numRuns, long timeoutS) throws Exception ;
+    void runExperiment(String problemID, int numRuns, long timeoutS, String[] algorithmIDs) throws Exception ;
+    void runExperiment(String problemID, int numRuns, long timeoutS, String algorithmID, String instanceID) throws Exception;
 }

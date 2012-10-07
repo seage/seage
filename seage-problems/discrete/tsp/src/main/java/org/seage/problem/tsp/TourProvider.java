@@ -56,7 +56,7 @@ public class TourProvider
             t0 = System.currentTimeMillis();
 
 
-            Integer[] tour = createGreedyTour(cities);
+            Integer[] tour = createGreedyTour(cities, 1);
             System.out.println("Creation: "+(System.currentTimeMillis() - t0) / 1000 + " s");
             t0 = System.currentTimeMillis();
 
@@ -79,8 +79,9 @@ public class TourProvider
         }
     }
 
-    public static Integer[] createGreedyTour(City[] cities) throws Exception
+    public static Integer[] createGreedyTour(City[] cities, long randomSeed) throws Exception
     {
+        Random r = new Random(randomSeed);
         Integer[] tour = new Integer[cities.length];
 
         // Greedy neighbor initialize
@@ -91,7 +92,7 @@ public class TourProvider
             tour[i] = 0;
             avail[i] = i;
         }
-        tour[0] = (int)(Math.random() * (cities.length-1));
+        tour[0] = (int)(r.nextInt(cities.length));
         avail[tour[0]] = -1;
         for( int i = 1; i < tour.length; i++ )
         {

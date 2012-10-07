@@ -29,6 +29,8 @@ import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
+
 import org.seage.aal.Annotations;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.classutil.ClassUtil;
@@ -43,9 +45,7 @@ import org.seage.data.DataNode;
  */
 public abstract class ProblemProvider implements IProblemProvider, Serializable
 {
-    /**
-	 * 
-	 */
+    private static Logger _logger = Logger.getLogger(ProblemProvider.class.getName());
 	private static final long serialVersionUID = -6411298239768735782L;
 	private static HashMap<String, IProblemProvider> _providers;
     private ProblemInfo _problemInfo;
@@ -81,7 +81,12 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
             DataNode instance = new DataNode("Instance");
             instance.putValue("type", "resource");
             instance.putValue("path", in);
-            instance.putValue("name", in.substring(in.lastIndexOf('/')+1));
+            String instanceFileName = in.substring(in.lastIndexOf('/')+1);
+            String instanceID = in.substring(in.lastIndexOf('/')+1);
+            if(instanceID.contains("."))
+                instanceID = instanceID.substring(0, instanceID.lastIndexOf('.'));
+            instance.putValue("id", instanceID);
+            instance.putValue("name", instanceFileName);
             instances.putDataNode(instance);
         }
         _problemInfo.putDataNode(instances);
@@ -174,7 +179,7 @@ public abstract class ProblemProvider implements IProblemProvider, Serializable
             }
             catch(Exception ex)
             {
-                System.err.println(ci.getClassName()+": "+ex.getMessage());
+                _logger.severe(ci.getClassName()+": "+ex.getMessage());                               
             }
         }
 

@@ -52,7 +52,7 @@ public interface IProblemProvider
 
     // Generates the very first solution(s).
     // Solutions can be random, hungry, or other.
-    Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance) throws Exception;
+    Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance, long randomSeed) throws Exception;
 
     // Visualizes solution, usually produces a picture.
     public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception;

@@ -77,8 +77,26 @@ public class SingleAlgorithmExperimenter implements IExperimenter
 
         runExperiment(problemID, numRuns, timeoutS, algIDs.toArray(new String[] {}));
     }
-
+    @Override
+    public void runExperiment(String problemID, int numRuns, long timeoutS, String algorithmID, String instanceID) throws Exception
+    {
+        runExperiment(problemID, numRuns, timeoutS, new String[] {algorithmID}, new String[] {instanceID});
+    }
+    
+    @Override
     public void runExperiment(String problemID, int numRuns, long timeoutS, String[] algorithmIDs) throws Exception
+    {
+        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
+        
+        List<String> instanceNames = new ArrayList<String>();
+        for (DataNode ins : pi.getDataNode("Instances").getDataNodes("Instance"))
+            instanceNames.add(ins.getValueStr("id"));
+        
+        runExperiment(problemID, numRuns, timeoutS, algorithmIDs, instanceNames.toArray(new String[] {}));
+        
+    }
+
+    public void runExperiment(String problemID, int numRuns, long timeoutS, String[] algorithmIDs, String[] instanceNames) throws Exception
     {
         long experimentID = System.currentTimeMillis();
         _logger.log(Level.INFO, "Running the experiment "+experimentID+" ...");
@@ -90,13 +108,14 @@ public class SingleAlgorithmExperimenter implements IExperimenter
 
         for (String algID : algorithmIDs)
         {
-            for (DataNode instanceInfo : pi.getDataNode("Instances").getDataNodes())
+            for (String instanceName : instanceNames)
             {
+                DataNode instanceInfo =  pi.getDataNode("Instances").getDataNodeById(instanceName);
                 List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
                 configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, instanceInfo, numRuns)));
 
                 
-                String instanceName = instanceInfo.getValueStr("name");
+                //String instanceName = instanceInfo.getValueStr("name");
                 long numOfConfigs = configs.size();
                 long runsPerCpu = numOfConfigs * 5 / Runtime.getRuntime().availableProcessors();
                 long estimatedTime = runsPerCpu * timeoutS;
