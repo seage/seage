@@ -28,6 +28,7 @@ package org.seage.logging;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -46,6 +47,7 @@ public class LogHelper {
             FileInputStream configFile = new FileInputStream(path);
             LogManager.getLogManager().readConfiguration(configFile);
             configFile.close();
+            
 
         } catch (IOException ex){
             System.err.println("WARNING: Could not open configuration file");
@@ -65,4 +67,10 @@ public class LogHelper {
            tempLogger = tempLogger.getParent();
         }
     }
+    
+    public class StdoutConsoleHandler extends ConsoleHandler {
+        protected void setOutputStream(OutputStream out) throws SecurityException {
+          super.setOutputStream(System.out); // kitten killed here :-(
+        }
+      }
 }

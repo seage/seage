@@ -27,13 +27,18 @@ package org.seage.experimenter.config;
 
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInfo;
+import org.seage.data.DataNode;
 
 /**
- *
+ * 
  * @author rick
  */
-public abstract class Configurator {
-    public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs)  throws Exception;
+public abstract class Configurator
+{
+    // TODO: A - Remove this method, replace it by the second one.
+    public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception;
+
+    public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, DataNode instanceInfo, int numConfigs) throws Exception;
 
     // TODO: A - modify the class to be a config stream ...
     // - to provide (generate) configs through a method 'next'

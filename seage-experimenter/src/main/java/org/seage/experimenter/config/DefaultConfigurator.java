@@ -32,32 +32,33 @@ import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
 
 /**
- *
+ * 
  * @author rick
  */
-public class DefaultConfigurator extends Configurator{
+public class DefaultConfigurator extends Configurator
+{
 
-    //private String _problemID;
-    //private String _algID;
+    // private String _problemID;
+    // private String _algID;
 
-//    public DefaultConfigurator(String algID) {
-//        _algID = algID;
-//    }
+    // public DefaultConfigurator(String algID) {
+    // _algID = algID;
+    // }
 
-
-@Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception {
+    @Override
+    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception
+    {
         ProblemConfig result = new ProblemConfig("Config");
-        //result.putDataNode(problemInfo.getDataNode("Algorithms").getDataNodeById(_algID));
+        // result.putDataNode(problemInfo.getDataNode("Algorithms").getDataNodeById(_algID));
         DataNode problem = new DataNode("Problem");
         problem.putValue("id", problemInfo.getValue("id"));
         problem.putDataNode(problemInfo.getDataNode("Instances").getDataNode("Instance", 0));
-        
+
         DataNode algorithm = new DataNode("Algorithm");
         algorithm.putValue("id", algID);
 
         DataNode params = new DataNode("Parameters");
-        for(DataNode dn : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
+        for (DataNode dn : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
             params.putValue(dn.getValueStr("name"), dn.getValue("init"));
 
         algorithm.putDataNode(params);
@@ -65,7 +66,14 @@ public class DefaultConfigurator extends Configurator{
         result.putDataNode(problem);
         result.putDataNode(algorithm);
 
-        return new ProblemConfig[]{result};
+        return new ProblemConfig[] { result };
+    }
+
+    @Override
+    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, DataNode instanceInfo, int numConfigs) throws Exception
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

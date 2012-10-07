@@ -35,107 +35,79 @@ import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
 
 /**
- *
+ * 
  * @author rick
  */
-public class RandomConfigurator extends Configurator{
+public class RandomConfigurator extends Configurator
+{
 
-    //private String _algID;
-    //private int _numConfigs;
-    private DataNode _paramInfo;
+    // private String _algID;
+    // private int _numConfigs;
+    //private DataNode _paramInfo;
 
-//    public RandomConfigurator() {
-//        _algID = algID;
-//        _numConfigs = numConfigs;
-//    }
+    // public RandomConfigurator() {
+    // _algID = algID;
+    // _numConfigs = numConfigs;
+    // }
 
     @Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception {
+    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, DataNode instanceInfo, int numConfigs) throws Exception
+    {
 
         List<ProblemConfig> results = new ArrayList<ProblemConfig>();
-        List<List<Double>> values = new ArrayList<List<Double>>();
+        // List<List<Double>> values = new ArrayList<List<Double>>();
 
-        // Config
-        ProblemConfig config = new ProblemConfig("Config");
-        //  |_ Problem
-        DataNode problem = new DataNode("Problem");
-        //  |   |_ Instance
-        DataNode instance = new DataNode("Instance");
-        //  |_ Algorithm
-        DataNode algorithm = new DataNode("Algorithm");
-        //      |_ Parameters
-        DataNode params = new DataNode("Parameters");
-
-        problem.putValue("id", problemInfo.getValue("id"));
-        algorithm.putValue("id", algID);
-
-        algorithm.putDataNode(params);
-        problem.putDataNode(instance);
-        config.putDataNode(algorithm);
-        config.putDataNode(problem);
-
-
-        for(DataNode inst : problemInfo.getDataNode("Instances").getDataNodes())
+        System.out.println(instanceInfo.getValue("path"));
+        
+        for (int i = 0; i < numConfigs; i++)
         {
-            System.out.println(inst.getValue("path"));
+            // Config
+            ProblemConfig config = new ProblemConfig("Config");
+            // |_ Problem
+            DataNode problem = new DataNode("Problem");
+            // | |_ Instance
+            DataNode instance = new DataNode("Instance");
+            // |_ Algorithm
+            DataNode algorithm = new DataNode("Algorithm");
+            // |_ Parameters
+            DataNode params = new DataNode("Parameters");
 
-            ProblemConfig instanceCfg = (ProblemConfig)config.clone();
-            instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("name", inst.getValue("name"));
-            instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("type", inst.getValue("type"));
-            instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("path", inst.getValue("path"));
+            problem.putValue("id", problemInfo.getValue("id"));
+            algorithm.putValue("id", algID);
 
-            _paramInfo = new DataNode("ParamInfo");
+            algorithm.putDataNodeRef(params);
+            problem.putDataNodeRef(instance);
+            config.putDataNodeRef(algorithm);
+            config.putDataNodeRef(problem);
 
-            for(DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
+            // ProblemConfig instanceCfg = (ProblemConfig)config.clone();
+            config.getDataNode("Problem").getDataNode("Instance").putValue("name", instanceInfo.getValue("name"));
+            config.getDataNode("Problem").getDataNode("Instance").putValue("type", instanceInfo.getValue("type"));
+            config.getDataNode("Problem").getDataNode("Instance").putValue("path", instanceInfo.getValue("path"));
+
+            for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
             {
                 String name = paramNode.getValueStr("name");
-                DataNode p = new DataNode(name);
-                p.putValue("min", paramNode.getValue("min"));
-                p.putValue("max", paramNode.getValue("max"));
-                _paramInfo.putDataNode(p);
+                double min = paramNode.getValueDouble("min");
+                double max = paramNode.getValueDouble("max");
+                double val = min + (max - min) * Math.random();
+                config.getDataNode("Algorithm").getDataNode("Parameters").putValue(name, val);
             }
 
-            for(int i=0;i<numConfigs;i++)
-            {
-                //ArrayList<Double> paramList = new ArrayList<Double>();
-                ProblemConfig r = (ProblemConfig) instanceCfg.clone();
-                for(int j=0;j<_paramInfo.getDataNodes().size();j++)
-                {
-                    String paramName = _paramInfo.getDataNodes().get(j).getName();
-                    double min = _paramInfo.getDataNode(paramName).getValueDouble("min");
-                    double max = _paramInfo.getDataNode(paramName).getValueDouble("max");
-                    double val =  min + (max-min)*Math.random();
-                    r.getDataNode("Algorithm").getDataNode("Parameters").putValue(paramName, val);
-                    //paramList.add(val);
-                }
-                //values.add(paramList);
-                r.putValue("configID", FileHelper.md5fromString(XmlHelper.getStringFromDocument(r.toXml())));
-                results.add(r);
-            }
+            config.putValue("configID", FileHelper.md5fromString(XmlHelper.getStringFromDocument(config.toXml())));
+            results.add(config);
+        }
 
-//            for(int n=0;n<values.size();n++){
-//
-//                for(int i=0;i<_paramInfo.getDataNodes().size();i++){
-//                    r.getDataNode("Algorithm").getDataNode("Parameters").putValue(_paramInfo.getDataNodes().get(i).getName(), values.get(n).get(i));
-//                }
-//                results.add(r);
-//            }
+        //
 
-            System.out.println("Mem: " +Runtime.getRuntime().totalMemory()/(1024*1024));
-         }
-
-//        System.out.println("Saving ...");
-//        new File("tmp").mkdirs();
-//        int i=0;
-//        for(ProblemConfig cfg : results)
-//            XmlHelper.writeXml(cfg, "tmp/"+System.currentTimeMillis()+"-"+(i++));
-
-        int num = results.size();
-        //int num = values.size();
-        System.out.println("Total: " +5*num);
-        System.out.println("Per core: " +5*num/Runtime.getRuntime().availableProcessors());
         return results.toArray(new ProblemConfig[0]);
     }
 
+    @Override
+    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

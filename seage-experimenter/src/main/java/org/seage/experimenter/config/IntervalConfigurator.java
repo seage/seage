@@ -153,4 +153,11 @@ public class IntervalConfigurator extends Configurator{
         
     }
 
+    @Override
+    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, DataNode instanceInfo, int numConfigs) throws Exception
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

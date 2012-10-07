@@ -101,7 +101,7 @@ class ExperimentTask implements Runnable{
         _outputStream = outputStream;
 
         _experimentReport = new DataNode("ExperimentTaskReport");
-        _experimentReport.putValue("version", "0.3");
+        _experimentReport.putValue("version", "0.4");
         _experimentReport.putValue("experimentID", experimentID);
         _experimentReport.putValue("timeoutS", timeoutS);
         try

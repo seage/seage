@@ -46,7 +46,7 @@ import org.seage.thread.TaskRunner;
  * 
  * @author Richard Malek
  */
-class ExperimentRunner
+public class ExperimentRunner
 {
 
 	private static Logger _logger = Logger.getLogger(ExperimentRunner.class.getName());
@@ -62,7 +62,7 @@ class ExperimentRunner
 	 */
 	public long run(ProblemConfig config, long timeoutS) throws Exception
 	{
-		return run(new ProblemConfig[] { config }, timeoutS);
+		return run(new ProblemConfig[] { config }, System.currentTimeMillis(),"","", timeoutS);
 	}
 
 	/**
@@ -81,15 +81,20 @@ class ExperimentRunner
 	/**
 	 * 
 	 * @param configs
+	 * @param instanceName 
+	 * @param algID 
 	 * @param timeoutS
 	 * @return
 	 * @throws Exception
 	 */
-	public long run(ProblemConfig[] configs, long timeoutS) throws Exception
+	public long run(ProblemConfig[] configs, long experimentID, String algID, String instanceName, long timeoutS) throws Exception
 	{
-		long experimentID = System.currentTimeMillis();
+		//long experimentID = System.currentTimeMillis();
 		
-		FileOutputStream fos = new FileOutputStream(new File("output/experiment-logs/"+experimentID+".zip"));
+		new File("output/experiment-logs").mkdirs();
+		String reportPath = String.format("output/experiment-logs/%s-%s-%s.zip",experimentID, algID, instanceName);
+		
+		FileOutputStream fos = new FileOutputStream(new File(reportPath));
 		ZipOutputStream zos = new ZipOutputStream(fos);
 
 		// Create a task queue
@@ -98,7 +103,7 @@ class ExperimentRunner
 		{
 			String configID = config.getConfigID();
 			String problemID = config.getProblemID();
-			String instanceName = config.getInstanceName().split("\\.")[0];
+			String instanceName2 = config.getInstanceName().split("\\.")[0];
 			String algorithmID = config.getAlgorithmID();
 			
 			for (int runID = 1; runID <= _numExperimentAttempts; runID++)

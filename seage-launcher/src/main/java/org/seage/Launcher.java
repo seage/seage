@@ -33,13 +33,13 @@ import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.experimenter.AdaptiveExperimenter;
-import org.seage.experimenter.BasicExperimenter;
 import org.seage.logging.LogHelper;
 import org.seage.experimenter.reporting.LogReportCreator;
 import org.seage.experimenter.reporting.ReportManager;
 import org.seage.experimenter.reporting.StatisticalReportCreator;
 import org.seage.experimenter.reporting.rapidminer.ExperimentLogImporter;
 import org.seage.experimenter.reporting.rapidminer.RMTest;
+import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimenter;
 import org.seage.temp.AlgorithmTester;
 import org.seage.temp.ClasspathTest;
 /**
@@ -107,11 +107,11 @@ public class Launcher {
                 indexCounter++;
                 if (args.length >= (5+indexCounter))
                 {
-                    new AdaptiveExperimenter().runExperiments(args[1+indexCounter], Integer.parseInt(args[2+indexCounter]), Long.parseLong(args[3+indexCounter]), Arrays.copyOfRange(args, 4+indexCounter, args.length));
+                    new AdaptiveExperimenter().runExperiment(args[1+indexCounter], Integer.parseInt(args[2+indexCounter]), Long.parseLong(args[3+indexCounter]), Arrays.copyOfRange(args, 4+indexCounter, args.length));
 
                 } else if (args.length == (4+indexCounter))
                 {
-                    new AdaptiveExperimenter().runExperiments(args[1+indexCounter], Integer.parseInt(args[2+indexCounter]), Long.parseLong(args[3+indexCounter]));
+                    new AdaptiveExperimenter().runExperiment(args[1+indexCounter], Integer.parseInt(args[2+indexCounter]), Long.parseLong(args[3+indexCounter]));
                 } 
                 else
                 {
@@ -124,10 +124,10 @@ public class Launcher {
                 {
     //                List<String> algIDs = new ArrayList<String>();
     //                for(int i=5;i<)
-                    new BasicExperimenter().runExperiments(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]), Arrays.copyOfRange(args, 4, args.length));
+                    new SingleAlgorithmExperimenter().runExperiment(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]), Arrays.copyOfRange(args, 4, args.length));
 
                 } else if (args.length == (4+indexCounter)) {
-                    new BasicExperimenter().runExperiments(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]));
+                    new SingleAlgorithmExperimenter().runExperiment(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]));
                 } else {
                     usage();
                 }
