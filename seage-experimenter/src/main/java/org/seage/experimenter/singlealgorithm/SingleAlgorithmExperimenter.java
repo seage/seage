@@ -75,16 +75,16 @@ public class SingleAlgorithmExperimenter implements IExperimenter
         for (DataNode alg : pi.getDataNode("Algorithms").getDataNodes("Algorithm"))
             algIDs.add(alg.getValueStr("id"));
 
-        runExperiment(problemID, numRuns, timeoutS, algIDs.toArray(new String[] {}));
+        runExperiment(numRuns, timeoutS, problemID, algIDs.toArray(new String[] {}));
     }
     @Override
-    public void runExperiment(String problemID, int numRuns, long timeoutS, String algorithmID, String instanceID) throws Exception
+    public void runExperiment(int numRuns, long timeoutS, String algorithmID, String instanceID, String problemID ) throws Exception
     {
-        runExperiment(problemID, numRuns, timeoutS, new String[] {algorithmID}, new String[] {instanceID});
+        runExperiment(numRuns, timeoutS, problemID, new String[] {algorithmID}, new String[] {instanceID});
     }
     
     @Override
-    public void runExperiment(String problemID, int numRuns, long timeoutS, String[] algorithmIDs) throws Exception
+    public void runExperiment(int numRuns, long timeoutS, String problemID, String[] algorithmIDs) throws Exception
     {
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
         
@@ -92,11 +92,11 @@ public class SingleAlgorithmExperimenter implements IExperimenter
         for (DataNode ins : pi.getDataNode("Instances").getDataNodes("Instance"))
             instanceNames.add(ins.getValueStr("id"));
         
-        runExperiment(problemID, numRuns, timeoutS, algorithmIDs, instanceNames.toArray(new String[] {}));
+        runExperiment(numRuns, timeoutS, problemID, algorithmIDs, instanceNames.toArray(new String[] {}));
         
     }
 
-    public void runExperiment(String problemID, int numRuns, long timeoutS, String[] algorithmIDs, String[] instanceNames) throws Exception
+    public void runExperiment(int numRuns, long timeoutS, String problemID, String[] algorithmIDs, String[] instanceIDs) throws Exception
     {
         long experimentID = System.currentTimeMillis();
         _logger.log(Level.INFO, "Running the experiment "+experimentID+" ...");
@@ -108,7 +108,7 @@ public class SingleAlgorithmExperimenter implements IExperimenter
 
         for (String algID : algorithmIDs)
         {
-            for (String instanceName : instanceNames)
+            for (String instanceName : instanceIDs)
             {
                 DataNode instanceInfo =  pi.getDataNode("Instances").getDataNodeById(instanceName);
                 List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
@@ -147,6 +147,20 @@ public class SingleAlgorithmExperimenter implements IExperimenter
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
 
         return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds); // (sb.toString());
+    }
+
+    @Override
+    public void runExperiment(int numRuns, long timeoutS, String problemID) throws Exception
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void runExperiment(int numRuns, long timeoutS, String problemID, String algorithmID, String[] instanceID) throws Exception
+    {
+        runExperiment(numRuns, timeoutS, problemID, new String[] {algorithmID}, instanceID);
+        
     }
 
 }

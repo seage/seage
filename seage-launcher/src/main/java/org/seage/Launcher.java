@@ -107,11 +107,11 @@ public class Launcher {
                 indexCounter++;
                 if (args.length >= (5+indexCounter))
                 {
-                    new AdaptiveExperimenter().runExperiment(args[1+indexCounter], Integer.parseInt(args[2+indexCounter]), Long.parseLong(args[3+indexCounter]), Arrays.copyOfRange(args, 4+indexCounter, args.length));
+                    new AdaptiveExperimenter().runExperiment(Integer.parseInt(args[2+indexCounter]), Long.parseLong(args[3+indexCounter]), args[1+indexCounter], Arrays.copyOfRange(args, 4+indexCounter, args.length));
 
                 } else if (args.length == (4+indexCounter))
                 {
-                    new AdaptiveExperimenter().runExperiment(args[1+indexCounter], Integer.parseInt(args[2+indexCounter]), Long.parseLong(args[3+indexCounter]));
+                    new AdaptiveExperimenter().runExperiment(Integer.parseInt(args[2+indexCounter]), Long.parseLong(args[3+indexCounter]), args[1+indexCounter]);
                 } 
                 else
                 {
@@ -124,10 +124,10 @@ public class Launcher {
                 {
     //                List<String> algIDs = new ArrayList<String>();
     //                for(int i=5;i<)
-                    new SingleAlgorithmExperimenter().runExperiment(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]), Arrays.copyOfRange(args, 4, args.length));
+                    new SingleAlgorithmExperimenter().runExperiment(Integer.parseInt(args[2]), Long.parseLong(args[3]), args[1], Arrays.copyOfRange(args, 4, args.length));
 
                 } else if (args.length == (4+indexCounter)) {
-                    new SingleAlgorithmExperimenter().runExperiment(args[1], Integer.parseInt(args[2]), Long.parseLong(args[3]));
+                    new SingleAlgorithmExperimenter().runExperiment(Integer.parseInt(args[2]), Long.parseLong(args[3]), args[1] );
                 } else {
                     usage();
                 }
@@ -135,9 +135,9 @@ public class Launcher {
             return;
         }
         if (args[0].equals("-experiment1")) {
-            if (args.length == 6)
+            if (args.length >= 6)
             {
-                new SingleAlgorithmExperimenter().runExperiment(args[1], Integer.parseInt(args[4]), Long.parseLong(args[5]), args[2], args[3]);
+                new SingleAlgorithmExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], args[4], Arrays.copyOfRange(args, 5, args.length));
 
             } else {
                 usage();
@@ -187,8 +187,8 @@ public class Launcher {
         System.out.println("\t-list");
         System.out.println("\t-test [problem-id [algorithm-id]]");
         System.out.println("\t-config path-to-config");
-        System.out.println("\t-experiment [-a]? problem-id num-runs timeoutS [algorithm-id [algorithm-id]*] ");
-        System.out.println("\t-experiment1 problem-id algorithm-id instance-id num-runs timeoutS");
+        System.out.println("\t-experiment [-a]? num-runs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
+        System.out.println("\t-experiment1 num-runs timeoutS problem-id algorithm-id instance-id [instance-id]*");
         System.out.println("\t-agents path-to-agent-config-xml");
         System.out.println("\t-report");
     }

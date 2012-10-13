@@ -91,7 +91,7 @@ public class AdaptiveExperimenter implements IExperimenter
     }
 
     @Override
-    public void runExperiment(String problemID, int numRuns, long timeoutS) throws Exception
+    public void runExperiment(int numRuns, long timeoutS, String problemID ) throws Exception
     {
         // ########### BASIC EXPERIMENTER ############
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
@@ -100,12 +100,12 @@ public class AdaptiveExperimenter implements IExperimenter
         for (DataNode alg : pi.getDataNode(ALGORITHMS).getDataNodes(ALGORITHM))
             algIDs.add(alg.getValueStr(ATTRIBUTE_ID));
 
-        runExperiment(problemID, numRuns, timeoutS, algIDs.toArray(new String[] {}));
+        runExperiment(numRuns, timeoutS, problemID, algIDs.toArray(new String[] {}));
         // ########### BASIC EXPERIMENTER ############
     }
 
     @Override
-    public void runExperiment(String problemID, int numRuns, long timeoutS, String[] algorithmIDs) throws Exception
+    public void runExperiment(int numRuns, long timeoutS, String problemID, String[] algorithmIDs) throws Exception
     {
         long experimentID = System.currentTimeMillis();
         // ########### BASIC EXPERIMENTER ############
@@ -181,7 +181,21 @@ public class AdaptiveExperimenter implements IExperimenter
     }
 
     @Override
-    public void runExperiment(String problemID, int numRuns, long timeoutS, String algorithmID, String instanceID) throws Exception
+    public void runExperiment(int numRuns, long timeoutS, String problemID, String algorithmID, String instanceID) throws Exception
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void runExperiment(int numRuns, long timeoutS, String problemID, String algorithmID, String[] instanceID) throws Exception
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void runExperiment(int numRuns, long timeoutS, String problemID, String[] algorithmIDs, String[] instanceIDs) throws Exception
     {
         // TODO Auto-generated method stub
         
