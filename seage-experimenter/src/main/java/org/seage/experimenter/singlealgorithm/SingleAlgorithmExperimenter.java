@@ -96,42 +96,47 @@ public class SingleAlgorithmExperimenter implements IExperimenter
         
     }
 
-    public void runExperiment(int numRuns, long timeoutS, String problemID, String[] algorithmIDs, String[] instanceIDs) throws Exception
+    public void runExperiment(int numOfConfigs, long timeoutS, String problemID, String[] algorithmIDs, String[] instanceIDs) throws Exception
     {
         long experimentID = System.currentTimeMillis();
-        _logger.log(Level.INFO, "Running the experiment "+experimentID+" ...");
-        _logger.info("Mem: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
+        _logger.info("Experiment "+experimentID+" started ...");
+        _logger.info("-------------------------------------");
+        //_logger.info("Mem: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
 
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
 
-        // ic.prepareConfigs(pi);
-
+        long totalNumOfConfigs = numOfConfigs*algorithmIDs.length*instanceIDs.length;
+        long totalNumberOfRuns = totalNumOfConfigs * 5; 
+        long totalRunsPerCpu = totalNumberOfRuns / Runtime.getRuntime().availableProcessors();
+        long totalEstimatedTime = totalRunsPerCpu * timeoutS;
+        
+        _logger.info("Total number of configs: " + totalNumOfConfigs);
+        _logger.info("Total number of runs: " + totalNumberOfRuns);
+        _logger.info("Total runs per cpu core: " + totalRunsPerCpu);
+        //_logger.info("Total estimated time: " + estimatedTime + "s");
+        _logger.info("Total estimated time: " + getDurationBreakdown(totalEstimatedTime * 1000) + " (DD:HH:mm:ss)");
+        _logger.info("-------------------------------------");
+        int i=0, j=0;
         for (String algID : algorithmIDs)
         {
-            for (String instanceName : instanceIDs)
+            i++;
+            for (String instanceID : instanceIDs)
             {
-                DataNode instanceInfo =  pi.getDataNode("Instances").getDataNodeById(instanceName);
+                j++;
+                DataNode instanceInfo =  pi.getDataNode("Instances").getDataNodeById(instanceID);
                 List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
-                configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, instanceInfo, numRuns)));
+                configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, instanceInfo, numOfConfigs)));                
+                _logger.info("-------------------------------------");
+                _logger.info(String.format("Algorithm: %s (%d/%d)", algID, i, algorithmIDs.length));
+                _logger.info(String.format("Instance: %s (%d/%d)", instanceID, j, instanceIDs.length));
+                _logger.info("Number of runs: " + numOfConfigs*5);
+                //_logger.info("Memory used for configs: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
 
-                
-                //String instanceName = instanceInfo.getValueStr("name");
-                long numOfConfigs = configs.size();
-                long runsPerCpu = numOfConfigs * 5 / Runtime.getRuntime().availableProcessors();
-                long estimatedTime = runsPerCpu * timeoutS;
-                _logger.info("Algorithm: " + algID);
-                _logger.info("Instance: " + instanceName);
-                _logger.info("Number of configs: " + numOfConfigs);
-                _logger.info("Number of runs: " + numOfConfigs * 5);
-                _logger.info("Runs per cpu core: " + runsPerCpu);
-                _logger.info("Estimated time in seconds: " + estimatedTime);
-                _logger.info("Estimated time: " + getDurationBreakdown(estimatedTime * 1000) + " (DD:HH:mm:ss)");
-                _logger.info("Memory used for configs: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
-
-                long expID = _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), experimentID, algID, instanceName, timeoutS);
-                _logger.log(Level.INFO, "Experiment " + expID + " finished");
+                long expID = _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), experimentID, algID, instanceID, timeoutS);
             }
         }
+        _logger.info("-------------------------------------");
+        _logger.log(Level.INFO, "Experiment " + experimentID + " finished ...");
     }
 
     private static String getDurationBreakdown(long millis)

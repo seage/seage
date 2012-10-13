@@ -36,41 +36,55 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
- *
+ * 
  * @author rick
  */
-public class LogHelper {
-    
+public class LogHelper
+{
+
     public static void loadConfig(String path)
     {
-        try {
+        try
+        {
             FileInputStream configFile = new FileInputStream(path);
             LogManager.getLogManager().readConfiguration(configFile);
             configFile.close();
-            
 
-        } catch (IOException ex){
+        }
+        catch (IOException ex)
+        {
             System.err.println("WARNING: Could not open configuration file");
             System.err.println("WARNING: Logging not configured (console output only)");
+
+            Logger logger = Logger.getLogger("");
+            logger.setLevel(Level.INFO);
+            ConsoleHandler ch = new ConsoleHandler();
+            // ch.setFormatter(new LogFormatter());
+            logger.addHandler(ch);
+            LogManager.getLogManager().addLogger(logger);
         }
     }
-    
+
     public static void setConsoleFineLevel(Logger logger, Level level)
     {
         Logger tempLogger = logger;
-        while(tempLogger != null) {
+        while (tempLogger != null)
+        {
             System.out.println(tempLogger.getName());
-           tempLogger.setLevel(Level.ALL);
-           for(Handler handler : tempLogger.getHandlers())
-               if(handler instanceof ConsoleHandler)
+            tempLogger.setLevel(Level.ALL);
+            for (Handler handler : tempLogger.getHandlers())
+                if (handler instanceof ConsoleHandler)
                     handler.setLevel(Level.ALL);
-           tempLogger = tempLogger.getParent();
+            tempLogger = tempLogger.getParent();
         }
     }
-    
-    public class StdoutConsoleHandler extends ConsoleHandler {
-        protected void setOutputStream(OutputStream out) throws SecurityException {
-          super.setOutputStream(System.out); // kitten killed here :-(
+
+    public static class StdoutConsoleHandler extends ConsoleHandler
+    {
+        protected void setOutputStream(OutputStream out) throws SecurityException
+        {
+            super.setOutputStream(System.out); // kitten killed here :-(
         }
-      }
+    }
+
 }

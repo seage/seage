@@ -163,7 +163,7 @@ public class ExperimentLogImporter
 
 	public void processLogs() throws OperatorException, OperatorCreationException, RepositoryException
 	{
-		Logger.getLogger(getClass().getName()).log(Level.INFO, "Processing experiment logs ...");
+	    _logger.info("Processing experiment logs ...");
 
 		long t0 = System.currentTimeMillis();
 
@@ -404,7 +404,7 @@ public class ExperimentLogImporter
 		{
 			try
 			{
-				Logger.getLogger(getClass().getName()).log(Level.INFO, Thread.currentThread().getName()+ " - importing file: " + _zipFile.getName());
+				_logger.info(Thread.currentThread().getName()+ " - importing file: " + _zipFile.getName());
 				
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder builder = factory.newDocumentBuilder();
@@ -427,7 +427,7 @@ public class ExperimentLogImporter
 						}
 						catch (Exception ex)
 						{
-							Logger.getLogger(getClass().getName()).log(Level.WARNING, name+" - "+ex.getMessage()+" - " +ex.toString());
+						    _logger.warning(name+" - "+ex.getMessage()+" - " +ex.toString());
 						}
 						// DataNode dn = XmlHelper.readXml(in);
 					}
@@ -437,7 +437,7 @@ public class ExperimentLogImporter
 			}
 			catch(Exception ex)
 			{
-				_logger.log(Level.SEVERE, ex.getMessage());
+				_logger.warning(ex.getMessage()+": "+_zipFile.getName());
 			}
 			
 		}

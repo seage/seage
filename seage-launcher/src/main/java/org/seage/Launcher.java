@@ -48,7 +48,7 @@ import org.seage.temp.ClasspathTest;
  */
 public class Launcher {
 
-    private static final Logger log = Logger.getLogger(Launcher.class.getPackage().getName());
+    private static final Logger log = Logger.getLogger(Launcher.class.getName());
 
     /**
      * @param args the command line arguments

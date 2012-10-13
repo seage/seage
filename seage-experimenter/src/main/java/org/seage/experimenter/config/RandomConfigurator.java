@@ -57,7 +57,7 @@ public class RandomConfigurator extends Configurator
         List<ProblemConfig> results = new ArrayList<ProblemConfig>();
         // List<List<Double>> values = new ArrayList<List<Double>>();
 
-        System.out.println(instanceInfo.getValue("path"));
+        //System.out.println(instanceInfo.getValue("path"));
         
         for (int i = 0; i < numConfigs; i++)
         {
