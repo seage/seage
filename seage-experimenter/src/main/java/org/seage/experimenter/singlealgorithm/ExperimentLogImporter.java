@@ -50,6 +50,10 @@ public class ExperimentLogImporter
 	private final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "repository";
 	
 	private Hashtable<RMDataTableInfo, List<DataRow>> _rmDataTables;
+	private RMDataTableInfo _experimentDataInfo;
+	private Hashtable<String, RMDataTableInfo> _rmAlgParams;
+	private Hashtable<String, Hashtable<String, XPath> > _rmAlgParamsXPaths;
+	private Hashtable<String, String> _rmAlgParamsConfigIDs;
 	
 	private Hashtable<String, Hashtable<String, XPath>> _xPaths;
 	
@@ -60,23 +64,22 @@ public class ExperimentLogImporter
 		
 		_rmDataTables = new Hashtable<RMDataTableInfo, List<DataRow>>();
 		
-		RMDataTableInfo expValues = new RMDataTableInfo("ExperimentValues");
-		expValues.Attributes.add(new RMAttributeInfo("ExperimentID", Ontology.NOMINAL));
-		expValues.Attributes.add(new RMAttributeInfo("ProblemID", Ontology.NOMINAL));
-		expValues.Attributes.add(new RMAttributeInfo("AlgorithmID", Ontology.NOMINAL));
-		expValues.Attributes.add(new RMAttributeInfo("InstanceID", Ontology.NOMINAL));
-		expValues.Attributes.add(new RMAttributeInfo("ConfigID", Ontology.NOMINAL));
-		expValues.Attributes.add(new RMAttributeInfo("RunID", Ontology.NOMINAL));
-		expValues.Attributes.add(new RMAttributeInfo("InitSolutionValue", Ontology.REAL));
-		expValues.Attributes.add(new RMAttributeInfo("BestSolutionValue", Ontology.REAL));
-		expValues.Attributes.add(new RMAttributeInfo("NrOfNewSolutions", Ontology.REAL));
-		expValues.Attributes.add(new RMAttributeInfo("NrOfIterations", Ontology.REAL));
-		expValues.Attributes.add(new RMAttributeInfo("LastIterNumberNewSol", Ontology.REAL));
-		expValues.Attributes.add(new RMAttributeInfo("DurationInSeconds", Ontology.REAL));
-		expValues.Attributes.add(new RMAttributeInfo("TimeoutInSeconds", Ontology.REAL));
-		expValues.Attributes.add(new RMAttributeInfo("ComputerName", Ontology.NOMINAL));
-		
-		_rmDataTables.put(expValues, new ArrayList<DataRow>());
+		_experimentDataInfo = new RMDataTableInfo("/databases/experiments", "ExperimentValues");
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("ExperimentID", Ontology.NOMINAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("ProblemID", Ontology.NOMINAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("AlgorithmID", Ontology.NOMINAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("InstanceID", Ontology.NOMINAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("ConfigID", Ontology.NOMINAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("RunID", Ontology.NOMINAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("InitSolutionValue", Ontology.REAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("BestSolutionValue", Ontology.REAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("NrOfNewSolutions", Ontology.REAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("NrOfIterations", Ontology.REAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("LastIterNumberNewSol", Ontology.REAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("DurationInSeconds", Ontology.REAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("TimeoutInSeconds", Ontology.REAL));
+		_experimentDataInfo.Attributes.add(new RMAttributeInfo("ComputerName", Ontology.NOMINAL));		
+		_rmDataTables.put(_experimentDataInfo, new ArrayList<DataRow>());		
 		
 		_xPaths = new Hashtable<String, Hashtable<String,XPath>>(); 
 		
@@ -135,37 +138,58 @@ public class ExperimentLogImporter
 		v04.put("TimeoutInSeconds", new XPath("/ExperimentTaskReport/@timeoutS"));
 		v04.put("ComputerName", new XPath("/ExperimentTaskReport/@machineName"));
 		
-//		Hashtable<String, XPath> v04 = new Hashtable<String, XPath>();
-//		v04.put("ExperimentID", new XPath("/ExperimentTaskReport/@experimentID"));
-//		v04.put("ProblemID", new XPath("/ExperimentTaskReport/Config/Problem/@problemID"));
-//		v04.put("AlgorithmID", new XPath("/ExperimentTaskReport/Config/Algorithm/@algorithmID"));
-//		v04.put("InstanceID", new XPath("/ExperimentTaskReport/Config/Problem/Instance/@name"));
-//		v04.put("ConfigID", new XPath("/ExperimentTaskReport/Config/@configID"));
-//		v04.put("RunID", new XPath("/ExperimentTaskReport/Config/@runID"));
-//		v04.put("InitSolutionValue", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@initObjVal"));
-//		v04.put("BestSolutionValue", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@bestObjVal"));
-//		v04.put("NrOfNewSolutions", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfNewSolutions"));
-//		v04.put("LastIterNumberNewSol", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
-//		v04.put("NrOfIterations", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfIter"));		
-//		
-//		Hashtable<String, XPath> v05 = new Hashtable<String, XPath>();
-//		v05.put("ExperimentID", new XPath("/ExperimentTaskReport/@experimentID"));
-//		v05.put("ProblemID", new XPath("/ExperimentTaskReport/Config/Problem/@problemID"));
-//		v05.put("AlgorithmID", new XPath("/ExperimentTaskReport/Config/Algorithm/@algorithmID"));
-//		v05.put("InstanceID", new XPath("/ExperimentTaskReport/Config/Problem/Instance/@name"));
-//		v05.put("ConfigID", new XPath("/ExperimentTaskReport/Config/@configID"));
-//		v05.put("RunID", new XPath("/ExperimentTaskReport/Config/@runID"));
-//		v05.put("InitSolutionValue", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@initObjVal"));
-//		v05.put("BestSolutionValue", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@bestObjVal"));
-//		v05.put("NrOfNewSolutions", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfNewSolutions"));
-//		v05.put("LastIterNumberNewSol", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
-//		v05.put("NrOfIterations", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfIter"));
-		
 		_xPaths.put("0.1", v01);
-		_xPaths.put("0.2", v02);
-		_xPaths.put("0.3", v03);
-		_xPaths.put("0.4", v04);
-//		_xPaths.put("0.5", v05);
+        _xPaths.put("0.2", v02);
+        _xPaths.put("0.3", v03);
+        _xPaths.put("0.4", v04);
+//      _xPaths.put("0.5", v05);
+		
+		_rmAlgParams = new Hashtable<String, RMDataTableInfo> ();
+	    _rmAlgParamsXPaths = new Hashtable<String, Hashtable<String, XPath> >();
+	    _rmAlgParamsConfigIDs = new Hashtable<String, String>();
+		
+		// GeneticAlgorithm		
+		RMDataTableInfo algGAParams = new RMDataTableInfo("/databases/experiments/parameters", "GeneticAlgorithm");
+		algGAParams.Attributes.add(new RMAttributeInfo("ConfigID", Ontology.NOMINAL));
+        algGAParams.Attributes.add(new RMAttributeInfo("CrossLengthPct", Ontology.REAL));
+        algGAParams.Attributes.add(new RMAttributeInfo("EliteSubjectPct", Ontology.REAL));
+        algGAParams.Attributes.add(new RMAttributeInfo("IterationCount", Ontology.REAL));
+        algGAParams.Attributes.add(new RMAttributeInfo("MutateLengthPct", Ontology.REAL));
+        algGAParams.Attributes.add(new RMAttributeInfo("MutateSubjectPct", Ontology.REAL));
+        algGAParams.Attributes.add(new RMAttributeInfo("NumSolutions", Ontology.REAL));
+        algGAParams.Attributes.add(new RMAttributeInfo("RandomSubjectPct", Ontology.REAL));
+        
+		Hashtable<String, XPath> algGAXPaths = new Hashtable<String, XPath>();
+		algGAXPaths.put("ConfigID", new XPath("/ExperimentTaskReport/Config/@configID"));
+		algGAXPaths.put("RandomSubjectPct", new XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@randomSubjectPct"));
+		algGAXPaths.put("CrossLengthPct", new XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@crossLengthPct"));
+		algGAXPaths.put("EliteSubjectPct", new XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@eliteSubjectPct"));
+		algGAXPaths.put("IterationCount", new XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@iterationCount"));
+		algGAXPaths.put("MutateLengthPct", new XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@mutateLengthPct"));
+		algGAXPaths.put("MutateSubjectPct", new XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@mutateSubjectPct"));
+		algGAXPaths.put("NumSolutions", new XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@numSolutions"));
+				
+        _rmAlgParams.put("GeneticAlgorithm", algGAParams);
+        _rmAlgParamsXPaths.put("GeneticAlgorithm", algGAXPaths);
+        _rmDataTables.put( algGAParams, new ArrayList<DataRow>());
+        
+        // TabuSearch     
+        RMDataTableInfo algTSParams = new RMDataTableInfo("/databases/experiments/parameters", "TabuSearch");
+        algTSParams.Attributes.add(new RMAttributeInfo("ConfigID", Ontology.NOMINAL));
+        algTSParams.Attributes.add(new RMAttributeInfo("NumIteration", Ontology.REAL));
+        algTSParams.Attributes.add(new RMAttributeInfo("TabuListLength", Ontology.REAL));
+        
+        Hashtable<String, XPath> algTSXPaths = new Hashtable<String, XPath>();
+        algTSXPaths.put("ConfigID", new XPath("/ExperimentTaskReport/Config/@configID"));
+        algTSXPaths.put("NumIteration", new XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@numIteration"));
+        algTSXPaths.put("TabuListLength", new XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@tabuListLength"));
+                
+        _rmAlgParams.put("TabuSearch", algTSParams);
+        _rmAlgParamsXPaths.put("TabuSearch", algTSXPaths);
+        _rmDataTables.put( algTSParams, new ArrayList<DataRow>());
+        
+        
+		
 	}
 
 	public void processLogs() throws OperatorException, OperatorCreationException, RepositoryException
@@ -204,31 +228,71 @@ public class ExperimentLogImporter
 				"Processing experiment logs DONE - " + t1 + "s");
 	}
 	
-	private synchronized void importDocument(Document doc) throws Exception
+	private synchronized void pickupDataFromDocument(Document doc, RMDataTableInfo tableInfo) throws Exception
 	{
+		double[] valArray = new double[tableInfo.Attributes.size()];
+		int i=0;
+		String version = getReportVersion(doc);			
 		
-		for(RMDataTableInfo tableInfo : _rmDataTables.keySet())
-		{
-			double[] valArray = new double[tableInfo.Attributes.size()];
-			int i=0;
-			String version = getReportVersion(doc);
-			
-			for(RMAttributeInfo attInfo : tableInfo.Attributes)
-			{ 
-				XPath xPath = _xPaths.get(version).get(attInfo.AttributeName);
-				String val = getValueFromDocument(doc.getDocumentElement(), xPath.XPath);//(String) xpath.evaluate(attInfo.XPath, doc, XPathConstants.STRING);; //xpath
-				//String val = (String) attInfo.XPath.evaluate( doc, XPathConstants.STRING);; //xpath
-				if(val.equals(""))
-					throw new Exception(xPath.XPathStr + " not found");
-				if(attInfo.Type == Ontology.NOMINAL)
-					valArray[i++] = attInfo.Attribute.getMapping().mapString(val);
-				else
-					valArray[i++] = Double.parseDouble(val);
+		for(RMAttributeInfo attInfo : tableInfo.Attributes)
+		{ 
+			XPath xPath = _xPaths.get(version).get(attInfo.AttributeName);
+			if(xPath == null)
+			{
+			    _logger.warning("No xpath defined for attribute: " + attInfo.AttributeName);
+			    continue;
 			}
-			
-			_rmDataTables.get(tableInfo).add(new DoubleArrayDataRow(valArray));
+			String val = getValueFromDocument(doc.getDocumentElement(), xPath.XPath);//(String) xpath.evaluate(attInfo.XPath, doc, XPathConstants.STRING);; //xpath
+			//String val = (String) attInfo.XPath.evaluate( doc, XPathConstants.STRING);; //xpath
+			if(val.equals(""))
+				throw new Exception(xPath.XPathStr + " not found");
+			if(attInfo.Type == Ontology.NOMINAL)
+				valArray[i++] = attInfo.Attribute.getMapping().mapString(val);
+			else
+				valArray[i++] = Double.parseDouble(val);
 		}
-
+		
+		_rmDataTables.get(tableInfo).add(new DoubleArrayDataRow(valArray));
+	}
+	
+	private synchronized void pickupAlgorithmParamsFromDocument(Document doc) throws Exception
+	{
+	    String configID = getValueFromDocument(doc.getDocumentElement(), new XPath("/ExperimentTaskReport/Config/@configID").XPath);
+	    if(_rmAlgParamsConfigIDs.containsKey(configID))
+	        return;
+	    else
+	        _rmAlgParamsConfigIDs.put(configID, configID);
+	    
+	    String algorithmID = getValueFromDocument(doc.getDocumentElement(), new XPath("/ExperimentTaskReport/Config/Algorithm/@algorithmID").XPath);
+	    if(!_rmAlgParams.containsKey(algorithmID))
+	    {
+	        _logger.warning("No parameter info for algorithm: " + algorithmID);
+	        return;
+	    }
+	    RMDataTableInfo algParams = _rmAlgParams.get(algorithmID);
+	    	    
+	    double[] valArray = new double[algParams.Attributes.size()];
+        int i=0;
+        
+        
+        for(RMAttributeInfo attInfo : algParams.Attributes)
+        { 
+            XPath xPath = _rmAlgParamsXPaths.get(algorithmID).get(attInfo.AttributeName);
+            if(xPath == null)
+            {
+                _logger.warning("No xpath defined for attribute: " + attInfo.AttributeName);
+                continue;
+            }
+            String val = getValueFromDocument(doc.getDocumentElement(), xPath.XPath);//(String) xpath.evaluate(attInfo.XPath, doc, XPathConstants.STRING);; //xpath
+            if(val.equals(""))
+                throw new Exception(xPath.XPathStr + " not found");
+            if(attInfo.Type == Ontology.NOMINAL)
+                valArray[i++] = attInfo.Attribute.getMapping().mapString(val);
+            else
+                valArray[i++] = Double.parseDouble(val);
+        }
+        
+        _rmDataTables.get(algParams).add(new DoubleArrayDataRow(valArray));
 	}
 	
 	private String getReportVersion(Document doc)
@@ -280,7 +344,7 @@ public class ExperimentLogImporter
 					.createOperator(RepositoryStorer.class);
 			modelWriter.setParameter(
 					RepositoryStorer.PARAMETER_REPOSITORY_ENTRY,
-					"//"+RAPIDMINER_LOCAL_REPOSITORY_NAME+"/databases/experiments/"+tableInfo.TableName);
+					"//"+RAPIDMINER_LOCAL_REPOSITORY_NAME+tableInfo.RepositoryPath+"/"+tableInfo.TableName);
 	
 			Process process = new Process();
 	
@@ -338,11 +402,13 @@ public class ExperimentLogImporter
 	
 	private class RMDataTableInfo
 	{
+	    public String RepositoryPath;
 		public String TableName;
 		public List<RMAttributeInfo> Attributes;
 		
-		public RMDataTableInfo(String tableName) {
-			TableName = tableName;
+		public RMDataTableInfo(String repositoryPath, String tableName) {
+		    RepositoryPath = repositoryPath;
+		    TableName = tableName;
 			Attributes = new ArrayList<RMAttributeInfo>();
 		}
 		
@@ -430,7 +496,12 @@ public class ExperimentLogImporter
 						try
 						{
 							Document doc = builder.parse(in);
-							importDocument(doc);
+							pickupDataFromDocument(doc, _experimentDataInfo);
+							pickupAlgorithmParamsFromDocument(doc);
+						}
+						catch (NullPointerException ex)
+						{
+						    _logger.log(Level.SEVERE, ex.getMessage(), ex);
 						}
 						catch (Exception ex)
 						{

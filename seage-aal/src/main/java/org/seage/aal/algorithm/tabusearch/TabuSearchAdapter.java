@@ -40,7 +40,7 @@ import org.seage.metaheuristic.tabusearch.*;
  */
 @AlgorithmParameters({
     @Parameter(name="numIterDivers", min=1, max=1, init=1),
-    @Parameter(name="numIteration", min=1, max=10000, init=1000),
+    @Parameter(name="numIteration", min=1, max=1000000, init=1000),
     @Parameter(name="numSolutions", min=1, max=1, init=1),    
     @Parameter(name="tabuListLength", min=1, max=1000, init=30)    
 })
