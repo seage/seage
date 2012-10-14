@@ -1,4 +1,4 @@
-package org.seage.experimenter.reporting.rapidminer;
+package org.seage.experimenter.singlealgorithm;
 
 import java.io.File;
 import java.io.InputStream;
@@ -14,6 +14,7 @@ import java.util.zip.ZipFile;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.seage.experimenter.reporting.rapidminer.ProcessPerformer;
 import org.seage.thread.TaskRunner;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -71,6 +72,9 @@ public class ExperimentLogImporter
 		expValues.Attributes.add(new RMAttributeInfo("NrOfNewSolutions", Ontology.REAL));
 		expValues.Attributes.add(new RMAttributeInfo("NrOfIterations", Ontology.REAL));
 		expValues.Attributes.add(new RMAttributeInfo("LastIterNumberNewSol", Ontology.REAL));
+		expValues.Attributes.add(new RMAttributeInfo("DurationInSeconds", Ontology.REAL));
+		expValues.Attributes.add(new RMAttributeInfo("TimeoutInSeconds", Ontology.REAL));
+		expValues.Attributes.add(new RMAttributeInfo("ComputerName", Ontology.NOMINAL));
 		
 		_rmDataTables.put(expValues, new ArrayList<DataRow>());
 		
@@ -127,6 +131,9 @@ public class ExperimentLogImporter
 		v04.put("NrOfNewSolutions", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfNewSolutions"));
 		v04.put("LastIterNumberNewSol", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
 		v04.put("NrOfIterations", new XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfIter"));
+		v04.put("DurationInSeconds", new XPath("/ExperimentTaskReport/@durationS"));
+		v04.put("TimeoutInSeconds", new XPath("/ExperimentTaskReport/@timeoutS"));
+		v04.put("ComputerName", new XPath("/ExperimentTaskReport/@machineName"));
 		
 //		Hashtable<String, XPath> v04 = new Hashtable<String, XPath>();
 //		v04.put("ExperimentID", new XPath("/ExperimentTaskReport/@experimentID"));

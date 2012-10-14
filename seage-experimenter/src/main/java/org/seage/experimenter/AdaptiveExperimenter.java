@@ -115,7 +115,7 @@ public class AdaptiveExperimenter implements IExperimenter
         for (String algID : algorithmIDs)
             configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
 
-        _experimentID = _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), experimentID, "", "", timeoutS);
+        _experimentID = _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), experimentID, problemID, "", "", timeoutS);
         // ########### BASIC EXPERIMENTER ############
 
         LogReportCreator reporter = new LogReportCreator();
@@ -137,7 +137,7 @@ public class AdaptiveExperimenter implements IExperimenter
             configs.addAll(Arrays.asList(((RandomConfiguratorEx) _configuratorAdaptive).prepareConfigs(paramIntervals, pi, algID, numRuns)));
         }
 
-        _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), experimentID, "", "", timeoutS);
+        _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), experimentID, problemID, "", "", timeoutS);
     }
 
     /**
