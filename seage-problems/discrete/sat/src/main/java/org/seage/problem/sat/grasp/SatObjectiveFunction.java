@@ -38,7 +38,7 @@ import org.seage.problem.sat.Literal;
  *
  * @author Martin Zaloga
  */
-public class SatObjectiveFunction implements IObjectiveFunction, Serializable {
+public class SatObjectiveFunction implements IObjectiveFunction {
 
     private Formula _formula;
 

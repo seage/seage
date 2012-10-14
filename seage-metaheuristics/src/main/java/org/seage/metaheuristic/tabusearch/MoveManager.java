@@ -41,7 +41,7 @@ package org.seage.metaheuristic.tabusearch;
  * @since 1.0
  */
 
-public interface MoveManager extends java.io.Serializable
+public interface MoveManager
 {   
     
     /**

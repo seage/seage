@@ -26,8 +26,8 @@
  */
 package org.seage.problem.qap.fireflies;
 
-import org.seage.problem.qap.fireflies.*;
-import org.seage.metaheuristic.fireflies.*;
+import org.seage.metaheuristic.fireflies.ObjectiveFunction;
+import org.seage.metaheuristic.fireflies.Solution;
 
 /**
  *

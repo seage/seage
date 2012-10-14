@@ -25,8 +25,6 @@
  */
 package org.seage.problem.sat.antcolony2;
 
-import org.seage.problem.sat.antcolony.*;
-import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaReader;
 

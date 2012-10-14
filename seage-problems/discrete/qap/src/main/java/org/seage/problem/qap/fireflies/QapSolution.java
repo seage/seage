@@ -25,8 +25,8 @@
  */
 package org.seage.problem.qap.fireflies;
 
-import org.seage.problem.qap.fireflies.*;
-import org.seage.metaheuristic.fireflies.*;
+import org.seage.metaheuristic.fireflies.Solution;
+import org.seage.metaheuristic.fireflies.SolutionAdapter;
 
 /**
  *
@@ -34,6 +34,8 @@ import org.seage.metaheuristic.fireflies.*;
  */
 public class QapSolution extends SolutionAdapter
 {
+    private static final long serialVersionUID = -8541084023812393344L;
+    
     protected Integer[] _assign;
     
     public QapSolution(){} // Appease clone()

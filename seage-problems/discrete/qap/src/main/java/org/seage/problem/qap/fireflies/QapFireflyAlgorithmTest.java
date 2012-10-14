@@ -25,11 +25,13 @@
  */
 package org.seage.problem.qap.fireflies;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.seage.logging.LogHelper;
-import org.seage.metaheuristic.fireflies.*;
-import org.seage.problem.qap.*;
+
+import org.seage.metaheuristic.fireflies.FireflySearch;
+import org.seage.metaheuristic.fireflies.FireflySearchEvent;
+import org.seage.metaheuristic.fireflies.FireflySearchListener;
+import org.seage.metaheuristic.fireflies.Solution;
+import org.seage.problem.qap.FacilityLocationProvider;
 
 /**
  *
@@ -37,6 +39,8 @@ import org.seage.problem.qap.*;
  */
 public class QapFireflyAlgorithmTest implements FireflySearchListener
 {
+    private static final long serialVersionUID = 4718562040304593731L;
+    
     private static final Logger log = Logger.getLogger("org.seage");
     private static String _dataPath = "data/chr12a.dat";
 //    private static String _dataPath = "D:\\qap\\bur26a.dat";

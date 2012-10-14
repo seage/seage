@@ -32,14 +32,11 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.seage.aal.data.AlgorithmParams;
-import org.seage.aal.reporter.AlgorithmReport;
-import org.seage.aal.Annotations.ProblemName;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
-import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.algorithm.ProblemProvider;
+import org.seage.aal.data.AlgorithmParams;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.data.DataNode;

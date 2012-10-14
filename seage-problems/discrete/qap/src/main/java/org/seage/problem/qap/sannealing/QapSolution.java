@@ -35,6 +35,8 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 public abstract class QapSolution extends Solution
 {
+    private static final long serialVersionUID = 7470151073119871074L;
+
     /**
      * Represent order of cities
      */

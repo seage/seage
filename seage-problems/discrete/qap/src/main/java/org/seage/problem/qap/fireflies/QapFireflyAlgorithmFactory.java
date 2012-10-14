@@ -26,17 +26,15 @@
 
 package org.seage.problem.qap.fireflies;
 
-import org.seage.aal.data.ProblemInstanceInfo;
-import org.seage.data.DataNode;
-import org.seage.problem.qap.fireflies.*;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.algorithm.fireflies.FireflyAlgorithmAdapter;
 import org.seage.aal.data.ProblemConfig;
-import org.seage.metaheuristic.fireflies.*;
-import org.seage.problem.qap.*;
+import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.metaheuristic.fireflies.Solution;
+import org.seage.problem.qap.QapProblemInstance;
 
  
 /** 
@@ -47,6 +45,7 @@ import org.seage.problem.qap.*;
 @Annotations.AlgorithmName("FireflyAlgorithm")
 public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
 {
+    private static final long serialVersionUID = -864910230419679081L;
 
     public void setProblemProvider(IProblemProvider provider) throws Exception {
         //throw new UnsupportedOperationException("Not supported yet.");

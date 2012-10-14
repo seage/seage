@@ -26,10 +26,11 @@
 
 package org.seage.problem.qap.fireflies;
 
-import org.seage.problem.qap.fireflies.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import org.seage.metaheuristic.fireflies.*;
+
+import org.seage.metaheuristic.fireflies.FireflyOperator;
+import org.seage.metaheuristic.fireflies.Solution;
 import org.seage.problem.qap.AssignmentProvider;
 
 /**

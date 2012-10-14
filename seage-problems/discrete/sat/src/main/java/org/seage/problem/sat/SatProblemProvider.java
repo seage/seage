@@ -27,12 +27,10 @@
 package org.seage.problem.sat;
 
 import org.seage.aal.Annotations;
-import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.algorithm.ProblemProvider;
+import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInstanceInfo;
-import org.seage.data.DataNode;
 
 /**
  *
@@ -42,6 +40,7 @@ import org.seage.data.DataNode;
 @Annotations.ProblemName("Boolean Satisfiability Problem")
 public class SatProblemProvider extends ProblemProvider
 {
+    private static final long serialVersionUID = -7802258959521522914L;
 
     public ProblemInstanceInfo initProblemInstance(ProblemConfig params) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");

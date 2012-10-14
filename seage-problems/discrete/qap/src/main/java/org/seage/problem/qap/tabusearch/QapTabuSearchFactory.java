@@ -30,10 +30,9 @@ package org.seage.problem.qap.tabusearch;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
-import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
 import org.seage.aal.data.ProblemConfig;
-import org.seage.data.DataNode;
+import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.qap.QapProblemInstance;
 
@@ -45,6 +44,7 @@ import org.seage.problem.qap.QapProblemInstance;
 @Annotations.AlgorithmName("Tabu Search")
 public class QapTabuSearchFactory implements IAlgorithmFactory
 {
+    private static final long serialVersionUID = 5421342721247275136L;
 
     public Class getAlgorithmClass() {
         return TabuSearchAdapter.class;
