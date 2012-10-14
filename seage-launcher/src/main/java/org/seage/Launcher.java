@@ -48,7 +48,7 @@ import org.seage.temp.ClasspathTest;
  */
 public class Launcher {
 
-    private static final Logger log = Logger.getLogger(Launcher.class.getName());
+    private static final Logger _logger = Logger.getLogger(Launcher.class.getName());
 
     /**
      * @param args the command line arguments
@@ -56,10 +56,11 @@ public class Launcher {
     public static void main(String[] args) {
         try {
             LogHelper.loadConfig("log.properties");
-            log.info("Running");
+            _logger.info("SEAGE running ...");
             new Launcher().run(args);
+            _logger.info("SEAGE finished ...");
         } catch (Exception ex) {
-            log.log(Level.SEVERE, ex.getMessage(), ex);
+            _logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -180,22 +181,22 @@ public class Launcher {
     }
 
     private void usage() {
-        System.out.println("Usage:");
-        System.out.println("------");
-        System.out.println("java -jar seage.launcher.jar {params}\n");
-        System.out.println("params:");
-        System.out.println("\t-list");
-        System.out.println("\t-test [problem-id [algorithm-id]]");
-        System.out.println("\t-config path-to-config");
-        System.out.println("\t-experiment [-a]? num-runs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
-        System.out.println("\t-experiment1 num-runs timeoutS problem-id algorithm-id instance-id [instance-id]*");
-        System.out.println("\t-agents path-to-agent-config-xml");
-        System.out.println("\t-report");
+        _logger.info("Usage:");
+        _logger.info("------");
+        _logger.info("java -jar seage.launcher.jar {params}\n");
+        _logger.info("params:");
+        _logger.info("\t-list");
+        _logger.info("\t-test [problem-id [algorithm-id]]");
+        _logger.info("\t-config path-to-config");
+        _logger.info("\t-experiment [-a]? num-runs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
+        _logger.info("\t-experiment1 num-runs timeoutS problem-id algorithm-id instance-id [instance-id]*");
+        _logger.info("\t-agents path-to-agent-config-xml");
+        _logger.info("\t-report");
     }
 
     private void list() throws Exception {
-        System.out.println("List of implemented problems and algorithms:");
-        System.out.println("--------------------------------------------");
+        _logger.info("List of implemented problems and algorithms:");
+        _logger.info("--------------------------------------------");
 
         DataNode problems = new DataNode("Problems");
         Map<String, IProblemProvider> providers = ProblemProvider.getProblemProviders();
@@ -207,33 +208,33 @@ public class Launcher {
                 problems.putDataNode(pi);
 
                 String name = pi.getValueStr("name");
-                System.out.println(name);
+                _logger.info(name);
 
-                System.out.println("\talgorithms:");
+                _logger.info("\talgorithms:");
                 for (DataNode alg : pi.getDataNode("Algorithms").getDataNodes()) {
-                    System.out.println("\t\t" + alg.getValueStr("id")/*
+                    _logger.info("\t\t" + alg.getValueStr("id")/*
                              * +" ("+alg.getValueStr("id")+")"
                              */);
 
-                    //System.out.println("\t\t\tparameters:");
+                    //_logger.info("\t\t\tparameters:");
                     for (DataNode param : alg.getDataNodes("Parameter")) {
-                        System.out.println("\t\t\t"
+                        _logger.info("\t\t\t"
                                 + param.getValueStr("name") + "  ("
                                 + param.getValueStr("min") + ", "
                                 + param.getValueStr("max") + ", "
                                 + param.getValueStr("init") + ")");
                     }
                 }
-                System.out.println("\tinstances:");
+                _logger.info("\tinstances:");
                 for (DataNode inst : pi.getDataNode("Instances").getDataNodes()) {
-                    System.out.println("\t\t" + inst.getValueStr("type") + "=" + inst.getValueStr("path")/*
+                    _logger.info("\t\t" + inst.getValueStr("type") + "=" + inst.getValueStr("path")/*
                              * +" ("+alg.getValueStr("id")+")"
                              */);
                 }
 
-                System.out.println();
+                _logger.info("");
             } catch (Exception ex) {
-                log.log(Level.SEVERE, problemId + ": " + ex.getMessage(), ex);
+                _logger.log(Level.SEVERE, problemId + ": " + ex.getMessage(), ex);
             }
             //XmlHelper.writeXml(problems, "problems.xml");
         }
