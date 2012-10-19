@@ -47,6 +47,10 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
+			<plugin>
+                		<artifactId>maven-release-plugin</artifactId>
+                		<version>2.0</version>
+            		</plugin>
 		</plugins>
 	</build>
 
@@ -56,4 +60,9 @@
 			<url>http://www.seage.org/repo</url>
 		</repository>
 	</repositories>
+	 <scm>
+		<connection>scm:git:git@github.com:seage/seage.git</connection>
+		<url>scm:git:git://github.com/seage/seage.git</url>
+		<developerConnection>scm:git:git@github.com:seage/seage.git</developerConnection>
+  	</scm>
 </project>
