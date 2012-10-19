@@ -23,7 +23,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
-package org.seage.experimenter.reporting.rapidminer;
+package org.seage.experimenter.reporting.rapidminer.old;
 
 import com.rapidminer.operator.IOObject;
 import java.util.ArrayList;

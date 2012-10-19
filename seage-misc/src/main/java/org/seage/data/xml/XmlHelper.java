@@ -32,6 +32,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -198,4 +200,39 @@ public class XmlHelper
 
 		validator.validate(new DOMSource(document));
 	}
+	
+   public static class XPath                     // Java's XPath is too slow, this is a hack
+    {
+        public String XPathStr;
+        public List<String> Nodes;
+
+        public XPath(String xPath)
+        {
+            XPathStr = xPath;
+            Nodes = new ArrayList<String>();
+            String[] split = xPath.split("/"); 
+            for(int i=2;i<split.length;i++) // i=2 -> skip '/ExperimentTask'
+            {
+                if(split[i].startsWith("@"))
+                    Nodes.add(split[i].substring(1));
+                else
+                    Nodes.add(split[i]);
+                
+            }
+        }
+        
+    }
+	public static String getValueFromDocument(Element elem, XPath xPath) {
+        return getValueFromDocument(elem, xPath, 0);
+    }
+    
+    public static  String getValueFromDocument(Element elem, XPath xPath, int level) {
+        if(level+1 == xPath.Nodes.size())
+            return elem.getAttribute(xPath.Nodes.get(level));
+        else
+        {
+            String s = xPath.Nodes.get(level);
+            return getValueFromDocument((Element)elem.getElementsByTagName(s).item(0), xPath, level+1);
+        }
+    }
 }

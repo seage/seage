@@ -38,8 +38,8 @@ import org.seage.experimenter.config.Configurator;
 import org.seage.experimenter.config.RandomConfigurator;
 import org.seage.experimenter.config.RandomConfiguratorEx;
 import org.seage.experimenter.reporting.LogReportCreator;
-import org.seage.experimenter.reporting.rapidminer.ProcessPerformer;
-import org.seage.experimenter.reporting.rapidminer.RMProcess;
+import org.seage.experimenter.reporting.rapidminer.old.ProcessPerformer;
+import org.seage.experimenter.reporting.rapidminer.old.RMProcess;
 
 public class AdaptiveExperimenter implements IExperimenter
 {

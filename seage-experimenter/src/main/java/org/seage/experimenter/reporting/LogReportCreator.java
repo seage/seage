@@ -35,7 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.transform.stream.StreamResult;
 import org.seage.data.file.FileHelper;
-import org.seage.experimenter.reporting.rapidminer.ProcessPerformer;
+import org.seage.experimenter.reporting.rapidminer.old.ProcessPerformer;
 
 /**
  *

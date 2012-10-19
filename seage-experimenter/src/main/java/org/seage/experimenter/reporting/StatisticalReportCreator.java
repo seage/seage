@@ -33,8 +33,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.transform.stream.StreamResult;
 import org.seage.data.DataNode;
-import org.seage.experimenter.reporting.rapidminer.ProcessPerformer;
-import org.seage.experimenter.reporting.rapidminer.RMProcess;
+import org.seage.experimenter.reporting.rapidminer.old.ProcessPerformer;
+import org.seage.experimenter.reporting.rapidminer.old.RMProcess;
 
 /**
  *

@@ -37,8 +37,8 @@ import org.seage.logging.LogHelper;
 import org.seage.experimenter.reporting.LogReportCreator;
 import org.seage.experimenter.reporting.ReportManager;
 import org.seage.experimenter.reporting.StatisticalReportCreator;
-import org.seage.experimenter.reporting.rapidminer.RMTest;
-import org.seage.experimenter.singlealgorithm.ExperimentLogImporter;
+import org.seage.experimenter.reporting.rapidminer.ExperimentDataImporter;
+import org.seage.experimenter.reporting.rapidminer.old.RMTest;
 import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimenter;
 import org.seage.temp.AlgorithmTester;
 import org.seage.temp.ClasspathTest;
@@ -168,7 +168,7 @@ public class Launcher {
         }
         
         if (args[0].equals("-repo")) {
-        	new ExperimentLogImporter("output/experiment-logs", "").processLogs();
+        	new ExperimentDataImporter("output/experiment-logs", "").processLogs();
         	return;
         }
         

@@ -1,4 +1,4 @@
-package org.seage.experimenter.reporting.rapidminer;
+package org.seage.experimenter.reporting.rapidminer.old;
 
 import java.io.File;
 import java.util.ArrayList;
