@@ -177,6 +177,7 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
     public void setParameters(AlgorithmParams params) throws Exception
     {
         _params = params;
+        _params.putValue("id", "TabuSearch");
         DataNode p = params.getDataNode("Parameters");
         _iterationToGo = _statNumIter = p.getValueInt("numIteration");
 

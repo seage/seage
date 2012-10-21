@@ -28,7 +28,10 @@ package org.seage.aal.algorithm.tabusearch;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seage.aal.algorithm.*;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
+import org.seage.aal.algorithm.AlgorithmAdapterTester;
+import org.seage.aal.data.AlgorithmParams;
+import org.seage.data.DataNode;
 
 /**
  *
@@ -36,15 +39,65 @@ import org.seage.aal.algorithm.*;
  */
 public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
     
-    @Before
-    public void initAlgorithm()
+    public TabuSearchAdapterTest() throws Exception
     {
+        super();
+    }
+
+    @Before
+    public void initAlgorithm() throws Exception
+    {
+        _algorithm = new TestTabuSearchAdapter(new TestMoveManager()
+        , new TestObjectiveFunction()
+        , new TestLongTermMemory()
+        , "");
         
+        _algParams = new AlgorithmParams("TabuSearchTest");
+        _algParams.putValue("problemID", "TabuSearchTest");
+        _algParams.putValue("instance", "TestInstance");
+        
+        DataNode params = new DataNode("Parameters");
+        params.putValue("numIterDivers", 1);
+        params.putValue("numIteration", 1);
+        params.putValue("numSolutions", 1);
+        params.putValue("tabuListLength", 1);
+        
+        _algParams.putDataNodeRef(params);
+        
+        _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
     }
     
+    @Override
+    @Test
+    public void testPhenotype() throws Exception
+    {
+        _tester.testPhenotype();
+    }
+    
+    @Override
     @Test
     public void testAlgorithm() throws Exception
     {
-        runAlgorithmTest();
+        _tester.testAlgorithm();
+    }
+
+    @Override
+    @Test
+    public void testAlgorithmWithZeroParams() throws Exception
+    {
+        _algParams = new AlgorithmParams("TabuSearchTest");
+        _algParams.putValue("problemID", "TabuSearchTest");
+        _algParams.putValue("instance", "TestInstance");
+        
+        DataNode params = new DataNode("Parameters");
+        params.putValue("numIterDivers", 0);
+        params.putValue("numIteration", 0);
+        params.putValue("numSolutions", 0);
+        params.putValue("tabuListLength", 0);
+        
+        _algParams.putDataNodeRef(params);
+        
+        _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);        
+        _tester.testAlgorithmWithZeroParams();
     }
 }

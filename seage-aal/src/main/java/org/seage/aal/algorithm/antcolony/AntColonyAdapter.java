@@ -25,7 +25,67 @@
  */
 package org.seage.aal.algorithm.antcolony;
 
-public class AntColonyAdapter
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.reporter.AlgorithmReport;
+
+public class AntColonyAdapter implements IAlgorithmAdapter
 {
+
+    @Override
+    public void setParameters(AlgorithmParams params) throws Exception
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void startSearching() throws Exception
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void startSearching(boolean async) throws Exception
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void stopSearching() throws Exception
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public boolean isRunning()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public AlgorithmReport getReport() throws Exception
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void solutionsFromPhenotype(Object[][] source) throws Exception
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public Object[][] solutionsToPhenotype() throws Exception
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

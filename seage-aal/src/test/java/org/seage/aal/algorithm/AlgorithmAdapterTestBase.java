@@ -25,24 +25,34 @@
  */
 package org.seage.aal.algorithm;
 
+import org.junit.Test;
 import org.seage.aal.data.AlgorithmParams;
 
 /**
  *
  * @author rick
  */
-public class AlgorithmAdapterTestBase {
-    protected IAlgorithmAdapter algorithm; 
-    protected Object[][] solutions;
-    protected AlgorithmParams algParams;
+public abstract class AlgorithmAdapterTestBase {
+    protected AlgorithmAdapterTester _tester;
     
-    protected void runAlgorithmTest() throws Exception
-    {             
-//        algorithm.solutionsFromPhenotype(solutions);
-//        algorithm.setParameters(algParams);
-//        algorithm.startSearching();
-//        solutions = algorithm.solutionsToPhenotype();
-//        algorithm.solutionsFromPhenotype(solutions);
-//        algorithm.startSearching();
-    }
+    protected IAlgorithmAdapter _algorithm; 
+    protected Object[][] _solutions;
+    protected AlgorithmParams _algParams;
+      
+    public AlgorithmAdapterTestBase() throws Exception
+    {
+        _solutions = new Integer[][] {
+                new Integer[]{1,2,3,4,5}, 
+                new Integer[]{2,3,4,5,1},
+                new Integer[]{3,4,5,1,2},
+                new Integer[]{4,5,1,2,3},
+                new Integer[]{5,1,2,3,4}};
+    }  
+
+    public abstract void testPhenotype() throws Exception;
+
+    public abstract void testAlgorithm() throws Exception;
+    
+    public abstract void testAlgorithmWithZeroParams() throws Exception;
+
 }

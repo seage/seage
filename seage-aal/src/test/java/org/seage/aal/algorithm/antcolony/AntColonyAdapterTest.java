@@ -29,6 +29,8 @@ package org.seage.aal.algorithm.antcolony;
 import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.*;
+import org.seage.aal.data.AlgorithmParams;
+import org.seage.metaheuristic.antcolony.AntColony;
 
 /**
  *
@@ -36,15 +38,39 @@ import org.seage.aal.algorithm.*;
  */
 public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     
-    @Before
-    public void initAlgorithm()
+    public AntColonyAdapterTest() throws Exception
     {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    @Before
+    public void initAlgorithm() throws Exception
+    {
+        _algorithm = new AntColonyAdapter();        
+        _algParams = new AlgorithmParams("");
         
+        _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
     }
     
+    @Override
+    @Test
+    public void testPhenotype() throws Exception
+    {
+        _tester.testPhenotype();
+    }
+    
+    @Override
     @Test
     public void testAlgorithm() throws Exception
     {
-        runAlgorithmTest();
+        _tester.testAlgorithm();
+    }
+
+    @Override
+    @Test
+    public void testAlgorithmWithZeroParams() throws Exception
+    {
+        _tester.testAlgorithmWithZeroParams();
     }
 }

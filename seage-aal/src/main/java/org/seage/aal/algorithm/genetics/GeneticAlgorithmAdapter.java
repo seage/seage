@@ -126,6 +126,8 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
     public void setParameters(AlgorithmParams params) throws Exception
     {
         _params = params;
+        _params.putValue("id", "GeneticAlgorithm");
+        
         DataNode p = params.getDataNode("Parameters");
         _geneticSearch.getOperator().setCrossLengthPct(p.getValueInt("crossLengthPct") / 100.0);
         _geneticSearch.getOperator().setMutatePct(p.getValueInt("mutateLengthPct") / 100.0);

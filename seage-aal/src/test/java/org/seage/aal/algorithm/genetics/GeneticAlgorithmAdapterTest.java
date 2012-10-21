@@ -29,6 +29,12 @@ package org.seage.aal.algorithm.genetics;
 import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.*;
+import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
+import org.seage.aal.data.AlgorithmParams;
+import org.seage.data.DataNode;
+import org.seage.metaheuristic.genetics.Evaluator;
+import org.seage.metaheuristic.genetics.GeneticOperator;
+import org.seage.metaheuristic.genetics.Subject;
 
 /**
  *
@@ -36,15 +42,63 @@ import org.seage.aal.algorithm.*;
  */
 public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     
-    @Before
-    public void initAlgorithm()
+    public GeneticAlgorithmAdapterTest() throws Exception
     {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    @Before
+    public void initAlgorithm() throws Exception
+    {
+        _algorithm = new GeneticAlgorithmAdapter(new GeneticOperator(), new Evaluator()
+        {
+            
+            @Override
+            public double[] evaluate(Subject solution) throws Exception
+            {
+                // TODO Auto-generated method stub
+                return new double[]{solution.getGenome().getChromosome(0).getGene(0).getValue()};
+            }
+        }, true, "");    
+        
+        _algParams = new AlgorithmParams("GeneticAlgorithmTest");
+        _algParams.putValue("problemID", "GeneticAlgorithmTest");
+        _algParams.putValue("instance", "TestInstance");
+        
+        DataNode params = new DataNode("Parameters");
+        params.putValue("crossLengthPct", 0);
+        params.putValue("mutateLengthPct", 0);
+        params.putValue("eliteSubjectPct", 0);
+        params.putValue("iterationCount", 1);
+        params.putValue("mutateSubjectPct", 0);
+        params.putValue("numSolutions", 1);
+        params.putValue("randomSubjectPct", 0); 
+        
+        _algParams.putDataNodeRef(params);
+        
+        _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
+    }
+    
+    @Override
+    @Test
+    public void testPhenotype() throws Exception
+    {
+        _tester.testPhenotype();
         
     }
     
+    @Override
     @Test
     public void testAlgorithm() throws Exception
     {
-        runAlgorithmTest();
+        _tester.testAlgorithm();
+    }
+
+    @Override
+    @Test
+    public void testAlgorithmWithZeroParams() throws Exception
+    {
+        _tester.testAlgorithmWithZeroParams();
     }
 }

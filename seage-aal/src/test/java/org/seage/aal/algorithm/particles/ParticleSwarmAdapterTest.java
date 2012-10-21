@@ -29,6 +29,8 @@ package org.seage.aal.algorithm.particles;
 import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.*;
+import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
+import org.seage.aal.data.AlgorithmParams;
 
 /**
  *
@@ -36,15 +38,56 @@ import org.seage.aal.algorithm.*;
  */
 public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
     
-    @Before
-    public void initAlgorithm()
+    public ParticleSwarmAdapterTest() throws Exception
     {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    @Before
+    public void initAlgorithm() throws Exception
+    {
+        _algorithm = new ParticleSwarmAdapter(null, null, false, "")
+        {
+            
+            @Override
+            public Object[][] solutionsToPhenotype() throws Exception
+            {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            
+            @Override
+            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            {
+                // TODO Auto-generated method stub
+                
+            }
+        };        
+        _algParams = new AlgorithmParams("");
+        
+        _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
+    }
+    
+    @Override
+    @Test
+    public void testPhenotype() throws Exception
+    {
+        _tester.testPhenotype();
         
     }
     
+    @Override
     @Test
     public void testAlgorithm() throws Exception
     {
-        runAlgorithmTest();
+        _tester.testAlgorithm();
+    }
+
+    @Override
+    @Test
+    public void testAlgorithmWithZeroParams() throws Exception
+    {
+        _tester.testAlgorithmWithZeroParams();
     }
 }
