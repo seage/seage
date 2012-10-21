@@ -47,10 +47,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new TestTabuSearchAdapter(new TestMoveManager()
-        , new TestObjectiveFunction()
-        , new TestLongTermMemory()
-        , "");
+        _algorithm = new TestTabuSearchAdapter(new TestMoveManager(), new TestObjectiveFunction(), "");
         
         _algParams = new AlgorithmParams("TabuSearchTest");
         _algParams.putValue("problemID", "TabuSearchTest");
@@ -83,21 +80,29 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
 
     @Override
     @Test
-    public void testAlgorithmWithZeroParams() throws Exception
-    {
-        _algParams = new AlgorithmParams("TabuSearchTest");
-        _algParams.putValue("problemID", "TabuSearchTest");
-        _algParams.putValue("instance", "TestInstance");
-        
+    public void testAlgorithmWithParamsAtZero() throws Exception
+    {       
         DataNode params = new DataNode("Parameters");
         params.putValue("numIterDivers", 0);
         params.putValue("numIteration", 0);
         params.putValue("numSolutions", 0);
         params.putValue("tabuListLength", 0);
+        _tester.setAlgParameters(params);
         
-        _algParams.putDataNodeRef(params);
+        _tester.testAlgorithmWithParamsAtZero();
+    }
+    
+    @Test
+    @Override    
+    public void testAsyncRunning() throws Exception
+    {
+        DataNode params = new DataNode("Parameters");
+        params.putValue("numIterDivers", 1);
+        params.putValue("numIteration", 1000000);
+        params.putValue("numSolutions", 1);
+        params.putValue("tabuListLength", 1);
+        _tester.setAlgParameters(params);
         
-        _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);        
-        _tester.testAlgorithmWithZeroParams();
+        _tester.testAsyncRunning();        
     }
 }

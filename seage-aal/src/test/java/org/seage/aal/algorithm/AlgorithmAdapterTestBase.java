@@ -53,6 +53,8 @@ public abstract class AlgorithmAdapterTestBase {
 
     public abstract void testAlgorithm() throws Exception;
     
-    public abstract void testAlgorithmWithZeroParams() throws Exception;
+    public abstract void testAlgorithmWithParamsAtZero() throws Exception;
+    
+    public abstract void testAsyncRunning() throws Exception;
 
 }

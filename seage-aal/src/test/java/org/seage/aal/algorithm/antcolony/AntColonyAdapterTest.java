@@ -53,24 +53,31 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
         _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
     }
     
-    @Override
     @Test
+    @Override    
     public void testPhenotype() throws Exception
     {
         _tester.testPhenotype();
     }
     
-    @Override
     @Test
+    @Override    
     public void testAlgorithm() throws Exception
     {
         _tester.testAlgorithm();
     }
 
-    @Override
     @Test
-    public void testAlgorithmWithZeroParams() throws Exception
+    @Override    
+    public void testAlgorithmWithParamsAtZero() throws Exception
     {
-        _tester.testAlgorithmWithZeroParams();
+        _tester.testAlgorithmWithParamsAtZero();
+    }
+
+    @Test
+    @Override
+    public void testAsyncRunning() throws Exception
+    {
+        _tester.testAsyncRunning();        
     }
 }

@@ -86,8 +86,15 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
 
     @Override
     @Test
-    public void testAlgorithmWithZeroParams() throws Exception
+    public void testAlgorithmWithParamsAtZero() throws Exception
     {
-        _tester.testAlgorithmWithZeroParams();
+        _tester.testAlgorithmWithParamsAtZero();
+    }
+    
+    @Test
+    @Override    
+    public void testAsyncRunning() throws Exception
+    {
+        _tester.testAsyncRunning();        
     }
 }

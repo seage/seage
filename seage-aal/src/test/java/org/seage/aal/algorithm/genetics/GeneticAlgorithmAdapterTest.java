@@ -97,8 +97,33 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
 
     @Override
     @Test
-    public void testAlgorithmWithZeroParams() throws Exception
+    public void testAlgorithmWithParamsAtZero() throws Exception
     {
-        _tester.testAlgorithmWithZeroParams();
+        DataNode params = new DataNode("Parameters");
+        params.putValue("crossLengthPct", 0);
+        params.putValue("mutateLengthPct", 0);
+        params.putValue("eliteSubjectPct", 0);
+        params.putValue("iterationCount", 0);
+        params.putValue("mutateSubjectPct", 0);
+        params.putValue("numSolutions", 0);
+        params.putValue("randomSubjectPct", 0); 
+        _tester.setAlgParameters(params);
+        _tester.testAlgorithmWithParamsAtZero();
+    }
+    
+    @Test
+    @Override    
+    public void testAsyncRunning() throws Exception
+    {
+        DataNode params = new DataNode("Parameters");
+        params.putValue("crossLengthPct", 1);
+        params.putValue("mutateLengthPct", 1);
+        params.putValue("eliteSubjectPct", 1);
+        params.putValue("iterationCount", 1000000);
+        params.putValue("mutateSubjectPct", 1);
+        params.putValue("numSolutions", 10);
+        params.putValue("randomSubjectPct", 1); 
+        _tester.setAlgParameters(params);
+        _tester.testAsyncRunning();        
     }
 }

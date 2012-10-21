@@ -36,49 +36,41 @@ import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.*;
 
 /**
- *  TabuSearchAdapter interface.
+ * TabuSearchAdapter interface.
  */
-@AlgorithmParameters({
-    @Parameter(name="numIterDivers", min=1, max=1, init=1),
-    @Parameter(name="numIteration", min=1, max=1000000, init=1000),
-    @Parameter(name="numSolutions", min=1, max=1, init=1),    
-    @Parameter(name="tabuListLength", min=1, max=1000, init=30)    
-})
+@AlgorithmParameters({ @Parameter(name = "numIterDivers", min = 1, max = 1, init = 1), @Parameter(name = "numIteration", min = 1, max = 1000000, init = 1000),
+        @Parameter(name = "numSolutions", min = 1, max = 1, init = 1), @Parameter(name = "tabuListLength", min = 1, max = 1000, init = 30) })
 public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 {
 
-    private TabuSearch _tabuSearch;
-    private ObjectiveFunction _objectiveFunction;
-    private LongTermMemory _longTermMemory;
+    private TabuSearch         _tabuSearch;
+    private ObjectiveFunction  _objectiveFunction;
+    private LongTermMemory     _longTermMemory;
     private TabuSearchObserver _observer;
-    private int _iterationToGo;
-    private int _tabuListLength;
-    private int _iterationDivers;
-    private boolean _maximizing;
-    protected Solution[] _solutions;
-    protected int _solutionsToExplore;
-    protected Solution _bestEverSolution;				// best of all solution
+    private int                _iterationToGo;
+    private int                _tabuListLength;
+    private int                _iterationDivers;
+    private boolean            _maximizing;
+    protected Solution[]       _solutions;
+    protected int              _solutionsToExplore;
+    protected Solution         _bestEverSolution;  // best of all solution
     private SolutionComparator _solutionComparator;
-    private AlgorithmParams _params;
+    private AlgorithmParams    _params;
 
-    private double _statInitObjVal;
-    private double _statEndObjVal;
-    private int _statNumIter;
-    private int _statNumNewSol;
-    private int _statLastIterNewSol;
-    private String _searchID;
-    private AlgorithmReporter _reporter;
+    private double             _statInitObjVal;
+    private double             _statEndObjVal;
+    private int                _statNumIter;
+    private int                _statNumNewSol;
+    private int                _statLastIterNewSol;
+    private String             _searchID;
+    private AlgorithmReporter  _reporter;
 
-    public TabuSearchAdapter(MoveManager moveManager,
-            ObjectiveFunction objectiveFunction,
-            LongTermMemory longTermMemory,
-            String searchID)
+    public TabuSearchAdapter(MoveManager moveManager, ObjectiveFunction objectiveFunction, String searchID)
     {
         _observer = new TabuSearchObserver();
-        _tabuSearch = new TabuSearch(moveManager, objectiveFunction, longTermMemory, false);
+        _tabuSearch = new TabuSearch(moveManager, objectiveFunction, false);
         _tabuSearch.addTabuSearchListener(_observer);
         _objectiveFunction = objectiveFunction;
-        _longTermMemory = longTermMemory;
 
         _tabuSearch.setAspirationCriteria(new BestEverAspirationCriteria());
         _iterationToGo = 0;
@@ -115,46 +107,26 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 
         _statNumNewSol = 0;
         Solution currentSolution = null;
-        setBestEverSolution();				// z nactenych reseni, ulozi nejlepsi
+        setBestEverSolution(); // z nactenych reseni, ulozi nejlepsi
 
         for (int i = 0; i < _solutions.length; i++)
         {
-            //if(_solutions[i].getObjectiveValue()==null)
             if (mask[i] == false)
             {
                 continue;
             }
 
-            //currentSolution = _solutions[_random.nextInt(_solutions.length)];
             currentSolution = _solutions[i];
-            //System.out.println("-\t" + currentSolution);
+            _tabuSearch.setBestSolution(currentSolution);
+            _tabuSearch.setCurrentSolution(currentSolution);
+
             _tabuSearch.setTabuList(new SimpleTabuList(_tabuListLength));
-            _tabuSearch.setBestSolution(null);
-            _longTermMemory.clearMemory();
-            _longTermMemory.resetIterNumber();
-            for (int j = 0; j < _iterationDivers; j++)
-            {
-                //if(i%2==1)
-                //    _tabuSearch.setBestSolution(null);
-                _tabuSearch.setIterationsToGo(_iterationToGo);
-                _tabuSearch.setBestSolution(currentSolution);
-                _tabuSearch.setCurrentSolution(currentSolution);
 
-                _tabuSearch.startSolving();
-                //while (_tabuSearch.isSolving())
-                //    Thread.currentThread().sleep(500);
-                //System.out.println("+\t" + _tabuSearch.getBestSolution());
-                currentSolution = _longTermMemory.diversifySolution();
-                //longTermMemory.clearMemory();
-                if (currentSolution == null)
-                {
-                    currentSolution = _tabuSearch.getBestSolution();
-                }
-            }
+            _tabuSearch.setIterationsToGo(_iterationToGo);
+
+            _tabuSearch.startSolving();
+
             _solutions[i] = _tabuSearch.getBestSolution();
-
-            //double[] val = _objectiveFunction.evaluate(_solutions[i], null);
-            //int a = 0;
 
         }
         Arrays.sort(_solutions, _solutionComparator);
@@ -164,15 +136,17 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
     {
         _tabuSearch.stopSolving();
 
-        while(isRunning())
+        while (isRunning())
         {
-            Thread.sleep(100);
-            System.out.print("-");
+            Thread.sleep(50);
         }
-        
+
     }
-    
-    public boolean isRunning() { return _tabuSearch.isSolving(); }
+
+    public boolean isRunning()
+    {
+        return _tabuSearch.isSolving();
+    }
 
     public void setParameters(AlgorithmParams params) throws Exception
     {
@@ -198,13 +172,15 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 
         avg /= num;
 
-//		DataNode stats = new DataNode("statistics");
-//		stats.putValue("NumberOfIter", new Integer(_statNumIter));
-//		stats.putValue("NumberOfNewSolutions", new Integer(_statNumNewSol));
-//		stats.putValue("LastIterNumberNewSol", new Integer(_statLastIterNewSol));
-//		stats.putValue("ObjValDelta", new Double(Math.abs(_statInitObjVal - _statEndObjVal)));
-//		stats.putValue("MinObjVal", new Double(_statEndObjVal));
-//		stats.putValue("AvgObjVal", new Double(avg));
+        // DataNode stats = new DataNode("statistics");
+        // stats.putValue("NumberOfIter", new Integer(_statNumIter));
+        // stats.putValue("NumberOfNewSolutions", new Integer(_statNumNewSol));
+        // stats.putValue("LastIterNumberNewSol", new
+        // Integer(_statLastIterNewSol));
+        // stats.putValue("ObjValDelta", new Double(Math.abs(_statInitObjVal -
+        // _statEndObjVal)));
+        // stats.putValue("MinObjVal", new Double(_statEndObjVal));
+        // stats.putValue("AvgObjVal", new Double(avg));
 
         _reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);
 
@@ -247,12 +223,12 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
         /**
 		 * 
 		 */
-		private static final long serialVersionUID = -4250943156287273367L;
-		public int _newBestSolutionFound;
-        private int _newCurrentSolutionFound;
-        private int _unimprovingMoveMade;
-        private int _improvingMoveMade;
-        private int _noChangeInValueMoveMade;
+        private static final long serialVersionUID = -4250943156287273367L;
+        public int                _newBestSolutionFound;
+        private int               _newCurrentSolutionFound;
+        private int               _unimprovingMoveMade;
+        private int               _improvingMoveMade;
+        private int               _noChangeInValueMoveMade;
 
         public TabuSearchObserver()
         {
@@ -284,9 +260,11 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
                 if (_bestEverSolution.getObjectiveValue() == null)
                 {
                     _bestEverSolution = (Solution) newBest.clone();
-                    //System.out.println(_searchID + "  " + newBest.getObjectiveValue()[0]);
+                    // System.out.println(_searchID + "  " +
+                    // newBest.getObjectiveValue()[0]);
 
-                    //addSolutionToGraph(e.getTabuSearch().getIterationsCompleted(), _bestEverSolution);
+                    // addSolutionToGraph(e.getTabuSearch().getIterationsCompleted(),
+                    // _bestEverSolution);
                     _statEndObjVal = _bestEverSolution.getObjectiveValue()[0];
                     _statNumNewSol++;
 
@@ -298,8 +276,10 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
                 else if (_tabuSearch.firstIsBetterThanSecond(newBest.getObjectiveValue(), _bestEverSolution.getObjectiveValue(), _maximizing))
                 {
                     _bestEverSolution = (Solution) newBest.clone();
-                    //System.out.println(_searchID + "  " + newBest.getObjectiveValue()[0]);
-                    //addSolutionToGraph(e.getTabuSearch().getIterationsCompleted(), _bestEverSolution);
+                    // System.out.println(_searchID + "  " +
+                    // newBest.getObjectiveValue()[0]);
+                    // addSolutionToGraph(e.getTabuSearch().getIterationsCompleted(),
+                    // _bestEverSolution);
                     _statEndObjVal = _bestEverSolution.getObjectiveValue()[0];
                     _statNumNewSol++;
 
@@ -309,12 +289,13 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
                     }
                 }
 
-                //System.out.println(_bestEverSolution);
-//                DataNode log = new DataNode("newSolution");
-//                log.putValue("time", System.currentTimeMillis());
-//                log.putValue("numIter", e.getTabuSearch().getIterationsCompleted());
-//                log.putValue("objVal", newBest.getObjectiveValue()[0]);
-//                log.putValue("solution", newBest.toString());
+                // System.out.println(_bestEverSolution);
+                // DataNode log = new DataNode("newSolution");
+                // log.putValue("time", System.currentTimeMillis());
+                // log.putValue("numIter",
+                // e.getTabuSearch().getIterationsCompleted());
+                // log.putValue("objVal", newBest.getObjectiveValue()[0]);
+                // log.putValue("solution", newBest.toString());
                 _reporter.putNewSolution(System.currentTimeMillis(), e.getTabuSearch().getIterationsCompleted(), newBest.getObjectiveValue()[0], newBest.toString());
             }
             catch (Exception ex)

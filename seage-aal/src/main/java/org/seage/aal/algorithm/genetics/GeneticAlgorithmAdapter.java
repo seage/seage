@@ -95,8 +95,6 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
      * @param param
      * @throws java.lang.Exception
      */
-
-
     public void startSearching() throws Exception
     {
         _reporter = new AlgorithmReporter(_searchID);
@@ -243,7 +241,9 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
         {
             _algorithmStopped = true;
             _statNrOfIterationsDone = e.getGeneticSearch().getCurrentIteration();
-            _statEndObjVal = e.getGeneticSearch().getBestSubject().getObjectiveValue()[0];
+            Subject s= e.getGeneticSearch().getBestSubject();
+            if(s != null)
+                _statEndObjVal = s.getObjectiveValue()[0];
         }
         public void newBestSolutionFound(GeneticSearchEvent e)
         {
@@ -251,13 +251,6 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
             {
                 Subject subject = e.getGeneticSearch().getBestSubject();  // e.getGeneticSearch().getSubjects().length - 1
                 _bestEverSolution = (Subject)e.getGeneticSearch().getBestSubject().clone();
-
-                //System.out.println(_searchID+"  "+subject.getFitness()[0] + " \t" + subject.hashCode() + "\t" + subject.toString());
-//                DataNode log = new DataNode("newSolution");
-//                log.putValue("time", System.currentTimeMillis());
-//                log.putValue("numIter", e.getGeneticSearch().getCurrentIteration());
-//                log.putValue("objVal", subject.getObjectiveValue()[0]);
-//                log.putValue("solution", subject.toString());
                 _reporter.putNewSolution(System.currentTimeMillis(), e.getGeneticSearch().getCurrentIteration(), subject.getObjectiveValue()[0], subject.toString());
                 _statNumNewSol++;
                 _statLastIterNewSol = e.getGeneticSearch().getCurrentIteration();

@@ -10,9 +10,9 @@ import org.seage.metaheuristic.tabusearch.ObjectiveFunction;
 public class TestTabuSearchAdapter extends TabuSearchAdapter
 {
     
-    public TestTabuSearchAdapter(MoveManager moveManager, ObjectiveFunction objectiveFunction, LongTermMemory longTermMemory, String searchID)
+    public TestTabuSearchAdapter(MoveManager moveManager, ObjectiveFunction objectiveFunction, String searchID)
     {
-        super(moveManager, objectiveFunction, longTermMemory, searchID);        
+        super(moveManager, objectiveFunction, searchID);        
     }
 
     @Override

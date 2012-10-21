@@ -3,6 +3,7 @@ package org.seage.aal.algorithm;
 import junit.framework.Assert;
 
 import org.seage.aal.data.AlgorithmParams;
+import org.seage.data.DataNode;
 
 public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
 {
@@ -12,6 +13,12 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
         _algorithm = algorithm;
         _solutions = solutions;
         _algParams = algParams;
+    }
+    
+    public void setAlgParameters(DataNode params) throws Exception
+    {
+        _algParams.removeDataNode(params.getName(), 0);
+        _algParams.putDataNodeRef(params);
     }
 
     @Override
@@ -24,7 +31,6 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
             for(int j=0;j<solutions[i].length;j++)
                 if(!solutions[i][j].equals(_solutions[i][j]))
                     Assert.failNotSame("Phenotype transformation failed.", _solutions, solutions);
-
     }
 
     @Override
@@ -40,9 +46,25 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
     }
 
     @Override
-    public void testAlgorithmWithZeroParams() throws Exception
+    public void testAlgorithmWithParamsAtZero() throws Exception
     {
         testAlgorithm();
     }
 
+    @Override
+    public void testAsyncRunning() throws Exception
+    {
+        _algorithm.solutionsFromPhenotype(_solutions);
+        _algorithm.setParameters(_algParams);
+        _algorithm.startSearching(true);
+        
+        Thread.currentThread().sleep(100);
+        Assert.assertTrue(_algorithm.isRunning());
+        
+        _algorithm.stopSearching();
+        
+        Thread.currentThread().sleep(100);
+        
+        Assert.assertFalse(_algorithm.isRunning());
+    }
 }

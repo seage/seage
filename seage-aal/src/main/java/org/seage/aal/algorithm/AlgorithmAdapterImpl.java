@@ -29,7 +29,8 @@ package org.seage.aal.algorithm;
  *
  * @author rick
  */
-public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter{
+public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
+{
     
     protected boolean _algorithmStarted = false;
     protected boolean _algorithmStopped = false;

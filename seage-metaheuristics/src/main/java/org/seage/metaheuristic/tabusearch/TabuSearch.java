@@ -58,9 +58,6 @@ public class TabuSearch extends TabuSearchBase
     
     /** Aspiration criteria. */
     protected AspirationCriteria aspirationCriteria;
-
-	/** Long term memory	 */
-	protected LongTermMemory longTermMemory;
     
     /** Current solution. */
     protected Solution currentSolution;
@@ -126,8 +123,7 @@ public class TabuSearch extends TabuSearchBase
 
 
 	public TabuSearch(MoveManager moveManager,
-            ObjectiveFunction objectiveFunction,
-            LongTermMemory longTermMemory,
+            ObjectiveFunction objectiveFunction,            
             boolean maximizing)
 	{
 		this();		
@@ -142,7 +138,6 @@ public class TabuSearch extends TabuSearchBase
 		this.moveManager = moveManager;
 		this.tabuList = tabuList;
 		this.aspirationCriteria = aspirationCriteria;
-		this.longTermMemory = longTermMemory;
 		this.maximizing = maximizing;		
 
 	}   // end constructor
@@ -170,7 +165,7 @@ public class TabuSearch extends TabuSearchBase
      */
     public TabuSearch( Solution initialSolution, MoveManager moveManager,
                            ObjectiveFunction objectiveFunction, TabuList tabuList,
-                           AspirationCriteria aspirationCriteria, LongTermMemory longTermMemory,
+                           AspirationCriteria aspirationCriteria,
                            boolean maximizing) throws Exception
     {
         this();
@@ -191,7 +186,6 @@ public class TabuSearch extends TabuSearchBase
         this.moveManager            =   moveManager;
         this.tabuList               =   tabuList;
         this.aspirationCriteria     =   aspirationCriteria;
-		this.longTermMemory			=	longTermMemory;
         this.maximizing             =   maximizing;
         
     }   // end constructor
@@ -305,9 +299,7 @@ public class TabuSearch extends TabuSearchBase
         // Set the new solution value
         // v1.0c: Clone this array so that arrays can be reused in the objective function
         currentSolution.setObjectiveValue( (double[])bestMoveVal.clone() );
-
-		longTermMemory.memorizeSolution(currentSolution, newBestSoln);
-		
+	
         // Update the best solution, too?
         if( newBestSoln )
         {   Solution newBest = (Solution)currentSolution.clone();
