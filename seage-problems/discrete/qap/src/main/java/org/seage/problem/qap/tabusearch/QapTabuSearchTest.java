@@ -65,7 +65,7 @@ public class QapTabuSearchTest implements TabuSearchListener
                 new QapObjectiveFunction(facilityLocation),
                 new SimpleTabuList(100),
                 new BestEverAspirationCriteria(),
-                new QapLongTermMemory(), false);
+                false);
 
         ts.addTabuSearchListener(this);
         ts.setIterationsToGo(1000000);

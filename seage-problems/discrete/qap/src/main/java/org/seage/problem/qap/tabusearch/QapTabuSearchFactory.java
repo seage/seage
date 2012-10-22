@@ -54,7 +54,7 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
     {
         final Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
         
-        IAlgorithmAdapter algorithm = new TabuSearchAdapter(new QapMoveManager(), new QapObjectiveFunction(facilityLocation), new QapLongTermMemory(), "" ) {
+        IAlgorithmAdapter algorithm = new TabuSearchAdapter(new QapMoveManager(), new QapObjectiveFunction(facilityLocation),  "" ) {
 
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {

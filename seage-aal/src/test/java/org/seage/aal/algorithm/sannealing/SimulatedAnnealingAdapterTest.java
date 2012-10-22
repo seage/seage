@@ -29,6 +29,8 @@ package org.seage.aal.algorithm.sannealing;
 import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.*;
+import org.seage.aal.data.AlgorithmParams;
+import org.seage.data.DataNode;
 
 /**
  *
@@ -45,7 +47,23 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
+        _algorithm = new TestSimulatedAnnealingAdapter(null, new TestObjectiveFunction(), new TestMoveManager(), false, "");
         
+        _algParams = new AlgorithmParams("SimulatedAnnealingTest");
+        _algParams.putValue("problemID", "SimulatedAnnealingTest");
+        _algParams.putValue("instance", "TestInstance");
+        
+        DataNode params = new DataNode("Parameters");
+        params.putValue("annealCoeficient", 0.1);
+        params.putValue("maxInnerIterations", 2);
+        params.putValue("maxTemperature", 100);
+        params.putValue("minTemperature", 1);
+        params.putValue("numInnerSuccesses", 1);
+        params.putValue("numSolutions", 1);
+        
+        _algParams.putDataNodeRef(params);
+        
+        _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
     }
     
     @Override
@@ -67,6 +85,14 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     @Test
     public void testAlgorithmWithParamsAtZero() throws Exception
     {
+        DataNode params = new DataNode("Parameters");
+        params.putValue("annealCoeficient", 0);
+        params.putValue("maxInnerIterations", 0);
+        params.putValue("maxTemperature", 0);
+        params.putValue("minTemperature", 0);
+        params.putValue("numInnerSuccesses", 0);
+        params.putValue("numSolutions", 0);
+        _tester.setAlgParameters(params);
         _tester.testAlgorithmWithParamsAtZero();
     }
     
@@ -74,6 +100,14 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     @Override    
     public void testAsyncRunning() throws Exception
     {
+        DataNode params = new DataNode("Parameters");
+        params.putValue("annealCoeficient", 0.999);
+        params.putValue("maxInnerIterations", 1000000);
+        params.putValue("maxTemperature", 100000);
+        params.putValue("minTemperature", 1);
+        params.putValue("numInnerSuccesses", 100000);
+        params.putValue("numSolutions", 1);
+        _tester.setAlgParameters(params);
         _tester.testAsyncRunning();        
     }
 }

@@ -60,7 +60,7 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
 
         final City[] cities = ((TspProblemInstance)instance).getCities();
 
-        algorithm = new TabuSearchAdapter(new TspMoveManager(), new TspObjectiveFunction(cities), new TspLongTermMemory(), "" ) {
+        algorithm = new TabuSearchAdapter(new TspMoveManager(), new TspObjectiveFunction(cities), "" ) {
 
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {

@@ -68,7 +68,7 @@ public class TspTabuSearchTest implements TabuSearchListener
                 new TspObjectiveFunction(cities),
                 new SimpleTabuList(50),
                 new BestEverAspirationCriteria(),
-                new TspLongTermMemory(), false);
+                false);
 
         ts.addTabuSearchListener(this);
         ts.setIterationsToGo(10000);
