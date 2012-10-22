@@ -115,6 +115,7 @@ public abstract class ParticleSwarmAdapter  extends AlgorithmAdapterImpl impleme
     public void setParameters(AlgorithmParams params) throws Exception
     {
         _params = params;
+        _params.putValue("id", "ParticleSwarm");
         DataNode p = params.getDataNode("Parameters");
         _particleSwarm.setMaximalIterationCount( p.getValueLong("maxIterationCount") );
         _particleSwarm.setMaximalVelocity( p.getValueDouble("maxVelocity") );

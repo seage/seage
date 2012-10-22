@@ -30,6 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.*;
 import org.seage.aal.data.AlgorithmParams;
+import org.seage.data.DataNode;
 import org.seage.metaheuristic.antcolony.AntColony;
 
 /**
@@ -47,8 +48,22 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new AntColonyAdapter();        
-        _algParams = new AlgorithmParams("");
+        _algorithm = new AntColonyAdapter();
+        _algParams = new AlgorithmParams("AntColonyTest");
+        _algParams.putValue("problemID", "AntColonyTest");
+        _algParams.putValue("instance", "TestInstance");
+        
+        DataNode params = new DataNode("Parameters");
+        params.putValue("annealCoeficient", 0.1);
+        params.putValue("maxInnerIterations", 2);
+        params.putValue("maxTemperature", 100);
+        params.putValue("minTemperature", 1);
+        params.putValue("numInnerSuccesses", 1);
+        params.putValue("numSolutions", 1);
+        
+        _algParams.putDataNodeRef(params);
+        
+        _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
         
         _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
     }

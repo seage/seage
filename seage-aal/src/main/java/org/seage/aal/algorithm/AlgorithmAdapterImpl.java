@@ -25,12 +25,18 @@
  */
 package org.seage.aal.algorithm;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.print.attribute.standard.Severity;
+
 /**
  *
  * @author rick
  */
 public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
 {
+    private static final Logger _logger = Logger.getLogger(AlgorithmAdapterImpl.class.getName());
     
     protected boolean _algorithmStarted = false;
     protected boolean _algorithmStopped = false;
@@ -52,15 +58,22 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
                     }
                     catch(Exception ex)
                     {
-                        ex.printStackTrace();
+                        _logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 }
             }).start();
 
+            int i=0;
             while(!_algorithmStarted)
             {
-                Thread.sleep(100);
-                //System.out.print("+");
+                Thread.sleep(10);
+                if(i++<10)
+                    ;//System.out.print("+");
+                else
+                {
+                    stopSearching();
+                    throw new Exception("Unable to start the algorithm asynchronously.");
+                }
             }
         }
         else

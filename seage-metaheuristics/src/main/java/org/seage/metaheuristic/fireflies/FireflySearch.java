@@ -258,6 +258,7 @@ public class FireflySearch extends FireflySearchBase{
         }
         catch (Exception ex)
         {
+            _isRunning = false;
             throw ex;
         }
     }

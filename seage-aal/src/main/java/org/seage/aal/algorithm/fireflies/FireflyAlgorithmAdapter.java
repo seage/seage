@@ -132,6 +132,7 @@ public abstract class FireflyAlgorithmAdapter extends  AlgorithmAdapterImpl
     public void setParameters(AlgorithmParams params) throws Exception
     {
         _params = params;
+        _params.putValue("id", "FireflyAlgorithm");
         DataNode p = params.getDataNode("Parameters");
         _fireflySearch.setIterationsToGo(p.getValueInt("iterationCount"));
         _statNumIter = p.getValueInt("iterationCount");

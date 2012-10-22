@@ -26,6 +26,9 @@
 
 package org.seage.aal.algorithm.tabusearch;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
@@ -47,7 +50,31 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new TestTabuSearchAdapter(new TestMoveManager(), new TestObjectiveFunction(), "");
+        _algorithm = new TabuSearchAdapter(new TestMoveManager(), new TestObjectiveFunction(), "")
+        {
+            @Override
+            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            {
+                _solutions = new TestSolution[source.length];
+                
+                for(int i=0;i<source.length;i++)
+                {
+                    _solutions[i] = new TestSolution(source[i]);
+                }
+                
+            }
+            @Override
+            public Object[][] solutionsToPhenotype() throws Exception
+            {
+                List<Object[]> result = new ArrayList<Object[]>();
+                
+                for(int i=0;i<_solutions.length;i++)
+                {
+                    result.add(((TestSolution)_solutions[i]).solution);
+                }
+                return (Object[][]) result.toArray(new Object[][]{});
+            }
+        };
         
         _algParams = new AlgorithmParams("TabuSearchTest");
         _algParams.putValue("problemID", "TabuSearchTest");

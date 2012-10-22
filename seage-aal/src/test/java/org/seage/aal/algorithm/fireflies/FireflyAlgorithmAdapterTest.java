@@ -24,27 +24,22 @@
  *     - Initial implementation
  */
 
-package org.seage.aal.algorithm.particles;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.seage.aal.algorithm.fireflies;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seage.aal.algorithm.*;
-import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
-import org.seage.aal.algorithm.tabusearch.TestSolution;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
+import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
-import org.seage.metaheuristic.particles.Particle;
 
 /**
  *
  * @author rick
  */
-public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
+public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     
-    public ParticleSwarmAdapterTest() throws Exception
+    public FireflyAlgorithmAdapterTest() throws Exception
     {
         super();
         // TODO Auto-generated constructor stub
@@ -53,52 +48,34 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new ParticleSwarmAdapter(null, null, false, "")
+        _algorithm = new FireflyAlgorithmAdapter(null, null, false, "")
         {
+            
+            @Override
+            public Object[][] solutionsToPhenotype() throws Exception
+            {
+                // TODO Auto-generated method stub
+                return null;
+            }
             
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-                _initialParticles = new Particle[source.length];
-                
-                for(int i=0;i<source.length;i++)
-                {
-                    _initialParticles[i] = new Particle(source[i].length);
-                    double[] coords = new double[source[i].length];
-                    for(int j=0;j<coords.length;j++)
-                        coords[j] = (Integer)source[i][j];
-                    _initialParticles[i].setCoords(coords);
-                }
+                // TODO Auto-generated method stub
                 
             }
-            @Override
-            public Object[][] solutionsToPhenotype() throws Exception
-            {
-                List<Object[]> result = new ArrayList<Object[]>();
+        };
                 
-                for(int i=0;i<_initialParticles.length;i++)
-                {
-                    Object[] coords = new Object[_initialParticles[i].getCoords().length];
-                    for(int j=0;j<coords.length;j++)
-                        coords[j] = (int)_initialParticles[i].getCoords()[j];
-                    result.add(coords);
-                }
-                return (Object[][]) result.toArray(new Object[][]{});
-            }
-        };        
-        
-        _algParams = new AlgorithmParams("ParticleSwarmTest");
-        _algParams.putValue("problemID", "ParticleSwarmTest");
+        _algParams = new AlgorithmParams("FireflyAlgorithmTest");
+        _algParams.putValue("problemID", "FireflyAlgorithmTest");
         _algParams.putValue("instance", "TestInstance");
         
         DataNode params = new DataNode("Parameters");
-        params.putValue("maxIterationCount", 0);
+        params.putValue("iterationCount", 0);
         params.putValue("numSolutions", 0);
-        params.putValue("maxVelocity", 0);
-        params.putValue("minVelocity", 1);
-        params.putValue("inertia", 0);
-        params.putValue("alpha", 1);
-        params.putValue("beta", 0); 
+        params.putValue("timeStep", 0);
+        params.putValue("withDecreasingRandomness", 1);
+        params.putValue("absorption", 0);
         
         _algParams.putDataNodeRef(params);
         
