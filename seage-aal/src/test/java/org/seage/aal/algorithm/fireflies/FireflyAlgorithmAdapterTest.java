@@ -48,34 +48,18 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new FireflyAlgorithmAdapter(null, null, false, "")
-        {
-            
-            @Override
-            public Object[][] solutionsToPhenotype() throws Exception
-            {
-                // TODO Auto-generated method stub
-                return null;
-            }
-            
-            @Override
-            public void solutionsFromPhenotype(Object[][] source) throws Exception
-            {
-                // TODO Auto-generated method stub
-                
-            }
-        };
+        _algorithm = new TestFireflyAlgorithmAdapter(new TestOperator(), new TestObjectiveFunction(), false, "");
                 
         _algParams = new AlgorithmParams("FireflyAlgorithmTest");
         _algParams.putValue("problemID", "FireflyAlgorithmTest");
         _algParams.putValue("instance", "TestInstance");
         
         DataNode params = new DataNode("Parameters");
-        params.putValue("iterationCount", 0);
-        params.putValue("numSolutions", 0);
-        params.putValue("timeStep", 0);
+        params.putValue("iterationCount", 10);
+        params.putValue("numSolutions", 5);
+        params.putValue("timeStep", 1);
         params.putValue("withDecreasingRandomness", 1);
-        params.putValue("absorption", 0);
+        params.putValue("absorption", 1);
         
         _algParams.putDataNodeRef(params);
         
@@ -101,6 +85,13 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     @Test
     public void testAlgorithmWithParamsAtZero() throws Exception
     {
+        DataNode params = new DataNode("Parameters");
+        params.putValue("iterationCount", 0);
+        params.putValue("numSolutions", 0);
+        params.putValue("timeStep", 0);
+        params.putValue("withDecreasingRandomness", 0);
+        params.putValue("absorption", 0);
+        _tester.setAlgParameters(params);
         _tester.testAlgorithmWithParamsAtZero();
     }
     
@@ -108,6 +99,13 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     @Override    
     public void testAsyncRunning() throws Exception
     {
+        DataNode params = new DataNode("Parameters");
+        params.putValue("iterationCount", 10000000);
+        params.putValue("numSolutions", 5);
+        params.putValue("timeStep", 1);
+        params.putValue("withDecreasingRandomness", 1);
+        params.putValue("absorption", 0);
+        _tester.setAlgParameters(params);
         _tester.testAsyncRunning();        
     }
 }
