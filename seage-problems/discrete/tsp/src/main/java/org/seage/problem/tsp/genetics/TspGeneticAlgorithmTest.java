@@ -26,9 +26,10 @@
 package org.seage.problem.tsp.genetics;
 
 import java.io.FileInputStream;
+
+import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.GeneticSearch;
 import org.seage.metaheuristic.genetics.GeneticSearchEvent;
-import org.seage.metaheuristic.genetics.GeneticSearchListener;
 import org.seage.metaheuristic.genetics.Genome;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.tsp.City;
@@ -39,7 +40,7 @@ import org.seage.problem.tsp.TourProvider;
  *
  * @author Richard Malek
  */
-public class TspGeneticAlgorithmTest implements GeneticSearchListener
+public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticSearchEvent>
 {
     public static void main(String[] args)
     {
@@ -91,11 +92,11 @@ public class TspGeneticAlgorithmTest implements GeneticSearchListener
         return result;
     }
 
-    public void geneticSearchStarted(GeneticSearchEvent e) {
+    public void algorithmStarted(GeneticSearchEvent e) {
         System.out.println("Genetic Algorithm for TSP started.");
     }
 
-    public void geneticSearchStopped(GeneticSearchEvent e) {
+    public void algorithmStopped(GeneticSearchEvent e) {
         System.out.println("Genetic Algorithm for TSP stopped.");
     }
 

@@ -45,7 +45,7 @@ public class SatAntColonyTest2 {
 //        double alpha = 1, beta = 2;
 //        int numAnts = 100, iterations = 500;
 
-        SatGraph2 graph = new SatGraph2(formula, evaporation, defaultPheromone);
+        SatGraph2 graph = new SatGraph2(formula);
 
         System.out.println("formula literals: "+formula.getLiteralCount());
         System.out.println("graph nodes: " +graph.getNodeList().size());
@@ -62,6 +62,6 @@ public class SatAntColonyTest2 {
 //        AntColony colony = new AntColony(antCreator, iterations);
 //        colony.beginExploring();
 //        System.out.println("Global best: "+(colony.getGlobalBest()-0.1));
-        graph.printPheromone();
+
     }
 }

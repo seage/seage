@@ -47,11 +47,11 @@ public class SatAntColonyTest
         double alpha = 1, beta = 5;
         int numAnts = 100, iterations = 5000;
 
-        SatGraph graph = new SatGraph(formula, evaporation, defaultPheromone);
+        SatGraph graph = new SatGraph(formula);
         SatAntBrain brain = new SatAntBrain(formula);
         
         AntColony colony = new AntColony(brain, graph);
-        colony.setParameters(numAnts, iterations, alpha, beta, quantumPheromone);
+        colony.setParameters(numAnts, iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
         colony.beginExploring(graph.getNodeList().get(0));
 
         System.out.println("Global best: "+(colony.getGlobalBest()-0.1));

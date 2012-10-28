@@ -39,8 +39,8 @@ public class SatGraph2 extends Graph {
 
     private boolean[] _preparedSolution;
 
-    public SatGraph2(Formula formula, double locEvaporCoeff, double defaultPheromone) {
-        super(locEvaporCoeff);
+    public SatGraph2(Formula formula) {
+        super();
         for (int id = 1; id < formula.getLiteralCount() + 1; id++) {
             _nodeList.add(new Node(id));
             _nodeList.add(new Node(-id));
@@ -51,7 +51,6 @@ public class SatGraph2 extends Graph {
             _preparedSolution[i] = true;
         }
         fillEdgeMap(formula);
-        setDefaultPheromone(defaultPheromone);
     }
 
     private boolean[] createSol(Node node1, Node node2) {
@@ -93,20 +92,6 @@ public class SatGraph2 extends Graph {
             for (Edge j : _edgeList) {
                 if (j.getNode1().equals(i) || j.getNode2().equals(i)) {
                     i.addConnection(j);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void printPheromone() {
-        for (Node n : _nodeList) {
-            System.out.println("n1:" + n.getId());
-            for (Edge e : n.getConnectionMap()) {
-                if (n.getId() != e.getNode1().getId()) {
-                    System.out.println("length: " + e.getEdgePrice() + "  n2:" + e.getNode1().getId() + "  ph:" + e.getLocalPheromone());
-                } else {
-                    System.out.println("length: " + e.getEdgePrice() + "  n2:" + e.getNode2().getId() + "  ph:" + e.getLocalPheromone());
                 }
             }
         }

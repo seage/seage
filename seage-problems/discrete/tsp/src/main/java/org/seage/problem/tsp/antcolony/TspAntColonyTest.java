@@ -26,6 +26,8 @@
 package org.seage.problem.tsp.antcolony;
 
 import java.io.FileInputStream;
+
+import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.*;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
@@ -35,7 +37,7 @@ import org.seage.problem.tsp.Visualizer;
  *
  * @author Richard Malek
  */
-public class TspAntColonyTest 
+public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 {
     public static void main(String[] args) {
         try {
@@ -61,10 +63,11 @@ public class TspAntColonyTest
         int iterations = 10, numAnts = 1000;
         double defaultPheromone = 0.0001, localEvaporation = 0.95, qantumPheromone = 10;
         double alpha = 1, beta = 3;
-        TspGraph graph = new TspGraph(cities, localEvaporation, defaultPheromone);
+        TspGraph graph = new TspGraph(cities);
         TspAntBrain brain = new TspAntBrain();
         AntColony colony = new AntColony(brain, graph);
-        colony.setParameters(numAnts, iterations, alpha, beta, qantumPheromone);
+        colony.addAntColonyListener(this);
+        colony.setParameters(numAnts, iterations, alpha, beta, qantumPheromone, defaultPheromone, localEvaporation);
         long t1 = System.currentTimeMillis();
         colony.beginExploring(graph.getNodeList().get(0));
         long t2 = System.currentTimeMillis();
@@ -84,4 +87,32 @@ public class TspAntColonyTest
         }
         Visualizer.instance().createGraph(cities, tour, "ants-tour.png", 800, 800);
     }
+
+	@Override
+	public void algorithmStarted(AntColonyEvent e)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void algorithmStopped(AntColonyEvent e)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void newBestSolutionFound(AntColonyEvent e)
+	{
+		System.out.println("new best: "+e.getAntColony().getGlobalBest());
+		
+	}
+
+	@Override
+	public void noChangeInValueIterationMade(AntColonyEvent e)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -48,7 +48,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new AntColonyAdapter();
+        _algorithm = new AntColonyAdapter(null, null);
         _algParams = new AlgorithmParams("AntColonyTest");
         _algParams.putValue("problemID", "AntColonyTest");
         _algParams.putValue("instance", "TestInstance");

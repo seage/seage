@@ -23,15 +23,22 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.metaheuristic.genetics;
+package org.seage.metaheuristic.antcolony;
 
 /**
  * @author Richard Malek (original)
  */
-public interface GeneticSearchListener extends java.util.EventListener
+public class AntColonyEvent
 {
-	public void geneticSearchStarted(GeneticSearchEvent e);
-	public void geneticSearchStopped(GeneticSearchEvent e);
-	public void newBestSolutionFound(GeneticSearchEvent e);
-	public void noChangeInValueIterationMade(GeneticSearchEvent e);
+	private AntColony _algorithm;
+	
+	public AntColonyEvent(AntColony algorithm)
+	{
+		_algorithm = algorithm;
+	}
+
+	public final AntColony getAntColony()
+	{
+		return _algorithm;
+	}
 }

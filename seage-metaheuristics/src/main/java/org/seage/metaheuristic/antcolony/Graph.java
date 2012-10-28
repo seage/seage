@@ -37,14 +37,15 @@ public class Graph {
 
     protected ArrayList<Node> _nodeList;
     protected ArrayList<Edge> _edgeList;
-    protected double _evaporCoeff;
+    protected double _evaporCoeff = 0.95;
 
-    public Graph(double evaporCoeff) {
+	public Graph() {
         _nodeList = new ArrayList<Node>();
         _edgeList = new ArrayList<Edge>();
-        _evaporCoeff = evaporCoeff;
     }
-
+	
+    
+    
     /**
      * List of nodes of graph
      * @return - List of nodes
@@ -64,25 +65,24 @@ public class Graph {
     /**
      * Evaporating from each edges of graph
      */
-    public void evaporating() {
+    public void evaporate() {
         for (Edge e : getEdgeList()) {
             e.evaporateFromEdge(_evaporCoeff);
         }
     }
-
+    
+    public void setEvaporCoeff(double evaporCoeff)
+	{
+		_evaporCoeff = evaporCoeff;
+	}
     /**
      * Default pheromone setting for all edges
      * @param defaultPheromone - Default pheromone
      */
-    protected void setDefaultPheromone(double defaultPheromone) {
+    public void setDefaultPheromone(double defaultPheromone) {
         for (Edge e : getEdgeList()) {
             e.setDefaultPheromone(defaultPheromone);
         }
     }
 
-    /**
-     * Pheromone printing
-     */
-    public void printPheromone() {
-    }
 }

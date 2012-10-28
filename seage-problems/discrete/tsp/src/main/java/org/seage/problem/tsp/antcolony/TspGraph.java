@@ -36,14 +36,13 @@ import org.seage.problem.tsp.City;
  */
 public class TspGraph extends Graph {
 
-    public TspGraph(City[] cities, double locEvaporCoeff, double defaultPheromone) {
-        super(locEvaporCoeff);
+    public TspGraph(City[] cities) {
+        super();
         for (int id = 0; id < cities.length; id++) {
             _nodeList.add(new Node(id));
         }
 
         fillEdgeMap(cities);
-        setDefaultPheromone(defaultPheromone);
     }
 
     /**
@@ -88,16 +87,6 @@ public class TspGraph extends Graph {
                 if (j.getNode1().equals(i) || j.getNode2().equals(i)) {
                     i.addConnection(j);
                 }
-            }
-        }
-    }
-
-    @Override
-    public void printPheromone() {
-        for (Node n : _nodeList) {
-            System.out.println(n.getId());
-            for (Edge e : n.getConnectionMap()) {
-                System.out.printf("\t%3.3f\t%3.5f\n", e.getEdgePrice(), e.getLocalPheromone());
             }
         }
     }

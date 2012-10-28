@@ -29,6 +29,7 @@ package org.seage.metaheuristic.antcolony;
  *
  * @author Martin Zaloga
  */
+@Deprecated
 public class AntCreator {
 
     protected Graph _graph;

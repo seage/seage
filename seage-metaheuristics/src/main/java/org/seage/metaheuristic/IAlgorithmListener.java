@@ -23,22 +23,15 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.metaheuristic.genetics;
+package org.seage.metaheuristic;
 
 /**
  * @author Richard Malek (original)
  */
-public class GeneticSearchEvent
+public interface IAlgorithmListener<E> extends java.util.EventListener
 {
-	private GeneticSearch _algorithm;
-	
-	public GeneticSearchEvent(GeneticSearch algorithm)
-	{
-		_algorithm= algorithm;
-	}
-
-	public final GeneticSearch getGeneticSearch()
-	{
-		return _algorithm;
-	}
+	public void algorithmStarted(E e);
+	public void algorithmStopped(E e);
+	public void newBestSolutionFound(E e);
+	public void noChangeInValueIterationMade(E e);
 }

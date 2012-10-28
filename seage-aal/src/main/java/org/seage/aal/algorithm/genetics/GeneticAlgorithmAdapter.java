@@ -27,6 +27,7 @@ package org.seage.aal.algorithm.genetics;
 
 
 import org.seage.data.DataNode;
+import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.*;
 import java.util.Arrays;
 import org.seage.aal.reporter.AlgorithmReport;
@@ -54,7 +55,7 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
     private GeneticSearch _geneticSearch;
     private Evaluator _evaluator;
     private SubjectComparator _comparator;
-    private GeneticSearchObserver _observer;
+    private GeneticSearchListener _algorithmListener;
     private Subject _bestEverSolution;
     private AlgorithmParams _params;
     private String _searchID;
@@ -79,10 +80,10 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
                                 String searchID)
     {
         _evaluator = evaluator;
-        _observer = new GeneticSearchObserver();
+        _algorithmListener = new GeneticSearchListener();
         _comparator = new SubjectComparator();
         _geneticSearch = new GeneticSearch(operator, evaluator);
-        _geneticSearch.addGeneticSearchListener(_observer);
+        _geneticSearch.addGeneticSearchListener(_algorithmListener);
         _searchID = searchID;
     }
 
@@ -229,15 +230,15 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
         }
     }
 
-    private class GeneticSearchObserver implements GeneticSearchListener
+    private class GeneticSearchListener implements IAlgorithmListener<GeneticSearchEvent>
     { 
-        public void geneticSearchStarted(GeneticSearchEvent e)
+        public void algorithmStarted(GeneticSearchEvent e)
         {
             _algorithmStarted = true;
             _statNumNewSol = _statLastIterNewSol = 0;
         }
 
-        public void geneticSearchStopped(GeneticSearchEvent e)
+        public void algorithmStopped(GeneticSearchEvent e)
         {
             _algorithmStopped = true;
             _statNrOfIterationsDone = e.getGeneticSearch().getCurrentIteration();

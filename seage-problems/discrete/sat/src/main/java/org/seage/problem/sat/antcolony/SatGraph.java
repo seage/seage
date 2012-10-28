@@ -39,8 +39,8 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
 
     private boolean[] _preparedSolution;
 
-    public SatGraph(Formula formula, double evaporation, double defaultPheromone) {
-        super(evaporation);
+    public SatGraph(Formula formula) {
+        super();
         _nodeList.add(new Node(0));
         for (int i = 1; i <= formula.getLiteralCount(); i++) {
             _nodeList.add(new Node(i));
@@ -51,7 +51,6 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
             _preparedSolution[i] = true;
         }
         fillEdgeMap(formula);
-        setDefaultPheromone(defaultPheromone);
     }
 
     /**
@@ -95,16 +94,6 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
             makeEdge(_nodeList.get(i), _nodeList.get(i + 3), formula);
             makeEdge(_nodeList.get(i + 1), _nodeList.get(i + 2), formula);
             makeEdge(_nodeList.get(i + 1), _nodeList.get(i + 3), formula);
-        }
-    }
-
-    @Override
-    public void printPheromone() {
-        for (Node n : _nodeList) {
-            System.out.println("n1:" + n.getId());
-            for (Edge e : n.getConnectionMap()) {
-                System.out.println(e.getEdgePrice() + "  n2:" + e.getNode2().getId() + "  ph:" + e.getLocalPheromone());
-            }
         }
     }
 }
