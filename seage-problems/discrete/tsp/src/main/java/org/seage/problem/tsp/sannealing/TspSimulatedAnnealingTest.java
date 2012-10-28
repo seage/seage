@@ -47,7 +47,7 @@ public class TspSimulatedAnnealingTest implements ISimulatedAnnealingListener
     {
         try
         {
-            new TspSimulatedAnnealingTest().run( _dataPath );
+            new TspSimulatedAnnealingTest().run( args[0] );
         }
         catch(Exception ex)
         {
@@ -64,10 +64,10 @@ public class TspSimulatedAnnealingTest implements ISimulatedAnnealingListener
 
         SimulatedAnnealing sa = new SimulatedAnnealing( new TspObjectiveFunction() , new TspMoveManager() );
 
-        sa.setMaximalTemperature( 200 );
+        sa.setMaximalTemperature( 500 );
         sa.setMinimalTemperature( 0.1 );
         sa.setAnnealingCoefficient( 0.99 );
-        sa.setMaximalIterationCount(1500);
+        sa.setMaximalIterationCount(5000);
         sa.setMaximalSuccessIterationCount(100);
 
         sa.addSimulatedAnnealingListener( this );

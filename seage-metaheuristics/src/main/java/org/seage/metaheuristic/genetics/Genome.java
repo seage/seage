@@ -59,11 +59,12 @@ public class Genome implements Serializable
 
 	public Genome(Genome genome)
 	{
-            //this(genome._chromosomes.length, genome._chromosomes[0].getLength());
-            _chromosomes = (Chromosome[])genome._chromosomes.clone();
+            this(genome._chromosomes.length, genome._chromosomes[0].getLength());
+            //_chromosomes = (Chromosome[])genome._chromosomes.clone();
             for (int i = 0; i < _chromosomes.length; i++)
             {
-                    _chromosomes[i] = (Chromosome)genome._chromosomes[i].clone();
+                for(int j=0;j<_chromosomes[i].getLength();j++)                    
+                    _chromosomes[i].setGene(j, new Gene(genome.getChromosome(i).getGene(j).getValue()));// = (Chromosome)genome._chromosomes[i].clone();
             }
 	}
 

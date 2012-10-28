@@ -61,10 +61,10 @@ public class TspGeneticAlgorithmTest implements GeneticSearchListener
         gs.addGeneticSearchListener(this);
         gs.setEliteSubjectPct(0.05);
         gs.setMutateSubjectPct(0.25);
-        gs.setPopulationCount(500);
+        gs.setPopulationCount(100);
         gs.setRandomSubjectPct(0.1);
         gs.setCrossLengthPct(0.40);
-        gs.setIterationToGo(500);
+        gs.setIterationToGo(1000);
         gs.startSearching(generateInitialSubjects(cities, 100));
     }
 

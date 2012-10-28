@@ -35,8 +35,8 @@ import org.seage.problem.tsp.Visualizer;
  *
  * @author Richard Malek
  */
-public class TspAntColonyTest {
-
+public class TspAntColonyTest 
+{
     public static void main(String[] args) {
         try {
             new TspAntColonyTest().run(args[0]);
@@ -58,19 +58,21 @@ public class TspAntColonyTest {
 
     public void run(String path) throws Exception {
         City[] cities = CityProvider.readCities(new FileInputStream(path));
-        int iterations = 100, numAnts = 100;
+        int iterations = 10, numAnts = 1000;
         double defaultPheromone = 0.0001, localEvaporation = 0.95, qantumPheromone = 10;
         double alpha = 1, beta = 3;
         TspGraph graph = new TspGraph(cities, localEvaporation, defaultPheromone);
         TspAntBrain brain = new TspAntBrain();
         AntColony colony = new AntColony(brain, graph);
         colony.setParameters(numAnts, iterations, alpha, beta, qantumPheromone);
+        long t1 = System.currentTimeMillis();
         colony.beginExploring(graph.getNodeList().get(0));
+        long t2 = System.currentTimeMillis();
 //        graph.printPheromone();
         System.out.println("Global best: "+colony.getGlobalBest());
         System.out.println("size: " + colony.getBestPath().size());
         System.out.println("nodes: "+graph.getNodeList().size());
-
+        System.out.println("time [ms]: " + (t2-t1));
         // visualization
         Integer[] tour = new Integer[colony.getBestPath().size()];
         tour[0] = colony.getBestPath().get(0).getNode2().getId();

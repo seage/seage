@@ -39,7 +39,7 @@ public class Ant {
     protected Node _startPosition;
     protected Node _currentPosition;
     protected double _distanceTravelled;
-    protected Vector<Node> _visited;
+    protected HashSet<Node> _visited;
     protected Vector<Edge> _path;
     protected AntBrain _brain;
     private double _qantumPheromone;
@@ -58,7 +58,7 @@ public class Ant {
      */
     protected Vector<Edge> explore(Node startingNode)
     {
-        _visited = new Vector<Node>();
+        _visited = new HashSet<Node>();
         _path = new Vector<Edge>();
         _brain._startingNode = startingNode;
         _currentPosition = startingNode;

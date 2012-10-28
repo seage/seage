@@ -59,7 +59,7 @@ public abstract class AntBrain{
      * @param visited - Visited nodes
      * @return - Available edges
      */
-    protected abstract List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited);
+    protected abstract List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited);
 //    {
 //        return null;
 //    }
@@ -70,7 +70,7 @@ public abstract class AntBrain{
      * @param visited - Visited nodes
      * @return - Selected edge
      */
-    protected Edge selectNextEdge(List<Edge> edges, Vector<Node> visited) {
+    protected Edge selectNextEdge(List<Edge> edges, HashSet<Node> visited) {
         double sum = 0;
         double[] probabilities = new double[edges.size()];
         // for each Edges

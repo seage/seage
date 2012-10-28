@@ -112,7 +112,7 @@ public class Subject implements Cloneable, Serializable
 
 	public Object clone()
 	{
-            Object result = null;
+            Object result = new Subject(this);
             try
             {
 //                    result = (Subject)super.clone();
@@ -121,12 +121,12 @@ public class Subject implements Cloneable, Serializable
 //                            result._fitness = (double[])this._fitness.clone();
 //                    result._hashCode = this._hashCode;
 
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    ObjectOutputStream oos = new ObjectOutputStream(baos);
-                    oos.writeObject(this);
-                    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-                    ObjectInputStream ois = new ObjectInputStream(bais);
-                    result = ois.readObject();
+//                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                    ObjectOutputStream oos = new ObjectOutputStream(baos);
+//                    oos.writeObject(this);
+//                    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+//                    ObjectInputStream ois = new ObjectInputStream(bais);
+//                    result = ois.readObject();
 
 
             }

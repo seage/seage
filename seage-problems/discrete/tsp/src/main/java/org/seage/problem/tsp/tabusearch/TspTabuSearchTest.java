@@ -71,7 +71,7 @@ public class TspTabuSearchTest implements TabuSearchListener
                 false);
 
         ts.addTabuSearchListener(this);
-        ts.setIterationsToGo(10000);
+        ts.setIterationsToGo(100000);
         ts.startSolving();
     }
 

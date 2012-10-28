@@ -53,7 +53,7 @@ public class TspHillClimberTest {
      */
     public static void main(String[] args) {
         try {
-            new TspHillClimberTest().run(args[0], "greedy", 500, 500);
+            new TspHillClimberTest().run(args[0], "greedy", 100000, 10000);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();

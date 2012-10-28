@@ -26,6 +26,7 @@
 package org.seage.problem.tsp.antcolony;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 import org.seage.metaheuristic.antcolony.AntBrain;
@@ -39,7 +40,7 @@ import org.seage.metaheuristic.antcolony.Node;
 public class TspAntBrain extends AntBrain {
 
     @Override
-    protected List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited)
+    protected List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited)
     {
         List<Edge> result = new ArrayList<Edge>();
         for(Edge e : currentPosition.getConnectionMap())
