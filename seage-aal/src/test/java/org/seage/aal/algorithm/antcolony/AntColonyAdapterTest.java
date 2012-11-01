@@ -72,7 +72,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     @Override    
     public void testPhenotype() throws Exception
     {
-        //_tester.testPhenotype();
+        _tester.testPhenotype();
     }
     
     @Test

@@ -30,6 +30,7 @@ import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.AntColony;
@@ -55,8 +56,18 @@ public class AntColonyAdapter implements IAlgorithmAdapter
 	private AntColony _antColony;
 	private AntColonyListener _algorithmListener;
 	
+	private AlgorithmParams    _params;
+	private double _iterationCount;
+	private double _alpha;
+	private double _beta;
+	private double _defaultPheromone;
+	private double _qantumOfPheromone;
+	private double _localEvaporation;
+	private double _numAnts;
+	
 	public AntColonyAdapter(AntBrain brain, Graph graph)
 	{
+		_params = null;
 		_algorithmListener = new AntColonyListener();
 		_antColony = new AntColony(brain, graph);
 		_antColony.addAntColonyListener(_algorithmListener);
@@ -65,7 +76,16 @@ public class AntColonyAdapter implements IAlgorithmAdapter
     @Override
     public void setParameters(AlgorithmParams params) throws Exception
     {
-        // TODO Auto-generated method stub
+    	_params = params;
+        _params.putValue("id", "TabuSearch");
+        DataNode p = params.getDataNode("Parameters");
+        _numAnts = p.getValueDouble("numAnts");
+        _iterationCount = p.getValueDouble("iterationCount");
+        _alpha = p.getValueDouble("alpha");
+        _beta = p.getValueDouble("beta");
+        _defaultPheromone = p.getValueDouble("defaultPheromone");
+        _qantumOfPheromone = p.getValueDouble("qantumOfPheromone");
+        _localEvaporation = p.getValueDouble("localEvaporation");
         
     }
 

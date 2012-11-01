@@ -25,6 +25,7 @@
  */
 package org.seage.problem.sat.antcolony;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 import org.seage.metaheuristic.antcolony.AntBrain;
@@ -47,7 +48,7 @@ public class SatAntBrain extends AntBrain {
     }
 
     @Override
-    protected List<Edge> getAvailableEdges(Node currentPosition, Vector<Node> visited) {
+    protected List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited) {
         if(currentPosition.getConnectionMap().size() == 0){
             return null;
         }
@@ -55,7 +56,7 @@ public class SatAntBrain extends AntBrain {
     }
 
     @Override
-    protected Edge selectNextEdge(List<Edge> edges, Vector<Node> visited) {
+    protected Edge selectNextEdge(List<Edge> edges, HashSet<Node> visited) {
         double[] probabilities = new double[edges.size()];
         double sum = 0;
         // for each Edges
