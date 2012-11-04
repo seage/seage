@@ -27,8 +27,8 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
         _algorithm.solutionsFromPhenotype(_solutions);
         Object[][] solutions = _algorithm.solutionsToPhenotype();
         
-        for(int i=0;i<solutions.length;i++)
-            for(int j=0;j<solutions[i].length;j++)
+        for(int i=0;i<_solutions.length;i++)
+            for(int j=0;j<_solutions[i].length;j++)
                 if(!solutions[i][j].equals(_solutions[i][j]))
                     Assert.failNotSame("Phenotype transformation failed.", _solutions, solutions);
     }

@@ -27,11 +27,13 @@ package org.seage.aal.algorithm.antcolony;
 
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
+import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
+import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
@@ -51,23 +53,20 @@ import org.seage.metaheuristic.antcolony.Graph;
     @Parameter(name="qantumOfPheromone", min=1, max=1000, init=10),   
     @Parameter(name="localEvaporation", min=0.7, max=0.98, init=0.95)
 })
-public class AntColonyAdapter implements IAlgorithmAdapter
+public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 {
-	private AntColony _antColony;
+	protected AntColony _antColony;
 	private AntColonyListener _algorithmListener;
-	
-	private AlgorithmParams    _params;
-	private double _iterationCount;
-	private double _alpha;
-	private double _beta;
-	private double _defaultPheromone;
-	private double _qantumOfPheromone;
-	private double _localEvaporation;
-	private double _numAnts;
+	protected Graph _graph;
+	private AlgorithmParams _params;
+	protected AntBrain _brain;
+	protected Ant[] _ants;
 	
 	public AntColonyAdapter(AntBrain brain, Graph graph)
 	{
 		_params = null;
+		_brain = brain;
+		_graph = graph;
 		_algorithmListener = new AntColonyListener();
 		_antColony = new AntColony(brain, graph);
 		_antColony.addAntColonyListener(_algorithmListener);
@@ -79,60 +78,38 @@ public class AntColonyAdapter implements IAlgorithmAdapter
     	_params = params;
         _params.putValue("id", "TabuSearch");
         DataNode p = params.getDataNode("Parameters");
-        _numAnts = p.getValueDouble("numAnts");
-        _iterationCount = p.getValueDouble("iterationCount");
-        _alpha = p.getValueDouble("alpha");
-        _beta = p.getValueDouble("beta");
-        _defaultPheromone = p.getValueDouble("defaultPheromone");
-        _qantumOfPheromone = p.getValueDouble("qantumOfPheromone");
-        _localEvaporation = p.getValueDouble("localEvaporation");
+        int numAnts = p.getValueInt("numAnts");
+        int iterationCount = p.getValueInt("iterationCount");
+        double alpha = p.getValueDouble("alpha");
+        double beta = p.getValueDouble("beta");
+        double defaultPheromone = p.getValueDouble("defaultPheromone");
+        double quantumOfPheromone = p.getValueDouble("qantumOfPheromone");
+        double localEvaporation = p.getValueDouble("localEvaporation");
+        _antColony.setParameters(iterationCount, alpha, beta, quantumOfPheromone, defaultPheromone, localEvaporation);
         
     }
 
     @Override
     public void startSearching() throws Exception
     {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void startSearching(boolean async) throws Exception
-    {
-        // TODO Auto-generated method stub
+    	_antColony.startExploring(_graph.getNodeList().get(0), _ants);
         
     }
 
     @Override
     public void stopSearching() throws Exception
     {
-        // TODO Auto-generated method stub
-        
+        _antColony.stopExploring();
     }
 
     @Override
     public boolean isRunning()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return _antColony.isRunning();
     }
 
     @Override
     public AlgorithmReport getReport() throws Exception
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void solutionsFromPhenotype(Object[][] source) throws Exception
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public Object[][] solutionsToPhenotype() throws Exception
     {
         // TODO Auto-generated method stub
         return null;

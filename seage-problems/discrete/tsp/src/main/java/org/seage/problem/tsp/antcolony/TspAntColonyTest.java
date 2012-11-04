@@ -34,85 +34,100 @@ import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.Visualizer;
 
 /**
- *
+ * 
  * @author Richard Malek
  */
 public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 {
-    public static void main(String[] args) {
-        try {
-            new TspAntColonyTest().run(args[0]);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+	public static void main(String[] args)
+	{
+		try
+		{
+			new TspAntColonyTest().run(args[0]);
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
 
-    public void testing(Graph graph) {
-        double sum = 0;
-        double edges = 0;
-        for (Edge edge : graph.getEdgeList()) {
-            sum += edge.getEdgePrice();
-            edges++;
-        }
-        System.out.println(sum);
-        System.out.println(edges);
-    }
+	public void testing(Graph graph)
+	{
+		double sum = 0;
+		double edges = 0;
+		for (Edge edge : graph.getEdgeList())
+		{
+			sum += edge.getEdgePrice();
+			edges++;
+		}
+		System.out.println(sum);
+		System.out.println(edges);
+	}
 
-    public void run(String path) throws Exception {
-        City[] cities = CityProvider.readCities(new FileInputStream(path));
-        int iterations = 10, numAnts = 1000;
-        double defaultPheromone = 0.0001, localEvaporation = 0.95, qantumPheromone = 10;
-        double alpha = 1, beta = 3;
-        TspGraph graph = new TspGraph(cities);
-        TspAntBrain brain = new TspAntBrain();
-        AntColony colony = new AntColony(brain, graph);
-        colony.addAntColonyListener(this);
-        colony.setParameters(numAnts, iterations, alpha, beta, qantumPheromone, defaultPheromone, localEvaporation);
-        long t1 = System.currentTimeMillis();
-        colony.beginExploring(graph.getNodeList().get(0));
-        long t2 = System.currentTimeMillis();
-//        graph.printPheromone();
-        System.out.println("Global best: "+colony.getGlobalBest());
-        System.out.println("size: " + colony.getBestPath().size());
-        System.out.println("nodes: "+graph.getNodeList().size());
-        System.out.println("time [ms]: " + (t2-t1));
-        // visualization
-        Integer[] tour = new Integer[colony.getBestPath().size()];
-        tour[0] = colony.getBestPath().get(0).getNode2().getId();
-        for (int i = 1; i < tour.length; i++) {
-            tour[i] = colony.getBestPath().get(i).getNode2().getId();
-            if (tour[i - 1] == tour[i]) {
-                tour[i] = colony.getBestPath().get(i).getNode1().getId();
-            }
-        }
-        Visualizer.instance().createGraph(cities, tour, "ants-tour.png", 800, 800);
-    }
+	public void run(String path) throws Exception
+	{
+		City[] cities = CityProvider.readCities(new FileInputStream(path));
+		int iterations = 10, numAnts = 1000;
+		double defaultPheromone = 0.0001, localEvaporation = 0.95, quantumPheromone = 10;
+		double alpha = 1, beta = 3;
+		TspGraph graph = new TspGraph(cities);
+		AntBrain brain = new AntBrain();
+		AntColony colony = new AntColony(brain, graph);
+		colony.addAntColonyListener(this);
+		colony.setParameters( iterations, alpha, beta, quantumPheromone, defaultPheromone, localEvaporation);
+
+		Ant ants[] = new Ant[numAnts];
+		for (int i = 0; i < numAnts; i++) 
+			ants[i] = new Ant(brain, graph);
+		//brain.setParameters(graph.getNodeList().size(), alpha, beta);
+		
+		long t1 = System.currentTimeMillis();
+		colony.startExploring(graph.getNodeList().get(0), ants);
+		long t2 = System.currentTimeMillis();
+		// graph.printPheromone();
+		System.out.println("Global best: " + colony.getGlobalBest());
+		System.out.println("size: " + colony.getBestPath().size());
+		System.out.println("nodes: " + graph.getNodeList().size());
+		System.out.println("time [ms]: " + (t2 - t1));
+		// visualization
+		Integer[] tour = new Integer[colony.getBestPath().size()];
+		tour[0] = colony.getBestPath().get(0).getNode2().getId();
+		for (int i = 1; i < tour.length; i++)
+		{
+			tour[i] = colony.getBestPath().get(i).getNode2().getId();
+			if (tour[i - 1] == tour[i])
+			{
+				tour[i] = colony.getBestPath().get(i).getNode1().getId();
+			}
+		}
+		//Visualizer.instance().createGraph(cities, tour, "ants-tour.png", 800, 800);
+	}
 
 	@Override
 	public void algorithmStarted(AntColonyEvent e)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void algorithmStopped(AntColonyEvent e)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void newBestSolutionFound(AntColonyEvent e)
 	{
-		System.out.println("new best: "+e.getAntColony().getGlobalBest());
-		
+		System.out.println("new best: " + e.getAntColony().getGlobalBest());
+
 	}
 
 	@Override
 	public void noChangeInValueIterationMade(AntColonyEvent e)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

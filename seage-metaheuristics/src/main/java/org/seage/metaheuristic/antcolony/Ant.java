@@ -35,23 +35,21 @@ import java.util.*;
  */
 public class Ant {
 
-    protected Graph _graph;
+    
     protected Node _startPosition;
     protected Node _currentPosition;
     protected double _distanceTravelled;
     protected HashSet<Node> _visited;
     protected Vector<Edge> _path;
+    
     protected AntBrain _brain;
-    private double _qantumPheromone;
+    protected Graph _graph;
 
-    public Ant(AntBrain brain, Graph graph , double qantumPheromone)
+	public Ant(AntBrain brain, Graph graph)
     {
-        _brain = brain;
-        _graph = graph;
-        
-        _qantumPheromone = qantumPheromone;        
-    }
-
+		_brain = brain;
+		_graph = graph;
+    }	
     /**
      * Ant passage through the graph
      * @return - ants path
@@ -98,7 +96,7 @@ public class Ant {
      */
     protected void leavePheromone() {
         for (Edge edge : _path) {
-            edge.addLocalPheromone(_qantumPheromone / (_distanceTravelled));
+            edge.addLocalPheromone(_brain.getQuantumPheromone() / (_distanceTravelled));
         }
     }
 }

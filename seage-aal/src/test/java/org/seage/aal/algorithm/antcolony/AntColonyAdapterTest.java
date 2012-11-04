@@ -48,22 +48,21 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new AntColonyAdapter(null, null);
+        _algorithm = new TestAntColonyAdapter(null, null);
         _algParams = new AlgorithmParams("AntColonyTest");
         _algParams.putValue("problemID", "AntColonyTest");
         _algParams.putValue("instance", "TestInstance");
         
         DataNode params = new DataNode("Parameters");
-        params.putValue("annealCoeficient", 0.1);
-        params.putValue("maxInnerIterations", 2);
-        params.putValue("maxTemperature", 100);
-        params.putValue("minTemperature", 1);
-        params.putValue("numInnerSuccesses", 1);
-        params.putValue("numSolutions", 1);
+        params.putValue("numAnts", 0.1);
+        params.putValue("iterationCount", 2);
+        params.putValue("alpha", 100);
+        params.putValue("beta", 1);
+        params.putValue("defaultPheromone", 1);
+        params.putValue("qantumOfPheromone", 1);
+        params.putValue("localEvaporation", 1);
         
         _algParams.putDataNodeRef(params);
-        
-        _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
         
         _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
     }
@@ -79,20 +78,20 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     @Override    
     public void testAlgorithm() throws Exception
     {
-        //_tester.testAlgorithm();
+        _tester.testAlgorithm();
     }
 
     @Test
     @Override    
     public void testAlgorithmWithParamsAtZero() throws Exception
     {
-        //_tester.testAlgorithmWithParamsAtZero();
+        _tester.testAlgorithmWithParamsAtZero();
     }
 
     @Test
     @Override
     public void testAsyncRunning() throws Exception
     {
-        //_tester.testAsyncRunning();        
+        _tester.testAsyncRunning();        
     }
 }

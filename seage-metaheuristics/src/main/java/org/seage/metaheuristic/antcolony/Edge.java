@@ -63,9 +63,9 @@ public class Edge {
      * Setting default pheromone
      * @param defaultPheromone - Value of default pheromone
      */
-    public void setDefaultPheromone(double defaultPheromone) {
-        _pheromone = defaultPheromone;
-    }
+//    public void setDefaultPheromone(double defaultPheromone) {
+//        _pheromone = defaultPheromone;
+//    }
 
     /**
      * Local pheromone addition

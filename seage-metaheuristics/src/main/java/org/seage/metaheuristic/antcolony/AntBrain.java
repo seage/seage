@@ -33,36 +33,55 @@ import java.util.*;
  *
  * @author Martin Zaloga
  */
-public abstract class AntBrain{
+public class AntBrain{
 
     protected Node _startingNode;
     protected double _alpha, _beta;
-    protected int _numNodes;
+    protected double _quantumPheromone;
     private Random _rand;
 
-    public AntBrain() {
-
+    public AntBrain() 
+    {
         _rand = new Random(System.currentTimeMillis());
     }
 
-    public void setParameters(int numNodes, double alpha, double beta)
+    void setParameters(double alpha, double beta, double quantumPheromone)
     {
-        _numNodes = numNodes;
         _alpha = alpha;
         _beta = beta;
-
+        _quantumPheromone = quantumPheromone;
     }
 
     /**
      * Finding available edges
      * @param currentPosition - Current position
      * @param visited - Visited nodes
-     * @return - Available edges
+     * @return - Available edges (a full graph)
      */
-    protected abstract List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited);
-//    {
-//        return null;
-//    }
+    protected List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited)
+    {
+        List<Edge> result = new ArrayList<Edge>();
+        for(Edge e : currentPosition.getConnectionMap())
+        {
+            Node node2 = null;
+            if(e.getNode1().equals(currentPosition))
+                node2 = e.getNode2();
+            else
+                node2 = e.getNode1();
+
+//            if(visited.size() == _numNodes)
+//                if(node2 == _startingNode)
+//                {
+//                    result.add(e);
+//                    return result;
+//                }
+
+            if(!visited.contains(node2))
+                result.add(e);
+        }
+
+        return result;
+    }
 
     /**
      * Selection following edge
@@ -119,8 +138,8 @@ public abstract class AntBrain{
         return 0;
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+	public double getQuantumPheromone()
+	{
+		return _quantumPheromone;
+	}
 }

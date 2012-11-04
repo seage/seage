@@ -70,19 +70,20 @@ public class Graph {
             e.evaporateFromEdge(_evaporCoeff);
         }
     }
-    
-    public void setEvaporCoeff(double evaporCoeff)
-	{
-		_evaporCoeff = evaporCoeff;
-	}
+
     /**
      * Default pheromone setting for all edges
      * @param defaultPheromone - Default pheromone
      */
     public void setDefaultPheromone(double defaultPheromone) {
         for (Edge e : getEdgeList()) {
-            e.setDefaultPheromone(defaultPheromone);
+            e.addLocalPheromone(defaultPheromone);
         }
     }
+    
+	public void setEvaporCoeff(double evaporCoeff)
+	{
+		_evaporCoeff = evaporCoeff;
+	}
 
 }

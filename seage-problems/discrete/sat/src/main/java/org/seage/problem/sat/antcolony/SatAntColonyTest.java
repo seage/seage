@@ -25,6 +25,7 @@
  */
 package org.seage.problem.sat.antcolony;
 
+import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
@@ -49,10 +50,14 @@ public class SatAntColonyTest
 
         SatGraph graph = new SatGraph(formula);
         SatAntBrain brain = new SatAntBrain(formula);
-        
+        brain.setParameters(graph.getNodeList().size(), alpha, beta);
         AntColony colony = new AntColony(brain, graph);
         colony.setParameters(numAnts, iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
-        colony.beginExploring(graph.getNodeList().get(0));
+        Ant ants[] = new Ant[numAnts];
+		for (int i = 0; i < numAnts; i++)
+			ants[i] = new Ant();
+		
+        colony.startExploring(graph.getNodeList().get(0), ants);
 
         System.out.println("Global best: "+(colony.getGlobalBest()-0.1));
         
