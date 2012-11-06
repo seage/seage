@@ -52,6 +52,7 @@ public class AntColony
 	private int _numIterations;
 	private boolean _started, _stopped;
 	private boolean _keepRunning;
+	private int _currentIteration;
 
 
 	// private AntCreator _antCreator;
@@ -94,8 +95,10 @@ public class AntColony
 		_started = _keepRunning = true;
 		_stopped = false;
 		_ants = ants;
+		_currentIteration = 0;
 		_eventProducer.fireAlgorithmStarted();
-		for (int i = 0; i < _numIterations && _keepRunning == true; i++)
+		while(_currentIteration++ < _numIterations && _keepRunning)
+		//for (int i = 0; i < _numIterations && _keepRunning == true; i++)
 		{
 			for (int j = 0; j < _ants.length; j++)
 			{
@@ -103,7 +106,7 @@ public class AntColony
 			}
 			solveRound();
 			_graph.evaporate();
-			for (int j = 0; j < _ants.length && _keepRunning == true; j++)
+			for (int j = 0; j < _ants.length && _keepRunning; j++)
 			{
 				_ants[j].leavePheromone();
 			}
@@ -152,8 +155,8 @@ public class AntColony
 				_eventProducer.fireNewBestSolutionFound();
 			}
 		}
-		// System.out.println("This round best was  : " + _roundBest);
-		// System.out.println("The global best was : " + _globalBest + "\n");
+		 //System.out.println("This round best was  : " + _roundBest);
+		 //System.out.println("The global best was : " + _globalBest + "\n");
 		_roundBest = Double.MAX_VALUE;
 		_reports.clear();
 	}
@@ -176,6 +179,11 @@ public class AntColony
 	public double getGlobalBest()
 	{
 		return _globalBest;
+	}
+	
+	public int getCurrentIteration()
+	{
+		return _currentIteration;
 	}
 
 	public boolean isRunning()

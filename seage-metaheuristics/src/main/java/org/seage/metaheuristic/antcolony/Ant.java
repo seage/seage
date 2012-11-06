@@ -57,8 +57,8 @@ public class Ant {
     protected Vector<Edge> explore(Node startingNode)
     {
         _visited = new HashSet<Node>();
-        _path = new Vector<Edge>();
-        _brain._startingNode = startingNode;
+        _path = new Vector<Edge>();     
+        _distanceTravelled = 0;
         _currentPosition = startingNode;
         _visited.add(startingNode);
 

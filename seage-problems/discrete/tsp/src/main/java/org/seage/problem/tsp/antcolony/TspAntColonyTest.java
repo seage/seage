@@ -43,7 +43,8 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	{
 		try
 		{
-			new TspAntColonyTest().run(args[0]);
+			String path = "data/eil51.tsp";
+			new TspAntColonyTest().run(path);
 		}
 		catch (Exception ex)
 		{
@@ -67,11 +68,11 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	public void run(String path) throws Exception
 	{
 		City[] cities = CityProvider.readCities(new FileInputStream(path));
-		int iterations = 10, numAnts = 1000;
-		double defaultPheromone = 0.0001, localEvaporation = 0.95, quantumPheromone = 10;
+		int iterations = 10, numAnts = 100;
+		double defaultPheromone = 0.01, localEvaporation = 0.90, quantumPheromone = 10;
 		double alpha = 1, beta = 3;
 		TspGraph graph = new TspGraph(cities);
-		AntBrain brain = new AntBrain();
+		AntBrain brain = new TspAntBrain(graph.getNodeList().get(0), cities.length);
 		AntColony colony = new AntColony(brain, graph);
 		colony.addAntColonyListener(this);
 		colony.setParameters( iterations, alpha, beta, quantumPheromone, defaultPheromone, localEvaporation);
@@ -120,7 +121,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	@Override
 	public void newBestSolutionFound(AntColonyEvent e)
 	{
-		System.out.println("new best: " + e.getAntColony().getGlobalBest());
+		System.out.println("new best: "+ e.getAntColony().getCurrentIteration()+" - " + e.getAntColony().getGlobalBest());
 
 	}
 

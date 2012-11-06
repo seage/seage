@@ -49,13 +49,13 @@ public class SatAntColonyTest
         int numAnts = 100, iterations = 5000;
 
         SatGraph graph = new SatGraph(formula);
-        SatAntBrain brain = new SatAntBrain(formula);
-        brain.setParameters(graph.getNodeList().size(), alpha, beta);
+        SatAntBrain brain = new SatAntBrain(formula);       
         AntColony colony = new AntColony(brain, graph);
-        colony.setParameters(numAnts, iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
+        colony.setParameters( iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
+        
         Ant ants[] = new Ant[numAnts];
-		for (int i = 0; i < numAnts; i++)
-			ants[i] = new Ant();
+		for (int i = 0; i < numAnts; i++) 
+			ants[i] = new Ant(brain, graph);
 		
         colony.startExploring(graph.getNodeList().get(0), ants);
 

@@ -35,7 +35,7 @@ import java.util.*;
  */
 public class AntBrain{
 
-    protected Node _startingNode;
+    //protected Node _startingNode;
     protected double _alpha, _beta;
     protected double _quantumPheromone;
     private Random _rand;
