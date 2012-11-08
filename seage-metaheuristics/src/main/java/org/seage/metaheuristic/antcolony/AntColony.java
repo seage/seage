@@ -45,7 +45,7 @@ public class AntColony
 	private Vector<Edge> _bestPath;
 	private Vector<Vector<Edge>> _reports;
 	private Graph _graph;
-	private AntBrain _antBrain;
+	//private AntBrain _antBrain;
 	private Ant[] _ants;
 
 	//private int _numAnts;
@@ -53,15 +53,18 @@ public class AntColony
 	private boolean _started, _stopped;
 	private boolean _keepRunning;
 	private int _currentIteration;
+	private double _alpha;
+	private double _beta;
+	private double _quantumPheromone;
 
 
 	// private AntCreator _antCreator;
 
-	public AntColony(AntBrain antBrain, Graph graph)
+	public AntColony(Graph graph)
 	{
 		_eventProducer = new AlgorithmEventProducerBase<IAlgorithmListener<AntColonyEvent>, AntColonyEvent>(new AntColonyEvent(this));
 		_graph = graph;
-		_antBrain = antBrain;
+
 		_roundBest = Double.MAX_VALUE;
 		_globalBest = Double.MAX_VALUE;
 		_reports = new Vector<Vector<Edge>>();
@@ -82,7 +85,10 @@ public class AntColony
 	public void setParameters(int numIterations, double alpha, double beta, double quantumPheromone, double defaultPheromone, double evaporCoeff) throws Exception
 	{
 		_numIterations = numIterations;
-		_antBrain.setParameters(alpha, beta, quantumPheromone);
+		_alpha = alpha;
+		_beta = beta;
+		_quantumPheromone = quantumPheromone;
+		//_antBrain.setParameters(alpha, beta, quantumPheromone);
 		_graph.setEvaporCoeff(evaporCoeff);
 		_graph.setDefaultPheromone(defaultPheromone);
 	}
@@ -92,9 +98,12 @@ public class AntColony
 	 */
 	public void startExploring(Node startingNode, Ant[] ants) throws Exception
 	{
-		_started = _keepRunning = true;
-		_stopped = false;
 		_ants = ants;
+		for(Ant a : _ants)
+			a.getBrain().setParameters(_alpha, _beta, _quantumPheromone);
+		
+		_started = _keepRunning = true;
+		_stopped = false;		
 		_currentIteration = 0;
 		_eventProducer.fireAlgorithmStarted();
 		while(_currentIteration++ < _numIterations && _keepRunning)

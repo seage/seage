@@ -44,6 +44,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 		try
 		{
 			String path = "data/eil51.tsp";
+			//String path = "data/d657.tsp";
 			new TspAntColonyTest().run(path);
 		}
 		catch (Exception ex)
@@ -68,18 +69,18 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	public void run(String path) throws Exception
 	{
 		City[] cities = CityProvider.readCities(new FileInputStream(path));
-		int iterations = 10, numAnts = 100;
-		double defaultPheromone = 0.01, localEvaporation = 0.90, quantumPheromone = 10;
+		int iterations = 100, numAnts = 1000;
+		double defaultPheromone = 0.01, localEvaporation = 0.65, quantumPheromone = 10;
 		double alpha = 1, beta = 3;
 		TspGraph graph = new TspGraph(cities);
 		AntBrain brain = new TspAntBrain(graph.getNodeList().get(0), cities.length);
-		AntColony colony = new AntColony(brain, graph);
+		AntColony colony = new AntColony(graph);
 		colony.addAntColonyListener(this);
 		colony.setParameters( iterations, alpha, beta, quantumPheromone, defaultPheromone, localEvaporation);
 
 		Ant ants[] = new Ant[numAnts];
 		for (int i = 0; i < numAnts; i++) 
-			ants[i] = new Ant(brain, graph);
+			ants[i] = new Ant(brain);
 		//brain.setParameters(graph.getNodeList().size(), alpha, beta);
 		
 		long t1 = System.currentTimeMillis();
@@ -101,7 +102,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 				tour[i] = colony.getBestPath().get(i).getNode1().getId();
 			}
 		}
-		//Visualizer.instance().createGraph(cities, tour, "ants-tour.png", 800, 800);
+		Visualizer.instance().createGraph(cities, tour, "ants-tour.png", 800, 800);
 	}
 
 	@Override

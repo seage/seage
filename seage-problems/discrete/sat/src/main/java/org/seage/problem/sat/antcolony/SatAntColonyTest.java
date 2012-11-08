@@ -50,12 +50,12 @@ public class SatAntColonyTest
 
         SatGraph graph = new SatGraph(formula);
         SatAntBrain brain = new SatAntBrain(formula);       
-        AntColony colony = new AntColony(brain, graph);
+        AntColony colony = new AntColony(graph);
         colony.setParameters( iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
         
         Ant ants[] = new Ant[numAnts];
 		for (int i = 0; i < numAnts; i++) 
-			ants[i] = new Ant(brain, graph);
+			ants[i] = new Ant(brain);
 		
         colony.startExploring(graph.getNodeList().get(0), ants);
 

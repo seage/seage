@@ -43,12 +43,12 @@ public class Ant {
     protected Vector<Edge> _path;
     
     protected AntBrain _brain;
-    protected Graph _graph;
+    //protected Graph _graph;
 
-	public Ant(AntBrain brain, Graph graph)
+	public Ant(AntBrain brain/*, Graph graph*/)
     {
 		_brain = brain;
-		_graph = graph;
+//		_graph = graph;
     }	
     /**
      * Ant passage through the graph
@@ -99,4 +99,9 @@ public class Ant {
             edge.addLocalPheromone(_brain.getQuantumPheromone() / (_distanceTravelled));
         }
     }
+	public AntBrain getBrain()
+	{
+		// TODO Auto-generated method stub
+		return _brain;
+	}
 }

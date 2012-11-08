@@ -17,7 +17,7 @@ public class TestAntColonyAdapter extends AntColonyAdapter
 	{
 		_ants = new Ant[source.length];
 		for(int i=0;i<_ants.length;i++)
-			_ants[i] = new Ant(_brain, _graph);
+			_ants[i] = new Ant(_brain);
 	}
 
 	@Override
