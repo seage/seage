@@ -125,4 +125,11 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
         _tester.setAlgParameters(params);
         _tester.testAsyncRunning();        
     }
+
+    @Test
+	@Override
+	public void testReport() throws Exception
+	{
+		_tester.testReport();		
+	}
 }

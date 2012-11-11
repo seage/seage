@@ -30,6 +30,7 @@ import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.Ant;
@@ -61,6 +62,8 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 	protected AntBrain _brain;
 	protected Ant[] _ants;
 	
+	private AlgorithmReporter _reporter;
+	
 	public AntColonyAdapter(AntBrain brain, Graph graph)
 	{
 		_params = null;
@@ -75,7 +78,7 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
     public void setParameters(AlgorithmParams params) throws Exception
     {
     	_params = params;
-        _params.putValue("id", "TabuSearch");
+        _params.putValue("id", "AntColony");
         DataNode p = params.getDataNode("Parameters");
         //int numAnts = p.getValueInt("numAnts");
         int iterationCount = p.getValueInt("iterationCount");
@@ -91,6 +94,9 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
     @Override
     public void startSearching() throws Exception
     {
+    	_reporter = new AlgorithmReporter("AntColony");
+        _reporter.putParameters(_params);
+        
     	_antColony.startExploring(_graph.getNodes().values().iterator().next(), _ants);
         
     }
@@ -110,8 +116,8 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
     @Override
     public AlgorithmReport getReport() throws Exception
     {
-        // TODO Auto-generated method stub
-        return null;
+    	_reporter.putStatistics(0, 0, 0, 0, 0, 0);
+        return _reporter.getReport();
     }
     
     private class AntColonyListener implements IAlgorithmListener<AntColonyEvent>

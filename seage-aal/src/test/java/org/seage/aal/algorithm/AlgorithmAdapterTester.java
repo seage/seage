@@ -3,6 +3,7 @@ package org.seage.aal.algorithm;
 import junit.framework.Assert;
 
 import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.data.DataNode;
 
 public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
@@ -58,15 +59,29 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
         _algorithm.setParameters(_algParams);
         _algorithm.startSearching(true);
         
-        //Thread.currentThread();
 		Thread.sleep(100);
         Assert.assertTrue(_algorithm.isRunning());
         
         _algorithm.stopSearching();
         
-        //Thread.currentThread();
-		Thread.sleep(100);
-        
+		Thread.sleep(100);        
         Assert.assertFalse(_algorithm.isRunning());
     }
+
+	@Override
+	public void testReport() throws Exception
+	{
+		testAlgorithm();
+		_algReport = _algorithm.getReport();
+		Assert.assertNotNull(_algReport);
+		Assert.assertTrue(_algReport.containsNode("Parameters"));
+		Assert.assertTrue(_algReport.containsNode("Minutes"));
+		Assert.assertTrue(_algReport.containsNode("Statistics"));
+		
+		for(String attName : _algReport.getDataNode("Parameters").getValueNames())
+			Assert.assertEquals(_algParams.getDataNode("Parameters").getValue(attName), _algReport.getDataNode("Parameters").getValue(attName));
+		
+		DataNode stats = _algReport.getDataNode("Statistics");
+		Assert.assertTrue(stats.getValueInt("numberOfIter") > 0);
+	}
 }

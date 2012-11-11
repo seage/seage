@@ -26,6 +26,7 @@
 package org.seage.aal.algorithm;
 
 import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.reporter.AlgorithmReport;
 
 /**
  *
@@ -37,6 +38,7 @@ public abstract class AlgorithmAdapterTestBase {
     protected IAlgorithmAdapter _algorithm; 
     protected Object[][] _solutions;
     protected AlgorithmParams _algParams;
+    protected AlgorithmReport _algReport;
       
     public AlgorithmAdapterTestBase() throws Exception
     {
@@ -55,5 +57,7 @@ public abstract class AlgorithmAdapterTestBase {
     public abstract void testAlgorithmWithParamsAtZero() throws Exception;
     
     public abstract void testAsyncRunning() throws Exception;
+    
+    public abstract void testReport() throws Exception;
 
 }

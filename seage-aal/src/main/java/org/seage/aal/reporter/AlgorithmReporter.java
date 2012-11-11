@@ -40,8 +40,6 @@ public class AlgorithmReporter
     public AlgorithmReporter(String searchID) throws Exception
     {
         _report = new AlgorithmReport("AlgorithmReport");
-        //_running.putValue("id", searchID);
-        //_running.putDataNode(new DataNode("Parameters"));
         _report.putDataNode(new DataNode("Minutes"));
         _report.putDataNode(new DataNode("Statistics"));
        
@@ -54,12 +52,6 @@ public class AlgorithmReporter
         _report.putValue("problemID", params.getValue("problemID"));
         _report.putValue("instance", params.getValue("instance"));
         _report.putDataNode(params.getDataNode("Parameters"));
-//        for(String paramName : params.getDataNode("Parameters").getNames())
-//            paramNode.putValue(paramName, params.getDataNode("Parameters").getValue(paramName));
-
-//        DataNode a = new DataNode("a");
-//        a.putDataNode(params);
-//        _report.putDataNode(a);
     }
     public void putNewSolution(long time, long iterNumber, double objVal, String solution) throws  Exception
     {
