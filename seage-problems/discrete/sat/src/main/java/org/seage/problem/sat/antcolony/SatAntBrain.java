@@ -47,13 +47,13 @@ public class SatAntBrain extends AntBrain {
         _formula = formula;
     }
 
-    @Override
-    protected List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited) {
-        if(currentPosition.getConnectionMap().size() == 0){
-            return null;
-        }
-        return currentPosition.getConnectionMap();
-    }
+//    @Override
+//    protected List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited) {
+//        if(currentPosition.getConnectionMap().size() == 0){
+//            return null;
+//        }
+//        return currentPosition.getConnectionMap().;
+//    }
 
     @Override
     protected Edge selectNextEdge(List<Edge> edges, HashSet<Node> visited) {
