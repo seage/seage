@@ -17,7 +17,7 @@ public class TestAntColonyAdapter extends AntColonyAdapter
 	{
 		_ants = new Ant[source.length];
 		for(int i=0;i<_ants.length;i++)
-			_ants[i] = new Ant(_brain);
+			_ants[i] = new Ant(_brain, (Integer[])source[i]);
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class TestAntColonyAdapter extends AntColonyAdapter
 	{
 		Object[][] result = new Object[_ants.length][];
 		for(int i=0;i<_ants.length;i++)
-			result[i] = new Integer[0];
+			result[i] = _ants[i].getNodeIDs();
 		return result;
 	}
 

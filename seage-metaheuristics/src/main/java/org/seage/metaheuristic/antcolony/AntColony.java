@@ -42,13 +42,11 @@ public class AntColony
 	private AlgorithmEventProducerBase<IAlgorithmListener<AntColonyEvent>, AntColonyEvent> _eventProducer;
 	private double _roundBest;
 	private double _globalBest;
-	private Vector<Edge> _bestPath;
-	private Vector<Vector<Edge>> _reports;
+	private List<Edge> _bestPath;
+	private List<List<Edge>> _reports;
 	private Graph _graph;
-	//private AntBrain _antBrain;
 	private Ant[] _ants;
 
-	//private int _numAnts;
 	private int _numIterations;
 	private boolean _started, _stopped;
 	private boolean _keepRunning;
@@ -57,9 +55,6 @@ public class AntColony
 	private double _beta;
 	private double _quantumPheromone;
 
-
-	// private AntCreator _antCreator;
-
 	public AntColony(Graph graph)
 	{
 		_eventProducer = new AlgorithmEventProducerBase<IAlgorithmListener<AntColonyEvent>, AntColonyEvent>(new AntColonyEvent(this));
@@ -67,7 +62,7 @@ public class AntColony
 
 		_roundBest = Double.MAX_VALUE;
 		_globalBest = Double.MAX_VALUE;
-		_reports = new Vector<Vector<Edge>>();
+		_reports = new ArrayList<List<Edge>>();
 		_started = false;
 		_stopped = false;
 	}
@@ -145,7 +140,7 @@ public class AntColony
 	{
 		double pathLength = 0;
 		int counter = 0;
-		for (Vector<Edge> vector : _reports)
+		for (List<Edge> vector : _reports)
 		{
 			if (_bestPath == null)
 			{
@@ -175,7 +170,7 @@ public class AntColony
 	 * 
 	 * @return The best path
 	 */
-	public Vector<Edge> getBestPath()
+	public List<Edge> getBestPath()
 	{
 		return _bestPath;
 	}

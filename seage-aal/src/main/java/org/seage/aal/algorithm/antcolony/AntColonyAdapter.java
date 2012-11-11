@@ -28,7 +28,6 @@ package org.seage.aal.algorithm.antcolony;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
-import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.data.DataNode;
@@ -78,7 +77,7 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
     	_params = params;
         _params.putValue("id", "TabuSearch");
         DataNode p = params.getDataNode("Parameters");
-        int numAnts = p.getValueInt("numAnts");
+        //int numAnts = p.getValueInt("numAnts");
         int iterationCount = p.getValueInt("iterationCount");
         double alpha = p.getValueDouble("alpha");
         double beta = p.getValueDouble("beta");
@@ -92,7 +91,7 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
     @Override
     public void startSearching() throws Exception
     {
-    	_antColony.startExploring(_graph.getNodeList().get(0), _ants);
+    	_antColony.startExploring(_graph.getNodes().values().iterator().next(), _ants);
         
     }
 
@@ -121,14 +120,14 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 		@Override
 		public void algorithmStarted(AntColonyEvent e)
 		{
-			// TODO Auto-generated method stub
+			_algorithmStarted = true;
 			
 		}
 
 		@Override
 		public void algorithmStopped(AntColonyEvent e)
 		{
-			// TODO Auto-generated method stub
+			_algorithmStopped = true;
 			
 		}
 

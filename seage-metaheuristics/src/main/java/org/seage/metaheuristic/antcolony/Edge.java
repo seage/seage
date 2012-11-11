@@ -27,7 +27,6 @@
  */
 package org.seage.metaheuristic.antcolony;
 
-import java.util.Vector;
 
 /**
  *
@@ -39,16 +38,14 @@ public class Edge {
     private Node _node1;
     private Node _node2;
     private double _pheromone;
-    private Vector<Node> _connections;
 
     public Edge(Node start, Node end) {
         _edgePrice = 0;
         _node1 = start;
+        _node1.addConnection(this);
         _node2 = end;
+        _node2.addConnection(this);
         _pheromone = 0;
-        _connections = new Vector<Node>();
-        _connections.add(start);
-        _connections.add(end);
     }
 
     /**
@@ -58,14 +55,6 @@ public class Edge {
     public double getLocalPheromone() {
         return _pheromone;
     }
-
-    /**
-     * Setting default pheromone
-     * @param defaultPheromone - Value of default pheromone
-     */
-//    public void setDefaultPheromone(double defaultPheromone) {
-//        _pheromone = defaultPheromone;
-//    }
 
     /**
      * Local pheromone addition
@@ -115,13 +104,5 @@ public class Edge {
      */
     public Node getNode1() {
         return _node1;
-    }
-
-    /**
-     * Both nodes
-     * @return - Both nodes
-     */
-    public Vector<Node> getConnections() {
-        return _connections;
     }
 }

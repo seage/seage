@@ -35,13 +35,13 @@ import java.util.*;
  */
 public class Graph {
 
-    protected ArrayList<Node> _nodeList;
-    protected ArrayList<Edge> _edgeList;
+    protected HashMap<Integer, Node> _nodes;
+    protected ArrayList<Edge> _edges;
     protected double _evaporCoeff = 0.95;
 
 	public Graph() {
-        _nodeList = new ArrayList<Node>();
-        _edgeList = new ArrayList<Edge>();
+        _nodes = new HashMap<Integer, Node>();
+        _edges = new ArrayList<Edge>();
     }
 	
     
@@ -50,23 +50,23 @@ public class Graph {
      * List of nodes of graph
      * @return - List of nodes
      */
-    public ArrayList<Node> getNodeList() {
-        return _nodeList;
+    public HashMap<Integer, Node> getNodes() {
+        return _nodes;
     }
 
     /**
      * List of edges of graph
      * @return - List of edges
      */
-    public ArrayList<Edge> getEdgeList() {
-        return _edgeList;
+    public ArrayList<Edge> getEdges() {
+        return _edges;
     }
 
     /**
      * Evaporating from each edges of graph
      */
     public void evaporate() {
-        for (Edge e : getEdgeList()) {
+        for (Edge e : getEdges()) {
             e.evaporateFromEdge(_evaporCoeff);
         }
     }
@@ -76,7 +76,7 @@ public class Graph {
      * @param defaultPheromone - Default pheromone
      */
     public void setDefaultPheromone(double defaultPheromone) {
-        for (Edge e : getEdgeList()) {
+        for (Edge e : getEdges()) {
             e.addLocalPheromone(defaultPheromone);
         }
     }

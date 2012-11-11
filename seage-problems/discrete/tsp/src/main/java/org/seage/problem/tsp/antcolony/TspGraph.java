@@ -39,7 +39,7 @@ public class TspGraph extends Graph {
     public TspGraph(City[] cities) {
         super();
         for (int id = 0; id < cities.length; id++) {
-            _nodeList.add(new Node(id));
+            _nodes.put(new Integer(id), new Node(id));
         }
 
         fillEdgeMap(cities);
@@ -62,17 +62,17 @@ public class TspGraph extends Graph {
      * List of graph edges filling
      */
     private void fillEdgeMap(City[] cities) {
-    	for(int i=0;i<_nodeList.size();i++)			// 0 1 2 3: 0-1, 0-2, 0-3, 1-2, 1-3, 2-3
+    	for(int i=0;i<_nodes.size();i++)			// 0 1 2 3: 0-1, 0-2, 0-3, 1-2, 1-3, 2-3
     	{	
-    		for(int j=i+1;j<_nodeList.size();j++)
+    		for(int j=i+1;j<_nodes.size();j++)
     		{    			
-    			Node n1 = _nodeList.get(i);
-    			Node n2 = _nodeList.get(j);
+    			Node n1 = _nodes.get(i);
+    			Node n2 = _nodes.get(j);
     			if (n1.equals(n2)) continue;    				
     			
     			Edge edge = new Edge(n1, n2);
     			edge.setEdgePrice(calculateEdgeLength(n1, n2, cities));
-    			_edgeList.add(edge);
+    			_edges.add(edge);
     			n1.addConnection(edge);
     			n2.addConnection(edge);
     		}	

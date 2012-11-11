@@ -57,7 +57,7 @@ public class SatAntColonyTest
 		for (int i = 0; i < numAnts; i++) 
 			ants[i] = new Ant(brain);
 		
-        colony.startExploring(graph.getNodeList().get(0), ants);
+        colony.startExploring(graph.getNodes().get(0), ants);
 
         System.out.println("Global best: "+(colony.getGlobalBest()-0.1));
         

@@ -42,8 +42,8 @@ public class SatGraph2 extends Graph {
     public SatGraph2(Formula formula) {
         super();
         for (int id = 1; id < formula.getLiteralCount() + 1; id++) {
-            _nodeList.add(new Node(id));
-            _nodeList.add(new Node(-id));
+            _nodes.put(new Integer(id),new Node(id));
+            _nodes.put(new Integer(-id),new Node(-id));
         }
 
         _preparedSolution = new boolean[formula.getLiteralCount()];
@@ -71,25 +71,25 @@ public class SatGraph2 extends Graph {
      */
     private void fillEdgeMap(Formula formula) {
         boolean same = false;
-        for (Node i : _nodeList) {
-            for (Node j : _nodeList) {
+        for (Node i : _nodes.values()) {
+            for (Node j : _nodes.values()) {
                 if (!i.equals(j) && !(Math.abs(i.getId()) == Math.abs(j.getId()))) {
                     Edge makedEdge = new Edge(i, j);
                     makedEdge.setEdgePrice(FormulaEvaluator.evaluate(formula, createSol(i, j)));
-                    for (Edge k : _edgeList) {
+                    for (Edge k : _edges) {
                         if (k.getNode1().equals(j) && k.getNode2().equals(i)) {
                             same = true;
                         }
                     }
                     if (!same) {
-                        _edgeList.add(makedEdge);
+                        _edges.add(makedEdge);
                     }
                 }
                 same = false;
             }
         }
-        for (Node i : _nodeList) {
-            for (Edge j : _edgeList) {
+        for (Node i : _nodes.values()) {
+            for (Edge j : _edges) {
                 if (j.getNode1().equals(i) || j.getNode2().equals(i)) {
                     i.addConnection(j);
                 }

@@ -34,11 +34,11 @@ import java.util.*;
 public class Node {
 
     private int _id;
-    private ArrayList<Edge> _connectionMap;
+    private HashSet<Edge> _connections;
 
     public Node(int id) {
         _id = id;
-        _connectionMap = new ArrayList<Edge>();
+        _connections = new HashSet<Edge>();
     }
 
     /**
@@ -67,14 +67,15 @@ public class Node {
      * @param edge - Edge for add
      */
     public void addConnection(Edge edge) {
-        _connectionMap.add(edge);
+    	if(!_connections.contains(edge))
+    		_connections.add(edge);
     }
 
     /**
      * List all edges which are joined with actual node
      * @return - List edges
      */
-    public ArrayList<Edge> getConnectionMap() {
-        return _connectionMap;
+    public HashSet<Edge> getConnectionMap() {
+        return _connections;
     }
 }

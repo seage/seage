@@ -28,10 +28,16 @@ package org.seage.problem.tsp.antcolony;
 import java.io.FileInputStream;
 
 import org.seage.metaheuristic.IAlgorithmListener;
-import org.seage.metaheuristic.antcolony.*;
+import org.seage.metaheuristic.antcolony.Ant;
+import org.seage.metaheuristic.antcolony.AntBrain;
+import org.seage.metaheuristic.antcolony.AntColony;
+import org.seage.metaheuristic.antcolony.AntColonyEvent;
+import org.seage.metaheuristic.antcolony.Edge;
+import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.Visualizer;
+
 
 /**
  * 
@@ -39,12 +45,31 @@ import org.seage.problem.tsp.Visualizer;
  */
 public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 {
+	//static String instance = "eil51";
+	//static String instance = "kroA100";
+	//static String instance = "kroA200";
+	//static String instance = "pcb442";
+	//static String instance = "u574";
+	static String instance = "u724";
+	//static String instance = "pcb1173";
+	//static String instance = "u1817";
+	//static String instance = "u2152";
+	//static String instance = "u2319";
+	//static String instance = "rl1323";
+	//static String instance = "fl1400";
+	//static String instance = "vm1748";
+	//static String instance = "fl3795";
+	//static String instance = "pcb3038";
+	//static String instance = "usa13509";
+	
 	public static void main(String[] args)
 	{
 		try
 		{
-			String path = "data/eil51.tsp";
+			//String path = "data/eil51.tsp";
 			//String path = "data/d657.tsp";
+           String path = "data/"+instance+".tsp";
+                        
 			new TspAntColonyTest().run(path);
 		}
 		catch (Exception ex)
@@ -57,7 +82,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	{
 		double sum = 0;
 		double edges = 0;
-		for (Edge edge : graph.getEdgeList())
+		for (Edge edge : graph.getEdges())
 		{
 			sum += edge.getEdgePrice();
 			edges++;
@@ -69,11 +94,12 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	public void run(String path) throws Exception
 	{
 		City[] cities = CityProvider.readCities(new FileInputStream(path));
-		int iterations = 100, numAnts = 1000;
-		double defaultPheromone = 0.01, localEvaporation = 0.65, quantumPheromone = 10;
+		int iterations = 10, numAnts = 100;
+		double defaultPheromone = 0.01, localEvaporation = 0.65, quantumPheromone = 100;
 		double alpha = 1, beta = 3;
 		TspGraph graph = new TspGraph(cities);
-		AntBrain brain = new TspAntBrain(graph.getNodeList().get(0), cities.length);
+		System.out.println("Loaded ...");
+		AntBrain brain = new TspAntBrain(graph.getNodes().get(0), cities.length);
 		AntColony colony = new AntColony(graph);
 		colony.addAntColonyListener(this);
 		colony.setParameters( iterations, alpha, beta, quantumPheromone, defaultPheromone, localEvaporation);
@@ -84,12 +110,12 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 		//brain.setParameters(graph.getNodeList().size(), alpha, beta);
 		
 		long t1 = System.currentTimeMillis();
-		colony.startExploring(graph.getNodeList().get(0), ants);
+		colony.startExploring(graph.getNodes().get(0), ants);
 		long t2 = System.currentTimeMillis();
 		// graph.printPheromone();
 		System.out.println("Global best: " + colony.getGlobalBest());
 		System.out.println("size: " + colony.getBestPath().size());
-		System.out.println("nodes: " + graph.getNodeList().size());
+		System.out.println("nodes: " + graph.getNodes().size());
 		System.out.println("time [ms]: " + (t2 - t1));
 		// visualization
 		Integer[] tour = new Integer[colony.getBestPath().size()];
@@ -102,20 +128,22 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 				tour[i] = colony.getBestPath().get(i).getNode1().getId();
 			}
 		}
-		Visualizer.instance().createGraph(cities, tour, "ants-tour.png", 800, 800);
+		int best = (int)colony.getGlobalBest();
+		String path2 = "ants-"+instance+"-"+best+"-"+System.currentTimeMillis()+".png";
+		Visualizer.instance().createGraph(cities, tour, path2, 800, 800);
 	}
 
 	@Override
 	public void algorithmStarted(AntColonyEvent e)
 	{
-		// TODO Auto-generated method stub
+		System.out.println("algorithmStarted");
 
 	}
 
 	@Override
 	public void algorithmStopped(AntColonyEvent e)
 	{
-		// TODO Auto-generated method stub
+		System.out.println("algorithmStopped");
 
 	}
 

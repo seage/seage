@@ -27,7 +27,9 @@
  */
 package org.seage.metaheuristic.antcolony;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Vector;
 
 /**
  *
@@ -40,21 +42,27 @@ public class Ant {
     protected Node _currentPosition;
     protected double _distanceTravelled;
     protected HashSet<Node> _visited;
-    protected Vector<Edge> _path;
+    protected List<Edge> _path;
+    protected Integer[] _nodeIDs;
     
-    protected AntBrain _brain;
-    //protected Graph _graph;
+	protected AntBrain _brain;
 
-	public Ant(AntBrain brain/*, Graph graph*/)
+	public Ant(AntBrain brain)
     {
-		_brain = brain;
-//		_graph = graph;
+		_brain = brain;		
     }	
+	
+	public Ant(AntBrain brain, Integer[] nodeIDs)
+    {
+		this(brain);
+		_nodeIDs = nodeIDs;
+    }
+	
     /**
      * Ant passage through the graph
      * @return - ants path
      */
-    protected Vector<Edge> explore(Node startingNode)
+    protected List<Edge> explore(Node startingNode)
     {
         _visited = new HashSet<Node>();
         _path = new Vector<Edge>();     
@@ -101,7 +109,11 @@ public class Ant {
     }
 	public AntBrain getBrain()
 	{
-		// TODO Auto-generated method stub
 		return _brain;
+	}
+	
+    public Integer[] getNodeIDs()
+	{
+		return _nodeIDs;
 	}
 }

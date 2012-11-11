@@ -48,8 +48,8 @@ public class SatAntColonyTest2 {
         SatGraph2 graph = new SatGraph2(formula);
 
         System.out.println("formula literals: "+formula.getLiteralCount());
-        System.out.println("graph nodes: " +graph.getNodeList().size());
-        System.out.println("graph edges: "+graph.getEdgeList().size());
+        System.out.println("graph nodes: " +graph.getNodes().size());
+        System.out.println("graph edges: "+graph.getEdges().size());
 
 //        for(int i = 0; i < graph.getNodeList().size(); i++){
 //            System.out.println("node "+graph.getNodeList().get(i).getId());

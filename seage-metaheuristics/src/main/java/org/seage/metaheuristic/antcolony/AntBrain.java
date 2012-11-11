@@ -27,116 +27,126 @@
  */
 package org.seage.metaheuristic.antcolony;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 
 /**
- *
+ * 
  * @author Martin Zaloga
  */
-public class AntBrain{
+public class AntBrain
+{
 
-    //protected Node _startingNode;
-    protected double _alpha, _beta;
-    protected double _quantumPheromone;
-    private Random _rand;
+	// protected Node _startingNode;
+	protected double _alpha, _beta;
+	protected double _quantumPheromone;
+	private Random _rand;
 
-    public AntBrain() 
-    {
-        _rand = new Random(System.currentTimeMillis());
-    }
+	public AntBrain()
+	{
+		_rand = new Random(System.currentTimeMillis());
+	}
 
-    void setParameters(double alpha, double beta, double quantumPheromone)
-    {
-        _alpha = alpha;
-        _beta = beta;
-        _quantumPheromone = quantumPheromone;
-    }
+	void setParameters(double alpha, double beta, double quantumPheromone)
+	{
+		_alpha = alpha;
+		_beta = beta;
+		_quantumPheromone = quantumPheromone;
+	}
 
-    /**
-     * Finding available edges
-     * @param currentPosition - Current position
-     * @param visited - Visited nodes
-     * @return - Available edges (a full graph)
-     */
-    protected List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited)
-    {
-        List<Edge> result = new ArrayList<Edge>();
-        for(Edge e : currentPosition.getConnectionMap())
-        {
-            Node node2 = null;
-            if(e.getNode1().equals(currentPosition))
-                node2 = e.getNode2();
-            else
-                node2 = e.getNode1();
+	/**
+	 * Finding available edges
+	 * 
+	 * @param currentPosition - Current position
+	 * @param visited - Visited nodes
+	 * @return - Available edges (a full graph)
+	 */
+	protected List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited)
+	{
+		List<Edge> result = new ArrayList<Edge>();
+		for (Edge e : currentPosition.getConnectionMap())
+		{
+			Node node2 = null;
+			if (e.getNode1().equals(currentPosition))
+				node2 = e.getNode2();
+			else
+				node2 = e.getNode1();
 
-//            if(visited.size() == _numNodes)
-//                if(node2 == _startingNode)
-//                {
-//                    result.add(e);
-//                    return result;
-//                }
+			if (!visited.contains(node2))
+				result.add(e);
+		}
 
-            if(!visited.contains(node2))
-                result.add(e);
-        }
+		return result;
+	}
 
-        return result;
-    }
+	/**
+	 * Selection following edge
+	 * 
+	 * @param edges - Available edges
+	 * @param visited - Visited nodes
+	 * @return - Selected edge
+	 */
+	protected Edge selectNextEdge(List<Edge> edges, HashSet<Node> visited)
+	{
+		double sum = 0;
+		double[] probabilities = new double[edges.size()];
+		// for each Edges
+		for (int i = 0; i < probabilities.length; i++)
+		{
+			Edge e = edges.get(i);
 
-    /**
-     * Selection following edge
-     * @param edges - Available edges
-     * @param visited - Visited nodes
-     * @return - Selected edge
-     */
-    protected Edge selectNextEdge(List<Edge> edges, HashSet<Node> visited) {
-        double sum = 0;
-        double[] probabilities = new double[edges.size()];
-        // for each Edges
-        for (int i = 0; i < probabilities.length; i++) {
-            Edge e = edges.get(i);
-            for (Node n : e.getConnections()) {
-                if (visited.contains(n)) {
-                    continue;
-                } else {
-                    probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgePrice(), _beta);
-                    sum += probabilities[i];
-                }
-            }
-        }
-        for (int i = 0; i < probabilities.length; i++) {
-            probabilities[i] /= sum;
-        }
-        return edges.get(next(probabilities));
-    }
+			if (!(visited.contains(e.getNode1()) && visited.contains(e.getNode2())))
+			{
+				probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgePrice(), _beta);
+				sum += probabilities[i];
+			}
 
-    /**
-     * Next edges index calculation
-     * @param probs - probabilities all edges
-     * @return - Next edges index
-     */
-    protected int next(double[] probs) {
-        double randomNumber = _rand.nextDouble();
-        double numberReach;
-        if (randomNumber <= 0.5) {
-            numberReach = 0;
-            for (int i = 0; i < probs.length; i++) {
-                numberReach += probs[i];
-                if (numberReach > randomNumber) {
-                    return i;
-                }
-            }
-        } else {
-            numberReach = 1;
-            for (int i = probs.length - 1; i >= 0; i--) {
-                numberReach -= probs[i];
-                if (numberReach <= randomNumber) {
-                    return i;
-                }
-            }
-        }
-        return 0;
-    }
+		}
+		for (int i = 0; i < probabilities.length; i++)
+		{
+			probabilities[i] /= sum;
+		}
+		return edges.get(next(probabilities));
+	}
+
+	/**
+	 * Next edges index calculation
+	 * 
+	 * @param probs - probabilities all edges
+	 * @return - Next edges index
+	 */
+	protected int next(double[] probs)
+	{
+		double randomNumber = _rand.nextDouble();
+		double numberReach;
+		if (randomNumber <= 0.5)
+		{
+			numberReach = 0;
+			for (int i = 0; i < probs.length; i++)
+			{
+				numberReach += probs[i];
+				if (numberReach > randomNumber)
+				{
+					return i;
+				}
+			}
+		}
+		else
+		{
+			numberReach = 1;
+			for (int i = probs.length - 1; i >= 0; i--)
+			{
+				numberReach -= probs[i];
+				if (numberReach <= randomNumber)
+				{
+					return i;
+				}
+			}
+		}
+		return 0;
+	}
 
 	public double getQuantumPheromone()
 	{
