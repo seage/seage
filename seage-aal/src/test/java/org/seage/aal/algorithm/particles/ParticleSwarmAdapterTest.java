@@ -31,9 +31,8 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seage.aal.algorithm.*;
-import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
-import org.seage.aal.algorithm.tabusearch.TestSolution;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
+import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.particles.Particle;

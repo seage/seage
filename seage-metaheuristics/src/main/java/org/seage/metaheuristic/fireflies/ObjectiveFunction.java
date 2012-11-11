@@ -39,8 +39,6 @@ import org.seage.metaheuristic.tabusearch.TabuSearch;
  */
 public interface ObjectiveFunction
 {    
-
-    public void ObjectiveFunction(Solution soln);
     /**
      * The {@link TabuSearch} expects an objective/
      * constraint penalties function to be able

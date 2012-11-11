@@ -136,8 +136,6 @@ public class TabuSearch extends TabuSearchBase
 		// Set tabu objects
 		this.objectiveFunction = objectiveFunction;
 		this.moveManager = moveManager;
-		this.tabuList = tabuList;
-		this.aspirationCriteria = aspirationCriteria;
 		this.maximizing = maximizing;		
 
 	}   // end constructor
@@ -261,7 +259,7 @@ public class TabuSearch extends TabuSearchBase
             aspirationCriteria, maximizing, chooseFirstImproving );
         final Move bestMove = (Move)bestMoveArr[0];
         final double[] bestMoveVal = (double[])bestMoveArr[1];
-        final boolean bestMoveTabu = ((Boolean)bestMoveArr[2]).booleanValue();
+        //final boolean bestMoveTabu = ((Boolean)bestMoveArr[2]).booleanValue();
 
 
 		
@@ -423,7 +421,7 @@ public class TabuSearch extends TabuSearchBase
                 else
                 {   // New one does not have better objective value, but see if it
                     // has a better tabu status.
-                    boolean newIsTabu;
+                    //boolean newIsTabu;
                     if( bestMoveTabu && !isTabu( soln, move, newObjVal, tabuList, aspirationCriteria, This ) )
                     {   bestMove = move;
                         bestMoveVal = newObjVal;

@@ -5,14 +5,6 @@ import org.seage.metaheuristic.fireflies.Solution;
 
 public class TestObjectiveFunction implements ObjectiveFunction
 {
-
-    @Override
-    public void ObjectiveFunction(Solution soln)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
     @Override
     public double[] evaluate(Solution soln) throws Exception
     {

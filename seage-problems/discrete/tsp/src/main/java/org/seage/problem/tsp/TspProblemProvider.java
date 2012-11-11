@@ -130,7 +130,7 @@ public class TspProblemProvider extends ProblemProvider
     @Override
     public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception
     {
-        Integer[] tour = (Integer[])solution;
+//        Integer[] tour = (Integer[])solution;
 
         // TODO: A - Implement visualize method
 //        String outPath = _problemParams.getDataNode("visualizer").getValueStr("outPath");

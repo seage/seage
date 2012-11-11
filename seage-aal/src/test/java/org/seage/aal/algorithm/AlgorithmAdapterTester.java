@@ -58,12 +58,14 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
         _algorithm.setParameters(_algParams);
         _algorithm.startSearching(true);
         
-        Thread.currentThread().sleep(100);
+        //Thread.currentThread();
+		Thread.sleep(100);
         Assert.assertTrue(_algorithm.isRunning());
         
         _algorithm.stopSearching();
         
-        Thread.currentThread().sleep(100);
+        //Thread.currentThread();
+		Thread.sleep(100);
         
         Assert.assertFalse(_algorithm.isRunning());
     }

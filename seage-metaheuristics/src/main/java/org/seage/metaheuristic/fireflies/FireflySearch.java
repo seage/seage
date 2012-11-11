@@ -74,7 +74,6 @@ public class FireflySearch extends FireflySearchBase
     private Solution            _bestSolution;
     private SolutionComparator  _solutionComparator;
 
-    private Random              _random;
     private boolean             _maximizing;
     private int                 _iterationsToGo;
     private boolean             _bestSolutionNoMove;
@@ -90,7 +89,7 @@ public class FireflySearch extends FireflySearchBase
         _operator = operator;
         _objectiveFunction = objectiveFunction;
         _population = new Population();
-        _random = new Random();
+        new Random();
 
         _bestSolution = null;
         _solutionComparator = new SolutionComparator();
@@ -154,7 +153,6 @@ public class FireflySearch extends FireflySearchBase
         {
             _isRunning = true;
             _keepSearching = true;
-            long startTime = System.currentTimeMillis();
             fireFireflySearchStarted();
 
             _bestSolution = null;
@@ -170,15 +168,13 @@ public class FireflySearch extends FireflySearchBase
                 else
                     break;
             }
-            double prevFitness, currBestFitness;
+            double currBestFitness;
             if (_maximizing)
             {
-                prevFitness = Double.MAX_VALUE;
                 currBestFitness = Double.MAX_VALUE;
             }
             else
             {
-                prevFitness = Double.MIN_VALUE;
                 currBestFitness = Double.MIN_VALUE;
             }
             int i = 0;

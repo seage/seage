@@ -25,7 +25,6 @@
  */
 package org.seage.aal.algorithm;
 
-import org.junit.Test;
 import org.seage.aal.data.AlgorithmParams;
 
 /**

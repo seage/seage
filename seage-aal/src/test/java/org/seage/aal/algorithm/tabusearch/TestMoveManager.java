@@ -12,8 +12,9 @@ public class TestMoveManager implements MoveManager
     {
         Move m = new Move()
         {
-            
-            @Override
+			private static final long serialVersionUID = 1333402968469149792L;
+
+			@Override
             public void operateOn(Solution soln)
             {
                 // TODO Auto-generated method stub

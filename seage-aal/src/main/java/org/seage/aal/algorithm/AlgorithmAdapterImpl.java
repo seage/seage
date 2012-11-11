@@ -28,8 +28,6 @@ package org.seage.aal.algorithm;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.print.attribute.standard.Severity;
-
 /**
  *
  * @author rick

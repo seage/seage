@@ -3,7 +3,6 @@ package org.seage.aal.algorithm.tabusearch;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seage.metaheuristic.tabusearch.LongTermMemory;
 import org.seage.metaheuristic.tabusearch.MoveManager;
 import org.seage.metaheuristic.tabusearch.ObjectiveFunction;
 

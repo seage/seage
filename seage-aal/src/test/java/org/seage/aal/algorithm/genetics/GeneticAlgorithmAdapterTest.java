@@ -28,8 +28,8 @@ package org.seage.aal.algorithm.genetics;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seage.aal.algorithm.*;
-import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
+import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.genetics.Evaluator;
