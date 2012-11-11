@@ -68,19 +68,23 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
         
         IAlgorithmAdapter algorithm;
 
-        algorithm = new SimulatedAnnealingAdapter((Solution) _qapSolution,
+        algorithm = new SimulatedAnnealingAdapter(
                 new QapObjectiveFunction(),
                 new QapMoveManager(), false, "")
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception 
             {
-                QapSolution initialSolution = new QapGreedySolution(facilityLocation);
-                Integer[] assign = initialSolution.getAssign();
-
-                for(int i = 0; i < assign.length; i++)
-                    assign[i] = (Integer)source[0][i];
-                
-                _initialSolution = initialSolution;
+            	_solutions = new Solution[source.length];
+            	for(int j=0;j<source.length;j++)
+            	{
+	                QapSolution solution = new QapGreedySolution(facilityLocation);
+	                Integer[] assign = solution.getAssign();
+	
+	                for(int i = 0; i < assign.length; i++)
+	                    assign[i] = (Integer)source[0][i];
+	                
+	                _solutions[j] = solution;
+            	}
             }
 
             public Object[][] solutionsToPhenotype() throws Exception
@@ -88,10 +92,12 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
                 Integer[] assign = ((QapSolution) _simulatedAnnealing.getBestSolution()).getAssign();
                 Object[][] source = new Object[1][ assign.length ];
 
-                source[0] = new Integer[ assign.length ];
-                for(int i = 0; i < assign.length; i++)
-                    source[0][i] = assign[i];
-
+                for(int j=0;j<source.length;j++)
+            	{
+	                source[j] = new Integer[ assign.length ];
+	                for(int i = 0; i < assign.length; i++)
+	                    source[j][i] = assign[i];
+            	}
                 return source;
             }
 

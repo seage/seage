@@ -46,13 +46,17 @@ import org.seage.metaheuristic.sannealing.Solution;
  * 
  * @author Jan Zmatlik
  */
-@AlgorithmParameters({ @Parameter(name = "annealCoeficient", min = 0.1, max = 1, init = 0.99), @Parameter(name = "maxInnerIterations", min = 1, max = 1000000, init = 100),
-        @Parameter(name = "maxTemperature", min = 10, max = 1000000, init = 100), @Parameter(name = "minTemperature", min = 0, max = 10000, init = 1),
-        @Parameter(name = "numInnerSuccesses", min = 0, max = 100000, init = 100), @Parameter(name = "numSolutions", min = 1, max = 1, init = 1) })
+@AlgorithmParameters({ 
+	@Parameter(name = "annealCoeficient", min = 0.1, max = 1, init = 0.99), 
+	@Parameter(name = "maxInnerIterations", min = 1, max = 1000000, init = 100),
+    @Parameter(name = "maxTemperature", min = 10, max = 1000000, init = 100), 
+    @Parameter(name = "minTemperature", min = 0, max = 10000, init = 1),
+    @Parameter(name = "numInnerSuccesses", min = 0, max = 100000, init = 100), 
+    @Parameter(name = "numSolutions", min = 1, max = 1, init = 1) })
 public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl implements ISimulatedAnnealingListener
 {
     protected SimulatedAnnealing _simulatedAnnealing;
-    protected Solution           _initialSolution;
+    protected Solution[]         _solutions;
     private AlgorithmParams      _params;
     // private Solution _bestSolution;
     private AlgorithmReporter    _reporter;
@@ -62,11 +66,9 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
     private long                 _lastIterationNumberNewSolution = 0;
     private double               _initObjectiveValue             = Double.MAX_VALUE;
 
-    public SimulatedAnnealingAdapter(Solution initialSolution, IObjectiveFunction objectiveFunction, IMoveManager moveManager, boolean maximizing, String searchID) throws Exception
+    public SimulatedAnnealingAdapter(IObjectiveFunction objectiveFunction, IMoveManager moveManager, boolean maximizing, String searchID) throws Exception
     {
-        _initialSolution = initialSolution;
         _simulatedAnnealing = new SimulatedAnnealing(objectiveFunction, moveManager);
-
         _reporter = new AlgorithmReporter(searchID);
     }
 
@@ -76,7 +78,7 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
         _reporter.putParameters(_params);
 
         _numberOfIterations = _numberOfNewSolutions = _lastIterationNumberNewSolution = 0;
-        _simulatedAnnealing.startSearching(_initialSolution);
+        _simulatedAnnealing.startSearching(_solutions[0]);
     }
 
     public void stopSearching() throws Exception
@@ -100,16 +102,6 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
         return _reporter.getReport();
     }
 
-    public Solution getInitialSolution()
-    {
-        return _initialSolution;
-    }
-
-    public void setInitialSolution(Solution _initialSolution)
-    {
-        this._initialSolution = _initialSolution;
-    }
-
     public void setParameters(AlgorithmParams params) throws Exception
     {
         _params = params;
@@ -130,9 +122,6 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
     {
         try
         {
-            // System.out.println(
-            // e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
-
             Solution s = e.getSimulatedAnnealing().getBestSolution();
 
             _reporter.putNewSolution(System.currentTimeMillis(), e.getSimulatedAnnealing().getCurrentIteration(), s.getObjectiveValue(), s.toString());

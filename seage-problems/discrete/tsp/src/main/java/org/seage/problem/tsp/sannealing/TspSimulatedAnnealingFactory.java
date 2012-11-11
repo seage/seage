@@ -30,13 +30,12 @@ package org.seage.problem.tsp.sannealing;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
-import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspProblemInstance;
-import org.seage.problem.tsp.TspProblemProvider;
 
 /**
  *
@@ -51,7 +50,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 	 */
 	private static final long serialVersionUID = -8342189368584823663L;
 	private TspSolution _tspSolution;
-    private TspProblemProvider _provider;
+//    private TspProblemProvider _provider;
 
     public TspSimulatedAnnealingFactory()
     {
@@ -79,30 +78,36 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
         IAlgorithmAdapter algorithm;
         final City[] cities = ((TspProblemInstance)instance).getCities();
         
-        algorithm = new SimulatedAnnealingAdapter((Solution) _tspSolution,
+        algorithm = new SimulatedAnnealingAdapter(
                 new TspObjectiveFunction(),
                 new TspMoveManager(), false, "")
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception 
             {
-                TspSolution initialSolution = new TspGreedySolution(cities);
-                Integer[] tour = initialSolution.getTour();
-
-                for(int i = 0; i < tour.length; i++)
-                    tour[i] = (Integer)source[0][i];
+            	_solutions = new Solution[source.length];
+            	for(int j=0;j<source.length;j++)
+            	{
+	                TspSolution solution = new TspGreedySolution(cities);
+	                Integer[] tour = solution.getTour();
+	
+	                for(int i = 0; i < tour.length; i++)
+	                    tour[i] = (Integer)source[j][i];
                 
-                _initialSolution = initialSolution;
+	                _solutions[j] = solution;
+            	}
             }
 
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 Integer[] tour = ((TspSolution) _simulatedAnnealing.getBestSolution()).getTour();
-                Object[][] source = new Object[1][ tour.length ];
+                Object[][] source = new Object[_solutions.length][ tour.length ];
 
-                source[0] = new Integer[ tour.length ];
-                for(int i = 0; i < tour.length; i++)
-                    source[0][i] = tour[i];
-
+                for(int j=0;j<source.length;j++)
+            	{
+                	source[j] = new Integer[ tour.length ];
+                	for(int i = 0; i < tour.length; i++)
+                		source[j][i] = tour[i];
+            	}
                 return source;
             }
 

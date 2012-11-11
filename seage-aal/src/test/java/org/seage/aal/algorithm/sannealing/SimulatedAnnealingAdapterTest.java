@@ -41,7 +41,6 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     public SimulatedAnnealingAdapterTest() throws Exception
     {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     @Before
@@ -71,7 +70,6 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     public void testPhenotype() throws Exception
     {
         _tester.testPhenotype();
-        
     }
     
     @Override
