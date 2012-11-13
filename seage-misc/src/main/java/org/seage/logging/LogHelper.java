@@ -56,10 +56,11 @@ public class LogHelper
             System.err.println("WARNING: Could not open configuration file");
             System.err.println("WARNING: Logging not configured (console output only)");
 
-            Logger logger = Logger.getLogger("");
-            logger.setLevel(Level.INFO);
+            Logger logger = Logger.getLogger("org.seage");
+            logger.setUseParentHandlers(false);
+            logger.setLevel(Level.FINEST);
             ConsoleHandler ch = new ConsoleHandler();
-            // ch.setFormatter(new LogFormatter());
+            ch.setFormatter(new LogFormatter());
             logger.addHandler(ch);
             LogManager.getLogManager().addLogger(logger);
         }

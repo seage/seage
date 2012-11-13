@@ -15,7 +15,7 @@ public final class LogFormatter extends Formatter {
     public String format(LogRecord record) {
         StringBuilder sb = new StringBuilder();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
         Date date = new Date(record.getMillis());
         sb.append(String.format("%-9s", "["+record.getLevel().getLocalizedName()+"]"))
             .append(" ")
