@@ -50,12 +50,13 @@ public class TaskRunner
 				if(task == null)
 					return;
 				Thread t = new Thread(task);
-				_logger.log(Level.FINER, t.toString());
+				_logger.log(Level.FINER, t.toString() + " started");
 				t.start();
 
 				try
 				{
 					t.join();
+					_logger.log(Level.FINER, t.toString() + " finished");
 				}
 				catch (InterruptedException e)
 				{
