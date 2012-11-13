@@ -29,6 +29,7 @@ package org.seage.aal.algorithm.genetics;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.*;
+
 import java.util.Arrays;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
@@ -266,5 +267,12 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
         {
 
         }
+
+		@Override
+		public void iterationPerformed(GeneticSearchEvent e)
+		{
+			// TODO Auto-generated method stub
+			
+		}
     }
 }

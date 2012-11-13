@@ -107,6 +107,12 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticSearch
     public void noChangeInValueIterationMade(GeneticSearchEvent e) {
         
     }
+
+	@Override
+	public void iterationPerformed(GeneticSearchEvent e)
+	{
+		
+	}
     
     
 }

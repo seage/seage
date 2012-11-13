@@ -45,7 +45,7 @@ import org.seage.metaheuristic.antcolony.Graph;
  *
  */
 @AlgorithmParameters({
-    @Parameter(name="numAnts", min=0, max=100000, init=100),
+    @Parameter(name="numSolutions", min=10, max=100000, init=100),
     @Parameter(name="iterationCount", min=0, max=1000000, init=100),
     @Parameter(name="alpha", min=1, max=10, init=1),
     @Parameter(name="beta", min=1, max=10, init=3),   
@@ -63,6 +63,12 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 	protected Ant[] _ants;
 	
 	private AlgorithmReporter _reporter;
+	private int _statNumIterations;
+	private int _statNumNewBestSolutions;
+	private long _statLastIteration;
+	private double _initialSolutionValue;
+	private double _bestSolutionValue;
+	public double _averageSolutionValue;
 	
 	public AntColonyAdapter(AntBrain brain, Graph graph)
 	{
@@ -97,6 +103,12 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
     	_reporter = new AlgorithmReporter("AntColony");
         _reporter.putParameters(_params);
         
+        _statLastIteration = 0;
+        _statNumIterations = 0;
+        _statNumNewBestSolutions = 0;
+        _initialSolutionValue =  _bestSolutionValue = 0;
+        _averageSolutionValue = 0;
+        
     	_antColony.startExploring(_graph.getNodes().values().iterator().next(), _ants);
         
     }
@@ -116,13 +128,12 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
     @Override
     public AlgorithmReport getReport() throws Exception
     {
-    	_reporter.putStatistics(0, 0, 0, 0, 0, 0);
+    	_reporter.putStatistics(_statNumIterations, _statNumNewBestSolutions, _statLastIteration, _initialSolutionValue, _averageSolutionValue, _bestSolutionValue);
         return _reporter.getReport();
     }
     
     private class AntColonyListener implements IAlgorithmListener<AntColonyEvent>
     {
-
 		@Override
 		public void algorithmStarted(AntColonyEvent e)
 		{
@@ -134,21 +145,28 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 		public void algorithmStopped(AntColonyEvent e)
 		{
 			_algorithmStopped = true;
+			_statNumIterations = e.getAntColony().getCurrentIteration();
 			
 		}
 
 		@Override
 		public void newBestSolutionFound(AntColonyEvent e)
 		{
-			// TODO Auto-generated method stub
-			
+			_statNumNewBestSolutions++;
+			_statLastIteration = e.getAntColony().getCurrentIteration();
+			_averageSolutionValue = _bestSolutionValue = e.getAntColony().getGlobalBest();			
 		}
 
 		@Override
 		public void noChangeInValueIterationMade(AntColonyEvent e)
+		{		
+		}
+
+		@Override
+		public void iterationPerformed(AntColonyEvent e)
 		{
-			// TODO Auto-generated method stub
-			
+			if(e.getAntColony().getCurrentIteration()==1)
+				_initialSolutionValue =  e.getAntColony().getGlobalBest();			
 		}
     	
     }

@@ -83,7 +83,7 @@ public class TspProblemProvider extends ProblemProvider
         int numTours = numSolutions;
         City[] cities = ((TspProblemInstance)instance).getCities();
         int tourLenght = cities.length;
-        Object[][] result = new Object[numTours][];
+        Integer[][] result = new Integer[numTours][];
 
         Random r = new Random(randomSeed);
 
@@ -93,7 +93,7 @@ public class TspProblemProvider extends ProblemProvider
         {
             int[] initTour = new int[tourLenght];
 
-            result[k] = new Object[tourLenght];
+            result[k] = new Integer[tourLenght];
 
             for (int i = 0; i < tourLenght; i++)
             {

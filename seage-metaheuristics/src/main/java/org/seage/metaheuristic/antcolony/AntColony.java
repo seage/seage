@@ -61,8 +61,7 @@ public class AntColony
 		_graph = graph;
 
 		_roundBest = Double.MAX_VALUE;
-		_globalBest = Double.MAX_VALUE;
-		_reports = new ArrayList<List<Edge>>();
+		_globalBest = Double.MAX_VALUE;		
 		_started = false;
 		_stopped = false;
 	}
@@ -97,6 +96,7 @@ public class AntColony
 		for(Ant a : _ants)
 			a.getBrain().setParameters(_alpha, _beta, _quantumPheromone);
 		
+		_reports = new ArrayList<List<Edge>>();
 		_started = _keepRunning = true;
 		_stopped = false;		
 		_currentIteration = 0;
@@ -104,7 +104,7 @@ public class AntColony
 		while(_currentIteration++ < _numIterations && _keepRunning)
 		//for (int i = 0; i < _numIterations && _keepRunning == true; i++)
 		{
-			for (int j = 0; j < _ants.length; j++)
+			for (int j = 0; j < _ants.length && _keepRunning; j++)
 			{
 				_reports.add(_ants[j].explore(startingNode));
 			}
