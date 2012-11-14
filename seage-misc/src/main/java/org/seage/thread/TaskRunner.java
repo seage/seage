@@ -12,21 +12,22 @@ public class TaskRunner
 
 	ConcurrentLinkedQueue<Runnable> _taskQueue;
 
-	public void runTasks(List<Runnable> taskQueue, int nrOfThreads)
+	public void runTasks(List<Runnable> taskQueue, int nrOfCores)
 	{
 		_taskQueue = new ConcurrentLinkedQueue<Runnable>(taskQueue);
 
 		List<Thread> runnerThreads = new ArrayList<Thread>();
 
-		for (int i = 0; i < nrOfThreads; i++)
+		for (int i = 0; i < nrOfCores; i++)
 		{
-			Thread t = new Thread(new RunnerThread());
+			String threadName = "TaskRunner-"+(i+1);
+			Thread t = new Thread(new RunnerThread(threadName), threadName);
 			runnerThreads.add(t);
 			t.start();
 		}
 
 		// Wait for each thread
-		for (int i = 0; i < nrOfThreads; i++)
+		for (int i = 0; i < nrOfCores; i++)
 		{
 			try
 			{
@@ -40,16 +41,22 @@ public class TaskRunner
 	}
 
 	private class RunnerThread implements Runnable
-	{
+	{		
+		private String _threadName;
+		public RunnerThread(String name)
+		{
+			_threadName = name;
+		}
 		@Override
 		public void run()
 		{
-			while (true)
+			int i=1;
+			while (!_taskQueue.isEmpty())
 			{
 				Runnable task = _taskQueue.poll();
 				if(task == null)
 					return;
-				Thread t = new Thread(task);
+				Thread t = new Thread(task, _threadName+"-Job"+i++);
 				_logger.log(Level.FINER, t.toString() + " started");
 				t.start();
 

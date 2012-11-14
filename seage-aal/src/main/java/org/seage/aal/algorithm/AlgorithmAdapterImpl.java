@@ -46,8 +46,7 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
         _algorithmStarted = false;
         
         if(async == true)
-        {
-            
+        {            
             new Thread(new Runnable() {
                 public void run() {
                     try
@@ -59,7 +58,7 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
                         _logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 }
-            }).start();
+            }, this.getClass().getName()).start();
 
             int i=0;
             while(!_algorithmStarted)
