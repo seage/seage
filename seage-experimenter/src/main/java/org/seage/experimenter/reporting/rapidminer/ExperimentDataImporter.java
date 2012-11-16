@@ -66,6 +66,8 @@ public class ExperimentDataImporter
 		_rmDataTableCreators.add(new ExperimentLogTableCreator("/databases/experiments", "ExperimentValues"));
 		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.GeneticAlgorithm("/databases/experiments/parameters"));
 		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.TabuSearch("/databases/experiments/parameters"));
+		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.AntColony("/databases/experiments/parameters"));
+		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.SimulatedAnnealing("/databases/experiments/parameters"));
 	}
 
 	public void processLogs() throws OperatorException, OperatorCreationException, RepositoryException
@@ -91,7 +93,7 @@ public class ExperimentDataImporter
 		}
 		catch (Exception ex)
 		{
-			_logger.severe(ex.getMessage());
+			_logger.log(Level.SEVERE, ex.getMessage());
 		}
 		
 		writeDataTablesToRepository();
