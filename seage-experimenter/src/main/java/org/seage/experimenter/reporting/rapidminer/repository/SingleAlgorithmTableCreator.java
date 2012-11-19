@@ -10,10 +10,10 @@ import com.rapidminer.example.table.AttributeFactory;
 import com.rapidminer.example.table.DoubleArrayDataRow;
 import com.rapidminer.tools.Ontology;
 
-public class ExperimentLogTableCreator extends RMDataTableCreator
+public class SingleAlgorithmTableCreator extends RMDataTableCreator
 {
 
-    public ExperimentLogTableCreator(String repositoryPath, String tableName)
+    public SingleAlgorithmTableCreator(String repositoryPath, String tableName)
     {
         super(repositoryPath, tableName);
         
@@ -105,14 +105,14 @@ public class ExperimentLogTableCreator extends RMDataTableCreator
     {
         double[] valArray = new double[_attributes.size()];
         int i=0;
-        String version = getReportVersion(doc);         
+        String version = getReportVersion(doc);        	
         
         for(Attribute attInfo : _attributes)
         { 
             XmlHelper.XPath xPath = _versionedXPaths.get(version).get(attInfo.getName());
             if(xPath == null)
             {
-                _logger.warning("No XmlHelper.XPath defined for attribute: " + attInfo.getName());
+                _logger.warning(doc.getLocalName() + ": No XmlHelper.XPath defined for attribute: " + attInfo.getName());
                 continue;
             }
             String val = XmlHelper.getValueFromDocument(doc.getDocumentElement(), xPath);//(String) XmlHelper.XPath.evaluate(attInfo.XmlHelper.XPath, doc, XmlHelper.XPathConstants.STRING);; //XmlHelper.XPath

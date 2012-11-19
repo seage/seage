@@ -17,7 +17,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.reporting.rapidminer.old.ProcessPerformer;
 import org.seage.experimenter.reporting.rapidminer.repository.AlgorithmParamsTableCreator;
-import org.seage.experimenter.reporting.rapidminer.repository.ExperimentLogTableCreator;
+import org.seage.experimenter.reporting.rapidminer.repository.SingleAlgorithmTableCreator;
 import org.seage.experimenter.reporting.rapidminer.repository.RMDataTableCreator;
 import org.seage.thread.TaskRunner;
 import org.w3c.dom.Document;
@@ -63,7 +63,7 @@ public class ExperimentDataImporter
 		_repoName = repoName;
 		
 		_rmDataTableCreators = new ArrayList<RMDataTableCreator>();
-		_rmDataTableCreators.add(new ExperimentLogTableCreator("/databases/experiments", "ExperimentValues"));
+		_rmDataTableCreators.add(new SingleAlgorithmTableCreator("/databases/experiments", "ExperimentValues"));
 		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.GeneticAlgorithm("/databases/experiments/parameters"));
 		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.TabuSearch("/databases/experiments/parameters"));
 		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.AntColony("/databases/experiments/parameters"));
@@ -206,7 +206,12 @@ public class ExperimentDataImporter
 						try
 						{
 							Document doc = builder.parse(in);
-
+							String version = doc.getDocumentElement().getAttribute("version");
+							if(version == "")
+							{
+								_logger.warning("Unsupported report version: " + _zipFile.getName());
+								return;
+							}
 							//------------------------------------------------------
 							for(RMDataTableCreator creator : _rmDataTableCreators)
 							    if(creator.isInvolved(doc))

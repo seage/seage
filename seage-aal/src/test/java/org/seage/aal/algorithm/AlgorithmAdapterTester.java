@@ -83,5 +83,7 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
 		
 		DataNode stats = _algReport.getDataNode("Statistics");
 		Assert.assertTrue(stats.getValueInt("numberOfIter") > 0);
+		Assert.assertTrue(stats.getValueDouble("initObjVal") > 0);
+		Assert.assertTrue(stats.getValueInt("avgObjVal") > 0);
 	}
 }
