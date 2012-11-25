@@ -34,12 +34,7 @@ import org.seage.problem.tsp.TourProvider;
  */
 public class TspRandomSolution extends TspSolution {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 7177910038153918189L;
-
-	public TspRandomSolution(City[] cities)
+    public TspRandomSolution(City[] cities)
     {
         super( cities );
         _tour = TourProvider.createRandomTour( cities );

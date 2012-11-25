@@ -53,7 +53,7 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
 
     private QapObjectiveFunction _objectiveFunction;
 
-    public Class getAlgorithmClass() {
+    public Class<ParticleSwarmAdapter> getAlgorithmClass() {
         return ParticleSwarmAdapter.class;
     }
 

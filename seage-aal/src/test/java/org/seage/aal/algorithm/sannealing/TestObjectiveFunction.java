@@ -9,7 +9,7 @@ public class TestObjectiveFunction implements IObjectiveFunction
     @Override
     public void setObjectiveValue(Solution s)
     {
-        s.setObjectiveValue(0);
+        s.setObjectiveValue(1);
     }
 
 }

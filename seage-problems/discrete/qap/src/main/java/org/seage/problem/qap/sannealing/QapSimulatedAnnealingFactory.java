@@ -30,10 +30,9 @@ package org.seage.problem.qap.sannealing;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
-import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.data.ProblemConfig;
-import org.seage.data.DataNode;
+import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.qap.QapProblemInstance;
 
@@ -45,7 +44,7 @@ import org.seage.problem.qap.QapProblemInstance;
 @Annotations.AlgorithmName("Simulated Annealing")
 public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
 {
-    private QapSolution _qapSolution;
+    
 
 //    public QapSimulatedAnnealingFactory(DataNode params, Double[][][] facilityLocation) throws Exception
 //    {
@@ -58,7 +57,7 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
 //            _qapSolution = new QapSortedSolution( facilityLocation );
 //    }
 
-    public Class getAlgorithmClass() {
+    public Class<SimulatedAnnealingAdapter> getAlgorithmClass() {
         return SimulatedAnnealingAdapter.class;
     }
 

@@ -62,8 +62,6 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
     private String _searchID;
     //private String _paramID;
     
-    private boolean _isRunning;
-
     private double _statInitObjVal;
     private double _statEndObjVal;
     private int _statNrOfIterationsDone;

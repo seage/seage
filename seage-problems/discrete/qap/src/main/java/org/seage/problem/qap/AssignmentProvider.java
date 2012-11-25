@@ -108,11 +108,6 @@ public class AssignmentProvider
             int location = -1;
             double price = Double.MAX_VALUE;
             for( int j=0;j<avail.length;j++){
-                double newPrice=0;
-                double a=sumMat[0][i];
-                double b=sumMat[1][j];
-                double add=facilityLocation[2][i][j];
-
                 if(sumMat[0][i]*sumMat[1][j] + facilityLocation[2][i][j] < price)
                     if(avail[j] >= 0){
                     price = sumMat[0][i]*sumMat[1][j] + facilityLocation[2][i][j];
@@ -144,7 +139,7 @@ public class AssignmentProvider
     public static Integer[] createRandomAssignment(Double[][][] facilityLocation)
     {
 //        Integer[] assign = new Integer[ facilityLocation[0][0].length ];
-        List<Integer> listAssign = new ArrayList();
+        List<Integer> listAssign = new ArrayList<Integer>();
         for (int i = 0; i < facilityLocation[0][0].length; i++) {
             listAssign.add(i);
         }

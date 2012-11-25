@@ -66,8 +66,7 @@ public class StatementGrammarRule extends GrammarRule {
         Vector<Symbol> children = treePos.getChildren();
         if (children.size() != 3)
             throw new Exception("Arity error: expected 6 children, found: " + children.size());
-        ///count the result
-        String left = (children.get(0).eval(symbolTable)).toString();
+        (children.get(0).eval(symbolTable)).toString();
         Integer right = (Integer)(children.get(2).eval(symbolTable));
 //        if (left != null && right != null) {
 //            symbolTable.putValue(left, right);

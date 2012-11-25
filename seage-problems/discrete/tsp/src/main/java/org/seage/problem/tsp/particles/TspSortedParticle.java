@@ -30,11 +30,6 @@ package org.seage.problem.tsp.particles;
  * @author Jan Zmatlik
  */
 public class TspSortedParticle extends TspParticle {
-    
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -6649581422758326190L;
 
 	public TspSortedParticle(int dimension)
     {

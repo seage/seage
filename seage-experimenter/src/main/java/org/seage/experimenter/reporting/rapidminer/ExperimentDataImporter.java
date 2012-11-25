@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,22 +13,15 @@ import java.util.zip.ZipFile;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.reporting.rapidminer.old.ProcessPerformer;
 import org.seage.experimenter.reporting.rapidminer.repository.AlgorithmParamsTableCreator;
-import org.seage.experimenter.reporting.rapidminer.repository.SingleAlgorithmTableCreator;
 import org.seage.experimenter.reporting.rapidminer.repository.RMDataTableCreator;
+import org.seage.experimenter.reporting.rapidminer.repository.SingleAlgorithmTableCreator;
 import org.seage.thread.TaskRunner;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 import com.rapidminer.Process;
 import com.rapidminer.RapidMiner;
-import com.rapidminer.example.Attribute;
-import com.rapidminer.example.table.AttributeFactory;
-import com.rapidminer.example.table.DataRow;
-import com.rapidminer.example.table.DoubleArrayDataRow;
 import com.rapidminer.example.table.ListDataRowReader;
 import com.rapidminer.example.table.MemoryExampleTable;
 import com.rapidminer.operator.IOContainer;
@@ -41,27 +33,20 @@ import com.rapidminer.repository.Repository;
 import com.rapidminer.repository.RepositoryException;
 import com.rapidminer.repository.RepositoryManager;
 import com.rapidminer.repository.local.LocalRepository;
-import com.rapidminer.tools.Ontology;
 import com.rapidminer.tools.OperatorService;
 
 public class ExperimentDataImporter
 {
 	private static Logger _logger = Logger.getLogger(ExperimentDataImporter.class.getName());
 	private String _logPath;
-	private String _repoName;
-	
 	private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "seage";
 	private final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "repository";
 	
 	private List<RMDataTableCreator> _rmDataTableCreators;
 	
-	private Hashtable<String, Hashtable<String, XmlHelper.XPath>> _xPaths;
-	
 	public ExperimentDataImporter(String logPath, String repoName) throws RepositoryException
 	{
 		_logPath = logPath;
-		_repoName = repoName;
-		
 		_rmDataTableCreators = new ArrayList<RMDataTableCreator>();
 		_rmDataTableCreators.add(new SingleAlgorithmTableCreator("/databases/experiments", "ExperimentValues"));
 		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.GeneticAlgorithm("/databases/experiments/parameters"));

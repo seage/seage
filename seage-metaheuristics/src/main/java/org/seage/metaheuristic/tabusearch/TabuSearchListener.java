@@ -36,7 +36,7 @@ package org.seage.metaheuristic.tabusearch;
  * @version 1.0
  * @since 1.0
  */
-public interface TabuSearchListener extends java.io.Serializable, java.util.EventListener
+public interface TabuSearchListener extends java.util.EventListener
 {
 
     /**

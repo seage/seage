@@ -41,10 +41,6 @@ public class SatAntColonyTest2 {
 //        String path = "data/uf75/uf75-01.cnf";
         String path = "data/uf20/my.cnf";
         Formula formula = FormulaReader.readFormula(path);
-        double qantumPheromone = 0.01, evaporation = 0.05, defaultPheromone = 1;
-//        double alpha = 1, beta = 2;
-//        int numAnts = 100, iterations = 500;
-
         SatGraph2 graph = new SatGraph2(formula);
 
         System.out.println("formula literals: "+formula.getLiteralCount());

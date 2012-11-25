@@ -67,8 +67,6 @@ public class RMTest {
 
 			process.run(new IOContainer(mex.createExampleSet()));
 
-			int a = 0;
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

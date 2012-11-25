@@ -163,7 +163,7 @@ public class Launcher {
         }
         
         if (args[0].equals("-cp")) {
-            new ClasspathTest().main(args);
+			ClasspathTest.main(args);
             return;
         }
 

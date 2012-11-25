@@ -26,20 +26,15 @@
 package org.seage.experimenter.reporting.rapidminer.repository;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.logging.Logger;
 
 import org.seage.data.xml.XmlHelper;
-import org.seage.experimenter.reporting.rapidminer.ExperimentDataImporter;
 import org.w3c.dom.Document;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.table.DataRow;
-import com.rapidminer.example.table.DoubleArrayDataRow;
 
 public abstract class RMDataTableCreator
 {

@@ -50,9 +50,6 @@ import org.w3c.dom.ProcessingInstruction;
  */
 public class DataNode implements Serializable
 {
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 2193543253630004569L;
 
 	private String _name;
@@ -369,9 +366,10 @@ public class DataNode implements Serializable
         {
             result = ObjectCloner.deepCopy(this);
         }
-        finally
-        {
-            return result;
-        }
+		catch (Exception e)
+		{
+		}
+        
+        return result;
     }
 }

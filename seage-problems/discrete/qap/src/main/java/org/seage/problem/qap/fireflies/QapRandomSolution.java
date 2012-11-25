@@ -25,7 +25,6 @@
  */
 package org.seage.problem.qap.fireflies;
 
-import org.seage.problem.qap.fireflies.*;
 import org.seage.problem.qap.AssignmentProvider;
 
 /**

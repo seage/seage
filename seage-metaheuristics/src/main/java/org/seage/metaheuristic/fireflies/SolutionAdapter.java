@@ -71,11 +71,7 @@ import java.util.Locale;
 public abstract class SolutionAdapter implements Solution
 {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4325320090356824935L;
-	/** Objective function value. */
+    /** Objective function value. */
     private double[] objectiveValue;
     
 

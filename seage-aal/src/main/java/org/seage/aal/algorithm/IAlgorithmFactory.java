@@ -26,15 +26,14 @@
 
 package org.seage.aal.algorithm;
 
-import java.io.Serializable;
-import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.data.ProblemInstanceInfo;
 
 /**
  *
  * @author Richard Malek
  */
-public interface IAlgorithmFactory extends Serializable
+public interface IAlgorithmFactory
 {
     Class<?> getAlgorithmClass();
 

@@ -27,7 +27,6 @@
  */
 package org.seage.problem.qap;
 
-import java.awt.Graphics2D;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 
@@ -38,9 +37,6 @@ import java.awt.image.BufferedImage;
  */
 public class Visualizer
 {
-    private static final int _pWidth = 4;
-    private static final int _pHeight = 4;
-
     // <editor-fold defaultstate="collapsed" desc="Singleton design pattern">
     private static Visualizer _instance;
     private Visualizer()
@@ -59,7 +55,7 @@ public class Visualizer
     {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB );
 
-        Graphics2D graphics = (Graphics2D)image.getGraphics();
+        image.getGraphics();
 
         /* NEEDS TO BE IMPLEMENTED
         // getting current width ang height

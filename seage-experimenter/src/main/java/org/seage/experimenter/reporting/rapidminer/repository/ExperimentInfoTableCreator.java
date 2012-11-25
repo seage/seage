@@ -1,14 +1,6 @@
 package org.seage.experimenter.reporting.rapidminer.repository;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-
-import org.seage.data.xml.XmlHelper;
 import org.w3c.dom.Document;
-
-import com.rapidminer.example.table.AttributeFactory;
-import com.rapidminer.example.table.DataRow;
-import com.rapidminer.tools.Ontology;
 
 public class ExperimentInfoTableCreator extends RMDataTableCreator
 {

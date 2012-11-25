@@ -49,7 +49,7 @@ public class CondLessEqualGrammarRule extends GrammarRule {
         super (new NonterminalSymbol("COND"), new Vector<Symbol> (), uniqueId);
         Vector<Symbol> left = getRight();
         left.add(new NonterminalSymbol("E"));
-        Vector<String> s = new Vector<String>();
+        new Vector<String>();
         left.add(new TerminalSymbol("<=", null));
         left.add(new NonterminalSymbol("E"));
     }

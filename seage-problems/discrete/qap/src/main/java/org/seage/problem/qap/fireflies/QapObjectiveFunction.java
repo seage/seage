@@ -69,7 +69,6 @@ public class QapObjectiveFunction implements ObjectiveFunction
                 double price = 0;
                 for(int i=0;i<len;i++){
                     for(int j=0;j<len;j++){
-                        double a = _matrix[0][i][j];
                         price+=_matrix[0][i][j]*_matrix[1][assign[i]][assign[j]];
                     }
                 }

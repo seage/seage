@@ -31,7 +31,8 @@ package org.seage.metaheuristic.fireflies;
  *
  * @author Karel Durkota
  */
-public interface Solution extends java.lang.Cloneable, java.io.Serializable{
+public interface Solution extends Cloneable 
+{
 
     /**
      * If the value has been set for this solution, then the value will

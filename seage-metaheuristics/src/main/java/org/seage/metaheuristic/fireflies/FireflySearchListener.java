@@ -38,7 +38,7 @@ package org.seage.metaheuristic.fireflies;
  * @version 1.0
  * @since 1.0
  */
-public interface FireflySearchListener extends java.io.Serializable, java.util.EventListener
+public interface FireflySearchListener extends java.util.EventListener
 {
 
     /**

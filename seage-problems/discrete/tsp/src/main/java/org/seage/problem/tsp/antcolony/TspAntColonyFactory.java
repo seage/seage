@@ -30,15 +30,12 @@ import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
-import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspProblemInstance;
-import org.seage.problem.tsp.sannealing.TspGreedySolution;
-import org.seage.problem.tsp.sannealing.TspSolution;
 
 /**
  *
@@ -48,8 +45,6 @@ import org.seage.problem.tsp.sannealing.TspSolution;
 @Annotations.AlgorithmName("AntColony")
 public class TspAntColonyFactory implements IAlgorithmFactory
 {
-	private static final long serialVersionUID = -2607094079724657650L;
-
 	public Class<AntColonyAdapter> getAlgorithmClass() {
         return AntColonyAdapter.class;
     }

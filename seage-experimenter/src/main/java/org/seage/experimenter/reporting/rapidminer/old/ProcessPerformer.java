@@ -36,6 +36,7 @@ import com.rapidminer.repository.RepositoryManager;
 import com.rapidminer.repository.local.LocalRepository;
 import java.io.File;
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.seage.data.DataNode;
@@ -141,7 +142,8 @@ public class ProcessPerformer {
         }
     }
     
-    public List<DataNode> getProcessesDataNodes() throws Exception
+    @SuppressWarnings("unchecked")
+	public List<DataNode> getProcessesDataNodes() throws Exception
     {        
         for(NamedIOObjectNode exampleSetNode : _exampleSetNodes)
         {
@@ -151,7 +153,7 @@ public class ProcessPerformer {
             
             while( iterator.hasNext() )
             {
-                Map.Entry<String, IOObject> entry = (Map.Entry)iterator.next();
+                Map.Entry<String, IOObject> entry = (Entry<String, IOObject>)iterator.next();
                 
                 IOObject obj = entry.getValue();
                 if(obj instanceof IOObjectCollection)

@@ -50,7 +50,7 @@ public class SatGreedySolution extends SatSolution {
 
     //OK
     private void initGreedySolution(Formula formula) throws Exception {
-        List<Integer> listOfLiteralsIndexes = new ArrayList();
+        List<Integer> listOfLiteralsIndexes = new ArrayList<Integer>();
         initLiterals(formula.getLiteralCount());
         int numLiterals = formula.getLiteralCount();
         for(int i = 0; i < numLiterals; i++){

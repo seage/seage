@@ -64,7 +64,6 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
     private SolutionComparator    _comparator;
     private FireflySearchObserver _observer;
     private Solution              _bestEverSolution;
-    private boolean               _maximizing;
     private AlgorithmParams       _params;
     private String                _searchID;
     // private String _paramID;
@@ -87,7 +86,6 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
         _fireflySearch = new FireflySearch(operator, evaluator);
         _fireflySearch.addFireflySearchListener(_observer);
         _searchID = searchID;
-        _maximizing = maximizing;
     }
 
     /**
@@ -192,11 +190,6 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
 
     private class FireflySearchObserver implements FireflySearchListener
     {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = 4493187986748464658L;
-
         public void FireflySearchStarted(FireflySearchEvent e)
         {
             _statNumNewSol = _statLastIterNewSol = 0;
@@ -237,7 +230,8 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
             }
         }
 
-        public void noChangeInValueIterationMade(FireflySearchEvent e)
+        @SuppressWarnings("unused")
+		public void noChangeInValueIterationMade(FireflySearchEvent e)
         {
 
         }

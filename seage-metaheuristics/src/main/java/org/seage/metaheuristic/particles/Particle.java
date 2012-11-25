@@ -26,19 +26,14 @@
 
 package org.seage.metaheuristic.particles;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  *
  * @author Jan Zmatlik
  */
-public class Particle implements Cloneable, Serializable{
-
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -641046029890977230L;
+public class Particle implements Cloneable
+{
 
 	private double[] _coords;
 

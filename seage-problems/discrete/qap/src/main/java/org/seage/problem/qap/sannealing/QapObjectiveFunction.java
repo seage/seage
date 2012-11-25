@@ -34,20 +34,15 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 public class QapObjectiveFunction implements IObjectiveFunction
 {
-    private QapSolution _currrentQapSolution;
-    
     public void setObjectiveValue(Solution solution)
     {
-        _currrentQapSolution = (QapSolution)solution;
-
         Integer[] assign = ((QapSolution) solution)._assign;
         int len = assign.length;
-        Double[][][] _matrix = ((QapSolution)solution)._facilityLocation;
+        Double[][][] _matrix = QapSolution._facilityLocation;
 
         double price = 0;
         for(int i=0;i<len;i++){
             for(int j=0;j<len;j++){
-                double a = _matrix[0][i][j];
                 price+=_matrix[0][i][j]*_matrix[1][assign[i]][assign[j]];
             }
         }

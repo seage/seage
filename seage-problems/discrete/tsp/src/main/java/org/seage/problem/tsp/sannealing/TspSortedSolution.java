@@ -33,11 +33,6 @@ import org.seage.problem.tsp.TourProvider;
  * @author Jan Zmatlik
  */
 public class TspSortedSolution extends TspSolution{
-    
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5819925041074672416L;
 
 	public TspSortedSolution(City[] cities)
     {

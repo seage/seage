@@ -40,10 +40,7 @@ public class QapPhenotypeEvaluator implements IPhenotypeEvaluator
     @Override
     public double[] evaluate(Object[] phenotypeSubject, ProblemInstanceInfo instance) throws Exception
     {
-        double assignPrice = 0;
         Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
-        int numFacilities = facilityLocation[0][0].length;
-
         double price = 0;
         for(int i=0;i<facilityLocation[0][0].length;i++){
             for(int j=0;j<facilityLocation[0][0].length;j++){

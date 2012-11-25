@@ -32,12 +32,12 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
+
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInstanceInfo;
-import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 
 /**
@@ -77,7 +77,7 @@ public class QapProblemProvider extends ProblemProvider
         Object[][] result = new Object[numAssigns][assignPrice];
 
 //	Random r = new Random();
-        ArrayList al = new ArrayList();
+        ArrayList<Integer> al = new ArrayList<Integer>();
         for(int i=0;i<assignPrice;i++)
             al.add(i);
         for(int i=0;i<numAssigns;i++){
@@ -131,7 +131,6 @@ public class QapProblemProvider extends ProblemProvider
     @Override
     public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception
     {
-        Integer[] assign = (Integer[])solution;
 
         // TODO: A - Implement visualize method
 //        String outPath = _problemParams.getDataNode("visualizer").getValueStr("outPath");

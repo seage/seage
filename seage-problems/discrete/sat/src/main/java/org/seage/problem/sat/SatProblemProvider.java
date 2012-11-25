@@ -40,8 +40,6 @@ import org.seage.aal.data.ProblemInstanceInfo;
 @Annotations.ProblemName("Boolean Satisfiability Problem")
 public class SatProblemProvider extends ProblemProvider
 {
-    private static final long serialVersionUID = -7802258959521522914L;
-
     public ProblemInstanceInfo initProblemInstance(ProblemConfig params) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }

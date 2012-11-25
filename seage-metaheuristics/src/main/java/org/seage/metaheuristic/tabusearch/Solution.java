@@ -48,8 +48,7 @@ package org.seage.metaheuristic.tabusearch;
  * @version 1.0
  * @since 1.0b
  */
-public interface Solution 
-extends java.lang.Cloneable, java.io.Serializable
+public interface Solution extends Cloneable
 {
 
 

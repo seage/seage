@@ -42,7 +42,7 @@ package org.seage.metaheuristic.tabusearch;
  * @version 1.0
  * @since 1.0
  */        
-public interface Move extends java.io.Serializable
+public interface Move
 {   
 
     /**

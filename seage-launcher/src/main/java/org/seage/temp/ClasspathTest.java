@@ -46,11 +46,11 @@ public class ClasspathTest {
 		new ClasspathTest().foo();
 		List<String> classes = new ClassPathAnalyzer().analyzeClassPath();
 
-		for (String c : classes) {
+		//for (String c : classes) {
 			// System.out.println(c);
 
 			// Class.forName(c);
-		}
+		//}
 
 		System.out.println("CRC: " + classes.size());
 	}
@@ -148,7 +148,7 @@ public class ClasspathTest {
 		public void process() throws IOException {
 			try {
 				JarFile jf = new JarFile(new File(_path));
-				Manifest mf = jf.getManifest();
+				jf.getManifest();
 
 				for (JarCPItem i : getDependencyJars())
 					System.out.println("\t" + i);

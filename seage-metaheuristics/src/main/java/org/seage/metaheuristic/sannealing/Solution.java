@@ -25,18 +25,13 @@
  */
 package org.seage.metaheuristic.sannealing;
 
-import java.io.Serializable;
 
 /**
  *
  * @author Jan Zmatlik
  */
-public class Solution implements Cloneable, Serializable {
+public class Solution  {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8796081540194212352L;
 	/**
      * The value is value of Solution
      */

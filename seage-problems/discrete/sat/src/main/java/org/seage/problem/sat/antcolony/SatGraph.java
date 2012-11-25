@@ -59,7 +59,8 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
      * @param preparedSolution - pre-prepared solution
      * @return - Prepared array of values
      */
-    private boolean[] createSol(Node node) {
+    @SuppressWarnings("unused")
+	private boolean[] createSol(Node node) {
         boolean[] solution = _preparedSolution.clone();
         int index = Math.abs(node.getId());
         if (node.getId() < 0) {

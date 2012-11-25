@@ -36,12 +36,7 @@ import org.seage.aal.data.ProblemInstanceInfo;
 public class TspPhenotypeEvaluator implements IPhenotypeEvaluator
 {
     
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -3361951575532763882L;
-
-	@Override
+    @Override
     public double[] evaluate(Object[] phenotypeSubject, ProblemInstanceInfo instance) throws Exception
     {
         double tourLength = 0;

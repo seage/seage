@@ -3,7 +3,6 @@ package org.seage.aal.algorithm;
 import junit.framework.Assert;
 
 import org.seage.aal.data.AlgorithmParams;
-import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.data.DataNode;
 
 public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
@@ -41,8 +40,8 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
         _algorithm.setParameters(_algParams);
         _algorithm.startSearching();
         _algorithm.solutionsToPhenotype();
-        _algorithm.solutionsFromPhenotype(_solutions);
-        _algorithm.startSearching();
+//        _algorithm.solutionsFromPhenotype(_solutions);
+//        _algorithm.startSearching();
 
     }
 

@@ -137,7 +137,6 @@ class ExperimentTask implements Runnable{
     public void run() {
         String problemID = "";
         String algorithmID = "";
-        String instanceName = "";
         try{
             problemID = _config.getDataNode("Problem").getValueStr("id");
             algorithmID = _config.getDataNode("Algorithm").getValueStr("id");
@@ -148,7 +147,7 @@ class ExperimentTask implements Runnable{
 
             // problem instance
             ProblemInstanceInfo instance = provider.initProblemInstance(_config);
-            instanceName = instance.toString();
+            instance.toString();
             // algorithm
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, _config);
 

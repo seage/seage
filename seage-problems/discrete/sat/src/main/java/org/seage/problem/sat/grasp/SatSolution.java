@@ -25,15 +25,15 @@
  */
 package org.seage.problem.sat.grasp;
 
-import java.io.Serializable;
 import java.util.Random;
+
 import org.seage.metaheuristic.grasp.Solution;
 
 /**
  *
  * @author Martin Zaloga
  */
-public class SatSolution extends Solution implements java.lang.Cloneable, Serializable {
+public class SatSolution extends Solution {
 
     protected boolean[] _litValues;
     protected Random _rnd;

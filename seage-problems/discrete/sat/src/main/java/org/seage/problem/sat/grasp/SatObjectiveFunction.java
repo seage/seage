@@ -25,14 +25,12 @@
  */
 package org.seage.problem.sat.grasp;
 
-import java.io.Serializable;
 import org.seage.data.ObjectCloner;
 import org.seage.metaheuristic.grasp.IMove;
 import org.seage.metaheuristic.grasp.IObjectiveFunction;
 import org.seage.metaheuristic.grasp.Solution;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
-import org.seage.problem.sat.Literal;
 
 /**
  *

@@ -132,7 +132,7 @@ public class SingleAlgorithmExperimenter implements IExperimenter
                 _logger.info("Number of runs: " + numOfConfigs*5);
                 //_logger.info("Memory used for configs: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
 
-                long expID = _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), experimentID, problemID, algID, instanceID, timeoutS);
+                _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), experimentID, problemID, algID, instanceID, timeoutS);
             }
         }
         _logger.info("-------------------------------------");

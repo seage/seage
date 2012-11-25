@@ -6,8 +6,6 @@ import org.seage.metaheuristic.tabusearch.Solution;
 
 public class TestObjectiveFunction implements ObjectiveFunction
 {
-	private static final long serialVersionUID = -8957639520367369780L;
-
 	@Override
     public double[] evaluate(Solution soln, Move move) throws Exception
     {

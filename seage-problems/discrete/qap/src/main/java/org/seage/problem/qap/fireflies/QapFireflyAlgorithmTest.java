@@ -39,9 +39,8 @@ import org.seage.problem.qap.FacilityLocationProvider;
  */
 public class QapFireflyAlgorithmTest implements FireflySearchListener
 {
-    private static final long serialVersionUID = 4718562040304593731L;
-    
-    private static final Logger log = Logger.getLogger("org.seage");
+    @SuppressWarnings("unused")
+	private static final Logger log = Logger.getLogger("org.seage");
     private static String _dataPath = "data/chr12a.dat";
 //    private static String _dataPath = "D:\\qap\\bur26a.dat";
     public FireflySearch fs;

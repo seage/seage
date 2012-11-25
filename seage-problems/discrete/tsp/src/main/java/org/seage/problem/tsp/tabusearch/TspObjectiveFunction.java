@@ -35,11 +35,7 @@ import org.seage.problem.tsp.City;
 public class TspObjectiveFunction implements ObjectiveFunction
 {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 3000751801782794274L;
-	public double[][] _matrix;
+    public double[][] _matrix;
 
     public TspObjectiveFunction(City[] cities)
     {

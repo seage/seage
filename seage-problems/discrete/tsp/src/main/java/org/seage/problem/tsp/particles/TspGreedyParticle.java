@@ -31,12 +31,7 @@ package org.seage.problem.tsp.particles;
  */
 public class TspGreedyParticle extends TspParticle {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 4470752712563389539L;
-
-	public TspGreedyParticle(int dimension) throws Exception
+    public TspGreedyParticle(int dimension) throws Exception
     {
         super(  dimension  );
 //        _tour = TourProvider.createGreedyTour( cities );

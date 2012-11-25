@@ -46,8 +46,9 @@ import org.seage.thread.TaskRunner;
 public class ExperimentRunner
 {
 
-    private static Logger _logger                = Logger.getLogger(ExperimentRunner.class.getName());
-    private int           _numExperimentAttempts = 5;
+    @SuppressWarnings("unused")
+	private static Logger _logger = Logger.getLogger(ExperimentRunner.class.getName());
+    private int _numExperimentAttempts = 5;
 
     /**
      * 

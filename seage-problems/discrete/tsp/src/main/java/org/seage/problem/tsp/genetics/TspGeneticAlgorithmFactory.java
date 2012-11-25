@@ -46,12 +46,7 @@ import org.seage.problem.tsp.TspProblemInstance;
 public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -2607094079724657650L;
-
-	public Class<GeneticAlgorithmAdapter> getAlgorithmClass() {
+    public Class<GeneticAlgorithmAdapter> getAlgorithmClass() {
         return GeneticAlgorithmAdapter.class;
     }
 

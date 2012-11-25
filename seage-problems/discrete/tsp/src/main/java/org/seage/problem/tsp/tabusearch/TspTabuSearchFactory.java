@@ -45,11 +45,6 @@ import org.seage.problem.tsp.TspProblemInstance;
 public class TspTabuSearchFactory implements IAlgorithmFactory
 {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 8631171212961224975L;
-
 	public Class<TabuSearchAdapter> getAlgorithmClass() {
         return TabuSearchAdapter.class;
     }

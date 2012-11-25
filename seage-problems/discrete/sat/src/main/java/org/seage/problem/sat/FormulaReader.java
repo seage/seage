@@ -68,7 +68,7 @@ public class FormulaReader
 
     private static int[] readLine(StreamTokenizer stok) throws IOException
     {
-        ArrayList res = new ArrayList();
+        ArrayList<Integer> res = new ArrayList<Integer>();
         double sum = 0;
         int[] result = null;
         boolean comment = false;

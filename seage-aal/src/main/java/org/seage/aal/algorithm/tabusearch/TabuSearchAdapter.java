@@ -48,11 +48,9 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 
 	private TabuSearch _tabuSearch;
 	private ObjectiveFunction _objectiveFunction;
-	private LongTermMemory _longTermMemory;
 	private TabuSearchObserver _observer;
 	private int _iterationToGo;
 	private int _tabuListLength;
-	private int _iterationDivers;
 	private boolean _maximizing;
 	protected Solution[] _solutions;
 	protected int _solutionsToExplore;
@@ -159,7 +157,7 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 		_iterationToGo = _statNumIter = p.getValueInt("numIteration");
 
 		_tabuListLength = p.getValueInt("tabuListLength");
-		_iterationDivers = p.getValueInt("numIterDivers");
+		p.getValueInt("numIterDivers");
 		_solutionsToExplore = p.getValueInt("numSolutions");
 
 	}
@@ -190,6 +188,7 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 		return _reporter.getReport();
 	}
 
+	@SuppressWarnings("deprecation")
 	private void setBestEverSolution() throws Exception
 	{
 		try
@@ -206,7 +205,7 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 				{
 					_solutions[i].setObjectiveValue(_objectiveFunction.evaluate(_solutions[i], null));
 				}
-				if (_tabuSearch.firstIsBetterThanSecond(_solutions[i].getObjectiveValue(), _bestEverSolution.getObjectiveValue(), _maximizing))
+				if (TabuSearch.firstIsBetterThanSecond(_solutions[i].getObjectiveValue(), _bestEverSolution.getObjectiveValue(), _maximizing))
 				{
 					_bestEverSolution = (Solution) _solutions[i].clone();
 				}
@@ -223,23 +222,8 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 	{
 		// params
 
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -4250943156287273367L;
-		public int _newBestSolutionFound;
-		private int _newCurrentSolutionFound;
-		private int _unimprovingMoveMade;
-		private int _improvingMoveMade;
-		private int _noChangeInValueMoveMade;
-
 		public TabuSearchObserver()
 		{
-			_newBestSolutionFound = 0;
-			_newCurrentSolutionFound = 0;
-			_unimprovingMoveMade = 0;
-			_improvingMoveMade = 0;
-			_noChangeInValueMoveMade = 0;
 		}
 
 		public void tabuSearchStarted(TabuSearchEvent e)
@@ -253,11 +237,11 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 			_algorithmStopped = true;
 		}
 
+		@SuppressWarnings("deprecation")
 		public void newBestSolutionFound(TabuSearchEvent e)
 		{
 			try
 			{
-				_newBestSolutionFound++;
 				Solution newBest = e.getTabuSearch().getBestSolution();
 
 				if (_bestEverSolution.getObjectiveValue() == null)
@@ -276,7 +260,7 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 						_statLastIterNewSol = e.getTabuSearch().getIterationsCompleted();
 					}
 				}
-				else if (_tabuSearch.firstIsBetterThanSecond(newBest.getObjectiveValue(), _bestEverSolution.getObjectiveValue(), _maximizing))
+				else if (TabuSearch.firstIsBetterThanSecond(newBest.getObjectiveValue(), _bestEverSolution.getObjectiveValue(), _maximizing))
 				{
 					_bestEverSolution = (Solution) newBest.clone();
 					// System.out.println(_searchID + "  " +
@@ -310,22 +294,18 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 
 		public void newCurrentSolutionFound(TabuSearchEvent e)
 		{
-			_newCurrentSolutionFound++;
 		}
 
 		public void unimprovingMoveMade(TabuSearchEvent e)
 		{
-			_unimprovingMoveMade++;
 		}
 
 		public void improvingMoveMade(TabuSearchEvent e)
 		{
-			_improvingMoveMade++;
 		}
 
 		public void noChangeInValueMoveMade(TabuSearchEvent e)
 		{
-			_noChangeInValueMoveMade++;
 		}
 	}
 }

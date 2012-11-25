@@ -33,11 +33,7 @@ import org.seage.metaheuristic.tabusearch.*;
  */
 public class TspSwapMove implements Move 
 {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -9074270137013779182L;
-	public int customer;
+    public int customer;
     public int movement;
 
 

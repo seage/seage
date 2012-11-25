@@ -26,14 +26,14 @@ import java.util.*;
  */
 public class Formula {
 
-    private ArrayList _clauses;
+    private ArrayList<Clause> _clauses;
     private int _literalCount;
     private Clause[] __null;
     private ArrayList< ArrayList<Literal>> _literals;
 
     public Formula(List<Clause> clauses)
     {
-        _clauses = new ArrayList(clauses);
+        _clauses = new ArrayList<Clause>(clauses);
         __null = new Clause[0];
 
         for(Clause c : clauses)

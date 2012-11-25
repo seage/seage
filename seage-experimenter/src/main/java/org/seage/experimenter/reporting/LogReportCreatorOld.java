@@ -174,7 +174,8 @@ public class LogReportCreatorOld implements ILogReport {
 
     }
     
-    private void report1()
+    @SuppressWarnings("unused")
+	private void report1()
     {
         System.out.println("Creating reports 1...");
         

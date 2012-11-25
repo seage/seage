@@ -44,9 +44,7 @@ import org.seage.problem.qap.QapProblemInstance;
 @Annotations.AlgorithmName("Tabu Search")
 public class QapTabuSearchFactory implements IAlgorithmFactory
 {
-    private static final long serialVersionUID = 5421342721247275136L;
-
-    public Class getAlgorithmClass() {
+    public Class<TabuSearchAdapter> getAlgorithmClass() {
         return TabuSearchAdapter.class;
     }
 

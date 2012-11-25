@@ -25,7 +25,6 @@
  */
 package org.seage.aal.algorithm;
 
-import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +32,8 @@ import java.util.logging.Logger;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.data.ProblemInfo;
-import org.seage.classutil.ClassUtil;
 import org.seage.classutil.ClassInfo;
+import org.seage.classutil.ClassUtil;
 import org.seage.data.DataNode;
 
 
@@ -43,10 +42,9 @@ import org.seage.data.DataNode;
  *
  * @author Richard Malek
  */
-public abstract class ProblemProvider implements IProblemProvider, Serializable
+public abstract class ProblemProvider implements IProblemProvider
 {
     private static Logger _logger = Logger.getLogger(ProblemProvider.class.getName());
-	private static final long serialVersionUID = -6411298239768735782L;
 	private static HashMap<String, IProblemProvider> _providers;
     private ProblemInfo _problemInfo;
     private HashMap<String, IAlgorithmFactory> _algFactories;

@@ -26,15 +26,15 @@
 
 package org.seage.aal.algorithm;
 
-import org.seage.aal.data.ProblemInstanceInfo;
-import java.io.Serializable;
 import java.util.Comparator;
+
+import org.seage.aal.data.ProblemInstanceInfo;
 
 /**
  *
  * @author Rick
  */
-public interface IPhenotypeEvaluator extends Comparator<double[]>, Serializable
+public interface IPhenotypeEvaluator extends Comparator<double[]>
 {
     double[] evaluate(Object[] phenotypeSubject, ProblemInstanceInfo instance) throws Exception;
 }

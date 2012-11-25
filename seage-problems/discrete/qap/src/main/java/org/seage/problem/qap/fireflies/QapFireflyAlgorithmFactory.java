@@ -45,13 +45,11 @@ import org.seage.problem.qap.QapProblemInstance;
 @Annotations.AlgorithmName("FireflyAlgorithm")
 public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
 {
-    private static final long serialVersionUID = -864910230419679081L;
-
     public void setProblemProvider(IProblemProvider provider) throws Exception {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Class getAlgorithmClass() {
+    public Class<FireflyAlgorithmAdapter> getAlgorithmClass() {
         return FireflyAlgorithmAdapter.class;
     }
 

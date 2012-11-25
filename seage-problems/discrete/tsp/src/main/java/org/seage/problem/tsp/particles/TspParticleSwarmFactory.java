@@ -49,12 +49,7 @@ import org.seage.problem.tsp.TspProblemInstance;
 @Annotations.AlgorithmName("Particle Swarm")
 public class TspParticleSwarmFactory implements IAlgorithmFactory
 {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5757913635304836763L;
-
-	private int _numParticles;
+    private int _numParticles;
 
     private TspObjectiveFunction _objectiveFunction;
 
