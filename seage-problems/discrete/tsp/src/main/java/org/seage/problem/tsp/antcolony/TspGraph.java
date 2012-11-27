@@ -36,7 +36,7 @@ import org.seage.problem.tsp.City;
  */
 public class TspGraph extends Graph {
 
-    public TspGraph(City[] cities) {
+    public TspGraph(City[] cities) throws Exception {
         super();
         for (int id = 0; id < cities.length; id++) {
             _nodes.put(new Integer(id), new Node(id));
@@ -53,15 +53,16 @@ public class TspGraph extends Graph {
      * @return - Euclide edge length
      */
     private double calculateEdgeLength(Node start, Node end, City[] cities) {
-        double _dX = (cities[start.getId()].X - cities[end.getId()].X);
-        double _dY = (cities[start.getId()].Y - cities[end.getId()].Y);
+        double _dX = (cities[start.getID()].X - cities[end.getID()].X);
+        double _dY = (cities[start.getID()].Y - cities[end.getID()].Y);
         return Math.sqrt(_dX * _dX + _dY * _dY);
     }
 
     /**
      * List of graph edges filling
+     * @throws Exception 
      */
-    private void fillEdgeMap(City[] cities) {
+    private void fillEdgeMap(City[] cities) throws Exception {
     	for(int i=0;i<_nodes.size();i++)			// 0 1 2 3: 0-1, 0-2, 0-3, 1-2, 1-3, 2-3
     	{	
     		for(int j=i+1;j<_nodes.size();j++)
@@ -73,8 +74,8 @@ public class TspGraph extends Graph {
     			Edge edge = new Edge(n1, n2);
     			edge.setEdgePrice(calculateEdgeLength(n1, n2, cities));
     			_edges.add(edge);
-    			n1.addConnection(edge);
-    			n2.addConnection(edge);
+    			n1.addEdge(edge);
+    			n2.addEdge(edge);
     		}	
     	}
     }

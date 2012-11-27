@@ -64,7 +64,7 @@ public class SatAntColonyTest
         boolean[] s = new boolean[colony.getBestPath().size()];
         for(int i=0;i<s.length;i++)
         {
-            s[i] = colony.getBestPath().get(i).getNode1().getId() > 0;
+            s[i] = colony.getBestPath().get(i).getNode1().getID() > 0;
             int s2 = 0;
             if(s[i]) s2 =1;
             System.out.print(s2);

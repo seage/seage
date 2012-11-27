@@ -43,7 +43,7 @@ public class Ant {
     protected double _distanceTravelled;
     protected HashSet<Node> _visited;
     protected List<Edge> _path;
-    protected Integer[] _nodeIDs;
+    protected List<Integer> _nodeIDs;
     
 	protected AntBrain _brain;
 
@@ -52,11 +52,24 @@ public class Ant {
 		_brain = brain;		
     }	
 	
-	public Ant(AntBrain brain, Integer[] nodeIDs)
+	public Ant(AntBrain brain, List<Integer> nodeIDs)
     {
 		this(brain);
 		_nodeIDs = nodeIDs;
     }
+	
+	public List<Edge> doFirstExploration(Graph graph) throws Exception
+	{
+		_path = _brain.getEdgesToNodes(_nodeIDs, graph);
+		_distanceTravelled = 0;
+		for (Edge edge : _path)
+		{
+			_distanceTravelled += edge.getEdgePrice();
+			edge.addLocalPheromone(_brain.getQuantumPheromone() / (_distanceTravelled));
+		}
+		
+		return _path;
+	}
 	
     /**
      * Ant passage through the graph
@@ -70,33 +83,25 @@ public class Ant {
         _currentPosition = startingNode;
         _visited.add(startingNode);
 
+        _nodeIDs.clear();
         List<Edge> edges = _brain.getAvailableEdges(_currentPosition, _visited);
-        while (edges != null && edges.size() > 0) {
+        
+        while (edges != null && edges.size() > 0) 
+        {
             Edge nextEdge = _brain.selectNextEdge(edges, _visited);
-            updatePosition(nextEdge);
+            Node nextNode = nextEdge.getNode1().equals(_currentPosition) ? nextEdge.getNode2() : nextEdge.getNode1();
+            
+            _distanceTravelled += nextEdge.getEdgePrice();
+            _path.add(nextEdge);
+            _visited.add(nextNode);
+            _currentPosition = nextNode;
+            _nodeIDs.add(nextNode.getID());
+            
             edges = _brain.getAvailableEdges(_currentPosition, _visited);
         }        
 
-        //_distanceTravelled = _brain.pathCost(_path);
         leavePheromone();
-        return _path; // Report
-    }
-
-    /**
-     * Update ants position
-     * @param selectedEdge - Actual selected edge
-     */
-    protected void updatePosition(Edge arcChoice) {
-        Node choiceNode;
-        if (arcChoice.getNode1().equals(_currentPosition)) {
-            choiceNode = (arcChoice.getNode2());
-        } else {
-            choiceNode = (arcChoice.getNode1());
-        }
-        _distanceTravelled += arcChoice.getEdgePrice();
-        _path.add(arcChoice);
-        _visited.add(choiceNode);
-        _currentPosition = choiceNode;
+        return _path;
     }
 
     /**
@@ -112,8 +117,13 @@ public class Ant {
 		return _brain;
 	}
 	
-    public Integer[] getNodeIDs()
+    public List<Integer> getNodeIDs()
 	{
 		return _nodeIDs;
 	}
+    
+    public double getDistanceTravelled()
+    {
+    	return _distanceTravelled;
+    }
 }

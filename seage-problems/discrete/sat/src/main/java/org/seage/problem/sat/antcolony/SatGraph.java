@@ -39,7 +39,7 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
 
     private boolean[] _preparedSolution;
 
-    public SatGraph(Formula formula) {
+    public SatGraph(Formula formula) throws Exception {
         super();
         _nodes.put(new Integer(0), new Node(0));
         for (int i = 1; i <= formula.getLiteralCount(); i++) {
@@ -62,8 +62,8 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
     @SuppressWarnings("unused")
 	private boolean[] createSol(Node node) {
         boolean[] solution = _preparedSolution.clone();
-        int index = Math.abs(node.getId());
-        if (node.getId() < 0) {
+        int index = Math.abs(node.getID());
+        if (node.getID() < 0) {
             solution[index - 1] = false;
         }
         return solution;
@@ -74,20 +74,22 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
      * @param start - Start node
      * @param end - Destination node
      * @param formula - Readed formula
+     * @throws Exception 
      */
-    private void makeEdge(Node start, Node end, Formula formula) {
+    private void makeEdge(Node start, Node end, Formula formula) throws Exception {
         Edge edge = new Edge(start, end);
 //        edge.setEdgePrice(FormulaEvaluator.evaluate(formula, createSol(end)));
-        edge.setEdgePrice(FormulaEvaluator.evaluate(formula, Math.abs(end.getId())-1, end.getId()>0));
+        edge.setEdgePrice(FormulaEvaluator.evaluate(formula, Math.abs(end.getID())-1, end.getID()>0));
         _edges.add(edge);
-        start.addConnection(edge);
+        start.addEdge(edge);
     }
 
     /**
      * List of edges filling
      * @param formula - Readed formula
+     * @throws Exception 
      */
-    private void fillEdgeMap(Formula formula) {
+    private void fillEdgeMap(Formula formula) throws Exception {
         makeEdge(_nodes.get(0), _nodes.get(1), formula);
         makeEdge(_nodes.get(0), _nodes.get(2), formula);
         for (int i = 1; i < formula.getLiteralCount() * 2 - 2; i += 2) {

@@ -34,11 +34,14 @@ import java.util.*;
 public class Node {
 
     private int _id;
-    private HashSet<Edge> _connections;
+    private HashMap<Node, Edge> _edges;
+    private HashMap<Integer, Node> _nodes;
+    
 
     public Node(int id) {
         _id = id;
-        _connections = new HashSet<Edge>();
+        _edges = new HashMap<Node, Edge>();
+        _nodes = new HashMap<Integer, Node>();
     }
 
     /**
@@ -58,24 +61,45 @@ public class Node {
      * Identification number
      * @return - Number id
      */
-    public int getId() {
+    public int getID() {
         return _id;
     }
 
     /**
      * Edge in edge-list adding
      * @param edge - Edge for add
+     * @throws Exception 
      */
-    public void addConnection(Edge edge) {
-    	if(!_connections.contains(edge))
-    		_connections.add(edge);
+    public void addEdge(Edge edge) throws Exception 
+    {
+    	Node node = edge.getNode1();
+    	Node node2 = edge.getNode2();
+    	
+    	if(node.equals(node2))
+    		throw new Exception("Edge with both nodes the same.");
+    	if(!(node.equals(this) || node2.equals(this)))
+    		throw new Exception("The adding edge is not related to the current node.");
+    	
+    	if(node.equals(this))
+    		node = node2;
+    	
+    	if(!_edges.containsValue(edge))
+    		_edges.put(node, edge);
+    	
+    	_nodes.put(node.getID(), node);
+    	
     }
 
     /**
      * List all edges which are joined with actual node
      * @return - List edges
      */
-    public HashSet<Edge> getConnectionMap() {
-        return _connections;
+    public Collection<Edge> getEdges() {
+        return _edges.values();
+    }
+    
+    public HashMap<Node, Edge> getEdgeMap()
+    {
+    	return _edges;
     }
 }

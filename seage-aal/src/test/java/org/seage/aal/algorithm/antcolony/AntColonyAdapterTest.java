@@ -51,15 +51,26 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
+    	int NUM = 5;
     	Graph graph = new Graph();
-    	Node n1 = new Node(1);
-    	Node n2 = new Node(2);
-    	Edge e = new Edge(n1, n2);
-    	e.setEdgePrice(1);
-    	graph.getNodes().put(1, n1);
-    	graph.getNodes().put(2, n2);
-    	graph.getEdges().add(e);
-    	
+    	for(int i=0;i<NUM;i++)
+    	{
+    		Node n1 = new Node(i+1);
+    		graph.getNodes().put(i+1, n1);
+    		
+    	}
+    	for(int i=0;i<NUM;i++)
+    	{
+    		Node n1 = graph.getNodes().get(i+1);
+    		for(int j=i+1;j<NUM;j++)
+    		{
+    			Node n2 = graph.getNodes().get(j+1);
+    			Edge e = new Edge(n1, n2);
+    	    	e.setEdgePrice(1);
+    	    	graph.getEdges().add(e);
+    		}
+    	}
+    	    	
         _algorithm = new TestAntColonyAdapter(new AntBrain(), graph);
         _algParams = new AlgorithmParams("AntColonyTest");
         _algParams.putValue("problemID", "AntColonyTest");

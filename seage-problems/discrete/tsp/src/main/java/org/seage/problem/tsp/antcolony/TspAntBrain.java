@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
+import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 
 /**
@@ -52,7 +53,7 @@ public class TspAntBrain extends AntBrain
 	protected List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited)
 	{
 		List<Edge> result = new ArrayList<Edge>();
-		for (Edge e : currentPosition.getConnectionMap())
+		for (Edge e : currentPosition.getEdges())
 		{
 			Node node2 = null;
 			if (e.getNode1().equals(currentPosition))
@@ -73,4 +74,17 @@ public class TspAntBrain extends AntBrain
 
 		return result;
 	}
+
+	@Override
+	public List<Edge> getEdgesToNodes(List<Integer> _nodeIDs, Graph graph) throws Exception
+	{
+		List<Edge> result = super.getEdgesToNodes(_nodeIDs, graph); 
+		Node n1 = graph.getNodes().get(_nodeIDs.get(0));
+		Node n2 = graph.getNodes().get(_nodeIDs.get(_nodeIDs.size()-1));
+		
+		result.add(n1.getEdgeMap().get(n2));
+
+		return result;
+	}
+	
 }

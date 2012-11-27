@@ -138,6 +138,7 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 		public void algorithmStarted(AntColonyEvent e)
 		{
 			_algorithmStarted = true;
+			_initialSolutionValue = _averageSolutionValue = e.getAntColony().getGlobalBest();
 			
 		}
 

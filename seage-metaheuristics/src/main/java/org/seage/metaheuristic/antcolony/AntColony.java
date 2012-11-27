@@ -29,6 +29,7 @@
 package org.seage.metaheuristic.antcolony;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 import org.seage.metaheuristic.AlgorithmEventProducerBase;
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -39,6 +40,7 @@ import org.seage.metaheuristic.IAlgorithmListener;
  */
 public class AntColony
 {
+	private static final Logger _logger = Logger.getLogger(AntColony.class.getName());
 	private AlgorithmEventProducerBase<IAlgorithmListener<AntColonyEvent>, AntColonyEvent> _eventProducer;
 	private double _roundBest;
 	private double _globalBest;
@@ -90,12 +92,27 @@ public class AntColony
 	/**
 	 * Main part of ant-colony algorithm
 	 */
-	public void startExploring(Node startingNode, Ant[] ants) throws Exception
+	public void startExploring(Node startingNode, Ant[] ants)
 	{
+		_globalBest = Double.MAX_VALUE;
 		_ants = ants;
 		for(Ant a : _ants)
-			a.getBrain().setParameters(_alpha, _beta, _quantumPheromone);
-		
+		{
+			a.getBrain().setParameters(_alpha, _beta, _quantumPheromone);			
+			try
+			{
+				List<Edge> path = a.doFirstExploration(_graph);
+				if(a.getDistanceTravelled() < _globalBest)
+				{
+					_globalBest = a.getDistanceTravelled();
+					_bestPath = path;
+				}
+			}
+			catch (Exception e)
+			{
+				_logger.warning(e.getMessage());
+			}
+		}
 		_reports = new ArrayList<List<Edge>>();
 		_started = _keepRunning = true;
 		_stopped = false;		
@@ -123,15 +140,6 @@ public class AntColony
 	{
 		_keepRunning = false;
 	}
-
-//	private void createAnts() throws Exception
-//	{
-//		_ants = new Ant[_numAnts];
-//		_antBrain.setParameters(_graph.getNodeList().size(), _alpha, _beta);
-//		for (int i = 0; i < _numAnts; i++)
-//			_ants[i] = new Ant(_antBrain, _graph, _quantumPheromone);
-//
-//	}
 
 	/**
 	 * Evaluation for each iteration

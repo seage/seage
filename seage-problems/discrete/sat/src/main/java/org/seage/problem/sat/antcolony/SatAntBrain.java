@@ -76,7 +76,7 @@ public class SatAntBrain extends AntBrain {
         Node node;
         for (int i = 0; i < _formula.getLiteralCount(); i++) {
             node = (Node) path.get(i).getNode2();
-            if (node.getId() < 0) {
+            if (node.getID() < 0) {
                 solution[i] = false;
             } else {
                 solution[i] = true;

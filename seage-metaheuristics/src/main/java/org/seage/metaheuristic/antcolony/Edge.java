@@ -32,19 +32,20 @@ package org.seage.metaheuristic.antcolony;
  *
  * @author Martin Zaloga
  */
-public class Edge {
-
-    private double _edgePrice;
+public class Edge 
+{    
     private Node _node1;
     private Node _node2;
+    private double _edgePrice;
     private double _pheromone;
 
-    public Edge(Node start, Node end) {
-        _edgePrice = 0;
-        _node1 = start;
-        _node1.addConnection(this);
+    public Edge(Node start, Node end) throws Exception 
+    {
+        _node1 = start;        
         _node2 = end;
-        _node2.addConnection(this);
+        _node1.addEdge(this);
+        _node2.addEdge(this);
+        _edgePrice = 0;
         _pheromone = 0;
     }
 

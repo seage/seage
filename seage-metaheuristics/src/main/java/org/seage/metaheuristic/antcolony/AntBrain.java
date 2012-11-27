@@ -66,7 +66,7 @@ public class AntBrain
 	protected List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited)
 	{
 		List<Edge> result = new ArrayList<Edge>();
-		for (Edge e : currentPosition.getConnectionMap())
+		for (Edge e : currentPosition.getEdges())
 		{
 			Node node2 = null;
 			if (e.getNode1().equals(currentPosition))
@@ -151,5 +151,24 @@ public class AntBrain
 	public double getQuantumPheromone()
 	{
 		return _quantumPheromone;
+	}
+
+	public List<Edge> getEdgesToNodes(List<Integer> _nodeIDs, Graph graph) throws Exception
+	{
+		List<Edge> edges = new ArrayList<Edge>();
+		
+		
+		for(int i=0;i<_nodeIDs.size()-1;i++)
+		{
+			Node n1 = graph.getNodes().get(_nodeIDs.get(i));
+			Node n2 = graph.getNodes().get(_nodeIDs.get(i+1));
+			Edge e = n1.getEdgeMap().get(n2);
+			if(e == null)
+				throw new Exception("There is no edge for node IDs: " + n1.getID() + ", " + n2.getID());
+			
+			edges.add(e);
+		}
+		
+		return edges;
 	}
 }

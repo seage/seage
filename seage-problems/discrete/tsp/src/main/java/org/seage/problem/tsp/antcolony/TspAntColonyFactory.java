@@ -26,6 +26,8 @@
 
 package org.seage.problem.tsp.antcolony;
 
+import java.util.ArrayList;
+
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
@@ -62,15 +64,19 @@ public class TspAntColonyFactory implements IAlgorithmFactory
 			{
 				_ants = new Ant[source.length];
 				for(int i=0;i<_ants.length;i++)
-					_ants[i] = new Ant(_brain, (Integer[])source[i]);            	
-				
+				{
+					ArrayList<Integer> nodes = new ArrayList<Integer>();
+					for(int j=0;j<source[i].length;j++)
+						nodes.add((Integer)source[i][j]);
+					_ants[i] = new Ant(_brain, nodes);
+				}								
 			}
 			@Override
 			public Object[][] solutionsToPhenotype() throws Exception
 			{
 				Object[][] result = new Object[_ants.length][];
 				for(int i=0;i<_ants.length;i++)
-					result[i] = _ants[i].getNodeIDs();
+					result[i] = _ants[i].getNodeIDs().toArray(new Integer[]{});
 				return result;
 			}			
 		};
