@@ -34,7 +34,7 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 public class QapObjectiveFunction implements IObjectiveFunction
 {
-    public void setObjectiveValue(Solution solution)
+    public double getObjectiveValue(Solution solution)
     {
         Integer[] assign = ((QapSolution) solution)._assign;
         int len = assign.length;
@@ -50,6 +50,6 @@ public class QapObjectiveFunction implements IObjectiveFunction
         for(int i=0;i<_matrix[0][0].length;i++){
             addition+=_matrix[2][i][assign[i]];
         }
-        solution.setObjectiveValue( price+addition );
+        return  price+addition ;
     }
 }

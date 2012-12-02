@@ -54,7 +54,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
         
         DataNode params = new DataNode("Parameters");
         params.putValue("annealCoeficient", 0.1);
-        params.putValue("maxInnerIterations", 2);
+        params.putValue("maxInnerIterations", 10);
         params.putValue("maxTemperature", 100);
         params.putValue("minTemperature", 1);
         params.putValue("numInnerSuccesses", 1);

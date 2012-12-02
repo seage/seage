@@ -7,9 +7,14 @@ public class TestObjectiveFunction implements IObjectiveFunction
 {
 
     @Override
-    public void setObjectiveValue(Solution s)
+    public double getObjectiveValue(Solution s)
     {
-        s.setObjectiveValue(1);
+    	TestSolution sol = (TestSolution)s;
+    	double val = 0;
+    	for(int i=0;i<sol.solution.length-1;i++)
+    		val += Math.abs((Integer)sol.solution[i]-(Integer)sol.solution[i+1]);
+        
+    	return val;
     }
 
 }

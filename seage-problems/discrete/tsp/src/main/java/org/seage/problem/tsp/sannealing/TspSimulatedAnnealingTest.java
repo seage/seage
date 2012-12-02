@@ -26,19 +26,20 @@
 package org.seage.problem.tsp.sannealing;
 
 import java.io.FileInputStream;
-import org.seage.problem.tsp.CityProvider;
-import org.seage.problem.tsp.City;
-import org.seage.metaheuristic.sannealing.ISimulatedAnnealingListener;
+
+import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
 import org.seage.metaheuristic.sannealing.Solution;
+import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.CityProvider;
 
 /**
  * The purpose of this class is demonstration of SA algorithm use.
  *
  * @author Jan Zmatlik
  */
-public class TspSimulatedAnnealingTest implements ISimulatedAnnealingListener
+public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAnnealingEvent>
 {
     private City[] _cities;
     //private static String _dataPath = "D:\\eil51.tsp";
@@ -76,22 +77,35 @@ public class TspSimulatedAnnealingTest implements ISimulatedAnnealingListener
         System.out.println(sa.getBestSolution());
     }
 
-    public void simulatedAnnealingStarted(SimulatedAnnealingEvent e) {
-        System.out.println("Started");
-    }
+	@Override
+	public void algorithmStarted(SimulatedAnnealingEvent e)
+	{
+		System.out.println("Started");
+	}
 
-    public void simulatedAnnealingStopped(SimulatedAnnealingEvent e) {
-        System.out.println("Stopped");
-    }
+	@Override
+	public void algorithmStopped(SimulatedAnnealingEvent e)
+	{
+		System.out.println("Stopped");
+	}
 
-    public void newBestSolutionFound(SimulatedAnnealingEvent e) {
-        System.out.println("Best: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
-    }
+	@Override
+	public void iterationPerformed(SimulatedAnnealingEvent e)
+	{
 
-    public void newCurrentSolutionFound(SimulatedAnnealingEvent e) {
-    }
+	}
 
-    public void newIterationStarted(SimulatedAnnealingEvent e) {
-    }
+	@Override
+	public void noChangeInValueIterationMade(SimulatedAnnealingEvent e)
+	{
+		
+	}
+
+	@Override
+	public void newBestSolutionFound(SimulatedAnnealingEvent e)
+	{
+		// TODO Auto-generated method stub
+		System.out.println("Best: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
+	}
 
 }

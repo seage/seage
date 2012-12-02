@@ -36,7 +36,7 @@ public class TspObjectiveFunction implements IObjectiveFunction
 {
     private TspSolution _currrentTspSolution;
     
-    public void setObjectiveValue(Solution solution)
+    public double getObjectiveValue(Solution solution)
     {
         _currrentTspSolution = (TspSolution)solution;
 
@@ -48,7 +48,7 @@ public class TspObjectiveFunction implements IObjectiveFunction
 
         distance += getDistance(tourLength, 0);
 
-        solution.setObjectiveValue( distance );
+        return distance;
     }
 
   /**

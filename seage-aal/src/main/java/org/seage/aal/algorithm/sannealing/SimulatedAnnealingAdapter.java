@@ -28,16 +28,16 @@
 
 package org.seage.aal.algorithm.sannealing;
 
-import org.seage.aal.reporter.AlgorithmReport;
-import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.data.DataNode;
+import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
-import org.seage.metaheuristic.sannealing.ISimulatedAnnealingListener;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
 import org.seage.metaheuristic.sannealing.Solution;
@@ -53,7 +53,7 @@ import org.seage.metaheuristic.sannealing.Solution;
     @Parameter(name = "minTemperature", min = 0, max = 10000, init = 1),
     @Parameter(name = "numInnerSuccesses", min = 0, max = 100000, init = 100), 
     @Parameter(name = "numSolutions", min = 1, max = 1, init = 1) })
-public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl implements ISimulatedAnnealingListener
+public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl
 {
     protected SimulatedAnnealing _simulatedAnnealing;
     protected Solution[]         _solutions;
@@ -61,14 +61,15 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
     // private Solution _bestSolution;
     private AlgorithmReporter    _reporter;
     private String               _searchID;
-    private long                 _numberOfIterations             = 0;
+    private long                 _numberOfIterationsDone             = 0;
     private long                 _numberOfNewSolutions           = 0;
-    private long                 _lastIterationNumberNewSolution = 0;
+    private long                 _lastImprovingIteration = 0;
     private double               _initObjectiveValue             = Double.MAX_VALUE;
 
     public SimulatedAnnealingAdapter(IObjectiveFunction objectiveFunction, IMoveManager moveManager, boolean maximizing, String searchID) throws Exception
     {
         _simulatedAnnealing = new SimulatedAnnealing(objectiveFunction, moveManager);
+        _simulatedAnnealing.addSimulatedAnnealingListener(new SimulatedAnnealingListener());
         _reporter = new AlgorithmReporter(searchID);
     }
 
@@ -77,7 +78,7 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
         _reporter = new AlgorithmReporter(_searchID);
         _reporter.putParameters(_params);
 
-        _numberOfIterations = _numberOfNewSolutions = _lastIterationNumberNewSolution = 0;
+        _numberOfIterationsDone = _numberOfNewSolutions = _lastImprovingIteration = 0;
         _simulatedAnnealing.startSearching(_solutions[0]);
     }
 
@@ -96,7 +97,7 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
 
     public AlgorithmReport getReport() throws Exception
     {
-        _reporter.putStatistics(_numberOfIterations, _numberOfNewSolutions, _lastIterationNumberNewSolution, _initObjectiveValue, _simulatedAnnealing.getBestSolution().getObjectiveValue(),
+        _reporter.putStatistics(_numberOfIterationsDone, _numberOfNewSolutions, _lastImprovingIteration, _initObjectiveValue, _simulatedAnnealing.getBestSolution().getObjectiveValue(),
                 _simulatedAnnealing.getBestSolution().getObjectiveValue());
 
         return _reporter.getReport();
@@ -113,40 +114,54 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl imp
         _simulatedAnnealing.setMinimalTemperature(p.getValueDouble("minTemperature"));
         _simulatedAnnealing.setAnnealingCoefficient(p.getValueDouble("annealCoeficient"));
         _simulatedAnnealing.setMaximalIterationCount(p.getValueInt("maxInnerIterations"));
-        _simulatedAnnealing.setMaximalSuccessIterationCount(p.getValueInt("numInnerSuccesses"));
-        _simulatedAnnealing.addSimulatedAnnealingListener(this);
+        _simulatedAnnealing.setMaximalSuccessIterationCount(p.getValueInt("numInnerSuccesses"));        
     }
 
-    // ############################ EVENTS ###############################//
-    public void newBestSolutionFound(SimulatedAnnealingEvent e)
+    private class SimulatedAnnealingListener implements IAlgorithmListener<SimulatedAnnealingEvent>
     {
-        try
-        {
-            Solution s = e.getSimulatedAnnealing().getBestSolution();
+		@Override
+		public void algorithmStarted(SimulatedAnnealingEvent e)
+		{
+			_algorithmStarted = true;
+	        _initObjectiveValue = e.getSimulatedAnnealing().getCurrentSolution().getObjectiveValue();
+		}
 
-            _reporter.putNewSolution(System.currentTimeMillis(), e.getSimulatedAnnealing().getCurrentIteration(), s.getObjectiveValue(), s.toString());
-            _numberOfNewSolutions++;
-            _lastIterationNumberNewSolution = e.getSimulatedAnnealing().getCurrentIteration();
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
-    }
+		@Override
+		public void algorithmStopped(SimulatedAnnealingEvent e)
+		{
+			 _numberOfIterationsDone = e.getSimulatedAnnealing().getCurrentIteration();			
+		}
+		
+		@Override
+		public void newBestSolutionFound(SimulatedAnnealingEvent e)
+	    {
+	        try
+	        {
+	            Solution s = e.getSimulatedAnnealing().getBestSolution();
+	
+	            _reporter.putNewSolution(System.currentTimeMillis(), e.getSimulatedAnnealing().getCurrentIteration(), s.getObjectiveValue(), s.toString());
+	            _numberOfNewSolutions++;
+	            _lastImprovingIteration = e.getSimulatedAnnealing().getCurrentIteration();
+	        }
+	        catch (Exception ex)
+	        {
+	            ex.printStackTrace();
+	        }
+	    }		
 
-    public void newIterationStarted(SimulatedAnnealingEvent e)
-    {
-        _numberOfIterations = e.getSimulatedAnnealing().getCurrentIteration();
-    }
+		@Override
+		public void iterationPerformed(SimulatedAnnealingEvent e)
+		{
+			// TODO Auto-generated method stub
+			
+		}
 
-    public void simulatedAnnealingStarted(SimulatedAnnealingEvent e)
-    {
-        _algorithmStarted = true;
-        _initObjectiveValue = e.getSimulatedAnnealing().getCurrentSolution().getObjectiveValue();
-    }
-
-    public void simulatedAnnealingStopped(SimulatedAnnealingEvent e)
-    {
+		@Override
+		public void noChangeInValueIterationMade(SimulatedAnnealingEvent e)
+		{
+			// TODO Auto-generated method stub
+			
+		}
     }
 
 }

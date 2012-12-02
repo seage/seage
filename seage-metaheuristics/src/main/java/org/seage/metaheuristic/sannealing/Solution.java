@@ -30,12 +30,12 @@ package org.seage.metaheuristic.sannealing;
  *
  * @author Jan Zmatlik
  */
-public class Solution  {
+public class Solution  implements Cloneable, Comparable<Solution>{
 
 	/**
      * The value is value of Solution
      */
-    private double _value = Double.MAX_VALUE;
+    private double _value; 
 
     /**
      * Returns the value of Solution
@@ -69,4 +69,10 @@ public class Solution  {
             throw new InternalError( e.toString() );
         }
     }
+
+	@Override
+	public int compareTo(Solution sol)
+	{
+		return (int)(sol._value - _value);
+	}
 }

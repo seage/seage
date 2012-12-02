@@ -26,18 +26,19 @@
 package org.seage.problem.qap.sannealing;
 
 import java.io.FileInputStream;
-import org.seage.problem.qap.FacilityLocationProvider;
-import org.seage.metaheuristic.sannealing.ISimulatedAnnealingListener;
+
+import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
 import org.seage.metaheuristic.sannealing.Solution;
+import org.seage.problem.qap.FacilityLocationProvider;
 
 /**
  * The purpose of this class is demonstration of SA algorithm use.
  *
  * @author Karel Durkota
  */
-public class QapSimulatedAnnealingTest implements ISimulatedAnnealingListener
+public class QapSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAnnealingEvent>
 {
     private Double[][][] _facilityLocation;
     private static String _dataPath = "data/tai12a.dat";
@@ -79,22 +80,34 @@ public class QapSimulatedAnnealingTest implements ISimulatedAnnealingListener
         System.out.println("\nEVAL: "+((QapSolution)sa.getBestSolution()).getObjectiveValue());
     }
 
-    public void simulatedAnnealingStarted(SimulatedAnnealingEvent e) {
-        System.out.println("Started");
-    }
+	@Override
+	public void algorithmStarted(SimulatedAnnealingEvent e)
+	{
+		System.out.println("Started");
+	}
 
-    public void simulatedAnnealingStopped(SimulatedAnnealingEvent e) {
-        System.out.println("Stopped");
-    }
+	@Override
+	public void algorithmStopped(SimulatedAnnealingEvent e)
+	{
+		System.out.println("Stopped");
+	}
 
-    public void newBestSolutionFound(SimulatedAnnealingEvent e) {
-        System.out.println("Best: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
-    }
+	@Override
+	public void newBestSolutionFound(SimulatedAnnealingEvent e)
+	{
+		System.out.println("Best: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
+	}
 
-    public void newCurrentSolutionFound(SimulatedAnnealingEvent e) {
-    }
+	@Override
+	public void iterationPerformed(SimulatedAnnealingEvent e)
+	{
+		
+	}
 
-    public void newIterationStarted(SimulatedAnnealingEvent e) {
-    }
+	@Override
+	public void noChangeInValueIterationMade(SimulatedAnnealingEvent e)
+	{
+		
+	}
 
 }

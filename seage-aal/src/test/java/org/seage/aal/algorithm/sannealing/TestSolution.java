@@ -10,7 +10,4 @@ public class TestSolution  extends Solution
     {
         solution = sol;
     }
-
-    
-
 }

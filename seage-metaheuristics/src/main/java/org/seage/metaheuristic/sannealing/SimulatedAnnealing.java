@@ -25,6 +25,9 @@
  */
 package org.seage.metaheuristic.sannealing;
 
+import org.seage.metaheuristic.AlgorithmEventProducer;
+import org.seage.metaheuristic.IAlgorithmListener;
+
 /**
  * @author Jan Zmatlik
  */
@@ -60,8 +63,8 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   /**
    * Provide firing Events, registering listeners
    */
-  private SimulatedAnnealingListenerProvider _listenerProvider = new SimulatedAnnealingListenerProvider( this );
-
+  //private SimulatedAnnealingListenerProvider _listenerProvider = new SimulatedAnnealingListenerProvider( this );
+  private AlgorithmEventProducer<IAlgorithmListener<SimulatedAnnealingEvent>, SimulatedAnnealingEvent> _eventProducer;
   /**
    * The Solution which is actual
    */
@@ -106,6 +109,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
   {
       _objectiveFunction = objectiveFunction;
       _moveManager = moveManager;
+      _eventProducer = new AlgorithmEventProducer<IAlgorithmListener<SimulatedAnnealingEvent>, SimulatedAnnealingEvent>(new SimulatedAnnealingEvent(this));
   }  
 
   /**
@@ -135,10 +139,10 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     // The best solution is same as current solution
     _bestSolution = _currentSolution = solution;
 
-    _objectiveFunction.setObjectiveValue( solution );
+    solution.setObjectiveValue(_objectiveFunction.getObjectiveValue( solution ));
 
     // Fire event to listeners about that algorithm has started
-    _listenerProvider.fireSimulatedAnnealingStarted();
+    _eventProducer.fireAlgorithmStarted();
 
     // Iterates until current temperature is equal or greather than minimal temperature
     // and successful iteration count is less than zero
@@ -148,8 +152,6 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
         while(( innerIterationCount < _maximalIterationCount ) && ( successIterationCount < _maximalSuccessIterationCount ) && !_stopSearching)
         {
-            _listenerProvider.fireNewIterationStarted();
-
             _currentIteration++;
             innerIterationCount++;
                 
@@ -157,9 +159,9 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
             Solution modifiedSolution = _moveManager.getModifiedSolution( _currentSolution );
 
             // Calculate objective function and set value to modified solution
-            _objectiveFunction.setObjectiveValue( modifiedSolution );
+            modifiedSolution.setObjectiveValue( _objectiveFunction.getObjectiveValue( modifiedSolution ));
             
-            if(modifiedSolution.getObjectiveValue() < _currentSolution.getObjectiveValue())
+            if(modifiedSolution.compareTo(_currentSolution) > 0)
                 probability = 1;
             else
                 probability = Math.exp( - ( modifiedSolution.getObjectiveValue() - _currentSolution.getObjectiveValue() ) / _currentTemperature );
@@ -168,19 +170,20 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
             {
                 successIterationCount++;
                 _currentSolution = modifiedSolution;
-                if(_currentSolution.getObjectiveValue() < _bestSolution.getObjectiveValue())
+                if(modifiedSolution.compareTo(_currentSolution) > 0)
                 {
                     _bestSolution = modifiedSolution.clone();
-                    _listenerProvider.fireNewBestSolutionFound();
+                    _eventProducer.fireNewBestSolutionFound();
                 }
             }
         }
         // Anneal temperature
         _currentTemperature = _annealCoefficient * _currentTemperature;
+        _eventProducer.fireIterationPerformed();
     }
     _isRunning = false;
     // Fire event to listeners about that algorithm was stopped
-    _listenerProvider.fireSimulatedAnnealingStopped();
+    _eventProducer.fireAlgorithmStopped();
   }
 
   public Solution getCurrentSolution() {
@@ -191,9 +194,9 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     this._currentSolution = _currentSolution;
   }
 
-  public final void addSimulatedAnnealingListener( ISimulatedAnnealingListener listener )
+  public final void addSimulatedAnnealingListener(IAlgorithmListener<SimulatedAnnealingEvent>  listener )
   {
-    _listenerProvider.addSimulatedAnnealingListener( listener );
+	  _eventProducer.addAlgorithmListener( listener );
   } 
 
   public double getMaximalTemperature()
