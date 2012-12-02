@@ -84,7 +84,10 @@ public class RandomConfigurator extends Configurator
             config.getDataNode("Problem").getDataNode("Instance").putValue("name", instanceInfo.getValue("name"));
             config.getDataNode("Problem").getDataNode("Instance").putValue("type", instanceInfo.getValue("type"));
             config.getDataNode("Problem").getDataNode("Instance").putValue("path", instanceInfo.getValue("path"));
-
+            
+            if(problemInfo.getDataNode("Algorithms").getDataNodeById(algID)==null)
+            	throw new Exception("Unknown algorithm id: " + algID);
+            
             for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
             {
                 String name = paramNode.getValueStr("name");

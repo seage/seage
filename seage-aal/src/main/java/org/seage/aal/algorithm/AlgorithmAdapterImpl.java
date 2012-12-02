@@ -28,6 +28,8 @@ package org.seage.aal.algorithm;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.seage.aal.data.AlgorithmParams;
+
 /**
  *
  * @author rick
@@ -39,7 +41,7 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
     protected boolean _algorithmStarted = false;
     protected boolean _algorithmStopped = false;
     
-    public void startSearching(boolean async) throws Exception {
+    public void startSearching(final AlgorithmParams params, boolean async) throws Exception {
         if(_algorithmStarted && !_algorithmStopped)
             throw new Exception("Algorithm already started, running.");
         
@@ -51,7 +53,7 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
                 public void run() {
                     try
                     {
-                        startSearching();                        
+                        startSearching(params);                        
                     }
                     catch(Exception ex)
                     {
@@ -74,6 +76,6 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
             }
         }
         else
-            startSearching();
+            startSearching(params);
     }
 }

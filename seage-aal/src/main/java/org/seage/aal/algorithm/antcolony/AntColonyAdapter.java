@@ -82,7 +82,6 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 		_antColony.addAntColonyListener(new AntColonyListener());
 	}
 	
-    @Override
     public void setParameters(AlgorithmParams params) throws Exception
     {
     	_params = params;
@@ -100,8 +99,12 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
     }
 
     @Override
-    public void startSearching() throws Exception
+    public void startSearching(AlgorithmParams params) throws Exception
     {
+    	if(params==null)
+    		throw new Exception("Parameters not set");
+    	setParameters(params);
+    	
     	_reporter = new AlgorithmReporter("AntColony");
         _reporter.putParameters(_params);
         

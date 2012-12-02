@@ -73,15 +73,21 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl
         _reporter = new AlgorithmReporter(searchID);
     }
 
-    public void startSearching() throws Exception
+    @Override
+    public void startSearching(AlgorithmParams params) throws Exception
     {
+    	if(params==null)
+    		throw new Exception("Parameters not set");
+    	setParameters(params);
+    	
         _reporter = new AlgorithmReporter(_searchID);
         _reporter.putParameters(_params);
 
         _numberOfIterationsDone = _numberOfNewSolutions = _lastImprovingIteration = 0;
         _simulatedAnnealing.startSearching(_solutions[0]);
     }
-
+    
+    @Override
     public void stopSearching() throws Exception
     {
         _simulatedAnnealing.stopSearching();
@@ -90,11 +96,13 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl
             Thread.sleep(100);
     }
 
+    @Override
     public boolean isRunning()
     {
         return _simulatedAnnealing.isRunning();
     }
 
+    @Override
     public AlgorithmReport getReport() throws Exception
     {
         _reporter.putStatistics(_numberOfIterationsDone, _numberOfNewSolutions, _lastImprovingIteration, _initObjectiveValue, _simulatedAnnealing.getBestSolution().getObjectiveValue(),

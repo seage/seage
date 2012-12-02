@@ -1,5 +1,7 @@
 package org.seage.aal.algorithm;
 
+import java.util.Random;
+
 import junit.framework.Assert;
 
 import org.seage.aal.data.AlgorithmParams;
@@ -8,11 +10,32 @@ import org.seage.data.DataNode;
 public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
 {
 
-    public AlgorithmAdapterTester(IAlgorithmAdapter algorithm, Object[][] solutions, AlgorithmParams algParams) throws Exception
+    public AlgorithmAdapterTester(IAlgorithmAdapter algorithm, /*Object[][] solutions,*/ AlgorithmParams algParams) throws Exception
     {
         _algorithm = algorithm;
-        _solutions = solutions;
+        //_solutions = solutions;
         _algParams = algParams;
+        
+        
+    	Random rnd = new Random(4);
+    	_solutions = new Integer[NUM_SOLUTIONS][];
+    	
+    	for(int i=0;i<NUM_SOLUTIONS;i++)
+    	{
+    		_solutions[i] = new Integer[SOLUTION_LENGTH];
+    		for(int j=0;j<SOLUTION_LENGTH;j++)
+    		{
+    			_solutions[i][j] = j+1;
+    		}
+    		for(int j=0;j<SOLUTION_LENGTH;j++)
+    		{
+    			int ix1 = rnd.nextInt(SOLUTION_LENGTH);
+    			int ix2 = rnd.nextInt(SOLUTION_LENGTH);
+    			Object a = _solutions[i][ix1]; 
+    			_solutions[i][ix1] = _solutions[i][ix2];
+    			_solutions[i][ix2] = a;
+    		}
+    	}
     }
     
     public void setAlgParameters(DataNode params) throws Exception
@@ -25,7 +48,7 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
     public void testPhenotype() throws Exception
     {
         _algorithm.solutionsFromPhenotype(_solutions);
-        Object[][] solutions = _algorithm.solutionsToPhenotype();
+        Object[][] solutions = _algorithm.solutionsToPhenotype();        
         
         for(int k=0;k<solutions.length;k++)
         {
@@ -41,6 +64,30 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
 	        	Assert.failNotSame("Phenotype transformation failed.", _solutions, solutions);
 	        	return;
 	        }
+	        
+	        
+        }
+        
+        boolean flags[] = new boolean[solutions[0].length];        
+        	
+        for(int i=0;i<solutions.length;i++)
+        {
+        	for(int j=0;j<flags.length;j++)
+            	flags[j] = false;
+        	for(int j=0;j<solutions[i].length;j++)
+        	{
+        		if(!flags[(Integer)solutions[i][j]-1])
+        			flags[(Integer)solutions[i][j]-1] = true;
+        		else{
+        			Assert.fail("Invalid phenotype solution");
+        			return;
+        		}
+        	}
+        	for(int j=0;j<solutions[i].length;j++)
+        		if(!flags[(Integer)solutions[i][j]-1]){
+        			Assert.fail("Invalid phenotype solution");
+        			return;
+        		}
         }
     }
 
@@ -48,12 +95,24 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
     public void testAlgorithm() throws Exception
     {
         _algorithm.solutionsFromPhenotype(_solutions);
-        _algorithm.setParameters(_algParams);
-        _algorithm.startSearching();
+        _algorithm.startSearching(_algParams);
         _algorithm.solutionsToPhenotype();
 //        _algorithm.solutionsFromPhenotype(_solutions);
 //        _algorithm.startSearching();
 
+    }
+    
+    @Override
+    public void testAlgorithmWithParamsNull() throws Exception
+    {
+    	try
+    	{
+    		_algParams = null;
+    		testAlgorithm();
+    		Assert.fail("Algorithm should throw an exception when parameters not set.");
+    	}
+    	catch(Exception ex)
+    	{}
     }
 
     @Override
@@ -66,8 +125,7 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
     public void testAsyncRunning() throws Exception
     {
         _algorithm.solutionsFromPhenotype(_solutions);
-        _algorithm.setParameters(_algParams);
-        _algorithm.startSearching(true);
+        _algorithm.startSearching(_algParams, true);
         Assert.assertTrue(_algorithm.isRunning());
         
         _algorithm.stopSearching();

@@ -50,19 +50,18 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
 
     @Before
     public void initAlgorithm() throws Exception
-    {
-    	int NUM_NODES = _solutions[0].length;
+    {    	
     	Graph graph = new Graph();
-    	for(int i=0;i<NUM_NODES;i++)
+    	for(int i=0;i<SOLUTION_LENGTH;i++)
     	{
     		Node n1 = new Node(i+1);
     		graph.getNodes().put(i+1, n1);
     		
     	}
-    	for(int i=0;i<NUM_NODES;i++)
+    	for(int i=0;i<SOLUTION_LENGTH;i++)
     	{
     		Node n1 = graph.getNodes().get(i+1);
-    		for(int j=i+1;j<NUM_NODES;j++)
+    		for(int j=i+1;j<SOLUTION_LENGTH;j++)
     		{
     			Node n2 = graph.getNodes().get(j+1);
     			Edge e = new Edge(n1, n2);
@@ -87,7 +86,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
         
         _algParams.putDataNodeRef(params);
         
-        _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
+        _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
     }
     
     @Test
@@ -142,5 +141,12 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
 	public void testReport() throws Exception
 	{
 		_tester.testReport();		
+	}
+
+    @Test
+	@Override
+	public void testAlgorithmWithParamsNull() throws Exception
+	{
+		_tester.testAlgorithmWithParamsNull();		
 	}
 }

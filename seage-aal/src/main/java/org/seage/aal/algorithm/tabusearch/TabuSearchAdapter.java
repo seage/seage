@@ -81,8 +81,12 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 	}
 
 	@Override
-	public void startSearching() throws Exception
+	public void startSearching(AlgorithmParams params) throws Exception
 	{
+		if(params==null)
+    		throw new Exception("Parameters not set");
+    	setParameters(params);
+    	
 		_reporter = new AlgorithmReporter(_searchID);
 		_reporter.putParameters(_params);
 
@@ -133,6 +137,7 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 		Arrays.sort(_solutions, _solutionComparator);
 	}
 
+	@Override
 	public void stopSearching() throws Exception
 	{
 		_tabuSearch.stopSolving();
@@ -144,6 +149,7 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 
 	}
 
+	@Override
 	public boolean isRunning()
 	{
 		return _tabuSearch.isSolving();
@@ -162,6 +168,7 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 
 	}
 
+	@Override
 	public AlgorithmReport getReport() throws Exception
 	{
 		int num = _solutions.length;

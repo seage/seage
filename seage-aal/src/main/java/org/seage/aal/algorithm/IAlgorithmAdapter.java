@@ -42,17 +42,11 @@ public interface IAlgorithmAdapter
 //    //  |_ parameters
 //    DataNode getAlgorithmInfo() throws Exception;
 
-    // Inits the algorithm.
-    //void init(DataNode params);
-
-    // Sets algorithm parameters
-    void setParameters(AlgorithmParams params) throws Exception;
-
     // Runs the algorithm.
-    void startSearching() throws Exception;
+    void startSearching(final AlgorithmParams params) throws Exception;
     
     // Runs the algorithm.
-    void startSearching(boolean async) throws Exception;
+    void startSearching(final AlgorithmParams params, boolean async) throws Exception;
 
     // Stops the algorithm.
     void stopSearching() throws Exception;

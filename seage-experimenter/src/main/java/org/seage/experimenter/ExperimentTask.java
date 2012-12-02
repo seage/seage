@@ -156,8 +156,7 @@ class ExperimentTask implements Runnable{
 
             long startTime = System.currentTimeMillis();
             algorithm.solutionsFromPhenotype(solutions);
-            algorithm.setParameters(algNode);
-            algorithm.startSearching(true);
+            algorithm.startSearching(algNode, true);
             waitForTimeout(algorithm);
             algorithm.stopSearching();
             long endTime = System.currentTimeMillis();

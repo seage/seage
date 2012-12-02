@@ -6,15 +6,16 @@ import org.seage.aal.reporter.AlgorithmReport;
 
 public abstract class GraspAlgorithmAdapter extends AlgorithmAdapterImpl{
 
-	@Override
 	public void setParameters(AlgorithmParams params) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void startSearching() throws Exception {
-		// TODO Auto-generated method stub
+	public void startSearching(AlgorithmParams params) throws Exception {
+		if(params==null)
+    		throw new Exception("Parameters not set");
+    	setParameters(params);
 		
 	}
 

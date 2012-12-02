@@ -41,37 +41,17 @@ public abstract class AlgorithmAdapterTestBase {
     protected Object[][] _solutions;
     protected AlgorithmParams _algParams;
     protected AlgorithmReport _algReport;
-      
-    public AlgorithmAdapterTestBase() throws Exception
-    {
-    	int NUMSOL=100;
-    	int SOLLEN=100;
-    	Random rnd = new Random(4);
-    	_solutions = new Integer[NUMSOL][];
-    	
-    	for(int i=0;i<NUMSOL;i++)
-    	{
-    		_solutions[i] = new Integer[SOLLEN];
-    		for(int j=0;j<SOLLEN;j++)
-    		{
-    			_solutions[i][j] = j+1;
-    		}
-    		for(int j=0;j<SOLLEN;j++)
-    		{
-    			int ix1 = rnd.nextInt(SOLLEN);
-    			int ix2 = rnd.nextInt(SOLLEN);
-    			Object a = _solutions[i][ix1]; 
-    			_solutions[i][ix1] = _solutions[i][ix2];
-    			_solutions[i][ix2] = a;
-    		}
-    	}
-    }  
+    
+    protected final int NUM_SOLUTIONS = 100;
+    protected final int SOLUTION_LENGTH=100;
 
     public abstract void testPhenotype() throws Exception;
 
     public abstract void testAlgorithm() throws Exception;
     
     public abstract void testAlgorithmWithParamsAtZero() throws Exception;
+    
+    public abstract void testAlgorithmWithParamsNull() throws Exception;
     
     public abstract void testAsyncRunning() throws Exception;
     

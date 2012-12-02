@@ -103,7 +103,7 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
         
         _algParams.putDataNodeRef(params);
         
-        _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
+        _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
     }
     
     @Override
@@ -140,5 +140,12 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
 	public void testReport() throws Exception
 	{
 		_tester.testReport();		
+	}
+    
+    @Test
+    @Override
+	public void testAlgorithmWithParamsNull() throws Exception
+	{
+		_tester.testAlgorithmWithParamsNull();		
 	}
 }

@@ -38,7 +38,7 @@ import org.seage.data.DataNode;
  *
  * @author rick
  */
-@Ignore("Adapter class not fully implemented yet")
+//@Ignore("Adapter class not fully implemented yet")
 public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     
     public FireflyAlgorithmAdapterTest() throws Exception
@@ -64,7 +64,7 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
         
         _algParams.putDataNodeRef(params);
         
-        _tester = new AlgorithmAdapterTester(_algorithm, _solutions, _algParams);
+        _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
     }
     
     @Override
@@ -114,6 +114,13 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
 	@Override
 	public void testReport() throws Exception
 	{
-		//_tester.testReport();		
+		_tester.testReport();		
+	}
+    
+    @Test
+    @Override
+	public void testAlgorithmWithParamsNull() throws Exception
+	{
+		_tester.testAlgorithmWithParamsNull();		
 	}
 }

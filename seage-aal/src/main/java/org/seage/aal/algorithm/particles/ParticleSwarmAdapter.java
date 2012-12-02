@@ -81,12 +81,19 @@ public abstract class ParticleSwarmAdapter  extends AlgorithmAdapterImpl impleme
         _reporter = new AlgorithmReporter( searchID );
     }
 
-    public void startSearching() throws Exception {
+    @Override
+    public void startSearching(AlgorithmParams params) throws Exception 
+    {
+    	if(params==null)
+    		throw new Exception("Parameters not set");
+    	setParameters(params);
+    	
         _reporter = new AlgorithmReporter( _searchID );
         _reporter.putParameters( _params );
         _particleSwarm.startSearching( _initialParticles );
     }
     
+    @Override
     public void stopSearching() throws Exception {
         _particleSwarm.stopSearching();
         
@@ -94,10 +101,12 @@ public abstract class ParticleSwarmAdapter  extends AlgorithmAdapterImpl impleme
             Thread.sleep(100);
     }
     
+    @Override
     public boolean isRunning() {
         return _particleSwarm.isRunning();
     }
 
+    @Override
     public AlgorithmReport getReport() throws Exception
     {
           _reporter.putStatistics (

@@ -91,7 +91,7 @@ public class AdaptiveExperimenter implements IExperimenter
     }
 
     @Override
-    public void runExperiment(int numRuns, long timeoutS, String problemID ) throws Exception
+    public void runExperiment(int numOfConfigs, long timeoutS, String problemID ) throws Exception
     {
         // ########### BASIC EXPERIMENTER ############
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
@@ -100,12 +100,12 @@ public class AdaptiveExperimenter implements IExperimenter
         for (DataNode alg : pi.getDataNode(ALGORITHMS).getDataNodes(ALGORITHM))
             algIDs.add(alg.getValueStr(ATTRIBUTE_ID));
 
-        runExperiment(numRuns, timeoutS, problemID, algIDs.toArray(new String[] {}));
+        runExperiment(numOfConfigs, timeoutS, problemID, algIDs.toArray(new String[] {}));
         // ########### BASIC EXPERIMENTER ############
     }
 
     @Override
-    public void runExperiment(int numRuns, long timeoutS, String problemID, String[] algorithmIDs) throws Exception
+    public void runExperiment(int numOfConfigs, long timeoutS, String problemID, String[] algorithmIDs) throws Exception
     {
         long experimentID = System.currentTimeMillis();
         // ########### BASIC EXPERIMENTER ############
@@ -113,7 +113,7 @@ public class AdaptiveExperimenter implements IExperimenter
 
         List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
         for (String algID : algorithmIDs)
-            configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numRuns)));
+            configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numOfConfigs)));
 
         _experimentID = _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), experimentID, problemID, "", "", timeoutS);
         // ########### BASIC EXPERIMENTER ############
@@ -134,7 +134,7 @@ public class AdaptiveExperimenter implements IExperimenter
         for (String algID : algorithmIDs)
         {
             DataNode paramIntervals = prepareDataForConfig(pi, dataNodes.get(0), algID);
-            configs.addAll(Arrays.asList(((RandomConfiguratorEx) _configuratorAdaptive).prepareConfigs(paramIntervals, pi, algID, numRuns)));
+            configs.addAll(Arrays.asList(((RandomConfiguratorEx) _configuratorAdaptive).prepareConfigs(paramIntervals, pi, algID, numOfConfigs)));
         }
 
         _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), experimentID, problemID, "", "", timeoutS);
@@ -180,25 +180,11 @@ public class AdaptiveExperimenter implements IExperimenter
         return paramIntervals;
     }
 
-    @Override
-    public void runExperiment(int numRuns, long timeoutS, String problemID, String algorithmID, String instanceID) throws Exception
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void runExperiment(int numRuns, long timeoutS, String problemID, String algorithmID, String[] instanceID) throws Exception
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void runExperiment(int numRuns, long timeoutS, String problemID, String[] algorithmIDs, String[] instanceIDs) throws Exception
-    {
-        // TODO Auto-generated method stub
-        
-    }
+	@Override
+	public void runExperiment(int numOfConfigs, long timeoutS, String problemID, String[] algorithmIDs, String[] instanceIDs) throws Exception
+	{
+		// TODO Auto-generated method stub
+		
+	}
 
 }

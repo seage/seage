@@ -39,7 +39,8 @@ import org.seage.experimenter.reporting.ReportManager;
 import org.seage.experimenter.reporting.StatisticalReportCreator;
 import org.seage.experimenter.reporting.rapidminer.ExperimentDataImporter;
 import org.seage.experimenter.reporting.rapidminer.old.RMTest;
-import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimenter;
+import org.seage.experimenter.singlealgorithm.SingleAlgorithmRandomExperimenter;
+import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;
 import org.seage.temp.AlgorithmTester;
 import org.seage.temp.ClasspathTest;
 /**
@@ -54,14 +55,16 @@ public class Launcher {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-            LogHelper.loadConfig("log.properties");
-            _logger.info("SEAGE running ...");
-            new Launcher().run(args);
-            _logger.info("SEAGE finished ...");
+    	LogHelper.loadConfig("log.properties");
+        _logger.info("SEAGE running ...");
+        
+    	try {            
+            new Launcher().run(args);           
         } catch (Exception ex) {
             _logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+    	
+    	_logger.info("SEAGE finished ...");
     }
 
     private void run(String[] args) throws Exception {
@@ -100,10 +103,10 @@ public class Launcher {
         if (args[0].equals("-experiment")) {             
         	if (args.length >= 5)
             {
-                new SingleAlgorithmExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 4, args.length));
+                new SingleAlgorithmRandomExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 4, args.length));
 
             } else if (args.length == 4) {
-                new SingleAlgorithmExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );
+                new SingleAlgorithmRandomExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );
             } else {
                 usage();
             }
@@ -128,7 +131,18 @@ public class Launcher {
         if (args[0].equals("-experiment1")) {
             if (args.length >= 6)
             {
-                new SingleAlgorithmExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], args[4], Arrays.copyOfRange(args, 5, args.length));
+                new SingleAlgorithmRandomExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], new String[]{args[4]}, Arrays.copyOfRange(args, 5, args.length));
+
+            } else {
+                usage();
+            }
+            return;
+        }
+        
+        if (args[0].equals("-experiment2")) {
+            if (args.length >= 6)
+            {
+                new SingleAlgorithmEvolutionExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], new String[]{args[4]}, Arrays.copyOfRange(args, 5, args.length));
 
             } else {
                 usage();
@@ -178,9 +192,10 @@ public class Launcher {
         _logger.info("\t-list");
         _logger.info("\t-test [problem-id [algorithm-id]]");
         _logger.info("\t-config path-to-config");
-        _logger.info("\t-experiment   num-runs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
-        _logger.info("\t-experiment-a num-runs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
-        _logger.info("\t-experiment1  num-runs timeoutS problem-id  algorithm-id instance-id [instance-id]*");
+        _logger.info("\t-experiment   numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
+        _logger.info("\t-experiment-a numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
+        _logger.info("\t-experiment1  numOfConfigs timeoutS problem-id  algorithm-id instance-id [instance-id]*");
+        _logger.info("\t-experiment2  numOfConfigs timeoutS problem-id  algorithm-id instance-id [instance-id]*");
         _logger.info("\t-agents path-to-agent-config-xml");
         _logger.info("\t-report");
     }

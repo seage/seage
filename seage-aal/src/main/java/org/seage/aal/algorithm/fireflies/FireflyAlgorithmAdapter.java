@@ -94,9 +94,13 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
      * @param param
      * @throws java.lang.Exception
      */
-
-    public void startSearching() throws Exception
+    @Override
+    public void startSearching(AlgorithmParams params) throws Exception
     {
+    	if(params==null)
+    		throw new Exception("Parameters not set");
+    	setParameters(params);
+    	
         _reporter = new AlgorithmReporter(_searchID);
         _reporter.putParameters(_params);
 
@@ -108,6 +112,7 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
             throw new Exception("Solutions null");
     }
 
+    @Override
     public void stopSearching() throws Exception
     {
         _fireflySearch.stopSolving();
@@ -116,6 +121,7 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
             Thread.sleep(100);
     }
 
+    @Override
     public boolean isRunning()
     {
         return _fireflySearch.isRunning();

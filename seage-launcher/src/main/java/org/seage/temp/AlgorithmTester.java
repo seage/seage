@@ -123,11 +123,10 @@ public class AlgorithmTester {
             AlgorithmParams algNode = config.getAlgorithmParams();
             Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance, 1);
             algorithm.solutionsFromPhenotype(solutions);
-            algorithm.setParameters(algNode);
-            algorithm.startSearching();
+            algorithm.startSearching(algNode);
             solutions = algorithm.solutionsToPhenotype();
             algorithm.solutionsFromPhenotype(solutions);
-            algorithm.startSearching();
+            algorithm.startSearching(algNode);
 
             System.out.printf("%"+(50-algName.length())+"s","OK\n");
 
@@ -164,8 +163,7 @@ public class AlgorithmTester {
         System.out.printf("%s: %3s %s\n", "Instance","", instance);
         System.out.println("Running ...");
         algorithm.solutionsFromPhenotype(solutions);
-        algorithm.setParameters(algNode);
-        algorithm.startSearching();
+        algorithm.startSearching(algNode);
         solutions = algorithm.solutionsToPhenotype();
 
         // phenotype evaluator

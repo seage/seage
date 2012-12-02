@@ -103,9 +103,14 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
      * @param param
      * @throws java.lang.Exception
      */
-    public void startSearching() throws Exception
+    @Override
+    public void startSearching(final AlgorithmParams params) throws Exception
     {
-        _reporter = new AlgorithmReporter(_searchID);
+    	if(params==null)
+    		throw new Exception("Parameters not set");
+    	setParameters(params);
+    
+        _reporter = new AlgorithmReporter(_searchID);        
         _reporter.putParameters(_params);
         
         setBestEverSolution();
@@ -117,10 +122,12 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
             throw new Exception("Solutions null");
     }
     
+    @Override
     public boolean isRunning() {
         return _geneticSearch.isRunning();
     }
 
+    @Override
     public void stopSearching() throws Exception
     {
         _geneticSearch.stopSolving();
