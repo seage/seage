@@ -49,8 +49,16 @@ public class ExperimentRunner
     @SuppressWarnings("unused")
 	private static Logger _logger = Logger.getLogger(ExperimentRunner.class.getName());
     private int _numExperimentAttempts = 5;
+	private int _processorCount;
 
-    /**
+	
+    public ExperimentRunner()
+	{
+		_processorCount = Runtime.getRuntime().availableProcessors();
+    	//_processorCount = 1;
+	}
+
+	/**
      * 
      * @param config
      * @param timeoutS
@@ -114,7 +122,7 @@ public class ExperimentRunner
         }
 
         // Run threads for each processor
-        new TaskRunner().runTasks(taskQueue, Runtime.getRuntime().availableProcessors());
+        new TaskRunner().runTasks(taskQueue, _processorCount);
 
         zos.close();
         fos.close();

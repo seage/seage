@@ -25,6 +25,8 @@
  */
 package org.seage.aal.algorithm.antcolony;
 
+import java.util.logging.Level;
+
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
@@ -46,26 +48,26 @@ import org.seage.metaheuristic.antcolony.Graph;
  */
 @AlgorithmParameters({
     @Parameter(name="numSolutions", min=10, max=1000, init=100),
-    @Parameter(name="iterationCount", min=0, max=1000000, init=100),
+    @Parameter(name="iterationCount", min=10, max=1000000, init=100),
     @Parameter(name="alpha", min=1, max=10, init=1),
     @Parameter(name="beta", min=1, max=10, init=3),   
-    @Parameter(name="defaultPheromone", min=00001, max=0.1, init=0.00001),
+    @Parameter(name="defaultPheromone", min=0.00001, max=1.0, init=0.00001),
     @Parameter(name="qantumOfPheromone", min=1, max=1000, init=10),   
-    @Parameter(name="localEvaporation", min=0.7, max=0.98, init=0.95)
+    @Parameter(name="localEvaporation", min=0.5, max=0.98, init=0.95)
 })
 public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 {
 	protected AntColony _antColony;
-	private AntColonyListener _algorithmListener;
+	//private AntColonyListener _algorithmListener;
 	protected Graph _graph;
 	private AlgorithmParams _params;
 	protected AntBrain _brain;
 	protected Ant[] _ants;
 	
 	private AlgorithmReporter _reporter;
-	private int _statNumIterations;
-	private int _statNumNewBestSolutions;
-	private long _statLastIteration;
+	private long _statNumIterationsDone;
+	private long _statNumNewBestSolutions;
+	private long _statLastImprovingIteration;
 	private double _initialSolutionValue;
 	private double _bestSolutionValue;
 	public double _averageSolutionValue;
@@ -75,9 +77,9 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 		_params = null;
 		_brain = brain;
 		_graph = graph;
-		_algorithmListener = new AntColonyListener();
+		//_algorithmListener = ;
 		_antColony = new AntColony(graph);
-		_antColony.addAntColonyListener(_algorithmListener);
+		_antColony.addAntColonyListener(new AntColonyListener());
 	}
 	
     @Override
@@ -103,8 +105,8 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
     	_reporter = new AlgorithmReporter("AntColony");
         _reporter.putParameters(_params);
         
-        _statLastIteration = 0;
-        _statNumIterations = 0;
+        _statLastImprovingIteration = 0;
+        _statNumIterationsDone = 0;
         _statNumNewBestSolutions = 0;
         _initialSolutionValue =  _bestSolutionValue = 0;
         _averageSolutionValue = 0;
@@ -117,6 +119,9 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
     public void stopSearching() throws Exception
     {
         _antColony.stopExploring();
+        
+        while(isRunning())
+            Thread.sleep(100);
     }
 
     @Override
@@ -128,7 +133,9 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
     @Override
     public AlgorithmReport getReport() throws Exception
     {
-    	_reporter.putStatistics(_statNumIterations, _statNumNewBestSolutions, _statLastIteration, _initialSolutionValue, _averageSolutionValue, _bestSolutionValue);
+    	_reporter.putStatistics(_statNumIterationsDone, 
+    			_statNumNewBestSolutions, _statLastImprovingIteration, 
+    			_initialSolutionValue, _averageSolutionValue, _bestSolutionValue);
         return _reporter.getReport();
     }
     
@@ -138,7 +145,7 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 		public void algorithmStarted(AntColonyEvent e)
 		{
 			_algorithmStarted = true;
-			_initialSolutionValue = _averageSolutionValue = e.getAntColony().getGlobalBest();
+			_initialSolutionValue = _averageSolutionValue = _bestSolutionValue = e.getAntColony().getGlobalBest();
 			
 		}
 
@@ -146,16 +153,27 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 		public void algorithmStopped(AntColonyEvent e)
 		{
 			_algorithmStopped = true;
-			_statNumIterations = e.getAntColony().getCurrentIteration();
-			
+			_statNumIterationsDone = e.getAntColony().getCurrentIteration();
 		}
 
 		@Override
 		public void newBestSolutionFound(AntColonyEvent e)
 		{
 			_statNumNewBestSolutions++;
-			_statLastIteration = e.getAntColony().getCurrentIteration();
-			_averageSolutionValue = _bestSolutionValue = e.getAntColony().getGlobalBest();			
+			AntColony alg = e.getAntColony(); 
+			_statLastImprovingIteration = alg.getCurrentIteration();
+			_averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();	
+			try
+			{
+				_reporter.putNewSolution(System.currentTimeMillis(), 
+						alg.getCurrentIteration(), 
+						alg.getGlobalBest(), 
+						"TBD");
+			}
+			catch (Exception ex)
+			{
+				_logger.log(Level.WARNING, ex.getMessage(), ex);
+			}
 		}
 
 		@Override

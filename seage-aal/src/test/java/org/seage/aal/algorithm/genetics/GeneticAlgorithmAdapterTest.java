@@ -45,20 +45,23 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     public GeneticAlgorithmAdapterTest() throws Exception
     {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     @Before
     public void initAlgorithm() throws Exception
     {
         _algorithm = new GeneticAlgorithmAdapter(new GeneticOperator(), new Evaluator()
-        {
-            
+        {            
             @Override
             public double[] evaluate(Subject solution) throws Exception
             {
-                // TODO Auto-generated method stub
-                return new double[]{solution.getGenome().getChromosome(0).getGene(0).getValue()};
+            	double val = 0;
+            	for(int i=0;i<solution.getGenome().getChromosome(0).getGeneArray().length-1;i++)
+            	{
+            		val += Math.abs(solution.getGenome().getChromosome(0).getGene(i).getValue() - solution.getGenome().getChromosome(0).getGene(i+1).getValue());
+            	}
+            	
+                return new double[]{val};
             }
         }, true, "");    
         

@@ -65,7 +65,7 @@ public class ProblemConfig extends DataNode{
     
     public String getConfigID() throws Exception
     {
-    	return this.hash();
+    	return this.getValueStr("configID");
     }
     
     public String getProblemID() throws Exception

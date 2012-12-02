@@ -49,7 +49,7 @@ import org.seage.data.xml.XmlHelper;
  * |_ ... 
  * 
  * ExperimentReport 		# version 0.2
- *  |_ version (0.2)
+ *  |_ version (0.4)
  *  |_ experimentID
  *  |_ startTimeMS
  *  |_ timeoutS
@@ -164,30 +164,9 @@ class ExperimentTask implements Runnable{
 
             solutions = algorithm.solutionsToPhenotype();
 
-            // phenotype evaluator
-            //IPhenotypeEvaluator evaluator = provider.initPhenotypeEvaluator();
-            //double[] result = evaluator.evaluate(solutions[0], instance);
-
-            //AlgorithmReport algReport = algorithm.getReport();
             _experimentReport.putDataNode(algorithm.getReport());
             _experimentReport.putValue("durationS", (endTime - startTime)/1000);
             
-//            DataNode expReport = new DataNode("ExperimentTask");
-//            expReport.putValue("version", "0.1");
-//            //expReport.putValue("experimentID", _experimentID);
-//            expReport.putValue("runID", _runID);
-//            expReport.putValue("durationS", (endTime - startTime)/1000);
-//            expReport.putDataNode(algReport);
-//            expReport.putDataNode(_config);
-//            
-//            //String experimentID = _config.getValueStr("experimentID");
-//            String configID = _config.getValueStr("configID");
-                       
-            //File dir = new File("output/"+_experimentID);
-            //if(!dir.exists()) dir.mkdirs();
-
-            //String path = dir.getPath()+"/"+problemID +"-"+instanceName.split("\\.")[0] +"-"+algorithmID+"-"+getRunOrder()+"-"+_experimentID+".xml";
-            //XmlHelper.writeXml(expReport, _os);
             XmlHelper.writeXml(_experimentReport, _outputStream, new ZipEntry(_reportName));
             //serialize(expReport);
 
@@ -205,7 +184,7 @@ class ExperimentTask implements Runnable{
     {
         long time = System.currentTimeMillis();
         while(alg.isRunning() && ((System.currentTimeMillis()-time)<_timeout))
-            Thread.sleep(300);
+            Thread.sleep(100);
     }
 
 }

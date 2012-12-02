@@ -235,6 +235,7 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 		public void tabuSearchStopped(TabuSearchEvent e)
 		{
 			_algorithmStopped = true;
+			_statEndObjVal = _bestEverSolution.getObjectiveValue()[0];
 		}
 
 		@SuppressWarnings("deprecation")

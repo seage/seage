@@ -31,7 +31,7 @@ package org.seage.metaheuristic.antcolony;
 import java.util.*;
 import java.util.logging.Logger;
 
-import org.seage.metaheuristic.AlgorithmEventProducerBase;
+import org.seage.metaheuristic.AlgorithmEventProducer;
 import org.seage.metaheuristic.IAlgorithmListener;
 
 /**
@@ -41,27 +41,27 @@ import org.seage.metaheuristic.IAlgorithmListener;
 public class AntColony
 {
 	private static final Logger _logger = Logger.getLogger(AntColony.class.getName());
-	private AlgorithmEventProducerBase<IAlgorithmListener<AntColonyEvent>, AntColonyEvent> _eventProducer;
+	private AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent>, AntColonyEvent> _eventProducer;
 	private double _roundBest;
 	private double _globalBest;
 	private List<Edge> _bestPath;
-	private List<List<Edge>> _reports;
+	private List<List<Edge>> _antReports;
 	private Graph _graph;
 	private Ant[] _ants;
 
 	private int _numIterations;
 	private boolean _started, _stopped;
 	private boolean _keepRunning;
-	private int _currentIteration;
+	private long _currentIteration;
 	private double _alpha;
 	private double _beta;
 	private double _quantumPheromone;
 
 	public AntColony(Graph graph)
 	{
-		_eventProducer = new AlgorithmEventProducerBase<IAlgorithmListener<AntColonyEvent>, AntColonyEvent>(new AntColonyEvent(this));
+		_eventProducer = new AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent>, AntColonyEvent>(new AntColonyEvent(this));
 		_graph = graph;
-
+		_antReports = new ArrayList<List<Edge>>();
 		_roundBest = Double.MAX_VALUE;
 		_globalBest = Double.MAX_VALUE;		
 		_started = false;
@@ -70,7 +70,7 @@ public class AntColony
 	
 	public void addAntColonyListener(IAlgorithmListener<AntColonyEvent> listener)
 	{
-		_eventProducer.addGeneticSearchListener(listener);
+		_eventProducer.addAlgorithmListener(listener);
 	}
 
 	public void removeAntColonyListener(IAlgorithmListener<AntColonyEvent> listener)
@@ -84,7 +84,6 @@ public class AntColony
 		_alpha = alpha;
 		_beta = beta;
 		_quantumPheromone = quantumPheromone;
-		//_antBrain.setParameters(alpha, beta, quantumPheromone);
 		_graph.setEvaporCoeff(evaporCoeff);
 		_graph.setDefaultPheromone(defaultPheromone);
 	}
@@ -105,7 +104,7 @@ public class AntColony
 				if(a.getDistanceTravelled() < _globalBest)
 				{
 					_globalBest = a.getDistanceTravelled();
-					_bestPath = path;
+					_bestPath = path;					
 				}
 			}
 			catch (Exception e)
@@ -113,17 +112,18 @@ public class AntColony
 				_logger.warning(e.getMessage());
 			}
 		}
-		_reports = new ArrayList<List<Edge>>();
+		
 		_started = _keepRunning = true;
 		_stopped = false;		
 		_currentIteration = 0;
-		_eventProducer.fireAlgorithmStarted();
+		_eventProducer.fireAlgorithmStarted();		
 		while(_currentIteration++ < _numIterations && _keepRunning)
 		//for (int i = 0; i < _numIterations && _keepRunning == true; i++)
 		{
+			_antReports.clear();
 			for (int j = 0; j < _ants.length && _keepRunning; j++)
 			{
-				_reports.add(_ants[j].explore(startingNode));
+				_antReports.add(_ants[j].explore(startingNode));
 			}
 			solveRound();
 			_graph.evaporate();
@@ -146,31 +146,30 @@ public class AntColony
 	 */
 	private void solveRound()
 	{
+		boolean newBest = false;
 		double pathLength = 0;
 		int counter = 0;
-		for (List<Edge> vector : _reports)
+		for (List<Edge> vector : _antReports)
 		{
 			if (_bestPath == null)
 			{
 				_bestPath = vector;
 			}
-			pathLength = _ants[counter]._distanceTravelled;
-			counter++;
-			if (pathLength < _roundBest)
-			{
+			pathLength = _ants[counter++]._distanceTravelled;
+			
+			if (pathLength < _roundBest)			
 				_roundBest = pathLength;
-			}
+			
 			if (_roundBest < _globalBest)
 			{
 				_globalBest = _roundBest;
-				_bestPath = vector;
-				_eventProducer.fireNewBestSolutionFound();
+				_bestPath = new ArrayList<Edge>(vector);
+				newBest = true;
 			}
 		}
-		 //System.out.println("This round best was  : " + _roundBest);
-		 //System.out.println("The global best was : " + _globalBest + "\n");
-		_roundBest = Double.MAX_VALUE;
-		_reports.clear();
+		if(newBest)
+			_eventProducer.fireNewBestSolutionFound();
+		_roundBest = Double.MAX_VALUE;		
 	}
 
 	/**
@@ -193,13 +192,13 @@ public class AntColony
 		return _globalBest;
 	}
 	
-	public int getCurrentIteration()
+	public long getCurrentIteration()
 	{
 		return _currentIteration;
 	}
 
 	public boolean isRunning()
 	{
-		return _started && _keepRunning && !_stopped;
+		return _started && !_stopped;
 	}
 }

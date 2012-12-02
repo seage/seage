@@ -26,17 +26,24 @@
 package org.seage.aal.algorithm.genetics;
 
 
-import org.seage.data.DataNode;
-import org.seage.metaheuristic.IAlgorithmListener;
-import org.seage.metaheuristic.genetics.*;
-
 import java.util.Arrays;
-import org.seage.aal.reporter.AlgorithmReport;
-import org.seage.aal.reporter.AlgorithmReporter;
-import org.seage.aal.Annotations.Parameter;
+import java.util.logging.Level;
+
 import org.seage.aal.Annotations.AlgorithmParameters;
+import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReporter;
+import org.seage.data.DataNode;
+import org.seage.metaheuristic.IAlgorithmListener;
+import org.seage.metaheuristic.genetics.Evaluator;
+import org.seage.metaheuristic.genetics.GeneticOperator;
+import org.seage.metaheuristic.genetics.GeneticSearch;
+import org.seage.metaheuristic.genetics.GeneticSearchEvent;
+import org.seage.metaheuristic.genetics.Genome;
+import org.seage.metaheuristic.genetics.Subject;
+import org.seage.metaheuristic.genetics.SubjectComparator;
 
 /**
  * GeneticSearchAdapter class
@@ -52,6 +59,7 @@ import org.seage.aal.data.AlgorithmParams;
 })
 public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
 {
+	
     protected Subject[] _solutions;
     private GeneticSearch _geneticSearch;
     private Evaluator _evaluator;
@@ -63,10 +71,10 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
     //private String _paramID;
     
     private double _statInitObjVal;
-    private double _statEndObjVal;
+    private double _statBestObjVal;
     private int _statNrOfIterationsDone;
     private int _statNumNewSol;
-    private int _statLastIterNewSol;
+    private int _statLastImprovingIteration;
     //private int _nrOfIterationsDone;
     
     private AlgorithmReporter _reporter;
@@ -170,15 +178,8 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
         for (int i = 0; i < num; i++)
             avg +=_solutions[i].getObjectiveValue()[0];
         avg /= num;
-        //DataNode stats = new DataNode("statistics");
-//        stats.putValue("numberOfIter", _statNumIter);
-//        stats.putValue("numberOfNewSolutions", _statNumNewSol);
-//        stats.putValue("lastIterNumberNewSol", _statLastIterNewSol);
-//        stats.putValue("initObjVal", _statInitObjVal);
-//        stats.putValue("avgObjVal", avg);
-//        stats.putValue("bestObjVal", _statEndObjVal);
 
-        _reporter.putStatistics(_statNrOfIterationsDone, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);
+        _reporter.putStatistics(_statNrOfIterationsDone, _statNumNewSol, _statLastImprovingIteration, _statInitObjVal, avg, _statBestObjVal);
 
         return _reporter.getReport();
     }
@@ -234,7 +235,7 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
         public void algorithmStarted(GeneticSearchEvent e)
         {
             _algorithmStarted = true;
-            _statNumNewSol = _statLastIterNewSol = 0;
+            _statNumNewSol = _statLastImprovingIteration = 0;
         }
 
         public void algorithmStopped(GeneticSearchEvent e)
@@ -243,7 +244,7 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
             _statNrOfIterationsDone = e.getGeneticSearch().getCurrentIteration();
             Subject s= e.getGeneticSearch().getBestSubject();
             if(s != null)
-                _statEndObjVal = s.getObjectiveValue()[0];
+                _statBestObjVal = s.getObjectiveValue()[0];
         }
         public void newBestSolutionFound(GeneticSearchEvent e)
         {
@@ -253,12 +254,12 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
                 _bestEverSolution = (Subject)e.getGeneticSearch().getBestSubject().clone();
                 _reporter.putNewSolution(System.currentTimeMillis(), e.getGeneticSearch().getCurrentIteration(), subject.getObjectiveValue()[0], subject.toString());
                 _statNumNewSol++;
-                _statLastIterNewSol = e.getGeneticSearch().getCurrentIteration();
+                _statLastImprovingIteration = e.getGeneticSearch().getCurrentIteration();
 
             }
             catch(Exception ex)
             {
-                ex.printStackTrace();
+                _logger.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
         public void noChangeInValueIterationMade(GeneticSearchEvent e)

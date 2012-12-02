@@ -27,10 +27,21 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
         _algorithm.solutionsFromPhenotype(_solutions);
         Object[][] solutions = _algorithm.solutionsToPhenotype();
         
-        for(int i=0;i<_solutions.length;i++)
-            for(int j=0;j<_solutions[i].length;j++)
-                if(!solutions[i][j].equals(_solutions[i][j]))
-                    Assert.failNotSame("Phenotype transformation failed.", _solutions, solutions);
+        for(int k=0;k<solutions.length;k++)
+        {
+        	boolean match = false;
+	        for(int i=0;i<_solutions.length;i++)
+	            for(int j=0;j<_solutions[i].length;j++)
+	                if(!solutions[k][j].equals(_solutions[i][j]))
+	                	break;
+	                else if((j+1)==_solutions[i].length)
+	                	match = true;
+	                    
+	        if(!match){
+	        	Assert.failNotSame("Phenotype transformation failed.", _solutions, solutions);
+	        	return;
+	        }
+        }
     }
 
     @Override
@@ -57,13 +68,10 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
         _algorithm.solutionsFromPhenotype(_solutions);
         _algorithm.setParameters(_algParams);
         _algorithm.startSearching(true);
-        
-		Thread.sleep(100);
         Assert.assertTrue(_algorithm.isRunning());
         
         _algorithm.stopSearching();
         
-		Thread.sleep(100);        
         Assert.assertFalse(_algorithm.isRunning());
     }
 
@@ -84,5 +92,9 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
 		Assert.assertTrue(stats.getValueInt("numberOfIter") > 0);
 		Assert.assertTrue(stats.getValueDouble("initObjVal") > 0);
 		Assert.assertTrue(stats.getValueInt("avgObjVal") > 0);
+		Assert.assertTrue(stats.getValueInt("bestObjVal") > 0);
+		Assert.assertTrue(stats.getValueInt("lastIterNumberNewSol") == 0 || stats.getValueInt("bestObjVal")< stats.getValueDouble("initObjVal") );
+		Assert.assertTrue(stats.getValueInt("numberOfNewSolutions") > 0 || stats.getValueInt("lastIterNumberNewSol") == 0);
+		Assert.assertTrue(stats.getValueInt("lastIterNumberNewSol") > 0 || stats.getValueInt("numberOfNewSolutions") == 0);
 	}
 }

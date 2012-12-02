@@ -65,13 +65,13 @@ public class AlgorithmReporter
     }
 
     public void putStatistics(
-            long numberOfIter, long numberOfNewSolutions, long lastIterNumberNewSol,
+            long numberOfIterationsDone, long numberOfNewSolutions, long lastImprovingIteration,
             double initObjVal, double avgObjVal, double bestObjVal) throws Exception
     {
         DataNode stats = _report.getDataNode("Statistics");
-        stats.putValue("numberOfIter", numberOfIter);
+        stats.putValue("numberOfIter", numberOfIterationsDone);
         stats.putValue("numberOfNewSolutions", numberOfNewSolutions);
-        stats.putValue("lastIterNumberNewSol", lastIterNumberNewSol);
+        stats.putValue("lastIterNumberNewSol", lastImprovingIteration);
         stats.putValue("initObjVal", initObjVal);
         stats.putValue("avgObjVal", avgObjVal);
         stats.putValue("bestObjVal", bestObjVal);

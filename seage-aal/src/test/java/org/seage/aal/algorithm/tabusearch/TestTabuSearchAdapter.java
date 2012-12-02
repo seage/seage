@@ -19,11 +19,8 @@ public class TestTabuSearchAdapter extends TabuSearchAdapter
     {
         _solutions = new TestSolution[source.length];
         
-        for(int i=0;i<source.length;i++)
-        {
-            _solutions[i] = new TestSolution(source[i]);
-        }
-        
+        for(int i=0;i<source.length;i++)        
+            _solutions[i] = new TestSolution(source[i]);        
     }
 
     @Override
@@ -31,10 +28,9 @@ public class TestTabuSearchAdapter extends TabuSearchAdapter
     {
         List<Object[]> result = new ArrayList<Object[]>();
         
-        for(int i=0;i<_solutions.length;i++)
-        {
+        for(int i=0;i<_solutions.length;i++)        
             result.add(((TestSolution)_solutions[i]).solution);
-        }
+        
         return (Object[][]) result.toArray(new Object[][]{});
     }
 

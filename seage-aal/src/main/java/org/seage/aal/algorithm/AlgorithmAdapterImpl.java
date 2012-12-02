@@ -34,7 +34,7 @@ import java.util.logging.Logger;
  */
 public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
 {
-    private static final Logger _logger = Logger.getLogger(AlgorithmAdapterImpl.class.getName());
+    protected static final Logger _logger = Logger.getLogger(AlgorithmAdapterImpl.class.getName());
     
     protected boolean _algorithmStarted = false;
     protected boolean _algorithmStopped = false;

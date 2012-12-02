@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
@@ -41,6 +42,7 @@ import org.seage.metaheuristic.particles.Particle;
  *
  * @author rick
  */
+@Ignore("Adapter class not fully implemented yet")
 public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
     
     public ParticleSwarmAdapterTest() throws Exception
@@ -130,13 +132,13 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
     @Override    
     public void testAsyncRunning() throws Exception
     {
-        //_tester.testAsyncRunning();        
+        _tester.testAsyncRunning();        
     }
     
     @Test
 	@Override
 	public void testReport() throws Exception
 	{
-		//_tester.testReport();		
+		_tester.testReport();		
 	}
 }

@@ -51,22 +51,22 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-    	int NUM = 5;
+    	int NUM_NODES = _solutions[0].length;
     	Graph graph = new Graph();
-    	for(int i=0;i<NUM;i++)
+    	for(int i=0;i<NUM_NODES;i++)
     	{
     		Node n1 = new Node(i+1);
     		graph.getNodes().put(i+1, n1);
     		
     	}
-    	for(int i=0;i<NUM;i++)
+    	for(int i=0;i<NUM_NODES;i++)
     	{
     		Node n1 = graph.getNodes().get(i+1);
-    		for(int j=i+1;j<NUM;j++)
+    		for(int j=i+1;j<NUM_NODES;j++)
     		{
     			Node n2 = graph.getNodes().get(j+1);
     			Edge e = new Edge(n1, n2);
-    	    	e.setEdgePrice(1);
+    	    	e.setEdgePrice(Math.abs(n1.getID()-n2.getID()));
     	    	graph.getEdges().add(e);
     		}
     	}

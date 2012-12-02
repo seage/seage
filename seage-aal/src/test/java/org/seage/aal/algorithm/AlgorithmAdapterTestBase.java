@@ -25,6 +25,8 @@
  */
 package org.seage.aal.algorithm;
 
+import java.util.Random;
+
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
 
@@ -42,12 +44,27 @@ public abstract class AlgorithmAdapterTestBase {
       
     public AlgorithmAdapterTestBase() throws Exception
     {
-        _solutions = new Integer[][] {
-                new Integer[]{1,2,3,4,5}, 
-                new Integer[]{2,3,4,5,1},
-                new Integer[]{3,4,5,1,2},
-                new Integer[]{4,5,1,2,3},
-                new Integer[]{5,1,2,3,4}};
+    	int NUMSOL=100;
+    	int SOLLEN=100;
+    	Random rnd = new Random(4);
+    	_solutions = new Integer[NUMSOL][];
+    	
+    	for(int i=0;i<NUMSOL;i++)
+    	{
+    		_solutions[i] = new Integer[SOLLEN];
+    		for(int j=0;j<SOLLEN;j++)
+    		{
+    			_solutions[i][j] = j+1;
+    		}
+    		for(int j=0;j<SOLLEN;j++)
+    		{
+    			int ix1 = rnd.nextInt(SOLLEN);
+    			int ix2 = rnd.nextInt(SOLLEN);
+    			Object a = _solutions[i][ix1]; 
+    			_solutions[i][ix1] = _solutions[i][ix2];
+    			_solutions[i][ix2] = a;
+    		}
+    	}
     }  
 
     public abstract void testPhenotype() throws Exception;

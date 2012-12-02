@@ -27,7 +27,7 @@ package org.seage.metaheuristic.genetics;
 
 import java.util.*;
 
-import org.seage.metaheuristic.AlgorithmEventProducerBase;
+import org.seage.metaheuristic.AlgorithmEventProducer;
 import org.seage.metaheuristic.IAlgorithmListener;
 
 /**
@@ -35,7 +35,7 @@ import org.seage.metaheuristic.IAlgorithmListener;
  */
 public class GeneticSearch
 {
-	private AlgorithmEventProducerBase<IAlgorithmListener<GeneticSearchEvent>, GeneticSearchEvent> _eventProducer;
+	private AlgorithmEventProducer<IAlgorithmListener<GeneticSearchEvent>, GeneticSearchEvent> _eventProducer;
 	private int _iterationCount;
 	private int _currentIteration;
 	private int _populationCount;
@@ -58,7 +58,7 @@ public class GeneticSearch
 
 	public GeneticSearch(GeneticOperator operator, Evaluator evaluator)
 	{
-		_eventProducer = new AlgorithmEventProducerBase<IAlgorithmListener<GeneticSearchEvent>, GeneticSearchEvent>(new GeneticSearchEvent(this));
+		_eventProducer = new AlgorithmEventProducer<IAlgorithmListener<GeneticSearchEvent>, GeneticSearchEvent>(new GeneticSearchEvent(this));
 
 		_operator = operator;
 		_evaluator = evaluator;
@@ -73,7 +73,7 @@ public class GeneticSearch
 
 	public void addGeneticSearchListener(IAlgorithmListener<GeneticSearchEvent> listener)
 	{
-		_eventProducer.addGeneticSearchListener(listener);
+		_eventProducer.addAlgorithmListener(listener);
 	}
 
 	public void removeGeneticSearchListener(IAlgorithmListener<GeneticSearchEvent> listener)
@@ -148,11 +148,15 @@ public class GeneticSearch
 
 				evaluatePopulation(_population);
 				// _population.removeTwins();
-
-				if (_bestSubject == null || _subjectComparator.compare(_population.getBestSubject(), _bestSubject) == -1)
+				
+				if(_bestSubject == null)
 				{
 					_bestSubject = (Subject) _population.getBestSubject().clone();
-					// System.out.print(i+"\t");
+				}
+				
+				if (_subjectComparator.compare(_population.getBestSubject(), _bestSubject) == -1)
+				{
+					_bestSubject = (Subject) _population.getBestSubject().clone();
 					_eventProducer.fireNewBestSolutionFound();
 				}
 				else
