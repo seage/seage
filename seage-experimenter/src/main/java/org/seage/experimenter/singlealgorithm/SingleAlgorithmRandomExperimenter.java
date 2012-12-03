@@ -115,7 +115,7 @@ public class SingleAlgorithmRandomExperimenter implements IExperimenter
         int i=0, j=0;
         for (String algID : algorithmIDs)
         {
-            i++;
+            i++;j=0;
             for (String instanceID : instanceIDs)
             {
                 j++;

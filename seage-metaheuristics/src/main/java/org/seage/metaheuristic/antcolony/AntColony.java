@@ -93,10 +93,17 @@ public class AntColony
 	 */
 	public void startExploring(Node startingNode, Ant[] ants)
 	{
+		_started = _keepRunning = true;
+		_stopped = false;		
+		_currentIteration = 0;
 		_globalBest = Double.MAX_VALUE;
+		_eventProducer.fireAlgorithmStarted();	
+		
 		_ants = ants;
 		for(Ant a : _ants)
 		{
+			if(!_keepRunning)
+				break;
 			a.getBrain().setParameters(_alpha, _beta, _quantumPheromone);			
 			try
 			{
@@ -112,15 +119,12 @@ public class AntColony
 				_logger.warning(e.getMessage());
 			}
 		}
-		
-		_started = _keepRunning = true;
-		_stopped = false;		
-		_currentIteration = 0;
-		_eventProducer.fireAlgorithmStarted();		
-		while(_currentIteration++ < _numIterations && _keepRunning)
-		//for (int i = 0; i < _numIterations && _keepRunning == true; i++)
+			
+		while(_currentIteration < _numIterations && _keepRunning)
 		{
+			_currentIteration++;
 			_antReports.clear();
+			
 			for (int j = 0; j < _ants.length && _keepRunning; j++)
 			{
 				_antReports.add(_ants[j].explore(startingNode));
