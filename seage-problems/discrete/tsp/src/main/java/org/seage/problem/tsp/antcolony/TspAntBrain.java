@@ -66,15 +66,11 @@ public class TspAntBrain extends AntBrain
 		Node n1 = graph.getNodes().get(_nodeIDs.get(0));
 		Node n2 = graph.getNodes().get(_nodeIDs.get(_nodeIDs.size()-1));
 		
-		result.add(n1.getEdgeMap().get(n2));
+		Edge e = n1.getEdgeMap().get(n2);
+		if(e == null)
+			e = graph.createEdge(n1, n2);
+		result.add(e);
 
 		return result;
-	}
-
-	@Override
-	public double getNodesDistance(Node n1, Node n2)
-	{
-		return _graph.calculateEdgeLength(n1, n2);
-	}
-	
+	}	
 }

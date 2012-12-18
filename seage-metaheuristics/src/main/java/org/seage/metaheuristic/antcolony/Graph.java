@@ -33,7 +33,7 @@ import java.util.*;
  *
  * @author Martin Zaloga
  */
-public class Graph {
+public abstract class Graph {
 
     protected HashMap<Integer, Node> _nodes;
     protected ArrayList<Edge> _edges;
@@ -44,7 +44,7 @@ public class Graph {
         _edges = new ArrayList<Edge>();
     }
 	
-    
+	public abstract double getNodesDistance(Node n1, Node n2);
     
     /**
      * List of nodes of graph
@@ -88,9 +88,13 @@ public class Graph {
 
 
 
-	public void addEdge(Edge nextEdge)
+	public Edge createEdge(Node n1, Node n2) throws Exception
 	{
-		_edges.add(nextEdge);		
+		Edge newEdge = new Edge(n1, n2);
+		newEdge.setEdgePrice(getNodesDistance(n1, n2));
+		_edges.add(newEdge);	
+		
+		return newEdge;
 	}
 
 }

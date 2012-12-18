@@ -54,7 +54,7 @@ public class TspGraph extends Graph {
      * @param cities - Readed cities
      * @return - Euclide edge length
      */
-    public double calculateEdgeLength(Node start, Node end) {
+    public double getNodesDistance(Node start, Node end) {
         double _dX = (_cities[start.getID()-1].X - _cities[end.getID()-1].X);
         double _dY = (_cities[start.getID()-1].Y - _cities[end.getID()-1].Y);
         return Math.sqrt(_dX * _dX + _dY * _dY);

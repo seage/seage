@@ -71,7 +71,10 @@ public class Ant {
 		_distanceTravelled = 0;
 		for (Edge edge : _path)
 		{
-			_distanceTravelled += edge.getEdgePrice();
+			_distanceTravelled += edge.getEdgePrice();			
+		}
+		for (Edge edge : _path)
+		{
 			edge.addLocalPheromone(_brain.getQuantumPheromone() / (_distanceTravelled));
 		}
 		
@@ -101,9 +104,7 @@ public class Ant {
             Edge nextEdge = _currentNode.getEdgeMap().get(nextNode);
             if(nextEdge==null)
             {
-            	nextEdge = new Edge(_currentNode, nextNode);
-            	nextEdge.setEdgePrice(_brain.getNodesDistance(_currentNode, nextNode));
-            	_graph.addEdge(nextEdge);
+            	nextEdge = _graph.createEdge(_currentNode, nextNode);
             }     
             
             _distanceTravelled +=  nextEdge.getEdgePrice();            

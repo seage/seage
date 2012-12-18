@@ -32,6 +32,7 @@ import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
+import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
@@ -50,26 +51,26 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {    	
-    	Graph graph = new Graph();
+    	Graph graph = new TestGraph();
     	for(int i=0;i<SOLUTION_LENGTH;i++)
     	{
     		Node n1 = new Node(i+1);
     		graph.getNodes().put(i+1, n1);
     		
     	}
-    	for(int i=0;i<SOLUTION_LENGTH;i++)
-    	{
-    		Node n1 = graph.getNodes().get(i+1);
-    		for(int j=i+1;j<SOLUTION_LENGTH;j++)
-    		{
-    			Node n2 = graph.getNodes().get(j+1);
-    			Edge e = new Edge(n1, n2);
-    	    	e.setEdgePrice(Math.abs(n1.getID()-n2.getID()));
-    	    	graph.getEdges().add(e);
-    		}
-    	}
+//    	for(int i=0;i<SOLUTION_LENGTH;i++)
+//    	{
+//    		Node n1 = graph.getNodes().get(i+1);
+//    		for(int j=i+1;j<SOLUTION_LENGTH;j++)
+//    		{
+//    			Node n2 = graph.getNodes().get(j+1);
+//    			Edge e = new Edge(n1, n2);
+//    	    	e.setEdgePrice(Math.abs(n1.getID()-n2.getID()));
+//    	    	graph.getEdges().add(e);
+//    		}
+//    	}
     	    	
-        _algorithm = new TestAntColonyAdapter(new TestAntBrain(graph), graph);
+        _algorithm = new TestAntColonyAdapter(new AntBrain(graph), graph);
         _algParams = new AlgorithmParams("AntColonyTest");
         _algParams.putValue("problemID", "AntColonyTest");
         _algParams.putValue("instance", "TestInstance");

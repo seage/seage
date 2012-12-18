@@ -36,7 +36,7 @@ import java.util.Random;
  * 
  * @author Martin Zaloga
  */
-public abstract class AntBrain
+public class AntBrain
 {
 
 	// protected Node _startingNode;
@@ -45,8 +45,6 @@ public abstract class AntBrain
 	private Random _rand;
 	protected Graph _graph;
 	
-	public abstract double getNodesDistance(Node n1, Node n2);
-
 	public AntBrain(Graph graph)
 	{	
 		_graph = graph;
@@ -119,7 +117,7 @@ public abstract class AntBrain
 			else
 			{
 				edgePheromone = 0.001;
-				edgePrice = getNodesDistance(currentNode, n);
+				edgePrice = _graph.getNodesDistance(currentNode, n);
 			}
 			
 			if (!(visited.contains(n)))
@@ -200,7 +198,10 @@ public abstract class AntBrain
 			Node n2 = graph.getNodes().get(_nodeIDs.get(i+1));
 			Edge e = n1.getEdgeMap().get(n2);
 			if(e == null)
-				throw new Exception("There is no edge for node IDs: " + n1.getID() + ", " + n2.getID());
+			{
+				//throw new Exception("There is no edge for node IDs: " + n1.getID() + ", " + n2.getID());
+				e = graph.createEdge(n1, n2);
+			}
 			
 			edges.add(e);
 		}

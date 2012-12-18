@@ -84,11 +84,4 @@ public class SatAntBrain extends AntBrain {
         }
         return (FormulaEvaluator.evaluate(_formula, solution) + 0.1);
     }
-
-	@Override
-	public double getNodesDistance(Node n1, Node n2)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }

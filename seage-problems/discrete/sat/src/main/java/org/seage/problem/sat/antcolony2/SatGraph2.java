@@ -97,4 +97,11 @@ public class SatGraph2 extends Graph {
             }
         }
     }
+
+	@Override
+	public double getNodesDistance(Node n1, Node n2)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

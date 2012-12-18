@@ -175,7 +175,7 @@ class ExperimentTask implements Runnable{
             //System.err.println("ERR: " + problemID +"/"+algorithmID+"/"+instanceName);
             //System.err.println(_config.toString());
             //ex.printStackTrace();
-        	_logger.log(Level.SEVERE, ex.getMessage());
+        	_logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
     

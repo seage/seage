@@ -99,4 +99,11 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
             makeEdge(_nodes.get(i + 1), _nodes.get(i + 3), formula);
         }
     }
+
+	@Override
+	public double getNodesDistance(Node n1, Node n2)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
