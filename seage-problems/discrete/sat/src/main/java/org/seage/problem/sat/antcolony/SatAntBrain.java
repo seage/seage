@@ -25,9 +25,8 @@
  */
 package org.seage.problem.sat.antcolony;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Vector;
+
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Node;
@@ -42,8 +41,8 @@ public class SatAntBrain extends AntBrain {
 
     private Formula _formula;
 
-    public SatAntBrain( Formula formula) {
-        super();
+    public SatAntBrain(SatGraph graph, Formula formula) {
+        super(graph);
         _formula = formula;
     }
 
@@ -55,21 +54,22 @@ public class SatAntBrain extends AntBrain {
 //        return currentPosition.getConnectionMap().;
 //    }
 
-    @Override
-    protected Edge selectNextEdge(List<Edge> edges, HashSet<Node> visited) {
-        double[] probabilities = new double[edges.size()];
-        double sum = 0;
-        // for each Edges
-        for (int i = 0; i < probabilities.length; i++) {
-            Edge e = edges.get(i);
-            probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgePrice(), _beta);
-            sum += probabilities[i];
-        }
-        for (int i = 0; i < probabilities.length; i++) {
-            probabilities[i] /= sum;
-        }
-        return edges.get(next(probabilities));
-    }
+//    @Override
+//    protected Node selectNextNode(Node currentNode, List<Node> nodes, HashSet<Node> visited)
+//    {
+//        double[] probabilities = new double[edges.size()];
+//        double sum = 0;
+//        // for each Edges
+//        for (int i = 0; i < probabilities.length; i++) {
+//            Edge e = edges.get(i);
+//            probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgePrice(), _beta);
+//            sum += probabilities[i];
+//        }
+//        for (int i = 0; i < probabilities.length; i++) {
+//            probabilities[i] /= sum;
+//        }
+//        return edges.get(next(probabilities));
+//    }
  
     protected double pathCost(Vector<Edge> path) {
         boolean[] solution = new boolean[_formula.getLiteralCount()];
@@ -84,4 +84,11 @@ public class SatAntBrain extends AntBrain {
         }
         return (FormulaEvaluator.evaluate(_formula, solution) + 0.1);
     }
+
+	@Override
+	public double getNodesDistance(Node n1, Node n2)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

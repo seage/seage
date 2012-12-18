@@ -78,7 +78,7 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 		_brain = brain;
 		_graph = graph;
 		//_algorithmListener = ;
-		_antColony = new AntColony(graph);
+		_antColony = new AntColony(graph, brain);
 		_antColony.addAntColonyListener(new AntColonyListener());
 	}
 	

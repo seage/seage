@@ -26,7 +26,7 @@ public class TestAntColonyAdapter extends AntColonyAdapter
 			ArrayList<Integer> nodes =  new ArrayList<Integer>();
 			for(int j=0;j<source[i].length;j++)
 				nodes.add((Integer)source[i][j]);
-			_ants[i] = new Ant(_brain, nodes);
+			_ants[i] = new Ant(nodes);
 		}
 	}
 

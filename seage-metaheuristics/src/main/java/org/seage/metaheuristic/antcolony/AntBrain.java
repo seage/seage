@@ -36,16 +36,20 @@ import java.util.Random;
  * 
  * @author Martin Zaloga
  */
-public class AntBrain
+public abstract class AntBrain
 {
 
 	// protected Node _startingNode;
 	protected double _alpha, _beta;
 	protected double _quantumPheromone;
 	private Random _rand;
+	protected Graph _graph;
+	
+	public abstract double getNodesDistance(Node n1, Node n2);
 
-	public AntBrain()
-	{
+	public AntBrain(Graph graph)
+	{	
+		_graph = graph;
 		_rand = new Random(System.currentTimeMillis());
 	}
 
@@ -59,24 +63,31 @@ public class AntBrain
 	/**
 	 * Finding available edges
 	 * 
-	 * @param currentPosition - Current position
+	 * @param currentNode - Current position
 	 * @param visited - Visited nodes
 	 * @return - Available edges (a full graph)
 	 */
-	protected List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited)
+	protected ArrayList<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited)
 	{
-		List<Edge> result = new ArrayList<Edge>();
-		for (Edge e : currentPosition.getEdges())
+		ArrayList<Node> result = new ArrayList<Node>();
+		
+		for(Node n : _graph.getNodes().values())
 		{
-			Node node2 = null;
-			if (e.getNode1().equals(currentPosition))
-				node2 = e.getNode2();
-			else
-				node2 = e.getNode1();
-
-			if (!visited.contains(node2))
-				result.add(e);
+			if (!visited.contains(n) && !n.equals(currentNode))
+				result.add(n);
 		}
+		
+//		for (Edge e : currentNode.getEdges())
+//		{
+//			Node node2 = null;
+//			if (e.getNode1().equals(currentNode))
+//				node2 = e.getNode2();
+//			else
+//				node2 = e.getNode1();
+//
+//			if (!visited.contains(node2))
+//				result.add(node2);
+//		}
 
 		return result;
 	}
@@ -88,19 +99,34 @@ public class AntBrain
 	 * @param visited - Visited nodes
 	 * @return - Selected edge
 	 */
-	protected Edge selectNextEdge(List<Edge> edges, HashSet<Node> visited)
+	protected Node selectNextNode(Node currentNode, ArrayList<Node> nodes, HashSet<Node> visited)
 	{
 		double sum = 0;
-		double[] probabilities = new double[edges.size()];
+		double[] probabilities = new double[nodes.size()];
 		// for each Edges
-		for (int i = 0; i < probabilities.length; i++)
+		for (int i = 0; i < nodes.size(); i++)
 		{
-			Edge e = edges.get(i);
-
-			if (!(visited.contains(e.getNode1()) && visited.contains(e.getNode2())))
+			double edgePheromone = 0;
+			double edgePrice = 0;
+			
+			Node n = nodes.get(i);
+			Edge e = currentNode.getEdgeMap().get(n);
+			if(e != null)
 			{
-				probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgePrice(), _beta);
-				sum += probabilities[i];
+				edgePheromone = e.getLocalPheromone();
+				edgePrice = e.getEdgePrice();
+			}
+			else
+			{
+				edgePheromone = 0.001;
+				edgePrice = getNodesDistance(currentNode, n);
+			}
+			
+			if (!(visited.contains(n)))
+			{
+                            double p = pow(edgePheromone, _alpha) * pow(1/edgePrice, _beta);
+                            probabilities[i] = p;
+                            sum += p;
 			}
 
 		}
@@ -108,8 +134,19 @@ public class AntBrain
 		{
 			probabilities[i] /= sum;
 		}
-		return edges.get(next(probabilities));
+		return nodes.get(next(probabilities));
 	}
+        /**
+         * A faster power function than Math.pow
+         * @param x
+         * @param y
+         * @return x^y
+         */
+        public static double pow(final double x, final double y) {
+            final long tmp = Double.doubleToLongBits(x);
+            final long tmp2 = (long)(y * (tmp - 4606921280493453312L)) + 4606921280493453312L;
+            return Double.longBitsToDouble(tmp2);
+        }
 
 	/**
 	 * Next edges index calculation
@@ -156,7 +193,6 @@ public class AntBrain
 	public List<Edge> getEdgesToNodes(List<Integer> _nodeIDs, Graph graph) throws Exception
 	{
 		List<Edge> edges = new ArrayList<Edge>();
-		
 		
 		for(int i=0;i<_nodeIDs.size()-1;i++)
 		{

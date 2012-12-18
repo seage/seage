@@ -28,6 +28,7 @@ package org.seage.problem.tsp.antcolony;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
@@ -39,39 +40,22 @@ import org.seage.metaheuristic.antcolony.Node;
  */
 public class TspAntBrain extends AntBrain
 {
-	private Node _startingNode;
-	private int _numNodes;
+	private Node _startingNode;	
+	private TspGraph _graph;
 
-	public TspAntBrain(Node startingNode, int numNodes)
+	public TspAntBrain(TspGraph graph, Node startingNode)
 	{
-		super();
+		super(graph);
 		_startingNode = startingNode;
-		_numNodes = numNodes;
+		_graph = graph;
 	}
 	
 	@Override
-	protected List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited)
+	protected ArrayList<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited)
 	{
-		List<Edge> result = new ArrayList<Edge>();
-		for (Edge e : currentPosition.getEdges())
-		{
-			Node node2 = null;
-			if (e.getNode1().equals(currentPosition))
-				node2 = e.getNode2();
-			else
-				node2 = e.getNode1();
-
-			if (visited.size() == _numNodes)
-				if (node2 == _startingNode)
-				{
-					result.add(e);
-					return result;
-				}
-
-			if (!visited.contains(node2))
-				result.add(e);
-		}
-
+		ArrayList<Node> result = super.getAvailableNodes(currentNode, visited);
+		if(visited.size()==_graph.getNodes().values().size() && !currentNode.equals(_startingNode))
+			result.add(_startingNode);
 		return result;
 	}
 
@@ -85,6 +69,12 @@ public class TspAntBrain extends AntBrain
 		result.add(n1.getEdgeMap().get(n2));
 
 		return result;
+	}
+
+	@Override
+	public double getNodesDistance(Node n1, Node n2)
+	{
+		return _graph.calculateEdgeLength(n1, n2);
 	}
 	
 }

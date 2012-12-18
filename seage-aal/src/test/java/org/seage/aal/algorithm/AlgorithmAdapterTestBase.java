@@ -25,8 +25,6 @@
  */
 package org.seage.aal.algorithm;
 
-import java.util.Random;
-
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
 

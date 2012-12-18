@@ -86,4 +86,11 @@ public class Graph {
 		_evaporCoeff = evaporCoeff;
 	}
 
+
+
+	public void addEdge(Edge nextEdge)
+	{
+		_edges.add(nextEdge);		
+	}
+
 }

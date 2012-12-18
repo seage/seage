@@ -27,6 +27,7 @@
  */
 package org.seage.metaheuristic.antcolony;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
@@ -37,9 +38,9 @@ import java.util.Vector;
  */
 public class Ant {
 
-    
+    protected Graph _graph;
     protected Node _startPosition;
-    protected Node _currentPosition;
+    protected Node _currentNode;
     protected double _distanceTravelled;
     protected HashSet<Node> _visited;
     protected List<Edge> _path;
@@ -47,16 +48,22 @@ public class Ant {
     
 	protected AntBrain _brain;
 
-	public Ant(AntBrain brain)
+	public Ant()
     {
-		_brain = brain;		
+		this(new ArrayList<Integer>());
     }	
 	
-	public Ant(AntBrain brain, List<Integer> nodeIDs)
+	public Ant(List<Integer> nodeIDs)
     {
-		this(brain);
 		_nodeIDs = nodeIDs;
     }
+	
+	void setParameters(Graph graph, AntBrain brain, double alpha, double beta, double quantumPheromone)
+	{
+		_graph = graph;
+		_brain = brain;
+		_brain.setParameters(alpha, beta, quantumPheromone);
+	}
 	
 	public List<Edge> doFirstExploration(Graph graph) throws Exception
 	{
@@ -74,30 +81,39 @@ public class Ant {
     /**
      * Ant passage through the graph
      * @return - ants path
+     * @throws Exception 
      */
-    protected List<Edge> explore(Node startingNode)
+    protected List<Edge> explore(Node startingNode) throws Exception
     {
         _visited = new HashSet<Node>();
-        _path = new Vector<Edge>();     
+        _path = new ArrayList<Edge>();
         _distanceTravelled = 0;
-        _currentPosition = startingNode;
+        _currentNode = startingNode;
         _visited.add(startingNode);
 
         _nodeIDs.clear();
-        List<Edge> edges = _brain.getAvailableEdges(_currentPosition, _visited);
+        ArrayList<Node> nodes = _brain.getAvailableNodes(_currentNode, _visited);
         
-        while (edges != null && edges.size() > 0) 
+        while (nodes != null && nodes.size() > 0) 
         {
-            Edge nextEdge = _brain.selectNextEdge(edges, _visited);
-            Node nextNode = nextEdge.getNode1().equals(_currentPosition) ? nextEdge.getNode2() : nextEdge.getNode1();
+            Node nextNode = _brain.selectNextNode(_currentNode, nodes, _visited);
+            //Node nextNode = nextEdge.getNode1().equals(_currentPosition) ? nextEdge.getNode2() : nextEdge.getNode1();
+            Edge nextEdge = _currentNode.getEdgeMap().get(nextNode);
+            if(nextEdge==null)
+            {
+            	nextEdge = new Edge(_currentNode, nextNode);
+            	nextEdge.setEdgePrice(_brain.getNodesDistance(_currentNode, nextNode));
+            	_graph.addEdge(nextEdge);
+            }     
             
-            _distanceTravelled += nextEdge.getEdgePrice();
+            _distanceTravelled +=  nextEdge.getEdgePrice();            
+            
             _path.add(nextEdge);
             _visited.add(nextNode);
-            _currentPosition = nextNode;
+            _currentNode = nextNode;
             _nodeIDs.add(nextNode.getID());
             
-            edges = _brain.getAvailableEdges(_currentPosition, _visited);
+            nodes = _brain.getAvailableNodes(_currentNode, _visited);
         }        
 
         leavePheromone();

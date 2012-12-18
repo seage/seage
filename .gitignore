@@ -9,6 +9,7 @@ build/
 target/bin/
 target/output/
 target/report/
+target/repository/processes/*.properties
 
 /seage-misc/target/
 /seage-metaheuristics/target/

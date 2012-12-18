@@ -32,7 +32,6 @@ import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
-import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
@@ -70,7 +69,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     		}
     	}
     	    	
-        _algorithm = new TestAntColonyAdapter(new AntBrain(), graph);
+        _algorithm = new TestAntColonyAdapter(new TestAntBrain(graph), graph);
         _algParams = new AlgorithmParams("AntColonyTest");
         _algParams.putValue("problemID", "AntColonyTest");
         _algParams.putValue("instance", "TestInstance");
