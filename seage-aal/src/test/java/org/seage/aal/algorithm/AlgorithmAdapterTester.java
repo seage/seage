@@ -151,6 +151,7 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
 		Assert.assertTrue(stats.getValueDouble("initObjVal") > 0);
 		Assert.assertTrue(stats.getValueInt("avgObjVal") > 0);
 		Assert.assertTrue(stats.getValueInt("bestObjVal") > 0);
+		Assert.assertFalse(stats.getValueInt("initObjVal") < stats.getValueInt("bestObjVal"));
 		Assert.assertTrue(stats.getValueInt("lastIterNumberNewSol") == 0 || stats.getValueInt("bestObjVal")< stats.getValueDouble("initObjVal") );
 		Assert.assertTrue(stats.getValueInt("numberOfNewSolutions") > 0 || stats.getValueInt("lastIterNumberNewSol") == 0);
 		Assert.assertTrue(stats.getValueInt("lastIterNumberNewSol") > 0 || stats.getValueInt("numberOfNewSolutions") == 0);

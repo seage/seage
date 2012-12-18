@@ -101,8 +101,7 @@ public class AntColony
 		_started = _keepRunning = true;
 		_stopped = false;		
 		_currentIteration = 0;
-		_globalBest = Double.MAX_VALUE;
-		_eventProducer.fireAlgorithmStarted();	
+		_globalBest = Double.MAX_VALUE;		
 		
 		_ants = ants;
 		for(Ant a : _ants)
@@ -127,6 +126,8 @@ public class AntColony
 				_logger.log(Level.WARNING, "Unable to do a first exploration", e);
 			}
 		}
+		
+		_eventProducer.fireAlgorithmStarted();	
 			
 		while(_currentIteration < _numIterations && _keepRunning)
 		{
