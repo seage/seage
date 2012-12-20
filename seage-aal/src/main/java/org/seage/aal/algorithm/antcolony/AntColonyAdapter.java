@@ -111,14 +111,14 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
         _statLastImprovingIteration = 0;
         _statNumIterationsDone = 0;
         _statNumNewBestSolutions = 0;
-        _initialSolutionValue =  _bestSolutionValue = 0;
         _averageSolutionValue = 0;
+        _initialSolutionValue =  _bestSolutionValue = Double.MAX_VALUE;
         
     	_antColony.startExploring(_graph.getNodes().values().iterator().next(), _ants);
         
     }
 
-    @Override
+	@Override
     public void stopSearching() throws Exception
     {
         _antColony.stopExploring();
@@ -148,7 +148,6 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 		public void algorithmStarted(AntColonyEvent e)
 		{
 			_algorithmStarted = true;
-			_initialSolutionValue = _averageSolutionValue = _bestSolutionValue = e.getAntColony().getGlobalBest();
 			
 		}
 
@@ -162,10 +161,17 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 		@Override
 		public void newBestSolutionFound(AntColonyEvent e)
 		{
-			_statNumNewBestSolutions++;
 			AntColony alg = e.getAntColony(); 
+			
+			_averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();			
 			_statLastImprovingIteration = alg.getCurrentIteration();
-			_averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();	
+			_averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();
+			
+			if(_initialSolutionValue==Double.MAX_VALUE)
+				_initialSolutionValue = _bestSolutionValue;
+			else
+				_statNumNewBestSolutions++;			
+				
 			try
 			{
 				_reporter.putNewSolution(System.currentTimeMillis(), 

@@ -45,7 +45,7 @@ import org.seage.problem.tsp.Visualizer;
  */
 public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 {
-	//static String instance = "eil51";
+	static String instance = "eil51";
 	//static String instance = "berlin52";
 	//static String instance = "kroA100";
 	//static String instance = "kroA200";
@@ -61,7 +61,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	//static String instance = "vm1748";
 	//static String instance = "fl3795";
 	//static String instance = "pcb3038";
-	static String instance = "usa13509";
+	//static String instance = "usa13509";
 	
 	private int _edges;
 	
@@ -98,8 +98,8 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	{
 		City[] cities = CityProvider.readCities(new FileInputStream(path));
 		_edges = cities.length * (cities.length-1)/2;
-		int iterations = 1, numAnts = 1;
-		double defaultPheromone = 0.2, localEvaporation = 0.90, quantumPheromone = 1000;
+		int iterations = 300, numAnts = 500;
+		double defaultPheromone = 0.8, localEvaporation = 0.8, quantumPheromone = 100;
 		double alpha = 1, beta = 3;
 		TspGraph graph = new TspGraph(cities);
 		System.out.println("Loaded ...");

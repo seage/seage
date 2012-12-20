@@ -101,9 +101,11 @@ public class AntColony
 		_started = _keepRunning = true;
 		_stopped = false;		
 		_currentIteration = 0;
-		_globalBest = Double.MAX_VALUE;		
-		
+		_globalBest = Double.MAX_VALUE;				
 		_ants = ants;
+		
+		_eventProducer.fireAlgorithmStarted();	
+		
 		for(Ant a : _ants)
 		{
 			if(!_keepRunning) break;			
@@ -127,7 +129,8 @@ public class AntColony
 			}
 		}
 		
-		_eventProducer.fireAlgorithmStarted();	
+		if(_globalBest < Double.MAX_VALUE)
+			_eventProducer.fireNewBestSolutionFound();
 			
 		while(_currentIteration < _numIterations && _keepRunning)
 		{
