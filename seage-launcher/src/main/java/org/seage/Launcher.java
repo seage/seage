@@ -32,7 +32,6 @@ import java.util.logging.Logger;
 import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
-import org.seage.experimenter.AdaptiveExperimenter;
 import org.seage.logging.LogHelper;
 import org.seage.experimenter.reporting.LogReportCreator;
 import org.seage.experimenter.reporting.ReportManager;
@@ -41,6 +40,7 @@ import org.seage.experimenter.reporting.rapidminer.ExperimentDataImporter;
 import org.seage.experimenter.reporting.rapidminer.old.RMTest;
 import org.seage.experimenter.singlealgorithm.SingleAlgorithmRandomExperimenter;
 import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;
+import org.seage.experimenter.singlealgorithm.old.AdaptiveExperimenter;
 import org.seage.temp.AlgorithmTester;
 import org.seage.temp.ClasspathTest;
 /**

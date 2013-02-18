@@ -17,6 +17,7 @@ public class SingleAlgorithmTableCreator extends RMDataTableCreator
     {
         super(repositoryPath, tableName);
         
+        _attributes.add(AttributeFactory.createAttribute("ExperimentType", Ontology.NOMINAL));
         _attributes.add(AttributeFactory.createAttribute("ExperimentID", Ontology.NOMINAL));
         _attributes.add(AttributeFactory.createAttribute("ProblemID", Ontology.NOMINAL));
         _attributes.add(AttributeFactory.createAttribute("AlgorithmID", Ontology.NOMINAL));
@@ -32,7 +33,7 @@ public class SingleAlgorithmTableCreator extends RMDataTableCreator
         _attributes.add(AttributeFactory.createAttribute("TimeoutInSeconds", Ontology.REAL));
         _attributes.add(AttributeFactory.createAttribute("ComputerName", Ontology.NOMINAL));      
         
-        Hashtable<String, XmlHelper.XPath> v01 = new Hashtable<String, XmlHelper.XPath>();
+        Hashtable<String, XmlHelper.XPath> v01 = new Hashtable<String, XmlHelper.XPath>(); 
         //v01.put("ExperimentType", new XmlHelper.XPath("/ExperimentTask/Config/@runID"));
         v01.put("ExperimentID", new XmlHelper.XPath("/ExperimentTask/Config/@runID"));
         v01.put("ProblemID", new XmlHelper.XPath("/ExperimentTask/Config/Problem/@id"));
@@ -47,6 +48,7 @@ public class SingleAlgorithmTableCreator extends RMDataTableCreator
         v01.put("NrOfIterations", new XmlHelper.XPath("/ExperimentTask/AlgorithmReport/Statistics/@numberOfIter"));
         
         Hashtable<String, XmlHelper.XPath> v02 = new Hashtable<String, XmlHelper.XPath>();
+        //v02.put("ExperimentType", new XmlHelper.XPath("/ExperimentTask/Config/@runID"));
         v02.put("ExperimentID", new XmlHelper.XPath("/ExperimentTask/@experimentID"));
         v02.put("ProblemID", new XmlHelper.XPath("/ExperimentTask/Config/Problem/@id"));
         v02.put("AlgorithmID", new XmlHelper.XPath("/ExperimentTask/Config/Algorithm/@id"));
@@ -60,6 +62,7 @@ public class SingleAlgorithmTableCreator extends RMDataTableCreator
         v02.put("NrOfIterations", new XmlHelper.XPath("/ExperimentTask/AlgorithmReport/Statistics/@numberOfIter"));
         
         Hashtable<String, XmlHelper.XPath> v03 = new Hashtable<String, XmlHelper.XPath>();
+        //v03.put("ExperimentType", new XmlHelper.XPath("/ExperimentTask/Config/@runID"));
         v03.put("ExperimentID", new XmlHelper.XPath("/ExperimentTask/@experimentID"));
         v03.put("ProblemID", new XmlHelper.XPath("/ExperimentTask/Config/Problem/@id"));
         v03.put("AlgorithmID", new XmlHelper.XPath("/ExperimentTask/Config/Algorithm/@id"));
@@ -73,6 +76,7 @@ public class SingleAlgorithmTableCreator extends RMDataTableCreator
         v03.put("NrOfIterations", new XmlHelper.XPath("/ExperimentTask/AlgorithmReport/Statistics/@numberOfIter"));
         
         Hashtable<String, XmlHelper.XPath> v04 = new Hashtable<String, XmlHelper.XPath>();
+        //v04.put("ExperimentType", new XmlHelper.XPath("/ExperimentTask/Config/@runID"));
         v04.put("ExperimentID", new XmlHelper.XPath("/ExperimentTaskReport/@experimentID"));
         v04.put("ProblemID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/@problemID"));
         v04.put("AlgorithmID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/@algorithmID"));
@@ -88,10 +92,28 @@ public class SingleAlgorithmTableCreator extends RMDataTableCreator
         v04.put("TimeoutInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@timeoutS"));
         v04.put("ComputerName", new XmlHelper.XPath("/ExperimentTaskReport/@machineName"));
         
+        Hashtable<String, XmlHelper.XPath> v05 = new Hashtable<String, XmlHelper.XPath>();
+        v05.put("ExperimentType", new XmlHelper.XPath("/ExperimentTaskReport/@experimentType"));
+        v05.put("ExperimentID", new XmlHelper.XPath("/ExperimentTaskReport/@experimentID"));
+        v05.put("ProblemID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/@problemID"));
+        v05.put("AlgorithmID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/@algorithmID"));
+        v05.put("InstanceID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/Instance/@name"));
+        v05.put("ConfigID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
+        v05.put("RunID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@runID"));
+        v05.put("InitSolutionValue", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@initObjVal"));
+        v05.put("BestSolutionValue", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@bestObjVal"));
+        v05.put("NrOfNewSolutions", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfNewSolutions"));
+        v05.put("LastIterNumberNewSol", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
+        v05.put("NrOfIterations", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfIter"));
+        v05.put("DurationInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@durationS"));
+        v05.put("TimeoutInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@timeoutS"));
+        v05.put("ComputerName", new XmlHelper.XPath("/ExperimentTaskReport/@machineName"));
+        
         _versionedXPaths.put("0.1", v01);
         _versionedXPaths.put("0.2", v02);
         _versionedXPaths.put("0.3", v03);
         _versionedXPaths.put("0.4", v04);
+        _versionedXPaths.put("0.5", v05);
     }
 
     @Override
@@ -110,12 +132,21 @@ public class SingleAlgorithmTableCreator extends RMDataTableCreator
         for(Attribute attInfo : _attributes)
         { 
             XmlHelper.XPath xPath = _versionedXPaths.get(version).get(attInfo.getName());
-            if(xPath == null)
+            String val = null;
+            if(attInfo.getName().equals("ExperimentType") && xPath == null)
+            	val = "SingleAlgorithmRandom";
+            else
             {
-                _logger.warning(doc.getLocalName() + ": No XmlHelper.XPath defined for attribute: " + attInfo.getName());
-                continue;
+	            if(xPath == null)
+	            {
+	                _logger.warning(doc.getLocalName() + ": No XmlHelper.XPath defined for attribute: " + attInfo.getName());
+	                continue;
+	            }            
+	            else
+	            {
+	            	val = XmlHelper.getValueFromDocument(doc.getDocumentElement(), xPath);//(String) XmlHelper.XPath.evaluate(attInfo.XmlHelper.XPath, doc, XmlHelper.XPathConstants.STRING);; //XmlHelper.XPath
+	            }
             }
-            String val = XmlHelper.getValueFromDocument(doc.getDocumentElement(), xPath);//(String) XmlHelper.XPath.evaluate(attInfo.XmlHelper.XPath, doc, XmlHelper.XPathConstants.STRING);; //XmlHelper.XPath
             //String val = (String) attInfo.XmlHelper.XPath.evaluate( doc, XmlHelper.XPathConstants.STRING);; //XmlHelper.XPath
             if(val.equals(""))
                 throw new Exception(xPath.XPathStr + " not found");

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.3.005">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.3.005" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <parameter key="parallelize_main_process" value="false"/>
+    <process expanded="true">
+      <operator activated="true" class="retrieve" compatibility="5.3.005" expanded="true" height="60" name="Retrieve (2)" width="90" x="112" y="255">
+        <parameter key="repository_entry" value="//seage/databases/experiments/ExperimentValues"/>
+      </operator>
+      <operator activated="true" class="aggregate" compatibility="5.3.005" expanded="true" height="76" name="Aggregate (2)" width="90" x="246" y="255">
+        <parameter key="use_default_aggregation" value="false"/>
+        <parameter key="attribute_filter_type" value="all"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="attribute_value"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="time"/>
+        <parameter key="block_type" value="attribute_block"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_matrix_row_start"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <parameter key="default_aggregation_function" value="average"/>
+        <list key="aggregation_attributes">
+          <parameter key="BestSolutionValue" value="average"/>
+        </list>
+        <parameter key="group_by_attributes" value="|ConfigID|AlgorithmID|ExperimentID|InstanceID|ProblemID"/>
+        <parameter key="count_all_combinations" value="false"/>
+        <parameter key="only_distinct" value="false"/>
+        <parameter key="ignore_missings" value="true"/>
+      </operator>
+      <operator activated="true" class="set_role" compatibility="5.3.005" expanded="true" height="76" name="Set Role (3)" width="90" x="447" y="255">
+        <parameter key="name" value="ConfigID"/>
+        <parameter key="target_role" value="id"/>
+        <list key="set_additional_roles"/>
+      </operator>
+      <operator activated="true" class="remember" compatibility="5.3.005" expanded="true" height="60" name="Remember" width="90" x="648" y="255">
+        <parameter key="name" value="ExperimentValues"/>
+        <parameter key="io_object" value="ExampleSet"/>
+        <parameter key="store_which" value="1"/>
+        <parameter key="remove_from_process" value="true"/>
+      </operator>
+      <operator activated="true" class="execute_process" compatibility="5.3.005" expanded="true" height="76" name="Execute algorithmParams" width="90" x="112" y="120">
+        <parameter key="process_location" value="//seage/processes/algorithmParams"/>
+        <parameter key="use_input" value="true"/>
+        <parameter key="store_output" value="false"/>
+        <parameter key="propagate_metadata_recursively" value="true"/>
+        <parameter key="cache_process" value="true"/>
+        <list key="macros"/>
+      </operator>
+      <operator activated="true" class="loop_collection" compatibility="5.3.005" expanded="true" height="76" name="Loop Collection" width="90" x="447" y="30">
+        <parameter key="set_iteration_macro" value="false"/>
+        <parameter key="macro_name" value="iteration"/>
+        <parameter key="macro_start_value" value="1"/>
+        <parameter key="unfold" value="false"/>
+        <parameter key="parallelize_iteration" value="false"/>
+        <process expanded="true">
+          <operator activated="true" class="recall" compatibility="5.3.005" expanded="true" height="60" name="Recall" width="90" x="313" y="165">
+            <parameter key="name" value="ExperimentValues"/>
+            <parameter key="io_object" value="ExampleSet"/>
+            <parameter key="remove_from_store" value="false"/>
+          </operator>
+          <operator activated="true" class="join" compatibility="5.3.005" expanded="true" height="76" name="Join" width="90" x="514" y="30">
+            <parameter key="remove_double_attributes" value="true"/>
+            <parameter key="join_type" value="inner"/>
+            <parameter key="use_id_attribute_as_key" value="true"/>
+            <list key="key_attributes"/>
+            <parameter key="keep_both_join_attributes" value="false"/>
+          </operator>
+          <connect from_port="single" to_op="Join" to_port="left"/>
+          <connect from_op="Recall" from_port="result" to_op="Join" to_port="right"/>
+          <connect from_op="Join" from_port="join" to_port="output 1"/>
+          <portSpacing port="source_single" spacing="0"/>
+          <portSpacing port="sink_output 1" spacing="0"/>
+          <portSpacing port="sink_output 2" spacing="0"/>
+        </process>
+      </operator>
+      <connect from_op="Retrieve (2)" from_port="output" to_op="Aggregate (2)" to_port="example set input"/>
+      <connect from_op="Aggregate (2)" from_port="example set output" to_op="Set Role (3)" to_port="example set input"/>
+      <connect from_op="Set Role (3)" from_port="example set output" to_op="Remember" to_port="store"/>
+      <connect from_op="Execute algorithmParams" from_port="result 1" to_op="Loop Collection" to_port="collection"/>
+      <connect from_op="Loop Collection" from_port="output 1" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>

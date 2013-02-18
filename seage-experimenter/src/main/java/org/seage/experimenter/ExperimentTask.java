@@ -88,7 +88,7 @@ class ExperimentTask implements Runnable{
     
     //private static long _runOrder=100000;
 
-    public ExperimentTask(long experimentID, int runID, String reportName, long timeoutS, ProblemConfig config, ZipOutputStream outputStream) throws Exception
+    public ExperimentTask(String experimentType, long experimentID, int runID, String reportName, long timeoutS, ProblemConfig config, ZipOutputStream outputStream) throws Exception
     {
         _experimentID = experimentID;
     	_runID = runID;
@@ -98,7 +98,8 @@ class ExperimentTask implements Runnable{
         _outputStream = outputStream;
 
         _experimentReport = new DataNode("ExperimentTaskReport");
-        _experimentReport.putValue("version", "0.4");
+        _experimentReport.putValue("version", "0.5");
+        _experimentReport.putValue("experimentType", experimentType);
         _experimentReport.putValue("experimentID", experimentID);
         _experimentReport.putValue("timeoutS", timeoutS);
         try

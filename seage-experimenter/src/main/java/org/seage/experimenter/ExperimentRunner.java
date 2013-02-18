@@ -70,7 +70,7 @@ public class ExperimentRunner
         String problemID = config.getProblemID();
         String algorithmID = config.getAlgorithmID();
         String instanceID = config.getInstanceName().split("\\.")[0];
-        return run(new ProblemConfig[] { config }, System.currentTimeMillis(), problemID, algorithmID, instanceID, timeoutS);
+        return run(new ProblemConfig[] { config }, "Config", System.currentTimeMillis(), problemID, algorithmID, instanceID, timeoutS);
     }
 
     /**
@@ -95,7 +95,7 @@ public class ExperimentRunner
      * @return experimentID
      * @throws Exception
      */
-    public long run(ProblemConfig[] configs, long experimentID, String problemID, String algorithmID, String instanceID, long timeoutS) throws Exception
+    public long run(ProblemConfig[] configs, String experimentType,  long experimentID, String problemID, String algorithmID, String instanceID, long timeoutS) throws Exception
     {
         // long experimentID = System.currentTimeMillis();
 
@@ -117,7 +117,7 @@ public class ExperimentRunner
             for (int runID = 1; runID <= _numExperimentAttempts; runID++)
             {
                 String reportName = problemID + "-" + algorithmID + "-" + instanceID + "-" + configID + "-" + runID + ".xml";
-                taskQueue.add(new ExperimentTask(experimentID, runID, reportName, timeoutS, config, zos));
+                taskQueue.add(new ExperimentTask(experimentType, experimentID, runID, reportName, timeoutS, config, zos));
             }
         }
 

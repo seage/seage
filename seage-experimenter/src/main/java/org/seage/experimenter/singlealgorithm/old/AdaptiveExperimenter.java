@@ -25,7 +25,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
-package org.seage.experimenter;
+package org.seage.experimenter.singlealgorithm.old;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +34,8 @@ import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
+import org.seage.experimenter.ExperimentRunner;
+import org.seage.experimenter.IExperimenter;
 import org.seage.experimenter.config.Configurator;
 import org.seage.experimenter.config.RandomConfigurator;
 import org.seage.experimenter.config.RandomConfiguratorEx;
@@ -115,7 +117,7 @@ public class AdaptiveExperimenter implements IExperimenter
         for (String algID : algorithmIDs)
             configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, numOfConfigs)));
 
-        _experimentID = _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), experimentID, problemID, "", "", timeoutS);
+        _experimentID = _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), "Adaptive", experimentID, problemID, "", "", timeoutS);
         // ########### BASIC EXPERIMENTER ############
 
         LogReportCreator reporter = new LogReportCreator();
@@ -137,7 +139,7 @@ public class AdaptiveExperimenter implements IExperimenter
             configs.addAll(Arrays.asList(((RandomConfiguratorEx) _configuratorAdaptive).prepareConfigs(paramIntervals, pi, algID, numOfConfigs)));
         }
 
-        _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), experimentID, problemID, "", "", timeoutS);
+        _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), "Adaptive", experimentID, problemID, "", "", timeoutS);
     }
 
     /**
