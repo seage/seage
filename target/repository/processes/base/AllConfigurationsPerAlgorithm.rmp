@@ -14,8 +14,13 @@
     <parameter key="encoding" value="SYSTEM"/>
     <parameter key="parallelize_main_process" value="false"/>
     <process expanded="true">
-      <operator activated="true" class="retrieve" compatibility="5.3.005" expanded="true" height="60" name="Retrieve (2)" width="90" x="112" y="255">
-        <parameter key="repository_entry" value="//seage/databases/experiments/ExperimentValues"/>
+      <operator activated="true" class="execute_process" compatibility="5.3.005" expanded="true" height="76" name="Execute FilteredExperimentValues" width="90" x="112" y="255">
+        <parameter key="process_location" value="FilteredExperimentValues"/>
+        <parameter key="use_input" value="true"/>
+        <parameter key="store_output" value="false"/>
+        <parameter key="propagate_metadata_recursively" value="true"/>
+        <parameter key="cache_process" value="true"/>
+        <list key="macros"/>
       </operator>
       <operator activated="true" class="aggregate" compatibility="5.3.005" expanded="true" height="76" name="Aggregate (2)" width="90" x="246" y="255">
         <parameter key="use_default_aggregation" value="false"/>
@@ -40,19 +45,14 @@
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
-      <operator activated="true" class="set_role" compatibility="5.3.005" expanded="true" height="76" name="Set Role (3)" width="90" x="447" y="255">
-        <parameter key="name" value="ConfigID"/>
-        <parameter key="target_role" value="id"/>
-        <list key="set_additional_roles"/>
-      </operator>
       <operator activated="true" class="remember" compatibility="5.3.005" expanded="true" height="60" name="Remember" width="90" x="648" y="255">
         <parameter key="name" value="ExperimentValues"/>
         <parameter key="io_object" value="ExampleSet"/>
         <parameter key="store_which" value="1"/>
         <parameter key="remove_from_process" value="true"/>
       </operator>
-      <operator activated="true" class="execute_process" compatibility="5.3.005" expanded="true" height="76" name="Execute algorithmParams" width="90" x="112" y="120">
-        <parameter key="process_location" value="//seage/processes/algorithmParams"/>
+      <operator activated="true" class="execute_process" compatibility="5.3.005" expanded="true" height="76" name="Execute algorithmParams" width="90" x="112" y="30">
+        <parameter key="process_location" value="//seage/processes/_algorithmParams"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
         <parameter key="propagate_metadata_recursively" value="true"/>
@@ -78,17 +78,16 @@
             <list key="key_attributes"/>
             <parameter key="keep_both_join_attributes" value="false"/>
           </operator>
-          <connect from_port="single" to_op="Join" to_port="left"/>
-          <connect from_op="Recall" from_port="result" to_op="Join" to_port="right"/>
+          <connect from_port="single" to_op="Join" to_port="right"/>
+          <connect from_op="Recall" from_port="result" to_op="Join" to_port="left"/>
           <connect from_op="Join" from_port="join" to_port="output 1"/>
           <portSpacing port="source_single" spacing="0"/>
           <portSpacing port="sink_output 1" spacing="0"/>
           <portSpacing port="sink_output 2" spacing="0"/>
         </process>
       </operator>
-      <connect from_op="Retrieve (2)" from_port="output" to_op="Aggregate (2)" to_port="example set input"/>
-      <connect from_op="Aggregate (2)" from_port="example set output" to_op="Set Role (3)" to_port="example set input"/>
-      <connect from_op="Set Role (3)" from_port="example set output" to_op="Remember" to_port="store"/>
+      <connect from_op="Execute FilteredExperimentValues" from_port="result 1" to_op="Aggregate (2)" to_port="example set input"/>
+      <connect from_op="Aggregate (2)" from_port="example set output" to_op="Remember" to_port="store"/>
       <connect from_op="Execute algorithmParams" from_port="result 1" to_op="Loop Collection" to_port="collection"/>
       <connect from_op="Loop Collection" from_port="output 1" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>

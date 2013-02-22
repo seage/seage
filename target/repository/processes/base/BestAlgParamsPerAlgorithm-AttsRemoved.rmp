@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.3.005">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.3.005" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <parameter key="parallelize_main_process" value="false"/>
+    <process expanded="true">
+      <operator activated="true" class="execute_process" compatibility="5.3.005" expanded="true" height="76" name="Execute BestAlgParamsPerAlgorithm" width="90" x="45" y="75">
+        <parameter key="process_location" value="//seage/processes/base/BestAlgParamsPerAlgorithm"/>
+        <parameter key="use_input" value="false"/>
+        <parameter key="store_output" value="false"/>
+        <parameter key="propagate_metadata_recursively" value="true"/>
+        <parameter key="cache_process" value="true"/>
+        <list key="macros"/>
+      </operator>
+      <operator activated="true" class="loop_collection" compatibility="5.3.005" expanded="true" height="76" name="Loop Collection" width="90" x="313" y="75">
+        <parameter key="set_iteration_macro" value="false"/>
+        <parameter key="macro_name" value="iteration"/>
+        <parameter key="macro_start_value" value="1"/>
+        <parameter key="unfold" value="false"/>
+        <parameter key="parallelize_iteration" value="false"/>
+        <process expanded="true">
+          <operator activated="true" class="remove_attribute_range" compatibility="5.3.005" expanded="true" height="76" name="Remove Attribute Range" width="90" x="246" y="30">
+            <parameter key="first_attribute" value="1"/>
+            <parameter key="last_attribute" value="13"/>
+          </operator>
+          <connect from_port="single" to_op="Remove Attribute Range" to_port="example set input"/>
+          <connect from_op="Remove Attribute Range" from_port="example set output" to_port="output 1"/>
+          <portSpacing port="source_single" spacing="0"/>
+          <portSpacing port="sink_output 1" spacing="0"/>
+          <portSpacing port="sink_output 2" spacing="0"/>
+        </process>
+      </operator>
+      <connect from_op="Execute BestAlgParamsPerAlgorithm" from_port="result 1" to_op="Loop Collection" to_port="collection"/>
+      <connect from_op="Loop Collection" from_port="output 1" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>

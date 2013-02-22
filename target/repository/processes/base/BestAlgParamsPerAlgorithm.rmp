@@ -36,8 +36,8 @@
           <portSpacing port="sink_out 1" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="execute_process" compatibility="5.3.005" expanded="true" height="76" name="Execute BestAlgParamsPerProblemAlgInstance" width="90" x="179" y="30">
-        <parameter key="process_location" value="base/BestAlgParamsPerProblemAlgInstance"/>
+      <operator activated="true" class="execute_process" compatibility="5.3.005" expanded="true" height="76" name="Execute SortedAlgParamsPerProblemAlgInstance" width="90" x="179" y="30">
+        <parameter key="process_location" value="SortedAlgParamsPerProblemAlgInstance"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
         <parameter key="propagate_metadata_recursively" value="true"/>
@@ -127,7 +127,7 @@
         </process>
       </operator>
       <operator activated="true" class="loop_repository" compatibility="5.3.005" expanded="true" height="76" name="Loop Repository (2)" width="90" x="581" y="30">
-        <parameter key="repository_folder" value="../databases/experiments/parameters/"/>
+        <parameter key="repository_folder" value="../../databases/experiments/parameters/"/>
         <parameter key="entry_type" value="IOObject"/>
         <parameter key="filtered_string" value="file name (last part of the path)"/>
         <parameter key="entry_name_macro" value="entry_name"/>
@@ -148,7 +148,7 @@
           <portSpacing port="sink_out 2" spacing="0"/>
         </process>
       </operator>
-      <connect from_op="Execute BestAlgParamsPerProblemAlgInstance" from_port="result 1" to_op="Loop Collection" to_port="collection"/>
+      <connect from_op="Execute SortedAlgParamsPerProblemAlgInstance" from_port="result 1" to_op="Loop Collection" to_port="collection"/>
       <connect from_op="Loop Repository (2)" from_port="out 1" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>

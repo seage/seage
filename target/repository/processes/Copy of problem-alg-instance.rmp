@@ -17,12 +17,12 @@
       <operator activated="true" class="retrieve" compatibility="5.3.005" expanded="true" height="60" name="Retrieve ExperimentValues" width="90" x="45" y="75">
         <parameter key="repository_entry" value="//seage/databases/experiments/ExperimentValues"/>
       </operator>
-      <operator activated="true" class="filter_examples" compatibility="5.3.005" expanded="true" height="76" name="Filter Examples" width="90" x="179" y="210">
+      <operator activated="true" class="filter_examples" compatibility="5.3.005" expanded="true" height="76" name="Filter Examples" width="90" x="179" y="75">
         <parameter key="condition_class" value="attribute_value_filter"/>
         <parameter key="parameter_string" value="BestSolutionValue &gt; 0 &amp;&amp; InitSolutionValue &gt; 0 &amp;&amp; NrOfNewSolutions &gt; 0"/>
         <parameter key="invert_filter" value="false"/>
       </operator>
-      <operator activated="true" class="aggregate" compatibility="5.3.005" expanded="true" height="76" name="Aggregate (2)" width="90" x="313" y="120">
+      <operator activated="true" class="aggregate" compatibility="5.3.005" expanded="true" height="76" name="Aggregate (2)" width="90" x="313" y="75">
         <parameter key="use_default_aggregation" value="false"/>
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
@@ -51,7 +51,7 @@
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
-      <operator activated="true" class="remember" compatibility="5.3.005" expanded="true" height="60" name="Remember" width="90" x="447" y="255">
+      <operator activated="true" class="remember" compatibility="5.3.005" expanded="true" height="60" name="Remember" width="90" x="380" y="210">
         <parameter key="name" value="ExperimentData"/>
         <parameter key="io_object" value="ExampleSet"/>
         <parameter key="store_which" value="1"/>
