@@ -33,14 +33,14 @@
 	 	<dependency>
 			<groupId>rapidminer</groupId>
 			<artifactId>rapidminer-launcher</artifactId>
-			<version>5.1.014</version>
+			<version>5.3.5</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>rapidminer</groupId>
 			<artifactId>rapidminer</artifactId>
-			<version>5.1.014</version>
+			<version>5.3.5</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -81,6 +81,11 @@
 		    <groupId>org.apache.poi</groupId>
 		    <artifactId>poi</artifactId>
 		    <version>3.8</version>
+		</dependency>
+		<dependency>
+		    <groupId>vldocking</groupId>
+		    <artifactId>vldocking</artifactId>
+		    <version>1.0</version>
 		</dependency>
 	 </dependencies>
 </project>

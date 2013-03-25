@@ -56,7 +56,7 @@
 
 	<repositories>
 		<repository>
-			<id>seage-repo</id>
+			<id>seage-maven-repo</id>
 			<url>http://www.seage.org/maven-repo</url>
 		</repository>
 	</repositories>

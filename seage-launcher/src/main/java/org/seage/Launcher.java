@@ -29,16 +29,19 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.logging.LogHelper;
+import org.seage.experimenter.config.Adaptive1Configurator;
+import org.seage.experimenter.config.RandomConfigurator;
 import org.seage.experimenter.reporting.LogReportCreator;
 import org.seage.experimenter.reporting.ReportManager;
 import org.seage.experimenter.reporting.StatisticalReportCreator;
 import org.seage.experimenter.reporting.rapidminer.ExperimentDataImporter;
 import org.seage.experimenter.reporting.rapidminer.old.RMTest;
-import org.seage.experimenter.singlealgorithm.SingleAlgorithmRandomExperimenter;
+import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimenter;
 import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;
 import org.seage.experimenter.singlealgorithm.old.AdaptiveExperimenter;
 import org.seage.temp.AlgorithmTester;
@@ -103,10 +106,10 @@ public class Launcher {
         if (args[0].equals("-experiment")) {             
         	if (args.length >= 5)
             {
-                new SingleAlgorithmRandomExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 4, args.length));
+                new SingleAlgorithmExperimenter("SingleAlgorithmRandom", new RandomConfigurator()).runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 4, args.length));
 
             } else if (args.length == 4) {
-                new SingleAlgorithmRandomExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );
+                new SingleAlgorithmExperimenter("SingleAlgorithmRandom", new RandomConfigurator()).runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );
             } else {
                 usage();
             }
@@ -131,7 +134,17 @@ public class Launcher {
         if (args[0].equals("-experiment1")) {
             if (args.length >= 6)
             {
-                new SingleAlgorithmRandomExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], new String[]{args[4]}, Arrays.copyOfRange(args, 5, args.length));
+                new SingleAlgorithmExperimenter("SingleAlgorithmRandom", new RandomConfigurator()).runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], new String[]{args[4]}, Arrays.copyOfRange(args, 5, args.length));
+
+            } else {
+                usage();
+            }
+            return;
+        }
+        if (args[0].equals("-experiment2")) {
+            if (args.length >= 6)
+            {
+                new SingleAlgorithmExperimenter("SingleAlgorithmAdaptive1", new Adaptive1Configurator()).runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], new String[]{args[4]}, Arrays.copyOfRange(args, 5, args.length));
 
             } else {
                 usage();

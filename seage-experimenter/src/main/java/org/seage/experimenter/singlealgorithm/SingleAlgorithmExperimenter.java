@@ -47,17 +47,19 @@ import org.seage.experimenter.config.RandomConfigurator;
  * 
  * @author rick
  */
-public class SingleAlgorithmRandomExperimenter implements IExperimenter
+public class SingleAlgorithmExperimenter implements IExperimenter
 {
 
-    private static Logger _logger = Logger.getLogger(SingleAlgorithmRandomExperimenter.class.getName());
+    private static Logger _logger = Logger.getLogger(SingleAlgorithmExperimenter.class.getName());
 
     Configurator _configurator;
     ExperimentRunner _experimentRunner;
+    String _experimentName;
 
-    public SingleAlgorithmRandomExperimenter()
+    public SingleAlgorithmExperimenter(String experimentName, Configurator configurator)
     {
-        _configurator = new RandomConfigurator();
+    	_experimentName= experimentName;
+        _configurator = configurator;
 
         _experimentRunner = new ExperimentRunner();
     }
@@ -128,7 +130,7 @@ public class SingleAlgorithmRandomExperimenter implements IExperimenter
                 _logger.info("Number of runs: " + numOfConfigs*5);
                 //_logger.info("Memory used for configs: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
 
-                _experimentRunner.run(configs.toArray(new ProblemConfig[] {}),"SingleAlgorithmRandom0", experimentID, problemID, algID, instanceID, timeoutS);
+                _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), _experimentName, experimentID, problemID, algID, instanceID, timeoutS);
             }
         }
         _logger.info("-------------------------------------");

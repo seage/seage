@@ -127,7 +127,7 @@ public class ExperimentDataImporter
 	
 	private void writeDataTablesToRepository() throws OperatorException, OperatorCreationException, RepositoryException
 	{
-		System.setProperty("rapidminer.home", ".");
+		//System.setProperty("rapidminer.home", ".");
 		RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
 		RapidMiner.init();
 		
