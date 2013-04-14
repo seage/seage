@@ -23,7 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.temp;
+package org.seage.sandbox;
 
 import org.seage.classutil.ClassPathAnalyzer;
 import java.io.File;

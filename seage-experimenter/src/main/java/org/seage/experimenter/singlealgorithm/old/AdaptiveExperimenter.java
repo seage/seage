@@ -34,7 +34,6 @@ import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
-import org.seage.experimenter.ExperimentRunner;
 import org.seage.experimenter.IExperimenter;
 import org.seage.experimenter.config.Configurator;
 import org.seage.experimenter.config.RandomConfigurator;
@@ -42,6 +41,7 @@ import org.seage.experimenter.config.RandomConfiguratorEx;
 import org.seage.experimenter.reporting.LogReportCreator;
 import org.seage.experimenter.reporting.rapidminer.old.ProcessPerformer;
 import org.seage.experimenter.reporting.rapidminer.old.RMProcess;
+import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimentRunner;
 
 public class AdaptiveExperimenter implements IExperimenter
 {
@@ -71,14 +71,14 @@ public class AdaptiveExperimenter implements IExperimenter
     Configurator _configurator;
     Configurator _configuratorAdaptive;
     ProcessPerformer _processPerformer;
-    ExperimentRunner _experimentRunner;
+    SingleAlgorithmExperimentRunner _experimentRunner;
     private long _experimentID;
 
     public AdaptiveExperimenter() throws Exception
     {
         // ########### BASIC EXPERIMENTER ############
         _configurator = new RandomConfigurator();
-        _experimentRunner = new ExperimentRunner();
+        _experimentRunner = new SingleAlgorithmExperimentRunner();
         // ########### BASIC EXPERIMENTER ############
 
         _processPerformer = new ProcessPerformer();

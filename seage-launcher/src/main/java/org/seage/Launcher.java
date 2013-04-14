@@ -36,16 +36,17 @@ import org.seage.data.DataNode;
 import org.seage.logging.LogHelper;
 import org.seage.experimenter.config.Adaptive1Configurator;
 import org.seage.experimenter.config.RandomConfigurator;
+import org.seage.experimenter.reporting.ExperimentDataRapidMinerImporter;
 import org.seage.experimenter.reporting.LogReportCreator;
 import org.seage.experimenter.reporting.ReportManager;
 import org.seage.experimenter.reporting.StatisticalReportCreator;
-import org.seage.experimenter.reporting.rapidminer.ExperimentDataImporter;
-import org.seage.experimenter.reporting.rapidminer.old.RMTest;
 import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimenter;
 import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;
 import org.seage.experimenter.singlealgorithm.old.AdaptiveExperimenter;
-import org.seage.temp.AlgorithmTester;
-import org.seage.temp.ClasspathTest;
+import org.seage.sandbox.AlgorithmTester;
+import org.seage.sandbox.ClasspathTest;
+import org.seage.sandbox.RapidMinerTest;
+
 /**
  *
  * @author rick
@@ -144,7 +145,7 @@ public class Launcher {
         if (args[0].equals("-experiment2")) {
             if (args.length >= 6)
             {
-                new SingleAlgorithmExperimenter("SingleAlgorithmAdaptive1", new Adaptive1Configurator()).runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], new String[]{args[4]}, Arrays.copyOfRange(args, 5, args.length));
+                //new SingleAlgorithmExperimenter("SingleAlgorithmAdaptive1", new Adaptive1Configurator()).runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], new String[]{args[4]}, Arrays.copyOfRange(args, 5, args.length));
 
             } else {
                 usage();
@@ -178,19 +179,19 @@ public class Launcher {
             
             return;
         }
-        
-        if (args[0].equals("-t")) {
-        	new RMTest().testCustomExampleSetOnInput();
-        	return;
-        }
-        
+                
         if (args[0].equals("-repo")) {
-        	new ExperimentDataImporter("output/experiment-logs", "").processLogs();
+        	new ExperimentDataRapidMinerImporter("output/experiment-logs", "").processLogs();
         	return;
         }
         
         if (args[0].equals("-cp")) {
 			ClasspathTest.main(args);
+            return;
+        }
+        
+        if (args[0].equals("-rm")) {
+			new RapidMinerTest().testCustomExampleSetOnInput();
             return;
         }
 

@@ -1,4 +1,4 @@
-package org.seage.experimenter.reporting.rapidminer;
+package org.seage.experimenter.reporting;
 
 import java.io.File;
 import java.io.InputStream;
@@ -18,6 +18,7 @@ import org.seage.experimenter.reporting.rapidminer.repository.AlgorithmParamsTab
 import org.seage.experimenter.reporting.rapidminer.repository.RMDataTableCreator;
 import org.seage.experimenter.reporting.rapidminer.repository.SingleAlgorithmTableCreator;
 import org.seage.thread.TaskRunner;
+import org.seage.thread.TaskRunnerEx;
 import org.w3c.dom.Document;
 
 import com.rapidminer.Process;
@@ -35,16 +36,16 @@ import com.rapidminer.repository.RepositoryManager;
 import com.rapidminer.repository.local.LocalRepository;
 import com.rapidminer.tools.OperatorService;
 
-public class ExperimentDataImporter
+public class ExperimentDataRapidMinerImporter
 {
-	private static Logger _logger = Logger.getLogger(ExperimentDataImporter.class.getName());
+	private static Logger _logger = Logger.getLogger(ExperimentDataRapidMinerImporter.class.getName());
 	private String _logPath;
 	private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "seage";
 	private final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "repository";
 	
 	private List<RMDataTableCreator> _rmDataTableCreators;
 	
-	public ExperimentDataImporter(String logPath, String repoName) throws RepositoryException
+	public ExperimentDataRapidMinerImporter(String logPath, String repoName) throws RepositoryException
 	{
 		_logPath = logPath;
 		_rmDataTableCreators = new ArrayList<RMDataTableCreator>();
@@ -74,7 +75,8 @@ public class ExperimentDataImporter
 				tasks.add(new ProcessZipTask(f));				
 			}	
 			
-			new TaskRunner().runTasks(tasks, Runtime.getRuntime().availableProcessors());
+			//new TaskRunner().runTasks(tasks, Runtime.getRuntime().availableProcessors());
+			new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(tasks.toArray(new Runnable[]{}));
 		}
 		catch (Exception ex)
 		{
@@ -127,7 +129,7 @@ public class ExperimentDataImporter
 	
 	private void writeDataTablesToRepository() throws OperatorException, OperatorCreationException, RepositoryException
 	{
-		//System.setProperty("rapidminer.home", ".");
+		System.setProperty("rapidminer.home", ".");
 		RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
 		RapidMiner.init();
 		

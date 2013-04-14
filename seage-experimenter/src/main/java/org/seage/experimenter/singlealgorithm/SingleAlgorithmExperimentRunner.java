@@ -26,7 +26,7 @@
  *     - Modified
  */
 
-package org.seage.experimenter;
+package org.seage.experimenter.singlealgorithm;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,16 +43,16 @@ import org.seage.thread.TaskRunner;
  * 
  * @author Richard Malek
  */
-public class ExperimentRunner
+public class SingleAlgorithmExperimentRunner
 {
 
     @SuppressWarnings("unused")
-	private static Logger _logger = Logger.getLogger(ExperimentRunner.class.getName());
+	private static Logger _logger = Logger.getLogger(SingleAlgorithmExperimentRunner.class.getName());
     private int _numExperimentAttempts = 5;
 	private int _processorCount;
 
 	
-    public ExperimentRunner()
+    public SingleAlgorithmExperimentRunner()
 	{
 		_processorCount = Runtime.getRuntime().availableProcessors();
     	//_processorCount = 1;
@@ -117,7 +117,7 @@ public class ExperimentRunner
             for (int runID = 1; runID <= _numExperimentAttempts; runID++)
             {
                 String reportName = problemID + "-" + algorithmID + "-" + instanceID + "-" + configID + "-" + runID + ".xml";
-                taskQueue.add(new ExperimentTask(experimentType, experimentID, runID, reportName, timeoutS, config, zos));
+                taskQueue.add(new SingleAlgorithmExperimentTask(experimentType, experimentID, runID, reportName, timeoutS, config, zos));
             }
         }
 

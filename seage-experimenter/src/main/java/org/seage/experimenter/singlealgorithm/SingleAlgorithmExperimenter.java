@@ -35,7 +35,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.seage.aal.algorithm.ProblemProvider;
-import org.seage.experimenter.ExperimentRunner;
 import org.seage.experimenter.IExperimenter;
 import org.seage.experimenter.config.Configurator;
 import org.seage.aal.data.ProblemInfo;
@@ -53,7 +52,7 @@ public class SingleAlgorithmExperimenter implements IExperimenter
     private static Logger _logger = Logger.getLogger(SingleAlgorithmExperimenter.class.getName());
 
     Configurator _configurator;
-    ExperimentRunner _experimentRunner;
+    SingleAlgorithmExperimentRunner _experimentRunner;
     String _experimentName;
 
     public SingleAlgorithmExperimenter(String experimentName, Configurator configurator)
@@ -61,7 +60,7 @@ public class SingleAlgorithmExperimenter implements IExperimenter
     	_experimentName= experimentName;
         _configurator = configurator;
 
-        _experimentRunner = new ExperimentRunner();
+        _experimentRunner = new SingleAlgorithmExperimentRunner();
     }
 
     public void runFromConfigFile(String configPath) throws Exception

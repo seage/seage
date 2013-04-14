@@ -14,7 +14,7 @@
 	      <groupId>junit</groupId>
 	      <artifactId>junit</artifactId>
 	      <version>4.0</version>
-	      <scope>runtime</scope>
+	      <scope>test</scope>
 	    </dependency>
 	 	<dependency>
 	 		<groupId>${project.groupId}</groupId>
@@ -48,22 +48,16 @@
 			<groupId>encog</groupId>
 			<artifactId>encog</artifactId>
 			<version>1.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>jxl</groupId>
+			<groupId>net.sourceforge.jexcelapi</groupId>
 			<artifactId>jxl</artifactId>
-			<version>1.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
+			<version>2.6.12</version>
 		</dependency>
 		<dependency>
 			<groupId>jep</groupId>
 			<artifactId>jep</artifactId>
 			<version>1.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>joone-engine</groupId>
@@ -74,18 +68,19 @@
 		</dependency>
 		<dependency>
 		    <groupId>org.eobjects.sassyreader</groupId>
-		    <artifactId>SassyReader</artifactId>
-		    <version>0.5</version>
+			<artifactId>SassyReader</artifactId>
+			<version>0.5</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.poi</groupId>
-		    <artifactId>poi</artifactId>
-		    <version>3.8</version>
-		</dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.9</version>
+		</dependency>            
 		<dependency>
 		    <groupId>vldocking</groupId>
 		    <artifactId>vldocking</artifactId>
 		    <version>1.0</version>
+		    <scope>compile</scope>
 		</dependency>
 	 </dependencies>
 </project>

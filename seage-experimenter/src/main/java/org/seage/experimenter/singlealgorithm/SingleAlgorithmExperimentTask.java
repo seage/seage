@@ -24,7 +24,7 @@
  *     - Initial implementation
  */
 
-package org.seage.experimenter;
+package org.seage.experimenter.singlealgorithm;
 
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -75,8 +75,8 @@ import org.seage.data.xml.XmlHelper;
  * 
  * @author rick
  */
-class ExperimentTask implements Runnable{
-	private static Logger _logger = Logger.getLogger(ExperimentTask.class.getName());
+class SingleAlgorithmExperimentTask implements Runnable{
+	private static Logger _logger = Logger.getLogger(SingleAlgorithmExperimentTask.class.getName());
     private ProblemConfig _config;
     private long _experimentID;
     private String _reportName;
@@ -88,7 +88,7 @@ class ExperimentTask implements Runnable{
     
     //private static long _runOrder=100000;
 
-    public ExperimentTask(String experimentType, long experimentID, int runID, String reportName, long timeoutS, ProblemConfig config, ZipOutputStream outputStream) throws Exception
+    public SingleAlgorithmExperimentTask(String experimentType, long experimentID, int runID, String reportName, long timeoutS, ProblemConfig config, ZipOutputStream outputStream) throws Exception
     {
         _experimentID = experimentID;
     	_runID = runID;

@@ -24,7 +24,7 @@
  *     - Initial implementation
  */
 
-package org.seage.temp;
+package org.seage.sandbox;
 
 public class ProcessorInfo {
 

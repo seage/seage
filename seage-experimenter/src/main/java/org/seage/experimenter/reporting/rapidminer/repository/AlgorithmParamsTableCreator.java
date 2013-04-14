@@ -65,8 +65,8 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
             else
                 valArray[i++] = Double.parseDouble(val);
         }
-        
-        _dataTable.add(new DoubleArrayDataRow(valArray));
+
+        _dataTable.add(new DoubleArrayDataRow(valArray));        
         
     }
     

@@ -1,8 +1,10 @@
-package org.seage.experimenter.reporting.rapidminer.old;
+package org.seage.sandbox;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.seage.logging.LogHelper;
 
 import com.rapidminer.Process;
 import com.rapidminer.RapidMiner;
@@ -16,29 +18,37 @@ import com.rapidminer.example.table.MemoryExampleTable;
 import com.rapidminer.operator.IOContainer;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.io.RepositoryStorer;
-import com.rapidminer.operator.ports.OutputPort;
-import com.rapidminer.operator.ports.OutputPorts;
+import com.rapidminer.repository.RepositoryException;
 import com.rapidminer.repository.RepositoryManager;
 import com.rapidminer.repository.local.LocalRepository;
 import com.rapidminer.tools.Ontology;
 import com.rapidminer.tools.OperatorService;
 
-public class RMTest {
+public class RapidMinerTest {
 	private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "SEAGE-RM-REPO";
     private final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "/home/rick/Temp/SEAGE-RM-REPO";
 
 	public void testCustomExampleSetOnInput() {
 		
 		try {
+			//LogHelper.loadConfig("/home/rick/Projects/seage/debug-logging.properties");
 			
-			String rapidMinerHome = "/home/rick/Temp/rm-test";
-			System.setProperty("rapidminer.home", rapidMinerHome);
+			//String rapidMinerHome = "/home/rick/Temp/rm-test";
+			//System.setProperty("rapidminer.home", "/opt/rapidminer-5.1.014");
 			//System.setProperty(RapidMiner..PROPERTY_CONNECTIONS_FILE_XML, "false");
-			System.setProperty(RapidMiner.PROPERTY_RAPIDMINER_INIT_PLUGINS, "false");
+			//System.setProperty(RapidMiner.PROPERTY_RAPIDMINER_INIT_PLUGINS, "false");
 			//System.setProperty(RapidMiner, "false");
 			//System.setProperty("rapidminer.home", rapidMinerHome);
 			RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
-			RepositoryManager.getInstance(null).addRepository(new LocalRepository( RAPIDMINER_LOCAL_REPOSITORY_NAME , new File( RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH )));
+			RepositoryManager rm = RepositoryManager.getInstance(null);
+			try
+	        {
+	            rm.getRepository(RAPIDMINER_LOCAL_REPOSITORY_NAME);
+	        }
+	        catch(RepositoryException re)
+	        {
+	            rm.addRepository(new LocalRepository( RAPIDMINER_LOCAL_REPOSITORY_NAME , new File( RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH )));
+	        }			
 			RapidMiner.init();
 
 			Process process = new Process(new File(RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH+"/proc2.rmp"));			

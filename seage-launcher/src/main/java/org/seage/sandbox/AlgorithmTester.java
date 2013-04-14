@@ -23,7 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.temp;
+package org.seage.sandbox;
 
 import java.io.File;
 import java.util.Map;
