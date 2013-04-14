@@ -30,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.logging.ConsoleHandler;
+import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -56,26 +57,43 @@ public class LogHelper
             System.err.println("WARNING: Could not open configuration file");
             System.err.println("WARNING: Logging not configured (console output only)");
 
-            Logger logger = Logger.getLogger("org.seage");
-            logger.setUseParentHandlers(false);
-            logger.setLevel(Level.FINEST);
-            ConsoleHandler ch = new ConsoleHandler();
-            ch.setFormatter(new LogFormatter());
-            logger.addHandler(ch);
-            LogManager.getLogManager().addLogger(logger);
+            setConsoleDefaultFormatter(Logger.getLogger("org.seage"), Level.ALL);
         }
     }
 
-    public static void setConsoleFineLevel(Logger logger, Level level)
+    public static void setConsoleLevel(Logger logger, Level level)
     {
         Logger tempLogger = logger;
         while (tempLogger != null)
         {
             System.out.println(tempLogger.getName());
-            tempLogger.setLevel(Level.ALL);
+            tempLogger.setLevel(level);
             for (Handler handler : tempLogger.getHandlers())
                 if (handler instanceof ConsoleHandler)
-                    handler.setLevel(Level.ALL);
+                    handler.setLevel(level);
+            tempLogger = tempLogger.getParent();
+        }
+    }
+    
+//    public static void setConsoleDefaultFormatter()
+//    {
+//    	Logger logger = Logger.getLogger("org.seage");
+//    	setConsoleDefaultFormatter(logger);
+//        
+//    }
+    public static void setConsoleDefaultFormatter(Logger logger, Level level)
+    {
+    	Formatter formatter = new LogFormatter();
+    	Logger tempLogger = logger;
+        while (tempLogger != null)
+        {
+            System.out.println(tempLogger.getName());
+            tempLogger.setLevel(level);
+            for (Handler handler : tempLogger.getHandlers())
+                if (handler instanceof ConsoleHandler){
+                    handler.setLevel(level);
+                    handler.setFormatter(formatter);
+                }
             tempLogger = tempLogger.getParent();
         }
     }
