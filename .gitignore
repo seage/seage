@@ -18,6 +18,9 @@ target/repository/databases/experiments/
 /seage-metaheuristics/target/
 /seage-aal/target/
 /seage-problems/discrete/tsp/target/
+/seage-problems/discrete/tsp/nbactions-*.xml
+/seage-problems/discrete/tsp/vizualization/
+/seage-problems/discrete/tsp/nb-configuration.xml
 /seage-problems/discrete/sat/target/
 /seage-problems/discrete/qap/target/
 /seage-problems/discrete/jssp/target/
@@ -41,4 +44,4 @@ target/repository/databases/experiments/
 /seage-launcher/nbactions-experimenter-tsp-1-10-sa.xml
 /seage-launcher/nbactions-experimetner tabusearch.xml
 /seage-launcher/nbactions-reporter.xml
-/seage-launcher/SEAGE-RM-REPO
+
