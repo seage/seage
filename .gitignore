@@ -10,6 +10,9 @@ target/bin/
 target/output/
 target/report/
 target/repository/processes/*.properties
+target/repository/databases/experiments/
+*.properties
+*.versionsBackup
 
 /seage-misc/target/
 /seage-metaheuristics/target/
