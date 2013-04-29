@@ -1,4 +1,4 @@
-package org.seage.experimenter.config;
+package org.seage.experimenter.singlealgorithm.feedback;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
+import org.seage.experimenter.config.Configurator;
 
 import com.rapidminer.Process;
 import com.rapidminer.RapidMiner;
@@ -17,7 +18,7 @@ import com.rapidminer.repository.RepositoryException;
 import com.rapidminer.repository.RepositoryManager;
 import com.rapidminer.repository.local.LocalRepository;
 
-public class Adaptive1Configurator extends Configurator
+public class FeedbackConfigurator extends Configurator
 {
 	private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "seage";
 	private final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "repository";

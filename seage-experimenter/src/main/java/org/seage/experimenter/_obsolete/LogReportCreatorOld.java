@@ -23,7 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.experimenter.reporting;
+package org.seage.experimenter._obsolete;
 
 import java.io.File;
 import java.io.FileInputStream;

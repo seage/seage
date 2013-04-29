@@ -23,38 +23,14 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
-package org.seage.experimenter.reporting;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.seage.experimenter._obsolete;
 
 /**
  *
- * @author zmatlja1
+ * @author Zis
  */
-public class ReportManager {
+public interface ILogReport {
     
-    List<ILogReport> _reporters;
-
-    public ReportManager()
-    {
-        this._reporters = new ArrayList<ILogReport>();
-    }
-    
-    public void addReporter(ILogReport reporter)
-    {
-        this._reporters.add( reporter );
-    }
-    
-    public List<ILogReport> getReporters()
-    {
-        return _reporters;
-    }
-    
-    public void executeAllReporters() throws Exception
-    {
-        for(ILogReport reporter : _reporters)
-            reporter.report();
-    }
+    public void report() throws Exception;
     
 }

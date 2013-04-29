@@ -1,4 +1,4 @@
-package org.seage.experimenter.reporting;
+package org.seage.experimenter.reporting.rapidminer;
 
 import java.io.File;
 import java.io.InputStream;
@@ -13,7 +13,7 @@ import java.util.zip.ZipFile;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.seage.experimenter.reporting.rapidminer.old.ProcessPerformer;
+import org.seage.experimenter._obsolete.ProcessPerformer;
 import org.seage.experimenter.reporting.rapidminer.repository.AlgorithmParamsTableCreator;
 import org.seage.experimenter.reporting.rapidminer.repository.RMDataTableCreator;
 import org.seage.experimenter.reporting.rapidminer.repository.SingleAlgorithmTableCreator;

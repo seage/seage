@@ -26,15 +26,17 @@
  *     - Initial implementation
  */
 
-package org.seage.experimenter.config;
+package org.seage.experimenter.singlealgorithm.random;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
 import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
+import org.seage.experimenter.config.Configurator;
 
 public class RandomConfiguratorEx extends Configurator
 {	

@@ -23,7 +23,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
-package org.seage.experimenter.reporting.rapidminer.old;
+package org.seage.experimenter._obsolete;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Attributes;

@@ -23,7 +23,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
-package org.seage.experimenter.reporting;
+package org.seage.experimenter._obsolete;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,10 +31,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.transform.stream.StreamResult;
+
 import org.seage.data.DataNode;
-import org.seage.experimenter.reporting.rapidminer.old.ProcessPerformer;
-import org.seage.experimenter.reporting.rapidminer.old.RMProcess;
 
 /**
  *

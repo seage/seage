@@ -75,8 +75,8 @@ import org.seage.data.xml.XmlHelper;
  * 
  * @author rick
  */
-class SingleAlgorithmExperimentTask implements Runnable{
-	private static Logger _logger = Logger.getLogger(SingleAlgorithmExperimentTask.class.getName());
+class SingleAlgorithmExperiment implements Runnable{
+	private static Logger _logger = Logger.getLogger(SingleAlgorithmExperiment.class.getName());
     private ProblemConfig _config;
     private long _experimentID;
     private String _reportName;
@@ -88,7 +88,7 @@ class SingleAlgorithmExperimentTask implements Runnable{
     
     //private static long _runOrder=100000;
 
-    public SingleAlgorithmExperimentTask(String experimentType, long experimentID, int runID, String reportName, long timeoutS, ProblemConfig config, ZipOutputStream outputStream) throws Exception
+    public SingleAlgorithmExperiment(String experimentType, long experimentID, int runID, String reportName, long timeoutS, ProblemConfig config, ZipOutputStream outputStream) throws Exception
     {
         _experimentID = experimentID;
     	_runID = runID;

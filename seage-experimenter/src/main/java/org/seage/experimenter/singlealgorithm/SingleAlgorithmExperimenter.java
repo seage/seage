@@ -27,12 +27,15 @@
  */
 package org.seage.experimenter.singlealgorithm;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.experimenter.IExperimenter;
@@ -40,7 +43,9 @@ import org.seage.experimenter.config.Configurator;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.data.DataNode;
-import org.seage.experimenter.config.RandomConfigurator;
+import org.seage.data.xml.XmlHelper;
+import org.seage.experimenter.singlealgorithm.random.RandomConfigurator;
+import org.seage.thread.TaskRunner;
 
 /**
  * 
@@ -49,7 +54,7 @@ import org.seage.experimenter.config.RandomConfigurator;
 public class SingleAlgorithmExperimenter implements IExperimenter
 {
 
-    private static Logger _logger = Logger.getLogger(SingleAlgorithmExperimenter.class.getName());
+    protected static Logger _logger = Logger.getLogger(SingleAlgorithmExperimenter.class.getName());
 
     Configurator _configurator;
     SingleAlgorithmExperimentRunner _experimentRunner;
@@ -149,6 +154,95 @@ public class SingleAlgorithmExperimenter implements IExperimenter
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
 
         return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds); // (sb.toString());
+    }
+
+}
+
+class SingleAlgorithmExperimentRunner
+{
+
+    @SuppressWarnings("unused")
+	private static Logger _logger = Logger.getLogger(SingleAlgorithmExperimentRunner.class.getName());
+    private int _numExperimentAttempts = 5;
+	private int _processorCount;
+
+	
+    public SingleAlgorithmExperimentRunner()
+	{
+		_processorCount = Runtime.getRuntime().availableProcessors();
+    	//_processorCount = 1;
+	}
+
+	/**
+     * 
+     * @param config
+     * @param timeoutS
+     * @return experimentID
+     * @throws Exception
+     */
+    public long run(ProblemConfig config, long timeoutS) throws Exception
+    {
+        String problemID = config.getProblemID();
+        String algorithmID = config.getAlgorithmID();
+        String instanceID = config.getInstanceName().split("\\.")[0];
+        return run(new ProblemConfig[] { config }, "Config", System.currentTimeMillis(), problemID, algorithmID, instanceID, timeoutS);
+    }
+
+    /**
+     * 
+     * @param configPath
+     * @param timeoutS
+     * @return experimentID
+     * @throws Exception
+     */
+    public long run(String configPath, long timeoutS) throws Exception
+    {
+        ProblemConfig config = new ProblemConfig(XmlHelper.readXml(new File(configPath)));
+        return run(config, timeoutS);
+    }
+
+    /**
+     * 
+     * @param configs
+     * @param instanceID
+     * @param algorithmID
+     * @param timeoutS
+     * @return experimentID
+     * @throws Exception
+     */
+    public long run(ProblemConfig[] configs, String experimentType,  long experimentID, String problemID, String algorithmID, String instanceID, long timeoutS) throws Exception
+    {
+        // long experimentID = System.currentTimeMillis();
+
+        new File("output/experiment-logs").mkdirs();
+        String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", experimentID, problemID, algorithmID, instanceID);
+
+        FileOutputStream fos = new FileOutputStream(new File(reportPath));
+        ZipOutputStream zos = new ZipOutputStream(fos);
+
+        // Create a task queue
+        List<Runnable> taskQueue = new ArrayList<Runnable>();
+        for (ProblemConfig config : configs)
+        {
+            String configID = config.getConfigID();
+            // String problemID2 = config.getProblemID();
+            // String instanceName2 = config.getInstanceName().split("\\.")[0];
+            // String algorithmID2 = config.getAlgorithmID();
+
+            for (int runID = 1; runID <= _numExperimentAttempts; runID++)
+            {
+                String reportName = problemID + "-" + algorithmID + "-" + instanceID + "-" + configID + "-" + runID + ".xml";
+                taskQueue.add(new SingleAlgorithmExperiment(experimentType, experimentID, runID, reportName, timeoutS, config, zos));
+            }
+        }
+
+        // Run threads for each processor
+        new TaskRunner().runTasks(taskQueue, _processorCount);
+
+        zos.close();
+        fos.close();
+
+        return experimentID;
     }
 
 }

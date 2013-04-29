@@ -23,7 +23,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
-package org.seage.experimenter.reporting;
+package org.seage.experimenter._obsolete;
 
 import java.io.FileInputStream;
 import javax.xml.transform.TransformerFactory;

@@ -33,16 +33,14 @@ import java.util.logging.Logger;
 import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
-import org.seage.logging.LogHelper;
-import org.seage.experimenter.config.Adaptive1Configurator;
-import org.seage.experimenter.config.RandomConfigurator;
-import org.seage.experimenter.reporting.ExperimentDataRapidMinerImporter;
-import org.seage.experimenter.reporting.LogReportCreator;
-import org.seage.experimenter.reporting.ReportManager;
-import org.seage.experimenter.reporting.StatisticalReportCreator;
+import org.seage.experimenter._obsolete.LogReportCreator;
+import org.seage.experimenter._obsolete.ReportManager;
+import org.seage.experimenter._obsolete.StatisticalReportCreator;
+import org.seage.experimenter.reporting.rapidminer.ExperimentDataRapidMinerImporter;
 import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimenter;
 import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;
-import org.seage.experimenter.singlealgorithm.old.AdaptiveExperimenter;
+import org.seage.experimenter.singlealgorithm.random.RandomConfigurator;
+import org.seage.logging.LogHelper;
 import org.seage.sandbox.AlgorithmTester;
 import org.seage.sandbox.ClasspathTest;
 import org.seage.sandbox.RapidMinerTest;
@@ -117,21 +115,21 @@ public class Launcher {
             
             return;
         }
-        if(args[0].equals("-experiment-a"))
-        {
-            if (args.length >= 5)
-            {
-                new AdaptiveExperimenter().runExperiment(Integer.parseInt(args[2]), Long.parseLong(args[3]), args[1], Arrays.copyOfRange(args, 4, args.length));
-
-            } else if (args.length == 4)
-            {
-                new AdaptiveExperimenter().runExperiment(Integer.parseInt(args[2]), Long.parseLong(args[3]), args[1]);
-            } 
-            else
-            {
-                usage();
-            }
-        }
+//        if(args[0].equals("-experiment-a"))
+//        {
+//            if (args.length >= 5)
+//            {
+//                new AdaptiveExperimenter().runExperiment(Integer.parseInt(args[2]), Long.parseLong(args[3]), args[1], Arrays.copyOfRange(args, 4, args.length));
+//
+//            } else if (args.length == 4)
+//            {
+//                new AdaptiveExperimenter().runExperiment(Integer.parseInt(args[2]), Long.parseLong(args[3]), args[1]);
+//            } 
+//            else
+//            {
+//                usage();
+//            }
+//        }
         if (args[0].equals("-experiment1")) {
             if (args.length >= 6)
             {
