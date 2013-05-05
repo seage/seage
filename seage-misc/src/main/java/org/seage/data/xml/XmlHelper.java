@@ -148,9 +148,9 @@ public class XmlHelper
 		writeXml(dataSet, new FileOutputStream(f));
 	}
 	
-	public static synchronized void writeXml(DataNode dataSet, ZipOutputStream outputStream, ZipEntry entry) throws Exception
+	public static synchronized void writeXml(DataNode dataSet, ZipOutputStream outputStream, String entryName) throws Exception
 	{
-		outputStream.putNextEntry(entry);
+		outputStream.putNextEntry(new ZipEntry(entryName));
 		writeXml(dataSet, outputStream);
 	}
 

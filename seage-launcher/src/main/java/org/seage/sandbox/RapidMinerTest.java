@@ -1,6 +1,7 @@
 package org.seage.sandbox;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.seage.logging.LogHelper;
 
 import com.rapidminer.Process;
 import com.rapidminer.RapidMiner;
+import com.rapidminer.RepositoryProcessLocation;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.set.SimpleExampleSet;
 import com.rapidminer.example.table.AttributeFactory;
@@ -15,19 +17,78 @@ import com.rapidminer.example.table.DataRow;
 import com.rapidminer.example.table.DoubleArrayDataRow;
 import com.rapidminer.example.table.ListDataRowReader;
 import com.rapidminer.example.table.MemoryExampleTable;
+import com.rapidminer.operator.ExecutionMode;
 import com.rapidminer.operator.IOContainer;
+import com.rapidminer.operator.IOObject;
 import com.rapidminer.operator.Operator;
+import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.io.RepositoryStorer;
+import com.rapidminer.repository.Entry;
+import com.rapidminer.repository.ProcessEntry;
+import com.rapidminer.repository.Repository;
 import com.rapidminer.repository.RepositoryException;
+import com.rapidminer.repository.RepositoryLocation;
 import com.rapidminer.repository.RepositoryManager;
 import com.rapidminer.repository.local.LocalRepository;
 import com.rapidminer.tools.Ontology;
 import com.rapidminer.tools.OperatorService;
+import com.rapidminer.tools.XMLException;
 
 public class RapidMinerTest {
-	private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "SEAGE-RM-REPO";
+	private static final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "SEAGE-RM-REPO";
     private final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "/home/rick/Temp/SEAGE-RM-REPO";
 
+    public static void main(String[] args)
+    {
+    	System.out.println("asdf");
+    	testRepositoryProcessLocation();
+    }
+    
+    private static void testRepositoryProcessLocation()
+    {
+    	RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
+		RepositoryManager rm = RepositoryManager.getInstance(null);
+		try
+        {
+//            LocalRepository repo = (LocalRepository)rm.getRepository("seage");
+//            RapidMiner.init();
+//            RapidMiner
+//            Process process = new Process(new File(repo.getFile().getAbsolutePath()+"/processes/base/BestAlgParamsPerAlgorithm.rmp"));
+//            process.run();
+            
+            RepositoryLocation location;
+            RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
+            RapidMiner.init();
+            location = new RepositoryLocation("//seage/processes/base/BestAlgParamsPerAlgorithm");
+            Entry entry = location.locateEntry();
+            if (entry instanceof ProcessEntry) {
+                Process process = new RepositoryProcessLocation(location).load(null);
+
+                IOContainer ioResult = process.run();
+                IOObject result = ioResult.getElementAt(0);
+                System.out.println(result.toString());
+            }
+        }
+        catch(RepositoryException re)
+        {
+        	System.out.println("No such a repository: seage");
+        }
+		catch (IOException e)
+		{			
+			e.printStackTrace();
+		}
+		catch (XMLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (OperatorException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
 	public void testCustomExampleSetOnInput() {
 		
 		try {

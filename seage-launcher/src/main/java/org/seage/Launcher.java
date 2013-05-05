@@ -33,17 +33,11 @@ import java.util.logging.Logger;
 import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
-import org.seage.experimenter._obsolete.LogReportCreator;
-import org.seage.experimenter._obsolete.ReportManager;
-import org.seage.experimenter._obsolete.StatisticalReportCreator;
 import org.seage.experimenter.reporting.rapidminer.ExperimentDataRapidMinerImporter;
-import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimenter;
-import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;
-import org.seage.experimenter.singlealgorithm.random.RandomConfigurator;
+import org.seage.experimenter.singlealgorithm.feedback.SingleAlgorithmFeedbackExperimenter;
+import org.seage.experimenter.singlealgorithm.random.SingleAlgorithmRandomExperimenter;
 import org.seage.logging.LogHelper;
 import org.seage.sandbox.AlgorithmTester;
-import org.seage.sandbox.ClasspathTest;
-import org.seage.sandbox.RapidMinerTest;
 
 /**
  *
@@ -102,63 +96,31 @@ public class Launcher {
             return;
         }
 
-        if (args[0].equals("-experiment")) {             
+        if (args[0].equals("-experiment-single-random")) {             
         	if (args.length >= 5)
             {
-                new SingleAlgorithmExperimenter("SingleAlgorithmRandom", new RandomConfigurator()).runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 4, args.length));
+                new SingleAlgorithmRandomExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 4, args.length));
 
             } else if (args.length == 4) {
-                new SingleAlgorithmExperimenter("SingleAlgorithmRandom", new RandomConfigurator()).runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );
+                new SingleAlgorithmRandomExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );
             } else {
                 usage();
             }
             
             return;
         }
-//        if(args[0].equals("-experiment-a"))
-//        {
-//            if (args.length >= 5)
-//            {
-//                new AdaptiveExperimenter().runExperiment(Integer.parseInt(args[2]), Long.parseLong(args[3]), args[1], Arrays.copyOfRange(args, 4, args.length));
-//
-//            } else if (args.length == 4)
-//            {
-//                new AdaptiveExperimenter().runExperiment(Integer.parseInt(args[2]), Long.parseLong(args[3]), args[1]);
-//            } 
-//            else
-//            {
-//                usage();
-//            }
-//        }
-        if (args[0].equals("-experiment1")) {
-            if (args.length >= 6)
-            {
-                new SingleAlgorithmExperimenter("SingleAlgorithmRandom", new RandomConfigurator()).runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], new String[]{args[4]}, Arrays.copyOfRange(args, 5, args.length));
-
-            } else {
-                usage();
-            }
-            return;
-        }
-        if (args[0].equals("-experiment2")) {
-            if (args.length >= 6)
-            {
-                //new SingleAlgorithmExperimenter("SingleAlgorithmAdaptive1", new Adaptive1Configurator()).runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], new String[]{args[4]}, Arrays.copyOfRange(args, 5, args.length));
-
-            } else {
-                usage();
-            }
-            return;
-        }
         
-        if (args[0].equals("-experiment2")) {
-            if (args.length >= 6)
+        if (args[0].equals("-experiment-single-feedback")) {             
+        	if (args.length >= 5)
             {
-                new SingleAlgorithmEvolutionExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], new String[]{args[4]}, Arrays.copyOfRange(args, 5, args.length));
+                new SingleAlgorithmFeedbackExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 5, args.length));
 
+            } else if (args.length == 4) {
+                new SingleAlgorithmFeedbackExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );
             } else {
                 usage();
             }
+            
             return;
         }
 
@@ -166,31 +128,10 @@ public class Launcher {
             agents(args[1]);
             return;
         }
-        
+                      
         if (args[0].equals("-report")) {
-            
-            ReportManager reportManager = new ReportManager();
-            reportManager.addReporter(new LogReportCreator());
-            reportManager.addReporter(new StatisticalReportCreator());
-            
-            reportManager.executeAllReporters();
-            
-            return;
-        }
-                
-        if (args[0].equals("-repo")) {
         	new ExperimentDataRapidMinerImporter("output/experiment-logs", "").processLogs();
         	return;
-        }
-        
-        if (args[0].equals("-cp")) {
-			ClasspathTest.main(args);
-            return;
-        }
-        
-        if (args[0].equals("-rm")) {
-			new RapidMinerTest().testCustomExampleSetOnInput();
-            return;
         }
 
         usage();
@@ -204,10 +145,8 @@ public class Launcher {
         _logger.info("\t-list");
         _logger.info("\t-test [problem-id [algorithm-id]]");
         _logger.info("\t-config path-to-config");
-        _logger.info("\t-experiment   numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
-        _logger.info("\t-experiment-a numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
-        _logger.info("\t-experiment1  numOfConfigs timeoutS problem-id  algorithm-id instance-id [instance-id]*");
-        _logger.info("\t-experiment2  numOfConfigs timeoutS problem-id  algorithm-id instance-id [instance-id]*");
+        _logger.info("\t-experiment-single-random   numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
+        _logger.info("\t-experiment-single-feedback numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
         _logger.info("\t-agents path-to-agent-config-xml");
         _logger.info("\t-report");
     }

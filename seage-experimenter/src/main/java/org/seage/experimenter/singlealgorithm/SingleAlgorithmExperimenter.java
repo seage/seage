@@ -46,18 +46,18 @@ import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.singlealgorithm.random.RandomConfigurator;
 import org.seage.thread.TaskRunner;
+import org.seage.thread.TaskRunnerEx;
 
 /**
  * 
  * @author rick
  */
-public class SingleAlgorithmExperimenter implements IExperimenter
+public abstract class SingleAlgorithmExperimenter implements IExperimenter
 {
 
     protected static Logger _logger = Logger.getLogger(SingleAlgorithmExperimenter.class.getName());
 
     Configurator _configurator;
-    SingleAlgorithmExperimentRunner _experimentRunner;
     String _experimentName;
 
     public SingleAlgorithmExperimenter(String experimentName, Configurator configurator)
@@ -65,12 +65,12 @@ public class SingleAlgorithmExperimenter implements IExperimenter
     	_experimentName= experimentName;
         _configurator = configurator;
 
-        _experimentRunner = new SingleAlgorithmExperimentRunner();
+        new File("output/experiment-logs").mkdirs();
     }
 
     public void runFromConfigFile(String configPath) throws Exception
     {
-        _experimentRunner.run(configPath, Long.MAX_VALUE);
+        //_experimentRunner.run(configPath, Long.MAX_VALUE);
     }
 
     @Override
@@ -119,23 +119,41 @@ public class SingleAlgorithmExperimenter implements IExperimenter
         _logger.info("Total estimated time: " + getDurationBreakdown(totalEstimatedTime * 1000) + " (DD:HH:mm:ss)");
         _logger.info("-------------------------------------");
         int i=0, j=0;
-        for (String algID : algorithmIDs)
+        for (String algorithmID : algorithmIDs)
         {
             i++;j=0;
             for (String instanceID : instanceIDs)
             {
                 j++;
                 DataNode instanceInfo =  pi.getDataNode("Instances").getDataNodeById(instanceID);
-                List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
-                configs.addAll(Arrays.asList(_configurator.prepareConfigs(pi, algID, instanceInfo, numOfConfigs)));                
+                //List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
+                //configs.addAll(Arrays.asList());                
                 _logger.info("-------------------------------------");
-                _logger.info(String.format("Algorithm: %s (%d/%d)", algID, i, algorithmIDs.length));
                 _logger.info(String.format("Instance: %s (%d/%d)", instanceID, j, instanceIDs.length));
+                _logger.info(String.format("Algorithm: %s (%d/%d)", algorithmID, i, algorithmIDs.length));                
                 _logger.info("Number of runs: " + numOfConfigs*5);
                 //_logger.info("Memory used for configs: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
 
-                _experimentRunner.run(configs.toArray(new ProblemConfig[] {}), _experimentName, experimentID, problemID, algID, instanceID, timeoutS);
-            }
+                
+                String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", experimentID, problemID, algorithmID, instanceID);
+
+                ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)));
+
+                // Create a task queue
+                List<Runnable> taskQueue = new ArrayList<Runnable>();
+                for(ProblemConfig config : _configurator.prepareConfigs(pi, algorithmID, instanceInfo, numOfConfigs))
+                {
+                	String configID = config.getConfigID();
+
+                    for (int runID = 1; runID <= 5; runID++)
+                    {
+                        String reportName = problemID + "-" + algorithmID + "-" + instanceID + "-" + configID + "-" + runID + ".xml";
+                        taskQueue.add(new SingleAlgorithmExperiment(_experimentName, experimentID, timeoutS, config, reportName, zos, runID));
+                    }
+                }
+                new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(taskQueue.toArray(new Runnable[]{}));
+
+                zos.close();            }
         }
         _logger.info("-------------------------------------");
         _logger.log(Level.INFO, "Experiment " + experimentID + " finished ...");
@@ -154,95 +172,6 @@ public class SingleAlgorithmExperimenter implements IExperimenter
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
 
         return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds); // (sb.toString());
-    }
-
-}
-
-class SingleAlgorithmExperimentRunner
-{
-
-    @SuppressWarnings("unused")
-	private static Logger _logger = Logger.getLogger(SingleAlgorithmExperimentRunner.class.getName());
-    private int _numExperimentAttempts = 5;
-	private int _processorCount;
-
-	
-    public SingleAlgorithmExperimentRunner()
-	{
-		_processorCount = Runtime.getRuntime().availableProcessors();
-    	//_processorCount = 1;
-	}
-
-	/**
-     * 
-     * @param config
-     * @param timeoutS
-     * @return experimentID
-     * @throws Exception
-     */
-    public long run(ProblemConfig config, long timeoutS) throws Exception
-    {
-        String problemID = config.getProblemID();
-        String algorithmID = config.getAlgorithmID();
-        String instanceID = config.getInstanceName().split("\\.")[0];
-        return run(new ProblemConfig[] { config }, "Config", System.currentTimeMillis(), problemID, algorithmID, instanceID, timeoutS);
-    }
-
-    /**
-     * 
-     * @param configPath
-     * @param timeoutS
-     * @return experimentID
-     * @throws Exception
-     */
-    public long run(String configPath, long timeoutS) throws Exception
-    {
-        ProblemConfig config = new ProblemConfig(XmlHelper.readXml(new File(configPath)));
-        return run(config, timeoutS);
-    }
-
-    /**
-     * 
-     * @param configs
-     * @param instanceID
-     * @param algorithmID
-     * @param timeoutS
-     * @return experimentID
-     * @throws Exception
-     */
-    public long run(ProblemConfig[] configs, String experimentType,  long experimentID, String problemID, String algorithmID, String instanceID, long timeoutS) throws Exception
-    {
-        // long experimentID = System.currentTimeMillis();
-
-        new File("output/experiment-logs").mkdirs();
-        String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", experimentID, problemID, algorithmID, instanceID);
-
-        FileOutputStream fos = new FileOutputStream(new File(reportPath));
-        ZipOutputStream zos = new ZipOutputStream(fos);
-
-        // Create a task queue
-        List<Runnable> taskQueue = new ArrayList<Runnable>();
-        for (ProblemConfig config : configs)
-        {
-            String configID = config.getConfigID();
-            // String problemID2 = config.getProblemID();
-            // String instanceName2 = config.getInstanceName().split("\\.")[0];
-            // String algorithmID2 = config.getAlgorithmID();
-
-            for (int runID = 1; runID <= _numExperimentAttempts; runID++)
-            {
-                String reportName = problemID + "-" + algorithmID + "-" + instanceID + "-" + configID + "-" + runID + ".xml";
-                taskQueue.add(new SingleAlgorithmExperiment(experimentType, experimentID, runID, reportName, timeoutS, config, zos));
-            }
-        }
-
-        // Run threads for each processor
-        new TaskRunner().runTasks(taskQueue, _processorCount);
-
-        zos.close();
-        fos.close();
-
-        return experimentID;
     }
 
 }

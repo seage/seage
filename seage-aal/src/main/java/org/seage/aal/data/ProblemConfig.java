@@ -34,7 +34,7 @@ import org.seage.data.DataNode;
  * 
  * ProblemConfig
  *  |_ problemID
- *  |_ instance
+ *  |_ Instance
  *  |_Algorithm
  *     |_ Parameter
  *     |_ ...
@@ -75,12 +75,12 @@ public class ProblemConfig extends DataNode{
     
     public String getInstanceName() throws Exception
     {
-    	return this.getDataNode("Algorithm").getValueStr("id");
+    	return this.getDataNode("Problem").getDataNode("Instance").getValueStr("name");
     }
     
     public String getAlgorithmID() throws Exception
     {
-    	return this.getDataNode("Problem").getDataNode("Instance").getValueStr("name");
+    	return this.getDataNode("Algorithm").getValueStr("id");    	
     }
     
 }
