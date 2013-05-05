@@ -77,23 +77,23 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
             super(repositoryPath, "GeneticAlgorithm");
                  
             _attributes.add(AttributeFactory.createAttribute("ConfigID", Ontology.NOMINAL));
-            _attributes.add(AttributeFactory.createAttribute("CrossLengthPct", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("EliteSubjectPct", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("IterationCount", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("MutateLengthPct", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("MutateSubjectPct", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("NumSolutions", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("RandomSubjectPct", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("crossLengthPct", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("eliteSubjectPct", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("iterationCount", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("mutateLengthPct", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("mutateSubjectPct", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("numSolutions", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("randomSubjectPct", Ontology.REAL));
             
             Hashtable<String, XmlHelper.XPath> algGAXPaths = new Hashtable<String, XmlHelper.XPath>();
             algGAXPaths.put("ConfigID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
-            algGAXPaths.put("RandomSubjectPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@randomSubjectPct"));
-            algGAXPaths.put("CrossLengthPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@crossLengthPct"));
-            algGAXPaths.put("EliteSubjectPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@eliteSubjectPct"));
-            algGAXPaths.put("IterationCount", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@iterationCount"));
-            algGAXPaths.put("MutateLengthPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@mutateLengthPct"));
-            algGAXPaths.put("MutateSubjectPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@mutateSubjectPct"));
-            algGAXPaths.put("NumSolutions", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@numSolutions"));
+            algGAXPaths.put("randomSubjectPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@randomSubjectPct"));
+            algGAXPaths.put("crossLengthPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@crossLengthPct"));
+            algGAXPaths.put("eliteSubjectPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@eliteSubjectPct"));
+            algGAXPaths.put("iterationCount", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@iterationCount"));
+            algGAXPaths.put("mutateLengthPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@mutateLengthPct"));
+            algGAXPaths.put("mutateSubjectPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@mutateSubjectPct"));
+            algGAXPaths.put("numSolutions", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@numSolutions"));
 
             _versionedXPaths.put(VERSION, algGAXPaths);
         }
@@ -106,13 +106,13 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
             super(repositoryPath, "TabuSearch");
             
             _attributes.add(AttributeFactory.createAttribute("ConfigID", Ontology.NOMINAL));
-            _attributes.add(AttributeFactory.createAttribute("NumIteration", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("TabuListLength", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("numIteration", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("tabuListLength", Ontology.REAL));
 
             Hashtable<String, XmlHelper.XPath> algTSXPaths = new Hashtable<String, XmlHelper.XPath>();
             algTSXPaths.put("ConfigID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
-            algTSXPaths.put("NumIteration", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@numIteration"));
-            algTSXPaths.put("TabuListLength", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@tabuListLength"));
+            algTSXPaths.put("numIteration", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@numIteration"));
+            algTSXPaths.put("tabuListLength", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@tabuListLength"));
 
             _versionedXPaths.put(VERSION, algTSXPaths);
         }
@@ -125,21 +125,21 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
             super(repositoryPath, "AntColony");
             
             _attributes.add(AttributeFactory.createAttribute("ConfigID", Ontology.NOMINAL));
-            _attributes.add(AttributeFactory.createAttribute("Alpha", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("Beta", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("DefaultPheromone", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("IterationCount", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("NumberOfAnts", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("QantumOfPheromone", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("alpha", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("beta", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("defaultPheromone", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("iterationCount", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("numSolutions", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("qantumOfPheromone", Ontology.REAL));
             
             Hashtable<String, XmlHelper.XPath> algAntXPaths = new Hashtable<String, XmlHelper.XPath>();
             algAntXPaths.put("ConfigID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
-            algAntXPaths.put("Alpha", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@alpha"));
-            algAntXPaths.put("Beta", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@beta"));
-            algAntXPaths.put("DefaultPheromone", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@defaultPheromone"));
-            algAntXPaths.put("IterationCount", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@iterationCount"));
-            algAntXPaths.put("NumberOfAnts", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
-            algAntXPaths.put("QantumOfPheromone", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@qantumOfPheromone"));
+            algAntXPaths.put("alpha", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@alpha"));
+            algAntXPaths.put("beta", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@beta"));
+            algAntXPaths.put("defaultPheromone", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@defaultPheromone"));
+            algAntXPaths.put("iterationCount", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@iterationCount"));
+            algAntXPaths.put("numberOfAnts", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
+            algAntXPaths.put("qantumOfPheromone", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@qantumOfPheromone"));
 
             _versionedXPaths.put(VERSION, algAntXPaths);
         }
@@ -152,19 +152,19 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
             super(repositoryPath, "SimulatedAnnealing");
             
             _attributes.add(AttributeFactory.createAttribute("ConfigID", Ontology.NOMINAL));
-            _attributes.add(AttributeFactory.createAttribute("AnnealCoeficient", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("MaxInnerIterations", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("MaxTemperature", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("MinTemperature", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("NumInnerSuccesses", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("annealCoeficient", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("maxInnerIterations", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("maxTemperature", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("minTemperature", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("numInnerSuccesses", Ontology.REAL));
             
             Hashtable<String, XmlHelper.XPath> algSAXPaths = new Hashtable<String, XmlHelper.XPath>();
             algSAXPaths.put("ConfigID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
-            algSAXPaths.put("AnnealCoeficient", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@annealCoeficient"));
-            algSAXPaths.put("MaxInnerIterations", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxInnerIterations"));
-            algSAXPaths.put("MaxTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxTemperature"));
-            algSAXPaths.put("MinTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@minTemperature"));
-            algSAXPaths.put("NumInnerSuccesses", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numInnerSuccesses"));
+            algSAXPaths.put("annealCoeficient", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@annealCoeficient"));
+            algSAXPaths.put("maxInnerIterations", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxInnerIterations"));
+            algSAXPaths.put("maxTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxTemperature"));
+            algSAXPaths.put("minTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@minTemperature"));
+            algSAXPaths.put("numInnerSuccesses", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numInnerSuccesses"));
 
             _versionedXPaths.put(VERSION, algSAXPaths);
         }

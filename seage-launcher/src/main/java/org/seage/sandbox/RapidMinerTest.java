@@ -56,10 +56,21 @@ public class RapidMinerTest {
                 Process process = new RepositoryProcessLocation(location).load(null);
 
                 IOContainer ioResult = process.run();
-                IOObjectCollection<SimpleExampleSet> result = (IOObjectCollection<SimpleExampleSet> )ioResult.getElementAt(0);
-                //IOObjectCollection<SimpleExampleSet> col = (IOObjectCollection<SimpleExampleSet>)result.getObjects();
+                @SuppressWarnings("unchecked")
+				IOObjectCollection<SimpleExampleSet> result = (IOObjectCollection<SimpleExampleSet> )ioResult.getElementAt(0);
                 for(SimpleExampleSet c : result.getObjects())
+                {
                 	System.out.println(c.getAttributes().getId().getName());
+                	
+                	for(Attribute att : c.getAttributes())
+                	{
+                		System.out.println(att);
+                	}
+                	for(int i=0;i<c.getExampleTable().size();i++)
+                	{
+                		System.out.println(c.getExample(i));
+                	}
+                }
             }
         }
         catch(RepositoryException re)
@@ -71,13 +82,11 @@ public class RapidMinerTest {
 			e.printStackTrace();
 		}
 		catch (XMLException e)
-		{
-			// TODO Auto-generated catch block
+		{			
 			e.printStackTrace();
 		}
 		catch (OperatorException e)
-		{
-			// TODO Auto-generated catch block
+		{			
 			e.printStackTrace();
 		}
     }

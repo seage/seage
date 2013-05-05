@@ -5,10 +5,9 @@ import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimenter;
 public class SingleAlgorithmFeedbackExperimenter extends SingleAlgorithmExperimenter
 {
 
-	public SingleAlgorithmFeedbackExperimenter()
+	public SingleAlgorithmFeedbackExperimenter() throws Exception
 	{
 		super("SingleAlgorithmFeedback", new FeedbackConfigurator());
-		// TODO Auto-generated constructor stub
 	}
 
 }

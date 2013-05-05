@@ -41,16 +41,6 @@ import org.seage.experimenter.config.Configurator;
  */
 public class RandomConfigurator extends Configurator
 {
-
-    // private String _algID;
-    // private int _numConfigs;
-    //private DataNode _paramInfo;
-
-    // public RandomConfigurator() {
-    // _algID = algID;
-    // _numConfigs = numConfigs;
-    // }
-
     @Override
     public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, DataNode instanceInfo, int numConfigs) throws Exception
     {
@@ -62,32 +52,7 @@ public class RandomConfigurator extends Configurator
         
         for (int i = 0; i < numConfigs; i++)
         {
-            // Config
-            ProblemConfig config = new ProblemConfig("Config");
-            // |_ Problem
-            DataNode problem = new DataNode("Problem");
-            // | |_ Instance
-            DataNode instance = new DataNode("Instance");
-            // |_ Algorithm
-            DataNode algorithm = new DataNode("Algorithm");
-            // |_ Parameters
-            DataNode params = new DataNode("Parameters");
-
-            problem.putValue("id", problemInfo.getValue("id"));
-            algorithm.putValue("id", algID);
-
-            algorithm.putDataNodeRef(params);
-            problem.putDataNodeRef(instance);
-            config.putDataNodeRef(algorithm);
-            config.putDataNodeRef(problem);
-
-            // ProblemConfig instanceCfg = (ProblemConfig)config.clone();
-            config.getDataNode("Problem").getDataNode("Instance").putValue("name", instanceInfo.getValue("name"));
-            config.getDataNode("Problem").getDataNode("Instance").putValue("type", instanceInfo.getValue("type"));
-            config.getDataNode("Problem").getDataNode("Instance").putValue("path", instanceInfo.getValue("path"));
-            
-            if(problemInfo.getDataNode("Algorithms").getDataNodeById(algID)==null)
-            	throw new Exception("Unknown algorithm id: " + algID);
+            ProblemConfig config = createProblemConfig(problemInfo, algID, instanceInfo);
             
             for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
             {

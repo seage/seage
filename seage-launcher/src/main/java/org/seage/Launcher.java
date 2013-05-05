@@ -113,7 +113,7 @@ public class Launcher {
         if (args[0].equals("-experiment-single-feedback")) {             
         	if (args.length >= 5)
             {
-                new SingleAlgorithmFeedbackExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 5, args.length));
+                new SingleAlgorithmFeedbackExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 4, args.length));
 
             } else if (args.length == 4) {
                 new SingleAlgorithmFeedbackExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );

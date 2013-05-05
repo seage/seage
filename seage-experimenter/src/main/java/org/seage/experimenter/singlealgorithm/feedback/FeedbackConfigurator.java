@@ -1,74 +1,104 @@
 package org.seage.experimenter.singlealgorithm.feedback;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
+import org.seage.data.file.FileHelper;
+import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.config.Configurator;
 
 import com.rapidminer.Process;
 import com.rapidminer.RapidMiner;
+import com.rapidminer.RepositoryProcessLocation;
+import com.rapidminer.example.Attribute;
+import com.rapidminer.example.Example;
 import com.rapidminer.example.set.SimpleExampleSet;
 import com.rapidminer.operator.IOContainer;
-import com.rapidminer.operator.UserError;
-import com.rapidminer.repository.RepositoryException;
-import com.rapidminer.repository.RepositoryManager;
-import com.rapidminer.repository.local.LocalRepository;
+import com.rapidminer.operator.IOObjectCollection;
+import com.rapidminer.repository.Entry;
+import com.rapidminer.repository.ProcessEntry;
+import com.rapidminer.repository.RepositoryLocation;
 
 public class FeedbackConfigurator extends Configurator
 {
-	private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "seage";
-	private final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "repository";
+	protected IOObjectCollection<SimpleExampleSet> _feedbackParams;
+	
+	@SuppressWarnings("unchecked")
+	public FeedbackConfigurator() throws Exception
+	{
+		RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
+        RapidMiner.init();        
+             
+        RepositoryLocation location = new RepositoryLocation("//seage/processes/base/BestAlgParamsPerAlgorithm-AttsRemoved");        
+        Entry entry = location.locateEntry();
+        
+        if (entry instanceof ProcessEntry) {
+            Process process = new RepositoryProcessLocation(location).load(null);
+
+            IOContainer ioResult = process.run();
+            _feedbackParams = (IOObjectCollection<SimpleExampleSet> )ioResult.getElementAt(0);           
+        }
+        else 
+        	throw new Exception("Can't find "+location.getPath()+" in RM's repository.");
+
+	}
 	
 	@Override
 	public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, DataNode instanceInfo, int numConfigs) throws Exception
-	{
-//		try {
-//			
-//			//String rapidMinerHome = "/home/rick/Temp/rm-test";
-//			//System.setProperty("rapidminer.home", rapidMinerHome);
-//			//System.setProperty(RapidMiner..PROPERTY_CONNECTIONS_FILE_XML, "false");
-//			System.setProperty(RapidMiner.PROPERTY_RAPIDMINER_INIT_PLUGINS, "false");
-//			//System.setProperty(RapidMiner, "false");
-//			System.setProperty("rapidminer.home", ".");
-//			RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
-//			RepositoryManager.getInstance(null).addRepository(new LocalRepository( RAPIDMINER_LOCAL_REPOSITORY_NAME , new File( RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH )));
-//			RapidMiner.init();
-//			
-//			RepositoryManager rm = RepositoryManager.getInstance(null);
-//			try
-//	        {
-//	            rm.getRepository(RAPIDMINER_LOCAL_REPOSITORY_NAME);
-//	        }
-//	        catch(RepositoryException re)
-//	        {
-//	            rm.addRepository(new LocalRepository( RAPIDMINER_LOCAL_REPOSITORY_NAME , new File( RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH )));
-//	            rm.save();
-//	        }
-//			
-//
-//			Process process = new Process(new File(RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH+"/processes/base/BestAlgParamsPerAlgorithm-AttsRemoved.rmp"));			
-//			try{
-//				IOContainer res = process.run();
-//			}
-//			catch(UserError err){}
-////			IOContainer op= process.getRootOperator().getResults();
-////			SimpleExampleSet ses = (SimpleExampleSet)op.getElementAt(0);
-////			ses.getExample(0);
-//			//op.getElementAt(0)
-//			int a = 0;
-//			//Process process2 = new Process(new File());
-//
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
+	{		
+		SimpleExampleSet exampleSetParams = null;
+		for(SimpleExampleSet c : _feedbackParams.getObjects())
+        {
+        	if(c.getAttributes().getId().getName().equals(algID))
+        	{	
+        		exampleSetParams = c;
+        		break;
+        	}
+        	
+//        	for(Attribute att : c.getAttributes())
+//        	{
+//        		System.out.println(att);
+//        	}
+//        	for(int i=0;i<c.getExampleTable().size();i++)
+//        	{
+//        		System.out.println(c.getExample(i));
+//        	}
+        }
 		List<ProblemConfig> results = new ArrayList<ProblemConfig>();
-		return results.toArray(new ProblemConfig[0]);
+        if(exampleSetParams==null)
+        {
+        	_logger.warning("There are no usable experiments in the repository.");
+        	return results.toArray(new ProblemConfig[0]);
+        }
+
+        //System.out.println(instanceInfo.getValue("path"));
+        int feedbackConfigs = exampleSetParams.getExampleTable().size();
+        int realNumConfigs = numConfigs > feedbackConfigs ? numConfigs : feedbackConfigs; 
+        for (int i = 0; i < realNumConfigs; i++)
+        {        	
+        	Example example = exampleSetParams.getExample(i);
+            ProblemConfig config = createProblemConfig(problemInfo, algID, instanceInfo);
+            
+            for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
+            {            	
+                String name = paramNode.getValueStr("name");
+                Attribute att = exampleSetParams.getAttributes().get(name);                
+                
+                double val = example.getValue(att);
+                
+                config.getDataNode("Algorithm").getDataNode("Parameters").putValue(name, val);
+            }
+
+            config.putValue("configID", FileHelper.md5fromString(XmlHelper.getStringFromDocument(config.toXml())));
+            results.add(config);
+        }
+
+        //
+
+        return results.toArray(new ProblemConfig[0]);
 	}
 
 	@Override

@@ -6,7 +6,7 @@
     <macros/>
   </context>
   <operator activated="true" class="process" compatibility="5.3.008" expanded="true" name="Process">
-    <parameter key="logverbosity" value="init"/>
+    <parameter key="logverbosity" value="warning"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
     <parameter key="notification_email" value=""/>

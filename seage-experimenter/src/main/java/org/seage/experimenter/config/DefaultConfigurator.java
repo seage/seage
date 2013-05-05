@@ -38,13 +38,6 @@ import org.seage.data.DataNode;
 public class DefaultConfigurator extends Configurator
 {
 
-    // private String _problemID;
-    // private String _algID;
-
-    // public DefaultConfigurator(String algID) {
-    // _algID = algID;
-    // }
-
     @Override
     public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception
     {
