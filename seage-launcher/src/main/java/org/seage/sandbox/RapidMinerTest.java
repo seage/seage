@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seage.logging.LogHelper;
-
 import com.rapidminer.Process;
 import com.rapidminer.RapidMiner;
 import com.rapidminer.RepositoryProcessLocation;
@@ -17,15 +15,13 @@ import com.rapidminer.example.table.DataRow;
 import com.rapidminer.example.table.DoubleArrayDataRow;
 import com.rapidminer.example.table.ListDataRowReader;
 import com.rapidminer.example.table.MemoryExampleTable;
-import com.rapidminer.operator.ExecutionMode;
 import com.rapidminer.operator.IOContainer;
-import com.rapidminer.operator.IOObject;
+import com.rapidminer.operator.IOObjectCollection;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.io.RepositoryStorer;
 import com.rapidminer.repository.Entry;
 import com.rapidminer.repository.ProcessEntry;
-import com.rapidminer.repository.Repository;
 import com.rapidminer.repository.RepositoryException;
 import com.rapidminer.repository.RepositoryLocation;
 import com.rapidminer.repository.RepositoryManager;
@@ -40,7 +36,7 @@ public class RapidMinerTest {
 
     public static void main(String[] args)
     {
-    	System.out.println("asdf");
+    	System.out.println("RepositoryProcessLocation");
     	testRepositoryProcessLocation();
     }
     
@@ -50,23 +46,20 @@ public class RapidMinerTest {
 		RepositoryManager rm = RepositoryManager.getInstance(null);
 		try
         {
-//            LocalRepository repo = (LocalRepository)rm.getRepository("seage");
-//            RapidMiner.init();
-//            RapidMiner
-//            Process process = new Process(new File(repo.getFile().getAbsolutePath()+"/processes/base/BestAlgParamsPerAlgorithm.rmp"));
-//            process.run();
-            
+      
             RepositoryLocation location;
             RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
             RapidMiner.init();
-            location = new RepositoryLocation("//seage/processes/base/BestAlgParamsPerAlgorithm");
+            location = new RepositoryLocation("//seage/processes/base/BestAlgParamsPerAlgorithm-AttsRemoved");
             Entry entry = location.locateEntry();
             if (entry instanceof ProcessEntry) {
                 Process process = new RepositoryProcessLocation(location).load(null);
 
                 IOContainer ioResult = process.run();
-                IOObject result = ioResult.getElementAt(0);
-                System.out.println(result.toString());
+                IOObjectCollection<SimpleExampleSet> result = (IOObjectCollection<SimpleExampleSet> )ioResult.getElementAt(0);
+                //IOObjectCollection<SimpleExampleSet> col = (IOObjectCollection<SimpleExampleSet>)result.getObjects();
+                for(SimpleExampleSet c : result.getObjects())
+                	System.out.println(c.getAttributes().getId().getName());
             }
         }
         catch(RepositoryException re)

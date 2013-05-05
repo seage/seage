@@ -36,16 +36,14 @@
         <parameter key="invert_selection" value="false"/>
         <parameter key="include_special_attributes" value="false"/>
         <parameter key="default_aggregation_function" value="average"/>
-        <list key="aggregation_attributes">
-          <parameter key="BestSolutionValue" value="average"/>
-        </list>
+        <list key="aggregation_attributes"/>
         <parameter key="group_by_attributes" value="|AlgorithmID"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
-      <operator activated="true" class="multiply" compatibility="5.3.008" expanded="true" height="94" name="Multiply (2)" width="90" x="246" y="300"/>
-      <operator activated="true" class="loop_examples" compatibility="5.3.008" expanded="true" height="76" name="Loop Examples" width="90" x="313" y="165">
+      <operator activated="true" class="multiply" compatibility="5.3.008" expanded="true" height="94" name="Multiply (2)" width="90" x="313" y="300"/>
+      <operator activated="true" class="loop_examples" compatibility="5.3.008" expanded="true" height="76" name="Loop Examples" width="90" x="447" y="165">
         <parameter key="iteration_macro" value="example"/>
         <process expanded="true">
           <operator activated="true" class="extract_macro" compatibility="5.3.008" expanded="true" height="60" name="Extract Macro (5)" width="90" x="112" y="30">
@@ -72,7 +70,7 @@
           <portSpacing port="sink_output 1" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="execute_process" compatibility="5.3.008" expanded="true" height="76" name="Execute SortedAlgParamsPerProblemAlgInstance" width="90" x="447" y="30">
+      <operator activated="true" class="execute_process" compatibility="5.3.008" expanded="true" height="76" name="Execute SortedAlgParamsPerProblemAlgInstance" width="90" x="313" y="30">
         <parameter key="process_location" value="SortedAlgParamsPerProblemAlgInstance"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
@@ -80,7 +78,7 @@
         <parameter key="cache_process" value="true"/>
         <list key="macros"/>
       </operator>
-      <operator activated="true" class="loop_collection" compatibility="5.3.008" expanded="true" height="76" name="Loop Collection" width="90" x="581" y="30">
+      <operator activated="true" class="loop_collection" compatibility="5.3.008" expanded="true" height="76" name="Loop Collection" width="90" x="447" y="30">
         <parameter key="set_iteration_macro" value="true"/>
         <parameter key="macro_name" value="iteration"/>
         <parameter key="macro_start_value" value="1"/>
@@ -182,7 +180,7 @@
           <portSpacing port="sink_output 1" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="loop_examples" compatibility="5.3.008" expanded="true" height="76" name="Loop Examples (2)" width="90" x="849" y="165">
+      <operator activated="true" class="loop_examples" compatibility="5.3.008" expanded="true" height="94" name="Loop Examples (2)" width="90" x="849" y="165">
         <parameter key="iteration_macro" value="example"/>
         <process expanded="true">
           <operator activated="true" class="extract_macro" compatibility="5.3.008" expanded="true" height="60" name="Extract Macro (6)" width="90" x="112" y="75">
@@ -205,131 +203,11 @@
           </operator>
           <connect from_port="example set" to_op="Extract Macro (6)" to_port="example set"/>
           <connect from_op="Recall (5)" from_port="result" to_op="Rename (3)" to_port="example set input"/>
-          <connect from_op="Rename (3)" from_port="example set output" to_port="example set"/>
+          <connect from_op="Rename (3)" from_port="example set output" to_port="output 1"/>
           <portSpacing port="source_example set" spacing="0"/>
           <portSpacing port="sink_example set" spacing="0"/>
           <portSpacing port="sink_output 1" spacing="0"/>
-        </process>
-      </operator>
-      <operator activated="false" class="loop_collection" compatibility="5.3.008" expanded="true" height="60" name="Loop Collection (3)" width="90" x="849" y="390">
-        <parameter key="set_iteration_macro" value="false"/>
-        <parameter key="macro_name" value="iteration"/>
-        <parameter key="macro_start_value" value="1"/>
-        <parameter key="unfold" value="false"/>
-        <process expanded="true">
-          <operator activated="false" class="extract_macro" compatibility="5.3.008" expanded="true" height="60" name="Extract Macro (3)" width="90" x="112" y="30">
-            <parameter key="macro" value="AlgorithmID"/>
-            <parameter key="macro_type" value="data_value"/>
-            <parameter key="statistics" value="average"/>
-            <parameter key="attribute_name" value="AlgorithmID"/>
-            <parameter key="example_index" value="1"/>
-            <list key="additional_macros">
-              <parameter key="ConfigID" value="ConfigID"/>
-            </list>
-          </operator>
-          <operator activated="false" class="remember" compatibility="5.3.008" expanded="true" height="60" name="Remember (4)" width="90" x="313" y="30">
-            <parameter key="name" value="%{AlgorithmID}Params"/>
-            <parameter key="io_object" value="ExampleSet"/>
-            <parameter key="store_which" value="1"/>
-            <parameter key="remove_from_process" value="true"/>
-          </operator>
-          <connect from_port="single" to_op="Extract Macro (3)" to_port="example set"/>
-          <connect from_op="Extract Macro (3)" from_port="example set" to_op="Remember (4)" to_port="store"/>
-          <portSpacing port="source_single" spacing="0"/>
-          <portSpacing port="sink_output 1" spacing="0"/>
-        </process>
-      </operator>
-      <operator activated="false" class="loop_repository" compatibility="5.3.008" expanded="true" height="60" name="Loop Repository" width="90" x="849" y="570">
-        <parameter key="repository_folder" value="//seage/databases/experiments/parameters/"/>
-        <parameter key="entry_type" value="IOObject"/>
-        <parameter key="filtered_string" value="file name (last part of the path)"/>
-        <parameter key="entry_name_macro" value="entry_name"/>
-        <parameter key="repository_path_macro" value="repository_path"/>
-        <parameter key="parent_folder_macro" value="parent_folder"/>
-        <parameter key="recursive" value="true"/>
-        <process expanded="true">
-          <operator activated="false" class="remember" compatibility="5.3.008" expanded="true" height="60" name="Remember" width="90" x="313" y="30">
-            <parameter key="name" value="%{entry_name}Params"/>
-            <parameter key="io_object" value="ExampleSet"/>
-            <parameter key="store_which" value="1"/>
-            <parameter key="remove_from_process" value="true"/>
-          </operator>
-          <connect from_port="repository object" to_op="Remember" to_port="store"/>
-          <portSpacing port="source_repository object" spacing="0"/>
-          <portSpacing port="source_in 1" spacing="0"/>
-          <portSpacing port="sink_out 1" spacing="0"/>
-        </process>
-      </operator>
-      <operator activated="false" class="loop_repository" compatibility="5.3.008" expanded="true" height="76" name="Loop Repository (2)" width="90" x="849" y="480">
-        <parameter key="repository_folder" value="../../databases/experiments/parameters/"/>
-        <parameter key="entry_type" value="IOObject"/>
-        <parameter key="filtered_string" value="file name (last part of the path)"/>
-        <parameter key="entry_name_macro" value="entry_name"/>
-        <parameter key="repository_path_macro" value="repository_path"/>
-        <parameter key="parent_folder_macro" value="parent_folder"/>
-        <parameter key="recursive" value="true"/>
-        <process expanded="true">
-          <operator activated="false" class="handle_exception" compatibility="5.3.008" expanded="true" height="76" name="Handle Exception" width="90" x="179" y="120">
-            <process expanded="true">
-              <operator activated="false" class="recall" compatibility="5.3.008" expanded="true" height="60" name="Recall (3)" width="90" x="112" y="75">
-                <parameter key="name" value="%{entry_name}Data"/>
-                <parameter key="io_object" value="ExampleSet"/>
-                <parameter key="remove_from_store" value="false"/>
-              </operator>
-              <operator activated="false" class="rename" compatibility="5.3.008" expanded="true" height="76" name="Rename" width="90" x="313" y="75">
-                <parameter key="old_name" value="id"/>
-                <parameter key="new_name" value="%{entry_name}"/>
-                <list key="rename_additional_attributes"/>
-              </operator>
-              <connect from_op="Recall (3)" from_port="result" to_op="Rename" to_port="example set input"/>
-              <connect from_op="Rename" from_port="example set output" to_port="out 1"/>
-              <portSpacing port="source_in 1" spacing="0"/>
-              <portSpacing port="source_in 2" spacing="0"/>
-              <portSpacing port="sink_out 1" spacing="0"/>
-              <portSpacing port="sink_out 2" spacing="0"/>
-            </process>
-            <process expanded="true">
-              <portSpacing port="source_in 1" spacing="0"/>
-              <portSpacing port="source_in 2" spacing="0"/>
-              <portSpacing port="sink_out 1" spacing="0"/>
-              <portSpacing port="sink_out 2" spacing="0"/>
-            </process>
-          </operator>
-          <connect from_port="repository object" to_op="Handle Exception" to_port="in 1"/>
-          <connect from_op="Handle Exception" from_port="out 1" to_port="out 1"/>
-          <portSpacing port="source_repository object" spacing="0"/>
-          <portSpacing port="source_in 1" spacing="0"/>
-          <portSpacing port="sink_out 1" spacing="0"/>
-          <portSpacing port="sink_out 2" spacing="0"/>
-        </process>
-      </operator>
-      <operator activated="false" class="loop_collection" compatibility="5.3.008" expanded="true" height="60" name="Loop Collection (4)" width="90" x="849" y="300">
-        <parameter key="set_iteration_macro" value="false"/>
-        <parameter key="macro_name" value="iteration"/>
-        <parameter key="macro_start_value" value="1"/>
-        <parameter key="unfold" value="false"/>
-        <process expanded="true">
-          <operator activated="false" class="extract_macro" compatibility="5.3.008" expanded="true" height="60" name="Extract Macro (4)" width="90" x="45" y="75">
-            <parameter key="macro" value="AlgorithmID"/>
-            <parameter key="macro_type" value="data_value"/>
-            <parameter key="statistics" value="average"/>
-            <parameter key="attribute_name" value="AlgorithmID"/>
-            <parameter key="example_index" value="1"/>
-            <list key="additional_macros"/>
-          </operator>
-          <operator activated="false" class="recall" compatibility="5.3.008" expanded="true" height="60" name="Recall (4)" width="90" x="179" y="75">
-            <parameter key="name" value="%{AlgorithmID}Data"/>
-            <parameter key="io_object" value="ExampleSet"/>
-            <parameter key="remove_from_store" value="false"/>
-          </operator>
-          <operator activated="false" class="rename" compatibility="5.3.008" expanded="true" height="76" name="Rename (2)" width="90" x="514" y="75">
-            <parameter key="old_name" value="id"/>
-            <parameter key="new_name" value="%{AlgorithmID}"/>
-            <list key="rename_additional_attributes"/>
-          </operator>
-          <connect from_op="Recall (4)" from_port="result" to_op="Rename (2)" to_port="example set input"/>
-          <portSpacing port="source_single" spacing="0"/>
-          <portSpacing port="sink_output 1" spacing="0"/>
+          <portSpacing port="sink_output 2" spacing="0"/>
         </process>
       </operator>
       <connect from_op="Execute FilteredExperimentValues" from_port="result 1" to_op="Aggregate" to_port="example set input"/>
@@ -338,7 +216,7 @@
       <connect from_op="Multiply (2)" from_port="output 2" to_op="Loop Examples (2)" to_port="example set"/>
       <connect from_op="Execute SortedAlgParamsPerProblemAlgInstance" from_port="result 1" to_op="Loop Collection" to_port="collection"/>
       <connect from_op="Loop Collection" from_port="output 1" to_op="Loop Collection (2)" to_port="collection"/>
-      <connect from_op="Loop Examples (2)" from_port="example set" to_port="result 1"/>
+      <connect from_op="Loop Examples (2)" from_port="output 1" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
