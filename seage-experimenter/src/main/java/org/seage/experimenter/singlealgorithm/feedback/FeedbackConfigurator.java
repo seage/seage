@@ -76,7 +76,7 @@ public class FeedbackConfigurator extends Configurator
 
         //System.out.println(instanceInfo.getValue("path"));
         int feedbackConfigs = exampleSetParams.getExampleTable().size();
-        int realNumConfigs = numConfigs > feedbackConfigs ? numConfigs : feedbackConfigs; 
+        int realNumConfigs = numConfigs < feedbackConfigs ? numConfigs : feedbackConfigs; 
         for (int i = 0; i < realNumConfigs; i++)
         {        	
         	Example example = exampleSetParams.getExample(i);
