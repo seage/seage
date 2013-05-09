@@ -72,6 +72,15 @@ public abstract class TspSolution extends Solution
     {
         _cities = cities;
     }
+    
+    @Override
+    public String toString()
+    {
+    	String res = new String();
+    	for(Integer t : _tour)
+    		res += t + " ";
+    	return res;
+    }
 
     @Override
     public TspSolution clone()

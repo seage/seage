@@ -170,7 +170,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
             {
                 successIterationCount++;
                 _currentSolution = modifiedSolution;
-                if(modifiedSolution.compareTo(_currentSolution) > 0)
+                if(modifiedSolution.compareTo(_bestSolution) > 0)
                 {
                     _bestSolution = modifiedSolution.clone();
                     _eventProducer.fireNewBestSolutionFound();
