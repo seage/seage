@@ -40,10 +40,10 @@ public interface ISimulatedAnnealing
     void setAnnealingCoefficient(double alpha);
 
     long getMaximalIterationCount();
-    void setMaximalIterationCount(long _maximalIterationCount);
+    void setMaximalInnerIterationCount(long _maximalIterationCount);
 
     long getMaximalSuccessIterationCount();
-    void setMaximalSuccessIterationCount(long _maximalSuccessIterationCount);
+    void setMaximalAcceptedSolutionsPerOneStepCount(long _maximalSuccessIterationCount);
 
     long getCurrentIteration();
 

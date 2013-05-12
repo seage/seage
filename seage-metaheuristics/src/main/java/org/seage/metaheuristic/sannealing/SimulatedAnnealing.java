@@ -246,7 +246,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
       return _maximalIterationCount;
   }
 
-  public void setMaximalIterationCount(long _maximalIterationCount) {
+  public void setMaximalInnerIterationCount(long _maximalIterationCount) {
       this._maximalIterationCount = _maximalIterationCount;
   }
 
@@ -254,7 +254,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
       return _maximalSuccessIterationCount;
   }
 
-  public void setMaximalSuccessIterationCount(long _maximalSuccessIterationCount) {
+  public void setMaximalAcceptedSolutionsPerOneStepCount(long _maximalSuccessIterationCount) {
       this._maximalSuccessIterationCount = _maximalSuccessIterationCount;
   }
   

@@ -158,7 +158,7 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
             _attributes.add(AttributeFactory.createAttribute("maxInnerIterations", Ontology.REAL));
             _attributes.add(AttributeFactory.createAttribute("maxTemperature", Ontology.REAL));
             _attributes.add(AttributeFactory.createAttribute("minTemperature", Ontology.REAL));
-            _attributes.add(AttributeFactory.createAttribute("numInnerSuccesses", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("maxOneStepAcceptedSolutions", Ontology.REAL));
             _attributes.add(AttributeFactory.createAttribute("numSolutions", Ontology.REAL));
             
             Hashtable<String, XmlHelper.XPath> algSAXPaths = new Hashtable<String, XmlHelper.XPath>();
@@ -167,7 +167,7 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
             algSAXPaths.put("maxInnerIterations", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxInnerIterations"));
             algSAXPaths.put("maxTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxTemperature"));
             algSAXPaths.put("minTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@minTemperature"));
-            algSAXPaths.put("numInnerSuccesses", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numInnerSuccesses"));
+            algSAXPaths.put("maxOneStepAcceptedSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxOneStepAcceptedSolutions"));
             algSAXPaths.put("numSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
             _versionedXPaths.put(VERSION, algSAXPaths);
         }

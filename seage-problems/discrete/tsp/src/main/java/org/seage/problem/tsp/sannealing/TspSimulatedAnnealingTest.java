@@ -65,11 +65,11 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
 
         SimulatedAnnealing sa = new SimulatedAnnealing( new TspObjectiveFunction() , new TspMoveManager() );
 
-        sa.setMaximalTemperature( 1500 );
+        sa.setMaximalTemperature( 1500000 );
         sa.setMinimalTemperature( 0.1 );
         sa.setAnnealingCoefficient( 0.99 );
-        sa.setMaximalIterationCount(5000);
-        sa.setMaximalSuccessIterationCount(100);
+        sa.setMaximalInnerIterationCount(500000);
+        sa.setMaximalAcceptedSolutionsPerOneStepCount(50000);
 
         sa.addSimulatedAnnealingListener( this );
         TspGreedySolution s = new TspGreedySolution(_cities);

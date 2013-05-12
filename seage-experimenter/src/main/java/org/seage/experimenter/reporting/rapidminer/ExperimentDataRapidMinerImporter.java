@@ -211,7 +211,7 @@ public class ExperimentDataRapidMinerImporter
 						}
 						catch (Exception ex)
 						{
-						    _logger.warning(ze.getName()+" - "+ex.getMessage()+" - " +ex.toString());
+						    _logger.warning(_zipFile.getName() +" - "+ze.getName()+" - "+ex.getMessage()+" - " +ex.toString());
 						}
 					}
 				}

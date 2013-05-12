@@ -67,8 +67,8 @@ public class QapSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         sa.setMaximalTemperature( 2000 );
         sa.setMinimalTemperature( 0.1 );
         sa.setAnnealingCoefficient( 0.99 );
-        sa.setMaximalIterationCount(2500);
-        sa.setMaximalSuccessIterationCount(100);
+        sa.setMaximalInnerIterationCount(2500);
+        sa.setMaximalAcceptedSolutionsPerOneStepCount(100);
 
         sa.addSimulatedAnnealingListener( this );
         sa.startSearching( (Solution) new QapGreedySolution( _facilityLocation ) );
