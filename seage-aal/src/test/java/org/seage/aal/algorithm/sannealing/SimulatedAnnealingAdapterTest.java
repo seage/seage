@@ -57,7 +57,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
         params.putValue("maxInnerIterations", 10);
         params.putValue("maxTemperature", 100);
         params.putValue("minTemperature", 1);
-        params.putValue("numInnerSuccesses", 1);
+        params.putValue("maxOneStepAcceptedSolutions", 1);
         params.putValue("numSolutions", 1);
         
         _algParams.putDataNodeRef(params);
@@ -88,7 +88,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
         params.putValue("maxInnerIterations", 0);
         params.putValue("maxTemperature", 0);
         params.putValue("minTemperature", 0);
-        params.putValue("numInnerSuccesses", 0);
+        params.putValue("maxOneStepAcceptedSolutions", 0);
         params.putValue("numSolutions", 0);
         _tester.setAlgParameters(params);
         _tester.testAlgorithmWithParamsAtZero();
@@ -103,7 +103,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
         params.putValue("maxInnerIterations", 1000000);
         params.putValue("maxTemperature", 100000);
         params.putValue("minTemperature", 1);
-        params.putValue("numInnerSuccesses", 100000);
+        params.putValue("maxOneStepAcceptedSolutions", 100000);
         params.putValue("numSolutions", 1);
         _tester.setAlgParameters(params);
         _tester.testAsyncRunning();        
