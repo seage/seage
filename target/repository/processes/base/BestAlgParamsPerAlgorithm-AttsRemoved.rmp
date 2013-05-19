@@ -45,9 +45,25 @@
             <parameter key="invert_selection" value="true"/>
             <parameter key="include_special_attributes" value="false"/>
           </operator>
+          <operator activated="true" class="remove_duplicates" compatibility="5.3.008" expanded="true" height="76" name="Remove Duplicates" width="90" x="782" y="30">
+            <parameter key="attribute_filter_type" value="subset"/>
+            <parameter key="attribute" value=""/>
+            <parameter key="attributes" value="|ExperimentType"/>
+            <parameter key="use_except_expression" value="false"/>
+            <parameter key="value_type" value="attribute_value"/>
+            <parameter key="use_value_type_exception" value="false"/>
+            <parameter key="except_value_type" value="time"/>
+            <parameter key="block_type" value="attribute_block"/>
+            <parameter key="use_block_type_exception" value="false"/>
+            <parameter key="except_block_type" value="value_matrix_row_start"/>
+            <parameter key="invert_selection" value="true"/>
+            <parameter key="include_special_attributes" value="false"/>
+            <parameter key="treat_missing_values_as_duplicates" value="false"/>
+          </operator>
           <connect from_port="single" to_op="Remove Attribute Range" to_port="example set input"/>
           <connect from_op="Remove Attribute Range" from_port="example set output" to_op="Select Attributes" to_port="example set input"/>
-          <connect from_op="Select Attributes" from_port="example set output" to_port="output 1"/>
+          <connect from_op="Select Attributes" from_port="example set output" to_op="Remove Duplicates" to_port="example set input"/>
+          <connect from_op="Remove Duplicates" from_port="example set output" to_port="output 1"/>
           <portSpacing port="source_single" spacing="0"/>
           <portSpacing port="sink_output 1" spacing="0"/>
           <portSpacing port="sink_output 2" spacing="0"/>
