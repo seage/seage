@@ -59,16 +59,21 @@ class ContinuousFireflyOperator extends FireflyOperator{
         _dimension=2;
     }
 
-    public ContinuousFireflyOperator(double initialIntensity,double initialRandomness,double finalRandomness,double absorption,double timeStep,boolean withDecreasingRandomness, int dimension, double[] xMin, double[] xMax){
+    public ContinuousFireflyOperator(double initialIntensity,double initialRandomness,double finalRandomness,double absorption,double timeStep,boolean withDecreasingRandomness, int dimension, double xMin, double xMax){
         _withDecreasingRandomness=withDecreasingRandomness;
         _initialIntensity=initialIntensity;
         _initialRandomness=initialRandomness;
         _finalRandomness=finalRandomness;
         _absorption=absorption;
         _timeStep=timeStep;
-        _minBoundery=xMin;
-        _maxBoundery=xMax;
+        _minBoundery=new double[dimension];
+        _maxBoundery=new double[dimension];
         _dimension=dimension;
+        for(int i=0;i<dimension;i++)
+        {
+        	_minBoundery[i]=xMin;
+        	_minBoundery[i]=xMax;
+        }
     }
 
     /**

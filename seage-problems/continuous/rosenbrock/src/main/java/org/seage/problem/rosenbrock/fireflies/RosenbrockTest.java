@@ -30,6 +30,7 @@ import org.seage.metaheuristic.fireflies.FireflySearch;
 import org.seage.metaheuristic.fireflies.Solution;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.metaheuristic.particles.ParticleSwarm;
+import org.seage.problem.rosenbrock.sannealing.RosenbrockSolution;
 
 /**
  *
@@ -39,21 +40,22 @@ public class RosenbrockTest
 {
     public static void main(String[] args) throws Exception
     {
+    	int dimension =4;
         boolean _withDecreasingRandomness=false;
         boolean _withHillClimbingBestSolution=false;
         boolean _bestSolutionNoMove=false;
         double _initialIntensity=1;
         double _initialRandomness=5;
         double _finalRandomness=2;
-        double _absorption=0.3;//0.025;
-        double _timeStep=1.7;//0.15;
-        int populationSize = 100;
+        double _absorption=0.03;//0.025;
+        double _timeStep=0.7;//0.15;
+        int populationSize = 1000;
         boolean _maximizing = false;
-        int iterationsToGo = 1000;
-        double[] minBound = {-10,-10};
-        double[] maxBound = {10,10};
+        int iterationsToGo = 10000;
+        double minBound = -10;
+        double maxBound = 10;
 
-        FireflyOperator fo = new ContinuousFireflyOperator(_initialIntensity,_initialRandomness,_finalRandomness,_absorption,_timeStep,_withDecreasingRandomness,2,minBound,maxBound);
+        FireflyOperator fo = new ContinuousFireflyOperator(_initialIntensity,_initialRandomness,_finalRandomness,_absorption,_timeStep,_withDecreasingRandomness,dimension,minBound,maxBound);
         RosenbrockObjectiveFunction rof = new RosenbrockObjectiveFunction();
                 
         FireflySearch fs = new FireflySearch(fo, rof);
@@ -71,7 +73,10 @@ public class RosenbrockTest
         fs.setIterationsToGo(iterationsToGo);
 //        System.out.println("Length of solution"+(new QapRandomSolution(facilityLocations)._assign.length));
         Solution[] solutions = generateInitialSolutions(10,fo);
-        fs.startSolving(solutions);        
+        fs.startSolving(solutions);   
+        System.out.println(fs.getBestSolution().getObjectiveValue()[0]);
+        for(int i = 0; i < dimension; i++)
+            System.out.print(" " + ((ContinuousSolution)fs.getBestSolution()).getAssign()[i]);
     }
 
     private static Solution[] generateInitialSolutions(int count, FireflyOperator fo) throws Exception

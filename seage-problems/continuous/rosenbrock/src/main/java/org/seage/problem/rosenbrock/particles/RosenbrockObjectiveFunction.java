@@ -27,6 +27,7 @@ package org.seage.problem.rosenbrock.particles;
 
 import org.seage.metaheuristic.particles.IObjectiveFunction;
 import org.seage.metaheuristic.particles.Particle;
+import org.seage.problem.rosenbrock.RosenbrockFunction;
 
 /**
  *
@@ -38,11 +39,7 @@ public class RosenbrockObjectiveFunction implements IObjectiveFunction
     public void setObjectiveValue(Particle particle)
     {
         double[] coords = particle.getCoords();
-        double value = 0.0;
-        for(int i = 0; i < coords.length - 1; i++)
-        {
-            value += (Math.pow(1 - coords[i], 2) + 100 * Math.pow( coords[i + 1] - Math.pow( coords[i], 2 ) , 2 ) );
-        }
-        particle.setEvaluation( value );
+        
+        particle.setEvaluation( RosenbrockFunction.f(coords) );
     }
 }

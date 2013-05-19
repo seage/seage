@@ -59,7 +59,7 @@ public class RosenbrockTest
         }
 
         ParticleSwarm pso = new ParticleSwarm( objFunction );
-        pso.setMaximalIterationCount( 100000 );
+        pso.setMaximalIterationCount( 1000 );
         pso.setMaximalVelocity( 0.9 );
         pso.setMinimalVelocity( -0.9 );
         pso.setInertia( 0.9 );

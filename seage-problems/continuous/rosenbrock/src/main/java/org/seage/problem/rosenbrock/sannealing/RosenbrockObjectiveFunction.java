@@ -36,14 +36,15 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class RosenbrockObjectiveFunction implements IObjectiveFunction
 {
     // f(X) = SUM(to N-1, i = 0) [(1 - Xi)^2 + 100 * (Xi+1 - Xi^2)^2]
-    public void setObjectiveValue(Solution solution)
-    {
-        double[] coords = ((RosenbrockSolution)solution).getCoords();
+	@Override
+	public double getObjectiveValue(Solution solution)
+	{
+		double[] coords = ((RosenbrockSolution)solution).getCoords();
         double value = 0.0;
         for(int i = 0; i < coords.length - 1; i++)
         {
             value += (Math.pow(1 - coords[i], 2) + 100 * Math.pow( coords[i + 1] - Math.pow( coords[i], 2 ) , 2 ) );
         }
-        solution.setObjectiveValue( value );
-    }
+		return value;
+	}
 }
