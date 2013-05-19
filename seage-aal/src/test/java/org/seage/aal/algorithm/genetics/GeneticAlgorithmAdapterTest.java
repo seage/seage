@@ -58,7 +58,7 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
             	double val = 0;
             	for(int i=0;i<solution.getGenome().getChromosome(0).getGeneArray().length-1;i++)
             	{
-            		val += Math.abs(solution.getGenome().getChromosome(0).getGene(i).getValue() - solution.getGenome().getChromosome(0).getGene(i+1).getValue());
+            		val += Math.abs((Integer)solution.getGenome().getChromosome(0).getGene(i).getValue() - (Integer)solution.getGenome().getChromosome(0).getGene(i+1).getValue());
             	}
             	
                 return new double[]{val};

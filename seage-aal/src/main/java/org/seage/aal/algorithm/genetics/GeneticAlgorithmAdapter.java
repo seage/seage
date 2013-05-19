@@ -143,13 +143,13 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
         
         DataNode p = params.getDataNode("Parameters");
         _geneticSearch.getOperator().setCrossLengthPct(p.getValueInt("crossLengthPct") / 100.0);
-        _geneticSearch.getOperator().setMutatePct(p.getValueInt("mutateLengthPct") / 100.0);
-        _geneticSearch.setEliteSubjectPct(p.getValueInt("eliteSubjectPct") / 100.0);
+        _geneticSearch.getOperator().setMutateLengthPct(p.getValueInt("mutateLengthPct") / 100.0);
+        _geneticSearch.setEliteSubjectsPct(p.getValueInt("eliteSubjectPct") / 100.0);
         _geneticSearch.setIterationToGo(p.getValueInt("iterationCount"));
         //_statNumIter = p.getValueInt("iterationCount");
-        _geneticSearch.setMutateSubjectPct(p.getValueInt("mutateSubjectPct") / 100.0);
+        _geneticSearch.setMutatePopulationPct(p.getValueInt("mutateSubjectPct") / 100.0);
         _geneticSearch.setPopulationCount(p.getValueInt("numSolutions"));
-        _geneticSearch.setRandomSubjectPct(p.getValueInt("randomSubjectPct") / 100.0);
+        _geneticSearch.setRandomSubjectsPct(p.getValueInt("randomSubjectPct") / 100.0);
 
         //_paramID = param.getValue("ID");
     }

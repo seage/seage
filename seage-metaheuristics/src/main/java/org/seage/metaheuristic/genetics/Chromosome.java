@@ -64,9 +64,9 @@ public class Chromosome implements Serializable
 		return _genes[index];
 	}
         
-        public Integer[] getGeneArray()
+        public Object[] getGeneArray()
         {
-            Integer[] result = new Integer[_genes.length];
+        	Object[] result = new Object[_genes.length];
             for(int i =0;i<result.length;i++) result[i] = _genes[i]._value;
             return result;
         }

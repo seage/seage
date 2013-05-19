@@ -39,10 +39,10 @@ public class GeneticSearch
 	private int _iterationCount;
 	private int _currentIteration;
 	private int _populationCount;
-	private double _randomSubjectPct;
-	private double _mutateSubjectPct;
-	private double _eliteSubjectPct;
-	private double _crossLengthPct;
+	private double _randomSubjectsPct;
+	private double _mutateSubjectsPct;
+	private double _eliteSubjectsPct;
+	//private double _crossLengthPct;
 
 	private boolean _keepSearching;
 	private boolean _isRunning;
@@ -124,13 +124,12 @@ public class GeneticSearch
 			_currentIteration = 0;
 
 			Population workPopulation = new Population();
-			int numEliteSubject = (int) Math.max(_eliteSubjectPct * _populationCount, 1);
-			int numMutateSubject = (int) (_mutateSubjectPct * _populationCount);
+			int numEliteSubject = (int) Math.max(_eliteSubjectsPct * _populationCount, 1);
+			int numMutateSubject = (int) (_mutateSubjectsPct * _populationCount);
 			int numCrossSubject = _populationCount - numEliteSubject - numMutateSubject;
-			int numRandomSubject = (int) (_randomSubjectPct * _populationCount);
+			int numRandomSubject = (int) (_randomSubjectsPct * _populationCount);
 
-			_operator.setCrossLengthPct(_crossLengthPct);
-
+			
 			_population.removeAll();
 			for (int i = 0; i < _populationCount; i++)
 			{
@@ -296,7 +295,7 @@ public class GeneticSearch
 
 			for (int i = 1; i < subjects.length; i++)
 			{
-				if ((1.0 * numMutateSubject / subjects.length) < _random.nextDouble())
+				if ((1.0 * numMutateSubject / subjects.length) > _random.nextDouble())
 				{
 					// int ix = _random.nextInt(subjects.length);
 					result.addSubject(_operator.mutate(subjects[i]));
@@ -354,23 +353,31 @@ public class GeneticSearch
 		_populationCount = count;
 	}
 
-	public void setRandomSubjectPct(double pct)
+	public void setRandomSubjectsPct(double pct)
 	{
-		_randomSubjectPct = pct;
+		_randomSubjectsPct = pct;
 	}
 
-	public void setCrossLengthPct(double pct)
+	public void setMutatePopulationPct(double pct)
 	{
-		_crossLengthPct = pct;
+		_mutateSubjectsPct = pct;
 	}
 
-	public void setMutateSubjectPct(double pct)
+	public void setEliteSubjectsPct(double pct)
 	{
-		_mutateSubjectPct = pct;
+		_eliteSubjectsPct = pct;
 	}
 
-	public void setEliteSubjectPct(double pct)
+	//----------------------------------------------------
+	
+	public void setCrossLengthPct(double crossLengthPct)
 	{
-		_eliteSubjectPct = pct;
+		_operator.setCrossLengthPct(crossLengthPct);
+	}
+	
+	public void setMutateChromosomeLengthPct(double pct)
+	{
+		_operator.setMutateLengthPct(pct);
+		
 	}
 }

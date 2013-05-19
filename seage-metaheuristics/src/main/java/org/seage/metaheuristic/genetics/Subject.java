@@ -56,29 +56,6 @@ public class Subject
 		return _id;
 	}
 
-	// public int compareTo(Object obj)
-	// {
-	// Subject s1 = this;
-	// Subject s2 = (Subject)obj;
-
-	// for(int i=0;i<s1._fitness.length;i++)
-	// {
-	// boolean d1 = s1._fitness[i] > s2._fitness[i];
-	// boolean d2 = s1._fitness[i] < s2._fitness[i];
-
-	// if(d1 == false && d2 == false)
-	// continue;
-	// else
-	// if(d1 == true)
-	// return 1;
-	// else
-	// if (d2 == true)
-	// return -1;
-	// }
-
-	// return 0;
-	// }
-
 	/*
 	 * Interface Solution
 	 */
@@ -178,7 +155,7 @@ public class Subject
 		int hash = 0x1000;
 		for (int i = 0; i < chrom.getLength(); i++)
 		{
-			hash = ((hash << 5) ^ (hash >> 27)) ^ (chrom.getGene(i).getValue() + 2) << 1;
+			hash = ((hash << 5) ^ (hash >> 27)) ^ (chrom.getGene(i).hashCode() + 2) << 1;
 		}
 		_hashCode = hash;
 	}
