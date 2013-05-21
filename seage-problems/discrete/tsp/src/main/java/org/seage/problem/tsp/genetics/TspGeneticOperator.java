@@ -40,7 +40,7 @@ public class TspGeneticOperator extends GeneticOperator
 
 	public Subject[] crossOver2(Subject parent1, Subject parent2) throws Exception
 	{
-		int length = parent1.getGenome().getChromosome(0).getLength();
+		int length = parent1.getChromosome().getLength();
 
 		int[] occur1 = new int[length];
 		int[] occur2 = new int[length];
@@ -60,11 +60,11 @@ public class TspGeneticOperator extends GeneticOperator
 
 		for (int i = ix; i < ix + crossLength; i++)
 		{
-			int x1 = (Integer) child1.getGenome().getChromosome(0).getGene(i).getValue();
-			int x2 = (Integer) child2.getGenome().getChromosome(0).getGene(i).getValue();
+			int x1 = (Integer) child1.getChromosome().getGene(i).getValue();
+			int x2 = (Integer) child2.getChromosome().getGene(i).getValue();
 
-			child1.getGenome().getChromosome(0).getGene(i).setValue(x2);
-			child2.getGenome().getChromosome(0).getGene(i).setValue(x1);
+			child1.getChromosome().getGene(i).setValue(x2);
+			child2.getChromosome().getGene(i).setValue(x1);
 
 			cross1[x2] = x1;
 			cross2[x1] = x2;
@@ -112,7 +112,7 @@ public class TspGeneticOperator extends GeneticOperator
 	public Subject[] crossOver(Subject parent1, Subject parent2) throws Exception
 	{
 
-		int length = parent1.getGenome().getChromosome(0).getLength();
+		int length = parent1.getChromosome().getLength();
 
 		int ix = _random.nextInt(length);
 		int crossLength = (int) (length * _random.nextDouble() * _crossLengthPct) + 1;

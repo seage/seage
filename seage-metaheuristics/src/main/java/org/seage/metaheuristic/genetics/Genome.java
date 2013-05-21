@@ -42,33 +42,33 @@ public class Genome implements Serializable
 	{
 	}
 
-	public Genome(int numChrom, int numGenes)
-	{
-		_chromosomes = new Chromosome[numChrom];
-		for (int i = 0; i < _chromosomes.length; i++)
-		{
-			// if (genome._chromosomes[i] != null)
-			{
-				_chromosomes[i] = new Chromosome(numGenes);// (Chromosome)genome._chromosomes[i].clone();
-				for (int j = 0; j < numGenes; j++)
-				{
-					_chromosomes[i].setGene(j, new Gene(0));
-				}
-			}
-		}
-	}
+//	public Genome(int numChrom, int numGenes)
+//	{
+//		_chromosomes = new Chromosome[numChrom];
+//		for (int i = 0; i < _chromosomes.length; i++)
+//		{
+//			// if (genome._chromosomes[i] != null)
+//			{
+//				_chromosomes[i] = new Chromosome(numGenes);// (Chromosome)genome._chromosomes[i].clone();
+//				for (int j = 0; j < numGenes; j++)
+//				{
+//					_chromosomes[i].setGene(j, new Gene(0));
+//				}
+//			}
+//		}
+//	}
 
-	public Genome(Genome genome)
-	{
-		this(genome._chromosomes.length, genome._chromosomes[0].getLength());
-		// _chromosomes = (Chromosome[])genome._chromosomes.clone();
-		for (int i = 0; i < _chromosomes.length; i++)
-		{
-			for (int j = 0; j < _chromosomes[i].getLength(); j++)
-				_chromosomes[i].setGene(j, new Gene(genome.getChromosome(i).getGene(j).getValue()));// =
-																									// (Chromosome)genome._chromosomes[i].clone();
-		}
-	}
+//	public Genome(Genome genome)
+//	{
+//		this(genome._chromosomes.length, genome._chromosomes[0].getLength());
+//		// _chromosomes = (Chromosome[])genome._chromosomes.clone();
+//		for (int i = 0; i < _chromosomes.length; i++)
+//		{
+//			for (int j = 0; j < _chromosomes[i].getLength(); j++)
+//				_chromosomes[i].setGene(j, new Gene(genome.getChromosome(i).getGene(j).getValue()));// =
+//																									// (Chromosome)genome._chromosomes[i].clone();
+//		}
+//	}
 
 	public Object clone()
 	{

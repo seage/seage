@@ -50,7 +50,7 @@ public class ValueEvolutionReasoner extends EvolutionReasoner
         HashMap<Attribute, Double> values = new HashMap<Attribute, Double>();
         int ix = 0;
 
-        for(Integer i: subject.getGenome().getChromosome(0).getGeneArray())
+        for(Integer i: subject.getChromosome().getGeneArray())
             values.put(_attributes[ix++], i.doubleValue());
         
 

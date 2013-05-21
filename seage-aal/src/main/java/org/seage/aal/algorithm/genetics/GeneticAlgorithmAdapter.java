@@ -37,7 +37,7 @@ import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
-import org.seage.metaheuristic.genetics.Evaluator;
+import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.metaheuristic.genetics.GeneticOperator;
 import org.seage.metaheuristic.genetics.GeneticSearch;
 import org.seage.metaheuristic.genetics.GeneticSearchEvent;
@@ -62,7 +62,7 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
 	
     protected Subject[] _solutions;
     private GeneticSearch _geneticSearch;
-    private Evaluator _evaluator;
+    private SubjectEvaluator _evaluator;
     private SubjectComparator _comparator;
     private GeneticSearchListener _algorithmListener;
     private Subject _bestEverSolution;
@@ -82,7 +82,7 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
 
 
     public GeneticAlgorithmAdapter(GeneticOperator operator, 
-                                Evaluator evaluator, 
+                                SubjectEvaluator evaluator, 
                                 boolean maximizing,
                                 String searchID)
     {
@@ -203,7 +203,7 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
             for (int j = 0; j < source[i].length; j++)
             {
                 int geneValue = ((Integer)source[i][j]).intValue();
-                _solutions[i].getGenome().getChromosome(0).getGene(j).setValue(geneValue);
+                _solutions[i].getChromosome().getGene(j).setValue(geneValue);
             }
         }
     }
@@ -221,12 +221,12 @@ public class GeneticAlgorithmAdapter extends AlgorithmAdapterImpl
 
             for (int i = 0; i < _solutions.length; i++)
             {
-                int numGenes = _solutions[i].getGenome().getChromosome(0).getLength();
+                int numGenes = _solutions[i].getChromosome().getLength();
                 result[i] = new Integer[numGenes];
 
                 for (int j = 0; j < numGenes; j++)
                 {
-                    result[i][j] =  _solutions[i].getGenome().getChromosome(0).getGene(j).getValue();
+                    result[i][j] =  _solutions[i].getChromosome().getGene(j).getValue();
                 }
             }
             return result;

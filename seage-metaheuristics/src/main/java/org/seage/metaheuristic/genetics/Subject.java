@@ -28,32 +28,23 @@ package org.seage.metaheuristic.genetics;
 /**
  * @author Richard Malek (original)
  */
-public class Subject
+public class Subject<GeneType>
 {
-	private static int _maxId = 0;
-	private Genome _genome;
+	private Chromosome<GeneType> _chromosome;
 	private double[] _fitness;
-	private int _id;
 	private int _hashCode;
-
-	public Subject(Genome genome)
+	
+	public Subject(GeneType[] geneValues)
 	{
-		_genome = new Genome(genome);
-		_fitness = new double[] {};
-		_id = ++_maxId;
+		_chromosome = new Chromosome<GeneType>(geneValues);
 		computeHash();
 	}
 
-	public Subject(Subject subject)
+	protected Subject(Subject<GeneType> subject)
 	{
-		_genome = new Genome((Genome) subject._genome);
+		_chromosome = subject.getChromosome().clone();
 		_fitness = subject._fitness;
 		computeHash();
-	}
-
-	public int getId()
-	{
-		return _id;
 	}
 
 	/*
@@ -70,43 +61,21 @@ public class Subject
 
 	public void setObjectiveValue(double[] objValue)
 	{
-		_fitness = objValue;// (int)objValue[0];
+		_fitness = objValue;
 		computeHash();
 	}
 
-	public Object clone()
+	public Subject<GeneType> clone()
 	{
-		Object result = new Subject(this);
-//		try
-//		{
-//			 result = (Subject)super.clone();
-//			 result._genome = (Genome)this._genome.clone();
-//			 if (this._fitness != null)
-//			 result._fitness = (double[])this._fitness.clone();
-//			 result._hashCode = this._hashCode;
-//
-//			 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//			 ObjectOutputStream oos = new ObjectOutputStream(baos);
-//			 oos.writeObject(this);
-//			 ByteArrayInputStream bais = new
-//			 ByteArrayInputStream(baos.toByteArray());
-//			 ObjectInputStream ois = new ObjectInputStream(bais);
-//			 result = ois.readObject();
-//
-//		}
-//		catch (Exception ex)
-//		{
-//			throw new InternalError(ex.toString());
-//		}
-		return result;
+		return new Subject<GeneType>(this);
 	}
 
 	/*
 	 * Subject's method
 	 */
-	public Genome getGenome()
+	public Chromosome<GeneType> getChromosome()
 	{
-		return _genome;
+		return _chromosome;
 	}
 
 	public double[] getFitness()
@@ -114,48 +83,13 @@ public class Subject
 		return _fitness;
 	}
 
-	public void print()
-	{
-		System.out.println();
-		for (int i = 0; i < _genome.getLength(); i++)
-		{
-			System.out.print("M" + i + "> ");
-			for (int j = 0; j < _genome.getChromosome(i).getLength(); j++)
-			{
-				String nula, nula2;
-
-				int jobID = 0;// _genome.getChromosome(i).getGene(j).getValue(0);
-				int operID = 0;// _genome.getChromosome(i).getGene(j).getValue(1);
-
-				if (jobID < 10)
-					nula = "00";
-				else if (jobID < 100)
-					nula = "0";
-				else
-					nula = "";
-
-				if (operID < 10)
-					nula2 = "00";
-				else if (operID < 100)
-					nula2 = "0";
-				else
-					nula2 = "";
-
-				System.out.print(nula + jobID + "-" + nula2 + operID + " ");
-				// if(_genome.getChromosome(i).getGene(j).getValue(0) > numJobs)
-				// numJobs = _genome.getChromosome(i).getGene(j).getValue(0);
-			}
-			System.out.println();
-		}
-	}
-
 	public void computeHash()
 	{
-		Chromosome chrom = getGenome().getChromosome(0);
+		//Chromosome chrom = getGenome().getChromosome(0);
 		int hash = 0x1000;
-		for (int i = 0; i < chrom.getLength(); i++)
+		for (int i = 0; i < _chromosome.getLength(); i++)
 		{
-			hash = ((hash << 5) ^ (hash >> 27)) ^ (chrom.getGene(i).hashCode() + 2) << 1;
+			hash = ((hash << 5) ^ (hash >> 27)) ^ (_chromosome.getGene(i).hashCode() + 2) << 1;
 		}
 		_hashCode = hash;
 	}
@@ -171,24 +105,12 @@ public class Subject
 
 		if (_fitness == null)
 			return "null";
-		// NumberFormat formatter = new DecimalFormat("0.000", new
-		// DecimalFormatSymbols(Locale.US));
-		// for (int i = 0; i < _fitness.length; i++)
-		// {
-		// result += formatter.format(_fitness[i]) + "\t";
-		// }
-		// result += hashCode() + "\t";
-		for (int i = 0; i < _genome.getChromosome(0).getLength(); i++)
+
+		for (int i = 0; i < _chromosome.getLength(); i++)
 		{
-			result += (_genome.getChromosome(0).getGene(i)) + " ";
+			result += (_chromosome.getGene(i)) + " ";
 		}
 
 		return result;
 	}
-	// public String toString()
-	// {
-	// Integer hash = new Integer(hashCode());
-	// return hash.toString();
-	// }
-
 }

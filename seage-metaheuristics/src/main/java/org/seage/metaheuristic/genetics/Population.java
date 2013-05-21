@@ -30,25 +30,25 @@ import java.util.*;
 /**
  * @author Richard Malek (original)
  */
-public class Population
+class Population<GeneType>
 {
-    private ArrayList<Subject> _population;
+    private ArrayList<Subject<GeneType>> _population;
 
     public Population()
     {
-        _population = new ArrayList<Subject>();
+        _population = new ArrayList<Subject<GeneType>>();
     }
 
-    public void addSubject(Subject subject)
+    public void addSubject(Subject<GeneType> subject)
     {
         _population.add(subject);
     }
 
-    public Subject getSubject(int ix) throws Exception
+    public Subject<GeneType> getSubject(int ix) throws Exception
     {
         try
         {
-            return (Subject)_population.get(ix);
+            return (Subject<GeneType>)_population.get(ix);
         }
         catch (Exception ex)
         {
@@ -66,7 +66,7 @@ public class Population
         return _population.size();
     }
 
-    public List<Subject> getList()
+    public List<Subject<GeneType>> getList()
     {
         return _population;
     }
@@ -75,12 +75,12 @@ public class Population
     {
         try
         {
-            ArrayList<Subject> newPopulation = new ArrayList<Subject>();
+            ArrayList<Subject<GeneType>> newPopulation = new ArrayList<Subject<GeneType>>();
             newPopulation.add(getSubject(0));
             for (int i = 1; i < _population.size(); i++)
             {
-                Subject prev = (Subject)_population.get(i - 1);
-                Subject curr = (Subject)_population.get(i);
+                Subject<GeneType> prev = (Subject<GeneType>)_population.get(i - 1);
+                Subject<GeneType> curr = (Subject<GeneType>)_population.get(i);
                 if (curr.hashCode() != prev.hashCode())
                 {
                     newPopulation.add(curr);
@@ -98,37 +98,42 @@ public class Population
     public void resize(int newLength)
     {
         if(getSize() > newLength)
-            _population = new ArrayList<Subject>(_population.subList(0, newLength));
+            _population = new ArrayList<Subject<GeneType>>(_population.subList(0, newLength));
     }
 
-    public Subject getBestSubject()
+    public Subject<GeneType> getBestSubject()
     {
-        return (Subject)_population.get(0);
+        return _population.get(0);
     }
 
-    public void mergePopulation(Population population)
+    public void mergePopulation(Population<GeneType> population)
     {
         _population.addAll(population._population);
     }
 
-    public Subject[] getSubjects() throws Exception
+    public List<Subject<GeneType>> getSubjects() throws Exception
     {
         return getSubjects(_population.size());
     }
 
-    public Subject[] getSubjects(int numSubjects) throws Exception
+    public List<Subject<GeneType>> getSubjects(int numSubjects) throws Exception
     {
         try
         {
             int length = _population.size();
             if (length > numSubjects)
-                return (Subject[])_population.subList(0,numSubjects).toArray(new Subject[0]);
+                return _population.subList(0,numSubjects);
             else
-                return (Subject[])_population.toArray(new Subject[0]);
+                return _population;
         }
         catch (Exception ex)
         {
             throw ex;
         }
     }
+
+	public void sort(SubjectComparator<GeneType> subjectComparator)
+	{
+		Collections.sort(_population, subjectComparator);		
+	}
 }

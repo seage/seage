@@ -26,83 +26,50 @@
 package org.seage.metaheuristic.genetics;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * @author Richard Malek (original)
  */
-public class Chromosome implements Serializable
+public class Chromosome<GeneType> implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3050047980641091757L;
 	//public Gene[] m_gene;
-	private Gene[] _genes;
+	private GeneType[] _genes;
 
 	private Chromosome()
 	{ }
 
-	public Chromosome(int length)
+	public Chromosome(GeneType[] geneValues)
 	{		
-		_genes = new Gene[length];
-		//m_gene = new int[length];
+		_genes = Arrays.copyOf(geneValues, geneValues.length);
 	}
 
-	public Chromosome(Gene[] genes)
-	{		
-		_genes = genes;
-		//m_gene = new int[length];
-	}
-	
 	public int getLength()
 	{
 		return _genes.length;
 	}
 	
-	public Gene getGene(int index)
+	public GeneType getGene(int index)
 	{
 		return _genes[index];
 	}
-        
-        public Object[] getGeneArray()
-        {
-        	Object[] result = new Object[_genes.length];
-            for(int i =0;i<result.length;i++) result[i] = _genes[i]._value;
-            return result;
-        }
-        
-        public void setGeneArray(Integer[] geneArray)
-        {
-            for(int i =0;i<_genes.length;i++) 
-                _genes[i]._value = geneArray[i];
-        }
 
-	public void setGene(int index, Gene gene)
+	public void setGene(int index, GeneType gene)
 	{
-		_genes[index] = gene;//(Gene)gene.clone();
+		_genes[index]= gene;
 	}
 
-	public Object clone()
+	public Chromosome<GeneType> clone()
 	{
-		Chromosome newChrom = new Chromosome();
-
-		Gene[] genes = new Gene[_genes.length];
-		for (int i = 0; i < genes.length; i++)
-			genes[i] = (Gene)_genes[i].clone();
-
-		newChrom._genes = genes;
-		return  newChrom;
+		return new Chromosome<GeneType>(_genes);
 	}
 
 	public void swapGenes(int index1, int index2)
 	{
-		Gene tmpGene = _genes[index1];
+		GeneType tmpGene = _genes[index1];
 		setGene(index1, getGene(index2));
 		setGene(index2, tmpGene);
-
-		/*int tmpGene = _genes[index1].getValue(0);
-		_genes[index1].setValue(0, _genes[index2].getValue(0));
-		_genes[index2].setValue(0, tmpGene);*/
 	}
 
 	public String toString()

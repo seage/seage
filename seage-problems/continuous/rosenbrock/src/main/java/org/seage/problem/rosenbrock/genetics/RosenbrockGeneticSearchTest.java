@@ -1,9 +1,12 @@
 package org.seage.problem.rosenbrock.genetics;
 
+import java.util.ArrayList;
+
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.GeneticSearch;
 import org.seage.metaheuristic.genetics.GeneticSearchEvent;
 import org.seage.metaheuristic.genetics.Genome;
+import org.seage.metaheuristic.genetics.RealGeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.rosenbrock.RosenbrockFunction;
 
@@ -13,20 +16,20 @@ public class RosenbrockGeneticSearchTest
 	{
 		try
 		{
-			int dim = 10;
+			int dim = 11;
 
 			double test[] = new double[dim];
 			for (int i = 0; i < dim; i++)
 				test[i] = 1;
 			System.out.println(RosenbrockFunction.f(test));
 
-			RosenbrockGeneticOperator.Limit[] limits = new RosenbrockGeneticOperator.Limit[dim];
-			RosenbrockGeneticOperator operator = new RosenbrockGeneticOperator(limits);
+			RealGeneticOperator.Limit[] limits = new RealGeneticOperator.Limit[dim];
+			RealGeneticOperator operator = new RealGeneticOperator(limits);
 
 			for (int i = 0; i < dim; i++)
 				limits[i] = operator.new Limit(-10, 10);
 
-			GeneticSearch gs = new GeneticSearch(operator, new RosenbrockEvaluator());
+			GeneticSearch<Double> gs = new GeneticSearch<Double>(operator, new RosenbrockEvaluator());
 			gs.addGeneticSearchListener(new IAlgorithmListener<GeneticSearchEvent>()
 			{
 				
@@ -65,28 +68,30 @@ public class RosenbrockGeneticSearchTest
 					
 				}
 			});
-			gs.setCrossLengthPct(0.3);
-			gs.setEliteSubjectsPct(0.2);
-			gs.setIterationToGo(200000);
-			gs.setMutateChromosomeLengthPct(0.1);
+			gs.setCrossLengthPct(0.4);
+			gs.setEliteSubjectsPct(0.1);
+			gs.setIterationToGo(10000);
+			gs.setMutateChromosomeLengthPct(0.2);
 			gs.setMutatePopulationPct(0.0);			
-			gs.setPopulationCount(100);
+			gs.setPopulationCount(1000);
 			gs.setRandomSubjectsPct(0.01);
 
-			Subject[] subjects = new Subject[100];
-			for (int i = 0; i < subjects.length; i++)
+			Double[] dimArray = new Double[dim];
+			for(int i=0;i<dim;i++)
+				dimArray[i] = new Double(0);
+			
+			ArrayList<Subject<Double>> subjects = new ArrayList<Subject<Double>>();
+			for (int i = 0; i < gs.getPopulationCount(); i++)
 			{
-				subjects[i] = new Subject(new Genome(1, dim));
-
-				operator.randomize(subjects[i]);
-
+				subjects.add( new Subject<Double>(dimArray));
+				operator.randomize(subjects.get(i));
 			}
 
 			gs.startSearching(subjects);
 
 			System.out.println(gs.getBestSubject().getObjectiveValue()[0]);
 			for (int i = 0; i < dim; i++)
-				System.out.print(gs.getBestSubject().getGenome().getChromosome(0).getGene(i).getValue() + " ");
+				System.out.print(gs.getBestSubject().getChromosome().getGene(i) + " ");
 			System.out.println();
 		}
 		catch (Exception e)

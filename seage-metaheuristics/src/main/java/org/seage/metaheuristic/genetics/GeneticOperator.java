@@ -25,12 +25,14 @@
  */
 package org.seage.metaheuristic.genetics;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
  * @author Richard Malek (original)
  */
-public class GeneticOperator
+public class GeneticOperator<GeneType>
 {
 	protected Random _random;
 	protected double _crossLengthPct;
@@ -51,9 +53,9 @@ public class GeneticOperator
 	// / <param name="population">Aktualni populace - podle jejiz parametru se
 	// vyber provadi</param>
 	// / <returns>Vraci indexy vybranych subjectu</returns>
-	public int[] select(Subject[] subjects)
+	public int[] select(List<Subject<GeneType>> subjects)
 	{
-		int count = subjects.length;
+		int count = subjects.size();
 		int[] result = new int[2];
 		double[] table = new double[count];
 		table[0] = distributionF(1, count);
@@ -102,27 +104,30 @@ public class GeneticOperator
 	// / <param name="parent1">Prvni rodic</param>
 	// / <param name="parent2">Druhy rodic</param>
 	// / <returns>Vraci mnozinu potomku</returns>
-	public Subject[] crossOver(Subject parent1, Subject parent2) throws Exception
+	public List<Subject<GeneType>> crossOver(Subject<GeneType> parent1, Subject<GeneType> parent2) throws Exception
 	{
-		int length = parent1.getGenome().getChromosome(0).getLength();
+		int length = parent1.getChromosome().getLength();
 		int ix = _random.nextInt(length);
 		int crossLength = (int) (length * _random.nextDouble() * _crossLengthPct);
 
 		if (ix > length - crossLength)
 			ix = length - crossLength;
 
-		Subject child1 = (Subject) parent1.clone();
-		Subject child2 = (Subject) parent2.clone();
+		Subject<GeneType> child1 = (Subject<GeneType>) parent1.clone();
+		Subject<GeneType> child2 = (Subject<GeneType>) parent2.clone();
 
 		for (int i = ix; i < ix + crossLength; i++)
 		{
-			Object x1 = child1.getGenome().getChromosome(0).getGene(i).getValue();
-			Object x2 = child2.getGenome().getChromosome(0).getGene(i).getValue();
-			child1.getGenome().getChromosome(0).getGene(i).setValue(x2);
-			child2.getGenome().getChromosome(0).getGene(i).setValue(x1);
+			GeneType x1 = child1.getChromosome().getGene(i);
+			GeneType x2 = child2.getChromosome().getGene(i);
+			child1.getChromosome().setGene(i, x2);
+			child2.getChromosome().setGene(i, x1);
 		}
-		return new Subject[] { child1, child2 };
-		// return new Subject[] { parent1, parent2 };
+		ArrayList<Subject<GeneType>> result = new ArrayList<Subject<GeneType>>();
+		result.add(child1);
+		result.add(child2);
+		
+		return result;
 	}
 
 	// / <summary>
@@ -130,40 +135,38 @@ public class GeneticOperator
 	// / </summary>
 	// / <param name="subject">Subjekt, ktery je mutovan</param>
 	// / <returns>Vraci zmutovanehy Subject</returns>
-	public Subject mutate(Subject subject) throws Exception
+	public Subject<GeneType> mutate(Subject<GeneType> subject) throws Exception
 	{
 
-		int length = subject.getGenome().getChromosome(0).getLength();
+		int length = subject.getChromosome().getLength();
 		int count = /* (int)(length * _mutatePct);/ */_random.nextInt((int) (length * _mutateLengthPct) + 1);
-		Subject mutant = (Subject) subject.clone();
+		Subject<GeneType> mutant = subject.clone();
 
 		for (int i = 0; i < count; i++)
 		{
 			int ix1 = _random.nextInt(length);
 			int ix2 = _random.nextInt(length);
-			// int x =
-			// mutant.getGenome().getChromosome(0).getGene(ix).getValue();
-			mutant.getGenome().getChromosome(0).swapGenes(ix1, ix2);
+
+			mutant.getChromosome().swapGenes(ix1, ix2);
 		}
 		return mutant;
 
 	}
 
-	public Subject randomize(Subject subject) throws Exception
+	public Subject<GeneType> randomize(Subject<GeneType> subject) throws Exception
 	{
-		int length = subject.getGenome().getChromosome(0).getLength();
+		int length = subject.getChromosome().getLength();
 
-		Subject random = (Subject) subject.clone();
+		Subject<GeneType> random = subject.clone();
 
-		random.getGenome().getChromosome(0).swapGenes(1, 2);
+		random.getChromosome().swapGenes(1, 2);
 
 		for (int i = 0; i < length * 10; i++)
 		{
 			int ix1 = _random.nextInt(length);
 			int ix2 = _random.nextInt(length);
-			// int x =
-			// mutant.getGenome().getChromosome(0).getGene(ix).getValue();
-			random.getGenome().getChromosome(0).swapGenes(ix1, ix2);
+
+			random.getChromosome().swapGenes(ix1, ix2);
 		}
 		return random;
 

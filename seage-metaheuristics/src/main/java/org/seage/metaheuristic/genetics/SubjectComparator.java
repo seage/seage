@@ -28,10 +28,10 @@ package org.seage.metaheuristic.genetics;
 /**
  * @author Richard Malek (original)
  */
-public class SubjectComparator implements java.util.Comparator<Subject>
+public class SubjectComparator<GeneType> implements java.util.Comparator<Subject<GeneType>>
 {
 	@Override
-	public int compare(Subject s1, Subject s2)
+	public int compare(Subject<GeneType> s1, Subject<GeneType> s2)
 	{
 		for (int i = 0; i < s1.getObjectiveValue().length; i++)
 		{

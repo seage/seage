@@ -32,7 +32,7 @@ import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
-import org.seage.metaheuristic.genetics.Evaluator;
+import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.metaheuristic.genetics.GeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 
@@ -50,15 +50,15 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new GeneticAlgorithmAdapter(new GeneticOperator(), new Evaluator()
+        _algorithm = new GeneticAlgorithmAdapter(new GeneticOperator(), new SubjectEvaluator()
         {            
             @Override
             public double[] evaluate(Subject solution) throws Exception
             {
             	double val = 0;
-            	for(int i=0;i<solution.getGenome().getChromosome(0).getGeneArray().length-1;i++)
+            	for(int i=0;i<solution.getChromosome().getGeneArray().length-1;i++)
             	{
-            		val += Math.abs((Integer)solution.getGenome().getChromosome(0).getGene(i).getValue() - (Integer)solution.getGenome().getChromosome(0).getGene(i+1).getValue());
+            		val += Math.abs((Integer)solution.getChromosome().getGene(i).getValue() - (Integer)solution.getChromosome().getGene(i+1).getValue());
             	}
             	
                 return new double[]{val};

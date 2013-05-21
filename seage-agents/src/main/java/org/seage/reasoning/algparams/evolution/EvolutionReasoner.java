@@ -135,11 +135,11 @@ public abstract class EvolutionReasoner extends Reasoner
         {
             if(_random.nextDouble() < _mutatePct)
             {
-                for(int i=0;i<subject.getGenome().getChromosome(0).getLength();i++)
+                for(int i=0;i<subject.getChromosome().getLength();i++)
                 {
                     if(_random.nextDouble() < _mutateLengthPct)
                     {
-                        Gene g = subject.getGenome().getChromosome(0).getGene(i);
+                        Gene g = subject.getChromosome().getGene(i);
                         g.setValue(randomAtt(_attributes[i]));
                     }
                 }
@@ -151,13 +151,13 @@ public abstract class EvolutionReasoner extends Reasoner
         @Override
         public Subject randomize(Subject subject) throws Exception
         {
-            if(subject.getGenome().getChromosome(0).getLength() != _attributes.length)
+            if(subject.getChromosome().getLength() != _attributes.length)
                 return subject;
 
             for(int j=0;j<_attributes.length;j++)
             {
                 int geneVal = randomAtt(_attributes[j]);
-                subject.getGenome().getChromosome(0).setGene(j, new Gene(geneVal));
+                subject.getChromosome().setGene(j, new Gene(geneVal));
             }
             return subject;
         }

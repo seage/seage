@@ -61,11 +61,12 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticSearch
         GeneticSearch gs = new GeneticSearch(new TspGeneticOperator(), new TspEvaluator(cities));     
         gs.addGeneticSearchListener(this);
         gs.setEliteSubjectsPct(0.05);
-        gs.setMutatePopulationPct(0.25);
-        gs.setPopulationCount(100);
+        gs.setMutatePopulationPct(0.0);
+        gs.setMutateChromosomeLengthPct(0.3);
+        gs.setPopulationCount(500);
         gs.setRandomSubjectsPct(0.1);
-        gs.setCrossLengthPct(0.40);
-        gs.setIterationToGo(1000);
+        gs.setCrossLengthPct(0.30);
+        gs.setIterationToGo(100000);
         gs.startSearching(generateInitialSubjects(cities, 100));
     }
 
@@ -77,15 +78,15 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticSearch
         Subject[] result = new Subject[numTours];
 
         for(int k=0;k<tours.length;k++)
-            if(k<tours.length/20)
-                tours[k] = TourProvider.createGreedyTour(cities, 1);
-            else
+//            if(k<tours.length/20)
+//                tours[k] = TourProvider.createGreedyTour(cities, 1);
+//            else
                 tours[k] = TourProvider.createRandomTour(cities);
 
         for(int k=0;k<tours.length;k++)
         {
             Subject s = new Subject(new Genome(1, tourLenght));
-            s.getGenome().getChromosome(0).setGeneArray(tours[k]);
+            s.getChromosome().setGeneArray(tours[k]);
 
             result[k] = s;
         }

@@ -47,7 +47,7 @@ public class JsspGeneticSearchAdapter extends GeneticSearchAdapter
 			for (int j = 0; j < numOper; j++)
 			{
 				int geneVal = ((Integer)dt.getRow(i).getCell(j).getCellProperty()).intValue();
-				subject.getGenome().getChromosome(0).setGene(j, new Gene(geneVal));
+				subject.getChromosome().setGene(j, new Gene(geneVal));
 			}
 			results[i] = subject;
 			results[i].setObjectiveValue((double[])dt.getRow(i).getRowProperty());
@@ -71,7 +71,7 @@ public class JsspGeneticSearchAdapter extends GeneticSearchAdapter
 				dt.getRow(i).setRowProperty(subject.getObjectiveValue());
 				for (int j = 0; j < cellCount; j++)
 				{
-					Integer cellValue = new Integer(subject.getGenome().getChromosome(0).getGene(j).getValue());
+					Integer cellValue = new Integer(subject.getChromosome().getGene(j).getValue());
 					dt.getRow(i).getCell(j).setCellProperty(cellValue);
 				}
 			}

@@ -44,7 +44,7 @@ public class JsspOperator extends GeneticOperator
 			offsprings[0] = (Subject)parent1.clone();
 			offsprings[1] = (Subject)parent2.clone();
 
-			chromLength = offsprings[0].getGenome().getChromosome(0).getLength();
+			chromLength = offsprings[0].getChromosome().getLength();
 
 			crossLength = /*(int)(chromLength * _crossLengthPct);/*/Math.max(_random.nextInt((int)(chromLength * _crossLengthPct)+1)-2,2);
 			int crossBegin = _random.nextInt(chromLength - crossLength );
@@ -57,8 +57,8 @@ public class JsspOperator extends GeneticOperator
 			{
 				//if (i >= crossBegin && i < crossEnd)
 				{
-					int par1GeneVal = ((Subject)parent1).getGenome().getChromosome(0).getGene(i).getValue();
-					int par2GeneVal = ((Subject)parent2).getGenome().getChromosome(0).getGene(i).getValue();
+					int par1GeneVal = ((Subject)parent1).getChromosome().getGene(i).getValue();
+					int par2GeneVal = ((Subject)parent2).getChromosome().getGene(i).getValue();
 
 					if (par1GeneVal == par2GeneVal) continue;
 
@@ -70,8 +70,8 @@ public class JsspOperator extends GeneticOperator
 
 
 
-					offsprings[0].getGenome().getChromosome(0).getGene(i).setValue( ((Subject)parent2).getGenome().getChromosome(0).getGene(i).getValue());
-					offsprings[1].getGenome().getChromosome(0).getGene(i).setValue( ((Subject)parent1).getGenome().getChromosome(0).getGene(i).getValue());
+					offsprings[0].getChromosome().getGene(i).setValue( ((Subject)parent2).getChromosome().getGene(i).getValue());
+					offsprings[1].getChromosome().getGene(i).setValue( ((Subject)parent1).getChromosome().getGene(i).getValue());
 					//offsprings[1].Chromosome.Genes[i].Value = parent1.Chromosome.Genes[i].Value;
 				}
 				//else
@@ -142,9 +142,9 @@ public class JsspOperator extends GeneticOperator
 							int jj = crossBegin;
 							while (occurrence[indexPlus] > 0)
 							{
-								if (((Subject)subject).getGenome().getChromosome(0).getGene(jj).getValue() == indexPlus + 1)
+								if (((Subject)subject).getChromosome().getGene(jj).getValue() == indexPlus + 1)
 								{
-									((Subject)subject).getGenome().getChromosome(0).getGene(jj).setValue(indexMinus + 1);
+									((Subject)subject).getChromosome().getGene(jj).setValue(indexMinus + 1);
 
 									occurrence[indexPlus]--;
 									occurrence[indexMinus]++;
@@ -167,9 +167,9 @@ public class JsspOperator extends GeneticOperator
 							int jj = crossBegin;
 							while (occurrence[indexMinus] < 0)
 							{
-								if (((Subject)subject).getGenome().getChromosome(0).getGene(jj).getValue() == indexPlus + 1)
+								if (((Subject)subject).getChromosome().getGene(jj).getValue() == indexPlus + 1)
 								{
-									((Subject)subject).getGenome().getChromosome(0).getGene(jj).setValue( indexMinus + 1);
+									((Subject)subject).getChromosome().getGene(jj).setValue( indexMinus + 1);
 
 									occurrence[indexPlus]--;
 									occurrence[indexMinus]++;
@@ -196,9 +196,9 @@ public class JsspOperator extends GeneticOperator
 	{
 		Subject s = (Subject)sol;
 		int sum = 0;
-		for (int i = 0; i < s.getGenome().getChromosome(0).getLength(); i++)
+		for (int i = 0; i < s.getChromosome().getLength(); i++)
 		{
-			sum += s.getGenome().getChromosome(0).getGene(i).getValue();
+			sum += s.getChromosome().getGene(i).getValue();
 		}
 		return sum;
 	}

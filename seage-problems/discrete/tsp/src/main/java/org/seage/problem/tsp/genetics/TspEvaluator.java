@@ -26,7 +26,7 @@
 
 package org.seage.problem.tsp.genetics;
 
-import org.seage.metaheuristic.genetics.Evaluator;
+import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.tsp.City;
 
@@ -34,7 +34,7 @@ import org.seage.problem.tsp.City;
  *
  * @author Richard Malek
  */
-public class TspEvaluator implements Evaluator
+public class TspEvaluator extends SubjectEvaluator
 {
     private City[] _cities;
 	public TspEvaluator(City[] cities)
@@ -42,9 +42,10 @@ public class TspEvaluator implements Evaluator
 		_cities = (City[])cities.clone();
 	}
     
+	@Override
     public double[] evaluate(Subject solution) throws Exception
     {
-        return evaluate(solution.getGenome().getChromosome(0).getGeneArray());
+        return evaluate(solution.getChromosome().getGeneArray());
     }
 
     private double[] evaluate(Object[] phenotypeSubject) throws Exception
