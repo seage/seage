@@ -17,7 +17,6 @@ import org.seage.experimenter._obsolete.ProcessPerformer;
 import org.seage.experimenter.reporting.rapidminer.repository.AlgorithmParamsTableCreator;
 import org.seage.experimenter.reporting.rapidminer.repository.RMDataTableCreator;
 import org.seage.experimenter.reporting.rapidminer.repository.SingleAlgorithmTableCreator;
-import org.seage.thread.TaskRunner;
 import org.seage.thread.TaskRunnerEx;
 import org.w3c.dom.Document;
 

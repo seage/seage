@@ -28,9 +28,6 @@ package org.seage.problem.rosenbrock.fireflies;
 import org.seage.metaheuristic.fireflies.FireflyOperator;
 import org.seage.metaheuristic.fireflies.FireflySearch;
 import org.seage.metaheuristic.fireflies.Solution;
-import org.seage.metaheuristic.particles.Particle;
-import org.seage.metaheuristic.particles.ParticleSwarm;
-import org.seage.problem.rosenbrock.sannealing.RosenbrockSolution;
 
 /**
  *

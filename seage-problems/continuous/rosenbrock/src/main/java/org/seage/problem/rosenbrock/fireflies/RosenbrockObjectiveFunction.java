@@ -24,13 +24,8 @@
  *     - Initial implementation
  */
 package org.seage.problem.rosenbrock.fireflies;
-import org.seage.problem.rosenbrock.fireflies.*;
-
-import org.seage.metaheuristic.fireflies.*;
 import org.seage.metaheuristic.fireflies.ObjectiveFunction;
-
-import org.seage.metaheuristic.particles.IObjectiveFunction;
-import org.seage.metaheuristic.particles.Particle;
+import org.seage.metaheuristic.fireflies.Solution;
 
 /**
  *

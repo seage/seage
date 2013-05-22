@@ -26,9 +26,8 @@
 package org.seage.problem.rosenbrock.fireflies;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import org.seage.metaheuristic.fireflies.*;
+import org.seage.metaheuristic.fireflies.FireflyOperator;
+import org.seage.metaheuristic.fireflies.Solution;
 
 /**
  *
