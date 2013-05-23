@@ -1,7 +1,6 @@
 package org.seage.experimenter.singlealgorithm.evolution;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.seage.aal.algorithm.IAlgorithmAdapter;
@@ -10,6 +9,8 @@ import org.seage.aal.data.AlgorithmParams;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.data.DataNode;
 import org.seage.experimenter.IExperimenter;
+import org.seage.metaheuristic.genetics.GeneticSearch;
+import org.seage.metaheuristic.genetics.RealGeneticOperator;
 
 public class SingleAlgorithmEvolutionExperimenter implements IExperimenter
 {
@@ -17,7 +18,7 @@ public class SingleAlgorithmEvolutionExperimenter implements IExperimenter
 
 	public SingleAlgorithmEvolutionExperimenter()
 	{
-		_geneticAlgorithm = new GeneticAlgorithmAdapter(new ExperimentGeneticOperator(), new ExperimentEvaluator(), false, "");
+		_geneticAlgorithm = new GeneticAlgorithmAdapter(new ExperimentGeneticOperator(null), new ExperimentEvaluator(), false, "");
 	}
 	
 	@Override
@@ -63,6 +64,22 @@ public class SingleAlgorithmEvolutionExperimenter implements IExperimenter
 //		_geneticAlgorithm.solutionsFromPhenotype(configs);
 //		_geneticAlgorithm.startSearching(params);
 //		dest = _geneticAlgorithm.solutionsToPhenotype();
+//		------------
+		int dim = 10;
+		RealGeneticOperator.Limit[] limits = new RealGeneticOperator.Limit[dim];
+		RealGeneticOperator operator = new RealGeneticOperator(limits);
+
+		for (int i = 0; i < dim; i++)
+			limits[i] = operator.new Limit(-10, 10);
+
+		GeneticSearch<Double> gs = new GeneticSearch<Double>(operator, new ExperimentEvaluator());
+		gs.setCrossLengthPct(0.3);
+		gs.setEliteSubjectsPct(0.2);
+		gs.setIterationToGo(200000);
+		gs.setMutateChromosomeLengthPct(0.1);
+		gs.setMutatePopulationPct(0.0);			
+		gs.setPopulationCount(100);
+		gs.setRandomSubjectsPct(0.01);
 	}
 
 	

@@ -34,7 +34,7 @@ import org.seage.problem.tsp.City;
  *
  * @author Richard Malek
  */
-public class TspEvaluator extends SubjectEvaluator
+public class TspEvaluator extends SubjectEvaluator<Integer>
 {
     private City[] _cities;
 	public TspEvaluator(City[] cities)
@@ -43,12 +43,12 @@ public class TspEvaluator extends SubjectEvaluator
 	}
     
 	@Override
-    public double[] evaluate(Subject solution) throws Exception
+    public double[] evaluate(Subject<Integer> solution) throws Exception
     {
-        return evaluate(solution.getChromosome().getGeneArray());
+        return evaluate(solution.getChromosome().getGenes());
     }
 
-    private double[] evaluate(Object[] phenotypeSubject) throws Exception
+    private double[] evaluate(Integer[] phenotypeSubject) throws Exception
     {
         double tourLength = 0;
         int numCities = _cities.length;

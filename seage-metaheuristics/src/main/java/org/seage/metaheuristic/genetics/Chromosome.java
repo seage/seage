@@ -54,6 +54,11 @@ public class Chromosome<GeneType> implements Serializable
 	{
 		return _genes[index];
 	}
+	
+	public GeneType[] getGenes()
+	{
+		return _genes;
+	}
 
 	public void setGene(int index, GeneType gene)
 	{

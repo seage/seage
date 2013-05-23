@@ -26,6 +26,8 @@
 package org.seage.problem.tsp.genetics;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.GeneticSearch;
@@ -58,7 +60,7 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticSearch
     {
         City[] cities = CityProvider.readCities(new FileInputStream(path));
         
-        GeneticSearch gs = new GeneticSearch(new TspGeneticOperator(), new TspEvaluator(cities));     
+        GeneticSearch<Integer> gs = new GeneticSearch<Integer>(new TspGeneticOperator(), new TspEvaluator(cities));     
         gs.addGeneticSearchListener(this);
         gs.setEliteSubjectsPct(0.05);
         gs.setMutatePopulationPct(0.0);
@@ -70,26 +72,24 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticSearch
         gs.startSearching(generateInitialSubjects(cities, 100));
     }
 
-    private Subject[] generateInitialSubjects(City[] cities, int count) throws Exception
+    private List<Subject<Integer>> generateInitialSubjects(City[] cities, int count) throws Exception
     {
         int numTours = count;
         int tourLenght = cities.length;
-        Integer[][] tours = new Integer[numTours][tourLenght];
-        Subject[] result = new Subject[numTours];
+        //Integer[][] tours = new Integer[numTours][tourLenght];
+        ArrayList<Subject<Integer>> result = new ArrayList<Subject<Integer>>(numTours);
 
-        for(int k=0;k<tours.length;k++)
-//            if(k<tours.length/20)
-//                tours[k] = TourProvider.createGreedyTour(cities, 1);
-//            else
-                tours[k] = TourProvider.createRandomTour(cities);
+        for(int k=0;k<tourLenght;k++)
+        	result.add( new Subject<Integer>(TourProvider.createRandomTour(cities)));
+                //tours[k] = TourProvider.createRandomTour(cities);
 
-        for(int k=0;k<tours.length;k++)
-        {
-            Subject s = new Subject(new Genome(1, tourLenght));
-            s.getChromosome().setGeneArray(tours[k]);
-
-            result[k] = s;
-        }
+//        for(int k=0;k<tours.length;k++)
+//        {
+//            Subject s = new Subject(new Genome(1, tourLenght));
+//            s.getChromosome().setGeneArray(tours[k]);
+//
+//            result[k] = s;
+//        }
         return result;
     }
 

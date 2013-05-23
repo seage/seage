@@ -15,6 +15,7 @@ import com.rapidminer.RapidMiner;
 import com.rapidminer.RepositoryProcessLocation;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
+import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.set.SimpleExampleSet;
 import com.rapidminer.operator.IOContainer;
 import com.rapidminer.operator.IOObjectCollection;
@@ -49,8 +50,8 @@ public class FeedbackConfigurator extends Configurator
 	@Override
 	public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, DataNode instanceInfo, int numConfigs) throws Exception
 	{		
-		SimpleExampleSet exampleSetParams = null;
-		for(SimpleExampleSet c : _feedbackParams.getObjects())
+		ExampleSet exampleSetParams = null;
+		for(ExampleSet c : _feedbackParams.getObjects())
         {
         	if(c.getAttributes().getId().getName().equals(algID))
         	{	
@@ -75,7 +76,7 @@ public class FeedbackConfigurator extends Configurator
         }
 
         //System.out.println(instanceInfo.getValue("path"));
-        int feedbackConfigs = exampleSetParams.getExampleTable().size();
+        int feedbackConfigs = exampleSetParams.size();//.getExampleTable().size();
         int realNumConfigs = numConfigs < feedbackConfigs ? numConfigs : feedbackConfigs; 
         for (int i = 0; i < realNumConfigs; i++)
         {        	
