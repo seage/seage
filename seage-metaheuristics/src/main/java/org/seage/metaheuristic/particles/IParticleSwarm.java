@@ -28,19 +28,31 @@ package org.seage.metaheuristic.particles;
 /**
  * @author Jan Zmatlik
  */
-public interface IParticleSwarm {
-        long getMaximalIterationCount();
-        void setMaximalIterationCount(long maximalIterationCount);
+public interface IParticleSwarm
+{
+	
 
-        double getMaximalVelocity();
-        void setMaximalVelocity(double maximalVelocity);
-        double getMinimalVelocity();
-        void setMinimalVelocity(double minimalVelocity);
+	void startSearching(Particle[] particles);
 
-        void startSearching(Particle[] particles);
-        void stopSearching();
+	void stopSearching();
 
-        Particle getBestParticle();
-        public Particle[] getParticles();
-        public void setParticles(Particle[] particles);
+	Particle getBestParticle();
+
+	public Particle[] getParticles();
+
+	public void setParticles(Particle[] particles);
+	
+	long getCurrentIteration();
+	
+	long getMaximalIterationCount();
+
+	void setMaximalIterationCount(long maximalIterationCount);
+
+	double getMaximalVelocity();
+
+	void setMaximalVectorValue(double maximalVelocity);
+
+	double getMinimalVelocity();
+
+	void setMinimalVectorValue(double minimalVelocity);
 }

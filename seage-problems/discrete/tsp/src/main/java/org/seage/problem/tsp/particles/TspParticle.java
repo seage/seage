@@ -35,7 +35,7 @@ public abstract class TspParticle extends Particle
 {
     public TspParticle(int dimension)
     {
-        super( dimension );
+        super( dimension );        
     }
 
     public Integer[] getTour()

@@ -65,6 +65,8 @@ public class ParticleSwarm implements IParticleSwarm
 
 	private boolean _isRunning = false;
 
+	private long _currentIteration;
+
 	/**
 	 * Constructor
 	 * 
@@ -85,7 +87,7 @@ public class ParticleSwarm implements IParticleSwarm
 		_isRunning = true;
 
 		// Initial number of iteration
-		long iterationCount = 0;
+		_currentIteration = 0;
 
 		_globalMinimum = _localMinimum = findMinimum(particles);
 
@@ -95,10 +97,10 @@ public class ParticleSwarm implements IParticleSwarm
 		_particles = particles;
 
 		//long globalFoundIteration = 0;
-		while (_maximalIterationCount > iterationCount && !_stopSearching)
+		while (_maximalIterationCount > _currentIteration && !_stopSearching)
 		{
 			_listenerProvider.fireNewIterationStarted();
-			iterationCount++;
+			_currentIteration++;
 
 			for (Particle particle : particles)
 			{
@@ -110,7 +112,8 @@ public class ParticleSwarm implements IParticleSwarm
 				_velocityManager.calculateNewVelocityAndPosition(particle, _localMinimum, _globalMinimum, _alpha, _beta, _inertia);
 
 				// Check and set minimal and maximal velocity
-				checkVelocityBounds(particle);
+				//checkVelocityBounds(particle);
+				checkValueBounds(particle);
 
 				// Evaluate particle by objective function
 				_objectiveFunction.setObjectiveValue(particle);
@@ -149,6 +152,17 @@ public class ParticleSwarm implements IParticleSwarm
 				particle.getVelocity()[i] = _minimalVelocity;
 			else if (particle.getVelocity()[i] > _maximalVelocity)
 				particle.getVelocity()[i] = _maximalVelocity;
+		}
+	}
+	
+	private void checkValueBounds(Particle particle)
+	{
+		for (int i = 0; i < particle.getCoords().length; i++)
+		{
+			if (particle.getCoords()[i] < _minimalVelocity)
+				particle.getCoords()[i] = _minimalVelocity;
+			else if (particle.getCoords()[i] > _maximalVelocity)
+				particle.getCoords()[i] = _maximalVelocity;
 		}
 	}
 
@@ -200,7 +214,7 @@ public class ParticleSwarm implements IParticleSwarm
 		return _maximalVelocity;
 	}
 
-	public void setMaximalVelocity(double maximalVelocity)
+	public void setMaximalVectorValue(double maximalVelocity)
 	{
 		_maximalVelocity = maximalVelocity;
 	}
@@ -220,7 +234,7 @@ public class ParticleSwarm implements IParticleSwarm
 		return _minimalVelocity;
 	}
 
-	public void setMinimalVelocity(double minimalVelocity)
+	public void setMinimalVectorValue(double minimalVelocity)
 	{
 		this._minimalVelocity = minimalVelocity;
 	}
@@ -263,6 +277,11 @@ public class ParticleSwarm implements IParticleSwarm
 	public boolean isRunning()
 	{
 		return _isRunning;
+	}
+	
+	public long getCurrentIteration()
+	{
+		return _currentIteration;
 	}
 
 }

@@ -64,8 +64,8 @@ public class QapParticleSwarmTest implements IParticleSwarmListener
         ParticleSwarm pso = new ParticleSwarm( new QapObjectiveFunction(_facilityLocation) );
 
         pso.setMaximalIterationCount( 1500 );
-        pso.setMaximalVelocity(0.9);
-        pso.setMinimalVelocity(-0.9);
+        pso.setMaximalVectorValue(0.9);
+        pso.setMinimalVectorValue(-0.9);
         pso.setAlpha(0.9);
         pso.setBeta(0.9);
 

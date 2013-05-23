@@ -127,8 +127,8 @@ public abstract class ParticleSwarmAdapter  extends AlgorithmAdapterImpl impleme
         _params.putValue("id", "ParticleSwarm");
         DataNode p = params.getDataNode("Parameters");
         _particleSwarm.setMaximalIterationCount( p.getValueLong("maxIterationCount") );
-        _particleSwarm.setMaximalVelocity( p.getValueDouble("maxVelocity") );
-        _particleSwarm.setMinimalVelocity( p.getValueDouble("minVelocity") );
+        _particleSwarm.setMaximalVectorValue( p.getValueDouble("maxVelocity") );
+        _particleSwarm.setMinimalVectorValue( p.getValueDouble("minVelocity") );
         _particleSwarm.setInertia( p.getValueDouble("inertia") );
         _particleSwarm.setAlpha( p.getValueDouble("alpha") );
         _particleSwarm.setBeta( p.getValueDouble("beta") );

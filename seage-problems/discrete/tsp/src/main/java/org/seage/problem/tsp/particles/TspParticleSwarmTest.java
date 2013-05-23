@@ -41,7 +41,8 @@ import org.seage.problem.tsp.City;
 public class TspParticleSwarmTest implements IParticleSwarmListener
 {
     private City[] _cities;
-    private static String _dataPath = "data/eil101.tsp";
+    //private static String _dataPath = "data/eil51.tsp";
+    private static String _dataPath = "data/berlin52.tsp";
 
     public static void main(String[] args)
     {
@@ -66,18 +67,32 @@ public class TspParticleSwarmTest implements IParticleSwarmListener
 
         ParticleSwarm pso = new ParticleSwarm( new TspObjectiveFunction(_cities) );
 
-        pso.setMaximalIterationCount( 1500 );
-        pso.setMaximalVelocity(0.9);
-        pso.setMinimalVelocity(-0.9);
-        pso.setAlpha(0.9);
-        pso.setBeta(0.9);
+        pso.setMaximalIterationCount( 10000 );
+//        pso.setMaximalVelocity(10);
+//        pso.setMinimalVelocity(-10);
+//        pso.setInertia( 0.9 );
+//        pso.setAlpha(1.193);
+//        pso.setBeta(0.721);
+        
+        pso.setMinimalVectorValue(-10 );
+        pso.setMaximalVectorValue( 10 );
+        
+        pso.setInertia( 0.721 );
+        pso.setAlpha(0.5);
+        pso.setBeta(0.2);
 
         pso.addParticleSwarmOptimizationListener( this );
-        pso.startSearching( new Particle[] {new TspSortedParticle(_cities.length), new TspGreedyParticle(_cities.length)} );
+        
+        Particle[] particles = new Particle[10000];
+        for(int i=0;i<particles.length;i++)
+        	particles[i] = new TspRandomParticle(_cities.length);
+        pso.startSearching( particles );
     }
 
     public void newBestSolutionFound(ParticleSwarmEvent e) {
-       // System.out.println("Best: " + e.getParticleSwarmOptimization().getBestSolution().getObjectiveValue());
+       
+    	String s = String.format("Best (%d): %f", e.getParticleSwarm().getCurrentIteration(), e.getParticleSwarm().getBestParticle().getEvaluation()); 
+    	System.out.println(s);
     }
 
     public void newIterationStarted(ParticleSwarmEvent e) {

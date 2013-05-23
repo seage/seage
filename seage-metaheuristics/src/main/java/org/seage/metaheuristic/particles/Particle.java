@@ -35,9 +35,9 @@ import java.util.Comparator;
 public class Particle implements Cloneable
 {
 
-	private double[] _coords;
+	protected double[] _coords;
 
-    private double[] _velocity;
+	protected double[] _velocity;
 
     private double _evaluation = Double.MAX_VALUE;
 

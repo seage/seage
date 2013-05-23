@@ -25,19 +25,26 @@
  */
 package org.seage.problem.rosenbrock.particles;
 
+import org.seage.metaheuristic.particles.IParticleSwarmListener;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.metaheuristic.particles.ParticleSwarm;
+import org.seage.metaheuristic.particles.ParticleSwarmEvent;
 
 /**
  *
  * @author Jan Zmatlik
  */
-public class RosenbrockTest
+public class RosenbrockTest implements IParticleSwarmListener
 {
     public static void main(String[] args)
     {
-        int dimension = 80;
-        int numberOfParticles = 100;
+    	new RosenbrockTest().start();
+    }
+    
+    public void start()
+    {
+        int dimension = 30;
+        int numberOfParticles = 1000;
         //int maximalVelocity = 1.0d;
 
         RosenbrockObjectiveFunction objFunction = new RosenbrockObjectiveFunction();
@@ -59,13 +66,25 @@ public class RosenbrockTest
         }
 
         ParticleSwarm pso = new ParticleSwarm( objFunction );
-        pso.setMaximalIterationCount( 1000 );
-        pso.setMaximalVelocity( 0.9 );
-        pso.setMinimalVelocity( -0.9 );
-        pso.setInertia( 0.9 );
-        pso.setAlpha(0.2);
-        pso.setBeta(0.5);
+        pso.addParticleSwarmOptimizationListener( this );
+        pso.setMaximalIterationCount( 10000 );
+//        pso.setMaximalVelocity( 10 );
+//        pso.setMinimalVelocity( -10 );
+//        pso.setInertia( 0.92 );
+//        pso.setAlpha(0.2);
+//        pso.setBeta(0.5);
+        
+        pso.setMaximalVectorValue( 10 );
+        pso.setMinimalVectorValue( -10 );
+        pso.setInertia( 0.721 );
+        pso.setAlpha(1.193);
+        pso.setBeta(1.193);
+        
         pso.startSearching( particles );
+        
+        for(int i=0;i<pso.getBestParticle().getCoords().length;i++)
+        	System.out.print(pso.getBestParticle().getCoords()[i]+" ");
+        System.out.println();
     }
 
     private static Particle[] generateParticles(int count, int dimension)
@@ -76,4 +95,19 @@ public class RosenbrockTest
 
         return particles;
     }
+    
+    public void newBestSolutionFound(ParticleSwarmEvent e) {
+        System.out.println("Best: " + e.getParticleSwarm().getBestParticle().getEvaluation());
+     }
+
+     public void newIterationStarted(ParticleSwarmEvent e) {
+     }
+
+     public void particleSwarmStarted(ParticleSwarmEvent e) {
+         System.out.println("Started");
+     }
+
+     public void particleSwarmStopped(ParticleSwarmEvent e) {
+         System.out.println("Stopped");
+     }
 }
