@@ -46,24 +46,37 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     {
         super();
     }
-
+//    {            
+//        @Override
+//        public double[] evaluate(Subject<?> solution) throws Exception
+//        {
+//        	double val = 0;
+//        	for(int i=0;i<solution.getChromosome().getGenes().length-1;i++)
+//        	{
+//        		val += Math.abs((Integer)solution.getChromosome().getGene(i) - (Integer)solution.getChromosome().getGene(i+1));
+//        	}
+//        	
+//            return new double[]{val};
+//        }
+//    }
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new GeneticAlgorithmAdapter(new GeneticOperator(), new SubjectEvaluator()
-        {            
-            @Override
-            public double[] evaluate(Subject solution) throws Exception
-            {
-            	double val = 0;
-            	for(int i=0;i<solution.getChromosome().getGeneArray().length-1;i++)
-            	{
-            		val += Math.abs((Integer)solution.getChromosome().getGene(i).getValue() - (Integer)solution.getChromosome().getGene(i+1).getValue());
-            	}
-            	
-                return new double[]{val};
-            }
-        }, true, "");    
+    	SubjectEvaluator<Integer> se = new SubjectEvaluator<Integer>()
+		{			
+			@Override
+			protected double[] evaluate(Subject<Integer> solution) throws Exception
+			{
+				double val = 0;
+	        	for(int i=0;i<solution.getChromosome().getGenes().length-1;i++)
+	        	{
+	        		val += Math.abs(solution.getChromosome().getGene(i) - solution.getChromosome().getGene(i+1));
+	        	}
+	        	
+	            return new double[]{val};
+			}
+		};
+        _algorithm = new GeneticAlgorithmAdapter<Integer>(new GeneticOperator<Integer>(), se, true, "");
         
         _algParams = new AlgorithmParams("GeneticAlgorithmTest");
         _algParams.putValue("problemID", "GeneticAlgorithmTest");

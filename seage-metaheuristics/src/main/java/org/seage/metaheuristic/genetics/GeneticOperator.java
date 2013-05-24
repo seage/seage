@@ -53,7 +53,7 @@ public class GeneticOperator<GeneType>
 	// / <param name="population">Aktualni populace - podle jejiz parametru se
 	// vyber provadi</param>
 	// / <returns>Vraci indexy vybranych subjectu</returns>
-	public int[] select(List<Subject<GeneType>> subjects)
+	public int[] select(ArrayList<Subject<GeneType>> subjects)
 	{
 		int count = subjects.size();
 		int[] result = new int[2];
@@ -105,7 +105,7 @@ public class GeneticOperator<GeneType>
 	// / <param name="parent2">Druhy rodic</param>
 	// / <returns>Vraci mnozinu potomku</returns>
 	public List<Subject<GeneType>> crossOver(Subject<GeneType> parent1, Subject<GeneType> parent2) throws Exception
-	{
+	{		
 		int length = parent1.getChromosome().getLength();
 		int ix = _random.nextInt(length);
 		int crossLength = (int) (length * _random.nextDouble() * _crossLengthPct);
@@ -123,10 +123,9 @@ public class GeneticOperator<GeneType>
 			child1.getChromosome().setGene(i, x2);
 			child2.getChromosome().setGene(i, x1);
 		}
-		ArrayList<Subject<GeneType>> result = new ArrayList<Subject<GeneType>>();
-		result.add(child1);
-		result.add(child2);
 		
+		List<Subject<GeneType>> result = new ArrayList<Subject<GeneType>>();
+		result.add(child1);result.add(child2);
 		return result;
 	}
 

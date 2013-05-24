@@ -36,10 +36,6 @@ import java.util.List;
  */
 public class TspGeneticOperator extends GeneticOperator<Integer>
 {
-	public TspGeneticOperator()
-	{
-	}
-
 	public List<Subject<Integer>> crossOver2(Subject<Integer> parent1, Subject<Integer> parent2) throws Exception
 	{
 		int length = parent1.getChromosome().getLength();
@@ -155,9 +151,9 @@ public class TspGeneticOperator extends GeneticOperator<Integer>
 			child1Chrom.swapGenes(i, y1);
 			child1Chrom.swapGenes(i, y2);
 		}
-		ArrayList<Subject<Integer>> result = new ArrayList<Subject<Integer>>();
-		result.add(child1);
-		result.add(child2);
+
+		List<Subject<Integer>> result = new ArrayList<Subject<Integer>>();
+		result.add(child1); result.add(child2);
 		return result;
 
 	}

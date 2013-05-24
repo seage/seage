@@ -42,7 +42,7 @@ import org.seage.problem.tsp.TourProvider;
  *
  * @author Richard Malek
  */
-public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticSearchEvent>
+public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticSearchEvent<Integer>>
 {
     public static void main(String[] args)
     {
@@ -93,24 +93,24 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticSearch
         return result;
     }
 
-    public void algorithmStarted(GeneticSearchEvent e) {
+    public void algorithmStarted(GeneticSearchEvent<Integer> e) {
         System.out.println("Genetic Algorithm for TSP started.");
     }
 
-    public void algorithmStopped(GeneticSearchEvent e) {
+    public void algorithmStopped(GeneticSearchEvent<Integer> e) {
         System.out.println("Genetic Algorithm for TSP stopped.");
     }
 
-    public void newBestSolutionFound(GeneticSearchEvent e) {
+    public void newBestSolutionFound(GeneticSearchEvent<Integer> e) {
         System.out.println("New best: " + e.getGeneticSearch().getBestSubject().getFitness()[0]);
     }
 
-    public void noChangeInValueIterationMade(GeneticSearchEvent e) {
+    public void noChangeInValueIterationMade(GeneticSearchEvent<Integer> e) {
         
     }
 
 	@Override
-	public void iterationPerformed(GeneticSearchEvent e)
+	public void iterationPerformed(GeneticSearchEvent<Integer> e)
 	{
 		
 	}

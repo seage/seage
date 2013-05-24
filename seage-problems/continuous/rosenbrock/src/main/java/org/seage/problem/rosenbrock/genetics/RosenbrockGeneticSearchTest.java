@@ -30,39 +30,39 @@ public class RosenbrockGeneticSearchTest
 				limits[i] = operator.new Limit(-10, 10);
 
 			GeneticSearch<Double> gs = new GeneticSearch<Double>(operator, new RosenbrockEvaluator());
-			gs.addGeneticSearchListener(new IAlgorithmListener<GeneticSearchEvent>()
+			gs.addGeneticSearchListener(new IAlgorithmListener<GeneticSearchEvent<Double>>()
 			{
 				
 				@Override
-				public void noChangeInValueIterationMade(GeneticSearchEvent e)
+				public void noChangeInValueIterationMade(GeneticSearchEvent<Double> e)
 				{
 					// TODO Auto-generated method stub
 					
 				}
 				
 				@Override
-				public void newBestSolutionFound(GeneticSearchEvent e)
+				public void newBestSolutionFound(GeneticSearchEvent<Double> e)
 				{
 					System.out.println(e.getGeneticSearch().getBestSubject().getObjectiveValue()[0]);
 					
 				}
 				
 				@Override
-				public void iterationPerformed(GeneticSearchEvent e)
+				public void iterationPerformed(GeneticSearchEvent<Double> e)
 				{
 					// TODO Auto-generated method stub
 					
 				}
 				
 				@Override
-				public void algorithmStopped(GeneticSearchEvent e)
+				public void algorithmStopped(GeneticSearchEvent<Double> e)
 				{
 					// TODO Auto-generated method stub
 					
 				}
 				
 				@Override
-				public void algorithmStarted(GeneticSearchEvent e)
+				public void algorithmStarted(GeneticSearchEvent<Double> e)
 				{
 					// TODO Auto-generated method stub
 					

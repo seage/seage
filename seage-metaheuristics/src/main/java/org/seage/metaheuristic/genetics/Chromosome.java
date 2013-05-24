@@ -37,6 +37,7 @@ public class Chromosome<GeneType> implements Serializable
 	//public Gene[] m_gene;
 	private GeneType[] _genes;
 
+	@SuppressWarnings("unused")
 	private Chromosome()
 	{ }
 

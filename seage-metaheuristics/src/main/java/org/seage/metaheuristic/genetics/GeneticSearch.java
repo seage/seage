@@ -35,7 +35,7 @@ import org.seage.metaheuristic.IAlgorithmListener;
  */
 public class GeneticSearch<GeneType>
 {
-	private AlgorithmEventProducer<IAlgorithmListener<GeneticSearchEvent>, GeneticSearchEvent> _eventProducer;
+	private AlgorithmEventProducer<IAlgorithmListener<GeneticSearchEvent<GeneType>>, GeneticSearchEvent<GeneType>> _eventProducer;
 	private int _iterationCount;
 	private int _currentIteration;
 	private int _populationCount;
@@ -57,7 +57,7 @@ public class GeneticSearch<GeneType>
 
 	public GeneticSearch(GeneticOperator<GeneType> operator, SubjectEvaluator<GeneType> evaluator)
 	{
-		_eventProducer = new AlgorithmEventProducer<IAlgorithmListener<GeneticSearchEvent>, GeneticSearchEvent>(new GeneticSearchEvent(this));
+		_eventProducer = new AlgorithmEventProducer<IAlgorithmListener<GeneticSearchEvent<GeneType>>, GeneticSearchEvent<GeneType>>(new GeneticSearchEvent<GeneType>(this));
 
 		_subjectComparator = new SubjectComparator<GeneType>();
 		_operator = operator;
@@ -70,12 +70,12 @@ public class GeneticSearch<GeneType>
 		_keepSearching = _isRunning = false;
 	}
 
-	public void addGeneticSearchListener(IAlgorithmListener<GeneticSearchEvent> listener)
+	public void addGeneticSearchListener(IAlgorithmListener<GeneticSearchEvent<GeneType>> listener)
 	{
 		_eventProducer.addAlgorithmListener(listener);
 	}
 
-	public void removeGeneticSearchListener(IAlgorithmListener<GeneticSearchEvent> listener)
+	public void removeGeneticSearchListener(IAlgorithmListener<GeneticSearchEvent<GeneType>> listener)
 	{
 		_eventProducer.removeGeneticSearchListener(listener);
 	}
@@ -134,7 +134,7 @@ public class GeneticSearch<GeneType>
 		{
 			_currentIteration++;
 
-			_evaluator.evaluateSubjects(_population.getList());
+			_evaluator.evaluateSubjects(_population.getSubjects());
 			_population.sort(_subjectComparator);
 			// _population.removeTwins();
 
@@ -171,7 +171,7 @@ public class GeneticSearch<GeneType>
 				_population.resize(_populationCount);
 
 		}
-		_evaluator.evaluateSubjects(_population.getList());
+		_evaluator.evaluateSubjects(_population.getSubjects());
 		_population.sort(_subjectComparator);
 		_isRunning = false;
 		_eventProducer.fireAlgorithmStopped();
@@ -197,8 +197,8 @@ public class GeneticSearch<GeneType>
 
 	private Population<GeneType> crossover(int numCrossSubject) throws Exception
 	{
-		List<Subject<GeneType>> subjects = _population.getSubjects();
-		Population<GeneType> result = new Population<GeneType>();
+		ArrayList<Subject<GeneType>> subjects = new ArrayList<Subject<GeneType>>(_population.getSubjects());
+		Population<GeneType> resultPopulation = new Population<GeneType>();
 		if (numCrossSubject % 2 == 1)
 			numCrossSubject++;
 		for (int i = 0; i < numCrossSubject / 2; i++)
@@ -210,19 +210,19 @@ public class GeneticSearch<GeneType>
 			{
 				ix = _operator.select(subjects);
 			}
-			List<Subject<GeneType>> children = _operator.crossOver(subjects.get(ix[0]), subjects.get(ix[1]));
+			List<Subject<GeneType>> children = _operator.crossOver(subjects.get(ix[0]), subjects.get(ix[1]));			
 
-			result.addSubject(_operator.mutate(children.get(0)));
-			result.addSubject(_operator.mutate(children.get(1)));
+			resultPopulation.addSubject(_operator.mutate(children.get(0)));
+			resultPopulation.addSubject(_operator.mutate(children.get(1)));
 
 		}
-		return result;
+		return resultPopulation;
 
 	}
 
 	private Population<GeneType> mutate(int numMutateSubject) throws Exception
 	{		
-		List<Subject<GeneType>> subjects = _population.getSubjects();
+		List<Subject<GeneType>> subjects = new ArrayList<Subject<GeneType>>(_population.getSubjects());
 		Population<GeneType> result = new Population<GeneType>();
 
 		for (int i = 1; i < subjects.size(); i++)

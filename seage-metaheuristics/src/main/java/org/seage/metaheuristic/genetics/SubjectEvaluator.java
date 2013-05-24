@@ -34,7 +34,7 @@ public abstract class SubjectEvaluator<GeneType>
 {		
 	protected abstract double[] evaluate(Subject<GeneType> solution) throws Exception;
 	
-	void evaluateSubjects(List<Subject<GeneType>> subjects) throws Exception
+	public void evaluateSubjects(List<Subject<GeneType>> subjects) throws Exception
 	{
 		for (Subject<GeneType> subject : subjects)
 		{			

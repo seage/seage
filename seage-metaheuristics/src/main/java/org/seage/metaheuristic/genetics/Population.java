@@ -116,15 +116,16 @@ class Population<GeneType>
         return getSubjects(_population.size());
     }
 
-    public List<Subject<GeneType>> getSubjects(int numSubjects) throws Exception
+    @SuppressWarnings("unchecked")
+	public List<Subject<GeneType>> getSubjects(int numSubjects) throws Exception
     {
         try
         {
             int length = _population.size();
             if (length > numSubjects)
-                return _population.subList(0,numSubjects);
+                return  _population.subList(0,numSubjects);
             else
-                return _population;
+                return  _population;
         }
         catch (Exception ex)
         {

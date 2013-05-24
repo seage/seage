@@ -28,16 +28,16 @@ package org.seage.metaheuristic.genetics;
 /**
  * @author Richard Malek (original)
  */
-public class GeneticSearchEvent
+public class GeneticSearchEvent<GeneType>
 {
-	private GeneticSearch _algorithm;
+	private GeneticSearch<GeneType> _algorithm;
 	
-	public GeneticSearchEvent(GeneticSearch algorithm)
+	public GeneticSearchEvent(GeneticSearch<GeneType> algorithm)
 	{
 		_algorithm= algorithm;
 	}
 
-	public final GeneticSearch getGeneticSearch()
+	public final GeneticSearch<GeneType> getGeneticSearch()
 	{
 		return _algorithm;
 	}

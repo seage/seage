@@ -15,12 +15,6 @@ public class ExperimentGeneticOperator extends RealGeneticOperator
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public List<Subject<Double>> crossOver0(Subject<Double> parent1, Subject<Double> parent2) throws Exception
-	{
-		// TODO Auto-generated method stub
-		return super.crossOver0(parent1, parent2);
-	}
 
 	@Override
 	public Subject<Double> mutate(Subject<Double> subject) throws Exception

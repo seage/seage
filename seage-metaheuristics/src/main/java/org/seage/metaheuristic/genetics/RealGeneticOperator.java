@@ -27,13 +27,15 @@ public class RealGeneticOperator extends GeneticOperator<Double>	// private doub
 	}
 
 	//@Override
-	public List<Subject<Double>> crossOver0(Subject<Double> parent1, Subject<Double> parent2) throws Exception
+	public Subject<Double>[] crossOver0(Subject<Double> parent1, Subject<Double> parent2) throws Exception
 	{
 		double crossFactor = _crossLengthPct /100.0;
 		
-		ArrayList<Subject<Double>> children = new ArrayList<Subject<Double>>(2);
-		children.add(parent1.clone());
-		children.add(parent2.clone());
+		@SuppressWarnings("unchecked")
+		Subject<Double>[] children = (Subject<Double>[])new Object[2];
+		
+		children[0] = parent1.clone();
+		children[1] = parent2.clone();
 		
 		for(Subject<Double> s : children)
 		{
@@ -49,7 +51,7 @@ public class RealGeneticOperator extends GeneticOperator<Double>	// private doub
 		return children;
 	}
 
-	@Override
+	//@Override
 	public Subject<Double> mutate(Subject<Double>  subject) throws Exception
 	{
 		double mutateFactor = _mutateLengthPct /100.0;
@@ -66,7 +68,7 @@ public class RealGeneticOperator extends GeneticOperator<Double>	// private doub
 	}
 
 	@Override
-	public Subject<Double>  randomize(Subject<Double>  subject) throws Exception
+	public Subject<Double> randomize(Subject<Double>  subject) throws Exception
 	{
 		for(int i=0;i<subject.getChromosome().getLength();i++)
 		{			
