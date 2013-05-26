@@ -25,7 +25,6 @@
  */
 package org.seage.aal.algorithm.genetics;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,21 +39,24 @@ import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
-import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.metaheuristic.genetics.GeneticOperator;
 import org.seage.metaheuristic.genetics.GeneticSearch;
 import org.seage.metaheuristic.genetics.GeneticSearchEvent;
-import org.seage.metaheuristic.genetics.Genome;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectComparator;
+import org.seage.metaheuristic.genetics.SubjectEvaluator;
 
 /**
  * GeneticSearchAdapter class
  */
-@AlgorithmParameters({ @Parameter(name = "crossLengthPct", min = 0, max = 100, init = 10), @Parameter(name = "eliteSubjectPct", min = 0, max = 100, init = 10),
-		@Parameter(name = "iterationCount", min = 100, max = 100000, init = 100), @Parameter(name = "mutateLengthPct", min = 0, max = 100, init = 10),
-		@Parameter(name = "mutateSubjectPct", min = 0, max = 100, init = 10), @Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),
-		@Parameter(name = "randomSubjectPct", min = 0, max = 100, init = 10) })
+@AlgorithmParameters({ 
+	@Parameter(name = "crossLengthPct", min = 0, max = 100, init = 10), 
+	@Parameter(name = "eliteSubjectPct", min = 0, max = 100, init = 10),
+	@Parameter(name = "iterationCount", min = 100, max = 100000, init = 100), 
+	@Parameter(name = "mutateLengthPct", min = 0, max = 100, init = 10),
+	@Parameter(name = "mutateSubjectPct", min = 0, max = 100, init = 10), 
+	@Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),
+	@Parameter(name = "randomSubjectPct", min = 0, max = 100, init = 10) })
 public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 {
 
@@ -104,8 +106,6 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 
 		_reporter = new AlgorithmReporter(_searchID);
 		_reporter.putParameters(_params);
-
-		setBestEverSolution();
 
 		_geneticSearch.startSearching(_solutions);
 
@@ -158,6 +158,7 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 
 	public AlgorithmReport getReport() throws Exception
 	{
+		setBestEverSolution();
 		int num = _solutions.size();// > 10 ? 10 : solutions.length;
 		double avg = 0;
 		for (int i = 0; i < num; i++)
@@ -232,13 +233,15 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 		{
 			try
 			{
-				Subject<GeneType> subject = e.getGeneticSearch().getBestSubject(); // e.getGeneticSearch().getSubjects().length
-																					// -
-																					// 1
-				_bestEverSolution = e.getGeneticSearch().getBestSubject().clone();
-				_reporter.putNewSolution(System.currentTimeMillis(), e.getGeneticSearch().getCurrentIteration(), subject.getObjectiveValue()[0], subject.toString());
+				GeneticSearch<GeneType> gs = e.getGeneticSearch();
+				Subject<GeneType> subject = gs.getBestSubject();
+				if(_statNumNewSol==0)
+					_statInitObjVal = subject.getObjectiveValue()[0];
+				 
+				_bestEverSolution = gs.getBestSubject().clone();
+				_reporter.putNewSolution(System.currentTimeMillis(), gs.getCurrentIteration(), subject.getObjectiveValue()[0], subject.toString());
 				_statNumNewSol++;
-				_statLastImprovingIteration = e.getGeneticSearch().getCurrentIteration();
+				_statLastImprovingIteration = gs.getCurrentIteration();
 
 			}
 			catch (Exception ex)

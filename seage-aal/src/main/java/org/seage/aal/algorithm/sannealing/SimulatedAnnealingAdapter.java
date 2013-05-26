@@ -130,8 +130,7 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl
 		@Override
 		public void algorithmStarted(SimulatedAnnealingEvent e)
 		{
-			_algorithmStarted = true;
-	        _initObjectiveValue = e.getSimulatedAnnealing().getCurrentSolution().getObjectiveValue();
+			_algorithmStarted = true;	        
 		}
 
 		@Override
@@ -148,6 +147,10 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl
 	            Solution s = e.getSimulatedAnnealing().getBestSolution();
 	
 	            _reporter.putNewSolution(System.currentTimeMillis(), e.getSimulatedAnnealing().getCurrentIteration(), s.getObjectiveValue(), s.toString());
+	            
+	            if(_numberOfNewSolutions==0)
+	            	_initObjectiveValue = s.getObjectiveValue();
+	            
 	            _numberOfNewSolutions++;
 	            _lastImprovingIteration = e.getSimulatedAnnealing().getCurrentIteration();
 	        }

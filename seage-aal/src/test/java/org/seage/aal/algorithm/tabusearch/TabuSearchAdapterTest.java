@@ -82,7 +82,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
         
         DataNode params = new DataNode("Parameters");
         params.putValue("numIterDivers", 1);
-        params.putValue("numIteration", 1);
+        params.putValue("numIteration", 3);
         params.putValue("numSolutions", 1);
         params.putValue("tabuListLength", 1);
         

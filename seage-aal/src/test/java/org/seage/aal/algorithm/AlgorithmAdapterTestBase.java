@@ -41,7 +41,7 @@ public abstract class AlgorithmAdapterTestBase {
     protected AlgorithmReport _algReport;
     
     protected final int NUM_SOLUTIONS = 100;
-    protected final int SOLUTION_LENGTH=100;
+    protected final int SOLUTION_LENGTH=100;  
 
     public abstract void testPhenotype() throws Exception;
 

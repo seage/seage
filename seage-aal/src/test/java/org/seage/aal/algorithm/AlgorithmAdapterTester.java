@@ -147,13 +147,14 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
 			Assert.assertEquals(_algParams.getDataNode("Parameters").getValue(attName), _algReport.getDataNode("Parameters").getValue(attName));
 		
 		DataNode stats = _algReport.getDataNode("Statistics");
-		Assert.assertTrue(stats.getValueInt("numberOfIter") > 0);
+		Assert.assertTrue(stats.getValueInt("numberOfIter") > 1);
 		Assert.assertTrue(stats.getValueDouble("initObjVal") > 0);
 		Assert.assertTrue(stats.getValueInt("avgObjVal") > 0);
 		Assert.assertTrue(stats.getValueInt("bestObjVal") > 0);
 		Assert.assertFalse(stats.getValueInt("initObjVal") < stats.getValueInt("bestObjVal"));
-		Assert.assertTrue(stats.getValueInt("lastIterNumberNewSol") == 0 || stats.getValueInt("bestObjVal")< stats.getValueDouble("initObjVal") );
+		Assert.assertTrue((stats.getValueInt("initObjVal") != stats.getValueInt("bestObjVal")) || (stats.getValueInt("numberOfNewSolutions") == 1));
+		Assert.assertTrue(stats.getValueInt("lastIterNumberNewSol") < 2 || stats.getValueInt("bestObjVal")< stats.getValueDouble("initObjVal") );
 		Assert.assertTrue(stats.getValueInt("numberOfNewSolutions") > 0 || stats.getValueInt("lastIterNumberNewSol") == 0);
-		Assert.assertTrue(stats.getValueInt("lastIterNumberNewSol") > 0 || stats.getValueInt("numberOfNewSolutions") == 0);
+		Assert.assertTrue(stats.getValueInt("lastIterNumberNewSol") > 1 || stats.getValueInt("numberOfNewSolutions") == 1);
 	}
 }

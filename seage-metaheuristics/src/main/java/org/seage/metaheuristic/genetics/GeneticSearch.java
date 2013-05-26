@@ -141,6 +141,7 @@ public class GeneticSearch<GeneType>
 			if (_bestSubject == null)
 			{
 				_bestSubject = _population.getBestSubject().clone();
+				_eventProducer.fireNewBestSolutionFound();
 			}
 
 			if (_subjectComparator.compare(_population.getBestSubject(), _bestSubject) == -1)

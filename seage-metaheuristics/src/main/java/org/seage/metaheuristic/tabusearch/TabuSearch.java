@@ -166,11 +166,7 @@ public class TabuSearch extends TabuSearchBase
                            AspirationCriteria aspirationCriteria,
                            boolean maximizing) throws Exception
     {
-        this();
-        
-        // Make sure initial solution is evaluated.
-        double[] val = objectiveFunction.evaluate( initialSolution, null );
-        initialSolution.setObjectiveValue( val );
+        this();         
         
         // Set current solution to initial solution 
         // and best solution to a copy of the initial solution.
@@ -228,13 +224,7 @@ public class TabuSearch extends TabuSearchBase
           
         // Check for null solutions
         if( currentSolution == null )
-            throw new NoCurrentSolutionException();
-        
-        if( bestSolution == null )
-        {   
-            bestSolution = (Solution) currentSolution.clone();
-            internalSetBestSolution( bestSolution );
-        }   // end if: null best solution
+            throw new NoCurrentSolutionException();           
         
         // Clear event-queuing flags.
         this.fireNewCurrentSolution      = false;
@@ -242,6 +232,7 @@ public class TabuSearch extends TabuSearchBase
         this.fireUnimprovingMoveMade     = false;
 		this.fireImprovingMoveMade		 = false;       
         this.fireNoChangeInValueMoveMade = false;
+           
         
         // Get list of moves to try
         final Move[] moves = moveManager.getAllMoves( currentSolution );
@@ -806,11 +797,20 @@ public class TabuSearch extends TabuSearchBase
         // This line was moved from below the 'if' statement
         // in v1.0-exp2 so that if an object responding
         // to the tabuSearchStarted event inquired, the
-        // isSolving() method would correctly return true.
+        // isSolving() method would correctly return true.        
         
         // Make sure there are iterations requested.
-        if( iterationsToGo > 0 )
-            fireTabuSearchStarted();
+        fireTabuSearchStarted();
+        
+        // Make sure initial solution is evaluated.
+        double[] val = objectiveFunction.evaluate( currentSolution, null );
+        currentSolution.setObjectiveValue( val );
+        
+        if( bestSolution == null )
+        {   
+            bestSolution = (Solution) currentSolution.clone();
+            fireNewBestSolution( );
+        }   // end if: null best solution
         
         long startTime = System.currentTimeMillis();
         // While not canceled and iterations left to go

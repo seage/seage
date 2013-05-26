@@ -167,10 +167,10 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
 			_statLastImprovingIteration = alg.getCurrentIteration();
 			_averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();
 			
-			if(_initialSolutionValue==Double.MAX_VALUE)
+			if(_statNumNewBestSolutions==0)
 				_initialSolutionValue = _bestSolutionValue;
-			else
-				_statNumNewBestSolutions++;			
+			
+			_statNumNewBestSolutions++;			
 				
 			try
 			{

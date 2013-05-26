@@ -77,7 +77,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
         
         DataNode params = new DataNode("Parameters");
         //params.putValue("numAnts", 0.1);
-        params.putValue("iterationCount", 2);
+        params.putValue("iterationCount", 3);
         params.putValue("alpha", 100);
         params.putValue("beta", 1);
         params.putValue("defaultPheromone", 1);

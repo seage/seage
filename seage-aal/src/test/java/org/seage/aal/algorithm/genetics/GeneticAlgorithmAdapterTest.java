@@ -86,7 +86,7 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
         params.putValue("crossLengthPct", 0);
         params.putValue("mutateLengthPct", 0);
         params.putValue("eliteSubjectPct", 0);
-        params.putValue("iterationCount", 1);
+        params.putValue("iterationCount", 3);
         params.putValue("mutateSubjectPct", 0);
         params.putValue("numSolutions", 1);
         params.putValue("randomSubjectPct", 0); 

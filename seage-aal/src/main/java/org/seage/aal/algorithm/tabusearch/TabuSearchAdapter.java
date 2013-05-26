@@ -25,15 +25,22 @@
  */
 package org.seage.aal.algorithm.tabusearch;
 
-import java.util.*;
-import org.seage.aal.reporter.AlgorithmReporter;
-import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.data.DataNode;
-import org.seage.metaheuristic.tabusearch.*;
+import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
+import org.seage.metaheuristic.tabusearch.MoveManager;
+import org.seage.metaheuristic.tabusearch.ObjectiveFunction;
+import org.seage.metaheuristic.tabusearch.SimpleTabuList;
+import org.seage.metaheuristic.tabusearch.Solution;
+import org.seage.metaheuristic.tabusearch.SolutionComparator;
+import org.seage.metaheuristic.tabusearch.TabuSearch;
+import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
+import org.seage.metaheuristic.tabusearch.TabuSearchListener;
 
 /**
  * TabuSearchAdapter interface.
@@ -47,7 +54,6 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 {
 
 	private TabuSearch _tabuSearch;
-	private ObjectiveFunction _objectiveFunction;
 	private TabuSearchObserver _observer;
 	private int _iterationToGo;
 	private int _tabuListLength;
@@ -55,7 +61,6 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 	protected Solution[] _solutions;
 	protected int _solutionsToExplore;
 	protected Solution _bestEverSolution; // best of all solution
-	private SolutionComparator _solutionComparator;
 	private AlgorithmParams _params;
 
 	private double _statInitObjVal;
@@ -71,12 +76,10 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 		_observer = new TabuSearchObserver();
 		_tabuSearch = new TabuSearch(moveManager, objectiveFunction, false);
 		_tabuSearch.addTabuSearchListener(_observer);
-		_objectiveFunction = objectiveFunction;
 
 		_tabuSearch.setAspirationCriteria(new BestEverAspirationCriteria());
 		_iterationToGo = 0;
 		_tabuListLength = 0;
-		_solutionComparator = new SolutionComparator(false);
 		_searchID = searchID;
 	}
 
@@ -90,51 +93,23 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 		_reporter = new AlgorithmReporter(_searchID);
 		_reporter.putParameters(_params);
 
-		boolean[] mask = new boolean[_solutions.length];
 
-		if (_solutionsToExplore >= _solutions.length)
+		if ( _solutions.length > 1)
 		{
-			_solutionsToExplore = _solutions.length;
-			for (int i = 0; i < _solutionsToExplore; i++)
-			{
-				mask[i] = true;
-			}
-		}
-		else
-		{
-			// Random rnd = new Random();
-			mask[0] = true;
-			for (int i = 1; i < _solutionsToExplore; i++)
-			{
-				mask[i] = true;
-			}
-		}
+			_logger.warning("More than one solutions to solve, used just the first one.");
+		}		
 
 		_statNumNewSol = 0;
-		Solution currentSolution = null;
-		setBestEverSolution(); // z nactenych reseni, ulozi nejlepsi
 
-		for (int i = 0; i < _solutions.length; i++)
-		{
-			if (mask[i] == false)
-			{
-				continue;
-			}
+		_tabuSearch.setCurrentSolution(_solutions[0]);
+		_tabuSearch.setTabuList(new SimpleTabuList(_tabuListLength));
+		_tabuSearch.setIterationsToGo(_iterationToGo);
 
-			currentSolution = _solutions[i];
-			_tabuSearch.setBestSolution(currentSolution);
-			_tabuSearch.setCurrentSolution(currentSolution);
+		_tabuSearch.startSolving();
 
-			_tabuSearch.setTabuList(new SimpleTabuList(_tabuListLength));
+		_solutions[0] = _tabuSearch.getBestSolution();
 
-			_tabuSearch.setIterationsToGo(_iterationToGo);
 
-			_tabuSearch.startSolving();
-
-			_solutions[i] = _tabuSearch.getBestSolution();
-
-		}
-		Arrays.sort(_solutions, _solutionComparator);
 	}
 
 	@Override
@@ -146,7 +121,6 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 		{
 			Thread.sleep(50);
 		}
-
 	}
 
 	@Override
@@ -171,58 +145,9 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 	@Override
 	public AlgorithmReport getReport() throws Exception
 	{
-		int num = _solutions.length;
-		double avg = 0;
-		for (int i = 0; i < num; i++)
-		{
-			avg += _solutions[i].getObjectiveValue()[0];
-		}
-
-		avg /= num;
-
-		// DataNode stats = new DataNode("statistics");
-		// stats.putValue("NumberOfIter", new Integer(_statNumIter));
-		// stats.putValue("NumberOfNewSolutions", new Integer(_statNumNewSol));
-		// stats.putValue("LastIterNumberNewSol", new
-		// Integer(_statLastIterNewSol));
-		// stats.putValue("ObjValDelta", new Double(Math.abs(_statInitObjVal -
-		// _statEndObjVal)));
-		// stats.putValue("MinObjVal", new Double(_statEndObjVal));
-		// stats.putValue("AvgObjVal", new Double(avg));
-
-		_reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);
+		_reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, (_statInitObjVal+_statEndObjVal)/2, _statEndObjVal);
 
 		return _reporter.getReport();
-	}
-
-	@SuppressWarnings("deprecation")
-	private void setBestEverSolution() throws Exception
-	{
-		try
-		{
-			if (_solutions[0].getObjectiveValue() == null)
-			{
-				_solutions[0].setObjectiveValue(_objectiveFunction.evaluate(_solutions[0], null));
-			}
-			_bestEverSolution = (Solution) _solutions[0].clone();
-
-			for (int i = 1; i < _solutions.length; i++)
-			{
-				if (_solutions[i].getObjectiveValue() == null)
-				{
-					_solutions[i].setObjectiveValue(_objectiveFunction.evaluate(_solutions[i], null));
-				}
-				if (TabuSearch.firstIsBetterThanSecond(_solutions[i].getObjectiveValue(), _bestEverSolution.getObjectiveValue(), _maximizing))
-				{
-					_bestEverSolution = (Solution) _solutions[i].clone();
-				}
-			}
-			_statInitObjVal = _bestEverSolution.getObjectiveValue()[0];
-		}
-		catch (Exception ex)
-		{
-			throw ex;
-		}
 	}
 
 	private class TabuSearchObserver implements TabuSearchListener
@@ -251,46 +176,16 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 			try
 			{
 				Solution newBest = e.getTabuSearch().getBestSolution();
+				_bestEverSolution = newBest;		
+				
+				_statLastIterNewSol = e.getTabuSearch().getIterationsCompleted();				
+				
+				_statEndObjVal = _bestEverSolution.getObjectiveValue()[0];
+				_statNumNewSol++;
+				
+				if(_statNumNewSol==1)
+					_statInitObjVal = _statEndObjVal;
 
-				if (_bestEverSolution.getObjectiveValue() == null)
-				{
-					_bestEverSolution = (Solution) newBest.clone();
-					// System.out.println(_searchID + "  " +
-					// newBest.getObjectiveValue()[0]);
-
-					// addSolutionToGraph(e.getTabuSearch().getIterationsCompleted(),
-					// _bestEverSolution);
-					_statEndObjVal = _bestEverSolution.getObjectiveValue()[0];
-					_statNumNewSol++;
-
-					if (_statLastIterNewSol < e.getTabuSearch().getIterationsCompleted())
-					{
-						_statLastIterNewSol = e.getTabuSearch().getIterationsCompleted();
-					}
-				}
-				else if (TabuSearch.firstIsBetterThanSecond(newBest.getObjectiveValue(), _bestEverSolution.getObjectiveValue(), _maximizing))
-				{
-					_bestEverSolution = (Solution) newBest.clone();
-					// System.out.println(_searchID + "  " +
-					// newBest.getObjectiveValue()[0]);
-					// addSolutionToGraph(e.getTabuSearch().getIterationsCompleted(),
-					// _bestEverSolution);
-					_statEndObjVal = _bestEverSolution.getObjectiveValue()[0];
-					_statNumNewSol++;
-
-					if (_statLastIterNewSol < e.getTabuSearch().getIterationsCompleted())
-					{
-						_statLastIterNewSol = e.getTabuSearch().getIterationsCompleted();
-					}
-				}
-
-				// System.out.println(_bestEverSolution);
-				// DataNode log = new DataNode("newSolution");
-				// log.putValue("time", System.currentTimeMillis());
-				// log.putValue("numIter",
-				// e.getTabuSearch().getIterationsCompleted());
-				// log.putValue("objVal", newBest.getObjectiveValue()[0]);
-				// log.putValue("solution", newBest.toString());
 				_reporter.putNewSolution(System.currentTimeMillis(), e.getTabuSearch().getIterationsCompleted(), newBest.getObjectiveValue()[0], newBest.toString());
 			}
 			catch (Exception ex)
