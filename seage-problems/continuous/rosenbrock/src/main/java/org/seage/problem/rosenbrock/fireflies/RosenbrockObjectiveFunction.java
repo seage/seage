@@ -26,6 +26,7 @@
 package org.seage.problem.rosenbrock.fireflies;
 import org.seage.metaheuristic.fireflies.ObjectiveFunction;
 import org.seage.metaheuristic.fireflies.Solution;
+import org.seage.problem.rosenbrock.RosenbrockFunction;
 
 /**
  *
@@ -40,26 +41,12 @@ public class RosenbrockObjectiveFunction implements ObjectiveFunction
     public void setObjectiveValue(Solution sol)
     {
         Double[] coords = ((ContinuousSolution) sol)._assign;
-        double[] value = {0.0};
-        for(int i = 0; i < coords.length - 1; i++)
-        {
-            value[0] += (Math.pow(1 - coords[i], 2) + 100 * Math.pow( coords[i + 1] - Math.pow( coords[i], 2 ) , 2 ) );
-        }
-        sol.setObjectiveValue(value);
-    }
-
-    public void ObjectiveFunction(Solution soln) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        sol.setObjectiveValue( new double[]{ RosenbrockFunction.f(coords) });
     }
 
     public double[] evaluate(Solution soln) throws Exception {
-        Double[] coords = ((ContinuousSolution) soln)._assign;
-        double[] value = {0.0};
-        for(int i = 0; i < coords.length - 1; i++)
-        {
-            value[0] += (Math.pow(1 - coords[i], 2) + 100 * Math.pow( coords[i + 1] - Math.pow( coords[i], 2 ) , 2 ) );
-        }
-        return value;
+        Double[] coords = ((ContinuousSolution) soln)._assign;      
+        return new double[]{ RosenbrockFunction.f(coords) };
     }
 
     public int getCounter() {

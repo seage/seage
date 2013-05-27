@@ -28,6 +28,7 @@ package org.seage.problem.rosenbrock.sannealing;
 
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
 import org.seage.metaheuristic.sannealing.Solution;
+import org.seage.problem.rosenbrock.RosenbrockFunction;
 
 /**
  *
@@ -40,11 +41,7 @@ public class RosenbrockObjectiveFunction implements IObjectiveFunction
 	public double getObjectiveValue(Solution solution)
 	{
 		double[] coords = ((RosenbrockSolution)solution).getCoords();
-        double value = 0.0;
-        for(int i = 0; i < coords.length - 1; i++)
-        {
-            value += (Math.pow(1 - coords[i], 2) + 100 * Math.pow( coords[i + 1] - Math.pow( coords[i], 2 ) , 2 ) );
-        }
-		return value;
+        
+		return RosenbrockFunction.f(coords);
 	}
 }

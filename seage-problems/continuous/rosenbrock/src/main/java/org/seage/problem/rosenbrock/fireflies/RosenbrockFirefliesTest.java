@@ -33,7 +33,7 @@ import org.seage.metaheuristic.fireflies.Solution;
  *
  * @author Jan Zmatlik
  */
-public class RosenbrockTest
+public class RosenbrockFirefliesTest
 {
     public static void main(String[] args) throws Exception
     {
@@ -44,11 +44,11 @@ public class RosenbrockTest
         double _initialIntensity=1;
         double _initialRandomness=5;
         double _finalRandomness=2;
-        double _absorption=0.03;//0.025;
+        double _absorption=0.003;//0.025;
         double _timeStep=0.7;//0.15;
-        int populationSize = 1000;
+        int populationSize = 100;
         boolean _maximizing = false;
-        int iterationsToGo = 10000;
+        int iterationsToGo = 1000;
         double minBound = -10;
         double maxBound = 10;
 
@@ -69,7 +69,7 @@ public class RosenbrockTest
         fs.setMaximizing(_maximizing);
         fs.setIterationsToGo(iterationsToGo);
 //        System.out.println("Length of solution"+(new QapRandomSolution(facilityLocations)._assign.length));
-        Solution[] solutions = generateInitialSolutions(10,fo);
+        Solution[] solutions = generateInitialSolutions(populationSize,fo);
         fs.startSolving(solutions);   
         System.out.println(fs.getBestSolution().getObjectiveValue()[0]);
         for(int i = 0; i < dimension; i++)

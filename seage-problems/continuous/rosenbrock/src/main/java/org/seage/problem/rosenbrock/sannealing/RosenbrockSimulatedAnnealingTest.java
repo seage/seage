@@ -31,11 +31,11 @@ import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
  *
  * @author Jan Zmatlik
  */
-public class RosenbrockTest {
+public class RosenbrockSimulatedAnnealingTest {
 
     public static void main(String[] args)
     {
-        int dimension = 30;
+        int dimension = 10;
 
         RosenbrockSolution rosSolution = new RosenbrockSolution(dimension);
 
