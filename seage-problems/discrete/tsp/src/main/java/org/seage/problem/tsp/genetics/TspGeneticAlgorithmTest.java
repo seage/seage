@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seage.metaheuristic.IAlgorithmListener;
-import org.seage.metaheuristic.genetics.GeneticSearch;
-import org.seage.metaheuristic.genetics.GeneticSearchEvent;
+import org.seage.metaheuristic.genetics.GeneticAlgorithm;
+import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
@@ -41,7 +41,7 @@ import org.seage.problem.tsp.TourProvider;
  *
  * @author Richard Malek
  */
-public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticSearchEvent<Integer>>
+public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgorithmEvent<Integer>>
 {
     public static void main(String[] args)
     {
@@ -59,7 +59,7 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticSearch
     {
         City[] cities = CityProvider.readCities(new FileInputStream(path));
         
-        GeneticSearch<Integer> gs = new GeneticSearch<Integer>(new TspGeneticOperator(), new TspEvaluator(cities));     
+        GeneticAlgorithm<Integer> gs = new GeneticAlgorithm<Integer>(new TspGeneticOperator(), new TspEvaluator(cities));     
         gs.addGeneticSearchListener(this);
         gs.setEliteSubjectsPct(0.05);
         gs.setMutatePopulationPct(0.0);
@@ -92,24 +92,24 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticSearch
         return result;
     }
 
-    public void algorithmStarted(GeneticSearchEvent<Integer> e) {
+    public void algorithmStarted(GeneticAlgorithmEvent<Integer> e) {
         System.out.println("Genetic Algorithm for TSP started.");
     }
 
-    public void algorithmStopped(GeneticSearchEvent<Integer> e) {
+    public void algorithmStopped(GeneticAlgorithmEvent<Integer> e) {
         System.out.println("Genetic Algorithm for TSP stopped.");
     }
 
-    public void newBestSolutionFound(GeneticSearchEvent<Integer> e) {
+    public void newBestSolutionFound(GeneticAlgorithmEvent<Integer> e) {
         System.out.println("New best: " + e.getGeneticSearch().getBestSubject().getFitness()[0]);
     }
 
-    public void noChangeInValueIterationMade(GeneticSearchEvent<Integer> e) {
+    public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Integer> e) {
         
     }
 
 	@Override
-	public void iterationPerformed(GeneticSearchEvent<Integer> e)
+	public void iterationPerformed(GeneticAlgorithmEvent<Integer> e)
 	{
 		
 	}

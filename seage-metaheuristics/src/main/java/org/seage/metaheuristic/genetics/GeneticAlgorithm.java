@@ -33,9 +33,9 @@ import org.seage.metaheuristic.IAlgorithmListener;
 /**
  * @author Richard Malek (original)
  */
-public class GeneticSearch<GeneType>
+public class GeneticAlgorithm<GeneType>
 {
-	private AlgorithmEventProducer<IAlgorithmListener<GeneticSearchEvent<GeneType>>, GeneticSearchEvent<GeneType>> _eventProducer;
+	private AlgorithmEventProducer<IAlgorithmListener<GeneticAlgorithmEvent<GeneType>>, GeneticAlgorithmEvent<GeneType>> _eventProducer;
 	private int _iterationCount;
 	private int _currentIteration;
 	private int _populationCount;
@@ -55,9 +55,9 @@ public class GeneticSearch<GeneType>
 
 	private Random _random;
 
-	public GeneticSearch(GeneticOperator<GeneType> operator, SubjectEvaluator<GeneType> evaluator)
+	public GeneticAlgorithm(GeneticOperator<GeneType> operator, SubjectEvaluator<GeneType> evaluator)
 	{
-		_eventProducer = new AlgorithmEventProducer<IAlgorithmListener<GeneticSearchEvent<GeneType>>, GeneticSearchEvent<GeneType>>(new GeneticSearchEvent<GeneType>(this));
+		_eventProducer = new AlgorithmEventProducer<IAlgorithmListener<GeneticAlgorithmEvent<GeneType>>, GeneticAlgorithmEvent<GeneType>>(new GeneticAlgorithmEvent<GeneType>(this));
 
 		_subjectComparator = new SubjectComparator<GeneType>();
 		_operator = operator;
@@ -70,12 +70,12 @@ public class GeneticSearch<GeneType>
 		_keepSearching = _isRunning = false;
 	}
 
-	public void addGeneticSearchListener(IAlgorithmListener<GeneticSearchEvent<GeneType>> listener)
+	public void addGeneticSearchListener(IAlgorithmListener<GeneticAlgorithmEvent<GeneType>> listener)
 	{
 		_eventProducer.addAlgorithmListener(listener);
 	}
 
-	public void removeGeneticSearchListener(IAlgorithmListener<GeneticSearchEvent<GeneType>> listener)
+	public void removeGeneticSearchListener(IAlgorithmListener<GeneticAlgorithmEvent<GeneType>> listener)
 	{
 		_eventProducer.removeGeneticSearchListener(listener);
 	}

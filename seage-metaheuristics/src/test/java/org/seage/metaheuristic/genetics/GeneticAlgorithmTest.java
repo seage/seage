@@ -46,7 +46,7 @@ public class GeneticAlgorithmTest {
 	            return new double[]{val};
 			}
 		};
-		GeneticSearch<Integer> ga = new GeneticSearch<Integer>(new GeneticOperator<Integer>(), evaluator );
+		GeneticAlgorithm<Integer> ga = new GeneticAlgorithm<Integer>(new GeneticOperator<Integer>(), evaluator );
 		ga.addGeneticSearchListener(new Listener());
 		ga.setCrossLengthPct(0.4);
 		ga.setEliteSubjectsPct(0.1);
@@ -73,39 +73,39 @@ public class GeneticAlgorithmTest {
 		ga.startSearching(subjects);
 	}
 	
-	private class Listener implements IAlgorithmListener<GeneticSearchEvent<Integer>>
+	private class Listener implements IAlgorithmListener<GeneticAlgorithmEvent<Integer>>
 	{
 
 		@Override
-		public void algorithmStarted(GeneticSearchEvent<Integer> e)
+		public void algorithmStarted(GeneticAlgorithmEvent<Integer> e)
 		{
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void algorithmStopped(GeneticSearchEvent<Integer> e)
+		public void algorithmStopped(GeneticAlgorithmEvent<Integer> e)
 		{
 			System.out.println(e.getGeneticSearch().getBestSubject().getChromosome());
 			
 		}
 
 		@Override
-		public void newBestSolutionFound(GeneticSearchEvent<Integer> e)
+		public void newBestSolutionFound(GeneticAlgorithmEvent<Integer> e)
 		{
 			System.out.println(e.getGeneticSearch().getBestSubject().getFitness()[0]);
 			
 		}
 
 		@Override
-		public void iterationPerformed(GeneticSearchEvent<Integer> e)
+		public void iterationPerformed(GeneticAlgorithmEvent<Integer> e)
 		{
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void noChangeInValueIterationMade(GeneticSearchEvent<Integer> e)
+		public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Integer> e)
 		{
 			// TODO Auto-generated method stub
 			

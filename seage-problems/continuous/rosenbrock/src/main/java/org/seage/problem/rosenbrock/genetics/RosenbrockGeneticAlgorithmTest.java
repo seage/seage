@@ -3,13 +3,13 @@ package org.seage.problem.rosenbrock.genetics;
 import java.util.ArrayList;
 
 import org.seage.metaheuristic.IAlgorithmListener;
-import org.seage.metaheuristic.genetics.GeneticSearch;
-import org.seage.metaheuristic.genetics.GeneticSearchEvent;
+import org.seage.metaheuristic.genetics.GeneticAlgorithm;
+import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 import org.seage.metaheuristic.genetics.RealGeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.rosenbrock.RosenbrockFunction;
 
-public class RosenbrockGeneticSearchTest
+public class RosenbrockGeneticAlgorithmTest
 {
 	public static void main(String[] args)
 	{
@@ -28,40 +28,40 @@ public class RosenbrockGeneticSearchTest
 			for (int i = 0; i < dim; i++)
 				limits[i] = operator.new Limit(-10, 10);
 
-			GeneticSearch<Double> gs = new GeneticSearch<Double>(operator, new RosenbrockEvaluator());
-			gs.addGeneticSearchListener(new IAlgorithmListener<GeneticSearchEvent<Double>>()
+			GeneticAlgorithm<Double> gs = new GeneticAlgorithm<Double>(operator, new RosenbrockEvaluator());
+			gs.addGeneticSearchListener(new IAlgorithmListener<GeneticAlgorithmEvent<Double>>()
 			{
 				
 				@Override
-				public void noChangeInValueIterationMade(GeneticSearchEvent<Double> e)
+				public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Double> e)
 				{
 					// TODO Auto-generated method stub
 					
 				}
 				
 				@Override
-				public void newBestSolutionFound(GeneticSearchEvent<Double> e)
+				public void newBestSolutionFound(GeneticAlgorithmEvent<Double> e)
 				{
 					System.out.println(e.getGeneticSearch().getBestSubject().getObjectiveValue()[0]);
 					
 				}
 				
 				@Override
-				public void iterationPerformed(GeneticSearchEvent<Double> e)
+				public void iterationPerformed(GeneticAlgorithmEvent<Double> e)
 				{
 					// TODO Auto-generated method stub
 					
 				}
 				
 				@Override
-				public void algorithmStopped(GeneticSearchEvent<Double> e)
+				public void algorithmStopped(GeneticAlgorithmEvent<Double> e)
 				{
 					// TODO Auto-generated method stub
 					
 				}
 				
 				@Override
-				public void algorithmStarted(GeneticSearchEvent<Double> e)
+				public void algorithmStarted(GeneticAlgorithmEvent<Double> e)
 				{
 					// TODO Auto-generated method stub
 					

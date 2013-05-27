@@ -9,7 +9,7 @@ import org.seage.aal.data.AlgorithmParams;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.data.DataNode;
 import org.seage.experimenter.IExperimenter;
-import org.seage.metaheuristic.genetics.GeneticSearch;
+import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.RealGeneticOperator;
 
 public class SingleAlgorithmEvolutionExperimenter implements IExperimenter
@@ -72,7 +72,7 @@ public class SingleAlgorithmEvolutionExperimenter implements IExperimenter
 		for (int i = 0; i < dim; i++)
 			limits[i] = operator.new Limit(-10, 10);
 
-		GeneticSearch<Double> gs = new GeneticSearch<Double>(operator, new ExperimentEvaluator());
+		GeneticAlgorithm<Double> gs = new GeneticAlgorithm<Double>(operator, new ExperimentEvaluator());
 		gs.setCrossLengthPct(0.3);
 		gs.setEliteSubjectsPct(0.2);
 		gs.setIterationToGo(200000);

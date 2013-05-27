@@ -40,8 +40,8 @@ import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.GeneticOperator;
-import org.seage.metaheuristic.genetics.GeneticSearch;
-import org.seage.metaheuristic.genetics.GeneticSearchEvent;
+import org.seage.metaheuristic.genetics.GeneticAlgorithm;
+import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectComparator;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
@@ -61,10 +61,10 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 {
 
 	protected List<Subject<GeneType>> _solutions;
-	private GeneticSearch<GeneType> _geneticSearch;
+	private GeneticAlgorithm<GeneType> _geneticSearch;
 	private SubjectEvaluator<GeneType> _evaluator;
 	private SubjectComparator<GeneType> _comparator;
-	private GeneticSearchListener _algorithmListener;
+	private GeneticAlgorithmListener _algorithmListener;
 	private Subject<GeneType> _bestEverSolution;
 	private AlgorithmParams _params;
 	private String _searchID;
@@ -84,9 +84,9 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 	public GeneticAlgorithmAdapter(GeneticOperator<GeneType> operator, SubjectEvaluator<GeneType> evaluator, boolean maximizing, String searchID)
 	{
 		_evaluator = evaluator;
-		_algorithmListener = new GeneticSearchListener();
+		_algorithmListener = new GeneticAlgorithmListener();
 		_comparator = new SubjectComparator<GeneType>();
-		_geneticSearch = new GeneticSearch<GeneType>(operator, evaluator);
+		_geneticSearch = new GeneticAlgorithm<GeneType>(operator, evaluator);
 		_geneticSearch.addGeneticSearchListener(_algorithmListener);
 		_searchID = searchID;
 	}
@@ -202,15 +202,15 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 
 	}
 
-	private class GeneticSearchListener implements IAlgorithmListener<GeneticSearchEvent<GeneType>>
+	private class GeneticAlgorithmListener implements IAlgorithmListener<GeneticAlgorithmEvent<GeneType>>
 	{
-		public void algorithmStarted(GeneticSearchEvent<GeneType> e)
+		public void algorithmStarted(GeneticAlgorithmEvent<GeneType> e)
 		{
 			_algorithmStarted = true;
 			_statNumNewSol = _statLastImprovingIteration = 0;
 		}
 
-		public void algorithmStopped(GeneticSearchEvent<GeneType> e)
+		public void algorithmStopped(GeneticAlgorithmEvent<GeneType> e)
 		{
 			_algorithmStopped = true;
 			_statNrOfIterationsDone = e.getGeneticSearch().getCurrentIteration();
@@ -219,11 +219,11 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 				_statBestObjVal = s.getObjectiveValue()[0];
 		}
 
-		public void newBestSolutionFound(GeneticSearchEvent<GeneType> e)
+		public void newBestSolutionFound(GeneticAlgorithmEvent<GeneType> e)
 		{
 			try
 			{
-				GeneticSearch<GeneType> gs = e.getGeneticSearch();
+				GeneticAlgorithm<GeneType> gs = e.getGeneticSearch();
 				Subject<GeneType> subject = gs.getBestSubject();
 				if(_statNumNewSol==0)
 					_statInitObjVal = subject.getObjectiveValue()[0];
@@ -240,13 +240,13 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 			}
 		}
 
-		public void noChangeInValueIterationMade(GeneticSearchEvent<GeneType> e)
+		public void noChangeInValueIterationMade(GeneticAlgorithmEvent<GeneType> e)
 		{
 
 		}
 
 		@Override
-		public void iterationPerformed(GeneticSearchEvent<GeneType> e)
+		public void iterationPerformed(GeneticAlgorithmEvent<GeneType> e)
 		{
 
 		}
