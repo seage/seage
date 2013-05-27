@@ -50,13 +50,13 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
  * GeneticSearchAdapter class
  */
 @AlgorithmParameters({ 
-	@Parameter(name = "crossLengthPct", min = 0, max = 100, init = 10), 
-	@Parameter(name = "eliteSubjectPct", min = 0, max = 100, init = 10),
+	@Parameter(name = "crossLengthPct", min = 0, max = 1, init = 0.10), 
+	@Parameter(name = "eliteSubjectPct", min = 0, max = 1, init = 0.10),
 	@Parameter(name = "iterationCount", min = 100, max = 100000, init = 100), 
-	@Parameter(name = "mutateLengthPct", min = 0, max = 100, init = 10),
-	@Parameter(name = "mutateSubjectPct", min = 0, max = 100, init = 10), 
+	@Parameter(name = "mutateLengthPct", min = 0, max = 1, init = 0.10),
+	@Parameter(name = "mutateSubjectPct", min = 0, max = 1, init = 0.10), 
 	@Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),
-	@Parameter(name = "randomSubjectPct", min = 0, max = 100, init = 10) })
+	@Parameter(name = "randomSubjectPct", min = 0, max = 1, init = 0.10) })
 public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 {
 
@@ -135,30 +135,20 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 		_params.putValue("id", "GeneticAlgorithm");
 
 		DataNode p = params.getDataNode("Parameters");
-		_geneticSearch.getOperator().setCrossLengthPct(p.getValueInt("crossLengthPct") / 100.0);
-		_geneticSearch.getOperator().setMutateLengthPct(p.getValueInt("mutateLengthPct") / 100.0);
-		_geneticSearch.setEliteSubjectsPct(p.getValueInt("eliteSubjectPct") / 100.0);
+		_geneticSearch.getOperator().setCrossLengthPct(p.getValueDouble("crossLengthPct"));
+		_geneticSearch.getOperator().setMutateLengthPct(p.getValueDouble("mutateLengthPct"));
+		_geneticSearch.setEliteSubjectsPct(p.getValueDouble("eliteSubjectPct"));
 		_geneticSearch.setIterationToGo(p.getValueInt("iterationCount"));
 		// _statNumIter = p.getValueInt("iterationCount");
-		_geneticSearch.setMutatePopulationPct(p.getValueInt("mutateSubjectPct") / 100.0);
+		_geneticSearch.setMutatePopulationPct(p.getValueDouble("mutateSubjectPct"));
 		_geneticSearch.setPopulationCount(p.getValueInt("numSolutions"));
-		_geneticSearch.setRandomSubjectsPct(p.getValueInt("randomSubjectPct") / 100.0);
+		_geneticSearch.setRandomSubjectsPct(p.getValueDouble("randomSubjectPct"));
 
 		// _paramID = param.getValue("ID");
 	}
 
-	private void setBestEverSolution() throws Exception
-	{
-		_evaluator.evaluateSubjects(_solutions);
-		Collections.sort(_solutions, _comparator);
-		_bestEverSolution = _solutions.get(0);
-		_statInitObjVal = _bestEverSolution.getObjectiveValue()[0];
-
-	}
-
 	public AlgorithmReport getReport() throws Exception
-	{
-		setBestEverSolution();
+	{	
 		int num = _solutions.size();// > 10 ? 10 : solutions.length;
 		double avg = 0;
 		for (int i = 0; i < num; i++)
@@ -258,7 +248,6 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 		@Override
 		public void iterationPerformed(GeneticSearchEvent<GeneType> e)
 		{
-			// TODO Auto-generated method stub
 
 		}
 	}

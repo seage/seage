@@ -102,9 +102,7 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
     	setParameters(params);
     	
         _reporter = new AlgorithmReporter(_searchID);
-        _reporter.putParameters(_params);
-
-        setBestEverSolution();
+        _reporter.putParameters(_params);        
 
         _fireflySearch.startSolving(_solutions);
         _solutions = _fireflySearch.getSolutions();
@@ -148,31 +146,6 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
         // _paramID = param.getValue("ID");
     }
 
-    private void setBestEverSolution() throws Exception
-    {
-        if (_solutions == null || _solutions.length == 0)
-            return;
-        try
-        {
-            if (_solutions[0].getObjectiveValue() == null || _solutions[0].getObjectiveValue().length == 0)
-                _solutions[0].setObjectiveValue(_evaluator.evaluate(_solutions[0]));
-            _bestEverSolution = (Solution) _solutions[0].clone();
-
-            for (int i = 1; i < _solutions.length; i++)
-            {
-                if (_solutions[i].getObjectiveValue() == null)
-                    _solutions[i].setObjectiveValue(_evaluator.evaluate(_solutions[i]));
-
-                if (_comparator.compare(_solutions[i], _bestEverSolution) == 1)
-                    _bestEverSolution = (Solution) _solutions[i].clone();
-            }
-            _statInitObjVal = _bestEverSolution.getObjectiveValue()[0];
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
 
     public AlgorithmReport getReport() throws Exception
     {
@@ -181,13 +154,6 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
         for (int i = 0; i < num; i++)
             avg += _solutions[i].getObjectiveValue()[0];
         avg /= num;
-        // DataNode stats = new DataNode("statistics");
-        // stats.putValue("numberOfIter", _statNumIter);
-        // stats.putValue("numberOfNewSolutions", _statNumNewSol);
-        // stats.putValue("lastIterNumberNewSol", _statLastIterNewSol);
-        // stats.putValue("initObjVal", _statInitObjVal);
-        // stats.putValue("avgObjVal", avg);
-        // stats.putValue("bestObjVal", _statEndObjVal);
 
         _reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);
 
@@ -216,15 +182,9 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
             {
                 Solution solution = e.getFireflySearch().getBestSolution();
                 _bestEverSolution = (Solution) e.getFireflySearch().getBestSolution().clone();
+                if(_statNumNewSol==0)
+                	_statInitObjVal = solution.getObjectiveValue()[0];
 
-                // System.out.println(_searchID+"  "+solution.getObjectiveValue()[0]
-                // + " \t" + solution.hashCode() + "\t" + solution.toString());
-                // DataNode log = new DataNode("newSolution");
-                // log.putValue("time", System.currentTimeMillis());
-                // log.putValue("numIter",
-                // e.getFireflySearch().getCurrentIteration());
-                // log.putValue("objVal", subject.getObjectiveValue()[0]);
-                // log.putValue("solution", subject.toString());
                 _reporter.putNewSolution(System.currentTimeMillis(), e.getFireflySearch().getCurrentIteration(), solution.getObjectiveValue()[0], solution.toString());
                 _statNumNewSol++;
                 _statLastIterNewSol = e.getFireflySearch().getCurrentIteration();

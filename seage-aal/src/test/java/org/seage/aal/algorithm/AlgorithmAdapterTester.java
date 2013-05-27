@@ -94,7 +94,7 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
     @Override
     public void testAlgorithm() throws Exception
     {
-        _algorithm.solutionsFromPhenotype(_solutions);
+        _algorithm.solutionsFromPhenotype(_solutions);        
         _algorithm.startSearching(_algParams);
         _algorithm.solutionsToPhenotype();
 //        _algorithm.solutionsFromPhenotype(_solutions);
@@ -153,7 +153,7 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
 		Assert.assertTrue(stats.getValueInt("bestObjVal") > 0);
 		Assert.assertFalse(stats.getValueInt("initObjVal") < stats.getValueInt("bestObjVal"));
 		Assert.assertTrue((stats.getValueInt("initObjVal") != stats.getValueInt("bestObjVal")) || (stats.getValueInt("numberOfNewSolutions") == 1));
-		Assert.assertTrue(stats.getValueInt("lastIterNumberNewSol") < 2 || stats.getValueInt("bestObjVal")< stats.getValueDouble("initObjVal") );
+		Assert.assertTrue(stats.getValueInt("bestObjVal") == stats.getValueDouble("initObjVal") || stats.getValueInt("lastIterNumberNewSol") > 1  );
 		Assert.assertTrue(stats.getValueInt("numberOfNewSolutions") > 0 || stats.getValueInt("lastIterNumberNewSol") == 0);
 		Assert.assertTrue(stats.getValueInt("lastIterNumberNewSol") > 1 || stats.getValueInt("numberOfNewSolutions") == 1);
 	}

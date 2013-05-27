@@ -68,28 +68,28 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
 			protected double[] evaluate(Subject<Integer> solution) throws Exception
 			{
 				double val = 0;
-	        	for(int i=0;i<solution.getChromosome().getGenes().length-1;i++)
+	        	for(int i=0;i<solution.getChromosome().getGenes().length;i++)
 	        	{
-	        		val += Math.abs(solution.getChromosome().getGene(i) - solution.getChromosome().getGene(i+1));
+	        		val += i*solution.getChromosome().getGene(i);
 	        	}
 	        	
 	            return new double[]{val};
 			}
 		};
-        _algorithm = new GeneticAlgorithmAdapter<Integer>(new GeneticOperator<Integer>(), se, true, "");
+        _algorithm = new GeneticAlgorithmAdapter<Integer>(new GeneticOperator<Integer>(), se, false, "");
         
         _algParams = new AlgorithmParams("GeneticAlgorithmTest");
         _algParams.putValue("problemID", "GeneticAlgorithmTest");
         _algParams.putValue("instance", "TestInstance");
         
         DataNode params = new DataNode("Parameters");
-        params.putValue("crossLengthPct", 0);
-        params.putValue("mutateLengthPct", 0);
-        params.putValue("eliteSubjectPct", 0);
-        params.putValue("iterationCount", 3);
-        params.putValue("mutateSubjectPct", 0);
-        params.putValue("numSolutions", 1);
-        params.putValue("randomSubjectPct", 0); 
+        params.putValue("crossLengthPct", 0.40);
+        params.putValue("mutateLengthPct", 0.20);
+        params.putValue("eliteSubjectPct", 0.1);
+        params.putValue("iterationCount", 10);
+        params.putValue("mutateSubjectPct", 0.10);
+        params.putValue("numSolutions", 10);
+        params.putValue("randomSubjectPct", 0.1); 
         
         _algParams.putDataNodeRef(params);
         
