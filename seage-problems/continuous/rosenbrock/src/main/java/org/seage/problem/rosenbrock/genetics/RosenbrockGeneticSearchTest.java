@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.GeneticSearch;
 import org.seage.metaheuristic.genetics.GeneticSearchEvent;
-import org.seage.metaheuristic.genetics.Genome;
 import org.seage.metaheuristic.genetics.RealGeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.rosenbrock.RosenbrockFunction;

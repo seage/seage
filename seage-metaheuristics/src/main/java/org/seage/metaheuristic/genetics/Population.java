@@ -116,7 +116,6 @@ class Population<GeneType>
         return getSubjects(_population.size());
     }
 
-    @SuppressWarnings("unchecked")
 	public List<Subject<GeneType>> getSubjects(int numSubjects) throws Exception
     {
         try

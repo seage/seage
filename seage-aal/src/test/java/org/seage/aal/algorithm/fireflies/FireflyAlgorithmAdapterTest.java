@@ -27,7 +27,6 @@
 package org.seage.aal.algorithm.fireflies;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;

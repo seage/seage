@@ -18,7 +18,7 @@ public class SingleAlgorithmEvolutionExperimenter implements IExperimenter
 
 	public SingleAlgorithmEvolutionExperimenter()
 	{
-		_geneticAlgorithm = new GeneticAlgorithmAdapter(new ExperimentGeneticOperator(null), new ExperimentEvaluator(), false, "");
+		_geneticAlgorithm = new GeneticAlgorithmAdapter<Double>(new ExperimentGeneticOperator(null), new ExperimentEvaluator(), false, "");
 	}
 	
 	@Override

@@ -37,7 +37,6 @@ import org.seage.metaheuristic.tabusearch.MoveManager;
 import org.seage.metaheuristic.tabusearch.ObjectiveFunction;
 import org.seage.metaheuristic.tabusearch.SimpleTabuList;
 import org.seage.metaheuristic.tabusearch.Solution;
-import org.seage.metaheuristic.tabusearch.SolutionComparator;
 import org.seage.metaheuristic.tabusearch.TabuSearch;
 import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
 import org.seage.metaheuristic.tabusearch.TabuSearchListener;
@@ -57,7 +56,6 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 	private TabuSearchObserver _observer;
 	private int _iterationToGo;
 	private int _tabuListLength;
-	private boolean _maximizing;
 	protected Solution[] _solutions;
 	protected int _solutionsToExplore;
 	protected Solution _bestEverSolution; // best of all solution
@@ -170,7 +168,6 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 			_statEndObjVal = _bestEverSolution.getObjectiveValue()[0];
 		}
 
-		@SuppressWarnings("deprecation")
 		public void newBestSolutionFound(TabuSearchEvent e)
 		{
 			try

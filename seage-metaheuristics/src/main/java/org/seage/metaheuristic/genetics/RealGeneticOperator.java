@@ -1,10 +1,5 @@
 package org.seage.metaheuristic.genetics;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.seage.metaheuristic.genetics.GeneticOperator;
-import org.seage.metaheuristic.genetics.Subject;
 
 public class RealGeneticOperator extends GeneticOperator<Double>	// private double _crossLengthPct;
 {

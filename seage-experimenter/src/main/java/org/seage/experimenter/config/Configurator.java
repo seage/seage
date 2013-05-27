@@ -30,7 +30,6 @@ import java.util.logging.Logger;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
-import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimenter;
 
 /**
  * 

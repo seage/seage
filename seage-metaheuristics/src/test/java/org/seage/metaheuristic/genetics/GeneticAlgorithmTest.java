@@ -26,14 +26,12 @@ import java.util.Random;
 import org.junit.Test;
 import org.seage.metaheuristic.IAlgorithmListener;
 
-import static org.junit.Assert.assertTrue;
-
 public class GeneticAlgorithmTest {
 
 	@Test
 	public void testAlgorithm() throws Exception 
 	{		
-		SubjectEvaluator evaluator = new SubjectEvaluator<Integer>()
+		SubjectEvaluator<Integer> evaluator = new SubjectEvaluator<Integer>()
 		{
 
 			@Override
@@ -48,7 +46,7 @@ public class GeneticAlgorithmTest {
 	            return new double[]{val};
 			}
 		};
-		GeneticSearch ga = new GeneticSearch(new GeneticOperator<Integer>(), evaluator );
+		GeneticSearch<Integer> ga = new GeneticSearch<Integer>(new GeneticOperator<Integer>(), evaluator );
 		ga.addGeneticSearchListener(new Listener());
 		ga.setCrossLengthPct(0.4);
 		ga.setEliteSubjectsPct(0.1);

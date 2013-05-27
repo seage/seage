@@ -43,7 +43,7 @@ public class RapidMinerTest {
     private static void testRepositoryProcessLocation()
     {
     	RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
-		RepositoryManager rm = RepositoryManager.getInstance(null);
+		//RepositoryManager rm = RepositoryManager.getInstance(null);
 		try
         {
       
@@ -120,7 +120,6 @@ public class RapidMinerTest {
 			SimpleExampleSet ses = (SimpleExampleSet)op.getElementAt(0);
 			ses.getExample(0);
 			//op.getElementAt(0)
-			int a = 0;
 			//Process process2 = new Process(new File());
 
 		} catch (Exception e) {

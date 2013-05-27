@@ -30,7 +30,6 @@ import java.io.FileInputStream;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
-import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
 

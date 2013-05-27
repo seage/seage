@@ -1,8 +1,5 @@
 package org.seage.experimenter.singlealgorithm.evolution;
 
-import java.util.List;
-
-import org.seage.metaheuristic.genetics.GeneticOperator;
 import org.seage.metaheuristic.genetics.RealGeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 

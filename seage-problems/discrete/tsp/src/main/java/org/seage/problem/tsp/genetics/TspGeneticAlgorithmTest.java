@@ -32,7 +32,6 @@ import java.util.List;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.GeneticSearch;
 import org.seage.metaheuristic.genetics.GeneticSearchEvent;
-import org.seage.metaheuristic.genetics.Genome;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;

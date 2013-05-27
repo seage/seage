@@ -46,7 +46,7 @@ import org.seage.problem.tsp.TspProblemInstance;
 public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 {
 
-    public Class<GeneticAlgorithmAdapter> getAlgorithmClass() {
+    public Class<?> getAlgorithmClass() {
         return GeneticAlgorithmAdapter.class;
     }
 
@@ -54,7 +54,7 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
     {        
         IAlgorithmAdapter algorithm;
         City[] cities = ((TspProblemInstance)instance).getCities();
-        algorithm = new GeneticAlgorithmAdapter(new TspGeneticOperator(), new TspEvaluator(cities), false, "");
+        algorithm = new GeneticAlgorithmAdapter<Integer>(new TspGeneticOperator(), new TspEvaluator(cities), false, "");
 
         return algorithm;
     }
