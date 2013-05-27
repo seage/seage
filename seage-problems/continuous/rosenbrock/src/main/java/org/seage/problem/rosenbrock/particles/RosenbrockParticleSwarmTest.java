@@ -34,11 +34,11 @@ import org.seage.metaheuristic.particles.ParticleSwarmEvent;
  *
  * @author Jan Zmatlik
  */
-public class RosenbrockTest implements IParticleSwarmListener
+public class RosenbrockParticleSwarmTest implements IParticleSwarmListener
 {
     public static void main(String[] args)
     {
-    	new RosenbrockTest().start();
+    	new RosenbrockParticleSwarmTest().start();
     }
     
     public void start()
