@@ -31,9 +31,9 @@ package org.seage.metaheuristic.particles;
 
 public class ParticleSwarm implements IParticleSwarm
 {
-	private double _maximalVelocity;
+	private double _maximalValue;
 
-	private double _minimalVelocity;
+	private double _minimalValue;
 
 	/**
 	 * Provide firing Events, registering listeners
@@ -143,26 +143,15 @@ public class ParticleSwarm implements IParticleSwarm
 		// System.out.println("Found in " + globalFoundIteration +
 		// " iteration.");
 	}
-
-	private void checkVelocityBounds(Particle particle)
-	{
-		for (int i = 0; i < particle.getVelocity().length; i++)
-		{
-			if (particle.getVelocity()[i] < _minimalVelocity)
-				particle.getVelocity()[i] = _minimalVelocity;
-			else if (particle.getVelocity()[i] > _maximalVelocity)
-				particle.getVelocity()[i] = _maximalVelocity;
-		}
-	}
 	
 	private void checkValueBounds(Particle particle)
 	{
 		for (int i = 0; i < particle.getCoords().length; i++)
 		{
-			if (particle.getCoords()[i] < _minimalVelocity)
-				particle.getCoords()[i] = _minimalVelocity;
-			else if (particle.getCoords()[i] > _maximalVelocity)
-				particle.getCoords()[i] = _maximalVelocity;
+			if (particle.getCoords()[i] < _minimalValue)
+				particle.getCoords()[i] = _minimalValue;
+			else if (particle.getCoords()[i] > _maximalValue)
+				particle.getCoords()[i] = _maximalValue;
 		}
 	}
 
@@ -211,12 +200,12 @@ public class ParticleSwarm implements IParticleSwarm
 
 	public double getMaximalVelocity()
 	{
-		return _maximalVelocity;
+		return _maximalValue;
 	}
 
 	public void setMaximalVectorValue(double maximalVelocity)
 	{
-		_maximalVelocity = maximalVelocity;
+		_maximalValue = maximalVelocity;
 	}
 
 	public double getInertia()
@@ -231,12 +220,12 @@ public class ParticleSwarm implements IParticleSwarm
 
 	public double getMinimalVelocity()
 	{
-		return _minimalVelocity;
+		return _minimalValue;
 	}
 
 	public void setMinimalVectorValue(double minimalVelocity)
 	{
-		this._minimalVelocity = minimalVelocity;
+		this._minimalValue = minimalVelocity;
 	}
 
 	public double getAlpha()
