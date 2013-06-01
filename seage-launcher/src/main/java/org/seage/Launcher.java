@@ -34,6 +34,7 @@ import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.experimenter.reporting.rapidminer.ExperimentDataRapidMinerImporter;
+import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;
 import org.seage.experimenter.singlealgorithm.feedback.SingleAlgorithmFeedbackExperimenter;
 import org.seage.experimenter.singlealgorithm.random.SingleAlgorithmRandomExperimenter;
 import org.seage.logging.LogHelper;
@@ -123,6 +124,20 @@ public class Launcher {
             
             return;
         }
+        
+        if (args[0].equals("-experiment-single-evolution")) {             
+        	if (args.length >= 5)
+            {
+                new SingleAlgorithmEvolutionExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 4, args.length));
+
+            } else if (args.length == 4) {
+                new SingleAlgorithmEvolutionExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );
+            } else {
+                usage();
+            }
+            
+            return;
+        }
 
         if (args[0].equals("-agents")) {
             agents(args[1]);
@@ -145,8 +160,9 @@ public class Launcher {
         _logger.info("\t-list");
         _logger.info("\t-test [problem-id [algorithm-id]]");
         _logger.info("\t-config path-to-config");
-        _logger.info("\t-experiment-single-random   numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
-        _logger.info("\t-experiment-single-feedback numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
+        _logger.info("\t-experiment-single-random    numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
+        _logger.info("\t-experiment-single-feedback  numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
+        _logger.info("\t-experiment-single-evolution numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
         _logger.info("\t-agents path-to-agent-config-xml");
         _logger.info("\t-report");
     }
