@@ -5,7 +5,7 @@ public class RealGeneticOperator extends GeneticOperator<Double>	// private doub
 {
 	private Limit[] _limits;
 	
-	public class Limit
+	public static class Limit
 	{
 		public double Min=0;
 		public double Max=0;

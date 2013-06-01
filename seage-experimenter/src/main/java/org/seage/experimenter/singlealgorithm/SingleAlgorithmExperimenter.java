@@ -149,13 +149,14 @@ public abstract class SingleAlgorithmExperimenter implements IExperimenter
                 }
                 new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(taskQueue.toArray(new Runnable[]{}));
 
-                zos.close();            }
+                zos.close();            
+            }
         }
         _logger.info("-------------------------------------");
         _logger.log(Level.INFO, "Experiment " + experimentID + " finished ...");
     }
 
-    private static String getDurationBreakdown(long millis)
+    protected static String getDurationBreakdown(long millis)
     {
         if (millis < 0) { throw new IllegalArgumentException("Duration must be greater than zero!"); }
 

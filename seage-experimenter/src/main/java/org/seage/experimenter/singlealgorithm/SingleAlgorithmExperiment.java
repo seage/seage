@@ -72,7 +72,7 @@ import org.seage.experimenter.Experiment;
  * 
  * @author rick
  */
-class SingleAlgorithmExperiment extends Experiment
+public class SingleAlgorithmExperiment extends Experiment
 {
     public SingleAlgorithmExperiment(String experimentType, long experimentID, long timeoutS, ProblemConfig config, String reportName, ZipOutputStream reportOutputStream, int runID ) throws Exception
     {
