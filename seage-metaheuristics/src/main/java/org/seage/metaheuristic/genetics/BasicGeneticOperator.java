@@ -112,7 +112,7 @@ public class BasicGeneticOperator<S extends Subject<GeneType>, GeneType> extends
 	{		
 		int length = parent1.getChromosome().getLength();
 		int ix = _random.nextInt(length);
-		int crossLength = (int) (length * _random.nextDouble() * _crossLengthPct);
+		int crossLength = 1+(int) (length * _random.nextDouble() * _crossLengthPct);
 
 		if (ix > length - crossLength)
 			ix = length - crossLength;
@@ -122,8 +122,8 @@ public class BasicGeneticOperator<S extends Subject<GeneType>, GeneType> extends
 
 		for (int i = ix; i < ix + crossLength; i++)
 		{
-			GeneType x1 = parent1.getChromosome().getGene(i);
-			GeneType x2 = parent2.getChromosome().getGene(i);
+			GeneType x1 = child1.getChromosome().getGene(i);
+			GeneType x2 = child2.getChromosome().getGene(i);
 			child1.getChromosome().setGene(i, x2);
 			child2.getChromosome().setGene(i, x1);
 		}

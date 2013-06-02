@@ -11,7 +11,6 @@ public class ExperimentEvaluator extends SubjectEvaluator<ExperimentSubject>
 	public void evaluateSubjects(List<ExperimentSubject> subjects) throws Exception 
 	{
 //		List<Runnable> taskQueue = new ArrayList<Runnable>();
-		
 		for(Subject<Double> s : subjects)
 		{
 			ExperimentSubject es = (ExperimentSubject)s;
@@ -22,6 +21,7 @@ public class ExperimentEvaluator extends SubjectEvaluator<ExperimentSubject>
 			
 			es.setObjectiveValue(new double[]{val});
 		}
+
 		
 //		String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", experimentID, problemID, algorithmID, instanceID);
 //
@@ -46,8 +46,7 @@ public class ExperimentEvaluator extends SubjectEvaluator<ExperimentSubject>
 
 	@Override
 	protected double[] evaluate(ExperimentSubject solution) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		throw new Exception("Should be unimplemented");
 	}
 
 }

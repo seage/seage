@@ -16,7 +16,7 @@ public class SingleAlgorithmEvolutionExperimenter extends SingleAlgorithmExperim
 {
 	public SingleAlgorithmEvolutionExperimenter() 
 	{
-		super("SingleAlgorithmEvolutio", null);		
+		super("SingleAlgorithmEvolution", null);		
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class SingleAlgorithmEvolutionExperimenter extends SingleAlgorithmExperim
         		List<ExperimentSubject> subjects = initializeSubjects(algorithmID, pi, 10);        		
         		
         		gs.startSearching(subjects);
-        		_logger.info(" -" +gs.getBestSubject().getObjectiveValue()[0]);
+        		_logger.info("   " +gs.getBestSubject().toString());
             }
         }
 //		------------
