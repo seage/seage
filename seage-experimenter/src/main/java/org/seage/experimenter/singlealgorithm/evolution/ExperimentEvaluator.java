@@ -1,21 +1,14 @@
 package org.seage.experimenter.singlealgorithm.evolution;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipOutputStream;
 
-import org.seage.aal.data.ProblemConfig;
-import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperiment;
-import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.metaheuristic.genetics.Subject;
-import org.seage.thread.TaskRunnerEx;
+import org.seage.metaheuristic.genetics.SubjectEvaluator;
 
-public class ExperimentEvaluator extends SubjectEvaluator<Double>
+public class ExperimentEvaluator extends SubjectEvaluator<ExperimentSubject>
 {
 	@Override
-	public void evaluateSubjects(List<Subject<Double>> subjects) throws Exception 
+	public void evaluateSubjects(List<ExperimentSubject> subjects) throws Exception 
 	{
 //		List<Runnable> taskQueue = new ArrayList<Runnable>();
 		
@@ -52,7 +45,7 @@ public class ExperimentEvaluator extends SubjectEvaluator<Double>
 	}
 
 	@Override
-	protected double[] evaluate(Subject<Double> solution) throws Exception {
+	protected double[] evaluate(ExperimentSubject solution) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

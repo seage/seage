@@ -41,7 +41,7 @@ import org.seage.problem.tsp.TourProvider;
  *
  * @author Richard Malek
  */
-public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgorithmEvent<Integer>>
+public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>>
 {
     public static void main(String[] args)
     {
@@ -59,7 +59,7 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     {
         City[] cities = CityProvider.readCities(new FileInputStream(path));
         
-        GeneticAlgorithm<Integer> gs = new GeneticAlgorithm<Integer>(new TspGeneticOperator(), new TspEvaluator(cities));     
+        GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<Subject<Integer>>(new TspGeneticOperator(), new TspEvaluator(cities)); 
         gs.addGeneticSearchListener(this);
         gs.setEliteSubjectsPct(0.05);
         gs.setMutatePopulationPct(0.0);
@@ -92,24 +92,24 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
         return result;
     }
 
-    public void algorithmStarted(GeneticAlgorithmEvent<Integer> e) {
+    public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e) {
         System.out.println("Genetic Algorithm for TSP started.");
     }
 
-    public void algorithmStopped(GeneticAlgorithmEvent<Integer> e) {
+    public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e) {
         System.out.println("Genetic Algorithm for TSP stopped.");
     }
 
-    public void newBestSolutionFound(GeneticAlgorithmEvent<Integer> e) {
+    public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e) {
         System.out.println("New best: " + e.getGeneticSearch().getBestSubject().getFitness()[0]);
     }
 
-    public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Integer> e) {
+    public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Integer>> e) {
         
     }
 
 	@Override
-	public void iterationPerformed(GeneticAlgorithmEvent<Integer> e)
+	public void iterationPerformed(GeneticAlgorithmEvent<Subject<Integer>> e)
 	{
 		
 	}

@@ -33,9 +33,9 @@ import org.seage.metaheuristic.IAlgorithmListener;
 /**
  * @author Richard Malek (original)
  */
-public class GeneticAlgorithm<GeneType>
+public class GeneticAlgorithm<S extends Subject<?>>
 {
-	private AlgorithmEventProducer<IAlgorithmListener<GeneticAlgorithmEvent<GeneType>>, GeneticAlgorithmEvent<GeneType>> _eventProducer;
+	private AlgorithmEventProducer<IAlgorithmListener<GeneticAlgorithmEvent<S>>, GeneticAlgorithmEvent<S>> _eventProducer;
 	private int _iterationCount;
 	private int _currentIteration;
 	private int _populationCount;
@@ -46,23 +46,23 @@ public class GeneticAlgorithm<GeneType>
 	private boolean _keepSearching;
 	private boolean _isRunning;
 
-	private Population<GeneType> _population;
-	private GeneticOperator<GeneType> _operator;
-	private SubjectEvaluator<GeneType> _evaluator;
-	private SubjectComparator<GeneType> _subjectComparator;
+	private Population<S> _population;
+	private GeneticOperator<S> _operator;
+	private SubjectEvaluator<S> _evaluator;
+	private SubjectComparator<S> _subjectComparator;
 
-	private Subject<GeneType> _bestSubject;
+	private S _bestSubject;
 
 	private Random _random;
 
-	public GeneticAlgorithm(GeneticOperator<GeneType> operator, SubjectEvaluator<GeneType> evaluator)
+	public GeneticAlgorithm(GeneticOperator<S> operator, SubjectEvaluator<S> evaluator)
 	{
-		_eventProducer = new AlgorithmEventProducer<IAlgorithmListener<GeneticAlgorithmEvent<GeneType>>, GeneticAlgorithmEvent<GeneType>>(new GeneticAlgorithmEvent<GeneType>(this));
+		_eventProducer = new AlgorithmEventProducer<IAlgorithmListener<GeneticAlgorithmEvent<S>>, GeneticAlgorithmEvent<S>>(new GeneticAlgorithmEvent<S>(this));
 
-		_subjectComparator = new SubjectComparator<GeneType>();
+		_subjectComparator = new SubjectComparator<S>();
 		_operator = operator;
 		_evaluator = evaluator;
-		_population = new Population<GeneType>();
+		_population = new Population<S>();
 		_random = new Random();
 
 		_bestSubject = null;
@@ -70,22 +70,22 @@ public class GeneticAlgorithm<GeneType>
 		_keepSearching = _isRunning = false;
 	}
 
-	public void addGeneticSearchListener(IAlgorithmListener<GeneticAlgorithmEvent<GeneType>> listener)
+	public void addGeneticSearchListener(IAlgorithmListener<GeneticAlgorithmEvent<S>> listener)
 	{
 		_eventProducer.addAlgorithmListener(listener);
 	}
 
-	public void removeGeneticSearchListener(IAlgorithmListener<GeneticAlgorithmEvent<GeneType>> listener)
+	public void removeGeneticSearchListener(IAlgorithmListener<GeneticAlgorithmEvent<S>> listener)
 	{
 		_eventProducer.removeGeneticSearchListener(listener);
 	}
 
-	public GeneticOperator<GeneType> getOperator()
+	public GeneticOperator<S> getOperator()
 	{
 		return _operator;
 	}
 
-	public List<Subject<GeneType>> getSubjects() throws Exception
+	public List<S> getSubjects() throws Exception
 	{
 		return _population.getSubjects(_populationCount);
 	}
@@ -100,12 +100,13 @@ public class GeneticAlgorithm<GeneType>
 		return _isRunning;
 	}
 
-	public Subject<GeneType> getBestSubject()
+	public S getBestSubject()
 	{
 		return _bestSubject;
 	}
 
-	public void startSearching(List<Subject<GeneType>> subjects) throws Exception
+	@SuppressWarnings("unchecked")
+	public void startSearching(List<S> subjects) throws Exception
 	{
 		_keepSearching = _isRunning = true;
 		_eventProducer.fireAlgorithmStarted();
@@ -113,7 +114,7 @@ public class GeneticAlgorithm<GeneType>
 		_bestSubject = null;
 		_currentIteration = 0;
 
-		Population<GeneType> workPopulation = new Population<GeneType>();
+		Population<S> workPopulation = new Population<S>();
 		int numEliteSubject = (int) Math.max(_eliteSubjectsPct * _populationCount, 1);
 		int numMutateSubject = (int) (_mutateSubjectsPct * _populationCount);
 		int numCrossSubject = _populationCount - numEliteSubject - numMutateSubject;
@@ -140,13 +141,13 @@ public class GeneticAlgorithm<GeneType>
 
 			if (_bestSubject == null)
 			{
-				_bestSubject = _population.getBestSubject().clone();
+				_bestSubject = (S) _population.getBestSubject().clone();
 				_eventProducer.fireNewBestSolutionFound();
 			}
 
 			if (_subjectComparator.compare(_population.getBestSubject(), _bestSubject) == -1)
 			{
-				_bestSubject = _population.getBestSubject().clone();
+				_bestSubject = (S) _population.getBestSubject().clone();
 				_eventProducer.fireNewBestSolutionFound();
 			}
 			else
@@ -178,14 +179,14 @@ public class GeneticAlgorithm<GeneType>
 		_eventProducer.fireAlgorithmStopped();
 	}
 
-	private Population<GeneType> elitism(int numEliteSubject) throws Exception
+	private Population<S> elitism(int numEliteSubject) throws Exception
 	{
 
-		Population<GeneType> result = new Population<GeneType>();
-		Subject<GeneType> prev = _population.getBestSubject();
+		Population<S> result = new Population<S>();
+		S prev = _population.getBestSubject();
 		for (int i = 0; i < numEliteSubject; i++)
 		{
-			Subject<GeneType> curr = _population.getSubject(i);
+			S curr = _population.getSubject(i);
 			if (i == 0 || curr.hashCode() != prev.hashCode())
 			{
 				prev = curr;
@@ -196,10 +197,10 @@ public class GeneticAlgorithm<GeneType>
 
 	}
 
-	private Population<GeneType> crossover(int numCrossSubject) throws Exception
+	private Population<S> crossover(int numCrossSubject) throws Exception
 	{
-		ArrayList<Subject<GeneType>> subjects = new ArrayList<Subject<GeneType>>(_population.getSubjects());
-		Population<GeneType> resultPopulation = new Population<GeneType>();
+		ArrayList<S> subjects = new ArrayList<S>(_population.getSubjects());
+		Population<S> resultPopulation = new Population<S>();
 		if (numCrossSubject % 2 == 1)
 			numCrossSubject++;
 		for (int i = 0; i < numCrossSubject / 2; i++)
@@ -211,7 +212,7 @@ public class GeneticAlgorithm<GeneType>
 			{
 				ix = _operator.select(subjects);
 			}
-			List<Subject<GeneType>> children = _operator.crossOver(subjects.get(ix[0]), subjects.get(ix[1]));			
+			List<S> children = _operator.crossOver(subjects.get(ix[0]), subjects.get(ix[1]));			
 
 			resultPopulation.addSubject(_operator.mutate(children.get(0)));
 			resultPopulation.addSubject(_operator.mutate(children.get(1)));
@@ -221,10 +222,10 @@ public class GeneticAlgorithm<GeneType>
 
 	}
 
-	private Population<GeneType> mutate(int numMutateSubject) throws Exception
+	private Population<S> mutate(int numMutateSubject) throws Exception
 	{		
-		List<Subject<GeneType>> subjects = new ArrayList<Subject<GeneType>>(_population.getSubjects());
-		Population<GeneType> result = new Population<GeneType>();
+		List<S> subjects = new ArrayList<S>(_population.getSubjects());
+		Population<S> result = new Population<S>();
 
 		for (int i = 1; i < subjects.size(); i++)
 		{
@@ -236,16 +237,17 @@ public class GeneticAlgorithm<GeneType>
 		return result;		
 	}
 
-	private Population<GeneType> randomize(int numRandomSubject) throws Exception
+	@SuppressWarnings("unchecked")
+	private Population<S> randomize(int numRandomSubject) throws Exception
 	{		
-		List<Subject<GeneType>> subjects = _population.getSubjects();
-		Population<GeneType> result = new Population<GeneType>();
+		List<S> subjects = _population.getSubjects();
+		Population<S> result = new Population<S>();
 
 		for (int i = 0; i < subjects.size(); i++)
 		{
 			if ((1.0 * numRandomSubject/ subjects.size()) > _random.nextDouble())
 			{
-				result.addSubject(_operator.randomize(subjects.get(i).clone()));
+				result.addSubject(_operator.randomize((S)subjects.get(i).clone()));
 			}
 		}
 		return result;

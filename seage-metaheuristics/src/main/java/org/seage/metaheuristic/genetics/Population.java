@@ -30,25 +30,25 @@ import java.util.*;
 /**
  * @author Richard Malek (original)
  */
-class Population<GeneType>
+class Population<S extends Subject<?>>
 {
-    private ArrayList<Subject<GeneType>> _population;
+    private ArrayList<S> _population;
 
     public Population()
     {
-        _population = new ArrayList<Subject<GeneType>>();
+        _population = new ArrayList<S>();
     }
 
-    public void addSubject(Subject<GeneType> subject)
+    public void addSubject(S subject)
     {
         _population.add(subject);
     }
 
-    public Subject<GeneType> getSubject(int ix) throws Exception
+    public S getSubject(int ix) throws Exception
     {
         try
         {
-            return (Subject<GeneType>)_population.get(ix);
+            return _population.get(ix);
         }
         catch (Exception ex)
         {
@@ -66,7 +66,7 @@ class Population<GeneType>
         return _population.size();
     }
 
-    public List<Subject<GeneType>> getList()
+    public List<S> getList()
     {
         return _population;
     }
@@ -75,12 +75,12 @@ class Population<GeneType>
     {
         try
         {
-            ArrayList<Subject<GeneType>> newPopulation = new ArrayList<Subject<GeneType>>();
+            ArrayList<S> newPopulation = new ArrayList<S>();
             newPopulation.add(getSubject(0));
             for (int i = 1; i < _population.size(); i++)
             {
-                Subject<GeneType> prev = (Subject<GeneType>)_population.get(i - 1);
-                Subject<GeneType> curr = (Subject<GeneType>)_population.get(i);
+                S prev = _population.get(i - 1);
+                S curr = _population.get(i);
                 if (curr.hashCode() != prev.hashCode())
                 {
                     newPopulation.add(curr);
@@ -98,25 +98,25 @@ class Population<GeneType>
     public void resize(int newLength)
     {
         if(getSize() > newLength)
-            _population = new ArrayList<Subject<GeneType>>(_population.subList(0, newLength));
+            _population = new ArrayList<S>(_population.subList(0, newLength));
     }
 
-    public Subject<GeneType> getBestSubject()
+    public S getBestSubject()
     {
         return _population.get(0);
     }
 
-    public void mergePopulation(Population<GeneType> population)
+    public void mergePopulation(Population<S> population)
     {
         _population.addAll(population._population);
     }
 
-    public List<Subject<GeneType>> getSubjects() throws Exception
+    public List<S> getSubjects() throws Exception
     {
         return getSubjects(_population.size());
     }
 
-	public List<Subject<GeneType>> getSubjects(int numSubjects) throws Exception
+	public List<S> getSubjects(int numSubjects) throws Exception
     {
         try
         {
@@ -132,7 +132,7 @@ class Population<GeneType>
         }
     }
 
-	public void sort(SubjectComparator<GeneType> subjectComparator)
+	public void sort(SubjectComparator<S> subjectComparator)
 	{
 		Collections.sort(_population, subjectComparator);		
 	}

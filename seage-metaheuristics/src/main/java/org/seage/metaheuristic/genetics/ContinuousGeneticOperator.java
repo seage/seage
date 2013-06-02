@@ -1,7 +1,7 @@
 package org.seage.metaheuristic.genetics;
 
 
-public class RealGeneticOperator extends GeneticOperator<Double>	// private double _crossLengthPct;
+public class ContinuousGeneticOperator<S extends Subject<Double>> extends BasicGeneticOperator<S, Double>	// private double _crossLengthPct;
 {
 	private Limit[] _limits;
 	
@@ -16,7 +16,7 @@ public class RealGeneticOperator extends GeneticOperator<Double>	// private doub
 		}
 	}
 	
-	public RealGeneticOperator(Limit[] limits)
+	public ContinuousGeneticOperator(Limit[] limits)
 	{
 		_limits = limits;
 	}
@@ -47,7 +47,7 @@ public class RealGeneticOperator extends GeneticOperator<Double>	// private doub
 	}
 
 	//@Override
-	public Subject<Double> mutate(Subject<Double>  subject) throws Exception
+	public S mutate(S subject) throws Exception
 	{
 		double mutateFactor = _mutateLengthPct /100.0;
 	
@@ -63,7 +63,7 @@ public class RealGeneticOperator extends GeneticOperator<Double>	// private doub
 	}
 
 	@Override
-	public Subject<Double> randomize(Subject<Double>  subject) throws Exception
+	public S randomize(S subject) throws Exception
 	{
 		for(int i=0;i<subject.getChromosome().getLength();i++)
 		{			

@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * @author Richard Malek
  */
-public class TspGeneticOperator extends GeneticOperator<Integer>
+public class TspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, Integer>
 {
 	public List<Subject<Integer>> crossOver2(Subject<Integer> parent1, Subject<Integer> parent2) throws Exception
 	{

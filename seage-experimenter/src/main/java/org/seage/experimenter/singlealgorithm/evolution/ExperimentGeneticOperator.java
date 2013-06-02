@@ -1,9 +1,8 @@
 package org.seage.experimenter.singlealgorithm.evolution;
 
-import org.seage.metaheuristic.genetics.RealGeneticOperator;
-import org.seage.metaheuristic.genetics.Subject;
+import org.seage.metaheuristic.genetics.ContinuousGeneticOperator;
 
-public class ExperimentGeneticOperator extends RealGeneticOperator
+public class ExperimentGeneticOperator extends ContinuousGeneticOperator<ExperimentSubject>
 {
 
 	public ExperimentGeneticOperator(Limit[] limits)
@@ -14,14 +13,14 @@ public class ExperimentGeneticOperator extends RealGeneticOperator
 
 
 	@Override
-	public Subject<Double> mutate(Subject<Double> subject) throws Exception
+	public ExperimentSubject mutate(ExperimentSubject subject) throws Exception
 	{
 		// TODO Auto-generated method stub
 		return super.mutate(subject);
 	}
 
 	@Override
-	public Subject<Double> randomize(Subject<Double> subject) throws Exception
+	public ExperimentSubject randomize(ExperimentSubject subject) throws Exception
 	{
 		// TODO Auto-generated method stub
 		return super.randomize(subject);

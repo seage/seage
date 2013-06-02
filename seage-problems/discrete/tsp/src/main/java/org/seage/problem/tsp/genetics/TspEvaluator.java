@@ -34,7 +34,7 @@ import org.seage.problem.tsp.City;
  *
  * @author Richard Malek
  */
-public class TspEvaluator extends SubjectEvaluator<Integer>
+public class TspEvaluator extends SubjectEvaluator<Subject<Integer>>
 {
     private City[] _cities;
 	public TspEvaluator(City[] cities)

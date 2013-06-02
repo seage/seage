@@ -30,13 +30,13 @@ import java.util.List;
 /**
  * @author Richard Malek (original)
  */
-public abstract class SubjectEvaluator<GeneType>
+public abstract class SubjectEvaluator<S extends Subject<?>>
 {		
-	protected abstract double[] evaluate(Subject<GeneType> solution) throws Exception;
+	protected abstract double[] evaluate(S solution) throws Exception;
 	
-	public void evaluateSubjects(List<Subject<GeneType>> subjects) throws Exception
+	public void evaluateSubjects(List<S> subjects) throws Exception
 	{
-		for (Subject<GeneType> subject : subjects)
+		for (S subject : subjects)
 		{			
 			subject.setObjectiveValue(evaluate(subject));
 		}	

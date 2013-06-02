@@ -26,12 +26,17 @@
 
 package org.seage.problem.tsp.genetics;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
 import org.seage.aal.data.ProblemConfig;
+import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspProblemInstance;
 
@@ -54,7 +59,32 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
     {        
         IAlgorithmAdapter algorithm;
         City[] cities = ((TspProblemInstance)instance).getCities();
-        algorithm = new GeneticAlgorithmAdapter<Integer>(new TspGeneticOperator(), new TspEvaluator(cities), false, "");
+        algorithm = new GeneticAlgorithmAdapter<Subject<Integer>>(new TspGeneticOperator(), new TspEvaluator(cities), false, "")
+		{
+        	@Override
+			public Object[][] solutionsToPhenotype() throws Exception 
+			{
+				_evaluator.evaluateSubjects(_solutions);
+				Collections.sort(_solutions, _comparator);
+		
+				Object[][] result = new Object[_solutions.size()][];
+		
+				for (int i = 0; i < _solutions.size(); i++)
+				{
+					int numGenes = _solutions.get(i).getChromosome().getLength();
+					result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
+				}
+				return result;
+			}
+			
+			@Override
+			public void solutionsFromPhenotype(Object[][] source) throws Exception 
+			{
+				_solutions = new ArrayList<Subject<Integer>>(source.length);
+				for (int i = 0; i < source.length; i++)				
+					_solutions.add( new Subject<Integer>((Integer[]) source[i]));								
+			}
+		};
 
         return algorithm;
     }

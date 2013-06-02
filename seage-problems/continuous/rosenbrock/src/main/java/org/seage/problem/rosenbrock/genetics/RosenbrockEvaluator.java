@@ -4,7 +4,7 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.rosenbrock.RosenbrockFunction;
 
-public class RosenbrockEvaluator extends SubjectEvaluator<Double>
+public class RosenbrockEvaluator extends SubjectEvaluator<Subject<Double> >
 {
 	@Override
 	protected double[] evaluate(Subject<Double> solution) throws Exception

@@ -31,7 +31,8 @@ public class GeneticAlgorithmTest {
 	@Test
 	public void testAlgorithm() throws Exception 
 	{		
-		SubjectEvaluator<Integer> evaluator = new SubjectEvaluator<Integer>()
+		BasicGeneticOperator<Subject<Integer>, Integer> operator = new BasicGeneticOperator<Subject<Integer>, Integer>();
+		SubjectEvaluator<Subject<Integer>> evaluator = new SubjectEvaluator<Subject<Integer>>()
 		{
 
 			@Override
@@ -46,7 +47,7 @@ public class GeneticAlgorithmTest {
 	            return new double[]{val};
 			}
 		};
-		GeneticAlgorithm<Integer> ga = new GeneticAlgorithm<Integer>(new GeneticOperator<Integer>(), evaluator );
+		GeneticAlgorithm<Subject<Integer>> ga = new GeneticAlgorithm<Subject<Integer>>(operator, evaluator );
 		ga.addGeneticSearchListener(new Listener());
 		ga.setCrossLengthPct(0.4);
 		ga.setEliteSubjectsPct(0.1);
@@ -73,39 +74,39 @@ public class GeneticAlgorithmTest {
 		ga.startSearching(subjects);
 	}
 	
-	private class Listener implements IAlgorithmListener<GeneticAlgorithmEvent<Integer>>
+	private class Listener implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>>
 	{
 
 		@Override
-		public void algorithmStarted(GeneticAlgorithmEvent<Integer> e)
+		public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e)
 		{
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void algorithmStopped(GeneticAlgorithmEvent<Integer> e)
+		public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e)
 		{
 			System.out.println(e.getGeneticSearch().getBestSubject().getChromosome());
 			
 		}
 
 		@Override
-		public void newBestSolutionFound(GeneticAlgorithmEvent<Integer> e)
+		public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e)
 		{
 			System.out.println(e.getGeneticSearch().getBestSubject().getFitness()[0]);
 			
 		}
 
 		@Override
-		public void iterationPerformed(GeneticAlgorithmEvent<Integer> e)
+		public void iterationPerformed(GeneticAlgorithmEvent<Subject<Integer>> e)
 		{
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Integer> e)
+		public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Integer>> e)
 		{
 			// TODO Auto-generated method stub
 			

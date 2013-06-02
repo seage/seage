@@ -26,15 +26,19 @@
 
 package org.seage.aal.algorithm.genetics;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
-import org.seage.metaheuristic.genetics.SubjectEvaluator;
-import org.seage.metaheuristic.genetics.GeneticOperator;
+import org.seage.metaheuristic.genetics.BasicGeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
+import org.seage.metaheuristic.genetics.SubjectEvaluator;
 
 /**
  *
@@ -62,7 +66,7 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-    	SubjectEvaluator<Integer> se = new SubjectEvaluator<Integer>()
+    	SubjectEvaluator<Subject<Integer>> se = new SubjectEvaluator<Subject<Integer>>()
 		{			
 			@Override
 			protected double[] evaluate(Subject<Integer> solution) throws Exception
@@ -76,7 +80,34 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
 	            return new double[]{val};
 			}
 		};
-        _algorithm = new GeneticAlgorithmAdapter<Integer>(new GeneticOperator<Integer>(), se, false, "");
+        
+		_algorithm = new GeneticAlgorithmAdapter<Subject<Integer>>(new BasicGeneticOperator<Subject<Integer>, Integer>(), se, false, "") 
+        {
+			
+			@Override
+			public Object[][] solutionsToPhenotype() throws Exception 
+			{
+				_evaluator.evaluateSubjects(_solutions);
+				Collections.sort(_solutions, _comparator);
+		
+				Object[][] result = new Object[_solutions.size()][];
+		
+				for (int i = 0; i < _solutions.size(); i++)
+				{
+					int numGenes = _solutions.get(i).getChromosome().getLength();
+					result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
+				}
+				return result;
+			}
+			
+			@Override
+			public void solutionsFromPhenotype(Object[][] source) throws Exception 
+			{
+				_solutions = new ArrayList<Subject<Integer>>(source.length);
+				for (int i = 0; i < source.length; i++)				
+					_solutions.add( new Subject<Integer>((Integer[]) source[i]));								
+			}
+		};
         
         _algParams = new AlgorithmParams("GeneticAlgorithmTest");
         _algParams.putValue("problemID", "GeneticAlgorithmTest");

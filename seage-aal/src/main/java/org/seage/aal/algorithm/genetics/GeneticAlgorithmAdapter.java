@@ -25,9 +25,6 @@
  */
 package org.seage.aal.algorithm.genetics;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -39,9 +36,9 @@ import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
-import org.seage.metaheuristic.genetics.GeneticOperator;
 import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
+import org.seage.metaheuristic.genetics.GeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectComparator;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
@@ -57,16 +54,16 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
 	@Parameter(name = "mutateSubjectPct", min = 0, max = 1, init = 0.10), 
 	@Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),
 	@Parameter(name = "randomSubjectPct", min = 0, max = 1, init = 0.10) })
-public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
+public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends AlgorithmAdapterImpl
 {
 
-	protected List<Subject<GeneType>> _solutions;
-	private GeneticAlgorithm<GeneType> _geneticSearch;
-	private SubjectEvaluator<GeneType> _evaluator;
-	private SubjectComparator<GeneType> _comparator;
+	protected List<S> _solutions;
+	protected GeneticAlgorithm<S> _geneticSearch;
+	protected SubjectEvaluator<S> _evaluator;
+	protected SubjectComparator<S> _comparator;
 	private GeneticAlgorithmListener _algorithmListener;
-	private Subject<GeneType> _bestEverSolution;
-	private AlgorithmParams _params;
+	protected S _bestEverSolution;
+	protected AlgorithmParams _params;
 	private String _searchID;
 	// private String _paramID;
 
@@ -81,12 +78,12 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 
 	// private DataNode _minutes;
 
-	public GeneticAlgorithmAdapter(GeneticOperator<GeneType> operator, SubjectEvaluator<GeneType> evaluator, boolean maximizing, String searchID)
+	public GeneticAlgorithmAdapter(GeneticOperator<S> operator, SubjectEvaluator<S> evaluator, boolean maximizing, String searchID)
 	{
 		_evaluator = evaluator;
 		_algorithmListener = new GeneticAlgorithmListener();
-		_comparator = new SubjectComparator<GeneType>();
-		_geneticSearch = new GeneticAlgorithm<GeneType>(operator, evaluator);
+		_comparator = new SubjectComparator<S>();
+		_geneticSearch = new GeneticAlgorithm<S>(operator, evaluator);
 		_geneticSearch.addGeneticSearchListener(_algorithmListener);
 		_searchID = searchID;
 	}
@@ -160,75 +157,75 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 		return _reporter.getReport();
 	}
 
-	@SuppressWarnings("unchecked")
-	public void solutionsFromPhenotype(Object[][] source) throws Exception
-	{
-		int numSolutions = source.length;
-
-		//_solutions = (Subject<GeneType>[]) new Object[numSolutions];
-		_solutions = new ArrayList<Subject<GeneType>>(numSolutions);//(Subject<GeneType>[]) Array.newInstance(Subject.class, numSolutions);
-
-		for (int i = 0; i < numSolutions; i++)
-		{
-			_solutions.add( new Subject<GeneType>((GeneType[]) source[i]));
-			// for (int j = 0; j < source[i].length; j++)
-			// {
-			// int geneValue = ((Integer)source[i][j]).intValue();
-			// _solutions[i].getChromosome().getGene(j).setValue(geneValue);
-			// }
-		}
-	}
+	public abstract void solutionsFromPhenotype(Object[][] source) throws Exception;
+//	{
+//		int numSolutions = source.length;
+//
+//		//_solutions = (Subject<GeneType>[]) new Object[numSolutions];
+//		_solutions = new ArrayList<S>(numSolutions);//(Subject<GeneType>[]) Array.newInstance(Subject.class, numSolutions);
+//
+//		for (int i = 0; i < numSolutions; i++)
+//		{
+//			_solutions.add( new S((GeneType[]) source[i]));
+//			// for (int j = 0; j < source[i].length; j++)
+//			// {
+//			// int geneValue = ((Integer)source[i][j]).intValue();
+//			// _solutions[i].getChromosome().getGene(j).setValue(geneValue);
+//			// }
+//		}
+//	}
 
 	// Returns solutions in best-first order
-	public Object[][] solutionsToPhenotype() throws Exception
+	public abstract Object[][] solutionsToPhenotype() throws Exception;
+//	{
+//		_evaluator.evaluateSubjects(_solutions);
+//		Collections.sort(_solutions, _comparator);
+//
+//		Object[][] result = new Object[_solutions.size()][];
+//
+//		for (int i = 0; i < _solutions.size(); i++)
+//		{
+//			int numGenes = _solutions.get(i).getChromosome().getLength();
+//			result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
+//
+//			// for (int j = 0; j < numGenes; j++)
+//			// {
+//			// result[i][j] =
+//			// _solutions[i].getChromosome().getGene(j).getValue();
+//			// }
+//		}
+//		return result;
+//
+//	}
+
+	private class GeneticAlgorithmListener implements IAlgorithmListener<GeneticAlgorithmEvent<S>>
 	{
-		_evaluator.evaluateSubjects(_solutions);
-		Collections.sort(_solutions, _comparator);
-
-		Object[][] result = new Object[_solutions.size()][];
-
-		for (int i = 0; i < _solutions.size(); i++)
-		{
-			int numGenes = _solutions.get(i).getChromosome().getLength();
-			result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
-
-			// for (int j = 0; j < numGenes; j++)
-			// {
-			// result[i][j] =
-			// _solutions[i].getChromosome().getGene(j).getValue();
-			// }
-		}
-		return result;
-
-	}
-
-	private class GeneticAlgorithmListener implements IAlgorithmListener<GeneticAlgorithmEvent<GeneType>>
-	{
-		public void algorithmStarted(GeneticAlgorithmEvent<GeneType> e)
+		public void algorithmStarted(GeneticAlgorithmEvent<S> e)
 		{
 			_algorithmStarted = true;
 			_statNumNewSol = _statLastImprovingIteration = 0;
 		}
 
-		public void algorithmStopped(GeneticAlgorithmEvent<GeneType> e)
+		public void algorithmStopped(GeneticAlgorithmEvent<S> e)
 		{
 			_algorithmStopped = true;
 			_statNrOfIterationsDone = e.getGeneticSearch().getCurrentIteration();
-			Subject<GeneType> s = e.getGeneticSearch().getBestSubject();
+			S s = e.getGeneticSearch().getBestSubject();
 			if (s != null)
 				_statBestObjVal = s.getObjectiveValue()[0];
 		}
 
-		public void newBestSolutionFound(GeneticAlgorithmEvent<GeneType> e)
+		@SuppressWarnings("unchecked")
+		public void newBestSolutionFound(GeneticAlgorithmEvent<S> e)
 		{
 			try
 			{
-				GeneticAlgorithm<GeneType> gs = e.getGeneticSearch();
-				Subject<GeneType> subject = gs.getBestSubject();
+				GeneticAlgorithm<S> gs = e.getGeneticSearch();
+				S subject = gs.getBestSubject();
 				if(_statNumNewSol==0)
 					_statInitObjVal = subject.getObjectiveValue()[0];
 				 
-				_bestEverSolution = gs.getBestSubject().clone();
+				_bestEverSolution = (S)gs.getBestSubject().clone();
 				_reporter.putNewSolution(System.currentTimeMillis(), gs.getCurrentIteration(), subject.getObjectiveValue()[0], subject.toString());
 				_statNumNewSol++;
 				_statLastImprovingIteration = gs.getCurrentIteration();
@@ -240,13 +237,13 @@ public class GeneticAlgorithmAdapter<GeneType> extends AlgorithmAdapterImpl
 			}
 		}
 
-		public void noChangeInValueIterationMade(GeneticAlgorithmEvent<GeneType> e)
+		public void noChangeInValueIterationMade(GeneticAlgorithmEvent<S> e)
 		{
 
 		}
 
 		@Override
-		public void iterationPerformed(GeneticAlgorithmEvent<GeneType> e)
+		public void iterationPerformed(GeneticAlgorithmEvent<S> e)
 		{
 
 		}
