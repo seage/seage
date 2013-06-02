@@ -109,7 +109,8 @@ class ContinuousFireflyOperator extends FireflyOperator{
  */
     public void attract(Solution s0, Solution s1, int iter) {
         //beta step
-        Double[] cs0 = ((ContinuousSolution)s0)._assign,cs1 = ((ContinuousSolution)s1)._assign;
+        @SuppressWarnings("unused")
+		Double[] cs0 = ((ContinuousSolution)s0)._assign,cs1 = ((ContinuousSolution)s1)._assign;
         // compute beta
         Double[] result=betaStep(s0,s1,_absorption);
         if(_withDecreasingRandomness)

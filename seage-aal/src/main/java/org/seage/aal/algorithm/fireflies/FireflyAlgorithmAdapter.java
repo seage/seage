@@ -58,14 +58,14 @@ import org.seage.metaheuristic.fireflies.SolutionComparator;
 })
 public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
 {
-    protected Solution[]          _solutions;
-    private FireflySearch         _fireflySearch;
-    private ObjectiveFunction     _evaluator;
-    private SolutionComparator    _comparator;
-    private FireflySearchObserver _observer;
-    private Solution              _bestEverSolution;
-    private AlgorithmParams       _params;
-    private String                _searchID;
+    protected Solution[]          	_solutions;
+    protected FireflySearch         _fireflySearch;
+    protected ObjectiveFunction     _evaluator;
+    protected SolutionComparator    _comparator;
+    protected FireflySearchObserver _observer;
+    protected Solution              _bestEverSolution;
+    protected AlgorithmParams       _params;
+    private String                	_searchID;
     // private String _paramID;
 
     private double                _statInitObjVal;
