@@ -61,12 +61,12 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
         
         GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<Subject<Integer>>(new TspGeneticOperator(), new TspEvaluator(cities)); 
         gs.addGeneticSearchListener(this);
-        gs.setEliteSubjectsPct(0.05);
-        gs.setMutatePopulationPct(0.0);
-        gs.setMutateChromosomeLengthPct(0.3);
+        gs.setEliteSubjectsPct(5);
+        gs.setMutatePopulationPct(1);
+        gs.setMutateChromosomeLengthPct(30);
         gs.setPopulationCount(500);
-        gs.setRandomSubjectsPct(0.1);
-        gs.setCrossLengthPct(0.30);
+        gs.setRandomSubjectsPct(10);
+        gs.setCrossLengthPct(30);
         gs.setIterationToGo(100000);
         gs.startSearching(generateInitialSubjects(cities, 100));
     }

@@ -39,9 +39,9 @@ public class GeneticAlgorithm<S extends Subject<?>>
 	private int _iterationCount;
 	private int _currentIteration;
 	private int _populationCount;
-	private double _randomSubjectsPct;
-	private double _mutateSubjectsPct;
-	private double _eliteSubjectsPct;
+	private double _randomSubjectsCoef;
+	private double _mutateSubjectsCoef;
+	private double _eliteSubjectsCoef;
 
 	private boolean _keepSearching;
 	private boolean _isRunning;
@@ -115,10 +115,10 @@ public class GeneticAlgorithm<S extends Subject<?>>
 		_currentIteration = 0;
 
 		Population<S> workPopulation = new Population<S>();
-		int numEliteSubject = (int) Math.max(_eliteSubjectsPct * _populationCount, 1);
-		int numMutateSubject = (int) (_mutateSubjectsPct * _populationCount);
+		int numEliteSubject = (int) Math.max(_eliteSubjectsCoef * _populationCount, 1);
+		int numMutateSubject = (int) (_mutateSubjectsCoef * _populationCount);
 		int numCrossSubject = _populationCount - numEliteSubject - numMutateSubject;
-		int numRandomSubject = (int) (_randomSubjectsPct * _populationCount);
+		int numRandomSubject = (int) (_randomSubjectsCoef * _populationCount);
 
 		_population.removeAll();
 		for (int i = 0; i < _populationCount; i++)
@@ -194,7 +194,6 @@ public class GeneticAlgorithm<S extends Subject<?>>
 			}
 		}
 		return result;
-
 	}
 
 	private Population<S> crossover(int numCrossSubject) throws Exception
@@ -219,7 +218,6 @@ public class GeneticAlgorithm<S extends Subject<?>>
 
 		}
 		return resultPopulation;
-
 	}
 
 	private Population<S> mutate(int numMutateSubject) throws Exception
@@ -251,7 +249,6 @@ public class GeneticAlgorithm<S extends Subject<?>>
 			}
 		}
 		return result;
-
 	}
 
 	// setters / getters
@@ -283,29 +280,29 @@ public class GeneticAlgorithm<S extends Subject<?>>
 
 	public void setRandomSubjectsPct(double pct)
 	{
-		_randomSubjectsPct = pct;
+		_randomSubjectsCoef = pct/100.0;
 	}
 
 	public void setMutatePopulationPct(double pct)
 	{
-		_mutateSubjectsPct = pct;
+		_mutateSubjectsCoef = pct/100.0;
 	}
 
 	public void setEliteSubjectsPct(double pct)
 	{
-		_eliteSubjectsPct = pct;
+		_eliteSubjectsCoef = pct/100.0;
 	}
 
 	// ----------------------------------------------------
 
 	public void setCrossLengthPct(double crossLengthPct)
 	{
-		_operator.setCrossLengthPct(crossLengthPct);
+		_operator.setCrossLengthCoef(crossLengthPct/100.0);
 	}
 
 	public void setMutateChromosomeLengthPct(double pct)
 	{
-		_operator.setMutateLengthPct(pct);
+		_operator.setMutateLengthCoef(pct/100.0);
 
 	}
 }

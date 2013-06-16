@@ -67,13 +67,13 @@ public class RosenbrockGeneticAlgorithmTest
 					
 				}
 			});
-			gs.setCrossLengthPct(0.4);
-			gs.setEliteSubjectsPct(0.1);
+			gs.setCrossLengthPct(40);
+			gs.setEliteSubjectsPct(10);
 			gs.setIterationToGo(10000);
-			gs.setMutateChromosomeLengthPct(0.2);
-			gs.setMutatePopulationPct(0.0);			
+			gs.setMutateChromosomeLengthPct(20);
+			gs.setMutatePopulationPct(10);			
 			gs.setPopulationCount(1000);
-			gs.setRandomSubjectsPct(0.01);
+			gs.setRandomSubjectsPct(1);
 
 			Double[] dimArray = new Double[dim];
 			for(int i=0;i<dim;i++)

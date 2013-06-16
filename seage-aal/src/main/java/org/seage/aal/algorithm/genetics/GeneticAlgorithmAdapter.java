@@ -47,13 +47,13 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
  * GeneticSearchAdapter class
  */
 @AlgorithmParameters({ 
-	@Parameter(name = "crossLengthPct", min = 0, max = 1, init = 0.10), 
-	@Parameter(name = "eliteSubjectPct", min = 0, max = 1, init = 0.10),
+	@Parameter(name = "crossLengthPct", min = 0, max = 100, init = 10), 
+	@Parameter(name = "eliteSubjectPct", min = 0, max = 100, init = 10),
 	@Parameter(name = "iterationCount", min = 100, max = 100000, init = 100), 
-	@Parameter(name = "mutateLengthPct", min = 0, max = 1, init = 0.10),
-	@Parameter(name = "mutateSubjectPct", min = 0, max = 1, init = 0.10), 
+	@Parameter(name = "mutateLengthPct", min = 0, max = 100, init = 10),
+	@Parameter(name = "mutateSubjectPct", min = 0, max = 100, init = 10), 
 	@Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),
-	@Parameter(name = "randomSubjectPct", min = 0, max = 1, init = 0.10) })
+	@Parameter(name = "randomSubjectPct", min = 0, max = 100, init = 10) })
 public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends AlgorithmAdapterImpl
 {
 
@@ -132,18 +132,17 @@ public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends Algo
 		_params.putValue("id", "GeneticAlgorithm");
 
 		DataNode p = params.getDataNode("Parameters");
-		_geneticSearch.getOperator().setCrossLengthPct(p.getValueDouble("crossLengthPct"));
-		_geneticSearch.getOperator().setMutateLengthPct(p.getValueDouble("mutateLengthPct"));
+		_geneticSearch.getOperator().setCrossLengthCoef(p.getValueDouble("crossLengthPct"));
+		_geneticSearch.getOperator().setMutateLengthCoef(p.getValueDouble("mutateLengthPct"));
 		_geneticSearch.setEliteSubjectsPct(p.getValueDouble("eliteSubjectPct"));
 		_geneticSearch.setIterationToGo(p.getValueInt("iterationCount"));
-		// _statNumIter = p.getValueInt("iterationCount");
 		_geneticSearch.setMutatePopulationPct(p.getValueDouble("mutateSubjectPct"));
 		_geneticSearch.setPopulationCount(p.getValueInt("numSolutions"));
 		_geneticSearch.setRandomSubjectsPct(p.getValueDouble("randomSubjectPct"));
 
 		// _paramID = param.getValue("ID");
 	}
-
+		
 	public AlgorithmReport getReport() throws Exception
 	{	
 		int num = _solutions.size();// > 10 ? 10 : solutions.length;
@@ -158,45 +157,11 @@ public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends Algo
 	}
 
 	public abstract void solutionsFromPhenotype(Object[][] source) throws Exception;
-//	{
-//		int numSolutions = source.length;
-//
-//		//_solutions = (Subject<GeneType>[]) new Object[numSolutions];
-//		_solutions = new ArrayList<S>(numSolutions);//(Subject<GeneType>[]) Array.newInstance(Subject.class, numSolutions);
-//
-//		for (int i = 0; i < numSolutions; i++)
-//		{
-//			_solutions.add( new S((GeneType[]) source[i]));
-//			// for (int j = 0; j < source[i].length; j++)
-//			// {
-//			// int geneValue = ((Integer)source[i][j]).intValue();
-//			// _solutions[i].getChromosome().getGene(j).setValue(geneValue);
-//			// }
-//		}
-//	}
+
 
 	// Returns solutions in best-first order
 	public abstract Object[][] solutionsToPhenotype() throws Exception;
-//	{
-//		_evaluator.evaluateSubjects(_solutions);
-//		Collections.sort(_solutions, _comparator);
-//
-//		Object[][] result = new Object[_solutions.size()][];
-//
-//		for (int i = 0; i < _solutions.size(); i++)
-//		{
-//			int numGenes = _solutions.get(i).getChromosome().getLength();
-//			result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
-//
-//			// for (int j = 0; j < numGenes; j++)
-//			// {
-//			// result[i][j] =
-//			// _solutions[i].getChromosome().getGene(j).getValue();
-//			// }
-//		}
-//		return result;
-//
-//	}
+
 
 	private class GeneticAlgorithmListener implements IAlgorithmListener<GeneticAlgorithmEvent<S>>
 	{

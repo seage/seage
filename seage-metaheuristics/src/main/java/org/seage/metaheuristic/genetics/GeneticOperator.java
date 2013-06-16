@@ -36,15 +36,15 @@ import java.util.Random;
 public abstract class GeneticOperator<S extends Subject<?>>
 {
 	protected Random _random;
-	protected double _crossLengthPct;
-	protected double _mutateLengthPct;
+	protected double _crossLengthCoef;
+	protected double _mutateLengthCoef;
 
 	public GeneticOperator()
 	{
 		_random = new Random();
 
-		_crossLengthPct = 0.45;
-		_mutateLengthPct = 0.3;
+		_crossLengthCoef = 0.45;
+		_mutateLengthCoef = 0.3;
 	}
 
 	// / <summary>
@@ -76,13 +76,13 @@ public abstract class GeneticOperator<S extends Subject<?>>
 	public abstract S randomize(S subject) throws Exception;
 
 
-	public void setCrossLengthPct(double pct)
+	public void setCrossLengthCoef(double coef)
 	{
-		_crossLengthPct = pct;
+		_crossLengthCoef = coef;
 	}
 
-	public void setMutateLengthPct(double pct)
+	public void setMutateLengthCoef(double coef)
 	{
-		_mutateLengthPct = pct;
+		_mutateLengthCoef = coef;
 	}
 }

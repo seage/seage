@@ -82,8 +82,7 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
 		};
         
 		_algorithm = new GeneticAlgorithmAdapter<Subject<Integer>>(new BasicGeneticOperator<Subject<Integer>, Integer>(), se, false, "") 
-        {
-			
+        {			
 			@Override
 			public Object[][] solutionsToPhenotype() throws Exception 
 			{
@@ -114,13 +113,13 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
         _algParams.putValue("instance", "TestInstance");
         
         DataNode params = new DataNode("Parameters");
-        params.putValue("crossLengthPct", 0.40);
-        params.putValue("mutateLengthPct", 0.20);
-        params.putValue("eliteSubjectPct", 0.1);
+        params.putValue("crossLengthPct", 40);
+        params.putValue("mutateLengthPct", 20);
+        params.putValue("eliteSubjectPct", 1);
         params.putValue("iterationCount", 10);
-        params.putValue("mutateSubjectPct", 0.10);
+        params.putValue("mutateSubjectPct", 10);
         params.putValue("numSolutions", 10);
-        params.putValue("randomSubjectPct", 0.1); 
+        params.putValue("randomSubjectPct", 1); 
         
         _algParams.putDataNodeRef(params);
         

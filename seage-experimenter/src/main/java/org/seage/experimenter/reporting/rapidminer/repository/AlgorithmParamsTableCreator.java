@@ -12,7 +12,7 @@ import com.rapidminer.tools.Ontology;
 
 public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
 {
-    protected final String VERSION="0.1";
+    protected final String VERSION="0.4";
     private Hashtable<String, String> _rmAlgParamsConfigIDs;
     
     protected String _algorithmID;
@@ -44,7 +44,7 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
     public synchronized void processDocument(Document doc) throws Exception
     {
         Hashtable<String, XmlHelper.XPath> xPaths = _versionedXPaths.get(VERSION);
-                
+        
         double[] valArray = new double[_attributes.size()];
         int i=0;
         

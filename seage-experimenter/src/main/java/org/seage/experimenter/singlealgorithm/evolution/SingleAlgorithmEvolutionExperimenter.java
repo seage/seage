@@ -37,13 +37,13 @@ public class SingleAlgorithmEvolutionExperimenter extends SingleAlgorithmExperim
             {
             	_logger.info(instanceID);
             	GeneticAlgorithm<ExperimentSubject> gs = new GeneticAlgorithm<ExperimentSubject>(realOperator, new ExperimentEvaluator());
-        		gs.setCrossLengthPct(0.3);
-        		gs.setEliteSubjectsPct(0.2);
+        		gs.setCrossLengthPct(30);
+        		gs.setEliteSubjectsPct(20);
         		gs.setIterationToGo(numOfConfigs);
-        		gs.setMutateChromosomeLengthPct(0.1);
-        		gs.setMutatePopulationPct(0.0);
+        		gs.setMutateChromosomeLengthPct(10);
+        		gs.setMutatePopulationPct(1);
         		gs.setPopulationCount(5);
-        		gs.setRandomSubjectsPct(0.01);
+        		gs.setRandomSubjectsPct(1);
         		
         		List<ExperimentSubject> subjects = initializeSubjects(algorithmID, pi, 10);        		
         		
