@@ -31,9 +31,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.algorithm.ProblemProvider;
@@ -50,8 +48,7 @@ import org.seage.thread.TaskRunnerEx;
  */
 public abstract class SingleAlgorithmExperimenter extends Experimenter
 {
-	Configurator _configurator;
-    
+	Configurator _configurator;    
 
     public SingleAlgorithmExperimenter(String experimentName, Configurator configurator)
     {
@@ -121,20 +118,4 @@ public abstract class SingleAlgorithmExperimenter extends Experimenter
         _logger.info("-------------------------------------");
         _logger.log(Level.INFO, "Experiment " + experimentID + " finished ...");
     }
-
-    protected static String getDurationBreakdown(long millis)
-    {
-        if (millis < 0) { throw new IllegalArgumentException("Duration must be greater than zero!"); }
-
-        long days = TimeUnit.MILLISECONDS.toDays(millis);
-        millis -= TimeUnit.DAYS.toMillis(days);
-        long hours = TimeUnit.MILLISECONDS.toHours(millis);
-        millis -= TimeUnit.HOURS.toMillis(hours);
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-        millis -= TimeUnit.MINUTES.toMillis(minutes);
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
-
-        return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds); // (sb.toString());
-    }
-
 }

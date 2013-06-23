@@ -1,26 +1,29 @@
 package org.seage.experimenter.singlealgorithm.evolution;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimentTask;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
+import org.seage.thread.TaskRunnerEx;
 
-public class ExperimentTaskEvaluator extends SubjectEvaluator<ExperimentTaskSubject>
+public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<SingleAlgorithmExperimentTaskSubject>
 {
 	@Override
-	public void evaluateSubjects(List<ExperimentTaskSubject> subjects) throws Exception 
+	public void evaluateSubjects(List<SingleAlgorithmExperimentTaskSubject> subjects) throws Exception 
 	{
-//		List<Runnable> taskQueue = new ArrayList<Runnable>();
-		for(Subject<Double> s : subjects)
-		{
-			ExperimentTaskSubject es = (ExperimentTaskSubject)s;
-			
+		List<Runnable> taskQueue = new ArrayList<Runnable>();
+		for(SingleAlgorithmExperimentTaskSubject s : subjects)
+		{	
 			double val = 0;
-			for(int i=0;i<es.getChromosome().getLength();i++)
-				val+=(i+1)*es.getChromosome().getGene(i);
+												
+			//taskQueue.add( new SingleAlgorithmExperimentTask(experimentType, experimentID, timeoutS, config, reportName, reportOutputStream, runID));
 			
-			es.setObjectiveValue(new double[]{val});
+			s.setObjectiveValue(new double[]{val});
 		}
+		
+		new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(taskQueue.toArray(new Runnable[]{}));
 
 		
 //		String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", experimentID, problemID, algorithmID, instanceID);
@@ -45,7 +48,7 @@ public class ExperimentTaskEvaluator extends SubjectEvaluator<ExperimentTaskSubj
 	}
 
 	@Override
-	protected double[] evaluate(ExperimentTaskSubject solution) throws Exception {
+	protected double[] evaluate(SingleAlgorithmExperimentTaskSubject solution) throws Exception {
 		throw new Exception("Should be unimplemented");
 	}
 

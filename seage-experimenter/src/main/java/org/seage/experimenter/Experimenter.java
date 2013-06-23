@@ -28,6 +28,7 @@ package org.seage.experimenter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import org.seage.aal.algorithm.ProblemProvider;
@@ -76,4 +77,20 @@ public abstract class Experimenter
     }
     
     public abstract void runExperiment(int numOfConfigs, long timeoutS, String problemID, String[] algorithmIDs, String[] instanceIDs) throws Exception;
+    
+    
+    protected static String getDurationBreakdown(long millis)
+    {
+        if (millis < 0) { throw new IllegalArgumentException("Duration must be greater than zero!"); }
+
+        long days = TimeUnit.MILLISECONDS.toDays(millis);
+        millis -= TimeUnit.DAYS.toMillis(days);
+        long hours = TimeUnit.MILLISECONDS.toHours(millis);
+        millis -= TimeUnit.HOURS.toMillis(hours);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+        millis -= TimeUnit.MINUTES.toMillis(minutes);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+
+        return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds); // (sb.toString());
+    }
 }

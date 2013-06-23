@@ -171,7 +171,8 @@ public class GeneticAlgorithm<S extends Subject<?>>
 
 			if (_population.getSize() > _populationCount)
 				_population.resize(_populationCount);
-
+			
+			_eventProducer.fireIterationPerformed();
 		}
 		_evaluator.evaluateSubjects(_population.getSubjects());
 		_population.sort(_subjectComparator);
