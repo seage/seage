@@ -9,9 +9,9 @@ import org.seage.aal.data.ProblemConfig;
 import org.seage.data.DataNode;
 
 
-public abstract class Experiment implements Runnable
+public abstract class ExperimentTask implements Runnable
 {
-	protected static Logger _logger = Logger.getLogger(Experiment.class.getName());
+	protected static Logger _logger = Logger.getLogger(ExperimentTask.class.getName());
 	protected ProblemConfig _config;
 	protected String _experimentType;
 	protected long _experimentID;
@@ -19,11 +19,11 @@ public abstract class Experiment implements Runnable
 	protected long _timeoutS;
 	
 	protected String _reportName;
-	protected DataNode _experimentReport;
+	protected DataNode _experimentTaskReport;
 	protected ZipOutputStream _reportOutputStream;
 	
 	
-	public Experiment(String experimentType, long experimentID, long runID, long timeoutS, ProblemConfig config, String reportName, ZipOutputStream reportOutputStream) throws Exception
+	public ExperimentTask(String experimentType, long experimentID, long runID, long timeoutS, ProblemConfig config, String reportName, ZipOutputStream reportOutputStream) throws Exception
 	{
 		_experimentType = experimentType;
 		_experimentID = experimentID;
@@ -33,23 +33,23 @@ public abstract class Experiment implements Runnable
 		_reportName = reportName;
         _reportOutputStream = reportOutputStream;    	
         
-		_experimentReport = new DataNode("ExperimentTaskReport");
-        _experimentReport.putValue("version", "0.5");
-        _experimentReport.putValue("experimentType", experimentType);
-        _experimentReport.putValue("experimentID", experimentID);
-        _experimentReport.putValue("timeoutS", timeoutS);
+		_experimentTaskReport = new DataNode("ExperimentTaskReport");
+        _experimentTaskReport.putValue("version", "0.5");
+        _experimentTaskReport.putValue("experimentType", experimentType);
+        _experimentTaskReport.putValue("experimentID", experimentID);
+        _experimentTaskReport.putValue("timeoutS", timeoutS);
         
         try
 		{
-			_experimentReport.putValue("machineName", java.net.InetAddress.getLocalHost().getHostName());
+			_experimentTaskReport.putValue("machineName", java.net.InetAddress.getLocalHost().getHostName());
 		}
 		catch (UnknownHostException e)
 		{
 			_logger.log(Level.WARNING, e.getMessage());
 		}
-        _experimentReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
-        _experimentReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());
-        _experimentReport.putValue("availRAM", Runtime.getRuntime().maxMemory());
+        _experimentTaskReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
+        _experimentTaskReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());
+        _experimentTaskReport.putValue("availRAM", Runtime.getRuntime().maxMemory());
         
         
         DataNode configNode = new DataNode("Config");        
@@ -70,7 +70,7 @@ public abstract class Experiment implements Runnable
         configNode.putDataNode(problemNode);
         configNode.putDataNode(algorithmNode);
         
-        _experimentReport.putDataNode(configNode);
+        _experimentTaskReport.putDataNode(configNode);
 		
 	}
 	

@@ -40,7 +40,7 @@ import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
-import org.seage.experimenter.IExperimenter;
+import org.seage.experimenter.Experimenter;
 import org.seage.experimenter.config.Configurator;
 import org.seage.thread.TaskRunnerEx;
 
@@ -48,52 +48,18 @@ import org.seage.thread.TaskRunnerEx;
  * 
  * @author rick
  */
-public abstract class SingleAlgorithmExperimenter implements IExperimenter
+public abstract class SingleAlgorithmExperimenter extends Experimenter
 {
-
-    protected static Logger _logger = Logger.getLogger(SingleAlgorithmExperimenter.class.getName());
-
-    Configurator _configurator;
-    String _experimentName;
+	Configurator _configurator;
+    
 
     public SingleAlgorithmExperimenter(String experimentName, Configurator configurator)
     {
-    	_experimentName= experimentName;
+    	super(experimentName);
         _configurator = configurator;
-
-        new File("output/experiment-logs").mkdirs();
     }
 
-    public void runFromConfigFile(String configPath) throws Exception
-    {
-        //_experimentRunner.run(configPath, Long.MAX_VALUE);
-    }
-
-    @Override
-    public void runExperiment( int numOfConfigs, long timeoutS, String problemID) throws Exception
-    {
-        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-
-        List<String> algIDs = new ArrayList<String>();
-        for (DataNode alg : pi.getDataNode("Algorithms").getDataNodes("Algorithm"))
-            algIDs.add(alg.getValueStr("id"));
-
-        runExperiment(numOfConfigs, timeoutS, problemID, algIDs.toArray(new String[] {}));
-    }
-    
-    @Override
-    public void runExperiment(int numOfConfigs, long timeoutS, String problemID, String[] algorithmIDs) throws Exception
-    {
-        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-        
-        List<String> instanceNames = new ArrayList<String>();
-        for (DataNode ins : pi.getDataNode("Instances").getDataNodes("Instance"))
-            instanceNames.add(ins.getValueStr("id"));
-        
-        runExperiment(numOfConfigs, timeoutS, problemID, algorithmIDs, instanceNames.toArray(new String[] {}));
-        
-    }
-
+ 
     public void runExperiment(int numOfConfigs, long timeoutS, String problemID, String[] algorithmIDs, String[] instanceIDs) throws Exception
     {
         long experimentID = System.currentTimeMillis();
@@ -144,7 +110,7 @@ public abstract class SingleAlgorithmExperimenter implements IExperimenter
                     for (int runID = 1; runID <= 5; runID++)
                     {
                         String reportName = problemID + "-" + algorithmID + "-" + instanceID + "-" + configID + "-" + runID + ".xml";
-                        taskQueue.add(new SingleAlgorithmExperiment(_experimentName, experimentID, timeoutS, config, reportName, zos, runID));
+                        taskQueue.add(new SingleAlgorithmExperimentTask(_experimentName, experimentID, timeoutS, config, reportName, zos, runID));
                     }
                 }
                 new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(taskQueue.toArray(new Runnable[]{}));

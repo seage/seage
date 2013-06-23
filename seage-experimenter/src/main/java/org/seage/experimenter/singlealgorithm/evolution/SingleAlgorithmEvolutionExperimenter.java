@@ -3,23 +3,24 @@ package org.seage.experimenter.singlealgorithm.evolution;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.seage.aal.algorithm.ProblemProvider;
 import org.seage.aal.data.ProblemInfo;
 import org.seage.data.DataNode;
+import org.seage.experimenter.Experimenter;
 import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimenter;
 import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator.Limit;
 
-public class SingleAlgorithmEvolutionExperimenter extends SingleAlgorithmExperimenter
-{
+public class SingleAlgorithmEvolutionExperimenter extends Experimenter
+{	
 	public SingleAlgorithmEvolutionExperimenter() 
 	{
-		super("SingleAlgorithmEvolution", null);		
+		super("SingleAlgorithmEvolution");
 	}
-
-	@Override
+	
 	public void runExperiment(int numOfConfigs, long timeoutS, String problemID, String[] algorithmIDs, String[] instanceIDs) throws Exception
 	{
 		long experimentID = System.currentTimeMillis();
@@ -31,21 +32,21 @@ public class SingleAlgorithmEvolutionExperimenter extends SingleAlgorithmExperim
         for (String algorithmID : algorithmIDs)
         {
         	ContinuousGeneticOperator.Limit[] limits = prepareAlgorithmParametersLimits(algorithmID, pi);
-        	ContinuousGeneticOperator<ExperimentSubject> realOperator = new ContinuousGeneticOperator<ExperimentSubject>(limits);
+        	ContinuousGeneticOperator<ExperimentTaskSubject> realOperator = new ContinuousGeneticOperator<ExperimentTaskSubject>(limits);
         	
             for (String instanceID : instanceIDs)
             {
             	_logger.info(instanceID);
-            	GeneticAlgorithm<ExperimentSubject> gs = new GeneticAlgorithm<ExperimentSubject>(realOperator, new ExperimentEvaluator());
+            	GeneticAlgorithm<ExperimentTaskSubject> gs = new GeneticAlgorithm<ExperimentTaskSubject>(realOperator, new ExperimentTaskEvaluator());
         		gs.setCrossLengthPct(30);
         		gs.setEliteSubjectsPct(20);
-        		gs.setIterationToGo(numOfConfigs);
+        		gs.setIterationToGo((int) timeoutS);
         		gs.setMutateChromosomeLengthPct(10);
         		gs.setMutatePopulationPct(1);
-        		gs.setPopulationCount(5);
+        		gs.setPopulationCount(numOfConfigs);
         		gs.setRandomSubjectsPct(1);
         		
-        		List<ExperimentSubject> subjects = initializeSubjects(algorithmID, pi, 10);        		
+        		List<ExperimentTaskSubject> subjects = initializeSubjects(algorithmID, pi, numOfConfigs);        		
         		
         		gs.startSearching(subjects);
         		_logger.info("   " +gs.getBestSubject().toString());
@@ -57,9 +58,9 @@ public class SingleAlgorithmEvolutionExperimenter extends SingleAlgorithmExperim
         _logger.log(Level.INFO, "Experiment " + experimentID + " finished ...");
 	}
 
-	private List<ExperimentSubject> initializeSubjects(String algorithmID, ProblemInfo pi, int count) throws Exception 
+	private List<ExperimentTaskSubject> initializeSubjects(String algorithmID, ProblemInfo pi, int count) throws Exception 
 	{
-		List<ExperimentSubject> result = new ArrayList<ExperimentSubject>();
+		List<ExperimentTaskSubject> result = new ArrayList<ExperimentTaskSubject>();
 		List<DataNode> params = pi.getDataNode("Algorithms").getDataNodeById(algorithmID).getDataNodes("Parameter");
 		
 		for(int i=0;i<count;i++)
@@ -71,7 +72,7 @@ public class SingleAlgorithmEvolutionExperimenter extends SingleAlgorithmExperim
 	            double max = params.get(j).getValueDouble("max");
 	            values[j] = min + (max-min)*Math.random();
 	        }
-			result.add(new ExperimentSubject(values));
+			result.add(new ExperimentTaskSubject(values));
 		}
 		
 		return result;
@@ -93,5 +94,4 @@ public class SingleAlgorithmEvolutionExperimenter extends SingleAlgorithmExperim
 		
 		return result;
 	}
-
 }

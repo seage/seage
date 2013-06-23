@@ -2,21 +2,21 @@ package org.seage.experimenter.singlealgorithm.evolution;
 
 import org.seage.metaheuristic.genetics.Subject;
 
-public class ExperimentSubject extends Subject<Double> 
+public class ExperimentTaskSubject extends Subject<Double> 
 {
 
-	public ExperimentSubject(Double[] geneValues) {
+	public ExperimentTaskSubject(Double[] geneValues) {
 		super(geneValues);
 		// TODO Auto-generated constructor stub
 	}
 
-	public ExperimentSubject(ExperimentSubject experimentSubject) {
+	public ExperimentTaskSubject(ExperimentTaskSubject experimentSubject) {
 		super(experimentSubject);
 	}
 
 	@Override
 	public Subject<Double> clone() {
-		ExperimentSubject result = new ExperimentSubject(this);
+		ExperimentTaskSubject result = new ExperimentTaskSubject(this);
 		return result;
 	}
 	

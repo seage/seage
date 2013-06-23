@@ -30,6 +30,7 @@ public class FeedbackConfigurator extends Configurator
 	@SuppressWarnings("unchecked")
 	public FeedbackConfigurator() throws Exception
 	{
+		System.setProperty("rapidminer.home", ".");
 		RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
         RapidMiner.init();        
              

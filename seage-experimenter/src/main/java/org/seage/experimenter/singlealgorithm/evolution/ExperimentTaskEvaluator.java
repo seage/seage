@@ -5,15 +5,15 @@ import java.util.List;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
 
-public class ExperimentEvaluator extends SubjectEvaluator<ExperimentSubject>
+public class ExperimentTaskEvaluator extends SubjectEvaluator<ExperimentTaskSubject>
 {
 	@Override
-	public void evaluateSubjects(List<ExperimentSubject> subjects) throws Exception 
+	public void evaluateSubjects(List<ExperimentTaskSubject> subjects) throws Exception 
 	{
 //		List<Runnable> taskQueue = new ArrayList<Runnable>();
 		for(Subject<Double> s : subjects)
 		{
-			ExperimentSubject es = (ExperimentSubject)s;
+			ExperimentTaskSubject es = (ExperimentTaskSubject)s;
 			
 			double val = 0;
 			for(int i=0;i<es.getChromosome().getLength();i++)
@@ -45,7 +45,7 @@ public class ExperimentEvaluator extends SubjectEvaluator<ExperimentSubject>
 	}
 
 	@Override
-	protected double[] evaluate(ExperimentSubject solution) throws Exception {
+	protected double[] evaluate(ExperimentTaskSubject solution) throws Exception {
 		throw new Exception("Should be unimplemented");
 	}
 

@@ -37,7 +37,7 @@ import org.seage.aal.data.AlgorithmParams;
 import org.seage.aal.data.ProblemConfig;
 import org.seage.aal.data.ProblemInstanceInfo;
 import org.seage.data.xml.XmlHelper;
-import org.seage.experimenter.Experiment;
+import org.seage.experimenter.ExperimentTask;
 
 /**
  * Runs experiment and provides following experiment log:
@@ -72,9 +72,9 @@ import org.seage.experimenter.Experiment;
  * 
  * @author rick
  */
-public class SingleAlgorithmExperiment extends Experiment
+public class SingleAlgorithmExperimentTask extends ExperimentTask
 {
-    public SingleAlgorithmExperiment(String experimentType, long experimentID, long timeoutS, ProblemConfig config, String reportName, ZipOutputStream reportOutputStream, int runID ) throws Exception
+    public SingleAlgorithmExperimentTask(String experimentType, long experimentID, long timeoutS, ProblemConfig config, String reportName, ZipOutputStream reportOutputStream, int runID ) throws Exception
     {
     	super(experimentType, experimentID, runID, timeoutS, config, reportName, reportOutputStream);  	
     	       
@@ -109,10 +109,10 @@ public class SingleAlgorithmExperiment extends Experiment
 
             solutions = algorithm.solutionsToPhenotype();
 
-            _experimentReport.putDataNode(algorithm.getReport());
-            _experimentReport.putValue("durationS", (endTime - startTime)/1000);
+            _experimentTaskReport.putDataNode(algorithm.getReport());
+            _experimentTaskReport.putValue("durationS", (endTime - startTime)/1000);
             
-            XmlHelper.writeXml(_experimentReport, _reportOutputStream, _reportName);
+            XmlHelper.writeXml(_experimentTaskReport, _reportOutputStream, _reportName);
 
         }
         catch(Exception ex){
