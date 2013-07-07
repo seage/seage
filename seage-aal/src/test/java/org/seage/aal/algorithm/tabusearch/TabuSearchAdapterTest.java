@@ -33,8 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
-import org.seage.aal.data.AlgorithmParams;
-import org.seage.data.DataNode;
+import org.seage.aal.algorithm.AlgorithmParams;
 
 /**
  *
@@ -76,17 +75,12 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
             }
         };
         
-        _algParams = new AlgorithmParams("TabuSearchTest");
-        _algParams.putValue("problemID", "TabuSearchTest");
-        _algParams.putValue("instance", "TestInstance");
+        _algParams = new AlgorithmParams();      
         
-        DataNode params = new DataNode("Parameters");
-        params.putValue("numIterDivers", 1);
-        params.putValue("numIteration", 3);
-        params.putValue("numSolutions", 1);
-        params.putValue("tabuListLength", 1);
-        
-        _algParams.putDataNodeRef(params);
+        _algParams.putValue("numIterDivers", 1);
+        _algParams.putValue("numIteration", 3);
+        _algParams.putValue("numSolutions", 1);
+        _algParams.putValue("tabuListLength", 1);
         
         _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
     }
@@ -109,7 +103,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
     @Test
     public void testAlgorithmWithParamsAtZero() throws Exception
     {       
-        DataNode params = new DataNode("Parameters");
+    	AlgorithmParams params = new AlgorithmParams();
         params.putValue("numIterDivers", 0);
         params.putValue("numIteration", 0);
         params.putValue("numSolutions", 0);
@@ -123,7 +117,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
     @Override    
     public void testAsyncRunning() throws Exception
     {
-        DataNode params = new DataNode("Parameters");
+    	AlgorithmParams params = new AlgorithmParams();
         params.putValue("numIterDivers", 1);
         params.putValue("numIteration", 1000000);
         params.putValue("numSolutions", 1);

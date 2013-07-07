@@ -26,8 +26,7 @@
 
 package org.seage.aal.algorithm;
 
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.aal.problem.Instance;
 
 /**
  *
@@ -38,17 +37,8 @@ public interface IAlgorithmFactory
     Class<?> getAlgorithmClass();
 
     /**
-     *
-     * @param config
-     *  Config
-     *      |_ Algorithm
-     *      |   |_ Parameter
-     *      |   |_ ...
-     *      |   |_ Parameter
-     *      |_ Instance
      * @return IAlgorithmAdapter
      * @throws Exception
      */
-    IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, ProblemConfig config) throws Exception;
-    //DataNode getAlgorithmParameters(DataNode params) throws Exception;
+    IAlgorithmAdapter createAlgorithm(Instance instance) throws Exception;
 }

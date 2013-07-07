@@ -34,7 +34,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
-import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.particles.Particle;
 
@@ -88,9 +88,9 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
             }
         };        
         
-        _algParams = new AlgorithmParams("ParticleSwarmTest");
-        _algParams.putValue("problemID", "ParticleSwarmTest");
-        _algParams.putValue("instance", "TestInstance");
+        _algParams = new AlgorithmParams();
+        //_algParams.putValue("problemID", "ParticleSwarmTest");
+        //_algParams.putValue("instance", "TestInstance");
         
         DataNode params = new DataNode("Parameters");
         params.putValue("maxIterationCount", 0);

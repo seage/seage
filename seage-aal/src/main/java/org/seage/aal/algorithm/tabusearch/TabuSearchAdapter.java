@@ -28,10 +28,9 @@ package org.seage.aal.algorithm.tabusearch;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
-import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
-import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
 import org.seage.metaheuristic.tabusearch.MoveManager;
 import org.seage.metaheuristic.tabusearch.ObjectiveFunction;
@@ -129,14 +128,12 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 
 	public void setParameters(AlgorithmParams params) throws Exception
 	{
-		_params = params;
-		_params.putValue("id", "TabuSearch");
-		DataNode p = params.getDataNode("Parameters");
-		_iterationToGo = _statNumIter = p.getValueInt("numIteration");
+		_params = params;		
+		_iterationToGo = _statNumIter = _params.getValueInt("numIteration");
 
-		_tabuListLength = p.getValueInt("tabuListLength");
-		p.getValueInt("numIterDivers");
-		_solutionsToExplore = p.getValueInt("numSolutions");
+		_tabuListLength = _params.getValueInt("tabuListLength");
+		_params.getValueInt("numIterDivers");
+		_solutionsToExplore = _params.getValueInt("numSolutions");
 
 	}
 

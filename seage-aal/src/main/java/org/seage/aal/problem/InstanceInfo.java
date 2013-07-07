@@ -24,49 +24,34 @@
  *     - Initial implementation
  */
 
-package org.seage.aal.data;
+package org.seage.aal.problem;
 
 import org.seage.data.DataNode;
 
 /**
- * A structure describing a problem (name, id, available algorithms and instances)
- * @author rick
- * 
- * ProblemInfo
- *  |_ id
- *  |_ name
- *  |_ class
- *  |_ Algorithms
- *  |   |_ Algorithm
- *  |   |   |_ id
- *  |   |   |_ name
- *  |   |   |_ factoryClass
- *  |   |   |_ Parameter
- *  |   |   |   |_ name
- *  |   |   |   |_ max
- *  |   |   |   |_ min
- *  |   |   |   |_ init
- *  |   |   |_ ...
- *  |   |   |_ Parameter
- *  |   |_ Algorithm
- *  |       |_ ...
- *  |_ Instances
- *      |_ Instance
- *      |   |_ type ("file" | "resource")
- *      |   |_ path
- *      |_ ...
- *      |_ Instance
+ *
+ * @author Richard Malek
  */
-public class ProblemInfo extends DataNode{
-    
-    
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 7658277873739208135L;
-
-	public ProblemInfo(String name) {
-        super(name);
+public class InstanceInfo extends DataNode
+{
+	private static final long serialVersionUID = 1L;
+	
+	protected String _instanceID;
+        
+    public InstanceInfo(DataNode instance) throws Exception
+    {
+    	super(instance);
+    	_instanceID = getValueStr("id");
     }
 
+    public String getInstanceID() {
+        return _instanceID;
+    }
+    
+    @Override
+    public String toString() {
+        return _instanceID;
+    }
+    
+    
 }

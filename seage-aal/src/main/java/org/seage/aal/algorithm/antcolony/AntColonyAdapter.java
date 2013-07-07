@@ -30,10 +30,9 @@ import java.util.logging.Level;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
-import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
-import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
@@ -85,15 +84,13 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
     public void setParameters(AlgorithmParams params) throws Exception
     {
     	_params = params;
-        _params.putValue("id", "AntColony");
-        DataNode p = params.getDataNode("Parameters");
-        //int numAnts = p.getValueInt("numAnts");
-        int iterationCount = p.getValueInt("iterationCount");
-        double alpha = p.getValueDouble("alpha");
-        double beta = p.getValueDouble("beta");
-        double defaultPheromone = p.getValueDouble("defaultPheromone");
-        double quantumOfPheromone = p.getValueDouble("qantumOfPheromone");
-        double localEvaporation = p.getValueDouble("localEvaporation");
+        
+        int iterationCount = _params.getValueInt("iterationCount");
+        double alpha = _params.getValueDouble("alpha");
+        double beta = _params.getValueDouble("beta");
+        double defaultPheromone = _params.getValueDouble("defaultPheromone");
+        double quantumOfPheromone = _params.getValueDouble("qantumOfPheromone");
+        double localEvaporation = _params.getValueDouble("localEvaporation");
         _antColony.setParameters(iterationCount, alpha, beta, quantumOfPheromone, defaultPheromone, localEvaporation);
         
     }

@@ -28,9 +28,9 @@ package org.seage.problem.sat;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.algorithm.ProblemProvider;
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.aal.problem.Instance;
+import org.seage.aal.problem.InstanceInfo;
+import org.seage.aal.problem.ProblemProvider;
 
 /**
  *
@@ -40,21 +40,21 @@ import org.seage.aal.data.ProblemInstanceInfo;
 @Annotations.ProblemName("Boolean Satisfiability Problem")
 public class SatProblemProvider extends ProblemProvider
 {
-    public ProblemInstanceInfo initProblemInstance(ProblemConfig params) throws Exception {
+	@Override
+	public Instance initProblemInstance(InstanceInfo instanceInfo) throws Exception
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+	
+    public IPhenotypeEvaluator initPhenotypeEvaluator(Instance instance) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public IPhenotypeEvaluator initPhenotypeEvaluator() throws Exception {
+    public Object[][] generateInitialSolutions(Instance instance, int numSolutions, long randomSeed) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance, long randomSeed) throws Exception {
+    public void visualizeSolution(Object[] solution, InstanceInfo instance) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-    public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-
 }

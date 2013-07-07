@@ -31,10 +31,9 @@ package org.seage.aal.algorithm.sannealing;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
-import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
-import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
@@ -114,15 +113,12 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl
     public void setParameters(AlgorithmParams params) throws Exception
     {
         _params = params;
-        _params.putValue("id", "SimulatedAnnealing");
 
-        DataNode p = params.getDataNode("Parameters");
-
-        _simulatedAnnealing.setMaximalTemperature(p.getValueInt("maxTemperature"));
-        _simulatedAnnealing.setMinimalTemperature(p.getValueDouble("minTemperature"));
-        _simulatedAnnealing.setAnnealingCoefficient(p.getValueDouble("annealCoeficient"));
-        _simulatedAnnealing.setMaximalInnerIterationCount(p.getValueInt("maxInnerIterations"));
-        _simulatedAnnealing.setMaximalAcceptedSolutionsPerOneStepCount(p.getValueInt("maxOneStepAcceptedSolutions"));        
+        _simulatedAnnealing.setMaximalTemperature(_params.getValueInt("maxTemperature"));
+        _simulatedAnnealing.setMinimalTemperature(_params.getValueDouble("minTemperature"));
+        _simulatedAnnealing.setAnnealingCoefficient(_params.getValueDouble("annealCoeficient"));
+        _simulatedAnnealing.setMaximalInnerIterationCount(_params.getValueInt("maxInnerIterations"));
+        _simulatedAnnealing.setMaximalAcceptedSolutionsPerOneStepCount(_params.getValueInt("maxOneStepAcceptedSolutions"));        
     }
 
     private class SimulatedAnnealingListener implements IAlgorithmListener<SimulatedAnnealingEvent>

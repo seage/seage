@@ -27,7 +27,6 @@
 package org.seage.problem.tsp;
 
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.data.ProblemInstanceInfo;
 
 /**
  *
@@ -35,12 +34,20 @@ import org.seage.aal.data.ProblemInstanceInfo;
  */
 public class TspPhenotypeEvaluator implements IPhenotypeEvaluator
 {
-    
-    @Override
-    public double[] evaluate(Object[] phenotypeSubject, ProblemInstanceInfo instance) throws Exception
+	protected TspProblemInstance _instance;
+	
+	
+    public TspPhenotypeEvaluator(TspProblemInstance instance)
+	{
+		super();
+		_instance = instance;
+	}
+
+	@Override
+    public double[] evaluate(Object[] phenotypeSubject) throws Exception
     {
         double tourLength = 0;
-        City[] cities = ((TspProblemInstance)instance).getCities();
+        City[] cities = ((TspProblemInstance)_instance).getCities();
         int numCities = cities.length;
 
         for (int i = 0; i < numCities; i++)

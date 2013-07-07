@@ -27,8 +27,9 @@ package org.seage.experimenter.config;
 
 import java.util.logging.Logger;
 
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInfo;
+import org.seage.aal.problem.InstanceInfo;
+import org.seage.aal.problem.ProblemConfig;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
 
 /**
@@ -39,13 +40,11 @@ public abstract class Configurator
 {
 	protected static Logger _logger = Logger.getLogger(Configurator.class.getName());
 	
-    // TODO: A - Remove this method, replace it by the second one.
-    public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception;
+    public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs) throws Exception;
 
-    public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, DataNode instanceInfo, int numConfigs) throws Exception;
-
-    protected ProblemConfig createProblemConfig(ProblemInfo problemInfo, String algID, DataNode instanceInfo) throws Exception
+    protected ProblemConfig createProblemConfig(ProblemInfo problemInfo, String instanceID, String algorithmID) throws Exception
     {
+    	InstanceInfo instanceInfo = problemInfo.getInstanceInfo(instanceID);
     	// Config
         ProblemConfig config = new ProblemConfig("Config");
         // |_ Problem
@@ -58,7 +57,7 @@ public abstract class Configurator
         DataNode params = new DataNode("Parameters");
 
         problem.putValue("id", problemInfo.getValue("id"));
-        algorithm.putValue("id", algID);
+        algorithm.putValue("id", algorithmID);
 
         algorithm.putDataNodeRef(params);
         problem.putDataNodeRef(instance);
@@ -70,8 +69,8 @@ public abstract class Configurator
         config.getDataNode("Problem").getDataNode("Instance").putValue("type", instanceInfo.getValue("type"));
         config.getDataNode("Problem").getDataNode("Instance").putValue("path", instanceInfo.getValue("path"));
         
-        if(problemInfo.getDataNode("Algorithms").getDataNodeById(algID)==null)
-        	throw new Exception("Unknown algorithm id: " + algID);
+        if(problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)==null)
+        	throw new Exception("Unknown algorithm id: " + algorithmID);
         
         return config;
     }

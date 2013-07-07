@@ -4,7 +4,6 @@ import java.util.Random;
 
 import junit.framework.Assert;
 
-import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 
 public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
@@ -38,10 +37,9 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
     	}
     }
     
-    public void setAlgParameters(DataNode params) throws Exception
+    public void setAlgParameters(AlgorithmParams params) throws Exception
     {
-        _algParams.removeDataNode(params.getName(), 0);
-        _algParams.putDataNodeRef(params);
+        _algParams = params;        
     }
 
     @Override
@@ -144,7 +142,7 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
 		Assert.assertTrue(_algReport.containsNode("Statistics"));
 		
 		for(String attName : _algReport.getDataNode("Parameters").getValueNames())
-			Assert.assertEquals(_algParams.getDataNode("Parameters").getValue(attName), _algReport.getDataNode("Parameters").getValue(attName));
+			Assert.assertEquals(_algParams.getValue(attName), _algReport.getDataNode("Parameters").getValue(attName));
 		
 		DataNode stats = _algReport.getDataNode("Statistics");
 		Assert.assertTrue(stats.getValueInt("numberOfIter") > 1);

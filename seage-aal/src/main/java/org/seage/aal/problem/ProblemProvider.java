@@ -23,7 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.aal.algorithm;
+package org.seage.aal.problem;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.seage.aal.Annotations;
-import org.seage.aal.data.ProblemInfo;
+import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.classutil.ClassInfo;
 import org.seage.classutil.ClassUtil;
 import org.seage.data.DataNode;

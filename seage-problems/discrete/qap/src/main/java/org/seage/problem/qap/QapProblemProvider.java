@@ -35,10 +35,9 @@ import java.util.Collections;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.algorithm.ProblemProvider;
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInstanceInfo;
-import org.seage.data.DataNode;
+import org.seage.aal.problem.Instance;
+import org.seage.aal.problem.InstanceInfo;
+import org.seage.aal.problem.ProblemProvider;
 
 /**
  *
@@ -50,26 +49,25 @@ public class QapProblemProvider extends ProblemProvider
 {
 
     @Override
-    public ProblemInstanceInfo initProblemInstance(ProblemConfig params) throws Exception
+    public Instance initProblemInstance(InstanceInfo instanceInfo) throws Exception
     {
-        DataNode info = params.getDataNode("Problem").getDataNode("Instance", 0);
-        String type = info.getValueStr("type");
-        String path = info.getValueStr("path");
-        String instanceName = path.substring(path.lastIndexOf('/')+1);
+    	//InstanceInfo instanceInfo = params.getInstanceInfo();
+        String type = instanceInfo.getValueStr("type");
+        String path = instanceInfo.getValueStr("path");
+        //String instanceName = path.substring(path.lastIndexOf('/')+1);
         InputStream stream;            
         if(type.equals("resource"))             
             stream = getClass().getResourceAsStream(path);
         else            
             stream = new FileInputStream(path);
 
-
         //params.getDataNode("evaluator").putValue("cities", _cities);
-        return new QapProblemInstance(instanceName, FacilityLocationProvider.readFacilityLocations(stream));
+        return new QapProblemInstance(instanceInfo, FacilityLocationProvider.readFacilityLocations(stream));
         
     }
 
     @Override
-    public Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance, long randomSeed) throws Exception
+    public Object[][] generateInitialSolutions(Instance instance, int numSolutions, long randomSeed) throws Exception
     {
         int numAssigns = numSolutions;
         Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
@@ -129,7 +127,7 @@ public class QapProblemProvider extends ProblemProvider
 //    }
 
     @Override
-    public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception
+    public void visualizeSolution(Object[] solution, InstanceInfo instance) throws Exception
     {
 
         // TODO: A - Implement visualize method
@@ -140,8 +138,8 @@ public class QapProblemProvider extends ProblemProvider
 //        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
     }
 
-    public IPhenotypeEvaluator initPhenotypeEvaluator() throws Exception {
-        return new QapPhenotypeEvaluator();
+    public IPhenotypeEvaluator initPhenotypeEvaluator(Instance instance) throws Exception {
+        return new QapPhenotypeEvaluator((QapProblemInstance)instance);
     }
 
 

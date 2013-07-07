@@ -23,11 +23,10 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.aal.algorithm;
+package org.seage.aal.problem;
 
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInfo;
-import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 
 /**
  * Problem provider interface
@@ -41,19 +40,19 @@ public interface IProblemProvider
     ProblemInfo getProblemInfo() throws Exception;
 
     // Returns the algorithm factory
-    IAlgorithmFactory getAlgorithmFactory(String algId) throws Exception;
+    IAlgorithmFactory getAlgorithmFactory(String algorithmID) throws Exception;
 
     // Initializes (reads) a problem instance.
-    ProblemInstanceInfo initProblemInstance(ProblemConfig params) throws Exception;
+    Instance initProblemInstance(InstanceInfo instanceInfo) throws Exception;
 
     //  Initializes an evaluator of solutions in phenotype representation
     // (i.e. in general representation of a problem solution).
-    IPhenotypeEvaluator initPhenotypeEvaluator() throws Exception;
+    IPhenotypeEvaluator initPhenotypeEvaluator(Instance instance) throws Exception;
 
     // Generates the very first solution(s).
     // Solutions can be random, hungry, or other.
-    Object[][] generateInitialSolutions(int numSolutions, ProblemInstanceInfo instance, long randomSeed) throws Exception;
+    Object[][] generateInitialSolutions(Instance instance, int numSolutions, long randomSeed) throws Exception;
 
     // Visualizes solution, usually produces a picture.
-    public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception;
+    public void visualizeSolution(Object[] solution, InstanceInfo instance) throws Exception;
 }

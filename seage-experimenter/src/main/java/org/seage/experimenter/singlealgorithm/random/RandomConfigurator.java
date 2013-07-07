@@ -28,8 +28,8 @@ package org.seage.experimenter.singlealgorithm.random;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInfo;
+import org.seage.aal.problem.ProblemConfig;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
 import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
@@ -42,7 +42,7 @@ import org.seage.experimenter.config.Configurator;
 public class RandomConfigurator extends Configurator
 {
     @Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, DataNode instanceInfo, int numConfigs) throws Exception
+	public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs) throws Exception
     {
 
         List<ProblemConfig> results = new ArrayList<ProblemConfig>();
@@ -52,9 +52,9 @@ public class RandomConfigurator extends Configurator
         
         for (int i = 0; i < numConfigs; i++)
         {
-            ProblemConfig config = createProblemConfig(problemInfo, algID, instanceInfo);
+            ProblemConfig config = createProblemConfig(problemInfo, instanceID, algorithmID );
             
-            for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
+            for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID).getDataNodes("Parameter"))
             {
                 String name = paramNode.getValueStr("name");
                 double min = paramNode.getValueDouble("min");
@@ -71,12 +71,4 @@ public class RandomConfigurator extends Configurator
 
         return results.toArray(new ProblemConfig[0]);
     }
-
-    @Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }

@@ -30,8 +30,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.seage.aal.algorithm.IProblemProvider;
-import org.seage.aal.algorithm.ProblemProvider;
+import org.seage.aal.problem.IProblemProvider;
+import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.experimenter.reporting.rapidminer.ExperimentDataRapidMinerImporter;
 import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;

@@ -27,16 +27,17 @@ package org.seage.sandbox;
 
 import java.io.File;
 import java.util.Map;
+
+import org.seage.aal.problem.IProblemProvider;
+import org.seage.aal.problem.Instance;
+import org.seage.aal.problem.ProblemConfig;
+import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.algorithm.IProblemProvider;
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInfo;
-import org.seage.aal.data.ProblemInstanceInfo;
-import org.seage.aal.algorithm.ProblemProvider;
-import org.seage.aal.data.AlgorithmParams;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.config.DefaultConfigurator;
@@ -73,17 +74,17 @@ public class AlgorithmTester {
         testProblem(_providers.get(problemId));
     }
     
-    public void test(String problemId, String algorithmId) throws Exception
+    public void test(String problemID, String algorithmID) throws Exception
     {
         System.out.println("Testing algorithms:");
         System.out.println("-------------------");
         
-        IProblemProvider provider = _providers.get(problemId);
+        IProblemProvider provider = _providers.get(problemID);
         ProblemInfo pi = provider.getProblemInfo();
         String problemName = pi.getValueStr("name");
         System.out.println(problemName);
 
-        testProblem(provider, pi, pi.getDataNode("Algorithms").getDataNodeById(algorithmId));
+        //testProblem(provider, pi, pi.getDataNode("Algorithms").getDataNodeById(algorithmID));
     }
 
     private void testProblem( IProblemProvider provider)
@@ -96,7 +97,7 @@ public class AlgorithmTester {
 
             for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
             {
-                testProblem(provider, pi, alg);
+                //testProblem(provider, pi.getInstanceInfo(instanceID), alg.getValueStr("id"));
                 //System.out.println("\t"+alg.getValueStr("id")/*+" ("+alg.getValueStr("id")+")"*/);
             }
         }
@@ -107,31 +108,30 @@ public class AlgorithmTester {
         }
     }
     
-    private void testProblem(IProblemProvider provider, ProblemInfo pi, DataNode alg)
-    {
-        String algName = "";
+    private void testProblem(IProblemProvider provider, String instanceID, String algorithmID)
+    {        
         try {
-            algName = alg.getValueStr("name");
-            System.out.print("\t" + algName);
             
-            ProblemConfig config = new DefaultConfigurator().prepareConfigs(pi, alg.getValueStr("id"), 1)[0];
+            System.out.print("\t" + algorithmID);
             
-            IAlgorithmFactory factory = provider.getAlgorithmFactory(alg.getValueStr("id"));
+            ProblemConfig config = new DefaultConfigurator().prepareConfigs(provider.getProblemInfo(), instanceID, algorithmID, 1)[0];
             
-            ProblemInstanceInfo instance = provider.initProblemInstance(config);
-            IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, config);
+            IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
+            
+            Instance instance = provider.initProblemInstance(provider.getProblemInfo().getInstanceInfo(instanceID));
+            IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
             AlgorithmParams algNode = config.getAlgorithmParams();
-            Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance, 1);
+            Object[][] solutions = provider.generateInitialSolutions(instance, algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
             algorithm.solutionsFromPhenotype(solutions);
             algorithm.startSearching(algNode);
             solutions = algorithm.solutionsToPhenotype();
             algorithm.solutionsFromPhenotype(solutions);
             algorithm.startSearching(algNode);
 
-            System.out.printf("%"+(50-algName.length())+"s","OK\n");
+            System.out.printf("%"+(50-algorithmID.length())+"s","OK\n");
 
         } catch (Exception ex) {
-            System.out.printf("%"+(52-algName.length())+"s","FAIL\n");
+            System.out.printf("%"+(52-algorithmID.length())+"s","FAIL\n");
             //System.out.println("\t"+"FAIL");
             ex.printStackTrace();
             //System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
@@ -143,19 +143,19 @@ public class AlgorithmTester {
         ProblemConfig config = new ProblemConfig(XmlHelper.readXml(new File(configPath)));
         String problemID = config.getDataNode("Problem").getValueStr("id");
         String algorithmID = config.getDataNode("Algorithm").getValueStr("id");
-
+        String instanceID = config.getDataNode("Problem").getDataNode("Instance").getValueStr("id");
         // provider and factory
         IProblemProvider provider = ProblemProvider.getProblemProviders().get(problemID);
         IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
 
         // problem instance
-        ProblemInstanceInfo instance = provider.initProblemInstance(config);
+        Instance instance = provider.initProblemInstance(provider.getProblemInfo().getInstanceInfo(instanceID));
 
         // algorithm
-        IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, config);
+        IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
 
         AlgorithmParams algNode = config.getAlgorithmParams();
-        Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance, 1);
+        Object[][] solutions = provider.generateInitialSolutions(instance, algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
 
 
         System.out.printf("%s: %4s %s\n", "Problem","", problemID);
@@ -167,8 +167,8 @@ public class AlgorithmTester {
         solutions = algorithm.solutionsToPhenotype();
 
         // phenotype evaluator
-        IPhenotypeEvaluator evaluator = provider.initPhenotypeEvaluator();
-        double[] result = evaluator.evaluate(solutions[0], instance);
+        IPhenotypeEvaluator evaluator = provider.initPhenotypeEvaluator(instance);
+        double[] result = evaluator.evaluate(solutions[0]);
 
         System.out.printf("%s: %5s %s\n", "Result","", result[0]);
         //System.out.println(": " + result[0]);

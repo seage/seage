@@ -24,8 +24,9 @@
  *     - Initial implementation
  */
 
-package org.seage.aal.data;
+package org.seage.aal.problem;
 
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.data.DataNode;
 
 /**
@@ -55,13 +56,7 @@ public class ProblemConfig extends DataNode{
         super(dn);
     }
     
-    public AlgorithmParams getAlgorithmParams() throws Exception
-    {
-        AlgorithmParams result = new AlgorithmParams(this.getDataNode("Algorithm"));
-        result.putValue("problemID", this.getDataNode("Problem").getValue("id"));
-        result.putValue("instance", this.getDataNode("Problem").getDataNode("Instance").getValue("name"));
-        return result;
-    }
+    
     
     public String getConfigID() throws Exception
     {
@@ -73,6 +68,11 @@ public class ProblemConfig extends DataNode{
     	return this.getDataNode("Problem").getValueStr("id");
     }
     
+    public InstanceInfo getInstanceInfo() throws Exception
+    {
+    	return new InstanceInfo(this.getDataNode("Problem").getDataNode("Instance"));
+    }
+    
     public String getInstanceName() throws Exception
     {
     	return this.getDataNode("Problem").getDataNode("Instance").getValueStr("name");
@@ -82,5 +82,18 @@ public class ProblemConfig extends DataNode{
     {
     	return this.getDataNode("Algorithm").getValueStr("id");    	
     }
+    
+    public AlgorithmParams getAlgorithmParams() throws Exception
+    {
+        AlgorithmParams result = new AlgorithmParams(this.getDataNode("Algorithm").getDataNode("Parameters"));
+        //result.putValue("problemID", this.getDataNode("Problem").getValue("id"));
+        //result.putValue("instance", this.getDataNode("Problem").getDataNode("Instance").getValue("name"));
+        return result;
+    }
+
+	public String getInstanceID() throws Exception
+	{
+		return this.getDataNode("Problem").getDataNode("Instance").getValueStr("id");;
+	}
     
 }

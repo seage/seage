@@ -29,8 +29,6 @@ package org.seage.aal.algorithm.sannealing;
 import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.*;
-import org.seage.aal.data.AlgorithmParams;
-import org.seage.data.DataNode;
 
 /**
  *
@@ -48,19 +46,14 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     {
         _algorithm = new TestSimulatedAnnealingAdapter(null, new TestObjectiveFunction(), new TestMoveManager(), false, "");
         
-        _algParams = new AlgorithmParams("SimulatedAnnealingTest");
-        _algParams.putValue("problemID", "SimulatedAnnealingTest");
-        _algParams.putValue("instance", "TestInstance");
+        _algParams = new AlgorithmParams();       
         
-        DataNode params = new DataNode("Parameters");
-        params.putValue("annealCoeficient", 0.1);
-        params.putValue("maxInnerIterations", 10);
-        params.putValue("maxTemperature", 100);
-        params.putValue("minTemperature", 1);
-        params.putValue("maxOneStepAcceptedSolutions", 1);
-        params.putValue("numSolutions", 1);
-        
-        _algParams.putDataNodeRef(params);
+        _algParams.putValue("annealCoeficient", 0.1);
+        _algParams.putValue("maxInnerIterations", 10);
+        _algParams.putValue("maxTemperature", 100);
+        _algParams.putValue("minTemperature", 1);
+        _algParams.putValue("maxOneStepAcceptedSolutions", 1);
+        _algParams.putValue("numSolutions", 1);
         
         _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
     }
@@ -83,7 +76,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     @Test
     public void testAlgorithmWithParamsAtZero() throws Exception
     {
-        DataNode params = new DataNode("Parameters");
+    	AlgorithmParams params = new AlgorithmParams();
         params.putValue("annealCoeficient", 0);
         params.putValue("maxInnerIterations", 0);
         params.putValue("maxTemperature", 0);
@@ -98,7 +91,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     @Override    
     public void testAsyncRunning() throws Exception
     {
-        DataNode params = new DataNode("Parameters");
+    	AlgorithmParams params = new AlgorithmParams();
         params.putValue("annealCoeficient", 0.999);
         params.putValue("maxInnerIterations", 1000000);
         params.putValue("maxTemperature", 100000);

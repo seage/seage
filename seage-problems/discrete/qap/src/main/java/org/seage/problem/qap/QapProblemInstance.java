@@ -26,17 +26,19 @@
 
 package org.seage.problem.qap;
 
-import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.aal.problem.Instance;
+import org.seage.aal.problem.InstanceInfo;
 
 /**
  *
  * @author rick
  */
-public class QapProblemInstance extends ProblemInstanceInfo{
+public class QapProblemInstance extends Instance
+{
     private Double[][][] _facilityLocation;
 
-    public QapProblemInstance(String instanceName, Double[][][] facilityLocation) {
-        super(instanceName);
+    public QapProblemInstance(InstanceInfo instanceInfo, Double[][][] facilityLocation) throws Exception {
+        super(instanceInfo);
         _facilityLocation = facilityLocation;
     }
 

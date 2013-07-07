@@ -31,10 +31,9 @@ import java.util.logging.Level;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
-import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
-import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
@@ -128,17 +127,15 @@ public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends Algo
 
 	public void setParameters(AlgorithmParams params) throws Exception
 	{
-		_params = params;
-		_params.putValue("id", "GeneticAlgorithm");
-
-		DataNode p = params.getDataNode("Parameters");
-		_geneticSearch.getOperator().setCrossLengthCoef(p.getValueDouble("crossLengthPct"));
-		_geneticSearch.getOperator().setMutateLengthCoef(p.getValueDouble("mutateLengthPct"));
-		_geneticSearch.setEliteSubjectsPct(p.getValueDouble("eliteSubjectPct"));
-		_geneticSearch.setIterationToGo(p.getValueInt("iterationCount"));
-		_geneticSearch.setMutatePopulationPct(p.getValueDouble("mutateSubjectPct"));
-		_geneticSearch.setPopulationCount(p.getValueInt("numSolutions"));
-		_geneticSearch.setRandomSubjectsPct(p.getValueDouble("randomSubjectPct"));
+		_params = params;	
+		
+		_geneticSearch.getOperator().setCrossLengthCoef(_params.getValueDouble("crossLengthPct"));
+		_geneticSearch.getOperator().setMutateLengthCoef(_params.getValueDouble("mutateLengthPct"));
+		_geneticSearch.setEliteSubjectsPct(_params.getValueDouble("eliteSubjectPct"));
+		_geneticSearch.setIterationToGo(_params.getValueInt("iterationCount"));
+		_geneticSearch.setMutatePopulationPct(_params.getValueDouble("mutateSubjectPct"));
+		_geneticSearch.setPopulationCount(_params.getValueInt("numSolutions"));
+		_geneticSearch.setRandomSubjectsPct(_params.getValueDouble("randomSubjectPct"));
 
 		// _paramID = param.getValue("ID");
 	}

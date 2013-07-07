@@ -26,17 +26,18 @@
 
 package org.seage.problem.tsp;
 
-import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.aal.problem.Instance;
+import org.seage.aal.problem.InstanceInfo;
 
 /**
  *
  * @author rick
  */
-public class TspProblemInstance extends ProblemInstanceInfo{
+public class TspProblemInstance extends Instance{
 
     private City[] _cities;
-    public TspProblemInstance(String instanceName, City[] cities) {
-        super(instanceName);
+    public TspProblemInstance(InstanceInfo instanceInfo, City[] cities) throws Exception {
+        super(instanceInfo);
         _cities = cities;
     }
     

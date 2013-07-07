@@ -1,7 +1,7 @@
 package org.seage.aal.algorithm.grasp;
 
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
-import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
 
 public abstract class GraspAlgorithmAdapter extends AlgorithmAdapterImpl{

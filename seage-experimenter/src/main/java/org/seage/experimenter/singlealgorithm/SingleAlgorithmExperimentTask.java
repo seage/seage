@@ -29,13 +29,12 @@ package org.seage.experimenter.singlealgorithm;
 import java.util.logging.Level;
 import java.util.zip.ZipOutputStream;
 
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
-import org.seage.aal.algorithm.IProblemProvider;
-import org.seage.aal.algorithm.ProblemProvider;
-import org.seage.aal.data.AlgorithmParams;
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.aal.problem.IProblemProvider;
+import org.seage.aal.problem.Instance;
+import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.ExperimentTask;
 
@@ -74,35 +73,31 @@ import org.seage.experimenter.ExperimentTask;
  */
 public class SingleAlgorithmExperimentTask extends ExperimentTask
 {
-    public SingleAlgorithmExperimentTask(String experimentType, long experimentID, long timeoutS, ProblemConfig config, String reportName, ZipOutputStream reportOutputStream, int runID ) throws Exception
+    public SingleAlgorithmExperimentTask(String experimentType, long experimentID, String problemID, String instanceID, String algorithmID, AlgorithmParams algorithmParams, int runID , long timeoutS, ZipOutputStream reportOutputStream) throws Exception
     {
-    	super(experimentType, experimentID, runID, timeoutS, config, reportName, reportOutputStream);  	
-    	       
+    	super(experimentType, experimentID, problemID, instanceID, algorithmID, algorithmParams, runID, timeoutS, reportOutputStream);  	
     }
     
-    public void run() {
-        String problemID = "";
-        String algorithmID = "";
-        try{
-            problemID = _config.getDataNode("Problem").getValueStr("id");
-            algorithmID = _config.getDataNode("Algorithm").getValueStr("id");
-
+    public void run() 
+    {
+        try
+        {
             // provider and factory
-            IProblemProvider provider = ProblemProvider.getProblemProviders().get(problemID);
-            IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
+            IProblemProvider provider = ProblemProvider.getProblemProviders().get(_problemID);
+            IAlgorithmFactory factory = provider.getAlgorithmFactory(_algorithmID);
 
             // problem instance
-            ProblemInstanceInfo instance = provider.initProblemInstance(_config);
+            Instance instance = provider.initProblemInstance(provider.getProblemInfo().getInstanceInfo(_instanceID));
             instance.toString();
             // algorithm
-            IAlgorithmAdapter algorithm = factory.createAlgorithm(instance, _config);
+            IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
 
-            AlgorithmParams algNode = _config.getAlgorithmParams();
-            Object[][] solutions = provider.generateInitialSolutions(algNode.getDataNode("Parameters").getValueInt("numSolutions"), instance, _experimentID);
+            
+            Object[][] solutions = provider.generateInitialSolutions(instance, _algorithmParams.getValueInt("numSolutions"), _experimentID);
 
             long startTime = System.currentTimeMillis();
             algorithm.solutionsFromPhenotype(solutions);
-            algorithm.startSearching(algNode, true);
+            algorithm.startSearching(_algorithmParams, true);
             waitForTimeout(algorithm);
             algorithm.stopSearching();
             long endTime = System.currentTimeMillis();
@@ -112,7 +107,7 @@ public class SingleAlgorithmExperimentTask extends ExperimentTask
             _experimentTaskReport.putDataNode(algorithm.getReport());
             _experimentTaskReport.putValue("durationS", (endTime - startTime)/1000);
             
-            XmlHelper.writeXml(_experimentTaskReport, _reportOutputStream, _reportName);
+            XmlHelper.writeXml(_experimentTaskReport, _reportOutputStream, getReportName());
 
         }
         catch(Exception ex){

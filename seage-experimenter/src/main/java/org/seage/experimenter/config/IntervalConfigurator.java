@@ -28,8 +28,8 @@ package org.seage.experimenter.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInfo;
+import org.seage.aal.problem.ProblemConfig;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
 
 /**
@@ -48,8 +48,8 @@ public class IntervalConfigurator extends Configurator{
     }
 
     @Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception {
-
+	public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs) throws Exception
+	{
 
         List<ProblemConfig> results = new ArrayList<ProblemConfig>();
         List<List<Double>> values = new ArrayList<List<Double>>();
@@ -66,7 +66,7 @@ public class IntervalConfigurator extends Configurator{
         DataNode params = new DataNode("Parameters");
 
         problem.putValue("id", problemInfo.getValue("id"));
-        algorithm.putValue("id", algID);
+        algorithm.putValue("id", algorithmID);
 
         algorithm.putDataNode(params);
         problem.putDataNode(instance);
@@ -88,7 +88,7 @@ public class IntervalConfigurator extends Configurator{
             ArrayList<String> paramsToAdd = new ArrayList<String>();
             _paramInfo = new DataNode("ParamInfo");
 
-            for(DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
+            for(DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID).getDataNodes("Parameter"))
             {
                 String name = paramNode.getValueStr("name");
                 paramsToAdd.add(name);
@@ -152,12 +152,4 @@ public class IntervalConfigurator extends Configurator{
         }
         
     }
-
-    @Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, DataNode instanceInfo, int numConfigs) throws Exception
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }

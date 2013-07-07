@@ -31,8 +31,7 @@ import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.aal.problem.Instance;
 import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.qap.QapProblemInstance;
 
@@ -48,7 +47,7 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
         return TabuSearchAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, ProblemConfig config) throws Exception
+    public IAlgorithmAdapter createAlgorithm(Instance instance) throws Exception
     {
         final Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
         

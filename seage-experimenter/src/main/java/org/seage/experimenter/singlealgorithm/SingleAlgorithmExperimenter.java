@@ -29,18 +29,11 @@ package org.seage.experimenter.singlealgorithm;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.zip.ZipOutputStream;
 
-import org.seage.aal.algorithm.ProblemProvider;
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInfo;
-import org.seage.data.DataNode;
 import org.seage.experimenter.Experimenter;
 import org.seage.experimenter.config.Configurator;
-import org.seage.thread.TaskRunnerEx;
 
 /**
  * 
@@ -48,12 +41,11 @@ import org.seage.thread.TaskRunnerEx;
  */
 public abstract class SingleAlgorithmExperimenter extends Experimenter
 {
-	Configurator _configurator;    
+	
 
     public SingleAlgorithmExperimenter(String experimentName, Configurator configurator)
     {
     	super(experimentName);
-        _configurator = configurator;
     }
 
  
@@ -64,7 +56,7 @@ public abstract class SingleAlgorithmExperimenter extends Experimenter
         _logger.info("-------------------------------------");
         //_logger.info("Mem: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
 
-        ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
+        //ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
 
         long totalNumOfConfigs = numOfConfigs*algorithmIDs.length*instanceIDs.length;
         long totalNumberOfRuns = totalNumOfConfigs * 5; 
@@ -82,9 +74,9 @@ public abstract class SingleAlgorithmExperimenter extends Experimenter
         {
             i++;j=0;
             for (String instanceID : instanceIDs)
-            {
+            { 
                 j++;
-                DataNode instanceInfo =  pi.getDataNode("Instances").getDataNodeById(instanceID);
+                //DataNode instanceInfo =  pi.getDataNode("Instances").getDataNodeById(instanceID);
                 //List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
                 //configs.addAll(Arrays.asList());                
                 _logger.info("-------------------------------------");
@@ -99,18 +91,7 @@ public abstract class SingleAlgorithmExperimenter extends Experimenter
                 ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)));
 
                 // Create a task queue
-                List<Runnable> taskQueue = new ArrayList<Runnable>();
-                for(ProblemConfig config : _configurator.prepareConfigs(pi, algorithmID, instanceInfo, numOfConfigs))
-                {
-                	String configID = config.getConfigID();
-
-                    for (int runID = 1; runID <= 5; runID++)
-                    {
-                        String reportName = problemID + "-" + algorithmID + "-" + instanceID + "-" + configID + "-" + runID + ".xml";
-                        taskQueue.add(new SingleAlgorithmExperimentTask(_experimentName, experimentID, timeoutS, config, reportName, zos, runID));
-                    }
-                }
-                new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(taskQueue.toArray(new Runnable[]{}));
+                
 
                 zos.close();            
             }

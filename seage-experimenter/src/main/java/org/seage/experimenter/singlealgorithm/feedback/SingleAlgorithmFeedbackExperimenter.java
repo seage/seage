@@ -1,13 +1,33 @@
 package org.seage.experimenter.singlealgorithm.feedback;
 
-import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimenter;
+import java.util.zip.ZipOutputStream;
 
-public class SingleAlgorithmFeedbackExperimenter extends SingleAlgorithmExperimenter
+import org.seage.aal.problem.InstanceInfo;
+import org.seage.aal.problem.ProblemInfo;
+import org.seage.experimenter.Experimenter;
+
+public class SingleAlgorithmFeedbackExperimenter extends Experimenter
 {
 
 	public SingleAlgorithmFeedbackExperimenter() throws Exception
 	{
-		super("SingleAlgorithmFeedback", new FeedbackConfigurator());
+		super("SingleAlgorithmFeedback");
+	}
+
+	@Override
+	protected void runExperimentTasks(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, int numConfigs, long timeoutS, ZipOutputStream zos)
+			throws Exception
+	{
+		try
+		{
+			new FeedbackConfigurator();
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

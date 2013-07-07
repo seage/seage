@@ -29,10 +29,9 @@ package org.seage.aal.algorithm.fireflies;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
-import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
-import org.seage.data.DataNode;
 import org.seage.metaheuristic.fireflies.FireflyOperator;
 import org.seage.metaheuristic.fireflies.FireflySearch;
 import org.seage.metaheuristic.fireflies.FireflySearchEvent;
@@ -128,19 +127,18 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
     public void setParameters(AlgorithmParams params) throws Exception
     {
         _params = params;
-        _params.putValue("id", "FireflyAlgorithm");
-        DataNode p = params.getDataNode("Parameters");
-        _fireflySearch.setIterationsToGo(p.getValueInt("iterationCount"));
-        _statNumIter = p.getValueInt("iterationCount");
+                
+        _fireflySearch.setIterationsToGo(_params.getValueInt("iterationCount"));
+        _statNumIter = _params.getValueInt("iterationCount");
         // _geneticSearch.setSolutionCount(param.getValueInt("numSolution"));
-        _fireflySearch.setPopulationCount(p.getValueInt("numSolutions"));
-        _fireflySearch.setAbsorption(p.getValueDouble("absorption"));
+        _fireflySearch.setPopulationCount(_params.getValueInt("numSolutions"));
+        _fireflySearch.setAbsorption(_params.getValueDouble("absorption"));
         // _EFASearch.setInitialIntensity(param.getValueDouble("initialIntensity"));
         // _EFASearch.setInitialRandomness(param.getValueDouble("initialRandomness"));
         // _EFASearch.setFinalRandomness(param.getValueDouble("finalRandomness"));
         // _EFASearch.setAbsorption(param.getValueDouble("absorption"));
-        _fireflySearch.setTimeStep(p.getValueDouble("timeStep"));
-        _fireflySearch.setWithDecreasingRandomness(((p.getValueDouble("withDecreasingRandomness") > 0) ? true : false));
+        _fireflySearch.setTimeStep(_params.getValueDouble("timeStep"));
+        _fireflySearch.setWithDecreasingRandomness(((_params.getValueDouble("withDecreasingRandomness") > 0) ? true : false));
         // EDD OWN PARAMETERS
 
         // _paramID = param.getValue("ID");

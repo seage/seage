@@ -34,8 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
-import org.seage.aal.data.AlgorithmParams;
-import org.seage.data.DataNode;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.metaheuristic.genetics.BasicGeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
@@ -108,20 +107,15 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
 			}
 		};
         
-        _algParams = new AlgorithmParams("GeneticAlgorithmTest");
-        _algParams.putValue("problemID", "GeneticAlgorithmTest");
-        _algParams.putValue("instance", "TestInstance");
+        _algParams = new AlgorithmParams();        
+        _algParams.putValue("crossLengthPct", 40);
+        _algParams.putValue("mutateLengthPct", 20);
+        _algParams.putValue("eliteSubjectPct", 1);
+        _algParams.putValue("iterationCount", 10);
+        _algParams.putValue("mutateSubjectPct", 10);
+        _algParams.putValue("numSolutions", 10);
+        _algParams.putValue("randomSubjectPct", 1);       
         
-        DataNode params = new DataNode("Parameters");
-        params.putValue("crossLengthPct", 40);
-        params.putValue("mutateLengthPct", 20);
-        params.putValue("eliteSubjectPct", 1);
-        params.putValue("iterationCount", 10);
-        params.putValue("mutateSubjectPct", 10);
-        params.putValue("numSolutions", 10);
-        params.putValue("randomSubjectPct", 1); 
-        
-        _algParams.putDataNodeRef(params);
         
         _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
     }
@@ -145,7 +139,7 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     @Test
     public void testAlgorithmWithParamsAtZero() throws Exception
     {
-        DataNode params = new DataNode("Parameters");
+        AlgorithmParams params = new AlgorithmParams();
         params.putValue("crossLengthPct", 0);
         params.putValue("mutateLengthPct", 0);
         params.putValue("eliteSubjectPct", 0);
@@ -161,7 +155,7 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     @Override    
     public void testAsyncRunning() throws Exception
     {
-        DataNode params = new DataNode("Parameters");
+    	AlgorithmParams params = new AlgorithmParams();
         params.putValue("crossLengthPct", 1);
         params.putValue("mutateLengthPct", 1);
         params.putValue("eliteSubjectPct", 1);

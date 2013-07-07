@@ -27,8 +27,8 @@
 package org.seage.experimenter.config;
 
 import org.seage.experimenter.config.Configurator;
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInfo;
+import org.seage.aal.problem.ProblemConfig;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
 
 /**
@@ -37,15 +37,14 @@ import org.seage.data.DataNode;
  */
 public class DefaultConfigurator extends Configurator
 {
-
     @Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception
+    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algID, int numConfigs) throws Exception
     {
-        ProblemConfig result = new ProblemConfig("Config");
+    	ProblemConfig result = new ProblemConfig("Config");
         // result.putDataNode(problemInfo.getDataNode("Algorithms").getDataNodeById(_algID));
         DataNode problem = new DataNode("Problem");
         problem.putValue("id", problemInfo.getValue("id"));
-        problem.putDataNode(problemInfo.getDataNode("Instances").getDataNode("Instance", 0));
+        problem.putDataNode(problemInfo.getDataNode("Instances").getDataNodeById(instanceID));
 
         DataNode algorithm = new DataNode("Algorithm");
         algorithm.putValue("id", algID);
@@ -60,13 +59,6 @@ public class DefaultConfigurator extends Configurator
         result.putDataNode(algorithm);
 
         return new ProblemConfig[] { result };
-    }
-
-    @Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, DataNode instanceInfo, int numConfigs) throws Exception
-    {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

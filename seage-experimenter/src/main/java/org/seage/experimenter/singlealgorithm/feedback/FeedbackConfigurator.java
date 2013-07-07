@@ -3,8 +3,8 @@ package org.seage.experimenter.singlealgorithm.feedback;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInfo;
+import org.seage.aal.problem.ProblemConfig;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
 import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
@@ -49,12 +49,12 @@ public class FeedbackConfigurator extends Configurator
 	}
 	
 	@Override
-	public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, DataNode instanceInfo, int numConfigs) throws Exception
+	public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs) throws Exception
 	{		
 		ExampleSet exampleSetParams = null;
 		for(ExampleSet c : _feedbackParams.getObjects())
         {
-        	if(c.getAttributes().getId().getName().equals(algID))
+        	if(c.getAttributes().getId().getName().equals(algorithmID))
         	{	
         		exampleSetParams = c;
         		break;
@@ -82,9 +82,9 @@ public class FeedbackConfigurator extends Configurator
         for (int i = 0; i < realNumConfigs; i++)
         {        	
         	Example example = exampleSetParams.getExample(i);
-            ProblemConfig config = createProblemConfig(problemInfo, algID, instanceInfo);
+            ProblemConfig config = createProblemConfig(problemInfo, instanceID , algorithmID);
             
-            for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
+            for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID).getDataNodes("Parameter"))
             {            	
                 String name = paramNode.getValueStr("name");
                 Attribute att = exampleSetParams.getAttributes().get(name);                
@@ -101,11 +101,5 @@ public class FeedbackConfigurator extends Configurator
         //
 
         return results.toArray(new ProblemConfig[0]);
-	}
-
-	@Override
-	public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String algID, int numConfigs) throws Exception
-	{		
-		return null;
 	}
 }

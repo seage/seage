@@ -25,7 +25,7 @@
  */
 package org.seage.aal.reporter;
 
-import org.seage.aal.data.AlgorithmParams;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.data.DataNode;
 
 /**
@@ -47,11 +47,8 @@ public class AlgorithmReporter
 
     public void putParameters(AlgorithmParams params) throws Exception
     {
-        _report.putValue("created", System.currentTimeMillis());
-        _report.putValue("algorithmID", params.getValue("id"));
-        _report.putValue("problemID", params.getValue("problemID"));
-        _report.putValue("instance", params.getValue("instance"));
-        _report.putDataNode(params.getDataNode("Parameters"));
+        _report.putValue("created", System.currentTimeMillis());     
+        _report.putDataNode(params);
     }
     public void putNewSolution(long time, long iterNumber, double objVal, String solution) throws  Exception
     {

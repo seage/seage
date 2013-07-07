@@ -32,8 +32,7 @@ import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.aal.problem.Instance;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.problem.tsp.City;
@@ -51,7 +50,7 @@ public class TspAntColonyFactory implements IAlgorithmFactory
         return AntColonyAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, ProblemConfig config) throws Exception
+    public IAlgorithmAdapter createAlgorithm(Instance instance) throws Exception
     {        
         IAlgorithmAdapter algorithm;
         City[] cities = ((TspProblemInstance)instance).getCities();

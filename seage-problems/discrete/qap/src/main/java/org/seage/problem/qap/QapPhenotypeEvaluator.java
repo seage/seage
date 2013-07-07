@@ -27,7 +27,6 @@
 package org.seage.problem.qap;
 
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.data.ProblemInstanceInfo;
 
 /**
  *
@@ -36,11 +35,19 @@ import org.seage.aal.data.ProblemInstanceInfo;
  */
 public class QapPhenotypeEvaluator implements IPhenotypeEvaluator
 {
+    private QapProblemInstance _instance;
     
-    @Override
-    public double[] evaluate(Object[] phenotypeSubject, ProblemInstanceInfo instance) throws Exception
+    
+    public QapPhenotypeEvaluator(QapProblemInstance instance)
+	{
+		super();
+		_instance = instance;
+	}
+
+	@Override
+    public double[] evaluate(Object[] phenotypeSubject) throws Exception
     {
-        Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
+        Double[][][] facilityLocation = _instance.getFacilityLocation();
         double price = 0;
         for(int i=0;i<facilityLocation[0][0].length;i++){
             for(int j=0;j<facilityLocation[0][0].length;j++){

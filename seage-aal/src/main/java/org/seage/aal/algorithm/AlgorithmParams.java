@@ -24,7 +24,7 @@
  *     - Initial implementation
  */
 
-package org.seage.aal.data;
+package org.seage.aal.algorithm;
 
 import org.seage.data.DataNode;
 
@@ -35,17 +35,14 @@ import org.seage.data.DataNode;
  */
 public class AlgorithmParams extends DataNode{
 
-    /**
-	 * A generated value
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public AlgorithmParams(DataNode dn) {
         super(dn);
     }
 
-    public AlgorithmParams(String name) {
-        super(name);
+    public AlgorithmParams() {
+        super("Parameters");
     }
 
 }

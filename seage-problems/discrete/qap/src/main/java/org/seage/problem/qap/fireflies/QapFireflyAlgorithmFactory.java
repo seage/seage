@@ -29,10 +29,9 @@ package org.seage.problem.qap.fireflies;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
-import org.seage.aal.algorithm.IProblemProvider;
 import org.seage.aal.algorithm.fireflies.FireflyAlgorithmAdapter;
-import org.seage.aal.data.ProblemConfig;
-import org.seage.aal.data.ProblemInstanceInfo;
+import org.seage.aal.problem.IProblemProvider;
+import org.seage.aal.problem.Instance;
 import org.seage.metaheuristic.fireflies.Solution;
 import org.seage.problem.qap.QapProblemInstance;
 
@@ -53,7 +52,7 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
         return FireflyAlgorithmAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, ProblemConfig config) throws Exception
+    public IAlgorithmAdapter createAlgorithm(Instance instance) throws Exception
     {
         IAlgorithmAdapter algorithm;
         Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
@@ -90,11 +89,4 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
 //        algorithm.solutionsFromPhenotype(solutions);
         return algorithm;
     }
-
-//    public IAlgorithmAdapter createAlgorithm(ProblemInstanceInfo instance, DataNode config) throws Exception {
-//
-//        Double[][][] facilityLocation = instance
-//
-//    }
-
 }

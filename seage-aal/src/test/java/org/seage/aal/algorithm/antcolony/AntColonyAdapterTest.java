@@ -30,8 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
-import org.seage.aal.data.AlgorithmParams;
-import org.seage.data.DataNode;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
@@ -70,20 +69,14 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
 //    	}
     	    	
         _algorithm = new TestAntColonyAdapter(new AntBrain(graph), graph);
-        _algParams = new AlgorithmParams("AntColonyTest");
-        _algParams.putValue("problemID", "AntColonyTest");
-        _algParams.putValue("instance", "TestInstance");
-        
-        DataNode params = new DataNode("Parameters");
-        //params.putValue("numAnts", 0.1);
-        params.putValue("iterationCount", 3);
-        params.putValue("alpha", 100);
-        params.putValue("beta", 1);
-        params.putValue("defaultPheromone", 1);
-        params.putValue("qantumOfPheromone", 1);
-        params.putValue("localEvaporation", 1);
-        
-        _algParams.putDataNodeRef(params);
+        _algParams = new AlgorithmParams();
+
+        _algParams.putValue("iterationCount", 3);
+        _algParams.putValue("alpha", 100);
+        _algParams.putValue("beta", 1);
+        _algParams.putValue("defaultPheromone", 1);
+        _algParams.putValue("qantumOfPheromone", 1);
+        _algParams.putValue("localEvaporation", 1);
         
         _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
     }
@@ -106,7 +99,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     @Override    
     public void testAlgorithmWithParamsAtZero() throws Exception
     {
-    	DataNode params = new DataNode("Parameters");
+    	AlgorithmParams params = new AlgorithmParams();
         //params.putValue("numAnts", 0);
         params.putValue("iterationCount", 0);
         params.putValue("alpha", 0);
@@ -122,7 +115,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     @Override
     public void testAsyncRunning() throws Exception
     {
-    	DataNode params = new DataNode("Parameters");
+    	AlgorithmParams params = new AlgorithmParams();
         //params.putValue("numAnts", 0.1);
         params.putValue("iterationCount", 1000000);
         params.putValue("alpha", 100);

@@ -5,32 +5,39 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipOutputStream;
 
-import org.seage.aal.data.ProblemConfig;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.data.DataNode;
 
 
 public abstract class ExperimentTask implements Runnable
 {
 	protected static Logger _logger = Logger.getLogger(ExperimentTask.class.getName());
-	protected ProblemConfig _config;
+	//protected ProblemConfig _config;
 	protected String _experimentType;
 	protected long _experimentID;
+	protected String _problemID;
+	protected String _instanceID;
+	protected String _algorithmID;
+	protected AlgorithmParams _algorithmParams;
 	protected long _runID;
 	protected long _timeoutS;
 	
-	protected String _reportName;
+	//protected String _reportName;
 	protected DataNode _experimentTaskReport;
 	protected ZipOutputStream _reportOutputStream;
 	
-	
-	public ExperimentTask(String experimentType, long experimentID, long runID, long timeoutS, ProblemConfig config, String reportName, ZipOutputStream reportOutputStream) throws Exception
+	public ExperimentTask(String experimentType, long experimentID, String problemID, String instanceID, String algorithmID, AlgorithmParams algorithmParams, int runID, long timeoutS, ZipOutputStream reportOutputStream) throws Exception
 	{
 		_experimentType = experimentType;
 		_experimentID = experimentID;
+		_problemID = problemID;
+		_instanceID = instanceID;
+		_algorithmID = algorithmID;
+		_algorithmParams = algorithmParams;
 		_runID = runID;
 		_timeoutS = timeoutS;
-		_config = config;
-		_reportName = reportName;
+		//_config = config;
+		//_reportName = reportName;
         _reportOutputStream = reportOutputStream;    	
         
 		_experimentTaskReport = new DataNode("ExperimentTaskReport");
@@ -53,18 +60,18 @@ public abstract class ExperimentTask implements Runnable
         
         
         DataNode configNode = new DataNode("Config");        
-		configNode.putValue("configID", _config.getValueStr("configID"));		
+		//configNode.putValue("configID", _config.getValueStr("configID"));
 		configNode.putValue("runID", _runID);
         
         DataNode problemNode = new DataNode("Problem");
-        problemNode.putValue("problemID", _config.getDataNode("Problem").getValueStr("id"));
+        problemNode.putValue("problemID", _problemID);
         
         DataNode instanceNode = new DataNode("Instance");
-        instanceNode.putValue("name", _config.getDataNode("Problem").getDataNode("Instance").getValue("name"));
+        instanceNode.putValue("name", _instanceID);
         
         DataNode algorithmNode = new DataNode("Algorithm");
-        algorithmNode.putValue("algorithmID", _config.getDataNode("Algorithm").getValueStr("id"));
-        algorithmNode.putDataNode(_config.getDataNode("Algorithm").getDataNode("Parameters"));
+        algorithmNode.putValue("algorithmID", _algorithmID);
+        algorithmNode.putDataNode(_algorithmParams);
 
         problemNode.putDataNode(instanceNode);
         configNode.putDataNode(problemNode);
@@ -72,7 +79,11 @@ public abstract class ExperimentTask implements Runnable
         
         _experimentTaskReport.putDataNode(configNode);
 		
-	}
+	}	
 	
+	protected String getReportName() throws Exception
+	{
+		return _problemID + "-" + _instanceID + "-" + _algorithmID + "-" + _algorithmParams.hash() + "-" + _runID;
+	}
 
 }
