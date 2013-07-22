@@ -9,6 +9,7 @@ import org.seage.data.DataNode;
 import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.config.Configurator;
+import org.seage.experimenter.singlealgorithm.random.RandomConfigurator;
 
 import com.rapidminer.Process;
 import com.rapidminer.RapidMiner;
@@ -59,26 +60,18 @@ public class FeedbackConfigurator extends Configurator
         		exampleSetParams = c;
         		break;
         	}
-        	
-//        	for(Attribute att : c.getAttributes())
-//        	{
-//        		System.out.println(att);
-//        	}
-//        	for(int i=0;i<c.getExampleTable().size();i++)
-//        	{
-//        		System.out.println(c.getExample(i));
-//        	}
         }
 		List<ProblemConfig> results = new ArrayList<ProblemConfig>();
         if(exampleSetParams==null)
         {
-        	_logger.warning("There are no usable experiments in the repository.");
-        	return results.toArray(new ProblemConfig[0]);
+        	_logger.warning("There are no usable experiments in the repository, random param values generated.");
+        	return new RandomConfigurator().prepareConfigs(problemInfo, instanceID, algorithmID, numConfigs);
         }
 
         //System.out.println(instanceInfo.getValue("path"));
         int feedbackConfigs = exampleSetParams.size();//.getExampleTable().size();
-        int realNumConfigs = numConfigs < feedbackConfigs ? numConfigs : feedbackConfigs; 
+        int realNumConfigs = Math.min(numConfigs, feedbackConfigs);
+        
         for (int i = 0; i < realNumConfigs; i++)
         {        	
         	Example example = exampleSetParams.getExample(i);
@@ -97,9 +90,16 @@ public class FeedbackConfigurator extends Configurator
             config.putValue("configID", FileHelper.md5fromString(XmlHelper.getStringFromDocument(config.toXml())));
             results.add(config);
         }
-
+        
+        if(realNumConfigs < numConfigs)
+        {
+        	int rndConfigs = numConfigs - realNumConfigs;  
+        	ProblemConfig[] pc = new RandomConfigurator().prepareConfigs(problemInfo, instanceID, algorithmID, rndConfigs);
+        	
+        	for(int j=0;j<pc.length;j++)
+        		results.add(pc[j]);
+        }
         //
-
         return results.toArray(new ProblemConfig[0]);
 	}
 }

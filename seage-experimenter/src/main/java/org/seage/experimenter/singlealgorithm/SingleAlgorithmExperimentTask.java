@@ -91,7 +91,6 @@ public class SingleAlgorithmExperimentTask extends ExperimentTask
             instance.toString();
             // algorithm
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
-
             
             Object[][] solutions = provider.generateInitialSolutions(instance, _algorithmParams.getValueInt("numSolutions"), _experimentID);
 

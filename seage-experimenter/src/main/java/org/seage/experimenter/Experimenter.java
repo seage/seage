@@ -118,7 +118,7 @@ public abstract class Experimenter
 
                 ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)));
 
-                runExperimentTasks(experimentID, problemInfo, instanceInfo, algorithmIDs, numOfConfigs, timeoutS, zos);
+                performExperiment(experimentID, problemInfo, instanceInfo, algorithmIDs, numOfConfigs, timeoutS, zos);
 
                 zos.close();            
             }
@@ -127,7 +127,7 @@ public abstract class Experimenter
         _logger.log(Level.INFO, "Experiment " + experimentID + " finished ...");
     }
     
-    protected abstract void runExperimentTasks(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, int numConfigs, long timeoutS, ZipOutputStream zos) throws Exception;
+    protected abstract void performExperiment(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, int numConfigs, long timeoutS, ZipOutputStream zos) throws Exception;
 	    
     
     protected static String getDurationBreakdown(long millis)

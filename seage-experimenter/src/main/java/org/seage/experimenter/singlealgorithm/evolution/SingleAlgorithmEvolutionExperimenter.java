@@ -22,7 +22,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 	}
 
 	@Override
-	protected void runExperimentTasks(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, int numConfigs, long timeoutS, ZipOutputStream zos) throws Exception
+	protected void performExperiment(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, int numConfigs, long timeoutS, ZipOutputStream zos) throws Exception
 	{
 		String problemID = problemInfo.getProblemID();
 		String instanceID = instanceInfo.getInstanceID();

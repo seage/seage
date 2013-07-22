@@ -22,8 +22,13 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
 		_configurator = new RandomConfigurator();
 	}
 	
+	protected SingleAlgorithmRandomExperimenter(String experimenterName)
+	{
+		super(experimenterName);
+	}
+	
 	@Override
-	protected void runExperimentTasks(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, int numConfigs, long timeoutS, ZipOutputStream zos) throws Exception
+	protected void performExperiment(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, int numConfigs, long timeoutS, ZipOutputStream zos) throws Exception
 	{
 		for(String algorithmID : algorithmIDs)
 		{
@@ -32,9 +37,7 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
         	
 			List<Runnable> taskQueue = new ArrayList<Runnable>();
 	        for(ProblemConfig config : _configurator.prepareConfigs(problemInfo, instanceInfo.getInstanceID(), algorithmID, numConfigs))
-	        {	        	 
-	        	//String configID = config.getConfigID();
-	
+	        {
 	            for (int runID = 1; runID <= 5; runID++)
 	            {
 	                //String reportName = problemInfo.getProblemID() + "-" + algorithmID + "-" + instanceInfo.getInstanceID() + "-" + configID + "-" + runID + ".xml";

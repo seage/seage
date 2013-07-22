@@ -93,7 +93,7 @@ public class ProblemConfig extends DataNode{
 
 	public String getInstanceID() throws Exception
 	{
-		return this.getDataNode("Problem").getDataNode("Instance").getValueStr("id");;
+		return this.getDataNode("Problem").getDataNode("Instance").getValueStr("id");
 	}
     
 }
