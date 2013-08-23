@@ -4,14 +4,17 @@ import org.seage.metaheuristic.genetics.Subject;
 
 public class SingleAlgorithmExperimentTaskSubject extends Subject<Double> 
 {
-
-	public SingleAlgorithmExperimentTaskSubject(Double[] geneValues) {
+	protected String[] _paramNames;
+	public SingleAlgorithmExperimentTaskSubject(String[] paramNames, Double[] geneValues) 
+	{
 		super(geneValues);
-		// TODO Auto-generated constructor stub
+		_paramNames = paramNames;
 	}
 
-	public SingleAlgorithmExperimentTaskSubject(SingleAlgorithmExperimentTaskSubject experimentSubject) {
+	public SingleAlgorithmExperimentTaskSubject(SingleAlgorithmExperimentTaskSubject experimentSubject) 
+	{
 		super(experimentSubject);
+		_paramNames = experimentSubject._paramNames.clone();
 	}
 
 	@Override
@@ -19,5 +22,12 @@ public class SingleAlgorithmExperimentTaskSubject extends Subject<Double>
 		SingleAlgorithmExperimentTaskSubject result = new SingleAlgorithmExperimentTaskSubject(this);
 		return result;
 	}
+	
+	public String[] getParamNames()
+	{
+		return _paramNames;
+	}
+	
+	
 	
 }

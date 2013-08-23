@@ -58,14 +58,16 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 
 		for (int i = 0; i < count; i++)
 		{
+			String[] names = new String[params.size()];
 			Double[] values = new Double[params.size()];
 			for (int j = 0; j < params.size(); j++)
 			{
 				double min = params.get(j).getValueDouble("min");
 				double max = params.get(j).getValueDouble("max");
+				names[j] = params.get(j).getValueStr("name");
 				values[j] = min + (max - min) * Math.random();
 			}
-			result.add(new SingleAlgorithmExperimentTaskSubject(values));
+			result.add(new SingleAlgorithmExperimentTaskSubject(names, values));
 		}
 
 		return result;

@@ -31,8 +31,8 @@ import com.rapidminer.tools.OperatorService;
 import com.rapidminer.tools.XMLException;
 
 public class RapidMinerTest {
-	private static final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "SEAGE-RM-REPO";
-    private final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "/home/rick/Temp/SEAGE-RM-REPO";
+	private static final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "SEAGE-RM-REPO-old2";
+    private final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "/home/rick/Temp/SEAGE-RM-REPO-old2";
 
     public static void main(String[] args)
     {

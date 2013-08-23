@@ -48,8 +48,8 @@ import org.seage.data.DataNode;
 public class ProcessPerformer {
     
     private final String REPORT_NODE_NAME = "Report";    
-    private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "SEAGE-RM-REPO";
-    private final String RAPIDMINER_LOCAL_REPOSITORY_PATH = "SEAGE-RM-REPO";
+    private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "SEAGE-RM-REPO-old";
+    private final String RAPIDMINER_LOCAL_REPOSITORY_PATH = "SEAGE-RM-REPO-old";
     
     private List<RMProcess> _processes;
     

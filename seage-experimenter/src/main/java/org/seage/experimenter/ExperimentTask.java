@@ -85,5 +85,10 @@ public abstract class ExperimentTask implements Runnable
 	{
 		return _problemID + "-" + _instanceID + "-" + _algorithmID + "-" + _algorithmParams.hash() + "-" + _runID;
 	}
+	
+	public DataNode getExperimentTaskReport()
+	{
+		return _experimentTaskReport;
+	}
 
 }

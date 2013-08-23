@@ -1,12 +1,14 @@
 package org.seage.experimenter.singlealgorithm.evolution;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimentTask;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
+import org.seage.thread.TaskRunnerEx;
 
 public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<SingleAlgorithmExperimentTaskSubject>
 {
@@ -16,7 +18,7 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 	private String _algorithmID;
 	private long _timeoutS;
 	private ZipOutputStream _reportOutputStream;
-	
+	private int iterationID = 1;
 
 	public SingleAlgorithmExperimentTaskEvaluator(long experimentID, String problemID, String instanceID, String algorithmID, long timeoutS, ZipOutputStream reportOutputStream)
 	{
@@ -32,20 +34,33 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 	@Override
 	public void evaluateSubjects(List<SingleAlgorithmExperimentTaskSubject> subjects) throws Exception 
 	{
-		List<Runnable> taskQueue = new ArrayList<Runnable>();
+		List<SingleAlgorithmExperimentTask> taskQueue = new ArrayList<SingleAlgorithmExperimentTask>();
+		HashMap<SingleAlgorithmExperimentTask, SingleAlgorithmExperimentTaskSubject> taskMap = new HashMap<SingleAlgorithmExperimentTask, SingleAlgorithmExperimentTaskSubject>();
+		
 		for(SingleAlgorithmExperimentTaskSubject s : subjects)
 		{	
-			double val = 0;
-												
-			AlgorithmParams algorithmParams = null;
-			taskQueue.add( new SingleAlgorithmExperimentTask("SingleAlgorithmExperiment", _experimentID, _problemID, _instanceID, _algorithmID, algorithmParams, 1, _timeoutS, _reportOutputStream));
+			AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
+			for(int i=0;i<s.getChromosome().getLength();i++)
+			{
+				algorithmParams.putValue(s.getParamNames()[i], s.getChromosome().getGene(i));
+			}
 			
+			SingleAlgorithmExperimentTask task = new SingleAlgorithmExperimentTask("SingleAlgorithmEvolution", _experimentID, _problemID, _instanceID, _algorithmID, algorithmParams, iterationID, _timeoutS, _reportOutputStream); 
+			
+			taskMap.put(task, s);
+			taskQueue.add(task);						
+		}
+		
+		new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(taskQueue.toArray(new Runnable[]{}));
+
+		for(SingleAlgorithmExperimentTask task : taskQueue)
+		{
+			SingleAlgorithmExperimentTaskSubject s = taskMap.get(task);
+			double val = task.getExperimentTaskReport().getDataNode("AlgorithmReport").getDataNode("Statistics").getValueDouble("bestObjVal");
 			s.setObjectiveValue(new double[]{val});
 		}
 		
-		//new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(taskQueue.toArray(new Runnable[]{}));
-
-		
+		iterationID++;
 //		String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", experimentID, problemID, algorithmID, instanceID);
 //
 //        ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)));

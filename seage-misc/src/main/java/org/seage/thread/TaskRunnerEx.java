@@ -30,9 +30,10 @@ public class TaskRunnerEx
 		run(taskList);
 	}
 	
-	protected void run(List<Task> taskList) throws InterruptedException
+	protected void run(List<Task> taskList0) throws InterruptedException
 	{
 		_logger.finest("started");
+		List<Task> taskList = new ArrayList<Task>(taskList0);
 		CpuCoreCounter counter = new CpuCoreCounter(_processors);			
 		
 		while(!taskList.isEmpty())
