@@ -129,8 +129,8 @@ public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends Algo
 	{
 		_params = params;	
 		
-		_geneticSearch.getOperator().setCrossLengthCoef(_params.getValueDouble("crossLengthPct"));
-		_geneticSearch.getOperator().setMutateLengthCoef(_params.getValueDouble("mutateLengthPct"));
+		_geneticSearch.getOperator().setCrossLengthCoef(_params.getValueDouble("crossLengthPct")/100);
+		_geneticSearch.getOperator().setMutateLengthCoef(_params.getValueDouble("mutateLengthPct")/100);
 		_geneticSearch.setEliteSubjectsPct(_params.getValueDouble("eliteSubjectPct"));
 		_geneticSearch.setIterationToGo(_params.getValueInt("iterationCount"));
 		_geneticSearch.setMutatePopulationPct(_params.getValueDouble("mutateSubjectPct"));

@@ -23,9 +23,7 @@ public class ContinuousGeneticOperator<S extends Subject<Double>> extends BasicG
 
 	//@Override
 	public Subject<Double>[] crossOver0(Subject<Double> parent1, Subject<Double> parent2) throws Exception
-	{
-		double crossFactor = _crossLengthPct /100.0;
-		
+	{				
 		@SuppressWarnings("unchecked")
 		Subject<Double>[] children = (Subject<Double>[])new Object[2];
 		
@@ -36,7 +34,7 @@ public class ContinuousGeneticOperator<S extends Subject<Double>> extends BasicG
 		{
 			for(int i=0;i<parent1.getChromosome().getLength();i++)
 			{
-				if(crossFactor > _random.nextDouble())
+				if(_crossLengthCoef > _random.nextDouble())
 				{
 					double value = ((Double)parent1.getChromosome().getGene(i) + (Double)parent2.getChromosome().getGene(i))/2;
 					s.getChromosome().setGene(i, value);
@@ -48,12 +46,10 @@ public class ContinuousGeneticOperator<S extends Subject<Double>> extends BasicG
 
 	//@Override
 	public S mutate(S subject) throws Exception
-	{
-		double mutateFactor = _mutateLengthPct /100.0;
-	
+	{			
 		for(int i=0;i<subject.getChromosome().getLength();i++)
 		{
-			if(mutateFactor > _random.nextDouble())
+			if(_mutateLengthCoef > _random.nextDouble())
 			{
 				double value = _limits[i].Min + _random.nextDouble()*(_limits[i].Max-_limits[i].Min);
 				subject.getChromosome().setGene(i, value);

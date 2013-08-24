@@ -48,7 +48,7 @@ public class TspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, I
 			cross1[i] = cross2[i] = -1;
 
 		int ix = _random.nextInt(length);
-		int crossLength = (int) (length * _random.nextDouble() * _crossLengthPct) + 1;
+		int crossLength = (int) (length * _random.nextDouble() * _crossLengthCoef) + 1;
 
 		if (ix > length - crossLength)
 			ix = length - crossLength;
@@ -115,7 +115,7 @@ public class TspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, I
 		int length = parent1.getChromosome().getLength();
 
 		int ix = _random.nextInt(length);
-		int crossLength = (int) (length * _random.nextDouble() * _crossLengthPct) + 1;
+		int crossLength = (int) (length * _random.nextDouble() * _crossLengthCoef) + 1;
 
 		if (ix > length - crossLength)
 			ix = length - crossLength;

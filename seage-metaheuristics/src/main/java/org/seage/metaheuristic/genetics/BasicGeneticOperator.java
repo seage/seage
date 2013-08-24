@@ -36,16 +36,10 @@ import java.util.Random;
 public class BasicGeneticOperator<S extends Subject<GeneType>, GeneType> extends GeneticOperator<S>
 {
 	protected Random _random;
-	protected double _crossLengthPct;
-	//protected double _mutatePct;
-	protected double _mutateLengthPct;
 
 	public BasicGeneticOperator()
 	{
 		_random = new Random();
-
-		_crossLengthPct = 0.45;
-		_mutateLengthPct = 0.3;
 	}
 
 	// / <summary>
@@ -112,7 +106,7 @@ public class BasicGeneticOperator<S extends Subject<GeneType>, GeneType> extends
 	{		
 		int length = parent1.getChromosome().getLength();
 		int ix = _random.nextInt(length);
-		int crossLength = 1+(int) (length * _random.nextDouble() * _crossLengthPct);
+		int crossLength = 1+(int) (length * _random.nextDouble() * _crossLengthCoef);
 
 		if (ix > length - crossLength)
 			ix = length - crossLength;
@@ -144,7 +138,7 @@ public class BasicGeneticOperator<S extends Subject<GeneType>, GeneType> extends
 	{
 
 		int length = subject.getChromosome().getLength();
-		int count = /* (int)(length * _mutatePct);/ */_random.nextInt((int) (length * _mutateLengthPct) + 1);
+		int count = /* (int)(length * _mutatePct);/ */_random.nextInt((int) (length * _mutateLengthCoef) + 1);
 		S mutant = (S)subject.clone();
 
 		for (int i = 0; i < count; i++)
@@ -177,15 +171,5 @@ public class BasicGeneticOperator<S extends Subject<GeneType>, GeneType> extends
 		}
 		return random;
 
-	}
-
-	public void setCrossLengthPct(double pct)
-	{
-		_crossLengthPct = pct;
-	}
-
-	public void setMutateLengthPct(double pct)
-	{
-		_mutateLengthPct = pct;
 	}
 }

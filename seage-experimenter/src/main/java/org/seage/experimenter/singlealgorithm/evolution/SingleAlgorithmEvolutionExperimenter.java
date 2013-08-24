@@ -36,12 +36,12 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 			GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = new GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject>(realOperator, evaluator);
 			ga.addGeneticSearchListener(this);
 			ga.setCrossLengthPct(30);
-			ga.setEliteSubjectsPct(20);
+			ga.setEliteSubjectsPct(0);
 			ga.setIterationToGo((int) timeoutS);
 			ga.setMutateChromosomeLengthPct(10);
-			ga.setMutatePopulationPct(1);
+			ga.setMutatePopulationPct(50);
 			ga.setPopulationCount(numConfigs);
-			ga.setRandomSubjectsPct(1);
+			ga.setRandomSubjectsPct(10);
 
 			List<SingleAlgorithmExperimentTaskSubject> subjects = initializeSubjects(algorithmID, problemInfo, numConfigs);
 

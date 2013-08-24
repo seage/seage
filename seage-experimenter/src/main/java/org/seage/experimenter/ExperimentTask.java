@@ -18,6 +18,7 @@ public abstract class ExperimentTask implements Runnable
 	protected String _problemID;
 	protected String _instanceID;
 	protected String _algorithmID;
+	protected String _configID;
 	protected AlgorithmParams _algorithmParams;
 	protected long _runID;
 	protected long _timeoutS;
@@ -34,9 +35,10 @@ public abstract class ExperimentTask implements Runnable
 		_instanceID = instanceID;
 		_algorithmID = algorithmID;
 		_algorithmParams = algorithmParams;
+		_configID = algorithmParams.hash();
 		_runID = runID;
 		_timeoutS = timeoutS;
-		//_config = config;
+		
 		//_reportName = reportName;
         _reportOutputStream = reportOutputStream;    	
         
@@ -60,7 +62,7 @@ public abstract class ExperimentTask implements Runnable
         
         
         DataNode configNode = new DataNode("Config");        
-		//configNode.putValue("configID", _config.getValueStr("configID"));
+		configNode.putValue("configID", _configID);
 		configNode.putValue("runID", _runID);
         
         DataNode problemNode = new DataNode("Problem");
@@ -83,7 +85,7 @@ public abstract class ExperimentTask implements Runnable
 	
 	protected String getReportName() throws Exception
 	{
-		return _problemID + "-" + _instanceID + "-" + _algorithmID + "-" + _algorithmParams.hash() + "-" + _runID;
+		return _problemID + "-" + _instanceID + "-" + _algorithmID + "-" + _configID + "-" + _runID + ".xml";
 	}
 	
 	public DataNode getExperimentTaskReport()

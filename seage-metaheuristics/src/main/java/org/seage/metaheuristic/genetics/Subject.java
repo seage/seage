@@ -99,12 +99,13 @@ public class Subject<GeneType>
 		return _hashCode;
 	}
 
+	@Override
 	public String toString()
 	{
 		String result = "";
 
 		if (_fitness == null)
-			return "null";
+			return "#"+_hashCode;
 
 		for (int i = 0; i < _chromosome.getLength(); i++)
 		{
