@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.problem.InstanceInfo;
+import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
 import org.seage.experimenter.Experimenter;
+import org.seage.experimenter.singlealgorithm.feedback.FeedbackConfigurator;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator.Limit;
@@ -41,9 +43,9 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 			ga.setMutateChromosomeLengthPct(10);
 			ga.setMutatePopulationPct(50);
 			ga.setPopulationCount(numConfigs);
-			ga.setRandomSubjectsPct(10);
+			ga.setRandomSubjectsPct(20);
 
-			List<SingleAlgorithmExperimentTaskSubject> subjects = initializeSubjects(algorithmID, problemInfo, numConfigs);
+			List<SingleAlgorithmExperimentTaskSubject> subjects = initializeSubjects(problemInfo, instanceID, algorithmID, numConfigs);
 
 			ga.startSearching(subjects);
 			_logger.info("   " + ga.getBestSubject().toString());
@@ -51,10 +53,28 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 		}
 	}
 
-	private List<SingleAlgorithmExperimentTaskSubject> initializeSubjects(String algorithmID, ProblemInfo pi, int count) throws Exception
+	private List<SingleAlgorithmExperimentTaskSubject> initializeSubjects(ProblemInfo problemInfo, String instanceID, String algorithmID, int count) throws Exception
 	{
 		List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<SingleAlgorithmExperimentTaskSubject>();
-		List<DataNode> params = pi.getDataNode("Algorithms").getDataNodeById(algorithmID).getDataNodes("Parameter");
+		
+		FeedbackConfigurator fc = new FeedbackConfigurator();
+		ProblemConfig[] pc = fc.prepareConfigs(problemInfo, instanceID, algorithmID, count);
+		
+		List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID).getDataNodes("Parameter");
+		
+		for (int i = 0; i < count; i++)
+		{
+			String[] names = new String[params.size()];
+			Double[] values = new Double[params.size()];
+			for (int j = 0; j < params.size(); j++)
+			{
+				names[j] = params.get(j).getValueStr("name");
+				values[j] = pc[i].getDataNode("Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
+			}
+			result.add(new SingleAlgorithmExperimentTaskSubject(names, values));
+		}
+		
+		/*
 
 		for (int i = 0; i < count; i++)
 		{
@@ -68,7 +88,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 				values[j] = min + (max - min) * Math.random();
 			}
 			result.add(new SingleAlgorithmExperimentTaskSubject(names, values));
-		}
+		}*/
 
 		return result;
 	}

@@ -53,7 +53,7 @@ public abstract class Configurator
         DataNode instance = new DataNode("Instance");
         // |_ Algorithm
         DataNode algorithm = new DataNode("Algorithm");
-        // |_ Parameters
+        //   |_ Parameters
         DataNode params = new DataNode("Parameters");
 
         problem.putValue("id", problemInfo.getValue("id"));

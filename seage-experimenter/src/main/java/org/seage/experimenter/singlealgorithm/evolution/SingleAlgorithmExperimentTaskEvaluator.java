@@ -27,7 +27,7 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 		_problemID = problemID;
 		_instanceID = instanceID;
 		_algorithmID = algorithmID;
-		_timeoutS = timeoutS;
+		_timeoutS = 5;//timeoutS;
 		_reportOutputStream = reportOutputStream;
 	}
 
