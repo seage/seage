@@ -19,6 +19,8 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 	private long _timeoutS;
 	private ZipOutputStream _reportOutputStream;
 	private int iterationID = 1;
+	
+	private HashMap<String, Double> _configCache;
 
 	public SingleAlgorithmExperimentTaskEvaluator(long experimentID, String problemID, String instanceID, String algorithmID, long timeoutS, ZipOutputStream reportOutputStream)
 	{
@@ -29,6 +31,7 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 		_algorithmID = algorithmID;
 		_timeoutS = 5;//timeoutS;
 		_reportOutputStream = reportOutputStream;
+		_configCache = new HashMap<String, Double>();
 	}
 
 	@Override
@@ -45,10 +48,18 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 				algorithmParams.putValue(s.getParamNames()[i], s.getChromosome().getGene(i));
 			}
 			
-			SingleAlgorithmExperimentTask task = new SingleAlgorithmExperimentTask("SingleAlgorithmEvolution", _experimentID, _problemID, _instanceID, _algorithmID, algorithmParams, iterationID, _timeoutS, _reportOutputStream); 
+			String configID = algorithmParams.hash();
+			if(_configCache.containsKey(configID))
+			{
+				s.setObjectiveValue(new double[]{_configCache.get(configID)});
+			}
+			else
+			{
+				SingleAlgorithmExperimentTask task = new SingleAlgorithmExperimentTask("SingleAlgorithmEvolution", _experimentID, _problemID, _instanceID, _algorithmID, algorithmParams, iterationID, _timeoutS, _reportOutputStream); 
 			
-			taskMap.put(task, s);
-			taskQueue.add(task);						
+				taskMap.put(task, s);
+				taskQueue.add(task);
+			}						
 		}
 		
 		new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(taskQueue.toArray(new Runnable[]{}));
@@ -56,30 +67,14 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 		for(SingleAlgorithmExperimentTask task : taskQueue)
 		{
 			SingleAlgorithmExperimentTaskSubject s = taskMap.get(task);
-			double val = task.getExperimentTaskReport().getDataNode("AlgorithmReport").getDataNode("Statistics").getValueDouble("bestObjVal");
-			s.setObjectiveValue(new double[]{val});
+			double value = task.getExperimentTaskReport().getDataNode("AlgorithmReport").getDataNode("Statistics").getValueDouble("bestObjVal");
+			s.setObjectiveValue(new double[]{value});
+			
+			_configCache.put(task.getConfigID(), value);
 		}
 		
 		iterationID++;
-//		String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", experimentID, problemID, algorithmID, instanceID);
-//
-//        ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)));
-//
-//        // Create a task queue
-//        
-//        for(ProblemConfig config : _configurator.prepareConfigs(pi, algorithmID, instanceInfo, numOfConfigs))
-//        {
-//        	String configID = config.getConfigID();
-//
-//            for (int runID = 1; runID <= 5; runID++)
-//            {
-//                String reportName = problemID + "-" + algorithmID + "-" + instanceID + "-" + configID + "-" + runID + ".xml";
-//                taskQueue.add(new SingleAlgorithmExperiment(_experimentName, experimentID, timeoutS, config, reportName, zos, runID));
-//            }
-//        }
-//        new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(taskQueue.toArray(new Runnable[]{}));
-//
-//        zos.close();         
+   
 	}
 
 	@Override

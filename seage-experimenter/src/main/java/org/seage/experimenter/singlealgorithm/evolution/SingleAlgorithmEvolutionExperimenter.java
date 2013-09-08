@@ -18,9 +18,13 @@ import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 
 public class SingleAlgorithmEvolutionExperimenter extends Experimenter implements IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject>>
 {
-	public SingleAlgorithmEvolutionExperimenter()
+	private FeedbackConfigurator _feedbackConfigurator;
+	
+	public SingleAlgorithmEvolutionExperimenter() throws Exception
 	{
 		super("SingleAlgorithmEvolution");
+		
+		_feedbackConfigurator = new FeedbackConfigurator();
 	}
 
 	@Override
@@ -57,8 +61,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 	{
 		List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<SingleAlgorithmExperimentTaskSubject>();
 		
-		FeedbackConfigurator fc = new FeedbackConfigurator();
-		ProblemConfig[] pc = fc.prepareConfigs(problemInfo, instanceID, algorithmID, count);
+		ProblemConfig[] pc = _feedbackConfigurator.prepareConfigs(problemInfo, instanceID, algorithmID, count);
 		
 		List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID).getDataNodes("Parameter");
 		

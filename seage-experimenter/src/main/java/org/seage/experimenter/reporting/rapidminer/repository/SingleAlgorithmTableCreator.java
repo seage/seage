@@ -145,6 +145,7 @@ public class SingleAlgorithmTableCreator extends RMDataTableCreator
 	            else
 	            {
 	            	val = XmlHelper.getValueFromDocument(doc.getDocumentElement(), xPath);//(String) XmlHelper.XPath.evaluate(attInfo.XmlHelper.XPath, doc, XmlHelper.XPathConstants.STRING);; //XmlHelper.XPath
+	            	val = postProcessValue(val, version, attInfo);
 	            }
             }
             //String val = (String) attInfo.XmlHelper.XPath.evaluate( doc, XmlHelper.XPathConstants.STRING);; //XmlHelper.XPath
@@ -159,7 +160,14 @@ public class SingleAlgorithmTableCreator extends RMDataTableCreator
         _dataTable.add(new DoubleArrayDataRow(valArray));
     }
     
-    private String getReportVersion(Document doc)
+    private String postProcessValue(String val, String version, Attribute attInfo)
+	{
+		if(/*version.equals("0.4") &&*/ attInfo.getName().equals("InstanceID") && val.contains("."))
+			return val.split("\\.")[0];
+		return val;
+	}
+
+	private String getReportVersion(Document doc)
     {   
         String version = doc.getDocumentElement().getAttribute("version");
         if(version.equals("0.2"))

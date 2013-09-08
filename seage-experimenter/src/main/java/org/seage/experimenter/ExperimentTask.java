@@ -88,6 +88,11 @@ public abstract class ExperimentTask implements Runnable
 		return _problemID + "-" + _instanceID + "-" + _algorithmID + "-" + _configID + "-" + _runID + ".xml";
 	}
 	
+	public String getConfigID()
+	{
+		return _configID;
+	}
+	
 	public DataNode getExperimentTaskReport()
 	{
 		return _experimentTaskReport;
