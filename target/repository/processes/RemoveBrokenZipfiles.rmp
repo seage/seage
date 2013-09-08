@@ -100,14 +100,16 @@
               <portSpacing port="sink_out 2" spacing="0"/>
             </process>
             <process expanded="true">
-              <operator activated="true" class="move_file" compatibility="5.3.013" expanded="true" height="60" name="Move File" width="90" x="112" y="30">
+              <operator activated="true" class="print_to_console" compatibility="5.3.013" expanded="true" height="60" name="Print to Console (3)" width="90" x="112" y="120">
+                <parameter key="log_value" value="BROKEN: %{zipfile_path}"/>
+              </operator>
+              <operator activated="true" class="move_file" compatibility="5.3.013" expanded="true" height="76" name="Move File" width="90" x="179" y="30">
                 <parameter key="file" value="%{zipfile_path}"/>
                 <parameter key="destination" value="%{parent_path}/broken"/>
                 <parameter key="overwrite" value="false"/>
               </operator>
-              <operator activated="true" class="print_to_console" compatibility="5.3.013" expanded="true" height="60" name="Print to Console (3)" width="90" x="112" y="120">
-                <parameter key="log_value" value="BROKEN: %{zipfile_path}"/>
-              </operator>
+              <connect from_port="in 1" to_op="Move File" to_port="through 1"/>
+              <connect from_op="Move File" from_port="through 1" to_port="out 1"/>
               <portSpacing port="source_in 1" spacing="0"/>
               <portSpacing port="source_in 2" spacing="0"/>
               <portSpacing port="sink_out 1" spacing="0"/>
@@ -124,7 +126,6 @@
       </operator>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
-      <portSpacing port="sink_result 2" spacing="0"/>
     </process>
   </operator>
 </process>

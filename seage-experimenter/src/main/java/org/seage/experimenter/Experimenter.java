@@ -108,7 +108,7 @@ public abstract class Experimenter
                 //List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
                 //configs.addAll(Arrays.asList());                
                 _logger.info("-------------------------------------");
-                _logger.info(String.format("Instance: %s (%d/%d)", instanceIDs[i], i, instanceIDs.length));
+                _logger.info(String.format("Instance: %s (%d/%d)", instanceIDs[i], i+1, instanceIDs.length));
                 //_logger.info(String.format("Algorithm: %s (%d/%d)", algorithmIDs[j], j, algorithmIDs.length));                
                 //_logger.info("Number of runs: " + numOfConfigs*5);
                 //_logger.info("Memory used for configs: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));

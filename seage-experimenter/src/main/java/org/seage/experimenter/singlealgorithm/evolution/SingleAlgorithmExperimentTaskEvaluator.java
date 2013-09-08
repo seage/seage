@@ -18,7 +18,8 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 	private String _algorithmID;
 	private long _timeoutS;
 	private ZipOutputStream _reportOutputStream;
-	private int iterationID = 1;
+	//private int iterationID = 1;
+	private int evaluationID = 1;
 	
 	private HashMap<String, Double> _configCache;
 
@@ -55,7 +56,7 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 			}
 			else
 			{
-				SingleAlgorithmExperimentTask task = new SingleAlgorithmExperimentTask("SingleAlgorithmEvolution", _experimentID, _problemID, _instanceID, _algorithmID, algorithmParams, iterationID, _timeoutS, _reportOutputStream); 
+				SingleAlgorithmExperimentTask task = new SingleAlgorithmExperimentTask("SingleAlgorithmEvolution", _experimentID, _problemID, _instanceID, _algorithmID, algorithmParams, evaluationID++, _timeoutS, _reportOutputStream); 
 			
 				taskMap.put(task, s);
 				taskQueue.add(task);
@@ -72,9 +73,7 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 			
 			_configCache.put(task.getConfigID(), value);
 		}
-		
-		iterationID++;
-   
+		   
 	}
 
 	@Override
