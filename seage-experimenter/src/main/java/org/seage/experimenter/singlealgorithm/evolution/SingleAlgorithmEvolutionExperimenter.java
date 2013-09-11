@@ -35,6 +35,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 		
 		for (String algorithmID : algorithmIDs)
 		{
+			_logger.info(String.format("%-15s %s", "Algorithm: ", algorithmID));
 			ContinuousGeneticOperator.Limit[] limits = prepareAlgorithmParametersLimits(algorithmID, problemInfo);
 			ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject> realOperator = new ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject>(limits);
 

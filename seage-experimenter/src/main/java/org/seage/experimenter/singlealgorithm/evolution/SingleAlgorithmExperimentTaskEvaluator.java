@@ -68,7 +68,13 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 		for(SingleAlgorithmExperimentTask task : taskQueue)
 		{
 			SingleAlgorithmExperimentTaskSubject s = taskMap.get(task);
-			double value = task.getExperimentTaskReport().getDataNode("AlgorithmReport").getDataNode("Statistics").getValueDouble("bestObjVal");
+			double value = Double.MAX_VALUE; 
+			try{
+				value = task.getExperimentTaskReport().getDataNode("AlgorithmReport").getDataNode("Statistics").getValueDouble("bestObjVal");
+			}catch(Exception ex)
+			{
+				_logger.warning("Unable to set value");
+			}
 			s.setObjectiveValue(new double[]{value});
 			
 			_configCache.put(task.getConfigID(), value);

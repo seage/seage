@@ -108,7 +108,8 @@ public abstract class Experimenter
                 //List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
                 //configs.addAll(Arrays.asList());                
                 _logger.info("-------------------------------------");
-                _logger.info(String.format("Instance: %s (%d/%d)", instanceIDs[i], i+1, instanceIDs.length));
+                _logger.info(String.format("%-15s %s","Problem:", problemID));
+                _logger.info(String.format("%-15s %s    (%d/%d)", "Instance:", instanceIDs[i], i+1, instanceIDs.length));
                 //_logger.info(String.format("Algorithm: %s (%d/%d)", algorithmIDs[j], j, algorithmIDs.length));                
                 //_logger.info("Number of runs: " + numOfConfigs*5);
                 //_logger.info("Memory used for configs: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
@@ -124,7 +125,8 @@ public abstract class Experimenter
             }
         }
         _logger.info("-------------------------------------");
-        _logger.log(Level.INFO, "Experiment " + experimentID + " finished ...");
+        _logger.info("Experiment " + experimentID + " finished ...");
+        _logger.info(String.format("Experiment duration: %s (DD:HH:mm:ss)", getDurationBreakdown(System.currentTimeMillis()-experimentID)));
     }
     
     protected abstract void performExperiment(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, int numConfigs, long timeoutS, ZipOutputStream zos) throws Exception;

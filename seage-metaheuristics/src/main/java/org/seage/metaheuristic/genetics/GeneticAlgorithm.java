@@ -26,6 +26,7 @@
 package org.seage.metaheuristic.genetics;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 import org.seage.metaheuristic.AlgorithmEventProducer;
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -35,6 +36,8 @@ import org.seage.metaheuristic.IAlgorithmListener;
  */
 public class GeneticAlgorithm<S extends Subject<?>>
 {
+	protected static Logger _logger = Logger.getLogger(GeneticAlgorithm.class.getName());
+	
 	private AlgorithmEventProducer<IAlgorithmListener<GeneticAlgorithmEvent<S>>, GeneticAlgorithmEvent<S>> _eventProducer;
 	private int _iterationCount;
 	private int _currentIteration;
@@ -108,81 +111,94 @@ public class GeneticAlgorithm<S extends Subject<?>>
 	@SuppressWarnings("unchecked")
 	public void startSearching(List<S> subjects) throws Exception
 	{
-		_keepSearching = _isRunning = true;
-		_eventProducer.fireAlgorithmStarted();
-
-		_bestSubject = null;
-		_currentIteration = 0;
-
-		Population<S> workPopulation = new Population<S>();
-		int numEliteSubject = (int) Math.max(_eliteSubjectsCoef * _populationCount, 1);
-		int numMutateSubject = (int) (_mutateSubjectsCoef * _populationCount);
-		int numCrossSubject = _populationCount - numEliteSubject - numMutateSubject;
-		int numRandomSubject = (int) (_randomSubjectsCoef * _populationCount);
-
-		_population.removeAll();
-		for (int i = 0; i < _populationCount; i++)
-		{
-			if (i < subjects.size())
-				_population.addSubject(subjects.get(i));
-			else
-				break;
-		}
-
-		//double currBestFitness = Double.MAX_VALUE;
-		int i = 0;
-		while (i++ < _iterationCount && _keepSearching)
-		{
-			_currentIteration++;
-
-			_evaluator.evaluateSubjects(_population.getSubjects());
-			_population.sort(_subjectComparator);
-			// _population.removeTwins();
-
-			if (_bestSubject == null)
-			{
-				_bestSubject = (S) _population.getBestSubject().clone();
-				_eventProducer.fireNewBestSolutionFound();
-			}
-
-			if (_subjectComparator.compare(_population.getBestSubject(), _bestSubject) == -1)
-			{
-				_bestSubject = (S) _population.getBestSubject().clone();
-				_eventProducer.fireNewBestSolutionFound();
-			}
-			else
-				;// fireNoChangeInValueIterationMade();
-
-			workPopulation.removeAll();
-			// elitism
-			workPopulation.mergePopulation(elitism(numEliteSubject));
-			// crossover
-			workPopulation.mergePopulation(crossover(numCrossSubject));
-			// mutate
-			workPopulation.mergePopulation(mutate(numMutateSubject));
-			// randoms
-			workPopulation.mergePopulation(randomize(numRandomSubject));
-
-			_population.removeAll();
-			_population.mergePopulation(workPopulation);
-
-			if (_population.getSize() < _populationCount)
-				_population.mergePopulation(randomize(_populationCount - _population.getSize()));
-
-			if (_population.getSize() > _populationCount)
-				_population.resize(_populationCount);
+		try
+		{			
+			_keepSearching = _isRunning = true;
+			_eventProducer.fireAlgorithmStarted();
 			
-			_eventProducer.fireIterationPerformed();
+			if(subjects.size() == 0)
+				throw new Exception("No subject entered for the evolution.");
+	
+			_bestSubject = null;
+			_currentIteration = 0;
+	
+			Population<S> workPopulation = new Population<S>();
+			int numEliteSubject = (int) Math.max(_eliteSubjectsCoef * _populationCount, 1);
+			int numMutateSubject = (int) (_mutateSubjectsCoef * _populationCount);
+			int numCrossSubject = _populationCount - numEliteSubject - numMutateSubject;
+			int numRandomSubject = (int) (_randomSubjectsCoef * _populationCount);
+	
+			_population.removeAll();
+			for (int i = 0; i < _populationCount; i++)
+			{
+				if (i < subjects.size())
+					_population.addSubject(subjects.get(i));
+				else
+					break;
+			}
+			if (_population.getSize() < _populationCount)
+				_population.mergePopulation(createRandomSubjects(_populationCount - _population.getSize()));
+	
+			//double currBestFitness = Double.MAX_VALUE;
+			int i = 0;
+			while (i++ < _iterationCount && _keepSearching)
+			{
+				_currentIteration++;
+	
+				_evaluator.evaluateSubjects(_population.getSubjects());
+				_population.sort(_subjectComparator);
+				// _population.removeTwins();
+	
+				if (_bestSubject == null)
+				{
+					_bestSubject = (S) _population.getBestSubject().clone();
+					_eventProducer.fireNewBestSolutionFound();
+				}
+	
+				if (_subjectComparator.compare(_population.getBestSubject(), _bestSubject) == -1)
+				{
+					_bestSubject = (S) _population.getBestSubject().clone();
+					_eventProducer.fireNewBestSolutionFound();
+				}
+				else
+					;// fireNoChangeInValueIterationMade();
+	
+				workPopulation.removeAll();
+				// elitism
+				workPopulation.mergePopulation(elitism(numEliteSubject));
+				// crossover
+				workPopulation.mergePopulation(crossover(numCrossSubject));
+				// mutate
+				workPopulation.mergePopulation(mutate(numMutateSubject));
+				// randoms
+				workPopulation.mergePopulation(randomize(numRandomSubject));
+	
+				_population.removeAll();
+				_population.mergePopulation(workPopulation);
+	
+				if (_population.getSize() < _populationCount)
+					_population.mergePopulation(createRandomSubjects(_populationCount - _population.getSize()));
+	
+				if (_population.getSize() > _populationCount)
+					_population.resize(_populationCount);
+				
+				if(_population.getSize() != _populationCount)
+					throw new Exception("The new population has a wrong size.");
+				
+				_eventProducer.fireIterationPerformed();
+			}
+			_evaluator.evaluateSubjects(_population.getSubjects());
+			_population.sort(_subjectComparator);				
 		}
-		_evaluator.evaluateSubjects(_population.getSubjects());
-		_population.sort(_subjectComparator);
-		_isRunning = false;
-		_eventProducer.fireAlgorithmStopped();
+		finally
+		{
+			_isRunning = false;
+			_eventProducer.fireAlgorithmStopped();
+		}
 	}
 
 	private Population<S> elitism(int numEliteSubject) throws Exception
-	{
-
+	{		
 		Population<S> result = new Population<S>();
 		S prev = _population.getBestSubject();
 		for (int i = 0; i < numEliteSubject; i++)
@@ -248,6 +264,18 @@ public class GeneticAlgorithm<S extends Subject<?>>
 			{
 				result.addSubject(_operator.randomize((S)subjects.get(i).clone()));
 			}
+		}
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private Population<S> createRandomSubjects(int numRandomSubject) throws Exception
+	{			
+		Population<S> result = new Population<S>();
+
+		for (int i = 0; i < numRandomSubject; i++)
+		{			
+			result.addSubject(_operator.randomize((S)_population.getSubjects().get(i%_population.getSubjects().size()).clone()));			
 		}
 		return result;
 	}

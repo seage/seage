@@ -74,6 +74,7 @@ public class GeneticAlgorithmTest {
 		ga.startSearching(subjects);
 	}
 	
+		
 	private class Listener implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>>
 	{
 

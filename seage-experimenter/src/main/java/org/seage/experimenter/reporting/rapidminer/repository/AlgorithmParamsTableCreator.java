@@ -133,6 +133,7 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
             _attributes.add(AttributeFactory.createAttribute("iterationCount", Ontology.REAL));
             _attributes.add(AttributeFactory.createAttribute("numSolutions", Ontology.REAL));
             _attributes.add(AttributeFactory.createAttribute("qantumOfPheromone", Ontology.REAL));
+            _attributes.add(AttributeFactory.createAttribute("localEvaporation", Ontology.REAL));
             
             Hashtable<String, XmlHelper.XPath> algAntXPaths = new Hashtable<String, XmlHelper.XPath>();
             algAntXPaths.put("ConfigID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
@@ -142,6 +143,7 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
             algAntXPaths.put("iterationCount", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@iterationCount"));
             algAntXPaths.put("numSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
             algAntXPaths.put("qantumOfPheromone", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@qantumOfPheromone"));
+            algAntXPaths.put("localEvaporation", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@localEvaporation"));
 
             _versionedXPaths.put(VERSION, algAntXPaths);
         }
