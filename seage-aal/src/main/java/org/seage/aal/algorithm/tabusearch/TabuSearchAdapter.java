@@ -44,7 +44,6 @@ import org.seage.metaheuristic.tabusearch.TabuSearchListener;
  * TabuSearchAdapter interface.
  */
 @AlgorithmParameters({ 
-	@Parameter(name = "numIterDivers", min = 1, max = 1, init = 1), 
 	@Parameter(name = "numIteration", min = 1, max = 1000000, init = 1000),
 	@Parameter(name = "numSolutions", min = 1, max = 1, init = 1), 
 	@Parameter(name = "tabuListLength", min = 1, max = 1000, init = 30) })
@@ -132,7 +131,6 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 		_iterationToGo = _statNumIter = _params.getValueInt("numIteration");
 
 		_tabuListLength = _params.getValueInt("tabuListLength");
-		_params.getValueInt("numIterDivers");
 		_solutionsToExplore = _params.getValueInt("numSolutions");
 
 	}

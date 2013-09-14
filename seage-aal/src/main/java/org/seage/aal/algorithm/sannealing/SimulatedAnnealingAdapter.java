@@ -47,7 +47,7 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 @AlgorithmParameters({ 
 	@Parameter(name = "annealCoeficient", min = 0.1, max = 1, init = 0.99), 
-	@Parameter(name = "maxInnerIterations", min = 1, max = 100000, init = 100),
+	@Parameter(name = "maxInnerIterations", min = 1, max = 1000000, init = 100),
     @Parameter(name = "maxTemperature", min = 10, max = 1000000, init = 100), 
     @Parameter(name = "minTemperature", min = 0, max = 10000, init = 1),
     @Parameter(name = "maxOneStepAcceptedSolutions", min = 0, max = 1000000, init = 100), 

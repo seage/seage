@@ -31,6 +31,13 @@
 	 		<scope>compile</scope>
 	 	</dependency>
 	 	<dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>seage-metaheuristics</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+	 	<dependency>
 			<groupId>rapidminer</groupId>
 			<artifactId>rapidminer-launcher</artifactId>
 			<version>5.3.5</version>

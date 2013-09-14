@@ -25,7 +25,6 @@ package org.seage;
 
 
 //import aglobe.platform.Platform;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,6 +74,61 @@ public class Launcher {
             return;
         }
 
+        if (args[0].equals("-report")) {
+        	new ExperimentDataRapidMinerImporter("output/experiment-logs", "").processLogs();
+        	return;
+        }
+
+        if (args[0].equals("-experiment-single-random")) {             
+        	if (args.length == 1+5)
+            {
+        		int numConfigs = Integer.parseInt(args[1]);
+        		int timeoutS = Integer.parseInt(args[2]);
+        		
+                new SingleAlgorithmRandomExperimenter(numConfigs, timeoutS).runExperiment(args[3], args[4].split(","), args[5].split(","));
+
+            } else {
+                usage();
+            }
+            
+            return;
+        }
+        
+        if (args[0].equals("-experiment-single-feedback")) {             
+        	if (args.length == 1+5)
+            {
+        		int numConfigs = Integer.parseInt(args[1]);
+        		int timeoutS = Integer.parseInt(args[2]);
+        		
+                new SingleAlgorithmFeedbackExperimenter(numConfigs, timeoutS).runExperiment(args[3], args[4].split(","), args[5].split(","));
+
+            } else {
+                usage();
+            }
+            
+            return;
+        }
+        // -experiment-single-evolution numSubjects numIterations algorithmTimeoutS problemID *|instanceID[,instanceID,...] *|algorithmID[,algorithmID,...]
+        if (args[0].equals("-experiment-single-evolution")) {             
+        	if (args.length == 1+6)
+            {
+        		int numSubjects = Integer.parseInt(args[1]);
+        		int numIterations = Integer.parseInt(args[2]);
+        		int algorithmTimeoutS = Integer.parseInt(args[3]);
+        		
+                new SingleAlgorithmEvolutionExperimenter(numSubjects, numIterations, algorithmTimeoutS).runExperiment( args[4], args[5].split(","), args[6].split(","));
+
+            /*} else if (args.length == 4) {
+                new SingleAlgorithmEvolutionExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );*/
+            } else {
+                usage();
+            }
+            
+            return;
+        }
+                      
+        
+        
         if (args[0].equals("-test")) {
             if (args.length == 1) {
                 new AlgorithmTester().test();
@@ -96,57 +150,10 @@ public class Launcher {
             }
             return;
         }
-
-        if (args[0].equals("-experiment-single-random")) {             
-        	if (args.length >= 5)
-            {
-                new SingleAlgorithmRandomExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 4, args.length));
-
-            } else if (args.length == 4) {
-                new SingleAlgorithmRandomExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );
-            } else {
-                usage();
-            }
-            
-            return;
-        }
         
-        if (args[0].equals("-experiment-single-feedback")) {             
-        	if (args.length >= 5)
-            {
-                new SingleAlgorithmFeedbackExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 4, args.length));
-
-            } else if (args.length == 4) {
-                new SingleAlgorithmFeedbackExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );
-            } else {
-                usage();
-            }
-            
-            return;
-        }
-        
-        if (args[0].equals("-experiment-single-evolution")) {             
-        	if (args.length >= 5)
-            {
-                new SingleAlgorithmEvolutionExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3], Arrays.copyOfRange(args, 4, args.length));
-
-            } else if (args.length == 4) {
-                new SingleAlgorithmEvolutionExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );
-            } else {
-                usage();
-            }
-            
-            return;
-        }
-
         if (args[0].equals("-agents")) {
             agents(args[1]);
             return;
-        }
-                      
-        if (args[0].equals("-report")) {
-        	new ExperimentDataRapidMinerImporter("output/experiment-logs", "").processLogs();
-        	return;
         }
 
         usage();
@@ -158,12 +165,11 @@ public class Launcher {
         _logger.info("java -jar seage.launcher.jar {params}\n");
         _logger.info("params:");
         _logger.info("\t-list");
-        _logger.info("\t-test [problem-id [algorithm-id]]");
-        _logger.info("\t-config path-to-config");
-        _logger.info("\t-experiment-single-random    numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
-        _logger.info("\t-experiment-single-feedback  numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
-        _logger.info("\t-experiment-single-evolution numOfConfigs timeoutS problem-id [algorithm-id [algorithm-id]*] ");
-        _logger.info("\t-agents path-to-agent-config-xml");
+        //_logger.info("\t-config path-to-config");
+        _logger.info("\t-experiment-single-random    numOfConfigs algorithmTimeoutS problemID *|instanceID[,instanceID,...] *|algorithmID[,algorithmID,...]");
+        _logger.info("\t-experiment-single-feedback  numOfConfigs algorithmTimeoutS problemID *|instanceID[,instanceID,...] *|algorithmID[,algorithmID,...]");
+        _logger.info("\t-experiment-single-evolution numSubjects numIterations algorithmTimeoutS problemID *|instanceID[,instanceID,...] *|algorithmID[,algorithmID,...]");
+        //_logger.info("\t-agents path-to-agent-config-xml");
         _logger.info("\t-report");
     }
 

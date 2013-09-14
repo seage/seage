@@ -30,7 +30,7 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 		_problemID = problemID;
 		_instanceID = instanceID;
 		_algorithmID = algorithmID;
-		_timeoutS = 5;//timeoutS;
+		_timeoutS = timeoutS;
 		_reportOutputStream = reportOutputStream;
 		_configCache = new HashMap<String, Double>();
 	}

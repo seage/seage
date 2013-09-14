@@ -56,7 +56,7 @@ public abstract class Experimenter
     	throw new Exception("Not implemented");
     }
 
-    public void runExperiment( int numOfConfigs, long timeoutS, String problemID) throws Exception
+    /*public void runExperiment( int numOfConfigs, long timeoutS, String problemID) throws Exception
     {
         ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
 
@@ -77,21 +77,39 @@ public abstract class Experimenter
         
         runExperiment(numOfConfigs, timeoutS, problemID, algorithmIDs, instanceIDs.toArray(new String[] {}));
         
-    }
+    }*/
     
-    public void runExperiment(int numOfConfigs, long timeoutS, String problemID, String[] algorithmIDs, String[] instanceIDs) throws Exception
+    public void runExperiment(String problemID, String[] instanceIDs, String[] algorithmIDs) throws Exception
     {
+    	ProblemInfo problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
+    	
+    	// *** Check arguments ***
+    	if(instanceIDs[0].equals("*"))
+    	{
+    		List<String> instIDs = new ArrayList<String>();
+    		for (DataNode ins : problemInfo.getDataNode("Instances").getDataNodes("Instance"))    		
+            	instIDs.add(ins.getValueStr("id"));
+            instanceIDs = instIDs.toArray(new String[]{});
+    	}
+    	
+    	if(algorithmIDs[0].equals("*"))
+    	{
+    		List<String> algIDs = new ArrayList<String>();
+    		for (DataNode alg : problemInfo.getDataNode("Algorithms").getDataNodes("Algorithm"))
+            	algIDs.add(alg.getValueStr("id"));
+            algorithmIDs = algIDs.toArray(new String[]{});
+    	}
+    	// ***********************
+    	
     	long experimentID = System.currentTimeMillis();
         _logger.info("Experiment "+experimentID+" started ...");
         _logger.info("-------------------------------------");
         //_logger.info("Mem: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
-
-        ProblemInfo problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-
-        long totalNumOfConfigs = numOfConfigs*algorithmIDs.length*instanceIDs.length;
+        
+        long totalNumOfConfigs = 0;//numOfConfigs*algorithmIDs.length*instanceIDs.length;
         long totalNumberOfRuns = totalNumOfConfigs * 5; 
         long totalRunsPerCpu = totalNumberOfRuns / Runtime.getRuntime().availableProcessors();
-        long totalEstimatedTime = totalRunsPerCpu * timeoutS;
+        long totalEstimatedTime = 0;//totalRunsPerCpu * timeoutS;
         
         _logger.info("Total number of configs: " + totalNumOfConfigs);
         _logger.info("Total number of runs: " + totalNumberOfRuns);
@@ -101,35 +119,38 @@ public abstract class Experimenter
         _logger.info("-------------------------------------");
         for(int i=0;i<instanceIDs.length;i++)
         {
-        	//for (int j=0;j<algorithmIDs.length;j++)  
-            { 
+        	try
+        	{
+	            InstanceInfo instanceInfo =  problemInfo.getInstanceInfo(instanceIDs[i]); 
+	                          
+	            _logger.info("-------------------------------------");
+	            _logger.info(String.format("%-15s %s","Problem:", problemID));
+	            _logger.info(String.format("%-15s %s    (%d/%d)", "Instance:", instanceIDs[i], i+1, instanceIDs.length));
+	            //_logger.info(String.format("Algorithm: %s (%d/%d)", algorithmIDs[j], j, algorithmIDs.length));                
+	            //_logger.info("Number of runs: " + numOfConfigs*5);
+	            //_logger.info("Memory used for configs: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
+	
+	            
+	            String reportPath = String.format("output/experiment-logs/%s-%s-%s.zip", experimentID, problemID, instanceIDs[i]);
+	
+	            ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)));
+	
+	            performExperiment(experimentID, problemInfo, instanceInfo, algorithmIDs, zos);
 
-                InstanceInfo instanceInfo =  problemInfo.getInstanceInfo(instanceIDs[i]); 
-                //List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
-                //configs.addAll(Arrays.asList());                
-                _logger.info("-------------------------------------");
-                _logger.info(String.format("%-15s %s","Problem:", problemID));
-                _logger.info(String.format("%-15s %s    (%d/%d)", "Instance:", instanceIDs[i], i+1, instanceIDs.length));
-                //_logger.info(String.format("Algorithm: %s (%d/%d)", algorithmIDs[j], j, algorithmIDs.length));                
-                //_logger.info("Number of runs: " + numOfConfigs*5);
-                //_logger.info("Memory used for configs: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
-
-                
-                String reportPath = String.format("output/experiment-logs/%s-%s-%s.zip", experimentID, problemID, instanceIDs[i]);
-
-                ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)));
-
-                performExperiment(experimentID, problemInfo, instanceInfo, algorithmIDs, numOfConfigs, timeoutS, zos);
-
-                zos.close();            
-            }
+	            zos.close();
+        	}
+        	catch(Exception ex)
+        	{
+        		_logger.log(Level.WARNING, ex.getMessage(), ex);
+        	}
+            
         }
         _logger.info("-------------------------------------");
         _logger.info("Experiment " + experimentID + " finished ...");
         _logger.info(String.format("Experiment duration: %s (DD:HH:mm:ss)", getDurationBreakdown(System.currentTimeMillis()-experimentID)));
     }
     
-    protected abstract void performExperiment(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, int numConfigs, long timeoutS, ZipOutputStream zos) throws Exception;
+    protected abstract void performExperiment(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, ZipOutputStream zos) throws Exception;
 	    
     
     protected static String getDurationBreakdown(long millis)

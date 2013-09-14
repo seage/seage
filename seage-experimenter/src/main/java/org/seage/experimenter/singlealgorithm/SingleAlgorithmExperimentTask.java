@@ -111,6 +111,8 @@ public class SingleAlgorithmExperimentTask extends ExperimentTask
         }
         catch(Exception ex){
         	_logger.log(Level.SEVERE, ex.getMessage(), ex);
+        	_logger.log(Level.SEVERE, _algorithmParams.toString());
+        	
         }
     }
     

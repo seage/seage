@@ -104,7 +104,8 @@ public abstract class ProblemProvider implements IProblemProvider
                 DataNode algorithm = new DataNode("Algorithm");
 
                 an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmId.class);
-                if(an2 == null) throw new Exception("Unable to get annotation AlgorithmId");
+                if(an2 == null) 
+                	throw new Exception("Unable to get annotation AlgorithmId");
                 String algId = ((Annotations.AlgorithmId)an2).value();
 
                 an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmName.class);

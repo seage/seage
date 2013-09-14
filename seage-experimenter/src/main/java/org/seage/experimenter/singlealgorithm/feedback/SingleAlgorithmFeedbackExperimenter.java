@@ -5,9 +5,9 @@ import org.seage.experimenter.singlealgorithm.random.SingleAlgorithmRandomExperi
 public class SingleAlgorithmFeedbackExperimenter extends SingleAlgorithmRandomExperimenter
 {
 
-	public SingleAlgorithmFeedbackExperimenter() throws Exception
+	public SingleAlgorithmFeedbackExperimenter(int numConfigs, int timeoutS) throws Exception
 	{
-		super("SingleAlgorithmFeedback");
+		super("SingleAlgorithmFeedback", numConfigs, timeoutS);
 		_configurator = new FeedbackConfigurator();
 	}
 }
