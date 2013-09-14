@@ -53,4 +53,16 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
 	        new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(taskQueue.toArray(new Runnable[]{}));
 		}
 	}
+
+	@Override
+	protected long getEstimatedTime()
+	{		
+		return _timeoutS*1000;
+	}
+
+	@Override
+	protected long getNumberOfConfigs()
+	{		
+		return _numConfigs;
+	}
 }

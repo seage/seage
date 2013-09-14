@@ -165,4 +165,16 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	protected long getEstimatedTime()
+	{		
+		return getNumberOfConfigs()*_algorithmTimeoutS*1000;
+	}
+
+	@Override
+	protected long getNumberOfConfigs()
+	{
+		return _numIterations*_numSubjects;
+	}
 }
