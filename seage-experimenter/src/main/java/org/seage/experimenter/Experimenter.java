@@ -84,7 +84,7 @@ public abstract class Experimenter
         
         long totalNumOfConfigs = getNumberOfConfigs(); 
         long totalRunsPerCpu = totalNumOfConfigs / Runtime.getRuntime().availableProcessors();
-        long totalEstimatedTime = getEstimatedTime()*instanceIDs.length*algorithmIDs.length;
+        long totalEstimatedTime = getEstimatedTime()*instanceIDs.length*algorithmIDs.length/ Runtime.getRuntime().availableProcessors();
         
         _logger.info(String.format("%-25s: %s", "Total number of configs", totalNumOfConfigs));
         _logger.info("Total number of configs cpu core: " + totalRunsPerCpu);
