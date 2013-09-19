@@ -16,8 +16,8 @@ public class ExperimentDataH2ImporterTest
 	@Test
 	public void testProcessLogs() throws Exception
 	{
-		ExperimentDataH2Importer imp = new ExperimentDataH2Importer();
-		imp.processLogs();
+		//ExperimentDataH2Importer imp = new ExperimentDataH2Importer();
+		//imp.processLogs();
 	}
 
 }

@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
+import org.seage.experimenter.reporting.h2.ExperimentDataH2Importer;
 import org.seage.experimenter.reporting.rapidminer.ExperimentDataRapidMinerImporter;
 import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;
 import org.seage.experimenter.singlealgorithm.feedback.SingleAlgorithmFeedbackExperimenter;
@@ -78,6 +79,11 @@ public class Launcher {
         	new ExperimentDataRapidMinerImporter("output/experiment-logs", "").processLogs();
         	return;
         }
+        
+        if (args[0].equals("-report2")) {
+        	new ExperimentDataH2Importer("output/experiment-logs", "database/seage").processLogs();
+        	return;
+        }
 
         if (args[0].equals("-experiment-single-random")) {             
         	if (args.length == 1+5)
@@ -109,7 +115,7 @@ public class Launcher {
             return;
         }
         // -experiment-single-evolution numSubjects numIterations algorithmTimeoutS problemID *|instanceID[,instanceID,...] *|algorithmID[,algorithmID,...]
-        if (args[0].equals("-experiment-single-evolution")) {             
+        if (args[0].equals("-experiment-single-evolution")) {
         	if (args.length == 1+6)
             {
         		int numSubjects = Integer.parseInt(args[1]);
