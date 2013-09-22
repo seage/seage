@@ -21,50 +21,16 @@
         <parameter key="cache_process" value="true"/>
         <list key="macros"/>
       </operator>
-      <operator activated="true" class="aggregate" compatibility="5.3.013" expanded="true" height="76" name="Aggregate" width="90" x="380" y="75">
-        <parameter key="use_default_aggregation" value="false"/>
-        <parameter key="attribute_filter_type" value="all"/>
-        <parameter key="attribute" value=""/>
-        <parameter key="attributes" value=""/>
-        <parameter key="use_except_expression" value="false"/>
-        <parameter key="value_type" value="attribute_value"/>
-        <parameter key="use_value_type_exception" value="false"/>
-        <parameter key="except_value_type" value="time"/>
-        <parameter key="block_type" value="attribute_block"/>
-        <parameter key="use_block_type_exception" value="false"/>
-        <parameter key="except_block_type" value="value_matrix_row_start"/>
-        <parameter key="invert_selection" value="false"/>
-        <parameter key="include_special_attributes" value="false"/>
-        <parameter key="default_aggregation_function" value="average"/>
-        <list key="aggregation_attributes">
-          <parameter key="BestSolutionValue" value="minimum"/>
-        </list>
-        <parameter key="group_by_attributes" value="|AlgorithmID|InstanceID"/>
-        <parameter key="count_all_combinations" value="false"/>
-        <parameter key="only_distinct" value="false"/>
-        <parameter key="ignore_missings" value="true"/>
+      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute AlgorithmInstancePivotTable" width="90" x="313" y="75">
+        <parameter key="process_location" value="AlgorithmInstancePivotTable"/>
+        <parameter key="use_input" value="true"/>
+        <parameter key="store_output" value="false"/>
+        <parameter key="propagate_metadata_recursively" value="true"/>
+        <parameter key="cache_process" value="true"/>
+        <list key="macros"/>
       </operator>
-      <operator activated="true" class="pivot" compatibility="5.3.013" expanded="true" height="76" name="Pivot" width="90" x="581" y="75">
-        <parameter key="group_attribute" value="InstanceID"/>
-        <parameter key="index_attribute" value="AlgorithmID"/>
-        <parameter key="consider_weights" value="true"/>
-        <parameter key="weight_aggregation" value="minimum"/>
-        <parameter key="skip_constant_attributes" value="true"/>
-        <parameter key="datamanagement" value="double_array"/>
-      </operator>
-      <operator activated="true" class="rename" compatibility="5.3.013" expanded="true" height="76" name="Rename" width="90" x="782" y="30">
-        <parameter key="old_name" value="minimum(BestSolutionValue)_AntColony"/>
-        <parameter key="new_name" value="AntColony"/>
-        <list key="rename_additional_attributes">
-          <parameter key="minimum(BestSolutionValue)_GeneticAlgorithm" value="GeneticAlgorithm"/>
-          <parameter key="minimum(BestSolutionValue)_SimulatedAnnealing" value="SimulatedAnnealing"/>
-          <parameter key="minimum(BestSolutionValue)_TabuSearch" value="TabuSearch"/>
-        </list>
-      </operator>
-      <connect from_op="Execute FilteredExperimentValues" from_port="result 1" to_op="Aggregate" to_port="example set input"/>
-      <connect from_op="Aggregate" from_port="example set output" to_op="Pivot" to_port="example set input"/>
-      <connect from_op="Pivot" from_port="example set output" to_op="Rename" to_port="example set input"/>
-      <connect from_op="Rename" from_port="example set output" to_port="result 1"/>
+      <connect from_op="Execute FilteredExperimentValues" from_port="result 1" to_op="Execute AlgorithmInstancePivotTable" to_port="input 1"/>
+      <connect from_op="Execute AlgorithmInstancePivotTable" from_port="result 1" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>

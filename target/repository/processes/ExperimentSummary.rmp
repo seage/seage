@@ -57,6 +57,7 @@
           <parameter key="InitSolutionValue" value="average"/>
           <parameter key="BestSolutionValue" value="minimum"/>
           <parameter key="ConfigID" value="count"/>
+          <parameter key="NrOfNewSolutions" value="maximum"/>
         </list>
         <parameter key="group_by_attributes" value="AlgorithmID|ComputerName|ExperimentID|InstanceID|ProblemID|TimeoutInSeconds||ExperimentType"/>
         <parameter key="count_all_combinations" value="false"/>
@@ -81,11 +82,11 @@
       <connect from_op="Retrieve ExperimentValues" from_port="output" to_op="Multiply" to_port="input"/>
       <connect from_op="Multiply" from_port="output 1" to_op="Aggregate" to_port="example set input"/>
       <connect from_op="Multiply" from_port="output 2" to_op="Aggregate (2)" to_port="example set input"/>
-      <connect from_op="Aggregate (2)" from_port="example set output" to_port="result 2"/>
+      <connect from_op="Aggregate (2)" from_port="example set output" to_port="result 1"/>
       <connect from_op="Aggregate" from_port="example set output" to_op="Sort" to_port="example set input"/>
       <connect from_op="Sort" from_port="example set output" to_op="Generate Attributes" to_port="example set input"/>
       <connect from_op="Generate Attributes" from_port="example set output" to_op="Execute Script" to_port="input 1"/>
-      <connect from_op="Execute Script" from_port="output 1" to_port="result 1"/>
+      <connect from_op="Execute Script" from_port="output 1" to_port="result 2"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="90"/>
       <portSpacing port="sink_result 2" spacing="0"/>

@@ -81,7 +81,12 @@ public class Launcher {
         }
         
         if (args[0].equals("-report2")) {
-        	new ExperimentDataH2Importer("output/experiment-logs", "database/seage").processLogs();
+        	ExperimentDataH2Importer importer = new ExperimentDataH2Importer("output/experiment-logs", "database/seage");
+        	
+        	if(args.length == 2 && args[1].equals("clean"))
+        		importer.clean();
+        	importer.processLogs();
+        	
         	return;
         }
 

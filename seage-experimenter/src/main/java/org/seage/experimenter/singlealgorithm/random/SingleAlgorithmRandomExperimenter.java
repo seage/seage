@@ -18,6 +18,8 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
 	private int _numConfigs;
 	private int _timeoutS;
 	
+	private final int NUM_RUNS = 3;
+	
 	public SingleAlgorithmRandomExperimenter(int numConfigs, int timeoutS)
 	{
 		super("SingleAlgorithmRandom");
@@ -36,15 +38,21 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
 	@Override
 	protected void performExperiment(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, ZipOutputStream zos) throws Exception
 	{
-		for(String algorithmID : algorithmIDs)
+		for(int i=0;i<algorithmIDs.length;i++)
 		{
 			String problemID = problemInfo.getProblemID();
         	String instanceID = instanceInfo.getInstanceID();
+        	String algorithmID = algorithmIDs[i];
+        	
+        	_logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i+1, algorithmIDs.length));
         	
 			List<Runnable> taskQueue = new ArrayList<Runnable>();
-	        for(ProblemConfig config : _configurator.prepareConfigs(problemInfo, instanceInfo.getInstanceID(), algorithmID, _numConfigs))
+			ProblemConfig[] configs = _configurator.prepareConfigs(problemInfo, instanceInfo.getInstanceID(), algorithmID, _numConfigs);
+			for(int j=0;j<configs.length;j++)				
 	        {
-	            for (int runID = 1; runID <= 5; runID++)
+				ProblemConfig config = configs[j];
+	        	_logger.info(String.format("%-44s (%d/%d)", "   Config: ", j+1, configs.length));
+	            for (int runID = 1; runID <= NUM_RUNS; runID++)
 	            {
 	                //String reportName = problemInfo.getProblemID() + "-" + algorithmID + "-" + instanceInfo.getInstanceID() + "-" + configID + "-" + runID + ".xml";
 	                taskQueue.add(new SingleAlgorithmExperimentTask(_experimentName, experimentID, problemID, instanceID, algorithmID, config.getAlgorithmParams(), runID, _timeoutS, zos));
@@ -55,14 +63,14 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
 	}
 
 	@Override
-	protected long getEstimatedTime()
+	protected long getEstimatedTimePerExperiment()
 	{		
-		return _timeoutS*1000;
+		return _timeoutS*1000*NUM_RUNS;
 	}
 
 	@Override
-	protected long getNumberOfConfigs()
+	protected long getNumberOfConfigsPerExperiment()
 	{		
-		return _numConfigs;
+		return _numConfigs*NUM_RUNS;
 	}
 }

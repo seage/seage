@@ -82,9 +82,9 @@ public abstract class Experimenter
         _logger.info("Experiment "+experimentID+" started ...");
         _logger.info("-------------------------------------");
         
-        long totalNumOfConfigs = getNumberOfConfigs(); 
+        long totalNumOfConfigs = getNumberOfConfigsPerExperiment()*instanceIDs.length*algorithmIDs.length; 
         long totalRunsPerCpu = totalNumOfConfigs / Runtime.getRuntime().availableProcessors();
-        long totalEstimatedTime = getEstimatedTime()*instanceIDs.length*algorithmIDs.length/ Runtime.getRuntime().availableProcessors();
+        long totalEstimatedTime = getEstimatedTimePerExperiment()*instanceIDs.length*algorithmIDs.length/ Runtime.getRuntime().availableProcessors();
         
         _logger.info(String.format("%-25s: %s", "Total number of configs", totalNumOfConfigs));
         _logger.info("Total number of configs cpu core: " + totalRunsPerCpu);
@@ -99,7 +99,7 @@ public abstract class Experimenter
 	                          
 	            _logger.info("-------------------------------------");
 	            _logger.info(String.format("%-15s %s","Problem:", problemID));
-	            _logger.info(String.format("%-15s %s    (%d/%d)", "Instance:", instanceIDs[i], i+1, instanceIDs.length));
+	            _logger.info(String.format("%-15s %-16s    (%d/%d)", "Instance:", instanceIDs[i], i+1, instanceIDs.length));
 	            
 	            
 	            String reportPath = String.format("output/experiment-logs/%s-%s-%s.zip", experimentID, problemID, instanceIDs[i]);
@@ -123,8 +123,8 @@ public abstract class Experimenter
     
     protected abstract void performExperiment(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, ZipOutputStream zos) throws Exception;
     
-    protected abstract long getEstimatedTime();
-    protected abstract long getNumberOfConfigs();
+    protected abstract long getEstimatedTimePerExperiment();
+    protected abstract long getNumberOfConfigsPerExperiment();
 	    
     
     protected static String getDurationBreakdown(long millis)

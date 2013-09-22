@@ -42,13 +42,17 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 		String problemID = problemInfo.getProblemID();
 		String instanceID = instanceInfo.getInstanceID();
 				
-		for (String algorithmID : algorithmIDs)
+		for (int i=0;i<algorithmIDs.length;i++)
 		{
 			try
 			{
+				String algorithmID = algorithmIDs[i];
+				
 				if(problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)==null)
 					throw new Exception("Unknown algorithm: " + algorithmID);
-				_logger.info(String.format("%-15s %s", "Algorithm: ", algorithmID));
+				
+				_logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i+1, algorithmIDs.length));
+				
 				ContinuousGeneticOperator.Limit[] limits = prepareAlgorithmParametersLimits(algorithmID, problemInfo);
 				ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject> realOperator = new ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject>(limits);
 	
@@ -66,7 +70,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 				List<SingleAlgorithmExperimentTaskSubject> subjects = initializeSubjects(problemInfo, instanceID, algorithmID, _numSubjects);
 	
 				ga.startSearching(subjects);
-				_logger.info("   " + ga.getBestSubject().toString());
+				//_logger.info("   " + ga.getBestSubject().toString());
 			}
 			catch(Exception ex)
 			{
@@ -96,22 +100,6 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 			result.add(new SingleAlgorithmExperimentTaskSubject(names, values));
 		}
 		
-		/*
-
-		for (int i = 0; i < count; i++)
-		{
-			String[] names = new String[params.size()];
-			Double[] values = new Double[params.size()];
-			for (int j = 0; j < params.size(); j++)
-			{
-				double min = params.get(j).getValueDouble("min");
-				double max = params.get(j).getValueDouble("max");
-				names[j] = params.get(j).getValueStr("name");
-				values[j] = min + (max - min) * Math.random();
-			}
-			result.add(new SingleAlgorithmExperimentTaskSubject(names, values));
-		}*/
-
 		return result;
 	}
 
@@ -135,14 +123,14 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 	@Override
 	public void algorithmStarted(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e)
 	{
-		_logger.info("   Started");
+		//_logger.info("   Started");
 
 	}
 
 	@Override
 	public void algorithmStopped(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e)
 	{
-		_logger.info("   Stopped");
+		//_logger.info("   Stopped");
 
 	}
 
@@ -156,7 +144,8 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 	@Override
 	public void iterationPerformed(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e)
 	{
-		_logger.info("      Iteration " + e.getGeneticSearch().getCurrentIteration());
+		//_logger.info("      Iteration " + e.getGeneticSearch().getCurrentIteration());
+		_logger.info(String.format("%-44s (%d/%d)", "   Iteration: ", e.getGeneticSearch().getCurrentIteration(), e.getGeneticSearch().getIterationToGo()));
 	}
 
 	@Override
@@ -167,13 +156,13 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 	}
 
 	@Override
-	protected long getEstimatedTime()
+	protected long getEstimatedTimePerExperiment()
 	{		
-		return getNumberOfConfigs()*_algorithmTimeoutS*1000;
+		return getNumberOfConfigsPerExperiment()*_algorithmTimeoutS*1000;
 	}
 
 	@Override
-	protected long getNumberOfConfigs()
+	protected long getNumberOfConfigsPerExperiment()
 	{
 		return _numIterations*_numSubjects;
 	}

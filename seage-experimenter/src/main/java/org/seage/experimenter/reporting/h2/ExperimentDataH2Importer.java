@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
@@ -156,6 +157,27 @@ public class ExperimentDataH2Importer
         	long t2 = System.currentTimeMillis();
         	System.out.println(t2-t1);
         	
+        }
+        finally
+        {
+        	if(conn !=null)
+        		conn.close();
+        }
+	}
+
+	public void clean() throws Exception
+	{
+		String queryDropExperiments =
+				"DROP TABLE IF EXISTS Experiments";
+		
+		Class.forName("org.h2.Driver");
+        Connection conn = DriverManager.getConnection("jdbc:h2:"+_dbPath, "sa", "sa");
+        Statement dropStmt = null;
+        
+        try
+        {   
+        	dropStmt = conn.createStatement();
+        	dropStmt.executeUpdate(queryDropExperiments);
         }
         finally
         {
