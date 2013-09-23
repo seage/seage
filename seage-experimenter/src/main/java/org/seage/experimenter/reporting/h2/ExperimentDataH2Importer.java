@@ -2,37 +2,144 @@ package org.seage.experimenter.reporting.h2;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.seage.thread.TaskRunnerEx;
+import org.w3c.dom.Document;
 
 public class ExperimentDataH2Importer
 {
 	private static Logger _logger = Logger.getLogger(ExperimentDataH2Importer.class.getName());
 	private String _logPath;
 	private String _dbPath;
-	private String[] _experimentIDs;
+	private boolean _clean;
+
 	
-	public ExperimentDataH2Importer(String logPath, String dbPath) throws Exception
+	public ExperimentDataH2Importer(String logPath, String dbPath, boolean clean) throws Exception
 	{
 		_logPath = logPath;
-		_dbPath = dbPath;
-		//_experimentIDs = getExperimentIDs();
+		_dbPath = dbPath;	
+		_clean = clean;
+		
 	}
 
 	public void processLogs() throws Exception
 	{
-		String[] ids = getExperimentIDs();
-		for(String id : ids)
-			_logger.info(id);
-		_logger.info("Total: " + ids.length);
+		Class.forName("org.h2.Driver");
+        Connection conn = DriverManager.getConnection("jdbc:h2:"+_dbPath, "sa", "sa");
+        
+        try
+        {
+        	if(_clean) 
+        		clean(conn);
+			HashSet<String> ids = getExperimentIDs(conn);
+			processLogs(ids);
+			insertNewExperiments(ids, conn);
+        }
+        finally
+        {
+        	if(conn !=null)
+        		conn.close();
+        }
 	}
 	
-	private String[] getExperimentIDs() throws Exception
+	private void clean(Connection conn) throws Exception
+	{
+		String queryDropExperiments =
+				"DROP TABLE IF EXISTS Experiments";			
+        
+        Statement dropStmt = conn.createStatement();
+        dropStmt.executeUpdate(queryDropExperiments);
+	}
+	
+	private void insertNewExperiments(HashSet<String> ids, Connection conn) throws Exception
+	{
+		String queryInsert =				
+				"INSERT INTO Experiments VALUES (?)"; 
+		
+		PreparedStatement stmt = conn.prepareStatement(queryInsert);
+		
+		for(String id : ids)
+		{
+			stmt.setLong(1, Long.parseLong(id));
+			stmt.executeUpdate();
+		}
+	}
+
+	private void processLogs(HashSet<String> ids) throws Exception
+	{				
+		_logger.info("Processing experiment logs ...");
+
+		long t0 = System.currentTimeMillis();
+
+		File logDir = new File(_logPath);
+		List<Runnable> tasks = new ArrayList<Runnable>();
+		int fileCount = 0;
+		try
+		{			
+			for (File f : logDir.listFiles(new ZipFileFilter(ids)))
+			{
+				fileCount++;
+				tasks.add(new ProcessZipTask(f));
+				//_logger.info(f.getName());
+			}	
+			
+			//new TaskRunner().runTasks(tasks, Runtime.getRuntime().availableProcessors());
+			new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(tasks.toArray(new Runnable[]{}));
+		}
+		catch (Exception ex)
+		{
+			_logger.log(Level.SEVERE, ex.getMessage());
+		}
+		
+		//writeDataTablesToRepository();
+
+		long t1 = (System.currentTimeMillis() - t0) / 1000;
+
+		_logger.info("Files processed: " + fileCount);
+		_logger.info("Time:  " + t1 + "s");
+	}
+	
+	private class ZipFileFilter implements FilenameFilter
+	{
+		private HashSet<String> _ids;
+		
+		public ZipFileFilter(HashSet<String> ids)
+		{
+			_ids =ids;
+		}
+		@Override
+		public boolean accept(File arg0, String filename)
+		{
+			if (!filename.endsWith(".zip"))			
+				return false;
+			String id = filename.split("-")[0];
+			if(id == null)
+				return false;
+			if(_ids.contains(id))
+				return true;
+			return false;
+		}
+		
+	}
+	
+	private HashSet<String> getExperimentIDs(Connection conn) throws Exception
 	{
 		HashSet<String> experimentIDs = new HashSet<String>();
 		File f = new File(_logPath);
@@ -40,7 +147,7 @@ public class ExperimentDataH2Importer
 		{			
 			@Override
 			public boolean accept(File dir, String fileName)
-			{				
+			{
 				return fileName.endsWith(".zip");
 			}
 		});
@@ -60,129 +167,95 @@ public class ExperimentDataH2Importer
 		String queryInsert =				
 				"INSERT INTO NewExperiments VALUES (?)"; 
 		String queryMinus =				
-				"SELECT id FROM NewExperiments MINUS SELECT id FROM Experiments"; 
-		String queryInsert2 =				
-				"INSERT INTO Experiments VALUES (?)"; 
-		
-		Class.forName("org.h2.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:h2:"+_dbPath, "sa", "sa");
+				"SELECT id FROM NewExperiments MINUS SELECT id FROM Experiments"; 		
+				
         PreparedStatement stmt = null;
-        try
-        {
-        	stmt = conn.prepareStatement(queryCreateExperiments);
-        	stmt.execute();
-        	stmt = conn.prepareStatement(queryCreateNewExperiments);
-        	stmt.execute();
-        	
-        	stmt = conn.prepareStatement(queryInsert);	
-        	for(String id : experimentIDs)
-        	{        		
-        		stmt.setLong(1, Long.parseLong(id));
-        		stmt.execute();
-        	}
-        	
-        	stmt = conn.prepareStatement(queryMinus);        	
-        	ResultSet rs = stmt.executeQuery();
-        	
-        	experimentIDs.clear();
-        	stmt = conn.prepareStatement(queryInsert2);        	
-        	
-        	while(rs.next())
-        	{
-        		experimentIDs.add(rs.getString(1));
-        		stmt.setLong(1, rs.getLong(1));
-        		stmt.execute();
-        	}
-        }
-        finally
-        {
-        	if(conn !=null)
-        		conn.close();
-        }
 
-		return experimentIDs.toArray(new String[]{});
+    	stmt = conn.prepareStatement(queryCreateExperiments);
+    	stmt.execute();
+    	stmt = conn.prepareStatement(queryCreateNewExperiments);
+    	stmt.execute();
+    	
+    	stmt = conn.prepareStatement(queryInsert);	
+    	for(String id : experimentIDs)
+    	{        		
+    		stmt.setLong(1, Long.parseLong(id));
+    		stmt.execute();
+    	}
+    	
+    	stmt = conn.prepareStatement(queryMinus);        	
+    	ResultSet rs = stmt.executeQuery();
+    	
+    	experimentIDs.clear();      	
+    	
+    	while(rs.next())
+    	{
+    		experimentIDs.add(rs.getString(1));    		
+    	}
+
+
+		return experimentIDs;
 	}
 	
-	public void processLogs0() throws Exception
+	private class ProcessZipTask implements Runnable
 	{
-		String queryCreate =
-				"DROP TABLE IF EXISTS test;"+
-				"CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY, name VARCHAR(50))"; 
+		private File _zipFile;
 		
-		String queryCreate2 =
-				//"DROP TABLE IF EXISTS test2;"+
-				"CREATE TEMP TABLE test2 (id INTEGER PRIMARY KEY)";
-		
-		String queryInsert =				
-				"INSERT INTO test VALUES (?, ?)"; 
-		
-		String queryInsert2 =				
-				"INSERT INTO test2 VALUES (?)"; 
-		
-		String queryMinus =				
-				"SELECT id FROM test2 MINUS SELECT id FROM test"; 
-		
-		Class.forName("org.h2.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:h2:~/h2db/seage", "sa", "sa");
-        PreparedStatement createStmt = null;
-        PreparedStatement insertStmt = null;        
-        PreparedStatement selectStmt = null;
-        try
-        {
-        	createStmt = conn.prepareStatement(queryCreate);
-        	createStmt.execute();
-        	createStmt = conn.prepareStatement(queryCreate2);
-        	createStmt.execute();
-        	
-        	insertStmt = conn.prepareStatement(queryInsert);
-        	
-        	for(int i=0;i<10000;i++)
-        	{
-        		insertStmt.setInt(1, i+1);
-        		insertStmt.setString(2, new Integer(((i+1)*10)).toString());
-        		insertStmt.execute();
-        	}
-        	long t1 = System.currentTimeMillis();
-        	insertStmt = conn.prepareStatement(queryInsert2);
-        	
-        	for(int i=0;i<100000;i++)
-        	{
-        		insertStmt.setInt(1, i);        		
-        		insertStmt.execute();
-        	}
-        	
-        	selectStmt = conn.prepareStatement(queryMinus);
-        	
-        	ResultSet rs = selectStmt.executeQuery();
-        	long t2 = System.currentTimeMillis();
-        	System.out.println(t2-t1);
-        	
-        }
-        finally
-        {
-        	if(conn !=null)
-        		conn.close();
-        }
-	}
+		private ProcessZipTask(File zipFile)
+		{
+			_zipFile = zipFile;
+		}
 
-	public void clean() throws Exception
-	{
-		String queryDropExperiments =
-				"DROP TABLE IF EXISTS Experiments";
-		
-		Class.forName("org.h2.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:h2:"+_dbPath, "sa", "sa");
-        Statement dropStmt = null;
-        
-        try
-        {   
-        	dropStmt = conn.createStatement();
-        	dropStmt.executeUpdate(queryDropExperiments);
-        }
-        finally
-        {
-        	if(conn !=null)
-        		conn.close();
-        }
+		@Override
+		public void run()
+		{			
+			try
+			{
+				ZipFile zf = new ZipFile(_zipFile);
+				_logger.info(Thread.currentThread().getName()+ " - importing file: " + _zipFile.getName());
+				
+				DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
+				
+				for (Enumeration<? extends ZipEntry> e = zf.entries(); e.hasMoreElements();)
+				{
+					ZipEntry ze = e.nextElement();
+					if (!ze.isDirectory() && ze.getName().endsWith(".xml"))
+					{
+						InputStream in = zf.getInputStream(ze);
+						// read from 'in'
+						try
+						{
+							Document doc = builder.parse(in);
+							String version = doc.getDocumentElement().getAttribute("version");
+							if(version == "")
+							{
+								_logger.warning("Unsupported report version: " + _zipFile.getName());
+								return;
+							}
+							//------------------------------------------------------
+							/*for(RMDataTableCreator creator : _rmDataTableCreators)
+							    if(creator.isInvolved(doc))
+							        creator.processDocument(doc);
+							*/
+						}
+						catch (NullPointerException ex)
+						{
+						    _logger.log(Level.SEVERE, ex.getMessage(), ex);
+						}
+						catch (Exception ex)
+						{
+						    _logger.warning(_zipFile.getName() +" - "+ze.getName()+" - "+ex.getMessage()+" - " +ex.toString());
+						}
+					}
+				}
+				
+				zf.close();
+			}
+			catch(Exception ex)
+			{
+				_logger.warning("ERROR: "+_zipFile.getName()+": "+ex.getMessage());
+				_zipFile.renameTo(new File(_zipFile.getAbsolutePath()+".err"));
+			}
+		}
 	}
 }

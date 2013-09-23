@@ -45,13 +45,12 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
         	String algorithmID = algorithmIDs[i];
         	
         	_logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i+1, algorithmIDs.length));
+        	_logger.info(String.format("%-44s", "   Running... "));
         	
 			List<Runnable> taskQueue = new ArrayList<Runnable>();
 			ProblemConfig[] configs = _configurator.prepareConfigs(problemInfo, instanceInfo.getInstanceID(), algorithmID, _numConfigs);
-			for(int j=0;j<configs.length;j++)				
-	        {
-				ProblemConfig config = configs[j];
-	        	_logger.info(String.format("%-44s (%d/%d)", "   Config: ", j+1, configs.length));
+			for(ProblemConfig config : configs)				
+	        {					        	
 	            for (int runID = 1; runID <= NUM_RUNS; runID++)
 	            {
 	                //String reportName = problemInfo.getProblemID() + "-" + algorithmID + "-" + instanceInfo.getInstanceID() + "-" + configID + "-" + runID + ".xml";
