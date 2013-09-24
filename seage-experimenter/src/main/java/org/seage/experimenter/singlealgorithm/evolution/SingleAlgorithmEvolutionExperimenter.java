@@ -152,18 +152,17 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 	public void noChangeInValueIterationMade(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e)
 	{
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	protected long getEstimatedTimePerExperiment()
-	{		
-		return getNumberOfConfigsPerExperiment()*_algorithmTimeoutS*1000;
-	}
-
-	@Override
-	protected long getNumberOfConfigsPerExperiment()
+	protected long getEstimatedTime(int instancesCount, int algorithmsCount)
 	{
-		return _numIterations*_numSubjects;
+		return getNumberOfConfigs(instancesCount, algorithmsCount)*_algorithmTimeoutS*1000;
+	}
+
+	@Override
+	protected long getNumberOfConfigs(int instancesCount, int algorithmsCount)
+	{
+		return _numIterations*_numSubjects*instancesCount*algorithmsCount;
 	}
 }

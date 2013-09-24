@@ -82,12 +82,12 @@ public abstract class Experimenter
         _logger.info("Experiment "+experimentID+" started ...");
         _logger.info("-------------------------------------");
         
-        long totalNumOfConfigs = getNumberOfConfigsPerExperiment()*instanceIDs.length*algorithmIDs.length; 
+        long totalNumOfConfigs = getNumberOfConfigs(instanceIDs.length, algorithmIDs.length); 
         long totalRunsPerCpu = totalNumOfConfigs / Runtime.getRuntime().availableProcessors();
-        long totalEstimatedTime = getEstimatedTimePerExperiment()*instanceIDs.length*algorithmIDs.length/ Runtime.getRuntime().availableProcessors();
+        long totalEstimatedTime = getEstimatedTime(instanceIDs.length, algorithmIDs.length)/ Runtime.getRuntime().availableProcessors();
         
         _logger.info(String.format("%-25s: %s", "Total number of configs", totalNumOfConfigs));
-        _logger.info("Total number of configs cpu core: " + totalRunsPerCpu);
+        _logger.info("Total number of configs per cpu core: " + totalRunsPerCpu);
         _logger.info("Total estimated time: " + getDurationBreakdown(totalEstimatedTime) + " (DD:HH:mm:ss)");
         _logger.info("-------------------------------------");
         
@@ -123,8 +123,8 @@ public abstract class Experimenter
     
     protected abstract void performExperiment(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, ZipOutputStream zos) throws Exception;
     
-    protected abstract long getEstimatedTimePerExperiment();
-    protected abstract long getNumberOfConfigsPerExperiment();
+    protected abstract long getEstimatedTime(int instancesCount, int algorithmsCount);
+    protected abstract long getNumberOfConfigs(int instancesCount, int algorithmsCount);
 	    
     
     protected static String getDurationBreakdown(long millis)

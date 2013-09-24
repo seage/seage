@@ -62,14 +62,15 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
 	}
 
 	@Override
-	protected long getEstimatedTimePerExperiment()
-	{		
-		return _timeoutS*1000*NUM_RUNS;
+	protected long getEstimatedTime(int instancesCount, int algorithmsCount)
+	{
+		// TODO Auto-generated method stub
+		return getNumberOfConfigs(instancesCount, algorithmsCount)*_timeoutS*1000;
 	}
 
 	@Override
-	protected long getNumberOfConfigsPerExperiment()
+	protected long getNumberOfConfigs(int instancesCount, int algorithmsCount)
 	{		
-		return _numConfigs*NUM_RUNS;
+		return _numConfigs*NUM_RUNS*instancesCount*algorithmsCount;
 	}
 }
