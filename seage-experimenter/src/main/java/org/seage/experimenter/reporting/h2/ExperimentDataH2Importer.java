@@ -26,25 +26,27 @@ public class ExperimentDataH2Importer extends TableCreator
 		super(dbPath);
 		_logPath = logPath;
 		_clean = clean;
-		new ExperimentDataTableCreator(dbPath, clean);
+		//new ExperimentDataTableCreator(dbPath, clean);
 		
 	}
 	
 	public void processLogs() throws Exception
 	{		
+		_logger.info("Processing experiment logs ...");
+		long t0 = System.currentTimeMillis();
+		
 		ExperimentIDsTableCreator expIDsTableCreator = new ExperimentIDsTableCreator(_logPath, _dbPath, _clean);
 		HashSet<String> ids = expIDsTableCreator.getExperimentIDs();
 		createAndRunProcessExperimentZipFileTasks(ids);
 		expIDsTableCreator.insertNewExperiments(ids);
+		
+		long t1 = (System.currentTimeMillis() - t0) / 1000;
+		_logger.info("Time:  " + t1 + "s");
        
 	}
 
 	private void createAndRunProcessExperimentZipFileTasks(HashSet<String> ids) throws Exception
-	{				
-		_logger.info("Processing experiment logs ...");
-
-		long t0 = System.currentTimeMillis();
-
+	{
 		File logDir = new File(_logPath);
 		List<Runnable> tasks = new ArrayList<Runnable>();
 		int fileCount = 0;
@@ -63,12 +65,7 @@ public class ExperimentDataH2Importer extends TableCreator
 			_logger.log(Level.SEVERE, ex.getMessage());
 		}
 		
-		//writeDataTablesToRepository();
-
-		long t1 = (System.currentTimeMillis() - t0) / 1000;
-
 		_logger.info("Files processed: " + fileCount);
-		_logger.info("Time:  " + t1 + "s");
 	}
 	
 	private class ZipFileFilter implements FilenameFilter

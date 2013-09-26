@@ -1,6 +1,7 @@
 package org.seage.experimenter.reporting.h2;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -25,10 +26,11 @@ class ProcessExperimentZipFileTask implements Runnable
 
 	@Override
 	public void run()
-	{			
+	{	
+		ZipFile zf = null;	
 		try
 		{
-			ZipFile zf = new ZipFile(_zipFile);
+			zf = new ZipFile(_zipFile);	
 			_logger.info(Thread.currentThread().getName()+ " - importing file: " + _zipFile.getName());
 			
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
@@ -72,6 +74,18 @@ class ProcessExperimentZipFileTask implements Runnable
 		{
 			_logger.warning("ERROR: "+_zipFile.getName()+": "+ex.getMessage());			
 			_zipFile.renameTo(new File(_zipFile.getAbsolutePath()+".err"));
+		}
+		finally
+		{
+			if(zf != null)
+				try
+				{
+					zf.close();
+				}
+				catch (IOException ex)
+				{
+					_logger.warning("ERROR: "+_zipFile.getName()+": "+ex.getMessage());			
+				}
 		}
 	}
 }
