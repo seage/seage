@@ -136,8 +136,10 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
 		_currentIteration = 0;
 
-		// At first current temperature is same such as maximal temperature
-		_currentTemperature = _maximalTemperature;
+		// At first current temperature is same such as maximal temperature		
+		_currentTemperature = Math.max(_minimalTemperature, _maximalTemperature);
+		_minimalTemperature = Math.min(_minimalTemperature, _maximalTemperature);		
+		_maximalTemperature = _currentTemperature;
 
 		// The best solution is same as current solution
 		solution.setObjectiveValue(_objectiveFunction.getObjectiveValue(solution));		
