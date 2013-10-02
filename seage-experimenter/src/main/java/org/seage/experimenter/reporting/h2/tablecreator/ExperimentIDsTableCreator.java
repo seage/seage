@@ -21,21 +21,19 @@ public class ExperimentIDsTableCreator extends TableCreator implements IDocument
 	{
 		super(dbPath);
 		_expLogsPath = expLogsPath;
-		
-		String queryCreateExperiments =
-				//"DROP TABLE IF EXISTS Experiments;"+
-				"CREATE TABLE IF NOT EXISTS Experiments (ExperimentID BIGINT PRIMARY KEY)"; 
-		String queryDropExperiments =
-				"DROP TABLE IF EXISTS Experiments";		
 
+		String queryDropExperiments =
+				"DROP TABLE IF EXISTS Experiments";			
+		String queryCreateExperiments =
+				"CREATE TABLE IF NOT EXISTS Experiments (ExperimentID BIGINT PRIMARY KEY, ExperimentType VARCHAR, ComputerName VARCHAR)"; 
+		String queryInsert =				
+				"INSERT INTO Experiments VALUES (?, ?, ?)"; 
+		
 		Statement stmt = _conn.createStatement();
 		
 		if(clean)
 			stmt.execute(queryDropExperiments);	
 		stmt.execute(queryCreateExperiments);	
-		
-		String queryInsert =				
-				"INSERT INTO Experiments VALUES (?)"; 
 
 		_stmt = _conn.prepareStatement(queryInsert);
 	}
@@ -62,7 +60,6 @@ public class ExperimentIDsTableCreator extends TableCreator implements IDocument
 		}		
 		
 		String queryCreateNewExperiments =
-				//"DROP TABLE IF EXISTS test2;"+
 				"CREATE TEMP TABLE NewExperiments (ExperimentID BIGINT PRIMARY KEY)";
 		String queryInsert =				
 				"INSERT INTO NewExperiments VALUES (?)"; 
@@ -105,14 +102,14 @@ public class ExperimentIDsTableCreator extends TableCreator implements IDocument
 	public synchronized void processDocument(Document doc) throws Exception
 	{
 		String id = doc.getDocumentElement().getAttribute("experimentID");
+		String et = doc.getDocumentElement().getAttribute("experimentType"); et = et.length()>0?et:"SingleAlgorithmRandom";
+		String cn = doc.getDocumentElement().getAttribute("machineName");
 				
-		//for(String id : _experimentIDs)
-		//{
 		_stmt.setLong(1, Long.parseLong(id));
+		_stmt.setString(2, et);
+		_stmt.setString(3, cn);
 		_stmt.executeUpdate();
 		
 		_experimentIDs.remove(id);
-		//}
-		
 	}
 }
