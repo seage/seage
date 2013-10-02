@@ -31,12 +31,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.seage.data.xml.XmlHelper;
+import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.w3c.dom.Document;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.table.DataRow;
 
-public abstract class RMDataTableCreator
+public abstract class RMDataTableCreator implements IDocumentProcessor
 {
     protected static Logger _logger = Logger.getLogger(RMDataTableCreator.class.getName());
     
@@ -54,11 +55,7 @@ public abstract class RMDataTableCreator
         _dataTable = new ArrayList<DataRow>();
         
         _versionedXPaths = new Hashtable<String, Hashtable<String,XmlHelper.XPath>>();
-    }
-    
-    public abstract Boolean isInvolved(Document doc);
-    public abstract void processDocument(Document doc) throws Exception;
-    
+    }  
     
     public String getRepositoryPath() {return _repositoryPath;} 
     public String getTableName() {return _tableName;} 

@@ -14,6 +14,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.seage.experimenter._obsolete.ProcessPerformer;
+import org.seage.experimenter.reporting.IDocumentProcessor;
+import org.seage.experimenter.reporting.ProcessExperimentZipFileTask;
 import org.seage.experimenter.reporting.rapidminer.repository.AlgorithmParamsTableCreator;
 import org.seage.experimenter.reporting.rapidminer.repository.RMDataTableCreator;
 import org.seage.experimenter.reporting.rapidminer.repository.SingleAlgorithmTableCreator;
@@ -55,6 +57,7 @@ public class ExperimentDataRapidMinerImporter
 		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.SimulatedAnnealing("/databases/experiments/parameters"));
 	}
 
+	@SuppressWarnings("unchecked")
 	public void processLogs() throws OperatorException, OperatorCreationException, RepositoryException
 	{
 	    _logger.info("Processing experiment logs ...");
@@ -71,7 +74,7 @@ public class ExperimentDataRapidMinerImporter
 				if (!f.getName().endsWith(".zip"))
 					continue;				
 
-				tasks.add(new ProcessZipTask(f));				
+				tasks.add(new ProcessExperimentZipFileTask((List<IDocumentProcessor>)(List<?>)_rmDataTableCreators, f));				
 			}	
 			
 			//new TaskRunner().runTasks(tasks, Runtime.getRuntime().availableProcessors());
@@ -162,11 +165,11 @@ public class ExperimentDataRapidMinerImporter
 		
 	}
 	
-	private class ProcessZipTask implements Runnable
+	private class ProcessZipTask0 implements Runnable
 	{
 		private File _zipFile;
 		
-		private ProcessZipTask(File zipFile)
+		private ProcessZipTask0(File zipFile)
 		{
 			_zipFile = zipFile;
 		}

@@ -1,9 +1,10 @@
-package org.seage.experimenter.reporting.h2;
+package org.seage.experimenter.reporting;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -14,14 +15,16 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-class ProcessExperimentZipFileTask implements Runnable
+public class ProcessExperimentZipFileTask implements Runnable
 {
 	private static Logger _logger = Logger.getLogger(ProcessExperimentZipFileTask.class.getName());
 	private File _zipFile;
+	private List<IDocumentProcessor> _documentProcessors;
 	
-	ProcessExperimentZipFileTask(File zipFile)
+	public ProcessExperimentZipFileTask(List<IDocumentProcessor> documentProcessors, File zipFile)
 	{
 		_zipFile = zipFile;
+		_documentProcessors = documentProcessors;
 	}
 
 	@Override
@@ -34,13 +37,14 @@ class ProcessExperimentZipFileTask implements Runnable
 			_logger.info(Thread.currentThread().getName()+ " - importing file: " + _zipFile.getName());
 			
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();	
-			
+			boolean isProcessed = false;
 			for (Enumeration<? extends ZipEntry> e = zf.entries(); e.hasMoreElements();)
 			{
 				ZipEntry ze = e.nextElement();
 				if (!ze.isDirectory() && ze.getName().endsWith(".xml"))
 				{
 					InputStream in = zf.getInputStream(ze);
+					isProcessed = true;
 					// read from 'in'
 					try
 					{
@@ -52,10 +56,10 @@ class ProcessExperimentZipFileTask implements Runnable
 							return;
 						}
 						//------------------------------------------------------
-						/*for(RMDataTableCreator creator : _rmDataTableCreators)
-						    if(creator.isInvolved(doc))
-						        creator.processDocument(doc);
-						*/
+						for(IDocumentProcessor processor : _documentProcessors)
+						    if(processor.isInvolved(doc))
+						    	processor.processDocument(doc);
+						
 					}
 					catch (NullPointerException ex)
 					{
@@ -67,8 +71,9 @@ class ProcessExperimentZipFileTask implements Runnable
 					}
 				}
 			}
+			if(!isProcessed)
+				throw new Exception("No xml file in the zip file.");
 			
-			zf.close();
 		}
 		catch(Exception ex)
 		{

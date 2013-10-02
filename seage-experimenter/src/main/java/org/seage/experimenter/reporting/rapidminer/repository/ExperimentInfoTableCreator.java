@@ -1,8 +1,9 @@
 package org.seage.experimenter.reporting.rapidminer.repository;
 
+import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.w3c.dom.Document;
 
-public class ExperimentInfoTableCreator extends RMDataTableCreator
+public class ExperimentInfoTableCreator extends RMDataTableCreator implements IDocumentProcessor
 {
 
     public ExperimentInfoTableCreator(String repositoryPath, String tableName)
@@ -12,14 +13,13 @@ public class ExperimentInfoTableCreator extends RMDataTableCreator
     }
 
     @Override
-    public Boolean isInvolved(Document doc)
+    public boolean isInvolved(Document doc)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return true;
     }
 
     @Override
-    public void processDocument(Document doc)
+    public void processDocument(Document doc) throws Exception
     {
 
         

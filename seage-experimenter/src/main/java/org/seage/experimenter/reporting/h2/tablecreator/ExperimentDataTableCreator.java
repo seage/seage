@@ -1,9 +1,11 @@
 package org.seage.experimenter.reporting.h2.tablecreator;
 
-import java.sql.Connection;
 import java.sql.Statement;
 
-public class ExperimentDataTableCreator extends TableCreator
+import org.seage.experimenter.reporting.IDocumentProcessor;
+import org.w3c.dom.Document;
+
+public class ExperimentDataTableCreator extends TableCreator implements IDocumentProcessor
 {
 
 	public ExperimentDataTableCreator(String dbPath, boolean clean) throws Exception
@@ -31,20 +33,27 @@ public class ExperimentDataTableCreator extends TableCreator
 						"ComputerName VARCHAR"+
 						")";
 		
-		Connection conn = createConnection();
-		try
-		{
-			Statement stmt = conn.createStatement();
+
+			Statement stmt = _conn.createStatement();
 			
 			if(clean)
 				stmt.execute(queryDrop);	
 			stmt.execute(queryCreate);
-		}
-		finally
-		{
-			if(conn != null)
-				conn.close();
-		}
+
+	}
+
+	@Override
+	public synchronized boolean isInvolved(Document doc)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public synchronized void processDocument(Document doc)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

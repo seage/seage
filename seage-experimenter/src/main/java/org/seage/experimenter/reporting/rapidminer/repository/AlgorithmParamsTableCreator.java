@@ -3,6 +3,7 @@ package org.seage.experimenter.reporting.rapidminer.repository;
 import java.util.Hashtable;
 
 import org.seage.data.xml.XmlHelper;
+import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.w3c.dom.Document;
 
 import com.rapidminer.example.Attribute;
@@ -25,7 +26,7 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
     }
 
     @Override
-    public synchronized Boolean isInvolved(Document doc)
+    public synchronized boolean isInvolved(Document doc)
     {
         String algorithmID = XmlHelper.getValueFromDocument(doc.getDocumentElement(), new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/@algorithmID"));
         if(!algorithmID.equals(_algorithmID))
