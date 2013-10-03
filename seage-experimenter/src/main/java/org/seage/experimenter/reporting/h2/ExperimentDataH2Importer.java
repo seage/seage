@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 
 import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.seage.experimenter.reporting.ProcessExperimentZipFileTask;
-import org.seage.experimenter.reporting.h2.tablecreator.ExperimentDataTableCreator;
-import org.seage.experimenter.reporting.h2.tablecreator.ExperimentIDsTableCreator;
+import org.seage.experimenter.reporting.h2.tablecreator.ExperimentTasksTableCreator;
+import org.seage.experimenter.reporting.h2.tablecreator.ExperimentsTableCreator;
 import org.seage.experimenter.reporting.h2.tablecreator.TableCreator;
 import org.seage.thread.TaskRunnerEx;
 
@@ -22,19 +22,19 @@ public class ExperimentDataH2Importer
 	private static Logger _logger = Logger.getLogger(ExperimentDataH2Importer.class.getName());
 	private String _logPath;
 	private String _dbPath;
-	private boolean _clean;
-	
+	private ExperimentsTableCreator _expIDsTableCreator;
 	private List<TableCreator> _h2DataTableCreators;
 		
 	public ExperimentDataH2Importer(String logPath, String dbPath, boolean clean) throws Exception
 	{
 		_logPath = logPath;
 		_dbPath = dbPath;
-		_clean = clean;
-		
-		_h2DataTableCreators = new ArrayList<TableCreator>();		
-		_h2DataTableCreators.add(new ExperimentDataTableCreator(dbPath, clean));
 
+		_expIDsTableCreator = new ExperimentsTableCreator(_logPath, _dbPath, clean);
+		
+		_h2DataTableCreators = new ArrayList<TableCreator>();
+		_h2DataTableCreators.add(_expIDsTableCreator);
+		_h2DataTableCreators.add(new ExperimentTasksTableCreator(dbPath));
 	}
 			
 	public void processLogs() throws Exception
@@ -42,11 +42,9 @@ public class ExperimentDataH2Importer
 		_logger.info("Processing experiment logs ...");
 		long t0 = System.currentTimeMillis();
 		
-		ExperimentIDsTableCreator expIDsTableCreator = new ExperimentIDsTableCreator(_logPath, _dbPath, _clean);
-		_h2DataTableCreators.add(expIDsTableCreator);
 		try
 		{
-			HashSet<String> ids = expIDsTableCreator.getExperimentIDs();
+			HashSet<String> ids = _expIDsTableCreator.getExperimentIDs();
 			createAndRunProcessExperimentZipFileTasks(ids);
 			//expIDsTableCreator.insertNewExperiments(ids);
 		}

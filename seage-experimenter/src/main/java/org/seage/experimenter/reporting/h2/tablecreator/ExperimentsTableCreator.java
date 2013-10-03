@@ -10,22 +10,22 @@ import java.util.HashSet;
 import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.w3c.dom.Document;
 
-public class ExperimentIDsTableCreator extends TableCreator implements IDocumentProcessor
+public class ExperimentsTableCreator extends TableCreator implements IDocumentProcessor
 {
 	//protected Connection _conn;
 	private String _expLogsPath;
 	private HashSet<String> _experimentIDs;
 	private PreparedStatement _stmt;
 
-	public ExperimentIDsTableCreator(String expLogsPath, String dbPath, boolean clean) throws Exception
+	public ExperimentsTableCreator(String expLogsPath, String dbPath, boolean clean) throws Exception
 	{
 		super(dbPath);
 		_expLogsPath = expLogsPath;
 
 		String queryDropExperiments =
-				"DROP TABLE IF EXISTS Experiments";			
+				"DROP ALL OBJECTS";			
 		String queryCreateExperiments =
-				"CREATE TABLE IF NOT EXISTS Experiments (ExperimentID BIGINT PRIMARY KEY, ExperimentType VARCHAR, ComputerName VARCHAR)"; 
+				"CREATE TABLE IF NOT EXISTS Experiments (ExperimentID VARCHAR PRIMARY KEY, ExperimentType VARCHAR, ComputerName VARCHAR)"; 
 		String queryInsert =				
 				"INSERT INTO Experiments VALUES (?, ?, ?)"; 
 		
@@ -74,7 +74,7 @@ public class ExperimentIDsTableCreator extends TableCreator implements IDocument
     	stmt = _conn.prepareStatement(queryInsert);	
     	for(String id : _experimentIDs)
     	{        		
-    		stmt.setLong(1, Long.parseLong(id));
+    		stmt.setString(1, id);
     		stmt.execute();
     	}
     	
