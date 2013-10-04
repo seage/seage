@@ -10,7 +10,7 @@ import java.util.HashSet;
 import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.w3c.dom.Document;
 
-public class ExperimentsTableCreator extends TableCreator implements IDocumentProcessor
+public class ExperimentsTableCreator extends H2DataTableCreator implements IDocumentProcessor
 {
 	//protected Connection _conn;
 	private String _expLogsPath;
@@ -92,10 +92,15 @@ public class ExperimentsTableCreator extends TableCreator implements IDocumentPr
 	}
 
 	@Override
-	public boolean isInvolved(Document doc)
+	public synchronized boolean isInvolved(Document doc)
 	{
 		String id = doc.getDocumentElement().getAttribute("experimentID");
-		return _experimentIDs.contains(id);
+		if(_experimentIDs.contains(id))
+		{			
+			_experimentIDs.remove(id);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -108,8 +113,6 @@ public class ExperimentsTableCreator extends TableCreator implements IDocumentPr
 		_stmt.setLong(1, Long.parseLong(id));
 		_stmt.setString(2, et);
 		_stmt.setString(3, cn);
-		_stmt.executeUpdate();
-		
-		_experimentIDs.remove(id);
+		_stmt.executeUpdate();		
 	}
 }

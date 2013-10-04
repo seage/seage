@@ -12,9 +12,10 @@ import java.util.logging.Logger;
 
 import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.seage.experimenter.reporting.ProcessExperimentZipFileTask;
+import org.seage.experimenter.reporting.h2.tablecreator.AlgorithmParamsTableCreator;
 import org.seage.experimenter.reporting.h2.tablecreator.ExperimentTasksTableCreator;
 import org.seage.experimenter.reporting.h2.tablecreator.ExperimentsTableCreator;
-import org.seage.experimenter.reporting.h2.tablecreator.TableCreator;
+import org.seage.experimenter.reporting.h2.tablecreator.H2DataTableCreator;
 import org.seage.thread.TaskRunnerEx;
 
 public class ExperimentDataH2Importer
@@ -22,19 +23,23 @@ public class ExperimentDataH2Importer
 	private static Logger _logger = Logger.getLogger(ExperimentDataH2Importer.class.getName());
 	private String _logPath;
 	private String _dbPath;
-	private ExperimentsTableCreator _expIDsTableCreator;
-	private List<TableCreator> _h2DataTableCreators;
+	private ExperimentsTableCreator _expperimentsTableCreator;
+	private List<H2DataTableCreator> _h2DataTableCreators;
 		
 	public ExperimentDataH2Importer(String logPath, String dbPath, boolean clean) throws Exception
 	{
 		_logPath = logPath;
 		_dbPath = dbPath;
 
-		_expIDsTableCreator = new ExperimentsTableCreator(_logPath, _dbPath, clean);
+		_expperimentsTableCreator = new ExperimentsTableCreator(_logPath, _dbPath, clean);
 		
-		_h2DataTableCreators = new ArrayList<TableCreator>();
-		_h2DataTableCreators.add(_expIDsTableCreator);
+		_h2DataTableCreators = new ArrayList<H2DataTableCreator>();
+		_h2DataTableCreators.add(_expperimentsTableCreator);
 		_h2DataTableCreators.add(new ExperimentTasksTableCreator(dbPath));
+		_h2DataTableCreators.add(new AlgorithmParamsTableCreator.GeneticAlgorithm(dbPath));
+		_h2DataTableCreators.add(new AlgorithmParamsTableCreator.TabuSearch(dbPath));
+		_h2DataTableCreators.add(new AlgorithmParamsTableCreator.SimulatedAnnealing(dbPath));
+		_h2DataTableCreators.add(new AlgorithmParamsTableCreator.AntColony(dbPath));
 	}
 			
 	public void processLogs() throws Exception
@@ -44,13 +49,13 @@ public class ExperimentDataH2Importer
 		
 		try
 		{
-			HashSet<String> ids = _expIDsTableCreator.getExperimentIDs();
+			HashSet<String> ids = _expperimentsTableCreator.getExperimentIDs();
 			createAndRunProcessExperimentZipFileTasks(ids);
 			//expIDsTableCreator.insertNewExperiments(ids);
 		}
 		finally
 		{
-			for(TableCreator tc : _h2DataTableCreators)
+			for(H2DataTableCreator tc : _h2DataTableCreators)
 				tc.close();
 		}
 		long t1 = (System.currentTimeMillis() - t0) / 1000;

@@ -10,7 +10,7 @@ import org.w3c.dom.Document;
 
 import com.rapidminer.example.Attribute;
 
-public class ExperimentTasksTableCreator extends TableCreator implements IDocumentProcessor
+public class ExperimentTasksTableCreator extends H2DataTableCreator implements IDocumentProcessor
 {
 	private PreparedStatement _stmt;
 	
@@ -19,7 +19,6 @@ public class ExperimentTasksTableCreator extends TableCreator implements IDocume
 		super(dbPath);
 		
 		Hashtable<String, XmlHelper.XPath> v04 = new Hashtable<String, XmlHelper.XPath>();
-        //v04.put("ExperimentType", new XmlHelper.XPath("/ExperimentTask/Config/@runID"));
         v04.put("ExperimentID", new XmlHelper.XPath("/ExperimentTaskReport/@experimentID"));
         v04.put("ProblemID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/@problemID"));
         v04.put("InstanceID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/Instance/@name"));
@@ -33,10 +32,8 @@ public class ExperimentTasksTableCreator extends TableCreator implements IDocume
         v04.put("NrOfIterations", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfIter"));
         v04.put("DurationInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@durationS"));
         v04.put("TimeoutInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@timeoutS"));
-        //v04.put("ComputerName", new XmlHelper.XPath("/ExperimentTaskReport/@machineName"));
         
         Hashtable<String, XmlHelper.XPath> v05 = new Hashtable<String, XmlHelper.XPath>();
-        //v05.put("ExperimentType", new XmlHelper.XPath("/ExperimentTaskReport/@experimentType"));
         v05.put("ExperimentID", new XmlHelper.XPath("/ExperimentTaskReport/@experimentID"));
         v05.put("ProblemID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/@problemID"));
         v05.put("InstanceID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/Instance/@name"));
@@ -50,7 +47,6 @@ public class ExperimentTasksTableCreator extends TableCreator implements IDocume
         v05.put("NrOfIterations", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfIter"));
         v05.put("DurationInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@durationS"));
         v05.put("TimeoutInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@timeoutS"));
-        //v05.put("ComputerName", new XmlHelper.XPath("/ExperimentTaskReport/@machineName"));
         
         _versionedXPaths.put("0.4", v04);
         _versionedXPaths.put("0.5", v05);
@@ -59,7 +55,6 @@ public class ExperimentTasksTableCreator extends TableCreator implements IDocume
 					"CREATE TABLE IF NOT EXISTS ExperimentTasks"+
 					"("+
 					"ExperimentID VARCHAR,"+
-					//"ExperimentType VARCHAR,"+
 					"ProblemID VARCHAR,"+
 					"InstanceID VARCHAR,"+
 					"AlgorithmID VARCHAR,"+					
@@ -72,7 +67,6 @@ public class ExperimentTasksTableCreator extends TableCreator implements IDocume
 					"LastIterNumberNewSol DOUBLE,"+
 					"DurationInSeconds DOUBLE,"+
 					"TimeoutInSeconds DOUBLE,"+
-					//"ComputerName VARCHAR"+
 					")";		
 		String insertQuery = 
 					"INSERT INTO ExperimentTasks VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -85,7 +79,7 @@ public class ExperimentTasksTableCreator extends TableCreator implements IDocume
 	}
 
 	@Override
-	public synchronized boolean isInvolved(Document doc)
+	public boolean isInvolved(Document doc)
 	{
 		return true;
 	}
@@ -116,26 +110,11 @@ public class ExperimentTasksTableCreator extends TableCreator implements IDocume
 		_stmt.executeUpdate();
 		
 	}
-
-	private String getVersionedValue(Document doc, String attName, String version) throws Exception
-	{		
-		XmlHelper.XPath xPath = _versionedXPaths.get(version).get(attName);
-		String val = "";
-		if(xPath == null)        
-			throw new Exception(doc.getLocalName() + ": No XmlHelper.XPath defined for attribute: " + attName);                    
-        else
-        {
-        	val = XmlHelper.getValueFromDocument(doc.getDocumentElement(), xPath);//(String) XmlHelper.XPath.evaluate(attInfo.XmlHelper.XPath, doc, XmlHelper.XPathConstants.STRING);; //XmlHelper.XPath
-        	val = postProcessValue(attName, val, version);
-        }
-		return val;
-	}
 	
-	private String postProcessValue(String attName, String val, String version)
+	protected String postProcessValue(String attName, String val, String version)
 	{
 		if(/*version.equals("0.4") &&*/ attName.equals("InstanceID") && val.contains("."))
 			return val.split("\\.")[0];
 		return val;
 	}
-
 }
