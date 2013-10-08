@@ -9,6 +9,7 @@ import org.seage.data.DataNode;
 import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.config.Configurator;
+import org.seage.experimenter.reporting.rapidminer.RapidMinerManager;
 import org.seage.experimenter.singlealgorithm.random.RandomConfigurator;
 
 import com.rapidminer.Process;
@@ -23,6 +24,8 @@ import com.rapidminer.operator.IOObjectCollection;
 import com.rapidminer.repository.Entry;
 import com.rapidminer.repository.ProcessEntry;
 import com.rapidminer.repository.RepositoryLocation;
+import com.rapidminer.repository.RepositoryManager;
+import com.rapidminer.repository.db.DBRepository;
 
 public class FeedbackConfigurator extends Configurator
 {
@@ -31,16 +34,16 @@ public class FeedbackConfigurator extends Configurator
 	@SuppressWarnings("unchecked")
 	public FeedbackConfigurator() throws Exception
 	{
-		System.setProperty("rapidminer.home", ".");
-		RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
-        RapidMiner.init();        
-             
-        RepositoryLocation location = new RepositoryLocation("//seage/processes/base/BestAlgParamsPerAlgorithm-AttsRemoved");        
+		RapidMinerManager.init();
+		RapidMinerManager.initDatabaseConnection();
+
+        //RepositoryLocation location = new RepositoryLocation("//seage/processes/base/BestAlgParamsPerAlgorithm-AttsRemoved");        
+        RepositoryLocation location = new RepositoryLocation("//seage/processes/testDB");
         Entry entry = location.locateEntry();
         
         if (entry instanceof ProcessEntry) {
             Process process = new RepositoryProcessLocation(location).load(null);
-
+            
             IOContainer ioResult = process.run();
             _feedbackParams = (IOObjectCollection<SimpleExampleSet> )ioResult.getElementAt(0);           
         }

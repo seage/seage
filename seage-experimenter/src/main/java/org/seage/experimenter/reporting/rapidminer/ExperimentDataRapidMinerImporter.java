@@ -41,8 +41,7 @@ public class ExperimentDataRapidMinerImporter
 {
 	private static Logger _logger = Logger.getLogger(ExperimentDataRapidMinerImporter.class.getName());
 	private String _logPath;
-	private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "seage";
-	private final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "repository";
+	
 	
 	private List<RMDataTableCreator> _rmDataTableCreators;
 	
@@ -92,50 +91,12 @@ public class ExperimentDataRapidMinerImporter
 		Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, "Processing experiment logs DONE - " + t1 + "s");
 	}
 
-	private void initRepository() throws RepositoryException
-    {
-        _logger.fine("initRepository");
-        RepositoryManager rm = RepositoryManager.getInstance(null);
-
-        List<Repository> reposToRemove = new ArrayList<Repository>();
-        
-        for(Repository repo : rm.getRepositories())
-        {
-            if(!(repo instanceof LocalRepository))
-                continue;
-            LocalRepository r = (LocalRepository)repo;
-            if(r.getName().equals(RAPIDMINER_LOCAL_REPOSITORY_NAME))
-            {
-                if(!r.getFile().getPath().equals(RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH))
-                    reposToRemove.add(r);
-                    
-            }
-        }
-        
-        for(Repository repo : reposToRemove)
-            rm.removeRepository(repo);          
-        
-        try
-        {
-            rm.getRepository(RAPIDMINER_LOCAL_REPOSITORY_NAME);
-        }
-        catch(RepositoryException re)
-        {
-            rm.addRepository(new LocalRepository( RAPIDMINER_LOCAL_REPOSITORY_NAME , new File( RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH )));
-        }
-        
-        _logger.fine("initRepository: saving");
-        rm.save();
-        _logger.fine("initRepository: done");
-    }
+	
 	
 	private void writeDataTablesToRepository() throws OperatorException, OperatorCreationException, RepositoryException
 	{
-		System.setProperty("rapidminer.home", ".");
-		RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
-		RapidMiner.init();
-		
-		initRepository();
+		RapidMinerManager.init();		
+		RapidMinerManager.initRepository();
 		
 		for(RMDataTableCreator table : _rmDataTableCreators)
 		{	
@@ -146,7 +107,7 @@ public class ExperimentDataRapidMinerImporter
 					.createOperator(RepositoryStorer.class);
 			modelWriter.setParameter(
 					RepositoryStorer.PARAMETER_REPOSITORY_ENTRY,
-					"//"+RAPIDMINER_LOCAL_REPOSITORY_NAME+table.getRepositoryPath()+"/"+table.getTableName());
+					"//"+RapidMinerManager.RAPIDMINER_LOCAL_REPOSITORY_NAME+table.getRepositoryPath()+"/"+table.getTableName());
 	
 			Process process = new Process();
 	
