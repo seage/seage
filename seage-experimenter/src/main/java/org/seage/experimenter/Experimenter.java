@@ -79,7 +79,9 @@ public abstract class Experimenter
     	// ***********************
     	
     	long experimentID = System.currentTimeMillis();
-        _logger.info("Experiment "+experimentID+" started ...");
+    	_logger.info("-------------------------------------");
+    	_logger.info("Experimenter: "+_experimentName);
+        _logger.info("ExperimentID: "+experimentID);
         _logger.info("-------------------------------------");
         
         long totalNumOfConfigs = getNumberOfConfigs(instanceIDs.length, algorithmIDs.length); 

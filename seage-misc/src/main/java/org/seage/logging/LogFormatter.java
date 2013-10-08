@@ -16,16 +16,16 @@ public final class LogFormatter extends Formatter {
         StringBuilder sb = new StringBuilder();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
-        String className = record.getSourceClassName();
-        className = className.length()>50 ? className.substring(0, 46)+"_" : className;
-        String methodName = className+"."+record.getSourceMethodName();        
-        methodName = methodName.length()>60 ? methodName.substring(0, 59) : methodName;
+        //String className = record.getSourceClassName();
+        //className = className.length()>50 ? className.substring(0, 46)+"_" : className;
+        //String methodName = className+"."+record.getSourceMethodName();        
+        //methodName = methodName.length()>60 ? methodName.substring(0, 59) : methodName;
         Date date = new Date(record.getMillis());
         sb.append(String.format("%-9s", "["+record.getLevel().getLocalizedName()+"]"))
             .append("  ")
             .append(sdf.format(date))
-            .append("  ")
-            .append(String.format("%-60s",methodName))
+            //.append("  ")
+            //.append(String.format("%-60s",methodName))
             .append("  ")
             .append(formatMessage(record))
             .append(LINE_SEPARATOR);
