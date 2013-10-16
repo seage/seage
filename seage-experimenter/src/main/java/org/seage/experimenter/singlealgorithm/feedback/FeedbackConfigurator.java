@@ -37,8 +37,8 @@ public class FeedbackConfigurator extends Configurator
 		RapidMinerManager.init();
 		RapidMinerManager.initDatabaseConnection();
 
-        //RepositoryLocation location = new RepositoryLocation("//seage/processes/base/BestAlgParamsPerAlgorithm-AttsRemoved");        
-        RepositoryLocation location = new RepositoryLocation("//seage/processes/testDB");
+        RepositoryLocation location = new RepositoryLocation("//seage/processes/base/BestAlgParamsPerAlgorithm-AttsRemoved");        
+        //RepositoryLocation location = new RepositoryLocation("//seage/processes/testDB");
         Entry entry = location.locateEntry();
         
         if (entry instanceof ProcessEntry) {
