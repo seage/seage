@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<process version="5.3.008">
+<process version="5.3.013">
   <context>
     <input/>
     <output/>
     <macros/>
   </context>
-  <operator activated="true" class="process" compatibility="5.3.008" expanded="true" name="Process">
+  <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
     <parameter key="logverbosity" value="init"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
@@ -13,7 +13,7 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="execute_process" compatibility="5.3.008" expanded="true" height="76" name="Execute BestAlgParamsPerAlgorithm" width="90" x="45" y="75">
+      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute BestAlgParamsPerAlgorithm" width="90" x="45" y="75">
         <parameter key="process_location" value="//seage/processes/base/BestAlgParamsPerAlgorithm"/>
         <parameter key="use_input" value="false"/>
         <parameter key="store_output" value="false"/>
@@ -21,17 +21,17 @@
         <parameter key="cache_process" value="true"/>
         <list key="macros"/>
       </operator>
-      <operator activated="true" class="loop_collection" compatibility="5.3.008" expanded="true" height="76" name="Loop Collection" width="90" x="313" y="75">
+      <operator activated="true" class="loop_collection" compatibility="5.3.013" expanded="true" height="94" name="Loop Collection" width="90" x="447" y="75">
         <parameter key="set_iteration_macro" value="false"/>
         <parameter key="macro_name" value="iteration"/>
         <parameter key="macro_start_value" value="1"/>
         <parameter key="unfold" value="false"/>
         <process expanded="true">
-          <operator activated="true" class="remove_attribute_range" compatibility="5.3.008" expanded="true" height="76" name="Remove Attribute Range" width="90" x="246" y="30">
+          <operator activated="true" class="remove_attribute_range" compatibility="5.3.013" expanded="true" height="76" name="Remove Attribute Range" width="90" x="45" y="30">
             <parameter key="first_attribute" value="2"/>
             <parameter key="last_attribute" value="14"/>
           </operator>
-          <operator activated="true" class="select_attributes" compatibility="5.3.008" expanded="true" height="76" name="Select Attributes" width="90" x="514" y="30">
+          <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes" width="90" x="179" y="30">
             <parameter key="attribute_filter_type" value="subset"/>
             <parameter key="attribute" value=""/>
             <parameter key="attributes" value="|IterationCount|NumIteration"/>
@@ -45,7 +45,7 @@
             <parameter key="invert_selection" value="true"/>
             <parameter key="include_special_attributes" value="false"/>
           </operator>
-          <operator activated="true" class="remove_duplicates" compatibility="5.3.008" expanded="true" height="76" name="Remove Duplicates" width="90" x="782" y="30">
+          <operator activated="true" class="remove_duplicates" compatibility="5.3.013" expanded="true" height="76" name="Remove Duplicates" width="90" x="313" y="30">
             <parameter key="attribute_filter_type" value="subset"/>
             <parameter key="attribute" value=""/>
             <parameter key="attributes" value="|ExperimentType"/>
@@ -67,13 +67,16 @@
           <portSpacing port="source_single" spacing="0"/>
           <portSpacing port="sink_output 1" spacing="0"/>
           <portSpacing port="sink_output 2" spacing="0"/>
+          <portSpacing port="sink_output 3" spacing="0"/>
         </process>
       </operator>
       <connect from_op="Execute BestAlgParamsPerAlgorithm" from_port="result 1" to_op="Loop Collection" to_port="collection"/>
       <connect from_op="Loop Collection" from_port="output 1" to_port="result 1"/>
+      <connect from_op="Loop Collection" from_port="output 2" to_port="result 2"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
     </process>
   </operator>
 </process>

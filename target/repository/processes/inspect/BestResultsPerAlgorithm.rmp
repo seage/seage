@@ -14,23 +14,26 @@
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
       <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute FilteredExperimentValues" width="90" x="45" y="75">
-        <parameter key="process_location" value="base/FilteredExperimentValues"/>
+        <parameter key="process_location" value="//seage/processes/blocks/FilteredExperimentValues"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
         <parameter key="propagate_metadata_recursively" value="true"/>
         <parameter key="cache_process" value="true"/>
         <list key="macros"/>
       </operator>
-      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute AlgorithmInstancePivotTable" width="90" x="313" y="75">
-        <parameter key="process_location" value="AlgorithmInstancePivotTable"/>
+      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute AlgorithmInstancePivotTable (2)" width="90" x="313" y="75">
+        <parameter key="process_location" value="//seage/processes/blocks/AlgorithmInstancePivotTable"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
         <parameter key="propagate_metadata_recursively" value="true"/>
         <parameter key="cache_process" value="true"/>
-        <list key="macros"/>
+        <list key="macros">
+          <parameter key="myAttribute" value="BestSolutionValue"/>
+          <parameter key="myFunction" value="count"/>
+        </list>
       </operator>
-      <connect from_op="Execute FilteredExperimentValues" from_port="result 1" to_op="Execute AlgorithmInstancePivotTable" to_port="input 1"/>
-      <connect from_op="Execute AlgorithmInstancePivotTable" from_port="result 1" to_port="result 1"/>
+      <connect from_op="Execute FilteredExperimentValues" from_port="result 1" to_op="Execute AlgorithmInstancePivotTable (2)" to_port="input 1"/>
+      <connect from_op="Execute AlgorithmInstancePivotTable (2)" from_port="result 1" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>

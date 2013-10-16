@@ -3,7 +3,12 @@
   <context>
     <input/>
     <output/>
-    <macros/>
+    <macros>
+      <macro>
+        <key>DBPATH</key>
+        <value>/home/rick/Projects/seage/target/database/seage</value>
+      </macro>
+    </macros>
   </context>
   <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
     <parameter key="logverbosity" value="init"/>
@@ -13,7 +18,22 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="aggregate" compatibility="5.3.013" expanded="true" height="76" name="Aggregate" width="90" x="179" y="75">
+      <operator activated="true" class="read_database" compatibility="5.3.013" expanded="true" height="60" name="Read Database" width="90" x="112" y="30">
+        <parameter key="define_connection" value="predefined"/>
+        <parameter key="connection" value="SEAGE_DB"/>
+        <parameter key="database_system" value="H2"/>
+        <parameter key="database_url" value="jdbc:h2:%{DBPATH}"/>
+        <parameter key="username" value="sa"/>
+        <parameter key="password" value="BWoMqVNtjhg="/>
+        <parameter key="define_query" value="query"/>
+        <parameter key="query" value="SELECT *&#10;FROM &quot;PUBLIC&quot;.&quot;ExperimentTasks&quot;&#10;WHERE &quot;BestSolutionValue&quot; &gt; 0 AND &quot;InitSolutionValue&quot; &gt; 0 AND &quot;NrOfNewSolutions&quot; &gt; 1"/>
+        <parameter key="use_default_schema" value="true"/>
+        <parameter key="table_name" value="ExperimentTasks"/>
+        <parameter key="prepare_statement" value="false"/>
+        <enumeration key="parameters"/>
+        <parameter key="datamanagement" value="double_array"/>
+      </operator>
+      <operator activated="true" class="aggregate" compatibility="5.3.013" expanded="true" height="76" name="Aggregate" width="90" x="313" y="30">
         <parameter key="use_default_aggregation" value="false"/>
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
@@ -29,22 +49,20 @@
         <parameter key="include_special_attributes" value="false"/>
         <parameter key="default_aggregation_function" value="average"/>
         <list key="aggregation_attributes">
-          <parameter key="BestSolutionValue" value="minimum"/>
+          <parameter key="BestSolutionValue" value="average"/>
+          <parameter key="DurationInSeconds" value="average"/>
+          <parameter key="InitSolutionValue" value="average"/>
+          <parameter key="LastIterNumberNewSol" value="average"/>
+          <parameter key="NrOfIterations" value="average"/>
+          <parameter key="NrOfNewSolutions" value="average"/>
+          <parameter key="TimeoutInSeconds" value="average"/>
         </list>
-        <parameter key="group_by_attributes" value="|AlgorithmID|InstanceID"/>
+        <parameter key="group_by_attributes" value="AlgorithmID|ComputerName|ConfigID|ExperimentID|InstanceID|ProblemID||ExperimentType"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
-      <operator activated="true" class="pivot" compatibility="5.3.013" expanded="true" height="76" name="Pivot" width="90" x="380" y="75">
-        <parameter key="group_attribute" value="InstanceID"/>
-        <parameter key="index_attribute" value="AlgorithmID"/>
-        <parameter key="consider_weights" value="true"/>
-        <parameter key="weight_aggregation" value="minimum"/>
-        <parameter key="skip_constant_attributes" value="true"/>
-        <parameter key="datamanagement" value="double_array"/>
-      </operator>
-      <operator activated="true" class="rename_by_replacing" compatibility="5.3.013" expanded="true" height="76" name="Rename by Replacing" width="90" x="581" y="75">
+      <operator activated="true" class="rename_by_replacing" compatibility="5.3.013" expanded="true" height="76" name="Rename by Replacing" width="90" x="447" y="30">
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
         <parameter key="attributes" value=""/>
@@ -57,14 +75,13 @@
         <parameter key="except_block_type" value="value_matrix_row_start"/>
         <parameter key="invert_selection" value="false"/>
         <parameter key="include_special_attributes" value="false"/>
-        <parameter key="replace_what" value="(minimum\(BestSolutionValue\)_)"/>
+        <parameter key="replace_what" value="\w*\((\w*)\)"/>
+        <parameter key="replace_by" value="$1"/>
       </operator>
-      <connect from_port="input 1" to_op="Aggregate" to_port="example set input"/>
-      <connect from_op="Aggregate" from_port="example set output" to_op="Pivot" to_port="example set input"/>
-      <connect from_op="Pivot" from_port="example set output" to_op="Rename by Replacing" to_port="example set input"/>
+      <connect from_op="Read Database" from_port="output" to_op="Aggregate" to_port="example set input"/>
+      <connect from_op="Aggregate" from_port="example set output" to_op="Rename by Replacing" to_port="example set input"/>
       <connect from_op="Rename by Replacing" from_port="example set output" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
-      <portSpacing port="source_input 2" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
     </process>

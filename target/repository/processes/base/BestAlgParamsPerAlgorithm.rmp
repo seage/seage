@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<process version="5.3.008">
+<process version="5.3.013">
   <context>
     <input/>
     <output/>
     <macros/>
   </context>
-  <operator activated="true" class="process" compatibility="5.3.008" expanded="true" name="Process">
-    <parameter key="logverbosity" value="warning"/>
+  <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
+    <parameter key="logverbosity" value="error"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
     <parameter key="notification_email" value=""/>
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="execute_process" compatibility="5.3.008" expanded="true" height="76" name="Execute FilteredExperimentValues" width="90" x="45" y="165">
-        <parameter key="process_location" value="FilteredExperimentValues"/>
-        <parameter key="use_input" value="true"/>
+      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute FilteredExperimentValues" width="90" x="45" y="165">
+        <parameter key="process_location" value="//seage/processes/blocks/FilteredExperimentValues"/>
+        <parameter key="use_input" value="false"/>
         <parameter key="store_output" value="false"/>
         <parameter key="propagate_metadata_recursively" value="true"/>
         <parameter key="cache_process" value="true"/>
         <list key="macros"/>
       </operator>
-      <operator activated="true" class="aggregate" compatibility="5.3.008" expanded="true" height="76" name="Aggregate" width="90" x="179" y="165">
+      <operator activated="true" class="multiply" compatibility="5.3.013" expanded="true" height="94" name="Multiply (3)" width="90" x="179" y="165"/>
+      <operator activated="true" class="aggregate" compatibility="5.3.013" expanded="true" height="76" name="Aggregate" width="90" x="313" y="210">
         <parameter key="use_default_aggregation" value="false"/>
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
@@ -42,11 +43,11 @@
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
-      <operator activated="true" class="multiply" compatibility="5.3.008" expanded="true" height="94" name="Multiply (2)" width="90" x="313" y="300"/>
-      <operator activated="true" class="loop_examples" compatibility="5.3.008" expanded="true" height="76" name="Loop Examples" width="90" x="447" y="165">
+      <operator activated="true" class="multiply" compatibility="5.3.013" expanded="true" height="94" name="Multiply (2)" width="90" x="447" y="210"/>
+      <operator activated="true" class="loop_examples" compatibility="5.3.013" expanded="true" height="76" name="Loop Examples" width="90" x="581" y="165">
         <parameter key="iteration_macro" value="example"/>
         <process expanded="true">
-          <operator activated="true" class="extract_macro" compatibility="5.3.008" expanded="true" height="60" name="Extract Macro (5)" width="90" x="112" y="30">
+          <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro (5)" width="90" x="112" y="30">
             <parameter key="macro" value="AlgorithmID"/>
             <parameter key="macro_type" value="data_value"/>
             <parameter key="statistics" value="average"/>
@@ -54,37 +55,48 @@
             <parameter key="example_index" value="%{example}"/>
             <list key="additional_macros"/>
           </operator>
-          <operator activated="true" class="retrieve" compatibility="5.3.008" expanded="true" height="60" name="Retrieve" width="90" x="313" y="30">
+          <operator activated="false" class="retrieve" compatibility="5.3.013" expanded="true" height="60" name="Retrieve" width="90" x="313" y="30">
             <parameter key="repository_entry" value="//seage/databases/experiments/parameters/%{AlgorithmID}"/>
           </operator>
-          <operator activated="true" class="remember" compatibility="5.3.008" expanded="true" height="60" name="Remember (5)" width="90" x="581" y="30">
+          <operator activated="true" class="read_database" compatibility="5.3.013" expanded="true" height="60" name="Read Database" width="90" x="313" y="120">
+            <parameter key="define_connection" value="predefined"/>
+            <parameter key="connection" value="SEAGE_DB"/>
+            <parameter key="database_system" value="MySQL"/>
+            <parameter key="define_query" value="table name"/>
+            <parameter key="use_default_schema" value="true"/>
+            <parameter key="table_name" value="AlgorithmParams_%{AlgorithmID}"/>
+            <parameter key="prepare_statement" value="false"/>
+            <enumeration key="parameters"/>
+            <parameter key="datamanagement" value="double_array"/>
+          </operator>
+          <operator activated="true" class="remember" compatibility="5.3.013" expanded="true" height="60" name="Remember (5)" width="90" x="581" y="120">
             <parameter key="name" value="%{AlgorithmID}Params"/>
             <parameter key="io_object" value="ExampleSet"/>
             <parameter key="store_which" value="1"/>
             <parameter key="remove_from_process" value="true"/>
           </operator>
           <connect from_port="example set" to_op="Extract Macro (5)" to_port="example set"/>
-          <connect from_op="Retrieve" from_port="output" to_op="Remember (5)" to_port="store"/>
+          <connect from_op="Read Database" from_port="output" to_op="Remember (5)" to_port="store"/>
           <portSpacing port="source_example set" spacing="0"/>
           <portSpacing port="sink_example set" spacing="0"/>
           <portSpacing port="sink_output 1" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="execute_process" compatibility="5.3.008" expanded="true" height="76" name="Execute SortedAlgParamsPerProblemAlgInstance" width="90" x="313" y="30">
-        <parameter key="process_location" value="SortedAlgParamsPerProblemAlgInstance"/>
+      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute SortedAlgParamsPerProblemAlgInstance" width="90" x="313" y="30">
+        <parameter key="process_location" value="//seage/processes/blocks/SortedAlgParamsPerProblemAlgInstance"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
         <parameter key="propagate_metadata_recursively" value="true"/>
         <parameter key="cache_process" value="true"/>
         <list key="macros"/>
       </operator>
-      <operator activated="true" class="loop_collection" compatibility="5.3.008" expanded="true" height="76" name="Loop Collection" width="90" x="447" y="30">
+      <operator activated="true" class="loop_collection" compatibility="5.3.013" expanded="true" height="76" name="Loop Collection" width="90" x="581" y="30">
         <parameter key="set_iteration_macro" value="true"/>
         <parameter key="macro_name" value="iteration"/>
         <parameter key="macro_start_value" value="1"/>
         <parameter key="unfold" value="false"/>
         <process expanded="true">
-          <operator activated="true" class="extract_macro" compatibility="5.3.008" expanded="true" height="60" name="Extract Macro" width="90" x="45" y="30">
+          <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro" width="90" x="45" y="30">
             <parameter key="macro" value="AlgorithmID"/>
             <parameter key="macro_type" value="data_value"/>
             <parameter key="statistics" value="average"/>
@@ -94,15 +106,15 @@
               <parameter key="ConfigID" value="ConfigID"/>
             </list>
           </operator>
-          <operator activated="false" class="print_to_console" compatibility="5.3.008" expanded="true" height="60" name="Print to Console" width="90" x="179" y="255">
+          <operator activated="false" class="print_to_console" compatibility="5.3.013" expanded="true" height="60" name="Print to Console" width="90" x="447" y="255">
             <parameter key="log_value" value="%{AlgorithmID} - %{ConfigID}"/>
           </operator>
-          <operator activated="true" class="recall" compatibility="5.3.008" expanded="true" height="60" name="Recall" width="90" x="45" y="165">
+          <operator activated="true" class="recall" compatibility="5.3.013" expanded="true" height="60" name="Recall" width="90" x="45" y="120">
             <parameter key="name" value="%{AlgorithmID}Params"/>
             <parameter key="io_object" value="ExampleSet"/>
             <parameter key="remove_from_store" value="false"/>
           </operator>
-          <operator activated="true" class="join" compatibility="5.3.008" expanded="true" height="76" name="Join" width="90" x="179" y="75">
+          <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join" width="90" x="179" y="75">
             <parameter key="remove_double_attributes" value="true"/>
             <parameter key="join_type" value="left"/>
             <parameter key="use_id_attribute_as_key" value="false"/>
@@ -111,19 +123,19 @@
             </list>
             <parameter key="keep_both_join_attributes" value="true"/>
           </operator>
-          <operator activated="true" class="filter_example_range" compatibility="5.3.008" expanded="true" height="76" name="Filter Example Range" width="90" x="313" y="75">
+          <operator activated="true" class="filter_example_range" compatibility="5.3.013" expanded="true" height="76" name="Filter Example Range" width="90" x="313" y="75">
             <parameter key="first_example" value="1"/>
             <parameter key="last_example" value="10"/>
             <parameter key="invert_filter" value="false"/>
           </operator>
-          <operator activated="true" class="generate_id" compatibility="5.3.008" expanded="true" height="76" name="Generate ID (2)" width="90" x="447" y="75">
+          <operator activated="true" class="generate_id" compatibility="5.3.013" expanded="true" height="76" name="Generate ID (2)" width="90" x="447" y="75">
             <parameter key="create_nominal_ids" value="false"/>
             <parameter key="offset" value="0"/>
           </operator>
-          <operator activated="true" class="multiply" compatibility="5.3.008" expanded="true" height="112" name="Multiply" width="90" x="581" y="75"/>
-          <operator activated="true" class="set_minus" compatibility="5.3.008" expanded="true" height="76" name="Set Minus" width="90" x="715" y="120"/>
-          <operator activated="true" class="remember" compatibility="5.3.008" expanded="true" height="60" name="Remember (2)" width="90" x="849" y="120">
-            <parameter key="name" value="%{AlgorithmID}Data"/>
+          <operator activated="true" class="multiply" compatibility="5.3.013" expanded="true" height="112" name="Multiply" width="90" x="581" y="75"/>
+          <operator activated="true" class="set_minus" compatibility="5.3.013" expanded="true" height="76" name="Set Minus" width="90" x="715" y="120"/>
+          <operator activated="true" class="remember" compatibility="5.3.013" expanded="true" height="60" name="Remember (2)" width="90" x="849" y="120">
+            <parameter key="name" value="%{AlgorithmID}ParamsBest"/>
             <parameter key="io_object" value="ExampleSet"/>
             <parameter key="store_which" value="1"/>
             <parameter key="remove_from_process" value="true"/>
@@ -143,13 +155,13 @@
           <portSpacing port="sink_output 2" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="loop_collection" compatibility="5.3.008" expanded="true" height="60" name="Loop Collection (2)" width="90" x="715" y="30">
+      <operator activated="true" class="loop_collection" compatibility="5.3.013" expanded="true" height="60" name="Loop Collection (2)" width="90" x="715" y="30">
         <parameter key="set_iteration_macro" value="false"/>
         <parameter key="macro_name" value="iteration"/>
         <parameter key="macro_start_value" value="1"/>
         <parameter key="unfold" value="false"/>
         <process expanded="true">
-          <operator activated="true" class="extract_macro" compatibility="5.3.008" expanded="true" height="60" name="Extract Macro (2)" width="90" x="112" y="30">
+          <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro (2)" width="90" x="112" y="30">
             <parameter key="macro" value="AlgorithmID"/>
             <parameter key="macro_type" value="data_value"/>
             <parameter key="statistics" value="average"/>
@@ -157,17 +169,17 @@
             <parameter key="example_index" value="1"/>
             <list key="additional_macros"/>
           </operator>
-          <operator activated="true" class="recall" compatibility="5.3.008" expanded="true" height="60" name="Recall (2)" width="90" x="179" y="165">
-            <parameter key="name" value="%{AlgorithmID}Data"/>
+          <operator activated="true" class="recall" compatibility="5.3.013" expanded="true" height="60" name="Recall (2)" width="90" x="179" y="165">
+            <parameter key="name" value="%{AlgorithmID}ParamsBest"/>
             <parameter key="io_object" value="ExampleSet"/>
             <parameter key="remove_from_store" value="false"/>
           </operator>
-          <operator activated="true" class="append" compatibility="5.3.008" expanded="true" height="94" name="Append" width="90" x="380" y="75">
+          <operator activated="true" class="append" compatibility="5.3.013" expanded="true" height="94" name="Append" width="90" x="380" y="75">
             <parameter key="datamanagement" value="double_array"/>
             <parameter key="merge_type" value="all"/>
           </operator>
-          <operator activated="true" class="remember" compatibility="5.3.008" expanded="true" height="60" name="Remember (3)" width="90" x="581" y="75">
-            <parameter key="name" value="%{AlgorithmID}Data"/>
+          <operator activated="true" class="remember" compatibility="5.3.013" expanded="true" height="60" name="Remember (3)" width="90" x="581" y="75">
+            <parameter key="name" value="%{AlgorithmID}ParamsBest"/>
             <parameter key="io_object" value="ExampleSet"/>
             <parameter key="store_which" value="1"/>
             <parameter key="remove_from_process" value="true"/>
@@ -180,10 +192,10 @@
           <portSpacing port="sink_output 1" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="loop_examples" compatibility="5.3.008" expanded="true" height="94" name="Loop Examples (2)" width="90" x="849" y="165">
+      <operator activated="true" class="loop_examples" compatibility="5.3.013" expanded="true" height="94" name="Loop Examples (2)" width="90" x="849" y="165">
         <parameter key="iteration_macro" value="example"/>
         <process expanded="true">
-          <operator activated="true" class="extract_macro" compatibility="5.3.008" expanded="true" height="60" name="Extract Macro (6)" width="90" x="112" y="75">
+          <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro (6)" width="90" x="112" y="165">
             <parameter key="macro" value="AlgorithmID"/>
             <parameter key="macro_type" value="data_value"/>
             <parameter key="statistics" value="average"/>
@@ -191,26 +203,35 @@
             <parameter key="example_index" value="%{example}"/>
             <list key="additional_macros"/>
           </operator>
-          <operator activated="true" class="recall" compatibility="5.3.008" expanded="true" height="60" name="Recall (5)" width="90" x="314" y="75">
-            <parameter key="name" value="%{AlgorithmID}Data"/>
+          <operator activated="true" class="recall" compatibility="5.3.013" expanded="true" height="60" name="Recall (5)" width="90" x="246" y="165">
+            <parameter key="name" value="%{AlgorithmID}ParamsBest"/>
             <parameter key="io_object" value="ExampleSet"/>
             <parameter key="remove_from_store" value="false"/>
           </operator>
-          <operator activated="true" class="rename" compatibility="5.3.008" expanded="true" height="76" name="Rename (3)" width="90" x="449" y="75">
+          <operator activated="true" class="rename" compatibility="5.3.013" expanded="true" height="76" name="Rename (3)" width="90" x="447" y="165">
             <parameter key="old_name" value="id"/>
             <parameter key="new_name" value="%{AlgorithmID}"/>
             <list key="rename_additional_attributes"/>
           </operator>
+          <operator activated="true" class="annotate" compatibility="5.3.013" expanded="true" height="60" name="Annotate" width="90" x="648" y="165">
+            <list key="annotations">
+              <parameter key="AlgorithmID" value="%{AlgorithmID}"/>
+            </list>
+            <parameter key="duplicate_annotations" value="overwrite"/>
+          </operator>
           <connect from_port="example set" to_op="Extract Macro (6)" to_port="example set"/>
           <connect from_op="Recall (5)" from_port="result" to_op="Rename (3)" to_port="example set input"/>
-          <connect from_op="Rename (3)" from_port="example set output" to_port="output 1"/>
+          <connect from_op="Rename (3)" from_port="example set output" to_op="Annotate" to_port="input"/>
+          <connect from_op="Annotate" from_port="output" to_port="output 1"/>
           <portSpacing port="source_example set" spacing="0"/>
           <portSpacing port="sink_example set" spacing="0"/>
           <portSpacing port="sink_output 1" spacing="0"/>
           <portSpacing port="sink_output 2" spacing="0"/>
         </process>
       </operator>
-      <connect from_op="Execute FilteredExperimentValues" from_port="result 1" to_op="Aggregate" to_port="example set input"/>
+      <connect from_op="Execute FilteredExperimentValues" from_port="result 1" to_op="Multiply (3)" to_port="input"/>
+      <connect from_op="Multiply (3)" from_port="output 1" to_op="Execute SortedAlgParamsPerProblemAlgInstance" to_port="input 1"/>
+      <connect from_op="Multiply (3)" from_port="output 2" to_op="Aggregate" to_port="example set input"/>
       <connect from_op="Aggregate" from_port="example set output" to_op="Multiply (2)" to_port="input"/>
       <connect from_op="Multiply (2)" from_port="output 1" to_op="Loop Examples" to_port="example set"/>
       <connect from_op="Multiply (2)" from_port="output 2" to_op="Loop Examples (2)" to_port="example set"/>

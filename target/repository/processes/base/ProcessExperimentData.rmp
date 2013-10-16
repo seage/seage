@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.3.013">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="execute_sql" compatibility="5.3.013" expanded="true" height="76" name="Execute SQL" width="90" x="45" y="30">
+        <parameter key="define_connection" value="predefined"/>
+        <parameter key="connection" value="SEAGE_DB"/>
+        <parameter key="database_system" value="MySQL"/>
+        <parameter key="query" value="create schema if not exists &quot;KB&quot;;&#10;"/>
+        <parameter key="prepare_statement" value="false"/>
+        <enumeration key="parameters"/>
+      </operator>
+      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute BestAlgParamsPerAlgorithm-AttsRemoved" width="90" x="246" y="30">
+        <parameter key="process_location" value="BestAlgParamsPerAlgorithm-AttsRemoved"/>
+        <parameter key="use_input" value="true"/>
+        <parameter key="store_output" value="false"/>
+        <parameter key="propagate_metadata_recursively" value="true"/>
+        <parameter key="cache_process" value="true"/>
+        <list key="macros"/>
+      </operator>
+      <operator activated="true" class="loop_collection" compatibility="5.3.013" expanded="true" height="76" name="Loop Collection" width="90" x="380" y="30">
+        <parameter key="set_iteration_macro" value="false"/>
+        <parameter key="macro_name" value="iteration"/>
+        <parameter key="macro_start_value" value="1"/>
+        <parameter key="unfold" value="false"/>
+        <process expanded="true">
+          <operator activated="true" class="extract_macro_from_annotation" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro from Annotation" width="90" x="112" y="75">
+            <parameter key="extract_all" value="false"/>
+            <parameter key="macro" value="AlgorithmID"/>
+            <parameter key="annotation" value="AlgorithmID"/>
+            <parameter key="fail_on_missing" value="true"/>
+          </operator>
+          <operator activated="true" class="set_role" compatibility="5.3.013" expanded="true" height="76" name="Set Role" width="90" x="246" y="75">
+            <parameter key="attribute_name" value="%{AlgorithmID}"/>
+            <parameter key="target_role" value="regular"/>
+            <list key="set_additional_roles"/>
+          </operator>
+          <operator activated="true" class="write_database" compatibility="5.3.013" expanded="true" height="60" name="Write Database" width="90" x="380" y="75">
+            <parameter key="define_connection" value="predefined"/>
+            <parameter key="connection" value="SEAGE_DB"/>
+            <parameter key="database_system" value="MySQL"/>
+            <parameter key="use_default_schema" value="false"/>
+            <parameter key="schema_name" value="KB"/>
+            <parameter key="table_name" value="AlgorithmParams_%{AlgorithmID}_Best"/>
+            <parameter key="overwrite_mode" value="overwrite"/>
+            <parameter key="set_default_varchar_length" value="false"/>
+            <parameter key="default_varchar_length" value="128"/>
+            <parameter key="add_generated_primary_keys" value="false"/>
+            <parameter key="db_key_attribute_name" value="generated_primary_key"/>
+            <parameter key="batch_size" value="1"/>
+          </operator>
+          <connect from_port="single" to_op="Extract Macro from Annotation" to_port="object"/>
+          <connect from_op="Extract Macro from Annotation" from_port="object" to_op="Set Role" to_port="example set input"/>
+          <connect from_op="Set Role" from_port="example set output" to_op="Write Database" to_port="input"/>
+          <connect from_op="Write Database" from_port="through" to_port="output 1"/>
+          <portSpacing port="source_single" spacing="0"/>
+          <portSpacing port="sink_output 1" spacing="0"/>
+          <portSpacing port="sink_output 2" spacing="0"/>
+        </process>
+      </operator>
+      <connect from_op="Execute SQL" from_port="through 1" to_op="Execute BestAlgParamsPerAlgorithm-AttsRemoved" to_port="input 1"/>
+      <connect from_op="Execute BestAlgParamsPerAlgorithm-AttsRemoved" from_port="result 1" to_op="Loop Collection" to_port="collection"/>
+      <connect from_op="Loop Collection" from_port="output 1" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>
