@@ -6,13 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashSet;
+import java.util.logging.Logger;
 
 import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.w3c.dom.Document;
 
 public class ExperimentsTableCreator extends H2DataTableCreator implements IDocumentProcessor
 {
-	//protected Connection _conn;
+	private static Logger _logger = Logger.getLogger(ExperimentsTableCreator.class.getName());
+	
 	private String _expLogsPath;
 	private HashSet<String> _experimentIDs;
 	private PreparedStatement _stmt;
@@ -51,6 +53,12 @@ public class ExperimentsTableCreator extends H2DataTableCreator implements IDocu
 				return fileName.endsWith(".zip");
 			}
 		});
+		
+		if(fl == null)
+		{
+			_logger.info("No zip file to process");
+			return new HashSet<String>();
+		}
 		
 		for(File z : fl)
 		{
