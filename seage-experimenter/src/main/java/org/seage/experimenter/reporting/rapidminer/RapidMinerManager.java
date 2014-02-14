@@ -16,6 +16,7 @@ import com.rapidminer.repository.db.DBConnectionFolder;
 import com.rapidminer.repository.db.DBRepository;
 import com.rapidminer.repository.local.LocalRepository;
 import com.rapidminer.tools.jdbc.JDBCProperties;
+import com.rapidminer.tools.jdbc.connection.DatabaseConnectionService;
 import com.rapidminer.tools.jdbc.connection.FieldConnectionEntry;
 
 public class RapidMinerManager
@@ -85,7 +86,9 @@ public class RapidMinerManager
 	{
 		if(_databaseConnectionInitialized)
 			return;
-        DBRepository dbr = (DBRepository) RepositoryManager.getInstance(null).getRepository("DB");
+		
+		/*RepositoryManager rm = RepositoryManager.getInstance(null);
+        DBRepository dbr = (DBRepository) rm.getRepository("DB");
 
         for(Folder f : dbr.getSubfolders())
         {
@@ -102,9 +105,16 @@ public class RapidMinerManager
         prop.setUrlPrefix("jdbc:h2:");
     	DBConnectionFolder dbFolder = new DBConnectionFolder(dbr, new FieldConnectionEntry("SEAGE_DB", prop, new File(".").getAbsolutePath()+"/database", "", "seage", "sa", new char[]{'s', 'a'}));
     	dbr.getSubfolders().add(dbFolder);
-    	
-    	_logger.info(dbFolder.getDescription());
 
+    	_logger.info(dbFolder.getDescription());
+		 */
+		JDBCProperties prop = new JDBCProperties(true);
+        prop.setName("H2"); prop.setUrlPrefix("jdbc:h2:");
+        
+    	FieldConnectionEntry fce = new FieldConnectionEntry("SEAGE_DB", prop, new File(".").getAbsolutePath()+"/database", "", "seage", "sa", new char[]{'s', 'a'});
+    	DatabaseConnectionService.addConnectionEntry(fce);
+    	
+    	
         _databaseConnectionInitialized = true;
 	}
 
