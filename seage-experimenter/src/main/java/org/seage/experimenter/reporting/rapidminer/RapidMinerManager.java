@@ -86,35 +86,23 @@ public class RapidMinerManager
 	{
 		if(_databaseConnectionInitialized)
 			return;
-		
-		/*RepositoryManager rm = RepositoryManager.getInstance(null);
-        DBRepository dbr = (DBRepository) rm.getRepository("DB");
 
-        for(Folder f : dbr.getSubfolders())
+		List<FieldConnectionEntry> entriesToDelete = new ArrayList<FieldConnectionEntry>();
+        for(FieldConnectionEntry ce : DatabaseConnectionService.getConnectionEntries())
         {
-        	if(f.getName().equals("SEAGE_DB"))
-        	{
-        		_logger.info(f.getDescription());
-        		
-        		dbr.getSubfolders().remove(f);        		
-        		break;
-        	}
+        	if(ce.getName().equals("SEAGE_DB"))        	
+        		entriesToDelete.add(ce);        		
+        	
         }
+        for(FieldConnectionEntry ce : entriesToDelete)
+        	DatabaseConnectionService.deleteConnectionEntry(ce);
+        
         JDBCProperties prop = new JDBCProperties(true);
         prop.setName("H2");
         prop.setUrlPrefix("jdbc:h2:");
-    	DBConnectionFolder dbFolder = new DBConnectionFolder(dbr, new FieldConnectionEntry("SEAGE_DB", prop, new File(".").getAbsolutePath()+"/database", "", "seage", "sa", new char[]{'s', 'a'}));
-    	dbr.getSubfolders().add(dbFolder);
+    	
+    	DatabaseConnectionService.addConnectionEntry(new FieldConnectionEntry("SEAGE_DB", prop, new File(".").getAbsolutePath()+"/database", "", "seage", "sa", new char[]{'s', 'a'}));
 
-    	_logger.info(dbFolder.getDescription());
-		 */
-		JDBCProperties prop = new JDBCProperties(true);
-        prop.setName("H2"); prop.setUrlPrefix("jdbc:h2:");
-        
-    	FieldConnectionEntry fce = new FieldConnectionEntry("SEAGE_DB", prop, new File(".").getAbsolutePath()+"/database", "", "seage", "sa", new char[]{'s', 'a'});
-    	DatabaseConnectionService.addConnectionEntry(fce);
-    	
-    	
         _databaseConnectionInitialized = true;
 	}
 

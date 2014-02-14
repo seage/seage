@@ -2,6 +2,8 @@ package org.seage.experimenter.reporting.h2;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

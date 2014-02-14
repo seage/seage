@@ -55,7 +55,7 @@ public class Launcher {
     	LogHelper.loadConfig("log.properties");
         _logger.info("SEAGE running ...");
         
-    	try {
+    	try {            
             new Launcher().run(args);           
         } catch (Exception ex) {
             _logger.log(Level.SEVERE, ex.getMessage(), ex);

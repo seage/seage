@@ -35,7 +35,6 @@ public class FeedbackConfigurator extends Configurator
 	public FeedbackConfigurator() throws Exception
 	{
 		RapidMinerManager.init();
-		RapidMinerManager.initRepository();
 		RapidMinerManager.initDatabaseConnection();
 
         RepositoryLocation location = new RepositoryLocation("//seage/processes/base/BestAlgParamsPerAlgorithm-AttsRemoved");        
