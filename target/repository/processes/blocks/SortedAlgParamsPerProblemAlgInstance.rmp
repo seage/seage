@@ -51,9 +51,9 @@
         <parameter key="include_special_attributes" value="false"/>
         <parameter key="default_aggregation_function" value="average"/>
         <list key="aggregation_attributes">
-          <parameter key="BestSolutionValue" value="minimum"/>
+          <parameter key="bestSolutionValue" value="minimum"/>
         </list>
-        <parameter key="group_by_attributes" value="AlgorithmID|InstanceID|ProblemID|"/>
+        <parameter key="group_by_attributes" value="algorithmID|problemID|instanceID"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
@@ -62,26 +62,26 @@
         <parameter key="iteration_macro" value="index"/>
         <process expanded="true">
           <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro (2)" width="90" x="45" y="30">
-            <parameter key="macro" value="ProblemID"/>
+            <parameter key="macro" value="problemID"/>
             <parameter key="macro_type" value="data_value"/>
             <parameter key="statistics" value="average"/>
-            <parameter key="attribute_name" value="ProblemID"/>
+            <parameter key="attribute_name" value="problemID"/>
             <parameter key="example_index" value="%{index}"/>
             <list key="additional_macros"/>
           </operator>
           <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro (3)" width="90" x="180" y="30">
-            <parameter key="macro" value="AlgorithmID"/>
+            <parameter key="macro" value="algorithmID"/>
             <parameter key="macro_type" value="data_value"/>
             <parameter key="statistics" value="average"/>
-            <parameter key="attribute_name" value="AlgorithmID"/>
+            <parameter key="attribute_name" value="algorithmID"/>
             <parameter key="example_index" value="%{index}"/>
             <list key="additional_macros"/>
           </operator>
           <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro" width="90" x="315" y="30">
-            <parameter key="macro" value="InstanceID"/>
+            <parameter key="macro" value="instanceID"/>
             <parameter key="macro_type" value="data_value"/>
             <parameter key="statistics" value="average"/>
-            <parameter key="attribute_name" value="InstanceID"/>
+            <parameter key="attribute_name" value="instanceID"/>
             <parameter key="example_index" value="%{index}"/>
             <list key="additional_macros"/>
           </operator>
@@ -92,11 +92,11 @@
           </operator>
           <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Filter Examples (2)" width="90" x="179" y="210">
             <parameter key="condition_class" value="attribute_value_filter"/>
-            <parameter key="parameter_string" value="ProblemID=%{ProblemID} &amp;&amp; AlgorithmID=%{AlgorithmID} &amp;&amp; InstanceID=%{InstanceID}"/>
+            <parameter key="parameter_string" value="problemID=%{problemID} &amp;&amp; algorithmID=%{algorithmID} &amp;&amp; instanceID=%{instanceID}"/>
             <parameter key="invert_filter" value="false"/>
           </operator>
           <operator activated="true" class="sort" compatibility="5.3.013" expanded="true" height="76" name="Sort" width="90" x="313" y="210">
-            <parameter key="attribute_name" value="BestSolutionValue"/>
+            <parameter key="attribute_name" value="bestSolutionValue"/>
             <parameter key="sorting_direction" value="increasing"/>
           </operator>
           <operator activated="false" class="filter_example_range" compatibility="5.3.013" expanded="true" height="76" name="Filter Example Range" width="90" x="447" y="300">

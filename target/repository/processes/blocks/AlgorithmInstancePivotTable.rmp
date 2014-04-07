@@ -31,14 +31,14 @@
         <list key="aggregation_attributes">
           <parameter key="%{myAttribute}" value="%{myFunction}"/>
         </list>
-        <parameter key="group_by_attributes" value="|AlgorithmID|InstanceID"/>
+        <parameter key="group_by_attributes" value="|algorithmID|instanceID"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
       <operator activated="true" class="pivot" compatibility="5.3.013" expanded="true" height="76" name="Pivot" width="90" x="380" y="75">
-        <parameter key="group_attribute" value="InstanceID"/>
-        <parameter key="index_attribute" value="AlgorithmID"/>
+        <parameter key="group_attribute" value="instanceID"/>
+        <parameter key="index_attribute" value="algorithmID"/>
         <parameter key="consider_weights" value="false"/>
         <parameter key="weight_aggregation" value="minimum"/>
         <parameter key="skip_constant_attributes" value="false"/>

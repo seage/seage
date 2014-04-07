@@ -78,7 +78,7 @@ public class ProcessExperimentZipFileTask implements Runnable
 		catch(Exception ex)
 		{
 			_logger.warning("ERROR: "+_zipFile.getName()+": "+ex.getMessage());			
-			//_zipFile.renameTo(new File(_zipFile.getAbsolutePath()+".err"));
+			_zipFile.renameTo(new File(_zipFile.getAbsolutePath()+".err"));
 		}
 		finally
 		{

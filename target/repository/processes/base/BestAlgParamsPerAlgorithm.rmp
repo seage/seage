@@ -38,7 +38,7 @@
         <parameter key="include_special_attributes" value="false"/>
         <parameter key="default_aggregation_function" value="average"/>
         <list key="aggregation_attributes"/>
-        <parameter key="group_by_attributes" value="|AlgorithmID"/>
+        <parameter key="group_by_attributes" value="|algorithmID"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
@@ -48,10 +48,10 @@
         <parameter key="iteration_macro" value="example"/>
         <process expanded="true">
           <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro (5)" width="90" x="112" y="30">
-            <parameter key="macro" value="AlgorithmID"/>
+            <parameter key="macro" value="algorithmID"/>
             <parameter key="macro_type" value="data_value"/>
             <parameter key="statistics" value="average"/>
-            <parameter key="attribute_name" value="AlgorithmID"/>
+            <parameter key="attribute_name" value="algorithmID"/>
             <parameter key="example_index" value="%{example}"/>
             <list key="additional_macros"/>
           </operator>
@@ -64,13 +64,13 @@
             <parameter key="database_system" value="MySQL"/>
             <parameter key="define_query" value="table name"/>
             <parameter key="use_default_schema" value="true"/>
-            <parameter key="table_name" value="AlgorithmParams_%{AlgorithmID}"/>
+            <parameter key="table_name" value="AlgorithmParams_%{algorithmID}"/>
             <parameter key="prepare_statement" value="false"/>
             <enumeration key="parameters"/>
             <parameter key="datamanagement" value="double_array"/>
           </operator>
           <operator activated="true" class="remember" compatibility="5.3.013" expanded="true" height="60" name="Remember (5)" width="90" x="581" y="120">
-            <parameter key="name" value="%{AlgorithmID}Params"/>
+            <parameter key="name" value="%{algorithmID}Params"/>
             <parameter key="io_object" value="ExampleSet"/>
             <parameter key="store_which" value="1"/>
             <parameter key="remove_from_process" value="true"/>
@@ -97,20 +97,20 @@
         <parameter key="unfold" value="false"/>
         <process expanded="true">
           <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro" width="90" x="45" y="30">
-            <parameter key="macro" value="AlgorithmID"/>
+            <parameter key="macro" value="algorithmID"/>
             <parameter key="macro_type" value="data_value"/>
             <parameter key="statistics" value="average"/>
-            <parameter key="attribute_name" value="AlgorithmID"/>
+            <parameter key="attribute_name" value="algorithmID"/>
             <parameter key="example_index" value="1"/>
             <list key="additional_macros">
-              <parameter key="ConfigID" value="ConfigID"/>
+              <parameter key="configID" value="configID"/>
             </list>
           </operator>
           <operator activated="false" class="print_to_console" compatibility="5.3.013" expanded="true" height="60" name="Print to Console" width="90" x="447" y="255">
             <parameter key="log_value" value="%{AlgorithmID} - %{ConfigID}"/>
           </operator>
           <operator activated="true" class="recall" compatibility="5.3.013" expanded="true" height="60" name="Recall" width="90" x="45" y="120">
-            <parameter key="name" value="%{AlgorithmID}Params"/>
+            <parameter key="name" value="%{algorithmID}Params"/>
             <parameter key="io_object" value="ExampleSet"/>
             <parameter key="remove_from_store" value="false"/>
           </operator>
@@ -119,7 +119,7 @@
             <parameter key="join_type" value="left"/>
             <parameter key="use_id_attribute_as_key" value="false"/>
             <list key="key_attributes">
-              <parameter key="ConfigID" value="ConfigID"/>
+              <parameter key="configID" value="configID"/>
             </list>
             <parameter key="keep_both_join_attributes" value="true"/>
           </operator>
@@ -135,7 +135,7 @@
           <operator activated="true" class="multiply" compatibility="5.3.013" expanded="true" height="112" name="Multiply" width="90" x="581" y="75"/>
           <operator activated="true" class="set_minus" compatibility="5.3.013" expanded="true" height="76" name="Set Minus" width="90" x="715" y="120"/>
           <operator activated="true" class="remember" compatibility="5.3.013" expanded="true" height="60" name="Remember (2)" width="90" x="849" y="120">
-            <parameter key="name" value="%{AlgorithmID}ParamsBest"/>
+            <parameter key="name" value="%{algorithmID}ParamsBest"/>
             <parameter key="io_object" value="ExampleSet"/>
             <parameter key="store_which" value="1"/>
             <parameter key="remove_from_process" value="true"/>
@@ -162,15 +162,15 @@
         <parameter key="unfold" value="false"/>
         <process expanded="true">
           <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro (2)" width="90" x="112" y="30">
-            <parameter key="macro" value="AlgorithmID"/>
+            <parameter key="macro" value="algorithmID"/>
             <parameter key="macro_type" value="data_value"/>
             <parameter key="statistics" value="average"/>
-            <parameter key="attribute_name" value="AlgorithmID"/>
+            <parameter key="attribute_name" value="algorithmID"/>
             <parameter key="example_index" value="1"/>
             <list key="additional_macros"/>
           </operator>
           <operator activated="true" class="recall" compatibility="5.3.013" expanded="true" height="60" name="Recall (2)" width="90" x="179" y="165">
-            <parameter key="name" value="%{AlgorithmID}ParamsBest"/>
+            <parameter key="name" value="%{algorithmID}ParamsBest"/>
             <parameter key="io_object" value="ExampleSet"/>
             <parameter key="remove_from_store" value="false"/>
           </operator>
@@ -179,7 +179,7 @@
             <parameter key="merge_type" value="all"/>
           </operator>
           <operator activated="true" class="remember" compatibility="5.3.013" expanded="true" height="60" name="Remember (3)" width="90" x="581" y="75">
-            <parameter key="name" value="%{AlgorithmID}ParamsBest"/>
+            <parameter key="name" value="%{algorithmID}ParamsBest"/>
             <parameter key="io_object" value="ExampleSet"/>
             <parameter key="store_which" value="1"/>
             <parameter key="remove_from_process" value="true"/>
@@ -196,26 +196,26 @@
         <parameter key="iteration_macro" value="example"/>
         <process expanded="true">
           <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro (6)" width="90" x="112" y="165">
-            <parameter key="macro" value="AlgorithmID"/>
+            <parameter key="macro" value="algorithmID"/>
             <parameter key="macro_type" value="data_value"/>
             <parameter key="statistics" value="average"/>
-            <parameter key="attribute_name" value="AlgorithmID"/>
+            <parameter key="attribute_name" value="algorithmID"/>
             <parameter key="example_index" value="%{example}"/>
             <list key="additional_macros"/>
           </operator>
           <operator activated="true" class="recall" compatibility="5.3.013" expanded="true" height="60" name="Recall (5)" width="90" x="246" y="165">
-            <parameter key="name" value="%{AlgorithmID}ParamsBest"/>
+            <parameter key="name" value="%{algorithmID}ParamsBest"/>
             <parameter key="io_object" value="ExampleSet"/>
             <parameter key="remove_from_store" value="false"/>
           </operator>
           <operator activated="true" class="rename" compatibility="5.3.013" expanded="true" height="76" name="Rename (3)" width="90" x="447" y="165">
             <parameter key="old_name" value="id"/>
-            <parameter key="new_name" value="%{AlgorithmID}"/>
+            <parameter key="new_name" value="%{algorithmID}"/>
             <list key="rename_additional_attributes"/>
           </operator>
           <operator activated="true" class="annotate" compatibility="5.3.013" expanded="true" height="60" name="Annotate" width="90" x="648" y="165">
             <list key="annotations">
-              <parameter key="AlgorithmID" value="%{AlgorithmID}"/>
+              <parameter key="algorithmID" value="%{algorithmID}"/>
             </list>
             <parameter key="duplicate_annotations" value="overwrite"/>
           </operator>

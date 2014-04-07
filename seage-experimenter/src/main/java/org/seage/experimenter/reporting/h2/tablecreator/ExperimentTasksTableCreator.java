@@ -19,34 +19,34 @@ public class ExperimentTasksTableCreator extends H2DataTableCreator implements I
 		super(dbPath);
 		
 		Hashtable<String, XmlHelper.XPath> v04 = new Hashtable<String, XmlHelper.XPath>();
-        v04.put("ExperimentID", new XmlHelper.XPath("/ExperimentTaskReport/@experimentID"));
-        v04.put("ProblemID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/@problemID"));
-        v04.put("InstanceID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/Instance/@name"));
-        v04.put("AlgorithmID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/@algorithmID"));        
-        v04.put("ConfigID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
-        v04.put("RunID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@runID"));
-        v04.put("InitSolutionValue", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@initObjVal"));
-        v04.put("BestSolutionValue", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@bestObjVal"));
-        v04.put("NrOfNewSolutions", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfNewSolutions"));
-        v04.put("LastIterNumberNewSol", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
-        v04.put("NrOfIterations", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfIter"));
-        v04.put("DurationInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@durationS"));
-        v04.put("TimeoutInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@timeoutS"));
+        v04.put("experimentID", new XmlHelper.XPath("/ExperimentTaskReport/@experimentID"));
+        v04.put("problemID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/@problemID"));
+        v04.put("instanceID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/Instance/@name"));
+        v04.put("algorithmID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/@algorithmID"));        
+        v04.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
+        v04.put("runID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@runID"));
+        v04.put("initSolutionValue", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@initObjVal"));
+        v04.put("bestSolutionValue", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@bestObjVal"));
+        v04.put("nrOfNewSolutions", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfNewSolutions"));
+        v04.put("lastIterNumberNewSol", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
+        v04.put("nrOfIterations", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfIter"));
+        v04.put("durationInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@durationS"));
+        v04.put("timeoutInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@timeoutS"));
         
         Hashtable<String, XmlHelper.XPath> v05 = new Hashtable<String, XmlHelper.XPath>();
-        v05.put("ExperimentID", new XmlHelper.XPath("/ExperimentTaskReport/@experimentID"));
-        v05.put("ProblemID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/@problemID"));
-        v05.put("InstanceID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/Instance/@name"));
-        v05.put("AlgorithmID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/@algorithmID"));        
-        v05.put("ConfigID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
-        v05.put("RunID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@runID"));
-        v05.put("InitSolutionValue", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@initObjVal"));
-        v05.put("BestSolutionValue", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@bestObjVal"));
-        v05.put("NrOfNewSolutions", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfNewSolutions"));
-        v05.put("LastIterNumberNewSol", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
-        v05.put("NrOfIterations", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfIter"));
-        v05.put("DurationInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@durationS"));
-        v05.put("TimeoutInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@timeoutS"));
+        v05.put("experimentID", new XmlHelper.XPath("/ExperimentTaskReport/@experimentID"));
+        v05.put("problemID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/@problemID"));
+        v05.put("instanceID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Problem/Instance/@name"));
+        v05.put("algorithmID", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/@algorithmID"));        
+        v05.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
+        v05.put("runID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@runID"));
+        v05.put("initSolutionValue", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@initObjVal"));
+        v05.put("bestSolutionValue", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@bestObjVal"));
+        v05.put("nrOfNewSolutions", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfNewSolutions"));
+        v05.put("lastIterNumberNewSol", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@lastIterNumberNewSol"));
+        v05.put("nrOfIterations", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Statistics/@numberOfIter"));
+        v05.put("durationInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@durationS"));
+        v05.put("timeoutInSeconds", new XmlHelper.XPath("/ExperimentTaskReport/@timeoutS"));
         
         _versionedXPaths.put("0.4", v04);
         _versionedXPaths.put("0.5", v05);
@@ -54,19 +54,19 @@ public class ExperimentTasksTableCreator extends H2DataTableCreator implements I
 		String queryCreate = 
 					"CREATE TABLE IF NOT EXISTS ExperimentTasks"+
 					"("+
-					"ExperimentID VARCHAR,"+
-					"ProblemID VARCHAR,"+
-					"InstanceID VARCHAR,"+
-					"AlgorithmID VARCHAR,"+					
-					"ConfigID VARCHAR,"+
-					"RunID VARCHAR,"+
-					"InitSolutionValue DOUBLE,"+
-					"BestSolutionValue DOUBLE,"+
-					"NrOfNewSolutions DOUBLE,"+
-					"NrOfIterations DOUBLE,"+
-					"LastIterNumberNewSol DOUBLE,"+
-					"DurationInSeconds DOUBLE,"+
-					"TimeoutInSeconds DOUBLE,"+
+					"experimentID VARCHAR,"+
+					"problemID VARCHAR,"+
+					"instanceID VARCHAR,"+
+					"algorithmID VARCHAR,"+					
+					"configID VARCHAR,"+
+					"runID VARCHAR,"+
+					"initSolutionValue DOUBLE,"+
+					"bestSolutionValue DOUBLE,"+
+					"nrOfNewSolutions DOUBLE,"+
+					"nrOfIterations DOUBLE,"+
+					"lastIterNumberNewSol DOUBLE,"+
+					"durationInSeconds DOUBLE,"+
+					"timeoutInSeconds DOUBLE,"+
 					")";		
 		String insertQuery = 
 					"INSERT INTO ExperimentTasks VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -92,20 +92,19 @@ public class ExperimentTasksTableCreator extends H2DataTableCreator implements I
 			throw new Exception("Unsupported version: "+version);
 				
 		_stmt.clearParameters();
-		_stmt.setString(1, getVersionedValue(doc, "ExperimentID", version));
-		_stmt.setString(2, getVersionedValue(doc, "ProblemID", version));
-		_stmt.setString(3, getVersionedValue(doc, "InstanceID", version));
-		_stmt.setString(4, getVersionedValue(doc, "AlgorithmID", version));
-		_stmt.setString(4, getVersionedValue(doc, "AlgorithmID", version));
-		_stmt.setString(5, getVersionedValue(doc, "ConfigID", version));
-		_stmt.setString(6, getVersionedValue(doc, "RunID", version));
-		_stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "InitSolutionValue", version)));
-		_stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "BestSolutionValue", version)));
-		_stmt.setDouble(9, Double.parseDouble(getVersionedValue(doc, "NrOfNewSolutions", version)));
-		_stmt.setDouble(10, Double.parseDouble(getVersionedValue(doc, "NrOfIterations", version)));
-		_stmt.setDouble(11, Double.parseDouble(getVersionedValue(doc, "LastIterNumberNewSol", version)));
-		_stmt.setDouble(12, Double.parseDouble(getVersionedValue(doc, "DurationInSeconds", version)));
-		_stmt.setDouble(13, Double.parseDouble(getVersionedValue(doc, "TimeoutInSeconds", version)));
+		_stmt.setString(1, getVersionedValue(doc, "experimentID", version));
+		_stmt.setString(2, getVersionedValue(doc, "problemID", version));
+		_stmt.setString(3, getVersionedValue(doc, "instanceID", version));
+		_stmt.setString(4, getVersionedValue(doc, "algorithmID", version));
+		_stmt.setString(5, getVersionedValue(doc, "configID", version));
+		_stmt.setString(6, getVersionedValue(doc, "runID", version));
+		_stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "initSolutionValue", version)));
+		_stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "bestSolutionValue", version)));
+		_stmt.setDouble(9, Double.parseDouble(getVersionedValue(doc, "nrOfNewSolutions", version)));
+		_stmt.setDouble(10, Double.parseDouble(getVersionedValue(doc, "nrOfIterations", version)));
+		_stmt.setDouble(11, Double.parseDouble(getVersionedValue(doc, "lastIterNumberNewSol", version)));
+		_stmt.setDouble(12, Double.parseDouble(getVersionedValue(doc, "durationInSeconds", version)));
+		_stmt.setDouble(13, Double.parseDouble(getVersionedValue(doc, "timeoutInSeconds", version)));
 		
 		_stmt.executeUpdate();
 		
@@ -113,7 +112,7 @@ public class ExperimentTasksTableCreator extends H2DataTableCreator implements I
 	
 	protected String postProcessValue(String attName, String val, String version)
 	{
-		if(/*version.equals("0.4") &&*/ attName.equals("InstanceID") && val.contains("."))
+		if(/*version.equals("0.4") &&*/ attName.equals("instanceID") && val.contains("."))
 			return val.split("\\.")[0];
 		return val;
 	}

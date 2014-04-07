@@ -25,7 +25,7 @@ public class ExperimentsTableCreator extends H2DataTableCreator implements IDocu
 		String queryDropExperiments =
 				"DROP ALL OBJECTS";			
 		String queryCreateExperiments =
-				"CREATE TABLE IF NOT EXISTS Experiments (ExperimentID VARCHAR PRIMARY KEY, ExperimentType VARCHAR, ComputerName VARCHAR)"; 
+				"CREATE TABLE IF NOT EXISTS Experiments (experimentID VARCHAR PRIMARY KEY, experimentType VARCHAR, computerName VARCHAR)"; 
 		String queryInsert =				
 				"INSERT INTO Experiments VALUES (?, ?, ?)"; 
 		

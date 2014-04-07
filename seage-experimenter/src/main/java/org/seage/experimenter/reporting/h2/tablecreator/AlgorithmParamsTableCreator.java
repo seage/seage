@@ -47,14 +47,14 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
             String queryCreate  = 
 					"CREATE TABLE IF NOT EXISTS AlgorithmParams_GeneticAlgorithm"+
 					"("+
-					"ConfigID VARCHAR,"+
-					"CrossLengthPct DOUBLE,"+
-					"EliteSubjectPct DOUBLE,"+
-					"IterationCount DOUBLE,"+
-					"MutateLengthPct DOUBLE,"+
-					"MutateSubjectPct DOUBLE,"+
-					"NumSolutions DOUBLE,"+
-					"RandomSubjectPct DOUBLE"+
+					"configID VARCHAR,"+
+					"crossLengthPct DOUBLE,"+
+					"eliteSubjectPct DOUBLE,"+
+					"iterationCount DOUBLE,"+
+					"mutateLengthPct DOUBLE,"+
+					"mutateSubjectPct DOUBLE,"+
+					"numSolutions DOUBLE,"+
+					"randomSubjectPct DOUBLE"+
 					")";
             String insertQuery = 
 					"INSERT INTO AlgorithmParams_GeneticAlgorithm VALUES(?,?,?,?,?,?,?,?)";
@@ -64,14 +64,14 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
     		_stmt = _conn.prepareStatement(insertQuery);
             
             Hashtable<String, XmlHelper.XPath> algGAXPaths = new Hashtable<String, XmlHelper.XPath>();
-            algGAXPaths.put("ConfigID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));            
-            algGAXPaths.put("CrossLengthPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@crossLengthPct"));
-            algGAXPaths.put("EliteSubjectPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@eliteSubjectPct"));
-            algGAXPaths.put("IterationCount", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@iterationCount"));
-            algGAXPaths.put("MutateLengthPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@mutateLengthPct"));
-            algGAXPaths.put("MutateSubjectPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@mutateSubjectPct"));
-            algGAXPaths.put("NumSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
-            algGAXPaths.put("RandomSubjectPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@randomSubjectPct"));
+            algGAXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));            
+            algGAXPaths.put("crossLengthPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@crossLengthPct"));
+            algGAXPaths.put("eliteSubjectPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@eliteSubjectPct"));
+            algGAXPaths.put("iterationCount", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@iterationCount"));
+            algGAXPaths.put("mutateLengthPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@mutateLengthPct"));
+            algGAXPaths.put("mutateSubjectPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@mutateSubjectPct"));
+            algGAXPaths.put("numSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
+            algGAXPaths.put("randomSubjectPct", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@randomSubjectPct"));
             
             _versionedXPaths.put(VERSION, algGAXPaths);
         }
@@ -85,14 +85,14 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
     		version = VERSION;
     				
     		_stmt.clearParameters();
-    		_stmt.setString(1, getVersionedValue(doc, "ConfigID", version));    
-    		_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "CrossLengthPct", version)));
-    		_stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "EliteSubjectPct", version)));
-    		_stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "IterationCount", version)));
-    		_stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "MutateLengthPct", version)));
-    		_stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "MutateSubjectPct", version)));
-    		_stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "NumSolutions", version)));
-    		_stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "RandomSubjectPct", version)));
+    		_stmt.setString(1, getVersionedValue(doc, "configID", version));    
+    		_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "crossLengthPct", version)));
+    		_stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "eliteSubjectPct", version)));
+    		_stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "iterationCount", version)));
+    		_stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "mutateLengthPct", version)));
+    		_stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "mutateSubjectPct", version)));
+    		_stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
+    		_stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "randomSubjectPct", version)));
     		
     		_stmt.executeUpdate();
                                    
@@ -108,10 +108,10 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
             String queryCreate  = 
 					"CREATE TABLE IF NOT EXISTS AlgorithmParams_TabuSearch"+
 					"("+
-					"ConfigID VARCHAR,"+
-					"NumIteration DOUBLE,"+
-					"TabuListLength DOUBLE,"+
-					"NumSolutions DOUBLE"+
+					"configID VARCHAR,"+
+					"numIteration DOUBLE,"+
+					"tabuListLength DOUBLE,"+
+					"numSolutions DOUBLE"+
 					")";
             String insertQuery = 
 					"INSERT INTO AlgorithmParams_TabuSearch VALUES(?,?,?,?)";
@@ -121,10 +121,10 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
     		_stmt = _conn.prepareStatement(insertQuery);
 
             Hashtable<String, XmlHelper.XPath> algTSXPaths = new Hashtable<String, XmlHelper.XPath>();
-            algTSXPaths.put("ConfigID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
-            algTSXPaths.put("NumIteration", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@numIteration"));
-            algTSXPaths.put("TabuListLength", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@tabuListLength"));
-            algTSXPaths.put("NumSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
+            algTSXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
+            algTSXPaths.put("numIteration", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@numIteration"));
+            algTSXPaths.put("tabuListLength", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@tabuListLength"));
+            algTSXPaths.put("numSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
             
             _versionedXPaths.put(VERSION, algTSXPaths);
         }
@@ -138,10 +138,10 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
     		version = VERSION;
     				
     		_stmt.clearParameters();
-    		_stmt.setString(1, getVersionedValue(doc, "ConfigID", version));    
-    		_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "NumIteration", version)));
-    		_stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "TabuListLength", version)));
-    		_stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "NumSolutions", version)));
+    		_stmt.setString(1, getVersionedValue(doc, "configID", version));    
+    		_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "numIteration", version)));
+    		_stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "tabuListLength", version)));
+    		_stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
     		
     		_stmt.executeUpdate();
                                    
@@ -157,14 +157,14 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
             String queryCreate  = 
 					"CREATE TABLE IF NOT EXISTS AlgorithmParams_AntColony"+
 					"("+
-					"ConfigID VARCHAR,"+
-					"Alpha DOUBLE,"+
-					"Beta DOUBLE,"+
-					"DefaultPheromone DOUBLE,"+
-					"IterationCount DOUBLE,"+
-					"NumSolutions DOUBLE,"+
-					"QantumOfPheromone DOUBLE,"+
-					"LocalEvaporation DOUBLE"+
+					"configID VARCHAR,"+
+					"alpha DOUBLE,"+
+					"beta DOUBLE,"+
+					"defaultPheromone DOUBLE,"+
+					"iterationCount DOUBLE,"+
+					"numSolutions DOUBLE,"+
+					"qantumOfPheromone DOUBLE,"+
+					"localEvaporation DOUBLE"+
 					")";
             String insertQuery = 
 					"INSERT INTO AlgorithmParams_AntColony VALUES(?,?,?,?,?,?,?,?)";
@@ -174,14 +174,14 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
     		_stmt = _conn.prepareStatement(insertQuery);
             
             Hashtable<String, XmlHelper.XPath> algAntXPaths = new Hashtable<String, XmlHelper.XPath>();
-            algAntXPaths.put("ConfigID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
-            algAntXPaths.put("Alpha", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@alpha"));
-            algAntXPaths.put("Beta", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@beta"));
-            algAntXPaths.put("DefaultPheromone", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@defaultPheromone"));
-            algAntXPaths.put("IterationCount", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@iterationCount"));
-            algAntXPaths.put("NumSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
-            algAntXPaths.put("QantumOfPheromone", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@qantumOfPheromone"));
-            algAntXPaths.put("LocalEvaporation", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@localEvaporation"));
+            algAntXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
+            algAntXPaths.put("alpha", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@alpha"));
+            algAntXPaths.put("beta", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@beta"));
+            algAntXPaths.put("defaultPheromone", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@defaultPheromone"));
+            algAntXPaths.put("iterationCount", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@iterationCount"));
+            algAntXPaths.put("numSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
+            algAntXPaths.put("qantumOfPheromone", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@qantumOfPheromone"));
+            algAntXPaths.put("localEvaporation", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@localEvaporation"));
 
             _versionedXPaths.put(VERSION, algAntXPaths);
         }
@@ -195,14 +195,14 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
     		version = VERSION;
     				
     		_stmt.clearParameters();
-    		_stmt.setString(1, getVersionedValue(doc, "ConfigID", version));    
-    		_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "Alpha", version)));
-    		_stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "Beta", version)));
-    		_stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "DefaultPheromone", version)));
-    		_stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "IterationCount", version)));
-    		_stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "NumSolutions", version)));
-    		_stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "QantumOfPheromone", version)));
-    		_stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "LocalEvaporation", version)));
+    		_stmt.setString(1, getVersionedValue(doc, "configID", version));    
+    		_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "alpha", version)));
+    		_stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "beta", version)));
+    		_stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "defaultPheromone", version)));
+    		_stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "iterationCount", version)));
+    		_stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
+    		_stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "qantumOfPheromone", version)));
+    		_stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "localEvaporation", version)));
     		
     		_stmt.executeUpdate();
                                    
@@ -218,13 +218,13 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
             String queryCreate  = 
 					"CREATE TABLE IF NOT EXISTS AlgorithmParams_SimulatedAnnealing"+
 					"("+
-					"ConfigID VARCHAR,"+
-					"AnnealCoeficient DOUBLE,"+
-					"MaxInnerIterations DOUBLE,"+
-					"MaxTemperature DOUBLE,"+
-					"MinTemperature DOUBLE,"+
-					"MaxOneStepAcceptedSolutions DOUBLE,"+
-					"NumSolutions DOUBLE,"+
+					"configID VARCHAR,"+
+					"annealCoeficient DOUBLE,"+
+					"maxInnerIterations DOUBLE,"+
+					"maxTemperature DOUBLE,"+
+					"minTemperature DOUBLE,"+
+					"maxOneStepAcceptedSolutions DOUBLE,"+
+					"numSolutions DOUBLE,"+
 					")";
             String insertQuery = 
 					"INSERT INTO AlgorithmParams_SimulatedAnnealing VALUES(?,?,?,?,?,?,?)";
@@ -234,13 +234,13 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
     		_stmt = _conn.prepareStatement(insertQuery);
                        
             Hashtable<String, XmlHelper.XPath> algSAXPaths = new Hashtable<String, XmlHelper.XPath>();
-            algSAXPaths.put("ConfigID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
-            algSAXPaths.put("AnnealCoeficient", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@annealCoeficient"));
-            algSAXPaths.put("MaxInnerIterations", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxInnerIterations"));
-            algSAXPaths.put("MaxTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxTemperature"));
-            algSAXPaths.put("MinTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@minTemperature"));
-            algSAXPaths.put("MaxOneStepAcceptedSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxOneStepAcceptedSolutions"));
-            algSAXPaths.put("NumSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
+            algSAXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
+            algSAXPaths.put("annealCoeficient", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@annealCoeficient"));
+            algSAXPaths.put("maxInnerIterations", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxInnerIterations"));
+            algSAXPaths.put("maxTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxTemperature"));
+            algSAXPaths.put("minTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@minTemperature"));
+            algSAXPaths.put("maxOneStepAcceptedSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxOneStepAcceptedSolutions"));
+            algSAXPaths.put("numSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
             _versionedXPaths.put(VERSION, algSAXPaths);
         }
         
@@ -253,13 +253,13 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
     		version = VERSION;
     				
     		_stmt.clearParameters();
-    		_stmt.setString(1, getVersionedValue(doc, "ConfigID", version));    
-    		_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "AnnealCoeficient", version)));
-    		_stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "MaxInnerIterations", version)));
-    		_stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "MaxTemperature", version)));
-    		_stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "MinTemperature", version)));
-    		_stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "MaxOneStepAcceptedSolutions", version)));
-    		_stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "NumSolutions", version)));
+    		_stmt.setString(1, getVersionedValue(doc, "configID", version));    
+    		_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "annealCoeficient", version)));
+    		_stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "maxInnerIterations", version)));
+    		_stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "maxTemperature", version)));
+    		_stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "minTemperature", version)));
+    		_stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "maxOneStepAcceptedSolutions", version)));
+    		_stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
     		
     		_stmt.executeUpdate();
                                    

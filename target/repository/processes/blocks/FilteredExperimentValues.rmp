@@ -24,9 +24,9 @@
         <parameter key="database_system" value="H2"/>
         <parameter key="database_url" value="jdbc:h2:%{DBPATH}"/>
         <parameter key="username" value="sa"/>
-        <parameter key="password" value="BWoMqVNtjhg="/>
+        <parameter key="password" value="q6nlle5ueO3FSNLnxXIDAw=="/>
         <parameter key="define_query" value="query"/>
-        <parameter key="query" value="SELECT *&#10;FROM &quot;PUBLIC&quot;.&quot;ExperimentTasks&quot;&#10;WHERE &quot;BestSolutionValue&quot; &gt; 0 AND &quot;InitSolutionValue&quot; &gt; 0 AND &quot;NrOfNewSolutions&quot; &gt; 1"/>
+        <parameter key="query" value="SELECT *&#10;FROM &quot;PUBLIC&quot;.&quot;ExperimentTasks&quot;&#10;WHERE &quot;bestSolutionValue&quot; &gt; 0 AND &quot;initSolutionValue&quot; &gt; 0 AND &quot;nrOfNewSolutions&quot; &gt; 1"/>
         <parameter key="use_default_schema" value="true"/>
         <parameter key="table_name" value="ExperimentTasks"/>
         <parameter key="prepare_statement" value="false"/>
@@ -49,15 +49,15 @@
         <parameter key="include_special_attributes" value="false"/>
         <parameter key="default_aggregation_function" value="average"/>
         <list key="aggregation_attributes">
-          <parameter key="BestSolutionValue" value="average"/>
-          <parameter key="DurationInSeconds" value="average"/>
-          <parameter key="InitSolutionValue" value="average"/>
-          <parameter key="LastIterNumberNewSol" value="average"/>
-          <parameter key="NrOfIterations" value="average"/>
-          <parameter key="NrOfNewSolutions" value="average"/>
-          <parameter key="TimeoutInSeconds" value="average"/>
+          <parameter key="bestSolutionValue" value="average"/>
+          <parameter key="durationInSeconds" value="average"/>
+          <parameter key="initSolutionValue" value="average"/>
+          <parameter key="lastIterNumberNewSol" value="average"/>
+          <parameter key="nrOfIterations" value="average"/>
+          <parameter key="nrOfNewSolutions" value="average"/>
+          <parameter key="timeoutInSeconds" value="average"/>
         </list>
-        <parameter key="group_by_attributes" value="AlgorithmID|ComputerName|ConfigID|ExperimentID|InstanceID|ProblemID||ExperimentType"/>
+        <parameter key="group_by_attributes" value="|problemID|instanceID|experimentID|configID|algorithmID|computerName|experimentType"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
