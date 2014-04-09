@@ -86,6 +86,8 @@ public class FeedbackConfigurator extends Configurator
                 Attribute att = exampleSetParams.getAttributes().get(name);                
                 
                 double val = example.getValue(att);
+                if(name.equals("iterationCount") && Double.compare( val, Double.NaN)==0)
+                	val = Double.MAX_VALUE;
                 
                 config.getDataNode("Algorithm").getDataNode("Parameters").putValue(name, val);
             }

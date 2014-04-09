@@ -21,17 +21,17 @@
         <parameter key="cache_process" value="true"/>
         <list key="macros"/>
       </operator>
-      <operator activated="true" class="loop_collection" compatibility="5.3.013" expanded="true" height="94" name="Loop Collection" width="90" x="447" y="75">
+      <operator activated="true" class="loop_collection" compatibility="5.3.013" expanded="true" height="94" name="Loop Collection" width="90" x="380" y="75">
         <parameter key="set_iteration_macro" value="false"/>
         <parameter key="macro_name" value="iteration"/>
         <parameter key="macro_start_value" value="1"/>
         <parameter key="unfold" value="false"/>
         <process expanded="true">
-          <operator activated="true" class="remove_attribute_range" compatibility="5.3.013" expanded="true" height="76" name="Remove Attribute Range" width="90" x="45" y="30">
-            <parameter key="first_attribute" value="2"/>
-            <parameter key="last_attribute" value="14"/>
+          <operator activated="true" class="remove_attribute_range" compatibility="5.3.013" expanded="true" height="76" name="Remove Attribute Range" width="90" x="112" y="30">
+            <parameter key="first_attribute" value="1"/>
+            <parameter key="last_attribute" value="12"/>
           </operator>
-          <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes" width="90" x="179" y="30">
+          <operator activated="true" class="select_attributes" compatibility="5.3.013" expanded="true" height="76" name="Select Attributes" width="90" x="313" y="30">
             <parameter key="attribute_filter_type" value="subset"/>
             <parameter key="attribute" value=""/>
             <parameter key="attributes" value="|iterationCount|numIteration"/>
@@ -45,7 +45,7 @@
             <parameter key="invert_selection" value="true"/>
             <parameter key="include_special_attributes" value="false"/>
           </operator>
-          <operator activated="true" class="remove_duplicates" compatibility="5.3.013" expanded="true" height="76" name="Remove Duplicates" width="90" x="313" y="30">
+          <operator activated="true" class="remove_duplicates" compatibility="5.3.013" expanded="true" height="76" name="Remove Duplicates" width="90" x="514" y="30">
             <parameter key="attribute_filter_type" value="subset"/>
             <parameter key="attribute" value=""/>
             <parameter key="attributes" value="|experimentType"/>
@@ -62,6 +62,7 @@
           </operator>
           <connect from_port="single" to_op="Remove Attribute Range" to_port="example set input"/>
           <connect from_op="Remove Attribute Range" from_port="example set output" to_op="Select Attributes" to_port="example set input"/>
+          <connect from_op="Remove Attribute Range" from_port="original" to_port="output 2"/>
           <connect from_op="Select Attributes" from_port="example set output" to_op="Remove Duplicates" to_port="example set input"/>
           <connect from_op="Remove Duplicates" from_port="example set output" to_port="output 1"/>
           <portSpacing port="source_single" spacing="0"/>
