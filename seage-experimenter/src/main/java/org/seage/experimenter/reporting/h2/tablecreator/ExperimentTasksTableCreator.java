@@ -50,6 +50,7 @@ public class ExperimentTasksTableCreator extends H2DataTableCreator implements I
         
         _versionedXPaths.put("0.4", v04);
         _versionedXPaths.put("0.5", v05);
+        _versionedXPaths.put("0.6", v05);
 		
 		String queryCreate = 
 					"CREATE TABLE IF NOT EXISTS ExperimentTasks"+

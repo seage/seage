@@ -10,7 +10,7 @@ import org.w3c.dom.Document;
 
 public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator implements IDocumentProcessor
 {
-    protected final String VERSION="0.4";
+    protected final String VERSION="0.6";
     private Hashtable<String, String> _algParamsConfigIDs;
     protected PreparedStatement _stmt;
     protected String _algorithmID;
@@ -109,7 +109,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
 					"CREATE TABLE IF NOT EXISTS AlgorithmParams_TabuSearch"+
 					"("+
 					"configID VARCHAR,"+
-					"numIteration DOUBLE,"+
+					"iterationCount DOUBLE,"+
 					"tabuListLength DOUBLE,"+
 					"numSolutions DOUBLE"+
 					")";
@@ -120,9 +120,18 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
     		stmt.execute(queryCreate);
     		_stmt = _conn.prepareStatement(insertQuery);
 
-            Hashtable<String, XmlHelper.XPath> algTSXPaths = new Hashtable<String, XmlHelper.XPath>();
+    		Hashtable<String, XmlHelper.XPath> algTSXPaths = new Hashtable<String, XmlHelper.XPath>();
             algTSXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
-            algTSXPaths.put("numIteration", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@numIteration"));
+            algTSXPaths.put("iterationCount", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@numIteration"));
+            algTSXPaths.put("tabuListLength", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@tabuListLength"));
+            algTSXPaths.put("numSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
+            
+            _versionedXPaths.put("0.4", algTSXPaths);
+            _versionedXPaths.put("0.5", algTSXPaths);
+            
+            algTSXPaths = new Hashtable<String, XmlHelper.XPath>();
+            algTSXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
+            algTSXPaths.put("iterationCount", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@iterationCount"));
             algTSXPaths.put("tabuListLength", new XmlHelper.XPath("/ExperimentTaskReport/AlgorithmReport/Parameters/@tabuListLength"));
             algTSXPaths.put("numSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
             
@@ -135,11 +144,11 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         	String version = doc.getDocumentElement().getAttribute("version");
     		if(version.compareToIgnoreCase("0.4")<0)
     			throw new Exception("Unsupported version: "+version);
-    		version = VERSION;
+    		//version = VERSION;
     				
     		_stmt.clearParameters();
     		_stmt.setString(1, getVersionedValue(doc, "configID", version));    
-    		_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "numIteration", version)));
+    		_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "iterationCount", version)));
     		_stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "tabuListLength", version)));
     		_stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
     		
