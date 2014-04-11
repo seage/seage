@@ -78,7 +78,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
         _algParams = new AlgorithmParams();      
         
         _algParams.putValue("numIterDivers", 1);
-        _algParams.putValue("numIteration", 3);
+        _algParams.putValue("iterationCount", 3);
         _algParams.putValue("numSolutions", 1);
         _algParams.putValue("tabuListLength", 1);
         
@@ -105,7 +105,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
     {       
     	AlgorithmParams params = new AlgorithmParams();
         params.putValue("numIterDivers", 0);
-        params.putValue("numIteration", 0);
+        params.putValue("iterationCount", 0);
         params.putValue("numSolutions", 0);
         params.putValue("tabuListLength", 0);
         _tester.setAlgParameters(params);
@@ -119,7 +119,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
     {
     	AlgorithmParams params = new AlgorithmParams();
         params.putValue("numIterDivers", 1);
-        params.putValue("numIteration", 1000000);
+        params.putValue("iterationCount", 1000000);
         params.putValue("numSolutions", 1);
         params.putValue("tabuListLength", 1);
         _tester.setAlgParameters(params);
