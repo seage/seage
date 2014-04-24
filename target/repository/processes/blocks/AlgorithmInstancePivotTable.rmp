@@ -40,7 +40,7 @@
         <parameter key="group_attribute" value="instanceID"/>
         <parameter key="index_attribute" value="algorithmID"/>
         <parameter key="consider_weights" value="false"/>
-        <parameter key="weight_aggregation" value="minimum"/>
+        <parameter key="weight_aggregation" value="maximum"/>
         <parameter key="skip_constant_attributes" value="false"/>
         <parameter key="datamanagement" value="double_array"/>
       </operator>

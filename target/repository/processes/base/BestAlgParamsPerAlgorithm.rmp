@@ -82,7 +82,7 @@
           <portSpacing port="sink_output 1" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute SortedAlgParamsPerProblemAlgInstance" width="90" x="313" y="30">
+      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute SortedAlgParamsPerProblemAlgInstance" width="90" x="715" y="30">
         <parameter key="process_location" value="//seage/processes/blocks/SortedAlgParamsPerProblemAlgInstance"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
@@ -90,7 +90,7 @@
         <parameter key="cache_process" value="true"/>
         <list key="macros"/>
       </operator>
-      <operator activated="true" class="loop_collection" compatibility="5.3.013" expanded="true" height="76" name="Loop Collection" width="90" x="581" y="30">
+      <operator activated="true" class="loop_collection" compatibility="5.3.013" expanded="true" height="76" name="Loop Collection" width="90" x="849" y="30">
         <parameter key="set_iteration_macro" value="true"/>
         <parameter key="macro_name" value="iteration"/>
         <parameter key="macro_start_value" value="1"/>
@@ -155,7 +155,7 @@
           <portSpacing port="sink_output 2" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="loop_collection" compatibility="5.3.013" expanded="true" height="60" name="Loop Collection (2)" width="90" x="715" y="30">
+      <operator activated="true" class="loop_collection" compatibility="5.3.013" expanded="true" height="60" name="Loop Collection (2)" width="90" x="983" y="30">
         <parameter key="set_iteration_macro" value="false"/>
         <parameter key="macro_name" value="iteration"/>
         <parameter key="macro_start_value" value="1"/>
@@ -192,7 +192,7 @@
           <portSpacing port="sink_output 1" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="loop_examples" compatibility="5.3.013" expanded="true" height="94" name="Loop Examples (2)" width="90" x="849" y="165">
+      <operator activated="true" class="loop_examples" compatibility="5.3.013" expanded="true" height="94" name="Loop Examples (2)" width="90" x="1117" y="165">
         <parameter key="iteration_macro" value="example"/>
         <process expanded="true">
           <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro (6)" width="90" x="112" y="165">

@@ -37,12 +37,12 @@
         <process expanded="true">
           <operator activated="true" class="extract_macro_from_annotation" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro from Annotation" width="90" x="112" y="75">
             <parameter key="extract_all" value="false"/>
-            <parameter key="macro" value="AlgorithmID"/>
-            <parameter key="annotation" value="AlgorithmID"/>
+            <parameter key="macro" value="algorithmID"/>
+            <parameter key="annotation" value="algorithmID"/>
             <parameter key="fail_on_missing" value="true"/>
           </operator>
           <operator activated="true" class="set_role" compatibility="5.3.013" expanded="true" height="76" name="Set Role" width="90" x="246" y="75">
-            <parameter key="attribute_name" value="%{AlgorithmID}"/>
+            <parameter key="attribute_name" value="%{algorithmID}"/>
             <parameter key="target_role" value="regular"/>
             <list key="set_additional_roles"/>
           </operator>
@@ -52,7 +52,7 @@
             <parameter key="database_system" value="MySQL"/>
             <parameter key="use_default_schema" value="false"/>
             <parameter key="schema_name" value="KB"/>
-            <parameter key="table_name" value="AlgorithmParams_%{AlgorithmID}_Best"/>
+            <parameter key="table_name" value="AlgorithmParams_%{algorithmID}_Best"/>
             <parameter key="overwrite_mode" value="overwrite"/>
             <parameter key="set_default_varchar_length" value="false"/>
             <parameter key="default_varchar_length" value="128"/>

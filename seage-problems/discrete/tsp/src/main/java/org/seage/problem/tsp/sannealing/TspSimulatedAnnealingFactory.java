@@ -74,7 +74,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
         final City[] cities = ((TspProblemInstance)instance).getCities();
         
         algorithm = new SimulatedAnnealingAdapter(
-                new TspObjectiveFunction(),
+                new TspObjectiveFunction(cities),
                 new TspMoveManager(), false, "")
         {
             public void solutionsFromPhenotype(Object[][] source) throws Exception 

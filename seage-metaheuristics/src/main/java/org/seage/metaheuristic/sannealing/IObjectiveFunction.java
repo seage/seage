@@ -31,5 +31,5 @@ package org.seage.metaheuristic.sannealing;
  * @author Jan Zmatlik
  */
 public interface IObjectiveFunction {
-    double getObjectiveValue(Solution s);
+    double getObjectiveValue(Solution s) throws Exception;
 }

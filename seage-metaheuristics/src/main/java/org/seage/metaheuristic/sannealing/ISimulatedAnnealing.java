@@ -50,6 +50,6 @@ public interface ISimulatedAnnealing
     Solution getBestSolution();
     public Solution getCurrentSolution();
 
-    void startSearching(Solution solution);
+    void startSearching(Solution solution) throws Exception;
     void stopSearching();
 }

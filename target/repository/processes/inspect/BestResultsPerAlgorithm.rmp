@@ -28,7 +28,7 @@
         <parameter key="propagate_metadata_recursively" value="true"/>
         <parameter key="cache_process" value="true"/>
         <list key="macros">
-          <parameter key="myAttribute" value="BestSolutionValue"/>
+          <parameter key="myAttribute" value="bestSolutionValue"/>
           <parameter key="myFunction" value="count"/>
         </list>
       </operator>

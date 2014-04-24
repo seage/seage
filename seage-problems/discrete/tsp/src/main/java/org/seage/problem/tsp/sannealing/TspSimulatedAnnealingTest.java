@@ -47,7 +47,9 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     {
         try
         {
-            new TspSimulatedAnnealingTest().run( args[0] );
+        	//String path = "data/tsp/u574.tsp";//args[0];
+        	String path = "data/tsp/eil51.tsp";//args[0];
+            new TspSimulatedAnnealingTest().run( path );
         }
         catch(Exception ex)
         {
@@ -62,17 +64,20 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 
-        SimulatedAnnealing sa = new SimulatedAnnealing( new TspObjectiveFunction() , new TspMoveManager() );
+        TspObjectiveFunction2 objFunction = new TspObjectiveFunction2(_cities);
+        SimulatedAnnealing sa = new SimulatedAnnealing(objFunction  , new TspMoveManager2(objFunction) );
 
-        sa.setMaximalTemperature( 1500000 );
-        sa.setMinimalTemperature( 0.1 );
-        sa.setAnnealingCoefficient( 0.99 );
-        sa.setMaximalInnerIterationCount(500000);
-        sa.setMaximalAcceptedSolutionsPerOneStepCount(50000);
+        sa.setMaximalTemperature( 9000100000000.0d );
+        sa.setMinimalTemperature( 1 );
+        sa.setAnnealingCoefficient( 0.999999);
+        sa.setMaximalInnerIterationCount(500);
+        sa.setMaximalAcceptedSolutionsPerOneStepCount(500);
 
         sa.addSimulatedAnnealingListener( this );
-        TspGreedySolution s = new TspGreedySolution(_cities);
-        System.out.println(s.getObjectiveValue());
+        //TspGreedySolution s = new TspGreedySolution(_cities);
+        TspRandomSolution s = new TspRandomSolution(_cities.length);
+        
+        System.out.println(objFunction.getObjectiveValue(s));
         sa.startSearching( s );
 
         System.out.println(sa.getBestSolution().getObjectiveValue());
@@ -106,7 +111,7 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
 	public void newBestSolutionFound(SimulatedAnnealingEvent e)
 	{
 		// TODO Auto-generated method stub
-		System.out.println("Best: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
+		System.out.println("New best: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
 	}
 
 }

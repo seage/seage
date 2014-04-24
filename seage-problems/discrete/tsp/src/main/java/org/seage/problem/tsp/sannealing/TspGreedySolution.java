@@ -36,7 +36,7 @@ public class TspGreedySolution extends TspSolution {
 
     public TspGreedySolution(City[] cities) throws Exception
     {
-        super( cities );
+        super( cities.length );
         _tour = TourProvider.createGreedyTour( cities , 1);
     }
 

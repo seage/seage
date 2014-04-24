@@ -34,6 +34,7 @@ public interface IMoveManager {
     /**
      * Returns modified clone of solution in parameter
      * @param Solution solution
+     * @throws Exception 
      */
-    Solution getModifiedSolution(Solution solution);
+    Solution getModifiedSolution(Solution solution) throws Exception;
 }

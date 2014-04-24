@@ -44,13 +44,11 @@ public abstract class TspSolution extends Solution
 
     /**
      * Array of cities
-     */
-    protected City[] _cities;
+     */    
 
-    public TspSolution(City[] cities)
+    public TspSolution(int length)
     {
-        _tour = new Integer[ cities.length ];
-        _cities = cities;
+        _tour = new Integer[ length ];
     }
 
     public Integer[] getTour()
@@ -58,20 +56,11 @@ public abstract class TspSolution extends Solution
         return _tour;
     }
 
-     public void setTour(Integer[] tour)
+    public void setTour(Integer[] tour)
     {
         _tour = tour;
     }
 
-    public City[] getCities()
-    {
-        return _cities;
-    }
-    
-    public void setCities(City[] cities)
-    {
-        _cities = cities;
-    }
     
     @Override
     public String toString()
@@ -90,7 +79,6 @@ public abstract class TspSolution extends Solution
         {
             tspSolution = (TspSolution)super.clone();
             tspSolution.setTour( _tour.clone() );
-            tspSolution.setCities( _cities );
             tspSolution.setObjectiveValue(getObjectiveValue());
         } catch (Exception ex)
         {

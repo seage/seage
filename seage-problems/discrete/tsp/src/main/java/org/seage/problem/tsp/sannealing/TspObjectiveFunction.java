@@ -27,6 +27,7 @@ package org.seage.problem.tsp.sannealing;
 
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
 import org.seage.metaheuristic.sannealing.Solution;
+import org.seage.problem.tsp.City;
 
 /**
  *
@@ -34,19 +35,25 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 public class TspObjectiveFunction implements IObjectiveFunction
 {
-    private TspSolution _currrentTspSolution;
+    //private TspSolution _currrentTspSolution;
+    protected City[] _cities;
+    
+    public TspObjectiveFunction(City[] cities)
+    {
+    	_cities = cities;
+    }
     
     public double getObjectiveValue(Solution solution)
     {
-        _currrentTspSolution = (TspSolution)solution;
+    	TspSolution currrentTspSolution = (TspSolution)solution;
 
         double distance = 0.0;
-        int tourLength = _currrentTspSolution.getTour().length - 1;
+        int tourLength = currrentTspSolution.getTour().length - 1;
 
         for (int i = 1; i <= tourLength; i++)
-            distance += this.getDistance( i , i - 1 );
+            distance += this.getDistance(currrentTspSolution, i , i - 1 );
 
-        distance += getDistance(tourLength, 0);
+        distance += getDistance(currrentTspSolution, tourLength, 0);
 
         return distance;
     }
@@ -58,16 +65,16 @@ public class TspObjectiveFunction implements IObjectiveFunction
    * @param j The second city index.
    * @return The distance between the two cities.
    */
-  private double getDistance(int i, int j)
+  private double getDistance(TspSolution tspSolution, int i, int j)
   {
-    int a = _currrentTspSolution.getTour()[i];
-    int b = _currrentTspSolution.getTour()[j];
+    int a = tspSolution.getTour()[i];
+    int b = tspSolution.getTour()[j];
       
     return getEuclideanDistance (
-                _currrentTspSolution.getCities()[a].X,
-                _currrentTspSolution.getCities()[a].Y,
-                _currrentTspSolution.getCities()[b].X,
-                _currrentTspSolution.getCities()[b].Y
+    		_cities[a].X,
+    		_cities[a].Y,
+    		_cities[b].X,
+    		_cities[b].Y
             );
   }
   

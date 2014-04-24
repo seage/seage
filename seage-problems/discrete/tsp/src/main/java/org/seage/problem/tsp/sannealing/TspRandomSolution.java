@@ -34,10 +34,10 @@ import org.seage.problem.tsp.TourProvider;
  */
 public class TspRandomSolution extends TspSolution {
 
-    public TspRandomSolution(City[] cities)
+    public TspRandomSolution(int length)
     {
-        super( cities );
-        _tour = TourProvider.createRandomTour( cities );
+        super( length );
+        _tour = TourProvider.createRandomTour( length );
     }
 
 }

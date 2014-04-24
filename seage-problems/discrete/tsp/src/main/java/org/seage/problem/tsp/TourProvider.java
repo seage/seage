@@ -112,33 +112,33 @@ public class TourProvider
     }
 
     // TODO: A - create better implementation
-    public static Integer[] createRandomTour(City[] cities)
+    public static Integer[] createRandomTour(int length)
     {
-        Integer[] tour = new Integer[ cities.length ];
+        Integer[] tour = new Integer[ length ];
         Random random = new Random();
         List<Integer> listTour = new ArrayList<Integer>();
-        for (int i = 0; i < cities.length; i++) {
+        for (int i = 0; i < length; i++) {
             listTour.add(i);
         }
 
         List<Integer> randTour = new ArrayList<Integer>();
         Integer pom = null;
-        for (int i = 0; i < cities.length; i++) {
+        for (int i = 0; i < length; i++) {
             pom = listTour.get(random.nextInt(listTour.size()));
             randTour.add(pom);
             listTour.remove(pom);
         }
 
-        for (int i = 0; i < cities.length; i++) {
+        for (int i = 0; i < length; i++) {
             tour[i] = randTour.get(i);
         }
 
         return tour;
     }
 
-    public static Integer[] createSortedTour(City[] cities)
+    public static Integer[] createSortedTour(int length)
     {
-        Integer[] tour = new Integer[ cities.length ];
+        Integer[] tour = new Integer[ length ];
         for(int i = 0; i < tour.length; i++)
             tour[i] = i;
 

@@ -18,7 +18,7 @@
         <parameter key="connection" value="SEAGE_DB"/>
         <parameter key="database_system" value="MySQL"/>
         <parameter key="define_query" value="query"/>
-        <parameter key="query" value="SELECT *, FORMATDATETIME(TIMESTAMP e.&quot;ExperimentID&quot; , &quot;yyyy-MM-dd&quot;)&#10;FROM &quot;PUBLIC&quot;.&quot;ExperimentTasks&quot; et &#10;left join &quot;PUBLIC&quot;.&quot;Experiments&quot; e &#10;on et.&quot;ExperimentID&quot; = e.&quot;ExperimentID&quot;"/>
+        <parameter key="query" value="SELECT *, FORMATDATETIME(TIMESTAMP e.&quot;experimentID&quot; , &quot;yyyy-MM-dd&quot;)&#10;FROM &quot;PUBLIC&quot;.&quot;ExperimentTasks&quot; et &#10;left join &quot;PUBLIC&quot;.&quot;Experiments&quot; e &#10;on et.&quot;experimentID&quot; = e.&quot;experimentID&quot;"/>
         <parameter key="use_default_schema" value="true"/>
         <parameter key="prepare_statement" value="false"/>
         <enumeration key="parameters"/>

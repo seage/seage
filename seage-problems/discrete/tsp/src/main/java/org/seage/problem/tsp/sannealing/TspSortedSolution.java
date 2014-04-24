@@ -25,7 +25,6 @@
  */
 package org.seage.problem.tsp.sannealing;
 
-import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TourProvider;
 
 /**
@@ -34,10 +33,10 @@ import org.seage.problem.tsp.TourProvider;
  */
 public class TspSortedSolution extends TspSolution{
 
-	public TspSortedSolution(City[] cities)
+	public TspSortedSolution(int length)
     {
-        super( cities );
-        _tour = TourProvider.createSortedTour( cities );
+        super( length );
+        _tour = TourProvider.createSortedTour( length );
     }
 
 }

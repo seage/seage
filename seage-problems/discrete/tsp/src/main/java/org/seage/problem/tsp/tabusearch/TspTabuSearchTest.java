@@ -26,6 +26,7 @@
 package org.seage.problem.tsp.tabusearch;
 
 import java.io.FileInputStream;
+
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.City;
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
@@ -44,7 +45,8 @@ public class TspTabuSearchTest implements TabuSearchListener
     {
         try
         {
-            new TspTabuSearchTest().run(args[0]);
+        	String path = "data/tsp/eil51.tsp";//args[0];
+            new TspTabuSearchTest().run(path);
         }
         catch(Exception ex)
         {
@@ -60,7 +62,7 @@ public class TspTabuSearchTest implements TabuSearchListener
 
         TabuSearch ts = new TabuSearch(new TspGreedyStartSolution(cities),
                 new TspMoveManager(),
-                new TspObjectiveFunction(cities),
+                new TspObjectiveFunction2(cities),
                 new SimpleTabuList(50),
                 new BestEverAspirationCriteria(),
                 false);

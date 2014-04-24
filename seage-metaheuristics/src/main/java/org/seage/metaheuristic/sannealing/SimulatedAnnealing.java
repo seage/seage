@@ -117,8 +117,9 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 
 	/**
 	 * This method is called to perform the simulated annealing.
+	 * @throws Exception 
 	 */
-	public void startSearching(Solution solution)
+	public void startSearching(Solution solution) throws Exception
 	{
 		_eventProducer.fireAlgorithmStarted();
 		// Searching is starting
@@ -151,11 +152,11 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 		// Iterates until current temperature is equal or greather than minimal
 		// temperature
 		// and successful iteration count is less than zero
-		while ((_currentTemperature >= _minimalTemperature) && (successIterationCount > 0) && !_stopSearching)
+		while ((_currentTemperature >= _minimalTemperature) /*&& (successIterationCount > 0)*/ && !_stopSearching)
 		{
 			innerIterationCount = successIterationCount = 0;
 
-			while ((innerIterationCount < _maximalIterationCount) && (successIterationCount < _maximalSuccessIterationCount) && !_stopSearching)
+			//while ((innerIterationCount < _maximalIterationCount) && (successIterationCount < _maximalSuccessIterationCount) && !_stopSearching)
 			{
 				_currentIteration++;
 				innerIterationCount++;

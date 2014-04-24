@@ -79,7 +79,7 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
         ArrayList<Subject<Integer>> result = new ArrayList<Subject<Integer>>(numTours);
 
         for(int k=0;k<tourLenght;k++)
-        	result.add( new Subject<Integer>(TourProvider.createRandomTour(cities)));
+        	result.add( new Subject<Integer>(TourProvider.createRandomTour(cities.length)));
                 //tours[k] = TourProvider.createRandomTour(cities);
 
 //        for(int k=0;k<tours.length;k++)
