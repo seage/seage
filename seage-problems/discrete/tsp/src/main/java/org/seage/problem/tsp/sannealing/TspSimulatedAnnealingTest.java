@@ -28,6 +28,7 @@ package org.seage.problem.tsp.sannealing;
 import java.io.FileInputStream;
 
 import org.seage.metaheuristic.IAlgorithmListener;
+import org.seage.metaheuristic.sannealing.ISimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
 import org.seage.problem.tsp.City;
@@ -47,8 +48,9 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     {
         try
         {
-        	//String path = "data/tsp/u574.tsp";//args[0];
-        	String path = "data/tsp/eil51.tsp";//args[0];
+        	String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
+        	//String path = "data/tsp/eil51.tsp";//args[0];		// 426
+        	//String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
             new TspSimulatedAnnealingTest().run( path );
         }
         catch(Exception ex)
@@ -67,20 +69,21 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         TspObjectiveFunction2 objFunction = new TspObjectiveFunction2(_cities);
         SimulatedAnnealing sa = new SimulatedAnnealing(objFunction  , new TspMoveManager2(objFunction) );
 
-        sa.setMaximalTemperature( 9000100000000.0d );
-        sa.setMinimalTemperature( 1 );
+        sa.setMaximalTemperature( 1000.0d );
+        sa.setMinimalTemperature( 0.001d);
         sa.setAnnealingCoefficient( 0.999999);
         sa.setMaximalInnerIterationCount(500);
         sa.setMaximalAcceptedSolutionsPerOneStepCount(500);
 
         sa.addSimulatedAnnealingListener( this );
-        //TspGreedySolution s = new TspGreedySolution(_cities);
-        TspRandomSolution s = new TspRandomSolution(_cities.length);
+        TspGreedySolution s = new TspGreedySolution(_cities);
+        //TspRandomSolution s = new TspRandomSolution(_cities.length);
         
         System.out.println(objFunction.getObjectiveValue(s));
         sa.startSearching( s );
 
         System.out.println(sa.getBestSolution().getObjectiveValue());
+        System.out.println(sa.getBestSolution());
     }
 
 	@Override
@@ -111,7 +114,8 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
 	public void newBestSolutionFound(SimulatedAnnealingEvent e)
 	{
 		// TODO Auto-generated method stub
-		System.out.println("New best: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
+		ISimulatedAnnealing sa = e.getSimulatedAnnealing();
+		System.out.println(String.format("New best: %f - iter: %d - temp: %f", sa.getBestSolution().getObjectiveValue(), sa.getCurrentIteration(), sa.getCurrentTemperature()));
 	}
 
 }

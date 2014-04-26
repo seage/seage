@@ -162,7 +162,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 				innerIterationCount++;
 
 				// Move to new locations
-				Solution modifiedSolution = _moveManager.getModifiedSolution(_currentSolution);
+				Solution modifiedSolution = _moveManager.getModifiedSolution(_currentSolution, _currentTemperature);
 
 				// Calculate objective function and set value to modified
 				// solution
@@ -226,6 +226,11 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 	public double getMinimalTemperature()
 	{
 		return _minimalTemperature;
+	}
+	
+	public double getCurrentTemperature()
+	{
+		return _currentTemperature;
 	}
 
 	public void setAnnealingCoefficient(double alpha)

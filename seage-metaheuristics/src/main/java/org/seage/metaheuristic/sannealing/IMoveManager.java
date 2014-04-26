@@ -36,5 +36,5 @@ public interface IMoveManager {
      * @param Solution solution
      * @throws Exception 
      */
-    Solution getModifiedSolution(Solution solution) throws Exception;
+    Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception;
 }

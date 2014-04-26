@@ -36,7 +36,7 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class TspMoveManager implements IMoveManager
 {
 	Random rnd = new Random();
-    public Solution getModifiedSolution(Solution solution)
+    public Solution getModifiedSolution(Solution solution, double ct)
     {
         TspSolution tspSolution = ((TspSolution)solution).clone();        
         

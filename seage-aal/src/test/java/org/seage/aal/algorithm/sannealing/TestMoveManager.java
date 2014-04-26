@@ -10,7 +10,7 @@ public class TestMoveManager implements IMoveManager
 	private Random rnd = new Random(1);
 	
     @Override
-    public Solution getModifiedSolution(Solution solution)
+    public Solution getModifiedSolution(Solution solution, double ct)
     {
     	TestSolution s = (TestSolution)solution.clone();
     	int ix = rnd.nextInt(s.solution.length);

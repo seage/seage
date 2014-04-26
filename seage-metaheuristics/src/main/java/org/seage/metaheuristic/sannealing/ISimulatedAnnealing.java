@@ -35,6 +35,7 @@ public interface ISimulatedAnnealing
 
     double getMinimalTemperature();
     void setMinimalTemperature(double minimalTemperature);
+    public double getCurrentTemperature();
 
     double getAnnealingCoefficient();
     void setAnnealingCoefficient(double alpha);

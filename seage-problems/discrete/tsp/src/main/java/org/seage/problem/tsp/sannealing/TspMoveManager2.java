@@ -44,7 +44,7 @@ public class TspMoveManager2 implements IMoveManager
 		_objFunc = objFunc;
 	}
 	
-    public Solution getModifiedSolution(Solution solution) throws Exception
+    public Solution getModifiedSolution0(Solution solution) throws Exception
     {
         TspSolution tspSolution = ((TspSolution)solution).clone();        
         
@@ -79,5 +79,35 @@ public class TspMoveManager2 implements IMoveManager
 
         return (Solution)tspSolution;
     }
+    
+    public Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception
+    {
+    	TspSolution tspSolution = ((TspSolution)solution).clone();  
+    	Integer[] next = neighbour(tspSolution.getTour(), currentTemperature);
+    	for(int i=0;i<tspSolution.getTour().length;i++)
+    	{
+    		tspSolution._tour[i] = next[i];
+    	}
+    	
+    	return tspSolution;
+    }
+    
+    Integer[] neighbour(Integer[] state, double curTemp) {
+        int n = state.length;
+        int i = rnd.nextInt(n);
+        int w = (int) Math.min(n * curTemp / 2, (Integer.MAX_VALUE/2 -1));
+        int j = Math.abs(i + rnd.nextInt(2 * w + 1) - w + n) % n;
+        Integer[] newState = state.clone();
+        int sign = i - j;
+        // reverse order from i to j
+        while (sign * (i - j) > 0) {
+          int t = newState[i];
+          newState[i] = newState[j];
+          newState[j] = t;
+          i = (i + 1) % n;
+          j = (j - 1 + n) % n;
+        }
+        return newState;
+      }
 
 }

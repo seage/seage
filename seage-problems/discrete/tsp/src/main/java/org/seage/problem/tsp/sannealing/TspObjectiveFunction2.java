@@ -66,8 +66,12 @@ public class TspObjectiveFunction2 implements IObjectiveFunction
                 double dist = 0;
                 for (int i = 0; i < len; i++)
                 {
-                    dist += _matrix[tour[i]][i + 1 >= len ? tour[0] : tour[i + 1]];
+                    dist += _matrix[tour[i]][i + 1 >= len ? tour[0] : tour[i + 1]];                    
                 }
+                /*for (int i = 0; i < len-1; i++)
+                {
+                    dist += _matrix[tour[i]][tour[i + 1]];                    
+                }*/
 
                 return new double[]{ dist };
             } // end if: move == null
