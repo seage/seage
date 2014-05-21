@@ -26,6 +26,7 @@
 package org.seage.problem.qap.sannealing;
 
 import java.util.Random;
+
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
 
@@ -56,5 +57,12 @@ public class QapMoveManager implements IMoveManager
 
         return (Solution)qapSolution;
     }
+
+	@Override
+	public Solution getModifiedSolution(Solution solution,
+			double currentTemperature) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

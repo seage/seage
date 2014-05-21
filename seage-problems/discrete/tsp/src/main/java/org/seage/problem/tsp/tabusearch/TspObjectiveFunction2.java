@@ -140,15 +140,15 @@ public class TspObjectiveFunction2 implements ObjectiveFunction
                 {                	
                     //   |     |
                     // A-B-C-D-E-F: swap B and E, say
-                    dist -= _matrix[tour[pos1L]][tour[pos1]];           // -AB
-                    dist -= _matrix[tour[pos1]][tour[pos1R]];         // -BC
-                    dist -= _matrix[tour[pos2L]][tour[pos2]];           // -DE
-                    dist -= _matrix[tour[pos2]][tour[pos2R]];   // -EF
+                    dist -= _matrix[tour[pos1L]][tour[pos1]];       // -AB
+                    dist -= _matrix[tour[pos1]][tour[pos1R]];       // -BC
+                    dist -= _matrix[tour[pos2L]][tour[pos2]];       // -DE
+                    dist -= _matrix[tour[pos2]][tour[pos2R]];   	// -EF
 
-                    dist += _matrix[tour[pos1L]][tour[pos2]];           // +AE
-                    dist += _matrix[tour[pos2]][tour[pos1R]];         // +EC
-                    dist += _matrix[tour[pos2L]][tour[pos1]];           // +DB
-                    dist += _matrix[tour[pos1]][tour[pos2R]];   // +BF
+                    dist += _matrix[tour[pos1L]][tour[pos2]];       // +AE
+                    dist += _matrix[tour[pos2]][tour[pos1R]];       // +EC
+                    dist += _matrix[tour[pos2L]][tour[pos1]];       // +DB
+                    dist += _matrix[tour[pos1]][tour[pos2R]];   	// +BF
                     return new double[]{ dist };
                 }   // end else: not a pair swap
             }   // end else: calculate incremental

@@ -58,7 +58,7 @@ public class TspProblemProvider extends ProblemProvider
         if(type.equals("resource"))        
             stream = getClass().getResourceAsStream(path);
         else
-            stream = new FileInputStream(path); 
+            stream = new FileInputStream(path);
 
         try{
             cities = CityProvider.readCities(stream);
@@ -104,22 +104,6 @@ public class TspProblemProvider extends ProblemProvider
         }
         return result;
     }
-
-//    @Override
-//    public IAlgorithmFactory createAlgorithmFactory(DataNode algorithmParams) throws Exception
-//    {
-//        String algName = algorithmParams.getName();
-//        if(algName.equals("geneticAlgorithm"))
-//            return new TspGeneticAlgorithmFactory();
-//        if(algName.equals("tabuSearch"))
-//            return new TspTabuSearchFactory();
-//        if(algName.equals("simulatedAnnealing"))
-//            return new TspSimulatedAnnealingFactory(algorithmParams, _cities);
-//        if(algName.equals("particleSwarm"))
-//            return new TspParticleSwarmFactory(algorithmParams, _cities);
-//
-//        throw new Exception("No algorithm factory for name: " + algName);
-//    }
 
     @Override
     public void visualizeSolution(Object[] solution, InstanceInfo instance) throws Exception

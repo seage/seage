@@ -81,26 +81,7 @@ public class TspObjectiveFunction2 implements IObjectiveFunction
                 //int mv = (TspSwapMove) move;
                 int pos1 = move[0];
                 int pos2 = move[1];
-
-                // Find positions
-                /*for (int i = 0; i < tour.length; i++)
-                {
-                    if (tour[i] == move[0])
-                    {
-                        pos1 = i;
-                        break;
-                    }
-                }*/
-                //pos2 =  move[1];
-
-                // Logic below requires pos1 < pos2
-                /*if (pos1 > pos2)
-                {
-                    int temp = pos2;
-                    pos2 = pos1;
-                    pos1 = temp;
-                }*/   // end if
-
+                
                 // Prior objective value
                 double dist = 0;//solution.getObjectiveValue();
 
