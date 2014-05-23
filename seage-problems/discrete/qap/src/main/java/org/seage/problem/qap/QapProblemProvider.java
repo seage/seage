@@ -138,7 +138,7 @@ public class QapProblemProvider extends ProblemProvider
 //        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
     }
 
-    public IPhenotypeEvaluator initPhenotypeEvaluator(Instance instance) throws Exception {
+    public IPhenotypeEvaluator<?> initPhenotypeEvaluator(Instance instance) throws Exception {
         return new QapPhenotypeEvaluator((QapProblemInstance)instance);
     }
 

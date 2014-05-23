@@ -1,17 +1,10 @@
 package org.seage.experimenter.reporting.rapidminer;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.seage.experimenter._obsolete.ProcessPerformer;
 import org.seage.experimenter.reporting.IDocumentProcessor;
@@ -20,10 +13,8 @@ import org.seage.experimenter.reporting.rapidminer.repository.AlgorithmParamsTab
 import org.seage.experimenter.reporting.rapidminer.repository.RMDataTableCreator;
 import org.seage.experimenter.reporting.rapidminer.repository.SingleAlgorithmTableCreator;
 import org.seage.thread.TaskRunnerEx;
-import org.w3c.dom.Document;
 
 import com.rapidminer.Process;
-import com.rapidminer.RapidMiner;
 import com.rapidminer.example.table.ListDataRowReader;
 import com.rapidminer.example.table.MemoryExampleTable;
 import com.rapidminer.operator.IOContainer;
@@ -31,10 +22,7 @@ import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorCreationException;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.io.RepositoryStorer;
-import com.rapidminer.repository.Repository;
 import com.rapidminer.repository.RepositoryException;
-import com.rapidminer.repository.RepositoryManager;
-import com.rapidminer.repository.local.LocalRepository;
 import com.rapidminer.tools.OperatorService;
 
 public class ExperimentDataRapidMinerImporter

@@ -27,7 +27,6 @@ package org.seage.problem.tsp.sannealing;
 
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
 import org.seage.metaheuristic.sannealing.Solution;
-import org.seage.metaheuristic.tabusearch.Move;
 import org.seage.problem.tsp.City;
 
 /**

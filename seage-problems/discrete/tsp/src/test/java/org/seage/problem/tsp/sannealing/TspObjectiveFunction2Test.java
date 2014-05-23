@@ -1,22 +1,16 @@
 package org.seage.problem.tsp.sannealing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.problem.IProblemProvider;
-import org.seage.aal.problem.Instance;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspProblemInstance;
-import org.seage.problem.tsp.sannealing.TspGreedySolution;
-import org.seage.problem.tsp.sannealing.TspObjectiveFunction2;
-import org.seage.problem.tsp.sannealing.TspRandomSolution;
-import org.seage.problem.tsp.sannealing.TspSolution;
 import org.seage.problem.tsp.tour.TspOptimalTour;
 import org.seage.problem.tsp.tour.TspOptimalTourBerlin52;
-import org.seage.problem.tsp.tour.TspOptimalTourPcb442;
 
 public class TspObjectiveFunction2Test 
 {

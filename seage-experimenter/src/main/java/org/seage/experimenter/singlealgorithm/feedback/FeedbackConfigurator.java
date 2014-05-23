@@ -13,7 +13,6 @@ import org.seage.experimenter.reporting.rapidminer.RapidMinerManager;
 import org.seage.experimenter.singlealgorithm.random.RandomConfigurator;
 
 import com.rapidminer.Process;
-import com.rapidminer.RapidMiner;
 import com.rapidminer.RepositoryProcessLocation;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
@@ -24,8 +23,6 @@ import com.rapidminer.operator.IOObjectCollection;
 import com.rapidminer.repository.Entry;
 import com.rapidminer.repository.ProcessEntry;
 import com.rapidminer.repository.RepositoryLocation;
-import com.rapidminer.repository.RepositoryManager;
-import com.rapidminer.repository.db.DBRepository;
 
 public class FeedbackConfigurator extends Configurator
 {

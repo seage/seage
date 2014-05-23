@@ -3,7 +3,6 @@ package org.seage.experimenter.reporting.rapidminer.repository;
 import java.util.Hashtable;
 
 import org.seage.data.xml.XmlHelper;
-import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.w3c.dom.Document;
 
 import com.rapidminer.example.Attribute;

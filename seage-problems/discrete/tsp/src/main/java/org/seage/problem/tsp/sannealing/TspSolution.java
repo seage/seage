@@ -27,8 +27,8 @@ package org.seage.problem.tsp.sannealing;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.seage.metaheuristic.sannealing.Solution;
-import org.seage.problem.tsp.City;
 
 /**
  *

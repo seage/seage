@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.Hashtable;
 
 import org.seage.data.xml.XmlHelper;
-import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.w3c.dom.Document;
 
 public abstract class H2DataTableCreator

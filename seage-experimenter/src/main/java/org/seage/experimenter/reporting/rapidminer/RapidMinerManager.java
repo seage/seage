@@ -5,15 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.w3c.dom.Element;
-
 import com.rapidminer.RapidMiner;
-import com.rapidminer.repository.Folder;
 import com.rapidminer.repository.Repository;
 import com.rapidminer.repository.RepositoryException;
 import com.rapidminer.repository.RepositoryManager;
-import com.rapidminer.repository.db.DBConnectionFolder;
-import com.rapidminer.repository.db.DBRepository;
 import com.rapidminer.repository.local.LocalRepository;
 import com.rapidminer.tools.jdbc.JDBCProperties;
 import com.rapidminer.tools.jdbc.connection.DatabaseConnectionService;

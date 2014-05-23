@@ -1,13 +1,10 @@
 package org.seage.experimenter.singlealgorithm.feedback;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
-import org.junit.Test;
-import org.seage.aal.problem.InstanceInfo;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
-import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 
 public class FeedbackConfiguratorTest

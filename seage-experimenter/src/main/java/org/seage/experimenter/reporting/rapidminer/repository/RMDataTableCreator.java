@@ -32,7 +32,6 @@ import java.util.logging.Logger;
 
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.reporting.IDocumentProcessor;
-import org.w3c.dom.Document;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.table.DataRow;

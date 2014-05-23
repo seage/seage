@@ -8,8 +8,6 @@ import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.w3c.dom.Document;
 
-import com.rapidminer.example.Attribute;
-
 public class ExperimentTasksTableCreator extends H2DataTableCreator implements IDocumentProcessor
 {
 	private PreparedStatement _stmt;

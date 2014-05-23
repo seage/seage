@@ -29,7 +29,6 @@ package org.seage.problem.tsp.particles;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
-import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.particles.ParticleSwarmAdapter;
 import org.seage.aal.problem.Instance;
 import org.seage.metaheuristic.particles.Particle;

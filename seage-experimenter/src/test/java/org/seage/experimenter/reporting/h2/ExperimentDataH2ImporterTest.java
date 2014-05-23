@@ -1,7 +1,5 @@
 package org.seage.experimenter.reporting.h2;
 
-import static org.junit.Assert.*;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 

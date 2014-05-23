@@ -25,7 +25,6 @@
  */
 package org.seage.problem.tsp.sannealing;
 
-import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TourProvider;
 
 /**

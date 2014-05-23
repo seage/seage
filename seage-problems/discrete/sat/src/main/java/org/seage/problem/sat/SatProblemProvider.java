@@ -46,7 +46,7 @@ public class SatProblemProvider extends ProblemProvider
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 	
-    public IPhenotypeEvaluator initPhenotypeEvaluator(Instance instance) throws Exception {
+    public IPhenotypeEvaluator<?> initPhenotypeEvaluator(Instance instance) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

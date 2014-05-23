@@ -126,12 +126,6 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 		_stopSearching = false;
 		_isRunning = true;
 
-		// Initial number of iteration
-		long innerIterationCount = 1;
-
-		// Initial number of successful iteration
-		long successIterationCount = 1;
-
 		// Initial probability
 		double probability = 0;
 
@@ -154,12 +148,9 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 		// and successful iteration count is less than zero
 		while ((_currentTemperature >= _minimalTemperature) /*&& (successIterationCount > 0)*/ && !_stopSearching)
 		{
-			innerIterationCount = successIterationCount = 0;
-
 			//while ((innerIterationCount < _maximalIterationCount) && (successIterationCount < _maximalSuccessIterationCount) && !_stopSearching)
 			{
-				_currentIteration++;
-				innerIterationCount++;
+				_currentIteration++;				
 
 				// Move to new locations
 				Solution modifiedSolution = _moveManager.getModifiedSolution(_currentSolution, _currentTemperature);
@@ -174,8 +165,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 					probability = Math.exp(-(modifiedSolution.getObjectiveValue() - _currentSolution.getObjectiveValue()) / _currentTemperature);
 
 				if (Math.random() <= probability)
-				{
-					successIterationCount++;
+				{					
 					_currentSolution = modifiedSolution;
 					if (modifiedSolution.compareTo(_bestSolution) > 0)
 					{

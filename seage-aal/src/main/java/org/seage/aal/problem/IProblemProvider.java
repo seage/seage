@@ -47,7 +47,7 @@ public interface IProblemProvider
 
     //  Initializes an evaluator of solutions in phenotype representation
     // (i.e. in general representation of a problem solution).
-    IPhenotypeEvaluator initPhenotypeEvaluator(Instance instance) throws Exception;
+    IPhenotypeEvaluator<?> initPhenotypeEvaluator(Instance instance) throws Exception;
 
     // Generates the very first solution(s).
     // Solutions can be random, hungry, or other.
