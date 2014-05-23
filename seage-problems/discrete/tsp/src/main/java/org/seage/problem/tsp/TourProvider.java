@@ -89,22 +89,22 @@ public class TourProvider
 
         for( int i = 0; i < avail.length; i++ )
         {
-            tour[i] = 0;
+            tour[i] = 1;
             avail[i] = i;
         }
-        tour[0] = (int)(r.nextInt(cities.length));
-        avail[tour[0]] = -1;
+        tour[0] = (int)(r.nextInt(cities.length))+1;
+        avail[tour[0]-1] = -1;
         for( int i = 1; i < tour.length; i++ )
         {
             int closest = -1;
             double dist = Double.MAX_VALUE;
             for( int j = 0; j < avail.length; j++ )
-                if( (norm(cities, tour[i-1], j ) < dist) && (avail[j] >= 0) )
+                if( (norm(cities, tour[i-1]-1, j ) < dist) && (avail[j] >= 0) )
                 {
-                    dist = norm(cities, tour[i-1], j );
+                    dist = norm(cities, tour[i-1]-1, j );
                     closest = j;
                 }   // end if: new nearest neighbor
-            tour[i] = closest;
+            tour[i] = closest+1;
             avail[closest] = -1;
         }   // end for
 
@@ -118,7 +118,7 @@ public class TourProvider
         Random random = new Random();
         List<Integer> listTour = new ArrayList<Integer>();
         for (int i = 0; i < length; i++) {
-            listTour.add(i);
+            listTour.add(i+1);
         }
 
         List<Integer> randTour = new ArrayList<Integer>();
@@ -140,7 +140,7 @@ public class TourProvider
     {
         Integer[] tour = new Integer[ length ];
         for(int i = 0; i < tour.length; i++)
-            tour[i] = i;
+            tour[i] = i+1;
 
         return tour;
     }

@@ -66,7 +66,7 @@ public class TspObjectiveFunction2 implements IObjectiveFunction
                 double dist = 0;
                 for (int i = 0; i < len; i++)
                 {
-                    dist += _matrix[tour[i]][i + 1 >= len ? tour[0] : tour[i + 1]];                    
+                    dist += _matrix[tour[i]-1][i + 1 >= len ? tour[0]-1 : tour[i + 1]-1];                    
                 }
                 /*for (int i = 0; i < len-1; i++)
                 {
@@ -96,37 +96,37 @@ public class TspObjectiveFunction2 implements IObjectiveFunction
                 {
                     //     | |
                     // A-B-C-D-E: swap C and D, say (works for symmetric matrix only)
-                    dist -= _matrix[tour[pos1L]][tour[pos1]];           // -BC
-                    dist -= _matrix[tour[pos2]][tour[pos2R]];   // -DE
-                    dist += _matrix[tour[pos1L]][tour[pos2]];           // +BD
-                    dist += _matrix[tour[pos1]][tour[pos2R]];   // +CE
-                    return new double[] { dist };
+                    dist -= _matrix[tour[pos1L]-1][tour[pos1]-1];           // -BC
+                    dist -= _matrix[tour[pos2]-1][tour[pos2R]-1];   // -DE
+                    dist += _matrix[tour[pos1L]-1][tour[pos2]-1];           // +BD
+                    dist += _matrix[tour[pos1]-1][tour[pos2R]-1];   // +CE
+                    return new double[] { solution.getObjectiveValue() + dist };
                 } // end if: pair swap
                 else if (delta==(len-1))
                 {
                 	// |       |
                     // A-B-C-D-E: swap A and E, say (works for symmetric matrix only)
-                    dist -= _matrix[tour[pos1]][tour[pos1R]];   // -AB
-                    dist -= _matrix[tour[pos2L]][tour[pos2]];   // -DE
-                    dist += _matrix[tour[pos1R]][tour[pos2]];   // +EB
-                    dist += _matrix[tour[pos1]][tour[pos2L]];   // +DA
-                    return new double[] { dist };
+                    dist -= _matrix[tour[pos1]-1][tour[pos1R]-1];   // -AB
+                    dist -= _matrix[tour[pos2L]-1][tour[pos2]-1];   // -DE
+                    dist += _matrix[tour[pos1R]-1][tour[pos2]-1];   // +EB
+                    dist += _matrix[tour[pos1]-1][tour[pos2L]-1];   // +DA
+                    return new double[] { solution.getObjectiveValue() +dist };
                 }
                 // Else the swap is separated by at least one customer
                 else
                 {                	
                     //   |     |
                     // A-B-C-D-E-F: swap B and E, say
-                    dist -= _matrix[tour[pos1L]][tour[pos1]];           // -AB
-                    dist -= _matrix[tour[pos1]][tour[pos1R]];         // -BC
-                    dist -= _matrix[tour[pos2L]][tour[pos2]];           // -DE
-                    dist -= _matrix[tour[pos2]][tour[pos2R]];   // -EF
+                    dist -= _matrix[tour[pos1L]-1][tour[pos1]-1];           // -AB
+                    dist -= _matrix[tour[pos1]-1][tour[pos1R]-1];         // -BC
+                    dist -= _matrix[tour[pos2L]-1][tour[pos2]-1];           // -DE
+                    dist -= _matrix[tour[pos2]-1][tour[pos2R]-1];   // -EF
 
-                    dist += _matrix[tour[pos1L]][tour[pos2]];           // +AE
-                    dist += _matrix[tour[pos2]][tour[pos1R]];         // +EC
-                    dist += _matrix[tour[pos2L]][tour[pos1]];           // +DB
-                    dist += _matrix[tour[pos1]][tour[pos2R]];   // +BF
-                    return new double[]{ dist };
+                    dist += _matrix[tour[pos1L]-1][tour[pos2]-1];           // +AE
+                    dist += _matrix[tour[pos2]-1][tour[pos1R]-1];         // +EC
+                    dist += _matrix[tour[pos2L]-1][tour[pos1]-1];           // +DB
+                    dist += _matrix[tour[pos1]-1][tour[pos2R]-1];   // +BF
+                    return new double[]{ solution.getObjectiveValue() + dist };
                 }   // end else: not a pair swap
             }   // end else: calculate incremental
         } catch (Exception ex)
@@ -158,7 +158,7 @@ public class TspObjectiveFunction2 implements IObjectiveFunction
     {
         double xDiff = x2 - x1;
         double yDiff = y2 - y1;
-        return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+        return Math.round(Math.sqrt(xDiff * xDiff + yDiff * yDiff));
     }   // end norm
 
 	@Override
