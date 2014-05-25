@@ -119,7 +119,7 @@ public class TspProblemProvider extends ProblemProvider
     }
 
     public IPhenotypeEvaluator<?> initPhenotypeEvaluator(Instance instance) throws Exception {
-        return new TspPhenotypeEvaluator((TspProblemInstance)instance);
+        return new TspPhenotypeEvaluator(((TspProblemInstance)instance).getCities());
     }
 
 }

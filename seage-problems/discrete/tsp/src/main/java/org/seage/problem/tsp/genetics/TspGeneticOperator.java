@@ -130,8 +130,8 @@ public class TspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, I
 
 		for (int i = 0; i < length; i++)
 		{
-			chromVals1.put(i, child1Chrom.getGene(i));
-			chromVals2.put(i, child2Chrom.getGene(i));
+			chromVals1.put(i+1, child1Chrom.getGene(i));
+			chromVals2.put(i+1, child2Chrom.getGene(i));
 		}
 
 		for (int i = ix; i < ix + crossLength; i++)
@@ -145,8 +145,8 @@ public class TspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, I
 
 			// int y1 = findGeneValueIndex(x2, child1Chrom);
 			// int y2 = findGeneValueIndex(x1, child2Chrom);
-			int y1 = chromVals1.get(x2);
-			int y2 = chromVals2.get(x1);
+			int y1 = chromVals1.get(x2)-1;
+			int y2 = chromVals2.get(x1)-1;
 
 			child1Chrom.swapGenes(i, y1);
 			child1Chrom.swapGenes(i, y2);

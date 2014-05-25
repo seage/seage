@@ -53,7 +53,9 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         	//String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
         	String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
         	//String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
+        	//String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
         	//String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
+        	
             new TspSimulatedAnnealingTest().run( path );
         }
         catch(Exception ex)
@@ -74,7 +76,7 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
 
         sa.setMaximalTemperature( 10000.0d );
         sa.setMinimalTemperature( 0.0001d);
-        sa.setAnnealingCoefficient( 0.999999);
+        sa.setAnnealingCoefficient( 0.9999999);
         sa.setMaximalInnerIterationCount(500);
         sa.setMaximalAcceptedSolutionsPerOneStepCount(500);
 

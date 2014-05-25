@@ -28,7 +28,7 @@ public class TspPhenotypeEvaluatorTest {
 	{
 		IProblemProvider provider = ProblemProvider.getProblemProviders().get("TSP");
 		Instance instance = provider.initProblemInstance(provider.getProblemInfo().getInstanceInfo(tour.Name));
-		TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator((TspProblemInstance)instance);
+		TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance)instance).getCities());
 		
 		Integer[] s = tour.OptimalTour;
 		TspOptimalTour.printTour(s);

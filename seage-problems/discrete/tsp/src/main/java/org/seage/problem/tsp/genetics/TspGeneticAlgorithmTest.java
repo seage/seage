@@ -47,7 +47,14 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     {
         try
         {
-            new TspGeneticAlgorithmTest().run(args[0]);
+        	String path = "data/tsp/eil51.tsp";//args[0];		// 426
+        	//String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
+        	//String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
+        	//String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
+        	//String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
+        	//String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
+        	
+            new TspGeneticAlgorithmTest().run(path);
         }
         catch(Exception ex)
         {
@@ -62,10 +69,10 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
         GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<Subject<Integer>>(new TspGeneticOperator(), new TspEvaluator(cities)); 
         gs.addGeneticSearchListener(this);
         gs.setEliteSubjectsPct(5);
-        gs.setMutatePopulationPct(1);
+        gs.setMutatePopulationPct(5);
         gs.setMutateChromosomeLengthPct(30);
         gs.setPopulationCount(500);
-        gs.setRandomSubjectsPct(10);
+        gs.setRandomSubjectsPct(5);
         gs.setCrossLengthPct(30);
         gs.setIterationToGo(100000);
         gs.startSearching(generateInitialSubjects(cities, 100));
