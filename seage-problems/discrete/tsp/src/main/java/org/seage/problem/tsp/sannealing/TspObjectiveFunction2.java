@@ -52,6 +52,7 @@ public class TspObjectiveFunction2 implements IObjectiveFunction
         _matrix = createMatrix(customers);
     }   // end constructor
 
+    
     public double[] evaluate(TspSolution solution, int[] move) throws Exception
     {
         try
@@ -67,10 +68,6 @@ public class TspObjectiveFunction2 implements IObjectiveFunction
                 {
                     dist += _matrix[tour[i]-1][i + 1 >= len ? tour[0]-1 : tour[i + 1]-1];                    
                 }
-                /*for (int i = 0; i < len-1; i++)
-                {
-                    dist += _matrix[tour[i]][tour[i + 1]];                    
-                }*/
 
                 return new double[]{ dist };
             } // end if: move == null

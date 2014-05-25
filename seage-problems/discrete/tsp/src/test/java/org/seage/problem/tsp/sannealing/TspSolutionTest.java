@@ -13,7 +13,7 @@ import org.seage.problem.tsp.TspProblemInstance;
 import org.seage.problem.tsp.tour.TspOptimalTour;
 import org.seage.problem.tsp.tour.TspOptimalTourBerlin52;
 
-public class TspGreedySolutionTest
+public class TspSolutionTest
 {
 	private TspOptimalTour _optimalTour;
 	private City[] _cities;
@@ -29,14 +29,14 @@ public class TspGreedySolutionTest
 	}
 
 	@Test
-	public void testGetTour() throws Exception
+	public void testTourValidity() throws Exception
 	{		
-		testGetTour(new TspRandomSolution(_cities.length));
-		testGetTour(new TspSortedSolution(_cities.length));
-		testGetTour(new TspGreedySolution(_cities));		
+		testTourValidity(new TspRandomSolution(_cities.length));
+		testTourValidity(new TspSortedSolution(_cities.length));
+		testTourValidity(new TspGreedySolution(_cities));		
 	}
 	
-	private void testGetTour(TspSolution solution)
+	private void testTourValidity(TspSolution solution)
 	{
 		assertEquals(_optimalTour.OptimalTour.length, solution.getTour().length);
 		Arrays.sort(solution.getTour());
