@@ -45,7 +45,13 @@ public class TspTabuSearchTest implements TabuSearchListener
     {
         try
         {
-        	String path = "data/tsp/eil51.tsp";//args[0];
+        	//String path = "data/tsp/eil51.tsp";//args[0];		// 426
+        	String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
+        	//String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
+        	//String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
+        	//String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
+        	//String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
+        	
             new TspTabuSearchTest().run(path);
         }
         catch(Exception ex)
@@ -62,13 +68,13 @@ public class TspTabuSearchTest implements TabuSearchListener
 
         TabuSearch ts = new TabuSearch(new TspGreedyStartSolution(cities),
                 new TspMoveManager(),
-                new TspObjectiveFunction2(cities),
+                new TspObjectiveFunction(cities),
                 new SimpleTabuList(50),
                 new BestEverAspirationCriteria(),
                 false);
 
         ts.addTabuSearchListener(this);
-        ts.setIterationsToGo(100000);
+        ts.setIterationsToGo(1000000);
         ts.startSolving();
     }
 
@@ -93,7 +99,7 @@ public class TspTabuSearchTest implements TabuSearchListener
     }
 
     public void tabuSearchStopped(TabuSearchEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        System.out.println("finished");
     }
 
     public void unimprovingMoveMade(TabuSearchEvent e) {

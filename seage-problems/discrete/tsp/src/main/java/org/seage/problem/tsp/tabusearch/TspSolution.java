@@ -34,32 +34,32 @@ import org.seage.problem.tsp.City;
  */
 public class TspSolution extends SolutionAdapter 
 {
-    protected int[] _tour;
+    protected Integer[] _tour;
     
     public TspSolution(){} // Appease clone()
 
     public TspSolution(City[] customers)
     {
         // Crudely initialize solution
-        _tour = new int[ customers.length ];
+        _tour = new Integer[ customers.length ];
         for( int i = 0; i < customers.length; i++ )
-            _tour[i] = i;
+            _tour[i] = i+1;
     }   // end constructor
     
     
     public Object clone()
     {
 		TspSolution copy = (TspSolution)super.clone();
-		copy._tour = (int[])this._tour.clone();
+		copy._tour = (Integer[])this._tour.clone();
         return copy;
     }   // end clone
 
-    public int[] getTour()
+    public Integer[] getTour()
     {
             return _tour;
     }
 
-    public void setTour(int[] tour)
+    public void setTour(Integer[] tour)
     {
             _tour = tour;
     }
@@ -68,7 +68,7 @@ public class TspSolution extends SolutionAdapter
     {
         StringBuffer s = new StringBuffer();
 
-        s.append( new Double(getObjectiveValue()[0]).toString().substring(0,10) +"\t" + hashCode());
+        s.append( new Double(getObjectiveValue()[0]).toString() +"\t" + hashCode());
 		//s.append( "Sequence: [ " );
         
 		//for( int i = 0; i < tour.length - 1; i++ )

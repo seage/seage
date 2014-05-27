@@ -12,10 +12,10 @@ import org.seage.problem.tsp.TspProblemInstance;
 import org.seage.problem.tsp.tour.TspOptimalTour;
 import org.seage.problem.tsp.tour.TspOptimalTourBerlin52;
 
-public class TspObjectiveFunction2Test 
+public class TspObjectiveFunctionTest 
 {
 	private TspOptimalTour _optimalTour;
-	private TspObjectiveFunction2 _objFunc;
+	private TspObjectiveFunction _objFunc;
 	private City[] _cities;
 	@Before
 	public void setUp() throws Exception {		
@@ -27,7 +27,7 @@ public class TspObjectiveFunction2Test
 		TspProblemInstance instance = (TspProblemInstance)provider.initProblemInstance(provider.getProblemInfo().getInstanceInfo(_optimalTour.Name));
 		
 		_cities = instance.getCities();
-		_objFunc = new TspObjectiveFunction2(_cities);		
+		_objFunc = new TspObjectiveFunction(_cities);		
 	}
 
 	@After

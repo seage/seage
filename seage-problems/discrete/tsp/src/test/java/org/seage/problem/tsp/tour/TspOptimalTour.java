@@ -26,6 +26,17 @@ public class TspOptimalTour
 		return result;
 	}
 	
+	public static Integer[] applySwapMove(Integer[] array, int[] move)
+	{
+		Integer[] result = array.clone();
+		
+		int a = result[move[0]];
+		result[move[0]] = result[move[1]];
+		result[move[1]] = a;
+		
+		return result;
+	}
+	
 	public static void printTour(Integer[] array)
 	{			
 		for(int i=0;i<array.length;i++)

@@ -62,7 +62,7 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
                 for(int i=0;i<source.length;i++)
                 {
                     TspSolution s = new TspSolution();
-                    int[] tour = new int[source[i].length];
+                    Integer[] tour = new Integer[source[i].length];
                     for(int j=0;j<tour.length;j++)
                         tour[j] = (Integer)source[i][j];
                     s.setTour(tour);

@@ -173,7 +173,7 @@ public class TabuSearch extends TabuSearchBase
         //setCurrentSolution( initialSolution );
         //setBestSolution( (Solution) initialSolution.clone() );
         this.currentSolution = initialSolution;
-        this.bestSolution = (Solution)initialSolution.clone();
+        //this.bestSolution = (Solution)initialSolution.clone(); // TODO: A - Review this commented line 
         
         // Set tabu objects
         this.objectiveFunction      =   objectiveFunction;

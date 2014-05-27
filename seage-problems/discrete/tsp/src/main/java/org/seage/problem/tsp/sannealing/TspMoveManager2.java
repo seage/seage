@@ -37,9 +37,9 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class TspMoveManager2 implements IMoveManager
 {
 	Random rnd = new Random(1);
-	private TspObjectiveFunction2 _objFunc;
+	private TspObjectiveFunction _objFunc;
 	
-	public TspMoveManager2(TspObjectiveFunction2 objFunc)
+	public TspMoveManager2(TspObjectiveFunction objFunc)
 	{
 		_objFunc = objFunc;
 	}

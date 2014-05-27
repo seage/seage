@@ -45,33 +45,18 @@ import org.seage.problem.tsp.Visualizer;
  */
 public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 {
-	static String instance = "eil51";
-	//static String instance = "berlin52";
-	//static String instance = "kroA100";
-	//static String instance = "kroA200";
-	//static String instance = "pcb442";
-	//static String instance = "u574";
-	//static String instance = "u724";
-	//static String instance = "pcb1173";
-	//static String instance = "u1817";
-	//static String instance = "u2152";
-	//static String instance = "u2319";
-	//static String instance = "rl1323";
-	//static String instance = "fl1400";
-	//static String instance = "vm1748";
-	//static String instance = "fl3795";
-	//static String instance = "pcb3038";
-	//static String instance = "usa13509";
-	
 	private int _edges;
 	
 	public static void main(String[] args)
 	{
 		try
 		{
-			//String path = "data/eil51.tsp";
-			//String path = "data/d657.tsp";
-           String path = "data/"+instance+".tsp";
+			String path = "data/tsp/eil51.tsp";//args[0];		// 426
+        	//String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
+        	//String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
+        	//String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
+        	//String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
+        	//String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
                         
 			new TspAntColonyTest().run(path);
 		}
@@ -98,8 +83,8 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	{
 		City[] cities = CityProvider.readCities(new FileInputStream(path));
 		_edges = cities.length * (cities.length-1)/2;
-		int iterations = 300, numAnts = 500;
-		double defaultPheromone = 0.8, localEvaporation = 0.8, quantumPheromone = 100;
+		int iterations = 1000, numAnts = 1000;
+		double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
 		double alpha = 1, beta = 3;
 		TspGraph graph = new TspGraph(cities);
 		System.out.println("Loaded ...");
@@ -141,8 +126,8 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 //		System.out.println();
 		
 		int best = (int)colony.getGlobalBest();
-		String path2 = "vizualization/ants-"+instance+"-"+best+"-"+System.currentTimeMillis()+".png";
-		Visualizer.instance().createGraph(cities, tour, path2, 1000, 800);
+		//String path2 = "vizualization/ants-"+instance+"-"+best+"-"+System.currentTimeMillis()+".png";
+		//Visualizer.instance().createGraph(cities, tour, path2, 1000, 800);
 	}
 
 	@Override

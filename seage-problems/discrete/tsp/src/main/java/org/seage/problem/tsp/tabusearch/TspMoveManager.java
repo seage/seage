@@ -25,6 +25,8 @@
  */
 package org.seage.problem.tsp.tabusearch;
 
+import java.util.ArrayList;
+
 import org.seage.metaheuristic.tabusearch.*;
 
 /**
@@ -38,21 +40,18 @@ public class TspMoveManager implements MoveManager
     @Override
     public Move[] getAllMoves( Solution solution )
     {
-        int[] tour = ((TspSolution)solution)._tour;
-        Move[] buffer = new Move[ tour.length*tour.length ];
-        int nextBufferPos = 0;
+    	Integer[] tour = ((TspSolution)solution)._tour;
+        ArrayList<Move> buffer = new ArrayList<Move>();
+        int span = Math.max(5, tour.length/5);        
         
         // Generate moves that move each customer
         // forward and back up to five spaces.
-        for (int i = 1; i < tour.length; i++)
-            for (int j = -tour.length/5; j <= tour.length/5; j++)
-                if ((i + j >= 1) && (i + j < tour.length) && (j != 0))
-                    buffer[nextBufferPos++] = new TspSwapMove(tour[i], j);
-
-        Move[] moves = new Move[ nextBufferPos];
-        System.arraycopy( buffer, 0, moves, 0, nextBufferPos );
-        
-        return moves;
+        for (int i = 0; i < tour.length; i++)
+            for (int j = -span; j <= span; j++)
+                if ((i + j > i) && (i + j < tour.length) /*&& (i != j)*/)
+                    buffer.add(new TspSwapMove(i, i + j));
+                
+        return buffer.toArray(new Move[]{});
     }   // end getAllMoves
     
 }   // end class MyMoveManager

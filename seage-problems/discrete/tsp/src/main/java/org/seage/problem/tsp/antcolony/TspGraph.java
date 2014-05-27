@@ -57,7 +57,7 @@ public class TspGraph extends Graph {
     public double getNodesDistance(Node start, Node end) {
         double _dX = (_cities[start.getID()-1].X - _cities[end.getID()-1].X);
         double _dY = (_cities[start.getID()-1].Y - _cities[end.getID()-1].Y);
-        return Math.sqrt(_dX * _dX + _dY * _dY);
+        return Math.round(Math.sqrt(_dX * _dX + _dY * _dY));
     }
 
     /**

@@ -51,8 +51,8 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         	
         	//String path = "data/tsp/eil51.tsp";//args[0];		// 426
         	//String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
-        	String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
-        	//String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
+        	//String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
+        	String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
         	//String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
         	//String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
         	
@@ -71,7 +71,7 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 
-        TspObjectiveFunction2 objFunction = new TspObjectiveFunction2(_cities);
+        TspObjectiveFunction objFunction = new TspObjectiveFunction(_cities);
         SimulatedAnnealing sa = new SimulatedAnnealing(objFunction  , new TspMoveManager2(objFunction) );
 
         sa.setMaximalTemperature( 10000.0d );
