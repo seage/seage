@@ -154,7 +154,6 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	@Override
 	public void noChangeInValueIterationMade(AntColonyEvent e)
 	{
-		// TODO Auto-generated method stub
 
 	}
 

@@ -106,7 +106,7 @@ public class LogReportCreator implements ILogReport {
             }
         };
         
-        // TODO: B Number of names of parameters is fixed, for future will be good to create a floating number of names of parameters 
+        // TODO: B - Number of names of parameters is fixed, for future will be good to create a floating number of names of parameters 
         
         int numberOfParameters = 10;
         StringBuilder sb = new StringBuilder();

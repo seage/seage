@@ -38,7 +38,6 @@ public class TestAntColonyAdapter extends AntColonyAdapter
 			@Override
 			public int compare(Ant o1, Ant o2)
 			{
-				// TODO Auto-generated method stub
 				return (int)(o1.getDistanceTravelled()-o2.getDistanceTravelled());
 			}
 			

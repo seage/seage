@@ -60,8 +60,8 @@ public class QapMoveManager implements IMoveManager
 
 	@Override
 	public Solution getModifiedSolution(Solution solution,
-			double currentTemperature) throws Exception {
-		// TODO Auto-generated method stub
+			double currentTemperature) throws Exception 
+	{
 		return null;
 	}
 

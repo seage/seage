@@ -6,9 +6,8 @@ import org.seage.aal.reporter.AlgorithmReport;
 
 public abstract class GraspAlgorithmAdapter extends AlgorithmAdapterImpl{
 
-	public void setParameters(AlgorithmParams params) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void setParameters(AlgorithmParams params) throws Exception 
+	{		
 	}
 
 	@Override
@@ -20,20 +19,20 @@ public abstract class GraspAlgorithmAdapter extends AlgorithmAdapterImpl{
 	}
 
 	@Override
-	public void stopSearching() throws Exception {
-		// TODO Auto-generated method stub
+	public void stopSearching() throws Exception
+	{
 		
 	}
 
 	@Override
-	public boolean isRunning() {
-		// TODO Auto-generated method stub
+	public boolean isRunning() 
+	{
 		return false;
 	}
 
 	@Override
-	public AlgorithmReport getReport() throws Exception {
-		// TODO Auto-generated method stub
+	public AlgorithmReport getReport() throws Exception 
+	{
 		return null;
 	}
 

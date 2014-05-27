@@ -111,7 +111,6 @@ public class TourProvider
         return tour;
     }
 
-    // TODO: A - create better implementation
     public static Integer[] createRandomTour(int length)
     {
         Integer[] tour = new Integer[ length ];

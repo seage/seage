@@ -47,8 +47,7 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
     
     public ParticleSwarmAdapterTest() throws Exception
     {
-        super();
-        // TODO Auto-generated constructor stub
+        super();        
     }
 
     @Before

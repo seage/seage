@@ -80,9 +80,7 @@ public class GeneticAlgorithmTest {
 
 		@Override
 		public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e)
-		{
-			// TODO Auto-generated method stub
-			
+		{			
 		}
 
 		@Override
@@ -102,14 +100,12 @@ public class GeneticAlgorithmTest {
 		@Override
 		public void iterationPerformed(GeneticAlgorithmEvent<Subject<Integer>> e)
 		{
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Integer>> e)
 		{
-			// TODO Auto-generated method stub
 			
 		}
 

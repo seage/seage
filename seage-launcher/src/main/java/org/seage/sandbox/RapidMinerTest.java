@@ -122,8 +122,9 @@ public class RapidMinerTest {
 			//op.getElementAt(0)
 			//Process process2 = new Process(new File());
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}
@@ -174,8 +175,9 @@ public void testCustomExampleSetOnInput0() {
 			
 			//Process process2 = new Process(new File());
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}

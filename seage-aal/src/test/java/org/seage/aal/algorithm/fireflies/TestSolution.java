@@ -15,7 +15,6 @@ public class TestSolution  extends SolutionAdapter
     @Override
     public boolean equals(Solution s)
     {
-        // TODO Auto-generated method stub
         return false;
     }
 

@@ -137,7 +137,6 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 	@Override
 	public void newBestSolutionFound(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e)
 	{
-		// TODO Auto-generated method stub
 
 	}
 
@@ -151,7 +150,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 	@Override
 	public void noChangeInValueIterationMade(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e)
 	{
-		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

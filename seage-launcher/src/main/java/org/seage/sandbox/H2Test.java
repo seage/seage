@@ -16,7 +16,6 @@ public class H2Test
 		}
 		catch (Exception e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -39,7 +38,7 @@ public class H2Test
 		}
 		finally
 		{
-			conn.close();// TODO: handle exception
+			conn.close();// TODO: B - handle exception
 		}
         
         long t1 = System.currentTimeMillis();
@@ -87,7 +86,6 @@ public class H2Test
 			}
 			catch (Exception e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			finally
@@ -99,7 +97,6 @@ public class H2Test
 					}
 					catch (SQLException e)
 					{
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 			}

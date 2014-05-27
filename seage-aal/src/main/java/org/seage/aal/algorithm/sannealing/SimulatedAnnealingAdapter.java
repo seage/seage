@@ -159,14 +159,12 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl
 		@Override
 		public void iterationPerformed(SimulatedAnnealingEvent e)
 		{
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void noChangeInValueIterationMade(SimulatedAnnealingEvent e)
 		{
-			// TODO Auto-generated method stub
 			
 		}
     }

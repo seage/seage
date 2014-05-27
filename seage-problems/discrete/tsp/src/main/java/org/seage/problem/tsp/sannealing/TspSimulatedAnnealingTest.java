@@ -118,7 +118,6 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
 	@Override
 	public void newBestSolutionFound(SimulatedAnnealingEvent e)
 	{
-		// TODO Auto-generated method stub
 		ISimulatedAnnealing sa = e.getSimulatedAnnealing();
 		System.out.println(String.format("New best: %f - iter: %d - temp: %f", sa.getBestSolution().getObjectiveValue(), sa.getCurrentIteration(), sa.getCurrentTemperature()));
 	}

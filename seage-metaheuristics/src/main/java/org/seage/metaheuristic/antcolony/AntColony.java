@@ -221,7 +221,6 @@ public class AntColony
 
 	public Graph getGraph()
 	{
-		// TODO Auto-generated method stub
 		return _graph;
 	}
 }
