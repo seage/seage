@@ -48,12 +48,10 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
         
         _algParams = new AlgorithmParams();       
         
-        _algParams.putValue("annealCoeficient", 0.1);
-        _algParams.putValue("maxInnerIterations", 10);
+        //_algParams.putValue("annealCoeficient", 0.1);
+        _algParams.putValue("numIterations", 10);
         _algParams.putValue("maxTemperature", 100);
-        _algParams.putValue("minTemperature", 1);
-        _algParams.putValue("maxOneStepAcceptedSolutions", 1);
-        _algParams.putValue("numSolutions", 1);
+        _algParams.putValue("minTemperature", 1);        
         
         _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
     }
@@ -77,12 +75,9 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     public void testAlgorithmWithParamsAtZero() throws Exception
     {
     	AlgorithmParams params = new AlgorithmParams();
-        params.putValue("annealCoeficient", 0);
-        params.putValue("maxInnerIterations", 0);
+        params.putValue("numIterations", 0);
         params.putValue("maxTemperature", 0);
         params.putValue("minTemperature", 0);
-        params.putValue("maxOneStepAcceptedSolutions", 0);
-        params.putValue("numSolutions", 0);
         _tester.setAlgParameters(params);
         _tester.testAlgorithmWithParamsAtZero();
     }
@@ -92,12 +87,9 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     public void testAsyncRunning() throws Exception
     {
     	AlgorithmParams params = new AlgorithmParams();
-        params.putValue("annealCoeficient", 0.999);
-        params.putValue("maxInnerIterations", 1000000);
+        params.putValue("numIterations", 1000000);
         params.putValue("maxTemperature", 100000);
         params.putValue("minTemperature", 1);
-        params.putValue("maxOneStepAcceptedSolutions", 100000);
-        params.putValue("numSolutions", 1);
         _tester.setAlgParameters(params);
         _tester.testAsyncRunning();        
     }

@@ -82,26 +82,28 @@ public class TspProblemProvider extends ProblemProvider
         Random r = new Random(randomSeed);
 
         result[0] = TourProvider.createGreedyTour(cities, randomSeed);
-        
-        for(int k=1;k<numTours;k++)
-        {
-            int[] initTour = new int[tourLenght];
-
-            result[k] = new Integer[tourLenght];
-
-            for (int i = 0; i < tourLenght; i++)
-            {
-                int ix = r.nextInt(tourLenght);
-
-                while (initTour[ix] != 0)
-                {
-                    ix = (ix + 1) % tourLenght;
-                }
-                initTour[ix] = 1;
-                result[k][i] = ix;
-            }
-
-        }
+        for(int i=1;i<numTours;i++)
+        	result[i] = TourProvider.createRandomTour(cities.length);
+        	
+//        for(int k=1;k<numTours;k++)
+//        {
+//            int[] initTour = new int[tourLenght];
+//
+//            result[k] = new Integer[tourLenght];
+//
+//            for (int i = 0; i < tourLenght; i++)
+//            {
+//                int ix = r.nextInt(tourLenght);
+//
+//                while (initTour[ix] != 0)
+//                {
+//                    ix = (ix + 1) % tourLenght;
+//                }
+//                initTour[ix] = 1;
+//                result[k][i] = ix;
+//            }
+//
+//        }
         return result;
     }
 

@@ -87,7 +87,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 	private IObjectiveFunction _objectiveFunction;
 
 	/**
-	 * Maximal count of iterations
+	 * Maximal number of iterations
 	 */
 	private long _maximalIterationCount;
 
@@ -129,6 +129,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 		// Initial probability
 		double probability = 0;
 
+		
 		_currentIteration = 0;
 
 		// At first current temperature is same such as maximal temperature		
@@ -136,6 +137,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 		_minimalTemperature = Math.min(_minimalTemperature, _maximalTemperature);		
 		_maximalTemperature = _currentTemperature;
 
+		_annealCoefficient = Math.exp(Math.log(_minimalTemperature/_maximalTemperature)/_maximalIterationCount);
 		// The best solution is same as current solution
 		solution.setObjectiveValue(_objectiveFunction.getObjectiveValue(solution));		
 		_bestSolution = _currentSolution = solution;		
@@ -146,7 +148,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 		// Iterates until current temperature is equal or greather than minimal
 		// temperature
 		// and successful iteration count is less than zero
-		while ((_currentTemperature >= _minimalTemperature) /*&& (successIterationCount > 0)*/ && !_stopSearching)
+		while ((_maximalIterationCount >= _currentIteration) /*&& (successIterationCount > 0)*/ && !_stopSearching)
 		{
 			//while ((innerIterationCount < _maximalIterationCount) && (successIterationCount < _maximalSuccessIterationCount) && !_stopSearching)
 			{
@@ -223,10 +225,10 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 		return _currentTemperature;
 	}
 
-	public void setAnnealingCoefficient(double alpha)
-	{
-		this._annealCoefficient = alpha;
-	}
+//	public void setAnnealingCoefficient(double alpha)
+//	{
+//		this._annealCoefficient = alpha;
+//	}
 
 	public double getAnnealingCoefficient()
 	{
@@ -253,20 +255,20 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
 		return _maximalIterationCount;
 	}
 
-	public void setMaximalInnerIterationCount(long _maximalIterationCount)
+	public void setMaximalIterationCount(long maximalIterationCount)
 	{
-		this._maximalIterationCount = _maximalIterationCount;
+		_maximalIterationCount = maximalIterationCount;
 	}
 
-	public long getMaximalSuccessIterationCount()
-	{
-		return _maximalSuccessIterationCount;
-	}
+//	public long getMaximalSuccessIterationCount()
+//	{
+//		return _maximalSuccessIterationCount;
+//	}
 
-	public void setMaximalAcceptedSolutionsPerOneStepCount(long _maximalSuccessIterationCount)
-	{
-		this._maximalSuccessIterationCount = _maximalSuccessIterationCount;
-	}
+//	public void setMaximalAcceptedSolutionsPerOneStepCount(long _maximalSuccessIterationCount)
+//	{
+//		this._maximalSuccessIterationCount = _maximalSuccessIterationCount;
+//	}
 
 	public boolean isRunning()
 	{

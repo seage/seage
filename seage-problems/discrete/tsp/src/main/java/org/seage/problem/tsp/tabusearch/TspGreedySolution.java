@@ -25,46 +25,20 @@
  */
 package org.seage.problem.tsp.tabusearch;
 
-import org.seage.metaheuristic.tabusearch.*;
+import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TourProvider;
 
 /**
  *
  * @author Richard Malek
  */
-public class TspSwapMove implements Move 
-{
-    public int ix1;
-    public int ix2;
-    private int _hashCode;
 
-	public TspSwapMove(int ix1, int ix2)
-    {   
-        this.ix1 = ix1;
-        this.ix2 = ix2;
-        _hashCode = ix1*1000000+ix2;
-    }   // end constructor
-    
-    
-    public void operateOn( Solution soln )
+public class TspGreedySolution extends TspSolution 
+{
+	public TspGreedySolution(City[] cities) throws Exception
     {
-    	Integer[] tour = ((TspSolution)soln)._tour;
-        
-        // Swap
-        int tmpIx = tour[ix1];
-        tour[ix1] = tour[ix2];
-        tour[ix2] = tmpIx;
-    }   // end operateOn
-    
-    
-    /** Identify a move for SimpleTabuList */
-    public int hashCode()
-    {   
-        return _hashCode;
-    }   // end hashCode
-    
-    public String toString()
-    {
-    	return "{"+ix1 + ", "+ix2+"}";
+        super( cities);
+        _tour = TourProvider.createGreedyTour( cities, System.currentTimeMillis());        
     }
     
-}   // end class MySwapMove
+}   // end class TspGreedyStartSolution

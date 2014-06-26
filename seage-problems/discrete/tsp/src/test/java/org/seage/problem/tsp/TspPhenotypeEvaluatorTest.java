@@ -46,7 +46,7 @@ public class TspPhenotypeEvaluatorTest {
 		TspOptimalTour.printTour(s);
 		assertEquals(tour.OptimalLength, (int)evaluator.evaluate(s)[0]);
 		
-		
+		double[] val = null;
 		s = TspOptimalTour.applySwapMove(s, new int[]{0, 1});
 		s = TspOptimalTour.applySwapMove(s, new int[]{10, 12});
 		s = TspOptimalTour.applySwapMove(s, new int[]{6, 5});

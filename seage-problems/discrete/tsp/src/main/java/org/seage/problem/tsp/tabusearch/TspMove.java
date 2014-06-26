@@ -26,47 +26,45 @@
 package org.seage.problem.tsp.tabusearch;
 
 import org.seage.metaheuristic.tabusearch.*;
-import org.seage.problem.tsp.City;
 
 /**
  *
  * @author Richard Malek
  */
-public class TspSolution extends SolutionAdapter 
+public class TspMove implements Move 
 {
-    protected Integer[] _tour;    
-    
-	public TspSolution(){} // Appease clone()
+    public int ix1;
+    public int ix2;
 
-    public TspSolution(City[] customers)
-    {
-        // Crudely initialize solution
-        _tour = new Integer[ customers.length ];
-        for( int i = 0; i < customers.length; i++ )
-            _tour[i] = i+1;
+	public TspMove(int ix1, int ix2)
+    {   
+        this.ix1 = ix1;
+        this.ix2 = ix2;
     }   // end constructor
     
     
-    public Object clone()
+    public void operateOn( Solution soln )
     {
-		TspSolution copy = (TspSolution)super.clone();
-		copy._tour = (Integer[])this._tour.clone();
-        return copy;
-    }   // end clone
-
-    public Integer[] getTour()
-    {
-    	return _tour;
-    }
-
-    public void setTour(Integer[] tour)
-    {
-    	_tour = tour;
-    }
+    	TspSolution tspSoln = (TspSolution)soln; 
+    	Integer[] tour = tspSoln._tour;
+        
+        // Swap
+        int tmpIx = tour[ix1];
+        tour[ix1] = tour[ix2];
+        tour[ix2] = tmpIx;        
+    }   // end operateOn
+    
+    
+    /** Identify a move for SimpleTabuList */
+    public int hashCode()
+    {   
+        //return _hashCode;
+        return ix1*1000000+ix2;
+    }   // end hashCode
     
     public String toString()
     {
-        return String.format("%f - %d", getObjectiveValue()[0], hashCode());
-    }   // end toString
+    	return "{"+ix1 + ", "+ix2+"}";
+    }
     
-}   // end class MySolution
+}   // end class MySwapMove

@@ -34,6 +34,12 @@ public class TspMoveBasedEvaluator
                 //int mv = (TspSwapMove) move;
                 int pos1 = move[0];
                 int pos2 = move[1];
+                if(pos1>pos2)
+                {
+                	int a = pos1;
+                	pos1 = pos2;
+                	pos2 = a;
+                }
                 
                 // Prior objective value
                 double dist = 0;//solution.getObjectiveValue();

@@ -46,11 +46,12 @@ public class TspTabuSearchTest implements TabuSearchListener
         try
         {
         	//String path = "data/tsp/eil51.tsp";//args[0];		// 426
-        	String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
+        	//String path = "data/tsp/eil101.tsp";//args[0];		// 
+        	//String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
         	//String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
         	//String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
         	//String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
-        	//String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
+        	String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
         	
             new TspTabuSearchTest().run(path);
         }
@@ -66,7 +67,10 @@ public class TspTabuSearchTest implements TabuSearchListener
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + cities.length);
 
-        TabuSearch ts = new TabuSearch(new TspGreedyStartSolution(cities),
+        TabuSearch ts = new TabuSearch(
+        		//new Tspr
+        		//new TspRandomSolution(cities),
+        		new TspGreedySolution(cities),
                 new TspMoveManager(),
                 new TspObjectiveFunction(cities),
                 new SimpleTabuList(50),
@@ -74,12 +78,12 @@ public class TspTabuSearchTest implements TabuSearchListener
                 false);
 
         ts.addTabuSearchListener(this);
-        ts.setIterationsToGo(1000000);
+        ts.setIterationsToGo(1500000);
         ts.startSolving();
     }
 
     public void newBestSolutionFound(TabuSearchEvent e) {
-        System.out.println(e.getTabuSearch().getBestSolution().toString());
+        System.out.println(e.getTabuSearch().getBestSolution().toString()+" - "+e.getTabuSearch().getIterationsCompleted());
     }
 
     public void improvingMoveMade(TabuSearchEvent e) {

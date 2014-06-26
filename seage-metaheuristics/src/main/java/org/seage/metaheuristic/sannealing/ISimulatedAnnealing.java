@@ -38,13 +38,9 @@ public interface ISimulatedAnnealing
     public double getCurrentTemperature();
 
     double getAnnealingCoefficient();
-    void setAnnealingCoefficient(double alpha);
 
     long getMaximalIterationCount();
-    void setMaximalInnerIterationCount(long _maximalIterationCount);
-
-    long getMaximalSuccessIterationCount();
-    void setMaximalAcceptedSolutionsPerOneStepCount(long _maximalSuccessIterationCount);
+    void setMaximalIterationCount(long maximalIterationCount);
 
     long getCurrentIteration();
 

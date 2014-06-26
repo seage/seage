@@ -83,9 +83,13 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	{
 		City[] cities = CityProvider.readCities(new FileInputStream(path));
 		_edges = cities.length * (cities.length-1)/2;
-		int iterations = 1000, numAnts = 1000;
-		double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
-		double alpha = 1, beta = 3;
+		int iterations = 10000;
+//		int numAnts = 500;
+//		double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
+//		double alpha = 1, beta = 3;
+		int numAnts = 46;
+		double defaultPheromone = 0.491, localEvaporation = 0.718, quantumPheromone = 43;
+		double alpha = 1.0, beta = 2.3;
 		TspGraph graph = new TspGraph(cities);
 		System.out.println("Loaded ...");
 		AntBrain brain = new TspAntBrain(graph, graph.getNodes().get(1));
@@ -147,7 +151,11 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	@Override
 	public void newBestSolutionFound(AntColonyEvent e)
 	{
-		System.out.println("### new best: "+ e.getAntColony().getCurrentIteration()+" - " + e.getAntColony().getGlobalBest());
+		System.out.println(String.format("%f - %d - %d/%d", 
+				e.getAntColony().getGlobalBest(),
+				e.getAntColony().getCurrentIteration(),
+				e.getAntColony().getGraph().getEdges().size(),
+				_edges));
 
 	}
 
@@ -160,8 +168,8 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	@Override
 	public void iterationPerformed(AntColonyEvent e)
 	{
-		System.out.println("iterationPerformed: " + e.getAntColony().getCurrentIteration());
-		System.out.println(" - edges: " + e.getAntColony().getGraph().getEdges().size() +" / "+_edges);
+		//System.out.println("iterationPerformed: " + e.getAntColony().getCurrentIteration());
+		//System.out.println(" - edges: " + e.getAntColony().getGraph().getEdges().size() +" / "+_edges);
 		
 	}
 }

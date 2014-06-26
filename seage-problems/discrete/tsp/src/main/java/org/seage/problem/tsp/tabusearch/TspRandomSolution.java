@@ -33,12 +33,12 @@ import org.seage.problem.tsp.TourProvider;
  * @author Richard Malek
  */
 
-public class TspGreedyStartSolution extends TspSolution 
+public class TspRandomSolution extends TspSolution 
 {
-	public TspGreedyStartSolution(City[] cities) throws Exception
+	public TspRandomSolution(City[] cities) throws Exception
     {
         super( cities);
-        _tour = TourProvider.createGreedyTour( cities, System.currentTimeMillis());        
+        _tour = TourProvider.createRandomTour( cities.length);        
     }
     
 }   // end class TspGreedyStartSolution

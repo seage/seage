@@ -45,12 +45,10 @@ import org.seage.metaheuristic.sannealing.Solution;
  * 
  * @author Jan Zmatlik
  */
-@AlgorithmParameters({ 
-	@Parameter(name = "annealCoeficient", min = 0.5, max = 1, init = 0.99), 
-	@Parameter(name = "maxInnerIterations", min = 1, max = 1000000, init = 100),
-    @Parameter(name = "maxTemperature", min = 10, max = 1000000, init = 100), 
-    @Parameter(name = "minTemperature", min = 0, max = 10000, init = 1),
-    @Parameter(name = "maxOneStepAcceptedSolutions", min = 0, max = 1000000, init = 100), 
+@AlgorithmParameters({	
+	@Parameter(name = "numIterations", min = 1, max = 999999999, init = 100),
+    @Parameter(name = "maxTemperature", min = 1000, max = 999999999, init = 100), 
+    @Parameter(name = "minTemperature", min = 0, max = 99999, init = 1),
     @Parameter(name = "numSolutions", min = 1, max = 1, init = 1) })
 public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl
 {
@@ -116,9 +114,9 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl
 
         _simulatedAnnealing.setMaximalTemperature(_params.getValueInt("maxTemperature"));
         _simulatedAnnealing.setMinimalTemperature(_params.getValueDouble("minTemperature"));
-        _simulatedAnnealing.setAnnealingCoefficient(_params.getValueDouble("annealCoeficient"));
-        _simulatedAnnealing.setMaximalInnerIterationCount(_params.getValueInt("maxInnerIterations"));
-        _simulatedAnnealing.setMaximalAcceptedSolutionsPerOneStepCount(_params.getValueInt("maxOneStepAcceptedSolutions"));        
+        //_simulatedAnnealing.setAnnealingCoefficient(_params.getValueDouble("annealCoeficient"));
+        _simulatedAnnealing.setMaximalIterationCount(_params.getValueInt("numIterations"));
+        //_simulatedAnnealing.setMaximalAcceptedSolutionsPerOneStepCount(_params.getValueInt("maxOneStepAcceptedSolutions"));        
     }
 
     private class SimulatedAnnealingListener implements IAlgorithmListener<SimulatedAnnealingEvent>

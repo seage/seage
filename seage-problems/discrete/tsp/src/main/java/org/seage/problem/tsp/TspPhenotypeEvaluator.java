@@ -29,7 +29,7 @@ package org.seage.problem.tsp;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 
 /**
- *
+ * TSP phenotype is a sequence of city IDs starting at _1_ 
  * @author Rick
  */
 public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<Integer>

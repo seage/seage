@@ -228,15 +228,15 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
 					"CREATE TABLE IF NOT EXISTS AlgorithmParams_SimulatedAnnealing"+
 					"("+
 					"configID VARCHAR,"+
-					"annealCoeficient DOUBLE,"+
-					"maxInnerIterations DOUBLE,"+
+					//"annealCoeficient DOUBLE,"+
+					"numIterations DOUBLE,"+
 					"maxTemperature DOUBLE,"+
 					"minTemperature DOUBLE,"+
-					"maxOneStepAcceptedSolutions DOUBLE,"+
+					//"maxOneStepAcceptedSolutions DOUBLE,"+
 					"numSolutions DOUBLE,"+
 					")";
             String insertQuery = 
-					"INSERT INTO AlgorithmParams_SimulatedAnnealing VALUES(?,?,?,?,?,?,?)";
+					"INSERT INTO AlgorithmParams_SimulatedAnnealing VALUES(?,?,?,?,?)";
             
             Statement stmt = _conn.createStatement();	
     		stmt.execute(queryCreate);
@@ -244,11 +244,11 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
                        
             Hashtable<String, XmlHelper.XPath> algSAXPaths = new Hashtable<String, XmlHelper.XPath>();
             algSAXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
-            algSAXPaths.put("annealCoeficient", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@annealCoeficient"));
-            algSAXPaths.put("maxInnerIterations", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxInnerIterations"));
+            //algSAXPaths.put("annealCoeficient", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@annealCoeficient"));
+            algSAXPaths.put("numIterations", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numIterations"));
             algSAXPaths.put("maxTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxTemperature"));
             algSAXPaths.put("minTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@minTemperature"));
-            algSAXPaths.put("maxOneStepAcceptedSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxOneStepAcceptedSolutions"));
+            //algSAXPaths.put("maxOneStepAcceptedSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxOneStepAcceptedSolutions"));
             algSAXPaths.put("numSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
             _versionedXPaths.put(VERSION, algSAXPaths);
         }
@@ -263,12 +263,12 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
     				
     		_stmt.clearParameters();
     		_stmt.setString(1, getVersionedValue(doc, "configID", version));    
-    		_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "annealCoeficient", version)));
-    		_stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "maxInnerIterations", version)));
-    		_stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "maxTemperature", version)));
-    		_stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "minTemperature", version)));
-    		_stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "maxOneStepAcceptedSolutions", version)));
-    		_stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
+    		//_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "annealCoeficient", version)));
+    		_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "numIterations", version)));
+    		_stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "maxTemperature", version)));
+    		_stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "minTemperature", version)));
+    		//_stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "maxOneStepAcceptedSolutions", version)));
+    		_stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
     		
     		_stmt.executeUpdate();
                                    

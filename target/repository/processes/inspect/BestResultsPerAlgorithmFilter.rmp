@@ -144,13 +144,11 @@
       <connect from_op="Execute AlgorithmInstancePivotTable (3)" from_port="result 1" to_op="SingleAlgorithmEvolution" to_port="example set input"/>
       <connect from_op="SingleAlgorithmEvolution" from_port="example set output" to_port="result 3"/>
       <connect from_op="Execute AlgorithmInstancePivotTable (4)" from_port="result 1" to_op="ExperimentID_" to_port="example set input"/>
-      <connect from_op="ExperimentID_" from_port="example set output" to_port="result 4"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
       <portSpacing port="sink_result 3" spacing="0"/>
       <portSpacing port="sink_result 4" spacing="0"/>
-      <portSpacing port="sink_result 5" spacing="0"/>
     </process>
   </operator>
 </process>

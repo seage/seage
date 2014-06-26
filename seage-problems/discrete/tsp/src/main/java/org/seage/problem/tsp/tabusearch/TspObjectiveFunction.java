@@ -50,7 +50,7 @@ protected TspMoveBasedEvaluator _evaluator;
 		double[] objVal = solution.getObjectiveValue();
 		if(move != null)
 		{
-			TspSwapMove tspMove = (TspSwapMove)move;
+			TspMove tspMove = (TspMove)move;
 			move2 = new int[]{tspMove.ix1, tspMove.ix2};
 		}
 		return _evaluator.evaluate(((TspSolution)solution).getTour(), move2, objVal==null?0:objVal[0]);
