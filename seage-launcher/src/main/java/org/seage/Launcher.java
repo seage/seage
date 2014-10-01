@@ -75,12 +75,12 @@ public class Launcher {
             return;
         }
 
-        if (args[0].equals("-report")) {
+        if (args[0].equals("-report0")) {
         	new ExperimentDataRapidMinerImporter("output/experiment-logs", "").processLogs();
         	return;
         }
         
-        if (args[0].equals("-report2")) 
+        if (args[0].equals("-report")) 
         {
         	boolean clean = false;        	
         	if(args.length == 2 && args[1].equals("clean"))
@@ -182,7 +182,7 @@ public class Launcher {
         _logger.info("\t-experiment-single-feedback  numOfConfigs algorithmTimeoutS problemID *|instanceID[,instanceID,...] *|algorithmID[,algorithmID,...]");
         _logger.info("\t-experiment-single-evolution numSubjects numIterations algorithmTimeoutS problemID *|instanceID[,instanceID,...] *|algorithmID[,algorithmID,...]");
         //_logger.info("\t-agents path-to-agent-config-xml");
-        _logger.info("\t-report");
+        _logger.info("\t-report [clean]");
     }
 
     private void list() throws Exception {

@@ -245,6 +245,16 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
             Hashtable<String, XmlHelper.XPath> algSAXPaths = new Hashtable<String, XmlHelper.XPath>();
             algSAXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
             //algSAXPaths.put("annealCoeficient", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@annealCoeficient"));
+            algSAXPaths.put("numIterations", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxInnerIterations"));
+            algSAXPaths.put("maxTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxTemperature"));
+            algSAXPaths.put("minTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@minTemperature"));
+            //algSAXPaths.put("maxOneStepAcceptedSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxOneStepAcceptedSolutions"));
+            algSAXPaths.put("numSolutions", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numSolutions"));
+            _versionedXPaths.put("0.5", algSAXPaths);
+            
+            algSAXPaths = new Hashtable<String, XmlHelper.XPath>();
+            algSAXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
+            //algSAXPaths.put("annealCoeficient", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@annealCoeficient"));
             algSAXPaths.put("numIterations", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@numIterations"));
             algSAXPaths.put("maxTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@maxTemperature"));
             algSAXPaths.put("minTemperature", new XmlHelper.XPath("/ExperimentTaskReport/Config/Algorithm/Parameters/@minTemperature"));
@@ -259,7 +269,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         	String version = doc.getDocumentElement().getAttribute("version");
     		if(version.compareToIgnoreCase("0.4")<0)
     			throw new Exception("Unsupported version: "+version);
-    		version = VERSION;
+    		//version = VERSION;
     				
     		_stmt.clearParameters();
     		_stmt.setString(1, getVersionedValue(doc, "configID", version));    
