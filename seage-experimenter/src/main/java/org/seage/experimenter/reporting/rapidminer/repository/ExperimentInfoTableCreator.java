@@ -19,7 +19,7 @@ public class ExperimentInfoTableCreator extends RMDataTableCreator implements ID
     }
 
     @Override
-    public void processDocument(Document doc) throws Exception
+    public void processDocument(Document doc, String containerFileName) throws Exception
     {
 
         

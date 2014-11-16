@@ -41,7 +41,7 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
     }
 
     @Override
-    public synchronized void processDocument(Document doc) throws Exception
+    public synchronized void processDocument(Document doc, String containerFileName) throws Exception
     {
         Hashtable<String, XmlHelper.XPath> xPaths = _versionedXPaths.get(VERSION);
         

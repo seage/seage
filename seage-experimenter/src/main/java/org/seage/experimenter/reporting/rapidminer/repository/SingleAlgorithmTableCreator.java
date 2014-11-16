@@ -123,7 +123,7 @@ public class SingleAlgorithmTableCreator extends RMDataTableCreator
     }
 
     @Override
-    public synchronized void processDocument(Document doc) throws Exception
+    public synchronized void processDocument(Document doc, String containerFileName) throws Exception
     {
         double[] valArray = new double[_attributes.size()];
         int i=0;

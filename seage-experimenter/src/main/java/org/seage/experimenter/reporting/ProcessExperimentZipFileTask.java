@@ -58,7 +58,7 @@ public class ProcessExperimentZipFileTask implements Runnable
 						//------------------------------------------------------
 						for(IDocumentProcessor processor : _documentProcessors)
 						    if(processor.isInvolved(doc))
-						    	processor.processDocument(doc);
+						    	processor.processDocument(doc, _zipFile.getName());
 						
 					}
 					catch (NullPointerException ex)

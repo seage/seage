@@ -25,9 +25,9 @@ public class ExperimentsTableCreator extends H2DataTableCreator implements IDocu
 		String queryDropExperiments =
 				"DROP ALL OBJECTS";			
 		String queryCreateExperiments =
-				"CREATE TABLE IF NOT EXISTS Experiments (experimentID VARCHAR PRIMARY KEY, experimentType VARCHAR, computerName VARCHAR)"; 
+				"CREATE TABLE IF NOT EXISTS Experiments (experimentID VARCHAR PRIMARY KEY, experimentType VARCHAR, computerName VARCHAR, fileName VARCHAR)"; 
 		String queryInsert =				
-				"INSERT INTO Experiments VALUES (?, ?, ?)"; 
+				"INSERT INTO Experiments VALUES (?, ?, ?, ?)"; 
 		
 		Statement stmt = _conn.createStatement();
 		
@@ -104,7 +104,7 @@ public class ExperimentsTableCreator extends H2DataTableCreator implements IDocu
 	}
 
 	@Override
-	public synchronized void processDocument(Document doc) throws Exception
+	public synchronized void processDocument(Document doc, String containerFileName) throws Exception
 	{
 		String id = doc.getDocumentElement().getAttribute("experimentID");
 		String et = doc.getDocumentElement().getAttribute("experimentType"); et = et.length()>0?et:"SingleAlgorithmRandom";
@@ -113,6 +113,7 @@ public class ExperimentsTableCreator extends H2DataTableCreator implements IDocu
 		_stmt.setLong(1, Long.parseLong(id));
 		_stmt.setString(2, et);
 		_stmt.setString(3, cn);
+		_stmt.setString(4, containerFileName);
 		_stmt.executeUpdate();		
 	}
 }

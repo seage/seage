@@ -77,7 +77,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         }
         
         @Override
-        public synchronized void processDocument(Document doc) throws Exception
+        public synchronized void processDocument(Document doc, String containerFileName) throws Exception
         {
         	String version = doc.getDocumentElement().getAttribute("version");
     		if(version.compareToIgnoreCase("0.4")<0)
@@ -139,7 +139,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         }
         
         @Override
-        public synchronized void processDocument(Document doc) throws Exception
+        public synchronized void processDocument(Document doc, String containerFileName) throws Exception
         {
         	String version = doc.getDocumentElement().getAttribute("version");
     		if(version.compareToIgnoreCase("0.4")<0)
@@ -196,7 +196,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         }
         
         @Override
-        public synchronized void processDocument(Document doc) throws Exception
+        public synchronized void processDocument(Document doc, String containerFileName) throws Exception
         {
         	String version = doc.getDocumentElement().getAttribute("version");
     		if(version.compareToIgnoreCase("0.4")<0)
@@ -264,7 +264,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         }
         
         @Override
-        public synchronized void processDocument(Document doc) throws Exception
+        public synchronized void processDocument(Document doc, String containerFileName) throws Exception
         {
         	String version = doc.getDocumentElement().getAttribute("version");
     		if(version.compareToIgnoreCase("0.4")<0)
