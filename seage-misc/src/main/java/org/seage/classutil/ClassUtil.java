@@ -25,8 +25,8 @@
  */
 package org.seage.classutil;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.util.*;
 
 /**
  *
@@ -41,16 +41,15 @@ public class ClassUtil
         List<ClassInfo> result = new ArrayList<ClassInfo>();
         for(String p : paths)
         {
+
             if(!p.contains(".class"))
                 continue;
             
-            String className = p.replace(".class", "").replace('/', '.');
-            
+            String className = p.replace(".class", "").replace(System.getProperty("file.separator"),".");
             if(!className.startsWith(pkgName))
                 continue;
             
             Class<?> c = Class.forName(className);
-                
             if(searchForParent(classObj, c))
                 //result.add(createClassInfo(jarFile, f.getCanonicalPath(), c));
                 result.add(new ClassInfo(c.getCanonicalName(), null));
@@ -64,6 +63,7 @@ public class ClassUtil
         pkgName = pkgName.replace('.', '/');
         for(String resName : paths)
         {
+        	resName = resName.replace(System.getProperty("file.separator"), "/");
             if(resName.contains(".class"))
                 continue;  
             

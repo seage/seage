@@ -2,9 +2,7 @@ package org.seage.problem.tsp.sannealing;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.problem.tsp.City;
@@ -24,6 +22,7 @@ public class TspObjectiveFunctionTest
 		//_optimalTour =  new TspOptimalTourPcb442();
 		
 		IProblemProvider provider = ProblemProvider.getProblemProviders().get("TSP");
+		Assert.assertNotNull(provider);
 		TspProblemInstance instance = (TspProblemInstance)provider.initProblemInstance(provider.getProblemInfo().getInstanceInfo(_optimalTour.Name));
 		
 		_cities = instance.getCities();

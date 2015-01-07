@@ -58,7 +58,7 @@ public class ClassPathAnalyzer {
     
     private boolean isFiltered(String s)
     {
-        return s.replace('-', '.').replace('/', '.').contains(_filter);
+        return s.replace('-', '.').replace(System.getProperty("file.separator"),".").contains(_filter);
     }
     
     public List<String> analyzeClassPath()
@@ -91,7 +91,7 @@ public class ClassPathAnalyzer {
         // if filter
         if(!isFiltered(dir.getAbsolutePath()))
             return;
-        analyzeDir(dir, dir.getAbsolutePath()+"/");
+        analyzeDir(dir, dir.getAbsolutePath()+System.getProperty("file.separator"));
     }
     private void analyzeDir(File dir, String prefix)
     {
@@ -119,7 +119,7 @@ public class ClassPathAnalyzer {
                 if(!p.endsWith(".jar"))
                     continue;
                 try{
-                    File f2 = new File(f.getAbsoluteFile().getParentFile().getAbsolutePath() + "/" +p);                     
+                    File f2 = new File(f.getAbsoluteFile().getParentFile().getAbsolutePath() + System.getProperty("file.separator") +p);                     
                     if(f2.isFile() && f2.exists())
                         jars.add(new JarFile(f2));
                 }
