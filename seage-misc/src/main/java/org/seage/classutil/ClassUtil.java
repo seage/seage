@@ -38,14 +38,14 @@ public class ClassUtil
     
     public static ClassInfo[] searchForClasses(Class<?> classObj, String pkgName) throws Exception
     {
-        List<ClassInfo> result = new ArrayList<ClassInfo>();
+    	List<ClassInfo> result = new ArrayList<ClassInfo>();
         for(String p : paths)
         {
 
             if(!p.contains(".class"))
                 continue;
             
-            String className = p.replace(".class", "").replace(System.getProperty("file.separator"),".");
+            String className = p.replace(".class", "").replace('/','.').replace('\\','.');
             if(!className.startsWith(pkgName))
                 continue;
             
@@ -64,6 +64,7 @@ public class ClassUtil
         for(String resName : paths)
         {
         	resName = resName.replace(System.getProperty("file.separator"), "/");
+        	
             if(resName.contains(".class"))
                 continue;  
             
@@ -74,12 +75,6 @@ public class ClassUtil
                 
                 result.add(resName);
             }
-                
-            
-            //Class c = Class.forName(className);
-                
-            //if(searchForParent(classObj, c))
-                //result.add(createClassInfo(jarFile, f.getCanonicalPath(), c));
                 
         }
         return result.toArray(new String[0]);

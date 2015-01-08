@@ -63,7 +63,7 @@ public class ClassPathAnalyzer {
     
     public List<String> analyzeClassPath()
     {
-        String cp = System.getProperty("java.class.path");
+    	String cp = System.getProperty("java.class.path");
         String delim = System.getProperty("path.separator");
 
         String[] paths = cp.split(delim);
@@ -116,7 +116,7 @@ public class ClassPathAnalyzer {
         {
             for(String p : o.toString().split(" "))
             {                
-                if(!p.endsWith(".jar"))
+            	if(!p.endsWith(".jar"))
                     continue;
                 try{
                     File f2 = new File(f.getAbsoluteFile().getParentFile().getAbsolutePath() + System.getProperty("file.separator") +p);                     
@@ -133,16 +133,14 @@ public class ClassPathAnalyzer {
         
         for(JarFile jar : jars)
         {
-            // if filter
-                  
             if(!isFiltered(jar.getName()))                
                 continue;
-//            else
-//                System.out.println("+++"+jar.getName());      
             
             for (Enumeration<?> entries = jar.entries(); entries.hasMoreElements();) {                
                 JarEntry entry = (JarEntry) entries.nextElement();
                 String entryName = entry.getName();
+                if((entryName.endsWith("/")))
+                	continue;
                 addClassPath(entryName);
                                    
             }
@@ -151,11 +149,9 @@ public class ClassPathAnalyzer {
     
     private void addClassPath(String path)
     {
-        String className = path;//.replace(".class", "").replace('/', '.');
+        String className = path;
                 
         if(!_classNames.contains(className))        
             _classNames.add(className);
-//        else
-//            System.out.println("\t"+className);
     }
 }
