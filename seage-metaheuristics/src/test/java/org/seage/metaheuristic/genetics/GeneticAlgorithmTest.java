@@ -22,12 +22,14 @@ package org.seage.metaheuristic.genetics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.seage.metaheuristic.IAlgorithmListener;
 
-public class GeneticAlgorithmTest {
-
+public class GeneticAlgorithmTest 
+{
+    private static final Logger _logger = Logger.getLogger(GeneticAlgorithmTest.class.getName());
 	@Test
 	public void testAlgorithm() throws Exception 
 	{		
@@ -86,14 +88,14 @@ public class GeneticAlgorithmTest {
 		@Override
 		public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e)
 		{
-			System.out.println(e.getGeneticSearch().getBestSubject().getChromosome());
+			_logger.finest(e.getGeneticSearch().getBestSubject().getChromosome().toString());
 			
 		}
 
 		@Override
 		public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e)
 		{
-			System.out.println(e.getGeneticSearch().getBestSubject().getFitness()[0]);
+			_logger.finest(String.format("+++ %f", e.getGeneticSearch().getBestSubject().getFitness()[0]));
 			
 		}
 

@@ -15,7 +15,7 @@ public class TaskRunnerExTest
 	@BeforeClass
 	public static void aa()
 	{
-		LogHelper.setConsoleDefaultFormatter(_logger, Level.ALL);
+		//LogHelper.setConsoleDefaultFormatter(_logger, Level.ALL);
 	}
 	
 	@Test

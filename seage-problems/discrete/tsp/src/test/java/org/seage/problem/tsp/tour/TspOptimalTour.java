@@ -1,7 +1,11 @@
 package org.seage.problem.tsp.tour;
 
+import java.util.logging.Logger;
+
 public class TspOptimalTour
 {
+	private static Logger _logger = Logger.getLogger(TspOptimalTour.class.getName());
+	
 	public String Name;
 	public Integer[] OptimalTour;
 	public int OptimalLength;
@@ -40,8 +44,9 @@ public class TspOptimalTour
 	public static void printTour(Integer[] array)
 	{			
 		for(int i=0;i<array.length;i++)
-			System.out.print(array[i]+" ");
+			_logger.fine(array[i]+" ");
 		
-		System.out.println();
+		_logger.fine(" ");
+		
 	}
 }
