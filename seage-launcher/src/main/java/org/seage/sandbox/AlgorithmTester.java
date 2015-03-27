@@ -29,7 +29,7 @@ import java.io.File;
 import java.util.Map;
 
 import org.seage.aal.problem.IProblemProvider;
-import org.seage.aal.problem.Instance;
+import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemProvider;
@@ -118,7 +118,7 @@ public class AlgorithmTester {
             
             IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
             
-            Instance instance = provider.initProblemInstance(provider.getProblemInfo().getInstanceInfo(instanceID));
+            ProblemInstance instance = provider.initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(instanceID));
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
             AlgorithmParams algNode = config.getAlgorithmParams();
             Object[][] solutions = provider.generateInitialSolutions(instance, algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
@@ -145,40 +145,41 @@ public class AlgorithmTester {
         String algorithmID = config.getDataNode("Algorithm").getValueStr("id");
         String instanceID = config.getDataNode("Problem").getDataNode("Instance").getValueStr("id");
         // provider and factory
-        IProblemProvider provider = ProblemProvider.getProblemProviders().get(problemID);
+        IProblemProvider provider = (IProblemProvider) ProblemProvider.getProblemProviders().get(problemID);
         IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
 
         // problem instance
-        Instance instance = provider.initProblemInstance(provider.getProblemInfo().getInstanceInfo(instanceID));
+        ProblemInstance instance = provider.initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(instanceID));
 
         // algorithm
         IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
 
         AlgorithmParams algNode = config.getAlgorithmParams();
-        Object[][] solutions = provider.generateInitialSolutions(instance, algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
-
-
-        System.out.printf("%s: %4s %s\n", "Problem","", problemID);
-        System.out.printf("%s: %2s %s\n", "Algorithm","", algorithmID);
-        System.out.printf("%s: %3s %s\n", "Instance","", instance);
-        System.out.println("Running ...");
-        algorithm.solutionsFromPhenotype(solutions);
-        algorithm.startSearching(algNode);
-        solutions = algorithm.solutionsToPhenotype();
-
-        // phenotype evaluator
-        IPhenotypeEvaluator evaluator = provider.initPhenotypeEvaluator(instance);
-        double[] result = evaluator.evaluate(solutions[0]);
-
-        System.out.printf("%s: %5s %s\n", "Result","", result[0]);
-        //System.out.println(": " + result[0]);
-
-        System.out.printf("%s: %3s ", "Solution","");
-        for(int i=0;i<solutions[0].length;i++)
-            System.out.print(solutions[0][i]+" ");
-        System.out.println();
-
-        AlgorithmReport report = algorithm.getReport();
-        report.save("output/"+System.currentTimeMillis()+".xml");
+        //Object[][] solutions = (Object[][])
+        		provider.generateInitialSolutions(instance, algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
+//
+//
+//        System.out.printf("%s: %4s %s\n", "Problem","", problemID);
+//        System.out.printf("%s: %2s %s\n", "Algorithm","", algorithmID);
+//        System.out.printf("%s: %3s %s\n", "Instance","", instance);
+//        System.out.println("Running ...");
+//        algorithm.solutionsFromPhenotype(solutions);
+//        algorithm.startSearching(algNode);
+//        solutions = algorithm.solutionsToPhenotype();
+//
+//        // phenotype evaluator
+//        IPhenotypeEvaluator evaluator = provider.initPhenotypeEvaluator(instance);
+//        double[] result = evaluator.evaluate(solutions[0]);
+//
+//        System.out.printf("%s: %5s %s\n", "Result","", result[0]);
+//        //System.out.println(": " + result[0]);
+//
+//        System.out.printf("%s: %3s ", "Solution","");
+//        for(int i=0;i<solutions[0].length;i++)
+//            System.out.print(solutions[0][i]+" ");
+//        System.out.println();
+//
+//        AlgorithmReport report = algorithm.getReport();
+//        report.save("output/"+System.currentTimeMillis()+".xml");
     }
 }

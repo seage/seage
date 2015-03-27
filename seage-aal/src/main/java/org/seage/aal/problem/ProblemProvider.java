@@ -27,7 +27,6 @@ package org.seage.aal.problem;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import org.seage.aal.Annotations;
@@ -57,7 +56,7 @@ public abstract class ProblemProvider implements IProblemProvider
 
         _problemInfo = new ProblemInfo("ProblemInfo");
         
-        Class<? extends ProblemProvider> problemClass = this.getClass();
+        Class<? extends ProblemProvider> problemClass = (Class<? extends ProblemProvider>) this.getClass();
         Annotation an = null;
 
         an = problemClass.getAnnotation(Annotations.ProblemId.class);
@@ -161,7 +160,7 @@ public abstract class ProblemProvider implements IProblemProvider
 
     ///////////////////////////////////////////////////////////////////////////
 
-    public static Map<String, IProblemProvider> getProblemProviders() throws Exception
+    public static HashMap<String, IProblemProvider> getProblemProviders() throws Exception
     {
         if(_providers != null)
             return _providers;
@@ -178,7 +177,7 @@ public abstract class ProblemProvider implements IProblemProvider
             }
             catch(Exception ex)
             {
-                _logger.severe(ci.getClassName()+": "+ex.getMessage());                               
+                _logger.severe(ci.getClassName()+": "+ex);                               
             }
         }
 

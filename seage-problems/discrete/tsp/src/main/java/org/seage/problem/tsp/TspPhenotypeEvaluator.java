@@ -32,7 +32,7 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
  * TSP phenotype is a sequence of city IDs starting at _1_ 
  * @author Rick
  */
-public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<Integer>
+public class TspPhenotypeEvaluator implements IPhenotypeEvaluator
 {
 	protected TspProblemInstance _instance;
 	protected City[] _cities;
@@ -44,8 +44,9 @@ public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<Integer>
 	}
 
 	@Override
-    public double[] evaluate(Integer[] phenotypeSubject) throws Exception
+    public double[] evaluate(Object[] phenotypeSubject) throws Exception
     {
+		Integer[] s = (Integer[])phenotypeSubject;
         int tourLength = 0;
         
         int numCities = _cities.length;
@@ -56,8 +57,8 @@ public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<Integer>
             if (i == numCities - 1)
                 k = 0;
 
-            int ix1 = phenotypeSubject[i]-1;
-            int ix2 = phenotypeSubject[k]-1;
+            int ix1 = s[i]-1;
+            int ix2 = s[k]-1;
             double x1 = _cities[ix1].X;
             double y1 = _cities[ix1].Y;
             double x2 = _cities[ix2].X;

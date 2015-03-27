@@ -33,7 +33,7 @@ import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.problem.IProblemProvider;
-import org.seage.aal.problem.Instance;
+import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.ExperimentTask;
@@ -87,7 +87,7 @@ public class SingleAlgorithmExperimentTask extends ExperimentTask
             IAlgorithmFactory factory = provider.getAlgorithmFactory(_algorithmID);
 
             // problem instance
-            Instance instance = provider.initProblemInstance(provider.getProblemInfo().getInstanceInfo(_instanceID));
+            ProblemInstance instance = provider.initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_instanceID));
             instance.toString();
             // algorithm
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);

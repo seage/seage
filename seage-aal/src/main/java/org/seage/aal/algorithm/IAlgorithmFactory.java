@@ -26,7 +26,7 @@
 
 package org.seage.aal.algorithm;
 
-import org.seage.aal.problem.Instance;
+import org.seage.aal.problem.ProblemInstance;
 
 /**
  *
@@ -40,5 +40,5 @@ public interface IAlgorithmFactory
      * @return IAlgorithmAdapter
      * @throws Exception
      */
-    IAlgorithmAdapter createAlgorithm(Instance instance) throws Exception;
+    IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception;
 }

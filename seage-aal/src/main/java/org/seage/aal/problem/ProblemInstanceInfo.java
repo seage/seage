@@ -32,25 +32,49 @@ import org.seage.data.DataNode;
  *
  * @author Richard Malek
  */
-public class InstanceInfo extends DataNode
+public class ProblemInstanceInfo extends DataNode
 {
 	private static final long serialVersionUID = 1L;
 	
 	protected String _instanceID;
+	protected String _type;
+    protected String _path;
         
-    public InstanceInfo(DataNode instance) throws Exception
+    public ProblemInstanceInfo(DataNode instance) throws Exception
     {
     	super(instance);
     	_instanceID = getValueStr("id");
+    	_type = getValueStr("type");
+    	_path = getValueStr("path");
     }
 
-    public String getInstanceID() {
+    public ProblemInstanceInfo(String id, String type, String path)
+	{
+    	super("Instance");
+    	_instanceID = id;
+    	_type = type;
+    	_path = path;
+	}
+
+	public String Type()
+	{
+		return _type;
+	}
+
+	public String Path()
+	{
+		return _path;
+	}
+
+	public String getInstanceID() 
+	{
         return _instanceID;
     }
     
     @Override
-    public String toString() {
-        return _instanceID;
+    public String toString() 
+    {
+        return _instanceID + " - " + _type + " - " + _path;
     }
     
     

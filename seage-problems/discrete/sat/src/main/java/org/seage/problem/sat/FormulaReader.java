@@ -27,15 +27,10 @@ import java.io.*;
  */
 public class FormulaReader
 {
-
-    public static Formula readFormula(String path) throws Exception
+ 
+    public static List<Clause> readClauses(InputStream stream) throws IOException
     {
-        return new Formula(readClauses(path));
-    }
-
-    private static List<Clause>  readClauses(String path) throws IOException
-    {
-        LineNumberReader lnr = new LineNumberReader(new FileReader(path));
+        LineNumberReader lnr = new LineNumberReader(new BufferedReader(new InputStreamReader(stream)));
         lnr.setLineNumber(1);
         StreamTokenizer stok = new StreamTokenizer(lnr);
 

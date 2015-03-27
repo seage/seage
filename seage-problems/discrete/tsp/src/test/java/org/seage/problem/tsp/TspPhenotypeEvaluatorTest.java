@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.seage.aal.problem.IProblemProvider;
-import org.seage.aal.problem.Instance;
+import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.problem.tsp.tour.TspOptimalTour;
 import org.seage.problem.tsp.tour.TspOptimalTourBerlin52;
@@ -27,7 +27,7 @@ public class TspPhenotypeEvaluatorTest {
 	private void testEvaluateTour(TspOptimalTour tour) throws Exception
 	{
 		IProblemProvider provider = ProblemProvider.getProblemProviders().get("TSP");
-		Instance instance = provider.initProblemInstance(provider.getProblemInfo().getInstanceInfo(tour.Name));
+		ProblemInstance instance = provider.initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(tour.Name));
 		TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance)instance).getCities());
 		
 		Integer[] s = tour.OptimalTour;

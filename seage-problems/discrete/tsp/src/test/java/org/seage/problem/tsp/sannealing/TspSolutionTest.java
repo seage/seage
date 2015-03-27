@@ -23,7 +23,7 @@ public class TspSolutionTest
 	{
 		_optimalTour =  new TspOptimalTourBerlin52();
 		IProblemProvider provider = ProblemProvider.getProblemProviders().get("TSP");
-		TspProblemInstance instance = (TspProblemInstance)provider.initProblemInstance(provider.getProblemInfo().getInstanceInfo(_optimalTour.Name));
+		TspProblemInstance instance = (TspProblemInstance)provider.initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_optimalTour.Name));
 		
 		_cities = instance.getCities();
 	}

@@ -35,8 +35,8 @@ import java.util.Collections;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.problem.Instance;
-import org.seage.aal.problem.InstanceInfo;
+import org.seage.aal.problem.ProblemInstance;
+import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 
 /**
@@ -49,7 +49,7 @@ public class QapProblemProvider extends ProblemProvider
 {
 
     @Override
-    public Instance initProblemInstance(InstanceInfo instanceInfo) throws Exception
+    public ProblemInstance initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
     {
     	//InstanceInfo instanceInfo = params.getInstanceInfo();
         String type = instanceInfo.getValueStr("type");
@@ -67,7 +67,7 @@ public class QapProblemProvider extends ProblemProvider
     }
 
     @Override
-    public Object[][] generateInitialSolutions(Instance instance, int numSolutions, long randomSeed) throws Exception
+    public Object[][] generateInitialSolutions(ProblemInstance instance, int numSolutions, long randomSeed) throws Exception
     {
         int numAssigns = numSolutions;
         Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
@@ -127,7 +127,7 @@ public class QapProblemProvider extends ProblemProvider
 //    }
 
     @Override
-    public void visualizeSolution(Object[] solution, InstanceInfo instance) throws Exception
+    public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception
     {
 
         // TODO: A - Implement visualize method
@@ -138,7 +138,7 @@ public class QapProblemProvider extends ProblemProvider
 //        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
     }
 
-    public IPhenotypeEvaluator<?> initPhenotypeEvaluator(Instance instance) throws Exception {
+    public IPhenotypeEvaluator initPhenotypeEvaluator(ProblemInstance instance) throws Exception {
         return new QapPhenotypeEvaluator((QapProblemInstance)instance);
     }
 

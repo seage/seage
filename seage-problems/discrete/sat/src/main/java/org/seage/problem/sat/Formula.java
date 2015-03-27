@@ -21,18 +21,25 @@ package org.seage.problem.sat;
 
 import java.util.*;
 
+import org.seage.aal.problem.ProblemInstance;
+import org.seage.aal.problem.ProblemInstanceInfo;
+
 /**
  * Summary description for Formula.
  */
-public class Formula {
+public class Formula extends ProblemInstance 
+{
 
     private ArrayList<Clause> _clauses;
     private int _literalCount;
     private Clause[] __null;
     private ArrayList< ArrayList<Literal>> _literals;
 
-    public Formula(List<Clause> clauses)
-    {
+    public Formula(ProblemInstanceInfo instanceInfo, List<Clause> clauses)
+	{
+    	super(instanceInfo);
+		_instanceInfo = instanceInfo;
+
         _clauses = new ArrayList<Clause>(clauses);
         __null = new Clause[0];
 

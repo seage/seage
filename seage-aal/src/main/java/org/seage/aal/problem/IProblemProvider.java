@@ -43,16 +43,16 @@ public interface IProblemProvider
     IAlgorithmFactory getAlgorithmFactory(String algorithmID) throws Exception;
 
     // Initializes (reads) a problem instance.
-    Instance initProblemInstance(InstanceInfo instanceInfo) throws Exception;
+    ProblemInstance initProblemInstance(ProblemInstanceInfo problemInstanceInfo) throws Exception;
 
     //  Initializes an evaluator of solutions in phenotype representation
     // (i.e. in general representation of a problem solution).
-    IPhenotypeEvaluator<?> initPhenotypeEvaluator(Instance instance) throws Exception;
+    IPhenotypeEvaluator initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception;
 
     // Generates the very first solution(s).
     // Solutions can be random, hungry, or other.
-    Object[][] generateInitialSolutions(Instance instance, int numSolutions, long randomSeed) throws Exception;
+    Object[][] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed) throws Exception;
 
     // Visualizes solution, usually produces a picture.
-    public void visualizeSolution(Object[] solution, InstanceInfo instance) throws Exception;
+    public void visualizeSolution(Object[] solution, ProblemInstanceInfo problemInstanceInfo) throws Exception;
 }

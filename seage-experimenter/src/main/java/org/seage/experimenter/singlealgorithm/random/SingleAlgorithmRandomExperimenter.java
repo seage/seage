@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipOutputStream;
 
-import org.seage.aal.problem.InstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.experimenter.Experimenter;
@@ -36,7 +36,7 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
 	}
 	
 	@Override
-	protected void performExperiment(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, ZipOutputStream zos) throws Exception
+	protected void performExperiment(long experimentID, ProblemInfo problemInfo, ProblemInstanceInfo instanceInfo, String[] algorithmIDs, ZipOutputStream zos) throws Exception
 	{
 		for(int i=0;i<algorithmIDs.length;i++)
 		{

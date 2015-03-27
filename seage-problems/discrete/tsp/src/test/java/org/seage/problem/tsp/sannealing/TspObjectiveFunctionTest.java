@@ -23,7 +23,7 @@ public class TspObjectiveFunctionTest
 		
 		IProblemProvider provider = ProblemProvider.getProblemProviders().get("TSP");
 		Assert.assertNotNull(provider);
-		TspProblemInstance instance = (TspProblemInstance)provider.initProblemInstance(provider.getProblemInfo().getInstanceInfo(_optimalTour.Name));
+		TspProblemInstance instance = (TspProblemInstance)provider.initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_optimalTour.Name));
 		
 		_cities = instance.getCities();
 		_objFunc = new TspObjectiveFunction(_cities);		

@@ -26,10 +26,13 @@
  */
 package org.seage.problem.sat;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.problem.Instance;
-import org.seage.aal.problem.InstanceInfo;
+import org.seage.aal.problem.ProblemInstance;
+import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 
 /**
@@ -41,20 +44,50 @@ import org.seage.aal.problem.ProblemProvider;
 public class SatProblemProvider extends ProblemProvider
 {
 	@Override
-	public Instance initProblemInstance(InstanceInfo instanceInfo) throws Exception
+	public Formula initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
+	{
+		String type = instanceInfo.getValueStr("type");
+        String path = instanceInfo.getValueStr("path");
+        
+        InputStream stream;
+        if(type.equals("resource"))        
+            stream = getClass().getResourceAsStream(path);
+        else
+            stream = new FileInputStream(path);
+        
+        Formula formula = null;
+        
+        try{
+        	formula = new Formula(instanceInfo, FormulaReader.readClauses(stream));
+        }catch(Exception ex){
+            System.err.println("TspProblemProvider.initProblemInstance - readCities failed, path: " + path);
+            throw ex;
+        }
+        
+        return formula;
+        
+	}	
+ 
+
+	@Override
+	public IPhenotypeEvaluator initPhenotypeEvaluator(
+			ProblemInstance problemInstance) throws Exception
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
-	
-    public IPhenotypeEvaluator<?> initPhenotypeEvaluator(Instance instance) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
-    public Object[][] generateInitialSolutions(Instance instance, int numSolutions, long randomSeed) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public Object[][] generateInitialSolutions(ProblemInstance problemInstance,
+			int numSolutions, long randomSeed) throws Exception
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    public void visualizeSolution(Object[] solution, InstanceInfo instance) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+
+	@Override
+	public void visualizeSolution(Object[] solution,
+			ProblemInstanceInfo problemInstanceInfo) throws Exception
+	{
+		throw new UnsupportedOperationException("Not supported yet.");		
+	}
 }

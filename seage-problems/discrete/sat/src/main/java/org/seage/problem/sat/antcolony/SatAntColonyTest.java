@@ -25,6 +25,9 @@
  */
 package org.seage.problem.sat.antcolony;
 
+import java.io.FileInputStream;
+
+import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.problem.sat.Formula;
@@ -42,7 +45,7 @@ public class SatAntColonyTest
      */
     public static void main(String[] args) throws Exception {
         String path = "data/uf75/uf75-050.cnf";// args[0];
-        Formula formula = FormulaReader.readFormula(path);
+        Formula formula = new Formula(new ProblemInstanceInfo("","",path), FormulaReader.readClauses(new FileInputStream(path)));
 
         double quantumPheromone = 10, evaporation = 0.95, defaultPheromone = 0.1;
         double alpha = 1, beta = 5;

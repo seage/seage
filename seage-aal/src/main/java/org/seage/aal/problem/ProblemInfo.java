@@ -73,12 +73,12 @@ public class ProblemInfo extends DataNode
 		return getValueStr("id");
 	}
 	
-	public InstanceInfo getInstanceInfo(String instanceID) throws Exception
+	public ProblemInstanceInfo getProblemInstanceInfo(String instanceID) throws Exception
 	{
 		DataNode dn = getDataNode("Instances").getDataNodeById(instanceID);
 		if(dn == null)
 			throw new Exception("ProblemInfo does not contain any information on instanceID: "+instanceID);
-		return new InstanceInfo(dn);
+		return new ProblemInstanceInfo(dn);
 	}
 
 }

@@ -31,7 +31,7 @@ import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.particles.ParticleSwarmAdapter;
-import org.seage.aal.problem.Instance;
+import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.qap.QapProblemInstance;
 
@@ -54,12 +54,12 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
         return ParticleSwarmAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm( Instance instance) throws Exception
+    public IAlgorithmAdapter createAlgorithm( ProblemInstance instance) throws Exception
     {
             throw new UnsupportedOperationException();
     }
     
-    public IAlgorithmAdapter createAlgorithm2( Instance instance) throws Exception
+    public IAlgorithmAdapter createAlgorithm2( ProblemInstance instance) throws Exception
     {    
         IAlgorithmAdapter algorithm;
         final Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();

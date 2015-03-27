@@ -32,8 +32,8 @@ import java.util.Random;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.problem.Instance;
-import org.seage.aal.problem.InstanceInfo;
+import org.seage.aal.problem.ProblemInstance;
+import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 
 
@@ -47,7 +47,7 @@ public class TspProblemProvider extends ProblemProvider
 {
 
     @Override
-    public Instance initProblemInstance(InstanceInfo instanceInfo) throws Exception
+    public TspProblemInstance initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
     {
         City[] cities;        
         
@@ -72,7 +72,7 @@ public class TspProblemProvider extends ProblemProvider
     }
 
     @Override
-    public Object[][] generateInitialSolutions(Instance instance, int numSolutions, long randomSeed) throws Exception
+    public Object[][] generateInitialSolutions(ProblemInstance instance, int numSolutions, long randomSeed) throws Exception
     {
         int numTours = numSolutions;
         City[] cities = ((TspProblemInstance)instance).getCities();
@@ -108,7 +108,7 @@ public class TspProblemProvider extends ProblemProvider
     }
 
     @Override
-    public void visualizeSolution(Object[] solution, InstanceInfo instance) throws Exception
+    public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception
     {
 //        Integer[] tour = (Integer[])solution;
 
@@ -120,8 +120,16 @@ public class TspProblemProvider extends ProblemProvider
 //        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
     }
 
-    public IPhenotypeEvaluator<?> initPhenotypeEvaluator(Instance instance) throws Exception {
-        return new TspPhenotypeEvaluator(((TspProblemInstance)instance).getCities());
+    public IPhenotypeEvaluator initPhenotypeEvaluator(TspProblemInstance instance) throws Exception {
+        return new TspPhenotypeEvaluator(instance.getCities());
     }
+
+	@Override
+	public IPhenotypeEvaluator initPhenotypeEvaluator(
+			ProblemInstance problemInstance) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

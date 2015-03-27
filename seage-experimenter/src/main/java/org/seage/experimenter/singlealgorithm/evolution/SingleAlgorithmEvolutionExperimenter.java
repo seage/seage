@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.zip.ZipOutputStream;
 
-import org.seage.aal.problem.InstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
@@ -37,7 +37,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter implement
 	}
 
 	@Override
-	protected void performExperiment(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, ZipOutputStream zos) throws Exception
+	protected void performExperiment(long experimentID, ProblemInfo problemInfo, ProblemInstanceInfo instanceInfo, String[] algorithmIDs, ZipOutputStream zos) throws Exception
 	{
 		String problemID = problemInfo.getProblemID();
 		String instanceID = instanceInfo.getInstanceID();

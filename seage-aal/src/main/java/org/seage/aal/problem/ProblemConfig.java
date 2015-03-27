@@ -68,12 +68,12 @@ public class ProblemConfig extends DataNode{
     	return this.getDataNode("Problem").getValueStr("id");
     }
     
-    public InstanceInfo getInstanceInfo() throws Exception
+    public ProblemInstanceInfo getProblemInstanceInfo() throws Exception
     {
-    	return new InstanceInfo(this.getDataNode("Problem").getDataNode("Instance"));
+    	return new ProblemInstanceInfo(this.getDataNode("Problem").getDataNode("Instance"));
     }
     
-    public String getInstanceName() throws Exception
+    public String getProblemInstanceName() throws Exception
     {
     	return this.getDataNode("Problem").getDataNode("Instance").getValueStr("name");
     }
@@ -91,7 +91,7 @@ public class ProblemConfig extends DataNode{
         return result;
     }
 
-	public String getInstanceID() throws Exception
+	public String getProblemInstanceID() throws Exception
 	{
 		return this.getDataNode("Problem").getDataNode("Instance").getValueStr("id");
 	}

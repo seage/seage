@@ -34,7 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipOutputStream;
 
-import org.seage.aal.problem.InstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
@@ -97,7 +97,7 @@ public abstract class Experimenter
         {
         	try
         	{
-	            InstanceInfo instanceInfo =  problemInfo.getInstanceInfo(instanceIDs[i]); 
+	            ProblemInstanceInfo instanceInfo =  problemInfo.getProblemInstanceInfo(instanceIDs[i]); 
 	                          
 	            _logger.info("-------------------------------------");
 	            _logger.info(String.format("%-15s %s","Problem:", problemID));
@@ -123,7 +123,7 @@ public abstract class Experimenter
         _logger.info(String.format("Experiment duration: %s (DD:HH:mm:ss)", getDurationBreakdown(System.currentTimeMillis()-experimentID)));
     }
     
-    protected abstract void performExperiment(long experimentID, ProblemInfo problemInfo, InstanceInfo instanceInfo, String[] algorithmIDs, ZipOutputStream zos) throws Exception;
+    protected abstract void performExperiment(long experimentID, ProblemInfo problemInfo, ProblemInstanceInfo instanceInfo, String[] algorithmIDs, ZipOutputStream zos) throws Exception;
     
     protected abstract long getEstimatedTime(int instancesCount, int algorithmsCount);
     protected abstract long getNumberOfConfigs(int instancesCount, int algorithmsCount);

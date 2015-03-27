@@ -30,7 +30,7 @@ package org.seage.problem.tsp.particles;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.particles.ParticleSwarmAdapter;
-import org.seage.aal.problem.Instance;
+import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspProblemInstance;
@@ -53,7 +53,7 @@ public class TspParticleSwarmFactory //implements IAlgorithmFactory
         return ParticleSwarmAdapter.class;
     }
 
-    public IAlgorithmAdapter createAlgorithm(Instance instance) throws Exception
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
         IAlgorithmAdapter algorithm;
 
