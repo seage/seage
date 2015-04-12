@@ -27,6 +27,8 @@ package org.seage.problem.sat.grasp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 
@@ -60,8 +62,9 @@ public class SatGreedySolution extends SatSolution {
         int literalIx;
         double valueBeforeMove = FormulaEvaluator.evaluate(formula, _litValues);
         double valueAfterMove;
+        Random rnd = new Random();
         while(listOfLiteralsIndexes.size() != 0){
-            listIndex = _rnd.nextInt(listOfLiteralsIndexes.size());
+            listIndex = rnd.nextInt(listOfLiteralsIndexes.size());
             literalIx = listOfLiteralsIndexes.get(listIndex);
             _copyLitValues = _litValues.clone();
             _copyLitValues[literalIx] = false;

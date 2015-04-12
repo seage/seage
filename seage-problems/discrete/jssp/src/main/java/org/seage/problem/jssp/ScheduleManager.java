@@ -18,7 +18,7 @@
  *
  */
 package org.seage.problem.jssp;
-import ailibrary.data.*;
+import org.seage.data.ds.*;
 
 /**
  * Summary description for ScheduleManager.
@@ -58,9 +58,9 @@ public class ScheduleManager
 
 		for (int i = 0; i < _jobsTable.getRowCount(); i++)
 		{
-			for (int j = 0; j < _jobsTable.getRow(i).getCellCount(); j++)
+			for (int j = 0; j < _jobsTable.get(i).size(); j++)
 			{
-				val = ((OperationInfo)_jobsTable.getRow(i).getCell(j).getCellProperty()).MachineID;
+				val = ((OperationInfo)_jobsTable.get(i).get(j).getCellProperty()).MachineID;
 				if (val > numMachines)
 					numMachines = val;
 			}
@@ -103,8 +103,8 @@ public class ScheduleManager
 
 			indexCurrentOper = _lastActivityInJobIndex[indexCurrentJob]++;
 
-			currentRow = _jobsTable.getRow(indexCurrentJob);
-			currentCell = currentRow.getCell(indexCurrentOper);
+			currentRow = _jobsTable.get(indexCurrentJob);
+			currentCell = currentRow.get(indexCurrentOper);
 
 			currentJob = (JobInfo)currentRow.getRowProperty();
 			currentOper = (OperationInfo)currentCell.getCellProperty();

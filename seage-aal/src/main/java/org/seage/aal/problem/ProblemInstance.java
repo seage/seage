@@ -2,17 +2,17 @@ package org.seage.aal.problem;
 
 public abstract class ProblemInstance
 {
-	protected ProblemInstanceInfo _instanceInfo;
+	protected ProblemInstanceInfo _problemInstanceInfo;
 
-	public ProblemInstance(ProblemInstanceInfo instanceInfo)
+	public ProblemInstance(ProblemInstanceInfo problemInstanceInfo)
 	{
 		super();
-		_instanceInfo = instanceInfo;
+		_problemInstanceInfo = problemInstanceInfo;
 	}
 
-	public ProblemInstanceInfo getInstanceInfo()
+	public ProblemInstanceInfo getProblemInstanceInfo()
 	{
-		return _instanceInfo;
+		return _problemInstanceInfo;
 	}
 
 }

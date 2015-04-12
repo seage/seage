@@ -31,5 +31,23 @@ public class DataStore extends HashMap<String, DataTable>
 	 * 
 	 */
 	private static final long serialVersionUID = -6942519066862881337L;
+
+	public static DataStore getInstance()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public DataTable getDataTable(String string)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void insertDataTable(String string, DataTable jobDataTable)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }
 

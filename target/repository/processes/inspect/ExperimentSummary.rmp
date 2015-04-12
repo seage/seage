@@ -41,7 +41,7 @@
         <parameter key="include_special_attributes" value="false"/>
         <parameter key="default_aggregation_function" value="average"/>
         <list key="aggregation_attributes"/>
-        <parameter key="group_by_attributes" value="|ExperimentID|ProblemID|AlgorithmID|InstanceID"/>
+        <parameter key="group_by_attributes" value="|experimentID|problemID|algorithmID|instanceID"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
@@ -62,12 +62,12 @@
         <parameter key="include_special_attributes" value="false"/>
         <parameter key="default_aggregation_function" value="average"/>
         <list key="aggregation_attributes">
-          <parameter key="InitSolutionValue" value="average"/>
-          <parameter key="BestSolutionValue" value="minimum"/>
-          <parameter key="ConfigID" value="count"/>
-          <parameter key="NrOfNewSolutions" value="maximum"/>
+          <parameter key="initSolutionValue" value="average"/>
+          <parameter key="bestSolutionValue" value="minimum"/>
+          <parameter key="configID" value="count"/>
+          <parameter key="nrOfNewSolutions" value="maximum"/>
         </list>
-        <parameter key="group_by_attributes" value="AlgorithmID|ComputerName|ExperimentID|InstanceID|ProblemID|TimeoutInSeconds||ExperimentType"/>
+        <parameter key="group_by_attributes" value="algorithmID|computerName|experimentID|instanceID|problemID|timeoutInSeconds||experimentType"/>
         <parameter key="count_all_combinations" value="false"/>
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>

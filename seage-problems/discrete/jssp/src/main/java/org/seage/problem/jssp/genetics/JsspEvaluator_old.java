@@ -19,14 +19,16 @@
  */
 package org.seage.problem.jssp.genetics;
 
-import jssp.data.*;
-
-import ailibrary2.data.*;
-import ailibrary2.algorithm.genetics.*;
+import org.seage.data.ds.DataStore;
+import org.seage.data.ds.DataTable;
+import org.seage.metaheuristic.genetics.Chromosome;
+import org.seage.metaheuristic.genetics.Subject;
+import org.seage.metaheuristic.genetics.SubjectEvaluator;
+import org.seage.problem.jssp.OperationInfo;
 /**
  * Summary description for JSSPEvaluator.
  */
-public class JsspEvaluator implements Evaluator
+public class JsspEvaluator_old extends SubjectEvaluator
 {
 	private int[] _firstActivityToDoIndex_InJob;			// prvni nenakreslena operace v jobu
 	private int[] _firstActivityToDoIndex_OnMachine;		// prvni nenakreslena operace na pracovisti
@@ -39,7 +41,7 @@ public class JsspEvaluator implements Evaluator
 
 	private MedicateTable _medicateTable;
 
-	public JsspEvaluator()
+	public JsspEvaluator_old()
 	{
 		DataStore dataStore = DataStore.getInstance();
 		DataTable dataTable = dataStore.getDataTable("jobs");
@@ -76,7 +78,7 @@ public class JsspEvaluator implements Evaluator
 		
 		OperationInfo ai;
 		Chromosome ch;
-		Genome genome = subject.getGenome();
+//2015		Genome genome = subject.getGenome();
 		// vezmu tabulku jobu		
 		DataTable dt = DataStore.getInstance().getDataTable("jobs");
 		
@@ -102,19 +104,19 @@ public class JsspEvaluator implements Evaluator
 			// na pracovisti zacnu od prvni nenakreslene operace			
 			for(int i=0;i<_numMachines;i++)
 			{
-				ch = genome.getChromosome(i);
+//2015				ch = genome.getChromosome(i);
 				// pokud uz mam na pracovisti vse nakreslene, jdu na dalsi				
-				if(ch.getLength() <= _firstActivityToDoIndex_OnMachine[i]) continue;
+//2015				if(ch.getLength() <= _firstActivityToDoIndex_OnMachine[i]) continue;
 				
 				// hodnota genu	
-				jobValue = ch.getGene(_firstActivityToDoIndex_OnMachine[i]).getValue()-1;
+//2015				jobValue = ch.getGene(_firstActivityToDoIndex_OnMachine[i]).getValue()-1;
 				
 				// aktualni prochazena operace	
 				// prvni nenakreslena operace v jobu
-				ai = (OperationInfo)dt.getRow(jobValue).getCell(_firstActivityToDoIndex_InJob[jobValue]).getCellProperty();
+//2015				ai = (OperationInfo)dt.getRow(jobValue).getCell(_firstActivityToDoIndex_InJob[jobValue]).getCellProperty();
 
 				// pokud mam nenakreslenou operaci na spravnem pracovisti, muzu ji nakreslit
-				if(ai.MachineID-1 == i)
+//2015				if(ai.MachineID-1 == i)
 				{
 					_firstActivityToDoIndex_InJob[jobValue]++;
 					_firstActivityToDoIndex_OnMachine[i]++;
@@ -123,11 +125,11 @@ public class JsspEvaluator implements Evaluator
 					
 					if(_prevOperEndTime[jobValue] > _maxMachineTime[i])
 					{
-						_maxMachineTime[i] = _prevOperEndTime[jobValue] + ai.Length;
+//2015						_maxMachineTime[i] = _prevOperEndTime[jobValue] + ai.Length;
 					}
 					else
 					{
-						_maxMachineTime[i] += ai.Length;
+//2015						_maxMachineTime[i] += ai.Length;
 					}
 					_prevOperEndTime[jobValue] = _maxMachineTime[i];
 
@@ -267,7 +269,7 @@ public class JsspEvaluator implements Evaluator
 	{
 		OperationInfo firstActivityToDo;
 		DataTable dataTable = DataStore.getInstance().getDataTable("jobs");
-		Genome genome = subject.getGenome();
+//2015		Genome genome = subject.getGenome();
 			
 		int jobIndex = 0, jobIndex2 = 0;
 
@@ -294,8 +296,8 @@ public class JsspEvaluator implements Evaluator
 		
 		for(int i=0;i<_numMachines;i++)
 		{
-			if(genome.getChromosome(i).getLength() <= _firstActivityToDoIndex_OnMachine[i]) continue;
-			else 
+//2015			if(genome.getChromosome(i).getLength() <= _firstActivityToDoIndex_OnMachine[i]) continue;
+//2015			else 
 			{
 				chromIndex = i;
 				break;
@@ -303,7 +305,7 @@ public class JsspEvaluator implements Evaluator
 		}
 
 		// index jobu, ktery zpusobuje problem
-		jobIndex = genome.getChromosome(chromIndex).getGene(_firstActivityToDoIndex_OnMachine[chromIndex]).getValue()-1;
+//2015		jobIndex = genome.getChromosome(chromIndex).getGene(_firstActivityToDoIndex_OnMachine[chromIndex]).getValue()-1;
 		// prvni nenakreslena operace jobu "jobIndex" v tabulce "jobs"
 		
 	
@@ -312,9 +314,9 @@ public class JsspEvaluator implements Evaluator
 		_medicateTable.Rows[chromIndex].Left.GeneIndex = _firstActivityToDoIndex_OnMachine[chromIndex];
 		_medicateTable.Rows[chromIndex].Hits++;
 
-		firstActivityToDo = (OperationInfo)dataTable.getRow(jobIndex).getCell(_firstActivityToDoIndex_InJob[jobIndex]).getCellProperty();
-		_medicateTable.Rows[chromIndex].Left.NextMachineIndex = firstActivityToDo.MachineID-1;
-		chromIndex = firstActivityToDo.MachineID-1;
+//2015		firstActivityToDo = (OperationInfo)dataTable.getRow(jobIndex).getCell(_firstActivityToDoIndex_InJob[jobIndex]).getCellProperty();
+//2015		_medicateTable.Rows[chromIndex].Left.NextMachineIndex = firstActivityToDo.MachineID-1;
+//2015		chromIndex = firstActivityToDo.MachineID-1;
 
 		// index pracoviste, kam se ma skocit - pouze Left !!!
 		
@@ -326,37 +328,37 @@ public class JsspEvaluator implements Evaluator
 			
 			/* Right*/
 			_medicateTable.Rows[chromIndex].Right.JobIndex = jobIndex;			
-			for(int i=_firstActivityToDoIndex_OnMachine[chromIndex];i<genome.getChromosome(chromIndex).getLength();i++)
+//2015			for(int i=_firstActivityToDoIndex_OnMachine[chromIndex];i<genome.getChromosome(chromIndex).getLength();i++)
 			{
-				if(genome.getChromosome(chromIndex).getGene(i).getValue()==jobIndex+1)
+//2015				if(genome.getChromosome(chromIndex).getGene(i).getValue()==jobIndex+1)
 				{
-					_medicateTable.Rows[chromIndex].Right.GeneIndex = i;
+//2015					_medicateTable.Rows[chromIndex].Right.GeneIndex = i;
 										
 					break;
 				}
 			}
 			/*******/
 
-			jobIndex = genome.getChromosome(chromIndex).getGene(_firstActivityToDoIndex_OnMachine[chromIndex]).getValue()-1;
+//2015			jobIndex = genome.getChromosome(chromIndex).getGene(_firstActivityToDoIndex_OnMachine[chromIndex]).getValue()-1;
 			
 			/* Left*/
-			_medicateTable.Rows[chromIndex].Left.JobIndex = jobIndex;
-			_medicateTable.Rows[chromIndex].Left.GeneIndex = _firstActivityToDoIndex_OnMachine[chromIndex];			
+//2015			_medicateTable.Rows[chromIndex].Left.JobIndex = jobIndex;
+//2015			_medicateTable.Rows[chromIndex].Left.GeneIndex = _firstActivityToDoIndex_OnMachine[chromIndex];			
 			/*******/
 			
-			_medicateTable.Rows[chromIndex].Hits++;
+//2015			_medicateTable.Rows[chromIndex].Hits++;
 			
-			if(_medicateTable.Rows[chromIndex].Hits > 1)
-			{
-				entryRowIndex = chromIndex;
-				break;
-			}
+//2015			if(_medicateTable.Rows[chromIndex].Hits > 1)
+//			{
+//				entryRowIndex = chromIndex;
+//				break;
+//			}
 
-			delkaCyklu++;
+//2015			delkaCyklu++;
 
-			firstActivityToDo = (OperationInfo)dataTable.getRow(jobIndex).getCell(_firstActivityToDoIndex_InJob[jobIndex]).getCellProperty();
-			_medicateTable.Rows[chromIndex].Left.NextMachineIndex = firstActivityToDo.MachineID-1;
-			chromIndex = firstActivityToDo.MachineID-1;
+//2015			firstActivityToDo = (OperationInfo)dataTable.getRow(jobIndex).getCell(_firstActivityToDoIndex_InJob[jobIndex]).getCellProperty();
+//2015			_medicateTable.Rows[chromIndex].Left.NextMachineIndex = firstActivityToDo.MachineID-1;
+//2015			chromIndex = firstActivityToDo.MachineID-1;
 
 ////			subject.getGenome().getChromosome(chromIndex).swapGenes(table.Rows[chromIndex].Left.GeneIndex, table.Rows[chromIndex].Right.GeneIndex);
 ////			break;
@@ -372,7 +374,7 @@ public class JsspEvaluator implements Evaluator
 		while(entryRowIndex != nextIndex)
 		{
 //			System.out.print(nextIndex + ", ");
-			subject.getGenome().getChromosome(nextIndex).swapGenes(_medicateTable.Rows[nextIndex].Left.GeneIndex, _medicateTable.Rows[nextIndex].Right.GeneIndex);
+//2015			subject.getGenome().getChromosome(nextIndex).swapGenes(_medicateTable.Rows[nextIndex].Left.GeneIndex, _medicateTable.Rows[nextIndex].Right.GeneIndex);
 			nextIndex = _medicateTable.Rows[nextIndex].Left.NextMachineIndex;
 			
 		}

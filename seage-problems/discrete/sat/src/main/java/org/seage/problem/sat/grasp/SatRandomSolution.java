@@ -25,6 +25,8 @@
  */
 package org.seage.problem.sat.grasp;
 
+import java.util.Random;
+
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 
@@ -42,9 +44,10 @@ public class SatRandomSolution extends SatSolution {
     }
 
     private void initRandSol(Formula formula) {
+    	Random rnd = new Random();
         _litValues = new boolean[_countLiterals];
         for (int i = 0; i < _countLiterals; i++) {
-            _litValues[i] = _rnd.nextBoolean();
+            _litValues[i] = rnd.nextBoolean();
         }
         setObjectiveValue(FormulaEvaluator.evaluate(formula, _litValues));
     }

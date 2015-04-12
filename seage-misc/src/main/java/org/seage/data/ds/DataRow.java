@@ -59,4 +59,10 @@ public class DataRow extends ArrayList<DataCell>
 			res += get(i).toString() + "\n";
 		return res;
 	}
+
+	public void initDataCells(int size)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

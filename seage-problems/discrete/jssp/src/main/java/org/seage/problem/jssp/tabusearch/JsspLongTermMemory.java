@@ -17,9 +17,10 @@
  * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package jssp.algorithm.tabusearch;
+package org.seage.problem.jssp.tabusearch;
 
-import ailibrary.algorithm.tabusearch.*;
+import org.seage.metaheuristic.tabusearch.LongTermMemory;
+import org.seage.metaheuristic.tabusearch.Solution;
 /**
  * Summary description for JsspLongTermMemory.
  */

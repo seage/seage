@@ -17,10 +17,14 @@
  * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package jssp.algorithm.tabusearch;
+package org.seage.problem.jssp.tabusearch;
 
-import ailibrary.algorithm.tabusearch.*;
-import jssp.data.*;
+import org.seage.metaheuristic.tabusearch.Move;
+import org.seage.metaheuristic.tabusearch.MoveManager;
+import org.seage.metaheuristic.tabusearch.Solution;
+import org.seage.problem.jssp.Schedule;
+import org.seage.problem.jssp.ScheduleCell;
+import org.seage.problem.jssp.ScheduleManager;
 /**
  * Summary description for JsspMoveManager.
  */

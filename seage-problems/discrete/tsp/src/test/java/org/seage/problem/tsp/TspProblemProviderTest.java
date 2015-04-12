@@ -17,16 +17,15 @@
  * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.seage.problem.qap;
+package org.seage.problem.tsp;
 
-import org.junit.Test;
+import org.seage.aal.problem.ProblemProviderTestBase;
 
-import static org.junit.Assert.assertTrue;
+public class TspProblemProviderTest extends ProblemProviderTestBase 
+{
 
-public class ProblemTest {
-
-	@Test
-	public void testProblem() {		
-		assertTrue(true);
+	public TspProblemProviderTest()
+	{
+		super(new TspProblemProvider());		
 	}
 } 

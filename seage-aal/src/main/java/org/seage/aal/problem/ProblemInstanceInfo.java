@@ -34,21 +34,22 @@ import org.seage.data.DataNode;
  */
 public class ProblemInstanceInfo extends DataNode
 {
+	public enum ProblemInstanceType {FILE, RESOURCE};
 	private static final long serialVersionUID = 1L;
 	
 	protected String _instanceID;
-	protected String _type;
+	protected ProblemInstanceType _type;
     protected String _path;
         
     public ProblemInstanceInfo(DataNode instance) throws Exception
     {
     	super(instance);
     	_instanceID = getValueStr("id");
-    	_type = getValueStr("type");
+    	_type = ProblemInstanceType.valueOf(getValueStr("type").toUpperCase());
     	_path = getValueStr("path");
     }
 
-    public ProblemInstanceInfo(String id, String type, String path)
+    public ProblemInstanceInfo(String id, ProblemInstanceType type, String path)
 	{
     	super("Instance");
     	_instanceID = id;
@@ -56,7 +57,7 @@ public class ProblemInstanceInfo extends DataNode
     	_path = path;
 	}
 
-	public String Type()
+	public ProblemInstanceType Type()
 	{
 		return _type;
 	}

@@ -60,7 +60,7 @@ public class SatProblemProvider extends ProblemProvider
         try{
         	formula = new Formula(instanceInfo, FormulaReader.readClauses(stream));
         }catch(Exception ex){
-            System.err.println("TspProblemProvider.initProblemInstance - readCities failed, path: " + path);
+            System.err.println("SatProblemProvider.initProblemInstance - readCities failed, path: " + path);
             throw ex;
         }
         

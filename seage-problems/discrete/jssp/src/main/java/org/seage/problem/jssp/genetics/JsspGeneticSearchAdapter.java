@@ -19,67 +19,87 @@
  */
 package org.seage.problem.jssp.genetics;
 
-import ailibrary.algorithm.GeneticSearchAdapter;
-import ailibrary.algorithm.genetics.*;
-import ailibrary.data.*;
+import javax.security.auth.Subject;
+
+import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
+import org.seage.data.ds.DataStore;
+import org.seage.data.ds.DataTable;
+import org.seage.metaheuristic.genetics.Gene;
+import org.seage.metaheuristic.genetics.GeneticOperator;
+import org.seage.metaheuristic.genetics.SubjectEvaluator;
+
 /**
  * Summary description for JsspGeneticSearchAdapter.
  */
-public class JsspGeneticSearchAdapter extends GeneticSearchAdapter
+public class JsspGeneticSearchAdapter extends GeneticAlgorithmAdapter
 {
 	public JsspGeneticSearchAdapter(GeneticOperator operator,
-								Evaluator evaluator,
+								SubjectEvaluator evaluator,
 								boolean maximizing,
 								String searchID)
 	{
 		super(operator, evaluator, maximizing, searchID);
 	}
 
-	public Object[] loadSolution() throws Exception
+//	public Object[] loadSolution() throws Exception
+//	{
+//		DataTable dt = DataStore.getInstance().getDataTable("solutions");
+//		Subject[] results = new Subject[dt.getRowCount()];
+//		
+//		for (int i = 0; i < results.length; i++)
+//		{ 
+//			int numOper = dt.getRow(i).getCellCount();
+//			Subject subject = new Subject(new Genome(1, numOper));
+//			for (int j = 0; j < numOper; j++)
+//			{
+//				int geneVal = ((Integer)dt.getRow(i).getCell(j).getCellProperty()).intValue();
+//				subject.getChromosome().setGene(j, new Gene(geneVal));
+//			}
+//			results[i] = subject;
+//			results[i].setObjectiveValue((double[])dt.getRow(i).getRowProperty());
+//		}
+//		return results;
+//	}
+//
+//	public void saveSolution(Object[] solutions) throws Exception
+//	{
+//		try
+//		{
+//			DataTable dt = DataStore.getInstance().getDataTable("solutions");
+//			
+//			int cellCount = dt.getRow(0).getCellCount();
+//
+//			dt.initDataRows(solutions.length);
+//			for (int i = 0; i < solutions.length; i++)
+//			{
+//				dt.getRow(i).initDataCells(cellCount);
+//				Subject subject = (Subject)solutions[solutions.length -i-1];
+//				dt.getRow(i).setRowProperty(subject.getObjectiveValue());
+//				for (int j = 0; j < cellCount; j++)
+//				{
+//					Integer cellValue = new Integer(subject.getChromosome().getGene(j).getValue());
+//					dt.getRow(i).getCell(j).setCellProperty(cellValue);
+//				}
+//			}
+//		}
+//		catch (Exception ex)
+//		{
+//			throw ex;
+//		}
+//		
+//	}
+
+	@Override
+	public void solutionsFromPhenotype(Object[][] source) throws Exception
 	{
-		DataTable dt = DataStore.getInstance().getDataTable("solutions");
-		Subject[] results = new Subject[dt.getRowCount()];
+		// TODO Auto-generated method stub
 		
-		for (int i = 0; i < results.length; i++)
-		{ 
-			int numOper = dt.getRow(i).getCellCount();
-			Subject subject = new Subject(new Genome(1, numOper));
-			for (int j = 0; j < numOper; j++)
-			{
-				int geneVal = ((Integer)dt.getRow(i).getCell(j).getCellProperty()).intValue();
-				subject.getChromosome().setGene(j, new Gene(geneVal));
-			}
-			results[i] = subject;
-			results[i].setObjectiveValue((double[])dt.getRow(i).getRowProperty());
-		}
-		return results;
 	}
 
-	public void saveSolution(Object[] solutions) throws Exception
+	@Override
+	public Object[][] solutionsToPhenotype() throws Exception
 	{
-		try
-		{
-			DataTable dt = DataStore.getInstance().getDataTable("solutions");
-			
-			int cellCount = dt.getRow(0).getCellCount();
-
-			dt.initDataRows(solutions.length);
-			for (int i = 0; i < solutions.length; i++)
-			{
-				dt.getRow(i).initDataCells(cellCount);
-				Subject subject = (Subject)solutions[solutions.length -i-1];
-				dt.getRow(i).setRowProperty(subject.getObjectiveValue());
-				for (int j = 0; j < cellCount; j++)
-				{
-					Integer cellValue = new Integer(subject.getChromosome().getGene(j).getValue());
-					dt.getRow(i).getCell(j).setCellProperty(cellValue);
-				}
-			}
-		}
-		catch (Exception ex)
-		{
-			throw ex;
-		}
-		
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

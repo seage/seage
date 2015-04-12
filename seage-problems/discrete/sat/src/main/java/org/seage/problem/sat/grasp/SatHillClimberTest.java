@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceType;
 import org.seage.metaheuristic.grasp.HillClimber;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaReader;
@@ -124,7 +125,7 @@ public class SatHillClimberTest {
         HillClimber hc;
 
         int[] iterations = {2000};
-        int[] restarts = {100};
+        int[] restarts = {5000};
 
         double sumTime, hlpTime;
 
@@ -145,8 +146,8 @@ public class SatHillClimberTest {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        String path = "data/uf75/uf75-050.cnf";
-        Formula formula = new Formula(new ProblemInstanceInfo("uf20","file","data/uf20/uf20-01.cnf"), FormulaReader.readClauses(new FileInputStream("data/uf20/uf20-01.cnf")));
+        String path = "data/sat/uf250-01.cnf";
+        Formula formula = new Formula(new ProblemInstanceInfo("uf20", ProblemInstanceType.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
         
         testing2(formula);
     }

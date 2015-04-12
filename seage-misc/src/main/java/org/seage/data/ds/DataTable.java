@@ -71,4 +71,10 @@ public class DataTable extends ArrayList<DataRow>
 	{
 		_tableProperty = o;
 	}
+
+	public int getRowCount()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

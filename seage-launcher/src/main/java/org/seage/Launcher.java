@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemProviderTester;
 import org.seage.data.DataNode;
 import org.seage.experimenter.reporting.h2.ExperimentDataH2Importer;
 import org.seage.experimenter.reporting.rapidminer.ExperimentDataRapidMinerImporter;
@@ -38,7 +39,6 @@ import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolution
 import org.seage.experimenter.singlealgorithm.feedback.SingleAlgorithmFeedbackExperimenter;
 import org.seage.experimenter.singlealgorithm.random.SingleAlgorithmRandomExperimenter;
 import org.seage.logging.LogHelper;
-import org.seage.sandbox.AlgorithmTester;
 
 /**
  *
@@ -143,11 +143,11 @@ public class Launcher {
         
         if (args[0].equals("-test")) {
             if (args.length == 1) {
-                new AlgorithmTester().test();
+                new ProblemProviderTester().test();
             } else if (args.length == 2) {
-                new AlgorithmTester().test(args[1]);
+                new ProblemProviderTester().test(args[1]);
             } else if (args.length == 3) {
-                new AlgorithmTester().test(args[1], args[2]);
+                new ProblemProviderTester().test(args[1], args[2]);
             } else {
                 usage();
             }
@@ -156,7 +156,7 @@ public class Launcher {
 
         if (args[0].equals("-config")) {
             if (args.length == 2) {
-                new AlgorithmTester().runFromConfigFile(args[1]);
+                new ProblemProviderTester().runFromConfigFile(args[1]);
             } else {
                 usage();
             }

@@ -26,6 +26,9 @@
 
 package org.seage.aal.problem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.seage.data.DataNode;
 
 /**
@@ -79,6 +82,14 @@ public class ProblemInfo extends DataNode
 		if(dn == null)
 			throw new Exception("ProblemInfo does not contain any information on instanceID: "+instanceID);
 		return new ProblemInstanceInfo(dn);
+	}
+	
+	public List<ProblemInstanceInfo> getProblemInstanceInfos() throws Exception
+	{
+		List<ProblemInstanceInfo> result = new ArrayList<ProblemInstanceInfo>();
+		for(DataNode dn : getDataNode("Instances").getDataNodes())
+			result.add(new ProblemInstanceInfo(dn));
+		return result;
 	}
 
 }

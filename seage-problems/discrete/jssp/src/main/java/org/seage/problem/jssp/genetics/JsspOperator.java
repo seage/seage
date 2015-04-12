@@ -19,7 +19,13 @@
  */
 package org.seage.problem.jssp.genetics;
 
-import ailibrary.algorithm.genetics.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.seage.metaheuristic.genetics.GeneticOperator;
+import org.seage.metaheuristic.genetics.Subject;
+
 /**
  * Summary description for JsspOperator.
  */
@@ -34,7 +40,7 @@ public class JsspOperator extends GeneticOperator
 		_occurrence2 = new int[numOper];
 	}
 
-	public Subject[] crossOver(Subject parent1, Subject parent2) throws Exception
+	public List<Subject> crossOver(Subject parent1, Subject parent2) throws Exception
 	{
 		Subject[] offsprings = new Subject[2];
 		int chromLength = 0;
@@ -46,7 +52,7 @@ public class JsspOperator extends GeneticOperator
 
 			chromLength = offsprings[0].getChromosome().getLength();
 
-			crossLength = /*(int)(chromLength * _crossLengthPct);/*/Math.max(_random.nextInt((int)(chromLength * _crossLengthPct)+1)-2,2);
+			crossLength = /*(int)(chromLength * _crossLengthPct);/*/Math.max(_random.nextInt((int)(chromLength * _crossLengthCoef)+1)-2,2);
 			int crossBegin = _random.nextInt(chromLength - crossLength );
 			int crossEnd = crossBegin + crossLength;
 
@@ -57,8 +63,8 @@ public class JsspOperator extends GeneticOperator
 			{
 				//if (i >= crossBegin && i < crossEnd)
 				{
-					int par1GeneVal = ((Subject)parent1).getChromosome().getGene(i).getValue();
-					int par2GeneVal = ((Subject)parent2).getChromosome().getGene(i).getValue();
+					int par1GeneVal = (Integer) ((Subject)parent1).getChromosome().getGene(i);
+					int par2GeneVal = (Integer) ((Subject)parent2).getChromosome().getGene(i);
 
 					if (par1GeneVal == par2GeneVal) continue;
 
@@ -70,8 +76,8 @@ public class JsspOperator extends GeneticOperator
 
 
 
-					offsprings[0].getChromosome().getGene(i).setValue( ((Subject)parent2).getChromosome().getGene(i).getValue());
-					offsprings[1].getChromosome().getGene(i).setValue( ((Subject)parent1).getChromosome().getGene(i).getValue());
+					offsprings[0].getChromosome().setGene(i, ((Subject)parent2).getChromosome().getGene(i));
+					offsprings[1].getChromosome().setGene(i, ((Subject)parent1).getChromosome().getGene(i));
 					//offsprings[1].Chromosome.Genes[i].Value = parent1.Chromosome.Genes[i].Value;
 				}
 				//else
@@ -106,7 +112,7 @@ public class JsspOperator extends GeneticOperator
 			throw new Exception("crossover: " + e);
 		}
 
-		return offsprings;
+		return Arrays.asList( offsprings);
 	}
 
 	protected void medicateSubject(int crossBegin, int[] occurrence, Subject subject) throws Exception
@@ -142,9 +148,9 @@ public class JsspOperator extends GeneticOperator
 							int jj = crossBegin;
 							while (occurrence[indexPlus] > 0)
 							{
-								if (((Subject)subject).getChromosome().getGene(jj).getValue() == indexPlus + 1)
+								if ((Integer)((Subject)subject).getChromosome().getGene(jj) == indexPlus + 1)
 								{
-									((Subject)subject).getChromosome().getGene(jj).setValue(indexMinus + 1);
+									((Subject)subject).getChromosome().setGene(jj, indexMinus + 1);
 
 									occurrence[indexPlus]--;
 									occurrence[indexMinus]++;
@@ -167,9 +173,9 @@ public class JsspOperator extends GeneticOperator
 							int jj = crossBegin;
 							while (occurrence[indexMinus] < 0)
 							{
-								if (((Subject)subject).getChromosome().getGene(jj).getValue() == indexPlus + 1)
+								if ((Integer)((Subject)subject).getChromosome().getGene(jj) == indexPlus + 1)
 								{
-									((Subject)subject).getChromosome().getGene(jj).setValue( indexMinus + 1);
+									((Subject)subject).getChromosome().setGene(jj, indexMinus + 1);
 
 									occurrence[indexPlus]--;
 									occurrence[indexMinus]++;
@@ -198,9 +204,30 @@ public class JsspOperator extends GeneticOperator
 		int sum = 0;
 		for (int i = 0; i < s.getChromosome().getLength(); i++)
 		{
-			sum += s.getChromosome().getGene(i).getValue();
+			sum += (Integer)s.getChromosome().getGene(i);
 		}
 		return sum;
+	}
+
+	@Override
+	public int[] select(ArrayList subjects)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Subject mutate(Subject subject) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Subject randomize(Subject subject) throws Exception
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

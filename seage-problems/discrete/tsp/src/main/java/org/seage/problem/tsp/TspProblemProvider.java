@@ -119,17 +119,10 @@ public class TspProblemProvider extends ProblemProvider
 //
 //        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
     }
-
-    public IPhenotypeEvaluator initPhenotypeEvaluator(TspProblemInstance instance) throws Exception {
-        return new TspPhenotypeEvaluator(instance.getCities());
+    
+    @Override
+    public IPhenotypeEvaluator initPhenotypeEvaluator(ProblemInstance instance) throws Exception {
+        return new TspPhenotypeEvaluator(((TspProblemInstance)instance).getCities());
     }
-
-	@Override
-	public IPhenotypeEvaluator initPhenotypeEvaluator(
-			ProblemInstance problemInstance) throws Exception
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

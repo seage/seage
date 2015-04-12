@@ -29,7 +29,7 @@ package org.seage.metaheuristic.grasp;
  *
  * @author Martin Zaloga
  */
-public class Solution implements java.lang.Cloneable {
+public class Solution implements java.lang.Cloneable, java.io.Serializable {
 
     /**
      * The _value is value of Solution

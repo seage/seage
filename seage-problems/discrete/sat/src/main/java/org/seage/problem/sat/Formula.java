@@ -37,8 +37,7 @@ public class Formula extends ProblemInstance
 
     public Formula(ProblemInstanceInfo instanceInfo, List<Clause> clauses)
 	{
-    	super(instanceInfo);
-		_instanceInfo = instanceInfo;
+    	super(instanceInfo);		
 
         _clauses = new ArrayList<Clause>(clauses);
         __null = new Clause[0];

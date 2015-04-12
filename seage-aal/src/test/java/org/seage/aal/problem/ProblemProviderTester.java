@@ -23,7 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.sandbox;
+package org.seage.aal.problem;
 
 import java.io.File;
 import java.util.Map;
@@ -40,17 +40,17 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
-import org.seage.experimenter.config.DefaultConfigurator;
+//import org.seage.experimenter.config.DefaultConfigurator;
 
 /**
  *
  * @author RMalek
  */
-public class AlgorithmTester {
+public class ProblemProviderTester {
 
     private Map<String, IProblemProvider> _providers ;
     
-    public AlgorithmTester() throws Exception
+    public ProblemProviderTester() throws Exception
     {
         _providers = ProblemProvider.getProblemProviders();
     }
@@ -114,7 +114,7 @@ public class AlgorithmTester {
             
             System.out.print("\t" + algorithmID);
             
-            ProblemConfig config = new DefaultConfigurator().prepareConfigs(provider.getProblemInfo(), instanceID, algorithmID, 1)[0];
+            ProblemConfig config = null;//new DefaultConfigurator().prepareConfigs(provider.getProblemInfo(), instanceID, algorithmID, 1)[0];
             
             IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
             

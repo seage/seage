@@ -37,7 +37,7 @@
         <parameter key="join_type" value="left"/>
         <parameter key="use_id_attribute_as_key" value="false"/>
         <list key="key_attributes">
-          <parameter key="ExperimentID" value="ExperimentID"/>
+          <parameter key="ExperimentID" value="experimentID"/>
         </list>
         <parameter key="keep_both_join_attributes" value="false"/>
       </operator>
@@ -54,7 +54,7 @@
         <parameter key="propagate_metadata_recursively" value="true"/>
         <parameter key="cache_process" value="true"/>
         <list key="macros">
-          <parameter key="myAttribute" value="BestSolutionValue"/>
+          <parameter key="myAttribute" value="bestSolutionValue"/>
           <parameter key="myFunction" value="minimum"/>
         </list>
       </operator>
@@ -65,17 +65,17 @@
       </operator>
       <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Filter Examples (2)" width="90" x="514" y="165">
         <parameter key="condition_class" value="attribute_value_filter"/>
-        <parameter key="parameter_string" value="ExperimentType = SingleAlgorithmFeedback"/>
+        <parameter key="parameter_string" value="experimentType = SingleAlgorithmFeedback"/>
         <parameter key="invert_filter" value="false"/>
       </operator>
       <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Filter Examples (3)" width="90" x="514" y="255">
         <parameter key="condition_class" value="attribute_value_filter"/>
-        <parameter key="parameter_string" value="ExperimentType = SingleAlgorithmEvolution"/>
+        <parameter key="parameter_string" value="experimentType = SingleAlgorithmEvolution"/>
         <parameter key="invert_filter" value="false"/>
       </operator>
       <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Filter Examples (4)" width="90" x="514" y="345">
         <parameter key="condition_class" value="attribute_value_filter"/>
-        <parameter key="parameter_string" value="ExperimentID = 1380709094467"/>
+        <parameter key="parameter_string" value="experimentID = 1380709094467"/>
         <parameter key="invert_filter" value="false"/>
       </operator>
       <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute AlgorithmInstancePivotTable (2)" width="90" x="648" y="165">
@@ -117,7 +117,7 @@
         <parameter key="propagate_metadata_recursively" value="true"/>
         <parameter key="cache_process" value="true"/>
         <list key="macros">
-          <parameter key="myAttribute" value="BestSolutionValue"/>
+          <parameter key="myAttribute" value="bestSolutionValue"/>
           <parameter key="myFunction" value="minimum"/>
         </list>
       </operator>
