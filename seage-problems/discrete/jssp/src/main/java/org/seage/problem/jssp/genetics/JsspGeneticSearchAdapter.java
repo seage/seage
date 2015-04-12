@@ -19,12 +19,7 @@
  */
 package org.seage.problem.jssp.genetics;
 
-import javax.security.auth.Subject;
-
 import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
-import org.seage.data.ds.DataStore;
-import org.seage.data.ds.DataTable;
-import org.seage.metaheuristic.genetics.Gene;
 import org.seage.metaheuristic.genetics.GeneticOperator;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
 

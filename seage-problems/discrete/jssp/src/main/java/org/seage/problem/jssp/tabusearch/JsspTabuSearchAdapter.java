@@ -20,8 +20,6 @@
 package org.seage.problem.jssp.tabusearch;
 
 import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
-import org.seage.data.ds.DataStore;
-import org.seage.data.ds.DataTable;
 import org.seage.metaheuristic.tabusearch.LongTermMemory;
 import org.seage.metaheuristic.tabusearch.MoveManager;
 import org.seage.metaheuristic.tabusearch.ObjectiveFunction;
