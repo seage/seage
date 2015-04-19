@@ -31,7 +31,7 @@ package org.seage.problem.sat;
  */
 public class FormulaEvaluator {
 
-    public static int evaluate(Formula f, boolean[] s) {
+    public static int evaluate(Formula f, Boolean[] s) {
         int numFalseClauses = 0;
         boolean clauseIsNegative = true;
 

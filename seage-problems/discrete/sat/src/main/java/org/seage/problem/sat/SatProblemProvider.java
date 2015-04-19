@@ -28,11 +28,13 @@ package org.seage.problem.sat;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Random;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.aal.problem.ProblemProvider;
 
 /**
@@ -46,11 +48,11 @@ public class SatProblemProvider extends ProblemProvider
 	@Override
 	public Formula initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
 	{
-		String type = instanceInfo.getValueStr("type");
-        String path = instanceInfo.getValueStr("path");
+		ProblemInstanceOrigin origin = instanceInfo.getOrigin();
+        String path = instanceInfo.getPath();
         
         InputStream stream;
-        if(type.equals("resource"))        
+        if(origin == ProblemInstanceOrigin.RESOURCE)        
             stream = getClass().getResourceAsStream(path);
         else
             stream = new FileInputStream(path);
@@ -73,14 +75,24 @@ public class SatProblemProvider extends ProblemProvider
 	public IPhenotypeEvaluator initPhenotypeEvaluator(
 			ProblemInstance problemInstance) throws Exception
 	{
-		throw new UnsupportedOperationException("Not supported yet.");
+		Formula f = (Formula)problemInstance;
+		return new SatPhenotypeEvaluator(f);
 	}
 
 	@Override
 	public Object[][] generateInitialSolutions(ProblemInstance problemInstance,
 			int numSolutions, long randomSeed) throws Exception
 	{
-		throw new UnsupportedOperationException("Not supported yet.");
+		Random rnd = new Random(randomSeed);
+		Formula f = (Formula) problemInstance;
+		Boolean[][] result = new Boolean[numSolutions][];
+		for(int i=0;i<numSolutions;i++)
+		{
+			result[i] = new Boolean[f.getLiteralCount()];
+			for(int j=0;j<f.getLiteralCount();j++)
+				result[i][j] = rnd.nextBoolean();
+		}
+		return result;
 	}
 
 

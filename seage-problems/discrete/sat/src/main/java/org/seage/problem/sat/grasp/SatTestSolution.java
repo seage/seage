@@ -37,7 +37,7 @@ public class SatTestSolution extends SatSolution {
     }
 
     private void initTestSol(int countLiterals) {
-        _litValues = new boolean[countLiterals];
+        _litValues = new Boolean[countLiterals];
         for (int i = 0; i < countLiterals; i++) {
             _litValues[i] = true;
         }

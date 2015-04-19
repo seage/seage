@@ -38,7 +38,7 @@ import org.seage.problem.sat.FormulaEvaluator;
  */
 public class SatGreedySolution extends SatSolution {
 
-     boolean[] _copyLitValues;
+	Boolean[] _copyLitValues;
 
     /**
      * Constructor the solution with using the greedy algorithm for initial solution

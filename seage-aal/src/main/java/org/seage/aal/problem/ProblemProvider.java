@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.classutil.ClassInfo;
 import org.seage.classutil.ClassUtil;
 import org.seage.data.DataNode;
@@ -76,7 +77,7 @@ public abstract class ProblemProvider implements IProblemProvider
         for(String in : ClassUtil.searchForInstancesInJar("instances", this.getClass().getPackage().getName()))
         {
             DataNode instance = new DataNode("Instance");
-            instance.putValue("type", "resource");
+            instance.putValue("type", ProblemInstanceOrigin.RESOURCE);
             instance.putValue("path", in);
             String instanceFileName = in.substring(in.lastIndexOf('/')+1);
             String instanceID = in.substring(in.lastIndexOf('/')+1);

@@ -36,7 +36,7 @@ import org.seage.data.DataNode;
  * ProblemConfig
  *  |_ problemID
  *  |_ Instance
- *  |_Algorithm
+ *  |_ Algorithm
  *     |_ Parameter
  *     |_ ...
  *     |_ Parameter

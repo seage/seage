@@ -36,7 +36,7 @@ import org.seage.metaheuristic.grasp.Solution;
 public class SatSolution extends Solution {
  
 	protected static final long serialVersionUID = -7791570406526861971L;
-	protected boolean[] _litValues;
+	protected Boolean[] _litValues;
     //protected Random _rnd;
 
     public SatSolution() {
@@ -44,7 +44,7 @@ public class SatSolution extends Solution {
     }
 
     public void initLiterals(int size){
-        _litValues = new boolean[size];
+        _litValues = new Boolean[size];
         for(int i = 0; i < size; i++){
             _litValues[i] = true;
         }
@@ -54,11 +54,11 @@ public class SatSolution extends Solution {
         return _litValues.length;
     }
 
-    public boolean[] getLiteralValues() {
+    public Boolean[] getLiteralValues() {
         return _litValues;
     }
 
-    public void setLiteralValues(boolean[] litValues) {
+    public void setLiteralValues(Boolean[] litValues) {
         _litValues = litValues;
     }
 
@@ -66,7 +66,7 @@ public class SatSolution extends Solution {
         return _litValues[index];
     }
 
-    public void setLiteralValue(int index, boolean value) {
+    public void setLiteralValue(int index, Boolean value) {
         _litValues[index] = value;
     }
 

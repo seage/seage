@@ -38,6 +38,7 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 
 /**
  *
@@ -51,14 +52,13 @@ public class QapProblemProvider extends ProblemProvider
     @Override
     public ProblemInstance initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
     {
-    	//InstanceInfo instanceInfo = params.getInstanceInfo();
-        String type = instanceInfo.getValueStr("type");
-        String path = instanceInfo.getValueStr("path");
-        //String instanceName = path.substring(path.lastIndexOf('/')+1);
-        InputStream stream;            
-        if(type.equals("resource"))             
+    	ProblemInstanceOrigin origin = instanceInfo.getOrigin();
+        String path = instanceInfo.getPath();
+        
+        InputStream stream;
+        if(origin == ProblemInstanceOrigin.RESOURCE)        
             stream = getClass().getResourceAsStream(path);
-        else            
+        else
             stream = new FileInputStream(path);
 
         //params.getDataNode("evaluator").putValue("cities", _cities);

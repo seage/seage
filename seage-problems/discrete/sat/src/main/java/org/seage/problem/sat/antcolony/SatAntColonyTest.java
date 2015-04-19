@@ -28,7 +28,7 @@ package org.seage.problem.sat.antcolony;
 import java.io.FileInputStream;
 
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceType;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.problem.sat.Formula;
@@ -46,7 +46,7 @@ public class SatAntColonyTest
      */
     public static void main(String[] args) throws Exception {
         String path = "data/sat/uf75-01.cnf";// args[0];
-        Formula formula = new Formula(new ProblemInstanceInfo("",ProblemInstanceType.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
+        Formula formula = new Formula(new ProblemInstanceInfo("",ProblemInstanceOrigin.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
 
         double quantumPheromone = 10, evaporation = 0.95, defaultPheromone = 0.1;
         double alpha = 1, beta = 5;
@@ -65,7 +65,7 @@ public class SatAntColonyTest
 
         System.out.println("Global best: "+(colony.getGlobalBest()-0.1));
         
-        boolean[] s = new boolean[colony.getBestPath().size()];
+        Boolean[] s = new Boolean[colony.getBestPath().size()];
         for(int i=0;i<s.length;i++)
         {
             s[i] = colony.getBestPath().get(i).getNode1().getID() > 0;

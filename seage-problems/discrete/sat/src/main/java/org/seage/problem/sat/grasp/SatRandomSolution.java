@@ -45,7 +45,7 @@ public class SatRandomSolution extends SatSolution {
 
     private void initRandSol(Formula formula) {
     	Random rnd = new Random();
-        _litValues = new boolean[_countLiterals];
+        _litValues = new Boolean[_countLiterals];
         for (int i = 0; i < _countLiterals; i++) {
             _litValues[i] = rnd.nextBoolean();
         }

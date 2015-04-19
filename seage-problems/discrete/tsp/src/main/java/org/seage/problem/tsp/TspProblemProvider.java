@@ -35,6 +35,7 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 
 
 /**
@@ -51,11 +52,11 @@ public class TspProblemProvider extends ProblemProvider
     {
         City[] cities;        
         
-        String type = instanceInfo.getValueStr("type");
+        ProblemInstanceOrigin origin = instanceInfo.getOrigin();
         String path = instanceInfo.getValueStr("path");
 
         InputStream stream;
-        if(type.equals("resource"))        
+        if(origin == ProblemInstanceOrigin.RESOURCE)        
             stream = getClass().getResourceAsStream(path);
         else
             stream = new FileInputStream(path);

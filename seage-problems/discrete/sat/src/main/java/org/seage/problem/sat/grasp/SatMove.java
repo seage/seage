@@ -47,7 +47,7 @@ public class SatMove implements IMove {
     public Solution apply(Solution s) {
         // TODO: A - tady se musi 's' klonovat - (hluboka kopie)
         SatSolution newSol = (SatSolution)s;
-        boolean[] litValues = newSol._litValues.clone();
+        Boolean[] litValues = newSol._litValues.clone();
         if(litValues[_literalIx]){
             litValues[_literalIx] = false;
         } else {

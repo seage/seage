@@ -33,7 +33,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceType;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 
 import static org.junit.Assert.*;
 
@@ -41,7 +41,6 @@ import static org.junit.Assert.*;
  *
  * @author RMalek
  */
-@Ignore
 public class FormulaReaderTest {
 
     public FormulaReaderTest() {
@@ -61,10 +60,36 @@ public class FormulaReaderTest {
     @Test
     public void testReadClauses() throws Exception 
     {
-//        Formula formula = new Formula(new ProblemInstanceInfo("uf20", ProblemInstanceType.RESOURCE, "uf20-01.cnf"), FormulaReader.readClauses(new FileInputStream("data/uf20/uf20-01.cnf")));
-//        assertNotNull(formula);
-//        assertNotNull(formula.getLiterals());
-//        assertNotNull(clauses[0].getLiterals()[0].getAbsValue());
+    	ProblemInstanceInfo pii = new ProblemInstanceInfo("uf20", ProblemInstanceOrigin.RESOURCE, "/org/seage/problem/sat/instances/uf20-01.cnf");
+    	SatProblemProvider spp = new SatProblemProvider();
+        Formula formula = spp.initProblemInstance(pii);
+        assertNotNull(formula);
+        assertEquals(20, formula.getLiterals().size());
+        assertEquals(91, formula.getClauses().length);
+        
+        // 1st clause
+        assertEquals(3, formula.getClauses()[0].getLiterals()[0].getIndex());
+        assertEquals(false, formula.getClauses()[0].getLiterals()[0].isNeg());
+        assertEquals(17, formula.getClauses()[0].getLiterals()[1].getIndex());
+        assertEquals(true, formula.getClauses()[0].getLiterals()[1].isNeg());
+        assertEquals(18, formula.getClauses()[0].getLiterals()[2].getIndex());
+        assertEquals(false, formula.getClauses()[0].getLiterals()[2].isNeg());
+        
+        // 45th clause
+        assertEquals(13, formula.getClauses()[45].getLiterals()[0].getIndex());
+        assertEquals(false, formula.getClauses()[45].getLiterals()[0].isNeg());
+        assertEquals(6, formula.getClauses()[45].getLiterals()[1].getIndex());
+        assertEquals(false, formula.getClauses()[45].getLiterals()[1].isNeg());
+        assertEquals(9, formula.getClauses()[45].getLiterals()[2].getIndex());
+        assertEquals(false, formula.getClauses()[45].getLiterals()[2].isNeg());
+        
+        // the last clause
+        assertEquals(3, formula.getClauses()[90].getLiterals()[0].getIndex());
+        assertEquals(false, formula.getClauses()[90].getLiterals()[0].isNeg());
+        assertEquals(15, formula.getClauses()[90].getLiterals()[1].getIndex());
+        assertEquals(true, formula.getClauses()[90].getLiterals()[1].isNeg());
+        assertEquals(4, formula.getClauses()[90].getLiterals()[2].getIndex());
+        assertEquals(true, formula.getClauses()[90].getLiterals()[2].isNeg());
     }
 
 }

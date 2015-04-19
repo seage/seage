@@ -37,7 +37,7 @@ import org.seage.problem.sat.FormulaEvaluator;
  */
 public class SatGraph2 extends Graph {
 
-    private boolean[] _preparedSolution;
+    private Boolean[] _preparedSolution;
 
     public SatGraph2(Formula formula) throws Exception {
         super();
@@ -46,15 +46,15 @@ public class SatGraph2 extends Graph {
             _nodes.put(new Integer(-id),new Node(-id));
         }
 
-        _preparedSolution = new boolean[formula.getLiteralCount()];
+        _preparedSolution = new Boolean[formula.getLiteralCount()];
         for (int i = 0; i < formula.getLiteralCount(); i++) {
             _preparedSolution[i] = true;
         }
         fillEdgeMap(formula);
     }
 
-    private boolean[] createSol(Node node1, Node node2) {
-        boolean[] solution = _preparedSolution.clone();
+    private Boolean[] createSol(Node node1, Node node2) {
+    	Boolean[] solution = _preparedSolution.clone();
         int index = Math.abs(node1.getID());
         if (node1.getID() < 0) {
             solution[index - 1] = false;

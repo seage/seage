@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceType;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.metaheuristic.grasp.HillClimber;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaReader;
@@ -147,7 +147,7 @@ public class SatHillClimberTest {
      */
     public static void main(String[] args) throws Exception {
         String path = "data/sat/uf250-01.cnf";
-        Formula formula = new Formula(new ProblemInstanceInfo("uf20", ProblemInstanceType.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
+        Formula formula = new Formula(new ProblemInstanceInfo("uf20", ProblemInstanceOrigin.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
         
         testing2(formula);
     }

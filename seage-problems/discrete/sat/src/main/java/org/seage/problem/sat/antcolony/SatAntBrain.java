@@ -72,7 +72,7 @@ public class SatAntBrain extends AntBrain {
 //    }
  
     protected double pathCost(Vector<Edge> path) {
-        boolean[] solution = new boolean[_formula.getLiteralCount()];
+        Boolean[] solution = new Boolean[_formula.getLiteralCount()];
         Node node;
         for (int i = 0; i < _formula.getLiteralCount(); i++) {
             node = (Node) path.get(i).getNode2();
