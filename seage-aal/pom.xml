@@ -46,10 +46,10 @@
 						</goals>
 						<configuration>
 							<overwrite>false</overwrite>
-							<outputDirectory>${project.build.directory}/classes</outputDirectory>
+							<outputDirectory>${project.build.directory}/classes/org/seage/aal/problem</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${project.build.directory}/test-classes</directory>
+									<directory>${project.build.directory}/test-classes/org/seage/aal/problem</directory>
 								</resource>
 							</resources>
 						</configuration>
