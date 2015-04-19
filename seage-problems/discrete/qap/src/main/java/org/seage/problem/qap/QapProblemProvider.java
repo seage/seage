@@ -72,7 +72,7 @@ public class QapProblemProvider extends ProblemProvider
         int numAssigns = numSolutions;
         Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
         int assignPrice = facilityLocation[0].length;
-        Object[][] result = new Object[numAssigns][assignPrice];
+        Integer[][] result = new Integer[numAssigns][assignPrice];
 
 //	Random r = new Random();
         ArrayList<Integer> al = new ArrayList<Integer>();
@@ -80,7 +80,7 @@ public class QapProblemProvider extends ProblemProvider
             al.add(i);
         for(int i=0;i<numAssigns;i++){
             Collections.shuffle(al);
-            result[i]=al.toArray();
+            result[i]=al.toArray(new Integer[]{});
         }
         return result;
 //        Object result[][]=new Object[numAssigns][assignPrice];

@@ -55,6 +55,21 @@ public abstract class ProblemProviderTestBase
 	{
 		Object[][] solutions = _provider.generateInitialSolutions(_problemInstance, 10, 10);
 		assertNotNull(solutions);
+		assertEquals(10, solutions.length);
+	}
+	
+	@Test
+	public void testPhenotypeEvaluator() throws Exception
+	{
+		IPhenotypeEvaluator phenotypeEvaluator = _provider.initPhenotypeEvaluator(_problemInstance);
+		assertNotNull(phenotypeEvaluator);
+		Object[][] solutions = _provider.generateInitialSolutions(_problemInstance, 10, 10);
+		
+		for(int i=0;i<10;i++)
+		{
+			double[] value = phenotypeEvaluator.evaluate(solutions[i]);
+			assertNotNull(value);
+		}
 	}
 
 }
