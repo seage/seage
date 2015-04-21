@@ -146,7 +146,7 @@ public class SatHillClimberTest {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        String path = "data/sat/uf250-01.cnf";
+        String path = "data/sat/uf100-01.cnf";
         Formula formula = new Formula(new ProblemInstanceInfo("uf20", ProblemInstanceOrigin.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
         
         testing2(formula);

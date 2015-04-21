@@ -1,4 +1,4 @@
 cd `dirname $0`
-LAUNCHER="`ls bin/seage-launcher*.jar`"
-java -jar -Xms1024m $LAUNCHER $@
+git pull origin master
 
+mvn -f ../pom.xml test
