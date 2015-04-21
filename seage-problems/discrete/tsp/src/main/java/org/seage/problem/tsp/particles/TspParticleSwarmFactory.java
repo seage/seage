@@ -29,6 +29,7 @@ package org.seage.problem.tsp.particles;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.particles.ParticleSwarmAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.particles.Particle;
@@ -42,7 +43,7 @@ import org.seage.problem.tsp.TspProblemInstance;
  */
 @Annotations.AlgorithmId("ParticleSwarm")
 @Annotations.AlgorithmName("Particle Swarm")
-public class TspParticleSwarmFactory //implements IAlgorithmFactory
+public class TspParticleSwarmFactory implements IAlgorithmFactory
 {
     private int _numParticles;
 

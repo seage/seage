@@ -73,7 +73,7 @@ public class TspHillClimberTest {
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 
-        _hc = new HillClimber(new TspObjectiveFunction(_cities), new TspMoveManager(), new TSPSolutionGenerator(switcher, _cities), iteration);
+        _hc = new HillClimber(new TspObjectiveFunction(_cities), new TspMoveManager(), new TspSolutionGenerator(switcher, _cities), iteration);
         _hc.startRestartedSearching(restarts);
         TspSolution bestSol = (TspSolution) _hc.getBestSolution();
         _tour = bestSol.getTour();

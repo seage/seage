@@ -33,7 +33,7 @@ import org.seage.problem.tsp.City;
  *
  * @author Zagy
  */
-public class TSPSolutionGenerator implements ISolutionGenerator {
+public class TspSolutionGenerator implements ISolutionGenerator {
 
     /**
      * _cities - Loaded cities
@@ -47,7 +47,7 @@ public class TSPSolutionGenerator implements ISolutionGenerator {
      * @param switcher - Loaded cities
      * @param cities - Parameter setting random or greedy initial solution
      */
-    public TSPSolutionGenerator(String switcher, City[] cities) {
+    public TspSolutionGenerator(String switcher, City[] cities) {
         _cities = cities;
         _switcher = switcher;
     }

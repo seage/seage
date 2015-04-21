@@ -1,9 +1,13 @@
 package org.seage.aal.algorithm.grasp;
 
+import org.seage.aal.Annotations.AlgorithmParameters;
+import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.reporter.AlgorithmReport;
 
+@AlgorithmParameters({ 
+	@Parameter(name = "numberOfRestarts", min = 0, max = 100, init = 10)})
 public abstract class GraspAlgorithmAdapter extends AlgorithmAdapterImpl{
 
 	public void setParameters(AlgorithmParams params) throws Exception 
