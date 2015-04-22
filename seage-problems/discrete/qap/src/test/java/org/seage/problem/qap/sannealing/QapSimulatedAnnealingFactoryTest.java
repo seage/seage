@@ -9,7 +9,6 @@ public class QapSimulatedAnnealingFactoryTest extends AlgorithmFactoryTestBase
 	public QapSimulatedAnnealingFactoryTest() 
 	{
 		super(new QapSimulatedAnnealingFactory(), new QapProblemProvider());
-		// TODO Auto-generated constructor stub
 	}
 
 }

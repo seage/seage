@@ -54,12 +54,8 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
         return ParticleSwarmAdapter.class;
     }
 
+      
     public IAlgorithmAdapter createAlgorithm( ProblemInstance instance) throws Exception
-    {
-            throw new UnsupportedOperationException();
-    }
-    
-    public IAlgorithmAdapter createAlgorithm2( ProblemInstance instance) throws Exception
     {    
         IAlgorithmAdapter algorithm;
         final Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
