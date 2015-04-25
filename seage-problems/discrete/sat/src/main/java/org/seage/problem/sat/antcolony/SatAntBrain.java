@@ -29,6 +29,7 @@ import java.util.Vector;
 
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
+import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
@@ -41,7 +42,7 @@ public class SatAntBrain extends AntBrain {
 
     private Formula _formula;
 
-    public SatAntBrain(SatGraph graph, Formula formula) {
+    public SatAntBrain(Graph graph, Formula formula) {
         super(graph);
         _formula = formula;
     }

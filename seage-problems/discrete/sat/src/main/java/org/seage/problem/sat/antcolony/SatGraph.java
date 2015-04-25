@@ -41,11 +41,16 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
 
     public SatGraph(Formula formula) throws Exception {
         super();
+        //   /-  1   2   3 - ...  n-1 \
+        // 0                              n
+        //   \- -1  -2  -3 - ... -n-1 /
         _nodes.put(new Integer(0), new Node(0));
-        for (int i = 1; i <= formula.getLiteralCount(); i++) {
+        for (int i = 1; i < formula.getLiteralCount(); i++) {
             _nodes.put(new Integer(i), new Node(i));
-            _nodes.put(new Integer(i), new Node(-i));
-        }        
+            _nodes.put(new Integer(-i), new Node(-i));
+        }
+        _nodes.put(new Integer(formula.getLiteralCount()), new Node(0));
+        
         _preparedSolution = new boolean[formula.getLiteralCount()];
         for (int i = 0; i < formula.getLiteralCount(); i++) {
             _preparedSolution[i] = true;
@@ -91,12 +96,14 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
      */
     private void fillEdgeMap(Formula formula) throws Exception {
         makeEdge(_nodes.get(0), _nodes.get(1), formula);
-        makeEdge(_nodes.get(0), _nodes.get(2), formula);
-        for (int i = 1; i < formula.getLiteralCount() * 2 - 2; i += 2) {
-            makeEdge(_nodes.get(i), _nodes.get(i + 2), formula);
-            makeEdge(_nodes.get(i), _nodes.get(i + 3), formula);
-            makeEdge(_nodes.get(i + 1), _nodes.get(i + 2), formula);
-            makeEdge(_nodes.get(i + 1), _nodes.get(i + 3), formula);
+        makeEdge(_nodes.get(0), _nodes.get(-1), formula);
+        makeEdge(_nodes.get(formula.getLiteralCount()-1), _nodes.get(formula.getLiteralCount()), formula);
+        makeEdge(_nodes.get(-formula.getLiteralCount()+1), _nodes.get(formula.getLiteralCount()), formula);
+        for (int i = 1; i < formula.getLiteralCount()-1; i++) {
+            makeEdge(_nodes.get(i), _nodes.get(  i + 1), formula);
+            makeEdge(_nodes.get(i), _nodes.get(-(i + 1)), formula);
+            makeEdge(_nodes.get(-i), _nodes.get(  i + 1), formula);
+            makeEdge(_nodes.get(-i), _nodes.get(-(i + 1)), formula);
         }
     }
 

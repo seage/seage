@@ -31,6 +31,7 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
+import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 import org.seage.problem.sat.FormulaReader;
@@ -45,14 +46,14 @@ public class SatAntColonyTest
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        String path = "data/sat/uf75-01.cnf";// args[0];
+        String path = "data/sat/uf20-01.cnf";// args[0];
         Formula formula = new Formula(new ProblemInstanceInfo("",ProblemInstanceOrigin.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
 
         double quantumPheromone = 10, evaporation = 0.95, defaultPheromone = 0.1;
         double alpha = 1, beta = 5;
         int numAnts = 100, iterations = 5000;
 
-        SatGraph graph = new SatGraph(formula);
+        Graph graph = new SatGraph2(formula);
         SatAntBrain brain = new SatAntBrain(graph, formula);       
         AntColony colony = new AntColony(graph, brain);
         colony.setParameters( iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
