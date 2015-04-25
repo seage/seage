@@ -29,6 +29,7 @@ package org.seage.aal.algorithm.sannealing;
 import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.*;
+import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 
 /**
  *

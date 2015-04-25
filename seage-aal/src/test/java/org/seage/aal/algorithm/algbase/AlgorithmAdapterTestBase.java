@@ -23,8 +23,11 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.aal.algorithm;
+package org.seage.aal.algorithm.algbase;
 
+import org.seage.aal.algorithm.AlgorithmAdapterTester;
+import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.reporter.AlgorithmReport;
 
 /**

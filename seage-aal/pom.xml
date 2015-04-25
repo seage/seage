@@ -62,10 +62,10 @@
 						</goals>
 						<configuration>
 							<overwrite>false</overwrite>
-							<outputDirectory>${project.build.directory}/classes/org/seage/aal/algorithm</outputDirectory>
+							<outputDirectory>${project.build.directory}/classes/org/seage/aal/algorithm/algbase</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${project.build.directory}/test-classes/org/seage/aal/algorithm</directory>									
+									<directory>${project.build.directory}/test-classes/org/seage/aal/algorithm/algbase</directory>									
 								</resource>
 							</resources>
 						</configuration>

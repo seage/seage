@@ -4,6 +4,7 @@ import java.util.Random;
 
 import junit.framework.Assert;
 
+import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 import org.seage.data.DataNode;
 
 public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
