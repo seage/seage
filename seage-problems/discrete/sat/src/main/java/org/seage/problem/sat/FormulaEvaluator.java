@@ -57,6 +57,8 @@ public class FormulaEvaluator {
 
     public static double evaluate(Formula f, int ix, boolean value)
     {
+    	if(ix == -1) // the last, artificialnode
+    		return 0;
         int positive = 0;
         int negative = 0;
 
