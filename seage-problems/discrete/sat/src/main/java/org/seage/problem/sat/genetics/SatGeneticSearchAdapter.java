@@ -1,16 +1,19 @@
-package sat.algorithm;
+package org.seage.problem.sat.genetics;
 
-import ailibrary.data.*;
-import ailibrary.algorithm.*;
-import ailibrary.algorithm.genetics.*;
-import sat.algorithm.genetics.*;
+import org.seage.data.ds.DataRow;
+import org.seage.data.ds.DataStore;
+import org.seage.data.ds.DataTable;
+import org.seage.metaheuristic.genetics.Chromosome;
+import org.seage.metaheuristic.genetics.GeneticOperator;
+import org.seage.metaheuristic.genetics.Subject;
+import org.seage.metaheuristic.genetics.SubjectEvaluator;
 /**
  * Summary description for SatGeneticSearchProxy.
  */
 public class SatGeneticSearchAdapter extends GeneticSearchAdapter
 {
 	public SatGeneticSearchAdapter(	GeneticOperator operator, 
-									Evaluator evaluator, 
+									SubjectEvaluator evaluator, 
 									boolean maximizing,
 									String searchID)
 	{

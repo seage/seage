@@ -1,24 +1,24 @@
-package sat.algorithm.genetics;
-import ailibrary.algorithm.genetics.*;
+package org.seage.problem.sat.genetics;
+import org.seage.metaheuristic.genetics.BasicGeneticOperator;
 
 /**
  * Summary description for SatGeneticOperator.
  */
-public class SatGeneticOperator extends GeneticOperator
+public class SatGeneticOperator extends BasicGeneticOperator<SatSubject, Boolean>
 {
-	public Subject mutate(Subject subject) throws Exception
+	public SatSubject mutate(SatSubject subject) throws Exception
 	{
 		try
 		{
-			int length = subject.getGenome().getChromosome(0).getLength();
-			int count = _random.nextInt((int)(length * _mutatePct) + 1);
-			Subject mutant = (Subject)subject.clone();
+			int length = subject.getChromosome().getLength();
+			int count = _random.nextInt((int)(length * _mutateLengthCoef) + 1);
+			SatSubject mutant = (SatSubject)subject.clone();
 
 			for (int i = 0; i < count; i++)
 			{
 				int ix = _random.nextInt(length);
-				int x = mutant.getGenome().getChromosome(0).getGene(ix).getValue();
-				mutant.getGenome().getChromosome(0).getGene(ix).setValue(1 - x);
+				boolean x = mutant.getChromosome().getGene(ix);
+				mutant.getChromosome().setGene(ix, !x);
 			}
 			return mutant;
 		}
@@ -28,24 +28,24 @@ public class SatGeneticOperator extends GeneticOperator
 		}
 	}
 
-	public Subject randomize(Subject subject) throws Exception
+	public SatSubject randomize(SatSubject subject) throws Exception
 	{
 		try
 		{
-			int length = subject.getGenome().getChromosome(0).getLength();
+			int length = subject.getChromosome().getLength();
 
-			Subject random = (Subject)subject.clone();
+			SatSubject random = (SatSubject)subject.clone();
 
 			for (int i = 0; i < length * 10; i++)
 			{
 				int ix = _random.nextInt(length - 2) + 1;
-				int x = random.getGenome().getChromosome(0).getGene(ix).getValue();
-				random.getGenome().getChromosome(0).getGene(ix).setValue(1 - x);
-				random.getGenome().getChromosome(0).getGene(ix + 1).setValue(1 - x);
-				random.getGenome().getChromosome(0).getGene(ix - 1).setValue(1 - x);
-				random.getGenome().getChromosome(0).getGene(length - ix - 1).setValue(1 - x);
-				random.getGenome().getChromosome(0).getGene(length - ix).setValue(1 - x);
-				random.getGenome().getChromosome(0).getGene(length - ix - 2).setValue(1 - x);
+				boolean x = random.getChromosome().getGene(ix);
+				random.getChromosome().setGene(ix, !x);
+				random.getChromosome().setGene(ix + 1, !x);
+				random.getChromosome().setGene(ix - 1, !x);
+				random.getChromosome().setGene(length - ix - 1, !x);
+				random.getChromosome().setGene(length - ix, !x);
+				random.getChromosome().setGene(length - ix - 2, !x);
 			}
 			return random;
 		}

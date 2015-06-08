@@ -1,4 +1,4 @@
-package sat.algorithm.tabusearch;
+package org.seage.problem.sat.tabusearch;
 
 import sat.data.*;
 import ailibrary.algorithm.tabusearch.*;
