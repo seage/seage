@@ -1,6 +1,7 @@
 package org.seage.problem.sat.tabusearch;
 
-import ailibrary.algorithm.tabusearch.*;
+import org.seage.metaheuristic.tabusearch.Move;
+import org.seage.metaheuristic.tabusearch.Solution;
 /**
  * Summary description for KnapMove.
  */

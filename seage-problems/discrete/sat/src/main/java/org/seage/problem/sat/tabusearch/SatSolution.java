@@ -1,7 +1,6 @@
 package org.seage.problem.sat.tabusearch;
 
-import sat.data.*;
-import ailibrary.algorithm.tabusearch.*;
+import org.seage.metaheuristic.tabusearch.SolutionAdapter;
 /**
  * Summary description for SatSolution.
  */
@@ -11,10 +10,10 @@ public class SatSolution extends SolutionAdapter
 	private boolean[] _literalValues;
 	private int _hash; 
 
-	public SatSolution(int numLiteral)
+	public SatSolution(boolean[] literalValues)
 	{
-		_literalValues = new boolean[numLiteral];
-		_hash = GeneralSatEvaluator.hashCode(_literalValues);
+		_literalValues = literalValues.clone();
+		//_hash = SatPhenotypeEvaluator.hashCode(_literalValues);
 	}
 
 	public boolean[] getLiteralValues()

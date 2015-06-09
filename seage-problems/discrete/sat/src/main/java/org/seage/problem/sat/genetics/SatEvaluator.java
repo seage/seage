@@ -7,7 +7,7 @@ import org.seage.problem.sat.SatPhenotypeEvaluator;
 /**
  * Summary description for SatObjectiveFunction.
  */
-public class SatEvaluator extends SubjectEvaluator<SatSubject>
+public class SatEvaluator extends SubjectEvaluator<Subject<Boolean>>
 {
 	private SatPhenotypeEvaluator _evaluator;
 	public SatEvaluator(SatPhenotypeEvaluator evaluator)
@@ -15,7 +15,7 @@ public class SatEvaluator extends SubjectEvaluator<SatSubject>
 		_evaluator = evaluator;
 	}
 
-	public double[] evaluate(SatSubject solution) throws Exception
+	public double[] evaluate(Subject<Boolean> solution) throws Exception
 	{
 		Chromosome<Boolean> chrom = solution.getChromosome();
 		Boolean[] array = new Boolean[chrom.getLength()];

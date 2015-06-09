@@ -24,7 +24,7 @@
  *     - Initial implementation
  */
 
-package org.seage.problem.tsp.genetics;
+package org.seage.problem.sat.genetics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,8 +36,8 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.genetics.Subject;
-import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.TspProblemInstance;
+import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.SatPhenotypeEvaluator;
 
 /**
  *
@@ -45,7 +45,7 @@ import org.seage.problem.tsp.TspProblemInstance;
  */
 @Annotations.AlgorithmId("GeneticAlgorithm")
 @Annotations.AlgorithmName("GeneticAlgorithm")
-public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
+public class SatGeneticAlgorithmFactory implements IAlgorithmFactory
 {
 
     public Class<?> getAlgorithmClass() {
@@ -55,8 +55,8 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {        
         IAlgorithmAdapter algorithm;
-        City[] cities = ((TspProblemInstance)instance).getCities();
-        algorithm = new GeneticAlgorithmAdapter<Subject<Integer>>(new TspGeneticOperator(), new TspEvaluator(cities), false, "")
+        Formula formula = (Formula)instance;
+        algorithm = new GeneticAlgorithmAdapter<Subject<Boolean>>(new SatGeneticOperator(), new SatEvaluator(new SatPhenotypeEvaluator(formula)), false, "")
 		{
         	@Override
 			public Object[][] solutionsToPhenotype() throws Exception 
@@ -77,9 +77,9 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 			@Override
 			public void solutionsFromPhenotype(Object[][] source) throws Exception 
 			{
-				_solutions = new ArrayList<Subject<Integer>>(source.length);
+				_solutions = new ArrayList<Subject<Boolean>>(source.length);
 				for (int i = 0; i < source.length; i++)				
-					_solutions.add( new Subject<Integer>((Integer[]) source[i]));								
+					_solutions.add( new Subject<Boolean>((Boolean[]) source[i]));								
 			}
 		};
 

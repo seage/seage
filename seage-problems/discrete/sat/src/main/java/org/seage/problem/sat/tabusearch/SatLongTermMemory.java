@@ -1,7 +1,9 @@
 package org.seage.problem.sat.tabusearch;
 
-import ailibrary.algorithm.tabusearch.*;
-import java.util.*;
+import java.util.ArrayList;
+
+import org.seage.metaheuristic.tabusearch.LongTermMemory;
+import org.seage.metaheuristic.tabusearch.Solution;
 /**
  * Summary description for SatLongTermMemory.
  */
@@ -60,7 +62,7 @@ public class SatLongTermMemory implements LongTermMemory
 
 	public Solution diversifySolution()
 	{
-		SatSolution result = new SatSolution(_literalCount.length);
+		SatSolution result = new SatSolution(new boolean[_literalCount.length]);
 		int sum = 0;
 		int avg = 0;
 		for (int i = 0; i < _literalCount.length; i++)

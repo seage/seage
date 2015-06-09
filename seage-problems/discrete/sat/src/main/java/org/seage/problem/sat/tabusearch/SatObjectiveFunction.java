@@ -1,17 +1,18 @@
 package org.seage.problem.sat.tabusearch;
 
-import sat.data.*;
-import ailibrary.algorithm.tabusearch.*;
-import ailibrary.data.*;
+import org.seage.metaheuristic.tabusearch.Move;
+import org.seage.metaheuristic.tabusearch.ObjectiveFunction;
+import org.seage.metaheuristic.tabusearch.Solution;
+import org.seage.problem.sat.SatPhenotypeEvaluator;
 
 /**
  * Summary description for KnapObjectiveFunction.
  */
 public class SatObjectiveFunction implements ObjectiveFunction
 {
-	private GeneralSatEvaluator _evaluator;
+	private SatPhenotypeEvaluator _evaluator;
 
-	public SatObjectiveFunction(GeneralSatEvaluator evaluator)
+	public SatObjectiveFunction(SatPhenotypeEvaluator evaluator)
 	{
 		_evaluator = evaluator;
 	}
@@ -22,7 +23,11 @@ public class SatObjectiveFunction implements ObjectiveFunction
 		{
 			SatSolution satSol = (SatSolution)solution;
 			SatMove satMove = (SatMove)move;
-			boolean[] literalValues = (boolean[])satSol.getLiteralValues().clone();
+			
+			Boolean[] literalValues = new Boolean[satSol.getLiteralValues().length];
+			//(boolean[])satSol.getLiteralValues().clone();
+			for(int i=0;i<satSol.getLiteralValues().length;i++)   
+				literalValues[i] = satSol.getLiteralValues()[i];			
 
 			if (satMove != null)
 			{

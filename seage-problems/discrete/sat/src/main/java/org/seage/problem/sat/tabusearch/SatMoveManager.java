@@ -1,8 +1,11 @@
 package org.seage.problem.sat.tabusearch;
 
-import sat.data.*;
-import ailibrary.algorithm.tabusearch.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
+
+import org.seage.metaheuristic.tabusearch.Move;
+import org.seage.metaheuristic.tabusearch.MoveManager;
+import org.seage.metaheuristic.tabusearch.Solution;
 /**
  * Summary description for SatMoveManager.
  */
@@ -10,12 +13,12 @@ public class SatMoveManager implements MoveManager
 {
 	//public DataStore _dataStore;
 	private SatMove[] _null;
-	private ArrayList _moves;
+	private ArrayList<SatMove> _moves;
 	private Random _random;
 	public SatMoveManager(/*DataStore dataStore*/)
 	{
 		//_dataStore = dataStore;
-		_moves = new ArrayList();
+		_moves = new ArrayList<SatMove>();
 		_random = new Random(97789);
 		_null = new SatMove[0];
 	}

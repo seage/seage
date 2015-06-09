@@ -1,18 +1,19 @@
 package org.seage.problem.sat.genetics;
 import org.seage.metaheuristic.genetics.BasicGeneticOperator;
+import org.seage.metaheuristic.genetics.Subject;
 
 /**
  * Summary description for SatGeneticOperator.
  */
-public class SatGeneticOperator extends BasicGeneticOperator<SatSubject, Boolean>
+public class SatGeneticOperator extends BasicGeneticOperator<Subject<Boolean>, Boolean>
 {
-	public SatSubject mutate(SatSubject subject) throws Exception
+	public Subject<Boolean> mutate(Subject<Boolean> subject) throws Exception
 	{
 		try
 		{
 			int length = subject.getChromosome().getLength();
 			int count = _random.nextInt((int)(length * _mutateLengthCoef) + 1);
-			SatSubject mutant = (SatSubject)subject.clone();
+			Subject<Boolean> mutant = (Subject<Boolean>)subject.clone();
 
 			for (int i = 0; i < count; i++)
 			{
@@ -28,13 +29,13 @@ public class SatGeneticOperator extends BasicGeneticOperator<SatSubject, Boolean
 		}
 	}
 
-	public SatSubject randomize(SatSubject subject) throws Exception
+	public Subject<Boolean> randomize(Subject<Boolean> subject) throws Exception
 	{
 		try
 		{
 			int length = subject.getChromosome().getLength();
 
-			SatSubject random = (SatSubject)subject.clone();
+			Subject<Boolean> random = (Subject<Boolean>)subject.clone();
 
 			for (int i = 0; i < length * 10; i++)
 			{
