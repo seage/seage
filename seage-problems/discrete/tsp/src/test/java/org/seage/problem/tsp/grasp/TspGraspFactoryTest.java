@@ -8,8 +8,7 @@ public class TspGraspFactoryTest extends AlgorithmFactoryTestBase
 
 	public TspGraspFactoryTest() 
 	{
-		super(new TspGraspAlgorithmFactory(), new TspProblemProvider());
-		// TODO Auto-generated constructor stub
+		super(new TspProblemProvider(), "GRASP");
 	}
 
 }

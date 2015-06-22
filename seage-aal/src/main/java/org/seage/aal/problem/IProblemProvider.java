@@ -25,6 +25,8 @@
  */
 package org.seage.aal.problem;
 
+import java.util.Map;
+
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 
@@ -39,9 +41,12 @@ public interface IProblemProvider
     // @see ProblemInfo
     ProblemInfo getProblemInfo() throws Exception;
 
-    // Returns the algorithm factory
+    // Returns the algorithm factory by id
     IAlgorithmFactory getAlgorithmFactory(String algorithmID) throws Exception;
-
+    
+    // Returns all algorithm factories
+    Map<String, IAlgorithmFactory> getAlgorithmFactories();
+    
     // Initializes (reads) a problem instance.
     ProblemInstance initProblemInstance(ProblemInstanceInfo problemInstanceInfo) throws Exception;
 

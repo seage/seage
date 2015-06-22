@@ -8,7 +8,7 @@ public class QapParticleSwarmFactoryTest extends AlgorithmFactoryTestBase
 
 	public QapParticleSwarmFactoryTest() 
 	{
-		super(new QapParticleSwarmFactory(), new QapProblemProvider());
+		super(new QapProblemProvider(), "ParticleSwarm");
 	}
 
 }

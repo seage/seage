@@ -8,7 +8,7 @@ public class QapFireflyAlgorithmFactoryTest extends AlgorithmFactoryTestBase
 
 	public QapFireflyAlgorithmFactoryTest() 
 	{
-		super(new QapFireflyAlgorithmFactory(), new QapProblemProvider());
+		super(new QapProblemProvider(), "FireflyAlgorithm");
 	}
 
 }

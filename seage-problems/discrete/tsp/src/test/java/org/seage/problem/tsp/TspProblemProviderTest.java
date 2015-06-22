@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Richard Malek and SEAGE contributors
+  * Copyright (c) 2009 Richard Malek and SEAGE contributors
 
  * This file is part of SEAGE.
 

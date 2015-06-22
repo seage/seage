@@ -8,7 +8,7 @@ public class QapTabuSearchFactoryTest extends AlgorithmFactoryTestBase
 
 	public QapTabuSearchFactoryTest() 
 	{
-		super(new QapTabuSearchFactory(), new QapProblemProvider());
+		super(new QapProblemProvider(), "TabuSearch");
 	}
 
 }

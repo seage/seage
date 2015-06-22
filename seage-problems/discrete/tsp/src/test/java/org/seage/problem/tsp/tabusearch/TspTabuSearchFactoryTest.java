@@ -8,7 +8,7 @@ public class TspTabuSearchFactoryTest extends AlgorithmFactoryTestBase
 
 	public TspTabuSearchFactoryTest() 
 	{
-		super(new TspTabuSearchFactory(), new TspProblemProvider());
+		super(new TspProblemProvider(), "TabuSearch");
 	}
 
 }

@@ -8,7 +8,7 @@ public class TspSimulatedAnnealingFactoryTest extends AlgorithmFactoryTestBase
 
 	public TspSimulatedAnnealingFactoryTest() 
 	{
-		super(new TspSimulatedAnnealingFactory(), new TspProblemProvider());
+		super(new TspProblemProvider(), "SimulatedAnnealing");
 		// TODO Auto-generated constructor stub
 	}
 

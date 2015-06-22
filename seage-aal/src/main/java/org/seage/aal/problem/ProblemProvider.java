@@ -105,7 +105,7 @@ public abstract class ProblemProvider implements IProblemProvider
 
                 an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmId.class);
                 if(an2 == null) 
-                	throw new Exception("Unable to get annotation AlgorithmId");
+                	throw new Exception(String.format("Unable to get annotation AlgorithmId: %s", algFactoryClass));
                 String algId = ((Annotations.AlgorithmId)an2).value();
 
                 an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmName.class);
@@ -155,6 +155,11 @@ public abstract class ProblemProvider implements IProblemProvider
         if(!_algFactories.containsKey(algId))
             throw new Exception("Unknown algorithm id: " + algId);
         return _algFactories.get(algId);
+    }
+    
+    public HashMap<String, IAlgorithmFactory> getAlgorithmFactories()
+    {
+    	return _algFactories;
     }
 
 

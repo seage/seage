@@ -8,7 +8,7 @@ public class TspParticleSwarmFactoryTest extends AlgorithmFactoryTestBase
 
 	public TspParticleSwarmFactoryTest() 
 	{
-		super(new TspParticleSwarmFactory(), new TspProblemProvider());
+		super(new TspProblemProvider(), "ParticleSwarm");
 	}
 
 }

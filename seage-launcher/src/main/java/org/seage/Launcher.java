@@ -198,7 +198,7 @@ public class Launcher {
                 problems.putDataNode(pi);
 
                 String name = pi.getValueStr("name");
-                _logger.info(name);
+                _logger.info(problemId+" - "+name);
 
                 _logger.info("\talgorithms:");
                 for (DataNode alg : pi.getDataNode("Algorithms").getDataNodes()) {
