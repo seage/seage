@@ -131,8 +131,7 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
         _fireflySearch.setIterationsToGo(_params.getValueInt("iterationCount"));
         _statNumIter = _params.getValueInt("iterationCount");
         // _geneticSearch.setSolutionCount(param.getValueInt("numSolution"));
-        _fireflySearch.setPopulationCount(_params.getValueInt("numSolutions"));
-        _fireflySearch.setAbsorption(_params.getValueDouble("absorption"));
+         _fireflySearch.setAbsorption(_params.getValueDouble("absorption"));
         // _EFASearch.setInitialIntensity(param.getValueDouble("initialIntensity"));
         // _EFASearch.setInitialRandomness(param.getValueDouble("initialRandomness"));
         // _EFASearch.setFinalRandomness(param.getValueDouble("finalRandomness"));

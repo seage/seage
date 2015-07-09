@@ -49,19 +49,7 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     {
         super();
     }
-//    {            
-//        @Override
-//        public double[] evaluate(Subject<?> solution) throws Exception
-//        {
-//        	double val = 0;
-//        	for(int i=0;i<solution.getChromosome().getGenes().length-1;i++)
-//        	{
-//        		val += Math.abs((Integer)solution.getChromosome().getGene(i) - (Integer)solution.getChromosome().getGene(i+1));
-//        	}
-//        	
-//            return new double[]{val};
-//        }
-//    }
+
     @Before
     public void initAlgorithm() throws Exception
     {

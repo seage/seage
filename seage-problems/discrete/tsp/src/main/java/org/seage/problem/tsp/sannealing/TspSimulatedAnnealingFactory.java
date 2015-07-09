@@ -94,16 +94,14 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 
             public Object[][] solutionsToPhenotype() throws Exception
             {
-                Integer[] tour = ((TspSolution) _simulatedAnnealing.getBestSolution()).getTour();
-                Object[][] source = new Object[_solutions.length][ tour.length ];
+                Object[][] result = new Object[_solutions.length][];
 
-                for(int j=0;j<source.length;j++)
+                for(int i=0;i<_solutions.length;i++)
             	{
-                	source[j] = new Integer[ tour.length ];
-                	for(int i = 0; i < tour.length; i++)
-                		source[j][i] = tour[i];
+                	TspSolution solution = (TspSolution)_solutions[i]; 
+                	result[i] = solution.getTour().clone();                	
             	}
-                return source;
+                return result;
             }
 
         };
