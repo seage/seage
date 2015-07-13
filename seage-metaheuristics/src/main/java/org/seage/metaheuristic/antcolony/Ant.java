@@ -54,7 +54,7 @@ public class Ant {
 	
 	public Ant(List<Integer> nodeIDs)
     {
-		_nodeIDs = nodeIDs;
+		_nodeIDs = new ArrayList<Integer>(nodeIDs);
     }
 	
 	void setParameters(Graph graph, AntBrain brain, double alpha, double beta, double quantumPheromone)
@@ -94,6 +94,7 @@ public class Ant {
         _visited.add(startingNode);
 
         _nodeIDs.clear();
+        _nodeIDs.add(startingNode.getID());
         ArrayList<Node> nodes = _brain.getAvailableNodes(_currentNode, _visited);
         
         while (nodes != null && nodes.size() > 0) 

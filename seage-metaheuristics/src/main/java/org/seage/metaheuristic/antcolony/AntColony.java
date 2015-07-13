@@ -143,10 +143,6 @@ public class AntColony
 			}
 			solveRound();
 			_graph.evaporate();
-//			for (int j = 0; j < _ants.length && _keepRunning; j++)
-//			{
-//				_ants[j].leavePheromone();
-//			}
 			_eventProducer.fireIterationPerformed();
 		}
 		_eventProducer.fireAlgorithmStopped();

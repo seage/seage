@@ -75,18 +75,6 @@ public class AntBrain
 				result.add(n);
 		}
 		
-//		for (Edge e : currentNode.getEdges())
-//		{
-//			Node node2 = null;
-//			if (e.getNode1().equals(currentNode))
-//				node2 = e.getNode2();
-//			else
-//				node2 = e.getNode1();
-//
-//			if (!visited.contains(node2))
-//				result.add(node2);
-//		}
-
 		return result;
 	}
 
@@ -122,9 +110,9 @@ public class AntBrain
 			
 			if (!(visited.contains(n)))
 			{
-                            double p = pow(edgePheromone, _alpha) * pow(1/edgePrice, _beta);
-                            probabilities[i] = p;
-                            sum += p;
+                double p = pow(edgePheromone, _alpha) * pow(1/edgePrice, _beta);
+                probabilities[i] = p;
+                sum += p;
 			}
 
 		}
