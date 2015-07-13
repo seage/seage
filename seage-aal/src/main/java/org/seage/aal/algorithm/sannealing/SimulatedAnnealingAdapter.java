@@ -82,6 +82,8 @@ public abstract class SimulatedAnnealingAdapter extends AlgorithmAdapterImpl
 
         _numberOfIterationsDone = _numberOfNewSolutions = _lastImprovingIteration = 0;
         _simulatedAnnealing.startSearching(_solutions[0]);
+
+		_solutions[0] = _simulatedAnnealing.getBestSolution();
     }
     
     @Override
