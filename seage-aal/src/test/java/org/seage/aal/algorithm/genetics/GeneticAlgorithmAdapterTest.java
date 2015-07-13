@@ -27,14 +27,15 @@
 package org.seage.aal.algorithm.genetics;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
+import org.seage.data.ObjectCloner;
 import org.seage.metaheuristic.genetics.BasicGeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
@@ -68,53 +69,59 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
 			}
 		};
         
-		_algorithm = new GeneticAlgorithmAdapter<Subject<Integer>>(new BasicGeneticOperator<Subject<Integer>, Integer>(), se, false, "") 
-        {			
-			@Override
-			public Object[][] solutionsToPhenotype() throws Exception 
-			{
-				_evaluator.evaluateSubjects(_solutions);
-				Collections.sort(_solutions, _comparator);
-		
-				Object[][] result = new Object[_solutions.size()][];
-		
-				for (int i = 0; i < _solutions.size(); i++)
-				{
-					int numGenes = _solutions.get(i).getChromosome().getLength();
-					result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
-				}
-				return result;
-			}
+		_algAdapter = new GeneticAlgorithmAdapter<Subject<Integer>>(new BasicGeneticOperator<Subject<Integer>, Integer>(), se, false, "") 
+        {		
+			private List<Subject<Integer>> _solutions0;
 			
 			@Override
 			public void solutionsFromPhenotype(Object[][] source) throws Exception 
 			{
 				_solutions = new ArrayList<Subject<Integer>>(source.length);
-				for (int i = 0; i < source.length; i++)				
-					_solutions.add( new Subject<Integer>((Integer[]) source[i]));								
+				_solutions0 = new ArrayList<Subject<Integer>>(source.length);
+				for (int i = 0; i < source.length; i++)
+				{
+					Subject<Integer> s =  new Subject<Integer>((Integer[]) source[i]);
+					_solutions.add(s);
+					_solutions0.add(s);
+				}				
 			}
+			
+			@Override
+			public Object[][] solutionsToPhenotype() throws Exception 
+			{
+//				_evaluator.evaluateSubjects(_solutions);
+//				Collections.sort(_solutions, _comparator);
+//		
+//				Object[][] result = new Object[_solutions.size()][];
+//		
+//				for (int i = 0; i < _solutions.size(); i++)
+//				{
+//					int numGenes = _solutions.get(i).getChromosome().getLength();
+//					result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
+//				}
+//				return result;
+				Assert.assertEquals(_solutions0.size(), _solutions.size());
+				
+				for (int i = 0; i < _solutions.size(); i++)
+				{
+					Assert.assertNotSame(_solutions0.get(i), _solutions.get(i));
+				}
+				return null;
+			}						
 		};
-        
+		        
         _algParams = new AlgorithmParams();        
         _algParams.putValue("crossLengthPct", 40);
         _algParams.putValue("mutateLengthPct", 20);
         _algParams.putValue("eliteSubjectPct", 1);
         _algParams.putValue("iterationCount", 10);
         _algParams.putValue("mutateSubjectPct", 10);
-        _algParams.putValue("numSolutions", 10);
+        _algParams.putValue("numSolutions", NUM_SOLUTIONS);
         _algParams.putValue("randomSubjectPct", 1);       
         
         
-        _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
-    }
-    
-    @Override
-    @Test
-    public void testPhenotype() throws Exception
-    {
-        _tester.testPhenotype();
-        
-    }
+        _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
+    }  
     
     @Override
     @Test

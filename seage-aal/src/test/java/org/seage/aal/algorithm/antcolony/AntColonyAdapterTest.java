@@ -68,7 +68,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
 //    		}
 //    	}
     	    	
-        _algorithm = new TestAntColonyAdapter(new AntBrain(graph), graph);
+        _algAdapter = new TestAntColonyAdapter(new AntBrain(graph), graph);
         _algParams = new AlgorithmParams();
 
         _algParams.putValue("iterationCount", 3);
@@ -78,15 +78,8 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
         _algParams.putValue("qantumOfPheromone", 1);
         _algParams.putValue("localEvaporation", 1);
         
-        _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
-    }
-    
-    @Test
-    @Override    
-    public void testPhenotype() throws Exception
-    {
-        _tester.testPhenotype();
-    }
+        _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
+    }  
     
     @Test
     @Override    

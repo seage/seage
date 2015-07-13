@@ -47,7 +47,7 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new TestFireflyAlgorithmAdapter(new TestOperator(), new TestObjectiveFunction(), false, "");
+        _algAdapter = new TestFireflyAlgorithmAdapter(new TestOperator(), new TestObjectiveFunction(), false, "");
                 
         _algParams = new AlgorithmParams();
 
@@ -57,15 +57,7 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
         _algParams.putValue("withDecreasingRandomness", 1);
         _algParams.putValue("absorption", 1);
                 
-        _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
-    }
-    
-    @Override
-    @Test
-    public void testPhenotype() throws Exception
-    {
-        _tester.testPhenotype();
-        
+        _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
     }
     
     @Override

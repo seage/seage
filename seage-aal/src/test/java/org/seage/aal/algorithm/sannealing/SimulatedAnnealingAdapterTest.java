@@ -45,7 +45,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new TestSimulatedAnnealingAdapter(null, new TestObjectiveFunction(), new TestMoveManager(), false, "");
+        _algAdapter = new TestSimulatedAnnealingAdapter(null, new TestObjectiveFunction(), new TestMoveManager(), false, "");
         
         _algParams = new AlgorithmParams();       
         
@@ -54,16 +54,9 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
         _algParams.putValue("maxTemperature", 100);
         _algParams.putValue("minTemperature", 1);        
         
-        _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
+        _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
     }
-    
-    @Override
-    @Test
-    public void testPhenotype() throws Exception
-    {
-        _tester.testPhenotype();
-    }
-    
+
     @Override
     @Test
     public void testAlgorithm() throws Exception

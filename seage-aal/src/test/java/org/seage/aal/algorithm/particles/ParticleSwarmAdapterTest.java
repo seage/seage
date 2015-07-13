@@ -53,7 +53,7 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new ParticleSwarmAdapter(null, null, false, "")
+        _algAdapter = new ParticleSwarmAdapter(null, null, false, "")
         {
             
             @Override
@@ -102,15 +102,7 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
         
         _algParams.putDataNodeRef(params);
         
-        _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
-    }
-    
-    @Override
-    @Test
-    public void testPhenotype() throws Exception
-    {
-        _tester.testPhenotype();
-        
+        _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
     }
     
     @Override

@@ -29,6 +29,7 @@ package org.seage.aal.algorithm.tabusearch;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
@@ -49,29 +50,39 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algorithm = new TabuSearchAdapter(new TestMoveManager(), new TestObjectiveFunction(), "")
+        _algAdapter = new TabuSearchAdapter(new TestMoveManager(), new TestObjectiveFunction(), "")
         {
+        	private TestSolution[] _solutions0;
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
+            	_solutions0 = new TestSolution[source.length];
                 _solutions = new TestSolution[source.length];
                 
                 for(int i=0;i<source.length;i++)
                 {
-                    _solutions[i] = new TestSolution(source[i]);
+                	TestSolution s = new TestSolution(source[i]);
+                	_solutions0[i] = s;
+                    _solutions[i] = s;
                 }
                 
             }
             @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
-                List<Object[]> result = new ArrayList<Object[]>();
-                
-                for(int i=0;i<_solutions.length;i++)
-                {
-                    result.add(((TestSolution)_solutions[i]).solution);
-                }
-                return (Object[][]) result.toArray(new Object[][]{});
+//                List<Object[]> result = new ArrayList<Object[]>();
+//                
+//                for(int i=0;i<_solutions.length;i++)
+//                {
+//                    result.add(((TestSolution)_solutions[i]).solution);
+//                }
+            	Assert.assertEquals(_solutions0.length, _solutions.length);
+            	Assert.assertNotSame(_solutions0[0], _solutions[0]);
+            	for(int i=1;i<_solutions.length;i++)
+            	{
+            		Assert.assertSame(_solutions0[i], _solutions[i]);
+            	}
+                return null;//(Object[][]) result.toArray(new Object[][]{});
             }
         };
         
@@ -82,16 +93,9 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
         _algParams.putValue("numSolutions", 1);
         _algParams.putValue("tabuListLength", 1);
         
-        _tester = new AlgorithmAdapterTester(_algorithm, /*_solutions,*/ _algParams);
+        _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
     }
-    
-    @Override
-    @Test
-    public void testPhenotype() throws Exception
-    {
-        _tester.testPhenotype();
-    }
-    
+
     @Override
     @Test
     public void testAlgorithm() throws Exception

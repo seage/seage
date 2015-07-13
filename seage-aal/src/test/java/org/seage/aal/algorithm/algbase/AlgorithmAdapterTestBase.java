@@ -37,15 +37,12 @@ import org.seage.aal.reporter.AlgorithmReport;
 public abstract class AlgorithmAdapterTestBase {
     protected AlgorithmAdapterTester _tester;
     
-    protected IAlgorithmAdapter _algorithm; 
-    protected Object[][] _solutions;
+    protected IAlgorithmAdapter _algAdapter; 
     protected AlgorithmParams _algParams;
     protected AlgorithmReport _algReport;
     
-    protected final int NUM_SOLUTIONS = 100;
+    protected final int NUM_SOLUTIONS = 10;
     protected final int SOLUTION_LENGTH=100;  
-
-    public abstract void testPhenotype() throws Exception;
 
     public abstract void testAlgorithm() throws Exception;
     
