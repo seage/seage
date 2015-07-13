@@ -70,19 +70,13 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
             @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
-//                List<Object[]> result = new ArrayList<Object[]>();
-//                
-//                for(int i=0;i<_solutions.length;i++)
-//                {
-//                    result.add(((TestSolution)_solutions[i]).solution);
-//                }
             	Assert.assertEquals(_solutions0.length, _solutions.length);
             	Assert.assertNotSame(_solutions0[0], _solutions[0]);
             	for(int i=1;i<_solutions.length;i++)
             	{
             		Assert.assertSame(_solutions0[i], _solutions[i]);
             	}
-                return null;//(Object[][]) result.toArray(new Object[][]{});
+                return null;
             }
         };
         

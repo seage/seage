@@ -56,17 +56,6 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     		graph.getNodes().put(i+1, n1);
     		
     	}
-//    	for(int i=0;i<SOLUTION_LENGTH;i++)
-//    	{
-//    		Node n1 = graph.getNodes().get(i+1);
-//    		for(int j=i+1;j<SOLUTION_LENGTH;j++)
-//    		{
-//    			Node n2 = graph.getNodes().get(j+1);
-//    			Edge e = new Edge(n1, n2);
-//    	    	e.setEdgePrice(Math.abs(n1.getID()-n2.getID()));
-//    	    	graph.getEdges().add(e);
-//    		}
-//    	}
     	    	
         _algAdapter = new TestAntColonyAdapter(new AntBrain(graph), graph);
         _algParams = new AlgorithmParams();

@@ -8,9 +8,11 @@ import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
 
+import junit.framework.Assert;
+
 public class TestAntColonyAdapter extends AntColonyAdapter
 {
-
+	private Ant[] _ants0;
 	public TestAntColonyAdapter(AntBrain brain, Graph graph)
 	{
 		super(brain, graph);
@@ -19,6 +21,7 @@ public class TestAntColonyAdapter extends AntColonyAdapter
 	@Override
 	public void solutionsFromPhenotype(Object[][] source) throws Exception
 	{
+		_ants0 = new Ant[source.length];
 		_ants = new Ant[source.length];	
 		
 		for(int i=0;i<_ants.length;i++)
@@ -26,6 +29,8 @@ public class TestAntColonyAdapter extends AntColonyAdapter
 			ArrayList<Integer> nodes =  new ArrayList<Integer>();
 			for(int j=0;j<source[i].length;j++)
 				nodes.add((Integer)source[i][j]);
+
+			_ants0[i] = new Ant(nodes);
 			_ants[i] = new Ant(nodes);
 		}
 	}
@@ -33,19 +38,24 @@ public class TestAntColonyAdapter extends AntColonyAdapter
 	@Override
 	public Object[][] solutionsToPhenotype() throws Exception
 	{
-		Arrays.sort(_ants, new Comparator<Ant>()
-		{
-			@Override
-			public int compare(Ant o1, Ant o2)
-			{
-				return (int)(o1.getDistanceTravelled()-o2.getDistanceTravelled());
-			}
-			
-		});
-		Object[][] result = new Object[_ants.length][];
+		Assert.assertEquals(_ants0.length, _ants.length);
+		
+		boolean notSame = false;
 		for(int i=0;i<_ants.length;i++)
-			result[i] = _ants[i].getNodeIDs().toArray(new Integer[]{});
-		return result;
+		{
+			Assert.assertEquals(_ants0[i].getNodeIDs().size(), _ants[i].getNodeIDs().size());
+			
+			for(int j=0;j<_ants0[i].getNodeIDs().size();j++)
+			{
+				if(_ants0[i].getNodeIDs().get(j) != _ants[i].getNodeIDs().get(j));
+				{
+					notSame = true;
+					break;
+				}
+			}
+		}
+		Assert.assertTrue(notSame);
+		return null;
 	}
 
 }
