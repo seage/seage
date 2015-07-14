@@ -52,12 +52,12 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
         _algParams = new AlgorithmParams();
 
         _algParams.putValue("iterationCount", 10);
-        _algParams.putValue("numSolutions", 5);
+        _algParams.putValue("numSolutions", NUM_SOLUTIONS);
         _algParams.putValue("timeStep", 1);
         _algParams.putValue("withDecreasingRandomness", 1);
         _algParams.putValue("absorption", 1);
                 
-        _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
+        _tester = new AlgorithmAdapterTester(_algAdapter, _algParams);
     }
     
     @Override

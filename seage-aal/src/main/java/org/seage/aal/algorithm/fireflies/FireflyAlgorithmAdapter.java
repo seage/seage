@@ -65,7 +65,6 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
     protected Solution              _bestEverSolution;
     protected AlgorithmParams       _params;
     private String                	_searchID;
-    // private String _paramID;
 
     private double                _statInitObjVal;
     private double                _statEndObjVal;
@@ -130,19 +129,12 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
                 
         _fireflySearch.setIterationsToGo(_params.getValueInt("iterationCount"));
         _statNumIter = _params.getValueInt("iterationCount");
-        // _geneticSearch.setSolutionCount(param.getValueInt("numSolution"));
-         _fireflySearch.setAbsorption(_params.getValueDouble("absorption"));
-        // _EFASearch.setInitialIntensity(param.getValueDouble("initialIntensity"));
-        // _EFASearch.setInitialRandomness(param.getValueDouble("initialRandomness"));
-        // _EFASearch.setFinalRandomness(param.getValueDouble("finalRandomness"));
-        // _EFASearch.setAbsorption(param.getValueDouble("absorption"));
+        _fireflySearch.setAbsorption(_params.getValueDouble("absorption"));
         _fireflySearch.setTimeStep(_params.getValueDouble("timeStep"));
         _fireflySearch.setWithDecreasingRandomness(((_params.getValueDouble("withDecreasingRandomness") > 0) ? true : false));
+        _fireflySearch.setPopulationCount(_params.getValueInt("numSolutions"));
         // EDD OWN PARAMETERS
-
-        // _paramID = param.getValue("ID");
     }
-
 
     public AlgorithmReport getReport() throws Exception
     {

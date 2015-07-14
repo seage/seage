@@ -3,12 +3,14 @@ package org.seage.aal.algorithm.fireflies;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.seage.metaheuristic.fireflies.FireflyOperator;
 import org.seage.metaheuristic.fireflies.ObjectiveFunction;
 
 
 public class TestFireflyAlgorithmAdapter extends FireflyAlgorithmAdapter
 {
+    private TestSolution[] _solutions0;
     
     public TestFireflyAlgorithmAdapter(FireflyOperator operator,
             ObjectiveFunction evaluator,
@@ -21,25 +23,28 @@ public class TestFireflyAlgorithmAdapter extends FireflyAlgorithmAdapter
     @Override
     public void solutionsFromPhenotype(Object[][] source) throws Exception
     {
+        _solutions0 = new TestSolution[source.length];
         _solutions = new TestSolution[source.length];
         
         for(int i=0;i<source.length;i++)
         {
-            _solutions[i] = new TestSolution(source[i]);
-        }
-        
+        	TestSolution s = new TestSolution(source[i]); 
+            _solutions0[i] = s;
+            _solutions[i] = s;
+        }        
     }
 
     @Override
     public Object[][] solutionsToPhenotype() throws Exception
     {
-        List<Object[]> result = new ArrayList<Object[]>();
-        
-        for(int i=0;i<_solutions.length;i++)
-        {
-            result.add(((TestSolution)_solutions[i]).solution);
-        }
-        return (Object[][]) result.toArray(new Object[][]{});
+    	Assert.assertEquals(_solutions0.length, _solutions.length);
+    	
+    	for(int i=1;i<_solutions.length;i++)
+    	{
+    		Assert.assertNotSame(_solutions0[i], _solutions[i]);
+    	}
+    	
+        return null;
     }
 
 }
