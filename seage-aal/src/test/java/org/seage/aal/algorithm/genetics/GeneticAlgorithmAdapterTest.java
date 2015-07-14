@@ -89,17 +89,6 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
 			@Override
 			public Object[][] solutionsToPhenotype() throws Exception 
 			{
-//				_evaluator.evaluateSubjects(_solutions);
-//				Collections.sort(_solutions, _comparator);
-//		
-//				Object[][] result = new Object[_solutions.size()][];
-//		
-//				for (int i = 0; i < _solutions.size(); i++)
-//				{
-//					int numGenes = _solutions.get(i).getChromosome().getLength();
-//					result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
-//				}
-//				return result;
 				Assert.assertEquals(_solutions0.size(), _solutions.size());
 				
 				for (int i = 0; i < _solutions.size(); i++)

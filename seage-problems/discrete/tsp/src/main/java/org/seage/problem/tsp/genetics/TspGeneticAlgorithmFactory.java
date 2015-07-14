@@ -58,12 +58,17 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
         City[] cities = ((TspProblemInstance)instance).getCities();
         algorithm = new GeneticAlgorithmAdapter<Subject<Integer>>(new TspGeneticOperator(), new TspEvaluator(cities), false, "")
 		{
+			@Override
+			public void solutionsFromPhenotype(Object[][] source) throws Exception 
+			{
+				_solutions = new ArrayList<Subject<Integer>>(source.length);
+				for (int i = 0; i < source.length; i++)				
+					_solutions.add( new Subject<Integer>((Integer[]) source[i]));								
+			}
+			
         	@Override
 			public Object[][] solutionsToPhenotype() throws Exception 
-			{
-				_evaluator.evaluateSubjects(_solutions);
-				Collections.sort(_solutions, _comparator);
-		
+			{		
 				Object[][] result = new Object[_solutions.size()][];
 		
 				for (int i = 0; i < _solutions.size(); i++)
@@ -72,14 +77,6 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 					result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
 				}
 				return result;
-			}
-			
-			@Override
-			public void solutionsFromPhenotype(Object[][] source) throws Exception 
-			{
-				_solutions = new ArrayList<Subject<Integer>>(source.length);
-				for (int i = 0; i < source.length; i++)				
-					_solutions.add( new Subject<Integer>((Integer[]) source[i]));								
 			}
 		};
 

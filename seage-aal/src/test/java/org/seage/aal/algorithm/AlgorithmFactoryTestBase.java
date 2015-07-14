@@ -74,7 +74,7 @@ public abstract class AlgorithmFactoryTestBase
 			assertNotNull(solutions2[i]);
 			for(int j=0;j<solutions[i].length;j++)
 			{
-				assertSame(solutions[i][j], solutions2[i][j]);
+				assertEquals(solutions[i][j], solutions2[i][j]);
 			}
 		}
 		
