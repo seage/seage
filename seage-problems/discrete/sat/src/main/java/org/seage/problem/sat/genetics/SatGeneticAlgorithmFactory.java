@@ -59,11 +59,16 @@ public class SatGeneticAlgorithmFactory implements IAlgorithmFactory
         algorithm = new GeneticAlgorithmAdapter<Subject<Boolean>>(new SatGeneticOperator(), new SatEvaluator(new SatPhenotypeEvaluator(formula)), false, "")
 		{
         	@Override
-			public Object[][] solutionsToPhenotype() throws Exception 
+			public void solutionsFromPhenotype(Object[][] source) throws Exception 
 			{
-				_evaluator.evaluateSubjects(_solutions);
-				Collections.sort(_solutions, _comparator);
-		
+				_solutions = new ArrayList<Subject<Boolean>>(source.length);
+				for (int i = 0; i < source.length; i++)				
+					_solutions.add( new Subject<Boolean>((Boolean[]) source[i]));								
+			}
+        	
+        	@Override
+			public Object[][] solutionsToPhenotype() throws Exception 
+			{		
 				Object[][] result = new Object[_solutions.size()][];
 		
 				for (int i = 0; i < _solutions.size(); i++)
@@ -72,14 +77,6 @@ public class SatGeneticAlgorithmFactory implements IAlgorithmFactory
 					result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
 				}
 				return result;
-			}
-			
-			@Override
-			public void solutionsFromPhenotype(Object[][] source) throws Exception 
-			{
-				_solutions = new ArrayList<Subject<Boolean>>(source.length);
-				for (int i = 0; i < source.length; i++)				
-					_solutions.add( new Subject<Boolean>((Boolean[]) source[i]));								
 			}
 		};
 

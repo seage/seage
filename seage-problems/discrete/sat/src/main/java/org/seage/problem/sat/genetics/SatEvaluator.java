@@ -24,6 +24,6 @@ public class SatEvaluator extends SubjectEvaluator<Subject<Boolean>>
 			array[i] = chrom.getGene(i);
 		}
 		double[] val = _evaluator.evaluate(array);
-		return new double[] { val[0], val[1], val[2] };
+		return new double[] { val[0] };
 	}
 }
