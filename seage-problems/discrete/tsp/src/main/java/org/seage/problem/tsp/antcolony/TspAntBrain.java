@@ -62,9 +62,9 @@ public class TspAntBrain extends AntBrain
 	@Override
 	public List<Edge> getEdgesToNodes(List<Integer> _nodeIDs, Graph graph) throws Exception
 	{
-		List<Edge> result = super.getEdgesToNodes(_nodeIDs, graph); 
-		Node n1 = graph.getNodes().get(_nodeIDs.get(0));
-		Node n2 = graph.getNodes().get(_nodeIDs.get(_nodeIDs.size()-1));
+		List<Edge> result = super.getEdgesToNodes(_nodeIDs, graph);
+		Node n1 = graph.getNodes().get(_nodeIDs.get(0)-1);
+		Node n2 = graph.getNodes().get(_nodeIDs.get(_nodeIDs.size()-1)-1);
 		
 		Edge e = n1.getEdgeMap().get(n2);
 		if(e == null)
