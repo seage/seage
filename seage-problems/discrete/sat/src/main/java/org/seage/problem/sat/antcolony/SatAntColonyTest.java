@@ -50,8 +50,8 @@ public class SatAntColonyTest
         Formula formula = new Formula(new ProblemInstanceInfo("",ProblemInstanceOrigin.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
 
         double quantumPheromone = 10, evaporation = 0.95, defaultPheromone = 0.1;
-        double alpha = 1, beta = 5;
-        int numAnts = 100, iterations = 5000;
+        double alpha = 1, beta = 3;
+        int numAnts = 10, iterations = 5000;
 
         Graph graph = new SatGraph2(formula);
         SatAntBrain brain = new SatAntBrain(graph, formula);       
@@ -64,7 +64,7 @@ public class SatAntColonyTest
 		
         colony.startExploring(graph.getNodes().get(0), ants);
 
-        System.out.println("Global best: "+(colony.getGlobalBest()-0.1));
+        System.out.println("Global best: "+colony.getGlobalBest());
         
         Boolean[] s = new Boolean[colony.getBestPath().size()];
         for(int i=0;i<s.length;i++)

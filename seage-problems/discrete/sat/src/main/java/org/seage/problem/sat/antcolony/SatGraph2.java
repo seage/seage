@@ -41,6 +41,7 @@ public class SatGraph2 extends Graph {
 
     public SatGraph2(Formula formula) throws Exception {
         super();
+        _nodes.put(new Integer(0),new Node(0));
         for (int id = 1; id < formula.getLiteralCount() + 1; id++) {
             _nodes.put(new Integer(id),new Node(id));
             _nodes.put(new Integer(-id),new Node(-id));

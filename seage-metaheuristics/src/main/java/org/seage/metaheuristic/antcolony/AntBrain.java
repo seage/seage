@@ -182,8 +182,8 @@ public class AntBrain
 		
 		for(int i=0;i<_nodeIDs.size()-1;i++)
 		{
-			Node n1 = graph.getNodes().get(_nodeIDs.get(i)-1);
-			Node n2 = graph.getNodes().get(_nodeIDs.get(i+1)-1);
+			Node n1 = graph.getNodes().get(_nodeIDs.get(i));
+			Node n2 = graph.getNodes().get(_nodeIDs.get(i+1));
 			Edge e = n1.getEdgeMap().get(n2);
 			if(e == null)
 			{

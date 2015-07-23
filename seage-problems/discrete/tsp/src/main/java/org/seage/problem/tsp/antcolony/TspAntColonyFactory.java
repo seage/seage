@@ -66,7 +66,7 @@ public class TspAntColonyFactory implements IAlgorithmFactory
 				{
 					ArrayList<Integer> nodes = new ArrayList<Integer>();
 					for(int j=0;j<source[i].length;j++)
-						nodes.add((Integer)source[i][j]+1);
+						nodes.add((Integer)source[i][j]);
 					_ants[i] = new Ant(nodes);
 				}								
 			}
@@ -79,7 +79,7 @@ public class TspAntColonyFactory implements IAlgorithmFactory
 					result[i] = new Integer[_ants[i].getNodeIDs().size()];
 					for(int j=0;j<result[i].length;j++)
 					{						
-						result[i][j] = _ants[i].getNodeIDs().get(j)-1;//.toArray(new Integer[]{});
+						result[i][j] = _ants[i].getNodeIDs().get(j);
 					}	
 				}
 				return result;
