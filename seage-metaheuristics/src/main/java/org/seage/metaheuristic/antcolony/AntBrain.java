@@ -65,7 +65,7 @@ public class AntBrain
 	 * @param visited - Visited nodes
 	 * @return - Available edges (a full graph)
 	 */
-	protected ArrayList<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited)
+	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited)
 	{
 		ArrayList<Node> result = new ArrayList<Node>();
 		
@@ -85,7 +85,7 @@ public class AntBrain
 	 * @param visited - Visited nodes
 	 * @return - Selected edge
 	 */
-	protected Node selectNextNode(Node currentNode, ArrayList<Node> nodes, HashSet<Node> visited)
+	protected Node selectNextNode(Node currentNode, List<Node> nodes, HashSet<Node> visited)
 	{
 		double sum = 0;
 		double[] probabilities = new double[nodes.size()];

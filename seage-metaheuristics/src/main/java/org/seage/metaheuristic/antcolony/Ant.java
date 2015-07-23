@@ -95,7 +95,7 @@ public class Ant {
 
         _nodeIDs.clear();
         _nodeIDs.add(startingNode.getID());
-        ArrayList<Node> nodes = _brain.getAvailableNodes(_currentNode, _visited);
+        List<Node> nodes = _brain.getAvailableNodes(_currentNode, _visited);
         
         while (nodes != null && nodes.size() > 0) 
         {

@@ -25,6 +25,9 @@
  */
 package org.seage.problem.sat.antcolony;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Vector;
 
 import org.seage.metaheuristic.antcolony.AntBrain;
@@ -47,13 +50,17 @@ public class SatAntBrain extends AntBrain {
         _formula = formula;
     }
 
-//    @Override
-//    protected List<Edge> getAvailableEdges(Node currentPosition, HashSet<Node> visited) {
-//        if(currentPosition.getConnectionMap().size() == 0){
-//            return null;
-//        }
-//        return currentPosition.getConnectionMap().;
-//    }
+	@Override
+	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited) {
+		
+		int nextID = Math.abs(currentNode.getID())+1;
+		if(!_graph.getNodes().containsKey(nextID))
+			return null;
+		ArrayList<Node> result = new ArrayList<Node>();
+		result.add(_graph.getNodes().get(nextID));
+		result.add(_graph.getNodes().get(-nextID));
+		return result;
+	}
 
 //    @Override
 //    protected Node selectNextNode(Node currentNode, List<Node> nodes, HashSet<Node> visited)

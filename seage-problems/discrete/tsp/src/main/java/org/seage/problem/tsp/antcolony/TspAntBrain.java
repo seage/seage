@@ -51,9 +51,9 @@ public class TspAntBrain extends AntBrain
 	}
 	
 	@Override
-	protected ArrayList<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited)
+	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited)
 	{
-		ArrayList<Node> result = super.getAvailableNodes(currentNode, visited);
+		List<Node> result = super.getAvailableNodes(currentNode, visited);
 		if(visited.size()==_graph.getNodes().values().size() && !currentNode.equals(_startingNode))
 			result.add(_startingNode);
 		return result;
