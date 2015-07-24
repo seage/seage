@@ -49,9 +49,9 @@ public class SatAntColonyTest
         String path = "data/sat/uf20-01.cnf";// args[0];
         Formula formula = new Formula(new ProblemInstanceInfo("",ProblemInstanceOrigin.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
 
-        double quantumPheromone = 10, evaporation = 0.95, defaultPheromone = 0.1;
+        double quantumPheromone = 100, evaporation = 0.98, defaultPheromone = 0.1;
         double alpha = 1, beta = 3;
-        int numAnts = 10, iterations = 5000;
+        int numAnts = 100, iterations = 50000;
 
         Graph graph = new SatGraph2(formula);
         SatAntBrain brain = new SatAntBrain(graph, formula);       

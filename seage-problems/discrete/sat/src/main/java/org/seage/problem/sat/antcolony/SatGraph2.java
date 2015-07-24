@@ -47,11 +47,11 @@ public class SatGraph2 extends Graph {
             _nodes.put(new Integer(-id),new Node(-id));
         }
 
-        _preparedSolution = new Boolean[formula.getLiteralCount()];
-        for (int i = 0; i < formula.getLiteralCount(); i++) {
-            _preparedSolution[i] = true;
-        }
-        fillEdgeMap(formula);
+//        _preparedSolution = new Boolean[formula.getLiteralCount()];
+//        for (int i = 0; i < formula.getLiteralCount(); i++) {
+//            _preparedSolution[i] = true;
+//        }
+//        fillEdgeMap(formula);
     }
 
     private Boolean[] createSol(Node node1, Node node2) {

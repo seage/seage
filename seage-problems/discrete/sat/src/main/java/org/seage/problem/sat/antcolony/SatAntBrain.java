@@ -50,17 +50,17 @@ public class SatAntBrain extends AntBrain {
         _formula = formula;
     }
 
-	@Override
-	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited) {
-		
-		int nextID = Math.abs(currentNode.getID())+1;
-		if(!_graph.getNodes().containsKey(nextID))
-			return null;
-		ArrayList<Node> result = new ArrayList<Node>();
-		result.add(_graph.getNodes().get(nextID));
-		result.add(_graph.getNodes().get(-nextID));
-		return result;
-	}
+//	@Override
+//	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited) {
+//		
+//		int nextID = Math.abs(currentNode.getID())+1;
+//		if(!_graph.getNodes().containsKey(nextID))
+//			return null;
+//		ArrayList<Node> result = new ArrayList<Node>();
+//		result.add(_graph.getNodes().get(nextID));
+//		result.add(_graph.getNodes().get(-nextID));
+//		return result;
+//	}
 
 //    @Override
 //    protected Node selectNextNode(Node currentNode, List<Node> nodes, HashSet<Node> visited)
@@ -79,17 +79,17 @@ public class SatAntBrain extends AntBrain {
 //        return edges.get(next(probabilities));
 //    }
  
-    protected double pathCost(Vector<Edge> path) {
-        Boolean[] solution = new Boolean[_formula.getLiteralCount()];
-        Node node;
-        for (int i = 0; i < _formula.getLiteralCount(); i++) {
-            node = (Node) path.get(i).getNode2();
-            if (node.getID() < 0) {
-                solution[i] = false;
-            } else {
-                solution[i] = true;
-            }
-        }
-        return (FormulaEvaluator.evaluate(_formula, solution) + 0.1);
-    }
+//    protected double pathCost(Vector<Edge> path) {
+//        Boolean[] solution = new Boolean[_formula.getLiteralCount()];
+//        Node node;
+//        for (int i = 0; i < _formula.getLiteralCount(); i++) {
+//            node = (Node) path.get(i).getNode2();
+//            if (node.getID() < 0) {
+//                solution[i] = false;
+//            } else {
+//                solution[i] = true;
+//            }
+//        }
+//        return (FormulaEvaluator.evaluate(_formula, solution) + 0.1);
+//    }
 }

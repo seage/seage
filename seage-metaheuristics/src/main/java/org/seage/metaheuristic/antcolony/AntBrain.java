@@ -65,18 +65,18 @@ public class AntBrain
 	 * @param visited - Visited nodes
 	 * @return - Available edges (a full graph)
 	 */
-	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited)
-	{
-		ArrayList<Node> result = new ArrayList<Node>();
-		
-		for(Node n : _graph.getNodes().values())
-		{
-			if (!visited.contains(n) && !n.equals(currentNode))
-				result.add(n);
-		}
-		
-		return result;
-	}
+//	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited)
+//	{
+//		ArrayList<Node> result = new ArrayList<Node>();
+//		
+//		for(Node n : _graph.getNodes().values())
+//		{
+//			if (!visited.contains(n) && !n.equals(currentNode))
+//				result.add(n);
+//		}
+//		
+//		return result;
+//	}
 
 	/**
 	 * Selection following edge
@@ -85,9 +85,10 @@ public class AntBrain
 	 * @param visited - Visited nodes
 	 * @return - Selected edge
 	 */
-	protected Node selectNextNode(Node currentNode, List<Node> nodes, HashSet<Node> visited)
+	protected Node selectNextNode(Node currentNode, HashSet<Node> visited)
 	{
 		double sum = 0;
+		List<Node> nodes = _graph.getAvailableNodes(currentNode);
 		double[] probabilities = new double[nodes.size()];
 		// for each Edges
 		for (int i = 0; i < nodes.size(); i++)

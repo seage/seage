@@ -25,6 +25,10 @@
  */
 package org.seage.problem.sat.antcolony;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
@@ -35,77 +39,35 @@ import org.seage.problem.sat.FormulaEvaluator;
  *
  * @author Zagy
  */
-public class SatGraph extends Graph implements java.lang.Cloneable {
+public class SatGraph extends Graph implements java.lang.Cloneable 
+{
 
-    private boolean[] _preparedSolution;
-
-    public SatGraph(Formula formula) throws Exception {
+    public SatGraph(Formula formula) throws Exception 
+    {
         super();
-        //   /-  1   2   3 - ...  n-1 \
-        // 0                              n
-        //   \- -1  -2  -3 - ... -n-1 /
+        //   /~  1 ~  2 ~  3 ~ ...  n 
+        // 0                       
+        //   \~ -1 ~ -2 ~ -3 ~ ... -n 
         _nodes.put(new Integer(0), new Node(0));
-        for (int i = 1; i < formula.getLiteralCount(); i++) {
+        
+        for (int i = 1; i <= formula.getLiteralCount(); i++) 
+        {
             _nodes.put(new Integer(i), new Node(i));
             _nodes.put(new Integer(-i), new Node(-i));
-        }
-        _nodes.put(new Integer(formula.getLiteralCount()), new Node(0));
-        
-        _preparedSolution = new boolean[formula.getLiteralCount()];
-        for (int i = 0; i < formula.getLiteralCount(); i++) {
-            _preparedSolution[i] = true;
-        }
-        fillEdgeMap(formula);
+        }        
     }
-
-    /**
-     * Creating solution in form for determinig
-     * @param node - Actual node
-     * @param preparedSolution - pre-prepared solution
-     * @return - Prepared array of values
-     */
-    @SuppressWarnings("unused")
-	private boolean[] createSol(Node node) {
-        boolean[] solution = _preparedSolution.clone();
-        int index = Math.abs(node.getID());
-        if (node.getID() < 0) {
-            solution[index - 1] = false;
-        }
-        return solution;
-    }
-
-    /**
-     * Making edges
-     * @param start - Start node
-     * @param end - Destination node
-     * @param formula - Readed formula
-     * @throws Exception 
-     */
-    private void makeEdge(Node start, Node end, Formula formula) throws Exception {
-        Edge edge = new Edge(start, end);
-//        edge.setEdgePrice(FormulaEvaluator.evaluate(formula, createSol(end)));
-        edge.setEdgePrice(FormulaEvaluator.evaluate(formula, Math.abs(end.getID())-1, end.getID()>0));
-        _edges.add(edge);
-        start.addEdge(edge);
-    }
-
-    /**
-     * List of edges filling
-     * @param formula - Readed formula
-     * @throws Exception 
-     */
-    private void fillEdgeMap(Formula formula) throws Exception {
-        makeEdge(_nodes.get(0), _nodes.get(1), formula);
-        makeEdge(_nodes.get(0), _nodes.get(-1), formula);
-        makeEdge(_nodes.get(formula.getLiteralCount()-1), _nodes.get(formula.getLiteralCount()), formula);
-        makeEdge(_nodes.get(-formula.getLiteralCount()+1), _nodes.get(formula.getLiteralCount()), formula);
-        for (int i = 1; i < formula.getLiteralCount()-1; i++) {
-            makeEdge(_nodes.get(i), _nodes.get(  i + 1), formula);
-            makeEdge(_nodes.get(i), _nodes.get(-(i + 1)), formula);
-            makeEdge(_nodes.get(-i), _nodes.get(  i + 1), formula);
-            makeEdge(_nodes.get(-i), _nodes.get(-(i + 1)), formula);
-        }
-    }
+    
+	@Override
+	public List<Node> getAvailableNodes(Node currentNode) 
+	{		
+		int nextID = Math.abs(currentNode.getID())+1;
+		if(!getNodes().containsKey(nextID))
+			return null;
+		ArrayList<Node> result = new ArrayList<Node>();
+		result.add(getNodes().get(nextID));
+		result.add(getNodes().get(-nextID));
+		return result;
+	}
 
 	@Override
 	public double getNodesDistance(Node n1, Node n2)

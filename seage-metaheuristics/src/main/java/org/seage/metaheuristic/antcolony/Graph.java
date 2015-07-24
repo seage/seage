@@ -63,6 +63,19 @@ public abstract class Graph {
     }
 
     /**
+     * Get a list of node reachable from the current node
+     * @param currentNode
+     * @return
+     */
+    public List<Node> getAvailableNodes(Node currentNode) 
+    {
+    	ArrayList<Node> result = new ArrayList<Node>(getNodes().values());
+    	result.remove(currentNode);
+    	
+    	return result;
+    }
+    
+    /**
      * Evaporating from each edges of graph
      */
     public void evaporate() {

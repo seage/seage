@@ -95,11 +95,12 @@ public class Ant {
 
         _nodeIDs.clear();
         _nodeIDs.add(startingNode.getID());
-        List<Node> nodes = _brain.getAvailableNodes(_currentNode, _visited);
+        //List<Node> nodes = _brain.getAvailableNodes(_currentNode, _visited);
+        Node nextNode = _brain.selectNextNode(_currentNode);
         
-        while (nodes != null && nodes.size() > 0) 
+        while (nextNode != null) 
         {
-            Node nextNode = _brain.selectNextNode(_currentNode, nodes, _visited);
+            
             //Node nextNode = nextEdge.getNode1().equals(_currentPosition) ? nextEdge.getNode2() : nextEdge.getNode1();
             Edge nextEdge = _currentNode.getEdgeMap().get(nextNode);
             if(nextEdge==null)
@@ -114,7 +115,7 @@ public class Ant {
             _currentNode = nextNode;
             _nodeIDs.add(nextNode.getID());
             
-            nodes = _brain.getAvailableNodes(_currentNode, _visited);
+            nextNode = _brain.selectNextNode(_currentNode);
         }        
 
         leavePheromone();
