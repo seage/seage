@@ -41,10 +41,12 @@ import org.seage.problem.sat.FormulaEvaluator;
  */
 public class SatGraph extends Graph implements java.lang.Cloneable 
 {
-
+	private Formula _formula;
+	
     public SatGraph(Formula formula) throws Exception 
     {
         super();
+        _formula = formula;
         //   /~  1 ~  2 ~  3 ~ ...  n 
         // 0                       
         //   \~ -1 ~ -2 ~ -3 ~ ... -n 
@@ -72,6 +74,6 @@ public class SatGraph extends Graph implements java.lang.Cloneable
 	@Override
 	public double getNodesDistance(Node n1, Node n2)
 	{
-		return 0;
+		return FormulaEvaluator.evaluate(_formula, Math.abs(n2.getID())-1, n2.getID()>0);
 	}
 }

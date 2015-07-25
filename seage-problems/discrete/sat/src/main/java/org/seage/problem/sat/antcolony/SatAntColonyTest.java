@@ -29,8 +29,10 @@ import java.io.FileInputStream;
 
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
+import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
@@ -40,22 +42,37 @@ import org.seage.problem.sat.FormulaReader;
  *
  * @author Zagy
  */
-public class SatAntColonyTest
+public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception {
-        String path = "data/sat/uf20-01.cnf";// args[0];
+    public static void main(String[] args) throws Exception 
+    {    	
+    	try
+		{
+    		String path = "data/sat/uf20-01.cnf";
+                        
+			new SatAntColonyTest().run(path);
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+    }
+    public void run(String path) throws Exception
+    {
+        // args[0];
         Formula formula = new Formula(new ProblemInstanceInfo("",ProblemInstanceOrigin.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
 
-        double quantumPheromone = 100, evaporation = 0.95, defaultPheromone = 0.1;
-        double alpha = 1, beta = 3;
-        int numAnts = 1000, iterations = 5000;
+        double quantumPheromone = 1000, evaporation = 0.62, defaultPheromone = 0.1;
+        double alpha = 2, beta = 3;
+        int numAnts = 20, iterations = 10000;
 
         Graph graph = new SatGraph(formula);
         SatAntBrain brain = new SatAntBrain(graph, formula);       
         AntColony colony = new AntColony(graph, brain);
+        colony.addAntColonyListener(this);
         colony.setParameters( iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
         
         Ant ants[] = new Ant[numAnts];
@@ -78,4 +95,38 @@ public class SatAntColonyTest
         System.out.println("Global best: "+ FormulaEvaluator.evaluate(formula, s));
         //graph.printPheromone();
     }
+
+	@Override
+	public void algorithmStarted(AntColonyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void algorithmStopped(AntColonyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void newBestSolutionFound(AntColonyEvent e) {
+		System.out.println(String.format("%f - %d - %d/%d", 
+				e.getAntColony().getGlobalBest(),
+				e.getAntColony().getCurrentIteration(),
+				e.getAntColony().getGraph().getEdges().size(),
+				e.getAntColony().getGraph().getNodes().size()*2));
+		
+	}
+
+	@Override
+	public void iterationPerformed(AntColonyEvent e) {
+		//System.out.println(e.getAntColony().getCurrentIteration());
+		
+	}
+
+	@Override
+	public void noChangeInValueIterationMade(AntColonyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }

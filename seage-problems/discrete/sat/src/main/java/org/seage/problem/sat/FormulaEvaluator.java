@@ -43,7 +43,7 @@ public class FormulaEvaluator {
                     x = !x;
                 }
 
-                if (x) {
+                if (x) { 
                     clauseIsNegative = false;
                     break;
                 }
@@ -62,17 +62,24 @@ public class FormulaEvaluator {
         int positive = 0;
         int negative = 0;
 
-        for (Literal l : f.getLiterals().get(ix))
+        for (Clause c : f.getClauses())
         {
-            if(l.isNeg() == value)
-                negative++;
-            else
-                positive++;
+	        for (Literal l : c.getLiterals())
+	        {
+	        	if(l.getIndex() == ix)
+	        	{
+		            if(l.isNeg() == value)
+		                negative++;
+		            else
+		                positive++;
+		            break;
+	        	}
+	        }
         }
 
         if(positive == 0 )
             return Double.MAX_VALUE;
         else
-            return 1.0 * negative / positive;
+            return f.getClauses().length * negative / positive;
     }
 }
