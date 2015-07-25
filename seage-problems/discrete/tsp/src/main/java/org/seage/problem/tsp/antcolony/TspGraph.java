@@ -25,6 +25,10 @@
  */
 package org.seage.problem.tsp.antcolony;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.tsp.City;
@@ -43,10 +47,19 @@ public class TspGraph extends Graph {
         for (int id = 1; id <= cities.length; id++) {
             _nodes.put(new Integer(id), new Node(id));
         }
-
-        //fillEdgeMap(cities);
     }
-
+	
+	@Override
+	public List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited)
+	{
+		List<Node> result = super.getAvailableNodes(currentNode, visited);
+		if(result.size() == 0 && currentNode != getNodes().get(1) && visited.size() == getNodes().values().size())
+		{
+			result = new ArrayList<Node>();
+			result.add(getNodes().get(1));
+		}
+		return result;
+	}
     /**
      * Edge length calculating
      * @param start - Starting node
@@ -55,30 +68,8 @@ public class TspGraph extends Graph {
      * @return - Euclide edge length
      */
     public double getNodesDistance(Node start, Node end) {
-        double _dX = (_cities[start.getID()-1].X - _cities[end.getID()-1].X);
-        double _dY = (_cities[start.getID()-1].Y - _cities[end.getID()-1].Y);
-        return Math.round(Math.sqrt(_dX * _dX + _dY * _dY));
+        double dX = (_cities[start.getID()-1].X - _cities[end.getID()-1].X);
+        double dY = (_cities[start.getID()-1].Y - _cities[end.getID()-1].Y);
+        return Math.round(Math.sqrt(dX * dX + dY * dY));
     }
-
-    /**
-     * List of graph edges filling
-     * @throws Exception 
-     */
-//    private void fillEdgeMap(City[] cities) throws Exception {
-//    	for(int i=0;i<_nodes.size();i++)			// 0 1 2 3: 0-1, 0-2, 0-3, 1-2, 1-3, 2-3
-//    	{	
-//    		for(int j=i+1;j<_nodes.size();j++)
-//    		{    			
-//    			Node n1 = _nodes.get(i);
-//    			Node n2 = _nodes.get(j);
-//    			if (n1.equals(n2)) continue;    				
-//    			
-//    			Edge edge = new Edge(n1, n2);
-//    			edge.setEdgePrice(calculateEdgeLength(n1, n2, cities));
-//    			_edges.add(edge);
-//    			n1.addEdge(edge);
-//    			n2.addEdge(edge);
-//    		}	
-//    	}
-//    }
 }

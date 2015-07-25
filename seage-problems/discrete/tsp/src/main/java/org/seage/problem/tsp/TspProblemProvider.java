@@ -28,15 +28,13 @@ package org.seage.problem.tsp;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Random;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
-
+import org.seage.aal.problem.ProblemProvider;
 
 /**
  *
@@ -77,34 +75,12 @@ public class TspProblemProvider extends ProblemProvider
     {
         int numTours = numSolutions;
         City[] cities = ((TspProblemInstance)instance).getCities();
-        int tourLenght = cities.length;
         Integer[][] result = new Integer[numTours][];
-
-        Random r = new Random(randomSeed);
 
         result[0] = TourProvider.createGreedyTour(cities, randomSeed);
         for(int i=1;i<numTours;i++)
         	result[i] = TourProvider.createRandomTour(cities.length);
         	
-//        for(int k=1;k<numTours;k++)
-//        {
-//            int[] initTour = new int[tourLenght];
-//
-//            result[k] = new Integer[tourLenght];
-//
-//            for (int i = 0; i < tourLenght; i++)
-//            {
-//                int ix = r.nextInt(tourLenght);
-//
-//                while (initTour[ix] != 0)
-//                {
-//                    ix = (ix + 1) % tourLenght;
-//                }
-//                initTour[ix] = 1;
-//                result[k][i] = ix;
-//            }
-//
-//        }
         return result;
     }
 

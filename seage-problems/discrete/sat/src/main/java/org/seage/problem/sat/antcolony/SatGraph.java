@@ -58,7 +58,7 @@ public class SatGraph extends Graph implements java.lang.Cloneable
     }
     
 	@Override
-	public List<Node> getAvailableNodes(Node currentNode) 
+	public List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited) 
 	{		
 		int nextID = Math.abs(currentNode.getID())+1;
 		if(!getNodes().containsKey(nextID))

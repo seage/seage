@@ -47,7 +47,7 @@ public class TspPhenotypeEvaluator implements IPhenotypeEvaluator
     public double[] evaluate(Object[] phenotypeSubject) throws Exception
     {
 		Integer[] s = (Integer[])phenotypeSubject;
-        int tourLength = 0;
+        double tourLength = 0;
         
         int numCities = _cities.length;
 

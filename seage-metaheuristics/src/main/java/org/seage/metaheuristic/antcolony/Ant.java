@@ -38,12 +38,10 @@ import java.util.List;
 public class Ant {
 
     protected Graph _graph;
-    protected Node _startPosition;
-    protected Node _currentNode;
     protected double _distanceTravelled;
-    protected HashSet<Node> _visited;
-    protected List<Edge> _path;
-    protected List<Integer> _nodeIDs;
+    protected HashSet<Node> _visitedNodes;
+    protected List<Edge> _edgePath;
+    protected List<Integer> _nodeIDsAlongPath;
     
 	protected AntBrain _brain;
 
@@ -54,7 +52,9 @@ public class Ant {
 	
 	public Ant(List<Integer> nodeIDs)
     {
-		_nodeIDs = new ArrayList<Integer>(nodeIDs);
+		_nodeIDsAlongPath = new ArrayList<Integer>(nodeIDs);
+		_visitedNodes = new HashSet<Node>();
+		_edgePath = new ArrayList<Edge>();
     }
 	
 	void setParameters(Graph graph, AntBrain brain, double alpha, double beta, double quantumPheromone)
@@ -64,80 +64,89 @@ public class Ant {
 		_brain.setParameters(alpha, beta, quantumPheromone);
 	}
 	
-	public List<Edge> doFirstExploration(Graph graph) throws Exception
+	/**
+	 * Do a first exploration if nodeIDs collection is set
+	 * @return A path traveled
+	 * @throws Exception
+	 */
+	public List<Edge> doFirstExploration() throws Exception
 	{
-		_path = _brain.getEdgesToNodes(_nodeIDs, graph);
+		_edgePath = new ArrayList<Edge>();
 		_distanceTravelled = 0;
-		for (Edge edge : _path)
+		
+		for(int i=0;i<_nodeIDsAlongPath.size()-1;i++)
 		{
-			_distanceTravelled += edge.getEdgePrice();			
-		}
-		for (Edge edge : _path)
-		{
-			edge.addLocalPheromone(_brain.getQuantumPheromone() / (_distanceTravelled));
+			Node n1 = _graph.getNodes().get(_nodeIDsAlongPath.get(i));
+			Node n2 = _graph.getNodes().get(_nodeIDsAlongPath.get(i+1));
+			Edge e = n1.getEdgeMap().get(n2);
+			if(e == null)			
+				e = _graph.createEdge(n1, n2);
+			_distanceTravelled += e.getEdgePrice();
+			_edgePath.add(e);
 		}
 		
-		return _path;
+		leavePheromone();
+		
+		return _edgePath;
 	}
 	
     /**
-     * Ant passage through the graph
-     * @return - ants path
+     * Ant exploring the graph
+     * @return Ant's path
      * @throws Exception 
      */
     protected List<Edge> explore(Node startingNode) throws Exception
     {
-        _visited = new HashSet<Node>();
-        _path = new ArrayList<Edge>();
-        _distanceTravelled = 0;
-        _currentNode = startingNode;
-        _visited.add(startingNode);
-
-        _nodeIDs.clear();
-        _nodeIDs.add(startingNode.getID());
-        //List<Node> nodes = _brain.getAvailableNodes(_currentNode, _visited);
-        Node nextNode = _brain.selectNextNode(_currentNode);
+    	_nodeIDsAlongPath.clear();
+    	_visitedNodes.clear();
+    	_edgePath.clear();        
+        _distanceTravelled = 0; 
+        
+        _nodeIDsAlongPath.add(startingNode.getID());
+        _visitedNodes.add(startingNode);
+        
+        Node currentNode = startingNode;        
+        Node nextNode = _brain.selectNextNode(startingNode, _visitedNodes);
         
         while (nextNode != null) 
         {
-            
-            //Node nextNode = nextEdge.getNode1().equals(_currentPosition) ? nextEdge.getNode2() : nextEdge.getNode1();
-            Edge nextEdge = _currentNode.getEdgeMap().get(nextNode);
-            if(nextEdge==null)
-            {
-            	nextEdge = _graph.createEdge(_currentNode, nextNode);
-            }     
+            Edge nextEdge = currentNode.getEdgeMap().get(nextNode);
+            if(nextEdge==null)            
+            	nextEdge = _graph.createEdge(currentNode, nextNode);                 
             
             _distanceTravelled +=  nextEdge.getEdgePrice();            
             
-            _path.add(nextEdge);
-            _visited.add(nextNode);
-            _currentNode = nextNode;
-            _nodeIDs.add(nextNode.getID());
+            _edgePath.add(nextEdge);
+            _visitedNodes.add(nextNode);            
+            _nodeIDsAlongPath.add(nextNode.getID());
             
-            nextNode = _brain.selectNextNode(_currentNode);
+            currentNode = nextNode;            
+            nextNode = _brain.selectNextNode(currentNode, _visitedNodes);
         }        
 
         leavePheromone();
-        return _path;
+        return _edgePath;
     }
 
     /**
      * Pheromone leaving
      */
-    protected void leavePheromone() {
-        for (Edge edge : _path) {
+    protected void leavePheromone() 
+    {
+        for (Edge edge : _edgePath) 
+        {
             edge.addLocalPheromone(_brain.getQuantumPheromone() / (_distanceTravelled));
         }
     }
+    
 	public AntBrain getBrain()
 	{
 		return _brain;
 	}
 	
-    public List<Integer> getNodeIDs()
+    public List<Integer> getNodeIDsAlongPath()
 	{
-		return _nodeIDs;
+		return _nodeIDsAlongPath;
 	}
     
     public double getDistanceTravelled()

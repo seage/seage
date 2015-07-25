@@ -67,11 +67,11 @@ public abstract class Graph {
      * @param currentNode
      * @return
      */
-    public List<Node> getAvailableNodes(Node currentNode) 
+    public List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited) 
     {
     	ArrayList<Node> result = new ArrayList<Node>(getNodes().values());
     	result.remove(currentNode);
-    	
+    	result.removeAll(visited);
     	return result;
     }
     

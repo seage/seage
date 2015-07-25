@@ -55,7 +55,7 @@ public class TspAntColonyFactory implements IAlgorithmFactory
         IAlgorithmAdapter algorithm;
         City[] cities = ((TspProblemInstance)instance).getCities();
         TspGraph graph = new TspGraph(cities);
-        AntBrain brain = new TspAntBrain(graph, graph.getNodes().get(1) );
+        AntBrain brain = new AntBrain(graph);
         algorithm = new AntColonyAdapter(brain, graph)
 		{			
         	@Override
@@ -76,10 +76,10 @@ public class TspAntColonyFactory implements IAlgorithmFactory
 				Object[][] result = new Object[_ants.length][];
 				for(int i=0;i<_ants.length;i++)
 				{
-					result[i] = new Integer[_ants[i].getNodeIDs().size()];
+					result[i] = new Integer[_ants[i].getNodeIDsAlongPath().size()];
 					for(int j=0;j<result[i].length;j++)
 					{						
-						result[i][j] = _ants[i].getNodeIDs().get(j);
+						result[i][j] = _ants[i].getNodeIDsAlongPath().get(j);
 					}	
 				}
 				return result;

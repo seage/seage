@@ -49,11 +49,11 @@ public class SatAntColonyTest
         String path = "data/sat/uf20-01.cnf";// args[0];
         Formula formula = new Formula(new ProblemInstanceInfo("",ProblemInstanceOrigin.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
 
-        double quantumPheromone = 100, evaporation = 0.98, defaultPheromone = 0.1;
+        double quantumPheromone = 100, evaporation = 0.95, defaultPheromone = 0.1;
         double alpha = 1, beta = 3;
-        int numAnts = 100, iterations = 50000;
+        int numAnts = 1000, iterations = 5000;
 
-        Graph graph = new SatGraph2(formula);
+        Graph graph = new SatGraph(formula);
         SatAntBrain brain = new SatAntBrain(graph, formula);       
         AntColony colony = new AntColony(graph, brain);
         colony.setParameters( iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);

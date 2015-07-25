@@ -108,15 +108,15 @@ public class AntColony
 		
 		for(Ant a : _ants)
 		{
-			if(!_keepRunning) break;			
+			if(!_keepRunning) break;
 			
 			a.setParameters(_graph, _brain, _alpha, _beta, _quantumPheromone);
 			
-			if(a.getNodeIDs().size() == 0) continue;
+			if(a.getNodeIDsAlongPath().size() == 0) continue;
 			
 			try
 			{
-				List<Edge> path = a.doFirstExploration(_graph);
+				List<Edge> path = a.doFirstExploration();
 				if(a.getDistanceTravelled() < _globalBest)
 				{
 					_globalBest = a.getDistanceTravelled();

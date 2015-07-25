@@ -43,11 +43,11 @@ public class TestAntColonyAdapter extends AntColonyAdapter
 		boolean notSame = false;
 		for(int i=0;i<_ants.length;i++)
 		{
-			Assert.assertEquals(_ants0[i].getNodeIDs().size(), _ants[i].getNodeIDs().size());
+			Assert.assertEquals(_ants0[i].getNodeIDsAlongPath().size(), _ants[i].getNodeIDsAlongPath().size());
 			
-			for(int j=0;j<_ants0[i].getNodeIDs().size();j++)
+			for(int j=0;j<_ants0[i].getNodeIDsAlongPath().size();j++)
 			{
-				if(_ants0[i].getNodeIDs().get(j) != _ants[i].getNodeIDs().get(j));
+				if(_ants0[i].getNodeIDsAlongPath().get(j) != _ants[i].getNodeIDsAlongPath().get(j));
 				{
 					notSame = true;
 					break;

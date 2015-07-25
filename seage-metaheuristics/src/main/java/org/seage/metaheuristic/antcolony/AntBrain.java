@@ -27,7 +27,6 @@
  */
 package org.seage.metaheuristic.antcolony;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -59,26 +58,6 @@ public class AntBrain
 	}
 
 	/**
-	 * Finding available edges
-	 * 
-	 * @param currentNode - Current position
-	 * @param visited - Visited nodes
-	 * @return - Available edges (a full graph)
-	 */
-//	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited)
-//	{
-//		ArrayList<Node> result = new ArrayList<Node>();
-//		
-//		for(Node n : _graph.getNodes().values())
-//		{
-//			if (!visited.contains(n) && !n.equals(currentNode))
-//				result.add(n);
-//		}
-//		
-//		return result;
-//	}
-
-	/**
 	 * Selection following edge
 	 * 
 	 * @param edges - Available edges
@@ -86,11 +65,15 @@ public class AntBrain
 	 * @return - Selected edge
 	 */
 	protected Node selectNextNode(Node currentNode, HashSet<Node> visited)
-	{
+	{		
+		List<Node> nodes = _graph.getAvailableNodes(currentNode, visited);
+		
+		if(nodes == null || nodes.size()==0)
+			return null;
+		
 		double sum = 0;
-		List<Node> nodes = _graph.getAvailableNodes(currentNode);
 		double[] probabilities = new double[nodes.size()];
-		// for each Edges
+		// for each available node calculate probability
 		for (int i = 0; i < nodes.size(); i++)
 		{
 			double edgePheromone = 0;
@@ -108,14 +91,10 @@ public class AntBrain
 				edgePheromone = 0.001;
 				edgePrice = _graph.getNodesDistance(currentNode, n);
 			}
-			
-			if (!(visited.contains(n)))
-			{
-                double p = pow(edgePheromone, _alpha) * pow(1/edgePrice, _beta);
-                probabilities[i] = p;
-                sum += p;
-			}
 
+            double p = pow(edgePheromone, _alpha) * pow(1/edgePrice, _beta);
+            probabilities[i] = p;
+            sum += p;
 		}
 		for (int i = 0; i < probabilities.length; i++)
 		{
@@ -175,26 +154,5 @@ public class AntBrain
 	public double getQuantumPheromone()
 	{
 		return _quantumPheromone;
-	}
-
-	public List<Edge> getEdgesToNodes(List<Integer> _nodeIDs, Graph graph) throws Exception
-	{
-		List<Edge> edges = new ArrayList<Edge>();
-		
-		for(int i=0;i<_nodeIDs.size()-1;i++)
-		{
-			Node n1 = graph.getNodes().get(_nodeIDs.get(i));
-			Node n2 = graph.getNodes().get(_nodeIDs.get(i+1));
-			Edge e = n1.getEdgeMap().get(n2);
-			if(e == null)
-			{
-				//throw new Exception("There is no edge for node IDs: " + n1.getID() + ", " + n2.getID());
-				e = graph.createEdge(n1, n2);
-			}
-			
-			edges.add(e);
-		}
-		
-		return edges;
 	}
 }

@@ -28,7 +28,7 @@ public class SatAntColonyFactory implements IAlgorithmFactory
 	        throws Exception
 	{
 		Formula formula = (Formula)instance;
-		Graph graph = new SatGraph2(formula);
+		Graph graph = new SatGraph(formula);
         SatAntBrain brain = new SatAntBrain(graph, formula);       
 
         return new AntColonyAdapter(brain, graph) {
@@ -51,10 +51,10 @@ public class SatAntColonyFactory implements IAlgorithmFactory
 				Object[][] result = new Object[_ants.length][];
 				for(int i=0;i<_ants.length;i++)
 				{
-					result[i] = new Boolean[_ants[i].getNodeIDs().size()];
+					result[i] = new Boolean[_ants[i].getNodeIDsAlongPath().size()];
 					for(int j=0;j<result[i].length;j++)
 					{						
-						result[i][j] = _ants[i].getNodeIDs().get(j)>0;//.toArray(new Integer[]{});
+						result[i][j] = _ants[i].getNodeIDsAlongPath().get(j)>0;//.toArray(new Integer[]{});
 					}	
 				}
 				return result;
