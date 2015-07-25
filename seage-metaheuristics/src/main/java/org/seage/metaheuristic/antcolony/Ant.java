@@ -106,7 +106,7 @@ public class Ant {
         _visitedNodes.add(startingNode);
         
         Node currentNode = startingNode;        
-        Node nextNode = _brain.selectNextNode(startingNode, _visitedNodes);
+        Node nextNode = _brain.selectNextNode(startingNode, currentNode, _visitedNodes);
         
         while (nextNode != null) 
         {
@@ -121,7 +121,7 @@ public class Ant {
             _nodeIDsAlongPath.add(nextNode.getID());
             
             currentNode = nextNode;            
-            nextNode = _brain.selectNextNode(currentNode, _visitedNodes);
+            nextNode = _brain.selectNextNode(startingNode, currentNode, _visitedNodes);
         }        
 
         leavePheromone();

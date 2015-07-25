@@ -50,13 +50,13 @@ public class TspGraph extends Graph {
     }
 	
 	@Override
-	public List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited)
+	public List<Node> getAvailableNodes(Node startingNode, Node currentNode, HashSet<Node> visited)
 	{
-		List<Node> result = super.getAvailableNodes(currentNode, visited);
-		if(result.size() == 0 && currentNode != getNodes().get(1) && visited.size() == getNodes().values().size())
+		List<Node> result = super.getAvailableNodes(startingNode, currentNode, visited);
+		if(currentNode != startingNode && visited.size() == getNodes().values().size())
 		{
 			result = new ArrayList<Node>();
-			result.add(getNodes().get(1));
+			result.add(startingNode);
 		}
 		return result;
 	}

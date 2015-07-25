@@ -64,9 +64,9 @@ public class AntBrain
 	 * @param visited - Visited nodes
 	 * @return - Selected edge
 	 */
-	protected Node selectNextNode(Node currentNode, HashSet<Node> visited)
+	protected Node selectNextNode(Node firstNode, Node currentNode, HashSet<Node> visited)
 	{		
-		List<Node> nodes = _graph.getAvailableNodes(currentNode, visited);
+		List<Node> nodes = _graph.getAvailableNodes(firstNode, currentNode, visited);
 		
 		if(nodes == null || nodes.size()==0)
 			return null;
