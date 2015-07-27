@@ -39,7 +39,6 @@ public class Ant {
 
     protected Graph _graph;
     protected double _distanceTravelled;
-    protected HashSet<Node> _visitedNodes;
     protected List<Edge> _edgePath;
     protected List<Integer> _nodeIDsAlongPath;
     
@@ -53,7 +52,6 @@ public class Ant {
 	public Ant(List<Integer> nodeIDs)
     {
 		_nodeIDsAlongPath = new ArrayList<Integer>(nodeIDs);
-		_visitedNodes = new HashSet<Node>();
 		_edgePath = new ArrayList<Edge>();
     }
 	
@@ -98,30 +96,33 @@ public class Ant {
     protected List<Edge> explore(Node startingNode) throws Exception
     {
     	_nodeIDsAlongPath.clear();
-    	_visitedNodes.clear();
     	_edgePath.clear();        
         _distanceTravelled = 0; 
+        _brain.reset();
         
         _nodeIDsAlongPath.add(startingNode.getID());
-        _visitedNodes.add(startingNode);
         
         Node currentNode = startingNode;        
-        Node nextNode = _brain.selectNextNode(startingNode, currentNode, _visitedNodes);
+        Node nextNode = _brain.selectNextNode(startingNode, currentNode);
         
         while (nextNode != null) 
         {
             Edge nextEdge = currentNode.getEdgeMap().get(nextNode);
-            if(nextEdge==null)            
-            	nextEdge = _graph.createEdge(currentNode, nextNode);                 
-            
+            if(nextEdge==null)
+            {
+            	nextEdge = nextNode.getEdgeMap().get(currentNode);
+            	if(nextEdge==null)
+            		nextEdge = _graph.createEdge(currentNode, nextNode);
+            	else
+            		nextNode.getEdgeMap().put(currentNode, nextEdge);
+            }
             _distanceTravelled +=  nextEdge.getEdgePrice();            
             
             _edgePath.add(nextEdge);
-            _visitedNodes.add(nextNode);            
             _nodeIDsAlongPath.add(nextNode.getID());
             
-            currentNode = nextNode;            
-            nextNode = _brain.selectNextNode(startingNode, currentNode, _visitedNodes);
+            currentNode = nextNode;
+            nextNode = _brain.selectNextNode(startingNode, currentNode);
         }        
 
         leavePheromone();

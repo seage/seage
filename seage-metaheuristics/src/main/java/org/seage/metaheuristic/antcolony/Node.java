@@ -102,4 +102,9 @@ public class Node {
     {
     	return _edges;
     }
+    
+    public String toString()
+    {
+    	return new Integer(getID()).toString();
+    }
 }

@@ -25,11 +25,6 @@
  */
 package org.seage.problem.sat.antcolony;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
-import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.sat.Formula;
@@ -57,19 +52,7 @@ public class SatGraph extends Graph implements java.lang.Cloneable
             _nodes.put(new Integer(i), new Node(i));
             _nodes.put(new Integer(-i), new Node(-i));
         }        
-    }
-    
-	@Override
-	public List<Node> getAvailableNodes(Node startingNode, Node currentNode, HashSet<Node> visited) 
-	{		
-		int nextID = Math.abs(currentNode.getID())+1;
-		if(!getNodes().containsKey(nextID))
-			return null;
-		ArrayList<Node> result = new ArrayList<Node>();
-		result.add(getNodes().get(nextID));
-		result.add(getNodes().get(-nextID));
-		return result;
-	}
+    }  
 
 	@Override
 	public double getNodesDistance(Node n1, Node n2)

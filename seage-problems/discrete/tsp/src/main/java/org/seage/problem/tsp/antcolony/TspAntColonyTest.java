@@ -92,7 +92,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 		double alpha = 1.0, beta = 2.3;
 		TspGraph graph = new TspGraph(cities);
 		System.out.println("Loaded ...");
-		AntBrain brain = new AntBrain(graph);
+		AntBrain brain = new TspAntBrain(graph);
 		AntColony colony = new AntColony(graph, brain);
 		colony.addAntColonyListener(this);
 		colony.setParameters( iterations, alpha, beta, quantumPheromone, defaultPheromone, localEvaporation);

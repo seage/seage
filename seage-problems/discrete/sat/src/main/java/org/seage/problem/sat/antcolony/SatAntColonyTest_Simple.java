@@ -26,6 +26,7 @@
 package org.seage.problem.sat.antcolony;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
@@ -34,15 +35,17 @@ import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Graph;
+import org.seage.problem.sat.Clause;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 import org.seage.problem.sat.FormulaReader;
+import org.seage.problem.sat.Literal;
 
 /**
  *
  * @author Zagy
  */
-public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent>
+public class SatAntColonyTest_Simple implements IAlgorithmListener<AntColonyEvent>
 {
     /**
      * @param args the command line arguments
@@ -50,31 +53,28 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     public static void main(String[] args) throws Exception 
     {    	
     	try
-		{
-    		//String path = "data/sat/uf20-01.cnf";
-    		String path = "data/sat/uf100-01.cnf";
-                      
-    		long start = System.currentTimeMillis();
-			new SatAntColonyTest().run(path);
-			long end = System.currentTimeMillis();
-			
-			System.out.println((end - start) + " ms");
+		{                        
+			new SatAntColonyTest_Simple().run();
 		}
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
 		}
     }
-    public void run(String path) throws Exception
+    public void run() throws Exception
     {
-        // args[0];
-        Formula formula = new Formula(new ProblemInstanceInfo("",ProblemInstanceOrigin.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
+    	ArrayList<Clause> clauses = new ArrayList<Clause>();
+		clauses.add( new Clause(new Literal[]{new Literal(0, false),new Literal(1, true),new Literal(2, true)}));
+		clauses.add( new Clause(new Literal[]{new Literal(0, true),new Literal(1, false),new Literal(2, true)}));
+		clauses.add( new Clause(new Literal[]{new Literal(0, true),new Literal(1, true),new Literal(2, false)}));
+		
+		Formula formula = new Formula(null, clauses);
+		
+        double quantumPheromone = 1000, evaporation = 0.9, defaultPheromone = 0.1;
+        double alpha = 1, beta = 1;
+        int numAnts = 10, iterations = 10;
 
-        double quantumPheromone = 10, evaporation = 0.7, defaultPheromone = 0.1;
-        double alpha = 1, beta = 3;
-        int numAnts = 100, iterations = 100;
-
-        Graph graph = new SatGraph(formula);
+        Graph graph = new SatGraph2(formula);
         SatAntBrain brain = new SatAntBrain(graph, formula);       
         AntColony colony = new AntColony(graph, brain);
         colony.addAntColonyListener(this);
@@ -115,11 +115,11 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 
 	@Override
 	public void newBestSolutionFound(AntColonyEvent e) {
-		System.out.println(String.format("%d - %f - %d/%d",
-				e.getAntColony().getCurrentIteration(),
+		System.out.println(String.format("%f - %d - %d/%d", 
 				e.getAntColony().getGlobalBest(),
+				e.getAntColony().getCurrentIteration(),
 				e.getAntColony().getGraph().getEdges().size(),
-				e.getAntColony().getGraph().getNodes().size()*e.getAntColony().getGraph().getNodes().size()/2));
+				e.getAntColony().getGraph().getNodes().size()*2));
 		
 	}
 

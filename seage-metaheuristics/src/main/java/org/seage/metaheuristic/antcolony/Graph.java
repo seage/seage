@@ -61,20 +61,7 @@ public abstract class Graph {
     public ArrayList<Edge> getEdges() {
         return _edges;
     }
-
-    /**
-     * Get a list of node reachable from the current node
-     * @param currentNode
-     * @return
-     */
-    public List<Node> getAvailableNodes(Node firstNode, Node currentNode, HashSet<Node> visited) 
-    {
-    	ArrayList<Node> result = new ArrayList<Node>(getNodes().values());
-    	result.remove(currentNode);
-    	result.removeAll(visited);
-    	return result;
-    }
-    
+   
     /**
      * Evaporating from each edges of graph
      */
@@ -99,8 +86,6 @@ public abstract class Graph {
 		_evaporCoeff = evaporCoeff;
 	}
 
-
-
 	public Edge createEdge(Node n1, Node n2) throws Exception
 	{
 		Edge newEdge = new Edge(n1, n2);
@@ -109,5 +94,4 @@ public abstract class Graph {
 		
 		return newEdge;
 	}
-
 }

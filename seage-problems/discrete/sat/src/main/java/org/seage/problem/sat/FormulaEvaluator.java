@@ -80,6 +80,6 @@ public class FormulaEvaluator {
         if(positive == 0 )
             return Double.MAX_VALUE;
         else
-            return f.getClauses().length * negative / positive;
+            return /*f.getClauses().length*/ 1.0  * negative / positive;
     }
 }

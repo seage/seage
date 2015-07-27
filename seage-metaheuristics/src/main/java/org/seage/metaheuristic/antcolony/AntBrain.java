@@ -27,6 +27,7 @@
  */
 package org.seage.metaheuristic.antcolony;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -43,6 +44,7 @@ public class AntBrain
 	protected double _quantumPheromone;
 	private Random _rand;
 	protected Graph _graph;
+	protected List<Node> _availableNodes;
 	
 	public AntBrain(Graph graph)
 	{	
@@ -57,6 +59,9 @@ public class AntBrain
 		_quantumPheromone = quantumPheromone;
 	}
 
+	public void reset() {
+		_availableNodes = null;
+	}
 	/**
 	 * Selection following edge
 	 * 
@@ -64,22 +69,22 @@ public class AntBrain
 	 * @param visited - Visited nodes
 	 * @return - Selected edge
 	 */
-	protected Node selectNextNode(Node firstNode, Node currentNode, HashSet<Node> visited)
-	{		
-		List<Node> nodes = _graph.getAvailableNodes(firstNode, currentNode, visited);
+	protected Node selectNextNode(Node firstNode, Node currentNode)
+	{
+		List<Node> availableNodes = getAvailableNodes(firstNode, currentNode);
 		
-		if(nodes == null || nodes.size()==0)
+		if(availableNodes == null || availableNodes.size()==0)
 			return null;
 		
 		double sum = 0;
-		double[] probabilities = new double[nodes.size()];
+		double[] probabilities = new double[availableNodes.size()];
 		// for each available node calculate probability
-		for (int i = 0; i < nodes.size(); i++)
+		for (int i = 0; i < availableNodes.size(); i++)
 		{
 			double edgePheromone = 0;
 			double edgePrice = 0;
 			
-			Node n = nodes.get(i);
+			Node n = availableNodes.get(i);
 			Edge e = currentNode.getEdgeMap().get(n);
 			if(e != null)
 			{
@@ -100,19 +105,39 @@ public class AntBrain
 		{
 			probabilities[i] /= sum;
 		}
-		return nodes.get(next(probabilities));
+		
+		Node nextNode = availableNodes.get(next(probabilities));
+		markSelected(nextNode);
+		
+		return nextNode;
 	}
-        /**
-         * A faster power function than Math.pow
-         * @param x
-         * @param y
-         * @return x^y
-         */
-        public static double pow(final double x, final double y) {
-            final long tmp = Double.doubleToLongBits(x);
-            final long tmp2 = (long)(y * (tmp - 4606921280493453312L)) + 4606921280493453312L;
-            return Double.longBitsToDouble(tmp2);
-        }
+    	
+	protected List<Node> getAvailableNodes(Node firstNode, Node currentNode) 
+	{
+		if(_availableNodes==null)
+		{
+			_availableNodes = new ArrayList<Node>(_graph.getNodes().values());
+			_availableNodes.remove(firstNode);
+		}
+		return _availableNodes;
+	}
+	
+	protected void markSelected(Node nextNode) 
+	{
+		_availableNodes.remove(nextNode);		
+	}
+	
+	/**
+     * A faster power function than Math.pow
+     * @param x
+     * @param y
+     * @return x^y
+     */
+    public static double pow(final double x, final double y) {
+        final long tmp = Double.doubleToLongBits(x);
+        final long tmp2 = (long)(y * (tmp - 4606921280493453312L)) + 4606921280493453312L;
+        return Double.longBitsToDouble(tmp2);
+    }
 
 	/**
 	 * Next edges index calculation

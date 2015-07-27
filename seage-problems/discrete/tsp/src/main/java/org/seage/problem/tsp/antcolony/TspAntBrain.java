@@ -23,45 +23,47 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.problem.sat.antcolony;
+package org.seage.problem.tsp.antcolony;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Vector;
 
 import org.seage.metaheuristic.antcolony.AntBrain;
-import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
-import org.seage.problem.sat.Formula;
-import org.seage.problem.sat.FormulaEvaluator;
 
 /**
  *
  * @author Zagy
  */
-public class SatAntBrain extends AntBrain 
+public class TspAntBrain extends AntBrain 
 {
-
-	private Formula _formula;
-
-    public SatAntBrain(Graph graph, Formula formula) {
+    public TspAntBrain(Graph graph) {
         super(graph);
-        _formula = formula;
     }
 
+//	@Override
+//	protected Node selectNextNode(Node firstNode, Node currentNode) 
+//	{		 
+//		Node n = super.selectNextNode(firstNode, currentNode);
+//		if(n==null && firstNode != currentNode)
+//			return firstNode;
+//		else
+//			return n;
+//	}
+
 	@Override
-	protected void markSelected(Node nextNode) 
+	protected List<Node> getAvailableNodes(Node startingNode, Node currentNode) 
 	{
-		super.markSelected(nextNode);
-		
-		if(nextNode!=null)
+		List<Node> result = super.getAvailableNodes(startingNode, currentNode);
+		if(currentNode != startingNode && result.size()==0)
 		{
-			Node n2 = _graph.getNodes().get(-nextNode.getID());
-			_availableNodes.remove(n2);
+			//result = new ArrayList<Node>();
+			result.add(startingNode);
 		}
+		return result;
 	}
+
+    
     
 //    @Override
 //	protected Node selectNextNode(Node firstNode, Node currentNode) 
