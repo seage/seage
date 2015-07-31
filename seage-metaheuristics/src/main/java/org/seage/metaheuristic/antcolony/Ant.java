@@ -43,15 +43,10 @@ public class Ant {
     protected List<Integer> _nodeIDsAlongPath;
     
 	protected AntBrain _brain;
-
-	public Ant()
-    {
-		this(new ArrayList<Integer>());
-    }	
 	
 	public Ant(List<Integer> nodeIDs)
     {
-		_nodeIDsAlongPath = new ArrayList<Integer>(nodeIDs);
+		_nodeIDsAlongPath = nodeIDs==null ? new ArrayList<Integer>(): new ArrayList<Integer>(nodeIDs);
 		_edgePath = new ArrayList<Edge>();
     }
 	
@@ -79,10 +74,9 @@ public class Ant {
 			Edge e = n1.getEdgeMap().get(n2);
 			if(e == null)			
 				e = _graph.createEdge(n1, n2);
-			_distanceTravelled += e.getEdgePrice();
 			_edgePath.add(e);
 		}
-		
+		_distanceTravelled = _brain.getPathCost(_edgePath);
 		leavePheromone();
 		
 		return _edgePath;
@@ -115,8 +109,7 @@ public class Ant {
             		nextEdge = _graph.createEdge(currentNode, nextNode);
             	else
             		nextNode.getEdgeMap().put(currentNode, nextEdge);
-            }
-            _distanceTravelled +=  nextEdge.getEdgePrice();            
+            }          
             
             _edgePath.add(nextEdge);
             _nodeIDsAlongPath.add(nextNode.getID());
@@ -124,7 +117,7 @@ public class Ant {
             currentNode = nextNode;
             nextNode = _brain.selectNextNode(startingNode, currentNode);
         }        
-
+        _distanceTravelled = _brain.getPathCost(_edgePath);
         leavePheromone();
         return _edgePath;
     }

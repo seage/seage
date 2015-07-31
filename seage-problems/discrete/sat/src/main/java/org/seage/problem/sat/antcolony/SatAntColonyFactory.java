@@ -11,6 +11,7 @@ import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.FormulaEvaluator;
 
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
@@ -28,7 +29,7 @@ public class SatAntColonyFactory implements IAlgorithmFactory
 	        throws Exception
 	{
 		Formula formula = (Formula)instance;
-		Graph graph = new SatGraph(formula);
+		Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
         SatAntBrain brain = new SatAntBrain(graph, formula);       
 
         return new AntColonyAdapter(brain, graph) {

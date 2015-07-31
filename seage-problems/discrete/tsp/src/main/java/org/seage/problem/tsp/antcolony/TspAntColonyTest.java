@@ -83,12 +83,12 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	{
 		City[] cities = CityProvider.readCities(new FileInputStream(path));
 		_edges = cities.length * (cities.length-1)/2;
-		int iterations = 5000;
+		int iterations = 10000;
 //		int numAnts = 500;
 //		double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
 //		double alpha = 1, beta = 3;
 		int numAnts = 150;
-		double defaultPheromone = 0.491, localEvaporation = 0.85, quantumPheromone = 43;
+		double defaultPheromone = 0.491, localEvaporation = 0.95, quantumPheromone = 43;
 		double alpha = 1.0, beta = 2.3;
 		TspGraph graph = new TspGraph(cities);
 		System.out.println("Loaded ...");
@@ -99,7 +99,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 
 		Ant ants[] = new Ant[numAnts];
 		for (int i = 0; i < numAnts; i++) 
-			ants[i] = new Ant();
+			ants[i] = new Ant(null);
 		//brain.setParameters(graph.getNodeList().size(), alpha, beta);
 		
 		long t1 = System.currentTimeMillis();

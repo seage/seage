@@ -25,11 +25,8 @@
  */
 package org.seage.problem.sat.antcolony;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 
-import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
@@ -38,7 +35,6 @@ import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.sat.Clause;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
-import org.seage.problem.sat.FormulaReader;
 import org.seage.problem.sat.Literal;
 
 /**
@@ -74,7 +70,7 @@ public class SatAntColonyTest_Simple implements IAlgorithmListener<AntColonyEven
         double alpha = 1, beta = 1;
         int numAnts = 10, iterations = 10;
 
-        Graph graph = new SatGraph2(formula);
+        Graph graph = new SatGraph(formula, new FormulaEvaluator(formula)); 
         SatAntBrain brain = new SatAntBrain(graph, formula);       
         AntColony colony = new AntColony(graph, brain);
         colony.addAntColonyListener(this);
@@ -82,7 +78,7 @@ public class SatAntColonyTest_Simple implements IAlgorithmListener<AntColonyEven
         
         Ant ants[] = new Ant[numAnts];
 		for (int i = 0; i < numAnts; i++) 
-			ants[i] = new Ant();
+			ants[i] = new Ant(null);
 		
         colony.startExploring(graph.getNodes().get(0), ants);
 

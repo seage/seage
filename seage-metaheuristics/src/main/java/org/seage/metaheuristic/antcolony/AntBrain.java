@@ -28,8 +28,10 @@
 package org.seage.metaheuristic.antcolony;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -44,7 +46,7 @@ public class AntBrain
 	protected double _quantumPheromone;
 	private Random _rand;
 	protected Graph _graph;
-	protected List<Node> _availableNodes;
+	protected HashSet<Node> _availableNodes;
 	
 	public AntBrain(Graph graph)
 	{	
@@ -71,20 +73,20 @@ public class AntBrain
 	 */
 	protected Node selectNextNode(Node firstNode, Node currentNode)
 	{
-		List<Node> availableNodes = getAvailableNodes(firstNode, currentNode);
+		HashSet<Node> availableNodes = getAvailableNodes(firstNode, currentNode);
 		
 		if(availableNodes == null || availableNodes.size()==0)
 			return null;
 		
-		double sum = 0;
-		double[] probabilities = new double[availableNodes.size()];
+		double sum = 0; int i=0;
+		ArrayList<Node> nodes = new ArrayList<Node>(); 
+		double[] probabilities = new double[availableNodes.size()];	
 		// for each available node calculate probability
-		for (int i = 0; i < availableNodes.size(); i++)
+		for (Node n : availableNodes)
 		{
 			double edgePheromone = 0;
-			double edgePrice = 0;
+			double edgePrice = 0;			
 			
-			Node n = availableNodes.get(i);
 			Edge e = currentNode.getEdgeMap().get(n);
 			if(e != null)
 			{
@@ -99,24 +101,25 @@ public class AntBrain
 
             double p = pow(edgePheromone, _alpha) * pow(1/edgePrice, _beta);
             probabilities[i] = p;
-            sum += p;
+            nodes.add(n);
+            sum += p; i++;
 		}
-		for (int i = 0; i < probabilities.length; i++)
+		for (i=0;i<probabilities.length;i++)
 		{
 			probabilities[i] /= sum;
 		}
 		
-		Node nextNode = availableNodes.get(next(probabilities));
+		Node nextNode = nodes.get(next(probabilities));
 		markSelected(nextNode);
 		
 		return nextNode;
 	}
     	
-	protected List<Node> getAvailableNodes(Node firstNode, Node currentNode) 
+	protected HashSet<Node> getAvailableNodes(Node firstNode, Node currentNode) 
 	{
 		if(_availableNodes==null)
 		{
-			_availableNodes = new ArrayList<Node>(_graph.getNodes().values());
+			_availableNodes = new HashSet<Node>(_graph.getNodes().values());
 			_availableNodes.remove(firstNode);
 		}
 		return _availableNodes;
@@ -175,9 +178,43 @@ public class AntBrain
 		}
 		return 0;
 	}
-
+	
 	public double getQuantumPheromone()
 	{
 		return _quantumPheromone;
+	}
+	
+	public double getPathCost(List<Edge> path)
+	{
+		double result = 0;
+		for(Edge e : path) result += e.getEdgePrice();
+		
+		return result;
+	}
+	
+	
+	protected List<Node> edgeListToNodeList(List<Edge> edges)
+	{
+		ArrayList<Node> nodeList = new ArrayList<Node>();
+		
+		Edge previous = null;
+		for(Edge e : edges)
+		{
+			if(previous != null)
+			{
+				if( e.getNode1().getID()==previous.getNode1().getID() ||
+					e.getNode1().getID()==previous.getNode2().getID())
+					nodeList.add(e.getNode2());
+				else
+					nodeList.add(e.getNode1());
+			}
+			else
+			{
+				nodeList.add(e.getNode1());
+				nodeList.add(e.getNode2());
+			}
+			previous = e;
+		}
+		return nodeList;
 	}
 }

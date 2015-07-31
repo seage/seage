@@ -25,9 +25,11 @@
  */
 package org.seage.problem.tsp.antcolony;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.seage.metaheuristic.antcolony.AntBrain;
+import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 
@@ -52,18 +54,16 @@ public class TspAntBrain extends AntBrain
 //	}
 
 	@Override
-	protected List<Node> getAvailableNodes(Node startingNode, Node currentNode) 
+	protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode) 
 	{
-		List<Node> result = super.getAvailableNodes(startingNode, currentNode);
+		HashSet<Node> result = super.getAvailableNodes(startingNode, currentNode);
 		if(currentNode != startingNode && result.size()==0)
-		{
-			//result = new ArrayList<Node>();
+		{			
 			result.add(startingNode);
 		}
 		return result;
 	}
-
-    
+   
     
 //    @Override
 //	protected Node selectNextNode(Node firstNode, Node currentNode) 

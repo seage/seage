@@ -32,7 +32,6 @@ public class Formula extends ProblemInstance
 
     private ArrayList<Clause> _clauses;
     private int _literalCount;
-    private Clause[] __null;
     private ArrayList< ArrayList<Literal>> _literals;
 
     public Formula(ProblemInstanceInfo instanceInfo, List<Clause> clauses)
@@ -40,7 +39,6 @@ public class Formula extends ProblemInstance
     	super(instanceInfo);		
 
         _clauses = new ArrayList<Clause>(clauses);
-        __null = new Clause[0];
 
         for(Clause c : clauses)
             for(Literal l : c.getLiterals())
@@ -56,8 +54,8 @@ public class Formula extends ProblemInstance
     }
 
     //OK
-    public Clause[] getClauses() {
-        return (Clause[]) _clauses.toArray(__null);
+    public ArrayList<Clause> getClauses() {
+        return _clauses;
     }
 
     //OK

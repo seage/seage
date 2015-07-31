@@ -25,11 +25,25 @@
  */
 package org.seage.problem.sat;
 
+import java.util.HashMap;
+
 /**
  *
  * @author rick
  */
-public class FormulaEvaluator {
+public class FormulaEvaluator
+{
+	private HashMap<Integer, Double> _literalPrices;
+	
+	public FormulaEvaluator(Formula formula)
+	{
+		_literalPrices = new HashMap<Integer, Double>();
+		for(int i = 0;i< formula.getLiteralCount();i++)
+		{
+			_literalPrices.put(i+1, evaluateLiteral(formula, i, true));
+			_literalPrices.put(-i-1, evaluateLiteral(formula, i, false));
+		}
+	}
 
     public static int evaluate(Formula f, Boolean[] s) {
         int numFalseClauses = 0;
@@ -55,31 +69,38 @@ public class FormulaEvaluator {
         return numFalseClauses;
     }
 
-    public static double evaluate(Formula f, int ix, boolean value)
+    public double evaluate(Formula f, Integer id)
     {
-    	if(ix == -1) // the last, artificialnode
-    		return 0;
-        int positive = 0;
-        int negative = 0;
+    	//Integer id = value?ix+1:-ix-1;
+    	return 1.0;//_literalPrices.get(id);
+    }
+    
+    private double evaluateLiteral(Formula f, int ix, boolean value)
+    {
+//    	if(ix == -1) // the last, artificialnode
+//    		return 0;
+//        int positive = 0;
+//        int negative = 0;
+//
+//        for (Clause c : f.getClauses())
+//        {
+//	        for (Literal l : c.getLiterals())
+//	        {
+//	        	if(l.getIndex() == ix)
+//	        	{
+//		            if(l.isNeg() == value)
+//		                negative++;
+//		            else
+//		                positive++;
+//		            break;
+//	        	}
+//	        }
+//        }
 
-        for (Clause c : f.getClauses())
-        {
-	        for (Literal l : c.getLiterals())
-	        {
-	        	if(l.getIndex() == ix)
-	        	{
-		            if(l.isNeg() == value)
-		                negative++;
-		            else
-		                positive++;
-		            break;
-	        	}
-	        }
-        }
-
-        if(positive == 0 )
-            return Double.MAX_VALUE;
-        else
-            return /*f.getClauses().length*/ 1.0  * negative / positive;
+        //if(positive == 0 )
+        //    return Double.MAX_VALUE;
+        //else
+            return 1.0;//*negative;//f.getClauses().size();
+        	//return (1.0*(negative+positive)/f.getClauses().size() )/*1.0*/  * (negative / positive);
     }
 }

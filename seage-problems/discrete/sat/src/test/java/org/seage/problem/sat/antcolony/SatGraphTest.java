@@ -8,6 +8,7 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.FormulaEvaluator;
 
 public class SatGraphTest
 {
@@ -18,7 +19,7 @@ public class SatGraphTest
 		ProblemInstanceInfo pii = provider.getProblemInfo().getProblemInstanceInfo("uf20-01");
 		Formula formula = (Formula)provider.initProblemInstance(pii);
 		
-		SatGraph graph = new SatGraph(formula);
+		SatGraph graph = new SatGraph(formula, new FormulaEvaluator(formula));
 		assertNotNull(graph);
     }
 }
