@@ -70,9 +70,9 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent>
         // args[0];
         Formula formula = new Formula(new ProblemInstanceInfo("",ProblemInstanceOrigin.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
 
-        double quantumPheromone = 50, evaporation = 0.98, defaultPheromone = 0.1;
-        double alpha = 1, beta = 2;
-        int numAnts = 100, iterations = 15000;
+        double quantumPheromone = 50, evaporation = 0.95 , defaultPheromone = 0.5;
+        double alpha = 1, beta = 1;
+        int numAnts = 100, iterations = 30000;
 
         Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
         SatAntBrain brain = new SatAntBrain(graph, formula);       
@@ -87,20 +87,7 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent>
         colony.startExploring(graph.getNodes().get(0), ants);
 
         System.out.println("Global best: "+colony.getGlobalBest());
-        
-//        Boolean[] s = new Boolean[colony.getBestPath()];
-//        for(int i=0;i<s.length;i++)
-//        {
-//        	if(colony.getBestPath().get(i).getNode1().getID()==0)
-//        		continue;
-//            s[i] = colony.getBestPath().get(i).getNode1().getID() > 0;
-//            int s2 = 0;
-//            if(s[i]) s2 =1;
-//            System.out.print(s2);
-//        }
-//        System.out.println();
-//        System.out.println("Global best: "+ FormulaEvaluator.evaluate(formula, s));
-        //graph.printPheromone();
+
     }
 
 	@Override

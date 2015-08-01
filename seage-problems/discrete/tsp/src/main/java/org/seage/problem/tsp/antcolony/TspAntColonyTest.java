@@ -51,8 +51,8 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 	{
 		try
 		{
-			//String path = "data/tsp/eil51.tsp";//args[0];		// 426
-        	String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
+			String path = "data/tsp/eil51.tsp";//args[0];		// 426 
+        	//String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
         	//String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
         	//String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
         	//String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778

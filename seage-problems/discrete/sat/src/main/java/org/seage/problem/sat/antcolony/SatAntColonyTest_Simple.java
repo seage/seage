@@ -66,8 +66,8 @@ public class SatAntColonyTest_Simple implements IAlgorithmListener<AntColonyEven
 		
 		Formula formula = new Formula(null, clauses);
 		
-        double quantumPheromone = 1000, evaporation = 0.9, defaultPheromone = 0.1;
-        double alpha = 1, beta = 1;
+        double quantumPheromone = 1000, evaporation = 0.92, defaultPheromone = 0.1;
+        double alpha = 2, beta = 1;
         int numAnts = 10, iterations = 10;
 
         Graph graph = new SatGraph(formula, new FormulaEvaluator(formula)); 

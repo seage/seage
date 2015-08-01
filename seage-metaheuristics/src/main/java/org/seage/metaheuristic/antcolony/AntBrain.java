@@ -95,7 +95,7 @@ public class AntBrain
 			}
 			else
 			{
-				edgePheromone = 0.001;
+				edgePheromone = _graph.getDefaultPheromone();
 				edgePrice = _graph.getNodesDistance(currentNode, n);
 			}
 
@@ -187,7 +187,8 @@ public class AntBrain
 	public double getPathCost(List<Edge> path)
 	{
 		double result = 0;
-		for(Edge e : path) result += e.getEdgePrice();
+		for(Edge e : path) 
+			result += e.getEdgePrice();
 		
 		return result;
 	}

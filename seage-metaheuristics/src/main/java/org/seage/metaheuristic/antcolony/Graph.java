@@ -38,6 +38,7 @@ public abstract class Graph {
     protected HashMap<Integer, Node> _nodes;
     protected ArrayList<Edge> _edges;
     protected double _evaporCoeff = 0.95;
+	private double _defaultPheromone;
 
 	public Graph() {
         _nodes = new HashMap<Integer, Node>();
@@ -70,15 +71,15 @@ public abstract class Graph {
             e.evaporateFromEdge(_evaporCoeff);
         }
     }
-
-    /**
-     * Default pheromone setting for all edges
-     * @param defaultPheromone - Default pheromone
-     */
-    public void setDefaultPheromone(double defaultPheromone) {
-        for (Edge e : getEdges()) {
-            e.addLocalPheromone(defaultPheromone);
-        }
+    
+    public double getDefaultPheromone() 
+    {
+    	return _defaultPheromone;
+    }
+    
+    public void setDefaultPheromone(double defaultPheromone) 
+    {
+    	_defaultPheromone = defaultPheromone;
     }
     
 	public void setEvaporCoeff(double evaporCoeff)
@@ -89,7 +90,8 @@ public abstract class Graph {
 	public Edge createEdge(Node n1, Node n2) throws Exception
 	{
 		Edge newEdge = new Edge(n1, n2);
-		newEdge.setEdgePrice(getNodesDistance(n1, n2));
+		newEdge.addLocalPheromone(_defaultPheromone);
+		newEdge.setEdgePrice(getNodesDistance(n1, n2));		
 		_edges.add(newEdge);	
 		
 		return newEdge;
