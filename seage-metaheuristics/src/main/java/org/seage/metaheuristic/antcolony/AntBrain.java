@@ -47,11 +47,13 @@ public class AntBrain
 	private Random _rand;
 	protected Graph _graph;
 	protected HashSet<Node> _availableNodes;
+	protected ArrayList<Node> _availableNodeList;
 	
 	public AntBrain(Graph graph)
 	{	
 		_graph = graph;
 		_rand = new Random(System.currentTimeMillis());
+		_availableNodeList = new ArrayList<Node>(); 
 	}
 
 	void setParameters(double alpha, double beta, double quantumPheromone)
@@ -63,6 +65,7 @@ public class AntBrain
 
 	public void reset() {
 		_availableNodes = null;
+		_availableNodeList.clear();
 	}
 	/**
 	 * Selection following edge
@@ -74,12 +77,12 @@ public class AntBrain
 	protected Node selectNextNode(Node firstNode, Node currentNode)
 	{
 		HashSet<Node> availableNodes = getAvailableNodes(firstNode, currentNode);
+		_availableNodeList.clear();
 		
 		if(availableNodes == null || availableNodes.size()==0)
 			return null;
 		
-		double sum = 0; int i=0;
-		ArrayList<Node> nodes = new ArrayList<Node>(); 
+		double sum = 0; int i=0;		
 		double[] probabilities = new double[availableNodes.size()];	
 		// for each available node calculate probability
 		for (Node n : availableNodes)
@@ -101,7 +104,7 @@ public class AntBrain
 
             double p = pow(edgePheromone, _alpha) * pow(1/edgePrice, _beta);
             probabilities[i] = p;
-            nodes.add(n);
+            _availableNodeList.add(n);
             sum += p; i++;
 		}
 		for (i=0;i<probabilities.length;i++)
@@ -109,7 +112,7 @@ public class AntBrain
 			probabilities[i] /= sum;
 		}
 		
-		Node nextNode = nodes.get(next(probabilities));
+		Node nextNode = _availableNodeList.get(next(probabilities));
 		markSelected(nextNode);
 		
 		return nextNode;

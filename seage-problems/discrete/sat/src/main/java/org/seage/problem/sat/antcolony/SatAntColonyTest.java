@@ -70,7 +70,7 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent>
         // args[0];
         Formula formula = new Formula(new ProblemInstanceInfo("",ProblemInstanceOrigin.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
 
-        double quantumPheromone = 50, evaporation = 0.95 , defaultPheromone = 0.5;
+        double quantumPheromone = 10, evaporation = 0.9 , defaultPheromone = 0.5;
         double alpha = 1, beta = 1;
         int numAnts = 100, iterations = 30000;
 
