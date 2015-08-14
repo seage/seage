@@ -1,29 +1,25 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
- * Contributors:
- *     Karel Durkota
- *     - Initial implementation
- *     Richard Malek
- *     - Added algorithm annotations
+ * Contributors: Karel Durkota - Initial implementation Richard Malek - Added
+ * algorithm annotations
  */
 package org.seage.problem.sat.sannealing;
 
@@ -36,23 +32,38 @@ import org.seage.metaheuristic.sannealing.Solution;
 
 /**
  *
- * @author Karel Durkota
+ * @author Richard Malek
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
 public class SatSimulatedAnnealingFactory implements IAlgorithmFactory
 {
 
-	@Override
-	public Class<?> getAlgorithmClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Class<?> getAlgorithmClass()
+    {
+        return SimulatedAnnealingAdapter.class;
+    }
 
-	@Override
-	public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
- 
+    @Override
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    {
+        return new SimulatedAnnealingAdapter(new SatObjectiveFunction(), new SatMoveManager(), false, "")
+        {
+
+            @Override
+            public Object[][] solutionsToPhenotype() throws Exception
+            {
+                return null;
+            }
+
+            @Override
+            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            {
+                // TODO Auto-generated method stub
+
+            }
+        };
+    }
+
 }

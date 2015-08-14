@@ -11,30 +11,32 @@ import org.seage.aal.problem.ProblemInstance;
 public class SatGraspAlgorithmFactory implements IAlgorithmFactory
 {
 
-	@Override
-	public Class<?> getAlgorithmClass()
-	{
-		return GraspAlgorithmAdapter.class;
-	}
+    @Override
+    public Class<?> getAlgorithmClass()
+    {
+        return GraspAlgorithmAdapter.class;
+    }
 
-	@Override
-	public IAlgorithmAdapter createAlgorithm(ProblemInstance instance)
-	        throws Exception
-	{		
-		return new GraspAlgorithmAdapter() {
-			
-			@Override
-			public Object[][] solutionsToPhenotype() throws Exception {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public void solutionsFromPhenotype(Object[][] source) throws Exception {
-				// TODO Auto-generated method stub
-				
-			}
-		};
-	}
+    @Override
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    {
+        return new GraspAlgorithmAdapter()
+        {
+
+            @Override
+            public Object[][] solutionsToPhenotype() throws Exception
+            {
+                // TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            {
+                // TODO Auto-generated method stub
+
+            }
+        };
+    }
 
 }

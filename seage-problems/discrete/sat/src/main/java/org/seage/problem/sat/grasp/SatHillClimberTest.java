@@ -1,27 +1,24 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
- * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
 package org.seage.problem.sat.grasp;
 
@@ -39,7 +36,8 @@ import org.seage.problem.sat.FormulaReader;
  *
  * @author Zagy
  */
-public class SatHillClimberTest {
+public class SatHillClimberTest
+{
 
     static Date _date;
     static SimpleDateFormat _hours = new SimpleDateFormat("h");
@@ -49,7 +47,8 @@ public class SatHillClimberTest {
     static int _h, _m, _s;
     static double _actualTime, _ms;
 
-    public static double getTime() {
+    public static double getTime()
+    {
         _date = new Date();
         _h = Integer.parseInt(_hours.format(_date));
         _m = Integer.parseInt(_minutes.format(_date));
@@ -59,50 +58,61 @@ public class SatHillClimberTest {
         return _actualTime;
     }
 
-    public static void testing1(Formula formula) throws Exception {
+    public static void testing1(Formula formula) throws Exception
+    {
         SatObjectiveFunction objFce = new SatObjectiveFunction(formula);
         SatSolutionGenerator solGen;
         HillClimber hc;
 
         String solutionType = "";
-        int[] iterations = {1, 10, 100, 1000};
-        int[] restarts = {1, 5, 10, 50, 100};
+        int[] iterations = { 1, 10, 100, 1000 };
+        int[] restarts = { 1, 5, 10, 50, 100 };
 
         int repeats = 10;
         double sumSol, sumTime, hlpTime;
         SatSolution actualBestSol, bestSol = null;
 
-//        solGen = new SatSolutionGenerator("greedy", formula);
-//        hc = new HillClimber(objFce, new SatMoveManager(), solGen, iter);
-//        hc.startRestartedSearching(classic, 10);
-//        SatSolution actualBestSol = (SatSolution) hc.getBestSolution();
-//        System.out.println(" false clauses: " + actualBestSol.getObjectiveValue());
+        // solGen = new SatSolutionGenerator("greedy", formula);
+        // hc = new HillClimber(objFce, new SatMoveManager(), solGen, iter);
+        // hc.startRestartedSearching(classic, 10);
+        // SatSolution actualBestSol = (SatSolution) hc.getBestSolution();
+        // System.out.println(" false clauses: " +
+        // actualBestSol.getObjectiveValue());
 
-        for (int i = 1; i <= 2; i++) {
-            switch (i) {
-                case 1:
-                    solutionType = "random";
-                    break;
-                case 2:
-                    solutionType = "greedy";
-                    break;
+        for (int i = 1; i <= 2; i++)
+        {
+            switch (i)
+            {
+            case 1:
+                solutionType = "random";
+                break;
+            case 2:
+                solutionType = "greedy";
+                break;
             }
             solGen = new SatSolutionGenerator(solutionType, formula);
-            for (int res : restarts) {
-                for (int iter : iterations) {
+            for (int res : restarts)
+            {
+                for (int iter : iterations)
+                {
                     sumSol = 0;
                     sumTime = 0;
-                    for (int j = 1; j <= repeats; j++) {
+                    for (int j = 1; j <= repeats; j++)
+                    {
                         hc = new HillClimber(objFce, new SatMoveManager(), solGen, iter);
                         hlpTime = getTime();
                         hc.startRestartedSearching(res);
                         sumTime = getTime() - hlpTime;
                         actualBestSol = (SatSolution) hc.getBestSolution();
-                        if (j > 1) {
-                            if (actualBestSol.getObjectiveValue() < bestSol.getObjectiveValue()) {
+                        if (j > 1)
+                        {
+                            if (actualBestSol.getObjectiveValue() < bestSol.getObjectiveValue())
+                            {
                                 bestSol = actualBestSol;
                             }
-                        } else {
+                        }
+                        else
+                        {
                             bestSol = actualBestSol;
                         }
                         sumSol += actualBestSol.getObjectiveValue();
@@ -117,20 +127,23 @@ public class SatHillClimberTest {
         }
     }
 
-    public static void testing2(Formula formula) throws Exception {
+    public static void testing2(Formula formula) throws Exception
+    {
         SatObjectiveFunction objFce = new SatObjectiveFunction(formula);
         SatMoveManager moveManager = new SatMoveManager();
         SatSolutionGenerator solGen = new SatSolutionGenerator("Greedy", formula);
-        
+
         HillClimber hc;
 
-        int[] iterations = {2000};
-        int[] restarts = {5000};
+        int[] iterations = { 2000 };
+        int[] restarts = { 5000 };
 
         double sumTime, hlpTime;
 
-        for (int res : restarts) {
-            for (int iter : iterations) {
+        for (int res : restarts)
+        {
+            for (int iter : iterations)
+            {
                 hc = new HillClimber(objFce, moveManager, solGen, iter);
                 hlpTime = getTime();
                 hc.startRestartedSearching(res);
@@ -143,12 +156,15 @@ public class SatHillClimberTest {
     }
 
     /**
-     * @param args the command line arguments
+     * @param args
+     *            the command line arguments
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception
+    {
         String path = "data/sat/uf100-01.cnf";
-        Formula formula = new Formula(new ProblemInstanceInfo("uf20", ProblemInstanceOrigin.FILE, path), FormulaReader.readClauses(new FileInputStream(path)));
-        
+        Formula formula = new Formula(new ProblemInstanceInfo("uf20", ProblemInstanceOrigin.FILE, path),
+                FormulaReader.readClauses(new FileInputStream(path)));
+
         testing2(formula);
     }
 }

@@ -6,9 +6,9 @@ import org.seage.problem.sat.SatProblemProvider;
 public class SatAntColonyFactoryTest extends AlgorithmFactoryTestBase
 {
 
-	public SatAntColonyFactoryTest() 
-	{
-		super( new SatProblemProvider(), "AntColony");		
-	}
+    public SatAntColonyFactoryTest()
+    {
+        super(new SatProblemProvider(), "AntColony");
+    }
 
 }

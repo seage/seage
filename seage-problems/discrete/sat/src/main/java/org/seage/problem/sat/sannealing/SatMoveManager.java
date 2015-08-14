@@ -1,27 +1,24 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
- * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
 package org.seage.problem.sat.sannealing;
 
@@ -32,37 +29,22 @@ import org.seage.metaheuristic.sannealing.Solution;
 
 /**
  *
- * @author Karel Durkota
+ * @author Richard Malek
  */
 public class SatMoveManager implements IMoveManager
 {
 
     public Solution getModifiedSolution(Solution solution)
     {
-        SatSolution qapSolution = ((SatSolution)solution).clone();
+        SatSolution qapSolution = (SatSolution) solution.clone();
 
-        Random rnd = new Random();
-        int qapSolutionLength = qapSolution.getAssign().length;
-        int a = rnd.nextInt( qapSolutionLength );
-        int b = rnd.nextInt( qapSolutionLength );
-
-        // Swap values if indices are different
-        if(a != b)
-        {
-
-            qapSolution.getAssign()[a] = qapSolution.getAssign()[a] + qapSolution.getAssign()[b];
-            qapSolution.getAssign()[b] = qapSolution.getAssign()[a] - qapSolution.getAssign()[b];
-            qapSolution.getAssign()[a] = qapSolution.getAssign()[a] - qapSolution.getAssign()[b];
-        }
-
-        return (Solution)qapSolution;
+        return (Solution) qapSolution;
     }
 
-	@Override
-	public Solution getModifiedSolution(Solution solution,
-			double currentTemperature) throws Exception 
-	{
-		return null;
-	}
+    @Override
+    public Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception
+    {
+        return null;
+    }
 
 }

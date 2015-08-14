@@ -10,37 +10,37 @@ import org.seage.problem.sat.SatPhenotypeEvaluator;
  */
 public class SatObjectiveFunction implements ObjectiveFunction
 {
-	private SatPhenotypeEvaluator _evaluator;
+    private SatPhenotypeEvaluator _evaluator;
 
-	public SatObjectiveFunction(SatPhenotypeEvaluator evaluator)
-	{
-		_evaluator = evaluator;
-	}
-
-	public double[] evaluate( Solution solution, Move move) throws Exception
+    public SatObjectiveFunction(SatPhenotypeEvaluator evaluator)
     {
-		try
-		{
-			SatSolution satSol = (SatSolution)solution;
-			SatMove satMove = (SatMove)move;
-			
-			Boolean[] literalValues = new Boolean[satSol.getLiteralValues().length];
-			//(boolean[])satSol.getLiteralValues().clone();
-			for(int i=0;i<satSol.getLiteralValues().length;i++)   
-				literalValues[i] = satSol.getLiteralValues()[i];			
+        _evaluator = evaluator;
+    }
 
-			if (satMove != null)
-			{
-				literalValues[satMove.getIndexes()[0]] = satMove.getValues()[0] == 1 ? true : false;
-				literalValues[satMove.getIndexes()[1]] = satMove.getValues()[1] == 1 ? true : false;
-			}
+    public double[] evaluate(Solution solution, Move move) throws Exception
+    {
+        try
+        {
+            SatSolution satSol = (SatSolution) solution;
+            SatMove satMove = (SatMove) move;
 
-			return _evaluator.evaluate(literalValues);
-		}
-		catch (Exception ex)
-		{
-			throw ex;
-		}
+            Boolean[] literalValues = new Boolean[satSol.getLiteralValues().length];
+            // (boolean[])satSol.getLiteralValues().clone();
+            for (int i = 0; i < satSol.getLiteralValues().length; i++)
+                literalValues[i] = satSol.getLiteralValues()[i];
+
+            if (satMove != null)
+            {
+                literalValues[satMove.getIndexes()[0]] = satMove.getValues()[0] == 1 ? true : false;
+                literalValues[satMove.getIndexes()[1]] = satMove.getValues()[1] == 1 ? true : false;
+            }
+
+            return _evaluator.evaluate(literalValues);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
 }

@@ -12,14 +12,14 @@ import org.seage.problem.sat.FormulaEvaluator;
 
 public class SatGraphTest
 {
-	@Test
-    public void testSatGraph() throws Exception 
+    @Test
+    public void testSatGraph() throws Exception
     {
-		IProblemProvider provider = ProblemProvider.getProblemProviders().get("SAT");
-		ProblemInstanceInfo pii = provider.getProblemInfo().getProblemInstanceInfo("uf20-01");
-		Formula formula = (Formula)provider.initProblemInstance(pii);
-		
-		SatGraph graph = new SatGraph(formula, new FormulaEvaluator(formula));
-		assertNotNull(graph);
+        IProblemProvider provider = ProblemProvider.getProblemProviders().get("SAT");
+        ProblemInstanceInfo pii = provider.getProblemInfo().getProblemInstanceInfo("uf20-01");
+        Formula formula = (Formula) provider.initProblemInstance(pii);
+
+        SatGraph graph = new SatGraph(formula, new FormulaEvaluator(formula));
+        assertNotNull(graph);
     }
 }

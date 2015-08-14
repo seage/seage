@@ -6,9 +6,9 @@ import org.seage.problem.sat.SatProblemProvider;
 public class SatGeneticAlgorithmFactoryTest extends AlgorithmFactoryTestBase
 {
 
-	public SatGeneticAlgorithmFactoryTest() 
-	{
-		super( new SatProblemProvider(), "GeneticAlgorithm");
-	}
+    public SatGeneticAlgorithmFactoryTest()
+    {
+        super(new SatProblemProvider(), "GeneticAlgorithm");
+    }
 
 }

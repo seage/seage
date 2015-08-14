@@ -1,27 +1,24 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
- * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
 package org.seage.problem.sat.sannealing;
 
@@ -31,75 +28,53 @@ import org.seage.metaheuristic.sannealing.Solution;
 
 /**
  *
- * @author Karel Durkota
+ * @author Richard Malek
  */
 public abstract class SatSolution extends Solution
 {
-    /**
-     * Represent order of cities
-     */
-    protected Integer[] _assign;
+    private boolean[] _literalValues;
+    private int _hash;
 
-    /**
-     * Array of cities
-     */
-    protected static Double[][][] _facilityLocation;
-
-    public SatSolution(Double[][][] facilityLocation)
+    public SatSolution(boolean[] literalValues)
     {
-        _assign = new Integer[ facilityLocation.length ];
-        _facilityLocation = facilityLocation;
+        _literalValues = literalValues.clone();
+        // _hash = SatPhenotypeEvaluator.hashCode(_literalValues);
     }
 
-    public Integer[] getAssign()
+    public boolean[] getLiteralValues()
     {
-        return _assign;
+        return _literalValues;
     }
 
-     public void setAssign(Integer[] assign)
+    public Solution clone()
     {
-        _assign = assign;
-    }
+        SatSolution copy = (SatSolution) super.clone();
 
-    public Double[][][] getFacilityLocation()
-    {
-        return _facilityLocation;
-    }
-    
-    public void setFacilityLocation(Double[][][] facilityLocation)
-    {
-        _facilityLocation = facilityLocation;
-    }
-
-    @Override
-    public SatSolution clone()
-    {
-        SatSolution qapSolution = null;
-        try
+        copy._literalValues = new boolean[_literalValues.length];
+        for (int i = 0; i < _literalValues.length; i++)
         {
-            qapSolution = (SatSolution)super.clone();
-            qapSolution.setAssign( _assign.clone() );
-            qapSolution.setFacilityLocation( _facilityLocation );
-            qapSolution.setObjectiveValue(getObjectiveValue());
-        } catch (Exception ex)
-        {
-            Logger.getLogger(SatSolution.class.getName()).log(Level.SEVERE, null, ex);
+            copy._literalValues[i] = _literalValues[i];
         }
-        return qapSolution;
+
+        return copy;
     }
 
- public String toString()
+    public String toString()
     {
-        StringBuffer s = new StringBuffer();
+        String result = super.toString();
 
-        s.append("[");
-        for(int i=_assign.length-1;i>=1;i--){
-            s.append((_assign[i]+1));
-            s.append(",");
+        String str = "";
+        for (int i = 0; i < _literalValues.length; i++)
+        {
+            int val = _literalValues[i] == true ? 1 : 0;
+            str += val;
         }
-        s.append((_assign[_assign[0]]+1)+"]");
+        return result + "\t" + str;
+    }
 
-        return s.toString();
-    }   // end toString
+    public int hashCode()
+    {
+        return _hash;
+    }
 
 }

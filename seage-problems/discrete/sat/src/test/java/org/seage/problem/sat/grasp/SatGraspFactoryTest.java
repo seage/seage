@@ -6,9 +6,9 @@ import org.seage.problem.sat.SatProblemProvider;
 public class SatGraspFactoryTest extends AlgorithmFactoryTestBase
 {
 
-	public SatGraspFactoryTest() 
-	{
-		super(new SatProblemProvider(), "GRASP");
-	}
+    public SatGraspFactoryTest()
+    {
+        super(new SatProblemProvider(), "GRASP");
+    }
 
 }

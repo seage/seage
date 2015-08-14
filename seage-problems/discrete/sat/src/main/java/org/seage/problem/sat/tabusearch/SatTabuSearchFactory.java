@@ -1,27 +1,24 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
- * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
 package org.seage.problem.sat.tabusearch;
 
@@ -44,7 +41,8 @@ import org.seage.problem.sat.SatPhenotypeEvaluator;
 public class SatTabuSearchFactory implements IAlgorithmFactory
 {
 
-	public Class<TabuSearchAdapter> getAlgorithmClass() {
+    public Class<TabuSearchAdapter> getAlgorithmClass()
+    {
         return TabuSearchAdapter.class;
     }
 
@@ -52,19 +50,21 @@ public class SatTabuSearchFactory implements IAlgorithmFactory
     {
         IAlgorithmAdapter algorithm;
 
-        Formula formula = (Formula)instance;
+        Formula formula = (Formula) instance;
 
-        algorithm = new TabuSearchAdapter(new SatMoveManager(), new SatObjectiveFunction(new SatPhenotypeEvaluator(formula)), "" ) {
+        algorithm = new TabuSearchAdapter(new SatMoveManager(),
+                new SatObjectiveFunction(new SatPhenotypeEvaluator(formula)), "")
+        {
 
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 _solutions = new Solution[source.length];
-                for(int i=0;i<source.length;i++)
+                for (int i = 0; i < source.length; i++)
                 {
                     boolean[] sol = new boolean[source[i].length];
-                    for(int j=0;j<sol.length;j++)
-                        sol[j] = (Boolean)source[i][j];
-                    
+                    for (int j = 0; j < sol.length; j++)
+                        sol[j] = (Boolean) source[i][j];
+
                     _solutions[i] = new SatSolution(sol);
                 }
             }
@@ -73,11 +73,11 @@ public class SatTabuSearchFactory implements IAlgorithmFactory
             {
                 Object[][] result = new Object[_solutions.length][];
 
-                for(int i=0;i<_solutions.length;i++)
+                for (int i = 0; i < _solutions.length; i++)
                 {
-                	SatSolution s = (SatSolution)_solutions[i];
+                    SatSolution s = (SatSolution) _solutions[i];
                     result[i] = new Boolean[s.getLiteralValues().length];
-                    for(int j=0;j<s.getLiteralValues().length;j++)
+                    for (int j = 0; j < s.getLiteralValues().length; j++)
                     {
                         result[i][j] = s.getLiteralValues()[j];
                     }
@@ -93,6 +93,5 @@ public class SatTabuSearchFactory implements IAlgorithmFactory
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 
 }
