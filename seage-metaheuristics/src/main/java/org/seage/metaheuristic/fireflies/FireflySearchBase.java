@@ -28,7 +28,6 @@
  */
 package org.seage.metaheuristic.fireflies;
 
-
 /**
  * This abstract class implements {@link FireflySearch} and defines the event-handling methods
  * including the add/remove methods and package-level fireXxx methods.
@@ -43,18 +42,17 @@ package org.seage.metaheuristic.fireflies;
 public abstract class FireflySearchBase implements IFireflySearch
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 4689450489917508880L;
+     * 
+     */
+    private static final long serialVersionUID = 4689450489917508880L;
 
-
-	/**
+    /**
      * Tracks the number of iterations comleted since the
      * inception of this firefly search.
      *
      * @since 1.0a
      */
-    private int iterationsCompleted;   
+    private int iterationsCompleted;
 
     /**
      * Returns the total number iterations that have been
@@ -64,8 +62,9 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @since 1.0a
      */
     public synchronized int getIterationsCompleted()
-    {   return iterationsCompleted;
-    }   // end getIterationsCompleted
+    {
+        return iterationsCompleted;
+    } // end getIterationsCompleted
 
     /**
      * Increments the number of iterations completed by one.
@@ -75,9 +74,9 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @since 1.0a
      */
     protected void incrementIterationsCompleted()
-    {   iterationsCompleted++;
-    }   // end incrementIterationsCompleted
-
+    {
+        iterationsCompleted++;
+    } // end incrementIterationsCompleted
 
     /* ********  E V E N T   C O D E  ******** */
 
@@ -89,8 +88,7 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @see FireflySearchEvent
      * @since 1.0
      */
-    private final FireflySearchEvent fireflyEvent = new FireflySearchEvent( this );
-
+    private final FireflySearchEvent fireflyEvent = new FireflySearchEvent(this);
 
     /**
      * An array of {@link FireflySearchListener}s. An array is
@@ -103,10 +101,8 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @since 1.0
      */
     private FireflySearchListener[] fireflySearchListenerList = {};
-    
 
     /* ********  A D D   M E T H O D S  ******** */
-
 
     /**
      * Registers <tt>listener</tt> to receive firefly events when
@@ -116,57 +112,53 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @see FireflySearchListener
      * @since 1.0
      */
-     public final synchronized void addFireflySearchListener( FireflySearchListener listener )
-     {  
-        FireflySearchListener[] list = new FireflySearchListener[
-            fireflySearchListenerList.length + 1 ];
+    public final synchronized void addFireflySearchListener(FireflySearchListener listener)
+    {
+        FireflySearchListener[] list = new FireflySearchListener[fireflySearchListenerList.length + 1];
 
-        for( int i = 0; i < list.length - 1; i++ )
+        for (int i = 0; i < list.length - 1; i++)
             list[i] = fireflySearchListenerList[i];
-            
-        list[ list.length-1 ] = listener;
-        fireflySearchListenerList = list;
-     }  // end addFireflySearchListener
 
+        list[list.length - 1] = listener;
+        fireflySearchListenerList = list;
+    } // end addFireflySearchListener
 
     /* ********  R E M O V E   M E T H O D S  ******** */
-     
 
-     /**
-      * Removes <tt>listener</tt> from list of objects to notify
-      * when a new best solution is found.
-      * 
-      * @param listener {@link FireflySearchListener} to remove from notification list.
-      * @see FireflySearchListener
-      * @since 1.0
-      */
-     public final synchronized void removeFireflySearchListener( FireflySearchListener listener )
-     {  // Find location of listener to remove
+    /**
+     * Removes <tt>listener</tt> from list of objects to notify
+     * when a new best solution is found.
+     * 
+     * @param listener {@link FireflySearchListener} to remove from notification list.
+     * @see FireflySearchListener
+     * @since 1.0
+     */
+    public final synchronized void removeFireflySearchListener(FireflySearchListener listener)
+    { // Find location of listener to remove
         int index = -1;
         int j = 0;
 
-        while( index < 0 && j < fireflySearchListenerList.length )
-        {   if( fireflySearchListenerList[j] == listener )
+        while (index < 0 && j < fireflySearchListenerList.length)
+        {
+            if (fireflySearchListenerList[j] == listener)
                 index = j;
-            else j++;
-        }   // end while: through list
-    
+            else
+                j++;
+        } // end while: through list
+
         // If index is less than zero then it wasn't in the list
-        if( index >= 0 )
-        {   FireflySearchListener[] list = new FireflySearchListener[
-                fireflySearchListenerList.length - 1 ];
+        if (index >= 0)
+        {
+            FireflySearchListener[] list = new FireflySearchListener[fireflySearchListenerList.length - 1];
 
-            for( int i = 0; i < list.length; i++ )
-                list[i] = fireflySearchListenerList[ i < index ? i : i + 1 ];
+            for (int i = 0; i < list.length; i++)
+                list[i] = fireflySearchListenerList[i < index ? i : i + 1];
             fireflySearchListenerList = list;
-        }   // end if: listener was in the list
-     }  // end removeFireflySearchListener
-
-
+        } // end if: listener was in the list
+    } // end removeFireflySearchListener
 
     /* ********  F I R E   M E T H O D S  ******** */
 
-    
     /**
      * This quick method is called when a new best solution is found.
      * The {@link FireflySearchEvent} sent to the listeners is a
@@ -177,11 +169,11 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @since 1.0
      */
     protected synchronized final void fireNewBestSolution()
-    {   int len = fireflySearchListenerList.length;
-        for( int i = 0; i < len; i++ )
-            fireflySearchListenerList[i].newBestSolutionFound( fireflyEvent );
-    }   // end fireNewBestSolution
-
+    {
+        int len = fireflySearchListenerList.length;
+        for (int i = 0; i < len; i++)
+            fireflySearchListenerList[i].newBestSolutionFound(fireflyEvent);
+    } // end fireNewBestSolution
 
     /**
      * This quick method is called when a new current solution is found.
@@ -193,11 +185,11 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @since 1.0
      */
     protected synchronized final void fireNewCurrentSolution()
-    {   int len = fireflySearchListenerList.length;
-        for( int i = 0; i < len; i++ )
-            fireflySearchListenerList[i].newCurrentSolutionFound( fireflyEvent );
-    }   // end fireNewCurrentSolution
-
+    {
+        int len = fireflySearchListenerList.length;
+        for (int i = 0; i < len; i++)
+            fireflySearchListenerList[i].newCurrentSolutionFound(fireflyEvent);
+    } // end fireNewCurrentSolution
 
     /**
      * This quick method is called when an unimproving move is made.
@@ -211,11 +203,9 @@ public abstract class FireflySearchBase implements IFireflySearch
     protected synchronized final void fireUnimprovingMoveMade()
     {
         int len = fireflySearchListenerList.length;
-        for( int i = 0; i < len; i++ )
-            fireflySearchListenerList[i].unimprovingMoveMade( fireflyEvent );
-    }   // end fireUnimprovingMoveMade
-
-    
+        for (int i = 0; i < len; i++)
+            fireflySearchListenerList[i].unimprovingMoveMade(fireflyEvent);
+    } // end fireUnimprovingMoveMade
 
     /**
      * This quick method is called when an improving move is made.
@@ -227,12 +217,11 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @since 1.0-exp7
      */
     protected synchronized final void fireImprovingMoveMade()
-    {   
+    {
         int len = fireflySearchListenerList.length;
-        for( int i = 0; i < len; i++ )
-            fireflySearchListenerList[i].improvingMoveMade( fireflyEvent );
-    }   // end fireImprovingMoveMade
-
+        for (int i = 0; i < len; i++)
+            fireflySearchListenerList[i].improvingMoveMade(fireflyEvent);
+    } // end fireImprovingMoveMade
 
     /**
      * This quick method is called when a no change in value move is made.
@@ -244,12 +233,11 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @since 1.0-exp7
      */
     protected synchronized final void fireNoChangeInValueMoveMade()
-    {   
+    {
         int len = fireflySearchListenerList.length;
-        for( int i = 0; i < len; i++ )
-            fireflySearchListenerList[i].noChangeInValueMoveMade( fireflyEvent );
-    }   // end fireNoChangeInValueMoveMade
-
+        for (int i = 0; i < len; i++)
+            fireflySearchListenerList[i].noChangeInValueMoveMade(fireflyEvent);
+    } // end fireNoChangeInValueMoveMade
 
     /**
      * This quick method is called when the fireflySearch finishes.
@@ -264,10 +252,10 @@ public abstract class FireflySearchBase implements IFireflySearch
     {
         int len = fireflySearchListenerList.length;
 
-        for( int i = 0; i < len; i++ )
-            fireflySearchListenerList[i].FireflySearchStopped( fireflyEvent );
+        for (int i = 0; i < len; i++)
+            fireflySearchListenerList[i].FireflySearchStopped(fireflyEvent);
 
-    }   // end fireFireflySearchStopped
+    } // end fireFireflySearchStopped
 
     /**
      * This quick method is called when the fireflySearch starts.
@@ -281,8 +269,8 @@ public abstract class FireflySearchBase implements IFireflySearch
     protected synchronized final void fireFireflySearchStarted()
     {
         int len = fireflySearchListenerList.length;
-        for( int i = 0; i < len; i++ )
-            fireflySearchListenerList[i].FireflySearchStarted( fireflyEvent );
-    }   // end fireFireflySearchStarted
+        for (int i = 0; i < len; i++)
+            fireflySearchListenerList[i].FireflySearchStarted(fireflyEvent);
+    } // end fireFireflySearchStarted
 
-}   // end class FireflySearchBase
+} // end class FireflySearchBase

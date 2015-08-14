@@ -8,21 +8,21 @@ import org.seage.aal.problem.ProblemInstance;
 
 @Annotations.AlgorithmId("GRASP")
 @Annotations.AlgorithmName("GRASP")
-public class TspGraspAlgorithmFactory implements IAlgorithmFactory 
+public class TspGraspAlgorithmFactory implements IAlgorithmFactory
 {
 
-	@Override
-	public Class<GraspAlgorithmAdapter> getAlgorithmClass() 
-	{
-		return GraspAlgorithmAdapter.class;
-	}
+    @Override
+    public Class<GraspAlgorithmAdapter> getAlgorithmClass()
+    {
+        return GraspAlgorithmAdapter.class;
+    }
 
-	@Override
-	public IAlgorithmAdapter createAlgorithm(ProblemInstance instance)
-			throws Exception 
-	{
-		// TODO Auto-generated method stub
-		return new TspGraspAlgorithmAdapter();
-	}
+    @Override
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance)
+            throws Exception
+    {
+        // TODO Auto-generated method stub
+        return new TspGraspAlgorithmAdapter();
+    }
 
 }

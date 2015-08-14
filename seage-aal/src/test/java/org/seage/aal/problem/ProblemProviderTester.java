@@ -46,10 +46,11 @@ import org.seage.data.xml.XmlHelper;
  *
  * @author RMalek
  */
-public class ProblemProviderTester {
+public class ProblemProviderTester
+{
 
-    private Map<String, IProblemProvider> _providers ;
-    
+    private Map<String, IProblemProvider> _providers;
+
     public ProblemProviderTester() throws Exception
     {
         _providers = ProblemProvider.getProblemProviders();
@@ -58,10 +59,10 @@ public class ProblemProviderTester {
     public void test() throws Exception
     {
         System.out.println("Testing algorithms:");
-        System.out.println("-------------------");        
+        System.out.println("-------------------");
 
-        for(String problemId : _providers.keySet())
-        {          
+        for (String problemId : _providers.keySet())
+        {
             testProblem(_providers.get(problemId));
         }
     }
@@ -73,12 +74,12 @@ public class ProblemProviderTester {
 
         testProblem(_providers.get(problemId));
     }
-    
+
     public void test(String problemID, String algorithmID) throws Exception
     {
         System.out.println("Testing algorithms:");
         System.out.println("-------------------");
-        
+
         IProblemProvider provider = _providers.get(problemID);
         ProblemInfo pi = provider.getProblemInfo();
         String problemName = pi.getValueStr("name");
@@ -87,51 +88,56 @@ public class ProblemProviderTester {
         //testProblem(provider, pi, pi.getDataNode("Algorithms").getDataNodeById(algorithmID));
     }
 
-    private void testProblem( IProblemProvider provider)
+    private void testProblem(IProblemProvider provider)
     {
         try
-        {            
+        {
             ProblemInfo pi = provider.getProblemInfo();
             String problemName = pi.getValueStr("name");
             System.out.println(problemName);
 
-            for(DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
+            for (DataNode alg : pi.getDataNode("Algorithms").getDataNodes())
             {
                 //testProblem(provider, pi.getInstanceInfo(instanceID), alg.getValueStr("id"));
                 //System.out.println("\t"+alg.getValueStr("id")/*+" ("+alg.getValueStr("id")+")"*/);
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             //System.err.println(problemId+": "+ex.getLocalizedMessage());
             ex.printStackTrace();
         }
     }
-    
+
     private void testProblem(IProblemProvider provider, String instanceID, String algorithmID)
-    {        
-        try {
-            
+    {
+        try
+        {
+
             System.out.print("\t" + algorithmID);
-            
+
             ProblemConfig config = null;//new DefaultConfigurator().prepareConfigs(provider.getProblemInfo(), instanceID, algorithmID, 1)[0];
-            
+
             IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
-            
-            ProblemInstance instance = provider.initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(instanceID));
+
+            ProblemInstance instance = provider
+                    .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(instanceID));
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
             AlgorithmParams algNode = config.getAlgorithmParams();
-            Object[][] solutions = provider.generateInitialSolutions(instance, algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
+            Object[][] solutions = provider.generateInitialSolutions(instance,
+                    algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
             algorithm.solutionsFromPhenotype(solutions);
             algorithm.startSearching(algNode);
             solutions = algorithm.solutionsToPhenotype();
             algorithm.solutionsFromPhenotype(solutions);
             algorithm.startSearching(algNode);
 
-            System.out.printf("%"+(50-algorithmID.length())+"s","OK\n");
+            System.out.printf("%" + (50 - algorithmID.length()) + "s", "OK\n");
 
-        } catch (Exception ex) {
-            System.out.printf("%"+(52-algorithmID.length())+"s","FAIL\n");
+        }
+        catch (Exception ex)
+        {
+            System.out.printf("%" + (52 - algorithmID.length()) + "s", "FAIL\n");
             //System.out.println("\t"+"FAIL");
             ex.printStackTrace();
             //System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
@@ -149,37 +155,38 @@ public class ProblemProviderTester {
         IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
 
         // problem instance
-        ProblemInstance instance = provider.initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(instanceID));
+        ProblemInstance instance = provider
+                .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(instanceID));
 
         // algorithm
         IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
 
         AlgorithmParams algNode = config.getAlgorithmParams();
         //Object[][] solutions = (Object[][])
-        		provider.generateInitialSolutions(instance, algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
-//
-//
-//        System.out.printf("%s: %4s %s\n", "Problem","", problemID);
-//        System.out.printf("%s: %2s %s\n", "Algorithm","", algorithmID);
-//        System.out.printf("%s: %3s %s\n", "Instance","", instance);
-//        System.out.println("Running ...");
-//        algorithm.solutionsFromPhenotype(solutions);
-//        algorithm.startSearching(algNode);
-//        solutions = algorithm.solutionsToPhenotype();
-//
-//        // phenotype evaluator
-//        IPhenotypeEvaluator evaluator = provider.initPhenotypeEvaluator(instance);
-//        double[] result = evaluator.evaluate(solutions[0]);
-//
-//        System.out.printf("%s: %5s %s\n", "Result","", result[0]);
-//        //System.out.println(": " + result[0]);
-//
-//        System.out.printf("%s: %3s ", "Solution","");
-//        for(int i=0;i<solutions[0].length;i++)
-//            System.out.print(solutions[0][i]+" ");
-//        System.out.println();
-//
-//        AlgorithmReport report = algorithm.getReport();
-//        report.save("output/"+System.currentTimeMillis()+".xml");
+        provider.generateInitialSolutions(instance, algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
+        //
+        //
+        //        System.out.printf("%s: %4s %s\n", "Problem","", problemID);
+        //        System.out.printf("%s: %2s %s\n", "Algorithm","", algorithmID);
+        //        System.out.printf("%s: %3s %s\n", "Instance","", instance);
+        //        System.out.println("Running ...");
+        //        algorithm.solutionsFromPhenotype(solutions);
+        //        algorithm.startSearching(algNode);
+        //        solutions = algorithm.solutionsToPhenotype();
+        //
+        //        // phenotype evaluator
+        //        IPhenotypeEvaluator evaluator = provider.initPhenotypeEvaluator(instance);
+        //        double[] result = evaluator.evaluate(solutions[0]);
+        //
+        //        System.out.printf("%s: %5s %s\n", "Result","", result[0]);
+        //        //System.out.println(": " + result[0]);
+        //
+        //        System.out.printf("%s: %3s ", "Solution","");
+        //        for(int i=0;i<solutions[0].length;i++)
+        //            System.out.print(solutions[0][i]+" ");
+        //        System.out.println();
+        //
+        //        AlgorithmReport report = algorithm.getReport();
+        //        report.save("output/"+System.currentTimeMillis()+".xml");
     }
 }

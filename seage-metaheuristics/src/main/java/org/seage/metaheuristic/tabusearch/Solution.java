@@ -27,7 +27,6 @@
  */
 package org.seage.metaheuristic.tabusearch;
 
-
 /**
  * This is the interface to implement when creating your own solution definitions.
  * It is usually easier to extend the {@link SolutionAdapter} class instead
@@ -51,7 +50,6 @@ package org.seage.metaheuristic.tabusearch;
 public interface Solution extends Cloneable
 {
 
-
     /**
      * If the value has been set for this solution, then the value will
      * be returned. Be careful if this returns null since this may
@@ -63,8 +61,6 @@ public interface Solution extends Cloneable
      */
     public abstract double[] getObjectiveValue();
 
-
-
     /**
      * Generally used by the {@link TabuSearch} to set the value of the
      * objective function
@@ -73,9 +69,8 @@ public interface Solution extends Cloneable
      * @param objValue The objective function value
      * @since 1.0
      */
-    public abstract void setObjectiveValue( double[] objValue );
+    public abstract void setObjectiveValue(double[] objValue);
 
-    
     /**
      * An essential Java method that returns of copy of the object. 
      * This should do whatever is necessary to ensure that the returned
@@ -94,6 +89,5 @@ public interface Solution extends Cloneable
      * @since 1.0
      */
     public abstract Object clone();
-        
-}   // end SolutionBase class
 
+} // end SolutionBase class

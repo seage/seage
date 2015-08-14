@@ -29,7 +29,8 @@ package org.seage.metaheuristic.grasp;
  *
  * @author Martin Zaloga
  */
-public interface IMove {
+public interface IMove
+{
 
     /**
      * Defining the shape functions for apply the solution

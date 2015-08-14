@@ -39,119 +39,125 @@ import java.util.zip.ZipException;
  *
  * @author rick
  */
-public class ClassPathAnalyzer {
-    
+public class ClassPathAnalyzer
+{
+
     String _filter = "";
     private List<String> _classNames;
-    
-    
+
     public ClassPathAnalyzer()
     {
         _classNames = new ArrayList<String>();
     }
-    
+
     public ClassPathAnalyzer(String filter)
     {
         this();
         _filter = filter;
-    }     
-    
+    }
+
     private boolean isFiltered(String s)
     {
-        return s.replace('-', '.').replace(System.getProperty("file.separator"),".").contains(_filter);
+        return s.replace('-', '.').replace(System.getProperty("file.separator"), ".").contains(_filter);
     }
-    
+
     public List<String> analyzeClassPath()
     {
-    	String cp = System.getProperty("java.class.path");
+        String cp = System.getProperty("java.class.path");
         String delim = System.getProperty("path.separator");
 
         String[] paths = cp.split(delim);
-        
-        for (String s : paths) {
+
+        for (String s : paths)
+        {
             try
-            {                
+            {
                 File f = new File(s);
-                if(f.isDirectory())
+                if (f.isDirectory())
                     analyzeDir(f);
-                if(f.isFile() && f.getName().endsWith(".jar"))
+                if (f.isFile() && f.getName().endsWith(".jar"))
                     analyzeJar(f);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                ex. printStackTrace();
+                ex.printStackTrace();
             }
         }
-        
+
         return _classNames;
     }
-    
+
     private void analyzeDir(File dir)
     {
         // if filter
-        if(!isFiltered(dir.getAbsolutePath()))
+        if (!isFiltered(dir.getAbsolutePath()))
             return;
-        analyzeDir(dir, dir.getAbsolutePath()+System.getProperty("file.separator"));
+        analyzeDir(dir, dir.getAbsolutePath() + System.getProperty("file.separator"));
     }
+
     private void analyzeDir(File dir, String prefix)
     {
-        for(File f : dir.listFiles()){
-            if(f.isDirectory())
-                analyzeDir(f, prefix);   
-            if(f.isFile())
+        for (File f : dir.listFiles())
+        {
+            if (f.isDirectory())
+                analyzeDir(f, prefix);
+            if (f.isFile())
                 addClassPath(f.getAbsolutePath().replace(prefix, ""));
         }
     }
-    
+
     private void analyzeJar(File f) throws IOException
     {
         JarFile jf = new JarFile(f);
         Manifest mf = jf.getManifest();
-        
+
         List<JarFile> jars = new ArrayList<JarFile>();
         jars.add(jf);
-        
+
         Object o = mf.getMainAttributes().get(new java.util.jar.Attributes.Name("Class-Path"));
-        if(o != null)
+        if (o != null)
         {
-            for(String p : o.toString().split(" "))
-            {                
-            	if(!p.endsWith(".jar"))
+            for (String p : o.toString().split(" "))
+            {
+                if (!p.endsWith(".jar"))
                     continue;
-                try{
-                    File f2 = new File(f.getAbsoluteFile().getParentFile().getAbsolutePath() + System.getProperty("file.separator") +p);                     
-                    if(f2.isFile() && f2.exists())
+                try
+                {
+                    File f2 = new File(f.getAbsoluteFile().getParentFile().getAbsolutePath()
+                            + System.getProperty("file.separator") + p);
+                    if (f2.isFile() && f2.exists())
                         jars.add(new JarFile(f2));
                 }
-                catch(ZipException ex)
+                catch (ZipException ex)
                 {
-                    System.err.println("'"+p+"'");
+                    System.err.println("'" + p + "'");
                     ex.printStackTrace();
                 }
             }
         }
-        
-        for(JarFile jar : jars)
+
+        for (JarFile jar : jars)
         {
-            if(!isFiltered(jar.getName()))                
+            if (!isFiltered(jar.getName()))
                 continue;
-            
-            for (Enumeration<?> entries = jar.entries(); entries.hasMoreElements();) {                
+
+            for (Enumeration<?> entries = jar.entries(); entries.hasMoreElements();)
+            {
                 JarEntry entry = (JarEntry) entries.nextElement();
                 String entryName = entry.getName();
-                if((entryName.endsWith("/")))
-                	continue;
+                if ((entryName.endsWith("/")))
+                    continue;
                 addClassPath(entryName);
-                                   
+
             }
-        }   
+        }
     }
-    
+
     private void addClassPath(String path)
     {
         String className = path;
-                
-        if(!_classNames.contains(className))        
+
+        if (!_classNames.contains(className))
             _classNames.add(className);
     }
 }

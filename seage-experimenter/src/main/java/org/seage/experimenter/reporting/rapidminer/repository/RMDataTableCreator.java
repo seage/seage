@@ -39,25 +39,41 @@ import com.rapidminer.example.table.DataRow;
 public abstract class RMDataTableCreator implements IDocumentProcessor
 {
     protected static Logger _logger = Logger.getLogger(RMDataTableCreator.class.getName());
-    
+
     protected String _repositoryPath;
     protected String _tableName;
     protected List<Attribute> _attributes;
     protected List<DataRow> _dataTable;
-    
+
     protected Hashtable<String, Hashtable<String, XmlHelper.XPath>> _versionedXPaths;
-    
-    public RMDataTableCreator(String repositoryPath, String tableName) {
+
+    public RMDataTableCreator(String repositoryPath, String tableName)
+    {
         _repositoryPath = repositoryPath;
         _tableName = tableName;
         _attributes = new ArrayList<Attribute>();
         _dataTable = new ArrayList<DataRow>();
-        
-        _versionedXPaths = new Hashtable<String, Hashtable<String,XmlHelper.XPath>>();
-    }  
-    
-    public String getRepositoryPath() {return _repositoryPath;} 
-    public String getTableName() {return _tableName;} 
-    public List<Attribute> getAttributes() {return _attributes;} 
-    public List<DataRow> getDataTable(){return _dataTable;}
+
+        _versionedXPaths = new Hashtable<String, Hashtable<String, XmlHelper.XPath>>();
+    }
+
+    public String getRepositoryPath()
+    {
+        return _repositoryPath;
+    }
+
+    public String getTableName()
+    {
+        return _tableName;
+    }
+
+    public List<Attribute> getAttributes()
+    {
+        return _attributes;
+    }
+
+    public List<DataRow> getDataTable()
+    {
+        return _dataTable;
+    }
 }

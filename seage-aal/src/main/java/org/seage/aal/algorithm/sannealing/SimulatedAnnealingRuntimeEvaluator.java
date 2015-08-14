@@ -33,20 +33,23 @@ import org.seage.aal.reporter.AlgorithmReportEvaluator;
  *
  * @author rick
  */
-public class SimulatedAnnealingRuntimeEvaluator extends AlgorithmReportEvaluator{
+public class SimulatedAnnealingRuntimeEvaluator extends AlgorithmReportEvaluator
+{
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5395906920326494209L;
+     * 
+     */
+    private static final long serialVersionUID = -5395906920326494209L;
 
-	@Override
-    public int evaluate(AlgorithmReport statistics) {
+    @Override
+    public int evaluate(AlgorithmReport statistics)
+    {
         return 0;
     }
 
     @Override
-    public int compare(AlgorithmReport o1, AlgorithmReport o2) {
+    public int compare(AlgorithmReport o1, AlgorithmReport o2)
+    {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

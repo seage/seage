@@ -37,46 +37,46 @@ import org.seage.metaheuristic.tabusearch.*;
 
 public class TspMoveManager implements MoveManager
 {
-    
+
     //@Override
-    public Move[] getAllMoves0( Solution solution )
+    public Move[] getAllMoves0(Solution solution)
     {
-    	Integer[] tour = ((TspSolution)solution)._tour;
+        Integer[] tour = ((TspSolution) solution)._tour;
         ArrayList<Move> buffer = new ArrayList<Move>();
-        int span = Math.max(5, tour.length/5);        
-        
+        int span = Math.max(5, tour.length / 5);
+
         // Generate moves that move each customer
         // forward and back up to five spaces.
         for (int i = 0; i < tour.length; i++)
             for (int j = -span; j <= span; j++)
-                if ((i + j > 0) && (i + j < tour.length) && (i != i+j))
+                if ((i + j > 0) && (i + j < tour.length) && (i != i + j))
                     buffer.add(new TspMove(i, i + j));
-                
-        return buffer.toArray(new Move[]{});
-    }   // end getAllMoves
-    
+
+        return buffer.toArray(new Move[] {});
+    } // end getAllMoves
+
     Random rnd = new Random();
-    
+
     //@Override
-    public Move[] getAllMoves( Solution solution )
+    public Move[] getAllMoves(Solution solution)
     {
-    	TspSolution tspSoln = (TspSolution)solution; 
-    	Integer[] tour = tspSoln._tour;
+        TspSolution tspSoln = (TspSolution) solution;
+        Integer[] tour = tspSoln._tour;
         ArrayList<Move> buffer = new ArrayList<Move>();
-         
+
         int ix1 = rnd.nextInt(tour.length);
-        
+
         // Generate moves that move each customer
         // forward and back up to five spaces.
         for (int i = 0; i < tour.length; i++)
         {
-        	int ix2 = (ix1 + i)%tour.length;
-        	if(ix1 == ix2)
-        		continue;
+            int ix2 = (ix1 + i) % tour.length;
+            if (ix1 == ix2)
+                continue;
             buffer.add(new TspMove(ix1, ix2));
         }
-                
-        return buffer.toArray(new Move[]{});
-    } 
-    
-}   // end class MyMoveManager
+
+        return buffer.toArray(new Move[] {});
+    }
+
+} // end class MyMoveManager

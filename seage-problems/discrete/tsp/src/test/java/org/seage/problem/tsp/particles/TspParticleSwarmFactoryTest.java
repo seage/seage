@@ -6,9 +6,9 @@ import org.seage.problem.tsp.TspProblemProvider;
 public class TspParticleSwarmFactoryTest extends AlgorithmFactoryTestBase
 {
 
-	public TspParticleSwarmFactoryTest() 
-	{
-		super(new TspProblemProvider(), "ParticleSwarm");
-	}
+    public TspParticleSwarmFactoryTest()
+    {
+        super(new TspProblemProvider(), "ParticleSwarm");
+    }
 
 }

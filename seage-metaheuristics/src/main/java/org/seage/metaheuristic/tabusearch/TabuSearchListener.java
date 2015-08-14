@@ -47,9 +47,8 @@ public interface TabuSearchListener extends java.util.EventListener
      * @see TabuSearch
      * @since 1.0
      */
-    public void tabuSearchStarted( TabuSearchEvent e );
-    
-    
+    public void tabuSearchStarted(TabuSearchEvent e);
+
     /**
      * Called when the tabu search stops solving, either because all requested
      * iterations are completed or someone has called 
@@ -60,12 +59,8 @@ public interface TabuSearchListener extends java.util.EventListener
      * @see TabuSearch
      * @since 1.0
      */
-    public void tabuSearchStopped( TabuSearchEvent e );
-    
-    
-    
-    
-    
+    public void tabuSearchStopped(TabuSearchEvent e);
+
     /**
      * Called when a new best solution is found.
      * 
@@ -74,8 +69,8 @@ public interface TabuSearchListener extends java.util.EventListener
      * @see TabuSearchEvent
      * @since 1.0
      */
-    public void newBestSolutionFound( TabuSearchEvent e );
-    
+    public void newBestSolutionFound(TabuSearchEvent e);
+
     /**
      * Called when a new current solution is found, which, by defintion,
      * is at every iteration, even if your "move" doesn't perceptibly
@@ -87,9 +82,7 @@ public interface TabuSearchListener extends java.util.EventListener
      * @see TabuSearch
      * @since 1.0
      */
-    public void newCurrentSolutionFound( TabuSearchEvent e );
-    
-    
+    public void newCurrentSolutionFound(TabuSearchEvent e);
 
     /**
      * Called when the tabu search makes an unimproving move.
@@ -100,9 +93,7 @@ public interface TabuSearchListener extends java.util.EventListener
      * @see TabuSearch
      * @since 1.0
      */
-    public void unimprovingMoveMade( TabuSearchEvent e );
-    
- 
+    public void unimprovingMoveMade(TabuSearchEvent e);
 
     /**
      * Called when the tabu search makes an improving move.
@@ -113,9 +104,7 @@ public interface TabuSearchListener extends java.util.EventListener
      * @see TabuSearch
      * @since 1.0-exp7
      */
-    public void improvingMoveMade( TabuSearchEvent e );
-
-
+    public void improvingMoveMade(TabuSearchEvent e);
 
     /**
      * Called when the tabu search makes a no change in value move.
@@ -126,11 +115,6 @@ public interface TabuSearchListener extends java.util.EventListener
      * @see TabuSearch
      * @since 1.0-exp7
      */
-    public void noChangeInValueMoveMade( TabuSearchEvent e );
+    public void noChangeInValueMoveMade(TabuSearchEvent e);
 
-    
-
-}   // end interface TabuSearchListener
-
-
-
+} // end interface TabuSearchListener

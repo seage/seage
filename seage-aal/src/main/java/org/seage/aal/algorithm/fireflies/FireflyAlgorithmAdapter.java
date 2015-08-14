@@ -44,39 +44,40 @@ import org.seage.metaheuristic.fireflies.SolutionComparator;
  * FireflySearchAdapter class
  */
 
-@AlgorithmParameters({ 
-	@Parameter(name = "iterationCount", min = 500, max = 500, init = 10), 
-	@Parameter(name = "numSolutions", min = 500, max = 500, init = 500),
-    @Parameter(name = "timeStep", min = 0.1, max = 2, init = 0.15), 
-    @Parameter(name = "withDecreasingRandomness", min = 1, max = 1, init = 1),
+@AlgorithmParameters({
+        @Parameter(name = "iterationCount", min = 500, max = 500, init = 10),
+        @Parameter(name = "numSolutions", min = 500, max = 500, init = 500),
+        @Parameter(name = "timeStep", min = 0.1, max = 2, init = 0.15),
+        @Parameter(name = "withDecreasingRandomness", min = 1, max = 1, init = 1),
         // @Parameter(name="initialIntensity", min=0, max=100000, init=1),
         // @Parameter(name="initialRandomness", min=0, max=100000, init=1),
         // @Parameter(name="finalRandomness", min=0, max=100000, init=0.2),
         @Parameter(name = "absorption", min = 0, max = 1, init = 0.025)
-// @Parameter(name="populationSize", min=0, max=10000, init=0.1)
+        // @Parameter(name="populationSize", min=0, max=10000, init=0.1)
 })
 public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
 {
-    protected Solution[]          	_solutions;
-    protected FireflySearch         _fireflySearch;
-    protected ObjectiveFunction     _evaluator;
-    protected SolutionComparator    _comparator;
+    protected Solution[] _solutions;
+    protected FireflySearch _fireflySearch;
+    protected ObjectiveFunction _evaluator;
+    protected SolutionComparator _comparator;
     protected FireflySearchObserver _observer;
-    protected Solution              _bestEverSolution;
-    protected AlgorithmParams       _params;
-    private String                	_searchID;
+    protected Solution _bestEverSolution;
+    protected AlgorithmParams _params;
+    private String _searchID;
 
-    private double                _statInitObjVal;
-    private double                _statEndObjVal;
-    private int                   _statNumIter;
-    private int                   _statNumNewSol;
-    private int                   _statLastIterNewSol;
+    private double _statInitObjVal;
+    private double _statEndObjVal;
+    private int _statNumIter;
+    private int _statNumNewSol;
+    private int _statLastIterNewSol;
 
-    private AlgorithmReporter     _reporter;
+    private AlgorithmReporter _reporter;
 
     // private DataNode _minutes;
 
-    public FireflyAlgorithmAdapter(FireflyOperator operator, ObjectiveFunction evaluator, boolean maximizing, String searchID)
+    public FireflyAlgorithmAdapter(FireflyOperator operator, ObjectiveFunction evaluator, boolean maximizing,
+            String searchID)
     {
         _evaluator = evaluator;
         _observer = new FireflySearchObserver();
@@ -95,12 +96,12 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
     @Override
     public void startSearching(AlgorithmParams params) throws Exception
     {
-    	if(params==null)
-    		throw new Exception("Parameters not set");
-    	setParameters(params);
-    	
+        if (params == null)
+            throw new Exception("Parameters not set");
+        setParameters(params);
+
         _reporter = new AlgorithmReporter(_searchID);
-        _reporter.putParameters(_params);        
+        _reporter.putParameters(_params);
 
         _fireflySearch.startSolving(_solutions);
         _solutions = _fireflySearch.getSolutions();
@@ -126,12 +127,13 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
     public void setParameters(AlgorithmParams params) throws Exception
     {
         _params = params;
-                
+
         _fireflySearch.setIterationsToGo(_params.getValueInt("iterationCount"));
         _statNumIter = _params.getValueInt("iterationCount");
         _fireflySearch.setAbsorption(_params.getValueDouble("absorption"));
         _fireflySearch.setTimeStep(_params.getValueDouble("timeStep"));
-        _fireflySearch.setWithDecreasingRandomness(((_params.getValueDouble("withDecreasingRandomness") > 0) ? true : false));
+        _fireflySearch
+                .setWithDecreasingRandomness(((_params.getValueDouble("withDecreasingRandomness") > 0) ? true : false));
         _fireflySearch.setPopulationCount(_params.getValueInt("numSolutions"));
         // EDD OWN PARAMETERS
     }
@@ -144,7 +146,8 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
             avg += _solutions[i].getObjectiveValue()[0];
         avg /= num;
 
-        _reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);
+        _reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg,
+                _statEndObjVal);
 
         return _reporter.getReport();
     }
@@ -171,10 +174,11 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
             {
                 Solution solution = e.getFireflySearch().getBestSolution();
                 _bestEverSolution = (Solution) e.getFireflySearch().getBestSolution().clone();
-                if(_statNumNewSol==0)
-                	_statInitObjVal = solution.getObjectiveValue()[0];
+                if (_statNumNewSol == 0)
+                    _statInitObjVal = solution.getObjectiveValue()[0];
 
-                _reporter.putNewSolution(System.currentTimeMillis(), e.getFireflySearch().getCurrentIteration(), solution.getObjectiveValue()[0], solution.toString());
+                _reporter.putNewSolution(System.currentTimeMillis(), e.getFireflySearch().getCurrentIteration(),
+                        solution.getObjectiveValue()[0], solution.toString());
                 _statNumNewSol++;
                 _statLastIterNewSol = e.getFireflySearch().getCurrentIteration();
 
@@ -186,7 +190,7 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
         }
 
         @SuppressWarnings("unused")
-		public void noChangeInValueIterationMade(FireflySearchEvent e)
+        public void noChangeInValueIterationMade(FireflySearchEvent e)
         {
 
         }

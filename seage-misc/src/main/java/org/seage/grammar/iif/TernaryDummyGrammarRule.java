@@ -32,30 +32,32 @@ import org.seage.grammar.GrammarRule;
 import org.seage.grammar.NonterminalSymbol;
 import java.util.*;
 
-
 /**
  *
  * @author jenik
    E -> F
  */
-public class TernaryDummyGrammarRule extends GrammarRule {
-    
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -3722771261823914549L;
+public class TernaryDummyGrammarRule extends GrammarRule
+{
 
-	public TernaryDummyGrammarRule(int uniqueId) {
-        super (new NonterminalSymbol("TERNARY"), new Vector<Symbol> (), uniqueId);
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3722771261823914549L;
+
+    public TernaryDummyGrammarRule(int uniqueId)
+    {
+        super(new NonterminalSymbol("TERNARY"), new Vector<Symbol>(), uniqueId);
         Vector<Symbol> left = getRight();
         left.add(new NonterminalSymbol("E"));
     }
-            
+
     /** @brief semantical actions for given rule
       * @param symbolTable table of symbols
       * @param treePos position in parse tree (reference to left non terminal)
       */
-    public Object eval(DataNode symbolTable, NonterminalSymbol treePos) throws Exception {
+    public Object eval(DataNode symbolTable, NonterminalSymbol treePos) throws Exception
+    {
         //we should have 1 children
         Vector<Symbol> children = treePos.getChildren();
         if (children.size() != 1)
@@ -64,10 +66,11 @@ public class TernaryDummyGrammarRule extends GrammarRule {
         Object o = children.get(0).eval(symbolTable);
         return o;
     }
-        
+
     /** @brief optimize derivate tree (eg. create result of arithmetical operations on contants) */
-    public Symbol optimize(NonterminalSymbol treePos) throws Exception {
+    public Symbol optimize(NonterminalSymbol treePos) throws Exception
+    {
         return null;
     }
-    
+
 }

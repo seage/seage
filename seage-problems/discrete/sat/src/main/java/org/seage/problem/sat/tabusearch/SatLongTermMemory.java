@@ -46,7 +46,8 @@ public class SatLongTermMemory implements LongTermMemory
         SatSolution satSol = (SatSolution) soln;
         for (int i = 0; i < _literalCount.length; i++)
         {
-            if (satSol.getLiteralValues()[i]) _literalCount[i]++;
+            if (satSol.getLiteralValues()[i])
+                _literalCount[i]++;
         }
         if (newBestSoln)
         {
@@ -104,10 +105,14 @@ public class SatLongTermMemory implements LongTermMemory
 
         for (int i = 0; i < bits.length / 2; i++)
         {
-            if (bits[i]) val0 += Math.pow(2, i);
-            if (bits[i + bits.length / 2]) val1 += Math.pow(2, i);
+            if (bits[i])
+                val0 += Math.pow(2, i);
+            if (bits[i + bits.length / 2])
+                val1 += Math.pow(2, i);
         }
-        if (bits.length % 2 == 1) if (bits[bits.length - 1]) val1 += Math.pow(2, bits.length - 1);
+        if (bits.length % 2 == 1)
+            if (bits[bits.length - 1])
+                val1 += Math.pow(2, bits.length - 1);
 
         return new long[] { val0, val1 };
     }

@@ -45,20 +45,19 @@ public class TspObjectiveFunction implements IObjectiveFunction
 
     public void setObjectiveValue(Particle particle)
     {
-        TspParticle currentParticle = ((TspParticle)particle);
+        TspParticle currentParticle = ((TspParticle) particle);
         double distance = 0.0;
         Integer[] tour = currentParticle.getTour();
 
         try
         {
-            distance = (int)TourProvider.getTourLenght(tour, _cities);
+            distance = (int) TourProvider.getTourLenght(tour, _cities);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             ex.printStackTrace();
         }
- 
-        particle.setEvaluation( distance );
+
+        particle.setEvaluation(distance);
     }
 }
-

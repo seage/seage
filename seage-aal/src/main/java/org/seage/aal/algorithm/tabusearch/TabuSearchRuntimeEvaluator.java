@@ -33,20 +33,23 @@ import org.seage.aal.reporter.AlgorithmReportEvaluator;
  *
  * @author rick
  */
-public class TabuSearchRuntimeEvaluator extends AlgorithmReportEvaluator{
+public class TabuSearchRuntimeEvaluator extends AlgorithmReportEvaluator
+{
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5125081087472331246L;
+     * 
+     */
+    private static final long serialVersionUID = 5125081087472331246L;
 
-	@Override
-    public int evaluate(AlgorithmReport statistics) {
+    @Override
+    public int evaluate(AlgorithmReport statistics)
+    {
         return 0;
     }
 
     @Override
-    public int compare(AlgorithmReport o1, AlgorithmReport o2) {
+    public int compare(AlgorithmReport o1, AlgorithmReport o2)
+    {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

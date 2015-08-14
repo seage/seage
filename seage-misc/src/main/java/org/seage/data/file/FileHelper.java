@@ -53,14 +53,14 @@ public class FileHelper
     {
         return md5fromFile(new File(path));
     }
-    
+
     public static String md5fromFile(File file) throws Exception
     {
         return md5(new FileInputStream(file));
     }
 
     public static String md5fromString(String stringToMd5) throws Exception
-    {        
+    {
         return md5(new ByteArrayInputStream(stringToMd5.getBytes()));
     }
 
@@ -70,8 +70,9 @@ public class FileHelper
         byte[] buffer = new byte[8192];
         int read = 0;
 
-        while( (read = is.read(buffer)) > 0) {
-                digest.update(buffer, 0, read);
+        while ((read = is.read(buffer)) > 0)
+        {
+            digest.update(buffer, 0, read);
         }
         byte[] md5sum = digest.digest();
         BigInteger bigInt = new BigInteger(1, md5sum);
@@ -93,35 +94,42 @@ public class FileHelper
 
         byte[] buf = new byte[1024];
         int len;
-        while ((len = in.read(buf)) > 0){
-        out.write(buf, 0, len);
+        while ((len = in.read(buf)) > 0)
+        {
+            out.write(buf, 0, len);
         }
         in.close();
         out.close();
     }
 
-    public static boolean deleteDirectory(File path) {
-    if( path.exists() ) {
-      File[] files = path.listFiles();
-      for(int i=0; i<files.length; i++) {
-         if(files[i].isDirectory()) {
-           deleteDirectory(files[i]);
-         }
-         else {
-           files[i].delete();
-         }
-      }
+    public static boolean deleteDirectory(File path)
+    {
+        if (path.exists())
+        {
+            File[] files = path.listFiles();
+            for (int i = 0; i < files.length; i++)
+            {
+                if (files[i].isDirectory())
+                {
+                    deleteDirectory(files[i]);
+                }
+                else
+                {
+                    files[i].delete();
+                }
+            }
+        }
+        return (path.delete());
     }
-    return( path.delete() );
-  }
 
     public static void writeToFile(InputStream is, File file) throws Exception
     {
 
         DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
         int c;
-        while((c = is.read()) != -1) {
-                out.writeByte(c);
+        while ((c = is.read()) != -1)
+        {
+            out.writeByte(c);
         }
         is.close();
         out.close();

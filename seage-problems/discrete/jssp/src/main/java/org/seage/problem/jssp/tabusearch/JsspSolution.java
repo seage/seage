@@ -20,32 +20,33 @@
 package org.seage.problem.jssp.tabusearch;
 
 import org.seage.metaheuristic.tabusearch.SolutionAdapter;
+
 /**
  * Summary description for JsspSolution.
  */
 public class JsspSolution extends SolutionAdapter
 {
-	private int[] _jobArray;
- 
-	public JsspSolution(int[] jobArray)
-	{
-		_jobArray = (int[])jobArray.clone();
-	}
+    private int[] _jobArray;
 
-	public int[] getJobArray()
-	{
-		return _jobArray;
-	}
+    public JsspSolution(int[] jobArray)
+    {
+        _jobArray = (int[]) jobArray.clone();
+    }
 
-	public String toString()
-	{
-		return getObjectiveValue()[0] + "";
-	}
+    public int[] getJobArray()
+    {
+        return _jobArray;
+    }
 
-	public Object clone()
-	{
-		JsspSolution copy = (JsspSolution)super.clone();
-		copy._jobArray = (int[])this._jobArray.clone();
-		return copy;
-	}   // end clone
+    public String toString()
+    {
+        return getObjectiveValue()[0] + "";
+    }
+
+    public Object clone()
+    {
+        JsspSolution copy = (JsspSolution) super.clone();
+        copy._jobArray = (int[]) this._jobArray.clone();
+        return copy;
+    } // end clone
 }

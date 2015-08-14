@@ -40,8 +40,9 @@ import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
  *
  * @author rick
  */
-public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
-    
+public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase
+{
+
     public TabuSearchAdapterTest() throws Exception
     {
         super();
@@ -52,41 +53,43 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
     {
         _algAdapter = new TabuSearchAdapter(new TestMoveManager(), new TestObjectiveFunction(), "")
         {
-        	private TestSolution[] _solutions0;
+            private TestSolution[] _solutions0;
+
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-            	_solutions0 = new TestSolution[source.length];
+                _solutions0 = new TestSolution[source.length];
                 _solutions = new TestSolution[source.length];
-                
-                for(int i=0;i<source.length;i++)
+
+                for (int i = 0; i < source.length; i++)
                 {
-                	TestSolution s = new TestSolution(source[i]);
-                	_solutions0[i] = s;
+                    TestSolution s = new TestSolution(source[i]);
+                    _solutions0[i] = s;
                     _solutions[i] = s;
                 }
-                
+
             }
+
             @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
-            	Assert.assertEquals(_solutions0.length, _solutions.length);
-            	Assert.assertNotSame(_solutions0[0], _solutions[0]);
-            	for(int i=1;i<_solutions.length;i++)
-            	{
-            		Assert.assertSame(_solutions0[i], _solutions[i]);
-            	}
+                Assert.assertEquals(_solutions0.length, _solutions.length);
+                Assert.assertNotSame(_solutions0[0], _solutions[0]);
+                for (int i = 1; i < _solutions.length; i++)
+                {
+                    Assert.assertSame(_solutions0[i], _solutions[i]);
+                }
                 return null;
             }
         };
-        
-        _algParams = new AlgorithmParams();      
-        
+
+        _algParams = new AlgorithmParams();
+
         _algParams.putValue("numIterDivers", 1);
         _algParams.putValue("iterationCount", 3);
         _algParams.putValue("numSolutions", 1);
         _algParams.putValue("tabuListLength", 1);
-        
+
         _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
     }
 
@@ -100,42 +103,42 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase{
     @Override
     @Test
     public void testAlgorithmWithParamsAtZero() throws Exception
-    {       
-    	AlgorithmParams params = new AlgorithmParams();
+    {
+        AlgorithmParams params = new AlgorithmParams();
         params.putValue("numIterDivers", 0);
         params.putValue("iterationCount", 0);
         params.putValue("numSolutions", 0);
         params.putValue("tabuListLength", 0);
         _tester.setAlgParameters(params);
-        
+
         _tester.testAlgorithmWithParamsAtZero();
     }
-    
+
     @Test
-    @Override    
+    @Override
     public void testAsyncRunning() throws Exception
     {
-    	AlgorithmParams params = new AlgorithmParams();
+        AlgorithmParams params = new AlgorithmParams();
         params.putValue("numIterDivers", 1);
         params.putValue("iterationCount", 1000000);
         params.putValue("numSolutions", 1);
         params.putValue("tabuListLength", 1);
         _tester.setAlgParameters(params);
-        
-        _tester.testAsyncRunning();        
+
+        _tester.testAsyncRunning();
     }
-    
-    @Test
-	@Override
-	public void testReport() throws Exception
-	{
-		_tester.testReport();		
-	}
-    
+
     @Test
     @Override
-	public void testAlgorithmWithParamsNull() throws Exception
-	{
-		_tester.testAlgorithmWithParamsNull();		
-	}
+    public void testReport() throws Exception
+    {
+        _tester.testReport();
+    }
+
+    @Test
+    @Override
+    public void testAlgorithmWithParamsNull() throws Exception
+    {
+        _tester.testAlgorithmWithParamsNull();
+    }
 }

@@ -34,22 +34,22 @@ import org.seage.aal.reporter.AlgorithmReport;
  */
 public interface IAlgorithmAdapter
 {
-//    // Returns meta-data on the algorithm
-//    //  |_ id
-//    //  |_ name
-//    //  |_ class
-//    //  |_ parameters
-//    DataNode getAlgorithmInfo() throws Exception;
+    //    // Returns meta-data on the algorithm
+    //    //  |_ id
+    //    //  |_ name
+    //    //  |_ class
+    //    //  |_ parameters
+    //    DataNode getAlgorithmInfo() throws Exception;
 
     // Runs the algorithm.
     void startSearching(final AlgorithmParams params) throws Exception;
-    
+
     // Runs the algorithm.
     void startSearching(final AlgorithmParams params, boolean async) throws Exception;
 
     // Stops the algorithm.
     void stopSearching() throws Exception;
-    
+
     // Checks if the algorithm is running
     boolean isRunning();
 

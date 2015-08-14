@@ -35,7 +35,6 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.qap.QapProblemInstance;
 
-
 /**
  *
  * @author Karel Durkota
@@ -50,16 +49,16 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
 
     private QapObjectiveFunction _objectiveFunction;
 
-    public Class<ParticleSwarmAdapter> getAlgorithmClass() {
+    public Class<ParticleSwarmAdapter> getAlgorithmClass()
+    {
         return ParticleSwarmAdapter.class;
     }
 
-      
-    public IAlgorithmAdapter createAlgorithm( ProblemInstance instance) throws Exception
-    {    
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    {
         IAlgorithmAdapter algorithm;
-        final Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
-        
+        final Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
+
         _objectiveFunction = new QapObjectiveFunction(facilityLocation);
 
         algorithm = new ParticleSwarmAdapter(
@@ -71,12 +70,12 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
             {
                 _numParticles = source.length;
                 _initialParticles = generateInitialSolutions(facilityLocation.length);
-                for(int i = 0; i < source.length; i++)
+                for (int i = 0; i < source.length; i++)
                 {
-                    Integer[] tour = ((QapParticle)_initialParticles[i]).getAssign();
-                    for(int j = 0; j < source[i].length; j++)
+                    Integer[] tour = ((QapParticle) _initialParticles[i]).getAssign();
+                    for (int j = 0; j < source[i].length; j++)
                     {
-                        tour[j] = (Integer)source[i][j];
+                        tour[j] = (Integer) source[i][j];
                     }
                 }
             }
@@ -84,59 +83,59 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 int numOfParticles = _particleSwarm.getParticles().length;
-                Object[][] source = new Object[ numOfParticles ][ facilityLocation.length ];
+                Object[][] source = new Object[numOfParticles][facilityLocation.length];
 
-                for(int i = 0; i < source.length; i++)
+                for (int i = 0; i < source.length; i++)
                 {
-                    source[i] = new Integer[ facilityLocation.length ];
-                    Integer[] tour = ((QapParticle)_particleSwarm.getParticles()[i]).getAssign();
-                    for(int j = 0; j < source[i].length; j++)
+                    source[i] = new Integer[facilityLocation.length];
+                    Integer[] tour = ((QapParticle) _particleSwarm.getParticles()[i]).getAssign();
+                    for (int j = 0; j < source[i].length; j++)
                     {
                         source[i][j] = tour[j];
                     }
                 }
 
                 // TODO: A - need to sort source by fitness function of each tour
-                
+
                 return source;
             }
         };
-        
+
         return algorithm;
     }
 
     private Particle[] generateInitialSolutions(int length) throws Exception
     {
-        Particle[] particles = generateQapRandomParticles( _numParticles, length );
+        Particle[] particles = generateQapRandomParticles(_numParticles, length);
 
-        for(Particle particle : particles)
+        for (Particle particle : particles)
         {
             // Initial coords
-            for(int i = 0; i < length; i++)
+            for (int i = 0; i < length; i++)
                 particle.getCoords()[i] = Math.random();
 
             // Initial velocity
-            for(int i = 0; i < length; i++)
+            for (int i = 0; i < length; i++)
                 particle.getVelocity()[i] = Math.random();
 
             // Evaluate
-            _objectiveFunction.setObjectiveValue( particle );
+            _objectiveFunction.setObjectiveValue(particle);
         }
 
         return particles;
     }
 
-//    void printArray(Integer[] array)
-//    {
-//        for(int i = 0; i< array.length; i++)
-//            System.out.print(" " + array[i]);
-//    }
+    //    void printArray(Integer[] array)
+    //    {
+    //        for(int i = 0; i< array.length; i++)
+    //            System.out.print(" " + array[i]);
+    //    }
 
     private Particle[] generateQapRandomParticles(int count, int length)
     {
         QapRandomParticle[] particles = new QapRandomParticle[count];
-        for(int i = 0; i < count; i++)
-            particles[i] = new QapRandomParticle( length );
+        for (int i = 0; i < count; i++)
+            particles[i] = new QapRandomParticle(length);
 
         return particles;
     }

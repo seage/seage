@@ -43,10 +43,10 @@ public interface IProblemProvider
 
     // Returns the algorithm factory by id
     IAlgorithmFactory getAlgorithmFactory(String algorithmID) throws Exception;
-    
+
     // Returns all algorithm factories
     Map<String, IAlgorithmFactory> getAlgorithmFactories();
-    
+
     // Initializes (reads) a problem instance.
     ProblemInstance initProblemInstance(ProblemInstanceInfo problemInstanceInfo) throws Exception;
 
@@ -56,7 +56,8 @@ public interface IProblemProvider
 
     // Generates the very first solution(s).
     // Solutions can be random, hungry, or other.
-    Object[][] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed) throws Exception;
+    Object[][] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
+            throws Exception;
 
     // Visualizes solution, usually produces a picture.
     public void visualizeSolution(Object[] solution, ProblemInstanceInfo problemInstanceInfo) throws Exception;

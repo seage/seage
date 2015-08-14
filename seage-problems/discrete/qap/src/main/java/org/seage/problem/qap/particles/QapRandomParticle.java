@@ -29,11 +29,12 @@ package org.seage.problem.qap.particles;
  *
  * @author Karel Durkota
  */
-public class QapRandomParticle extends QapParticle {
+public class QapRandomParticle extends QapParticle
+{
 
     public QapRandomParticle(int dimension)
     {
-        super(  dimension  );
+        super(dimension);
         //_tour = TourProvider.createRandomTour( cities );
     }
 

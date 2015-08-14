@@ -32,46 +32,47 @@ import java.io.Serializable;
  */
 public class Gene implements Serializable
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2263063124222499089L;
-	protected Object _value;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2263063124222499089L;
+    protected Object _value;
 
-	private Gene()
-	{ }
+    private Gene()
+    {
+    }
 
-	public Gene(Object value)
-	{
-		//if(value[0] == 0) throw new Exception("Invalid gene value");
-		_value = value;        
-	}
+    public Gene(Object value)
+    {
+        //if(value[0] == 0) throw new Exception("Invalid gene value");
+        _value = value;
+    }
 
-	public String toString()
-	{
-		Integer i = Integer.parseInt(_value.toString());
-		return i.toString();//value.toString();
-	}
+    public String toString()
+    {
+        Integer i = Integer.parseInt(_value.toString());
+        return i.toString();//value.toString();
+    }
 
-	public Object getValue()
-	{
-		return _value;
-	}
+    public Object getValue()
+    {
+        return _value;
+    }
 
-	public void setValue( Object value)
-	{
-		_value = value;
-	}
+    public void setValue(Object value)
+    {
+        _value = value;
+    }
 
-	public int hashCode()
-	{
-		return _value.hashCode();
-	}
+    public int hashCode()
+    {
+        return _value.hashCode();
+    }
 
-	public Object clone()
-	{
-		Gene gene = new Gene();
-		gene._value = _value;
-		return gene;
-	}
+    public Object clone()
+    {
+        Gene gene = new Gene();
+        gene._value = _value;
+        return gene;
+    }
 }

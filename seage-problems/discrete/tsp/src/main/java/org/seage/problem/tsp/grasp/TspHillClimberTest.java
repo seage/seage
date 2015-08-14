@@ -36,7 +36,8 @@ import org.seage.problem.tsp.Visualizer;
  * @author Martin Zaloga
  * @deprecated Replaced by TspProblemSolver
  */
-public class TspHillClimberTest {
+public class TspHillClimberTest
+{
 
     /**
      * _cities - List of a loaded cities
@@ -51,10 +52,14 @@ public class TspHillClimberTest {
      * The main trigger method
      * @param args - the argument is the path to the data
      */
-    public static void main(String[] args) {
-        try {
+    public static void main(String[] args)
+    {
+        try
+        {
             new TspHillClimberTest().run(args[0], "greedy", 100000, 10000);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
         }
@@ -68,12 +73,14 @@ public class TspHillClimberTest {
      * @param restarts - Numer of repeat optimalizations algorithm
      * @param iteration - Number of iteration algorthm
      */
-    public void run(String path, String switcher, int restarts, int iteration) throws Exception {
+    public void run(String path, String switcher, int restarts, int iteration) throws Exception
+    {
         _cities = CityProvider.readCities(new FileInputStream(path));
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 
-        _hc = new HillClimber(new TspObjectiveFunction(_cities), new TspMoveManager(), new TspSolutionGenerator(switcher, _cities), iteration);
+        _hc = new HillClimber(new TspObjectiveFunction(_cities), new TspMoveManager(),
+                new TspSolutionGenerator(switcher, _cities), iteration);
         _hc.startRestartedSearching(restarts);
         TspSolution bestSol = (TspSolution) _hc.getBestSolution();
         _tour = bestSol.getTour();

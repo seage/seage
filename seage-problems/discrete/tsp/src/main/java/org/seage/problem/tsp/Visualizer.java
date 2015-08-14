@@ -37,7 +37,6 @@ import java.io.FileOutputStream;
 
 import javax.imageio.ImageIO;
 
-
 /**
  *
  * @author Richard Malek
@@ -49,33 +48,39 @@ public class Visualizer
 
     // <editor-fold defaultstate="collapsed" desc="Singleton design pattern">
     private static Visualizer _instance;
+
     private Visualizer()
     {
     }
 
     public static Visualizer instance()
-    {        
-        if(_instance == null)
+    {
+        if (_instance == null)
             _instance = new Visualizer();
         return _instance;
     }
     // </editor-fold>
 
-    public void createGraph(City[] cities, Integer[] tour, String path, int width, int height) throws NoninvertibleTransformException
+    public void createGraph(City[] cities, Integer[] tour, String path, int width, int height)
+            throws NoninvertibleTransformException
     {
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB );
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
-        Graphics2D graphics = (Graphics2D)image.getGraphics();
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
 
         // getting current width ang height
-        double minX=Double.MAX_VALUE, minY=Double.MAX_VALUE;
-        double maxX=Double.MIN_VALUE, maxY=Double.MIN_VALUE;
-        for(int i=0;i<cities.length;i++)
+        double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
+        double maxX = Double.MIN_VALUE, maxY = Double.MIN_VALUE;
+        for (int i = 0; i < cities.length; i++)
         {
-            if(cities[tour[i]].X < minX) minX = cities[tour[i]].X;
-            if(cities[tour[i]].X > maxX) maxX = cities[tour[i]].X;
-            if(cities[tour[i]].Y < minY) minY = cities[tour[i]].Y;
-            if(cities[tour[i]].Y > maxY) maxY = cities[tour[i]].Y;
+            if (cities[tour[i]].X < minX)
+                minX = cities[tour[i]].X;
+            if (cities[tour[i]].X > maxX)
+                maxX = cities[tour[i]].X;
+            if (cities[tour[i]].Y < minY)
+                minY = cities[tour[i]].Y;
+            if (cities[tour[i]].Y > maxY)
+                maxY = cities[tour[i]].Y;
         }
 
         double currWidth = maxX - minX;
@@ -84,50 +89,50 @@ public class Visualizer
         graphics.setColor(Color.black);
         graphics.setBackground(Color.white);
 
-        width -=_pWidth;
-        height -=_pHeight;
+        width -= _pWidth;
+        height -= _pHeight;
 
         //TODO: B - Simplify the computation of X,Y coordinates.
         graphics.fillOval(
-                    (int)(width*(cities[tour[0]].X-minX) / currWidth),
-                    height-(int)(height*(cities[tour[0]].Y-minY) / currHeight), _pWidth , _pHeight );
+                (int) (width * (cities[tour[0]].X - minX) / currWidth),
+                height - (int) (height * (cities[tour[0]].Y - minY) / currHeight), _pWidth, _pHeight);
 
         int i = 1;
-        for( ; i < cities.length; i++)
+        for (; i < cities.length; i++)
         {
             graphics.fillOval(
-                    (int)(width*(cities[tour[i]].X-minX) / currWidth),
-                    height-(int)(height*(cities[tour[i]].Y-minY) / currHeight), _pWidth , _pHeight );
-            
-            graphics.drawLine (
-                        (int)(width*(cities[tour[i]].X-minX) / currWidth+_pWidth/2),
-                        height-(int)(height*(cities[tour[i]].Y-minY) / currHeight-_pHeight/2),
-                        (int)(width*(cities[tour[i - 1]].X-minX) / currWidth+_pWidth/2),
-                        height-(int)(height*(cities[tour[i - 1]].Y-minY) / currHeight-_pHeight/2)
-                    );
+                    (int) (width * (cities[tour[i]].X - minX) / currWidth),
+                    height - (int) (height * (cities[tour[i]].Y - minY) / currHeight), _pWidth, _pHeight);
+
+            graphics.drawLine(
+                    (int) (width * (cities[tour[i]].X - minX) / currWidth + _pWidth / 2),
+                    height - (int) (height * (cities[tour[i]].Y - minY) / currHeight - _pHeight / 2),
+                    (int) (width * (cities[tour[i - 1]].X - minX) / currWidth + _pWidth / 2),
+                    height - (int) (height * (cities[tour[i - 1]].Y - minY) / currHeight - _pHeight / 2));
         }
 
         // draw line between first and end city
-        graphics.drawLine (
-                        (int)(width*(cities[tour[0]].X-minX) / currWidth+_pWidth/2),
-                        height-(int)(height*(cities[tour[0]].Y-minY) / currHeight-_pHeight/2),
-                        (int)(width*(cities[tour[i - 1]].X-minX) / currWidth+_pWidth/2),
-                        height-(int)(height*(cities[tour[i - 1]].Y-minY) / currHeight-_pHeight/2)
-                    );
+        graphics.drawLine(
+                (int) (width * (cities[tour[0]].X - minX) / currWidth + _pWidth / 2),
+                height - (int) (height * (cities[tour[0]].Y - minY) / currHeight - _pHeight / 2),
+                (int) (width * (cities[tour[i - 1]].X - minX) / currWidth + _pWidth / 2),
+                height - (int) (height * (cities[tour[i - 1]].Y - minY) / currHeight - _pHeight / 2));
 
         try
         {
             File f = new File(path);
-            if(path.contains("/"))
+            if (path.contains("/"))
                 new File(f.getParent()).mkdirs();
-            BufferedOutputStream out = new BufferedOutputStream( new FileOutputStream( f ) );
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(f));
 
             ImageIO.write(image, "png", out);
             out.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.out.println("Chyba");
             e.printStackTrace();
         }
     }
-    
+
 }

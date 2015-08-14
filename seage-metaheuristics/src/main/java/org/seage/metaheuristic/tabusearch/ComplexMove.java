@@ -27,7 +27,6 @@
  */
 package org.seage.metaheuristic.tabusearch;
 
-
 /**
  * This extends the {@link Move} interface and requires you to implement
  * a <code>public int[] attributes()</code> method that returns attributes
@@ -53,5 +52,4 @@ public interface ComplexMove extends Move
      */
     public abstract int[] attributes();
 
-
-}   // end class ComplexMove
+} // end class ComplexMove

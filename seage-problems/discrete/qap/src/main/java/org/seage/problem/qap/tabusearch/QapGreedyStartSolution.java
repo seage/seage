@@ -34,14 +34,16 @@ import org.seage.problem.qap.AssignmentProvider;
 
 public class QapGreedyStartSolution extends QapSolution
 {
-    
-    public QapGreedyStartSolution(){} // Appease clone()
+
+    public QapGreedyStartSolution()
+    {
+    } // Appease clone()
 
     public QapGreedyStartSolution(Double[][][] customers) throws Exception
     {
-        super( customers );
-        _assign = AssignmentProvider.createGreedyAssignment( customers );
-        
-    }   // end constructor
+        super(customers);
+        _assign = AssignmentProvider.createGreedyAssignment(customers);
 
-}   // end class QapGreedyStartSolution
+    } // end constructor
+
+} // end class QapGreedyStartSolution

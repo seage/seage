@@ -35,14 +35,15 @@ public abstract class QapParticle extends Particle
 {
     public QapParticle(int dimension)
     {
-        super( dimension );
+        super(dimension);
     }
 
     public Integer[] getAssign()
     {
         Integer[] assign = new Integer[getCoords().length];
 
-        for(int i = 0; i < assign.length; i++) assign[i] = i;
+        for (int i = 0; i < assign.length; i++)
+            assign[i] = i;
 
         java.util.Arrays.sort(assign, new CoordComparator(getCoords()));
 

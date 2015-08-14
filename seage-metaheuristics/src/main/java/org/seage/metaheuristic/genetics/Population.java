@@ -97,7 +97,7 @@ class Population<S extends Subject<?>>
 
     public void resize(int newLength)
     {
-        if(getSize() > newLength)
+        if (getSize() > newLength)
             _population = new ArrayList<S>(_population.subList(0, newLength));
     }
 
@@ -116,15 +116,15 @@ class Population<S extends Subject<?>>
         return getSubjects(_population.size());
     }
 
-	public List<S> getSubjects(int numSubjects) throws Exception
+    public List<S> getSubjects(int numSubjects) throws Exception
     {
         try
         {
             int length = _population.size();
             if (length > numSubjects)
-                return  _population.subList(0,numSubjects);
+                return _population.subList(0, numSubjects);
             else
-                return  _population;
+                return _population;
         }
         catch (Exception ex)
         {
@@ -132,8 +132,8 @@ class Population<S extends Subject<?>>
         }
     }
 
-	public void sort(SubjectComparator<S> subjectComparator)
-	{
-		Collections.sort(_population, subjectComparator);		
-	}
+    public void sort(SubjectComparator<S> subjectComparator)
+    {
+        Collections.sort(_population, subjectComparator);
+    }
 }

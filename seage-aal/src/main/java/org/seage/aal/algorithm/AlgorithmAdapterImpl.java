@@ -35,36 +35,39 @@ import java.util.logging.Logger;
 public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
 {
     protected static final Logger _logger = Logger.getLogger(AlgorithmAdapterImpl.class.getName());
-    
+
     protected boolean _algorithmStarted = false;
     protected boolean _algorithmStopped = false;
-    
-    public void startSearching(final AlgorithmParams params, boolean async) throws Exception {
-        if(_algorithmStarted && !_algorithmStopped)
+
+    public void startSearching(final AlgorithmParams params, boolean async) throws Exception
+    {
+        if (_algorithmStarted && !_algorithmStopped)
             throw new Exception("Algorithm already started, running.");
-        
+
         _algorithmStarted = false;
-        
-        if(async == true)
-        {            
-            new Thread(new Runnable() {
-                public void run() {
+
+        if (async == true)
+        {
+            new Thread(new Runnable()
+            {
+                public void run()
+                {
                     try
                     {
-                        startSearching(params);                        
+                        startSearching(params);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         _logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 }
             }, this.getClass().getName()).start();
 
-            int i=0;
-            while(!_algorithmStarted)
+            int i = 0;
+            while (!_algorithmStarted)
             {
                 Thread.sleep(10);
-                if(i++<10)
+                if (i++ < 10)
                     ;//System.out.print("+");
                 else
                 {

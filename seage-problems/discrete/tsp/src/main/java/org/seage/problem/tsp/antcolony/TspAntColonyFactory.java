@@ -46,45 +46,47 @@ import org.seage.problem.tsp.TspProblemInstance;
 @Annotations.AlgorithmName("AntColony")
 public class TspAntColonyFactory implements IAlgorithmFactory
 {
-	public Class<AntColonyAdapter> getAlgorithmClass() {
+    public Class<AntColonyAdapter> getAlgorithmClass()
+    {
         return AntColonyAdapter.class;
     }
 
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
-    {        
+    {
         IAlgorithmAdapter algorithm;
-        City[] cities = ((TspProblemInstance)instance).getCities();
+        City[] cities = ((TspProblemInstance) instance).getCities();
         TspGraph graph = new TspGraph(cities);
         AntBrain brain = new AntBrain(graph);
         algorithm = new AntColonyAdapter(brain, graph)
-		{			
-        	@Override
-			public void solutionsFromPhenotype(Object[][] source) throws Exception
-			{
-				_ants = new Ant[source.length];
-				for(int i=0;i<_ants.length;i++)
-				{
-					ArrayList<Integer> nodes = new ArrayList<Integer>();
-					for(int j=0;j<source[i].length;j++)
-						nodes.add((Integer)source[i][j]);
-					_ants[i] = new Ant(nodes);
-				}								
-			}
-			@Override
-			public Object[][] solutionsToPhenotype() throws Exception
-			{
-				Object[][] result = new Object[_ants.length][];
-				for(int i=0;i<_ants.length;i++)
-				{
-					result[i] = new Integer[_ants[i].getNodeIDsAlongPath().size()];
-					for(int j=0;j<result[i].length;j++)
-					{						
-						result[i][j] = _ants[i].getNodeIDsAlongPath().get(j);
-					}	
-				}
-				return result;
-			}			
-		};
+        {
+            @Override
+            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            {
+                _ants = new Ant[source.length];
+                for (int i = 0; i < _ants.length; i++)
+                {
+                    ArrayList<Integer> nodes = new ArrayList<Integer>();
+                    for (int j = 0; j < source[i].length; j++)
+                        nodes.add((Integer) source[i][j]);
+                    _ants[i] = new Ant(nodes);
+                }
+            }
+
+            @Override
+            public Object[][] solutionsToPhenotype() throws Exception
+            {
+                Object[][] result = new Object[_ants.length][];
+                for (int i = 0; i < _ants.length; i++)
+                {
+                    result[i] = new Integer[_ants[i].getNodeIDsAlongPath().size()];
+                    for (int j = 0; j < result[i].length; j++)
+                    {
+                        result[i][j] = _ants[i].getNodeIDsAlongPath().get(j);
+                    }
+                }
+                return result;
+            }
+        };
 
         return algorithm;
     }

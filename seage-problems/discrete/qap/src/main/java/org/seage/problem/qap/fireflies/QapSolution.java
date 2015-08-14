@@ -35,61 +35,66 @@ import org.seage.metaheuristic.fireflies.SolutionAdapter;
 public class QapSolution extends SolutionAdapter
 {
     protected Integer[] _assign;
-    
-    public QapSolution(){} // Appease clone()
+
+    public QapSolution()
+    {
+    } // Appease clone()
 
     public QapSolution(Double[][][] customers)
     {
         // Crudely initialize solution
-        _assign = new Integer[ customers.length ];
-        for( int i = 0; i < customers.length; i++ )
+        _assign = new Integer[customers.length];
+        for (int i = 0; i < customers.length; i++)
             _assign[i] = i;
-    }   // end constructor
-    
-    public QapSolution(Integer[] assign){
+    } // end constructor
+
+    public QapSolution(Integer[] assign)
+    {
         _assign = assign;
     }
 
     public Object clone()
     {
-		QapSolution copy = (QapSolution)super.clone();
-		copy._assign = (Integer[])this._assign.clone();
+        QapSolution copy = (QapSolution) super.clone();
+        copy._assign = (Integer[]) this._assign.clone();
         return copy;
-    }   // end clone
+    } // end clone
 
     public Integer[] getAssign()
     {
-            return _assign;
+        return _assign;
     }
 
     public void setAssign(Integer[] assign)
     {
-            _assign = assign;
+        _assign = assign;
     }
-    
+
     public String toString()
     {
         StringBuffer s = new StringBuffer();
 
         s.append("[");
-        for(int i=0;i<_assign.length-1;i++){
-            s.append((_assign[i]+1));
+        for (int i = 0; i < _assign.length - 1; i++)
+        {
+            s.append((_assign[i] + 1));
             s.append(",");
         }
-        s.append((_assign[_assign.length-1]+1)+"]");
-        
+        s.append((_assign[_assign.length - 1] + 1) + "]");
+
         return s.toString();
-    }   // end toString
+    } // end toString
 
     @Override
-    public boolean equals(Solution in){
-        QapSolution q = (QapSolution)in;
-        for(int i=0;i<_assign.length;i++){
-            if(_assign[i]!=q.getAssign()[i])
+    public boolean equals(Solution in)
+    {
+        QapSolution q = (QapSolution) in;
+        for (int i = 0; i < _assign.length; i++)
+        {
+            if (_assign[i] != q.getAssign()[i])
                 return false;
         }
         return true;
     }
 
-    
-}   // end class MySolution
+} // end class MySolution

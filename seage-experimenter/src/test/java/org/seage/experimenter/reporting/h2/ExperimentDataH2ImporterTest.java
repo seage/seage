@@ -6,16 +6,16 @@ import org.junit.Test;
 public class ExperimentDataH2ImporterTest
 {
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception
-	{
-	}
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception
+    {
+    }
 
-	@Test
-	public void testProcessLogs() throws Exception
-	{
-		//ExperimentDataH2Importer imp = new ExperimentDataH2Importer();
-		//imp.processLogs();
-	}
+    @Test
+    public void testProcessLogs() throws Exception
+    {
+        //ExperimentDataH2Importer imp = new ExperimentDataH2Importer();
+        //imp.processLogs();
+    }
 
 }

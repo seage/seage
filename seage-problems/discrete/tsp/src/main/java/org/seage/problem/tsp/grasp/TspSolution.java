@@ -33,7 +33,8 @@ import org.seage.metaheuristic.grasp.Solution;
  *
  * @author Martin Zaloga
  */
-public class TspSolution extends Solution {
+public class TspSolution extends Solution
+{
 
     /**
      * _tour - Contains the tour of the solution
@@ -45,7 +46,8 @@ public class TspSolution extends Solution {
     /**
      * Constructor the solution with using the random algorithm for initial solution
      */
-    public TspSolution() {
+    public TspSolution()
+    {
         _rnd = new Random();
     }
 
@@ -53,7 +55,8 @@ public class TspSolution extends Solution {
      * Function for getting tour
      * @return - actual tour
      */
-    public Integer[] getTour() {
+    public Integer[] getTour()
+    {
         return _tour;
     }
 
@@ -61,7 +64,8 @@ public class TspSolution extends Solution {
      * Method for setting tour
      * @param tour - Setting tour
      */
-    public void setTour(Integer[] tour) {
+    public void setTour(Integer[] tour)
+    {
         _tour = tour;
     }
 }

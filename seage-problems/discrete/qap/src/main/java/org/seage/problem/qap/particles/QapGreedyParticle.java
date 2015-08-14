@@ -29,12 +29,13 @@ package org.seage.problem.qap.particles;
  *
  * @author Karel Durkota
  */
-public class QapGreedyParticle extends QapParticle {
+public class QapGreedyParticle extends QapParticle
+{
 
     public QapGreedyParticle(int dimension) throws Exception
     {
-        super(  dimension  );
-//        _tour = TourProvider.createGreedyTour( cities );
+        super(dimension);
+        //        _tour = TourProvider.createGreedyTour( cities );
     }
 
 }

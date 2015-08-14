@@ -27,21 +27,20 @@
  */
 package org.seage.metaheuristic.antcolony;
 
-
 /**
  *
  * @author Martin Zaloga
  */
-public class Edge 
-{    
+public class Edge
+{
     private Node _node1;
     private Node _node2;
     private double _edgePrice;
     private double _pheromone;
 
-    public Edge(Node start, Node end) throws Exception 
+    public Edge(Node start, Node end) throws Exception
     {
-        _node1 = start;        
+        _node1 = start;
         _node2 = end;
         _node1.addEdge(this);
         _node2.addEdge(this);
@@ -53,7 +52,8 @@ public class Edge
      * Pheromone on edge finding
      * @return - Value of pheromone
      */
-    public double getLocalPheromone() {
+    public double getLocalPheromone()
+    {
         return _pheromone;
     }
 
@@ -61,16 +61,19 @@ public class Edge
      * Local pheromone addition
      * @param pheromone
      */
-    public void addLocalPheromone(double pheromone) {
+    public void addLocalPheromone(double pheromone)
+    {
         _pheromone += pheromone;
     }
 
     /**
      * Pheromone evaporation
      */
-    public void evaporateFromEdge(double evapoCoef) {
+    public void evaporateFromEdge(double evapoCoef)
+    {
         _pheromone = _pheromone * evapoCoef;
-        if(_pheromone < 0.00001){
+        if (_pheromone < 0.00001)
+        {
             _pheromone = 0.00001;
         }
     }
@@ -79,7 +82,8 @@ public class Edge
      * Edge length finding
      * @return - Edge length
      */
-    public double getEdgePrice() {
+    public double getEdgePrice()
+    {
         return _edgePrice;
     }
 
@@ -87,7 +91,8 @@ public class Edge
      * Edge length setting
      * @param length - Edge length
      */
-    public void setEdgePrice(double length) {
+    public void setEdgePrice(double length)
+    {
         _edgePrice = length;
     }
 
@@ -95,7 +100,8 @@ public class Edge
      * Firs of nodes
      * @return - First node
      */
-    public Node getNode2() {
+    public Node getNode2()
+    {
         return _node2;
     }
 
@@ -103,7 +109,8 @@ public class Edge
      * Second of nodes
      * @return - Second node
      */
-    public Node getNode1() {
+    public Node getNode1()
+    {
         return _node1;
     }
 }

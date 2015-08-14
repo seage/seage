@@ -32,21 +32,24 @@ import java.util.List;
  *
  * @author zmatlja1
  */
-public class RMProcess {
-    
-    private String resourceName;    
+public class RMProcess
+{
+
+    private String resourceName;
     private String operatorName;
     private String reportName;
-    private List<String> operatorOutputPorts;  
+    private List<String> operatorOutputPorts;
 
-    public RMProcess(String resourceName, String operatorName, String reportName) {
+    public RMProcess(String resourceName, String operatorName, String reportName)
+    {
         this.resourceName = resourceName;
         this.operatorName = operatorName;
         this.reportName = reportName;
-        operatorOutputPorts = new ArrayList<String>(); 
+        operatorOutputPorts = new ArrayList<String>();
     }
 
-    public RMProcess(String resourceName, String operatorName, String reportName, List<String> operatorOutputPorts) {
+    public RMProcess(String resourceName, String operatorName, String reportName, List<String> operatorOutputPorts)
+    {
         this.resourceName = resourceName;
         this.operatorName = operatorName;
         this.reportName = reportName;
@@ -55,38 +58,46 @@ public class RMProcess {
 
     public void addOperatorOutputPort(String name)
     {
-        this.operatorOutputPorts.add( name );
+        this.operatorOutputPorts.add(name);
     }
 
-    public String getReportName() {
+    public String getReportName()
+    {
         return reportName;
     }
 
-    public void setReportName(String reportName) {
+    public void setReportName(String reportName)
+    {
         this.reportName = reportName;
     }
 
-    public String getResourceName() {
+    public String getResourceName()
+    {
         return resourceName;
     }
 
-    public void setResourceName(String resourceName) {
+    public void setResourceName(String resourceName)
+    {
         this.resourceName = resourceName;
     }
 
-    public String getOperatorName() {
+    public String getOperatorName()
+    {
         return operatorName;
     }
 
-    public void setOperatorName(String operatorName) {
+    public void setOperatorName(String operatorName)
+    {
         this.operatorName = operatorName;
     }
 
-    public List<String> getOperatorOutputPorts() {
+    public List<String> getOperatorOutputPorts()
+    {
         return operatorOutputPorts;
     }
 
-    public void setOperatorOutputPorts(List<String> operatorOutputPorts) {
+    public void setOperatorOutputPorts(List<String> operatorOutputPorts)
+    {
         this.operatorOutputPorts = operatorOutputPorts;
     }
 

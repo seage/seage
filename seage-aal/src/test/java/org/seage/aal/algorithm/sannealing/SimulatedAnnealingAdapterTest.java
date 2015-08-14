@@ -35,8 +35,9 @@ import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
  *
  * @author rick
  */
-public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
-    
+public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase
+{
+
     public SimulatedAnnealingAdapterTest() throws Exception
     {
         super();
@@ -45,15 +46,16 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algAdapter = new TestSimulatedAnnealingAdapter(null, new TestObjectiveFunction(), new TestMoveManager(), false, "");
-        
-        _algParams = new AlgorithmParams();       
-        
+        _algAdapter = new TestSimulatedAnnealingAdapter(null, new TestObjectiveFunction(), new TestMoveManager(), false,
+                "");
+
+        _algParams = new AlgorithmParams();
+
         //_algParams.putValue("annealCoeficient", 0.1);
         _algParams.putValue("numIterations", 10);
         _algParams.putValue("maxTemperature", 100);
-        _algParams.putValue("minTemperature", 1);        
-        
+        _algParams.putValue("minTemperature", 1);
+
         _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
     }
 
@@ -68,37 +70,37 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase{
     @Test
     public void testAlgorithmWithParamsAtZero() throws Exception
     {
-    	AlgorithmParams params = new AlgorithmParams();
+        AlgorithmParams params = new AlgorithmParams();
         params.putValue("numIterations", 0);
         params.putValue("maxTemperature", 0);
         params.putValue("minTemperature", 0);
         _tester.setAlgParameters(params);
         _tester.testAlgorithmWithParamsAtZero();
     }
-    
+
     @Test
-    @Override    
+    @Override
     public void testAsyncRunning() throws Exception
     {
-    	AlgorithmParams params = new AlgorithmParams();
+        AlgorithmParams params = new AlgorithmParams();
         params.putValue("numIterations", 1000000);
         params.putValue("maxTemperature", 100000);
         params.putValue("minTemperature", 1);
         _tester.setAlgParameters(params);
-        _tester.testAsyncRunning();        
+        _tester.testAsyncRunning();
     }
-    
-    @Test
-	@Override
-	public void testReport() throws Exception
-	{
-		_tester.testReport();		
-	}
-    
+
     @Test
     @Override
-	public void testAlgorithmWithParamsNull() throws Exception
-	{
-		_tester.testAlgorithmWithParamsNull();		
-	}
+    public void testReport() throws Exception
+    {
+        _tester.testReport();
+    }
+
+    @Test
+    @Override
+    public void testAlgorithmWithParamsNull() throws Exception
+    {
+        _tester.testAlgorithmWithParamsNull();
+    }
 }

@@ -50,7 +50,7 @@ public class Population
     {
         try
         {
-            return (Solution)_population.get(ix);
+            return (Solution) _population.get(ix);
         }
         catch (Exception ex)
         {
@@ -81,8 +81,8 @@ public class Population
             newPopulation.add(getSolution(0));
             for (int i = 1; i < _population.size(); i++)
             {
-                Solution prev = (Solution)_population.get(i - 1);
-                Solution curr = (Solution)_population.get(i);
+                Solution prev = (Solution) _population.get(i - 1);
+                Solution curr = (Solution) _population.get(i);
                 if (curr.hashCode() != prev.hashCode())
                 {
                     newPopulation.add(curr);
@@ -99,13 +99,13 @@ public class Population
 
     public void resize(int newLength)
     {
-        if(getSize() > newLength)
+        if (getSize() > newLength)
             _population = new ArrayList<Solution>(_population.subList(0, newLength));
     }
 
     public Solution getBestSolution()
     {
-        return (Solution)_population.get(0);
+        return (Solution) _population.get(0);
     }
 
     public void mergePopulation(Population population)
@@ -124,9 +124,9 @@ public class Population
         {
             int length = _population.size();
             if (length > numSubjects)
-                return (Solution[])_population.subList(0,numSubjects).toArray(new Solution[0]);
+                return (Solution[]) _population.subList(0, numSubjects).toArray(new Solution[0]);
             else
-                return (Solution[])_population.toArray(new Solution[0]);
+                return (Solution[]) _population.toArray(new Solution[0]);
         }
         catch (Exception ex)
         {

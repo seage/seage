@@ -68,7 +68,8 @@ public class SatAntBrain extends AntBrain
 
         for (Node n : nodeList)
         {
-            if (n.getID() == 0) continue;
+            if (n.getID() == 0)
+                continue;
             if (n.getID() < 0)
             {
                 solution[-n.getID() - 1] = false;

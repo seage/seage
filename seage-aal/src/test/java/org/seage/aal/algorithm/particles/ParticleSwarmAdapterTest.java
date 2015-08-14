@@ -43,11 +43,12 @@ import org.seage.metaheuristic.particles.Particle;
  * @author rick
  */
 @Ignore("Adapter class not fully implemented yet")
-public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
-    
+public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase
+{
+
     public ParticleSwarmAdapterTest() throws Exception
     {
-        super();        
+        super();
     }
 
     @Before
@@ -55,42 +56,43 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
     {
         _algAdapter = new ParticleSwarmAdapter(null, null, false, "")
         {
-            
+
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 _initialParticles = new Particle[source.length];
-                
-                for(int i=0;i<source.length;i++)
+
+                for (int i = 0; i < source.length; i++)
                 {
                     _initialParticles[i] = new Particle(source[i].length);
                     double[] coords = new double[source[i].length];
-                    for(int j=0;j<coords.length;j++)
-                        coords[j] = (Integer)source[i][j];
+                    for (int j = 0; j < coords.length; j++)
+                        coords[j] = (Integer) source[i][j];
                     _initialParticles[i].setCoords(coords);
                 }
-                
+
             }
+
             @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 List<Object[]> result = new ArrayList<Object[]>();
-                
-                for(int i=0;i<_initialParticles.length;i++)
+
+                for (int i = 0; i < _initialParticles.length; i++)
                 {
                     Object[] coords = new Object[_initialParticles[i].getCoords().length];
-                    for(int j=0;j<coords.length;j++)
-                        coords[j] = (int)_initialParticles[i].getCoords()[j];
+                    for (int j = 0; j < coords.length; j++)
+                        coords[j] = (int) _initialParticles[i].getCoords()[j];
                     result.add(coords);
                 }
-                return (Object[][]) result.toArray(new Object[][]{});
+                return (Object[][]) result.toArray(new Object[][] {});
             }
-        };        
-        
+        };
+
         _algParams = new AlgorithmParams();
         //_algParams.putValue("problemID", "ParticleSwarmTest");
         //_algParams.putValue("instance", "TestInstance");
-        
+
         DataNode params = new DataNode("Parameters");
         params.putValue("maxIterationCount", 0);
         params.putValue("numSolutions", 0);
@@ -98,13 +100,13 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
         params.putValue("minVelocity", 1);
         params.putValue("inertia", 0);
         params.putValue("alpha", 1);
-        params.putValue("beta", 0); 
-        
+        params.putValue("beta", 0);
+
         _algParams.putDataNodeRef(params);
-        
+
         _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
     }
-    
+
     @Override
     @Test
     public void testAlgorithm() throws Exception
@@ -118,25 +120,25 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase{
     {
         _tester.testAlgorithmWithParamsAtZero();
     }
-    
-    @Test
-    @Override    
-    public void testAsyncRunning() throws Exception
-    {
-        _tester.testAsyncRunning();        
-    }
-    
-    @Test
-	@Override
-	public void testReport() throws Exception
-	{
-		_tester.testReport();		
-	}
-    
+
     @Test
     @Override
-	public void testAlgorithmWithParamsNull() throws Exception
-	{
-		_tester.testAlgorithmWithParamsNull();		
-	}
+    public void testAsyncRunning() throws Exception
+    {
+        _tester.testAsyncRunning();
+    }
+
+    @Test
+    @Override
+    public void testReport() throws Exception
+    {
+        _tester.testReport();
+    }
+
+    @Test
+    @Override
+    public void testAlgorithmWithParamsNull() throws Exception
+    {
+        _tester.testAlgorithmWithParamsNull();
+    }
 }

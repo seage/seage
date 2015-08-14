@@ -36,20 +36,23 @@ import org.w3c.dom.Document;
  *
  * @author zmatlja1
  */
-public class Transformer {
-    
+public class Transformer
+{
+
     private static Transformer _transformer;
- 
-    private Transformer(){}
-    
+
+    private Transformer()
+    {
+    }
+
     public static Transformer getInstance()
     {
-        if(_transformer == null)
+        if (_transformer == null)
             _transformer = new Transformer();
-        
+
         return _transformer;
     }
-    
+
     /**
      * Method transforms a XML file into CSV format by using XSL Template
      * 
@@ -60,18 +63,21 @@ public class Transformer {
      * @return DataNode - SEAGE data structure
      */
     public void transformByXSLT(String xmlPath, String xsltName, StreamResult outputStream) throws Exception
-    {         
+    {
         TransformerFactory tFactory = TransformerFactory.newInstance();
-        javax.xml.transform.Transformer xmlTransformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));      
-        
+        javax.xml.transform.Transformer xmlTransformer = tFactory
+                .newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));
+
         xmlTransformer.transform(new StreamSource(new FileInputStream(xmlPath)), outputStream);
     }
-    
-    public void transformByXSLTFromDOMSource(Document xmlDocument, String xsltName, StreamResult outputStream) throws Exception
-    {         
-        javax.xml.transform.Transformer xmlTransformer = TransformerFactory.newInstance().newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));     
-      
-        xmlTransformer.transform( new DOMSource(xmlDocument) , outputStream );        
+
+    public void transformByXSLTFromDOMSource(Document xmlDocument, String xsltName, StreamResult outputStream)
+            throws Exception
+    {
+        javax.xml.transform.Transformer xmlTransformer = TransformerFactory.newInstance()
+                .newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));
+
+        xmlTransformer.transform(new DOMSource(xmlDocument), outputStream);
     }
-    
+
 }

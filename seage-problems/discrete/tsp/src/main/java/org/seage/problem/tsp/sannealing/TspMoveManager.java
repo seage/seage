@@ -35,24 +35,25 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 public class TspMoveManager implements IMoveManager
 {
-	Random rnd = new Random();
+    Random rnd = new Random();
+
     public Solution getModifiedSolution(Solution solution, double ct)
     {
-        TspSolution tspSolution = ((TspSolution)solution).clone();        
-        
+        TspSolution tspSolution = ((TspSolution) solution).clone();
+
         int tspSolutionLength = tspSolution.getTour().length;
-        int a = rnd.nextInt( tspSolutionLength );
-        int b = rnd.nextInt( tspSolutionLength );
+        int a = rnd.nextInt(tspSolutionLength);
+        int b = rnd.nextInt(tspSolutionLength);
 
         // Swap values if indices are different
-        if(a != b)
-        {  
-        	int tmp = tspSolution.getTour()[a];
+        if (a != b)
+        {
+            int tmp = tspSolution.getTour()[a];
             tspSolution.getTour()[a] = tspSolution.getTour()[b];
-            tspSolution.getTour()[b] = tmp;            
+            tspSolution.getTour()[b] = tmp;
         }
 
-        return (Solution)tspSolution;
+        return (Solution) tspSolution;
     }
 
 }

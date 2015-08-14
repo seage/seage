@@ -6,9 +6,9 @@ import org.seage.problem.tsp.TspProblemProvider;
 public class TspTabuSearchFactoryTest extends AlgorithmFactoryTestBase
 {
 
-	public TspTabuSearchFactoryTest() 
-	{
-		super(new TspProblemProvider(), "TabuSearch");
-	}
+    public TspTabuSearchFactoryTest()
+    {
+        super(new TspProblemProvider(), "TabuSearch");
+    }
 
 }

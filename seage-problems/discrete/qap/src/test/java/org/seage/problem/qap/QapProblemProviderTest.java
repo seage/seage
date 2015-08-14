@@ -21,10 +21,11 @@ package org.seage.problem.qap;
 
 import org.seage.aal.problem.ProblemProviderTestBase;
 
-public class QapProblemProviderTest extends ProblemProviderTestBase{
+public class QapProblemProviderTest extends ProblemProviderTestBase
+{
 
-	public QapProblemProviderTest()
-	{
-		super(new QapProblemProvider());
-	}
-} 
+    public QapProblemProviderTest()
+    {
+        super(new QapProblemProvider());
+    }
+}

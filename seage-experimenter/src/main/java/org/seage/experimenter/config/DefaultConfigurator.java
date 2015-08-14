@@ -38,9 +38,10 @@ import org.seage.data.DataNode;
 public class DefaultConfigurator extends Configurator
 {
     @Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algID, int numConfigs) throws Exception
+    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algID, int numConfigs)
+            throws Exception
     {
-    	ProblemConfig result = new ProblemConfig("Config");
+        ProblemConfig result = new ProblemConfig("Config");
         // result.putDataNode(problemInfo.getDataNode("Algorithms").getDataNodeById(_algID));
         DataNode problem = new DataNode("Problem");
         problem.putValue("id", problemInfo.getValue("id"));

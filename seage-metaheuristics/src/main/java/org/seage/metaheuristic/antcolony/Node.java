@@ -31,14 +31,15 @@ import java.util.*;
  *
  * @author Martin Zaloga
  */
-public class Node {
+public class Node
+{
 
     private int _id;
     private HashMap<Node, Edge> _edges;
     private HashMap<Integer, Node> _nodes;
-    
 
-    public Node(int id) {
+    public Node(int id)
+    {
         _id = id;
         _edges = new HashMap<Node, Edge>();
         _nodes = new HashMap<Integer, Node>();
@@ -49,10 +50,14 @@ public class Node {
      * @param node - Compared node
      * @return - if compared nodes are some
      */
-    public boolean equals(Node node) {
-        if(_id == node._id){
+    public boolean equals(Node node)
+    {
+        if (_id == node._id)
+        {
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
@@ -61,7 +66,8 @@ public class Node {
      * Identification number
      * @return - Number id
      */
-    public int getID() {
+    public int getID()
+    {
         return _id;
     }
 
@@ -70,41 +76,42 @@ public class Node {
      * @param edge - Edge for add
      * @throws Exception 
      */
-    public void addEdge(Edge edge) throws Exception 
+    public void addEdge(Edge edge) throws Exception
     {
-    	Node node = edge.getNode1();
-    	Node node2 = edge.getNode2();
-    	
-    	if(node.equals(node2))
-    		throw new Exception("Edge with both nodes the same.");
-    	if(!(node.equals(this) || node2.equals(this)))
-    		throw new Exception("The adding edge is not related to the current node.");
-    	
-    	if(node.equals(this))
-    		node = node2;
-    	
-    	if(!_edges.containsValue(edge))
-    		_edges.put(node, edge);
-    	
-    	_nodes.put(node.getID(), node);
-    	
+        Node node = edge.getNode1();
+        Node node2 = edge.getNode2();
+
+        if (node.equals(node2))
+            throw new Exception("Edge with both nodes the same.");
+        if (!(node.equals(this) || node2.equals(this)))
+            throw new Exception("The adding edge is not related to the current node.");
+
+        if (node.equals(this))
+            node = node2;
+
+        if (!_edges.containsValue(edge))
+            _edges.put(node, edge);
+
+        _nodes.put(node.getID(), node);
+
     }
 
     /**
      * List all edges which are joined with actual node
      * @return - List edges
      */
-    public Collection<Edge> getEdges() {
+    public Collection<Edge> getEdges()
+    {
         return _edges.values();
     }
-    
+
     public HashMap<Node, Edge> getEdgeMap()
     {
-    	return _edges;
+        return _edges;
     }
-    
+
     public String toString()
     {
-    	return new Integer(getID()).toString();
+        return new Integer(getID()).toString();
     }
 }

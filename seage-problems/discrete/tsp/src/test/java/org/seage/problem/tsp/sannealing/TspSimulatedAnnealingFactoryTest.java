@@ -6,10 +6,10 @@ import org.seage.problem.tsp.TspProblemProvider;
 public class TspSimulatedAnnealingFactoryTest extends AlgorithmFactoryTestBase
 {
 
-	public TspSimulatedAnnealingFactoryTest() 
-	{
-		super(new TspProblemProvider(), "SimulatedAnnealing");
-		// TODO Auto-generated constructor stub
-	}
+    public TspSimulatedAnnealingFactoryTest()
+    {
+        super(new TspProblemProvider(), "SimulatedAnnealing");
+        // TODO Auto-generated constructor stub
+    }
 
 }

@@ -25,17 +25,17 @@
  */
 package org.seage.metaheuristic.sannealing;
 
-
 /**
  *
  * @author Jan Zmatlik
  */
-public class Solution  implements Cloneable, Comparable<Solution>{
+public class Solution implements Cloneable, Comparable<Solution>
+{
 
-	/**
+    /**
      * The value is value of Solution
      */
-    private double _value; 
+    private double _value;
 
     /**
      * Returns the value of Solution
@@ -56,23 +56,23 @@ public class Solution  implements Cloneable, Comparable<Solution>{
     }
 
     @Override
-    public  Solution clone()
+    public Solution clone()
     {
         try
         {
-            Solution sol = (Solution)super.clone();
+            Solution sol = (Solution) super.clone();
             sol._value = _value;
             return sol;
         }
-        catch(CloneNotSupportedException e)
+        catch (CloneNotSupportedException e)
         {
-            throw new InternalError( e.toString() );
+            throw new InternalError(e.toString());
         }
     }
 
-	@Override
-	public int compareTo(Solution sol)
-	{
-		return (int)(sol._value - _value);
-	}
+    @Override
+    public int compareTo(Solution sol)
+    {
+        return (int) (sol._value - _value);
+    }
 }

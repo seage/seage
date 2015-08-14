@@ -26,9 +26,9 @@
  */
 
 package org.seage.aal.algorithm.fireflies;
+
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReportEvaluator;
-
 
 /**
  *
@@ -38,26 +38,27 @@ public class FireflyAlgorithmRuntimeEvaluator extends AlgorithmReportEvaluator
 {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 4013948974096657456L;
+     * 
+     */
+    private static final long serialVersionUID = 4013948974096657456L;
 
-	@Override
+    @Override
     public int evaluate(AlgorithmReport report)
     {
         //InputStream is = AlgorithmAdapter.class.getResourceAsStream("reportSchema.xsd");
         try
         {
-            return Math.max(report.getDataNode("statistics").getValueInt("numberOfNewSolutions")-5, 0);
+            return Math.max(report.getDataNode("statistics").getValueInt("numberOfNewSolutions") - 5, 0);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return 0;
         }
     }
 
     @Override
-    public int compare(AlgorithmReport o1, AlgorithmReport o2) {
+    public int compare(AlgorithmReport o1, AlgorithmReport o2)
+    {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

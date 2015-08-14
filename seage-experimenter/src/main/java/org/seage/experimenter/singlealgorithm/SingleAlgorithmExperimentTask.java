@@ -73,12 +73,15 @@ import org.seage.experimenter.ExperimentTask;
  */
 public class SingleAlgorithmExperimentTask extends ExperimentTask
 {
-    public SingleAlgorithmExperimentTask(String experimentType, long experimentID, String problemID, String instanceID, String algorithmID, AlgorithmParams algorithmParams, int runID , long timeoutS, ZipOutputStream reportOutputStream) throws Exception
+    public SingleAlgorithmExperimentTask(String experimentType, long experimentID, String problemID, String instanceID,
+            String algorithmID, AlgorithmParams algorithmParams, int runID, long timeoutS,
+            ZipOutputStream reportOutputStream) throws Exception
     {
-    	super(experimentType, experimentID, problemID, instanceID, algorithmID, algorithmParams, runID, timeoutS, reportOutputStream);  	
+        super(experimentType, experimentID, problemID, instanceID, algorithmID, algorithmParams, runID, timeoutS,
+                reportOutputStream);
     }
-    
-    public void run() 
+
+    public void run()
     {
         try
         {
@@ -87,12 +90,14 @@ public class SingleAlgorithmExperimentTask extends ExperimentTask
             IAlgorithmFactory factory = provider.getAlgorithmFactory(_algorithmID);
 
             // problem instance
-            ProblemInstance instance = provider.initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_instanceID));
+            ProblemInstance instance = provider
+                    .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_instanceID));
             instance.toString();
             // algorithm
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
-            
-            Object[][] solutions = provider.generateInitialSolutions(instance, _algorithmParams.getValueInt("numSolutions"), _experimentID);
+
+            Object[][] solutions = provider.generateInitialSolutions(instance,
+                    _algorithmParams.getValueInt("numSolutions"), _experimentID);
 
             long startTime = System.currentTimeMillis();
             algorithm.solutionsFromPhenotype(solutions);
@@ -104,22 +109,23 @@ public class SingleAlgorithmExperimentTask extends ExperimentTask
             solutions = algorithm.solutionsToPhenotype();
 
             _experimentTaskReport.putDataNode(algorithm.getReport());
-            _experimentTaskReport.putValue("durationS", (endTime - startTime)/1000);
-            
+            _experimentTaskReport.putValue("durationS", (endTime - startTime) / 1000);
+
             XmlHelper.writeXml(_experimentTaskReport, _reportOutputStream, getReportName());
 
         }
-        catch(Exception ex){
-        	_logger.log(Level.SEVERE, ex.getMessage(), ex);
-        	_logger.log(Level.SEVERE, _algorithmParams.toString());
-        	
+        catch (Exception ex)
+        {
+            _logger.log(Level.SEVERE, ex.getMessage(), ex);
+            _logger.log(Level.SEVERE, _algorithmParams.toString());
+
         }
     }
-    
+
     private void waitForTimeout(IAlgorithmAdapter alg) throws Exception
     {
         long time = System.currentTimeMillis();
-        while(alg.isRunning() && ((System.currentTimeMillis()-time)<_timeoutS*1000))
+        while (alg.isRunning() && ((System.currentTimeMillis() - time) < _timeoutS * 1000))
             Thread.sleep(100);
     }
 

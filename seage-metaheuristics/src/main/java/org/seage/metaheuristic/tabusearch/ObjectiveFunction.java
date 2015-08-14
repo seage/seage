@@ -27,7 +27,6 @@
  */
 package org.seage.metaheuristic.tabusearch;
 
-
 /**
  * The objective function is used to
  * evaluate a {@link Solution}. 
@@ -37,8 +36,8 @@ package org.seage.metaheuristic.tabusearch;
  * @since 1.0
  */
 public interface ObjectiveFunction
-{    
-    
+{
+
     /**
      * The {@link TabuSearch} expects an objective/
      * constraint penalties function to be able
@@ -87,9 +86,6 @@ public interface ObjectiveFunction
      * @see Move
      * @since 1.0
      */
-    public abstract double[] evaluate( Solution soln, Move move ) throws Exception;
-    
-    
-    
-}   // end class ObjectiveFunction
+    public abstract double[] evaluate(Solution soln, Move move) throws Exception;
 
+} // end class ObjectiveFunction

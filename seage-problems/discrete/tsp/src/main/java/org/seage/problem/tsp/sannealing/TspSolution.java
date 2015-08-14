@@ -37,18 +37,18 @@ import org.seage.metaheuristic.sannealing.Solution;
 public abstract class TspSolution extends Solution
 {
 
-	/**
+    /**
      * Represent order of cities
      */
     protected Integer[] _tour;
 
     /**
      * Array of cities
-     */    
+     */
 
     public TspSolution(int length)
     {
-        _tour = new Integer[ length ];
+        _tour = new Integer[length];
     }
 
     public Integer[] getTour()
@@ -61,14 +61,13 @@ public abstract class TspSolution extends Solution
         _tour = tour;
     }
 
-    
     @Override
     public String toString()
     {
-    	String res = new String();
-    	for(Integer t : _tour)
-    		res += t + " ";
-    	return res;
+        String res = new String();
+        for (Integer t : _tour)
+            res += t + " ";
+        return res;
     }
 
     @Override
@@ -77,10 +76,11 @@ public abstract class TspSolution extends Solution
         TspSolution tspSolution = null;
         try
         {
-            tspSolution = (TspSolution)super.clone();
-            tspSolution.setTour( _tour.clone() );
+            tspSolution = (TspSolution) super.clone();
+            tspSolution.setTour(_tour.clone());
             tspSolution.setObjectiveValue(getObjectiveValue());
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             Logger.getLogger(TspSolution.class.getName()).log(Level.SEVERE, null, ex);
         }

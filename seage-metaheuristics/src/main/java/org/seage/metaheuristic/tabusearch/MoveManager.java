@@ -27,7 +27,6 @@
  */
 package org.seage.metaheuristic.tabusearch;
 
-
 /**
  * The <tt>MoveManager</tt> determines which moves are available
  * at any given time (or given solution). As a performance boost, you
@@ -42,8 +41,8 @@ package org.seage.metaheuristic.tabusearch;
  */
 
 public interface MoveManager
-{   
-    
+{
+
     /**
      * This method should return an array of all possible
      * moves to try at an iteration based on the passed
@@ -60,7 +59,4 @@ public interface MoveManager
      */
     public abstract Move[] getAllMoves(Solution solution) throws Exception;
 
-
-}   // end class MoveManager
-    
-
+} // end class MoveManager

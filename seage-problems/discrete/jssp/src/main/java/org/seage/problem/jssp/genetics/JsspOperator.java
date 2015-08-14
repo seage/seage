@@ -31,204 +31,202 @@ import org.seage.metaheuristic.genetics.Subject;
  */
 public class JsspOperator extends GeneticOperator
 {
-	private int[] _occurrence;
-	private int[] _occurrence2;
+    private int[] _occurrence;
+    private int[] _occurrence2;
 
-	public JsspOperator(int numOper)
-	{
-		_occurrence = new int[numOper];
-		_occurrence2 = new int[numOper];
-	}
+    public JsspOperator(int numOper)
+    {
+        _occurrence = new int[numOper];
+        _occurrence2 = new int[numOper];
+    }
 
-	public List<Subject> crossOver(Subject parent1, Subject parent2) throws Exception
-	{
-		Subject[] offsprings = new Subject[2];
-		int chromLength = 0;
-		int crossLength = 0;
-		try
-		{
-			offsprings[0] = (Subject)parent1.clone();
-			offsprings[1] = (Subject)parent2.clone();
+    public List<Subject> crossOver(Subject parent1, Subject parent2) throws Exception
+    {
+        Subject[] offsprings = new Subject[2];
+        int chromLength = 0;
+        int crossLength = 0;
+        try
+        {
+            offsprings[0] = (Subject) parent1.clone();
+            offsprings[1] = (Subject) parent2.clone();
 
-			chromLength = offsprings[0].getChromosome().getLength();
+            chromLength = offsprings[0].getChromosome().getLength();
 
-			crossLength = /*(int)(chromLength * _crossLengthPct);/*/Math.max(_random.nextInt((int)(chromLength * _crossLengthCoef)+1)-2,2);
-			int crossBegin = _random.nextInt(chromLength - crossLength );
-			int crossEnd = crossBegin + crossLength;
+            crossLength = /*(int)(chromLength * _crossLengthPct);/*/Math
+                    .max(_random.nextInt((int) (chromLength * _crossLengthCoef) + 1) - 2, 2);
+            int crossBegin = _random.nextInt(chromLength - crossLength);
+            int crossEnd = crossBegin + crossLength;
 
-			for (int i = 0; i < _occurrence.length; i++) _occurrence[i] = 0;
-			for (int i = 0; i < _occurrence2.length; i++) _occurrence2[i] = 0;
+            for (int i = 0; i < _occurrence.length; i++)
+                _occurrence[i] = 0;
+            for (int i = 0; i < _occurrence2.length; i++)
+                _occurrence2[i] = 0;
 
-			for (int i = crossBegin; i < crossEnd; i++)
-			{
-				//if (i >= crossBegin && i < crossEnd)
-				{
-					int par1GeneVal = (Integer) ((Subject)parent1).getChromosome().getGene(i);
-					int par2GeneVal = (Integer) ((Subject)parent2).getChromosome().getGene(i);
+            for (int i = crossBegin; i < crossEnd; i++)
+            {
+                //if (i >= crossBegin && i < crossEnd)
+                {
+                    int par1GeneVal = (Integer) ((Subject) parent1).getChromosome().getGene(i);
+                    int par2GeneVal = (Integer) ((Subject) parent2).getChromosome().getGene(i);
 
-					if (par1GeneVal == par2GeneVal) continue;
+                    if (par1GeneVal == par2GeneVal)
+                        continue;
 
-					_occurrence[par1GeneVal - 1]++;
-					_occurrence[par2GeneVal - 1]--;
+                    _occurrence[par1GeneVal - 1]++;
+                    _occurrence[par2GeneVal - 1]--;
 
-					_occurrence2[par2GeneVal - 1]++;
-					_occurrence2[par1GeneVal - 1]--;
+                    _occurrence2[par2GeneVal - 1]++;
+                    _occurrence2[par1GeneVal - 1]--;
 
+                    offsprings[0].getChromosome().setGene(i, ((Subject) parent2).getChromosome().getGene(i));
+                    offsprings[1].getChromosome().setGene(i, ((Subject) parent1).getChromosome().getGene(i));
+                    //offsprings[1].Chromosome.Genes[i].Value = parent1.Chromosome.Genes[i].Value;
+                }
+                //else
+                {
+                    //offsprings[0].getChromosome().getGene(i).setValue(0, ((GSSolution)parent1).getChromosome().getGene(i).getValue(0));
+                    //offsprings[1].getChromosome().getGene(i).setValue(0, ((GSSolution)parent2).getChromosome().getGene(i).getValue(0));
 
+                    //offspring1.Chromosome.Genes[i].Value = parent1.Chromosome.Genes[i].Value;
+                    //offspring2.Chromosome.Genes[i].Value = parent2.Chromosome.Genes[i].Value;
+                }
 
-					offsprings[0].getChromosome().setGene(i, ((Subject)parent2).getChromosome().getGene(i));
-					offsprings[1].getChromosome().setGene(i, ((Subject)parent1).getChromosome().getGene(i));
-					//offsprings[1].Chromosome.Genes[i].Value = parent1.Chromosome.Genes[i].Value;
-				}
-				//else
-				{
-					//offsprings[0].getChromosome().getGene(i).setValue(0, ((GSSolution)parent1).getChromosome().getGene(i).getValue(0));
-					//offsprings[1].getChromosome().getGene(i).setValue(0, ((GSSolution)parent2).getChromosome().getGene(i).getValue(0));
+            }
 
-					//offspring1.Chromosome.Genes[i].Value = parent1.Chromosome.Genes[i].Value;
-					//offspring2.Chromosome.Genes[i].Value = parent2.Chromosome.Genes[i].Value;
-				}
+            // pouziva se a predava clenska promenna, aby se pole m_occurrence alokovalo pouze jednou
+            medicateSubject(crossBegin, _occurrence, offsprings[1]);
+            medicateSubject(crossBegin, _occurrence2, offsprings[0]);
 
+            int p1 = getSubjectSum(parent1);
+            int p2 = getSubjectSum(parent2);
 
-			}
+            int o1 = getSubjectSum(offsprings[0]);
+            int o2 = getSubjectSum(offsprings[1]);
 
-			// pouziva se a predava clenska promenna, aby se pole m_occurrence alokovalo pouze jednou
-			medicateSubject(crossBegin, _occurrence, offsprings[1]);
-			medicateSubject(crossBegin, _occurrence2, offsprings[0]);
+            if (!((p1 == p2) && (p1 == o1) && (p1 == o2)))
+                throw new Exception("checksum failed");
+        }
+        catch (Exception e)
+        {
+            throw new Exception("crossover: " + e);
+        }
 
+        return Arrays.asList(offsprings);
+    }
 
+    protected void medicateSubject(int crossBegin, int[] occurrence, Subject subject) throws Exception
+    {
+        try
+        {
+            int /*indexExcessP1 = 0,*/ indexMinus = -1, indexMinusPrev = 0;
 
-			int p1 = getSubjectSum(parent1);
-			int p2 = getSubjectSum(parent2);
+            for (int indexPlus = 0; indexPlus < occurrence.length; indexPlus++)
+            {
+                if (occurrence[indexPlus] > 0)
+                {
+                    while (true)
+                    {
+                        // najdu index se zapornou hodnotou - ten prvek chybi
+                        if (indexMinus == -1)
+                        {
+                            for (int j = indexMinusPrev; j < occurrence.length; j++)
+                                if (occurrence[j] < 0)
+                                {
+                                    indexMinus = j;
+                                    indexMinusPrev = indexMinus;
+                                    break;
+                                }
+                        }
+                        /*val1 = m_occurrence[indexPlus];
+                        val2 = -m_occurrence[indexMinus];*/
 
-			int o1 = getSubjectSum(offsprings[0]);
-			int o2 = getSubjectSum(offsprings[1]);
+                        // pokud pocet chybejicich prvku "indexMinus" prevysuje "indexPlus"
+                        if (occurrence[indexPlus] <= -occurrence[indexMinus])
+                        {
 
-			if (!((p1 == p2) && (p1 == o1) && (p1 == o2)))
-				throw new Exception("checksum failed");
-		}
-		catch (Exception e)
-		{
-			throw new Exception("crossover: " + e);
-		}
+                            int jj = crossBegin;
+                            while (occurrence[indexPlus] > 0)
+                            {
+                                if ((Integer) ((Subject) subject).getChromosome().getGene(jj) == indexPlus + 1)
+                                {
+                                    ((Subject) subject).getChromosome().setGene(jj, indexMinus + 1);
 
-		return Arrays.asList( offsprings);
-	}
+                                    occurrence[indexPlus]--;
+                                    occurrence[indexMinus]++;
+                                }
+                                jj++;
+                                //jj = (jj+1) % subject.Chromosome.Length ;
+                            }
 
-	protected void medicateSubject(int crossBegin, int[] occurrence, Subject subject) throws Exception
-	{
-		try
-		{
-			int /*indexExcessP1 = 0,*/ indexMinus = -1, indexMinusPrev = 0;
+                            //m_occurrence[indexMinus] += m_occurrence[indexPlus];								
+                            //m_occurrence[indexPlus] = 0;
+                            if (occurrence[indexPlus] == -occurrence[indexMinus])
+                                indexMinus = -1;
+                            break;
 
-			for (int indexPlus = 0; indexPlus < occurrence.length; indexPlus++)
-			{
-				if (occurrence[indexPlus] > 0)
-				{
-					while (true)
-					{
-						// najdu index se zapornou hodnotou - ten prvek chybi
-						if (indexMinus == -1)
-						{
-							for (int j = indexMinusPrev; j < occurrence.length; j++)
-								if (occurrence[j] < 0)
-								{
-									indexMinus = j;
-									indexMinusPrev = indexMinus;
-									break;
-								}
-						}
-						/*val1 = m_occurrence[indexPlus];
-						val2 = -m_occurrence[indexMinus];*/
+                        }
+                        else
+                        {
+                            // parent1 ma navic "m_occurrence[i]" jobu s id "i"
+                            // mam k dispozici id "indexPlus" o poctu "m_occurrence[indexMinus]"
+                            int jj = crossBegin;
+                            while (occurrence[indexMinus] < 0)
+                            {
+                                if ((Integer) ((Subject) subject).getChromosome().getGene(jj) == indexPlus + 1)
+                                {
+                                    ((Subject) subject).getChromosome().setGene(jj, indexMinus + 1);
 
-						// pokud pocet chybejicich prvku "indexMinus" prevysuje "indexPlus"
-						if (occurrence[indexPlus] <= -occurrence[indexMinus])
-						{
+                                    occurrence[indexPlus]--;
+                                    occurrence[indexMinus]++;
+                                }
+                                jj++;
+                                //jj = (jj+1) % subject.Chromosome.Length ;
+                            }
+                            /*m_occurrence[i] += m_occurrence[indexExcessP2];
+                            m_occurrence[indexExcessP2] = 0;*/
+                            indexMinus = -1;
+                        }
 
-							int jj = crossBegin;
-							while (occurrence[indexPlus] > 0)
-							{
-								if ((Integer)((Subject)subject).getChromosome().getGene(jj) == indexPlus + 1)
-								{
-									((Subject)subject).getChromosome().setGene(jj, indexMinus + 1);
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            throw new Exception("medicate: " + e);
+        }
+    }
 
-									occurrence[indexPlus]--;
-									occurrence[indexMinus]++;
-								}
-								jj++;
-								//jj = (jj+1) % subject.Chromosome.Length ;
-							}
+    private int getSubjectSum(Subject sol)
+    {
+        Subject s = (Subject) sol;
+        int sum = 0;
+        for (int i = 0; i < s.getChromosome().getLength(); i++)
+        {
+            sum += (Integer) s.getChromosome().getGene(i);
+        }
+        return sum;
+    }
 
-							//m_occurrence[indexMinus] += m_occurrence[indexPlus];								
-							//m_occurrence[indexPlus] = 0;
-							if (occurrence[indexPlus] == -occurrence[indexMinus]) indexMinus = -1;
-							break;
+    @Override
+    public int[] select(ArrayList subjects)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
+    @Override
+    public Subject mutate(Subject subject) throws Exception
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-						}
-						else
-						{
-							// parent1 ma navic "m_occurrence[i]" jobu s id "i"
-							// mam k dispozici id "indexPlus" o poctu "m_occurrence[indexMinus]"
-							int jj = crossBegin;
-							while (occurrence[indexMinus] < 0)
-							{
-								if ((Integer)((Subject)subject).getChromosome().getGene(jj) == indexPlus + 1)
-								{
-									((Subject)subject).getChromosome().setGene(jj, indexMinus + 1);
-
-									occurrence[indexPlus]--;
-									occurrence[indexMinus]++;
-								}
-								jj++;
-								//jj = (jj+1) % subject.Chromosome.Length ;
-							}
-							/*m_occurrence[i] += m_occurrence[indexExcessP2];
-							m_occurrence[indexExcessP2] = 0;*/
-							indexMinus = -1;
-						}
-
-					}
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			throw new Exception("medicate: " + e);
-		}
-	}
-
-	private int getSubjectSum(Subject sol)
-	{
-		Subject s = (Subject)sol;
-		int sum = 0;
-		for (int i = 0; i < s.getChromosome().getLength(); i++)
-		{
-			sum += (Integer)s.getChromosome().getGene(i);
-		}
-		return sum;
-	}
-
-	@Override
-	public int[] select(ArrayList subjects)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Subject mutate(Subject subject) throws Exception
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Subject randomize(Subject subject) throws Exception
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+    @Override
+    public Subject randomize(Subject subject) throws Exception
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

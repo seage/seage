@@ -29,12 +29,13 @@ package org.seage.problem.qap.particles;
  *
  * @author Karel Durkota
  */
-public class QapSortedParticle extends QapParticle {
-    
+public class QapSortedParticle extends QapParticle
+{
+
     public QapSortedParticle(int dimension)
     {
-        super( dimension );
-//        _tour = TourProvider.createSortedTour( cities );
+        super(dimension);
+        //        _tour = TourProvider.createSortedTour( cities );
     }
 
 }

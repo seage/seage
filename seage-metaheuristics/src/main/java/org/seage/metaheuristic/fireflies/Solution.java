@@ -26,12 +26,11 @@
 
 package org.seage.metaheuristic.fireflies;
 
-
 /**
  *
  * @author Karel Durkota
  */
-public interface Solution extends Cloneable 
+public interface Solution extends Cloneable
 {
 
     /**
@@ -53,8 +52,7 @@ public interface Solution extends Cloneable
      * @param objValue The objective function value
      * @since 1.0
      */
-    public abstract void setObjectiveValue( double[] objValue );
-
+    public abstract void setObjectiveValue(double[] objValue);
 
     /**
      * An essential Java method that returns of copy of the object.
@@ -74,5 +72,6 @@ public interface Solution extends Cloneable
      * @since 1.0
      */
     public abstract Object clone();
+
     public abstract boolean equals(Solution s);
 }

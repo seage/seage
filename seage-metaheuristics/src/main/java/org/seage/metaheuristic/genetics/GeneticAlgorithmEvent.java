@@ -30,15 +30,15 @@ package org.seage.metaheuristic.genetics;
  */
 public class GeneticAlgorithmEvent<S extends Subject<?>>
 {
-	private GeneticAlgorithm<S> _algorithm;
-	
-	public GeneticAlgorithmEvent(GeneticAlgorithm<S> algorithm)
-	{
-		_algorithm= algorithm;
-	}
+    private GeneticAlgorithm<S> _algorithm;
 
-	public final GeneticAlgorithm<S> getGeneticSearch()
-	{
-		return _algorithm;
-	}
+    public GeneticAlgorithmEvent(GeneticAlgorithm<S> algorithm)
+    {
+        _algorithm = algorithm;
+    }
+
+    public final GeneticAlgorithm<S> getGeneticSearch()
+    {
+        return _algorithm;
+    }
 }

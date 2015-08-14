@@ -44,20 +44,19 @@ public class QapObjectiveFunction implements IObjectiveFunction
 
     public void setObjectiveValue(Particle particle)
     {
-        QapParticle currentParticle = ((QapParticle)particle);
+        QapParticle currentParticle = ((QapParticle) particle);
         double price = 0.0;
         Integer[] assign = currentParticle.getAssign();
 
         try
         {
-            price = (int)AssignmentProvider.getTotalPrice(assign, _facilityLocation);
+            price = (int) AssignmentProvider.getTotalPrice(assign, _facilityLocation);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             ex.printStackTrace();
         }
- 
-        particle.setEvaluation( price );
+
+        particle.setEvaluation(price);
     }
 }
-

@@ -44,7 +44,8 @@ import org.seage.problem.tsp.TspProblemInstance;
 public class TspTabuSearchFactory implements IAlgorithmFactory
 {
 
-	public Class<TabuSearchAdapter> getAlgorithmClass() {
+    public Class<TabuSearchAdapter> getAlgorithmClass()
+    {
         return TabuSearchAdapter.class;
     }
 
@@ -52,19 +53,20 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
     {
         IAlgorithmAdapter algorithm;
 
-        final City[] cities = ((TspProblemInstance)instance).getCities();
+        final City[] cities = ((TspProblemInstance) instance).getCities();
 
-        algorithm = new TabuSearchAdapter(new TspMoveManager(), new TspObjectiveFunction(cities), "" ) {
+        algorithm = new TabuSearchAdapter(new TspMoveManager(), new TspObjectiveFunction(cities), "")
+        {
 
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 _solutions = new Solution[source.length];
-                for(int i=0;i<source.length;i++)
+                for (int i = 0; i < source.length; i++)
                 {
                     TspSolution s = new TspSolution();
                     Integer[] tour = new Integer[source[i].length];
-                    for(int j=0;j<tour.length;j++)
-                        tour[j] = (Integer)source[i][j];
+                    for (int j = 0; j < tour.length; j++)
+                        tour[j] = (Integer) source[i][j];
                     s.setTour(tour);
                     _solutions[i] = s;
                 }
@@ -74,11 +76,11 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
             {
                 Object[][] result = new Object[_solutions.length][];
 
-                for(int i=0;i<_solutions.length;i++)
+                for (int i = 0; i < _solutions.length; i++)
                 {
-                    TspSolution s = (TspSolution)_solutions[i];
+                    TspSolution s = (TspSolution) _solutions[i];
                     result[i] = new Integer[s.getTour().length];
-                    for(int j=0;j<s.getTour().length;j++)
+                    for (int j = 0; j < s.getTour().length; j++)
                     {
                         result[i][j] = s.getTour()[j];
                     }
@@ -97,6 +99,5 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 
 }

@@ -27,8 +27,6 @@
  */
 package org.seage.metaheuristic.tabusearch;
 
-
-
 /**
  * There is a great deal of flexibility
  * in defining these moves. A move could be toggling
@@ -41,9 +39,9 @@ package org.seage.metaheuristic.tabusearch;
  * @see Solution
  * @version 1.0
  * @since 1.0
- */        
+ */
 public interface Move
-{   
+{
 
     /**
      * The required method <tt>operateOn</tt> accepts
@@ -55,8 +53,6 @@ public interface Move
      * @see Solution
      * @since 1.0
      */
-    public abstract void operateOn( Solution soln );
+    public abstract void operateOn(Solution soln);
 
-                   
-}   // end class Move
-
+} // end class Move

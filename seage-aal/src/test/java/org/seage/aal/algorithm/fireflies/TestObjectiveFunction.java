@@ -8,7 +8,7 @@ public class TestObjectiveFunction implements ObjectiveFunction
     @Override
     public double[] evaluate(Solution soln) throws Exception
     {
-        return new double[]{(Integer) ((TestSolution)soln).solution[0]};
+        return new double[] { (Integer) ((TestSolution) soln).solution[0] };
     }
 
     @Override
@@ -20,7 +20,7 @@ public class TestObjectiveFunction implements ObjectiveFunction
     @Override
     public void incrementCounter()
     {
-        
+
     }
 
 }

@@ -29,7 +29,8 @@ package org.seage.metaheuristic.grasp;
  *
  * @author Martin Zaloga
  */
-public interface IHillClimber {
+public interface IHillClimber
+{
 
     /**
      * Defining the shape of the methods for setting the number of iterations

@@ -31,12 +31,13 @@ import org.seage.problem.tsp.TourProvider;
  *
  * @author Jan Zmatlik
  */
-public class TspRandomSolution extends TspSolution {
+public class TspRandomSolution extends TspSolution
+{
 
     public TspRandomSolution(int length)
     {
-        super( length );
-        _tour = TourProvider.createRandomTour( length );
+        super(length);
+        _tour = TourProvider.createRandomTour(length);
     }
 
 }

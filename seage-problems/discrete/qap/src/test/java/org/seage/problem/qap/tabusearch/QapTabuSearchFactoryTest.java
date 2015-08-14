@@ -6,9 +6,9 @@ import org.seage.problem.qap.QapProblemProvider;
 public class QapTabuSearchFactoryTest extends AlgorithmFactoryTestBase
 {
 
-	public QapTabuSearchFactoryTest() 
-	{
-		super(new QapProblemProvider(), "TabuSearch");
-	}
+    public QapTabuSearchFactoryTest()
+    {
+        super(new QapProblemProvider(), "TabuSearch");
+    }
 
 }

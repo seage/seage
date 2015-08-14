@@ -30,15 +30,15 @@ package org.seage.metaheuristic.antcolony;
  */
 public class AntColonyEvent
 {
-	private AntColony _algorithm;
-	
-	public AntColonyEvent(AntColony algorithm)
-	{
-		_algorithm = algorithm;
-	}
+    private AntColony _algorithm;
 
-	public final AntColony getAntColony()
-	{
-		return _algorithm;
-	}
+    public AntColonyEvent(AntColony algorithm)
+    {
+        _algorithm = algorithm;
+    }
+
+    public final AntColony getAntColony()
+    {
+        return _algorithm;
+    }
 }

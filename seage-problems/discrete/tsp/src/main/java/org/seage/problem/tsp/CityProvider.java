@@ -27,6 +27,7 @@ package org.seage.problem.tsp;
 
 import java.util.*;
 import java.io.*;
+
 /**
  *  @author Richard Malek
  */
@@ -36,29 +37,31 @@ public class CityProvider
     {
         ArrayList<City> result = new ArrayList<City>();
         Scanner scanner = new Scanner(stream);
-        try {
-            
-            while ( scanner.hasNextLine() )
+        try
+        {
+
+            while (scanner.hasNextLine())
             {
                 String line = scanner.nextLine();
-                if(line.equals("EOF") || line.trim().startsWith("NODE_COORD_SECTION"))
+                if (line.equals("EOF") || line.trim().startsWith("NODE_COORD_SECTION"))
                     break;
             }
 
-            while ( scanner.hasNextLine() )
+            while (scanner.hasNextLine())
             {
                 String line = scanner.nextLine();
-                if(line.equals("EOF"))
+                if (line.equals("EOF"))
                     break;
-                Double[] dataLine = readLine( line );
+                Double[] dataLine = readLine(line);
                 result.add(new City(dataLine[0].intValue(), dataLine[1], dataLine[2]));
             }
         }
-        finally {
-          //ensure the underlying stream is always closed
-          scanner.close();
+        finally
+        {
+            //ensure the underlying stream is always closed
+            scanner.close();
         }
-        return (City[])result.toArray(new City[0]);
+        return (City[]) result.toArray(new City[0]);
     }
 
     private static Double[] readLine(String line) throws IOException
@@ -67,23 +70,23 @@ public class CityProvider
         Scanner scanner = new Scanner(line);
         scanner.useDelimiter(" ");
         //while ( scanner.hasNext() )
-        for(int i=0;i<3;i++)
+        for (int i = 0; i < 3; i++)
         {
             result.add(Double.parseDouble(scanner.next()));
         }
         scanner.close();
-        return (Double[])result.toArray(new Double[0]);
+        return (Double[]) result.toArray(new Double[0]);
     }
 
     public static City[] generateCircleCities(int numCircleCities)
     {
         City[] result = new City[numCircleCities];
 
-		for (int i = 0; i < result.length; i++)
-		{
-			double angle = 6.28 * i * (1.0 / numCircleCities);
+        for (int i = 0; i < result.length; i++)
+        {
+            double angle = 6.28 * i * (1.0 / numCircleCities);
             result[i] = new City(i, Math.cos(angle), Math.sin(angle));
-		}
+        }
 
         return result;
     }

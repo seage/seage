@@ -31,22 +31,28 @@ package org.seage.metaheuristic.sannealing;
 public interface ISimulatedAnnealing
 {
     double getMaximalTemperature();
+
     void setMaximalTemperature(double maximalTemperature);
 
     double getMinimalTemperature();
+
     void setMinimalTemperature(double minimalTemperature);
+
     public double getCurrentTemperature();
 
     double getAnnealingCoefficient();
 
     long getMaximalIterationCount();
+
     void setMaximalIterationCount(long maximalIterationCount);
 
     long getCurrentIteration();
 
     Solution getBestSolution();
+
     public Solution getCurrentSolution();
 
     void startSearching(Solution solution) throws Exception;
+
     void stopSearching();
 }

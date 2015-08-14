@@ -36,20 +36,20 @@ public class ClassInfo
     private String _className;
     private URL[] _classPaths;
 
-
     public ClassInfo(String className, URL[] classPaths)
     {
         _className = className;
         _classPaths = classPaths;
-    }  
+    }
 
-    public String getClassName() {
+    public String getClassName()
+    {
         return _className;
     }
 
-    public URL[] getClassPaths() {
+    public URL[] getClassPaths()
+    {
         return _classPaths;
     }
-
 
 }

@@ -26,13 +26,13 @@
 
 package org.seage.metaheuristic.fireflies;
 
-
 /**
  *
  * @author Administrator
  */
-public abstract class FireflyOperator {
-        abstract public double getDistance(Solution s1, Solution s2);
+public abstract class FireflyOperator
+{
+    abstract public double getDistance(Solution s1, Solution s2);
 
     /**
      * Attracts the solution s0 to solution s1 by formula:
@@ -49,9 +49,8 @@ public abstract class FireflyOperator {
      * @param para - parameters of Firefly algorithm
      * @param iter - search iteration
     */
-        abstract public void attract(Solution s0, Solution s1, int iter);
-        
-        
+    abstract public void attract(Solution s0, Solution s1, int iter);
+
     /**
      * Returns decreased step of randomness. Function is used only in a case, if
      *  para.withDecreasingRandomness == true

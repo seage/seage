@@ -27,8 +27,6 @@
  */
 package org.seage.metaheuristic.tabusearch;
 
-   
-
 /**
  * The <tt>TabuList</tt> tracks which moves
  * are tabu and for how long.
@@ -39,7 +37,7 @@ package org.seage.metaheuristic.tabusearch;
  * @version 1.0
  * @since 1.0
  */
-    
+
 public interface TabuList extends java.io.Serializable
 {
 
@@ -56,9 +54,8 @@ public interface TabuList extends java.io.Serializable
      * @see Solution
      * @since 1.0
      */
-    public abstract void setTabu( Solution fromSolution, Move move );
-        
-        
+    public abstract void setTabu(Solution fromSolution, Move move);
+
     /**
      * This function should be able to determine if
      * a given move is on the tabu list. The solution that is passed is the
@@ -73,9 +70,6 @@ public interface TabuList extends java.io.Serializable
      * @see Solution
      * @since 1.0
      */
-    public abstract boolean isTabu( Solution fromSolution, Move move );    
-    
-    
-}   // end interface TabuList
+    public abstract boolean isTabu(Solution fromSolution, Move move);
 
-
+} // end interface TabuList

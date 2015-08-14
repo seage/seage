@@ -6,9 +6,9 @@ import org.seage.problem.tsp.TspProblemProvider;
 public class TspGraspFactoryTest extends AlgorithmFactoryTestBase
 {
 
-	public TspGraspFactoryTest() 
-	{
-		super(new TspProblemProvider(), "GRASP");
-	}
+    public TspGraspFactoryTest()
+    {
+        super(new TspProblemProvider(), "GRASP");
+    }
 
 }

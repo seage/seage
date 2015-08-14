@@ -30,29 +30,29 @@ package org.seage.metaheuristic.genetics;
  */
 public class SubjectComparator<S extends Subject<?>> implements java.util.Comparator<S>
 {
-	@Override
-	public int compare(S s1, S s2)
-	{
-		for (int i = 0; i < s1.getObjectiveValue().length; i++)
-		{
-			int result = compare(s1.getObjectiveValue()[i], s2.getObjectiveValue()[i]);
-			if (result == 0)
-				continue;
-			else
-				return result;
+    @Override
+    public int compare(S s1, S s2)
+    {
+        for (int i = 0; i < s1.getObjectiveValue().length; i++)
+        {
+            int result = compare(s1.getObjectiveValue()[i], s2.getObjectiveValue()[i]);
+            if (result == 0)
+                continue;
+            else
+                return result;
 
-		}
-		return 0;
-	}
+        }
+        return 0;
+    }
 
-	private int compare(double d1, double d2)
-	{
-		// if (_maximizing)
-		if (d1 < d2)
-			return -1;
-		if (d1 > d2)
-			return 1;
-		return 0;
-	}
+    private int compare(double d1, double d2)
+    {
+        // if (_maximizing)
+        if (d1 < d2)
+            return -1;
+        if (d1 > d2)
+            return 1;
+        return 0;
+    }
 
 }

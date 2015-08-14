@@ -48,37 +48,39 @@ import org.seage.problem.tsp.TspProblemInstance;
 public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
 {
 
-    public Class<?> getAlgorithmClass() {
+    public Class<?> getAlgorithmClass()
+    {
         return GeneticAlgorithmAdapter.class;
     }
 
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
-    {        
+    {
         IAlgorithmAdapter algorithm;
-        City[] cities = ((TspProblemInstance)instance).getCities();
-        algorithm = new GeneticAlgorithmAdapter<Subject<Integer>>(new TspGeneticOperator(), new TspEvaluator(cities), false, "")
-		{
-			@Override
-			public void solutionsFromPhenotype(Object[][] source) throws Exception 
-			{
-				_solutions = new ArrayList<Subject<Integer>>(source.length);
-				for (int i = 0; i < source.length; i++)				
-					_solutions.add( new Subject<Integer>((Integer[]) source[i]));								
-			}
-			
-        	@Override
-			public Object[][] solutionsToPhenotype() throws Exception 
-			{		
-				Object[][] result = new Object[_solutions.size()][];
-		
-				for (int i = 0; i < _solutions.size(); i++)
-				{
-					int numGenes = _solutions.get(i).getChromosome().getLength();
-					result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
-				}
-				return result;
-			}
-		};
+        City[] cities = ((TspProblemInstance) instance).getCities();
+        algorithm = new GeneticAlgorithmAdapter<Subject<Integer>>(new TspGeneticOperator(), new TspEvaluator(cities),
+                false, "")
+        {
+            @Override
+            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            {
+                _solutions = new ArrayList<Subject<Integer>>(source.length);
+                for (int i = 0; i < source.length; i++)
+                    _solutions.add(new Subject<Integer>((Integer[]) source[i]));
+            }
+
+            @Override
+            public Object[][] solutionsToPhenotype() throws Exception
+            {
+                Object[][] result = new Object[_solutions.size()][];
+
+                for (int i = 0; i < _solutions.size(); i++)
+                {
+                    int numGenes = _solutions.get(i).getChromosome().getLength();
+                    result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
+                }
+                return result;
+            }
+        };
 
         return algorithm;
     }

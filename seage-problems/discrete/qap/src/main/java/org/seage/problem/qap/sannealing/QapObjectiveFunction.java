@@ -41,15 +41,18 @@ public class QapObjectiveFunction implements IObjectiveFunction
         Double[][][] _matrix = QapSolution._facilityLocation;
 
         double price = 0;
-        for(int i=0;i<len;i++){
-            for(int j=0;j<len;j++){
-                price+=_matrix[0][i][j]*_matrix[1][assign[i]][assign[j]];
+        for (int i = 0; i < len; i++)
+        {
+            for (int j = 0; j < len; j++)
+            {
+                price += _matrix[0][i][j] * _matrix[1][assign[i]][assign[j]];
             }
         }
-        double addition=0;
-        for(int i=0;i<_matrix[0][0].length;i++){
-            addition+=_matrix[2][i][assign[i]];
+        double addition = 0;
+        for (int i = 0; i < _matrix[0][0].length; i++)
+        {
+            addition += _matrix[2][i][assign[i]];
         }
-        return  price+addition ;
+        return price + addition;
     }
 }

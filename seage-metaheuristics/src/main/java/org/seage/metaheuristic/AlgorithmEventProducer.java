@@ -33,49 +33,53 @@ import java.util.List;
  */
 public class AlgorithmEventProducer<L extends IAlgorithmListener<E>, E>
 {
-	private List<L> _listenerList;
-	private E _event;
+    private List<L> _listenerList;
+    private E _event;
 
-	public AlgorithmEventProducer(E event)
-	{
+    public AlgorithmEventProducer(E event)
+    {
         _event = event;
         _listenerList = new ArrayList<L>();
-	}		
+    }
 
-	public void addAlgorithmListener(L listener)
-	{
-		_listenerList.add(listener);
-	}
-	
-	public void removeGeneticSearchListener(L listener)
-	{
-		if(_listenerList.contains(listener))
-			_listenerList.remove(listener);
-	}
-	
-	public void fireAlgorithmStarted()
-	{
-		for (int i = 0; i < _listenerList.size(); i++)
-			_listenerList.get(i).algorithmStarted(_event);
-	}
-	public void fireAlgorithmStopped()
-	{
-		for (int i = 0; i < _listenerList.size(); i++)
-			_listenerList.get(i).algorithmStopped(_event);
-	}
-	public void fireNewBestSolutionFound()
-	{
-		for (int i = 0; i < _listenerList.size(); i++)
-			_listenerList.get(i).newBestSolutionFound(_event);
-	}
-	public void fireNoChangeInValueIterationMade()
-	{
-		for (int i = 0; i < _listenerList.size(); i++)
-			_listenerList.get(i).noChangeInValueIterationMade(_event);
-	}
-	public void fireIterationPerformed()
-	{
-		for (int i = 0; i < _listenerList.size(); i++)
-			_listenerList.get(i).iterationPerformed(_event);
-	}
+    public void addAlgorithmListener(L listener)
+    {
+        _listenerList.add(listener);
+    }
+
+    public void removeGeneticSearchListener(L listener)
+    {
+        if (_listenerList.contains(listener))
+            _listenerList.remove(listener);
+    }
+
+    public void fireAlgorithmStarted()
+    {
+        for (int i = 0; i < _listenerList.size(); i++)
+            _listenerList.get(i).algorithmStarted(_event);
+    }
+
+    public void fireAlgorithmStopped()
+    {
+        for (int i = 0; i < _listenerList.size(); i++)
+            _listenerList.get(i).algorithmStopped(_event);
+    }
+
+    public void fireNewBestSolutionFound()
+    {
+        for (int i = 0; i < _listenerList.size(); i++)
+            _listenerList.get(i).newBestSolutionFound(_event);
+    }
+
+    public void fireNoChangeInValueIterationMade()
+    {
+        for (int i = 0; i < _listenerList.size(); i++)
+            _listenerList.get(i).noChangeInValueIterationMade(_event);
+    }
+
+    public void fireIterationPerformed()
+    {
+        for (int i = 0; i < _listenerList.size(); i++)
+            _listenerList.get(i).iterationPerformed(_event);
+    }
 }

@@ -74,23 +74,24 @@ public class LogHelper
             tempLogger = tempLogger.getParent();
         }
     }
-    
-//    public static void setConsoleDefaultFormatter()
-//    {
-//    	Logger logger = Logger.getLogger("org.seage");
-//    	setConsoleDefaultFormatter(logger);
-//        
-//    }
+
+    //    public static void setConsoleDefaultFormatter()
+    //    {
+    //    	Logger logger = Logger.getLogger("org.seage");
+    //    	setConsoleDefaultFormatter(logger);
+    //        
+    //    }
     public static void setConsoleDefaultFormatter(Logger logger, Level level)
     {
-    	Formatter formatter = new LogFormatter();
-    	Logger tempLogger = logger;
+        Formatter formatter = new LogFormatter();
+        Logger tempLogger = logger;
         while (tempLogger != null)
         {
             System.out.println(tempLogger.getName());
             tempLogger.setLevel(level);
             for (Handler handler : tempLogger.getHandlers())
-                if (handler instanceof ConsoleHandler){
+                if (handler instanceof ConsoleHandler)
+                {
                     handler.setLevel(level);
                     handler.setFormatter(formatter);
                 }

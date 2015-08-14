@@ -33,7 +33,8 @@ import org.seage.problem.tsp.City;
  *
  * @author Zagy
  */
-public class TspSolutionGenerator implements ISolutionGenerator {
+public class TspSolutionGenerator implements ISolutionGenerator
+{
 
     /**
      * _cities - Loaded cities
@@ -47,7 +48,8 @@ public class TspSolutionGenerator implements ISolutionGenerator {
      * @param switcher - Loaded cities
      * @param cities - Parameter setting random or greedy initial solution
      */
-    public TspSolutionGenerator(String switcher, City[] cities) {
+    public TspSolutionGenerator(String switcher, City[] cities)
+    {
         _cities = cities;
         _switcher = switcher;
     }
@@ -56,17 +58,20 @@ public class TspSolutionGenerator implements ISolutionGenerator {
      * Function to generate the initial solution
      * @return
      */
-    public Solution generateSolution() {
+    public Solution generateSolution()
+    {
 
         TspSolution tspSolution = null;
 
         /*Initialization for the random initial solution*/
-        if (_switcher.equals("Random") || _switcher.equals("random")) {
+        if (_switcher.equals("Random") || _switcher.equals("random"))
+        {
             tspSolution = new TspRandomSolution(_cities);
         }
 
         /*Initialization for the greedy initial solution*/
-        if (_switcher.equals("Greedy") || _switcher.equals("greedy")) {
+        if (_switcher.equals("Greedy") || _switcher.equals("greedy"))
+        {
             tspSolution = new TspGreedySolution(_cities);
         }
         return tspSolution;

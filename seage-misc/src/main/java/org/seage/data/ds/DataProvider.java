@@ -26,6 +26,7 @@ import org.seage.data.ds.DataTable;
  */
 public interface DataProvider
 {
-	DataTable	getDataTable(String queryString);
-	void		saveDataTable(String queryString);
+    DataTable getDataTable(String queryString);
+
+    void saveDataTable(String queryString);
 }

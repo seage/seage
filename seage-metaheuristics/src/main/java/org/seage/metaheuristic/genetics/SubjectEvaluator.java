@@ -32,16 +32,16 @@ import java.util.logging.Logger;
  * @author Richard Malek (original)
  */
 public abstract class SubjectEvaluator<S extends Subject<?>>
-{		
-	protected static Logger _logger = Logger.getLogger(SubjectEvaluator.class.getName());
-	
-	protected abstract double[] evaluate(S solution) throws Exception;
-	
-	public void evaluateSubjects(List<S> subjects) throws Exception
-	{
-		for (S subject : subjects)
-		{			
-			subject.setObjectiveValue(evaluate(subject));
-		}	
-	}
+{
+    protected static Logger _logger = Logger.getLogger(SubjectEvaluator.class.getName());
+
+    protected abstract double[] evaluate(S solution) throws Exception;
+
+    public void evaluateSubjects(List<S> subjects) throws Exception
+    {
+        for (S subject : subjects)
+        {
+            subject.setObjectiveValue(evaluate(subject));
+        }
+    }
 }

@@ -31,12 +31,13 @@ import org.seage.problem.qap.AssignmentProvider;
  *
  * @author Karel Durkota
  */
-public class QapSortedSolution extends QapSolution{
-    
+public class QapSortedSolution extends QapSolution
+{
+
     public QapSortedSolution(Double[][][] facilityLocation)
     {
-        super( facilityLocation );
-        _assign = AssignmentProvider.createSortedAssignment( facilityLocation );
+        super(facilityLocation);
+        _assign = AssignmentProvider.createSortedAssignment(facilityLocation);
     }
 
 }

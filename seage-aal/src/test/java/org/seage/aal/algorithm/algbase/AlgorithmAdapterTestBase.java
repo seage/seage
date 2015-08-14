@@ -34,24 +34,25 @@ import org.seage.aal.reporter.AlgorithmReport;
  *
  * @author rick
  */
-public abstract class AlgorithmAdapterTestBase {
+public abstract class AlgorithmAdapterTestBase
+{
     protected AlgorithmAdapterTester _tester;
-    
-    protected IAlgorithmAdapter _algAdapter; 
+
+    protected IAlgorithmAdapter _algAdapter;
     protected AlgorithmParams _algParams;
     protected AlgorithmReport _algReport;
-    
+
     protected final int NUM_SOLUTIONS = 10;
-    protected final int SOLUTION_LENGTH=100;  
+    protected final int SOLUTION_LENGTH = 100;
 
     public abstract void testAlgorithm() throws Exception;
-    
+
     public abstract void testAlgorithmWithParamsAtZero() throws Exception;
-    
+
     public abstract void testAlgorithmWithParamsNull() throws Exception;
-    
+
     public abstract void testAsyncRunning() throws Exception;
-    
+
     public abstract void testReport() throws Exception;
 
 }

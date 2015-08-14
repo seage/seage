@@ -25,12 +25,12 @@
  */
 package org.seage.metaheuristic.grasp;
 
-
 /**
  *
  * @author Martin Zaloga
  */
-public interface IObjectiveFunction {
+public interface IObjectiveFunction
+{
 
     /**
      * Function that returns the rating for the next step

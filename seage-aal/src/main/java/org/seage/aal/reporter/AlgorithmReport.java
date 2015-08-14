@@ -39,13 +39,15 @@ import org.seage.data.xml.XmlHelper;
  */
 public class AlgorithmReport extends DataNode
 {
-	private static Logger _logger = Logger.getLogger(AlgorithmReport.class.getName());
+    private static Logger _logger = Logger.getLogger(AlgorithmReport.class.getName());
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -2598529749932239606L;
-	private int _id;
-    public AlgorithmReport(String name) {
+     * 
+     */
+    private static final long serialVersionUID = -2598529749932239606L;
+    private int _id;
+
+    public AlgorithmReport(String name)
+    {
         super(name);
     }
 
@@ -63,15 +65,15 @@ public class AlgorithmReport extends DataNode
     public void save(String path)
     {
         File f = new File(path);
-        if(!f.getParentFile().exists())
+        if (!f.getParentFile().exists())
             f.getParentFile().mkdirs();
         try
-		{
-			XmlHelper.writeXml(this, path);
-		}
-		catch (Exception e)
-		{
-			_logger.log(Level.WARNING, e.getMessage());
-		}
+        {
+            XmlHelper.writeXml(this, path);
+        }
+        catch (Exception e)
+        {
+            _logger.log(Level.WARNING, e.getMessage());
+        }
     }
 }

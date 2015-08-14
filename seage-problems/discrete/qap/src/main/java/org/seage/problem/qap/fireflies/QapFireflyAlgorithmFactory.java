@@ -35,7 +35,6 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.fireflies.Solution;
 import org.seage.problem.qap.QapProblemInstance;
 
- 
 /** 
  *
  * @author Richard Malek
@@ -44,49 +43,59 @@ import org.seage.problem.qap.QapProblemInstance;
 @Annotations.AlgorithmName("FireflyAlgorithm")
 public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
 {
-    public void setProblemProvider(IProblemProvider provider) throws Exception {
+    public void setProblemProvider(IProblemProvider provider) throws Exception
+    {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Class<FireflyAlgorithmAdapter> getAlgorithmClass() {
+    public Class<FireflyAlgorithmAdapter> getAlgorithmClass()
+    {
         return FireflyAlgorithmAdapter.class;
     }
 
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
         IAlgorithmAdapter algorithm;
-        Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
-        algorithm = new FireflyAlgorithmAdapter(new QapFireflyOperator(), new QapObjectiveFunction(facilityLocation), false, "") {
+        Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
+        algorithm = new FireflyAlgorithmAdapter(new QapFireflyOperator(), new QapObjectiveFunction(facilityLocation),
+                false, "")
+        {
 
-            public void solutionsFromPhenotype(Object[][] source) throws Exception {
+            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            {
                 int height = source.length;
                 int width = source[0].length;
                 Solution[] sols = new Solution[height];
-                for(int i=0;i<height;i++){
+                for (int i = 0; i < height; i++)
+                {
                     Integer[] result = new Integer[width];
-                    for(int j=0;j<width;j++){
-                        result[j]=(Integer)source[i][j];
+                    for (int j = 0; j < width; j++)
+                    {
+                        result[j] = (Integer) source[i][j];
                     }
-                    sols[i]=new QapSolution(result);
+                    sols[i] = new QapSolution(result);
                 }
-                this._solutions=sols; 
+                this._solutions = sols;
             }
 
-            public Object[][] solutionsToPhenotype() throws Exception {
+            public Object[][] solutionsToPhenotype() throws Exception
+            {
                 int height = _solutions.length;
-                int width=((QapSolution)this._solutions[0])._assign.length;
+                int width = ((QapSolution) this._solutions[0])._assign.length;
                 Object[][] r = new Object[height][width];
-                for(int i=0;i<height;i++){
-                    for(int j=0;j<width;j++){
-                        r[i][j]=((QapSolution)this._solutions[i])._assign[j];
+                for (int i = 0; i < height; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        r[i][j] = ((QapSolution) this._solutions[i])._assign[j];
                     }
                 }
                 return r;
             }
         };
 
-//        Object[][] solutions = _provider.generateInitialSolutions(_algParams.getValueInt("numSolution"));
-//        algorithm.solutionsFromPhenotype(solutions);
+        //        Object[][] solutions = _provider.generateInitialSolutions(_algParams.getValueInt("numSolution"));
+        //        algorithm.solutionsFromPhenotype(solutions);
         return algorithm;
     }
 }

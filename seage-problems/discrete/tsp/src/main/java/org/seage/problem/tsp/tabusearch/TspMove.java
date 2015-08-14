@@ -31,40 +31,38 @@ import org.seage.metaheuristic.tabusearch.*;
  *
  * @author Richard Malek
  */
-public class TspMove implements Move 
+public class TspMove implements Move
 {
     public int ix1;
     public int ix2;
 
-	public TspMove(int ix1, int ix2)
-    {   
+    public TspMove(int ix1, int ix2)
+    {
         this.ix1 = ix1;
         this.ix2 = ix2;
-    }   // end constructor
-    
-    
-    public void operateOn( Solution soln )
+    } // end constructor
+
+    public void operateOn(Solution soln)
     {
-    	TspSolution tspSoln = (TspSolution)soln; 
-    	Integer[] tour = tspSoln._tour;
-        
+        TspSolution tspSoln = (TspSolution) soln;
+        Integer[] tour = tspSoln._tour;
+
         // Swap
         int tmpIx = tour[ix1];
         tour[ix1] = tour[ix2];
-        tour[ix2] = tmpIx;        
-    }   // end operateOn
-    
-    
+        tour[ix2] = tmpIx;
+    } // end operateOn
+
     /** Identify a move for SimpleTabuList */
     public int hashCode()
-    {   
+    {
         //return _hashCode;
-        return ix1*1000000+ix2;
-    }   // end hashCode
-    
+        return ix1 * 1000000 + ix2;
+    } // end hashCode
+
     public String toString()
     {
-    	return "{"+ix1 + ", "+ix2+"}";
+        return "{" + ix1 + ", " + ix2 + "}";
     }
-    
-}   // end class MySwapMove
+
+} // end class MySwapMove

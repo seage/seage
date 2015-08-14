@@ -45,36 +45,38 @@ import org.seage.data.DataNode;
  *
  * @author zmatlja1
  */
-public class ProcessPerformer {
-    
-    private final String REPORT_NODE_NAME = "Report";    
+public class ProcessPerformer
+{
+
+    private final String REPORT_NODE_NAME = "Report";
     private final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "SEAGE-RM-REPO-old";
     private final String RAPIDMINER_LOCAL_REPOSITORY_PATH = "SEAGE-RM-REPO-old";
-    
+
     private List<RMProcess> _processes;
-    
+
     private List<NamedIOObjectNode> _exampleSetNodes;
-        
+
     public ProcessPerformer() throws Exception
     {
         _processes = new ArrayList<RMProcess>();
         _exampleSetNodes = new ArrayList<NamedIOObjectNode>();
 
-        RapidMiner.setExecutionMode( RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI );        
-        RepositoryManager.getInstance(null).addRepository(new LocalRepository( RAPIDMINER_LOCAL_REPOSITORY_NAME , new File( RAPIDMINER_LOCAL_REPOSITORY_PATH )));
-        RapidMiner.init();        
-    } 
-    
+        RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.EMBEDDED_WITHOUT_UI);
+        RepositoryManager.getInstance(null).addRepository(
+                new LocalRepository(RAPIDMINER_LOCAL_REPOSITORY_NAME, new File(RAPIDMINER_LOCAL_REPOSITORY_PATH)));
+        RapidMiner.init();
+    }
+
     public void addProcess(RMProcess process)
     {
-        _processes.add( process );
+        _processes.add(process);
     }
-    
+
     public List<RMProcess> getProcesses()
     {
         return _processes;
     }
-    
+
     /**
      * @param RMProcess rmProcess - instance of RMProcess
      * 
@@ -83,20 +85,21 @@ public class ProcessPerformer {
     public void performProcessThroughSinks(RMProcess rmProcess) throws Exception
     {
         // RapidMiner process inicialization
-        Process process = new Process( getClass().getResourceAsStream( rmProcess.getResourceName() ) );
-        process.setProcessLocation( new FileProcessLocation( new File(".") ) );
-        
+        Process process = new Process(getClass().getResourceAsStream(rmProcess.getResourceName()));
+        process.setProcessLocation(new FileProcessLocation(new File(".")));
+
         process.run();
-        
+
         NamedIOObjectNode namedNode = new NamedIOObjectNode();
-        namedNode.setRmProcess( rmProcess );
-        
-        for(String port : rmProcess.getOperatorOutputPorts())
+        namedNode.setRmProcess(rmProcess);
+
+        for (String port : rmProcess.getOperatorOutputPorts())
         {
-            namedNode.addDataFromOutputPort( port , process.getRootOperator().getSubprocess(0).getInnerSinks().getPortByName( port ).getAnyDataOrNull() );
+            namedNode.addDataFromOutputPort(port,
+                    process.getRootOperator().getSubprocess(0).getInnerSinks().getPortByName(port).getAnyDataOrNull());
         }
-        
-        _exampleSetNodes.add( namedNode );
+
+        _exampleSetNodes.add(namedNode);
     }
 
     /**
@@ -107,71 +110,75 @@ public class ProcessPerformer {
     public void performProcess(RMProcess rmProcess) throws Exception
     {
         // RapidMiner process inicialization
-        Process process = new Process( getClass().getResourceAsStream( rmProcess.getResourceName() ) );
-        process.setProcessLocation( new FileProcessLocation( new File(".") ) );   
-    
-        Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, process.getRootOperator().createProcessTree(0));
+        Process process = new Process(getClass().getResourceAsStream(rmProcess.getResourceName()));
+        process.setProcessLocation(new FileProcessLocation(new File(".")));
+
+        Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO,
+                process.getRootOperator().createProcessTree(0));
 
         process.run();
 
         Collection<Operator> operators = process.getAllOperators();
 
-        for(Operator operator : operators)
+        for (Operator operator : operators)
         {
-            if(operator.getName().equals( rmProcess.getOperatorName() ) )
+            if (operator.getName().equals(rmProcess.getOperatorName()))
             {
                 NamedIOObjectNode namedNode = new NamedIOObjectNode();
-                namedNode.setRmProcess( rmProcess );
-                
-                for(String port : rmProcess.getOperatorOutputPorts())
-                    namedNode.addDataFromOutputPort( port , operator.getOutputPorts().getPortByName( port ).getAnyDataOrNull() );
-   
-                _exampleSetNodes.add( namedNode );
+                namedNode.setRmProcess(rmProcess);
+
+                for (String port : rmProcess.getOperatorOutputPorts())
+                    namedNode.addDataFromOutputPort(port,
+                            operator.getOutputPorts().getPortByName(port).getAnyDataOrNull());
+
+                _exampleSetNodes.add(namedNode);
             }
-        }        
+        }
     }
-    
+
     /**
      * Iterates over all defined RMProcesses and preform them.
      */
     public void performProcesses() throws Exception
     {
-        for(RMProcess process : _processes)
+        for (RMProcess process : _processes)
         {
-            this.performProcess( process );
+            this.performProcess(process);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
-	public List<DataNode> getProcessesDataNodes() throws Exception
-    {        
-        for(NamedIOObjectNode exampleSetNode : _exampleSetNodes)
+    public List<DataNode> getProcessesDataNodes() throws Exception
+    {
+        for (NamedIOObjectNode exampleSetNode : _exampleSetNodes)
         {
-            Set<Map.Entry<String, IOObject>> set = exampleSetNode.getMap().entrySet();            
+            Set<Map.Entry<String, IOObject>> set = exampleSetNode.getMap().entrySet();
             Iterator<Map.Entry<String, IOObject>> iterator = set.iterator();
             DataNode dataNode = null;
-            
-            while( iterator.hasNext() )
+
+            while (iterator.hasNext())
             {
-                Map.Entry<String, IOObject> entry = (Entry<String, IOObject>)iterator.next();
-                
+                Map.Entry<String, IOObject> entry = (Entry<String, IOObject>) iterator.next();
+
                 IOObject obj = entry.getValue();
-                if(obj instanceof IOObjectCollection)
-                    dataNode = ExampleSetConverter.convertToDataNodeFromCollection( (IOObjectCollection<ExampleSet>)obj );
-                else if(obj instanceof ExampleSet)
-                    dataNode = ExampleSetConverter.convertToDataNode( (ExampleSet)obj );
-                
-                exampleSetNode.addDataNode( dataNode );
-            }            
+                if (obj instanceof IOObjectCollection)
+                    dataNode = ExampleSetConverter
+                            .convertToDataNodeFromCollection((IOObjectCollection<ExampleSet>) obj);
+                else if (obj instanceof ExampleSet)
+                    dataNode = ExampleSetConverter.convertToDataNode((ExampleSet) obj);
+
+                exampleSetNode.addDataNode(dataNode);
+            }
 
         }
-        
+
         return mergeDataNodes();
     }
+
     private List<DataNode> mergeDataNodes() throws Exception
     {
         // Sort Nodes by RMProces Report name
-        Collections.sort( _exampleSetNodes , new Comparator<NamedIOObjectNode>()
+        Collections.sort(_exampleSetNodes, new Comparator<NamedIOObjectNode>()
         {
             @Override
             public int compare(NamedIOObjectNode obj1, NamedIOObjectNode obj2)
@@ -179,30 +186,30 @@ public class ProcessPerformer {
                 return obj1.getRmProcess().getReportName().compareTo(obj2.getRmProcess().getReportName());
             }
         });
-        
-        DataNode dataNode = new DataNode( REPORT_NODE_NAME );
+
+        DataNode dataNode = new DataNode(REPORT_NODE_NAME);
         String lastReportName = null;
         List<DataNode> dataNodes = new ArrayList<DataNode>();
         int counter = 0;
-        
-        for(NamedIOObjectNode objectNode : _exampleSetNodes)
+
+        for (NamedIOObjectNode objectNode : _exampleSetNodes)
         {
-            if( lastReportName != null && !lastReportName.equals( objectNode.getRmProcess().getReportName() ) )
+            if (lastReportName != null && !lastReportName.equals(objectNode.getRmProcess().getReportName()))
             {
                 dataNodes.add(dataNode);
-                dataNode = new DataNode( REPORT_NODE_NAME );
+                dataNode = new DataNode(REPORT_NODE_NAME);
             }
             counter++;
-            
-            for(DataNode dn : objectNode.getDataNodes())
-                dataNode.putDataNode( dn );
-            
-            if(counter == _exampleSetNodes.size() )
+
+            for (DataNode dn : objectNode.getDataNodes())
+                dataNode.putDataNode(dn);
+
+            if (counter == _exampleSetNodes.size())
                 dataNodes.add(dataNode);
-            
+
             lastReportName = objectNode.getRmProcess().getReportName();
         }
-        
+
         return dataNodes;
     }
 

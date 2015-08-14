@@ -49,8 +49,9 @@ public class QapLongTermMemory implements LongTermMemory
 
     public Solution diversifySolution()
     {
-            return null;
+        return null;
     }
+
     public void resetIterNumber()
     {
 

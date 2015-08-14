@@ -29,7 +29,8 @@ package org.seage.metaheuristic.grasp;
  *
  * @author Martin Zaloga
  */
-public class Solution implements java.lang.Cloneable, java.io.Serializable {
+public class Solution implements java.lang.Cloneable, java.io.Serializable
+{
 
     /**
      * The _value is value of Solution
@@ -40,7 +41,8 @@ public class Solution implements java.lang.Cloneable, java.io.Serializable {
      * Returns the value of Solution
      * @return - The rating of Solution
      */
-    public double getObjectiveValue() {
+    public double getObjectiveValue()
+    {
         return _value;
     }
 
@@ -48,7 +50,8 @@ public class Solution implements java.lang.Cloneable, java.io.Serializable {
      * Sets the value of Solution
      * @param objValue - Evaluation of the solution
      */
-    public void setObjectiveValue(double objValue) {
+    public void setObjectiveValue(double objValue)
+    {
         _value = objValue;
     }
 }

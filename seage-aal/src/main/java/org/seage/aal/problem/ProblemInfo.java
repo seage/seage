@@ -63,33 +63,34 @@ import org.seage.data.DataNode;
  *      |_ Instance
  */
 public class ProblemInfo extends DataNode
-{       
-    
-	private static final long serialVersionUID = 7658277873739208135L;
+{
 
-	public ProblemInfo(String name) {
+    private static final long serialVersionUID = 7658277873739208135L;
+
+    public ProblemInfo(String name)
+    {
         super(name);
     }
-	
-	public String getProblemID() throws Exception
-	{
-		return getValueStr("id");
-	}
-	
-	public ProblemInstanceInfo getProblemInstanceInfo(String instanceID) throws Exception
-	{
-		DataNode dn = getDataNode("Instances").getDataNodeById(instanceID);
-		if(dn == null)
-			throw new Exception("ProblemInfo does not contain any information on instanceID: "+instanceID);
-		return new ProblemInstanceInfo(dn);
-	}
-	
-	public List<ProblemInstanceInfo> getProblemInstanceInfos() throws Exception
-	{
-		List<ProblemInstanceInfo> result = new ArrayList<ProblemInstanceInfo>();
-		for(DataNode dn : getDataNode("Instances").getDataNodes())
-			result.add(new ProblemInstanceInfo(dn));
-		return result;
-	}
+
+    public String getProblemID() throws Exception
+    {
+        return getValueStr("id");
+    }
+
+    public ProblemInstanceInfo getProblemInstanceInfo(String instanceID) throws Exception
+    {
+        DataNode dn = getDataNode("Instances").getDataNodeById(instanceID);
+        if (dn == null)
+            throw new Exception("ProblemInfo does not contain any information on instanceID: " + instanceID);
+        return new ProblemInstanceInfo(dn);
+    }
+
+    public List<ProblemInstanceInfo> getProblemInstanceInfos() throws Exception
+    {
+        List<ProblemInstanceInfo> result = new ArrayList<ProblemInstanceInfo>();
+        for (DataNode dn : getDataNode("Instances").getDataNodes())
+            result.add(new ProblemInstanceInfo(dn));
+        return result;
+    }
 
 }

@@ -37,29 +37,32 @@ import org.seage.problem.tsp.City;
  *
  * @author Zagy
  */
-public class TspGraph extends Graph {
+public class TspGraph extends Graph
+{
 
     private City[] _cities;
 
-	public TspGraph(City[] cities) throws Exception {
+    public TspGraph(City[] cities) throws Exception
+    {
         super();
         _cities = cities;
-        for (int id = 1; id <= cities.length; id++) {
+        for (int id = 1; id <= cities.length; id++)
+        {
             _nodes.put(new Integer(id), new Node(id));
         }
     }
-	
-//	@Override
-//	public List<Node> getAvailableNodes(Node startingNode, Node currentNode, HashSet<Node> visited)
-//	{
-//		List<Node> result = super.getAvailableNodes(startingNode, currentNode, visited);
-//		if(currentNode != startingNode && visited.size() == getNodes().values().size())
-//		{
-//			result = new ArrayList<Node>();
-//			result.add(startingNode);
-//		}
-//		return result;
-//	}
+
+    //	@Override
+    //	public List<Node> getAvailableNodes(Node startingNode, Node currentNode, HashSet<Node> visited)
+    //	{
+    //		List<Node> result = super.getAvailableNodes(startingNode, currentNode, visited);
+    //		if(currentNode != startingNode && visited.size() == getNodes().values().size())
+    //		{
+    //			result = new ArrayList<Node>();
+    //			result.add(startingNode);
+    //		}
+    //		return result;
+    //	}
     /**
      * Edge length calculating
      * @param start - Starting node
@@ -67,9 +70,10 @@ public class TspGraph extends Graph {
      * @param cities - Readed cities
      * @return - Euclide edge length
      */
-    public double getNodesDistance(Node start, Node end) {
-        double dX = (_cities[start.getID()-1].X - _cities[end.getID()-1].X);
-        double dY = (_cities[start.getID()-1].Y - _cities[end.getID()-1].Y);
+    public double getNodesDistance(Node start, Node end)
+    {
+        double dX = (_cities[start.getID() - 1].X - _cities[end.getID() - 1].X);
+        double dY = (_cities[start.getID() - 1].Y - _cities[end.getID() - 1].Y);
         return Math.round(Math.sqrt(dX * dX + dY * dY));
     }
 }

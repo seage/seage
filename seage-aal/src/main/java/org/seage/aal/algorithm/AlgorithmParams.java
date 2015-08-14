@@ -33,15 +33,18 @@ import org.seage.data.DataNode;
  * @author Richard Malek
  * 
  */
-public class AlgorithmParams extends DataNode{
+public class AlgorithmParams extends DataNode
+{
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public AlgorithmParams(DataNode dn) {
+    public AlgorithmParams(DataNode dn)
+    {
         super(dn);
     }
 
-    public AlgorithmParams() {
+    public AlgorithmParams()
+    {
         super("Parameters");
     }
 

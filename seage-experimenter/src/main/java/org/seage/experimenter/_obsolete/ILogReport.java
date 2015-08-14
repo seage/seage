@@ -29,8 +29,9 @@ package org.seage.experimenter._obsolete;
  *
  * @author Zis
  */
-public interface ILogReport {
-    
+public interface ILogReport
+{
+
     public void report() throws Exception;
-    
+
 }

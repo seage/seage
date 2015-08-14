@@ -41,48 +41,49 @@ import org.seage.data.DataNode;
  *     |_ ...
  *     |_ Parameter
  */
-public class ProblemConfig extends DataNode{
+public class ProblemConfig extends DataNode
+{
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5927850750546609837L;
+     * 
+     */
+    private static final long serialVersionUID = -5927850750546609837L;
 
-	public ProblemConfig(String name) {
+    public ProblemConfig(String name)
+    {
         super(name);
     }
 
-    public ProblemConfig(DataNode dn) {
+    public ProblemConfig(DataNode dn)
+    {
         super(dn);
     }
-    
-    
-    
+
     public String getConfigID() throws Exception
     {
-    	return this.getValueStr("configID");
+        return this.getValueStr("configID");
     }
-    
+
     public String getProblemID() throws Exception
     {
-    	return this.getDataNode("Problem").getValueStr("id");
+        return this.getDataNode("Problem").getValueStr("id");
     }
-    
+
     public ProblemInstanceInfo getProblemInstanceInfo() throws Exception
     {
-    	return new ProblemInstanceInfo(this.getDataNode("Problem").getDataNode("Instance"));
+        return new ProblemInstanceInfo(this.getDataNode("Problem").getDataNode("Instance"));
     }
-    
+
     public String getProblemInstanceName() throws Exception
     {
-    	return this.getDataNode("Problem").getDataNode("Instance").getValueStr("name");
+        return this.getDataNode("Problem").getDataNode("Instance").getValueStr("name");
     }
-    
+
     public String getAlgorithmID() throws Exception
     {
-    	return this.getDataNode("Algorithm").getValueStr("id");    	
+        return this.getDataNode("Algorithm").getValueStr("id");
     }
-    
+
     public AlgorithmParams getAlgorithmParams() throws Exception
     {
         AlgorithmParams result = new AlgorithmParams(this.getDataNode("Algorithm").getDataNode("Parameters"));
@@ -91,9 +92,9 @@ public class ProblemConfig extends DataNode{
         return result;
     }
 
-	public String getProblemInstanceID() throws Exception
-	{
-		return this.getDataNode("Problem").getDataNode("Instance").getValueStr("id");
-	}
-    
+    public String getProblemInstanceID() throws Exception
+    {
+        return this.getDataNode("Problem").getDataNode("Instance").getValueStr("id");
+    }
+
 }

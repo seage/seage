@@ -37,8 +37,9 @@ import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
  * @author rick
  */
 //@Ignore("Adapter class not fully implemented yet")
-public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
-    
+public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase
+{
+
     public FireflyAlgorithmAdapterTest() throws Exception
     {
         super();
@@ -48,7 +49,7 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     public void initAlgorithm() throws Exception
     {
         _algAdapter = new TestFireflyAlgorithmAdapter(new TestOperator(), new TestObjectiveFunction(), false, "");
-                
+
         _algParams = new AlgorithmParams();
 
         _algParams.putValue("iterationCount", 10);
@@ -56,10 +57,10 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
         _algParams.putValue("timeStep", 1);
         _algParams.putValue("withDecreasingRandomness", 1);
         _algParams.putValue("absorption", 1);
-                
+
         _tester = new AlgorithmAdapterTester(_algAdapter, _algParams);
     }
-    
+
     @Override
     @Test
     public void testAlgorithm() throws Exception
@@ -71,7 +72,7 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
     @Test
     public void testAlgorithmWithParamsAtZero() throws Exception
     {
-    	AlgorithmParams params = new AlgorithmParams();
+        AlgorithmParams params = new AlgorithmParams();
         params.putValue("iterationCount", 0);
         params.putValue("numSolutions", 0);
         params.putValue("timeStep", 0);
@@ -80,32 +81,32 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase{
         _tester.setAlgParameters(params);
         _tester.testAlgorithmWithParamsAtZero();
     }
-    
+
     @Test
-    @Override    
+    @Override
     public void testAsyncRunning() throws Exception
     {
-    	AlgorithmParams params = new AlgorithmParams();
+        AlgorithmParams params = new AlgorithmParams();
         params.putValue("iterationCount", 10000000);
         params.putValue("numSolutions", 5);
         params.putValue("timeStep", 1);
         params.putValue("withDecreasingRandomness", 1);
         params.putValue("absorption", 0);
         _tester.setAlgParameters(params);
-        _tester.testAsyncRunning();        
+        _tester.testAsyncRunning();
     }
-    
-    @Test
-	@Override
-	public void testReport() throws Exception
-	{
-		_tester.testReport();		
-	}
-    
+
     @Test
     @Override
-	public void testAlgorithmWithParamsNull() throws Exception
-	{
-		_tester.testAlgorithmWithParamsNull();		
-	}
+    public void testReport() throws Exception
+    {
+        _tester.testReport();
+    }
+
+    @Test
+    @Override
+    public void testAlgorithmWithParamsNull() throws Exception
+    {
+        _tester.testAlgorithmWithParamsNull();
+    }
 }

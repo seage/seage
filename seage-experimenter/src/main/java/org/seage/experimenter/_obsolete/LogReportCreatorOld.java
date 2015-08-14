@@ -48,269 +48,270 @@ import com.rapidminer.RapidMiner;
  *
  * @author rick
  */
-public class LogReportCreatorOld implements ILogReport {
-    
+public class LogReportCreatorOld implements ILogReport
+{
+
     private static String _logPath = "output";
     private static String _reportPath = "report";
-    
+
     public LogReportCreatorOld()
     {
         RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
         RapidMiner.init();
     }
-    
-   
+
     public void report() throws Exception
     {
         report0();
         reportRapidMiner();
         //report1();
     }
-    
+
     private void reportRapidMiner() throws Exception
     {
         Process process = new Process(new File("processDefifnition.xml"));
-        
+
         System.out.println(process.getRootOperator().createProcessTree(0));
-                        
+
         process.run();
 
-//        Collection<Operator> ops = process.getAllOperators();
-//        ExampleSet ex = null;
-//
-//        for(Operator op : ops)
-//        {
-//            System.out.println(op.getName());
-//            if(op.getName().equals("Aggregate (2)"))
-//                ex = op.getOutputPorts().getPortByName("example set output").getData();
-//        }
-//
-//
-//        System.out.println(ex);
+        //        Collection<Operator> ops = process.getAllOperators();
+        //        ExampleSet ex = null;
+        //
+        //        for(Operator op : ops)
+        //        {
+        //            System.out.println(op.getName());
+        //            if(op.getName().equals("Aggregate (2)"))
+        //                ex = op.getOutputPorts().getPortByName("example set output").getData();
+        //        }
+        //
+        //
+        //        System.out.println(ex);
     }
-    
-    
-    
+
     private void report0() throws Exception
     {
         System.out.println("Creating reports 0...");
-        
+
         File logDir = new File(_logPath);
-        
+
         File reportDir = new File(_reportPath);
-        
-        if(reportDir.exists())
+
+        if (reportDir.exists())
             FileHelper.deleteDirectory(reportDir);
 
         reportDir.mkdirs();
-        
-        File output = new File(reportDir.getPath()+"/report.csv");
+
+        File output = new File(reportDir.getPath() + "/report.csv");
         output.createNewFile();
-        
-        StreamResult outputStream = new StreamResult
-                        ( new FileOutputStream(output));
-        
-        FilenameFilter filter = new FilenameFilter() {
-            public boolean accept(File arg0, String arg1) {
-                if(arg0.isDirectory()) 
+
+        StreamResult outputStream = new StreamResult(new FileOutputStream(output));
+
+        FilenameFilter filter = new FilenameFilter()
+        {
+            public boolean accept(File arg0, String arg1)
+            {
+                if (arg0.isDirectory())
                     return true;
-                else 
+                else
                     return false;
             }
         };
         //DataNode xmlDoc = new DataNode("xml");
-        
-        for(String dirName : logDir.list(filter))
+
+        for (String dirName : logDir.list(filter))
         {
             System.err.println(dirName);
-            
+
             //File reportDirDir = new File(reportDir.getPath()+"/"+dirName);
             //reportDirDir.mkdirs();
-            
-            File logDirDir = new File(logDir.getPath()+"/"+dirName);
+
+            File logDirDir = new File(logDir.getPath() + "/" + dirName);
             Arrays.sort(logDirDir.list());
-            
-            for(String xmlFileName : logDirDir.list())
+
+            for (String xmlFileName : logDirDir.list())
             {
                 //System.out.println("\t"+xmlFileName);
-                String xmlPath = logDir.getPath()+"/"+dirName+"/"+xmlFileName;
+                String xmlPath = logDir.getPath() + "/" + dirName + "/" + xmlFileName;
                 //File xmlFile = new File();
-                try{
+                try
+                {
                     //DataNode dn = XmlHelper.readXml(xmlFile);
                     //xmlDoc.putDataNodeRef(dn);
                     transform0(xmlPath, "report2csv_1.xsl", outputStream);
-                }catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     System.out.println(xmlPath);
                     //e.printStackTrace();
-                }                
-            }            
-            
-            
+                }
+            }
+
         }
-        
+
         //XmlHelper.writeXml(xmlDoc, _reportPath+"/data.xml");
-        
+
         //transform0(xmlDoc.toXml(), "report0.xsl", reportDir.getPath()+"/report.html");
         //transform0(xmlDoc.toXml(), "report2csv.xsl", reportDir.getPath()+"/report.csv");
-        
+
     }
-    
+
     private void transform0(String xmlPath, String xsltName, StreamResult outputStream) throws Exception
     {
 
-                //XmlHelper.writeXml(xmlDoc, reportDir.getPath()+"/report.xml");
-                
-                System.setProperty("javax.xml.transform.TransformerFactory",
-                    "net.sf.saxon.TransformerFactoryImpl");
-                
-                TransformerFactory tFactory = TransformerFactory.newInstance();
-                Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));
+        //XmlHelper.writeXml(xmlDoc, reportDir.getPath()+"/report.xml");
 
-                transformer.transform (new StreamSource(new FileInputStream(xmlPath)), outputStream);
-                   //new javax.xml.transform.stream.StreamSource
-                   //     (reportDir.getPath()+"/report.xml"),
-                   
+        System.setProperty("javax.xml.transform.TransformerFactory",
+                "net.sf.saxon.TransformerFactoryImpl");
+
+        TransformerFactory tFactory = TransformerFactory.newInstance();
+        Transformer transformer = tFactory
+                .newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream(xsltName)));
+
+        transformer.transform(new StreamSource(new FileInputStream(xmlPath)), outputStream);
+        //new javax.xml.transform.stream.StreamSource
+        //     (reportDir.getPath()+"/report.xml"),
 
     }
-    
+
     @SuppressWarnings("unused")
-	private void report1()
+    private void report1()
     {
         System.out.println("Creating reports 1...");
-        
+
         File logDir = new File(_logPath);
-        
-        File reportDir = new File(_reportPath+"1");
-        
-        if(reportDir.exists())
+
+        File reportDir = new File(_reportPath + "1");
+
+        if (reportDir.exists())
             FileHelper.deleteDirectory(reportDir);
-        
+
         reportDir.mkdirs();
-        
-        FilenameFilter filter = new FilenameFilter() {
-            public boolean accept(File arg0, String arg1) {
-                if(arg0.isDirectory()) 
+
+        FilenameFilter filter = new FilenameFilter()
+        {
+            public boolean accept(File arg0, String arg1)
+            {
+                if (arg0.isDirectory())
                     return true;
-                else 
+                else
                     return false;
             }
         };
-        
+
         DataNode xmlDoc = new DataNode("xml");
-        
-        for(String dirName : logDir.list(filter))
+
+        for (String dirName : logDir.list(filter))
         {
             //System.out.println(dirName);
-            
+
             //File reportDirDir = new File(reportDir.getPath()+"/"+dirName);
             //reportDirDir.mkdirs();
-            
-            File logDirDir = new File(logDir.getPath()+"/"+dirName);
-            
-            
-            for(String xmlFileName : logDirDir.list())
+
+            File logDirDir = new File(logDir.getPath() + "/" + dirName);
+
+            for (String xmlFileName : logDirDir.list())
             {
                 //System.out.println("\t"+xmlFileName);
-                File xmlFile = new File(logDir.getPath()+"/"+dirName+"/"+xmlFileName);
-                try{
-                    DataNode report = XmlHelper.readXml(xmlFile); 
-                    
-                    String experimentID = getExperimentID(report);                    
-                    DataNode experiment = touchDataNode(xmlDoc, "Experiment", experimentID);                    
-                    
+                File xmlFile = new File(logDir.getPath() + "/" + dirName + "/" + xmlFileName);
+                try
+                {
+                    DataNode report = XmlHelper.readXml(xmlFile);
+
+                    String experimentID = getExperimentID(report);
+                    DataNode experiment = touchDataNode(xmlDoc, "Experiment", experimentID);
+
                     String problemID = report.getDataNode("Config").getDataNode("Problem").getValueStr("id");
                     DataNode problem = touchDataNode(experiment, "Problem", problemID);
-                    
-                    String instanceID = report.getDataNode("Config").getDataNode("Problem").getDataNode("Instance").getValueStr("name");
+
+                    String instanceID = report.getDataNode("Config").getDataNode("Problem").getDataNode("Instance")
+                            .getValueStr("name");
                     DataNode instance = touchDataNode(problem, "Instance", instanceID);
-                    
+
                     //String algorithmID = report.getDataNode("Config").getDataNode("Algorithm").getValueStr("id");
                     //DataNode algorithm = touchDataNode(instance, "Algorithm", algorithmID);
-                    
+
                     String configID = report.getDataNode("Config").getValueStr("configID");
                     DataNode config = touchDataNode(instance, "Config", configID);
-                    
+
                     //config.putValue("algorithmID", algorithm.getValue("id"));
                     DataNode algorithm = report.getDataNode("Config").getDataNode("Algorithm");
-                    if(!config.containsNode("Algorithm"))
+                    if (!config.containsNode("Algorithm"))
                         config.putDataNodeRef(algorithm);
-                    
+
                     String runID = getRuntID(report);
                     //touchDataNode(config, "Algorithm", runID);
                     DataNode run = touchDataNode(config, "Run", runID);
-                    
+
                     DataNode algReport = report.getDataNode("AlgorithmReport");
                     String algID = algReport.getValueStr("algorithmID");
                     DataNode algReport2 = touchDataNode(run, "AlgorithmReport", algID);
                     algReport2.putDataNodeRef(algReport.getDataNode("Statistics"));
 
-                    
-                    
                     //experiment.putDataNode(problem);
                     //xmlDoc.putDataNode(experiment);
-                }catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     e.printStackTrace();
-                }                
+                }
             }
             //XmlHelper.writeXml(xmlDoc, reportDirDir.getPath()+"/report.xml");
-            
-            
+
         }
-        
+
         //XmlHelper.writeXml(xmlDoc, reportDir.getPath()+"/report.xml");
-        
+
         try
-            {          
-                System.setProperty("javax.xml.transform.TransformerFactory",
+        {
+            System.setProperty("javax.xml.transform.TransformerFactory",
                     "net.sf.saxon.TransformerFactoryImpl");
 
-                TransformerFactory tFactory = TransformerFactory.newInstance();
-                Transformer transformer = tFactory.newTransformer(new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream("report1.xsl")));
+            TransformerFactory tFactory = TransformerFactory.newInstance();
+            Transformer transformer = tFactory.newTransformer(
+                    new javax.xml.transform.stream.StreamSource(getClass().getResourceAsStream("report1.xsl")));
 
-                transformer.transform
-                  (new DOMSource(xmlDoc.toXml()),
-                   //new javax.xml.transform.stream.StreamSource
-                   //     (reportDir.getPath()+"/report.xml"),
-                   new javax.xml.transform.stream.StreamResult
-                        ( new FileOutputStream(reportDir.getPath()+"/report.html")));
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            } 
+            transformer.transform(new DOMSource(xmlDoc.toXml()),
+                    //new javax.xml.transform.stream.StreamSource
+                    //     (reportDir.getPath()+"/report.xml"),
+                    new javax.xml.transform.stream.StreamResult(
+                            new FileOutputStream(reportDir.getPath() + "/report.html")));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
-    
+
     private String getExperimentID(DataNode report) throws Exception
     {
-        if(report.containsValue("experimentID"))
+        if (report.containsValue("experimentID"))
             return report.getValueStr("experimentID");
         else
             return report.getDataNode("Config").getValueStr("runID");
     }
-    
+
     private String getRuntID(DataNode report) throws Exception
     {
-        if(report.containsValue("runID"))
+        if (report.containsValue("runID"))
             return report.getValueStr("runID");
         else
             return report.getDataNode("AlgorithmReport").getValueStr("created");
     }
-    
+
     private DataNode touchDataNode(DataNode parent, String elemName, String elemID) throws Exception
     {
         DataNode result;
-        if(!parent.containsNode(elemName) || parent.getDataNodeById(elemID)==null)
+        if (!parent.containsNode(elemName) || parent.getDataNodeById(elemID) == null)
         {
             result = new DataNode(elemName);
             result.putValue("id", elemID);
 
-            parent.putDataNodeRef(result);            
+            parent.putDataNodeRef(result);
         }
         else
             result = parent.getDataNodeById(elemID);
-        
+
         return result;
     }
 }

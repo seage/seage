@@ -44,63 +44,62 @@ import org.seage.problem.tsp.TspProblemInstance;
 @Annotations.AlgorithmName("Simulated Annealing")
 public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
 {
-//	private TspSolution _tspSolution;
-//    private TspProblemProvider _provider;
+    //	private TspSolution _tspSolution;
+    //    private TspProblemProvider _provider;
 
     public TspSimulatedAnnealingFactory()
     {
     }
 
+    //    public TspSimulatedAnnealingFactory(DataNode params, City[] cities) throws Exception
+    //    {
+    //        String solutionType = params.getValueStr("initSolutionType");
+    //        if( solutionType.toLowerCase().equals("greedy") )
+    //            _tspSolution = new TspGreedySolution( cities );
+    //        else if( solutionType.toLowerCase().equals("random") )
+    //            _tspSolution = new TspRandomSolution( cities );
+    //        else if( solutionType.toLowerCase().equals("sorted") )
+    //            _tspSolution = new TspSortedSolution( cities );
+    //    }
 
-//    public TspSimulatedAnnealingFactory(DataNode params, City[] cities) throws Exception
-//    {
-//        String solutionType = params.getValueStr("initSolutionType");
-//        if( solutionType.toLowerCase().equals("greedy") )
-//            _tspSolution = new TspGreedySolution( cities );
-//        else if( solutionType.toLowerCase().equals("random") )
-//            _tspSolution = new TspRandomSolution( cities );
-//        else if( solutionType.toLowerCase().equals("sorted") )
-//            _tspSolution = new TspSortedSolution( cities );
-//    }
-
-
-    public Class<SimulatedAnnealingAdapter> getAlgorithmClass() {
+    public Class<SimulatedAnnealingAdapter> getAlgorithmClass()
+    {
         return SimulatedAnnealingAdapter.class;
     }
 
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
         IAlgorithmAdapter algorithm;
-        final City[] cities = ((TspProblemInstance)instance).getCities();
-        
+        final City[] cities = ((TspProblemInstance) instance).getCities();
+
         algorithm = new SimulatedAnnealingAdapter(
                 new TspObjectiveFunction(cities),
                 new TspMoveManager(), false, "")
         {
-            public void solutionsFromPhenotype(Object[][] source) throws Exception 
+            public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-            	_solutions = new Solution[source.length];
-            	for(int j=0;j<source.length;j++)
-            	{
-	                TspSolution solution = new TspGreedySolution(cities);
-	                Integer[] tour = solution.getTour();
-	
-	                for(int i = 0; i < tour.length; i++)
-	                    tour[i] = (Integer)source[j][i];
-                
-	                _solutions[j] = solution;
-            	}
+                _solutions = new Solution[source.length];
+                for (int j = 0; j < source.length; j++)
+                {
+                    TspSolution solution = new TspGreedySolution(cities);
+                    Integer[] tour = solution.getTour();
+
+                    for (int i = 0; i < tour.length; i++)
+                        tour[i] = (Integer) source[j][i];
+
+                    _solutions[j] = solution;
+                }
             }
 
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 Object[][] result = new Object[_solutions.length][];
 
-                for(int i=0;i<_solutions.length;i++)
-            	{
-                	TspSolution solution = (TspSolution)_solutions[i]; 
-                	result[i] = solution.getTour().clone();                	
-            	}
+                for (int i = 0; i < _solutions.length; i++)
+                {
+                    TspSolution solution = (TspSolution) _solutions[i];
+                    result[i] = solution.getTour().clone();
+                }
                 return result;
             }
 

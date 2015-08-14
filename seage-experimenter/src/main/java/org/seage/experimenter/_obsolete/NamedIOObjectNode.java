@@ -44,43 +44,49 @@ public class NamedIOObjectNode
     private List<DataNode> dataNodes;
     private RMProcess rmProcess;
 
-    public NamedIOObjectNode() {
+    public NamedIOObjectNode()
+    {
         this.map = new HashMap<String, IOObject>();
         this.dataNodes = new ArrayList<DataNode>();
     }
-    
+
     public void addDataFromOutputPort(String port, IOObject data)
     {
-        this.map.put( port , data );
-    }
-    
-    public void addDataNode(DataNode dataNode)
-    {
-        this.dataNodes.add( dataNode );
+        this.map.put(port, data);
     }
 
-    public List<DataNode> getDataNodes() {
+    public void addDataNode(DataNode dataNode)
+    {
+        this.dataNodes.add(dataNode);
+    }
+
+    public List<DataNode> getDataNodes()
+    {
         return dataNodes;
     }
 
-    public void setDataNodes(List<DataNode> dataNodes) {
+    public void setDataNodes(List<DataNode> dataNodes)
+    {
         this.dataNodes = dataNodes;
     }
 
-    public RMProcess getRmProcess() {
+    public RMProcess getRmProcess()
+    {
         return rmProcess;
     }
 
-    public void setRmProcess(RMProcess rmProcess) {
+    public void setRmProcess(RMProcess rmProcess)
+    {
         this.rmProcess = rmProcess;
     }
 
-
-    public HashMap<String, IOObject> getMap() {
+    public HashMap<String, IOObject> getMap()
+    {
         return map;
     }
 
-    public void setMap(HashMap<String, IOObject> map) {
+    public void setMap(HashMap<String, IOObject> map)
+    {
         this.map = map;
     }
 

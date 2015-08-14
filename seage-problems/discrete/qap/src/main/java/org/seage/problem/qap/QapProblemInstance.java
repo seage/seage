@@ -37,14 +37,15 @@ public class QapProblemInstance extends ProblemInstance
 {
     private Double[][][] _facilityLocation;
 
-    public QapProblemInstance(ProblemInstanceInfo instanceInfo, Double[][][] facilityLocation) throws Exception {
+    public QapProblemInstance(ProblemInstanceInfo instanceInfo, Double[][][] facilityLocation) throws Exception
+    {
         super(instanceInfo);
         _facilityLocation = facilityLocation;
     }
 
-    public Double[][][] getFacilityLocation() {
+    public Double[][][] getFacilityLocation()
+    {
         return _facilityLocation;
     }
-    
-    
+
 }

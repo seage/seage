@@ -30,7 +30,6 @@ package org.seage.problem.qap;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 
-
 /**
  *
  * @author Karel Durkota
@@ -39,21 +38,23 @@ public class Visualizer
 {
     // <editor-fold defaultstate="collapsed" desc="Singleton design pattern">
     private static Visualizer _instance;
+
     private Visualizer()
     {
     }
 
     public static Visualizer instance()
-    {        
-        if(_instance == null)
+    {
+        if (_instance == null)
             _instance = new Visualizer();
         return _instance;
     }
     // </editor-fold>
 
-    public void createTable(Double[][] facilityLocation, Integer[] assignement, String path, int width, int height) throws NoninvertibleTransformException
+    public void createTable(Double[][] facilityLocation, Integer[] assignement, String path, int width, int height)
+            throws NoninvertibleTransformException
     {
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB );
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         image.getGraphics();
 
@@ -68,21 +69,21 @@ public class Visualizer
             if(cities[tour[i]].Y < minY) minY = cities[tour[i]].Y;
             if(cities[tour[i]].Y > maxY) maxY = cities[tour[i]].Y;
         }
-
+        
         double currWidth = maxX - minX;
         double currHeight = maxY - minY;
-
+        
         graphics.setColor(Color.black);
         graphics.setBackground(Color.white);
-
+        
         width -=_pWidth;
         height -=_pHeight;
-
+        
         //TODO: B - Simplify the computation of X,Y coordinates.
         graphics.fillOval(
                     (int)(width*(cities[tour[0]].X-minX) / currWidth),
                     height-(int)(height*(cities[tour[0]].Y-minY) / currHeight), _pWidth , _pHeight );
-
+        
         int i = 1;
         for( ; i < cities.length; i++)
         {
@@ -97,7 +98,7 @@ public class Visualizer
                         height-(int)(height*(cities[tour[i - 1]].Y-minY) / currHeight-_pHeight/2)
                     );
         }
-
+        
         // draw line between first and end city
         graphics.drawLine (
                         (int)(width*(cities[tour[0]].X-minX) / currWidth+_pWidth/2),
@@ -105,14 +106,14 @@ public class Visualizer
                         (int)(width*(cities[tour[i - 1]].X-minX) / currWidth+_pWidth/2),
                         height-(int)(height*(cities[tour[i - 1]].Y-minY) / currHeight-_pHeight/2)
                     );
-
+        
         try
         {
             File f = new File(path);
             if(path.contains("/"))
                 new File(f.getParent()).mkdirs();
             BufferedOutputStream out = new BufferedOutputStream( new FileOutputStream( f ) );
-
+        
             ImageIO.write(image, "png", out);
             out.close();
         } catch (Exception e) {
@@ -120,5 +121,5 @@ public class Visualizer
             e.printStackTrace();
         }*/
     }
-    
+
 }

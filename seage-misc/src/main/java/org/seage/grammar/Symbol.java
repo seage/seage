@@ -29,15 +29,17 @@ package org.seage.grammar;
 import org.seage.data.DataNode;
 import java.io.Serializable;
 
-
 /**
  *
  * @author jenik
  */
 public interface Symbol extends Serializable
 {
-    
-    public enum Type { TERMINAL, NONTERMINAL };    
+
+    public enum Type
+    {
+        TERMINAL, NONTERMINAL
+    };
 
     /** @brief evaluate derivate tree
      *  @param symbolTable table of symbols and their values
@@ -47,10 +49,10 @@ public interface Symbol extends Serializable
 
     /** @brief optimize derivate tree, return new derivate (sub)tree */
     abstract public Symbol optimize();
-        
+
     /** @brief gets type of this symbol (termina, nonterminal) */
     abstract public Type getType();
-        
+
     /** @brief copy ourself, and return new instance */
     abstract public Symbol copy();
 

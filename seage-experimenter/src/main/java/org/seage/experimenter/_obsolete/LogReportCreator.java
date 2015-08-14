@@ -42,89 +42,93 @@ import org.seage.data.file.FileHelper;
  *
  * @author rick
  */
-public class LogReportCreator implements ILogReport {
-    
-    private static final String LOG_PATH            = "output";
-    private static final String REPORT_PATH         = "report";
-    private static final String XSL_TEMPLATE        = "report2csv.xsl";
-    private static final String OUTPUT_CSV_FILE     = "report.csv";    
+public class LogReportCreator implements ILogReport
+{
+
+    private static final String LOG_PATH = "output";
+    private static final String REPORT_PATH = "report";
+    private static final String XSL_TEMPLATE = "report2csv.xsl";
+    private static final String OUTPUT_CSV_FILE = "report.csv";
     //private static final String CSV_HEADER          = "ExperimentID;ProblemID;AlgorithmID;InstanceID;ConfigID;InitSolutionValue;SolutionValue;Time;";
-    
+
     private String _experimentID;
 
-    public LogReportCreator() {}
-    
+    public LogReportCreator()
+    {
+    }
+
     @Override
     public void report() throws Exception
     {
         createReport();
     }
-    
+
     public void report(String experimentID) throws Exception
     {
         _experimentID = experimentID;
         createReport();
     }
-    
+
     private void createReport() throws Exception
     {
         Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, "Creating reports ...");
         Logger.getLogger(ProcessPerformer.class.getName()).fine("Creating reports ...");
-        
+
         File logDir = new File(LOG_PATH);
-        
+
         File reportDir = new File(REPORT_PATH);
-        
-        if(reportDir.exists())
+
+        if (reportDir.exists())
             FileHelper.deleteDirectory(reportDir);
 
         reportDir.mkdirs();
-        
+
         File output = new File(reportDir.getPath() + "/" + OUTPUT_CSV_FILE);
         output.createNewFile();
 
-        StreamResult outputStream = new StreamResult
-                        ( new FileOutputStream(output));
-        
-        FilenameFilter filter = new FilenameFilter() {
+        StreamResult outputStream = new StreamResult(new FileOutputStream(output));
+
+        FilenameFilter filter = new FilenameFilter()
+        {
             @Override
-            public boolean accept(File arg0, String arg1) {
-                if(arg0.isDirectory()) 
+            public boolean accept(File arg0, String arg1)
+            {
+                if (arg0.isDirectory())
                 {
-                    if(_experimentID == null)
+                    if (_experimentID == null)
                         return true;
                     else
                     {
-                        if(!arg1.equals( _experimentID ))
+                        if (!arg1.equals(_experimentID))
                             return false;
                         else
                             return true;
                     }
                 }
-                else 
+                else
                     return false;
             }
         };
-        
+
         // TODO: B - Number of names of parameters is fixed, for future will be good to create a floating number of names of parameters 
-        
+
         int numberOfParameters = 10;
         StringBuilder sb = new StringBuilder();
-        for(int i = 1; i < numberOfParameters + 1; ++i)
+        for (int i = 1; i < numberOfParameters + 1; ++i)
         {
             sb.append("p").append(i).append(";");
-        }        
+        }
 
         //outputStream.getOutputStream().write( ( CSV_HEADER + sb.append("\n").toString() ).getBytes() );
 
-        for(String dirName : logDir.list(filter))
+        for (String dirName : logDir.list(filter))
         {
             System.err.println(dirName);
-            
+
             File logDirDir = new File(logDir.getPath() + "/" + dirName);
             Arrays.sort(logDirDir.list());
-            
-            for(String xmlFileName : logDirDir.list())
+
+            for (String xmlFileName : logDirDir.list())
             {
                 String xmlPath = logDir.getPath() + "/" + dirName + "/" + xmlFileName;
 
@@ -132,11 +136,11 @@ public class LogReportCreator implements ILogReport {
                 {
                     Transformer.getInstance().transformByXSLT(xmlPath, XSL_TEMPLATE, outputStream);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Logger.getLogger(ProcessPerformer.class.getName()).fine(xmlPath);
                 }
-            }            
-        }        
-    }   
+            }
+        }
+    }
 }

@@ -42,19 +42,21 @@ import org.seage.experimenter.config.Configurator;
 public class RandomConfigurator extends Configurator
 {
     @Override
-	public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs) throws Exception
+    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID,
+            int numConfigs) throws Exception
     {
 
         List<ProblemConfig> results = new ArrayList<ProblemConfig>();
         // List<List<Double>> values = new ArrayList<List<Double>>();
 
         //System.out.println(instanceInfo.getValue("path"));
-        
+
         for (int i = 0; i < numConfigs; i++)
         {
-            ProblemConfig config = createProblemConfig(problemInfo, instanceID, algorithmID );
-            
-            for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID).getDataNodes("Parameter"))
+            ProblemConfig config = createProblemConfig(problemInfo, instanceID, algorithmID);
+
+            for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
+                    .getDataNodes("Parameter"))
             {
                 String name = paramNode.getValueStr("name");
                 double min = paramNode.getValueDouble("min");

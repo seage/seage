@@ -27,91 +27,89 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.seage.metaheuristic.IAlgorithmListener;
 
-public class GeneticAlgorithmTest 
+public class GeneticAlgorithmTest
 {
     private static final Logger _logger = Logger.getLogger(GeneticAlgorithmTest.class.getName());
-	@Test
-	public void testAlgorithm() throws Exception 
-	{		
-		BasicGeneticOperator<Subject<Integer>, Integer> operator = new BasicGeneticOperator<Subject<Integer>, Integer>();
-		SubjectEvaluator<Subject<Integer>> evaluator = new SubjectEvaluator<Subject<Integer>>()
-		{
 
-			@Override
-			protected double[] evaluate(Subject<Integer> solution) throws Exception
-			{
-				double val = 0;
-	        	for(int i=0;i<solution.getChromosome().getGenes().length;i++)
-	        	{
-	        		val += i*solution.getChromosome().getGene(i);
-	        	}
-	        	
-	            return new double[]{val};
-			}
-		};
-		GeneticAlgorithm<Subject<Integer>> ga = new GeneticAlgorithm<Subject<Integer>>(operator, evaluator );
-		ga.addGeneticSearchListener(new Listener());
-		ga.setCrossLengthPct(0.4);
-		ga.setEliteSubjectsPct(0.1);
-		ga.setIterationToGo(1000);
-		ga.setMutateChromosomeLengthPct(0.2);
-		ga.setMutatePopulationPct(0.2);
-		ga.setPopulationCount(100);
-		ga.setRandomSubjectsPct(0.1);
-		
-		List<Subject<Integer>> subjects = new ArrayList<Subject<Integer>>();
-		
-		Random rnd = new Random(4);
-		for(int i=0;i<100;i++)
-		{
-			Integer[] arr = new Integer[100];
-			for(int j=0;j<100;j++)
-			{
-				arr[j] = rnd.nextInt(100);
-				
-			}
-			subjects.add(new Subject<Integer>(arr));
-		}
-		
-		ga.startSearching(subjects);
-	}
-	
-		
-	private class Listener implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>>
-	{
+    @Test
+    public void testAlgorithm() throws Exception
+    {
+        BasicGeneticOperator<Subject<Integer>, Integer> operator = new BasicGeneticOperator<Subject<Integer>, Integer>();
+        SubjectEvaluator<Subject<Integer>> evaluator = new SubjectEvaluator<Subject<Integer>>()
+        {
 
-		@Override
-		public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e)
-		{			
-		}
+            @Override
+            protected double[] evaluate(Subject<Integer> solution) throws Exception
+            {
+                double val = 0;
+                for (int i = 0; i < solution.getChromosome().getGenes().length; i++)
+                {
+                    val += i * solution.getChromosome().getGene(i);
+                }
 
-		@Override
-		public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e)
-		{
-			_logger.finest(e.getGeneticSearch().getBestSubject().getChromosome().toString());
-			
-		}
+                return new double[] { val };
+            }
+        };
+        GeneticAlgorithm<Subject<Integer>> ga = new GeneticAlgorithm<Subject<Integer>>(operator, evaluator);
+        ga.addGeneticSearchListener(new Listener());
+        ga.setCrossLengthPct(0.4);
+        ga.setEliteSubjectsPct(0.1);
+        ga.setIterationToGo(1000);
+        ga.setMutateChromosomeLengthPct(0.2);
+        ga.setMutatePopulationPct(0.2);
+        ga.setPopulationCount(100);
+        ga.setRandomSubjectsPct(0.1);
 
-		@Override
-		public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e)
-		{
-			_logger.finest(String.format("+++ %f", e.getGeneticSearch().getBestSubject().getFitness()[0]));
-			
-		}
+        List<Subject<Integer>> subjects = new ArrayList<Subject<Integer>>();
 
-		@Override
-		public void iterationPerformed(GeneticAlgorithmEvent<Subject<Integer>> e)
-		{
-			
-		}
+        Random rnd = new Random(4);
+        for (int i = 0; i < 100; i++)
+        {
+            Integer[] arr = new Integer[100];
+            for (int j = 0; j < 100; j++)
+            {
+                arr[j] = rnd.nextInt(100);
 
-		@Override
-		public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Integer>> e)
-		{
-			
-		}
+            }
+            subjects.add(new Subject<Integer>(arr));
+        }
 
-		
-		
-	}
-} 
+        ga.startSearching(subjects);
+    }
+
+    private class Listener implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>>
+    {
+
+        @Override
+        public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e)
+        {
+        }
+
+        @Override
+        public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e)
+        {
+            _logger.finest(e.getGeneticSearch().getBestSubject().getChromosome().toString());
+
+        }
+
+        @Override
+        public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e)
+        {
+            _logger.finest(String.format("+++ %f", e.getGeneticSearch().getBestSubject().getFitness()[0]));
+
+        }
+
+        @Override
+        public void iterationPerformed(GeneticAlgorithmEvent<Subject<Integer>> e)
+        {
+
+        }
+
+        @Override
+        public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Integer>> e)
+        {
+
+        }
+
+    }
+}

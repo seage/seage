@@ -43,59 +43,59 @@ import org.seage.problem.qap.QapProblemInstance;
 @Annotations.AlgorithmName("Simulated Annealing")
 public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
 {
-    
 
-//    public QapSimulatedAnnealingFactory(DataNode params, Double[][][] facilityLocation) throws Exception
-//    {
-//        String solutionType = params.getValueStr("initSolutionType");
-//        if( solutionType.toLowerCase().equals("greedy") )
-//            _qapSolution = new QapGreedySolution( facilityLocation );
-//        else if( solutionType.toLowerCase().equals("random") )
-//            _qapSolution = new QapRandomSolution( facilityLocation );
-//        else if( solutionType.toLowerCase().equals("sorted") )
-//            _qapSolution = new QapSortedSolution( facilityLocation );
-//    }
+    //    public QapSimulatedAnnealingFactory(DataNode params, Double[][][] facilityLocation) throws Exception
+    //    {
+    //        String solutionType = params.getValueStr("initSolutionType");
+    //        if( solutionType.toLowerCase().equals("greedy") )
+    //            _qapSolution = new QapGreedySolution( facilityLocation );
+    //        else if( solutionType.toLowerCase().equals("random") )
+    //            _qapSolution = new QapRandomSolution( facilityLocation );
+    //        else if( solutionType.toLowerCase().equals("sorted") )
+    //            _qapSolution = new QapSortedSolution( facilityLocation );
+    //    }
 
-    public Class<SimulatedAnnealingAdapter> getAlgorithmClass() {
+    public Class<SimulatedAnnealingAdapter> getAlgorithmClass()
+    {
         return SimulatedAnnealingAdapter.class;
     }
 
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
-        final Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
-        
+        final Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
+
         IAlgorithmAdapter algorithm;
 
         algorithm = new SimulatedAnnealingAdapter(
                 new QapObjectiveFunction(),
                 new QapMoveManager(), false, "")
         {
-            public void solutionsFromPhenotype(Object[][] source) throws Exception 
+            public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-            	_solutions = new Solution[source.length];
-            	for(int j=0;j<source.length;j++)
-            	{
-	                QapSolution solution = new QapGreedySolution(facilityLocation);
-	                Integer[] assign = solution.getAssign();
-	
-	                for(int i = 0; i < assign.length; i++)
-	                    assign[i] = (Integer)source[0][i];
-	                
-	                _solutions[j] = solution;
-            	}
+                _solutions = new Solution[source.length];
+                for (int j = 0; j < source.length; j++)
+                {
+                    QapSolution solution = new QapGreedySolution(facilityLocation);
+                    Integer[] assign = solution.getAssign();
+
+                    for (int i = 0; i < assign.length; i++)
+                        assign[i] = (Integer) source[0][i];
+
+                    _solutions[j] = solution;
+                }
             }
 
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 Integer[] assign = ((QapSolution) _simulatedAnnealing.getBestSolution()).getAssign();
-                Object[][] source = new Object[1][ assign.length ];
+                Object[][] source = new Object[1][assign.length];
 
-                for(int j=0;j<source.length;j++)
-            	{
-	                source[j] = new Integer[ assign.length ];
-	                for(int i = 0; i < assign.length; i++)
-	                    source[j][i] = assign[i];
-            	}
+                for (int j = 0; j < source.length; j++)
+                {
+                    source[j] = new Integer[assign.length];
+                    for (int i = 0; i < assign.length; i++)
+                        source[j][i] = assign[i];
+                }
                 return source;
             }
 

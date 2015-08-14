@@ -33,58 +33,59 @@ import java.util.Arrays;
  */
 public class Chromosome<GeneType> implements Serializable
 {
-	private static final long serialVersionUID = 3050047980641091757L;
-	//public Gene[] m_gene;
-	private GeneType[] _genes;
+    private static final long serialVersionUID = 3050047980641091757L;
+    //public Gene[] m_gene;
+    private GeneType[] _genes;
 
-	@SuppressWarnings("unused")
-	private Chromosome()
-	{ }
+    @SuppressWarnings("unused")
+    private Chromosome()
+    {
+    }
 
-	public Chromosome(GeneType[] geneValues)
-	{		
-		_genes = Arrays.copyOf(geneValues, geneValues.length);
-	}
+    public Chromosome(GeneType[] geneValues)
+    {
+        _genes = Arrays.copyOf(geneValues, geneValues.length);
+    }
 
-	public int getLength()
-	{
-		return _genes.length;
-	}
-	
-	public GeneType getGene(int index)
-	{
-		return _genes[index];
-	}
-	
-	public GeneType[] getGenes()
-	{
-		return _genes;
-	}
+    public int getLength()
+    {
+        return _genes.length;
+    }
 
-	public void setGene(int index, GeneType gene)
-	{
-		_genes[index]= gene;
-	}
+    public GeneType getGene(int index)
+    {
+        return _genes[index];
+    }
 
-	public Chromosome<GeneType> clone()
-	{
-		return new Chromosome<GeneType>(_genes);
-	}
+    public GeneType[] getGenes()
+    {
+        return _genes;
+    }
 
-	public void swapGenes(int index1, int index2)
-	{
-		GeneType tmpGene = _genes[index1];
-		setGene(index1, getGene(index2));
-		setGene(index2, tmpGene);
-	}
+    public void setGene(int index, GeneType gene)
+    {
+        _genes[index] = gene;
+    }
 
-	public String toString()
-	{
-		String tmp = "";
-		for(int i=0;i<_genes.length;i++)
-		{
-			tmp += _genes[i].toString() + " ";
-		}
-		return tmp;
-	}
+    public Chromosome<GeneType> clone()
+    {
+        return new Chromosome<GeneType>(_genes);
+    }
+
+    public void swapGenes(int index1, int index2)
+    {
+        GeneType tmpGene = _genes[index1];
+        setGene(index1, getGene(index2));
+        setGene(index2, tmpGene);
+    }
+
+    public String toString()
+    {
+        String tmp = "";
+        for (int i = 0; i < _genes.length; i++)
+        {
+            tmp += _genes[i].toString() + " ";
+        }
+        return tmp;
+    }
 }

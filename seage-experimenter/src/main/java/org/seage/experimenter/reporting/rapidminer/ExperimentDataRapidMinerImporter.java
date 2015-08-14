@@ -27,89 +27,90 @@ import com.rapidminer.tools.OperatorService;
 
 public class ExperimentDataRapidMinerImporter
 {
-	private static Logger _logger = Logger.getLogger(ExperimentDataRapidMinerImporter.class.getName());
-	private String _logPath;
-	
-	
-	private List<RMDataTableCreator> _rmDataTableCreators;
-	
-	public ExperimentDataRapidMinerImporter(String logPath, String repoName) throws RepositoryException
-	{
-		_logPath = logPath;
-		_rmDataTableCreators = new ArrayList<RMDataTableCreator>();
-		_rmDataTableCreators.add(new SingleAlgorithmTableCreator("/databases/experiments", "ExperimentValues"));
-		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.GeneticAlgorithm("/databases/experiments/parameters"));
-		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.TabuSearch("/databases/experiments/parameters"));
-		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.AntColony("/databases/experiments/parameters"));
-		_rmDataTableCreators.add(new AlgorithmParamsTableCreator.SimulatedAnnealing("/databases/experiments/parameters"));
-	}
+    private static Logger _logger = Logger.getLogger(ExperimentDataRapidMinerImporter.class.getName());
+    private String _logPath;
 
-	@SuppressWarnings("unchecked")
-	public void processLogs() throws OperatorException, OperatorCreationException, RepositoryException
-	{
-	    _logger.info("Processing experiment logs ...");
+    private List<RMDataTableCreator> _rmDataTableCreators;
 
-		long t0 = System.currentTimeMillis();
+    public ExperimentDataRapidMinerImporter(String logPath, String repoName) throws RepositoryException
+    {
+        _logPath = logPath;
+        _rmDataTableCreators = new ArrayList<RMDataTableCreator>();
+        _rmDataTableCreators.add(new SingleAlgorithmTableCreator("/databases/experiments", "ExperimentValues"));
+        _rmDataTableCreators.add(new AlgorithmParamsTableCreator.GeneticAlgorithm("/databases/experiments/parameters"));
+        _rmDataTableCreators.add(new AlgorithmParamsTableCreator.TabuSearch("/databases/experiments/parameters"));
+        _rmDataTableCreators.add(new AlgorithmParamsTableCreator.AntColony("/databases/experiments/parameters"));
+        _rmDataTableCreators
+                .add(new AlgorithmParamsTableCreator.SimulatedAnnealing("/databases/experiments/parameters"));
+    }
 
-		File logDir = new File(_logPath);
-		List<Runnable> tasks = new ArrayList<Runnable>();
+    @SuppressWarnings("unchecked")
+    public void processLogs() throws OperatorException, OperatorCreationException, RepositoryException
+    {
+        _logger.info("Processing experiment logs ...");
 
-		try
-		{			
-			for (File f : logDir.listFiles())
-			{
-				if (!f.getName().endsWith(".zip"))
-					continue;				
+        long t0 = System.currentTimeMillis();
 
-				tasks.add(new ProcessExperimentZipFileTask((List<IDocumentProcessor>)(List<?>)_rmDataTableCreators, f));				
-			}	
-			
-			//new TaskRunner().runTasks(tasks, Runtime.getRuntime().availableProcessors());
-			new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(tasks.toArray(new Runnable[]{}));
-		}
-		catch (Exception ex)
-		{
-			_logger.log(Level.SEVERE, ex.getMessage());
-		}
-		
-		writeDataTablesToRepository();
+        File logDir = new File(_logPath);
+        List<Runnable> tasks = new ArrayList<Runnable>();
 
-		long t1 = (System.currentTimeMillis() - t0) / 1000;
+        try
+        {
+            for (File f : logDir.listFiles())
+            {
+                if (!f.getName().endsWith(".zip"))
+                    continue;
 
-		Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, "Processing experiment logs DONE - " + t1 + "s");
-	}
+                tasks.add(
+                        new ProcessExperimentZipFileTask((List<IDocumentProcessor>) (List<?>) _rmDataTableCreators, f));
+            }
 
-	
-	
-	private void writeDataTablesToRepository() throws OperatorException, OperatorCreationException, RepositoryException
-	{
-		RapidMinerManager.init();		
-		RapidMinerManager.initRepository();
-		
-		for(RMDataTableCreator table : _rmDataTableCreators)
-		{	
-			MemoryExampleTable memoryTable = new MemoryExampleTable(table.getAttributes());
-			
-			/* Save model */
-			Operator modelWriter = OperatorService
-					.createOperator(RepositoryStorer.class);
-			modelWriter.setParameter(
-					RepositoryStorer.PARAMETER_REPOSITORY_ENTRY,
-					"//"+RapidMinerManager.RAPIDMINER_LOCAL_REPOSITORY_NAME+table.getRepositoryPath()+"/"+table.getTableName());
-	
-			Process process = new Process();
-	
-			process.getRootOperator().getSubprocess(0).addOperator(modelWriter);
-			process.getRootOperator()
-					.getSubprocess(0)
-					.getInnerSources()
-					.getPortByIndex(0)
-					.connectTo(
-							modelWriter.getInputPorts().getPortByName("input"));
-			
-			memoryTable.readExamples(new ListDataRowReader(table.getDataTable().iterator()));
-	
-			process.run(new IOContainer(memoryTable.createExampleSet()));
-		}
-	}
+            //new TaskRunner().runTasks(tasks, Runtime.getRuntime().availableProcessors());
+            new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(tasks.toArray(new Runnable[] {}));
+        }
+        catch (Exception ex)
+        {
+            _logger.log(Level.SEVERE, ex.getMessage());
+        }
+
+        writeDataTablesToRepository();
+
+        long t1 = (System.currentTimeMillis() - t0) / 1000;
+
+        Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO,
+                "Processing experiment logs DONE - " + t1 + "s");
+    }
+
+    private void writeDataTablesToRepository() throws OperatorException, OperatorCreationException, RepositoryException
+    {
+        RapidMinerManager.init();
+        RapidMinerManager.initRepository();
+
+        for (RMDataTableCreator table : _rmDataTableCreators)
+        {
+            MemoryExampleTable memoryTable = new MemoryExampleTable(table.getAttributes());
+
+            /* Save model */
+            Operator modelWriter = OperatorService
+                    .createOperator(RepositoryStorer.class);
+            modelWriter.setParameter(
+                    RepositoryStorer.PARAMETER_REPOSITORY_ENTRY,
+                    "//" + RapidMinerManager.RAPIDMINER_LOCAL_REPOSITORY_NAME + table.getRepositoryPath() + "/"
+                            + table.getTableName());
+
+            Process process = new Process();
+
+            process.getRootOperator().getSubprocess(0).addOperator(modelWriter);
+            process.getRootOperator()
+                    .getSubprocess(0)
+                    .getInnerSources()
+                    .getPortByIndex(0)
+                    .connectTo(
+                            modelWriter.getInputPorts().getPortByName("input"));
+
+            memoryTable.readExamples(new ListDataRowReader(table.getDataTable().iterator()));
+
+            process.run(new IOContainer(memoryTable.createExampleSet()));
+        }
+    }
 }

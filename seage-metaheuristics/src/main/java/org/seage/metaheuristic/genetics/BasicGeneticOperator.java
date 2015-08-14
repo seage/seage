@@ -35,141 +35,142 @@ import java.util.Random;
  */
 public class BasicGeneticOperator<S extends Subject<GeneType>, GeneType> extends GeneticOperator<S>
 {
-	protected Random _random;
+    protected Random _random;
 
-	public BasicGeneticOperator()
-	{
-		_random = new Random();
-	}
+    public BasicGeneticOperator()
+    {
+        _random = new Random();
+    }
 
-	// / <summary>
-	// / Vybira dva subjekty, kteri se budou krizit
-	// / </summary>
-	// / <param name="population">Aktualni populace - podle jejiz parametru se
-	// vyber provadi</param>
-	// / <returns>Vraci indexy vybranych subjectu</returns>
-	@Override
-	public int[] select(ArrayList<S> subjects)
-	{
-		int count = subjects.size();
-		int[] result = new int[2];
-		double[] table = new double[count];
-		table[0] = distributionF(1, count);
+    // / <summary>
+    // / Vybira dva subjekty, kteri se budou krizit
+    // / </summary>
+    // / <param name="population">Aktualni populace - podle jejiz parametru se
+    // vyber provadi</param>
+    // / <returns>Vraci indexy vybranych subjectu</returns>
+    @Override
+    public int[] select(ArrayList<S> subjects)
+    {
+        int count = subjects.size();
+        int[] result = new int[2];
+        double[] table = new double[count];
+        table[0] = distributionF(1, count);
 
-		for (int i = 1; i < count; i++)
-		{
-			table[i] = table[i - 1] + distributionF(i + 1, count);
-		}
+        for (int i = 1; i < count; i++)
+        {
+            table[i] = table[i - 1] + distributionF(i + 1, count);
+        }
 
-		double r = _random.nextDouble();
+        double r = _random.nextDouble();
 
-		for (int i = 0; i < count; i++)
-		{
-			if (r < table[i])
-			{
-				result[0] = result[1] = i;
-				;
-				break;
-			}
-		}
-		while (result[0] == result[1])
-		{
-			r = _random.nextDouble();
+        for (int i = 0; i < count; i++)
+        {
+            if (r < table[i])
+            {
+                result[0] = result[1] = i;
+                ;
+                break;
+            }
+        }
+        while (result[0] == result[1])
+        {
+            r = _random.nextDouble();
 
-			for (int i = 0; i < count; i++)
-			{
-				if (r < table[i])
-				{
-					result[1] = i;
-					break;
-				}
-			}
-		}
+            for (int i = 0; i < count; i++)
+            {
+                if (r < table[i])
+                {
+                    result[1] = i;
+                    break;
+                }
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	private double distributionF(int i, int n)
-	{
-		return 2 * (n + 1.0 - i) / (n * (n + 1.0));
-	}
+    private double distributionF(int i, int n)
+    {
+        return 2 * (n + 1.0 - i) / (n * (n + 1.0));
+    }
 
-	// / <summary>
-	// / Krizi dva subjekty
-	// / </summary>
-	// / <param name="parent1">Prvni rodic</param>
-	// / <param name="parent2">Druhy rodic</param>
-	// / <returns>Vraci mnozinu potomku</returns>
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<S> crossOver(S parent1, S parent2) throws Exception
-	{		
-		int length = parent1.getChromosome().getLength();
-		int ix = _random.nextInt(length);
-		int crossLength = 1+(int) (length * _random.nextDouble() * _crossLengthCoef);
+    // / <summary>
+    // / Krizi dva subjekty
+    // / </summary>
+    // / <param name="parent1">Prvni rodic</param>
+    // / <param name="parent2">Druhy rodic</param>
+    // / <returns>Vraci mnozinu potomku</returns>
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<S> crossOver(S parent1, S parent2) throws Exception
+    {
+        int length = parent1.getChromosome().getLength();
+        int ix = _random.nextInt(length);
+        int crossLength = 1 + (int) (length * _random.nextDouble() * _crossLengthCoef);
 
-		if (ix > length - crossLength)
-			ix = length - crossLength;
+        if (ix > length - crossLength)
+            ix = length - crossLength;
 
-		S child1 = (S) parent1.clone();
-		S child2 = (S) parent2.clone();
+        S child1 = (S) parent1.clone();
+        S child2 = (S) parent2.clone();
 
-		for (int i = ix; i < ix + crossLength; i++)
-		{
-			GeneType x1 = child1.getChromosome().getGene(i);
-			GeneType x2 = child2.getChromosome().getGene(i);
-			child1.getChromosome().setGene(i, x2);
-			child2.getChromosome().setGene(i, x1);
-		}
-		
-		List<S> result = new ArrayList<S>();
-		result.add(child1);result.add(child2);
-		return result;
-	}
+        for (int i = ix; i < ix + crossLength; i++)
+        {
+            GeneType x1 = child1.getChromosome().getGene(i);
+            GeneType x2 = child2.getChromosome().getGene(i);
+            child1.getChromosome().setGene(i, x2);
+            child2.getChromosome().setGene(i, x1);
+        }
 
-	// / <summary>
-	// / Mutuje subjekt
-	// / </summary>
-	// / <param name="subject">Subjekt, ktery je mutovan</param>
-	// / <returns>Vraci zmutovanehy Subject</returns>
-	@SuppressWarnings("unchecked")
-	@Override
-	public S mutate(S subject) throws Exception
-	{
+        List<S> result = new ArrayList<S>();
+        result.add(child1);
+        result.add(child2);
+        return result;
+    }
 
-		int length = subject.getChromosome().getLength();
-		int count = /* (int)(length * _mutatePct);/ */_random.nextInt((int) (length * _mutateLengthCoef) + 1);
-		S mutant = (S)subject.clone();
+    // / <summary>
+    // / Mutuje subjekt
+    // / </summary>
+    // / <param name="subject">Subjekt, ktery je mutovan</param>
+    // / <returns>Vraci zmutovanehy Subject</returns>
+    @SuppressWarnings("unchecked")
+    @Override
+    public S mutate(S subject) throws Exception
+    {
 
-		for (int i = 0; i < count; i++)
-		{
-			int ix1 = _random.nextInt(length);
-			int ix2 = _random.nextInt(length);
+        int length = subject.getChromosome().getLength();
+        int count = /* (int)(length * _mutatePct);/ */_random.nextInt((int) (length * _mutateLengthCoef) + 1);
+        S mutant = (S) subject.clone();
 
-			mutant.getChromosome().swapGenes(ix1, ix2);
-		}
-		return mutant;
+        for (int i = 0; i < count; i++)
+        {
+            int ix1 = _random.nextInt(length);
+            int ix2 = _random.nextInt(length);
 
-	}
+            mutant.getChromosome().swapGenes(ix1, ix2);
+        }
+        return mutant;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public S randomize(S subject) throws Exception
-	{
-		int length = subject.getChromosome().getLength();
+    }
 
-		S random = (S)subject.clone();
+    @SuppressWarnings("unchecked")
+    @Override
+    public S randomize(S subject) throws Exception
+    {
+        int length = subject.getChromosome().getLength();
 
-		random.getChromosome().swapGenes(1, 2);
+        S random = (S) subject.clone();
 
-		for (int i = 0; i < length * 10; i++)
-		{
-			int ix1 = _random.nextInt(length);
-			int ix2 = _random.nextInt(length);
+        random.getChromosome().swapGenes(1, 2);
 
-			random.getChromosome().swapGenes(ix1, ix2);
-		}
-		return random;
+        for (int i = 0; i < length * 10; i++)
+        {
+            int ix1 = _random.nextInt(length);
+            int ix2 = _random.nextInt(length);
 
-	}
+            random.getChromosome().swapGenes(ix1, ix2);
+        }
+        return random;
+
+    }
 }

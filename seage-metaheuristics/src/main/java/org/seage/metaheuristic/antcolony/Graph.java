@@ -33,25 +33,28 @@ import java.util.*;
  *
  * @author Martin Zaloga
  */
-public abstract class Graph {
+public abstract class Graph
+{
 
     protected HashMap<Integer, Node> _nodes;
     protected ArrayList<Edge> _edges;
     protected double _evaporCoeff = 0.95;
-	private double _defaultPheromone;
+    private double _defaultPheromone;
 
-	public Graph() {
+    public Graph()
+    {
         _nodes = new HashMap<Integer, Node>();
         _edges = new ArrayList<Edge>();
     }
-	
-	public abstract double getNodesDistance(Node n1, Node n2);
-    
+
+    public abstract double getNodesDistance(Node n1, Node n2);
+
     /**
      * List of nodes of graph
      * @return - List of nodes
      */
-    public HashMap<Integer, Node> getNodes() {
+    public HashMap<Integer, Node> getNodes()
+    {
         return _nodes;
     }
 
@@ -59,41 +62,44 @@ public abstract class Graph {
      * List of edges of graph
      * @return - List of edges
      */
-    public ArrayList<Edge> getEdges() {
+    public ArrayList<Edge> getEdges()
+    {
         return _edges;
     }
-   
+
     /**
      * Evaporating from each edges of graph
      */
-    public void evaporate() {
-        for (Edge e : getEdges()) {
+    public void evaporate()
+    {
+        for (Edge e : getEdges())
+        {
             e.evaporateFromEdge(_evaporCoeff);
         }
     }
-    
-    public double getDefaultPheromone() 
-    {
-    	return _defaultPheromone;
-    }
-    
-    public void setDefaultPheromone(double defaultPheromone) 
-    {
-    	_defaultPheromone = defaultPheromone;
-    }
-    
-	public void setEvaporCoeff(double evaporCoeff)
-	{
-		_evaporCoeff = evaporCoeff;
-	}
 
-	public Edge createEdge(Node n1, Node n2) throws Exception
-	{
-		Edge newEdge = new Edge(n1, n2);
-		newEdge.addLocalPheromone(_defaultPheromone);
-		newEdge.setEdgePrice(getNodesDistance(n1, n2));		
-		_edges.add(newEdge);	
-		
-		return newEdge;
-	}
+    public double getDefaultPheromone()
+    {
+        return _defaultPheromone;
+    }
+
+    public void setDefaultPheromone(double defaultPheromone)
+    {
+        _defaultPheromone = defaultPheromone;
+    }
+
+    public void setEvaporCoeff(double evaporCoeff)
+    {
+        _evaporCoeff = evaporCoeff;
+    }
+
+    public Edge createEdge(Node n1, Node n2) throws Exception
+    {
+        Edge newEdge = new Edge(n1, n2);
+        newEdge.addLocalPheromone(_defaultPheromone);
+        newEdge.setEdgePrice(getNodesDistance(n1, n2));
+        _edges.add(newEdge);
+
+        return newEdge;
+    }
 }

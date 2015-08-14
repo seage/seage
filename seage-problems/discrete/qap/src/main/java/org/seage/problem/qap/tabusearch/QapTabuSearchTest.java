@@ -46,9 +46,9 @@ public class QapTabuSearchTest implements TabuSearchListener
     {
         try
         {
-            new QapTabuSearchTest().run( _dataPath);
+            new QapTabuSearchTest().run(_dataPath);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -56,7 +56,7 @@ public class QapTabuSearchTest implements TabuSearchListener
 
     public void run(String path) throws Exception
     {
-        Double[][][] facilityLocation = FacilityLocationProvider.readFacilityLocations(new FileInputStream(path) );
+        Double[][][] facilityLocation = FacilityLocationProvider.readFacilityLocations(new FileInputStream(path));
         System.out.println("Loading an instance from path: " + path);
         System.out.println("Number of cities: " + facilityLocation[0].length);
 
@@ -70,41 +70,48 @@ public class QapTabuSearchTest implements TabuSearchListener
         ts.addTabuSearchListener(this);
         ts.setIterationsToGo(1000000);
         ts.startSolving();
-        Integer[] r = ((QapSolution)ts.getBestSolution()).getAssign();
+        Integer[] r = ((QapSolution) ts.getBestSolution()).getAssign();
         System.out.println(ts.getBestSolution().getObjectiveValue()[0]);
-        for(int i=0;i<r.length;i++){
-            System.out.print((r[i]+1)+",");
+        for (int i = 0; i < r.length; i++)
+        {
+            System.out.print((r[i] + 1) + ",");
         }
 
     }
 
-    public void newBestSolutionFound(TabuSearchEvent e) {
+    public void newBestSolutionFound(TabuSearchEvent e)
+    {
         System.out.println(e.getTabuSearch().getBestSolution().toString());
     }
 
-    public void improvingMoveMade(TabuSearchEvent e) {
+    public void improvingMoveMade(TabuSearchEvent e)
+    {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void newCurrentSolutionFound(TabuSearchEvent e) {
+    public void newCurrentSolutionFound(TabuSearchEvent e)
+    {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void noChangeInValueMoveMade(TabuSearchEvent e) {
+    public void noChangeInValueMoveMade(TabuSearchEvent e)
+    {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void tabuSearchStarted(TabuSearchEvent e) {
+    public void tabuSearchStarted(TabuSearchEvent e)
+    {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void tabuSearchStopped(TabuSearchEvent e) {
+    public void tabuSearchStopped(TabuSearchEvent e)
+    {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void unimprovingMoveMade(TabuSearchEvent e) {
+    public void unimprovingMoveMade(TabuSearchEvent e)
+    {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
-
 
 }

@@ -31,12 +31,13 @@ import org.seage.problem.qap.AssignmentProvider;
  *
  * @author Karel Durkota
  */
-public class QapGreedySolution extends QapSolution {
+public class QapGreedySolution extends QapSolution
+{
 
     public QapGreedySolution(Double[][][] facilityLocation) throws Exception
     {
-        super( facilityLocation );
-        this._assign = AssignmentProvider.createGreedyAssignment( facilityLocation );
+        super(facilityLocation);
+        this._assign = AssignmentProvider.createGreedyAssignment(facilityLocation);
     }
 
 }

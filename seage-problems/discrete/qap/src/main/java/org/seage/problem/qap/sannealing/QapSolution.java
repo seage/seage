@@ -47,7 +47,7 @@ public abstract class QapSolution extends Solution
 
     public QapSolution(Double[][][] facilityLocation)
     {
-        _assign = new Integer[ facilityLocation.length ];
+        _assign = new Integer[facilityLocation.length];
         _facilityLocation = facilityLocation;
     }
 
@@ -56,7 +56,7 @@ public abstract class QapSolution extends Solution
         return _assign;
     }
 
-     public void setAssign(Integer[] assign)
+    public void setAssign(Integer[] assign)
     {
         _assign = assign;
     }
@@ -65,7 +65,7 @@ public abstract class QapSolution extends Solution
     {
         return _facilityLocation;
     }
-    
+
     public void setFacilityLocation(Double[][][] facilityLocation)
     {
         _facilityLocation = facilityLocation;
@@ -77,29 +77,31 @@ public abstract class QapSolution extends Solution
         QapSolution qapSolution = null;
         try
         {
-            qapSolution = (QapSolution)super.clone();
-            qapSolution.setAssign( _assign.clone() );
-            qapSolution.setFacilityLocation( _facilityLocation );
+            qapSolution = (QapSolution) super.clone();
+            qapSolution.setAssign(_assign.clone());
+            qapSolution.setFacilityLocation(_facilityLocation);
             qapSolution.setObjectiveValue(getObjectiveValue());
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             Logger.getLogger(QapSolution.class.getName()).log(Level.SEVERE, null, ex);
         }
         return qapSolution;
     }
 
- public String toString()
+    public String toString()
     {
         StringBuffer s = new StringBuffer();
 
         s.append("[");
-        for(int i=_assign.length-1;i>=1;i--){
-            s.append((_assign[i]+1));
+        for (int i = _assign.length - 1; i >= 1; i--)
+        {
+            s.append((_assign[i] + 1));
             s.append(",");
         }
-        s.append((_assign[_assign[0]]+1)+"]");
+        s.append((_assign[_assign[0]] + 1) + "]");
 
         return s.toString();
-    }   // end toString
+    } // end toString
 
 }

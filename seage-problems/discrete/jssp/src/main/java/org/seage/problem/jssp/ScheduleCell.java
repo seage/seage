@@ -24,80 +24,82 @@ package org.seage.problem.jssp;
  */
 public class ScheduleCell
 {
-	private int _index;
-	private int _startTime;
-	private int _length;
+    private int _index;
+    private int _startTime;
+    private int _length;
 
-	private ScheduleCell _prevCellOnMachine;
-	private ScheduleCell _nextCellOnMachine;
-	private ScheduleCell _previousCellInJob;
+    private ScheduleCell _prevCellOnMachine;
+    private ScheduleCell _nextCellOnMachine;
+    private ScheduleCell _previousCellInJob;
 
-	public ScheduleCell(int index, int startTime, int length)
-	{
-		_index = index;
-		_startTime = startTime;
-		_length = length;
-	}
+    public ScheduleCell(int index, int startTime, int length)
+    {
+        _index = index;
+        _startTime = startTime;
+        _length = length;
+    }
 
-	public ScheduleCell getPreviousCellOnMachine()
-	{
-		return _prevCellOnMachine;
-	}
-	public void setPreviousCellOnMachine(ScheduleCell prev)
-	{
-		_prevCellOnMachine = prev;
-	}
+    public ScheduleCell getPreviousCellOnMachine()
+    {
+        return _prevCellOnMachine;
+    }
 
-	public ScheduleCell getNextCellOnMachine()
-	{
-		return _nextCellOnMachine;
-	}
-	public void setNextCellOnMachine(ScheduleCell next)
-	{
-		_nextCellOnMachine = next;
-	}
+    public void setPreviousCellOnMachine(ScheduleCell prev)
+    {
+        _prevCellOnMachine = prev;
+    }
 
-	public ScheduleCell getPreviousCellInJob()
-	{
-		return _previousCellInJob;
-	}
-	public void setPreviousCellInJob(ScheduleCell prev)
-	{
-		_previousCellInJob = prev;
-	}
-		
-		
-	public int getStartTime()
-	{
-		return _startTime;
-	}
+    public ScheduleCell getNextCellOnMachine()
+    {
+        return _nextCellOnMachine;
+    }
 
-	public int getEndTime()
-	{
-		return _startTime + _length;
-	}
+    public void setNextCellOnMachine(ScheduleCell next)
+    {
+        _nextCellOnMachine = next;
+    }
 
-	public int getLength()
-	{
-		return _length;
-	}
+    public ScheduleCell getPreviousCellInJob()
+    {
+        return _previousCellInJob;
+    }
 
-	public int getIndex()
-	{
-		return _index;
-	}
+    public void setPreviousCellInJob(ScheduleCell prev)
+    {
+        _previousCellInJob = prev;
+    }
 
-	public int compareStartTo(ScheduleCell comp)
-	{
-		return _startTime - comp._startTime;
-	}
+    public int getStartTime()
+    {
+        return _startTime;
+    }
 
-	public boolean compareStart2EndTo(ScheduleCell comp)
-	{
-		if (this._startTime == comp._startTime + comp._length)
-			return true;
-		else
-			return false;
-	}
-	
+    public int getEndTime()
+    {
+        return _startTime + _length;
+    }
+
+    public int getLength()
+    {
+        return _length;
+    }
+
+    public int getIndex()
+    {
+        return _index;
+    }
+
+    public int compareStartTo(ScheduleCell comp)
+    {
+        return _startTime - comp._startTime;
+    }
+
+    public boolean compareStart2EndTo(ScheduleCell comp)
+    {
+        if (this._startTime == comp._startTime + comp._length)
+            return true;
+        else
+            return false;
+    }
+
 }

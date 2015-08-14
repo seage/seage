@@ -39,37 +39,41 @@ import java.util.*;
  * @author jenik
    F -> a
  */
-public class LValueGrammarRule extends GrammarRule {
-    
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5259579139117682571L;
+public class LValueGrammarRule extends GrammarRule
+{
 
-	public LValueGrammarRule(int uniqueId) {
-        super (new NonterminalSymbol("L_VALUE"), new Vector<Symbol> (), uniqueId);
-//        Vector<ISymbol> right = getRight();
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5259579139117682571L;
+
+    public LValueGrammarRule(int uniqueId)
+    {
+        super(new NonterminalSymbol("L_VALUE"), new Vector<Symbol>(), uniqueId);
+        //        Vector<ISymbol> right = getRight();
         TerminalSymbol vt = new TerminalSymbol("l_value", new IntGeneratorFunctor(uniqueId));
         right.add(vt);
     }
-            
+
     /** @brief semantical actions for given rule
       * @param symbolTable table of symbols
       * @param treePos position in parse tree (reference to left non terminal)
       */
-    public Object eval(DataNode symbolTable, NonterminalSymbol treePos) throws Exception {
+    public Object eval(DataNode symbolTable, NonterminalSymbol treePos) throws Exception
+    {
         //we should have one children - constant value
         Vector<Symbol> children = treePos.getChildren();
         if (children.size() != 1)
-            throw new Exception("Arity error: expected 1 children, found: " + children.size());        
+            throw new Exception("Arity error: expected 1 children, found: " + children.size());
         ///count the result
         Object o = children.get(0).eval(symbolTable);
         return o;
     }
-        
+
     /** @brief optimize derivate tree (eg. create result of arithmetical operations on contants) */
-    public Symbol optimize(NonterminalSymbol treePos) throws Exception {
+    public Symbol optimize(NonterminalSymbol treePos) throws Exception
+    {
         return null;
     }
-    
+
 }

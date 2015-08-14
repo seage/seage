@@ -8,24 +8,24 @@ import org.seage.metaheuristic.tabusearch.Solution;
 
 public class TestMoveManager implements MoveManager
 {
-	private Random rnd = new Random(1);
-	
+    private Random rnd = new Random(1);
+
     @Override
     public Move[] getAllMoves(Solution solution) throws Exception
     {
         Move m = new Move()
         {
-			@Override
+            @Override
             public void operateOn(Solution soln)
             {
-				TestSolution s = (TestSolution)soln;
-				int ix = rnd.nextInt(s.solution.length);
-		    	Object o = s.solution[0];
-		    	s.solution[0] = s.solution[ix];
-		    	s.solution[ix] = o;            
+                TestSolution s = (TestSolution) soln;
+                int ix = rnd.nextInt(s.solution.length);
+                Object o = s.solution[0];
+                s.solution[0] = s.solution[ix];
+                s.solution[ix] = o;
             }
         };
-        return new Move[]{m, m};
+        return new Move[] { m, m };
     }
 
 }

@@ -6,14 +6,15 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class ClassPathAnalyzerTest {
+public class ClassPathAnalyzerTest
+{
 
-	@Test
-	public void test() 
-	{
-		ClassPathAnalyzer cpa = new ClassPathAnalyzer("seage.problem");
-		
-		List<String> list = cpa.analyzeClassPath();
-	}
+    @Test
+    public void test()
+    {
+        ClassPathAnalyzer cpa = new ClassPathAnalyzer("seage.problem");
+
+        List<String> list = cpa.analyzeClassPath();
+    }
 
 }

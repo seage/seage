@@ -101,7 +101,8 @@ public class FormulaReader
                 }
             }
         }
-        if (comment) return new int[] {};
+        if (comment)
+            return new int[] {};
 
         result = new int[res.size()];
 

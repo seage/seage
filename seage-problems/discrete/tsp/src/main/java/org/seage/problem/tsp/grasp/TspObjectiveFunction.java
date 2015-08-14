@@ -34,7 +34,8 @@ import org.seage.problem.tsp.City;
  *
  * @author Martin Zaloga
  */
-public class TspObjectiveFunction implements IObjectiveFunction {
+public class TspObjectiveFunction implements IObjectiveFunction
+{
 
     /**
      * _cities - Array of cities
@@ -47,7 +48,8 @@ public class TspObjectiveFunction implements IObjectiveFunction {
      * Constructor the object to assess the steps
      * @param cities - Array of cities
      */
-    public TspObjectiveFunction(City[] cities) {
+    public TspObjectiveFunction(City[] cities)
+    {
         _cities = cities;
         _firstIter = true;
     }
@@ -55,7 +57,8 @@ public class TspObjectiveFunction implements IObjectiveFunction {
     /**
      * Parameter settings, which says that this is the first iteration
      */
-    public void reset() {
+    public void reset()
+    {
         _firstIter = true;
     }
 
@@ -65,7 +68,8 @@ public class TspObjectiveFunction implements IObjectiveFunction {
      * @param m - The next step
      * @return - Evaluating the step
      */
-    public double evaluateMove(Solution s, IMove m) {
+    public double evaluateMove(Solution s, IMove m)
+    {
         Integer[] tour = null;
         Integer[] tourBefMod = null;
         double length = 0;
@@ -75,12 +79,16 @@ public class TspObjectiveFunction implements IObjectiveFunction {
         TspMove move = (TspMove) m;
 
         /*Deciding whether to rate the next step or the current solution*/
-        if (m != null) {
+        if (m != null)
+        {
 
             /*In the first step must be first determine the evaluation*/
-            if (_firstIter) {
+            if (_firstIter)
+            {
                 length = length(tour);
-            } else {
+            }
+            else
+            {
                 length = s.getObjectiveValue();
             }
 
@@ -89,7 +97,9 @@ public class TspObjectiveFunction implements IObjectiveFunction {
             tourBefMod = tour.clone();
             tour = modify(tour, ix1, ix2);
             length = modifyLength(tourBefMod, tour, ix1, ix2, length);
-        } else {
+        }
+        else
+        {
             length = length(tour);
         }
 
@@ -104,7 +114,8 @@ public class TspObjectiveFunction implements IObjectiveFunction {
      * @param ix2 - Index the second city
      * @return - Modified path
      */
-    private Integer[] modify(Integer[] tour, int ix1, int ix2) {
+    private Integer[] modify(Integer[] tour, int ix1, int ix2)
+    {
         int hlp = tour[ix1];
         tour[ix1] = tour[ix2];
         tour[ix2] = hlp;
@@ -116,8 +127,10 @@ public class TspObjectiveFunction implements IObjectiveFunction {
      * @param ind - index what will be Check
      * @return - index what was Checked
      */
-    private int controlBigIndex(int ind) {
-        if (ind == _cities.length) {
+    private int controlBigIndex(int ind)
+    {
+        if (ind == _cities.length)
+        {
             ind = 0;
         }
         return ind;
@@ -128,8 +141,10 @@ public class TspObjectiveFunction implements IObjectiveFunction {
      * @param ind - index what will be Check
      * @return - index what was Checked
      */
-    private int controlSmallIndex(int ind) {
-        if (ind == -1) {
+    private int controlSmallIndex(int ind)
+    {
+        if (ind == -1)
+        {
             ind = _cities.length - 1;
         }
         return ind;
@@ -141,7 +156,8 @@ public class TspObjectiveFunction implements IObjectiveFunction {
      * @param ind - index the neighboring towns
      * @return - Euclid distance
      */
-    private double euklDist(Integer[] tour, int ind) {
+    private double euklDist(Integer[] tour, int ind)
+    {
         double dx, dy;
         dx = _cities[tour[ind]].X - _cities[tour[controlBigIndex(ind + 1)]].X;
         dy = _cities[tour[ind]].Y - _cities[tour[controlBigIndex(ind + 1)]].Y;
@@ -153,9 +169,11 @@ public class TspObjectiveFunction implements IObjectiveFunction {
      * @param tour - Tour consist of indexes of cities
      * @return - Total length of tour
      */
-    private double length(Integer[] tour) {
+    private double length(Integer[] tour)
+    {
         double lenght = 0;
-        for (int i = 0; i < tour.length; i++) {
+        for (int i = 0; i < tour.length; i++)
+        {
             lenght += euklDist(tour, i);
         }
         return lenght;
@@ -170,10 +188,13 @@ public class TspObjectiveFunction implements IObjectiveFunction {
      * @param lengthBefMod - total length before the modify
      * @return - Length of the modify tour
      */
-    private double modifyLength(Integer[] tourBefMod, Integer[] tour, int ix1, int ix2, double lengthBefMod) {
+    private double modifyLength(Integer[] tourBefMod, Integer[] tour, int ix1, int ix2, double lengthBefMod)
+    {
         double length = 0, minusDist, plusDist;
-        minusDist = euklDist(tourBefMod, controlSmallIndex(ix1 - 1)) + euklDist(tourBefMod, ix1) + euklDist(tourBefMod, controlSmallIndex(ix2 - 1)) + euklDist(tourBefMod, ix2);
-        plusDist = euklDist(tour, controlSmallIndex(ix1 - 1)) + euklDist(tour, ix1) + euklDist(tour, controlSmallIndex(ix2 - 1)) + euklDist(tour, ix2);
+        minusDist = euklDist(tourBefMod, controlSmallIndex(ix1 - 1)) + euklDist(tourBefMod, ix1)
+                + euklDist(tourBefMod, controlSmallIndex(ix2 - 1)) + euklDist(tourBefMod, ix2);
+        plusDist = euklDist(tour, controlSmallIndex(ix1 - 1)) + euklDist(tour, ix1)
+                + euklDist(tour, controlSmallIndex(ix2 - 1)) + euklDist(tour, ix2);
         length = lengthBefMod - minusDist + plusDist;
         return length;
     }

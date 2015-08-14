@@ -35,54 +35,52 @@ import java.util.Random;
  */
 public abstract class GeneticOperator<S extends Subject<?>>
 {
-	protected Random _random;
-	protected double _crossLengthCoef;
-	protected double _mutateLengthCoef;
+    protected Random _random;
+    protected double _crossLengthCoef;
+    protected double _mutateLengthCoef;
 
-	public GeneticOperator()
-	{
-		_random = new Random();
+    public GeneticOperator()
+    {
+        _random = new Random();
 
-		_crossLengthCoef = 0.45;
-		_mutateLengthCoef = 0.3;
-	}
+        _crossLengthCoef = 0.45;
+        _mutateLengthCoef = 0.3;
+    }
 
-	// / <summary>
-	// / Vybira dva subjekty, kteri se budou krizit
-	// / </summary>
-	// / <param name="population">Aktualni populace - podle jejiz parametru se
-	// vyber provadi</param>
-	// / <returns>Vraci indexy vybranych subjectu</returns>
-	public abstract int[] select(ArrayList<S> subjects);
+    // / <summary>
+    // / Vybira dva subjekty, kteri se budou krizit
+    // / </summary>
+    // / <param name="population">Aktualni populace - podle jejiz parametru se
+    // vyber provadi</param>
+    // / <returns>Vraci indexy vybranych subjectu</returns>
+    public abstract int[] select(ArrayList<S> subjects);
 
-	// / <summary>
-	// / Krizi dva subjekty
-	// / </summary>
-	// / <param name="parent1">Prvni rodic</param>
-	// / <param name="parent2">Druhy rodic</param>
-	// / <returns>Vraci mnozinu potomku</returns>
+    // / <summary>
+    // / Krizi dva subjekty
+    // / </summary>
+    // / <param name="parent1">Prvni rodic</param>
+    // / <param name="parent2">Druhy rodic</param>
+    // / <returns>Vraci mnozinu potomku</returns>
 
-	public abstract List<S> crossOver(S parent1, S parent2) throws Exception;
+    public abstract List<S> crossOver(S parent1, S parent2) throws Exception;
 
-	// / <summary>
-	// / Mutuje subjekt
-	// / </summary>
-	// / <param name="subject">Subjekt, ktery je mutovan</param>
-	// / <returns>Vraci zmutovanehy Subject</returns>
+    // / <summary>
+    // / Mutuje subjekt
+    // / </summary>
+    // / <param name="subject">Subjekt, ktery je mutovan</param>
+    // / <returns>Vraci zmutovanehy Subject</returns>
 
-	public abstract S mutate(S subject) throws Exception;
-	
-	
-	public abstract S randomize(S subject) throws Exception;
+    public abstract S mutate(S subject) throws Exception;
 
+    public abstract S randomize(S subject) throws Exception;
 
-	public void setCrossLengthCoef(double coef)
-	{
-		_crossLengthCoef = coef;
-	}
+    public void setCrossLengthCoef(double coef)
+    {
+        _crossLengthCoef = coef;
+    }
 
-	public void setMutateLengthCoef(double coef)
-	{
-		_mutateLengthCoef = coef;
-	}
+    public void setMutateLengthCoef(double coef)
+    {
+        _mutateLengthCoef = coef;
+    }
 }

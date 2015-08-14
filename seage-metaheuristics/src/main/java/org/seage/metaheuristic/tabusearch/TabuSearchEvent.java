@@ -44,24 +44,21 @@ public class TabuSearchEvent extends java.util.EventObject
 {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -321748751786495861L;
+     * 
+     */
+    private static final long serialVersionUID = -321748751786495861L;
 
-
-
-	/**
+    /**
      * Constructor that accepts the source of the event.
      * 
      * @param source The source of the event.
      * @since 1.0
      */
     public TabuSearchEvent(Object source)
-    {   super( source );
-    }   // end constructor
+    {
+        super(source);
+    } // end constructor
 
-    
-    
     /**
      * Casts the <tt>source</tt> as a {@link TabuSearch}
      * prior to returning. It is equivalent to
@@ -71,9 +68,8 @@ public class TabuSearchEvent extends java.util.EventObject
      * @since 1.0
      */
     public final ITabuSearch getTabuSearch()
-    {   return (ITabuSearch) source;
-    }   // end getTabuSearch
+    {
+        return (ITabuSearch) source;
+    } // end getTabuSearch
 
-    
-}   // end class TabuSearchEvent
-
+} // end class TabuSearchEvent

@@ -25,22 +25,22 @@
  */
 package org.seage.problem.tsp.particles;
 
-
 /**
  *
  * @author Jan Zmatlik
  */
-public class TspRandomParticle extends TspParticle {
+public class TspRandomParticle extends TspParticle
+{
 
     public TspRandomParticle(int dimension)
     {
-        super(  dimension  );        
+        super(dimension);
         //double[] coords = new double[dimension];
-        for(int i=0;i<dimension;i++)
+        for (int i = 0; i < dimension; i++)
         {
-        	_coords[i] = Math.random();
-        	_velocity[i] = Math.random()/2;
-        }        
+            _coords[i] = Math.random();
+            _velocity[i] = Math.random() / 2;
+        }
     }
 
 }

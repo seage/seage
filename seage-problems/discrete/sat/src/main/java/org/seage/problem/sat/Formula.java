@@ -41,7 +41,8 @@ public class Formula extends ProblemInstance
 
         for (Clause c : clauses)
             for (Literal l : c.getLiterals())
-                if (l.getIndex() >= _literalCount) _literalCount = l.getIndex() + 1;
+                if (l.getIndex() >= _literalCount)
+                    _literalCount = l.getIndex() + 1;
 
         _literals = new ArrayList<ArrayList<Literal>>();
         for (int i = 0; i < _literalCount; i++)

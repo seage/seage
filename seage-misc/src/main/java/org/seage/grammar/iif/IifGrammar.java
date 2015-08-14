@@ -34,7 +34,8 @@ import java.util.Vector;
  *
  * @author rick
  */
-public class IifGrammar extends Grammar{
+public class IifGrammar extends Grammar
+{
 
     public IifGrammar(Vector<String> varNames)
     {
@@ -57,10 +58,10 @@ public class IifGrammar extends Grammar{
         addRule(new TDivideGrammarRule(15), -1);
         addRule(new TDummyGrammarRule(16), -1);
         addRule(new FConstGrammarRule(17), -1);
-        addRule(new FParGrammarRule(18),-1);
+        addRule(new FParGrammarRule(18), -1);
         addRule(new FVariableGrammarRule(19), -1);
         addRule(new VariableGrammarRule(varNames, 20), -1);
-          
+
     }
 
 }

@@ -35,12 +35,13 @@ public class VelocityManager implements IVelocityManager
 {
     Random _rnd = new Random();
 
-    public void calculateNewVelocityAndPosition(Particle particle, Particle localMinimum, Particle globalMinimum, double alpha, double beta, double inertia)
+    public void calculateNewVelocityAndPosition(Particle particle, Particle localMinimum, Particle globalMinimum,
+            double alpha, double beta, double inertia)
     {
         double[] randomVector1 = new double[particle.getCoords().length];
         double[] randomVector2 = new double[particle.getCoords().length];
 
-        for(int i = 0; i < particle.getCoords().length; i++)
+        for (int i = 0; i < particle.getCoords().length; i++)
         {
             randomVector1[i] = _rnd.nextDouble();
             randomVector2[i] = _rnd.nextDouble();
@@ -60,7 +61,7 @@ public class VelocityManager implements IVelocityManager
         // e2 as random vector
         //
         // V(T+1) = w*Vi(T) + Al*e1{*}[g - Xi(T)] + Be*e2[l - Xi(T)]
-        for(int i = 0; i < particle.getCoords().length; i++)
+        for (int i = 0; i < particle.getCoords().length; i++)
         {
             particle.getVelocity()[i] = inertia * particle.getVelocity()[i] +
                     randomVector1[i] * alpha * (globalMinimum.getCoords()[i] - particle.getCoords()[i]) +

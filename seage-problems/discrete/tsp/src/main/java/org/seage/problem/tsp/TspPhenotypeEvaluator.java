@@ -34,57 +34,57 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
  */
 public class TspPhenotypeEvaluator implements IPhenotypeEvaluator
 {
-	protected TspProblemInstance _instance;
-	protected City[] _cities;
-	
-    public TspPhenotypeEvaluator(City[] cities)
-	{
-		super();
-		_cities = cities;
-	}
+    protected TspProblemInstance _instance;
+    protected City[] _cities;
 
-	@Override
+    public TspPhenotypeEvaluator(City[] cities)
+    {
+        super();
+        _cities = cities;
+    }
+
+    @Override
     public double[] evaluate(Object[] phenotypeSubject) throws Exception
     {
-		Integer[] s = (Integer[])phenotypeSubject;
+        Integer[] s = (Integer[]) phenotypeSubject;
         double tourLength = 0;
-        
+
         int numCities = _cities.length;
 
         for (int i = 0; i < numCities; i++)
-        {				
+        {
             int k = i + 1;
             if (i == numCities - 1)
                 k = 0;
 
-            int ix1 = s[i]-1;
-            int ix2 = s[k]-1;
+            int ix1 = s[i] - 1;
+            int ix2 = s[k] - 1;
             double x1 = _cities[ix1].X;
             double y1 = _cities[ix1].Y;
             double x2 = _cities[ix2].X;
             double y2 = _cities[ix2].Y;
             tourLength += Math.round(Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)));
         }
-        return new double[] {tourLength };		
+        return new double[] { tourLength };
     }
-    
+
     @Override
     public int compare(double[] o1, double[] o2)
     {
-        if(o1 == null)
+        if (o1 == null)
             return -1;
-        if(o2 == null)
+        if (o2 == null)
             return 1;
-        
-        int length = o1.length<=o2.length ? o1.length : o2.length;
-        
-        for(int i=0;i<length;i++)
+
+        int length = o1.length <= o2.length ? o1.length : o2.length;
+
+        for (int i = 0; i < length; i++)
         {
-            if(o1[i] < o2[i])
+            if (o1[i] < o2[i])
                 return 1;
-            if(o1[i] > o2[i])
+            if (o1[i] > o2[i])
                 return -1;
-        }            
+        }
         return 0;
     }
 }

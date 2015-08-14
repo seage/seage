@@ -26,9 +26,9 @@
  *     - Merge with SEAGE
  */
 package org.seage.metaheuristic.tabusearch;
+
 import java.text.*;
 import java.util.*;
-
 
 /**
  * This is the class to extend when creating your own solution definitions.
@@ -70,7 +70,6 @@ public class SolutionAdapter implements Solution
 
     /** Objective function value. */
     private double[] objectiveValue;
-    
 
     /**
      * If the value has been set for this solution, then the value will
@@ -82,10 +81,9 @@ public class SolutionAdapter implements Solution
      * @since 1.0
      */
     public final double[] getObjectiveValue()
-    {   return this.objectiveValue;
-    }   // end getValue
-
-
+    {
+        return this.objectiveValue;
+    } // end getValue
 
     /**
      * Generally used by the {@link TabuSearch} to set the value of the
@@ -95,13 +93,12 @@ public class SolutionAdapter implements Solution
      * @param objValue The objective function value
      * @since 1.0
      */
-    
-    public final void setObjectiveValue( double[] objValue )
-    {   this.objectiveValue = objValue;
-    }   // end setObjectiveValue
 
+    public final void setObjectiveValue(double[] objValue)
+    {
+        this.objectiveValue = objValue;
+    } // end setObjectiveValue
 
-    
     /**
      * An essential Java method that returns of copy of the object.
      * Specifically the <tt>double</tt> array that holds the
@@ -112,46 +109,47 @@ public class SolutionAdapter implements Solution
      * @since 1.0
      */
     public Object clone()
-    {   try
+    {
+        try
         {
-            Solution sol = (Solution)super.clone();     // Java's default cloning
-            
-            double[] copyThisObjVal =                   // Get our objective value
-                getObjectiveValue();
-            
-            if( copyThisObjVal != null )                // Make sure the array isn't null
-            {
-                this.objectiveValue =                   // Clone the array using the built-in clone method
-                    (double[])copyThisObjVal.clone();
+            Solution sol = (Solution) super.clone(); // Java's default cloning
 
-             /*                                         // The primitive boolean field objectiveValid 
+            double[] copyThisObjVal = // Get our objective value
+            getObjectiveValue();
+
+            if (copyThisObjVal != null) // Make sure the array isn't null
+            {
+                this.objectiveValue = // Clone the array using the built-in clone method
+                (double[]) copyThisObjVal.clone();
+
+                /*                                         // The primitive boolean field objectiveValid 
                 nothing to do here                      // is automatically cloned by the 
-             */                                         // java.lang.Object's clone method.
-            }   // end if: not null
+                */ // java.lang.Object's clone method.
+            } // end if: not null
 
             return sol;
-        }   // end try
-        catch( java.lang.CloneNotSupportedException e ) // Catch exception from java.lang.Object
-        {   throw new InternalError( e.toString() );    // Throw a runtime error
-        }   // end catch
-    }   // end clone
+        } // end try
+        catch (java.lang.CloneNotSupportedException e) // Catch exception from java.lang.Object
+        {
+            throw new InternalError(e.toString()); // Throw a runtime error
+        } // end catch
+    } // end clone
 
-	public String toString()
-	{
-		String result = "";
+    public String toString()
+    {
+        String result = "";
 
-		double[] obj = getObjectiveValue();
-		if (obj == null)
-			return "null";
-		NumberFormat formatter = new DecimalFormat("0.000", new DecimalFormatSymbols(Locale.US));
-		for (int i = 0; i < obj.length; i++)
-		{
-			result += formatter.format(obj[i]) + "\t";
-		}
+        double[] obj = getObjectiveValue();
+        if (obj == null)
+            return "null";
+        NumberFormat formatter = new DecimalFormat("0.000", new DecimalFormatSymbols(Locale.US));
+        for (int i = 0; i < obj.length; i++)
+        {
+            result += formatter.format(obj[i]) + "\t";
+        }
 
-		result += hashCode();
-		return result;
-	}
-        
-}   // end SolutionBase class
+        result += hashCode();
+        return result;
+    }
 
+} // end SolutionBase class

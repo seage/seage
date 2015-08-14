@@ -38,14 +38,16 @@ import org.seage.data.DataNode;
  */
 public abstract class Configurator
 {
-	protected static Logger _logger = Logger.getLogger(Configurator.class.getName());
-	
-    public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs) throws Exception;
+    protected static Logger _logger = Logger.getLogger(Configurator.class.getName());
 
-    protected ProblemConfig createProblemConfig(ProblemInfo problemInfo, String instanceID, String algorithmID) throws Exception
+    public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID,
+            int numConfigs) throws Exception;
+
+    protected ProblemConfig createProblemConfig(ProblemInfo problemInfo, String instanceID, String algorithmID)
+            throws Exception
     {
-    	ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
-    	// Config
+        ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
+        // Config
         ProblemConfig config = new ProblemConfig("Config");
         // |_ Problem
         DataNode problem = new DataNode("Problem");
@@ -68,10 +70,10 @@ public abstract class Configurator
         config.getDataNode("Problem").getDataNode("Instance").putValue("name", instanceInfo.getValue("name"));
         config.getDataNode("Problem").getDataNode("Instance").putValue("type", instanceInfo.getValue("type"));
         config.getDataNode("Problem").getDataNode("Instance").putValue("path", instanceInfo.getValue("path"));
-        
-        if(problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)==null)
-        	throw new Exception("Unknown algorithm id: " + algorithmID);
-        
+
+        if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null)
+            throw new Exception("Unknown algorithm id: " + algorithmID);
+
         return config;
     }
 }

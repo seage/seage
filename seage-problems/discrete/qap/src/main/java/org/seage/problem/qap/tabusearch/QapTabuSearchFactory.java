@@ -43,25 +43,28 @@ import org.seage.problem.qap.QapProblemInstance;
 @Annotations.AlgorithmName("Tabu Search")
 public class QapTabuSearchFactory implements IAlgorithmFactory
 {
-    public Class<TabuSearchAdapter> getAlgorithmClass() {
+    public Class<TabuSearchAdapter> getAlgorithmClass()
+    {
         return TabuSearchAdapter.class;
     }
 
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
-        final Double[][][] facilityLocation = ((QapProblemInstance)instance).getFacilityLocation();
-        
-        IAlgorithmAdapter algorithm = new TabuSearchAdapter(new QapMoveManager(), new QapObjectiveFunction(facilityLocation),  "" ) {
+        final Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
+
+        IAlgorithmAdapter algorithm = new TabuSearchAdapter(new QapMoveManager(),
+                new QapObjectiveFunction(facilityLocation), "")
+        {
 
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 _solutions = new Solution[source.length];
-                for(int i=0;i<source.length;i++)
+                for (int i = 0; i < source.length; i++)
                 {
                     QapSolution s = new QapSolution();
                     Integer[] assign = new Integer[source[i].length];
-                    for(int j=0;j<assign.length;j++)
-                        assign[j] = (Integer)source[i][j];
+                    for (int j = 0; j < assign.length; j++)
+                        assign[j] = (Integer) source[i][j];
                     s.setAssign(assign);
                     _solutions[i] = s;
                 }
@@ -71,11 +74,11 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
             {
                 Object[][] result = new Object[_solutions.length][];
 
-                for(int i=0;i<_solutions.length;i++)
+                for (int i = 0; i < _solutions.length; i++)
                 {
-                    QapSolution s = (QapSolution)_solutions[i];
+                    QapSolution s = (QapSolution) _solutions[i];
                     result[i] = new Integer[s.getAssign().length];
-                    for(int j=0;j<s.getAssign().length;j++)
+                    for (int j = 0; j < s.getAssign().length; j++)
                     {
                         result[i][j] = s.getAssign()[j];
                     }

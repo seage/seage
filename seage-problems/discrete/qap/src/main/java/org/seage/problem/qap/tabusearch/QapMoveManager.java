@@ -34,25 +34,25 @@ import org.seage.metaheuristic.tabusearch.*;
 
 public class QapMoveManager implements MoveManager
 {
-    
+
     @Override
-    public Move[] getAllMoves( Solution solution )
+    public Move[] getAllMoves(Solution solution)
     {
-        Integer[] assign = ((QapSolution)solution)._assign;
-        Move[] buffer = new Move[ assign.length*assign.length ];
+        Integer[] assign = ((QapSolution) solution)._assign;
+        Move[] buffer = new Move[assign.length * assign.length];
         int nextBufferPos = 0;
-        
+
         // Generate moves that move each customer
         // forward and back up to five spaces.
         for (int i = 1; i < assign.length; i++)
-            for (int j = -assign.length/5; j <= assign.length/5; j++)
+            for (int j = -assign.length / 5; j <= assign.length / 5; j++)
                 if ((i + j >= 1) && (i + j < assign.length) && (j != 0))
                     buffer[nextBufferPos++] = new QapSwapMove(assign[i], j);
 
-        Move[] moves = new Move[ nextBufferPos];
-        System.arraycopy( buffer, 0, moves, 0, nextBufferPos );
-        
+        Move[] moves = new Move[nextBufferPos];
+        System.arraycopy(buffer, 0, moves, 0, nextBufferPos);
+
         return moves;
-    }   // end getAllMoves
-    
-}   // end class MyMoveManager
+    } // end getAllMoves
+
+} // end class MyMoveManager

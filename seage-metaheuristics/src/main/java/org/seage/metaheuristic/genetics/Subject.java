@@ -30,88 +30,88 @@ package org.seage.metaheuristic.genetics;
  */
 public class Subject<GeneType>
 {
-	private Chromosome<GeneType> _chromosome;
-	private double[] _fitness;
-	private int _hashCode;
-	
-	public Subject(GeneType[] geneValues)
-	{
-		_chromosome = new Chromosome<GeneType>(geneValues);
-		computeHash();
-	}
+    private Chromosome<GeneType> _chromosome;
+    private double[] _fitness;
+    private int _hashCode;
 
-	protected Subject(Subject<GeneType> subject)
-	{
-		_chromosome = subject.getChromosome().clone();
-		_fitness = subject._fitness;
-		computeHash();
-	}
+    public Subject(GeneType[] geneValues)
+    {
+        _chromosome = new Chromosome<GeneType>(geneValues);
+        computeHash();
+    }
 
-	/*
-	 * Interface Solution
-	 */
+    protected Subject(Subject<GeneType> subject)
+    {
+        _chromosome = subject.getChromosome().clone();
+        _fitness = subject._fitness;
+        computeHash();
+    }
 
-	public double[] getObjectiveValue()
-	{
-		/*
-		 * int[] result = {_fitness}; return result;
-		 */
-		return _fitness;
-	}
+    /*
+     * Interface Solution
+     */
 
-	public void setObjectiveValue(double[] objValue)
-	{
-		_fitness = objValue;
-		computeHash();
-	}
+    public double[] getObjectiveValue()
+    {
+        /*
+         * int[] result = {_fitness}; return result;
+         */
+        return _fitness;
+    }
 
-	public Subject<GeneType> clone()
-	{
-		return new Subject<GeneType>(this);
-	}
+    public void setObjectiveValue(double[] objValue)
+    {
+        _fitness = objValue;
+        computeHash();
+    }
 
-	/*
-	 * Subject's method
-	 */
-	public Chromosome<GeneType> getChromosome()
-	{
-		return _chromosome;
-	}
+    public Subject<GeneType> clone()
+    {
+        return new Subject<GeneType>(this);
+    }
 
-	public double[] getFitness()
-	{
-		return _fitness;
-	}
+    /*
+     * Subject's method
+     */
+    public Chromosome<GeneType> getChromosome()
+    {
+        return _chromosome;
+    }
 
-	public void computeHash()
-	{
-		//Chromosome chrom = getGenome().getChromosome(0);
-		int hash = 0x1000;
-		for (int i = 0; i < _chromosome.getLength(); i++)
-		{
-			hash = ((hash << 5) ^ (hash >> 27)) ^ (_chromosome.getGene(i).hashCode() + 2) << 1;
-		}
-		_hashCode = hash;
-	}
+    public double[] getFitness()
+    {
+        return _fitness;
+    }
 
-	public int hashCode()
-	{
-		return _hashCode;
-	}
+    public void computeHash()
+    {
+        //Chromosome chrom = getGenome().getChromosome(0);
+        int hash = 0x1000;
+        for (int i = 0; i < _chromosome.getLength(); i++)
+        {
+            hash = ((hash << 5) ^ (hash >> 27)) ^ (_chromosome.getGene(i).hashCode() + 2) << 1;
+        }
+        _hashCode = hash;
+    }
 
-	@Override
-	public String toString()
-	{
-		String result = "";
+    public int hashCode()
+    {
+        return _hashCode;
+    }
 
-		if (_fitness == null)
-			return "#"+_hashCode;
+    @Override
+    public String toString()
+    {
+        String result = "";
 
-		for (int i = 0; i < _chromosome.getLength(); i++)
-		{
-			result += (_chromosome.getGene(i)) + " ";
-		}
+        if (_fitness == null)
+            return "#" + _hashCode;
 
-		return result;
-	}
+        for (int i = 0; i < _chromosome.getLength(); i++)
+        {
+            result += (_chromosome.getGene(i)) + " ";
+        }
+
+        return result;
+    }
 }

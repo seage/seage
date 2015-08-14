@@ -18,6 +18,7 @@
  *
  */
 package org.seage.data.ds;
+
 import java.util.ArrayList;
 
 /**
@@ -25,56 +26,57 @@ import java.util.ArrayList;
  */
 public class DataTable extends ArrayList<DataRow>
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4842401883256968640L;
-	protected Object _tableProperty;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4842401883256968640L;
+    protected Object _tableProperty;
 
-	public DataTable()
-	{
-	}
-    
+    public DataTable()
+    {
+    }
+
     public DataTable(int numRow)
-	{
+    {
         this(numRow, 0);
-	}
-    
+    }
+
     public DataTable(int numRow, int numCells)
-	{
-        for(int i=0;i<numRow;i++)
+    {
+        for (int i = 0; i < numRow; i++)
             add(new DataRow(numCells));
-        
-	}
 
-	public DataRow getLastRow()
-	{
-		return this.get(this.size()-1);
-	}
+    }
 
-	public int getCellCount()
-	{
-		int count = 0;
-		for(int i=0;i<size();i++)
-		{
-			for(int j=0;j<get(i).size();j++) count++;
-		}
-		return count;
-	}
+    public DataRow getLastRow()
+    {
+        return this.get(this.size() - 1);
+    }
 
-	public Object getTableProperty()
-	{
-		return _tableProperty;
-	}
+    public int getCellCount()
+    {
+        int count = 0;
+        for (int i = 0; i < size(); i++)
+        {
+            for (int j = 0; j < get(i).size(); j++)
+                count++;
+        }
+        return count;
+    }
 
-	public void setTableProperty(Object o)
-	{
-		_tableProperty = o;
-	}
+    public Object getTableProperty()
+    {
+        return _tableProperty;
+    }
 
-	public int getRowCount()
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    public void setTableProperty(Object o)
+    {
+        _tableProperty = o;
+    }
+
+    public int getRowCount()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }

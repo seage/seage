@@ -39,15 +39,15 @@ public class QapMoveManager implements IMoveManager
 
     public Solution getModifiedSolution(Solution solution)
     {
-        QapSolution qapSolution = ((QapSolution)solution).clone();
+        QapSolution qapSolution = ((QapSolution) solution).clone();
 
         Random rnd = new Random();
         int qapSolutionLength = qapSolution.getAssign().length;
-        int a = rnd.nextInt( qapSolutionLength );
-        int b = rnd.nextInt( qapSolutionLength );
+        int a = rnd.nextInt(qapSolutionLength);
+        int b = rnd.nextInt(qapSolutionLength);
 
         // Swap values if indices are different
-        if(a != b)
+        if (a != b)
         {
 
             qapSolution.getAssign()[a] = qapSolution.getAssign()[a] + qapSolution.getAssign()[b];
@@ -55,14 +55,14 @@ public class QapMoveManager implements IMoveManager
             qapSolution.getAssign()[a] = qapSolution.getAssign()[a] - qapSolution.getAssign()[b];
         }
 
-        return (Solution)qapSolution;
+        return (Solution) qapSolution;
     }
 
-	@Override
-	public Solution getModifiedSolution(Solution solution,
-			double currentTemperature) throws Exception 
-	{
-		return null;
-	}
+    @Override
+    public Solution getModifiedSolution(Solution solution,
+            double currentTemperature) throws Exception
+    {
+        return null;
+    }
 
 }

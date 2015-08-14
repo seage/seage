@@ -26,43 +26,43 @@ import java.util.ArrayList;
  */
 public class DataRow extends ArrayList<DataCell>
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1940031810667352202L;
-	protected Object _rowProperty;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1940031810667352202L;
+    protected Object _rowProperty;
 
-	public DataRow()
-	{		
-	}
-    
+    public DataRow()
+    {
+    }
+
     public DataRow(int numCells)
-	{		
-        for(int i=0;i<numCells;i++)
+    {
+        for (int i = 0; i < numCells; i++)
             add(new DataCell());
-	}
+    }
 
-	public Object getRowProperty()
-	{
-		return _rowProperty;
-	}
+    public Object getRowProperty()
+    {
+        return _rowProperty;
+    }
 
-	public void setRowProperty(Object o)
-	{
-		_rowProperty = o;
-	}
+    public void setRowProperty(Object o)
+    {
+        _rowProperty = o;
+    }
 
-	public String toString()
-	{
-		String res = "";
-		for (int i = 0; i < size(); i++)
-			res += get(i).toString() + "\n";
-		return res;
-	}
+    public String toString()
+    {
+        String res = "";
+        for (int i = 0; i < size(); i++)
+            res += get(i).toString() + "\n";
+        return res;
+    }
 
-	public void initDataCells(int size)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+    public void initDataCells(int size)
+    {
+        // TODO Auto-generated method stub
+
+    }
 }

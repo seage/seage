@@ -48,58 +48,63 @@ public class TspProblemProvider extends ProblemProvider
     @Override
     public TspProblemInstance initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
     {
-        City[] cities;        
-        
+        City[] cities;
+
         ProblemInstanceOrigin origin = instanceInfo.getOrigin();
         String path = instanceInfo.getValueStr("path");
 
         InputStream stream;
-        if(origin == ProblemInstanceOrigin.RESOURCE)        
+        if (origin == ProblemInstanceOrigin.RESOURCE)
             stream = getClass().getResourceAsStream(path);
         else
             stream = new FileInputStream(path);
 
-        try{
+        try
+        {
             cities = CityProvider.readCities(stream);
-        }catch(Exception ex){
+        }
+        catch (Exception ex)
+        {
             System.err.println("TspProblemProvider.initProblemInstance - readCities failed, path: " + path);
             throw ex;
         }
 
         return new TspProblemInstance(instanceInfo, cities);
- 
+
     }
 
     @Override
-    public Object[][] generateInitialSolutions(ProblemInstance instance, int numSolutions, long randomSeed) throws Exception
+    public Object[][] generateInitialSolutions(ProblemInstance instance, int numSolutions, long randomSeed)
+            throws Exception
     {
         int numTours = numSolutions;
-        City[] cities = ((TspProblemInstance)instance).getCities();
+        City[] cities = ((TspProblemInstance) instance).getCities();
         Integer[][] result = new Integer[numTours][];
 
         result[0] = TourProvider.createGreedyTour(cities, randomSeed);
-        for(int i=1;i<numTours;i++)
-        	result[i] = TourProvider.createRandomTour(cities.length);
-        	
+        for (int i = 1; i < numTours; i++)
+            result[i] = TourProvider.createRandomTour(cities.length);
+
         return result;
     }
 
     @Override
     public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception
     {
-//        Integer[] tour = (Integer[])solution;
+        //        Integer[] tour = (Integer[])solution;
 
         // TODO: A - Implement visualize method
-//        String outPath = _problemParams.getDataNode("visualizer").getValueStr("outPath");
-//        int width = _problemParams.getDataNode("visualizer").getValueInt("width");
-//        int height = _problemParams.getDataNode("visualizer").getValueInt("height");
-//
-//        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
+        //        String outPath = _problemParams.getDataNode("visualizer").getValueStr("outPath");
+        //        int width = _problemParams.getDataNode("visualizer").getValueInt("width");
+        //        int height = _problemParams.getDataNode("visualizer").getValueInt("height");
+        //
+        //        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
     }
-    
+
     @Override
-    public IPhenotypeEvaluator initPhenotypeEvaluator(ProblemInstance instance) throws Exception {
-        return new TspPhenotypeEvaluator(((TspProblemInstance)instance).getCities());
+    public IPhenotypeEvaluator initPhenotypeEvaluator(ProblemInstance instance) throws Exception
+    {
+        return new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
     }
 
 }

@@ -45,17 +45,17 @@ public class TspTabuSearchTest implements TabuSearchListener
     {
         try
         {
-        	//String path = "data/tsp/eil51.tsp";//args[0];		// 426
-        	//String path = "data/tsp/eil101.tsp";//args[0];		// 
-        	//String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
-        	//String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
-        	//String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
-        	//String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
-        	String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
-        	
+            //String path = "data/tsp/eil51.tsp";//args[0];		// 426
+            //String path = "data/tsp/eil101.tsp";//args[0];		// 
+            //String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
+            //String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
+            //String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
+            //String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
+            String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
+
             new TspTabuSearchTest().run(path);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -68,9 +68,9 @@ public class TspTabuSearchTest implements TabuSearchListener
         System.out.println("Number of cities: " + cities.length);
 
         TabuSearch ts = new TabuSearch(
-        		//new Tspr
-        		//new TspRandomSolution(cities),
-        		new TspGreedySolution(cities),
+                //new Tspr
+                //new TspRandomSolution(cities),
+                new TspGreedySolution(cities),
                 new TspMoveManager(),
                 new TspObjectiveFunction(cities),
                 new SimpleTabuList(50),
@@ -82,33 +82,40 @@ public class TspTabuSearchTest implements TabuSearchListener
         ts.startSolving();
     }
 
-    public void newBestSolutionFound(TabuSearchEvent e) {
-        System.out.println(e.getTabuSearch().getBestSolution().toString()+" - "+e.getTabuSearch().getIterationsCompleted());
+    public void newBestSolutionFound(TabuSearchEvent e)
+    {
+        System.out.println(
+                e.getTabuSearch().getBestSolution().toString() + " - " + e.getTabuSearch().getIterationsCompleted());
     }
 
-    public void improvingMoveMade(TabuSearchEvent e) {
+    public void improvingMoveMade(TabuSearchEvent e)
+    {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void newCurrentSolutionFound(TabuSearchEvent e) {
+    public void newCurrentSolutionFound(TabuSearchEvent e)
+    {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void noChangeInValueMoveMade(TabuSearchEvent e) {
+    public void noChangeInValueMoveMade(TabuSearchEvent e)
+    {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void tabuSearchStarted(TabuSearchEvent e) {
+    public void tabuSearchStarted(TabuSearchEvent e)
+    {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void tabuSearchStopped(TabuSearchEvent e) {
+    public void tabuSearchStopped(TabuSearchEvent e)
+    {
         System.out.println("finished");
     }
 
-    public void unimprovingMoveMade(TabuSearchEvent e) {
+    public void unimprovingMoveMade(TabuSearchEvent e)
+    {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
-
 
 }

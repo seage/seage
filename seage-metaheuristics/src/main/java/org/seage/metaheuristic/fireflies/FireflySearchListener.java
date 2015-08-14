@@ -28,7 +28,6 @@
  */
 package org.seage.metaheuristic.fireflies;
 
-
 /**
  * An object that will listen for the firefly search to start.
  * 
@@ -49,9 +48,8 @@ public interface FireflySearchListener extends java.util.EventListener
      * @see FireflySearch
      * @since 1.0
      */
-    public void FireflySearchStarted( FireflySearchEvent e );
-    
-    
+    public void FireflySearchStarted(FireflySearchEvent e);
+
     /**
      * Called when the firefly search stops solving, either because all requested
      * iterations are completed or someone has called 
@@ -62,12 +60,8 @@ public interface FireflySearchListener extends java.util.EventListener
      * @see FireflySearch
      * @since 1.0
      */
-    public void FireflySearchStopped( FireflySearchEvent e );
-    
-    
-    
-    
-    
+    public void FireflySearchStopped(FireflySearchEvent e);
+
     /**
      * Called when a new best solution is found.
      * 
@@ -76,8 +70,8 @@ public interface FireflySearchListener extends java.util.EventListener
      * @see FireflySearchEvent
      * @since 1.0
      */
-    public void newBestSolutionFound( FireflySearchEvent e );
-    
+    public void newBestSolutionFound(FireflySearchEvent e);
+
     /**
      * Called when a new current solution is found, which, by defintion,
      * is at every iteration, even if your "move" doesn't perceptibly
@@ -89,9 +83,7 @@ public interface FireflySearchListener extends java.util.EventListener
      * @see FireflySearch
      * @since 1.0
      */
-    public void newCurrentSolutionFound( FireflySearchEvent e );
-    
-    
+    public void newCurrentSolutionFound(FireflySearchEvent e);
 
     /**
      * Called when the firefly search makes an unimproving move.
@@ -102,9 +94,7 @@ public interface FireflySearchListener extends java.util.EventListener
      * @see FireflySearch
      * @since 1.0
      */
-    public void unimprovingMoveMade( FireflySearchEvent e );
-    
- 
+    public void unimprovingMoveMade(FireflySearchEvent e);
 
     /**
      * Called when the firefly search makes an improving move.
@@ -115,9 +105,7 @@ public interface FireflySearchListener extends java.util.EventListener
      * @see FireflySearch
      * @since 1.0-exp7
      */
-    public void improvingMoveMade( FireflySearchEvent e );
-
-
+    public void improvingMoveMade(FireflySearchEvent e);
 
     /**
      * Called when the firefly search makes a no change in value move.
@@ -128,11 +116,6 @@ public interface FireflySearchListener extends java.util.EventListener
      * @see FireflySearch
      * @since 1.0-exp7
      */
-    public void noChangeInValueMoveMade( FireflySearchEvent e );
+    public void noChangeInValueMoveMade(FireflySearchEvent e);
 
-    
-
-}   // end interface FireflySearchListener
-
-
-
+} // end interface FireflySearchListener

@@ -8,69 +8,71 @@ import java.util.logging.Logger;
 
 public class TaskRunner
 {
-	private static Logger _logger = Logger.getLogger(TaskRunner.class.getName());
+    private static Logger _logger = Logger.getLogger(TaskRunner.class.getName());
 
-	ConcurrentLinkedQueue<Runnable> _taskQueue;
+    ConcurrentLinkedQueue<Runnable> _taskQueue;
 
-	public void runTasks(List<Runnable> taskQueue, int nrOfCores)
-	{
-		_taskQueue = new ConcurrentLinkedQueue<Runnable>(taskQueue);
+    public void runTasks(List<Runnable> taskQueue, int nrOfCores)
+    {
+        _taskQueue = new ConcurrentLinkedQueue<Runnable>(taskQueue);
 
-		List<Thread> runnerThreads = new ArrayList<Thread>();
+        List<Thread> runnerThreads = new ArrayList<Thread>();
 
-		for (int i = 0; i < nrOfCores; i++)
-		{
-			String threadName = "TaskRunner-"+(i+1);
-			Thread t = new Thread(new RunnerThread(threadName), threadName);
-			runnerThreads.add(t);
-			t.start();
-		}
+        for (int i = 0; i < nrOfCores; i++)
+        {
+            String threadName = "TaskRunner-" + (i + 1);
+            Thread t = new Thread(new RunnerThread(threadName), threadName);
+            runnerThreads.add(t);
+            t.start();
+        }
 
-		// Wait for each thread
-		for (int i = 0; i < nrOfCores; i++)
-		{
-			try
-			{
-				runnerThreads.get(i).join();
-			}
-			catch (InterruptedException e)
-			{
-				_logger.log(Level.FINER, e.getMessage());
-			}
-		}
-	}
+        // Wait for each thread
+        for (int i = 0; i < nrOfCores; i++)
+        {
+            try
+            {
+                runnerThreads.get(i).join();
+            }
+            catch (InterruptedException e)
+            {
+                _logger.log(Level.FINER, e.getMessage());
+            }
+        }
+    }
 
-	private class RunnerThread implements Runnable
-	{		
-		private String _threadName;
-		public RunnerThread(String name)
-		{
-			_threadName = name;
-		}
-		@Override
-		public void run()
-		{
-			int i=1;
-			while (!_taskQueue.isEmpty())
-			{
-				Runnable task = _taskQueue.poll();
-				if(task == null)
-					return;
-				Thread t = new Thread(task, _threadName+"-Job"+i++);
-				_logger.log(Level.FINER, t.toString() + " started");
-				t.start();
+    private class RunnerThread implements Runnable
+    {
+        private String _threadName;
 
-				try
-				{
-					t.join();
-					_logger.log(Level.FINER, t.toString() + " finished");
-				}
-				catch (InterruptedException e)
-				{
-					_logger.log(Level.WARNING, e.getMessage());
-				}
-			}
-		}
+        public RunnerThread(String name)
+        {
+            _threadName = name;
+        }
 
-	}
+        @Override
+        public void run()
+        {
+            int i = 1;
+            while (!_taskQueue.isEmpty())
+            {
+                Runnable task = _taskQueue.poll();
+                if (task == null)
+                    return;
+                Thread t = new Thread(task, _threadName + "-Job" + i++);
+                _logger.log(Level.FINER, t.toString() + " started");
+                t.start();
+
+                try
+                {
+                    t.join();
+                    _logger.log(Level.FINER, t.toString() + " finished");
+                }
+                catch (InterruptedException e)
+                {
+                    _logger.log(Level.WARNING, e.getMessage());
+                }
+            }
+        }
+
+    }
 }

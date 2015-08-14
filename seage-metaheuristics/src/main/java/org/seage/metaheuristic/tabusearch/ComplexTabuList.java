@@ -27,7 +27,6 @@
  */
 package org.seage.metaheuristic.tabusearch;
 
-
 /**
  * <p>
  *  This implementation of a tabu list uses the {@link ComplexMove}'s <code>attributes()</code>
@@ -61,19 +60,17 @@ package org.seage.metaheuristic.tabusearch;
 public class ComplexTabuList implements TabuList
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -1144625207822991616L;
+     * 
+     */
+    private static final long serialVersionUID = -1144625207822991616L;
 
-
-	/**
+    /**
      * The value 10 will be used as the tenure if
      * the null constructor is used.
      *
      * @since 1.0-exp3
      */
-    public final static int DEFAULT_TENURE   = 10;
-
+    public final static int DEFAULT_TENURE = 10;
 
     /**
     * The value 2 will be used as the number of attributes if
@@ -83,14 +80,12 @@ public class ComplexTabuList implements TabuList
      */
     public final static int DEFAULT_NUM_ATTR = 2;
 
-    
-    private int     tenure;       // Tabu list tenure
-    private int[][] tabuList;     // Data structure used to store list
-    private int     currentPos;   // Monotomically increasing counter
-    private int     listLength;   // Always equals tabuList.length
-    private int      numAttr;     // Number of attributes to track
-    
-    
+    private int tenure; // Tabu list tenure
+    private int[][] tabuList; // Data structure used to store list
+    private int currentPos; // Monotomically increasing counter
+    private int listLength; // Always equals tabuList.length
+    private int numAttr; // Number of attributes to track
+
     /**
      * When the int[] used for the tabu list needs to be
      * expanded, it will be set to the requested tenure
@@ -99,8 +94,7 @@ public class ComplexTabuList implements TabuList
      * @since 1.0-exp3
      */
     private final static double LIST_GROW_FACTOR = 2.0;
-    
-    
+
     /**
      * Constructs a <code>ComplexTabuList</code> with the
      * {@link #DEFAULT_TENURE} value of ten (10) and the
@@ -109,10 +103,10 @@ public class ComplexTabuList implements TabuList
      * @since 1.0-exp3
      */
     public ComplexTabuList()
-    {   this( DEFAULT_TENURE, DEFAULT_NUM_ATTR );        
-    }   // end SimpleTabuList
-    
-    
+    {
+        this(DEFAULT_TENURE, DEFAULT_NUM_ATTR);
+    } // end SimpleTabuList
+
     /**
      * Constructs a <code>ComplexTabuList</code> with a given tenure
      * and number of attributes
@@ -121,22 +115,20 @@ public class ComplexTabuList implements TabuList
      * @param numAttr the number of attributes in each move to store
      * @since 1.0-exp3
      */
-    public ComplexTabuList( int tenure, int numAttr )
+    public ComplexTabuList(int tenure, int numAttr)
     {
         super();
-        
-        this.tenure     = tenure;
-        this.numAttr    = numAttr;
+
+        this.tenure = tenure;
+        this.numAttr = numAttr;
         this.listLength = (int) (tenure * LIST_GROW_FACTOR);
-        this.tabuList   = new int[ listLength ][ numAttr ];
+        this.tabuList = new int[listLength][numAttr];
         this.currentPos = 0;
-        for( int i = 0; i < listLength; i++ )
-            for( int j = 0; j < numAttr; j++ )
+        for (int i = 0; i < listLength; i++)
+            for (int j = 0; j < numAttr; j++)
                 this.tabuList[i][j] = Integer.MIN_VALUE;
-    }   // end SimpleTabuList
-    
-    
-    
+    } // end SimpleTabuList
+
     /**
      * Determines if the {@link ComplexMove} is on the tabu list and ignores the
      * {@link Solution} that is passed to it. The move's identity is determined
@@ -153,32 +145,32 @@ public class ComplexTabuList implements TabuList
      * @see Solution
      * @since 1.0-exp3
      */
-    public boolean isTabu(Solution fromSolution, Move move) 
+    public boolean isTabu(Solution fromSolution, Move move)
     {
         // Make sure it's a "ComplexMove"
-        if( ! (move instanceof ComplexMove) )
-            throw new IllegalArgumentException( "Move is not of type ComplexMove" );
-        ComplexMove cMove = (ComplexMove)move;
+        if (!(move instanceof ComplexMove))
+            throw new IllegalArgumentException("Move is not of type ComplexMove");
+        ComplexMove cMove = (ComplexMove) move;
 
         // Get attributes and check length
         int[] attrs = cMove.attributes();
-        if( attrs.length != this.numAttr )
-            throw new IllegalArgumentException( "Wrong number of attributes (" +
-                                                attrs.length + "). Should be " +
-                                                this.numAttr + "." );
+        if (attrs.length != this.numAttr)
+            throw new IllegalArgumentException("Wrong number of attributes (" +
+                    attrs.length + "). Should be " +
+                    this.numAttr + ".");
 
         // See if attributes are tabu
-        for( int i = 1; i <= tenure; i++ )
-            if ( currentPos - i < 0 )
+        for (int i = 1; i <= tenure; i++)
+            if (currentPos - i < 0)
                 return false;
             else
-                for( int j = 0; j < this.numAttr; j++ )
-                    if ( attrs[j] == tabuList[ (currentPos-i) % listLength ][j] )
+                for (int j = 0; j < this.numAttr; j++)
+                    if (attrs[j] == tabuList[(currentPos - i) % listLength][j])
                         return true;
-        
+
         return false;
-    }   // end isTabu 
-    
+    } // end isTabu 
+
     /**
      * This method accepts a {@link ComplexMove} and {@link Solution} as
      * arguments and updates the tabu list as necessary.
@@ -202,22 +194,21 @@ public class ComplexTabuList implements TabuList
     public void setTabu(Solution fromSolution, Move move)
     {
         // Make sure it's a "ComplexMove"
-        if( ! (move instanceof ComplexMove) )
-            throw new IllegalArgumentException( "Move is not of type ComplexMove" );
-        ComplexMove cMove = (ComplexMove)move;
+        if (!(move instanceof ComplexMove))
+            throw new IllegalArgumentException("Move is not of type ComplexMove");
+        ComplexMove cMove = (ComplexMove) move;
 
         // Get attributes and check length
         int[] attrs = cMove.attributes();
-        if( attrs.length != this.numAttr )
-            throw new IllegalArgumentException( "Wrong number of attributes (" +
-                                                attrs.length + "). Should be " +
-                                                this.numAttr + "." );
+        if (attrs.length != this.numAttr)
+            throw new IllegalArgumentException("Wrong number of attributes (" +
+                    attrs.length + "). Should be " +
+                    this.numAttr + ".");
         // Record tabu
-        for( int j = 0; j < this.numAttr; j++ )
-            tabuList[ (currentPos) % listLength ][j] = attrs[j];
+        for (int j = 0; j < this.numAttr; j++)
+            tabuList[(currentPos) % listLength][j] = attrs[j];
         currentPos++;
-    }   // end setTabu
-
+    } // end setTabu
 
     /**
      * Returns the number of attributes in each move
@@ -227,12 +218,10 @@ public class ComplexTabuList implements TabuList
      * @since 1.0-exp9
      */
     public int getNumberOfAttributes()
-    {   return numAttr;
-    }   // end getNumberOfAttributes
-    
+    {
+        return numAttr;
+    } // end getNumberOfAttributes
 
-
-    
     /**
      * Returns the tenure being used by this tabu list.
      *
@@ -240,10 +229,10 @@ public class ComplexTabuList implements TabuList
      * @since 1.0-exp3
      */
     public int getTenure()
-    {   return tenure;
-    }   // end getTenure
-    
-    
+    {
+        return tenure;
+    } // end getTenure
+
     /**
      * Sets the tenure used by the tabu list. The data structure
      * being used to record the tabu list grows if the requested
@@ -256,23 +245,22 @@ public class ComplexTabuList implements TabuList
      * @param tenure the tabu list's new tenure
      * @since 1.0-exp3
      */
-    public void setTenure( int tenure )
+    public void setTenure(int tenure)
     {
-        if( tenure < 0 )
+        if (tenure < 0)
             return;
-        
-        if( tenure > this.tenure && tenure > tabuList.length )
+
+        if (tenure > this.tenure && tenure > tabuList.length)
         {
-            listLength        = (int) (tenure * LIST_GROW_FACTOR);
-            int[][] newTabuList = new int[ listLength ][ this.numAttr ];
-            for( int i = 0; i < tabuList.length; i++ )
+            listLength = (int) (tenure * LIST_GROW_FACTOR);
+            int[][] newTabuList = new int[listLength][this.numAttr];
+            for (int i = 0; i < tabuList.length; i++)
                 newTabuList[i] = tabuList[i];
-            
-            tabuList   = newTabuList;
-        }   // end if: grow tabu list
-        
+
+            tabuList = newTabuList;
+        } // end if: grow tabu list
+
         this.tenure = tenure;
-    }   // end setTenure
-    
-    
-}   // end class SimpleTabuList
+    } // end setTenure
+
+} // end class SimpleTabuList

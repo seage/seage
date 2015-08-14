@@ -32,29 +32,30 @@ import java.util.List;
  *
  * @author zmatlja1
  */
-public class ReportManager {
-    
+public class ReportManager
+{
+
     List<ILogReport> _reporters;
 
     public ReportManager()
     {
         this._reporters = new ArrayList<ILogReport>();
     }
-    
+
     public void addReporter(ILogReport reporter)
     {
-        this._reporters.add( reporter );
+        this._reporters.add(reporter);
     }
-    
+
     public List<ILogReport> getReporters()
     {
         return _reporters;
     }
-    
+
     public void executeAllReporters() throws Exception
     {
-        for(ILogReport reporter : _reporters)
+        for (ILogReport reporter : _reporters)
             reporter.report();
     }
-    
+
 }

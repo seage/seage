@@ -47,16 +47,16 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     {
         try
         {
-        	String path = "data/tsp/eil51.tsp";//args[0];		// 426
-        	//String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
-        	//String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
-        	//String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
-        	//String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
-        	//String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
-        	
+            String path = "data/tsp/eil51.tsp";//args[0];		// 426
+            //String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
+            //String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
+            //String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
+            //String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
+            //String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
+
             new TspGeneticAlgorithmTest().run(path);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -65,8 +65,9 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     public void run(String path) throws Exception
     {
         City[] cities = CityProvider.readCities(new FileInputStream(path));
-        
-        GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<Subject<Integer>>(new TspGeneticOperator(), new TspEvaluator(cities)); 
+
+        GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<Subject<Integer>>(new TspGeneticOperator(),
+                new TspEvaluator(cities));
         gs.addGeneticSearchListener(this);
         gs.setEliteSubjectsPct(5);
         gs.setMutatePopulationPct(5);
@@ -85,41 +86,44 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
         //Integer[][] tours = new Integer[numTours][tourLenght];
         ArrayList<Subject<Integer>> result = new ArrayList<Subject<Integer>>(numTours);
 
-        for(int k=0;k<tourLenght;k++)
-        	result.add( new Subject<Integer>(TourProvider.createRandomTour(cities.length)));
-                //tours[k] = TourProvider.createRandomTour(cities);
+        for (int k = 0; k < tourLenght; k++)
+            result.add(new Subject<Integer>(TourProvider.createRandomTour(cities.length)));
+        //tours[k] = TourProvider.createRandomTour(cities);
 
-//        for(int k=0;k<tours.length;k++)
-//        {
-//            Subject s = new Subject(new Genome(1, tourLenght));
-//            s.getChromosome().setGeneArray(tours[k]);
-//
-//            result[k] = s;
-//        }
+        //        for(int k=0;k<tours.length;k++)
+        //        {
+        //            Subject s = new Subject(new Genome(1, tourLenght));
+        //            s.getChromosome().setGeneArray(tours[k]);
+        //
+        //            result[k] = s;
+        //        }
         return result;
     }
 
-    public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e) {
+    public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e)
+    {
         System.out.println("Genetic Algorithm for TSP started.");
     }
 
-    public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e) {
+    public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e)
+    {
         System.out.println("Genetic Algorithm for TSP stopped.");
     }
 
-    public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e) {
+    public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e)
+    {
         System.out.println("New best: " + e.getGeneticSearch().getBestSubject().getFitness()[0]);
     }
 
-    public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Integer>> e) {
-        
+    public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Integer>> e)
+    {
+
     }
 
-	@Override
-	public void iterationPerformed(GeneticAlgorithmEvent<Subject<Integer>> e)
-	{
-		
-	}
-    
-    
+    @Override
+    public void iterationPerformed(GeneticAlgorithmEvent<Subject<Integer>> e)
+    {
+
+    }
+
 }

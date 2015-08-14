@@ -39,8 +39,9 @@ import org.seage.metaheuristic.antcolony.Node;
  *
  * @author rick
  */
-public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
-    
+public class AntColonyAdapterTest extends AlgorithmAdapterTestBase
+{
+
     public AntColonyAdapterTest() throws Exception
     {
         super();
@@ -48,15 +49,15 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
 
     @Before
     public void initAlgorithm() throws Exception
-    {    	
-    	Graph graph = new TestGraph();
-    	for(int i=0;i<SOLUTION_LENGTH;i++)
-    	{
-    		Node n1 = new Node(i+1);
-    		graph.getNodes().put(i+1, n1);
-    		
-    	}
-    	    	
+    {
+        Graph graph = new TestGraph();
+        for (int i = 0; i < SOLUTION_LENGTH; i++)
+        {
+            Node n1 = new Node(i + 1);
+            graph.getNodes().put(i + 1, n1);
+
+        }
+
         _algAdapter = new TestAntColonyAdapter(new AntBrain(graph), graph);
         _algParams = new AlgorithmParams();
 
@@ -66,22 +67,22 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
         _algParams.putValue("defaultPheromone", 1);
         _algParams.putValue("qantumOfPheromone", 1);
         _algParams.putValue("localEvaporation", 1);
-        
+
         _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
-    }  
-    
+    }
+
     @Test
-    @Override    
+    @Override
     public void testAlgorithm() throws Exception
     {
         _tester.testAlgorithm();
     }
 
     @Test
-    @Override    
+    @Override
     public void testAlgorithmWithParamsAtZero() throws Exception
     {
-    	AlgorithmParams params = new AlgorithmParams();
+        AlgorithmParams params = new AlgorithmParams();
         //params.putValue("numAnts", 0);
         params.putValue("iterationCount", 0);
         params.putValue("alpha", 0);
@@ -89,7 +90,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
         params.putValue("defaultPheromone", 0);
         params.putValue("qantumOfPheromone", 0);
         params.putValue("localEvaporation", 0);
-    	_tester.setAlgParameters(params);
+        _tester.setAlgParameters(params);
         _tester.testAlgorithmWithParamsAtZero();
     }
 
@@ -97,7 +98,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
     @Override
     public void testAsyncRunning() throws Exception
     {
-    	AlgorithmParams params = new AlgorithmParams();
+        AlgorithmParams params = new AlgorithmParams();
         //params.putValue("numAnts", 0.1);
         params.putValue("iterationCount", 1000000);
         params.putValue("alpha", 100);
@@ -105,22 +106,22 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase{
         params.putValue("defaultPheromone", 1);
         params.putValue("qantumOfPheromone", 1);
         params.putValue("localEvaporation", 1);
-        
+
         _tester.setAlgParameters(params);
-        _tester.testAsyncRunning();        
+        _tester.testAsyncRunning();
     }
 
     @Test
-	@Override
-	public void testReport() throws Exception
-	{
-		_tester.testReport();		
-	}
+    @Override
+    public void testReport() throws Exception
+    {
+        _tester.testReport();
+    }
 
     @Test
-	@Override
-	public void testAlgorithmWithParamsNull() throws Exception
-	{
-		_tester.testAlgorithmWithParamsNull();		
-	}
+    @Override
+    public void testAlgorithmWithParamsNull() throws Exception
+    {
+        _tester.testAlgorithmWithParamsNull();
+    }
 }

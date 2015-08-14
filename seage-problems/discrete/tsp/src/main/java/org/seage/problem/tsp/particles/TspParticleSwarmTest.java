@@ -48,61 +48,66 @@ public class TspParticleSwarmTest implements IParticleSwarmListener
     {
         try
         {
-            if(args.length != 0)
+            if (args.length != 0)
                 _dataPath = args[0];
-            new TspParticleSwarmTest().run( _dataPath );
+            new TspParticleSwarmTest().run(_dataPath);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            System.out.println( ex.getMessage() );
+            System.out.println(ex.getMessage());
             ex.printStackTrace();
         }
     }
 
     public void run(String path) throws Exception
     {
-        _cities = CityProvider.readCities( new FileInputStream(path) );
+        _cities = CityProvider.readCities(new FileInputStream(path));
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _cities.length);
 
-        ParticleSwarm pso = new ParticleSwarm( new TspObjectiveFunction(_cities) );
+        ParticleSwarm pso = new ParticleSwarm(new TspObjectiveFunction(_cities));
 
-        pso.setMaximalIterationCount( 10000 );
-//        pso.setMaximalVelocity(10);
-//        pso.setMinimalVelocity(-10);
-//        pso.setInertia( 0.9 );
-//        pso.setAlpha(1.193);
-//        pso.setBeta(0.721);
-        
-        pso.setMinimalVectorValue(-10 );
-        pso.setMaximalVectorValue( 10 );
-        
-        pso.setInertia( 0.721 );
+        pso.setMaximalIterationCount(10000);
+        //        pso.setMaximalVelocity(10);
+        //        pso.setMinimalVelocity(-10);
+        //        pso.setInertia( 0.9 );
+        //        pso.setAlpha(1.193);
+        //        pso.setBeta(0.721);
+
+        pso.setMinimalVectorValue(-10);
+        pso.setMaximalVectorValue(10);
+
+        pso.setInertia(0.721);
         pso.setAlpha(0.5);
         pso.setBeta(0.2);
 
-        pso.addParticleSwarmOptimizationListener( this );
-        
+        pso.addParticleSwarmOptimizationListener(this);
+
         Particle[] particles = new Particle[10000];
-        for(int i=0;i<particles.length;i++)
-        	particles[i] = new TspRandomParticle(_cities.length);
-        pso.startSearching( particles );
+        for (int i = 0; i < particles.length; i++)
+            particles[i] = new TspRandomParticle(_cities.length);
+        pso.startSearching(particles);
     }
 
-    public void newBestSolutionFound(ParticleSwarmEvent e) {
-       
-    	String s = String.format("Best (%d): %f", e.getParticleSwarm().getCurrentIteration(), e.getParticleSwarm().getBestParticle().getEvaluation()); 
-    	System.out.println(s);
+    public void newBestSolutionFound(ParticleSwarmEvent e)
+    {
+
+        String s = String.format("Best (%d): %f", e.getParticleSwarm().getCurrentIteration(),
+                e.getParticleSwarm().getBestParticle().getEvaluation());
+        System.out.println(s);
     }
 
-    public void newIterationStarted(ParticleSwarmEvent e) {
+    public void newIterationStarted(ParticleSwarmEvent e)
+    {
     }
 
-    public void particleSwarmStarted(ParticleSwarmEvent e) {
+    public void particleSwarmStarted(ParticleSwarmEvent e)
+    {
         System.out.println("Started");
     }
 
-    public void particleSwarmStopped(ParticleSwarmEvent e) {
+    public void particleSwarmStopped(ParticleSwarmEvent e)
+    {
         System.out.println("Stopped");
     }
 

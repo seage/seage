@@ -26,8 +26,6 @@
  */
 package org.seage.metaheuristic.fireflies;
 
-
-
 /**
  * The objective function is used to
  * evaluate a {@link Solution}. 
@@ -37,12 +35,12 @@ package org.seage.metaheuristic.fireflies;
  * @since 1.0
  */
 public interface ObjectiveFunction
-{    
-//    public abstract double[] evaluate( Solution soln, Move move ) throws Exception;
+{
+    //    public abstract double[] evaluate( Solution soln, Move move ) throws Exception;
 
-    public abstract double[] evaluate( Solution soln ) throws Exception;
-    
+    public abstract double[] evaluate(Solution soln) throws Exception;
+
     public int getCounter();
-    public void incrementCounter();
-}   // end class ObjectiveFunction
 
+    public void incrementCounter();
+} // end class ObjectiveFunction

@@ -35,47 +35,47 @@ import java.util.*;
 public class ClassUtil
 {
     private static List<String> paths = new ClassPathAnalyzer("seage.problem").analyzeClassPath();
-    
+
     public static ClassInfo[] searchForClasses(Class<?> classObj, String pkgName) throws Exception
     {
-    	List<ClassInfo> result = new ArrayList<ClassInfo>();
-        for(String p : paths)
+        List<ClassInfo> result = new ArrayList<ClassInfo>();
+        for (String p : paths)
         {
 
-            if(!p.contains(".class"))
+            if (!p.contains(".class"))
                 continue;
-            
-            String className = p.replace(".class", "").replace('/','.').replace('\\','.');
-            if(!className.startsWith(pkgName))
+
+            String className = p.replace(".class", "").replace('/', '.').replace('\\', '.');
+            if (!className.startsWith(pkgName))
                 continue;
-            
+
             Class<?> c = Class.forName(className);
-            if(searchForParent(classObj, c))
+            if (searchForParent(classObj, c))
                 //result.add(createClassInfo(jarFile, f.getCanonicalPath(), c));
                 result.add(new ClassInfo(c.getCanonicalName(), null));
         }
         return result.toArray(new ClassInfo[0]);
     }
-    
+
     public static String[] searchForInstancesInJar(final String instanceDir, String pkgName) throws Exception
     {
         List<String> result = new ArrayList<String>();
         pkgName = pkgName.replace('.', '/');
-        for(String resName : paths)
+        for (String resName : paths)
         {
-        	resName = resName.replace(System.getProperty("file.separator"), "/");
-        	
-            if(resName.contains(".class"))
-                continue;  
-            
-            if(resName.startsWith(pkgName) && resName.contains(instanceDir) && !resName.endsWith(instanceDir+"/"))
+            resName = resName.replace(System.getProperty("file.separator"), "/");
+
+            if (resName.contains(".class"))
+                continue;
+
+            if (resName.startsWith(pkgName) && resName.contains(instanceDir) && !resName.endsWith(instanceDir + "/"))
             {
-                if(!resName.startsWith("/"))
-                    resName="/"+resName ;
-                
+                if (!resName.startsWith("/"))
+                    resName = "/" + resName;
+
                 result.add(resName);
             }
-                
+
         }
         return result.toArray(new String[0]);
     }
@@ -85,24 +85,23 @@ public class ClassUtil
         ArrayList<Class<?>> cls = new ArrayList<Class<?>>();
 
         //if(pattern.isInterface())
-        for(Class<?> c : current.getInterfaces())
+        for (Class<?> c : current.getInterfaces())
             cls.add(c);
         //else
-        if(current.getSuperclass() != null)
+        if (current.getSuperclass() != null)
             cls.add(current.getSuperclass());
 
-        if(cls.isEmpty())
+        if (cls.isEmpty())
             return false;
         else
-            for(Class<?> c : cls)
+            for (Class<?> c : cls)
             {
-                if(c.getName().equals(pattern.getName()))
+                if (c.getName().equals(pattern.getName()))
                     return true;
                 else
                     return searchForParent(pattern, c);
             }
         return false;
     }
-
 
 }

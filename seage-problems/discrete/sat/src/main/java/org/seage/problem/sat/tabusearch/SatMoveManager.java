@@ -27,17 +27,22 @@ public class SatMoveManager implements MoveManager
 
     private int[] getTableValue2(int val0, int val1)
     {
-        if (val0 == 1 && val1 == 0) return new int[] { 0, 1 };
-        if (val0 == 0 && val1 == 1) return new int[] { 1, 1 };
-        if (val0 == 0 && val1 == 0) return new int[] { 1, 0 };
+        if (val0 == 1 && val1 == 0)
+            return new int[] { 0, 1 };
+        if (val0 == 0 && val1 == 1)
+            return new int[] { 1, 1 };
+        if (val0 == 0 && val1 == 0)
+            return new int[] { 1, 0 };
         // if (val0 == 1 && val1 == 1)
         return new int[] { 0, 0 };
     }
 
     private int[] getTableValue(int val0, int val1)
     {
-        if (val0 == 1) return new int[] { 0, val1 };
-        if (val0 == 0) return new int[] { 1, val1 };
+        if (val0 == 1)
+            return new int[] { 0, val1 };
+        if (val0 == 0)
+            return new int[] { 1, val1 };
 
         // if (val0 == 1 && val1 == 1)
         return new int[] { 0, 0 };

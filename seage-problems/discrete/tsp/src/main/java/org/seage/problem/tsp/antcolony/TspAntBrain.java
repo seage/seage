@@ -37,86 +37,86 @@ import org.seage.metaheuristic.antcolony.Node;
  *
  * @author Zagy
  */
-public class TspAntBrain extends AntBrain 
+public class TspAntBrain extends AntBrain
 {
-    public TspAntBrain(Graph graph) {
+    public TspAntBrain(Graph graph)
+    {
         super(graph);
     }
 
-//	@Override
-//	protected Node selectNextNode(Node firstNode, Node currentNode) 
-//	{		 
-//		Node n = super.selectNextNode(firstNode, currentNode);
-//		if(n==null && firstNode != currentNode)
-//			return firstNode;
-//		else
-//			return n;
-//	}
+    //	@Override
+    //	protected Node selectNextNode(Node firstNode, Node currentNode) 
+    //	{		 
+    //		Node n = super.selectNextNode(firstNode, currentNode);
+    //		if(n==null && firstNode != currentNode)
+    //			return firstNode;
+    //		else
+    //			return n;
+    //	}
 
-	@Override
-	protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode) 
-	{
-		HashSet<Node> result = super.getAvailableNodes(startingNode, currentNode);
-		if(currentNode != startingNode && result.size()==0)
-		{			
-			result.add(startingNode);
-		}
-		return result;
-	}
-   
-    
-//    @Override
-//	protected Node selectNextNode(Node firstNode, Node currentNode) 
-//    {
-//		Node n =super.selectNextNode(firstNode, currentNode, visited);
-//		if(n!=null)
-//		{
-//			Node n2 = _graph.getNodes().get(-n.getID());
-//			visited.add(n2);
-//		}
-//		return n;
-//	}
+    @Override
+    protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode)
+    {
+        HashSet<Node> result = super.getAvailableNodes(startingNode, currentNode);
+        if (currentNode != startingNode && result.size() == 0)
+        {
+            result.add(startingNode);
+        }
+        return result;
+    }
 
-//	@Override
-//	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited) {
-//		
-//		int nextID = Math.abs(currentNode.getID())+1;
-//		if(!_graph.getNodes().containsKey(nextID))
-//			return null;
-//		ArrayList<Node> result = new ArrayList<Node>();
-//		result.add(_graph.getNodes().get(nextID));
-//		result.add(_graph.getNodes().get(-nextID));
-//		return result;
-//	}
+    //    @Override
+    //	protected Node selectNextNode(Node firstNode, Node currentNode) 
+    //    {
+    //		Node n =super.selectNextNode(firstNode, currentNode, visited);
+    //		if(n!=null)
+    //		{
+    //			Node n2 = _graph.getNodes().get(-n.getID());
+    //			visited.add(n2);
+    //		}
+    //		return n;
+    //	}
 
-//    @Override
-//    protected Node selectNextNode(Node currentNode, List<Node> nodes, HashSet<Node> visited)
-//    {
-//        double[] probabilities = new double[edges.size()];
-//        double sum = 0;
-//        // for each Edges
-//        for (int i = 0; i < probabilities.length; i++) {
-//            Edge e = edges.get(i);
-//            probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgePrice(), _beta);
-//            sum += probabilities[i];
-//        }
-//        for (int i = 0; i < probabilities.length; i++) {
-//            probabilities[i] /= sum;
-//        }
-//        return edges.get(next(probabilities));
-//    }
- 
-//    protected double pathCost(Vector<Edge> path) {
-//        Boolean[] solution = new Boolean[_formula.getLiteralCount()];
-//        Node node;
-//        for (int i = 0; i < _formula.getLiteralCount(); i++) {
-//            node = (Node) path.get(i).getNode2();
-//            if (node.getID() < 0) {
-//                solution[i] = false;
-//            } else {
-//                solution[i] = true;
-//            }
-//        }
-//        return (FormulaEvaluator.evaluate(_formula, solution) + 0.1);
-//    }
+    //	@Override
+    //	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited) {
+    //		
+    //		int nextID = Math.abs(currentNode.getID())+1;
+    //		if(!_graph.getNodes().containsKey(nextID))
+    //			return null;
+    //		ArrayList<Node> result = new ArrayList<Node>();
+    //		result.add(_graph.getNodes().get(nextID));
+    //		result.add(_graph.getNodes().get(-nextID));
+    //		return result;
+    //	}
+
+    //    @Override
+    //    protected Node selectNextNode(Node currentNode, List<Node> nodes, HashSet<Node> visited)
+    //    {
+    //        double[] probabilities = new double[edges.size()];
+    //        double sum = 0;
+    //        // for each Edges
+    //        for (int i = 0; i < probabilities.length; i++) {
+    //            Edge e = edges.get(i);
+    //            probabilities[i] = Math.pow(e.getLocalPheromone(), _alpha) * Math.pow(1 / e.getEdgePrice(), _beta);
+    //            sum += probabilities[i];
+    //        }
+    //        for (int i = 0; i < probabilities.length; i++) {
+    //            probabilities[i] /= sum;
+    //        }
+    //        return edges.get(next(probabilities));
+    //    }
+
+    //    protected double pathCost(Vector<Edge> path) {
+    //        Boolean[] solution = new Boolean[_formula.getLiteralCount()];
+    //        Node node;
+    //        for (int i = 0; i < _formula.getLiteralCount(); i++) {
+    //            node = (Node) path.get(i).getNode2();
+    //            if (node.getID() < 0) {
+    //                solution[i] = false;
+    //            } else {
+    //                solution[i] = true;
+    //            }
+    //        }
+    //        return (FormulaEvaluator.evaluate(_formula, solution) + 0.1);
+    //    }
 }

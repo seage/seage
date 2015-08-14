@@ -29,7 +29,8 @@ package org.seage.metaheuristic.grasp;
  *
  * @author Martin Zaloga
  */
-public class HillClimber implements IHillClimber {
+public class HillClimber implements IHillClimber
+{
 
     /**
      * _numIter - Number of iteration after start Hill-Climber
@@ -51,7 +52,9 @@ public class HillClimber implements IHillClimber {
      * @param solutionGenerator - Object for generating solutions
      * @param numIter - Number of iteration
      */
-    public HillClimber(IObjectiveFunction objectiveFunction, IMoveManager moveManager, ISolutionGenerator solutionGenerator, int numIter) {
+    public HillClimber(IObjectiveFunction objectiveFunction, IMoveManager moveManager,
+            ISolutionGenerator solutionGenerator, int numIter)
+    {
         _moveManager = moveManager;
         _objectiveFunction = objectiveFunction;
         _solutionGenerator = solutionGenerator;
@@ -63,12 +66,14 @@ public class HillClimber implements IHillClimber {
      * @param solution - Object with an initial solution, which is made better
      * @param classic - Parameter that switchs between the classical and improved Hill-Climber algorithm
      */
-    public void startSearching(Solution solution) throws Exception {
+    public void startSearching(Solution solution) throws Exception
+    {
         _currentSolution = solution;
         int iter = 0;
         double bestVal = 0;
 
-        while (iter < _numIter) {
+        while (iter < _numIter)
+        {
             IMove[] moves = _moveManager.getAllMoves(_currentSolution);
 
             bestVal = solution.getObjectiveValue();
@@ -78,22 +83,26 @@ public class HillClimber implements IHillClimber {
             boolean noBetterMove = true;
 
             /*Browsing generated steps*/
-            for (IMove m : moves) {
+            for (IMove m : moves)
+            {
                 val = _objectiveFunction.evaluateMove(_currentSolution, m);
 
                 /*Selection of better solutions*/
-                if (val < bestVal) {
+                if (val < bestVal)
+                {
                     best = m;
                     bestVal = val;
                     noBetterMove = false;
                 }
             }
-            if (noBetterMove) {
+            if (noBetterMove)
+            {
                 return;
             }
 
             /*Selection of the best actual solution*/
-            if (best != null) {
+            if (best != null)
+            {
                 _currentSolution = best.apply(_currentSolution);
                 _currentSolution.setObjectiveValue(bestVal);
             }
@@ -108,18 +117,21 @@ public class HillClimber implements IHillClimber {
      * @param classic - Determines whether the solution can deteriorate
      * @param numRestarts - Number of restarts algorithm
      */
-    public void startRestartedSearching(int numRestarts) throws Exception {
+    public void startRestartedSearching(int numRestarts) throws Exception
+    {
         int countRest = 0;
         double bestDist = Double.MAX_VALUE;
         Solution bestSolution = null;
 
-        while (countRest <= numRestarts) {
+        while (countRest <= numRestarts)
+        {
 
             startSearching(_solutionGenerator.generateSolution());
             countRest++;
 
             /*Choosing the best solution*/
-            if (bestDist > getBestSolution().getObjectiveValue()) {
+            if (bestDist > getBestSolution().getObjectiveValue())
+            {
                 bestDist = getBestSolution().getObjectiveValue();
                 bestSolution = getBestSolution();
             }
@@ -132,7 +144,8 @@ public class HillClimber implements IHillClimber {
      * Method for setting number of iteration
      * @param count - Number of iteration algorithm
      */
-    public void setIterationCount(int count) {
+    public void setIterationCount(int count)
+    {
         _numIter = count;
     }
 
@@ -140,7 +153,8 @@ public class HillClimber implements IHillClimber {
      * Function which return the best solution
      * @return - The best solution
      */
-    public Solution getBestSolution() {
+    public Solution getBestSolution()
+    {
         return _currentSolution;
     }
 }

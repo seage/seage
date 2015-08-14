@@ -36,50 +36,52 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 public class QapPhenotypeEvaluator implements IPhenotypeEvaluator
 {
     private QapProblemInstance _instance;
-    
-    
-    public QapPhenotypeEvaluator(QapProblemInstance instance)
-	{
-		super();
-		_instance = instance;
-	}
 
-	@Override
+    public QapPhenotypeEvaluator(QapProblemInstance instance)
+    {
+        super();
+        _instance = instance;
+    }
+
+    @Override
     public double[] evaluate(Object[] phenotypeSubject) throws Exception
     {
-		Integer[] s = (Integer[])phenotypeSubject;
+        Integer[] s = (Integer[]) phenotypeSubject;
         Double[][][] facilityLocation = _instance.getFacilityLocation();
         double price = 0;
-        for(int i=0;i<facilityLocation[0][0].length;i++){
-            for(int j=0;j<facilityLocation[0][0].length;j++){
-                price+=facilityLocation[0][i][j]*facilityLocation[1][s[i]][s[j]];
+        for (int i = 0; i < facilityLocation[0][0].length; i++)
+        {
+            for (int j = 0; j < facilityLocation[0][0].length; j++)
+            {
+                price += facilityLocation[0][i][j] * facilityLocation[1][s[i]][s[j]];
             }
         }
-        double addition=0;
-        for(int i=0;i<facilityLocation[0][0].length;i++){
-            addition+=facilityLocation[2][i][s[i]];
+        double addition = 0;
+        for (int i = 0; i < facilityLocation[0][0].length; i++)
+        {
+            addition += facilityLocation[2][i][s[i]];
         }
 
-        return new double[] {price+addition};
+        return new double[] { price + addition };
     }
-    
+
     @Override
     public int compare(double[] o1, double[] o2)
     {
-        if(o1 == null)
+        if (o1 == null)
             return -1;
-        if(o2 == null)
+        if (o2 == null)
             return 1;
-        
-        int length = o1.length<=o2.length ? o1.length : o2.length;
-        
-        for(int i=0;i<length;i++)
+
+        int length = o1.length <= o2.length ? o1.length : o2.length;
+
+        for (int i = 0; i < length; i++)
         {
-            if(o1[i] < o2[i])
+            if (o1[i] < o2[i])
                 return 1;
-            if(o1[i] > o2[i])
+            if (o1[i] > o2[i])
                 return -1;
-        }            
+        }
         return 0;
     }
 }

@@ -42,15 +42,16 @@ public class AlgorithmReporter
         _report = new AlgorithmReport("AlgorithmReport");
         _report.putDataNode(new DataNode("Minutes"));
         _report.putDataNode(new DataNode("Statistics"));
-       
+
     }
 
     public void putParameters(AlgorithmParams params) throws Exception
     {
-        _report.putValue("created", System.currentTimeMillis());     
+        _report.putValue("created", System.currentTimeMillis());
         _report.putDataNode(params);
     }
-    public void putNewSolution(long time, long iterNumber, double objVal, String solution) throws  Exception
+
+    public void putNewSolution(long time, long iterNumber, double objVal, String solution) throws Exception
     {
         DataNode newSol = new DataNode("newSolution");
         newSol.putValue("time", time);
@@ -74,7 +75,8 @@ public class AlgorithmReporter
         stats.putValue("bestObjVal", bestObjVal);
     }
 
-    public AlgorithmReport getReport() throws Exception{
-        return (AlgorithmReport)_report.clone();
+    public AlgorithmReport getReport() throws Exception
+    {
+        return (AlgorithmReport) _report.clone();
     }
 }

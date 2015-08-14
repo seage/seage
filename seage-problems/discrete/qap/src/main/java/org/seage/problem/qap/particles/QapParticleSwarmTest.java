@@ -39,52 +39,56 @@ import org.seage.problem.qap.FacilityLocationProvider;
 public class QapParticleSwarmTest implements IParticleSwarmListener
 {
     private Double[][][] _facilityLocation;
-//    private static String _dataPath = "data/tai12a.dat";
+    //    private static String _dataPath = "data/tai12a.dat";
     private static String _dataPath = "D:\\qap\\bur26a.dat";
 
     public static void main(String[] args)
     {
         try
         {
-            new QapParticleSwarmTest().run( _dataPath );//args[0] );
+            new QapParticleSwarmTest().run(_dataPath);//args[0] );
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            System.out.println( ex.getMessage() );
+            System.out.println(ex.getMessage());
             ex.printStackTrace();
         }
     }
 
     public void run(String path) throws Exception
     {
-        _facilityLocation = FacilityLocationProvider.readFacilityLocations( new FileInputStream(path)  );
+        _facilityLocation = FacilityLocationProvider.readFacilityLocations(new FileInputStream(path));
         System.out.println("Loading cities from path: " + path);
         System.out.println("Number of cities: " + _facilityLocation[0][0].length);
 
-        ParticleSwarm pso = new ParticleSwarm( new QapObjectiveFunction(_facilityLocation) );
+        ParticleSwarm pso = new ParticleSwarm(new QapObjectiveFunction(_facilityLocation));
 
-        pso.setMaximalIterationCount( 1500 );
+        pso.setMaximalIterationCount(1500);
         pso.setMaximalVectorValue(0.9);
         pso.setMinimalVectorValue(-0.9);
         pso.setAlpha(0.9);
         pso.setBeta(0.9);
 
-        pso.addParticleSwarmOptimizationListener( this );
-        pso.startSearching( null );
+        pso.addParticleSwarmOptimizationListener(this);
+        pso.startSearching(null);
     }
 
-    public void newBestSolutionFound(ParticleSwarmEvent e) {
-       // System.out.println("Best: " + e.getParticleSwarmOptimization().getBestSolution().getObjectiveValue());
+    public void newBestSolutionFound(ParticleSwarmEvent e)
+    {
+        // System.out.println("Best: " + e.getParticleSwarmOptimization().getBestSolution().getObjectiveValue());
     }
 
-    public void newIterationStarted(ParticleSwarmEvent e) {
+    public void newIterationStarted(ParticleSwarmEvent e)
+    {
     }
 
-    public void particleSwarmStarted(ParticleSwarmEvent e) {
+    public void particleSwarmStarted(ParticleSwarmEvent e)
+    {
         System.out.println("Started");
     }
 
-    public void particleSwarmStopped(ParticleSwarmEvent e) {
+    public void particleSwarmStopped(ParticleSwarmEvent e)
+    {
         System.out.println("Stopped");
     }
 

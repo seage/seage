@@ -44,11 +44,9 @@ package org.seage.metaheuristic.tabusearch;
  */
 public interface ITabuSearch extends java.io.Serializable
 {
-    
-/* ********  C O N T R O L   M E T H O D S  ******** */
-    
-    
-    
+
+    /* ********  C O N T R O L   M E T H O D S  ******** */
+
     /**
      * Starts the tabu search if <tt>iterationsToGo</tt> is greater than zero.
      *
@@ -57,9 +55,7 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract void startSolving() throws Exception;
-    
-    
-    
+
     /**
      * Stops the tabu search after the current iteration finishes 
      * but leaves <tt>iterationsToGo</tt> untouched.
@@ -71,8 +67,7 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract void stopSolving();
-    
-    
+
     /**
      * Returns <tt>true</tt> if the tabu search is currently solving.
      *
@@ -80,13 +75,9 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract boolean isSolving();
-    
-    
-    
-/* ********  L I S T E N E R   M E T H O D S  ******** */
-    
-    
-    
+
+    /* ********  L I S T E N E R   M E T H O D S  ******** */
+
     /**
      * Register a {@link TabuSearchListener} with the tabu search.
      *
@@ -96,10 +87,8 @@ public interface ITabuSearch extends java.io.Serializable
      * @see TabuSearchListener
      * @since 1.0
      */
-    public abstract void addTabuSearchListener( TabuSearchListener listener );
-    
-    
-    
+    public abstract void addTabuSearchListener(TabuSearchListener listener);
+
     /**
      * Unregister a {@link TabuSearchListener} with the tabu search.
      *
@@ -109,16 +98,10 @@ public interface ITabuSearch extends java.io.Serializable
      * @see TabuSearchListener
      * @since 1.0
      */
-    public abstract void removeTabuSearchListener( TabuSearchListener listener );
-    
-    
-    
-    
-    
-/* ********  S E T   M E T H O D S  ******** */    
-    
-    
-    
+    public abstract void removeTabuSearchListener(TabuSearchListener listener);
+
+    /* ********  S E T   M E T H O D S  ******** */
+
     /**
      * Sets the objective function effective at the start of the next iteration
      * and re-evaluates the best and current solutions.
@@ -130,9 +113,7 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract void setObjectiveFunction(ObjectiveFunction function) throws Exception;
-    
-    
-    
+
     /**
      * Sets the move manager effective at the start of the next iteration.
      *
@@ -142,10 +123,8 @@ public interface ITabuSearch extends java.io.Serializable
      * @see MoveManager
      * @since 1.0
      */
-    public abstract void setMoveManager( MoveManager moveManager );
-    
-    
-    
+    public abstract void setMoveManager(MoveManager moveManager);
+
     /**
      * Sets the tabu list effective at the start of the next iteration.
      *
@@ -155,11 +134,8 @@ public interface ITabuSearch extends java.io.Serializable
      * @see TabuList
      * @since 1.0
      */
-    public abstract void setTabuList( TabuList tabuList );
-    
-    
-    
-    
+    public abstract void setTabuList(TabuList tabuList);
+
     /**
      * Sets the aspiration critera effective at the start of the next iteration.
      * A <tt>null</tt> value indicates that no aspiration criteria is to be used.
@@ -170,10 +146,8 @@ public interface ITabuSearch extends java.io.Serializable
      * @see AspirationCriteria
      * @since 1.0
      */
-    public abstract void setAspirationCriteria( AspirationCriteria aspirationCriteria );
-    
-    
-    
+    public abstract void setAspirationCriteria(AspirationCriteria aspirationCriteria);
+
     /**
      * Sets the best solution effective at the start of the next iteration
      * and evaluates the solution with the current objective function.
@@ -184,10 +158,8 @@ public interface ITabuSearch extends java.io.Serializable
      * @see Solution
      * @since 1.0
      */
-    public abstract void setBestSolution( Solution solution );
-    
-    
-    
+    public abstract void setBestSolution(Solution solution);
+
     /**
      * Sets the current solution effective at the start of the next iteration
      * and evaluates the solution with the current objective function.
@@ -198,10 +170,8 @@ public interface ITabuSearch extends java.io.Serializable
      * @see Solution
      * @since 1.0
      */
-    public abstract void setCurrentSolution(Solution solution)  throws Exception;
-    
-    
-    
+    public abstract void setCurrentSolution(Solution solution) throws Exception;
+
     /**
      * Sets the iterations remaining to be solved. 
      * The number of iterations to go is decremented at the beginning
@@ -215,11 +185,8 @@ public interface ITabuSearch extends java.io.Serializable
      * @param iterations The number of iterations left to go
      * @since 1.0
      */
-    public abstract void setIterationsToGo( int iterations );
-    
-    
-    
-    
+    public abstract void setIterationsToGo(int iterations);
+
     /**
      * Sets whether or not the tabu search should be maximizing the objective function.
      * A value of <tt>true</tt> means <em>maximize</em> while a value of <tt>false</tt>
@@ -230,9 +197,8 @@ public interface ITabuSearch extends java.io.Serializable
      * @param maximizing <tt>true</tt> if the tabu search should be maximizing, <tt>false</tt> otherwise.
      * @since 1.0
      */
-    public abstract void setMaximizing( boolean maximizing );
-    
-    
+    public abstract void setMaximizing(boolean maximizing);
+
     /**
      * Setting this to <tt>true</tt> will cause the search to go faster
      * by not necessarily evaluating all of the moves in a neighborhood
@@ -245,8 +211,8 @@ public interface ITabuSearch extends java.io.Serializable
      * @param choose Whether or not the first improving move will be chosen
      * @since 1.0.1
      */
-    public abstract void setChooseFirstImprovingMove( boolean choose );
-    
+    public abstract void setChooseFirstImprovingMove(boolean choose);
+
     /**
      * Returns whether or not the tabu search engine will choose the
      * first improving move it encounters at each iteration (<tt>true</tt>)
@@ -256,13 +222,9 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0.1
      */
     public abstract boolean isChooseFirstImprovingMove();
-    
-    
-/* ********  G E T   M E T H O D S  ******** */    
-    
-    
-    
-    
+
+    /* ********  G E T   M E T H O D S  ******** */
+
     /**
      * Returns the objective function.
      *
@@ -273,9 +235,7 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract ObjectiveFunction getObjectiveFunction();
-    
-    
-    
+
     /**
      * Returns the move manager.
      *
@@ -286,9 +246,7 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract MoveManager getMoveManager();
-    
-    
-    
+
     /**
      * Returns the tabu list.
      *
@@ -299,10 +257,7 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract TabuList getTabuList();
-    
-    
-    
-    
+
     /**
      * Returns the aspiration critera.
      * A <tt>null</tt> value indicates that no aspiration criteria is to be used.
@@ -314,9 +269,7 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract AspirationCriteria getAspirationCriteria();
-    
-    
-    
+
     /**
      * Returns the best solution found so far.
      *
@@ -327,9 +280,7 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract Solution getBestSolution();
-    
-    
-    
+
     /**
      * Returns the current solution.
      *
@@ -340,9 +291,7 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract Solution getCurrentSolution();
-    
-    
-    
+
     /**
      * Returns the number of iterations left to go.
      *
@@ -352,9 +301,7 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract int getIterationsToGo();
-    
-    
-    
+
     /**
      * Returns the total number iterations that have been
      * completed since the instantiation of this {@link TabuSearch}.
@@ -365,9 +312,7 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0a
      */
     public abstract int getIterationsCompleted();
-    
-    
-    
+
     /**
      * Returns whether or not the tabu search should be maximizing the objective function.
      * A value of <tt>true</tt> means <em>maximize</em> while a value of <tt>false</tt>
@@ -379,6 +324,5 @@ public interface ITabuSearch extends java.io.Serializable
      * @since 1.0
      */
     public abstract boolean isMaximizing();
-    
-    
-}   // end interface TabuSearch
+
+} // end interface TabuSearch

@@ -35,9 +35,9 @@ package org.seage.metaheuristic.tabusearch;
  * @author Robert Harder
  * @version 1.0
  * @since 1.0
- */        
+ */
 public interface AspirationCriteria extends java.io.Serializable
-{   
+{
 
     /**
      * Determine if the proposed tabu move should in fact be allowed
@@ -56,12 +56,10 @@ public interface AspirationCriteria extends java.io.Serializable
      * @see TabuSearch
      * @since 1.0
      */
-    public abstract boolean overrideTabu( 
-        Solution baseSolution, 
-        Move proposedMove, 
-        double[] proposedValue, 
-        ITabuSearch tabuSearch );
+    public abstract boolean overrideTabu(
+            Solution baseSolution,
+            Move proposedMove,
+            double[] proposedValue,
+            ITabuSearch tabuSearch);
 
-                   
-}   // end class AspirationCritera
-
+} // end class AspirationCritera

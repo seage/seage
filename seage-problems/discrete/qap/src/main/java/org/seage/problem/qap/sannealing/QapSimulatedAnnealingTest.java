@@ -47,67 +47,68 @@ public class QapSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     {
         try
         {
-            new QapSimulatedAnnealingTest().run( _dataPath );
+            new QapSimulatedAnnealingTest().run(_dataPath);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            System.out.println( ex.getMessage() );
+            System.out.println(ex.getMessage());
             ex.printStackTrace();
         }
     }
 
     public void run(String path) throws Exception
     {
-        _facilityLocation = FacilityLocationProvider.readFacilityLocations( new FileInputStream(path)  );
+        _facilityLocation = FacilityLocationProvider.readFacilityLocations(new FileInputStream(path));
         System.out.println("Loading Facilities & Locations from path: " + path);
         System.out.println("Number of facilities and locations: " + _facilityLocation.length);
 
-        SimulatedAnnealing sa = new SimulatedAnnealing( new QapObjectiveFunction() , new QapMoveManager() );
+        SimulatedAnnealing sa = new SimulatedAnnealing(new QapObjectiveFunction(), new QapMoveManager());
 
-        sa.setMaximalTemperature( 2000 );
-        sa.setMinimalTemperature( 0.1 );
+        sa.setMaximalTemperature(2000);
+        sa.setMinimalTemperature(0.1);
         //sa.setAnnealingCoefficient( 0.99 );
         sa.setMaximalIterationCount(2500);
         //sa.setMaximalAcceptedSolutionsPerOneStepCount(100);
 
-        sa.addSimulatedAnnealingListener( this );
-        sa.startSearching( (Solution) new QapGreedySolution( _facilityLocation ) );
+        sa.addSimulatedAnnealingListener(this);
+        sa.startSearching((Solution) new QapGreedySolution(_facilityLocation));
 
-        System.out.println(((QapSolution)sa.getBestSolution()).toString());
-        for(int i=0;i<((QapSolution)sa.getBestSolution())._assign.length;i++){
-            System.out.print(((QapSolution)sa.getBestSolution())._assign[i]+", ");
+        System.out.println(((QapSolution) sa.getBestSolution()).toString());
+        for (int i = 0; i < ((QapSolution) sa.getBestSolution())._assign.length; i++)
+        {
+            System.out.print(((QapSolution) sa.getBestSolution())._assign[i] + ", ");
         }
-        System.out.println("\nEVAL: "+((QapSolution)sa.getBestSolution()).getObjectiveValue());
+        System.out.println("\nEVAL: " + ((QapSolution) sa.getBestSolution()).getObjectiveValue());
     }
 
-	@Override
-	public void algorithmStarted(SimulatedAnnealingEvent e)
-	{
-		System.out.println("Started");
-	}
+    @Override
+    public void algorithmStarted(SimulatedAnnealingEvent e)
+    {
+        System.out.println("Started");
+    }
 
-	@Override
-	public void algorithmStopped(SimulatedAnnealingEvent e)
-	{
-		System.out.println("Stopped");
-	}
+    @Override
+    public void algorithmStopped(SimulatedAnnealingEvent e)
+    {
+        System.out.println("Stopped");
+    }
 
-	@Override
-	public void newBestSolutionFound(SimulatedAnnealingEvent e)
-	{
-		System.out.println("Best: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
-	}
+    @Override
+    public void newBestSolutionFound(SimulatedAnnealingEvent e)
+    {
+        System.out.println("Best: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
+    }
 
-	@Override
-	public void iterationPerformed(SimulatedAnnealingEvent e)
-	{
-		
-	}
+    @Override
+    public void iterationPerformed(SimulatedAnnealingEvent e)
+    {
 
-	@Override
-	public void noChangeInValueIterationMade(SimulatedAnnealingEvent e)
-	{
-		
-	}
+    }
+
+    @Override
+    public void noChangeInValueIterationMade(SimulatedAnnealingEvent e)
+    {
+
+    }
 
 }

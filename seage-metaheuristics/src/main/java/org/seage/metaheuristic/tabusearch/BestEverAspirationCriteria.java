@@ -47,13 +47,13 @@ package org.seage.metaheuristic.tabusearch;
  * @author Robert Harder
  */
 public class BestEverAspirationCriteria implements AspirationCriteria
-{    
+{
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 8050033847751573251L;
+     * 
+     */
+    private static final long serialVersionUID = 8050033847751573251L;
 
-	/**
+    /**
      * Determine if the proposed tabu move should in fact be allowed
      * because it results in a value better than the current
      * best solution's value.
@@ -74,20 +74,20 @@ public class BestEverAspirationCriteria implements AspirationCriteria
      * @author Victor Wiley
      * @author Robert Harder
      */
-    public boolean overrideTabu( 
-        final Solution solution, 
-        final Move proposedMove, 
-        final double[] proposedValue, 
-        final ITabuSearch tabuSearch )
+    public boolean overrideTabu(
+            final Solution solution,
+            final Move proposedMove,
+            final double[] proposedValue,
+            final ITabuSearch tabuSearch)
     {
-		return
-			//comparator.compare(solution, tabuSearch.getBestSolution()) == 1 ? true : false;
-			TabuSearch.isFirstBetterThanSecond(
-				proposedValue,
-				tabuSearch.getBestSolution().getObjectiveValue(),
-				tabuSearch.isMaximizing())
-			? true
-			: false;
-    }   // end overrideTabu
+        return
+        //comparator.compare(solution, tabuSearch.getBestSolution()) == 1 ? true : false;
+        TabuSearch.isFirstBetterThanSecond(
+                proposedValue,
+                tabuSearch.getBestSolution().getObjectiveValue(),
+                tabuSearch.isMaximizing())
+                        ? true
+                        : false;
+    } // end overrideTabu
 
-}   // end class BestEverAspirationCriteria
+} // end class BestEverAspirationCriteria

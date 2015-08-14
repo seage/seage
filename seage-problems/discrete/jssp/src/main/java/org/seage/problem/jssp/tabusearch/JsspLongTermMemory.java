@@ -21,34 +21,35 @@ package org.seage.problem.jssp.tabusearch;
 
 import org.seage.metaheuristic.tabusearch.LongTermMemory;
 import org.seage.metaheuristic.tabusearch.Solution;
+
 /**
  * Summary description for JsspLongTermMemory.
  */
 public class JsspLongTermMemory implements LongTermMemory
-{ 
-	public JsspLongTermMemory()
-	{
-		//
-		// TODO: Add Constructor Logic here
-		//
-	}
+{
+    public JsspLongTermMemory()
+    {
+        //
+        // TODO: Add Constructor Logic here
+        //
+    }
 
-	public void clearMemory()
-	{
-	}
-	
-	public void memorizeSolution(Solution soln, boolean newBestSoln)
-	{
-		//if (newBestSoln)
-		//    System.out.println(soln);
-	}
-	
-	public Solution diversifySolution()
-	{
-		return null;
-	}
+    public void clearMemory()
+    {
+    }
 
-	public void resetIterNumber()
-	{ 
-	}
+    public void memorizeSolution(Solution soln, boolean newBestSoln)
+    {
+        //if (newBestSoln)
+        //    System.out.println(soln);
+    }
+
+    public Solution diversifySolution()
+    {
+        return null;
+    }
+
+    public void resetIterNumber()
+    {
+    }
 }

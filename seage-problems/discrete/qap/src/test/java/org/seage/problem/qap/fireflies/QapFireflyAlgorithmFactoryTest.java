@@ -6,9 +6,9 @@ import org.seage.problem.qap.QapProblemProvider;
 public class QapFireflyAlgorithmFactoryTest extends AlgorithmFactoryTestBase
 {
 
-	public QapFireflyAlgorithmFactoryTest() 
-	{
-		super(new QapProblemProvider(), "FireflyAlgorithm");
-	}
+    public QapFireflyAlgorithmFactoryTest()
+    {
+        super(new QapProblemProvider(), "FireflyAlgorithm");
+    }
 
 }

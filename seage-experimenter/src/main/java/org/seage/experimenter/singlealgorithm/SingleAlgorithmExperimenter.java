@@ -41,59 +41,58 @@ import org.seage.experimenter.config.Configurator;
  */
 public abstract class SingleAlgorithmExperimenter extends Experimenter
 {
-	
 
     public SingleAlgorithmExperimenter(String experimentName, Configurator configurator)
     {
-    	super(experimentName);
+        super(experimentName);
     }
 
- 
-    public void runExperiment(int numOfConfigs, long timeoutS, String problemID, String[] algorithmIDs, String[] instanceIDs) throws Exception
+    public void runExperiment(int numOfConfigs, long timeoutS, String problemID, String[] algorithmIDs,
+            String[] instanceIDs) throws Exception
     {
         long experimentID = System.currentTimeMillis();
-        _logger.info("Experiment "+experimentID+" started ...");
+        _logger.info("Experiment " + experimentID + " started ...");
         _logger.info("-------------------------------------");
         //_logger.info("Mem: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
 
         //ProblemInfo pi = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
 
-        long totalNumOfConfigs = numOfConfigs*algorithmIDs.length*instanceIDs.length;
-        long totalNumberOfRuns = totalNumOfConfigs * 5; 
+        long totalNumOfConfigs = numOfConfigs * algorithmIDs.length * instanceIDs.length;
+        long totalNumberOfRuns = totalNumOfConfigs * 5;
         long totalRunsPerCpu = totalNumberOfRuns / Runtime.getRuntime().availableProcessors();
         long totalEstimatedTime = totalRunsPerCpu * timeoutS;
-        
+
         _logger.info("Total number of configs: " + totalNumOfConfigs);
         _logger.info("Total number of runs: " + totalNumberOfRuns);
         _logger.info("Total runs per cpu core: " + totalRunsPerCpu);
         //_logger.info("Total estimated time: " + estimatedTime + "s");
         _logger.info("Total estimated time: " + getDurationBreakdown(totalEstimatedTime * 1000) + " (DD:HH:mm:ss)");
         _logger.info("-------------------------------------");
-        int i=0, j=0;
+        int i = 0, j = 0;
         for (String algorithmID : algorithmIDs)
         {
-            i++;j=0;
+            i++;
+            j = 0;
             for (String instanceID : instanceIDs)
-            { 
+            {
                 j++;
                 //DataNode instanceInfo =  pi.getDataNode("Instances").getDataNodeById(instanceID);
                 //List<ProblemConfig> configs = new ArrayList<ProblemConfig>();
                 //configs.addAll(Arrays.asList());                
                 _logger.info("-------------------------------------");
                 _logger.info(String.format("Instance: %s (%d/%d)", instanceID, j, instanceIDs.length));
-                _logger.info(String.format("Algorithm: %s (%d/%d)", algorithmID, i, algorithmIDs.length));                
-                _logger.info("Number of runs: " + numOfConfigs*5);
+                _logger.info(String.format("Algorithm: %s (%d/%d)", algorithmID, i, algorithmIDs.length));
+                _logger.info("Number of runs: " + numOfConfigs * 5);
                 //_logger.info("Memory used for configs: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
 
-                
-                String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", experimentID, problemID, algorithmID, instanceID);
+                String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", experimentID, problemID,
+                        algorithmID, instanceID);
 
                 ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)));
 
                 // Create a task queue
-                
 
-                zos.close();            
+                zos.close();
             }
         }
         _logger.info("-------------------------------------");

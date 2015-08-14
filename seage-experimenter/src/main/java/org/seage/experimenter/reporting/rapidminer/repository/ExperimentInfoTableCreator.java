@@ -22,7 +22,6 @@ public class ExperimentInfoTableCreator extends RMDataTableCreator implements ID
     public void processDocument(Document doc, String containerFileName) throws Exception
     {
 
-        
     }
 
 }

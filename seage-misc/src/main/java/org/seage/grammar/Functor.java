@@ -33,11 +33,12 @@ import java.util.*;
  * @author jenik
    F -> a
  */
-public interface Functor  {
-               
-    /** @brief retrieve value */      
+public interface Functor
+{
+
+    /** @brief retrieve value */
     abstract public Object call();
-    
+
     abstract public void setVector(Vector<Integer> source);
-    
+
 }

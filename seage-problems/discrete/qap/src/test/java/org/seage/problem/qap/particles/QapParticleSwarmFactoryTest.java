@@ -6,9 +6,9 @@ import org.seage.problem.qap.QapProblemProvider;
 public class QapParticleSwarmFactoryTest extends AlgorithmFactoryTestBase
 {
 
-	public QapParticleSwarmFactoryTest() 
-	{
-		super(new QapProblemProvider(), "ParticleSwarm");
-	}
+    public QapParticleSwarmFactoryTest()
+    {
+        super(new QapProblemProvider(), "ParticleSwarm");
+    }
 
 }

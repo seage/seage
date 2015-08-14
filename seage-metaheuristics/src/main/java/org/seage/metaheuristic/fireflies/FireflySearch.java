@@ -44,39 +44,39 @@ import java.util.logging.Logger;
 public class FireflySearch extends FireflySearchBase
 {
 
-    private static final Logger _logger          = Logger.getLogger(FireflySearchBase.class.getName());
+    private static final Logger _logger = Logger.getLogger(FireflySearchBase.class.getName());
 
-    private static final long   serialVersionUID = -4308076927795750198L;
-    private int                 _iterationCount;
-    private int                 _currentIteration;
-    private int                 _populationCount;
+    private static final long serialVersionUID = -4308076927795750198L;
+    private int _iterationCount;
+    private int _currentIteration;
+    private int _populationCount;
 
-    private boolean             _withDecreasingRandomness;
-    private boolean             _withHillClimbingBestSolution;
-    private double              _initialIntensity;
-    private double              _initialRandomness;
-    private double              _finalRandomness;
-    private double              _absorption;
-    private double              _timeStep;
+    private boolean _withDecreasingRandomness;
+    private boolean _withHillClimbingBestSolution;
+    private double _initialIntensity;
+    private double _initialRandomness;
+    private double _finalRandomness;
+    private double _absorption;
+    private double _timeStep;
 
     // private double _randomSubjectPct;
     // private double _mutateSubjectPct;
     // private double _eliteSubjectPct;
     // private double _crossLengthPct;
 
-    private boolean             _keepSearching;
-    private boolean             _isRunning;
+    private boolean _keepSearching;
+    private boolean _isRunning;
 
-    private Population          _population;
-    private FireflyOperator     _operator;
-    private ObjectiveFunction   _objectiveFunction;
+    private Population _population;
+    private FireflyOperator _operator;
+    private ObjectiveFunction _objectiveFunction;
 
-    private Solution            _bestSolution;
-    private SolutionComparator  _solutionComparator;
+    private Solution _bestSolution;
+    private SolutionComparator _solutionComparator;
 
-    private boolean             _maximizing;
-    private int                 _iterationsToGo;
-    private boolean             _bestSolutionNoMove;
+    private boolean _maximizing;
+    private int _iterationsToGo;
+    private boolean _bestSolutionNoMove;
 
     /**
      * CONSTRUCTOR
@@ -199,7 +199,8 @@ public class FireflySearch extends FireflySearchBase
                 // System.out.println("\nVypis:"+_population.getSolutions()[j].toString()+" - "+_population.getSolutions()[j].getObjectiveValue()[0]);
                 // }
 
-                if (_bestSolution == null || _solutionComparator.compare(_population.getBestSolution(), _bestSolution) == -1)
+                if (_bestSolution == null
+                        || _solutionComparator.compare(_population.getBestSolution(), _bestSolution) == -1)
                 {
                     _bestSolution = (Solution) _population.getBestSolution().clone();
                     // System.out.print(i+"\t");
@@ -226,11 +227,15 @@ public class FireflySearch extends FireflySearchBase
                     boolean isBest = true;
                     for (int s2 = 0; s2 < _population.getSize(); s2++)
                     {
-                        if ((_maximizing && workPopulation.getSolution(s1).getObjectiveValue()[0] < workPopulation.getSolution(s2).getObjectiveValue()[0])
-                                || (!_maximizing && workPopulation.getSolution(s1).getObjectiveValue()[0] > workPopulation.getSolution(s2).getObjectiveValue()[0]))
+                        if ((_maximizing && workPopulation.getSolution(s1).getObjectiveValue()[0] < workPopulation
+                                .getSolution(s2).getObjectiveValue()[0])
+                                || (!_maximizing
+                                        && workPopulation.getSolution(s1).getObjectiveValue()[0] > workPopulation
+                                                .getSolution(s2).getObjectiveValue()[0]))
                         {
                             isBest = false;
-                            _operator.attract(_population.getSolutions()[s1], workPopulation.getSolutions()[s2], _currentIteration);
+                            _operator.attract(_population.getSolutions()[s1], workPopulation.getSolutions()[s2],
+                                    _currentIteration);
 
                             if (_population.getSolutions()[s1].equals(workPopulation.getSolutions()[s2]))
                             {
@@ -260,7 +265,7 @@ public class FireflySearch extends FireflySearchBase
             }
 
             evaluatePopulation(_population);
-            
+
             fireFireflySearchStopped();
             _isRunning = false;
         }

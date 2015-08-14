@@ -52,7 +52,8 @@ public @interface Annotations
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
-    public @interface ProblemName{
+    public @interface ProblemName
+    {
         String value();
     }
 
@@ -61,35 +62,43 @@ public @interface Annotations
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
-    public @interface AlgorithmId{
+    public @interface AlgorithmId
+    {
         String value();
     }
+
     /**
      * Associates a name to the algorithm.
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
-    public @interface AlgorithmName{
+    public @interface AlgorithmName
+    {
         String value();
     }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
-    public @interface AlgorithmParameters{
-        Parameter[] value();
+    public @interface AlgorithmParameters
+    {
+        Parameter[]value();
     }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
-    public @interface Parameter{
+    public @interface Parameter
+    {
         String name();
-        double min();        
+
+        double min();
+
         double max();
+
         double init();
     }
 
-//    public static Annotation get(String clsName, Class anotClass)
-//    {
-//
-//    }
+    //    public static Annotation get(String clsName, Class anotClass)
+    //    {
+    //
+    //    }
 }
