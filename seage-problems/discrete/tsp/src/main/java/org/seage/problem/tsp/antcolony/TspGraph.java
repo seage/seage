@@ -25,10 +25,6 @@
  */
 package org.seage.problem.tsp.antcolony;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.tsp.City;

@@ -23,16 +23,14 @@
 
 package org.seage.problem.sat;
 
-import java.io.FileInputStream;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
-
-import static org.junit.Assert.*;
 
 /**
  *

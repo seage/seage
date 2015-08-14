@@ -26,12 +26,13 @@
 package org.seage.problem.tsp.particles;
 
 import java.io.FileInputStream;
+
 import org.seage.metaheuristic.particles.IParticleSwarmListener;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.metaheuristic.particles.ParticleSwarm;
 import org.seage.metaheuristic.particles.ParticleSwarmEvent;
-import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.CityProvider;
 
 /**
  * The purpose of this class is demonstration of PSO algorithm use.

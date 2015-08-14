@@ -19,8 +19,6 @@
  */
 package org.seage.data.ds;
 
-import org.seage.data.ds.DataTable;
-
 /**
  * Summary description for DataProvider.
  */

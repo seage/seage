@@ -1,6 +1,7 @@
 package org.seage.problem.tsp.sannealing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 import java.util.Arrays;
 

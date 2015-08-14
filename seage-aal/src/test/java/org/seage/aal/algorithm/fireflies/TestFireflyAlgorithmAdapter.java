@@ -1,8 +1,5 @@
 package org.seage.aal.algorithm.fireflies;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Assert;
 import org.seage.metaheuristic.fireflies.FireflyOperator;
 import org.seage.metaheuristic.fireflies.ObjectiveFunction;

@@ -26,10 +26,12 @@
 
 package org.seage.grammar.iif;
 
-import org.seage.grammar.Symbol;
+import java.util.HashMap;
+import java.util.Vector;
+
 import org.seage.grammar.GrammarRule;
 import org.seage.grammar.NonterminalSymbol;
-import java.util.*;
+import org.seage.grammar.Symbol;
 
 /**
  * @deprecated 

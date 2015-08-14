@@ -22,8 +22,6 @@
  */
 package org.seage.problem.sat.sannealing;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.seage.metaheuristic.sannealing.Solution;
 
 /**

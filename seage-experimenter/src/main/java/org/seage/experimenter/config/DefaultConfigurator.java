@@ -26,7 +26,6 @@
 
 package org.seage.experimenter.config;
 
-import org.seage.experimenter.config.Configurator;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;

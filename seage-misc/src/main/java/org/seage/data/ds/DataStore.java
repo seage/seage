@@ -19,7 +19,7 @@
  */
 package org.seage.data.ds;
 
-import java.util.*;
+import java.util.HashMap;
 
 /**
  * Singleton

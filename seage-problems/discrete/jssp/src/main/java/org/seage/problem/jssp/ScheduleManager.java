@@ -19,7 +19,10 @@
  */
 package org.seage.problem.jssp;
 
-import org.seage.data.ds.*;
+import org.seage.data.ds.DataCell;
+import org.seage.data.ds.DataRow;
+import org.seage.data.ds.DataStore;
+import org.seage.data.ds.DataTable;
 
 /**
  * Summary description for ScheduleManager.

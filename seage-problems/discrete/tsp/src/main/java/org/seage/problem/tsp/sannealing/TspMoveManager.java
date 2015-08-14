@@ -26,6 +26,7 @@
 package org.seage.problem.tsp.sannealing;
 
 import java.util.Random;
+
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
 

@@ -19,7 +19,7 @@
  */
 package org.seage.problem.jssp;
 
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * Summary description for Schedule.

@@ -1,8 +1,6 @@
 package org.seage.aal.algorithm.antcolony;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;

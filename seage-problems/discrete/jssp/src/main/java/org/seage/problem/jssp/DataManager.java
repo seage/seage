@@ -19,9 +19,8 @@
  */
 package org.seage.problem.jssp;
 
-import java.util.*;
+import java.util.Random;
 
-import org.seage.data.ds.DataStore;
 import org.seage.data.ds.DataTable;
 
 /**

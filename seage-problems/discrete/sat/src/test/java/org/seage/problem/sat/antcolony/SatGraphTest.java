@@ -1,10 +1,9 @@
 package org.seage.problem.sat.antcolony;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.seage.aal.problem.IProblemProvider;
-import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.problem.sat.Formula;

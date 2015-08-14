@@ -26,8 +26,9 @@
 
 package org.seage.grammar;
 
+import java.util.Vector;
+
 import org.seage.data.DataNode;
-import java.util.*;
 
 /**
  *

@@ -26,9 +26,11 @@
 
 package org.seage.grammar;
 
-import org.seage.data.DataNode;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Iterator;
+import java.util.Vector;
+
+import org.seage.data.DataNode;
 
 /**
  *

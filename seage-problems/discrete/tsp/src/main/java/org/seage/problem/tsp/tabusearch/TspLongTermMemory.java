@@ -25,7 +25,8 @@
  */
 package org.seage.problem.tsp.tabusearch;
 
-import org.seage.metaheuristic.tabusearch.*;
+import org.seage.metaheuristic.tabusearch.LongTermMemory;
+import org.seage.metaheuristic.tabusearch.Solution;
 
 /**
  *

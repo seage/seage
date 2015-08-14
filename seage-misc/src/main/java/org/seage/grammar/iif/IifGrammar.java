@@ -26,9 +26,10 @@
 
 package org.seage.grammar.iif;
 
+import java.util.Vector;
+
 import org.seage.grammar.Grammar;
 import org.seage.grammar.NonterminalSymbol;
-import java.util.Vector;
 
 /**
  *

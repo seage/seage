@@ -25,19 +25,25 @@
  */
 package org.seage.experimenter._obsolete;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.seage.data.DataNode;
+
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Attributes;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.set.SortedExampleReader;
 import com.rapidminer.example.set.SortedExampleSet;
-import com.rapidminer.example.table.*;
+import com.rapidminer.example.table.AttributeFactory;
+import com.rapidminer.example.table.DataRow;
+import com.rapidminer.example.table.DoubleArrayDataRow;
+import com.rapidminer.example.table.ExampleTable;
+import com.rapidminer.example.table.MemoryExampleTable;
 import com.rapidminer.operator.IOObjectCollection;
 import com.rapidminer.tools.Ontology;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import org.seage.data.DataNode;
 
 /**
  *

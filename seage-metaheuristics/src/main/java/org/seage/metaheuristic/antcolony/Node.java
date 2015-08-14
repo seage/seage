@@ -25,7 +25,8 @@
  */
 package org.seage.metaheuristic.antcolony;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
 
 /**
  *

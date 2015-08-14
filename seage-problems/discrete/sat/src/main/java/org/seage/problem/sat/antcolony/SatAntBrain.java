@@ -22,10 +22,7 @@
  */
 package org.seage.problem.sat.antcolony;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Vector;
 
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;

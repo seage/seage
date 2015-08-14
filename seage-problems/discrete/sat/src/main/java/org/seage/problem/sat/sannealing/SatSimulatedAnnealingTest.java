@@ -22,12 +22,8 @@
  */
 package org.seage.problem.sat.sannealing;
 
-import java.io.FileInputStream;
-
 import org.seage.metaheuristic.IAlgorithmListener;
-import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
-import org.seage.metaheuristic.sannealing.Solution;
 
 /**
  * The purpose of this class is demonstration of SA algorithm use.

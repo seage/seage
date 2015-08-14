@@ -8,7 +8,6 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.antcolony.Ant;
-import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;

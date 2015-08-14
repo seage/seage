@@ -23,6 +23,7 @@
 package org.seage.problem.sat.grasp;
 
 import java.util.Random;
+
 import org.seage.metaheuristic.grasp.IMove;
 import org.seage.metaheuristic.grasp.IMoveManager;
 import org.seage.metaheuristic.grasp.Solution;

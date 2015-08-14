@@ -26,7 +26,7 @@
 
 package org.seage.grammar;
 
-import java.util.*;
+import java.util.Vector;
 
 /**
  *

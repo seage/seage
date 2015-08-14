@@ -26,9 +26,10 @@
 package org.seage.problem.tsp.grasp;
 
 import java.io.FileInputStream;
-import org.seage.problem.tsp.CityProvider;
-import org.seage.problem.tsp.City;
+
 import org.seage.metaheuristic.grasp.HillClimber;
+import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.Visualizer;
 
 /**

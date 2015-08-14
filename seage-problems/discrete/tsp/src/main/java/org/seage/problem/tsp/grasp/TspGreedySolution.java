@@ -27,6 +27,7 @@ package org.seage.problem.tsp.grasp;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.seage.problem.tsp.City;
 
 /**

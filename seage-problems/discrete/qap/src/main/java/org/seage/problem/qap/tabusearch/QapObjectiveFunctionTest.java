@@ -26,9 +26,10 @@
 package org.seage.problem.qap.tabusearch;
 
 import java.io.FileInputStream;
-import org.seage.problem.qap.FacilityLocationProvider;
+
 import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
 import org.seage.metaheuristic.tabusearch.TabuSearchListener;
+import org.seage.problem.qap.FacilityLocationProvider;
 
 /**
  *

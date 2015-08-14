@@ -26,12 +26,13 @@
 
 package org.seage.grammar.iif;
 
+import java.util.Vector;
+
 import org.seage.data.DataNode;
-import org.seage.grammar.Symbol;
 import org.seage.grammar.GrammarRule;
 import org.seage.grammar.NonterminalSymbol;
+import org.seage.grammar.Symbol;
 import org.seage.grammar.TerminalSymbol;
-import java.util.*;
 
 /**
  *

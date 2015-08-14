@@ -18,8 +18,14 @@
  */
 package org.seage.problem.sat;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.StreamTokenizer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Summary description for InstanceReader.

@@ -25,8 +25,10 @@
  */
 package org.seage.problem.tsp;
 
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *  @author Richard Malek

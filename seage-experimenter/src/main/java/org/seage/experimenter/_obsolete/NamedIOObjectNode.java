@@ -25,11 +25,13 @@
  */
 package org.seage.experimenter._obsolete;
 
-import com.rapidminer.operator.IOObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import org.seage.data.DataNode;
+
+import com.rapidminer.operator.IOObject;
 
 /**
  *

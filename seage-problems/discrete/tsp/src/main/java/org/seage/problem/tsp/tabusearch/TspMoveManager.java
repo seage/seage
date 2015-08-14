@@ -28,7 +28,9 @@ package org.seage.problem.tsp.tabusearch;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.seage.metaheuristic.tabusearch.*;
+import org.seage.metaheuristic.tabusearch.Move;
+import org.seage.metaheuristic.tabusearch.MoveManager;
+import org.seage.metaheuristic.tabusearch.Solution;
 
 /**
  *

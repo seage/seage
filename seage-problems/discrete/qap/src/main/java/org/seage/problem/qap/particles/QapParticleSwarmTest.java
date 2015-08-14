@@ -26,6 +26,7 @@
 package org.seage.problem.qap.particles;
 
 import java.io.FileInputStream;
+
 import org.seage.metaheuristic.particles.IParticleSwarmListener;
 import org.seage.metaheuristic.particles.ParticleSwarm;
 import org.seage.metaheuristic.particles.ParticleSwarmEvent;

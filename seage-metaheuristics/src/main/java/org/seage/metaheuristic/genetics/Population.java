@@ -25,7 +25,9 @@
  */
 package org.seage.metaheuristic.genetics;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Richard Malek (original)

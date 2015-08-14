@@ -25,7 +25,6 @@
  */
 package org.seage.sandbox;
 
-import org.seage.classutil.ClassPathAnalyzer;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +34,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.zip.ZipException;
+
+import org.seage.classutil.ClassPathAnalyzer;
 
 /**
  * 

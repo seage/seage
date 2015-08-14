@@ -27,6 +27,7 @@ package org.seage.problem.qap.sannealing;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.seage.metaheuristic.sannealing.Solution;
 
 /**

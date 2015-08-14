@@ -25,7 +25,6 @@ package org.seage.problem.sat.genetics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;

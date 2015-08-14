@@ -27,9 +27,9 @@ package org.seage.experimenter.config;
 
 import java.util.logging.Logger;
 
-import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
 
 /**

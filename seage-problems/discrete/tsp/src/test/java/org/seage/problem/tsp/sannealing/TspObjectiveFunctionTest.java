@@ -2,7 +2,10 @@ package org.seage.problem.tsp.sannealing;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.problem.tsp.City;

@@ -27,7 +27,7 @@
  */
 package org.seage.metaheuristic.tabusearch;
 
-import java.util.*;
+import java.util.Comparator;
 
 /**
  * SolutionComparator.

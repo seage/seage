@@ -28,16 +28,9 @@ package org.seage.aal.problem;
 import java.io.File;
 import java.util.Map;
 
-import org.seage.aal.problem.IProblemProvider;
-import org.seage.aal.problem.ProblemInstance;
-import org.seage.aal.problem.ProblemConfig;
-import org.seage.aal.problem.ProblemInfo;
-import org.seage.aal.problem.ProblemProvider;
-import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
-import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 //import org.seage.experimenter.config.DefaultConfigurator;

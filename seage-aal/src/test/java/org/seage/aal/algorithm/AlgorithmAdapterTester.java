@@ -2,10 +2,10 @@ package org.seage.aal.algorithm;
 
 import java.util.Random;
 
-import junit.framework.Assert;
-
 import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 import org.seage.data.DataNode;
+
+import junit.framework.Assert;
 
 public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
 {

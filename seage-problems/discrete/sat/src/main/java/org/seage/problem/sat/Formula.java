@@ -18,7 +18,8 @@
  */
 package org.seage.problem.sat;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;

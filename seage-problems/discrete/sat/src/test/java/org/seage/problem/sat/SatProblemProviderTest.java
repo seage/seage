@@ -1,6 +1,5 @@
 package org.seage.problem.sat;
 
-import org.junit.Ignore;
 import org.seage.aal.problem.ProblemProviderTestBase;
 
 // @Ignore

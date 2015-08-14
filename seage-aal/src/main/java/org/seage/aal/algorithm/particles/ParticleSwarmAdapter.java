@@ -28,12 +28,12 @@
 
 package org.seage.aal.algorithm.particles;
 
-import org.seage.aal.reporter.AlgorithmReport;
-import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.particles.IObjectiveFunction;
 import org.seage.metaheuristic.particles.IParticleSwarmListener;

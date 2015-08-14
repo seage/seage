@@ -25,11 +25,13 @@
  */
 package org.seage.problem.tsp.genetics;
 
-import org.seage.metaheuristic.genetics.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.seage.metaheuristic.genetics.BasicGeneticOperator;
+import org.seage.metaheuristic.genetics.Chromosome;
+import org.seage.metaheuristic.genetics.Subject;
 
 /**
  * @author Richard Malek

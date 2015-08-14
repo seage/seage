@@ -26,10 +26,8 @@
 package org.seage.problem.tsp.antcolony;
 
 import java.util.HashSet;
-import java.util.List;
 
 import org.seage.metaheuristic.antcolony.AntBrain;
-import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 

@@ -34,8 +34,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipOutputStream;
 
-import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 

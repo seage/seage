@@ -25,7 +25,8 @@
  */
 package org.seage.problem.qap.tabusearch;
 
-import org.seage.metaheuristic.tabusearch.*;
+import org.seage.metaheuristic.tabusearch.Move;
+import org.seage.metaheuristic.tabusearch.Solution;
 
 /**
  *
