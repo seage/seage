@@ -48,6 +48,7 @@ public class Gene implements Serializable
         _value = value;
     }
 
+    @Override
     public String toString()
     {
         Integer i = Integer.parseInt(_value.toString());
@@ -64,11 +65,13 @@ public class Gene implements Serializable
         _value = value;
     }
 
+    @Override
     public int hashCode()
     {
         return _value.hashCode();
     }
 
+    @Override
     public Object clone()
     {
         Gene gene = new Gene();

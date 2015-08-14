@@ -101,6 +101,7 @@ public class LogHelper
 
     public static class StdoutConsoleHandler extends ConsoleHandler
     {
+        @Override
         protected void setOutputStream(OutputStream out) throws SecurityException
         {
             super.setOutputStream(System.out); // kitten killed here :-(

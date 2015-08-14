@@ -74,6 +74,7 @@ public class BestEverAspirationCriteria implements AspirationCriteria
      * @author Victor Wiley
      * @author Robert Harder
      */
+    @Override
     public boolean overrideTabu(
             final Solution solution,
             final Move proposedMove,

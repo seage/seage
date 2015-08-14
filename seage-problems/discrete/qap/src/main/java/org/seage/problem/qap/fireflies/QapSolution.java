@@ -53,10 +53,11 @@ public class QapSolution extends SolutionAdapter
         _assign = assign;
     }
 
+    @Override
     public Object clone()
     {
         QapSolution copy = (QapSolution) super.clone();
-        copy._assign = (Integer[]) this._assign.clone();
+        copy._assign = this._assign.clone();
         return copy;
     } // end clone
 
@@ -70,6 +71,7 @@ public class QapSolution extends SolutionAdapter
         _assign = assign;
     }
 
+    @Override
     public String toString()
     {
         StringBuffer s = new StringBuffer();

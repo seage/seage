@@ -48,11 +48,13 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 
     private TspObjectiveFunction _objectiveFunction;
 
+    @Override
     public Class<ParticleSwarmAdapter> getAlgorithmClass()
     {
         return ParticleSwarmAdapter.class;
     }
 
+    @Override
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
         IAlgorithmAdapter algorithm;
@@ -66,6 +68,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
                 _objectiveFunction,
                 false, "")
         {
+            @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 _numParticles = source.length;
@@ -80,6 +83,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
                 }
             }
 
+            @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 int numOfParticles = _particleSwarm.getParticles().length;

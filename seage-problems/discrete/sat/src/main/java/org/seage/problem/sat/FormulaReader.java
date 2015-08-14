@@ -113,7 +113,7 @@ public class FormulaReader
         result = new int[res.size()];
 
         for (int i = 0; i < result.length; i++)
-            result[i] = ((Integer) res.get(i)).intValue();
+            result[i] = res.get(i).intValue();
 
         return result;
     }

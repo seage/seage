@@ -36,6 +36,7 @@ public class JsspObjectiveFunction implements ObjectiveFunction
         _scheduleManager = scheduleManager;
     }
 
+    @Override
     public double[] evaluate(Solution soln, Move move) throws Exception
     {
         //JsspSolution solution = (JsspSolution)soln;		
@@ -50,7 +51,7 @@ public class JsspObjectiveFunction implements ObjectiveFunction
         //}
         if (move != null)
             move.operateOn(soln);
-        int[] jobArray = (int[]) ((JsspSolution) soln).getJobArray();
+        int[] jobArray = ((JsspSolution) soln).getJobArray();
         Object[] values = _scheduleManager.evaluateSchedule(jobArray, false);
         if (move != null)
             move.operateOn(soln);

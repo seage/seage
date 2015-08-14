@@ -145,6 +145,7 @@ public class ComplexTabuList implements TabuList
      * @see Solution
      * @since 1.0-exp3
      */
+    @Override
     public boolean isTabu(Solution fromSolution, Move move)
     {
         // Make sure it's a "ComplexMove"
@@ -191,6 +192,7 @@ public class ComplexTabuList implements TabuList
      * @see Solution
      * @since 1.0-exp3
      */
+    @Override
     public void setTabu(Solution fromSolution, Move move)
     {
         // Make sure it's a "ComplexMove"

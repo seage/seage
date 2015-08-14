@@ -35,6 +35,7 @@ public class VelocityManager implements IVelocityManager
 {
     Random _rnd = new Random();
 
+    @Override
     public void calculateNewVelocityAndPosition(Particle particle, Particle localMinimum, Particle globalMinimum,
             double alpha, double beta, double inertia)
     {

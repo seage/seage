@@ -74,20 +74,24 @@ public class QapParticleSwarmTest implements IParticleSwarmListener
         pso.startSearching(null);
     }
 
+    @Override
     public void newBestSolutionFound(ParticleSwarmEvent e)
     {
         // System.out.println("Best: " + e.getParticleSwarmOptimization().getBestSolution().getObjectiveValue());
     }
 
+    @Override
     public void newIterationStarted(ParticleSwarmEvent e)
     {
     }
 
+    @Override
     public void particleSwarmStarted(ParticleSwarmEvent e)
     {
         System.out.println("Started");
     }
 
+    @Override
     public void particleSwarmStopped(ParticleSwarmEvent e)
     {
         System.out.println("Stopped");

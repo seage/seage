@@ -49,11 +49,13 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
 
     private QapObjectiveFunction _objectiveFunction;
 
+    @Override
     public Class<ParticleSwarmAdapter> getAlgorithmClass()
     {
         return ParticleSwarmAdapter.class;
     }
 
+    @Override
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
         IAlgorithmAdapter algorithm;
@@ -66,6 +68,7 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
                 _objectiveFunction,
                 false, "")
         {
+            @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 _numParticles = source.length;
@@ -80,6 +83,7 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
                 }
             }
 
+            @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 int numOfParticles = _particleSwarm.getParticles().length;

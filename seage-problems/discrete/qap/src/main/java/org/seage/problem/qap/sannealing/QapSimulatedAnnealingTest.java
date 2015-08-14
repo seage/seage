@@ -71,7 +71,7 @@ public class QapSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         //sa.setMaximalAcceptedSolutionsPerOneStepCount(100);
 
         sa.addSimulatedAnnealingListener(this);
-        sa.startSearching((Solution) new QapGreedySolution(_facilityLocation));
+        sa.startSearching(new QapGreedySolution(_facilityLocation));
 
         System.out.println(((QapSolution) sa.getBestSolution()).toString());
         for (int i = 0; i < ((QapSolution) sa.getBestSolution())._assign.length; i++)

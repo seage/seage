@@ -58,6 +58,7 @@ public class SatAntBrain extends AntBrain
         }
     }
 
+    @Override
     public double getPathCost(List<Edge> path)
     {
         Boolean[] solution = new Boolean[_formula.getLiteralCount()];

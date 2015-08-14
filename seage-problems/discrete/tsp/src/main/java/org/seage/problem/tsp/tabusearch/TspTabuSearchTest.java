@@ -82,37 +82,44 @@ public class TspTabuSearchTest implements TabuSearchListener
         ts.startSolving();
     }
 
+    @Override
     public void newBestSolutionFound(TabuSearchEvent e)
     {
         System.out.println(
                 e.getTabuSearch().getBestSolution().toString() + " - " + e.getTabuSearch().getIterationsCompleted());
     }
 
+    @Override
     public void improvingMoveMade(TabuSearchEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public void newCurrentSolutionFound(TabuSearchEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public void noChangeInValueMoveMade(TabuSearchEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public void tabuSearchStarted(TabuSearchEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public void tabuSearchStopped(TabuSearchEvent e)
     {
         System.out.println("finished");
     }
 
+    @Override
     public void unimprovingMoveMade(TabuSearchEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");

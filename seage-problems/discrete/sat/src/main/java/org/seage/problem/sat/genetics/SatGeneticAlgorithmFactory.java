@@ -44,11 +44,13 @@ import org.seage.problem.sat.SatPhenotypeEvaluator;
 public class SatGeneticAlgorithmFactory implements IAlgorithmFactory
 {
 
+    @Override
     public Class<?> getAlgorithmClass()
     {
         return GeneticAlgorithmAdapter.class;
     }
 
+    @Override
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
         IAlgorithmAdapter algorithm;

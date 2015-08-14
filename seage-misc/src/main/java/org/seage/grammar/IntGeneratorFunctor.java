@@ -43,6 +43,7 @@ public class IntGeneratorFunctor implements Functor
 
     /** @brief retrieve value
       */
+    @Override
     public Object call()
     {
         if (pos < 0)
@@ -65,6 +66,7 @@ public class IntGeneratorFunctor implements Functor
         return ret;
     }
 
+    @Override
     public void setVector(Vector<Integer> source)
     {
         this.sourceVector = source;

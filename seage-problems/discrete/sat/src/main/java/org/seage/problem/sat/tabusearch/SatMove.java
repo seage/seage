@@ -26,6 +26,7 @@ public class SatMove implements Move
         _hash = _hash % 0xffffff;
     }
 
+    @Override
     public void operateOn(Solution soln)
     {
         SatSolution satSol = (SatSolution) soln;
@@ -45,6 +46,7 @@ public class SatMove implements Move
         return _values;
     }
 
+    @Override
     public int hashCode()
     {
         return _hash;

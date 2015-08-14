@@ -55,7 +55,7 @@ public class QapMoveManager implements IMoveManager
             qapSolution.getAssign()[a] = qapSolution.getAssign()[a] - qapSolution.getAssign()[b];
         }
 
-        return (Solution) qapSolution;
+        return qapSolution;
     }
 
     @Override

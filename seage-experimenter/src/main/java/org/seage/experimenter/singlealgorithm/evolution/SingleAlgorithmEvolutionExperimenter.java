@@ -68,7 +68,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
                 ga.addGeneticSearchListener(this);
                 ga.setCrossLengthPct(30);
                 ga.setEliteSubjectsPct(0);
-                ga.setIterationToGo((int) _numIterations);
+                ga.setIterationToGo(_numIterations);
                 ga.setMutateChromosomeLengthPct(10);
                 ga.setMutatePopulationPct(50);
                 ga.setPopulationCount(_numSubjects);

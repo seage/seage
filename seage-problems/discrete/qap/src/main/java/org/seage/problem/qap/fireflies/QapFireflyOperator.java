@@ -75,6 +75,7 @@ public class QapFireflyOperator extends FireflyOperator
      * @param s2
      * @return
      */
+    @Override
     public double getDistance(Solution s1, Solution s2)
     {
         // for QAP distance of two solution will be their hammings distance

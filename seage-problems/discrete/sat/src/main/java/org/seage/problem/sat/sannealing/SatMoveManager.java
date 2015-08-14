@@ -36,7 +36,7 @@ public class SatMoveManager implements IMoveManager
     {
         SatSolution qapSolution = (SatSolution) solution.clone();
 
-        return (Solution) qapSolution;
+        return qapSolution;
     }
 
     @Override

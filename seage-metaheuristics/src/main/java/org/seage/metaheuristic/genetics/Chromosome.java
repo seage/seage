@@ -67,6 +67,7 @@ public class Chromosome<GeneType> implements Serializable
         _genes[index] = gene;
     }
 
+    @Override
     public Chromosome<GeneType> clone()
     {
         return new Chromosome<GeneType>(_genes);
@@ -79,6 +80,7 @@ public class Chromosome<GeneType> implements Serializable
         setGene(index2, tmpGene);
     }
 
+    @Override
     public String toString()
     {
         String tmp = "";

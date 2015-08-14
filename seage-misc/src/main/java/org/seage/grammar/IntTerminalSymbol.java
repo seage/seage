@@ -73,6 +73,7 @@ public class IntTerminalSymbol extends TerminalSymbol
     }
 
     /** @brief picks integer constant */
+    @Override
     public Integer pick()
     {
         Integer result = (Integer) generator.call();
@@ -84,15 +85,17 @@ public class IntTerminalSymbol extends TerminalSymbol
         return (int) result;
     }
 
+    @Override
     public Integer getValue()
     {
         return (Integer) _value;
     }
 
     /** @brief copy ourself, and return new instance */
+    @Override
     public Symbol copy()
     {
-        return (Symbol) new IntTerminalSymbol(this);
+        return new IntTerminalSymbol(this);
     }
 
     private int low;

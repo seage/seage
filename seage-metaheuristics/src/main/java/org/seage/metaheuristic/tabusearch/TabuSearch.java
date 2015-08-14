@@ -277,7 +277,7 @@ public class TabuSearch extends TabuSearchBase
 
         // Set the new solution value
         // v1.0c: Clone this array so that arrays can be reused in the objective function
-        currentSolution.setObjectiveValue((double[]) bestMoveVal.clone());
+        currentSolution.setObjectiveValue(bestMoveVal.clone());
 
         // Update the best solution, too?
         if (newBestSoln)
@@ -460,6 +460,7 @@ public class TabuSearch extends TabuSearchBase
      * @version 1.0a
      * @deprecated
      */
+    @Deprecated
     public static boolean firstIsBetterThanSecond(
             final double[] first, final double[] second, final boolean maximizing)
     {
@@ -752,6 +753,7 @@ public class TabuSearch extends TabuSearchBase
      *
      * @since 1.0c
      */
+    @Override
     public void startSolving() throws Exception
     {
         // v1.0c: Clear internal flag that might otherwise say "stop"
@@ -817,6 +819,7 @@ public class TabuSearch extends TabuSearchBase
      *
      * @since 1.0
      */
+    @Override
     public synchronized void stopSolving()
     {
         setKeepSolving(false);
@@ -827,6 +830,7 @@ public class TabuSearch extends TabuSearchBase
      *
      * @since 1.0
      */
+    @Override
     public synchronized boolean isSolving()
     {
         return solving;
@@ -840,6 +844,7 @@ public class TabuSearch extends TabuSearchBase
      * @see ObjectiveFunction
      * @since 1.0
      */
+    @Override
     public synchronized void setObjectiveFunction(ObjectiveFunction function) throws Exception
     {
         this.objectiveFunction = function;
@@ -859,6 +864,7 @@ public class TabuSearch extends TabuSearchBase
      * @see MoveManager
      * @since 1.0
      */
+    @Override
     public synchronized void setMoveManager(MoveManager moveManager)
     {
         this.moveManager = moveManager;
@@ -871,6 +877,7 @@ public class TabuSearch extends TabuSearchBase
      * @see TabuList
      * @since 1.0
      */
+    @Override
     public synchronized void setTabuList(TabuList tabuList)
     {
         this.tabuList = tabuList;
@@ -884,6 +891,7 @@ public class TabuSearch extends TabuSearchBase
      * @see AspirationCriteria
      * @since 1.0
      */
+    @Override
     public synchronized void setAspirationCriteria(AspirationCriteria aspirationCriteria)
     {
         this.aspirationCriteria = aspirationCriteria;
@@ -897,6 +905,7 @@ public class TabuSearch extends TabuSearchBase
      * @see Solution
      * @since 1.0
      */
+    @Override
     public synchronized void setBestSolution(Solution solution)
     {
         internalSetBestSolution(solution);
@@ -910,6 +919,7 @@ public class TabuSearch extends TabuSearchBase
      * @see Solution
      * @since 1.0
      */
+    @Override
     public synchronized void setCurrentSolution(Solution solution) throws Exception
     {
         internalSetCurrentSolution(solution);
@@ -927,6 +937,7 @@ public class TabuSearch extends TabuSearchBase
      * @see #startSolving
      * @since 1.0
      */
+    @Override
     public synchronized void setIterationsToGo(int iterations)
     {
         this.iterationsToGo = iterations;
@@ -942,6 +953,7 @@ public class TabuSearch extends TabuSearchBase
      * @param maximizing Whether or not the tabu search should be maximizing the objective function.
      * @since 1.0
      */
+    @Override
     public synchronized void setMaximizing(boolean maximizing)
     {
         this.maximizing = maximizing;
@@ -959,6 +971,7 @@ public class TabuSearch extends TabuSearchBase
      * @param choose Whether or not the first improving move will be chosen
      * @since 1.0.1
      */
+    @Override
     public synchronized void setChooseFirstImprovingMove(boolean choose)
     {
         this.chooseFirstImprovingMove = choose;
@@ -976,6 +989,7 @@ public class TabuSearch extends TabuSearchBase
      * @see ObjectiveFunction
      * @since 1.0
      */
+    @Override
     public synchronized ObjectiveFunction getObjectiveFunction()
     {
         return objectiveFunction;
@@ -988,6 +1002,7 @@ public class TabuSearch extends TabuSearchBase
      * @see MoveManager
      * @since 1.0
      */
+    @Override
     public synchronized MoveManager getMoveManager()
     {
         return moveManager;
@@ -1000,6 +1015,7 @@ public class TabuSearch extends TabuSearchBase
      * @see TabuList
      * @since 1.0
      */
+    @Override
     public synchronized TabuList getTabuList()
     {
         return tabuList;
@@ -1013,6 +1029,7 @@ public class TabuSearch extends TabuSearchBase
      * @see AspirationCriteria
      * @since 1.0
      */
+    @Override
     public synchronized AspirationCriteria getAspirationCriteria()
     {
         return aspirationCriteria;
@@ -1025,6 +1042,7 @@ public class TabuSearch extends TabuSearchBase
      * @see Solution
      * @since 1.0
      */
+    @Override
     public synchronized Solution getBestSolution()
     {
         return bestSolution;
@@ -1037,6 +1055,7 @@ public class TabuSearch extends TabuSearchBase
      * @see Solution
      * @since 1.0
      */
+    @Override
     public synchronized Solution getCurrentSolution()
     {
         return currentSolution;
@@ -1048,6 +1067,7 @@ public class TabuSearch extends TabuSearchBase
      * @return The number of iterations left for the tabu search to execute.
      * @since 1.0
      */
+    @Override
     public synchronized int getIterationsToGo()
     {
         return iterationsToGo;
@@ -1059,6 +1079,7 @@ public class TabuSearch extends TabuSearchBase
      * @return Whether or not the tabu search should be maximizing the objective function.
      * @since 1.0
      */
+    @Override
     public synchronized boolean isMaximizing()
     {
         return maximizing;
@@ -1071,6 +1092,7 @@ public class TabuSearch extends TabuSearchBase
      *
      * @since 1.0.1
      */
+    @Override
     public synchronized boolean isChooseFirstImprovingMove()
     {
         return chooseFirstImprovingMove;

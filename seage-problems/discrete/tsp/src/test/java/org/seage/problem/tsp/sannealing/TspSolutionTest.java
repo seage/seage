@@ -48,7 +48,7 @@ public class TspSolutionTest
 
         for (int i = 0; i < _optimalTour.OptimalTour.length - 1; i++)
         {
-            assertEquals((int) solution.getTour()[i], (int) solution.getTour()[i + 1] - 1);
+            assertEquals((int) solution.getTour()[i], solution.getTour()[i + 1] - 1);
         }
     }
 

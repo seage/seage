@@ -60,6 +60,7 @@ public class LogReportCreatorOld implements ILogReport
         RapidMiner.init();
     }
 
+    @Override
     public void report() throws Exception
     {
         report0();
@@ -109,6 +110,7 @@ public class LogReportCreatorOld implements ILogReport
 
         FilenameFilter filter = new FilenameFilter()
         {
+            @Override
             public boolean accept(File arg0, String arg1)
             {
                 if (arg0.isDirectory())
@@ -190,6 +192,7 @@ public class LogReportCreatorOld implements ILogReport
 
         FilenameFilter filter = new FilenameFilter()
         {
+            @Override
             public boolean accept(File arg0, String arg1)
             {
                 if (arg0.isDirectory())

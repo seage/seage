@@ -141,11 +141,13 @@ public class QapObjectiveFunction implements ObjectiveFunction
         throw new UnsupportedOperationException("Not supported yet. - ObjectiveFunction in QapObjectiveFuntion");
     }
 
+    @Override
     public int getCounter()
     {
         return counter;
     }
 
+    @Override
     public void incrementCounter()
     {
         counter++;

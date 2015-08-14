@@ -55,7 +55,7 @@ public class FormulaEvaluatorTest
         double val = 0.0;
         for (int i = 0; i < booleans.length; i++)
             val += formulaEvaluator.evaluate(f, (i + 1) * (booleans[i] == true ? 1 : -1));
-        System.out.println(String.format("%.2f - %d", val, formulaEvaluator.evaluate(f, booleans)));
+        System.out.println(String.format("%.2f - %d", val, FormulaEvaluator.evaluate(f, booleans)));
     }
 
 }

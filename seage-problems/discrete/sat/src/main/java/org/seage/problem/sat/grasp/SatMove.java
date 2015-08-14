@@ -44,6 +44,7 @@ public class SatMove implements IMove
         return _literalIx;
     }
 
+    @Override
     public Solution apply(Solution s)
     {
         // TODO: A - tady se musi 's' klonovat - (hluboka kopie)
@@ -59,6 +60,6 @@ public class SatMove implements IMove
         }
         newSol = new SatSolution();
         newSol.setLiteralValues(litValues);
-        return (Solution) newSol;
+        return newSol;
     }
 }

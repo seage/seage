@@ -63,7 +63,7 @@ public class Formula extends ProblemInstance
     // OK
     public Clause getClause(int index)
     {
-        return (Clause) _clauses.get(index);
+        return _clauses.get(index);
     }
 
     // OK

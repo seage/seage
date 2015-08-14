@@ -26,6 +26,7 @@ public class SatLongTermMemory implements LongTermMemory
         // _column = new ArrayList();
     }
 
+    @Override
     public void clearMemory()
     {
         for (int i = 0; i < _literalCount.length; i++)
@@ -34,6 +35,7 @@ public class SatLongTermMemory implements LongTermMemory
         }
     }
 
+    @Override
     public void memorizeSolution(Solution soln, boolean newBestSoln)
     {
         // if (_iterNumber == 0)
@@ -61,6 +63,7 @@ public class SatLongTermMemory implements LongTermMemory
         // _column.add(val);
     }
 
+    @Override
     public Solution diversifySolution()
     {
         SatSolution result = new SatSolution(new boolean[_literalCount.length]);
@@ -80,6 +83,7 @@ public class SatLongTermMemory implements LongTermMemory
         return result;
     }
 
+    @Override
     public String toString()
     {
         String result = "";
@@ -93,6 +97,7 @@ public class SatLongTermMemory implements LongTermMemory
         return result;
     }
 
+    @Override
     public void resetIterNumber()
     {
         _iterNumber = 0;

@@ -42,6 +42,7 @@ public class QapObjectiveFunction implements IObjectiveFunction
         _facilityLocation = facilityLocation;
     }
 
+    @Override
     public void setObjectiveValue(Particle particle)
     {
         QapParticle currentParticle = ((QapParticle) particle);

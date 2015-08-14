@@ -41,11 +41,13 @@ import org.seage.problem.sat.SatPhenotypeEvaluator;
 public class SatTabuSearchFactory implements IAlgorithmFactory
 {
 
+    @Override
     public Class<TabuSearchAdapter> getAlgorithmClass()
     {
         return TabuSearchAdapter.class;
     }
 
+    @Override
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
         IAlgorithmAdapter algorithm;
@@ -56,6 +58,7 @@ public class SatTabuSearchFactory implements IAlgorithmFactory
                 new SatObjectiveFunction(new SatPhenotypeEvaluator(formula)), "")
         {
 
+            @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 _solutions = new Solution[source.length];
@@ -69,6 +72,7 @@ public class SatTabuSearchFactory implements IAlgorithmFactory
                 }
             }
 
+            @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 Object[][] result = new Object[_solutions.length][];

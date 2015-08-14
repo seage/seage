@@ -55,11 +55,13 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
     //            _qapSolution = new QapSortedSolution( facilityLocation );
     //    }
 
+    @Override
     public Class<SimulatedAnnealingAdapter> getAlgorithmClass()
     {
         return SimulatedAnnealingAdapter.class;
     }
 
+    @Override
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
         final Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
@@ -70,6 +72,7 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
                 new QapObjectiveFunction(),
                 new QapMoveManager(), false, "")
         {
+            @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 _solutions = new Solution[source.length];
@@ -85,6 +88,7 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
                 }
             }
 
+            @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 Integer[] assign = ((QapSolution) _simulatedAnnealing.getBestSolution()).getAssign();

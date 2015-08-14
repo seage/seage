@@ -79,7 +79,7 @@ public class TspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, I
                 int c1 = 0, c2 = 0;
                 while (c1 != -1)
                 {
-                    c1 = cross1[(Integer) ch1.getGene(i)];
+                    c1 = cross1[ch1.getGene(i)];
                     if (c1 != -1)
                     {
                         ch1.setGene(i, c1);
@@ -87,15 +87,15 @@ public class TspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, I
                 }
                 while (c2 != -1)
                 {
-                    c2 = cross2[(Integer) ch2.getGene(i)];
+                    c2 = cross2[ch2.getGene(i)];
                     if (c2 != -1)
                     {
                         ch2.setGene(i, c2);
                     }
                 }
             }
-            occur1[(Integer) ch1.getGene(i)]++;
-            occur2[(Integer) ch2.getGene(i)]++;
+            occur1[ch1.getGene(i)]++;
+            occur2[ch2.getGene(i)]++;
         }
 
         for (int i = 0; i < length; i++)

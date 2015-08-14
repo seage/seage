@@ -43,11 +43,13 @@ public class SatObjectiveFunction implements IObjectiveFunction
         _formula = formula;
     }
 
+    @Override
     public void reset()
     {
     }
 
     // OK
+    @Override
     public double evaluateMove(Solution sol, IMove move) throws Exception
     {
 

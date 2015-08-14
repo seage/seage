@@ -62,11 +62,13 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
     //            _tspSolution = new TspSortedSolution( cities );
     //    }
 
+    @Override
     public Class<SimulatedAnnealingAdapter> getAlgorithmClass()
     {
         return SimulatedAnnealingAdapter.class;
     }
 
+    @Override
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
         IAlgorithmAdapter algorithm;
@@ -76,6 +78,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
                 new TspObjectiveFunction(cities),
                 new TspMoveManager(), false, "")
         {
+            @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 _solutions = new Solution[source.length];
@@ -91,6 +94,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
                 }
             }
 
+            @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 Object[][] result = new Object[_solutions.length][];

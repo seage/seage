@@ -94,16 +94,19 @@ abstract public class GrammarRule implements Serializable
     /** @brief optimize derivate tree (eg. create result of arithmetical operations on contants) */
     abstract public Symbol optimize(NonterminalSymbol treePos) throws Exception;
 
+    @Override
     public boolean equals(Object b)
     {
         return (b instanceof GrammarRule) && ((GrammarRule) b).id == this.id;
     }
 
+    @Override
     public int hashCode()
     {
         return new Integer(id).hashCode();
     }
 
+    @Override
     public String toString()
     {
         String s = left + " -> ";

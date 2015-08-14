@@ -63,7 +63,7 @@ public class CityProvider
             //ensure the underlying stream is always closed
             scanner.close();
         }
-        return (City[]) result.toArray(new City[0]);
+        return result.toArray(new City[0]);
     }
 
     private static Double[] readLine(String line) throws IOException
@@ -77,7 +77,7 @@ public class CityProvider
             result.add(Double.parseDouble(scanner.next()));
         }
         scanner.close();
-        return (Double[]) result.toArray(new Double[0]);
+        return result.toArray(new Double[0]);
     }
 
     public static City[] generateCircleCities(int numCircleCities)

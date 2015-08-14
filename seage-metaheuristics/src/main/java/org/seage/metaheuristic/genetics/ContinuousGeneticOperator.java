@@ -36,8 +36,8 @@ public class ContinuousGeneticOperator<S extends Subject<Double>> extends BasicG
             {
                 if (_crossLengthCoef > _random.nextDouble())
                 {
-                    double value = ((Double) parent1.getChromosome().getGene(i)
-                            + (Double) parent2.getChromosome().getGene(i)) / 2;
+                    double value = (parent1.getChromosome().getGene(i)
+                            + parent2.getChromosome().getGene(i)) / 2;
                     s.getChromosome().setGene(i, value);
                 }
             }
@@ -46,6 +46,7 @@ public class ContinuousGeneticOperator<S extends Subject<Double>> extends BasicG
     }
 
     //@Override
+    @Override
     public S mutate(S subject) throws Exception
     {
         for (int i = 0; i < subject.getChromosome().getLength(); i++)

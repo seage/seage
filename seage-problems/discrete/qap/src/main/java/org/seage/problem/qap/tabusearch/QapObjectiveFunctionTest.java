@@ -66,36 +66,43 @@ public class QapObjectiveFunctionTest implements TabuSearchListener
         System.out.println(qof.evaluate(new QapSolution(assign), null)[0]);
     }
 
+    @Override
     public void newBestSolutionFound(TabuSearchEvent e)
     {
         System.out.println(e.getTabuSearch().getBestSolution().toString());
     }
 
+    @Override
     public void improvingMoveMade(TabuSearchEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public void newCurrentSolutionFound(TabuSearchEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public void noChangeInValueMoveMade(TabuSearchEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public void tabuSearchStarted(TabuSearchEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public void tabuSearchStopped(TabuSearchEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public void unimprovingMoveMade(TabuSearchEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");

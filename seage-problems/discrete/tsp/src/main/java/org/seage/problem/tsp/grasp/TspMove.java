@@ -73,6 +73,7 @@ public class TspMove implements IMove
      * @param s - Actual solution
      * @return - New solution
      */
+    @Override
     public Solution apply(Solution s)
     {
         TspSolution newSol = (TspSolution) s;
@@ -81,6 +82,6 @@ public class TspMove implements IMove
         newTour[_ix1] = newTour[_ix2];
         newTour[_ix2] = pom;
         newSol.setTour(newTour);
-        return (Solution) newSol;
+        return newSol;
     }
 }

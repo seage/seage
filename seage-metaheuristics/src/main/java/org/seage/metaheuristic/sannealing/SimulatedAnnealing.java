@@ -120,6 +120,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
      * This method is called to perform the simulated annealing.
      * @throws Exception 
      */
+    @Override
     public void startSearching(Solution solution) throws Exception
     {
         _eventProducer.fireAlgorithmStarted();
@@ -187,6 +188,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
         _eventProducer.fireAlgorithmStopped();
     }
 
+    @Override
     public Solution getCurrentSolution()
     {
         return _currentSolution;
@@ -202,26 +204,31 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
         _eventProducer.addAlgorithmListener(listener);
     }
 
+    @Override
     public double getMaximalTemperature()
     {
         return _maximalTemperature;
     }
 
+    @Override
     public void setMaximalTemperature(double maximalTemperature)
     {
         this._maximalTemperature = maximalTemperature;
     }
 
+    @Override
     public void setMinimalTemperature(double minimalTemperature)
     {
         this._minimalTemperature = minimalTemperature;
     }
 
+    @Override
     public double getMinimalTemperature()
     {
         return _minimalTemperature;
     }
 
+    @Override
     public double getCurrentTemperature()
     {
         return _currentTemperature;
@@ -232,31 +239,37 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     //		this._annealCoefficient = alpha;
     //	}
 
+    @Override
     public double getAnnealingCoefficient()
     {
         return this._annealCoefficient;
     }
 
+    @Override
     public Solution getBestSolution()
     {
         return _bestSolution;
     }
 
+    @Override
     public void stopSearching() throws SecurityException
     {
         _stopSearching = true;
     }
 
+    @Override
     public long getCurrentIteration()
     {
         return _currentIteration;
     }
 
+    @Override
     public long getMaximalIterationCount()
     {
         return _maximalIterationCount;
     }
 
+    @Override
     public void setMaximalIterationCount(long maximalIterationCount)
     {
         _maximalIterationCount = maximalIterationCount;

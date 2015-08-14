@@ -127,6 +127,7 @@ public class SimpleTabuList implements TabuList
      * @see Solution
      * @since 1.0-exp3
      */
+    @Override
     public boolean isTabu(Solution fromSolution, Move move)
     {
         int attr = move.hashCode();
@@ -158,6 +159,7 @@ public class SimpleTabuList implements TabuList
      * @see Solution
      * @since 1.0-exp3
      */
+    @Override
     public void setTabu(Solution fromSolution, Move move)
     {
         tabuList[(currentPos++) % listLength] = move.hashCode();

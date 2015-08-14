@@ -30,7 +30,7 @@ public class JsspSolution extends SolutionAdapter
 
     public JsspSolution(int[] jobArray)
     {
-        _jobArray = (int[]) jobArray.clone();
+        _jobArray = jobArray.clone();
     }
 
     public int[] getJobArray()
@@ -38,15 +38,17 @@ public class JsspSolution extends SolutionAdapter
         return _jobArray;
     }
 
+    @Override
     public String toString()
     {
         return getObjectiveValue()[0] + "";
     }
 
+    @Override
     public Object clone()
     {
         JsspSolution copy = (JsspSolution) super.clone();
-        copy._jobArray = (int[]) this._jobArray.clone();
+        copy._jobArray = this._jobArray.clone();
         return copy;
     } // end clone
 }

@@ -60,6 +60,7 @@ public abstract class TabuSearchBase implements ITabuSearch
      * @return Total number of completed iterations
      * @since 1.0a
      */
+    @Override
     public synchronized int getIterationsCompleted()
     {
         return iterationsCompleted;
@@ -111,6 +112,7 @@ public abstract class TabuSearchBase implements ITabuSearch
      * @see TabuSearchListener
      * @since 1.0
      */
+    @Override
     public final synchronized void addTabuSearchListener(TabuSearchListener listener)
     {
         TabuSearchListener[] list = new TabuSearchListener[tabuSearchListenerList.length + 1];
@@ -132,6 +134,7 @@ public abstract class TabuSearchBase implements ITabuSearch
      * @see TabuSearchListener
      * @since 1.0
      */
+    @Override
     public final synchronized void removeTabuSearchListener(TabuSearchListener listener)
     { // Find location of listener to remove
         int index = -1;

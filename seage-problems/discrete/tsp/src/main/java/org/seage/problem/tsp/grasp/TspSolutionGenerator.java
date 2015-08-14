@@ -58,6 +58,7 @@ public class TspSolutionGenerator implements ISolutionGenerator
      * Function to generate the initial solution
      * @return
      */
+    @Override
     public Solution generateSolution()
     {
 

@@ -56,6 +56,7 @@ import org.seage.data.DataNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -127,7 +128,7 @@ public class XmlHelper
         NodeList nodeList = xmlElem.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++)
         {
-            if (nodeList.item(i).getNodeType() == Element.ELEMENT_NODE)
+            if (nodeList.item(i).getNodeType() == Node.ELEMENT_NODE)
             {
                 Element elem = (Element) nodeList.item(i);
                 result.putDataNodeRef(readElement(elem));

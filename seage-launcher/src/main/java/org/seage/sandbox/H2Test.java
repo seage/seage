@@ -64,6 +64,7 @@ public class H2Test
             _number = number;
         }
 
+        @Override
         public void run()
         {
             final String queryInsert = "INSERT INTO test VALUES (?)";

@@ -31,6 +31,7 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 public class SatObjectiveFunction implements IObjectiveFunction
 {
+    @Override
     public double getObjectiveValue(Solution solution)
     {
         return 0.0;

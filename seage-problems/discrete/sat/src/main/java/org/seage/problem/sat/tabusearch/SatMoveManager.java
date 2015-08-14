@@ -48,6 +48,7 @@ public class SatMoveManager implements MoveManager
         return new int[] { 0, 0 };
     }
 
+    @Override
     public Move[] getAllMoves(Solution solution)
     {
         SatSolution satSol = (SatSolution) solution;
@@ -74,6 +75,6 @@ public class SatMoveManager implements MoveManager
 
         // result.add(new SatMove(new int[] { ix0, ix1}, diff));
 
-        return (Move[]) _moves.toArray(_null);
+        return _moves.toArray(_null);
     }
 }

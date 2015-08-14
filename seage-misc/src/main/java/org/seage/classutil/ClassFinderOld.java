@@ -110,6 +110,7 @@ public class ClassFinderOld
         File[] searchResults = dir.listFiles(new FilenameFilter()
         {
 
+            @Override
             public boolean accept(File file, String name)
             {
                 return name.startsWith(jarPrefix) && name.endsWith(".jar");
@@ -121,6 +122,7 @@ public class ClassFinderOld
 
         for (File d : dir.listFiles(new FileFilter()
         {
+            @Override
             public boolean accept(File file)
             {
                 return file.isDirectory();

@@ -43,11 +43,13 @@ import org.seage.problem.qap.QapProblemInstance;
 @Annotations.AlgorithmName("Tabu Search")
 public class QapTabuSearchFactory implements IAlgorithmFactory
 {
+    @Override
     public Class<TabuSearchAdapter> getAlgorithmClass()
     {
         return TabuSearchAdapter.class;
     }
 
+    @Override
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
         final Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
@@ -56,6 +58,7 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
                 new QapObjectiveFunction(facilityLocation), "")
         {
 
+            @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 _solutions = new Solution[source.length];
@@ -70,6 +73,7 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
                 }
             }
 
+            @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 Object[][] result = new Object[_solutions.length][];

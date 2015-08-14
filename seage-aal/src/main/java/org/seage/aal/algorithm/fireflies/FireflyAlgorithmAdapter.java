@@ -138,6 +138,7 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
         // EDD OWN PARAMETERS
     }
 
+    @Override
     public AlgorithmReport getReport() throws Exception
     {
         int num = _solutions.length;// > 10 ? 10 : solutions.length;
@@ -154,12 +155,14 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
 
     private class FireflySearchObserver implements FireflySearchListener
     {
+        @Override
         public void FireflySearchStarted(FireflySearchEvent e)
         {
             _statNumNewSol = _statLastIterNewSol = 0;
             _algorithmStarted = true;
         }
 
+        @Override
         public void FireflySearchStopped(FireflySearchEvent e)
         {
             Solution best = e.getFireflySearch().getBestSolution();
@@ -168,6 +171,7 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
             _algorithmStopped = true;
         }
 
+        @Override
         public void newBestSolutionFound(FireflySearchEvent e)
         {
             try
@@ -197,21 +201,25 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
 
         // HAD TO IMPLEMENT BECAUSE OF INTERFACE, MAY CAUSE ALGORITHM NOT TO
         // WORK CORRECTLY
+        @Override
         public void newCurrentSolutionFound(FireflySearchEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
+        @Override
         public void unimprovingMoveMade(FireflySearchEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
+        @Override
         public void improvingMoveMade(FireflySearchEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
+        @Override
         public void noChangeInValueMoveMade(FireflySearchEvent e)
         {
             throw new UnsupportedOperationException("Not supported yet.");

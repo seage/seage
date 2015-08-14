@@ -80,6 +80,7 @@ public class ParticleSwarm implements IParticleSwarm
         _velocityManager = new VelocityManager();
     }
 
+    @Override
     public void startSearching(Particle[] particles)
     {
         // Searching is starting
@@ -184,26 +185,31 @@ public class ParticleSwarm implements IParticleSwarm
         _listenerProvider.addParticleSwarmListener(listener);
     }
 
+    @Override
     public void stopSearching()
     {
         _stopSearching = true;
     }
 
+    @Override
     public long getMaximalIterationCount()
     {
         return _maximalIterationCount;
     }
 
+    @Override
     public void setMaximalIterationCount(long maximalIterationCount)
     {
         this._maximalIterationCount = maximalIterationCount;
     }
 
+    @Override
     public double getMaximalVelocity()
     {
         return _maximalValue;
     }
 
+    @Override
     public void setMaximalVectorValue(double maximalVelocity)
     {
         _maximalValue = maximalVelocity;
@@ -219,11 +225,13 @@ public class ParticleSwarm implements IParticleSwarm
         this._inertia = inertia;
     }
 
+    @Override
     public double getMinimalVelocity()
     {
         return _minimalValue;
     }
 
+    @Override
     public void setMinimalVectorValue(double minimalVelocity)
     {
         this._minimalValue = minimalVelocity;
@@ -249,16 +257,19 @@ public class ParticleSwarm implements IParticleSwarm
         this._beta = beta;
     }
 
+    @Override
     public Particle getBestParticle()
     {
         return _globalMinimum;
     }
 
+    @Override
     public Particle[] getParticles()
     {
         return _particles;
     }
 
+    @Override
     public void setParticles(Particle[] particles)
     {
         this._particles = particles;
@@ -269,6 +280,7 @@ public class ParticleSwarm implements IParticleSwarm
         return _isRunning;
     }
 
+    @Override
     public long getCurrentIteration()
     {
         return _currentIteration;

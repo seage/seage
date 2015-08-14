@@ -38,6 +38,7 @@ public class TspMoveManager implements IMoveManager
 {
     Random rnd = new Random();
 
+    @Override
     public Solution getModifiedSolution(Solution solution, double ct)
     {
         TspSolution tspSolution = ((TspSolution) solution).clone();
@@ -54,7 +55,7 @@ public class TspMoveManager implements IMoveManager
             tspSolution.getTour()[b] = tmp;
         }
 
-        return (Solution) tspSolution;
+        return tspSolution;
     }
 
 }

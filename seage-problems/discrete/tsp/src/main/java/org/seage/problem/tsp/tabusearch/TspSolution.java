@@ -48,10 +48,11 @@ public class TspSolution extends SolutionAdapter
             _tour[i] = i + 1;
     } // end constructor
 
+    @Override
     public Object clone()
     {
         TspSolution copy = (TspSolution) super.clone();
-        copy._tour = (Integer[]) this._tour.clone();
+        copy._tour = this._tour.clone();
         return copy;
     } // end clone
 
@@ -65,6 +66,7 @@ public class TspSolution extends SolutionAdapter
         _tour = tour;
     }
 
+    @Override
     public String toString()
     {
         return String.format("%f - %d", getObjectiveValue()[0], hashCode());

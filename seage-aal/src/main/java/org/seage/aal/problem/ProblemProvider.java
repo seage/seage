@@ -56,7 +56,7 @@ public abstract class ProblemProvider implements IProblemProvider
 
         _problemInfo = new ProblemInfo("ProblemInfo");
 
-        Class<? extends ProblemProvider> problemClass = (Class<? extends ProblemProvider>) this.getClass();
+        Class<? extends ProblemProvider> problemClass = this.getClass();
         Annotation an = null;
 
         an = problemClass.getAnnotation(Annotations.ProblemId.class);
@@ -153,6 +153,7 @@ public abstract class ProblemProvider implements IProblemProvider
         return _problemInfo;
     }
 
+    @Override
     public IAlgorithmFactory getAlgorithmFactory(String algId) throws Exception
     {
         if (!_algFactories.containsKey(algId))
@@ -160,6 +161,7 @@ public abstract class ProblemProvider implements IProblemProvider
         return _algFactories.get(algId);
     }
 
+    @Override
     public HashMap<String, IAlgorithmFactory> getAlgorithmFactories()
     {
         return _algFactories;

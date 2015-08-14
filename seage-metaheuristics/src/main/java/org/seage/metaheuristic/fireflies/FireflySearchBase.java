@@ -61,6 +61,7 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @return Total number of completed iterations
      * @since 1.0a
      */
+    @Override
     public synchronized int getIterationsCompleted()
     {
         return iterationsCompleted;
@@ -112,6 +113,7 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @see FireflySearchListener
      * @since 1.0
      */
+    @Override
     public final synchronized void addFireflySearchListener(FireflySearchListener listener)
     {
         FireflySearchListener[] list = new FireflySearchListener[fireflySearchListenerList.length + 1];
@@ -133,6 +135,7 @@ public abstract class FireflySearchBase implements IFireflySearch
      * @see FireflySearchListener
      * @since 1.0
      */
+    @Override
     public final synchronized void removeFireflySearchListener(FireflySearchListener listener)
     { // Find location of listener to remove
         int index = -1;

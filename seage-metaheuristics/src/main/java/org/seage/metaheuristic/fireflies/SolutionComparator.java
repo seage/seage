@@ -49,6 +49,7 @@ public class SolutionComparator implements Comparator<Object>
         _maximizing = maximizing;
     }
 
+    @Override
     public int compare(Object o1, Object o2)
     {
         Solution s1 = (Solution) o1;

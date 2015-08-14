@@ -43,6 +43,7 @@ public class TspMoveManager implements IMoveManager
      * @param solution - Current solutions for which are generated further steps
      * @return - The next steps algorithm
      */
+    @Override
     public IMove[] getAllMoves(Solution solution)
     {
         TspSolution sol = (TspSolution) solution;
@@ -55,6 +56,6 @@ public class TspMoveManager implements IMoveManager
             moves[i] = new TspMove(rnd.nextInt(sol.getTour().length), rnd.nextInt(sol.getTour().length));
         }
 
-        return (IMove[]) moves;
+        return moves;
     }
 }

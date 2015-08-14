@@ -138,6 +138,7 @@ public abstract class ParticleSwarmAdapter extends AlgorithmAdapterImpl implemen
     }
 
     //############################ EVENTS ###############################//
+    @Override
     public void newBestSolutionFound(ParticleSwarmEvent e)
     {
         _bestParticle = e.getParticleSwarm().getBestParticle();
@@ -147,16 +148,19 @@ public abstract class ParticleSwarmAdapter extends AlgorithmAdapterImpl implemen
         _lastIterationNumberNewSolution = _numberOfIterations;
     }
 
+    @Override
     public void newIterationStarted(ParticleSwarmEvent e)
     {
         _numberOfIterations++;
     }
 
+    @Override
     public void particleSwarmStarted(ParticleSwarmEvent e)
     {
         _initObjectiveValue = e.getParticleSwarm().getBestParticle().getEvaluation();
     }
 
+    @Override
     public void particleSwarmStopped(ParticleSwarmEvent e)
     {
         _bestParticle = e.getParticleSwarm().getBestParticle();

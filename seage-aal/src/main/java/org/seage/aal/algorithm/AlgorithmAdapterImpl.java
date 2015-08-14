@@ -39,6 +39,7 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
     protected boolean _algorithmStarted = false;
     protected boolean _algorithmStopped = false;
 
+    @Override
     public void startSearching(final AlgorithmParams params, boolean async) throws Exception
     {
         if (_algorithmStarted && !_algorithmStopped)
@@ -50,6 +51,7 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
         {
             new Thread(new Runnable()
             {
+                @Override
                 public void run()
                 {
                     try

@@ -37,6 +37,7 @@ import org.seage.problem.tsp.Visualizer;
  * @author Martin Zaloga
  * @deprecated Replaced by TspProblemSolver
  */
+@Deprecated
 public class TspHillClimberTest
 {
 

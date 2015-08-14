@@ -34,6 +34,7 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 public class QapObjectiveFunction implements IObjectiveFunction
 {
+    @Override
     public double getObjectiveValue(Solution solution)
     {
         Integer[] assign = ((QapSolution) solution)._assign;

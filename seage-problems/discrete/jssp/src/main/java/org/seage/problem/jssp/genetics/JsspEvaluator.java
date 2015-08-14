@@ -36,6 +36,7 @@ public class JsspEvaluator extends SubjectEvaluator
         _scheduleManager = scheduleManager;
     }
 
+    @Override
     public double[] evaluate(Subject subject) throws Exception
     {
         Chromosome chrom = subject.getChromosome();

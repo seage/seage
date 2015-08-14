@@ -52,6 +52,7 @@ public class DataRow extends ArrayList<DataCell>
         _rowProperty = o;
     }
 
+    @Override
     public String toString()
     {
         String res = "";

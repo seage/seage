@@ -66,6 +66,7 @@ public class TspGraph extends Graph
      * @param cities - Readed cities
      * @return - Euclide edge length
      */
+    @Override
     public double getNodesDistance(Node start, Node end)
     {
         double dX = (_cities[start.getID() - 1].X - _cities[end.getID() - 1].X);

@@ -111,6 +111,7 @@ public class Node
         return _edges;
     }
 
+    @Override
     public String toString()
     {
         return new Integer(getID()).toString();

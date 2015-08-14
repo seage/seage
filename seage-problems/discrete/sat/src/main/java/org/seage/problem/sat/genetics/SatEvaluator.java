@@ -17,6 +17,7 @@ public class SatEvaluator extends SubjectEvaluator<Subject<Boolean>>
         _evaluator = evaluator;
     }
 
+    @Override
     public double[] evaluate(Subject<Boolean> solution) throws Exception
     {
         Chromosome<Boolean> chrom = solution.getChromosome();

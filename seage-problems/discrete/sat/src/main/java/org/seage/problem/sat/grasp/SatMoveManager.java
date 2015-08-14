@@ -45,6 +45,7 @@ public class SatMoveManager implements IMoveManager
      *            - Current solutions for which are generated further steps
      * @return - The next steps algorithm
      */
+    @Override
     public IMove[] getAllMoves(Solution solution)
     {
         SatSolution sol = (SatSolution) solution;
@@ -56,7 +57,7 @@ public class SatMoveManager implements IMoveManager
             moves[i] = new SatMove(_rnd.nextInt(sol.getLiteralCount()));
         }
         _moves = moves;
-        return (IMove[]) moves;
+        return moves;
     }
 
     public void printMoves()

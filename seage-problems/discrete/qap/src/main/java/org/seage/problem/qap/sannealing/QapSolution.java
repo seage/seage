@@ -90,6 +90,7 @@ public abstract class QapSolution extends Solution
         return qapSolution;
     }
 
+    @Override
     public String toString()
     {
         StringBuffer s = new StringBuffer();

@@ -43,6 +43,7 @@ public class QapSwapMove implements Move
         this.movement = movement;
     } // end constructor
 
+    @Override
     public void operateOn(Solution soln)
     {
         Integer[] assign = ((QapSolution) soln)._assign;
@@ -62,6 +63,7 @@ public class QapSwapMove implements Move
     } // end operateOn
 
     /** Identify a move for SimpleTabuList */
+    @Override
     public int hashCode()
     {
         return customer;

@@ -90,7 +90,7 @@ public class TourProvider
             tour[i] = 1;
             avail[i] = i;
         }
-        tour[0] = (int) (r.nextInt(cities.length)) + 1;
+        tour[0] = (r.nextInt(cities.length)) + 1;
         avail[tour[0] - 1] = -1;
         for (int i = 1; i < tour.length; i++)
         {

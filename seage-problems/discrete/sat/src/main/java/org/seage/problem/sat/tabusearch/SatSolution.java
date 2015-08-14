@@ -21,6 +21,7 @@ public class SatSolution extends SolutionAdapter
         return _literalValues;
     }
 
+    @Override
     public Object clone()
     {
         SatSolution copy = (SatSolution) super.clone();
@@ -34,6 +35,7 @@ public class SatSolution extends SolutionAdapter
         return copy;
     }
 
+    @Override
     public String toString()
     {
         String result = super.toString();
@@ -47,6 +49,7 @@ public class SatSolution extends SolutionAdapter
         return result + "\t" + str;
     }
 
+    @Override
     public int hashCode()
     {
         return _hash;

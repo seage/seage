@@ -60,7 +60,7 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
                 sum += q.fs.getBestSolution().getObjectiveValue()[0];
             }
             System.out.println(str);
-            System.out.println("Average:" + (double) sum / (double) iters);
+            System.out.println("Average:" + sum / iters);
         }
         catch (Exception ex)
         {
@@ -121,16 +121,19 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
         return result;
     }
 
+    @Override
     public void FireflySearchStarted(FireflySearchEvent e)
     {
         System.out.println("Firefly Algorithm for QAP started.");
     }
 
+    @Override
     public void FireflySearchStopped(FireflySearchEvent e)
     {
         System.out.println("Firefly Algorithm for QAP stopped.");
     }
 
+    @Override
     public void newBestSolutionFound(FireflySearchEvent e)
     {
         System.out.println("New best: " + e.getFireflySearch().getBestSolution().getObjectiveValue()[0]);
@@ -141,21 +144,25 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
         System.out.println("Firefly Algorithm for QAP - no change in value iteration made.");
     }
 
+    @Override
     public void newCurrentSolutionFound(FireflySearchEvent e)
     {
         System.out.println("Firefly Algorithm for QAP - new current solution found.");
     }
 
+    @Override
     public void unimprovingMoveMade(FireflySearchEvent e)
     {
         System.out.println("Firefly Algorithm for QAP - unimproving move made.");
     }
 
+    @Override
     public void improvingMoveMade(FireflySearchEvent e)
     {
         System.out.println("Firefly Algorithm for QAP - improving move made.");
     }
 
+    @Override
     public void noChangeInValueMoveMade(FireflySearchEvent e)
     {
         System.out.println("Firefly Algorithm for QAP - no change in value made.");

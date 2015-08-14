@@ -59,6 +59,7 @@ public class SatSolutionGenerator implements ISolutionGenerator
      * 
      * @return
      */
+    @Override
     public Solution generateSolution() throws Exception
     {
 

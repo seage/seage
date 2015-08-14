@@ -144,7 +144,7 @@ public class ProblemProviderTester
         String algorithmID = config.getDataNode("Algorithm").getValueStr("id");
         String instanceID = config.getDataNode("Problem").getDataNode("Instance").getValueStr("id");
         // provider and factory
-        IProblemProvider provider = (IProblemProvider) ProblemProvider.getProblemProviders().get(problemID);
+        IProblemProvider provider = ProblemProvider.getProblemProviders().get(problemID);
         IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
 
         // problem instance

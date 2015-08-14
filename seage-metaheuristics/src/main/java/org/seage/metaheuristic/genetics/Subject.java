@@ -65,6 +65,7 @@ public class Subject<GeneType>
         computeHash();
     }
 
+    @Override
     public Subject<GeneType> clone()
     {
         return new Subject<GeneType>(this);
@@ -94,6 +95,7 @@ public class Subject<GeneType>
         _hashCode = hash;
     }
 
+    @Override
     public int hashCode()
     {
         return _hashCode;

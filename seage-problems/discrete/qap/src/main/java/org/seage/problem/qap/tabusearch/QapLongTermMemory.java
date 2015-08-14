@@ -40,19 +40,23 @@ public class QapLongTermMemory implements LongTermMemory
     {
     }
 
+    @Override
     public void clearMemory()
     {
     }
 
+    @Override
     public void memorizeSolution(Solution soln, boolean newBestSoln)
     {
     }
 
+    @Override
     public Solution diversifySolution()
     {
         return null;
     }
 
+    @Override
     public void resetIterNumber()
     {
 

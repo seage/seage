@@ -56,6 +56,7 @@ public class NonterminalSymbol implements Symbol
         this(other.name);
     }
 
+    @Override
     public Object eval(DataNode symbolTable)
     {
         try
@@ -70,6 +71,7 @@ public class NonterminalSymbol implements Symbol
         }
     }
 
+    @Override
     public Symbol optimize()
     {
         try
@@ -96,7 +98,7 @@ public class NonterminalSymbol implements Symbol
         int i = stack.size();
         while (it.hasNext())
         {
-            Symbol s = (Symbol) it.next();
+            Symbol s = it.next();
             if (s.getType() == Symbol.Type.NONTERMINAL)
             {
                 NonterminalSymbol sn = new NonterminalSymbol((NonterminalSymbol) s);
@@ -117,6 +119,7 @@ public class NonterminalSymbol implements Symbol
         return children;
     }
 
+    @Override
     public String toString()
     {
         return name;
@@ -157,25 +160,29 @@ public class NonterminalSymbol implements Symbol
     }
 
     /** @brief copy ourself, and return new instance */
+    @Override
     public Symbol copy()
     {
-        return (Symbol) new NonterminalSymbol(this);
+        return new NonterminalSymbol(this);
     }
 
     protected Vector<Symbol> children;
     protected GrammarRule rule; ///by which grammar rule were we expanded?
     protected String name;
 
+    @Override
     public boolean equals(Object b)
     {
         return (b instanceof NonterminalSymbol) && ((NonterminalSymbol) b).name.equals(this.name);
     }
 
+    @Override
     public int hashCode()
     {
         return name.hashCode();
     }
 
+    @Override
     public Type getType()
     {
         return Symbol.Type.NONTERMINAL;

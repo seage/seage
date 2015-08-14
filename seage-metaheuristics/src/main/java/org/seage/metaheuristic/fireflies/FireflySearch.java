@@ -114,11 +114,13 @@ public class FireflySearch extends FireflySearchBase
         }
     }
 
+    @Override
     public void stopSolving()
     {
         _keepSearching = false;
     }
 
+    @Override
     public boolean isSolving()
     {
         return _isRunning;
@@ -147,6 +149,7 @@ public class FireflySearch extends FireflySearchBase
 
     }
 
+    @Override
     public void startSolving(Solution[] solutions) throws Exception
     {
         try
@@ -276,21 +279,25 @@ public class FireflySearch extends FireflySearchBase
         }
     }
 
+    @Override
     public void setObjectiveFunction(ObjectiveFunction function) throws Exception
     {
         _objectiveFunction = function;
     }
 
+    @Override
     public void setBestSolution(Solution solution)
     {
         _bestSolution = solution;
     }
 
+    @Override
     public void setIterationsToGo(int iterations)
     {
         _iterationsToGo = iterations;
     }
 
+    @Override
     public void setMaximizing(boolean maximizing)
     {
         _maximizing = maximizing;
@@ -306,21 +313,25 @@ public class FireflySearch extends FireflySearchBase
         return _populationCount;
     }
 
+    @Override
     public ObjectiveFunction getObjectiveFunction()
     {
         return _objectiveFunction;
     }
 
+    @Override
     public Solution getBestSolution()
     {
         return _bestSolution;
     }
 
+    @Override
     public int getIterationsToGo()
     {
         return _iterationsToGo;
     }
 
+    @Override
     public boolean isMaximizing()
     {
         return _maximizing;
@@ -336,11 +347,13 @@ public class FireflySearch extends FireflySearchBase
         this._absorption = _absorption;
     }
 
+    @Override
     public int getCurrentIteration()
     {
         return _currentIteration;
     }
 
+    @Override
     public void setCurrentIteration(int _currentIteration)
     {
         this._currentIteration = _currentIteration;

@@ -17,6 +17,7 @@ public class SatObjectiveFunction implements ObjectiveFunction
         _evaluator = evaluator;
     }
 
+    @Override
     public double[] evaluate(Solution solution, Move move) throws Exception
     {
         try

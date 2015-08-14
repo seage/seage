@@ -100,21 +100,25 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
         return result;
     }
 
+    @Override
     public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e)
     {
         System.out.println("Genetic Algorithm for TSP started.");
     }
 
+    @Override
     public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e)
     {
         System.out.println("Genetic Algorithm for TSP stopped.");
     }
 
+    @Override
     public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e)
     {
         System.out.println("New best: " + e.getGeneticSearch().getBestSubject().getFitness()[0]);
     }
 
+    @Override
     public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Integer>> e)
     {
 

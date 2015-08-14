@@ -36,6 +36,7 @@ public class JsspMove implements Move
         _ix2 = ix2;
     }
 
+    @Override
     public void operateOn(Solution soln)
     {
         JsspSolution solution = (JsspSolution) soln;
@@ -54,6 +55,7 @@ public class JsspMove implements Move
         return _ix2;
     }
 
+    @Override
     public int hashCode()
     {
         return (_ix1 << 10) + _ix2 << 5;

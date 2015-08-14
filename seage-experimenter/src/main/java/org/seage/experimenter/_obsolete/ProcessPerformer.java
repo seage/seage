@@ -167,7 +167,7 @@ public class ProcessPerformer
 
             while (iterator.hasNext())
             {
-                Map.Entry<String, IOObject> entry = (Entry<String, IOObject>) iterator.next();
+                Map.Entry<String, IOObject> entry = iterator.next();
 
                 IOObject obj = entry.getValue();
                 if (obj instanceof IOObjectCollection)

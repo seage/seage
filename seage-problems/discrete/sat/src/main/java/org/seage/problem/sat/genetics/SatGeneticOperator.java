@@ -8,13 +8,14 @@ import org.seage.metaheuristic.genetics.Subject;
  */
 public class SatGeneticOperator extends BasicGeneticOperator<Subject<Boolean>, Boolean>
 {
+    @Override
     public Subject<Boolean> mutate(Subject<Boolean> subject) throws Exception
     {
         try
         {
             int length = subject.getChromosome().getLength();
             int count = _random.nextInt((int) (length * _mutateLengthCoef) + 1);
-            Subject<Boolean> mutant = (Subject<Boolean>) subject.clone();
+            Subject<Boolean> mutant = subject.clone();
 
             for (int i = 0; i < count; i++)
             {
@@ -30,13 +31,14 @@ public class SatGeneticOperator extends BasicGeneticOperator<Subject<Boolean>, B
         }
     }
 
+    @Override
     public Subject<Boolean> randomize(Subject<Boolean> subject) throws Exception
     {
         try
         {
             int length = subject.getChromosome().getLength();
 
-            Subject<Boolean> random = (Subject<Boolean>) subject.clone();
+            Subject<Boolean> random = subject.clone();
 
             for (int i = 0; i < length * 10; i++)
             {

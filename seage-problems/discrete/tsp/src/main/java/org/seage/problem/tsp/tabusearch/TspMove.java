@@ -43,6 +43,7 @@ public class TspMove implements Move
         this.ix2 = ix2;
     } // end constructor
 
+    @Override
     public void operateOn(Solution soln)
     {
         TspSolution tspSoln = (TspSolution) soln;
@@ -55,12 +56,14 @@ public class TspMove implements Move
     } // end operateOn
 
     /** Identify a move for SimpleTabuList */
+    @Override
     public int hashCode()
     {
         //return _hashCode;
         return ix1 * 1000000 + ix2;
     } // end hashCode
 
+    @Override
     public String toString()
     {
         return "{" + ix1 + ", " + ix2 + "}";

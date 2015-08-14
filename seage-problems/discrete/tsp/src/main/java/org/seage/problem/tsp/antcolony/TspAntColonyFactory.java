@@ -46,11 +46,13 @@ import org.seage.problem.tsp.TspProblemInstance;
 @Annotations.AlgorithmName("AntColony")
 public class TspAntColonyFactory implements IAlgorithmFactory
 {
+    @Override
     public Class<AntColonyAdapter> getAlgorithmClass()
     {
         return AntColonyAdapter.class;
     }
 
+    @Override
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
         IAlgorithmAdapter algorithm;

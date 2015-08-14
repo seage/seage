@@ -40,6 +40,7 @@ public class JsspMoveManager implements MoveManager
         _maxMoves = 100;
     }
 
+    @Override
     public Move[] getAllMoves(Solution solution) throws Exception
     {
         try

@@ -77,9 +77,10 @@ public class TspMoveManager2 implements IMoveManager
             tspSolution.getTour()[bestMove[1]] = tmp;
         }
 
-        return (Solution) tspSolution;
+        return tspSolution;
     }
 
+    @Override
     public Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception
     {
         TspSolution tspSolution = ((TspSolution) solution).clone();

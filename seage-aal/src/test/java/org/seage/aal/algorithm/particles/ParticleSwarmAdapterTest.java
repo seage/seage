@@ -85,7 +85,7 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase
                         coords[j] = (int) _initialParticles[i].getCoords()[j];
                     result.add(coords);
                 }
-                return (Object[][]) result.toArray(new Object[][] {});
+                return result.toArray(new Object[][] {});
             }
         };
 

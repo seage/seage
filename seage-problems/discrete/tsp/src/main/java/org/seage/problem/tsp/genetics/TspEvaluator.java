@@ -42,7 +42,7 @@ public class TspEvaluator extends SubjectEvaluator<Subject<Integer>>
 
     public TspEvaluator(City[] cities)
     {
-        _cities = (City[]) cities.clone();
+        _cities = cities.clone();
         _phenotypeEvaluator = new TspPhenotypeEvaluator(_cities);
     }
 

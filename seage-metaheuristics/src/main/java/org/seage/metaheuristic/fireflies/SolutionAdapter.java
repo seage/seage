@@ -74,6 +74,7 @@ public abstract class SolutionAdapter implements Solution
     /** Objective function value. */
     private double[] objectiveValue;
 
+    @Override
     public abstract boolean equals(Solution s);
 
     /**
@@ -85,6 +86,7 @@ public abstract class SolutionAdapter implements Solution
      * @return The value of the solution
      * @since 1.0
      */
+    @Override
     public final double[] getObjectiveValue()
     {
         return this.objectiveValue;
@@ -99,6 +101,7 @@ public abstract class SolutionAdapter implements Solution
      * @since 1.0
      */
 
+    @Override
     public final void setObjectiveValue(double[] objValue)
     {
         this.objectiveValue = objValue;
@@ -113,6 +116,7 @@ public abstract class SolutionAdapter implements Solution
      * @see java.lang.Cloneable
      * @since 1.0
      */
+    @Override
     public Object clone()
     {
         try
@@ -125,7 +129,7 @@ public abstract class SolutionAdapter implements Solution
             if (copyThisObjVal != null) // Make sure the array isn't null
             {
                 this.objectiveValue = // Clone the array using the built-in clone method
-                (double[]) copyThisObjVal.clone();
+                copyThisObjVal.clone();
 
                 /*                                         // The primitive boolean field objectiveValid 
                 nothing to do here                      // is automatically cloned by the 
@@ -140,6 +144,7 @@ public abstract class SolutionAdapter implements Solution
         } // end catch
     } // end clone
 
+    @Override
     public String toString()
     {
         String result = "";

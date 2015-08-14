@@ -57,6 +57,7 @@ public class TspObjectiveFunction implements IObjectiveFunction
     /**
      * Parameter settings, which says that this is the first iteration
      */
+    @Override
     public void reset()
     {
         _firstIter = true;
@@ -68,6 +69,7 @@ public class TspObjectiveFunction implements IObjectiveFunction
      * @param m - The next step
      * @return - Evaluating the step
      */
+    @Override
     public double evaluateMove(Solution s, IMove m)
     {
         Integer[] tour = null;

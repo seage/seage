@@ -43,6 +43,7 @@ public class TspObjectiveFunction implements IObjectiveFunction
         _cities = cities;
     }
 
+    @Override
     public void setObjectiveValue(Particle particle)
     {
         TspParticle currentParticle = ((TspParticle) particle);

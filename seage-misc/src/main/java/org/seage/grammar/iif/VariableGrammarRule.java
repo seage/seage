@@ -60,6 +60,7 @@ public class VariableGrammarRule extends GrammarRule
       * @param symbolTable table of symbols
       * @param treePos position in parse tree (reference to left non terminal)
       */
+    @Override
     public Object eval(DataNode symbolTable, NonterminalSymbol treePos) throws Exception
     {
         //we should have one children - constant value
@@ -72,6 +73,7 @@ public class VariableGrammarRule extends GrammarRule
     }
 
     /** @brief optimize derivate tree (eg. create result of arithmetical operations on contants) */
+    @Override
     public Symbol optimize(NonterminalSymbol treePos) throws Exception
     {
         return null;

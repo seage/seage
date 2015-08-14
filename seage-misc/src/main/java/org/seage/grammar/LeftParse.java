@@ -96,6 +96,7 @@ public class LeftParse
         _constantVector.set(where, (int) Math.random() * 255);
     }
 
+    @Override
     public String toString()
     {
         Iterator<Integer> it = _ruleNums.iterator();

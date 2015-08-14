@@ -66,7 +66,7 @@ public class Grammar
         Iterator<Symbol> it = right.iterator();
         while (it.hasNext())
         {
-            Symbol s = (Symbol) it.next();
+            Symbol s = it.next();
             if (s.getType() == Symbol.Type.TERMINAL)
                 terminals.add((TerminalSymbol) s);
             else
@@ -122,7 +122,7 @@ public class Grammar
             Iterator<GrammarRule> it = rSet.iterator();
             while (it.hasNext())
             {
-                GrammarRule rule = (GrammarRule) it.next();
+                GrammarRule rule = it.next();
                 /** skip in order to prevent the cycles */
                 if (terminatable.contains(rule.getLeft()))
                     continue;
@@ -131,10 +131,10 @@ public class Grammar
                 boolean thisTerminatable = true;
                 while (rit.hasNext())
                 {
-                    Symbol s = (Symbol) rit.next();
+                    Symbol s = rit.next();
                     if (s.getType() != Symbol.Type.TERMINAL &&
-                            !terminatable.contains((NonterminalSymbol) s) &&
-                            !addTerminatable.contains((NonterminalSymbol) s))
+                            !terminatable.contains(s) &&
+                            !addTerminatable.contains(s))
                         thisTerminatable = false;
                 }
                 if (thisTerminatable)
@@ -156,6 +156,7 @@ public class Grammar
             throw new Exception("Not all symbols are terminatable!");
     }
 
+    @Override
     public String toString()
     {
         String result = "";

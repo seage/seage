@@ -150,18 +150,21 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
         {
         }
 
+        @Override
         public void tabuSearchStarted(TabuSearchEvent e)
         {
             _algorithmStarted = true;
             _statLastIterNewSol = 0;
         }
 
+        @Override
         public void tabuSearchStopped(TabuSearchEvent e)
         {
             _algorithmStopped = true;
             _statEndObjVal = _bestEverSolution.getObjectiveValue()[0];
         }
 
+        @Override
         public void newBestSolutionFound(TabuSearchEvent e)
         {
             try
@@ -187,18 +190,22 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 
         }
 
+        @Override
         public void newCurrentSolutionFound(TabuSearchEvent e)
         {
         }
 
+        @Override
         public void unimprovingMoveMade(TabuSearchEvent e)
         {
         }
 
+        @Override
         public void improvingMoveMade(TabuSearchEvent e)
         {
         }
 
+        @Override
         public void noChangeInValueMoveMade(TabuSearchEvent e)
         {
         }

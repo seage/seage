@@ -141,6 +141,7 @@ public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends Algo
         // _paramID = param.getValue("ID");
     }
 
+    @Override
     public AlgorithmReport getReport() throws Exception
     {
         int num = _solutions.size();// > 10 ? 10 : solutions.length;
@@ -155,19 +156,23 @@ public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends Algo
         return _reporter.getReport();
     }
 
+    @Override
     public abstract void solutionsFromPhenotype(Object[][] source) throws Exception;
 
     // Returns solutions in best-first order
+    @Override
     public abstract Object[][] solutionsToPhenotype() throws Exception;
 
     private class GeneticAlgorithmListener implements IAlgorithmListener<GeneticAlgorithmEvent<S>>
     {
+        @Override
         public void algorithmStarted(GeneticAlgorithmEvent<S> e)
         {
             _algorithmStarted = true;
             _statNumNewSol = _statLastImprovingIteration = 0;
         }
 
+        @Override
         public void algorithmStopped(GeneticAlgorithmEvent<S> e)
         {
             _algorithmStopped = true;
@@ -177,6 +182,7 @@ public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends Algo
                 _statBestObjVal = s.getObjectiveValue()[0];
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public void newBestSolutionFound(GeneticAlgorithmEvent<S> e)
         {
@@ -200,6 +206,7 @@ public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends Algo
             }
         }
 
+        @Override
         public void noChangeInValueIterationMade(GeneticAlgorithmEvent<S> e)
         {
 

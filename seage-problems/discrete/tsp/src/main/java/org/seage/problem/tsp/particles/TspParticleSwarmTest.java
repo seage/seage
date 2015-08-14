@@ -90,6 +90,7 @@ public class TspParticleSwarmTest implements IParticleSwarmListener
         pso.startSearching(particles);
     }
 
+    @Override
     public void newBestSolutionFound(ParticleSwarmEvent e)
     {
 
@@ -98,15 +99,18 @@ public class TspParticleSwarmTest implements IParticleSwarmListener
         System.out.println(s);
     }
 
+    @Override
     public void newIterationStarted(ParticleSwarmEvent e)
     {
     }
 
+    @Override
     public void particleSwarmStarted(ParticleSwarmEvent e)
     {
         System.out.println("Started");
     }
 
+    @Override
     public void particleSwarmStopped(ParticleSwarmEvent e)
     {
         System.out.println("Stopped");

@@ -48,11 +48,13 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public Class<FireflyAlgorithmAdapter> getAlgorithmClass()
     {
         return FireflyAlgorithmAdapter.class;
     }
 
+    @Override
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
         IAlgorithmAdapter algorithm;
@@ -61,6 +63,7 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
                 false, "")
         {
 
+            @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 int height = source.length;
@@ -78,6 +81,7 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
                 this._solutions = sols;
             }
 
+            @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
                 int height = _solutions.length;

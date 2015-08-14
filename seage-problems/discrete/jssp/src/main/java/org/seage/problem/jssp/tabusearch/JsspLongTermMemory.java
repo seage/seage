@@ -34,21 +34,25 @@ public class JsspLongTermMemory implements LongTermMemory
         //
     }
 
+    @Override
     public void clearMemory()
     {
     }
 
+    @Override
     public void memorizeSolution(Solution soln, boolean newBestSoln)
     {
         //if (newBestSoln)
         //    System.out.println(soln);
     }
 
+    @Override
     public Solution diversifySolution()
     {
         return null;
     }
 
+    @Override
     public void resetIterNumber()
     {
     }

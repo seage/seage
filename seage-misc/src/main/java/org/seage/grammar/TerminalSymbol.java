@@ -57,16 +57,19 @@ public class TerminalSymbol implements Symbol
         _value = null;
     }
 
+    @Override
     public Object eval(DataNode symbolTable)
     {
         return _value;
     }
 
+    @Override
     public Symbol optimize()
     {
         return this;
     }
 
+    @Override
     public String toString()
     {
         if (this._value != null)
@@ -81,12 +84,14 @@ public class TerminalSymbol implements Symbol
     }
 
     /** @brief copy ourself, and return new instance */
+    @Override
     public Symbol copy()
     {
         TerminalSymbol t = new TerminalSymbol(this.names, this.generator);
-        return (Symbol) t;
+        return t;
     }
 
+    @Override
     public Type getType()
     {
         return Symbol.Type.TERMINAL;

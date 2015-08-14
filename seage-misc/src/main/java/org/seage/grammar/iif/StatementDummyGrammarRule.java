@@ -38,6 +38,7 @@ import org.seage.grammar.Symbol;
  * @author jenik
    E -> F
  */
+@Deprecated
 public class StatementDummyGrammarRule extends GrammarRule
 {
 
@@ -66,6 +67,7 @@ public class StatementDummyGrammarRule extends GrammarRule
     }
 
     /** @brief optimize derivate tree (eg. create result of arithmetical operations on contants) */
+    @Override
     public Symbol optimize(NonterminalSymbol treePos) throws Exception
     {
         return null;

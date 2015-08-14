@@ -15,6 +15,7 @@ public class TestSimulatedAnnealingAdapter extends SimulatedAnnealingAdapter
         super(objectiveFunction, moveManager, maximizing, searchID);
     }
 
+    @Override
     public void solutionsFromPhenotype(Object[][] source) throws Exception
     {
         _solutions0 = new TestSolution[source.length];
@@ -28,6 +29,7 @@ public class TestSimulatedAnnealingAdapter extends SimulatedAnnealingAdapter
         }
     }
 
+    @Override
     public Object[][] solutionsToPhenotype() throws Exception
     {
         Assert.assertEquals(_solutions0.length, _solutions.length);
