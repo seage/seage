@@ -28,7 +28,7 @@ import org.seage.metaheuristic.sannealing.Solution;
  *
  * @author Richard Malek
  */
-public abstract class SatSolution extends Solution
+public class SatSolution extends Solution
 {
     private boolean[] _literalValues;
     private int _hash;

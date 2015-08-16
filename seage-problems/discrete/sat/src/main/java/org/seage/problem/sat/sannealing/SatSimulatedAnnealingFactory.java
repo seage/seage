@@ -28,7 +28,7 @@ import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.problem.ProblemInstance;
-
+import org.seage.problem.sat.Formula;
 /**
  *
  * @author Richard Malek
@@ -47,22 +47,43 @@ public class SatSimulatedAnnealingFactory implements IAlgorithmFactory
     @Override
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
-        return new SimulatedAnnealingAdapter(new SatObjectiveFunction(), new SatMoveManager(), false, "")
+        Formula formula = (Formula) instance;
+        IAlgorithmAdapter algorithm = new SimulatedAnnealingAdapter(new SatObjectiveFunction(formula), 
+                new SatMoveManager(), false, "")
         {
-
-            @Override
-            public Object[][] solutionsToPhenotype() throws Exception
-            {
-                return null;
-            }
 
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-                // TODO Auto-generated method stub
+                _solutions = new SatSolution[source.length];
+                for (int i = 0; i < source.length; i++)
+                {
+                    boolean[] sol = new boolean[source[i].length];
+                    for (int j = 0; j < sol.length; j++)
+                        sol[j] = (Boolean) source[i][j];
 
+                    _solutions[i] = new SatSolution(sol);
+                }
+            }
+
+            @Override
+            public Object[][] solutionsToPhenotype() throws Exception
+            {
+                Object[][] result = new Object[_solutions.length][];
+
+                for (int i = 0; i < _solutions.length; i++)
+                {
+                    SatSolution s = (SatSolution) _solutions[i];
+                    result[i] = new Boolean[s.getLiteralValues().length];
+                    for (int j = 0; j < s.getLiteralValues().length; j++)
+                    {
+                        result[i][j] = s.getLiteralValues()[j];
+                    }
+                }
+                return result;
             }
         };
+        return algorithm;
     }
 
 }

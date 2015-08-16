@@ -18,9 +18,13 @@
  */
 
 /**
- * Contributors: Richard Malek - Initial implementation
+ * Contributors: 
+ *    Richard Malek 
+ *    - Initial implementation
  */
 package org.seage.problem.sat.sannealing;
+
+import java.util.Random;
 
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
@@ -31,18 +35,21 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 public class SatMoveManager implements IMoveManager
 {
-
+    private Random _rnd = new Random();
+    
     public Solution getModifiedSolution(Solution solution)
     {
-        SatSolution qapSolution = (SatSolution) solution.clone();
-
-        return qapSolution;
+        SatSolution satSolution = (SatSolution) solution.clone();
+        boolean[] values = satSolution.getLiteralValues();
+        int ix = _rnd.nextInt(values.length);
+        values[ix] = !values[ix];
+        return satSolution;
     }
 
     @Override
     public Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception
     {
-        return null;
+        return getModifiedSolution(solution);
     }
 
 }
