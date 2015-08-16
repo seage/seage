@@ -50,11 +50,9 @@ public class SatTabuSearchFactory implements IAlgorithmFactory
     @Override
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
-        IAlgorithmAdapter algorithm;
-
         Formula formula = (Formula) instance;
 
-        algorithm = new TabuSearchAdapter(new SatMoveManager(),
+        IAlgorithmAdapter algorithm = new TabuSearchAdapter(new SatMoveManager(),
                 new SatObjectiveFunction(new SatPhenotypeEvaluator(formula)), "")
         {
 
