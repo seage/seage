@@ -32,7 +32,7 @@ public class SatSolution extends Solution
 {
     private boolean[] _literalValues;
     private int _hash;
-
+   
     public SatSolution(boolean[] literalValues)
     {
         _literalValues = literalValues.clone();

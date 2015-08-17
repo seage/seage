@@ -22,8 +22,15 @@
  */
 package org.seage.problem.sat.sannealing;
 
+import java.io.FileInputStream;
+
+import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.metaheuristic.IAlgorithmListener;
+import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
+import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.FormulaReader;
 
 /**
  * The purpose of this class is demonstration of SA algorithm use.
@@ -32,13 +39,14 @@ import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
  */
 public class SatSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAnnealingEvent>
 {
-    private static String _dataPath = "data/tai12a.dat";
-
     public static void main(String[] args)
     {
         try
         {
-            new SatSimulatedAnnealingTest().run(_dataPath);
+            // String path = "data/sat/uf20-01.cnf";
+            String path = "data/sat/uf100-01.cnf";
+            
+            new SatSimulatedAnnealingTest().run(path);
         }
         catch (Exception ex)
         {
@@ -49,34 +57,20 @@ public class SatSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
 
     public void run(String path) throws Exception
     {
-        // _facilityLocation = FacilityLocationProvider.readFacilityLocations(
-        // new FileInputStream(path) );
-        // System.out.println("Loading Facilities & Locations from path: " +
-        // path);
-        // System.out.println("Number of facilities and locations: " +
-        // _facilityLocation.length);
-        //
-        // SimulatedAnnealing sa = new SimulatedAnnealing( new
-        // SatObjectiveFunction() , new SatMoveManager() );
-        //
-        // sa.setMaximalTemperature( 2000 );
-        // sa.setMinimalTemperature( 0.1 );
-        // //sa.setAnnealingCoefficient( 0.99 );
-        // sa.setMaximalIterationCount(2500);
-        // //sa.setMaximalAcceptedSolutionsPerOneStepCount(100);
-        //
-        // sa.addSimulatedAnnealingListener( this );
-        // sa.startSearching( (Solution) new QapGreedySolution(
-        // _facilityLocation ) );
-        //
-        // System.out.println(((SatSolution)sa.getBestSolution()).toString());
-        // for(int
-        // i=0;i<((SatSolution)sa.getBestSolution())._assign.length;i++){
-        // System.out.print(((SatSolution)sa.getBestSolution())._assign[i]+",
-        // ");
-        // }
-        // System.out.println("\nEVAL:
-        // "+((SatSolution)sa.getBestSolution()).getObjectiveValue());
+        Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
+                FormulaReader.readClauses(new FileInputStream(path)));
+        
+        SimulatedAnnealing sa = new SimulatedAnnealing( new SatObjectiveFunction(formula) , new SatMoveManager() );
+        
+        sa.setMaximalTemperature( 200000 );
+        sa.setMinimalTemperature( 0.1 );
+        sa.setMaximalIterationCount(250000);
+        
+        sa.addSimulatedAnnealingListener( this );
+        
+        SatSolution solution = new SatSolution(new boolean[formula.getLiteralCount()]);
+        sa.startSearching(solution);
+        
     }
 
     @Override
