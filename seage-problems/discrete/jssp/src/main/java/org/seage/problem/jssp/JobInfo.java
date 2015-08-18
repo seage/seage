@@ -24,15 +24,15 @@ package org.seage.problem.jssp;
  */
 public class JobInfo
 {
-
     private int _id;
     private int _priority;
-
-    public JobInfo(int id, int priority)
+    private OperationInfo[] _operations;
+    
+    public JobInfo(int id, OperationInfo[] operations/*, int priority*/)
     {
         _id = id;
-        _priority = priority;
-
+        //_priority = priority;
+        _operations = operations;
     }
 
     public int getID()
@@ -43,6 +43,11 @@ public class JobInfo
     public int getPriority()
     {
         return _priority;
+    }
+    
+    public OperationInfo[] getOperationInfos()
+    {
+        return _operations;
     }
 
 }

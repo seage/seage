@@ -36,22 +36,6 @@ public class DataManager
         _random = new Random(321123);
     }
 
-    public void initDataStore(String path) throws Exception
-    {
-        try
-        {
-            //			DataStore dataStore = DataStore.getInstance();
-            //			dataStore.insertDataTable("jobs", getJobDataTable(path));
-            //			dataStore.insertDataTable("solutions", getSolutionDataTable());
-
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-
-    }
-
     private DataTable getJobDataTable(String path) throws Exception
     {
         try
