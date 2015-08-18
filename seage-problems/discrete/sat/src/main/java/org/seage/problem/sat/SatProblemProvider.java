@@ -48,17 +48,17 @@ public class SatProblemProvider extends ProblemProvider
         ProblemInstanceOrigin origin = instanceInfo.getOrigin();
         String path = instanceInfo.getPath();
 
-        InputStream stream;
+        InputStream stream0;
         if (origin == ProblemInstanceOrigin.RESOURCE)
-            stream = getClass().getResourceAsStream(path);
+            stream0 = getClass().getResourceAsStream(path);
         else
-            stream = new FileInputStream(path);
+            stream0 = new FileInputStream(path);
 
         Formula formula = null;
 
-        try
+        try(InputStream stream = stream0)
         {
-            formula = new Formula(instanceInfo, FormulaReader.readClauses(stream));
+            formula = new Formula(instanceInfo, FormulaReader.readClauses(stream0));
         }
         catch (Exception ex)
         {

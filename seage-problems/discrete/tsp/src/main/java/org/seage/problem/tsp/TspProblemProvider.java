@@ -53,13 +53,13 @@ public class TspProblemProvider extends ProblemProvider
         ProblemInstanceOrigin origin = instanceInfo.getOrigin();
         String path = instanceInfo.getValueStr("path");
 
-        InputStream stream;
+        InputStream stream0;
         if (origin == ProblemInstanceOrigin.RESOURCE)
-            stream = getClass().getResourceAsStream(path);
+            stream0 = getClass().getResourceAsStream(path);
         else
-            stream = new FileInputStream(path);
+            stream0 = new FileInputStream(path);
 
-        try
+        try(InputStream stream = stream0)
         {
             cities = CityProvider.readCities(stream);
         }
