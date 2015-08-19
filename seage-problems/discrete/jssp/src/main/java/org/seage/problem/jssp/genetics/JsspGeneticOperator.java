@@ -23,35 +23,37 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.seage.metaheuristic.genetics.BasicGeneticOperator;
 import org.seage.metaheuristic.genetics.GeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 
 /**
  * Summary description for JsspOperator.
  */
-public class JsspOperator extends GeneticOperator
+public class JsspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, Integer>
 {
     private int[] _occurrence;
     private int[] _occurrence2;
 
-    public JsspOperator(int numOper)
+    public JsspGeneticOperator(int numOper)
     {
         _occurrence = new int[numOper];
         _occurrence2 = new int[numOper];
     }
 
     @Override
-    public List<Subject> crossOver(Subject parent1, Subject parent2) throws Exception
+    public List<Subject<Integer>> crossOver(Subject<Integer> parent1, Subject<Integer> parent2) throws Exception
     {
-        Subject[] offsprings = new Subject[2];
+        Subject<Integer> offsprings1 = null;
+        Subject<Integer> offsprings2 = null;
         int chromLength = 0;
         int crossLength = 0;
         try
         {
-            offsprings[0] = parent1.clone();
-            offsprings[1] = parent2.clone();
+            offsprings1 = parent1.clone();
+            offsprings2 = parent2.clone();
 
-            chromLength = offsprings[0].getChromosome().getLength();
+            chromLength = offsprings1.getChromosome().getLength();
 
             crossLength = /*(int)(chromLength * _crossLengthPct);/*/Math
                     .max(_random.nextInt((int) (chromLength * _crossLengthCoef) + 1) - 2, 2);
@@ -67,8 +69,8 @@ public class JsspOperator extends GeneticOperator
             {
                 //if (i >= crossBegin && i < crossEnd)
                 {
-                    int par1GeneVal = (Integer) parent1.getChromosome().getGene(i);
-                    int par2GeneVal = (Integer) parent2.getChromosome().getGene(i);
+                    int par1GeneVal = parent1.getChromosome().getGene(i);
+                    int par2GeneVal = parent2.getChromosome().getGene(i);
 
                     if (par1GeneVal == par2GeneVal)
                         continue;
@@ -79,8 +81,8 @@ public class JsspOperator extends GeneticOperator
                     _occurrence2[par2GeneVal - 1]++;
                     _occurrence2[par1GeneVal - 1]--;
 
-                    offsprings[0].getChromosome().setGene(i, parent2.getChromosome().getGene(i));
-                    offsprings[1].getChromosome().setGene(i, parent1.getChromosome().getGene(i));
+                    offsprings1.getChromosome().setGene(i, parent2.getChromosome().getGene(i));
+                    offsprings2.getChromosome().setGene(i, parent1.getChromosome().getGene(i));
                     //offsprings[1].Chromosome.Genes[i].Value = parent1.Chromosome.Genes[i].Value;
                 }
                 //else
@@ -95,14 +97,14 @@ public class JsspOperator extends GeneticOperator
             }
 
             // pouziva se a predava clenska promenna, aby se pole m_occurrence alokovalo pouze jednou
-            medicateSubject(crossBegin, _occurrence, offsprings[1]);
-            medicateSubject(crossBegin, _occurrence2, offsprings[0]);
+            medicateSubject(crossBegin, _occurrence, offsprings2);
+            medicateSubject(crossBegin, _occurrence2, offsprings1);
 
             int p1 = getSubjectSum(parent1);
             int p2 = getSubjectSum(parent2);
 
-            int o1 = getSubjectSum(offsprings[0]);
-            int o2 = getSubjectSum(offsprings[1]);
+            int o1 = getSubjectSum(offsprings1);
+            int o2 = getSubjectSum(offsprings2);
 
             if (!((p1 == p2) && (p1 == o1) && (p1 == o2)))
                 throw new Exception("checksum failed");
@@ -111,11 +113,13 @@ public class JsspOperator extends GeneticOperator
         {
             throw new Exception("crossover: " + e);
         }
-
-        return Arrays.asList(offsprings);
+        
+        ArrayList<Subject<Integer>> result = new ArrayList<>();
+        result.add(offsprings1); result.add(offsprings2);
+        return result;
     }
 
-    protected void medicateSubject(int crossBegin, int[] occurrence, Subject subject) throws Exception
+    protected void medicateSubject(int crossBegin, int[] occurrence, Subject<Integer> subject) throws Exception
     {
         try
         {
@@ -198,36 +202,15 @@ public class JsspOperator extends GeneticOperator
         }
     }
 
-    private int getSubjectSum(Subject sol)
+    private int getSubjectSum(Subject<Integer> sol)
     {
-        Subject s = sol;
+        Subject<Integer> s = sol;
         int sum = 0;
         for (int i = 0; i < s.getChromosome().getLength(); i++)
         {
-            sum += (Integer) s.getChromosome().getGene(i);
+            sum += s.getChromosome().getGene(i);
         }
         return sum;
-    }
-
-    @Override
-    public int[] select(ArrayList subjects)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Subject mutate(Subject subject) throws Exception
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Subject randomize(Subject subject) throws Exception
-    {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

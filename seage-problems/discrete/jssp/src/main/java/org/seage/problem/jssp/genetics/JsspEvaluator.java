@@ -19,36 +19,26 @@
  */
 package org.seage.problem.jssp.genetics;
 
-import org.seage.metaheuristic.genetics.Chromosome;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
-import org.seage.problem.jssp.ScheduleManager;
+import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 
 /**
  * Summary description for JSSPGSEvaluator.
  */
-public class JsspEvaluator extends SubjectEvaluator
+public class JsspEvaluator extends SubjectEvaluator<Subject<Integer>>
 {
-    private ScheduleManager _scheduleManager;
+    private JsspPhenotypeEvaluator _phenotypeEvaluator;
 
-    public JsspEvaluator(ScheduleManager scheduleManager)
+    public JsspEvaluator(JsspPhenotypeEvaluator phenotypeEvaluator)
     {
-        _scheduleManager = scheduleManager;
+        _phenotypeEvaluator = phenotypeEvaluator;
     }
 
     @Override
-    public double[] evaluate(Subject subject) throws Exception
+    public double[] evaluate(Subject<Integer> subject) throws Exception
     {
-        Chromosome chrom = subject.getChromosome();
-        int[] jobArray = new int[chrom.getLength()];
-
-        for (int i = 0; i < jobArray.length; i++)
-            jobArray[i] = (Integer) chrom.getGene(i);
-
-        Object[] eval = _scheduleManager.evaluateSchedule(jobArray, false);
-
-        int makespan = ((Integer) eval[0]).intValue();
-
-        return new double[] { makespan };
+        return _phenotypeEvaluator.evaluate(subject.getChromosome().getGenes());
+        
     }
 }
