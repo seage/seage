@@ -2,15 +2,12 @@ package org.seage.thread;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TaskRunnerExTest
 {
-    private static Logger _logger = Logger.getLogger(TaskRunnerExTest.class.getName());
-
     @BeforeClass
     public static void aa()
     {

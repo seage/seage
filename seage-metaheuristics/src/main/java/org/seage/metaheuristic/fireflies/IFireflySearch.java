@@ -26,8 +26,6 @@
  */
 package org.seage.metaheuristic.fireflies;
 
-import java.util.function.Function;
-
 /**
  * The <tt>FireFly</tt> is the main source of control
  * for the programmer. The extended and instantiated

@@ -27,8 +27,6 @@
  */
 package org.seage.metaheuristic.tabusearch;
 
-import java.util.function.Function;
-
 /**
  * The <tt>TabuSearch</tt> is the main source of control
  * for the programmer. The extended and instantiated

@@ -8,9 +8,11 @@ import org.seage.metaheuristic.tabusearch.Solution;
 /**
  * Summary description for SatLongTermMemory.
  */
+@SuppressWarnings("all")
 public class SatLongTermMemory implements LongTermMemory
 {
     private int[] _literalCount;
+    
     private int _iterNumber;
     private SatSolution _bestSolution;
 

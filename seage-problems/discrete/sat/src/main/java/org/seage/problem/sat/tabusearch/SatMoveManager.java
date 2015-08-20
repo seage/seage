@@ -25,6 +25,7 @@ public class SatMoveManager implements MoveManager
         _null = new SatMove[0];
     }
 
+    @SuppressWarnings("unused")
     private int[] getTableValue2(int val0, int val1)
     {
         if (val0 == 1 && val1 == 0)

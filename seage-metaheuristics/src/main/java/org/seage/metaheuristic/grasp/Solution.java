@@ -31,7 +31,7 @@ package org.seage.metaheuristic.grasp;
  */
 public class Solution implements java.lang.Cloneable, java.io.Serializable
 {
-
+    private static final long serialVersionUID = -5024798712835848962L;
     /**
      * The _value is value of Solution
      */
