@@ -5,6 +5,8 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator
 {
     private JobsDefinition _jobsDefinition;
+    private Schedule _schedule;
+
     private int _numJobs;
     private int _numMachines;
 
@@ -31,7 +33,25 @@ public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator
     @Override
     public double[] evaluate(Object[] phenotypeSubject) throws Exception
     {
-        Integer[] jobArray = (Integer[])phenotypeSubject;
+        return evaluateSchedule((Integer[])phenotypeSubject);
+    }
+    
+    @Override
+    public int compare(double[] arg0, double[] arg1)
+    {
+        return (int)(arg1[0] - arg0[1]);
+    }
+    
+    public double[] evaluateSchedule(Integer[] jobArray)
+    {
+        _schedule = null;
+        return evaluateSchedule(jobArray, false);
+    }
+    
+    public double[] evaluateSchedule(Integer[] jobArray, boolean buildSchedule)
+    {
+        if (buildSchedule)
+            _schedule = new Schedule(_numJobs, _numMachines);
         
         JobInfo currentJob;
         OperationInfo currentOper;
@@ -79,15 +99,21 @@ public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator
             {
                 maxMakeSpan = _endTimeOnMachine[indexCurrentMachine];
             } 
+            
+            if (buildSchedule)
+            {
+                _schedule.addCell(indexCurrentJob, indexCurrentMachine,
+                        new ScheduleCell(i, _endTimeOnMachine[indexCurrentMachine] - currentOper.Length,
+                                currentOper.Length));
+            }
         }
-                
+                                
         return new double[] { maxMakeSpan };
     }
     
-    @Override
-    public int compare(double[] arg0, double[] arg1)
+    public Schedule getSchedule()
     {
-        return 0;
+        return _schedule;
     }
 
 }

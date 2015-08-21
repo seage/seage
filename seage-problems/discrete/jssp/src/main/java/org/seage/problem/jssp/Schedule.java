@@ -56,7 +56,7 @@ public class Schedule
 
     public ScheduleCell[] findCriticalPath() throws Exception
     {
-        ArrayList results = new ArrayList();
+        ArrayList<ScheduleCell> results = new ArrayList<ScheduleCell>();
         ScheduleCell sc = _furthestCell;
 
         findBreak(sc, results);
@@ -65,13 +65,13 @@ public class Schedule
 
         for (int i = 0; i < results.size(); i++)
         {
-            scArray[i] = (ScheduleCell) results.get(i);
+            scArray[i] = results.get(i);
         }
 
         return scArray;
     }
 
-    private void findBreak(ScheduleCell cell, ArrayList array) throws Exception
+    private void findBreak(ScheduleCell cell, ArrayList<ScheduleCell> array) throws Exception
     {
         if (cell == null)
             throw new Exception("Critical path: Null pointer");

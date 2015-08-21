@@ -22,7 +22,7 @@ package org.seage.problem.jssp.tabusearch;
 import org.seage.metaheuristic.tabusearch.Move;
 import org.seage.metaheuristic.tabusearch.ObjectiveFunction;
 import org.seage.metaheuristic.tabusearch.Solution;
-import org.seage.problem.jssp.ScheduleManager;
+import org.seage.problem.jssp._old.ScheduleManager;
 
 /**
  * Summary description for JsspObjectiveFunction.

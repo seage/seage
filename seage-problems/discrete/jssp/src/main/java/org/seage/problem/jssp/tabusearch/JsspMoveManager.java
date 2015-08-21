@@ -24,7 +24,7 @@ import org.seage.metaheuristic.tabusearch.MoveManager;
 import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.jssp.Schedule;
 import org.seage.problem.jssp.ScheduleCell;
-import org.seage.problem.jssp.ScheduleManager;
+import org.seage.problem.jssp._old.ScheduleManager;
 
 /**
  * Summary description for JsspMoveManager.
