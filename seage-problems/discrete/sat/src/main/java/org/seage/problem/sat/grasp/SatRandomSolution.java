@@ -33,6 +33,8 @@ import org.seage.problem.sat.FormulaEvaluator;
  */
 public class SatRandomSolution extends SatSolution
 {
+    private static final long serialVersionUID = -3426994807179668189L;
+    
     private int _countLiterals;
 
     public SatRandomSolution(Formula formula)

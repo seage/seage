@@ -39,6 +39,7 @@ import org.seage.data.xml.XmlHelper;
  *
  * @author RMalek
  */
+@SuppressWarnings("all")
 public class ProblemProviderTester
 {
 
@@ -102,11 +103,11 @@ public class ProblemProviderTester
         }
     }
 
+    @SuppressWarnings("unused")
     private void testProblem(IProblemProvider provider, String instanceID, String algorithmID)
     {
         try
         {
-
             System.out.print("\t" + algorithmID);
 
             ProblemConfig config = null;//new DefaultConfigurator().prepareConfigs(provider.getProblemInfo(), instanceID, algorithmID, 1)[0];
@@ -116,6 +117,7 @@ public class ProblemProviderTester
             ProblemInstance instance = provider
                     .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(instanceID));
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
+            @SuppressWarnings("null")
             AlgorithmParams algNode = config.getAlgorithmParams();
             Object[][] solutions = provider.generateInitialSolutions(instance,
                     algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import junit.framework.Assert;
+
 public class ClassPathAnalyzerTest
 {
 
@@ -13,6 +15,7 @@ public class ClassPathAnalyzerTest
         ClassPathAnalyzer cpa = new ClassPathAnalyzer("seage.problem");
 
         List<String> list = cpa.analyzeClassPath();
+        Assert.assertNotNull(list);
     }
 
 }

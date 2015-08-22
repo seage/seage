@@ -3,7 +3,7 @@ package org.seage.sandbox;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+//import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class H2Test
@@ -148,7 +148,7 @@ public class H2Test
 
             selectStmt = conn.prepareStatement(queryMinus);
 
-            ResultSet rs = selectStmt.executeQuery();
+            /*ResultSet rs = */selectStmt.executeQuery();
             long t2 = System.currentTimeMillis();
             System.out.println(t2 - t1);
 

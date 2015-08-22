@@ -35,7 +35,8 @@ import org.seage.problem.sat.FormulaEvaluator;
  */
 public class SatGreedySolution extends SatSolution
 {
-
+    private static final long serialVersionUID = -4353469001304258494L;
+    
     Boolean[] _copyLitValues;
 
     /**

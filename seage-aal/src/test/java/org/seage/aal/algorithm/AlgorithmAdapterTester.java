@@ -26,6 +26,7 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
         _algAdapter.solutionsFromPhenotype(createPhenotypeSolutions());
         _algAdapter.startSearching(_algParams);
         Assert.assertNull(_algAdapter.solutionsToPhenotype());
+        _algAdapter.solutionsToPhenotype();
     }
 
     @Override

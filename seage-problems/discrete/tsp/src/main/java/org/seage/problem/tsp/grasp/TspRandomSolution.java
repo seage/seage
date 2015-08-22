@@ -36,6 +36,7 @@ import org.seage.problem.tsp.City;
  */
 public class TspRandomSolution extends TspSolution
 {
+    private static final long serialVersionUID = 6408615829159721770L;
 
     /**
      * Constructor the solution with using the random algorithm for initial solution

@@ -34,6 +34,7 @@ public class TestAntColonyAdapter extends AntColonyAdapter
         }
     }
 
+    @SuppressWarnings("unused")
     @Override
     public Object[][] solutionsToPhenotype() throws Exception
     {

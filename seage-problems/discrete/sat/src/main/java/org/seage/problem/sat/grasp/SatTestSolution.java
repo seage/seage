@@ -28,6 +28,7 @@ package org.seage.problem.sat.grasp;
  */
 public class SatTestSolution extends SatSolution
 {
+    private static final long serialVersionUID = -1532470194515354499L;
 
     public SatTestSolution(int countLiterals)
     {

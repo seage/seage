@@ -36,6 +36,7 @@ import org.seage.problem.tsp.City;
  */
 public class TspGreedySolution extends TspSolution
 {
+    private static final long serialVersionUID = 2447664408044402269L;
 
     /**
      * Constructor the solution with using the greedy algorithm for initial solution

@@ -35,7 +35,7 @@ import org.seage.metaheuristic.grasp.Solution;
  */
 public class TspSolution extends Solution
 {
-
+    private static final long serialVersionUID = -5562176621423616108L;
     /**
      * _tour - Contains the tour of the solution
      * _rnd - Variable for the purposes of generating the random numbers

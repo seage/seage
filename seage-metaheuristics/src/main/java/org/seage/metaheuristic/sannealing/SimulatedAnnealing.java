@@ -94,6 +94,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing
     /**
      * Maximal count of success iterations
      */
+    @SuppressWarnings("unused")
     private long _maximalSuccessIterationCount;
 
     private boolean _stopSearching = false;
