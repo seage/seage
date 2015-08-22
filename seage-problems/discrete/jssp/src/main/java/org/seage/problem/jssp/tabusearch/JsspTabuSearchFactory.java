@@ -30,8 +30,9 @@ import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
 import org.seage.aal.problem.ProblemInstance;
-import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.Solution;
+import org.seage.problem.jssp.JobsDefinition;
+import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 
 /**
  *
@@ -51,24 +52,24 @@ public class JsspTabuSearchFactory implements IAlgorithmFactory
     @Override
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
     {
-        IAlgorithmAdapter algorithm;
-        
-        algorithm = new TabuSearchAdapter(new JsspMoveManager(null), new JsspObjectiveFunction(null), "")
+        JsspPhenotypeEvaluator evaluator = new JsspPhenotypeEvaluator((JobsDefinition) instance);
+       
+        IAlgorithmAdapter algorithm = new TabuSearchAdapter(new JsspMoveManager(evaluator),
+                new JsspObjectiveFunction(evaluator), "")
         {
 
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
                 _solutions = new Solution[source.length];
-//                for (int i = 0; i < source.length; i++)
-//                {
-//                    JsspSolution s = new JsspSolution();
-//                    Integer[] tour = new Integer[source[i].length];
-//                    for (int j = 0; j < tour.length; j++)
-//                        tour[j] = (Integer) source[i][j];
-//                    s.setTour(tour);
-//                    _solutions[i] = s;
-//                }
+                for (int i = 0; i < source.length; i++)
+                {
+                    Integer[] sol = new Integer[source[i].length];
+                    for (int j = 0; j < sol.length; j++)
+                        sol[j] = (Integer) source[i][j];
+
+                    _solutions[i] = new JsspSolution(sol);
+                }
             }
 
             @Override
@@ -76,25 +77,15 @@ public class JsspTabuSearchFactory implements IAlgorithmFactory
             {
                 Object[][] result = new Object[_solutions.length][];
 
-//                for (int i = 0; i < _solutions.length; i++)
-//                {
-//                    TspSolution s = (TspSolution) _solutions[i];
-//                    result[i] = new Integer[s.getTour().length];
-//                    for (int j = 0; j < s.getTour().length; j++)
-//                    {
-//                        result[i][j] = s.getTour()[j];
-//                    }
-//                }
+                for (int i = 0; i < _solutions.length; i++)
+                {
+                    JsspSolution s = (JsspSolution) _solutions[i];
+                    result[i] = s.getJobArray();                        
+                }
                 return result;
             }
         };
 
         return algorithm;
     }
-
-    public DataNode getAlgorithmParameters(DataNode params) throws Exception
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 }

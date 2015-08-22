@@ -20,21 +20,27 @@
 package org.seage.problem.jssp;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.seage.data.Pair;
 
 /**
- * Summary description for Schedule.
+ * JSSP Schedule.
  */
 public class Schedule
 {
+    private boolean _isCommited;
     private ScheduleCell[] _lastCellInJob;
     private ScheduleCell[] _lastCellOnMachine;
 
-    private ScheduleCell _furthestCell;
+    private ScheduleCell _mostDistantCell;
 
     public Schedule(int numJobs, int numMachines)
     {
         _lastCellInJob = new ScheduleCell[numJobs];
         _lastCellOnMachine = new ScheduleCell[numMachines];
+        _isCommited = false;
     }
 
     public void addCell(int jobIndex, int machineIndex, ScheduleCell newCell)
@@ -48,33 +54,27 @@ public class Schedule
         _lastCellOnMachine[machineIndex] = newCell;
         _lastCellInJob[jobIndex] = newCell;
 
-        if (_furthestCell == null)
-            _furthestCell = newCell;
-        else if (newCell.getEndTime() > _furthestCell.getEndTime())
-            _furthestCell = newCell;
+        if (_mostDistantCell == null)
+            _mostDistantCell = newCell;
+        else if (newCell.getEndTime() > _mostDistantCell.getEndTime())
+            _mostDistantCell = newCell;
     }
 
-    public ScheduleCell[] findCriticalPath() throws Exception
+    public List<Pair<ScheduleCell>> findCriticalPath() throws Exception
     {
-        ArrayList<ScheduleCell> results = new ArrayList<ScheduleCell>();
-        ScheduleCell sc = _furthestCell;
+        if(!_isCommited)
+            throw new Exception("Schedule is not commited, so not ready, run Schedule.Commit() first.");
+        ArrayList<Pair<ScheduleCell>> results = new ArrayList<Pair<ScheduleCell>>();
 
-        findBreak(sc, results);
+        findCriticalPath(_mostDistantCell, results);
 
-        ScheduleCell[] scArray = new ScheduleCell[results.size()];
-
-        for (int i = 0; i < results.size(); i++)
-        {
-            scArray[i] = results.get(i);
-        }
-
-        return scArray;
+        return Collections.unmodifiableList(results);
     }
 
-    private void findBreak(ScheduleCell cell, ArrayList<ScheduleCell> array) throws Exception
-    {
+    private void findCriticalPath(ScheduleCell cell, ArrayList<Pair<ScheduleCell>> criticalPairs) throws Exception
+    {        
         if (cell == null)
-            throw new Exception("Critical path: Null pointer");
+            throw new Exception("Critical path: cell is a null pointer");
 
         boolean breakFound = false;
 
@@ -117,33 +117,25 @@ public class Schedule
         {
             if (prevCellInJob.getStartTime() == prevCellInJob.getPreviousCellOnMachine().getEndTime())
             {
-                if (prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob() == null)
-                {
-                    array.add(prevCellInJob.getPreviousCellOnMachine());
-                    array.add(prevCellInJob);
-                }
-                else
-                {
-                    if (!prevCellInJob.getPreviousCellOnMachine()
-                            .compareStart2EndTo(prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob()))
-                    {
-                        array.add(prevCellInJob.getPreviousCellOnMachine());
-                        array.add(prevCellInJob);
-                    }
-                }
+                if (prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob() == null ||
+                    !prevCellInJob.getPreviousCellOnMachine()
+                        .compareStart2EndTo(prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob()))                
+                    criticalPairs.add(new org.seage.data.Pair<ScheduleCell>(prevCellInJob.getPreviousCellOnMachine(), prevCellInJob));                
             }
         }
 
-        if (currCell.getNextCellOnMachine() != null)
+        if (currCell.getNextCellOnMachine() != null &&
+            currCell.getNextCellOnMachine().getStartTime() == currCell.getEndTime())
         {
-            if (currCell.getNextCellOnMachine().getStartTime() == currCell.getEndTime())
-            {
-                array.add(currCell);
-                array.add(currCell.getNextCellOnMachine());
-            }
+            criticalPairs.add(new Pair<ScheduleCell>(currCell, currCell.getNextCellOnMachine()));
         }
 
-        findBreak(prevCellInJob, array);
+        findCriticalPath(prevCellInJob, criticalPairs);
 
+    }
+    
+    public void Commit()
+    {
+        _isCommited = true;
     }
 }

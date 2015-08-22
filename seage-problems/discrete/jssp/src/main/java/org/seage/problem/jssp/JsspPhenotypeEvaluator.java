@@ -104,10 +104,13 @@ public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator
             {
                 _schedule.addCell(indexCurrentJob, indexCurrentMachine,
                         new ScheduleCell(i, _endTimeOnMachine[indexCurrentMachine] - currentOper.Length,
-                                currentOper.Length));
+                                currentOper.Length)); 
             }
         }
-                                
+        
+        if(buildSchedule)
+            _schedule.Commit();
+        
         return new double[] { maxMakeSpan };
     }
     

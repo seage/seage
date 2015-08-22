@@ -20,11 +20,9 @@
 package org.seage.problem.jssp.genetics;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.seage.metaheuristic.genetics.BasicGeneticOperator;
-import org.seage.metaheuristic.genetics.GeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 
 /**

@@ -26,14 +26,25 @@ import org.seage.metaheuristic.tabusearch.SolutionAdapter;
  */
 public class JsspSolution extends SolutionAdapter
 {
-    private int[] _jobArray;
+    private Integer[] _jobArray;
 
-    public JsspSolution(int[] jobArray)
+    public JsspSolution(Integer[] jobArray)
     {
         _jobArray = jobArray.clone();
     }
 
-    public int[] getJobArray()
+    public JsspSolution(int numJobs, int numOpers)
+    {
+        _jobArray= new Integer[numJobs*numOpers];
+
+        int i=0;
+        for(int j=0;j<numJobs;j++)
+            for(int k=0;k<numOpers;k++)
+                _jobArray[i++] = j+1;
+        
+    }
+
+    public Integer[] getJobArray()
     {
         return _jobArray;
     }

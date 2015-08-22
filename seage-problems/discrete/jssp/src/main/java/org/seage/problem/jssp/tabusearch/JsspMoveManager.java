@@ -19,50 +19,47 @@
  */
 package org.seage.problem.jssp.tabusearch;
 
+import java.util.List;
+
+import org.seage.data.Pair;
 import org.seage.metaheuristic.tabusearch.Move;
 import org.seage.metaheuristic.tabusearch.MoveManager;
 import org.seage.metaheuristic.tabusearch.Solution;
+import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 import org.seage.problem.jssp.Schedule;
 import org.seage.problem.jssp.ScheduleCell;
-import org.seage.problem.jssp._old.ScheduleManager;
 
 /**
  * Summary description for JsspMoveManager.
  */
 public class JsspMoveManager implements MoveManager
 {
-    private ScheduleManager _scheduleManager;
+    private JsspPhenotypeEvaluator _evaluator;
     private int _maxMoves;
 
-    public JsspMoveManager(ScheduleManager scheduleManager)
+    public JsspMoveManager(JsspPhenotypeEvaluator evaluator)
     {
-        _scheduleManager = scheduleManager;
+        _evaluator = evaluator;
         _maxMoves = 100;
     }
 
     @Override
     public Move[] getAllMoves(Solution solution) throws Exception
     {
-        try
+        JsspSolution sol = (JsspSolution) solution;
+
+        _evaluator.evaluateSchedule(sol.getJobArray(), true);
+
+        Schedule schedule = _evaluator.getSchedule();
+        List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
+
+        JsspMove[] moves = new JsspMove[Math.min(criticalPath.size() / 2, _maxMoves)];
+        for (int i = 0; i < moves.length; i++)
         {
-            JsspSolution sol = (JsspSolution) solution;
-
-            Object[] val = _scheduleManager.evaluateSchedule(sol.getJobArray(), true);
-
-            Schedule schedule = (Schedule) val[1];
-            ScheduleCell[] criticalPath = schedule.findCriticalPath();
-
-            JsspMove[] moves = new JsspMove[Math.min(criticalPath.length / 2, _maxMoves)];
-            for (int i = 0; i < moves.length; i++)
-            {
-                moves[i] = new JsspMove(criticalPath[2 * i].getIndex(), criticalPath[2 * i + 1].getIndex());
-            }
-
-            return moves;
+            moves[i] = new JsspMove(criticalPath.get(i).getFirst().getIndex(), criticalPath.get(i).getSecond().getIndex());
         }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
+
+        return moves;
+
     }
 }

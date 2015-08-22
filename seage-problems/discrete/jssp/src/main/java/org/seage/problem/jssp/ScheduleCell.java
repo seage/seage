@@ -101,5 +101,11 @@ public class ScheduleCell
         else
             return false;
     }
-
+    
+    @Override
+    public String toString()
+    {
+        return _index + " - " + getStartTime()+":" + getEndTime();
+        
+    }
 }

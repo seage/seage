@@ -17,7 +17,7 @@
  * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.seage.problem.jssp.genetics;
+package org.seage.problem.jssp._old;
 
 import org.seage.data.ds.DataStore;
 import org.seage.data.ds.DataTable;
@@ -29,6 +29,7 @@ import org.seage.problem.jssp.OperationInfo;
 /**
  * Summary description for JSSPEvaluator.
  */
+@SuppressWarnings("all")
 public class JsspEvaluator_old extends SubjectEvaluator
 {
     private int[] _firstActivityToDoIndex_InJob; // prvni nenakreslena operace v jobu

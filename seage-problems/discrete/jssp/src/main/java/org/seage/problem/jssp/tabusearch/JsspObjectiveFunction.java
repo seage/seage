@@ -22,40 +22,30 @@ package org.seage.problem.jssp.tabusearch;
 import org.seage.metaheuristic.tabusearch.Move;
 import org.seage.metaheuristic.tabusearch.ObjectiveFunction;
 import org.seage.metaheuristic.tabusearch.Solution;
-import org.seage.problem.jssp._old.ScheduleManager;
+import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 
 /**
  * Summary description for JsspObjectiveFunction.
  */
 public class JsspObjectiveFunction implements ObjectiveFunction
 {
-    private ScheduleManager _scheduleManager;
+    private JsspPhenotypeEvaluator _evaluator;
 
-    public JsspObjectiveFunction(ScheduleManager scheduleManager)
+    public JsspObjectiveFunction(JsspPhenotypeEvaluator evaluator)
     {
-        _scheduleManager = scheduleManager;
+        _evaluator = evaluator;
     }
 
     @Override
     public double[] evaluate(Solution soln, Move move) throws Exception
     {
-        //JsspSolution solution = (JsspSolution)soln;		
-        //int[] jobArray = (int[])solution.getJobArray().clone();
-
-        //if (move!=null)
-        //{
-        //    JsspMove move2 = (JsspMove)move;
-        //    int tmp = jobArray[move2.getIndex1()];
-        //    jobArray[move2.getIndex1()] = jobArray[move2.getIndex2()];
-        //    jobArray[move2.getIndex2()] = tmp;
-        //}
         if (move != null)
             move.operateOn(soln);
-        int[] jobArray = ((JsspSolution) soln).getJobArray();
-        Object[] values = _scheduleManager.evaluateSchedule(jobArray, false);
+        Integer[] jobArray = ((JsspSolution) soln).getJobArray();
+        double[] values = _evaluator.evaluate(jobArray);
         if (move != null)
             move.operateOn(soln);
 
-        return new double[] { ((Integer) values[0]).intValue() };
+        return values;
     }
 }

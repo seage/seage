@@ -67,7 +67,6 @@ public class JsspProblemProvider extends ProblemProvider
         }
 
         return jobsDefinition;
-
     }
 
     @Override

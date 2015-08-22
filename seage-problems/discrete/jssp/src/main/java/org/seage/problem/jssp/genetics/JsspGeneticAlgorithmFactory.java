@@ -56,7 +56,7 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory
         JobsDefinition jobsDefinition = (JobsDefinition) instance;
         IAlgorithmAdapter algorithm = new GeneticAlgorithmAdapter<Subject<Integer>>(
                 new JsspGeneticOperator(jobsDefinition.getJobInfos()[0].getOperationInfos().length),
-                new JsspEvaluator(new JsspPhenotypeEvaluator(jobsDefinition)), false, "")
+                new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(jobsDefinition)), false, "")
         {
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception

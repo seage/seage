@@ -17,43 +17,28 @@
  * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.seage.problem.jssp.tabusearch;
+package org.seage.problem.jssp.genetics;
 
-import org.seage.metaheuristic.tabusearch.LongTermMemory;
-import org.seage.metaheuristic.tabusearch.Solution;
+import org.seage.metaheuristic.genetics.Subject;
+import org.seage.metaheuristic.genetics.SubjectEvaluator;
+import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 
 /**
- * Summary description for JsspLongTermMemory.
+ * Summary description for JSSPGSEvaluator.
  */
-public class JsspLongTermMemory implements LongTermMemory
+public class JsspSubjectEvaluator extends SubjectEvaluator<Subject<Integer>>
 {
-    public JsspLongTermMemory()
+    private JsspPhenotypeEvaluator _phenotypeEvaluator;
+
+    public JsspSubjectEvaluator(JsspPhenotypeEvaluator phenotypeEvaluator)
     {
-        //
-        // TODO: Add Constructor Logic here
-        //
+        _phenotypeEvaluator = phenotypeEvaluator;
     }
 
     @Override
-    public void clearMemory()
+    public double[] evaluate(Subject<Integer> subject) throws Exception
     {
-    }
-
-    @Override
-    public void memorizeSolution(Solution soln, boolean newBestSoln)
-    {
-        //if (newBestSoln)
-        //    System.out.println(soln);
-    }
-
-    @Override
-    public Solution diversifySolution()
-    {
-        return null;
-    }
-
-    @Override
-    public void resetIterNumber()
-    {
+        return _phenotypeEvaluator.evaluate(subject.getChromosome().getGenes());
+        
     }
 }
