@@ -93,14 +93,12 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     @Override
     public void algorithmStarted(AntColonyEvent e)
     {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void algorithmStopped(AntColonyEvent e)
     {
-        // TODO Auto-generated method stub
 
     }
 
@@ -123,7 +121,6 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     @Override
     public void noChangeInValueIterationMade(AntColonyEvent e)
     {
-        // TODO Auto-generated method stub
 
     }
 }

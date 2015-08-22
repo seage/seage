@@ -9,7 +9,6 @@ public class TspGeneticAlgorithmFactoryTest extends AlgorithmFactoryTestBase
     public TspGeneticAlgorithmFactoryTest()
     {
         super(new TspProblemProvider(), "GeneticAlgorithm");
-        // TODO Auto-generated constructor stub
     }
 
 }

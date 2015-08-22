@@ -21,7 +21,6 @@ public class TspGraspAlgorithmFactory implements IAlgorithmFactory
     public IAlgorithmAdapter createAlgorithm(ProblemInstance instance)
             throws Exception
     {
-        // TODO Auto-generated method stub
         return new TspGraspAlgorithmAdapter();
     }
 

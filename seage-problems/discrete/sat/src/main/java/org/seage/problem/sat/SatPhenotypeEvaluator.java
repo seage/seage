@@ -14,7 +14,6 @@ public class SatPhenotypeEvaluator implements IPhenotypeEvaluator
     @Override
     public int compare(double[] arg0, double[] arg1)
     {
-        // TODO Auto-generated method stub
         return (int) arg0[0] - (int) arg1[0];
     }
 
