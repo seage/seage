@@ -17,7 +17,7 @@ public class ScheduleTest
     {
         _jobsDefinition = new JobsDefinition(
                 new ProblemInstanceInfo("TestJsspInstance", ProblemInstanceOrigin.RESOURCE, ""), 
-                getClass().getResourceAsStream("/org/seage/problem/jssp/test01.xml"));
+                getClass().getResourceAsStream("/org/seage/problem/jssp/test-instances/test01.xml"));
     }
     
     @Test
