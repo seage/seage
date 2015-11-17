@@ -49,21 +49,13 @@
 				</configuration>
 			</plugin>
 			<plugin>
-                		<artifactId>maven-release-plugin</artifactId>
-                		<version>2.0</version>
-            		</plugin>
-			<!-- <plugin>
-			  <artifactId>maven-surefire-plugin</artifactId>
-			  <version>2.14</version>
-			  <configuration>
-			    <systemProperties>
-			      <property> 
-				<name>java.util.logging.config.file</name>
-				<value>${basedir}/debug-logging.properties</value>
-			      </property>
-			    </systemProperties>
-			  </configuration>
-			</plugin>  -->
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0</version>
+			</plugin>
+			<!-- <plugin> <artifactId>maven-surefire-plugin</artifactId> <version>2.14</version> 
+				<configuration> <systemProperties> <property> <name>java.util.logging.config.file</name> 
+				<value>${basedir}/debug-logging.properties</value> </property> </systemProperties> 
+				</configuration> </plugin> -->
 		</plugins>
 	</build>
 
@@ -73,9 +65,9 @@
 			<url>http://www.seage.org/maven-repo</url>
 		</repository>
 	</repositories>
-	 <scm>
+	<scm>
 		<connection>scm:git:git@github.com:seage/seage.git</connection>
 		<url>scm:git:git://github.com/seage/seage.git</url>
 		<developerConnection>scm:git:git@github.com:seage/seage.git</developerConnection>
-  	</scm>
+	</scm>
 </project>
