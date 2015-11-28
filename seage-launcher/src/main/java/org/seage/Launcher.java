@@ -145,7 +145,7 @@ public class Launcher
                 int algorithmTimeoutS = Integer.parseInt(args[3]);
 
                 new SingleAlgorithmEvolutionExperimenter(numSubjects, numIterations, algorithmTimeoutS)
-                        .runExperiment(args[4], args[5].split(","), args[6].split(","));
+                         .runExperiment(args[4], args[5].split(","), args[6].split(","));
 
                 /*} else if (args.length == 4) {
                 new SingleAlgorithmEvolutionExperimenter().runExperiment(Integer.parseInt(args[1]), Long.parseLong(args[2]), args[3] );*/
