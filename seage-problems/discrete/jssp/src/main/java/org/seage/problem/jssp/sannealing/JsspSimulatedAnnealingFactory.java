@@ -79,7 +79,9 @@ public class JsspSimulatedAnnealingFactory implements IAlgorithmFactory
                 _solutions = new Solution[source.length];
                 for (int j = 0; j < source.length; j++)
                 {
-                    JsspSolution solution = null;//new TspGreedySolution(cities);
+                    JsspSolution solution = new JsspSolution(0)
+                    {
+                    };
                     Integer[] tour = solution.getTour();
 
                     for (int i = 0; i < tour.length; i++)
