@@ -41,44 +41,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.5</version>
-				<executions>
-					<execution>
-						<phase>process-test-classes</phase>
-						<id>test-classes</id>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<overwrite>false</overwrite>
-							<outputDirectory>${project.build.directory}/classes/org/seage/aal/problem</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.build.directory}/test-classes/org/seage/aal/problem</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
-						<phase>process-test-classes</phase>
-						<id>test-classes2</id>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<overwrite>false</overwrite>
-							<outputDirectory>${project.build.directory}/classes/org/seage/aal/algorithm/algbase</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.build.directory}/test-classes/org/seage/aal/algorithm/algbase</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
