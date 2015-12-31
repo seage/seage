@@ -20,6 +20,12 @@
 	      <version>4.8.1</version>
 	      <scope>test</scope>
 	    </dependency>
+	    <dependency>
+			<groupId>io.takari.junit</groupId>
+			<artifactId>takari-cpsuite</artifactId>
+			<version>1.2.7</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>seage-misc</artifactId>
