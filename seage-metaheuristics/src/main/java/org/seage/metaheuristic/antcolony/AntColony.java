@@ -31,7 +31,7 @@ package org.seage.metaheuristic.antcolony;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.metaheuristic.AlgorithmEventProducer;
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -42,7 +42,7 @@ import org.seage.metaheuristic.IAlgorithmListener;
  */
 public class AntColony
 {
-    private static final Logger _logger = Logger.getLogger(AntColony.class.getName());
+    private static final Logger _logger = LoggerFactory.getLogger(AntColony.class.getName());
     private AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent>, AntColonyEvent> _eventProducer;
     private double _roundBest;
     private double _globalBest;
@@ -129,7 +129,7 @@ public class AntColony
             }
             catch (Exception e)
             {
-                _logger.log(Level.WARNING, "Unable to do a first exploration", e);
+                _logger.warn( "Unable to do a first exploration", e);
             }
         }
 

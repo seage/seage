@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.experimenter._obsolete.ProcessPerformer;
 import org.seage.experimenter.reporting.IDocumentProcessor;
@@ -27,7 +27,7 @@ import com.rapidminer.tools.OperatorService;
 
 public class ExperimentDataRapidMinerImporter
 {
-    private static Logger _logger = Logger.getLogger(ExperimentDataRapidMinerImporter.class.getName());
+    private static Logger _logger = LoggerFactory.getLogger(ExperimentDataRapidMinerImporter.class.getName());
     private String _logPath;
 
     private List<RMDataTableCreator> _rmDataTableCreators;
@@ -70,14 +70,14 @@ public class ExperimentDataRapidMinerImporter
         }
         catch (Exception ex)
         {
-            _logger.log(Level.SEVERE, ex.getMessage());
+            _logger.error( ex.getMessage());
         }
 
         writeDataTablesToRepository();
 
         long t1 = (System.currentTimeMillis() - t0) / 1000;
 
-        Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO,
+        LoggerFactory.getLogger(ProcessPerformer.class.getName()).info(
                 "Processing experiment logs DONE - " + t1 + "s");
     }
 

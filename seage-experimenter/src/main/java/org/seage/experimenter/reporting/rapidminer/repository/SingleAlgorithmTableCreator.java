@@ -155,7 +155,7 @@ public class SingleAlgorithmTableCreator extends RMDataTableCreator
             {
                 if (xPath == null)
                 {
-                    _logger.warning(
+                    _logger.warn(
                             doc.getLocalName() + ": No XmlHelper.XPath defined for attribute: " + attInfo.getName());
                     continue;
                 }

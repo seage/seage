@@ -96,6 +96,6 @@ public abstract class SingleAlgorithmExperimenter extends Experimenter
             }
         }
         _logger.info("-------------------------------------");
-        _logger.log(Level.INFO, "Experiment " + experimentID + " finished ...");
+        _logger.info( "Experiment " + experimentID + " finished ...");
     }
 }

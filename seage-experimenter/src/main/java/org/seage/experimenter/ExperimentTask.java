@@ -2,7 +2,7 @@ package org.seage.experimenter;
 
 import java.net.UnknownHostException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.algorithm.AlgorithmParams;
@@ -10,7 +10,7 @@ import org.seage.data.DataNode;
 
 public abstract class ExperimentTask implements Runnable
 {
-    protected static Logger _logger = Logger.getLogger(ExperimentTask.class.getName());
+    protected static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
     //protected ProblemConfig _config;
     protected String _experimentType;
     protected long _experimentID;
@@ -55,7 +55,7 @@ public abstract class ExperimentTask implements Runnable
         }
         catch (UnknownHostException e)
         {
-            _logger.log(Level.WARNING, e.getMessage());
+            _logger.warn( e.getMessage());
         }
         _experimentTaskReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
         _experimentTaskReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());

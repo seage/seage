@@ -79,7 +79,7 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
             }
             catch (Exception ex)
             {
-                _logger.warning("Unable to set value");
+                _logger.warn("Unable to set value");
             }
             s.setObjectiveValue(new double[] { value });
 

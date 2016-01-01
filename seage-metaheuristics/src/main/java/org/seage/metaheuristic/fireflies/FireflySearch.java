@@ -31,7 +31,7 @@ package org.seage.metaheuristic.fireflies;
 
 import java.util.Collections;
 import java.util.Random;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 /**
  * This version of the {@link FireflySearch} does not create any new threads,
@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 public class FireflySearch extends FireflySearchBase
 {
 
-    private static final Logger _logger = Logger.getLogger(FireflySearchBase.class.getName());
+    private static final Logger _logger = LoggerFactory.getLogger(FireflySearchBase.class.getName());
 
     private static final long serialVersionUID = -4308076927795750198L;
     private int _iterationCount;
@@ -264,7 +264,7 @@ public class FireflySearch extends FireflySearchBase
                     if (_solutionComparator.compare(best, _population.getBestSolution()) == -1)
                         _population.addSolution(best);
                 }
-                _logger.finer(new Double(_bestSolution.getObjectiveValue()[0]).toString());
+                _logger.trace(new Double(_bestSolution.getObjectiveValue()[0]).toString());
             }
 
             evaluatePopulation(_population);

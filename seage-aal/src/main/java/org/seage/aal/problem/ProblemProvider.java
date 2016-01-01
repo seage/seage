@@ -27,8 +27,9 @@ package org.seage.aal.problem;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
-import java.util.logging.Logger;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
@@ -43,7 +44,7 @@ import org.seage.data.DataNode;
  */
 public abstract class ProblemProvider implements IProblemProvider
 {
-    private static Logger _logger = Logger.getLogger(ProblemProvider.class.getName());
+    private static Logger _logger = LoggerFactory.getLogger(ProblemProvider.class.getName());
     private static HashMap<String, IProblemProvider> _providers;
     private ProblemInfo _problemInfo;
     private HashMap<String, IAlgorithmFactory> _algFactories;
@@ -186,7 +187,7 @@ public abstract class ProblemProvider implements IProblemProvider
             }
             catch (Exception ex)
             {
-                _logger.severe(ci.getClassName() + ": " + ex);
+                _logger.error(ci.getClassName(), ex);
             }
         }
 

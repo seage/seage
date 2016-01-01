@@ -30,7 +30,7 @@ import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import javax.xml.transform.stream.StreamResult;
 
@@ -57,7 +57,7 @@ public class StatisticalReportCreator implements ILogReport
         }
         catch (Exception ex)
         {
-            Logger.getLogger(StatisticalReportCreator.class.getName()).log(Level.SEVERE, null, ex);
+            LoggerFactory.getLogger(StatisticalReportCreator.class.getName()).error("Something failed.", ex);
         }
 
         rmProcesses = new RMProcess[] {

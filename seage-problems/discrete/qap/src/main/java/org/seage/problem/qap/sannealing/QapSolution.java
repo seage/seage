@@ -26,7 +26,7 @@
 package org.seage.problem.qap.sannealing;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.metaheuristic.sannealing.Solution;
 
@@ -85,7 +85,7 @@ public abstract class QapSolution extends Solution
         }
         catch (Exception ex)
         {
-            Logger.getLogger(QapSolution.class.getName()).log(Level.SEVERE, null, ex);
+            LoggerFactory.getLogger(QapSolution.class.getName()).error("QapSolution.clone()", ex);
         }
         return qapSolution;
     }

@@ -32,7 +32,7 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.util.Arrays;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import javax.xml.transform.stream.StreamResult;
 
@@ -71,8 +71,8 @@ public class LogReportCreator implements ILogReport
 
     private void createReport() throws Exception
     {
-        Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO, "Creating reports ...");
-        Logger.getLogger(ProcessPerformer.class.getName()).fine("Creating reports ...");
+        LoggerFactory.getLogger(ProcessPerformer.class.getName()).info( "Creating reports ...");
+        LoggerFactory.getLogger(ProcessPerformer.class.getName()).debug("Creating reports ...");
 
         File logDir = new File(LOG_PATH);
 
@@ -138,7 +138,7 @@ public class LogReportCreator implements ILogReport
                 }
                 catch (Exception e)
                 {
-                    Logger.getLogger(ProcessPerformer.class.getName()).fine(xmlPath);
+                    LoggerFactory.getLogger(ProcessPerformer.class.getName()).debug(xmlPath);
                 }
             }
         }

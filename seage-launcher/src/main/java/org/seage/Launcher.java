@@ -26,7 +26,8 @@ package org.seage;
 //import aglobe.platform.Platform;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
@@ -45,14 +46,16 @@ import org.seage.logging.LogHelper;
 public class Launcher
 {
 
-    private static final Logger _logger = Logger.getLogger(Launcher.class.getName());
+    private static final Logger _logger = LoggerFactory.getLogger(Launcher.class.getName());
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
     {
-        LogHelper.loadConfig("log.properties");
+        //LogHelper.createFileAppenderConfig(_logger);
+        LogHelper.configure(Launcher.class.getClassLoader().getResourceAsStream("logback.xml"));
+        
         _logger.info("SEAGE running ...");
 
         try
@@ -61,7 +64,7 @@ public class Launcher
         }
         catch (Exception ex)
         {
-            _logger.log(Level.SEVERE, ex.getMessage(), ex);
+            _logger.error( ex.getMessage(), ex);
         }
 
         _logger.info("SEAGE finished ...");
@@ -255,7 +258,7 @@ public class Launcher
             }
             catch (Exception ex)
             {
-                _logger.log(Level.SEVERE, problemId + ": " + ex.getMessage(), ex);
+                _logger.error( problemId + ": " + ex.getMessage(), ex);
             }
             //XmlHelper.writeXml(problems, "problems.xml");
         }

@@ -25,7 +25,7 @@
  */
 package org.seage.problem.qap.fireflies;
 
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.metaheuristic.fireflies.FireflySearch;
 import org.seage.metaheuristic.fireflies.FireflySearchEvent;
@@ -40,7 +40,7 @@ import org.seage.problem.qap.FacilityLocationProvider;
 public class QapFireflyAlgorithmTest implements FireflySearchListener
 {
     @SuppressWarnings("unused")
-    private static final Logger log = Logger.getLogger("org.seage");
+    private static final Logger log = LoggerFactory.getLogger("org.seage");
     private static String _dataPath = "data/chr12a.dat";
     //    private static String _dataPath = "D:\\qap\\bur26a.dat";
     public FireflySearch fs;

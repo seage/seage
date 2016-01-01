@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.problem.ProblemInfo;
@@ -41,7 +41,7 @@ import org.seage.data.DataNode;
 
 public abstract class Experimenter
 {
-    protected static Logger _logger = Logger.getLogger(Experimenter.class.getName());
+    protected static Logger _logger = LoggerFactory.getLogger(Experimenter.class.getName());
     protected String _experimentName;
 
     public Experimenter(String experimentName)
@@ -116,7 +116,7 @@ public abstract class Experimenter
             }
             catch (Exception ex)
             {
-                _logger.log(Level.WARNING, ex.getMessage(), ex);
+                _logger.warn( ex.getMessage(), ex);
             }
 
         }

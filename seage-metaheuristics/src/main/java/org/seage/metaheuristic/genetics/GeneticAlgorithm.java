@@ -28,7 +28,7 @@ package org.seage.metaheuristic.genetics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.metaheuristic.AlgorithmEventProducer;
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -38,7 +38,7 @@ import org.seage.metaheuristic.IAlgorithmListener;
  */
 public class GeneticAlgorithm<S extends Subject<?>>
 {
-    protected static Logger _logger = Logger.getLogger(GeneticAlgorithm.class.getName());
+    protected static Logger _logger = LoggerFactory.getLogger(GeneticAlgorithm.class.getName());
 
     private AlgorithmEventProducer<IAlgorithmListener<GeneticAlgorithmEvent<S>>, GeneticAlgorithmEvent<S>> _eventProducer;
     private int _iterationCount;

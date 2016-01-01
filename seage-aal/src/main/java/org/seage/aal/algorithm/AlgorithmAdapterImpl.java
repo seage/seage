@@ -25,8 +25,8 @@
  */
 package org.seage.aal.algorithm;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 /**
  *
@@ -34,7 +34,7 @@ import java.util.logging.Logger;
  */
 public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
 {
-    protected static final Logger _logger = Logger.getLogger(AlgorithmAdapterImpl.class.getName());
+    protected static final Logger _logger = LoggerFactory.getLogger(AlgorithmAdapterImpl.class.getName());
 
     protected boolean _algorithmStarted = false;
     protected boolean _algorithmStopped = false;
@@ -60,7 +60,7 @@ public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
                     }
                     catch (Exception ex)
                     {
-                        _logger.log(Level.SEVERE, ex.getMessage(), ex);
+                        _logger.error(ex.getMessage(), ex);
                     }
                 }
             }, this.getClass().getName()).start();

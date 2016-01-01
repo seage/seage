@@ -28,7 +28,7 @@ package org.seage.experimenter.reporting.rapidminer.repository;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.reporting.IDocumentProcessor;
@@ -38,7 +38,7 @@ import com.rapidminer.example.table.DataRow;
 
 public abstract class RMDataTableCreator implements IDocumentProcessor
 {
-    protected static Logger _logger = Logger.getLogger(RMDataTableCreator.class.getName());
+    protected static Logger _logger = LoggerFactory.getLogger(RMDataTableCreator.class.getName());
 
     protected String _repositoryPath;
     protected String _tableName;

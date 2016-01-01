@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -17,7 +17,7 @@ import org.w3c.dom.Document;
 
 public class ProcessExperimentZipFileTask implements Runnable
 {
-    private static Logger _logger = Logger.getLogger(ProcessExperimentZipFileTask.class.getName());
+    private static Logger _logger = LoggerFactory.getLogger(ProcessExperimentZipFileTask.class.getName());
     private File _zipFile;
     private List<IDocumentProcessor> _documentProcessors;
 
@@ -52,7 +52,7 @@ public class ProcessExperimentZipFileTask implements Runnable
                         String version = doc.getDocumentElement().getAttribute("version");
                         if (version == "")
                         {
-                            _logger.warning("Unsupported report version: " + _zipFile.getName());
+                            _logger.warn("Unsupported report version: " + _zipFile.getName());
                             return;
                         }
                         //------------------------------------------------------
@@ -63,11 +63,11 @@ public class ProcessExperimentZipFileTask implements Runnable
                     }
                     catch (NullPointerException ex)
                     {
-                        _logger.log(Level.SEVERE, ex.getMessage(), ex);
+                        _logger.error( ex.getMessage(), ex);
                     }
                     catch (Exception ex)
                     {
-                        _logger.warning(_zipFile.getName() + " - " + ze.getName() + " - " + ex.getMessage() + " - "
+                        _logger.warn(_zipFile.getName() + " - " + ze.getName() + " - " + ex.getMessage() + " - "
                                 + ex.toString());
                     }
                 }
@@ -78,7 +78,7 @@ public class ProcessExperimentZipFileTask implements Runnable
         }
         catch (Exception ex)
         {
-            _logger.warning("ERROR: " + _zipFile.getName() + ": " + ex.getMessage());
+            _logger.warn("ERROR: " + _zipFile.getName() + ": " + ex.getMessage());
             _zipFile.renameTo(new File(_zipFile.getAbsolutePath() + ".err"));
         }
         finally
@@ -90,7 +90,7 @@ public class ProcessExperimentZipFileTask implements Runnable
                 }
                 catch (IOException ex)
                 {
-                    _logger.warning("ERROR: " + _zipFile.getName() + ": " + ex.getMessage());
+                    _logger.warn("ERROR: " + _zipFile.getName() + ": " + ex.getMessage());
                 }
         }
     }

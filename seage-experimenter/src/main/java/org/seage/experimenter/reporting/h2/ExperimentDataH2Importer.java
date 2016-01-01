@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.seage.experimenter.reporting.ProcessExperimentZipFileTask;
@@ -18,7 +18,7 @@ import org.seage.thread.TaskRunnerEx;
 
 public class ExperimentDataH2Importer
 {
-    private static Logger _logger = Logger.getLogger(ExperimentDataH2Importer.class.getName());
+    private static Logger _logger = LoggerFactory.getLogger(ExperimentDataH2Importer.class.getName());
     private String _logPath;
     private String _dbPath;
     private ExperimentsTableCreator _expperimentsTableCreator;
@@ -80,7 +80,7 @@ public class ExperimentDataH2Importer
         }
         catch (Exception ex)
         {
-            _logger.log(Level.SEVERE, ex.getMessage());
+            _logger.error( ex.getMessage());
         }
 
         _logger.info("Files processed: " + fileCount);

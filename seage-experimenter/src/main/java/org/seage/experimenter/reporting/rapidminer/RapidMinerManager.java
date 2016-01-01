@@ -3,7 +3,7 @@ package org.seage.experimenter.reporting.rapidminer;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import com.rapidminer.RapidMiner;
 import com.rapidminer.repository.Repository;
@@ -16,7 +16,7 @@ import com.rapidminer.tools.jdbc.connection.FieldConnectionEntry;
 
 public class RapidMinerManager
 {
-    private static Logger _logger = Logger.getLogger(RapidMinerManager.class.getName());
+    private static Logger _logger = LoggerFactory.getLogger(RapidMinerManager.class.getName());
     public static final String RAPIDMINER_LOCAL_REPOSITORY_NAME = "seage";
     public static final String RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH = "repository";
 
@@ -39,7 +39,7 @@ public class RapidMinerManager
         if (_repositoryInitialized)
             return;
 
-        _logger.fine("initRepository");
+        _logger.debug("initRepository");
         RepositoryManager rm = RepositoryManager.getInstance(null);
 
         List<Repository> reposToRemove = new ArrayList<Repository>();
@@ -70,9 +70,9 @@ public class RapidMinerManager
                     new File(RAPIDMINER_LOCAL_REPOSITORY_DIR_PATH)));
         }
 
-        _logger.fine("initRepository: saving");
+        _logger.debug("initRepository: saving");
         rm.save();
-        _logger.fine("initRepository: done");
+        _logger.debug("initRepository: done");
 
         _repositoryInitialized = true;
     }

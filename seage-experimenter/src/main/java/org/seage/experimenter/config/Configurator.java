@@ -25,7 +25,7 @@
  */
 package org.seage.experimenter.config;
 
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
@@ -38,7 +38,7 @@ import org.seage.data.DataNode;
  */
 public abstract class Configurator
 {
-    protected static Logger _logger = Logger.getLogger(Configurator.class.getName());
+    protected static Logger _logger = LoggerFactory.getLogger(Configurator.class.getName());
 
     public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID,
             int numConfigs) throws Exception;

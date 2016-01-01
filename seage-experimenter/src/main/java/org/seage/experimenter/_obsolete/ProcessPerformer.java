@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.data.DataNode;
 
@@ -121,7 +121,7 @@ public class ProcessPerformer
         Process process = new Process(getClass().getResourceAsStream(rmProcess.getResourceName()));
         process.setProcessLocation(new FileProcessLocation(new File(".")));
 
-        Logger.getLogger(ProcessPerformer.class.getName()).log(Level.INFO,
+        LoggerFactory.getLogger(ProcessPerformer.class.getName()).info(
                 process.getRootOperator().createProcessTree(0));
 
         process.run();

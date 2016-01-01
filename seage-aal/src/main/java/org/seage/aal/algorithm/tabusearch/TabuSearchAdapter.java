@@ -91,7 +91,7 @@ public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
 
         if (_solutions.length > 1)
         {
-            _logger.warning("More than one solutions to solve, used just the first one.");
+            _logger.warn("More than one solutions to solve, used just the first one.");
         }
 
         _statNumNewSol = 0;

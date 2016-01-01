@@ -55,7 +55,7 @@ public abstract class AlgorithmParamsTableCreator extends RMDataTableCreator
             XmlHelper.XPath xPath = xPaths.get(att.getName());
             if (xPath == null)
             {
-                _logger.warning("No XmlHelper.XPath defined for attribute: " + att.getName());
+                _logger.warn("No XmlHelper.XPath defined for attribute: " + att.getName());
                 continue;
             }
             String val = XmlHelper.getValueFromDocument(doc.getDocumentElement(), xPath);//(String) XmlHelper.XPath.evaluate(attInfo.XmlHelper.XPath, doc, XmlHelper.XPathConstants.STRING);; //XmlHelper.XPath

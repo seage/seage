@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 public class TaskRunner
 {
-    private static Logger _logger = Logger.getLogger(TaskRunner.class.getName());
+    private static Logger _logger = LoggerFactory.getLogger(TaskRunner.class.getName());
 
     ConcurrentLinkedQueue<Runnable> _taskQueue;
 
@@ -35,7 +35,7 @@ public class TaskRunner
             }
             catch (InterruptedException e)
             {
-                _logger.log(Level.FINER, e.getMessage());
+                _logger.trace(e.getMessage());
             }
         }
     }
@@ -59,17 +59,17 @@ public class TaskRunner
                 if (task == null)
                     return;
                 Thread t = new Thread(task, _threadName + "-Job" + i++);
-                _logger.log(Level.FINER, t.toString() + " started");
+                _logger.trace(t.toString() + " started");
                 t.start();
 
                 try
                 {
                     t.join();
-                    _logger.log(Level.FINER, t.toString() + " finished");
+                    _logger.trace(t.toString() + " finished");
                 }
                 catch (InterruptedException e)
                 {
-                    _logger.log(Level.WARNING, e.getMessage());
+                    _logger.warn( e.getMessage());
                 }
             }
         }

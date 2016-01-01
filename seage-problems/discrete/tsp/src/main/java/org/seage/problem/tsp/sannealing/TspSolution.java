@@ -26,7 +26,7 @@
 package org.seage.problem.tsp.sannealing;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.metaheuristic.sannealing.Solution;
 
@@ -82,7 +82,7 @@ public abstract class TspSolution extends Solution
         }
         catch (Exception ex)
         {
-            Logger.getLogger(TspSolution.class.getName()).log(Level.SEVERE, null, ex);
+            LoggerFactory.getLogger(TspSolution.class.getName()).error("TspSolution.clone()", ex);
         }
         return tspSolution;
     }

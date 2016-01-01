@@ -69,7 +69,7 @@ public class FeedbackConfigurator extends Configurator
         List<ProblemConfig> results = new ArrayList<ProblemConfig>();
         if (exampleSetParams == null)
         {
-            _logger.warning("There are no usable experiments in the repository, random param values generated.");
+            _logger.warn("There are no usable experiments in the repository, random param values generated.");
             return new RandomConfigurator().prepareConfigs(problemInfo, instanceID, algorithmID, numConfigs);
         }
 

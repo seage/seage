@@ -82,7 +82,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
             }
             catch (Exception ex)
             {
-                _logger.log(Level.WARNING, ex.getMessage(), ex);
+                _logger.warn( ex.getMessage(), ex);
             }
 
         }

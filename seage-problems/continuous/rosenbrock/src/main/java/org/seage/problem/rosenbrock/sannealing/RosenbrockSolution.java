@@ -62,7 +62,7 @@ public class RosenbrockSolution extends Solution {
             rosSolution.setObjectiveValue(getObjectiveValue());
         } catch (Exception ex)
         {
-            //Logger.getLogger(TspSolution.class.getName()).log(Level.SEVERE, null, ex);
+            //LoggerFactory.getLogger(TspSolution.class.getName()).fatal( null, ex);
         }
         return rosSolution;
     }
