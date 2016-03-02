@@ -33,6 +33,7 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
     protected SingleAlgorithmRandomExperimenter(String experimenterName, int numConfigs, int timeoutS)
     {
         this(numConfigs, timeoutS);
+        _experimentName = experimenterName;
     }
 
     @Override
