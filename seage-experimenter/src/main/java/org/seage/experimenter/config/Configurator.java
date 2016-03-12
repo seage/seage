@@ -25,12 +25,12 @@
  */
 package org.seage.experimenter.config;
 
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
-
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 

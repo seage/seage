@@ -5,8 +5,6 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Level;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.experimenter.reporting.IDocumentProcessor;
 import org.seage.experimenter.reporting.ProcessExperimentZipFileTask;
@@ -15,6 +13,8 @@ import org.seage.experimenter.reporting.h2.tablecreator.ExperimentTasksTableCrea
 import org.seage.experimenter.reporting.h2.tablecreator.ExperimentsTableCreator;
 import org.seage.experimenter.reporting.h2.tablecreator.H2DataTableCreator;
 import org.seage.thread.TaskRunnerEx;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExperimentDataH2Importer
 {

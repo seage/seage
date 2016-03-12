@@ -1,12 +1,12 @@
 package org.seage.experimenter;
 
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.data.DataNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class ExperimentTask implements Runnable
 {

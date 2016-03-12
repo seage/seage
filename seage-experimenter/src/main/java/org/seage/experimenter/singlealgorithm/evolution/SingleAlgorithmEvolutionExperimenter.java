@@ -2,7 +2,6 @@ package org.seage.experimenter.singlealgorithm.evolution;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.problem.ProblemConfig;

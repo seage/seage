@@ -28,14 +28,14 @@ package org.seage.aal.problem;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.classutil.ClassInfo;
 import org.seage.classutil.ClassUtil;
 import org.seage.data.DataNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of IProblemProvider interface

@@ -26,11 +26,7 @@
 
 package org.seage.logging;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Date;
 
 import org.slf4j.Logger;
 //import org.apache.logging.log4j.core.Appender;

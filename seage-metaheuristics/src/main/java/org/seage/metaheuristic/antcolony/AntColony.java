@@ -30,11 +30,11 @@ package org.seage.metaheuristic.antcolony;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.metaheuristic.AlgorithmEventProducer;
 import org.seage.metaheuristic.IAlgorithmListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 

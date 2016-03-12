@@ -25,13 +25,13 @@
  */
 package org.seage.problem.qap.fireflies;
 
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
-
 import org.seage.metaheuristic.fireflies.FireflySearch;
 import org.seage.metaheuristic.fireflies.FireflySearchEvent;
 import org.seage.metaheuristic.fireflies.FireflySearchListener;
 import org.seage.metaheuristic.fireflies.Solution;
 import org.seage.problem.qap.FacilityLocationProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *

@@ -28,10 +28,11 @@ package org.seage.experimenter.reporting.rapidminer.repository;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.reporting.IDocumentProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.table.DataRow;

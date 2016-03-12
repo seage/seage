@@ -25,8 +25,6 @@ package org.seage;
 
 //import aglobe.platform.Platform;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
@@ -37,6 +35,8 @@ import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolution
 import org.seage.experimenter.singlealgorithm.feedback.SingleAlgorithmFeedbackExperimenter;
 import org.seage.experimenter.singlealgorithm.random.SingleAlgorithmRandomExperimenter;
 import org.seage.logging.LogHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *

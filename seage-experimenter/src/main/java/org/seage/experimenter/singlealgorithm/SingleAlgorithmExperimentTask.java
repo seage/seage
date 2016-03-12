@@ -26,7 +26,7 @@
 
 package org.seage.experimenter.singlealgorithm;
 
-import java.util.logging.Level;
+
 import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.algorithm.AlgorithmParams;

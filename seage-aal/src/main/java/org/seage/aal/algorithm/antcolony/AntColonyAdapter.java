@@ -25,7 +25,7 @@
  */
 package org.seage.aal.algorithm.antcolony;
 
-import java.util.logging.Level;
+
 
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;

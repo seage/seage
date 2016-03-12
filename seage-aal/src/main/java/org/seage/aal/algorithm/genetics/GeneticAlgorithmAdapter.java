@@ -26,7 +26,6 @@
 package org.seage.aal.algorithm.genetics;
 
 import java.util.List;
-import java.util.logging.Level;
 
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;

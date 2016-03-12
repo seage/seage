@@ -3,8 +3,6 @@ package org.seage.experimenter.reporting.rapidminer;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import org.seage.experimenter._obsolete.ProcessPerformer;
 import org.seage.experimenter.reporting.IDocumentProcessor;
@@ -13,6 +11,8 @@ import org.seage.experimenter.reporting.rapidminer.repository.AlgorithmParamsTab
 import org.seage.experimenter.reporting.rapidminer.repository.RMDataTableCreator;
 import org.seage.experimenter.reporting.rapidminer.repository.SingleAlgorithmTableCreator;
 import org.seage.thread.TaskRunnerEx;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.rapidminer.Process;
 import com.rapidminer.example.table.ListDataRowReader;

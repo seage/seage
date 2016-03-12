@@ -31,12 +31,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.util.Arrays;
-import java.util.logging.Level;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import javax.xml.transform.stream.StreamResult;
 
 import org.seage.data.file.FileHelper;
+import org.slf4j.LoggerFactory;
 
 /**
  *
