@@ -26,6 +26,7 @@
 package org.seage.problem.tsp.antcolony;
 
 import java.io.FileInputStream;
+import java.util.List;
 
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.Ant;
@@ -50,8 +51,8 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     {
         try
         {
-            String path = "data/tsp/eil51.tsp";//args[0];		// 426 
-            //String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
+            //String path = "data/tsp/eil51.tsp";//args[0];		// 426 
+            String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
             //String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
             //String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
             //String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
@@ -86,9 +87,9 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
         //		int numAnts = 500;
         //		double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
         //		double alpha = 1, beta = 3;
-        int numAnts = 150;
-        double defaultPheromone = 0.491, localEvaporation = 0.95, quantumPheromone = 43;
-        double alpha = 1.0, beta = 2.3;
+        int numAnts = 969;
+        double defaultPheromone = 0.917556841901922, localEvaporation = 0.6269178017512955, quantumPheromone = 610.6257680691537;
+        double alpha = 1.0654234316716138, beta = 1.1515958770402412;
         TspGraph graph = new TspGraph(cities);
         System.out.println("Loaded ...");
         AntBrain brain = new TspAntBrain(graph);
@@ -106,37 +107,38 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
         long t2 = System.currentTimeMillis();
         // graph.printPheromone();
         System.out.println("Global best: " + colony.getGlobalBest());
+        System.out.println("Global best hash: " + colony.getBestPath().hashCode());
         System.out.println("Edges: " + colony.getBestPath().size());
         System.out.println("Nodes: " + graph.getNodes().size());
         System.out.println("Time [ms]: " + (t2 - t1));
-        // visualization
-        Integer[] tour = new Integer[colony.getBestPath().size() + 1];
-        tour[0] = colony.getBestPath().get(0).getNode1().getID();
-        for (int i = 1; i < tour.length - 1; i++)
-        {
-            tour[i] = colony.getBestPath().get(i).getNode1().getID();
-            if (i > 0 && tour[i - 1] == tour[i])
-            {
-                tour[i] = colony.getBestPath().get(i).getNode2().getID();
-            }
 
-            System.out.print(tour[i] + " ");
-        }
-        tour[tour.length - 1] = colony.getBestPath().get(tour.length - 2).getNode2().getID();
-
+        Integer[] tour = createTour(colony.getBestPath());
+        for(Integer t : tour)
+        	System.out.print(t+" ");
         System.out.println();
         System.out.println(new TspPhenotypeEvaluator(cities).evaluate(tour)[0]);
-        //		Arrays.sort(tour);
-        //		for (int i = 1; i < tour.length; i++)
-        //			System.out.print(tour[i] + " ");
-        //		System.out.println();
-
-        //int best = (int)colony.getGlobalBest();
-        //String path2 = "vizualization/ants-"+instance+"-"+best+"-"+System.currentTimeMillis()+".png";
-        //Visualizer.instance().createGraph(cities, tour, path2, 1000, 800);
     }
 
-    @Override
+    private Integer[] createTour(List<Edge> bestPath) 
+    {
+    	Integer[] tour = new Integer[bestPath.size() + 1];
+    	
+        tour[0] = bestPath.get(0).getNode1().getID();
+        if(tour[0]!=bestPath.get(1).getNode1().getID() || tour[0]!=bestPath.get(1).getNode2().getID())
+        	tour[0] = bestPath.get(0).getNode2().getID();
+        for (int i = 1; i < tour.length - 1; i++)
+        {
+            tour[i] = bestPath.get(i).getNode1().getID();
+            if (i > 0 && tour[i - 1] == tour[i])
+            {
+                tour[i] = bestPath.get(i).getNode2().getID();
+            }
+        }
+        tour[tour.length - 1] = tour[0];
+        return tour;
+	}
+
+	@Override
     public void algorithmStarted(AntColonyEvent e)
     {
         System.out.println("algorithmStarted");
@@ -153,9 +155,10 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     @Override
     public void newBestSolutionFound(AntColonyEvent e)
     {
-        System.out.println(String.format("%f - %d - %d/%d",
+        System.out.println(String.format("%f - %d - %d - %d/%d",
                 e.getAntColony().getGlobalBest(),
                 e.getAntColony().getCurrentIteration(),
+                e.getAntColony().getBestPath().hashCode(),
                 e.getAntColony().getGraph().getEdges().size(),
                 _edges));
 

@@ -62,7 +62,8 @@ public class ExperimentTasksTableCreator extends H2DataTableCreator implements I
 
         String queryCreate = "CREATE TABLE IF NOT EXISTS ExperimentTasks" +
                 "(" +
-                "experimentID VARCHAR," +
+                "fileName VARCHAR," +
+                "experimentID VARCHAR," +                
                 "problemID VARCHAR," +
                 "instanceID VARCHAR," +
                 "algorithmID VARCHAR," +
@@ -76,7 +77,7 @@ public class ExperimentTasksTableCreator extends H2DataTableCreator implements I
                 "durationInSeconds DOUBLE," +
                 "timeoutInSeconds DOUBLE," +
                 ")";
-        String insertQuery = "INSERT INTO ExperimentTasks VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO ExperimentTasks VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         Statement stmt = _conn.createStatement();
         stmt.execute(queryCreate);
@@ -99,19 +100,20 @@ public class ExperimentTasksTableCreator extends H2DataTableCreator implements I
             throw new Exception("Unsupported version: " + version);
 
         _stmt.clearParameters();
-        _stmt.setString(1, getVersionedValue(doc, "experimentID", version));
-        _stmt.setString(2, getVersionedValue(doc, "problemID", version));
-        _stmt.setString(3, getVersionedValue(doc, "instanceID", version));
-        _stmt.setString(4, getVersionedValue(doc, "algorithmID", version));
-        _stmt.setString(5, getVersionedValue(doc, "configID", version));
-        _stmt.setString(6, getVersionedValue(doc, "runID", version));
-        _stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "initSolutionValue", version)));
-        _stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "bestSolutionValue", version)));
-        _stmt.setDouble(9, Double.parseDouble(getVersionedValue(doc, "nrOfNewSolutions", version)));
-        _stmt.setDouble(10, Double.parseDouble(getVersionedValue(doc, "nrOfIterations", version)));
-        _stmt.setDouble(11, Double.parseDouble(getVersionedValue(doc, "lastIterNumberNewSol", version)));
-        _stmt.setDouble(12, Double.parseDouble(getVersionedValue(doc, "durationInSeconds", version)));
-        _stmt.setDouble(13, Double.parseDouble(getVersionedValue(doc, "timeoutInSeconds", version)));
+        _stmt.setString(1, containerFileName);
+        _stmt.setString(2, getVersionedValue(doc, "experimentID", version));
+        _stmt.setString(3, getVersionedValue(doc, "problemID", version));
+        _stmt.setString(4, getVersionedValue(doc, "instanceID", version));
+        _stmt.setString(5, getVersionedValue(doc, "algorithmID", version));
+        _stmt.setString(6, getVersionedValue(doc, "configID", version));
+        _stmt.setString(7, getVersionedValue(doc, "runID", version));
+        _stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "initSolutionValue", version)));
+        _stmt.setDouble(9, Double.parseDouble(getVersionedValue(doc, "bestSolutionValue", version)));
+        _stmt.setDouble(10, Double.parseDouble(getVersionedValue(doc, "nrOfNewSolutions", version)));
+        _stmt.setDouble(11, Double.parseDouble(getVersionedValue(doc, "nrOfIterations", version)));
+        _stmt.setDouble(12, Double.parseDouble(getVersionedValue(doc, "lastIterNumberNewSol", version)));
+        _stmt.setDouble(13, Double.parseDouble(getVersionedValue(doc, "durationInSeconds", version)));
+        _stmt.setDouble(14, Double.parseDouble(getVersionedValue(doc, "timeoutInSeconds", version)));
 
         _stmt.executeUpdate();
 

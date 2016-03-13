@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.HashSet;
 
 import org.seage.experimenter.reporting.IDocumentProcessor;
@@ -23,7 +24,7 @@ public class ExperimentsTableCreator extends H2DataTableCreator implements IDocu
         _expLogsPath = expLogsPath;
 
         String queryDropExperiments = "DROP ALL OBJECTS";
-        String queryCreateExperiments = "CREATE TABLE IF NOT EXISTS Experiments (experimentID VARCHAR PRIMARY KEY, experimentType VARCHAR, computerName VARCHAR, fileName VARCHAR)";
+        String queryCreateExperiments = "CREATE TABLE IF NOT EXISTS Experiments (date TIMESTAMP, experimentID VARCHAR PRIMARY KEY, experimentType VARCHAR, computerName VARCHAR)";
         String queryInsert = "INSERT INTO Experiments VALUES (?, ?, ?, ?)";
 
         Statement stmt = _conn.createStatement();
@@ -105,10 +106,11 @@ public class ExperimentsTableCreator extends H2DataTableCreator implements IDocu
         et = et.length() > 0 ? et : "SingleAlgorithmRandom";
         String cn = doc.getDocumentElement().getAttribute("machineName");
 
-        _stmt.setLong(1, Long.parseLong(id));
-        _stmt.setString(2, et);
-        _stmt.setString(3, cn);
-        _stmt.setString(4, containerFileName);
+        long timeStamp = Long.parseLong(id);
+        _stmt.setTimestamp(1, new java.sql.Timestamp(timeStamp));
+        _stmt.setLong(2, timeStamp);
+        _stmt.setString(3, et);
+        _stmt.setString(4, cn);        
         _stmt.executeUpdate();
     }
 }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.3.015">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.3.015" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="retrieve" compatibility="5.3.015" expanded="true" height="60" name="Retrieve PUBLIC.Experiments" width="90" x="112" y="120">
+        <parameter key="repository_entry" value="//DB/SEAGE_DB/Example Sets/PUBLIC.Experiments"/>
+      </operator>
+      <operator activated="true" class="retrieve" compatibility="5.3.015" expanded="true" height="60" name="Retrieve PUBLIC.ExperimentTasks" width="90" x="112" y="210">
+        <parameter key="repository_entry" value="//DB/SEAGE_DB/Example Sets/PUBLIC.ExperimentTasks"/>
+      </operator>
+      <operator activated="true" class="filter_examples" compatibility="5.3.015" expanded="true" height="76" name="Filter Examples" width="90" x="246" y="210">
+        <parameter key="condition_class" value="attribute_value_filter"/>
+        <parameter key="parameter_string" value="nrOfNewSolutions &gt; 5"/>
+        <parameter key="invert_filter" value="false"/>
+      </operator>
+      <operator activated="true" class="join" compatibility="5.3.015" expanded="true" height="76" name="Join" width="90" x="514" y="165">
+        <parameter key="remove_double_attributes" value="true"/>
+        <parameter key="join_type" value="inner"/>
+        <parameter key="use_id_attribute_as_key" value="false"/>
+        <list key="key_attributes">
+          <parameter key="experimentID" value="experimentID"/>
+        </list>
+        <parameter key="keep_both_join_attributes" value="false"/>
+      </operator>
+      <operator activated="true" class="aggregate" compatibility="5.3.015" expanded="true" height="76" name="Aggregate" width="90" x="715" y="165">
+        <parameter key="use_default_aggregation" value="false"/>
+        <parameter key="attribute_filter_type" value="all"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="attribute_value"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="time"/>
+        <parameter key="block_type" value="attribute_block"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="value_matrix_row_start"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <parameter key="default_aggregation_function" value="average"/>
+        <list key="aggregation_attributes">
+          <parameter key="configID" value="count"/>
+          <parameter key="bestSolutionValue" value="minimum"/>
+        </list>
+        <parameter key="group_by_attributes" value="computerName|experimentID|experimentType|problemID|algorithmID|instanceID"/>
+        <parameter key="count_all_combinations" value="false"/>
+        <parameter key="only_distinct" value="false"/>
+        <parameter key="ignore_missings" value="true"/>
+      </operator>
+      <connect from_op="Retrieve PUBLIC.Experiments" from_port="output" to_op="Join" to_port="left"/>
+      <connect from_op="Retrieve PUBLIC.ExperimentTasks" from_port="output" to_op="Filter Examples" to_port="example set input"/>
+      <connect from_op="Filter Examples" from_port="example set output" to_op="Join" to_port="right"/>
+      <connect from_op="Join" from_port="join" to_op="Aggregate" to_port="example set input"/>
+      <connect from_op="Aggregate" from_port="example set output" to_port="result 1"/>
+      <connect from_op="Aggregate" from_port="original" to_port="result 2"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
+    </process>
+  </operator>
+</process>

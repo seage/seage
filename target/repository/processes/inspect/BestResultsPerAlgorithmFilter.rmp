@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<process version="5.3.013">
+<process version="5.3.015">
   <context>
     <input/>
     <output/>
     <macros/>
   </context>
-  <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
+  <operator activated="true" class="process" compatibility="5.3.015" expanded="true" name="Process">
     <parameter key="logverbosity" value="init"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
@@ -13,7 +13,7 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute FilteredExperimentValues" width="90" x="45" y="75">
+      <operator activated="true" class="execute_process" compatibility="5.3.015" expanded="true" height="76" name="Execute FilteredExperimentValues" width="90" x="45" y="75">
         <parameter key="process_location" value="//seage/processes/blocks/FilteredExperimentValues"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
@@ -21,7 +21,7 @@
         <parameter key="cache_process" value="true"/>
         <list key="macros"/>
       </operator>
-      <operator activated="true" class="read_database" compatibility="5.3.013" expanded="true" height="60" name="Read Database" width="90" x="45" y="165">
+      <operator activated="true" class="read_database" compatibility="5.3.015" expanded="true" height="60" name="Read Database" width="90" x="45" y="165">
         <parameter key="define_connection" value="predefined"/>
         <parameter key="connection" value="SEAGE_DB"/>
         <parameter key="database_system" value="MySQL"/>
@@ -32,22 +32,22 @@
         <enumeration key="parameters"/>
         <parameter key="datamanagement" value="double_array"/>
       </operator>
-      <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join" width="90" x="179" y="120">
+      <operator activated="true" class="join" compatibility="5.3.015" expanded="true" height="76" name="Join" width="90" x="179" y="120">
         <parameter key="remove_double_attributes" value="true"/>
         <parameter key="join_type" value="left"/>
         <parameter key="use_id_attribute_as_key" value="false"/>
         <list key="key_attributes">
-          <parameter key="ExperimentID" value="experimentID"/>
+          <parameter key="experimentID" value="experimentID"/>
         </list>
         <parameter key="keep_both_join_attributes" value="false"/>
       </operator>
-      <operator activated="true" class="multiply" compatibility="5.3.013" expanded="true" height="130" name="Multiply" width="90" x="380" y="75"/>
-      <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Filter Examples" width="90" x="514" y="75">
+      <operator activated="true" class="multiply" compatibility="5.3.015" expanded="true" height="130" name="Multiply" width="90" x="380" y="75"/>
+      <operator activated="true" class="filter_examples" compatibility="5.3.015" expanded="true" height="76" name="Filter Examples" width="90" x="514" y="75">
         <parameter key="condition_class" value="attribute_value_filter"/>
-        <parameter key="parameter_string" value="ExperimentType = SingleAlgorithmRandom"/>
+        <parameter key="parameter_string" value="experimentType = SingleAlgorithmRandom"/>
         <parameter key="invert_filter" value="false"/>
       </operator>
-      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute AlgorithmInstancePivotTable" width="90" x="648" y="75">
+      <operator activated="true" class="execute_process" compatibility="5.3.015" expanded="true" height="76" name="Execute AlgorithmInstancePivotTable" width="90" x="648" y="75">
         <parameter key="process_location" value="//seage/processes/blocks/AlgorithmInstancePivotTable"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
@@ -58,59 +58,27 @@
           <parameter key="myFunction" value="minimum"/>
         </list>
       </operator>
-      <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="SingleAlgorithmRandom" width="90" x="782" y="75">
+      <operator activated="true" class="generate_attributes" compatibility="5.3.015" expanded="true" height="76" name="SingleAlgorithmRandom" width="90" x="782" y="75">
         <list key="function_descriptions"/>
         <parameter key="use_standard_constants" value="true"/>
         <parameter key="keep_all" value="true"/>
       </operator>
-      <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Filter Examples (2)" width="90" x="514" y="165">
+      <operator activated="true" class="filter_examples" compatibility="5.3.015" expanded="true" height="76" name="Filter Examples (2)" width="90" x="514" y="165">
         <parameter key="condition_class" value="attribute_value_filter"/>
         <parameter key="parameter_string" value="experimentType = SingleAlgorithmFeedback"/>
         <parameter key="invert_filter" value="false"/>
       </operator>
-      <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Filter Examples (3)" width="90" x="514" y="255">
+      <operator activated="true" class="filter_examples" compatibility="5.3.015" expanded="true" height="76" name="Filter Examples (3)" width="90" x="514" y="255">
         <parameter key="condition_class" value="attribute_value_filter"/>
         <parameter key="parameter_string" value="experimentType = SingleAlgorithmEvolution"/>
         <parameter key="invert_filter" value="false"/>
       </operator>
-      <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Filter Examples (4)" width="90" x="514" y="345">
+      <operator activated="true" class="filter_examples" compatibility="5.3.015" expanded="true" height="76" name="Filter Examples (4)" width="90" x="514" y="345">
         <parameter key="condition_class" value="attribute_value_filter"/>
         <parameter key="parameter_string" value="experimentID = 1380709094467"/>
         <parameter key="invert_filter" value="false"/>
       </operator>
-      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute AlgorithmInstancePivotTable (2)" width="90" x="648" y="165">
-        <parameter key="process_location" value="//seage/processes/blocks/AlgorithmInstancePivotTable"/>
-        <parameter key="use_input" value="true"/>
-        <parameter key="store_output" value="false"/>
-        <parameter key="propagate_metadata_recursively" value="true"/>
-        <parameter key="cache_process" value="true"/>
-        <list key="macros">
-          <parameter key="myAttribute" value="BestSolutionValue"/>
-          <parameter key="myFunction" value="minimum"/>
-        </list>
-      </operator>
-      <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="SingleAlgorithmFeedback" width="90" x="782" y="165">
-        <list key="function_descriptions"/>
-        <parameter key="use_standard_constants" value="true"/>
-        <parameter key="keep_all" value="true"/>
-      </operator>
-      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute AlgorithmInstancePivotTable (3)" width="90" x="648" y="255">
-        <parameter key="process_location" value="//seage/processes/blocks/AlgorithmInstancePivotTable"/>
-        <parameter key="use_input" value="true"/>
-        <parameter key="store_output" value="false"/>
-        <parameter key="propagate_metadata_recursively" value="true"/>
-        <parameter key="cache_process" value="true"/>
-        <list key="macros">
-          <parameter key="myAttribute" value="BestSolutionValue"/>
-          <parameter key="myFunction" value="minimum"/>
-        </list>
-      </operator>
-      <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="SingleAlgorithmEvolution" width="90" x="782" y="255">
-        <list key="function_descriptions"/>
-        <parameter key="use_standard_constants" value="true"/>
-        <parameter key="keep_all" value="true"/>
-      </operator>
-      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute AlgorithmInstancePivotTable (4)" width="90" x="648" y="345">
+      <operator activated="true" class="execute_process" compatibility="5.3.015" expanded="true" height="76" name="Execute AlgorithmInstancePivotTable (2)" width="90" x="648" y="165">
         <parameter key="process_location" value="//seage/processes/blocks/AlgorithmInstancePivotTable"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
@@ -121,7 +89,39 @@
           <parameter key="myFunction" value="minimum"/>
         </list>
       </operator>
-      <operator activated="true" class="generate_attributes" compatibility="5.3.013" expanded="true" height="76" name="ExperimentID_" width="90" x="782" y="345">
+      <operator activated="true" class="generate_attributes" compatibility="5.3.015" expanded="true" height="76" name="SingleAlgorithmFeedback" width="90" x="782" y="165">
+        <list key="function_descriptions"/>
+        <parameter key="use_standard_constants" value="true"/>
+        <parameter key="keep_all" value="true"/>
+      </operator>
+      <operator activated="true" class="execute_process" compatibility="5.3.015" expanded="true" height="76" name="Execute AlgorithmInstancePivotTable (3)" width="90" x="648" y="255">
+        <parameter key="process_location" value="//seage/processes/blocks/AlgorithmInstancePivotTable"/>
+        <parameter key="use_input" value="true"/>
+        <parameter key="store_output" value="false"/>
+        <parameter key="propagate_metadata_recursively" value="true"/>
+        <parameter key="cache_process" value="true"/>
+        <list key="macros">
+          <parameter key="myAttribute" value="bestSolutionValue"/>
+          <parameter key="myFunction" value="minimum"/>
+        </list>
+      </operator>
+      <operator activated="true" class="generate_attributes" compatibility="5.3.015" expanded="true" height="76" name="SingleAlgorithmEvolution" width="90" x="782" y="255">
+        <list key="function_descriptions"/>
+        <parameter key="use_standard_constants" value="true"/>
+        <parameter key="keep_all" value="true"/>
+      </operator>
+      <operator activated="true" class="execute_process" compatibility="5.3.015" expanded="true" height="76" name="Execute AlgorithmInstancePivotTable (4)" width="90" x="648" y="345">
+        <parameter key="process_location" value="//seage/processes/blocks/AlgorithmInstancePivotTable"/>
+        <parameter key="use_input" value="true"/>
+        <parameter key="store_output" value="false"/>
+        <parameter key="propagate_metadata_recursively" value="true"/>
+        <parameter key="cache_process" value="true"/>
+        <list key="macros">
+          <parameter key="myAttribute" value="bestSolutionValue"/>
+          <parameter key="myFunction" value="minimum"/>
+        </list>
+      </operator>
+      <operator activated="true" class="generate_attributes" compatibility="5.3.015" expanded="true" height="76" name="ExperimentID_" width="90" x="782" y="345">
         <list key="function_descriptions"/>
         <parameter key="use_standard_constants" value="true"/>
         <parameter key="keep_all" value="true"/>

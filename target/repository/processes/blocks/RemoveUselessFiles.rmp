@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.3.013">
+  <context>
+    <input/>
+    <output/>
+    <macros>
+      <macro>
+        <key>DBPATH</key>
+        <value>/home/rick/Projects/seage/target/database/seage</value>
+      </macro>
+    </macros>
+  </context>
+  <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="execute_process" compatibility="5.3.013" expanded="true" height="76" name="Execute UselessExperiments" width="90" x="112" y="75">
+        <parameter key="process_location" value="UselessExperiments"/>
+        <parameter key="use_input" value="true"/>
+        <parameter key="store_output" value="false"/>
+        <parameter key="propagate_metadata_recursively" value="true"/>
+        <parameter key="cache_process" value="true"/>
+        <list key="macros"/>
+      </operator>
+      <operator activated="true" class="filter_examples" compatibility="5.3.013" expanded="true" height="76" name="Filter Examples" width="90" x="313" y="255">
+        <parameter key="condition_class" value="attribute_value_filter"/>
+        <parameter key="parameter_string" value="failure &gt; 0.5"/>
+        <parameter key="invert_filter" value="false"/>
+      </operator>
+      <operator activated="true" class="write_csv" compatibility="5.3.013" expanded="true" height="76" name="Write CSV" width="90" x="514" y="255">
+        <parameter key="csv_file" value="/home/rick/Projects/seage/target/output/fail.txt"/>
+        <parameter key="column_separator" value=";"/>
+        <parameter key="write_attribute_names" value="true"/>
+        <parameter key="quote_nominal_values" value="true"/>
+        <parameter key="format_date_attributes" value="true"/>
+        <parameter key="append_to_file" value="false"/>
+        <parameter key="encoding" value="SYSTEM"/>
+      </operator>
+      <operator activated="false" class="loop_examples" compatibility="5.3.013" expanded="true" height="76" name="Loop Examples" width="90" x="380" y="30">
+        <parameter key="iteration_macro" value="example"/>
+        <process expanded="true">
+          <operator activated="true" class="extract_macro" compatibility="5.3.013" expanded="true" height="60" name="Extract Macro" width="90" x="112" y="30">
+            <parameter key="macro" value="failure"/>
+            <parameter key="macro_type" value="data_value"/>
+            <parameter key="statistics" value="average"/>
+            <parameter key="attribute_name" value="failure"/>
+            <parameter key="example_index" value="%{example}"/>
+            <list key="additional_macros"/>
+          </operator>
+          <operator activated="true" class="branch" compatibility="5.3.013" expanded="true" height="94" name="Branch" width="90" x="380" y="30">
+            <parameter key="condition_type" value="expression"/>
+            <parameter key="condition_value" value="%{failure} &gt; 0.5"/>
+            <parameter key="io_object" value="ANOVAMatrix"/>
+            <parameter key="return_inner_output" value="true"/>
+            <process expanded="true">
+              <operator activated="true" class="print_to_console" compatibility="5.3.013" expanded="true" height="76" name="Print to Console" width="90" x="179" y="30">
+                <parameter key="log_value" value="%{failure}"/>
+              </operator>
+              <connect from_port="input 1" to_op="Print to Console" to_port="through 1"/>
+              <connect from_op="Print to Console" from_port="through 1" to_port="input 1"/>
+              <portSpacing port="source_condition" spacing="0"/>
+              <portSpacing port="source_input 1" spacing="0"/>
+              <portSpacing port="source_input 2" spacing="0"/>
+              <portSpacing port="sink_input 1" spacing="0"/>
+              <portSpacing port="sink_input 2" spacing="0"/>
+            </process>
+            <process expanded="true">
+              <portSpacing port="source_condition" spacing="0"/>
+              <portSpacing port="source_input 1" spacing="0"/>
+              <portSpacing port="source_input 2" spacing="0"/>
+              <portSpacing port="sink_input 1" spacing="0"/>
+              <portSpacing port="sink_input 2" spacing="0"/>
+            </process>
+          </operator>
+          <connect from_port="example set" to_op="Extract Macro" to_port="example set"/>
+          <connect from_op="Extract Macro" from_port="example set" to_op="Branch" to_port="input 1"/>
+          <portSpacing port="source_example set" spacing="0"/>
+          <portSpacing port="sink_example set" spacing="0"/>
+          <portSpacing port="sink_output 1" spacing="0"/>
+        </process>
+      </operator>
+      <connect from_op="Execute UselessExperiments" from_port="result 1" to_op="Filter Examples" to_port="example set input"/>
+      <connect from_op="Filter Examples" from_port="example set output" to_op="Write CSV" to_port="input"/>
+      <connect from_op="Write CSV" from_port="through" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>
