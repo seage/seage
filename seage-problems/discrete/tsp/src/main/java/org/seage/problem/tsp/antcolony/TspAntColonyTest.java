@@ -81,7 +81,13 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 
     public void run(String path) throws Exception
     {
-        City[] cities = CityProvider.readCities(new FileInputStream(path));
+        //City[] cities = CityProvider.readCities(new FileInputStream(path));
+    	City[] cities = new City[4];
+    	cities[0] = new City(1, 0.0, 0.0);
+    	cities[1] = new City(2, 0.0, 1.0);
+    	cities[2] = new City(3, 1.0, 0.0);
+    	cities[3] = new City(4, 1.0, 1.0);
+    	
         _edges = cities.length * (cities.length - 1) / 2;
         int iterations = 10000;
         //		int numAnts = 500;

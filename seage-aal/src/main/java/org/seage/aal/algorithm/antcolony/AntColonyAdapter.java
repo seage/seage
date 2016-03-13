@@ -27,6 +27,8 @@ package org.seage.aal.algorithm.antcolony;
 
 
 
+import java.util.List;
+
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
@@ -38,6 +40,7 @@ import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
+import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 
 /**
@@ -174,7 +177,7 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
                 _reporter.putNewSolution(System.currentTimeMillis(),
                         alg.getCurrentIteration(),
                         alg.getGlobalBest(),
-                        "TBD");
+                        createNodeListString(alg.getBestPath()));
             }
             catch (Exception ex)
             {
@@ -193,6 +196,27 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
             if (e.getAntColony().getCurrentIteration() == 1)
                 _initialSolutionValue = e.getAntColony().getGlobalBest();
         }
+        
+        private String createNodeListString(List<Edge> bestPath) 
+        {
+        	Integer[] nodeIDs = new Integer[bestPath.size() + 1];
+        	String result = "";
+            nodeIDs[0] = bestPath.get(0).getNode1().getID();
+            if(nodeIDs[0]!=bestPath.get(1).getNode1().getID() || nodeIDs[0]!=bestPath.get(1).getNode2().getID())
+            	nodeIDs[0] = bestPath.get(0).getNode2().getID();
+            for (int i = 1; i < nodeIDs.length - 1; i++)
+            {
+                nodeIDs[i] = bestPath.get(i).getNode1().getID();
+                if (i > 0 && nodeIDs[i - 1] == nodeIDs[i])
+                {
+                    nodeIDs[i] = bestPath.get(i).getNode2().getID();
+                }
+                result += nodeIDs[i] + " ";
+            }
+            nodeIDs[nodeIDs.length - 1] = nodeIDs[0];
+            
+            return result;
+    	}
 
     }
 

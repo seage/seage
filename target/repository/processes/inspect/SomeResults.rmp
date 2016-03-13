@@ -24,16 +24,16 @@
         <parameter key="parameter_string" value="nrOfNewSolutions &gt; 5"/>
         <parameter key="invert_filter" value="false"/>
       </operator>
-      <operator activated="true" class="join" compatibility="5.3.015" expanded="true" height="76" name="Join" width="90" x="514" y="165">
+      <operator activated="true" class="join" compatibility="5.3.015" expanded="true" height="76" name="Join" width="90" x="380" y="165">
         <parameter key="remove_double_attributes" value="true"/>
-        <parameter key="join_type" value="inner"/>
+        <parameter key="join_type" value="right"/>
         <parameter key="use_id_attribute_as_key" value="false"/>
         <list key="key_attributes">
           <parameter key="experimentID" value="experimentID"/>
         </list>
         <parameter key="keep_both_join_attributes" value="false"/>
       </operator>
-      <operator activated="true" class="aggregate" compatibility="5.3.015" expanded="true" height="76" name="Aggregate" width="90" x="715" y="165">
+      <operator activated="true" class="aggregate" compatibility="5.3.015" expanded="true" height="76" name="Aggregate" width="90" x="514" y="165">
         <parameter key="use_default_aggregation" value="false"/>
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
@@ -57,12 +57,17 @@
         <parameter key="only_distinct" value="false"/>
         <parameter key="ignore_missings" value="true"/>
       </operator>
+      <operator activated="true" class="sort" compatibility="5.3.015" expanded="true" height="76" name="Sort" width="90" x="648" y="75">
+        <parameter key="attribute_name" value="experimentID"/>
+        <parameter key="sorting_direction" value="decreasing"/>
+      </operator>
       <connect from_op="Retrieve PUBLIC.Experiments" from_port="output" to_op="Join" to_port="left"/>
       <connect from_op="Retrieve PUBLIC.ExperimentTasks" from_port="output" to_op="Filter Examples" to_port="example set input"/>
       <connect from_op="Filter Examples" from_port="example set output" to_op="Join" to_port="right"/>
       <connect from_op="Join" from_port="join" to_op="Aggregate" to_port="example set input"/>
-      <connect from_op="Aggregate" from_port="example set output" to_port="result 1"/>
+      <connect from_op="Aggregate" from_port="example set output" to_op="Sort" to_port="example set input"/>
       <connect from_op="Aggregate" from_port="original" to_port="result 2"/>
+      <connect from_op="Sort" from_port="example set output" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
