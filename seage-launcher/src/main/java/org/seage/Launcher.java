@@ -29,6 +29,7 @@ import java.util.Map;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
+import org.seage.experimenter.multialgorithm.MultiAlgorithmExperimenter;
 import org.seage.experimenter.reporting.h2.ExperimentDataH2Importer;
 import org.seage.experimenter.reporting.rapidminer.ExperimentDataRapidMinerImporter;
 import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;
@@ -181,6 +182,11 @@ public class Launcher
         //            }
         //            return;
         //        }
+        
+        if (args[0].equals("-experiment-multi-random"))
+        {
+        	new MultiAlgorithmExperimenter("").runExperiment(null, null, null);
+        }
 
         if (args[0].equals("-agents"))
         {
