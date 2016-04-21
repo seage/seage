@@ -5,7 +5,6 @@ import java.io.FilenameFilter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Date;
 import java.util.HashSet;
 
 import org.seage.experimenter.reporting.IDocumentProcessor;

@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import org.seage.launcher.commands.Command;
+import org.seage.launcher.commands.ExperimentMultiRandomCommand;
 import org.seage.launcher.commands.ExperimentSingleEvolutionCommand;
 import org.seage.launcher.commands.ExperimentSingleFeedbackCommand;
 import org.seage.launcher.commands.ExperimentSingleRandomCommand;
@@ -32,9 +33,10 @@ public class Launcher
 			HashMap<String, Command> commands = new LinkedHashMap<>();
 			commands.put("list", new ListCommand());
 			commands.put("report", new ReportCommand());
-			commands.put("experiment-single-random", new ExperimentSingleRandomCommand());
+			commands.put("experiment-single-random", new ExperimentSingleRandomCommand());			
 			commands.put("experiment-single-feedback", new ExperimentSingleFeedbackCommand());
 			commands.put("experiment-single-evolution", new ExperimentSingleEvolutionCommand());
+			commands.put("experiment-multi-random", new ExperimentMultiRandomCommand());
 			
 			Launcher launcher = new Launcher();
 			

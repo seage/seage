@@ -25,7 +25,6 @@
  */
 package org.seage.problem.tsp.antcolony;
 
-import java.io.FileInputStream;
 import java.util.List;
 
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -36,7 +35,6 @@ import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.TspPhenotypeEvaluator;
 
 /**

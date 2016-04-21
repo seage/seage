@@ -56,7 +56,7 @@ public abstract class Experimenter
         throw new Exception("Not implemented");
     }
 
-    public void runExperiment(String problemID, String[] instanceIDs, String[] algorithmIDs) throws Exception
+    public final void runExperiment(String problemID, String[] instanceIDs, String[] algorithmIDs) throws Exception
     {
         ProblemInfo problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
 

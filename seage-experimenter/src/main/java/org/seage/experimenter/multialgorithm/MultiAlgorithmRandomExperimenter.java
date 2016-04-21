@@ -6,10 +6,10 @@ import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.experimenter.Experimenter;
 
-public class MultiAlgorithmExperimenter extends Experimenter 
+public class MultiAlgorithmRandomExperimenter extends Experimenter 
 {
 
-	public MultiAlgorithmExperimenter(String experimentName) 
+	public MultiAlgorithmRandomExperimenter(String experimentName) 
 	{
 		super(experimentName);
 		// TODO Auto-generated constructor stub
