@@ -1,4 +1,4 @@
-package org.seage.experimenter.reporting.h2.tablecreator;
+package org.seage.knowledgebase.importing.db.tablecreator;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashSet;
 
-import org.seage.experimenter.reporting.IDocumentProcessor;
+import org.seage.knowledgebase.importing.IDocumentProcessor;
 import org.w3c.dom.Document;
 
 public class ExperimentsTableCreator extends H2DataTableCreator implements IDocumentProcessor
@@ -23,7 +23,7 @@ public class ExperimentsTableCreator extends H2DataTableCreator implements IDocu
         _expLogsPath = expLogsPath;
 
         String queryDropExperiments = "DROP ALL OBJECTS";
-        String queryCreateExperiments = "CREATE TABLE IF NOT EXISTS Experiments (date TIMESTAMP, experimentID VARCHAR PRIMARY KEY, experimentType VARCHAR, computerName VARCHAR)";
+        String queryCreateExperiments = "CREATE TABLE Experiments (date TIMESTAMP, experimentID VARCHAR PRIMARY KEY, experimentType VARCHAR, computerName VARCHAR)";
         String queryInsert = "INSERT INTO Experiments VALUES (?, ?, ?, ?)";
 
         Statement stmt = _conn.createStatement();

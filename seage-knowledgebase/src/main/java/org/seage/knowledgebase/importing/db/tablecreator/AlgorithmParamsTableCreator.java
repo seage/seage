@@ -1,11 +1,11 @@
-package org.seage.experimenter.reporting.h2.tablecreator;
+package org.seage.knowledgebase.importing.db.tablecreator;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.Hashtable;
 
 import org.seage.data.xml.XmlHelper;
-import org.seage.experimenter.reporting.IDocumentProcessor;
+import org.seage.knowledgebase.importing.IDocumentProcessor;
 import org.w3c.dom.Document;
 
 public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator implements IDocumentProcessor
@@ -46,7 +46,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         {
             super(dbPath, "GeneticAlgorithm");
 
-            String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_GeneticAlgorithm" +
+            String queryCreate = "CREATE TABLE AlgorithmParams_GeneticAlgorithm" +
                     "(" +
                     "configID VARCHAR," +
                     "crossLengthPct DOUBLE," +
@@ -112,7 +112,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         {
             super(dbPath, "TabuSearch");
 
-            String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_TabuSearch" +
+            String queryCreate = "CREATE TABLE AlgorithmParams_TabuSearch" +
                     "(" +
                     "configID VARCHAR," +
                     "iterationCount DOUBLE," +
@@ -174,7 +174,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         {
             super(dbPath, "AntColony");
 
-            String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_AntColony" +
+            String queryCreate = "CREATE TABLE AlgorithmParams_AntColony" +
                     "(" +
                     "configID VARCHAR," +
                     "alpha DOUBLE," +
@@ -238,7 +238,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         {
             super(dbPath, "SimulatedAnnealing");
 
-            String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_SimulatedAnnealing" +
+            String queryCreate = "CREATE TABLE AlgorithmParams_SimulatedAnnealing" +
                     "(" +
                     "configID VARCHAR," +
                     //"annealCoeficient DOUBLE,"+

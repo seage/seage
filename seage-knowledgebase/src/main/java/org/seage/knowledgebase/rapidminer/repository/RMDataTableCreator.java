@@ -23,14 +23,14 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.experimenter.reporting.rapidminer.repository;
+package org.seage.knowledgebase.rapidminer.repository;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 import org.seage.data.xml.XmlHelper;
-import org.seage.experimenter.reporting.IDocumentProcessor;
+import org.seage.knowledgebase.importing.IDocumentProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

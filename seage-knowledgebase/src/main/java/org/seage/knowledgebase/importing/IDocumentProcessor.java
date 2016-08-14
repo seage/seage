@@ -1,4 +1,4 @@
-package org.seage.experimenter.reporting;
+package org.seage.knowledgebase.importing;
 
 import org.w3c.dom.Document;
 

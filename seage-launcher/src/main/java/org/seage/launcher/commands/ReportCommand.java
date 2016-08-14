@@ -1,6 +1,6 @@
 package org.seage.launcher.commands;
 
-import org.seage.experimenter.reporting.h2.ExperimentDataH2Importer;
+import org.seage.knowledgebase.importing.db.ExperimentDataH2Importer;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;

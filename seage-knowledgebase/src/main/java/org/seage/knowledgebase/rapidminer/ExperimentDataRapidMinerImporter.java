@@ -1,15 +1,14 @@
-package org.seage.experimenter.reporting.rapidminer;
+package org.seage.knowledgebase.rapidminer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seage.experimenter._obsolete.ProcessPerformer;
-import org.seage.experimenter.reporting.IDocumentProcessor;
-import org.seage.experimenter.reporting.ProcessExperimentZipFileTask;
-import org.seage.experimenter.reporting.rapidminer.repository.AlgorithmParamsTableCreator;
-import org.seage.experimenter.reporting.rapidminer.repository.RMDataTableCreator;
-import org.seage.experimenter.reporting.rapidminer.repository.SingleAlgorithmTableCreator;
+import org.seage.knowledgebase.importing.IDocumentProcessor;
+import org.seage.knowledgebase.importing.ProcessExperimentZipFileTask;
+import org.seage.knowledgebase.rapidminer.repository.AlgorithmParamsTableCreator;
+import org.seage.knowledgebase.rapidminer.repository.RMDataTableCreator;
+import org.seage.knowledgebase.rapidminer.repository.SingleAlgorithmTableCreator;
 import org.seage.thread.TaskRunnerEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,8 +76,7 @@ public class ExperimentDataRapidMinerImporter
 
         long t1 = (System.currentTimeMillis() - t0) / 1000;
 
-        LoggerFactory.getLogger(ProcessPerformer.class.getName()).info(
-                "Processing experiment logs DONE - " + t1 + "s");
+        _logger.info("Processing experiment logs DONE - " + t1 + "s");
     }
 
     private void writeDataTablesToRepository() throws OperatorException, OperatorCreationException, RepositoryException

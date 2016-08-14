@@ -1,4 +1,4 @@
-package org.seage.experimenter.reporting.rapidminer.repository;
+package org.seage.knowledgebase.rapidminer.repository;
 
 import java.util.Hashtable;
 

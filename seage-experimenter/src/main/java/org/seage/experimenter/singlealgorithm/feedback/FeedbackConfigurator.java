@@ -9,8 +9,8 @@ import org.seage.data.DataNode;
 import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.config.Configurator;
-import org.seage.experimenter.reporting.rapidminer.RapidMinerManager;
 import org.seage.experimenter.singlealgorithm.random.RandomConfigurator;
+import org.seage.knowledgebase.rapidminer.RapidMinerManager;
 
 import com.rapidminer.Process;
 import com.rapidminer.RepositoryProcessLocation;

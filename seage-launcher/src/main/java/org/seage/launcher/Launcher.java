@@ -32,7 +32,7 @@ public class Launcher
 		{
 			HashMap<String, Command> commands = new LinkedHashMap<>();
 			commands.put("list", new ListCommand());
-			commands.put("report", new ReportCommand());
+                        commands.put("report", new ReportCommand());
 			commands.put("experiment-single-random", new ExperimentSingleRandomCommand());			
 			commands.put("experiment-single-feedback", new ExperimentSingleFeedbackCommand());
 			commands.put("experiment-single-evolution", new ExperimentSingleEvolutionCommand());

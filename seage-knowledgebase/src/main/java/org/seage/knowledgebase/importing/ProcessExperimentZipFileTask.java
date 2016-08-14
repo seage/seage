@@ -1,4 +1,4 @@
-package org.seage.experimenter.reporting;
+package org.seage.knowledgebase.importing;
 
 import java.io.File;
 import java.io.IOException;

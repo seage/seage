@@ -1,11 +1,11 @@
-package org.seage.experimenter.reporting.h2.tablecreator;
+package org.seage.knowledgebase.importing.db.tablecreator;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.Hashtable;
 
 import org.seage.data.xml.XmlHelper;
-import org.seage.experimenter.reporting.IDocumentProcessor;
+import org.seage.knowledgebase.importing.IDocumentProcessor;
 import org.w3c.dom.Document;
 
 public class ExperimentTasksTableCreator extends H2DataTableCreator implements IDocumentProcessor
@@ -60,7 +60,7 @@ public class ExperimentTasksTableCreator extends H2DataTableCreator implements I
         _versionedXPaths.put("0.5", v05);
         _versionedXPaths.put("0.6", v05);
 
-        String queryCreate = "CREATE TABLE IF NOT EXISTS ExperimentTasks" +
+        String queryCreate = "CREATE TABLE ExperimentTasks" +
                 "(" +
                 "fileName VARCHAR," +
                 "experimentID VARCHAR," +                

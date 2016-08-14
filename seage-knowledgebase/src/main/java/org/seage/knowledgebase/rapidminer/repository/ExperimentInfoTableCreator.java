@@ -1,6 +1,6 @@
-package org.seage.experimenter.reporting.rapidminer.repository;
+package org.seage.knowledgebase.rapidminer.repository;
 
-import org.seage.experimenter.reporting.IDocumentProcessor;
+import org.seage.knowledgebase.importing.IDocumentProcessor;
 import org.w3c.dom.Document;
 
 public class ExperimentInfoTableCreator extends RMDataTableCreator implements IDocumentProcessor

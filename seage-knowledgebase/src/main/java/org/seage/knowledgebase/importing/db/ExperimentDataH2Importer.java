@@ -1,4 +1,4 @@
-package org.seage.experimenter.reporting.h2;
+package org.seage.knowledgebase.importing.db;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import org.seage.experimenter.reporting.IDocumentProcessor;
-import org.seage.experimenter.reporting.ProcessExperimentZipFileTask;
-import org.seage.experimenter.reporting.h2.tablecreator.AlgorithmParamsTableCreator;
-import org.seage.experimenter.reporting.h2.tablecreator.ExperimentTasksTableCreator;
-import org.seage.experimenter.reporting.h2.tablecreator.ExperimentsTableCreator;
-import org.seage.experimenter.reporting.h2.tablecreator.H2DataTableCreator;
+import org.seage.knowledgebase.importing.IDocumentProcessor;
+import org.seage.knowledgebase.importing.ProcessExperimentZipFileTask;
+import org.seage.knowledgebase.importing.db.tablecreator.AlgorithmParamsTableCreator;
+import org.seage.knowledgebase.importing.db.tablecreator.ExperimentTasksTableCreator;
+import org.seage.knowledgebase.importing.db.tablecreator.ExperimentsTableCreator;
+import org.seage.knowledgebase.importing.db.tablecreator.H2DataTableCreator;
 import org.seage.thread.TaskRunnerEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

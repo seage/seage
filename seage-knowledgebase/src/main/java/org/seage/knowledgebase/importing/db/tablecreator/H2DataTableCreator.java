@@ -1,4 +1,4 @@
-package org.seage.experimenter.reporting.h2.tablecreator;
+package org.seage.knowledgebase.importing.db.tablecreator;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,8 +21,11 @@ public abstract class H2DataTableCreator
 
     protected Connection createConnection(String dbPath) throws Exception
     {
-        Class.forName("org.h2.Driver");
-        return DriverManager.getConnection("jdbc:h2:" + dbPath + ";DATABASE_TO_UPPER=FALSE", "sa", "sa");
+        //Class.forName("org.h2.Driver");
+        //return DriverManager.getConnection("jdbc:h2:" + dbPath + ";DATABASE_TO_UPPER=FALSE", "sa", "sa");
+        
+        Class.forName("org.hsqldb.jdbcDriver");
+        return DriverManager.getConnection("jdbc:hsqldb:file:"+dbPath+"testdb", "sa", "");
     }
 
     public void close() throws SQLException

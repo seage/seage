@@ -16,6 +16,7 @@
 		<module>seage-misc</module>
 		<module>seage-metaheuristics</module>
 		<module>seage-experimenter</module>
+		<module>seage-knowledgebase</module>
 		<module>seage-problems/discrete/tsp</module>
 		<module>seage-problems/discrete/qap</module>
 		<module>seage-problems/discrete/sat</module>
