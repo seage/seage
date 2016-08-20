@@ -5,7 +5,9 @@ import java.util.List;
 import org.seage.experimenter.multialgorithm.MultiAlgorithmRandomExperimenter;
 
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 
+@Parameters( commandDescription = "Perform multi random experiment")
 public class ExperimentMultiRandomCommand extends Command
 {
     @Parameter(names = "-n", required = true, description = "Number of random configs per each experiment")

@@ -29,10 +29,10 @@ public class Launcher
 	public static void main(String[] args) 
 	{
 		try
-		{
+		{		    
 			HashMap<String, Command> commands = new LinkedHashMap<>();
 			commands.put("list", new ListCommand());
-                        commands.put("report", new ReportCommand());
+			commands.put("report", new ReportCommand());
 			commands.put("experiment-single-random", new ExperimentSingleRandomCommand());			
 			commands.put("experiment-single-feedback", new ExperimentSingleFeedbackCommand());
 			commands.put("experiment-single-evolution", new ExperimentSingleEvolutionCommand());
@@ -43,8 +43,11 @@ public class Launcher
 			JCommander jc = new JCommander(launcher);
 			for(Entry<String, Command> e : commands.entrySet())
 				jc.addCommand(e.getKey(), e.getValue());
-			jc.parse(args);
-			if(args.length == 0 || launcher.help)
+						
+			if(args != null)
+			    jc.parse(args);
+			
+			if(args == null || args.length == 0 || launcher.help)
 			{
 				jc.usage();
 				return;
