@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 
 
 public class Launcher 
@@ -53,6 +54,11 @@ public class Launcher
 				return;
 			}		
 			launcher.run(commands.get(jc.getParsedCommand()));
+		}
+		catch(ParameterException ex)
+		{
+		    _logger.error(ex.getMessage());
+		    _logger.error("Try to use --help");
 		}
 		catch(Exception ex)
 		{
