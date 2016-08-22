@@ -1,4 +1,4 @@
-package org.seage;
+package org.seage.launcher;
 
 import org.junit.Test;
 import org.seage.launcher.Launcher;
