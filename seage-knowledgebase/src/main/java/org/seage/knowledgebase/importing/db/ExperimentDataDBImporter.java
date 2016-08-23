@@ -11,33 +11,33 @@ import org.seage.knowledgebase.importing.ProcessExperimentZipFileTask;
 import org.seage.knowledgebase.importing.db.tablecreator.AlgorithmParamsTableCreator;
 import org.seage.knowledgebase.importing.db.tablecreator.ExperimentTasksTableCreator;
 import org.seage.knowledgebase.importing.db.tablecreator.ExperimentsTableCreator;
-import org.seage.knowledgebase.importing.db.tablecreator.H2DataTableCreator;
+import org.seage.knowledgebase.importing.db.tablecreator.DataTableCreator;
 import org.seage.thread.TaskRunnerEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ExperimentDataH2Importer
+public class ExperimentDataDBImporter
 {
-    private static Logger _logger = LoggerFactory.getLogger(ExperimentDataH2Importer.class.getName());
+    private static Logger _logger = LoggerFactory.getLogger(ExperimentDataDBImporter.class.getName());
     private String _logPath;
     private String _dbPath;
     private ExperimentsTableCreator _expperimentsTableCreator;
-    private List<H2DataTableCreator> _h2DataTableCreators;
+    private List<DataTableCreator> _dataTableCreators;
 
-    public ExperimentDataH2Importer(String logPath, String dbPath, boolean clean) throws Exception
+    public ExperimentDataDBImporter(String logPath, String dbPath, boolean clean) throws Exception
     {
         _logPath = logPath;
         _dbPath = dbPath;
 
         _expperimentsTableCreator = new ExperimentsTableCreator(_logPath, _dbPath, clean);
 
-        _h2DataTableCreators = new ArrayList<H2DataTableCreator>();
-        _h2DataTableCreators.add(_expperimentsTableCreator);
-        _h2DataTableCreators.add(new ExperimentTasksTableCreator(dbPath));
-        _h2DataTableCreators.add(new AlgorithmParamsTableCreator.GeneticAlgorithm(dbPath));
-        _h2DataTableCreators.add(new AlgorithmParamsTableCreator.TabuSearch(dbPath));
-        _h2DataTableCreators.add(new AlgorithmParamsTableCreator.SimulatedAnnealing(dbPath));
-        _h2DataTableCreators.add(new AlgorithmParamsTableCreator.AntColony(dbPath));
+        _dataTableCreators = new ArrayList<DataTableCreator>();
+        _dataTableCreators.add(_expperimentsTableCreator);
+        _dataTableCreators.add(new ExperimentTasksTableCreator(dbPath));
+        _dataTableCreators.add(new AlgorithmParamsTableCreator.GeneticAlgorithm(dbPath));
+        _dataTableCreators.add(new AlgorithmParamsTableCreator.TabuSearch(dbPath));
+        _dataTableCreators.add(new AlgorithmParamsTableCreator.SimulatedAnnealing(dbPath));
+        _dataTableCreators.add(new AlgorithmParamsTableCreator.AntColony(dbPath));
     }
 
     public void processLogs() throws Exception
@@ -53,7 +53,7 @@ public class ExperimentDataH2Importer
         }
         finally
         {
-            for (H2DataTableCreator tc : _h2DataTableCreators)
+            for (DataTableCreator tc : _dataTableCreators)
                 tc.close();
         }
         long t1 = (System.currentTimeMillis() - t0) / 1000;
@@ -66,24 +66,24 @@ public class ExperimentDataH2Importer
     {
         File logDir = new File(_logPath);
         List<Runnable> tasks = new ArrayList<Runnable>();
-        int fileCount = 0;
+        File[] files = logDir.listFiles(new ZipFileFilter(ids));
+        int fileCount = files == null ? 0 : files.length;
         try
         {
-            for (File f : logDir.listFiles(new ZipFileFilter(ids)))
-            {
-                fileCount++;
-                tasks.add(
-                        new ProcessExperimentZipFileTask((List<IDocumentProcessor>) (List<?>) _h2DataTableCreators, f));
-                //_logger.info(f.getName());
+            for (int i=0;i<fileCount;i++)
+            {                
+                tasks.add(new ProcessExperimentZipFileTask((List<IDocumentProcessor>) (List<?>) _dataTableCreators, files[i]));                
             }
             new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(tasks.toArray(new Runnable[] {}));
         }
         catch (Exception ex)
         {
-            _logger.error( ex.getMessage());
+            _logger.error( ex.getMessage(), ex);
         }
-
-        _logger.info("Files processed: " + fileCount);
+        if(fileCount == 0)
+            _logger.info("No zip files found to process");
+        else
+            _logger.info("Files processed: " + fileCount);
     }
 
     private class ZipFileFilter implements FilenameFilter

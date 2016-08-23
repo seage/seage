@@ -10,7 +10,7 @@ import java.util.HashSet;
 import org.seage.knowledgebase.importing.IDocumentProcessor;
 import org.w3c.dom.Document;
 
-public class ExperimentsTableCreator extends H2DataTableCreator implements IDocumentProcessor
+public class ExperimentsTableCreator extends DataTableCreator implements IDocumentProcessor
 {
     //protected Connection _conn;
     private String _expLogsPath;
@@ -22,8 +22,9 @@ public class ExperimentsTableCreator extends H2DataTableCreator implements IDocu
         super(dbPath);
         _expLogsPath = expLogsPath;
 
-        String queryDropExperiments = "DROP ALL OBJECTS";
-        String queryCreateExperiments = "CREATE TABLE Experiments (date TIMESTAMP, experimentID VARCHAR PRIMARY KEY, experimentType VARCHAR, computerName VARCHAR)";
+        //String queryDropExperiments = "DROP TABLE Experiments IF EXISTS";
+        String queryDropExperiments = "DROP SCHEMA PUBLIC CASCADE";
+        String queryCreateExperiments = "CREATE TABLE IF NOT EXISTS Experiments (date TIMESTAMP, experimentID VARCHAR PRIMARY KEY, experimentType VARCHAR, computerName VARCHAR)";
         String queryInsert = "INSERT INTO Experiments VALUES (?, ?, ?, ?)";
 
         Statement stmt = _conn.createStatement();
@@ -48,6 +49,9 @@ public class ExperimentsTableCreator extends H2DataTableCreator implements IDocu
                 return fileName.endsWith(".zip");
             }
         });
+        
+        if(fl == null)
+            return _experimentIDs;
 
         for (File z : fl)
         {
@@ -56,12 +60,15 @@ public class ExperimentsTableCreator extends H2DataTableCreator implements IDocu
                 _experimentIDs.add(id);
         }
 
-        String queryCreateNewExperiments = "CREATE TEMP TABLE NewExperiments (ExperimentID BIGINT PRIMARY KEY)";
+        String queryDropNewExperiments = "DROP TABLE IF EXISTS NewExperiments";
+        String queryCreateNewExperiments = "CREATE MEMORY TABLE IF NOT EXISTS NewExperiments (ExperimentID VARCHAR PRIMARY KEY)";
         String queryInsert = "INSERT INTO NewExperiments VALUES (?)";
         String queryMinus = "SELECT ExperimentID FROM NewExperiments MINUS SELECT ExperimentID FROM Experiments";
 
         PreparedStatement stmt = null;
 
+        stmt = _conn.prepareStatement(queryDropNewExperiments);
+        stmt.execute();
         stmt = _conn.prepareStatement(queryCreateNewExperiments);
         stmt.execute();
 

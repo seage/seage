@@ -8,7 +8,7 @@ import org.seage.data.xml.XmlHelper;
 import org.seage.knowledgebase.importing.IDocumentProcessor;
 import org.w3c.dom.Document;
 
-public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator implements IDocumentProcessor
+public abstract class AlgorithmParamsTableCreator extends DataTableCreator implements IDocumentProcessor
 {
     protected final String VERSION = "0.6";
     private Hashtable<String, String> _algParamsConfigIDs;
@@ -46,7 +46,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         {
             super(dbPath, "GeneticAlgorithm");
 
-            String queryCreate = "CREATE TABLE AlgorithmParams_GeneticAlgorithm" +
+            String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_GeneticAlgorithm" +
                     "(" +
                     "configID VARCHAR," +
                     "crossLengthPct DOUBLE," +
@@ -112,7 +112,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         {
             super(dbPath, "TabuSearch");
 
-            String queryCreate = "CREATE TABLE AlgorithmParams_TabuSearch" +
+            String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_TabuSearch" +
                     "(" +
                     "configID VARCHAR," +
                     "iterationCount DOUBLE," +
@@ -174,7 +174,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         {
             super(dbPath, "AntColony");
 
-            String queryCreate = "CREATE TABLE AlgorithmParams_AntColony" +
+            String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_AntColony" +
                     "(" +
                     "configID VARCHAR," +
                     "alpha DOUBLE," +
@@ -238,7 +238,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
         {
             super(dbPath, "SimulatedAnnealing");
 
-            String queryCreate = "CREATE TABLE AlgorithmParams_SimulatedAnnealing" +
+            String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_SimulatedAnnealing" +
                     "(" +
                     "configID VARCHAR," +
                     //"annealCoeficient DOUBLE,"+
@@ -246,7 +246,7 @@ public abstract class AlgorithmParamsTableCreator extends H2DataTableCreator imp
                     "maxTemperature DOUBLE," +
                     "minTemperature DOUBLE," +
                     //"maxOneStepAcceptedSolutions DOUBLE,"+
-                    "numSolutions DOUBLE," +
+                    "numSolutions DOUBLE" +
                     ")";
             String insertQuery = "INSERT INTO AlgorithmParams_SimulatedAnnealing VALUES(?,?,?,?,?)";
 

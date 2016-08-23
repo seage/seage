@@ -8,24 +8,25 @@ import java.util.Hashtable;
 import org.seage.data.xml.XmlHelper;
 import org.w3c.dom.Document;
 
-public abstract class H2DataTableCreator
+public abstract class DataTableCreator
 {
-    protected Connection _conn;
+    protected static Connection _conn;
     protected Hashtable<String, Hashtable<String, XmlHelper.XPath>> _versionedXPaths;
 
-    public H2DataTableCreator(String dbPath) throws Exception
+    public DataTableCreator(String dbPath) throws Exception
     {
-        _conn = createConnection(dbPath);
+        if(_conn == null)
+            _conn = createConnection(dbPath);
         _versionedXPaths = new Hashtable<String, Hashtable<String, XmlHelper.XPath>>();
     }
 
-    protected Connection createConnection(String dbPath) throws Exception
+    protected static Connection createConnection(String dbPath) throws Exception
     {
         //Class.forName("org.h2.Driver");
         //return DriverManager.getConnection("jdbc:h2:" + dbPath + ";DATABASE_TO_UPPER=FALSE", "sa", "sa");
         
         Class.forName("org.hsqldb.jdbcDriver");
-        return DriverManager.getConnection("jdbc:hsqldb:file:"+dbPath+"testdb", "sa", "");
+        return DriverManager.getConnection("jdbc:hsqldb:file:"+dbPath+"testdb;shutdown=true;hsqldb.large_data=true;", "sa", "");
     }
 
     public void close() throws SQLException

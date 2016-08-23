@@ -1,6 +1,6 @@
 package org.seage.launcher.commands;
 
-import org.seage.knowledgebase.importing.db.ExperimentDataH2Importer;
+import org.seage.knowledgebase.importing.db.ExperimentDataDBImporter;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -14,7 +14,7 @@ public class ReportCommand extends Command
     @Override
     public void performCommad() throws Exception 
     {
-        new ExperimentDataH2Importer("output/experiment-logs", "database/seage", clean).processLogs();
+        new ExperimentDataDBImporter("output/experiment-logs", "database/seage", clean).processLogs();
     }
 }
 
