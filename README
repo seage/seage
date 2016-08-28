@@ -1,1 +1,1 @@
-Go to the "seage.launcher/target" directory and run "build.sh" and "run.sh" scripts.
+Simply, run "sh target/build.sh" to build the project, then run "sh target/build.sh" to run launcher which will provide you some help.
