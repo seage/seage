@@ -43,7 +43,7 @@ public abstract class QapSolution extends Solution
     /**
      * Array of cities
      */
-    protected static Double[][][] _facilityLocation;
+    protected Double[][][] _facilityLocation;
 
     public QapSolution(Double[][][] facilityLocation)
     {
@@ -74,18 +74,12 @@ public abstract class QapSolution extends Solution
     @Override
     public QapSolution clone()
     {
-        QapSolution qapSolution = null;
-        try
-        {
-            qapSolution = (QapSolution) super.clone();
-            qapSolution.setAssign(_assign.clone());
-            qapSolution.setFacilityLocation(_facilityLocation);
-            qapSolution.setObjectiveValue(getObjectiveValue());
-        }
-        catch (Exception ex)
-        {
-            LoggerFactory.getLogger(QapSolution.class.getName()).error("QapSolution.clone()", ex);
-        }
+        QapSolution qapSolution = (QapSolution) super.clone();;
+
+        qapSolution.setAssign(_assign.clone());
+        qapSolution.setFacilityLocation(_facilityLocation);
+        qapSolution.setObjectiveValue(getObjectiveValue());
+
         return qapSolution;
     }
 

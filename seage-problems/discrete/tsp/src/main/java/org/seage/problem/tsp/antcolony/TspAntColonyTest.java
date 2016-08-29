@@ -133,7 +133,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
         for (int i = 1; i < tour.length - 1; i++)
         {
             tour[i] = bestPath.get(i).getNode1().getID();
-            if (i > 0 && tour[i - 1] == tour[i])
+            if (i > 0 && tour[i - 1].equals(tour[i]))
             {
                 tour[i] = bestPath.get(i).getNode2().getID();
             }

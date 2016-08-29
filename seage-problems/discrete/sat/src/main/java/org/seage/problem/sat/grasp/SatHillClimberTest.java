@@ -39,15 +39,15 @@ import org.seage.problem.sat.FormulaReader;
 public class SatHillClimberTest
 {
 
-    static Date _date;
-    static SimpleDateFormat _hours = new SimpleDateFormat("h");
-    static SimpleDateFormat _minutes = new SimpleDateFormat("m");
-    static SimpleDateFormat _seconds = new SimpleDateFormat("s");
-    static SimpleDateFormat _milisec = new SimpleDateFormat("S");
-    static int _h, _m, _s;
-    static double _actualTime, _ms;
+    private Date _date;
+    private SimpleDateFormat _hours = new SimpleDateFormat("h");
+    private SimpleDateFormat _minutes = new SimpleDateFormat("m");
+    private SimpleDateFormat _seconds = new SimpleDateFormat("s");
+    private SimpleDateFormat _milisec = new SimpleDateFormat("S");
+    private int _h, _m, _s;
+    private double _actualTime, _ms;
 
-    public static double getTime()
+    public double getTime()
     {
         _date = new Date();
         _h = Integer.parseInt(_hours.format(_date));
@@ -58,7 +58,7 @@ public class SatHillClimberTest
         return _actualTime;
     }
 
-    public static void testing1(Formula formula) throws Exception
+    public void testing1(Formula formula) throws Exception
     {
         SatObjectiveFunction objFce = new SatObjectiveFunction(formula);
         SatSolutionGenerator solGen;
@@ -127,7 +127,7 @@ public class SatHillClimberTest
         }
     }
 
-    public static void testing2(Formula formula) throws Exception
+    public void testing2(Formula formula) throws Exception
     {
         SatObjectiveFunction objFce = new SatObjectiveFunction(formula);
         SatMoveManager moveManager = new SatMoveManager();
@@ -162,9 +162,11 @@ public class SatHillClimberTest
     public static void main(String[] args) throws Exception
     {
         String path = "data/sat/uf100-01.cnf";
+        
+        SatHillClimberTest test = new SatHillClimberTest();
         Formula formula = new Formula(new ProblemInstanceInfo("uf20", ProblemInstanceOrigin.FILE, path),
                 FormulaReader.readClauses(new FileInputStream(path)));
 
-        testing2(formula);
+        test.testing2(formula);
     }
 }

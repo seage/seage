@@ -40,13 +40,13 @@ import org.seage.problem.qap.AssignmentProvider;
 public class QapFireflyOperator extends FireflyOperator
 {
 
-    static boolean _withDecreasingRandomness;
-    static double _initialIntensity;
-    static double _initialRandomness;
-    static double _finalRandomness;
-    static double _absorption;
-    static double _timeStep;
-    public static Double[][][] _facilityLocations;
+    boolean _withDecreasingRandomness;
+    double _initialIntensity;
+    double _initialRandomness;
+    double _finalRandomness;
+    double _absorption;
+    double _timeStep;
+    static Double[][][] _facilityLocations;
 
     public QapFireflyOperator()
     {
@@ -83,7 +83,7 @@ public class QapFireflyOperator extends FireflyOperator
         QapSolution qaps1 = (QapSolution) s1, qaps2 = (QapSolution) s2;
         for (int i = 0; i < qaps1.getAssign().length; i++)
         {
-            if (qaps1.getAssign()[i] != qaps2.getAssign()[i])
+            if (!qaps1.getAssign()[i].equals(qaps2.getAssign()[i]))
                 distance++;
         }
         return distance;
@@ -169,7 +169,7 @@ public class QapFireflyOperator extends FireflyOperator
      * @param gamma
      * @return
      */
-    public static Integer[] betaStep(Integer[] solution1, Integer[] solution2, double gamma)
+    public Integer[] betaStep(Integer[] solution1, Integer[] solution2, double gamma)
     {
         int length = solution1.length;
         Integer[] mutant = new Integer[length];
@@ -177,7 +177,7 @@ public class QapFireflyOperator extends FireflyOperator
         int distance = 0;
         for (int i = 0; i < solution1.length; i++)
         {
-            if (solution1[i] != solution2[i])
+            if (!solution1[i].equals(solution2[i]))
                 distance++;
         }
         double beta = _initialIntensity / (1 + gamma * Math.pow(distance, 2));
@@ -194,7 +194,7 @@ public class QapFireflyOperator extends FireflyOperator
         // extracting what is in common of both solutions
         for (int i = 0; i < length; i++)
         {
-            if (solution1[i] == solution2[i])
+            if (solution1[i].equals(solution2[i]))
             {
                 //                System.out.print("-"+i+", ");
                 mutant[i] = solution1[i];
@@ -261,7 +261,7 @@ public class QapFireflyOperator extends FireflyOperator
         Collections.shuffle(elements);
         for (Integer i : positions)
         {
-            while (solution[i] == elements.get(0) && elements.size() > 1)
+            while (solution[i].equals(elements.get(0)) && elements.size() > 1)
             {
                 Collections.shuffle(elements);
             }

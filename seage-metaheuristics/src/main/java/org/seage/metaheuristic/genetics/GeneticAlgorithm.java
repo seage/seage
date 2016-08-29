@@ -221,7 +221,7 @@ public class GeneticAlgorithm<S extends Subject<?>>
     {
         ArrayList<S> subjects = new ArrayList<S>(_population.getSubjects());
         Population<S> resultPopulation = new Population<S>();
-        if (numCrossSubject % 2 == 1)
+        if ((numCrossSubject & 1) == 1)
             numCrossSubject++;
         for (int i = 0; i < numCrossSubject / 2; i++)
         {

@@ -45,10 +45,9 @@ public class Launcher
 			for(Entry<String, Command> e : commands.entrySet())
 				jc.addCommand(e.getKey(), e.getValue());
 						
-			if(args != null)
-			    jc.parse(args);
+			jc.parse(args);
 			
-			if(args == null || args.length == 0 || launcher.help)
+			if(args.length == 0 || launcher.help)
 			{
 				jc.usage();
 				return;

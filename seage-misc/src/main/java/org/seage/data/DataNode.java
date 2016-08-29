@@ -50,7 +50,7 @@ import org.w3c.dom.ProcessingInstruction;
 /**
  *  @author Richard Malek.
  */
-public class DataNode implements Serializable
+public class DataNode implements Serializable, Cloneable
 {
     private static final long serialVersionUID = 2193543253630004569L;
 

@@ -50,7 +50,7 @@ public class ProcessExperimentZipFileTask implements Runnable
                     {
                         Document doc = builder.parse(in);
                         String version = doc.getDocumentElement().getAttribute("version");
-                        if (version == "")
+                        if (version.isEmpty())
                         {
                             _logger.warn("Unsupported report version: " + _zipFile.getName());
                             return;

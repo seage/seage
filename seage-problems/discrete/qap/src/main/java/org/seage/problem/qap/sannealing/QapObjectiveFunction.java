@@ -37,9 +37,10 @@ public class QapObjectiveFunction implements IObjectiveFunction
     @Override
     public double getObjectiveValue(Solution solution)
     {
-        Integer[] assign = ((QapSolution) solution)._assign;
+    	QapSolution s = (QapSolution) solution;
+        Integer[] assign = s._assign;
         int len = assign.length;
-        Double[][][] _matrix = QapSolution._facilityLocation;
+        Double[][][] _matrix = s._facilityLocation;
 
         double price = 0;
         for (int i = 0; i < len; i++)

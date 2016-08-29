@@ -372,7 +372,7 @@ public class JsspEvaluator_old extends SubjectEvaluator
         //		System.out.println("OUT> entryRowIndex: " + entryRowIndex);
         //		//System.out.println(table.Rows[entryRowIndex].Left.JobIndex);
         //
-        int nextIndex = _medicateTable.Rows[entryRowIndex].Left.NextMachineIndex;
+        int nextIndex = 0;// 2016 _medicateTable.Rows[entryRowIndex].Left.NextMachineIndex;
 
         //System.out.print(entryRowIndex + ", ");
         while (entryRowIndex != nextIndex)

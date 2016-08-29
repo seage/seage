@@ -36,7 +36,7 @@ public class SatMove implements IMove
 
     public SatMove(int literalIx)
     {
-        literalIx = _literalIx;
+        _literalIx = literalIx;
     }
 
     public int getLiteralIx()

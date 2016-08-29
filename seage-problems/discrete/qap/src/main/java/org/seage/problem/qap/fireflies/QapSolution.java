@@ -93,7 +93,7 @@ public class QapSolution extends SolutionAdapter
         QapSolution q = (QapSolution) in;
         for (int i = 0; i < _assign.length; i++)
         {
-            if (_assign[i] != q.getAssign()[i])
+            if (!_assign[i].equals(q.getAssign()[i]))
                 return false;
         }
         return true;

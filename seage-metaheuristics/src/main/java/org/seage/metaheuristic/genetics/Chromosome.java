@@ -31,7 +31,7 @@ import java.util.Arrays;
 /**
  * @author Richard Malek (original)
  */
-public class Chromosome<GeneType> implements Serializable
+public class Chromosome<GeneType> implements Serializable, Cloneable
 {
     private static final long serialVersionUID = 3050047980641091757L;
     //public Gene[] m_gene;

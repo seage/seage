@@ -1,14 +1,50 @@
 package org.seage.experimenter;
 
 import java.net.UnknownHostException;
-import java.util.zip.ZipOutputStream;
 
-import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.problem.IProblemProvider;
+import org.seage.aal.problem.ProblemInstance;
+import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class ExperimentTask implements Runnable
+/**
+ * Runs experiment task and provides following experiment log:
+ * 
+ * ExperimentTask 			    # version 0.1 
+ * |_ ... 
+ * 
+ * ExperimentTaskReport 		# version 0.2
+ *  |_ version (0.4)
+ *  |_ experimentID
+ *  |_ startTimeMS
+ *  |_ timeoutS
+ *  |_ durationS
+ *  |_ machineName
+ *  |_ nrOfCores
+ *  |_ totalRAM
+ *  |_ availRAM 
+ *  |_ Config
+ *  |	|_ configID
+ *  |	|_ runID
+ *  |	|_ Problem
+ *  |	|	|_ problemID
+ *  |	|	|_ Instance
+ *  |	|		|_ name
+ *  |	|_ Algorithm
+ *  |		|_ algorithmID
+ *  |		|_ Parameters
+ *  |_ AlgorithmReport
+ *  	|_ Parameters
+ *  	|_ Statistics
+ *  	|_ Minutes
+ * 
+ * @author rick
+ */
+public class ExperimentTask implements Runnable
 {
     protected static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
     //protected ProblemConfig _config;
@@ -22,13 +58,10 @@ public abstract class ExperimentTask implements Runnable
     protected long _runID;
     protected long _timeoutS;
 
-    //protected String _reportName;
     protected DataNode _experimentTaskReport;
-    protected ZipOutputStream _reportOutputStream;
 
     public ExperimentTask(String experimentType, long experimentID, String problemID, String instanceID,
-            String algorithmID, AlgorithmParams algorithmParams, int runID, long timeoutS,
-            ZipOutputStream reportOutputStream) throws Exception
+            String algorithmID, AlgorithmParams algorithmParams, int runID, long timeoutS) throws Exception
     {
         _experimentType = experimentType;
         _experimentID = experimentID;
@@ -96,6 +129,55 @@ public abstract class ExperimentTask implements Runnable
     public DataNode getExperimentTaskReport()
     {
         return _experimentTaskReport;
+    }
+    
+    @Override
+    public void run()
+    {
+        try
+        {
+            // provider and factory
+            IProblemProvider provider = ProblemProvider.getProblemProviders().get(_experimentSetup.ProblemID);
+            IAlgorithmFactory factory = provider.getAlgorithmFactory(_experimentSetup.AlgorithmID);
+
+            // problem instance
+            ProblemInstance instance = provider
+                    .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_experimentSetup.InstanceID));
+            instance.toString();
+            // algorithm
+            IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
+
+            Object[][] solutions = provider.generateInitialSolutions(instance,
+            		_experimentSetup.AlgorithmParams.getValueInt("numSolutions"), _experimentSetup.ExperimentID.hashCode());
+
+            long startTime = System.currentTimeMillis();
+            algorithm.solutionsFromPhenotype(solutions);
+            algorithm.startSearching(_experimentSetup.AlgorithmParams, true);
+            waitForTimeout(algorithm);
+            algorithm.stopSearching();
+            long endTime = System.currentTimeMillis();
+
+            solutions = algorithm.solutionsToPhenotype();
+
+            _experimentTaskReport.putDataNode(algorithm.getReport());
+            _experimentTaskReport.putValue("durationS", (endTime - startTime) / 1000);
+
+            //XmlHelper.writeXml(_experimentTaskReport, _reportOutputStream, getReportName());
+
+        }
+        catch (Exception ex)
+        {
+            _logger.error( ex.getMessage(), ex);
+            _logger.error( _experimentSetup.AlgorithmParams.toString());
+
+        }
+    }
+
+    private void waitForTimeout(IAlgorithmAdapter alg) throws Exception
+    {
+        long time = System.currentTimeMillis();
+        while (alg.isRunning() && ((System.currentTimeMillis() - time) < _experimentSetup.TimeoutS * 1000))
+            Thread.sleep(100);
     }
 
 }

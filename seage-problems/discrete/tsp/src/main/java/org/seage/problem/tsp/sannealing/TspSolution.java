@@ -73,16 +73,11 @@ public abstract class TspSolution extends Solution
     public TspSolution clone()
     {
         TspSolution tspSolution = null;
-        try
-        {
-            tspSolution = (TspSolution) super.clone();
-            tspSolution.setTour(_tour.clone());
-            tspSolution.setObjectiveValue(getObjectiveValue());
-        }
-        catch (Exception ex)
-        {
-            LoggerFactory.getLogger(TspSolution.class.getName()).error("TspSolution.clone()", ex);
-        }
+
+        tspSolution = (TspSolution) super.clone();
+        tspSolution.setTour(_tour.clone());
+        tspSolution.setObjectiveValue(getObjectiveValue());
+
         return tspSolution;
     }
 

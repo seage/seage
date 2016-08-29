@@ -90,10 +90,10 @@ public class LeftParse
     public void mutate()
     {
         ///mutate rules
-        int where = (int) Math.random() * (_ruleNums.size() - 1);
-        _ruleNums.set(where, (int) Math.random() * 255);
-        where = (int) Math.random() * (_constantVector.size() - 1);
-        _constantVector.set(where, (int) Math.random() * 255);
+        int where = (int) (Math.random() * (_ruleNums.size() - 1));
+        _ruleNums.set(where, (int) (Math.random() * 255));
+        where = (int) (Math.random() * (_constantVector.size() - 1));
+        _constantVector.set(where, (int) (Math.random() * 255));
     }
 
     @Override

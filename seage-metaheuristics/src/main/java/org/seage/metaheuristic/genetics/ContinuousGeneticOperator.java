@@ -25,7 +25,7 @@ public class ContinuousGeneticOperator<S extends Subject<Double>> extends BasicG
     public Subject<Double>[] crossOver0(Subject<Double> parent1, Subject<Double> parent2) throws Exception
     {
         @SuppressWarnings("unchecked")
-        Subject<Double>[] children = (Subject<Double>[]) new Object[2];
+        Subject<Double>[] children = (Subject<Double>[]) new Subject<?>[2];
 
         children[0] = parent1.clone();
         children[1] = parent2.clone();

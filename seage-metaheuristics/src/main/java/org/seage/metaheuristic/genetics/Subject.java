@@ -28,7 +28,7 @@ package org.seage.metaheuristic.genetics;
 /**
  * @author Richard Malek (original)
  */
-public class Subject<GeneType>
+public class Subject<GeneType> implements Cloneable
 {
     private Chromosome<GeneType> _chromosome;
     private double[] _fitness;

@@ -73,16 +73,11 @@ public abstract class JsspSolution extends Solution
     public JsspSolution clone()
     {
         JsspSolution tspSolution = null;
-        try
-        {
-            tspSolution = (JsspSolution) super.clone();
-            tspSolution.setTour(_tour.clone());
-            tspSolution.setObjectiveValue(getObjectiveValue());
-        }
-        catch (Exception ex)
-        {
-            LoggerFactory.getLogger(JsspSolution.class.getName()).error("JsspSolution.clone()", ex);
-        }
+
+        tspSolution = (JsspSolution) super.clone();
+        tspSolution.setTour(_tour.clone());
+        tspSolution.setObjectiveValue(getObjectiveValue());
+
         return tspSolution;
     }
 

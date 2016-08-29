@@ -35,11 +35,8 @@ import java.util.Random;
  */
 public class BasicGeneticOperator<S extends Subject<GeneType>, GeneType> extends GeneticOperator<S>
 {
-    protected Random _random;
-
     public BasicGeneticOperator()
     {
-        _random = new Random();
     }
 
     // / <summary>

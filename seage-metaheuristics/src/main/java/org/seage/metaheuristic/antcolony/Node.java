@@ -51,9 +51,10 @@ public class Node
      * @param node - Compared node
      * @return - if compared nodes are some
      */
-    public boolean equals(Node node)
+    public boolean equals(Object node)
     {
-        if (_id == node._id)
+    	Node n = (Node)node;
+        if (n!= null && _id == n._id)
         {
             return true;
         }
@@ -109,6 +110,12 @@ public class Node
     public HashMap<Node, Edge> getEdgeMap()
     {
         return _edges;
+    }
+    
+    @Override
+    public int hashCode()
+    {
+    	return _id;
     }
 
     @Override

@@ -205,7 +205,7 @@ public class FireflySearch extends FireflySearchBase
                 // }
 
                 if (_bestSolution == null
-                        || _solutionComparator.compare(_population.getBestSolution(), _bestSolution) == -1)
+                        || _solutionComparator.compare(_population.getBestSolution(), _bestSolution) < 0)
                 {
                     _bestSolution = (Solution) _population.getBestSolution().clone();
                     // System.out.print(i+"\t");
@@ -263,7 +263,7 @@ public class FireflySearch extends FireflySearchBase
                 {
                     Solution best = (Solution) _population.getBestSolution().clone();
                     _operator.modifySolution(best);
-                    if (_solutionComparator.compare(best, _population.getBestSolution()) == -1)
+                    if (_solutionComparator.compare(best, _population.getBestSolution()) < 0)
                         _population.addSolution(best);
                 }
                 _logger.trace(new Double(_bestSolution.getObjectiveValue()[0]).toString());

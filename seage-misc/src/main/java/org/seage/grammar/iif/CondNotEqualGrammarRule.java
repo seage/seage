@@ -73,7 +73,7 @@ public class CondNotEqualGrammarRule extends GrammarRule
         Integer right = (Integer) (children.get(2).eval(symbolTable));
         if (left != null && right != null)
         {
-            return left != right;
+            return !left.equals(right);
         }
         return null;
     }

@@ -170,7 +170,7 @@ public abstract class ProblemProvider implements IProblemProvider
 
     ///////////////////////////////////////////////////////////////////////////
 
-    public static HashMap<String, IProblemProvider> getProblemProviders() throws Exception
+    public static synchronized HashMap<String, IProblemProvider> getProblemProviders() throws Exception
     {
         if (_providers != null)
             return _providers;

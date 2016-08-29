@@ -207,7 +207,7 @@ public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
             for (int i = 1; i < nodeIDs.length - 1; i++)
             {
                 nodeIDs[i] = bestPath.get(i).getNode1().getID();
-                if (i > 0 && nodeIDs[i - 1] == nodeIDs[i])
+                if (i > 0 && nodeIDs[i - 1].equals(nodeIDs[i]))
                 {
                     nodeIDs[i] = bestPath.get(i).getNode2().getID();
                 }
