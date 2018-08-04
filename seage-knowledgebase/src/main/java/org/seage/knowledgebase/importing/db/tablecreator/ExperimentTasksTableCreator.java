@@ -69,13 +69,13 @@ public class ExperimentTasksTableCreator extends DataTableCreator implements IDo
                 "algorithmID VARCHAR," +
                 "configID VARCHAR," +
                 "runID VARCHAR," +
-                "initSolutionValue DOUBLE," +
-                "bestSolutionValue DOUBLE," +
-                "nrOfNewSolutions DOUBLE," +
-                "nrOfIterations DOUBLE," +
-                "lastIterNumberNewSol DOUBLE," +
-                "durationInSeconds DOUBLE," +
-                "timeoutInSeconds DOUBLE" +
+                "initSolutionValue REAL," +
+                "bestSolutionValue REAL," +
+                "nrOfNewSolutions REAL," +
+                "nrOfIterations REAL," +
+                "lastIterNumberNewSol REAL," +
+                "durationInSeconds REAL," +
+                "timeoutInSeconds REAL" +
                 ")";
         String insertQuery = "INSERT INTO ExperimentTasks VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 

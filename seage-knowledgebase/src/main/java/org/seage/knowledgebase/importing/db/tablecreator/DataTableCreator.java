@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Hashtable;
+import java.util.Properties;
 
 import org.seage.data.xml.XmlHelper;
 import org.w3c.dom.Document;
@@ -25,8 +26,16 @@ public abstract class DataTableCreator
         //Class.forName("org.h2.Driver");
         //return DriverManager.getConnection("jdbc:h2:" + dbPath + ";DATABASE_TO_UPPER=FALSE", "sa", "sa");
         
-        Class.forName("org.hsqldb.jdbcDriver");
-        return DriverManager.getConnection("jdbc:hsqldb:file:"+dbPath+"testdb;shutdown=true;hsqldb.large_data=true;", "sa", "");
+        //Class.forName("org.hsqldb.jdbcDriver");
+        //return DriverManager.getConnection("jdbc:hsqldb:file:"+dbPath+"testdb;shutdown=true;hsqldb.large_data=true;", "sa", "");
+        
+        Class.forName("org.postgresql.Driver");
+        Properties props = new Properties();
+        props.setProperty("user","test");
+        props.setProperty("password","test");
+        props.setProperty("ssl","false");
+        return DriverManager.getConnection("jdbc:postgresql://db-dev.dmz:5432/seage", props);
+        
     }
 
     public void close() throws SQLException

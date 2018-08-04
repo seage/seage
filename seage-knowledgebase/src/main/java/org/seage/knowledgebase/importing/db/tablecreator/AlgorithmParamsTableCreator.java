@@ -49,13 +49,13 @@ public abstract class AlgorithmParamsTableCreator extends DataTableCreator imple
             String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_GeneticAlgorithm" +
                     "(" +
                     "configID VARCHAR," +
-                    "crossLengthPct DOUBLE," +
-                    "eliteSubjectPct DOUBLE," +
-                    "iterationCount DOUBLE," +
-                    "mutateLengthPct DOUBLE," +
-                    "mutateSubjectPct DOUBLE," +
-                    "numSolutions DOUBLE," +
-                    "randomSubjectPct DOUBLE" +
+                    "crossLengthPct REAL," +
+                    "eliteSubjectPct REAL," +
+                    "iterationCount REAL," +
+                    "mutateLengthPct REAL," +
+                    "mutateSubjectPct REAL," +
+                    "numSolutions REAL," +
+                    "randomSubjectPct REAL" +
                     ")";
             String insertQuery = "INSERT INTO AlgorithmParams_GeneticAlgorithm VALUES(?,?,?,?,?,?,?,?)";
 
@@ -115,9 +115,9 @@ public abstract class AlgorithmParamsTableCreator extends DataTableCreator imple
             String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_TabuSearch" +
                     "(" +
                     "configID VARCHAR," +
-                    "iterationCount DOUBLE," +
-                    "tabuListLength DOUBLE," +
-                    "numSolutions DOUBLE" +
+                    "iterationCount REAL," +
+                    "tabuListLength REAL," +
+                    "numSolutions REAL" +
                     ")";
             String insertQuery = "INSERT INTO AlgorithmParams_TabuSearch VALUES(?,?,?,?)";
 
@@ -177,13 +177,13 @@ public abstract class AlgorithmParamsTableCreator extends DataTableCreator imple
             String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_AntColony" +
                     "(" +
                     "configID VARCHAR," +
-                    "alpha DOUBLE," +
-                    "beta DOUBLE," +
-                    "defaultPheromone DOUBLE," +
-                    "iterationCount DOUBLE," +
-                    "numSolutions DOUBLE," +
-                    "qantumOfPheromone DOUBLE," +
-                    "localEvaporation DOUBLE" +
+                    "alpha REAL," +
+                    "beta REAL," +
+                    "defaultPheromone REAL," +
+                    "iterationCount REAL," +
+                    "numSolutions REAL," +
+                    "qantumOfPheromone REAL," +
+                    "localEvaporation REAL" +
                     ")";
             String insertQuery = "INSERT INTO AlgorithmParams_AntColony VALUES(?,?,?,?,?,?,?,?)";
 
@@ -242,11 +242,11 @@ public abstract class AlgorithmParamsTableCreator extends DataTableCreator imple
                     "(" +
                     "configID VARCHAR," +
                     //"annealCoeficient DOUBLE,"+
-                    "numIterations DOUBLE," +
-                    "maxTemperature DOUBLE," +
-                    "minTemperature DOUBLE," +
+                    "numIterations REAL," +
+                    "maxTemperature REAL," +
+                    "minTemperature REAL," +
                     //"maxOneStepAcceptedSolutions DOUBLE,"+
-                    "numSolutions DOUBLE" +
+                    "numSolutions REAL" +
                     ")";
             String insertQuery = "INSERT INTO AlgorithmParams_SimulatedAnnealing VALUES(?,?,?,?,?)";
 

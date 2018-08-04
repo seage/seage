@@ -22,8 +22,8 @@ public class ExperimentsTableCreator extends DataTableCreator implements IDocume
         super(dbPath);
         _expLogsPath = expLogsPath;
 
-        //String queryDropExperiments = "DROP TABLE Experiments IF EXISTS";
-        String queryDropExperiments = "DROP SCHEMA PUBLIC CASCADE";
+        String queryDropExperiments = "DROP TABLE IF EXISTS Experiments CASCADE";
+        //String queryDropExperiments = "";//"DROP SCHEMA PUBLIC CASCADE";
         String queryCreateExperiments = "CREATE TABLE IF NOT EXISTS Experiments (date TIMESTAMP, experimentID VARCHAR PRIMARY KEY, experimentType VARCHAR, computerName VARCHAR)";
         String queryInsert = "INSERT INTO Experiments VALUES (?, ?, ?, ?)";
 
@@ -61,9 +61,9 @@ public class ExperimentsTableCreator extends DataTableCreator implements IDocume
         }
 
         String queryDropNewExperiments = "DROP TABLE IF EXISTS NewExperiments";
-        String queryCreateNewExperiments = "CREATE MEMORY TABLE IF NOT EXISTS NewExperiments (ExperimentID VARCHAR PRIMARY KEY)";
+        String queryCreateNewExperiments = "CREATE TABLE IF NOT EXISTS NewExperiments (ExperimentID VARCHAR PRIMARY KEY)";
         String queryInsert = "INSERT INTO NewExperiments VALUES (?)";
-        String queryMinus = "SELECT ExperimentID FROM NewExperiments MINUS SELECT ExperimentID FROM Experiments";
+        String queryMinus = "SELECT ExperimentID FROM NewExperiments EXCEPT SELECT ExperimentID FROM Experiments";
 
         PreparedStatement stmt = null;
 
