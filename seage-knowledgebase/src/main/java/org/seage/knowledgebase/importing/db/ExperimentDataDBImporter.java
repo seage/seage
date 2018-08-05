@@ -74,7 +74,7 @@ public class ExperimentDataDBImporter
             {                
                 tasks.add(new ProcessExperimentZipFileTask((List<IDocumentProcessor>) (List<?>) _dataTableCreators, files[i]));                
             }
-            new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(tasks.toArray(new Runnable[] {}));
+            TaskRunnerEx.run(tasks.toArray(new Runnable[] {}), /*2*/Runtime.getRuntime().availableProcessors());
         }
         catch (Exception ex)
         {

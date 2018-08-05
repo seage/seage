@@ -2,38 +2,42 @@ package org.seage.knowledgebase.importing.db.tablecreator;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
 
 import org.seage.knowledgebase.importing.IDocumentProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 public class ExperimentsTableCreator extends DataTableCreator implements IDocumentProcessor
 {
-    //protected Connection _conn;
+	private static Logger _logger = LoggerFactory.getLogger(ExperimentTasksTableCreator.class.getName());
     private String _expLogsPath;
     private HashSet<String> _experimentIDs;
-    private PreparedStatement _stmt;
 
     public ExperimentsTableCreator(String expLogsPath, String dbPath, boolean clean) throws Exception
     {
         super(dbPath);
         _expLogsPath = expLogsPath;
 
-        String queryDropExperiments = "DROP TABLE IF EXISTS Experiments CASCADE";
-        //String queryDropExperiments = "";//"DROP SCHEMA PUBLIC CASCADE";
+        //String queryDropExperiments = "DROP TABLE IF EXISTS Experiments CASCADE";
+        String queryDropExperiments = "DROP SCHEMA if exists PUBLIC CASCADE;create schema public";
         String queryCreateExperiments = "CREATE TABLE IF NOT EXISTS Experiments (date TIMESTAMP, experimentID VARCHAR PRIMARY KEY, experimentType VARCHAR, computerName VARCHAR)";
-        String queryInsert = "INSERT INTO Experiments VALUES (?, ?, ?, ?)";
+        
 
-        Statement stmt = _conn.createStatement();
-
-        if (clean)
-            stmt.execute(queryDropExperiments);
-        stmt.execute(queryCreateExperiments);
-
-        _stmt = _conn.prepareStatement(queryInsert);
+        try(Connection _conn = createConnection("")) {
+            Statement stmt = _conn.createStatement();            
+            if (clean)
+                stmt.execute(queryDropExperiments);            
+            stmt.execute(queryCreateExperiments);
+        } catch(SQLException ex) {
+        	_logger.error(ex.getMessage(), ex);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -66,29 +70,30 @@ public class ExperimentsTableCreator extends DataTableCreator implements IDocume
         String queryMinus = "SELECT ExperimentID FROM NewExperiments EXCEPT SELECT ExperimentID FROM Experiments";
 
         PreparedStatement stmt = null;
-
-        stmt = _conn.prepareStatement(queryDropNewExperiments);
-        stmt.execute();
-        stmt = _conn.prepareStatement(queryCreateNewExperiments);
-        stmt.execute();
-
-        stmt = _conn.prepareStatement(queryInsert);
-        for (String id : _experimentIDs)
-        {
-            stmt.setString(1, id);
-            stmt.execute();
+        try(Connection conn = createConnection("")) {            
+	        stmt = conn.prepareStatement(queryDropNewExperiments);
+	        stmt.execute();
+	        stmt = conn.prepareStatement(queryCreateNewExperiments);
+	        stmt.execute();
+	
+	        stmt = conn.prepareStatement(queryInsert);
+	        for (String id : _experimentIDs)
+	        {
+	            stmt.setString(1, id);
+	            stmt.execute();
+	        }
+	
+	        stmt = conn.prepareStatement(queryMinus);
+	        ResultSet rs = stmt.executeQuery();
+	        _experimentIDs.clear();
+	        while (rs.next())
+	        {
+	            _experimentIDs.add(rs.getString(1));
+	        }
+        } catch(SQLException ex) {
+        	_logger.error(ex.getMessage(), ex);
         }
-
-        stmt = _conn.prepareStatement(queryMinus);
-        ResultSet rs = stmt.executeQuery();
-
-        _experimentIDs.clear();
-
-        while (rs.next())
-        {
-            _experimentIDs.add(rs.getString(1));
-        }
-
+        
         return (HashSet<String>) _experimentIDs.clone();
     }
 
@@ -111,12 +116,19 @@ public class ExperimentsTableCreator extends DataTableCreator implements IDocume
         String et = doc.getDocumentElement().getAttribute("experimentType");
         et = et.length() > 0 ? et : "SingleAlgorithmRandom";
         String cn = doc.getDocumentElement().getAttribute("machineName");
-
-        long timeStamp = Long.parseLong(id);
-        _stmt.setTimestamp(1, new java.sql.Timestamp(timeStamp));
-        _stmt.setLong(2, timeStamp);
-        _stmt.setString(3, et);
-        _stmt.setString(4, cn);        
-        _stmt.executeUpdate();
+        
+        String queryInsert = "INSERT INTO Experiments VALUES (?, ?, ?, ?)";
+        
+        try(Connection conn = createConnection("")) {           	 
+            PreparedStatement stmt = conn.prepareStatement(queryInsert);
+	        long timeStamp = Long.parseLong(id);
+	        stmt.setTimestamp(1, new java.sql.Timestamp(timeStamp));
+	        stmt.setLong(2, timeStamp);
+	        stmt.setString(3, et);
+	        stmt.setString(4, cn);        
+	        stmt.executeUpdate();
+        } catch(SQLException ex) {
+        	_logger.error(ex.getMessage(), ex);
+        }
     }
 }

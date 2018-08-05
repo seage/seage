@@ -1,18 +1,24 @@
 package org.seage.knowledgebase.importing.db.tablecreator;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Hashtable;
 
 import org.seage.data.xml.XmlHelper;
 import org.seage.knowledgebase.importing.IDocumentProcessor;
+import org.seage.knowledgebase.importing.ProcessExperimentZipFileTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 public abstract class AlgorithmParamsTableCreator extends DataTableCreator implements IDocumentProcessor
 {
+	private static Logger _logger = LoggerFactory.getLogger(AlgorithmParamsTableCreator.class.getName());
     protected final String VERSION = "0.6";
     private Hashtable<String, String> _algParamsConfigIDs;
-    protected PreparedStatement _stmt;
+    //protected PreparedStatement _stmt;
     protected String _algorithmID;
 
     public AlgorithmParamsTableCreator(String dbPath, String algorithmID) throws Exception
@@ -49,19 +55,21 @@ public abstract class AlgorithmParamsTableCreator extends DataTableCreator imple
             String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_GeneticAlgorithm" +
                     "(" +
                     "configID VARCHAR," +
-                    "crossLengthPct REAL," +
-                    "eliteSubjectPct REAL," +
-                    "iterationCount REAL," +
-                    "mutateLengthPct REAL," +
-                    "mutateSubjectPct REAL," +
-                    "numSolutions REAL," +
+                    "crossLengthPct DOUBLE PRECISION," +
+                    "eliteSubjectPct DOUBLE PRECISION," +
+                    "iterationCount DOUBLE PRECISION," +
+                    "mutateLengthPct DOUBLE PRECISION," +
+                    "mutateSubjectPct DOUBLE PRECISION," +
+                    "numSolutions DOUBLE PRECISION," +
                     "randomSubjectPct REAL" +
                     ")";
-            String insertQuery = "INSERT INTO AlgorithmParams_GeneticAlgorithm VALUES(?,?,?,?,?,?,?,?)";
-
-            Statement stmt = _conn.createStatement();
-            stmt.execute(queryCreate);
-            _stmt = _conn.prepareStatement(insertQuery);
+            
+            try(Connection _conn = createConnection("")) {
+	            Statement stmt = _conn.createStatement();
+	            stmt.execute(queryCreate);
+            } catch(SQLException ex) {
+            	_logger.error(ex.getMessage(), ex);
+            }
 
             Hashtable<String, XmlHelper.XPath> algGAXPaths = new Hashtable<String, XmlHelper.XPath>();
             algGAXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
@@ -90,18 +98,24 @@ public abstract class AlgorithmParamsTableCreator extends DataTableCreator imple
             if (version.compareToIgnoreCase("0.4") < 0)
                 throw new Exception("Unsupported version: " + version);
             version = VERSION;
+            String insertQuery = "INSERT INTO AlgorithmParams_GeneticAlgorithm VALUES(?,?,?,?,?,?,?,?)";
 
-            _stmt.clearParameters();
-            _stmt.setString(1, getVersionedValue(doc, "configID", version));
-            _stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "crossLengthPct", version)));
-            _stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "eliteSubjectPct", version)));
-            _stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "iterationCount", version)));
-            _stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "mutateLengthPct", version)));
-            _stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "mutateSubjectPct", version)));
-            _stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
-            _stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "randomSubjectPct", version)));
-
-            _stmt.executeUpdate();
+            try(Connection conn = createConnection("")) {           	 
+	            PreparedStatement stmt = conn.prepareStatement(insertQuery);
+	            stmt.clearParameters();
+	            stmt.setString(1, getVersionedValue(doc, "configID", version));
+	            stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "crossLengthPct", version)));
+	            stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "eliteSubjectPct", version)));
+	            stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "iterationCount", version)));
+	            stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "mutateLengthPct", version)));
+	            stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "mutateSubjectPct", version)));
+	            stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
+	            stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "randomSubjectPct", version)));
+	
+	            stmt.executeUpdate();
+            } catch(SQLException ex) {
+            	_logger.error(ex.getMessage(), ex);
+            }
 
         }
     }
@@ -115,15 +129,17 @@ public abstract class AlgorithmParamsTableCreator extends DataTableCreator imple
             String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_TabuSearch" +
                     "(" +
                     "configID VARCHAR," +
-                    "iterationCount REAL," +
-                    "tabuListLength REAL," +
+                    "iterationCount DOUBLE PRECISION," +
+                    "tabuListLength DOUBLE PRECISION," +
                     "numSolutions REAL" +
                     ")";
-            String insertQuery = "INSERT INTO AlgorithmParams_TabuSearch VALUES(?,?,?,?)";
-
-            Statement stmt = _conn.createStatement();
-            stmt.execute(queryCreate);
-            _stmt = _conn.prepareStatement(insertQuery);
+            
+            try(Connection _conn = createConnection("")) {
+	            Statement stmt = _conn.createStatement();
+	            stmt.execute(queryCreate);
+            } catch(SQLException ex) {
+            	_logger.error(ex.getMessage(), ex);
+            }
 
             Hashtable<String, XmlHelper.XPath> algTSXPaths = new Hashtable<String, XmlHelper.XPath>();
             algTSXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
@@ -156,14 +172,20 @@ public abstract class AlgorithmParamsTableCreator extends DataTableCreator imple
             if (version.compareToIgnoreCase("0.4") < 0)
                 throw new Exception("Unsupported version: " + version);
             //version = VERSION;
+            String insertQuery = "INSERT INTO AlgorithmParams_TabuSearch VALUES(?,?,?,?)";
 
-            _stmt.clearParameters();
-            _stmt.setString(1, getVersionedValue(doc, "configID", version));
-            _stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "iterationCount", version)));
-            _stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "tabuListLength", version)));
-            _stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
-
-            _stmt.executeUpdate();
+            try(Connection conn = createConnection("")) {           	 
+	            PreparedStatement stmt = conn.prepareStatement(insertQuery);
+	            stmt.clearParameters();
+	            stmt.setString(1, getVersionedValue(doc, "configID", version));
+	            stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "iterationCount", version)));
+	            stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "tabuListLength", version)));
+	            stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
+	
+	            stmt.executeUpdate();
+            } catch(SQLException ex) {
+            	_logger.error(ex.getMessage(), ex);
+            }
 
         }
     }
@@ -177,19 +199,21 @@ public abstract class AlgorithmParamsTableCreator extends DataTableCreator imple
             String queryCreate = "CREATE TABLE IF NOT EXISTS AlgorithmParams_AntColony" +
                     "(" +
                     "configID VARCHAR," +
-                    "alpha REAL," +
-                    "beta REAL," +
-                    "defaultPheromone REAL," +
-                    "iterationCount REAL," +
-                    "numSolutions REAL," +
-                    "qantumOfPheromone REAL," +
+                    "alpha DOUBLE PRECISION," +
+                    "beta DOUBLE PRECISION," +
+                    "defaultPheromone DOUBLE PRECISION," +
+                    "iterationCount DOUBLE PRECISION," +
+                    "numSolutions DOUBLE PRECISION," +
+                    "qantumOfPheromone DOUBLE PRECISION," +
                     "localEvaporation REAL" +
-                    ")";
-            String insertQuery = "INSERT INTO AlgorithmParams_AntColony VALUES(?,?,?,?,?,?,?,?)";
+                    ")";            
 
-            Statement stmt = _conn.createStatement();
-            stmt.execute(queryCreate);
-            _stmt = _conn.prepareStatement(insertQuery);
+            try(Connection _conn = createConnection("")) {
+	            Statement stmt = _conn.createStatement();
+	            stmt.execute(queryCreate);
+            } catch(SQLException ex) {
+            	_logger.error(ex.getMessage(), ex);
+            }
 
             Hashtable<String, XmlHelper.XPath> algAntXPaths = new Hashtable<String, XmlHelper.XPath>();
             algAntXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
@@ -216,18 +240,25 @@ public abstract class AlgorithmParamsTableCreator extends DataTableCreator imple
             if (version.compareToIgnoreCase("0.4") < 0)
                 throw new Exception("Unsupported version: " + version);
             version = VERSION;
-
-            _stmt.clearParameters();
-            _stmt.setString(1, getVersionedValue(doc, "configID", version));
-            _stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "alpha", version)));
-            _stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "beta", version)));
-            _stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "defaultPheromone", version)));
-            _stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "iterationCount", version)));
-            _stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
-            _stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "qantumOfPheromone", version)));
-            _stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "localEvaporation", version)));
-
-            _stmt.executeUpdate();
+            
+            String insertQuery = "INSERT INTO AlgorithmParams_AntColony VALUES(?,?,?,?,?,?,?,?)";
+            
+            try(Connection conn = createConnection("")) {           	 
+	            PreparedStatement stmt = conn.prepareStatement(insertQuery);
+	            stmt.clearParameters();
+	            stmt.setString(1, getVersionedValue(doc, "configID", version));
+	            stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "alpha", version)));
+	            stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "beta", version)));
+	            stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "defaultPheromone", version)));
+	            stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "iterationCount", version)));
+	            stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
+	            stmt.setDouble(7, Double.parseDouble(getVersionedValue(doc, "qantumOfPheromone", version)));
+	            stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "localEvaporation", version)));
+	
+	            stmt.executeUpdate();
+            } catch(SQLException ex) {
+            	_logger.error(ex.getMessage(), ex);
+            }
 
         }
     }
@@ -242,17 +273,21 @@ public abstract class AlgorithmParamsTableCreator extends DataTableCreator imple
                     "(" +
                     "configID VARCHAR," +
                     //"annealCoeficient DOUBLE,"+
-                    "numIterations REAL," +
-                    "maxTemperature REAL," +
-                    "minTemperature REAL," +
+                    "numIterations DOUBLE PRECISION," +
+                    "maxTemperature DOUBLE PRECISION," +
+                    "minTemperature DOUBLE PRECISION," +
                     //"maxOneStepAcceptedSolutions DOUBLE,"+
                     "numSolutions REAL" +
                     ")";
-            String insertQuery = "INSERT INTO AlgorithmParams_SimulatedAnnealing VALUES(?,?,?,?,?)";
-
-            Statement stmt = _conn.createStatement();
-            stmt.execute(queryCreate);
-            _stmt = _conn.prepareStatement(insertQuery);
+            
+            
+            try(Connection _conn = createConnection("")) {
+	            Statement stmt = _conn.createStatement();
+	            stmt.execute(queryCreate);
+            } catch(SQLException ex) {
+            	_logger.error(ex.getMessage(), ex);
+            }	            
+            
 
             Hashtable<String, XmlHelper.XPath> algSAXPaths = new Hashtable<String, XmlHelper.XPath>();
             algSAXPaths.put("configID", new XmlHelper.XPath("/ExperimentTaskReport/Config/@configID"));
@@ -290,17 +325,24 @@ public abstract class AlgorithmParamsTableCreator extends DataTableCreator imple
             if (version.compareToIgnoreCase("0.4") < 0)
                 throw new Exception("Unsupported version: " + version);
             //version = VERSION;
-
-            _stmt.clearParameters();
-            _stmt.setString(1, getVersionedValue(doc, "configID", version));
-            //_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "annealCoeficient", version)));
-            _stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "numIterations", version)));
-            _stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "maxTemperature", version)));
-            _stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "minTemperature", version)));
-            //_stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "maxOneStepAcceptedSolutions", version)));
-            _stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
-
-            _stmt.executeUpdate();
+            String insertQuery = "INSERT INTO AlgorithmParams_SimulatedAnnealing VALUES(?,?,?,?,?)";
+            
+            try(Connection conn = createConnection("")) {           	 
+	            PreparedStatement stmt = conn.prepareStatement(insertQuery);
+	
+	            stmt.clearParameters();
+	            stmt.setString(1, getVersionedValue(doc, "configID", version));
+	            //_stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "annealCoeficient", version)));
+	            stmt.setDouble(2, Double.parseDouble(getVersionedValue(doc, "numIterations", version)));
+	            stmt.setDouble(3, Double.parseDouble(getVersionedValue(doc, "maxTemperature", version)));
+	            stmt.setDouble(4, Double.parseDouble(getVersionedValue(doc, "minTemperature", version)));
+	            //_stmt.setDouble(6, Double.parseDouble(getVersionedValue(doc, "maxOneStepAcceptedSolutions", version)));
+	            stmt.setDouble(5, Double.parseDouble(getVersionedValue(doc, "numSolutions", version)));
+	
+	            stmt.executeUpdate();
+            } catch(SQLException ex) {
+            	_logger.error(ex.getMessage(), ex);
+            }
 
         }
     }

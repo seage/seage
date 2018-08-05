@@ -1,17 +1,20 @@
 package org.seage.knowledgebase.importing.db.tablecreator;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Hashtable;
 
 import org.seage.data.xml.XmlHelper;
 import org.seage.knowledgebase.importing.IDocumentProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 public class ExperimentTasksTableCreator extends DataTableCreator implements IDocumentProcessor
 {
-    private PreparedStatement _stmt;
-
+	private static Logger _logger = LoggerFactory.getLogger(ExperimentTasksTableCreator.class.getName());
     public ExperimentTasksTableCreator(String dbPath) throws Exception
     {
         super(dbPath);
@@ -69,20 +72,21 @@ public class ExperimentTasksTableCreator extends DataTableCreator implements IDo
                 "algorithmID VARCHAR," +
                 "configID VARCHAR," +
                 "runID VARCHAR," +
-                "initSolutionValue REAL," +
-                "bestSolutionValue REAL," +
-                "nrOfNewSolutions REAL," +
-                "nrOfIterations REAL," +
-                "lastIterNumberNewSol REAL," +
-                "durationInSeconds REAL," +
+                "initSolutionValue DOUBLE PRECISION," +
+                "bestSolutionValue DOUBLE PRECISION," +
+                "nrOfNewSolutions DOUBLE PRECISION," +
+                "nrOfIterations DOUBLE PRECISION," +
+                "lastIterNumberNewSol DOUBLE PRECISION," +
+                "durationInSeconds DOUBLE PRECISION," +
                 "timeoutInSeconds REAL" +
                 ")";
-        String insertQuery = "INSERT INTO ExperimentTasks VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-        Statement stmt = _conn.createStatement();
-        stmt.execute(queryCreate);
-
-        _stmt = _conn.prepareStatement(insertQuery);
+        
+        try(Connection _conn = createConnection("")) {
+            Statement stmt = _conn.createStatement();
+            stmt.execute(queryCreate);
+        } catch(SQLException ex) {
+        	_logger.error(ex.getMessage(), ex);
+        }
 
     }
 
@@ -98,24 +102,30 @@ public class ExperimentTasksTableCreator extends DataTableCreator implements IDo
         String version = doc.getDocumentElement().getAttribute("version");
         if (version.compareToIgnoreCase("0.4") < 0)
             throw new Exception("Unsupported version: " + version);
+        String insertQuery = "INSERT INTO ExperimentTasks VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        _stmt.clearParameters();
-        _stmt.setString(1, containerFileName);
-        _stmt.setString(2, getVersionedValue(doc, "experimentID", version));
-        _stmt.setString(3, getVersionedValue(doc, "problemID", version));
-        _stmt.setString(4, getVersionedValue(doc, "instanceID", version));
-        _stmt.setString(5, getVersionedValue(doc, "algorithmID", version));
-        _stmt.setString(6, getVersionedValue(doc, "configID", version));
-        _stmt.setString(7, getVersionedValue(doc, "runID", version));
-        _stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "initSolutionValue", version)));
-        _stmt.setDouble(9, Double.parseDouble(getVersionedValue(doc, "bestSolutionValue", version)));
-        _stmt.setDouble(10, Double.parseDouble(getVersionedValue(doc, "nrOfNewSolutions", version)));
-        _stmt.setDouble(11, Double.parseDouble(getVersionedValue(doc, "nrOfIterations", version)));
-        _stmt.setDouble(12, Double.parseDouble(getVersionedValue(doc, "lastIterNumberNewSol", version)));
-        _stmt.setDouble(13, Double.parseDouble(getVersionedValue(doc, "durationInSeconds", version)));
-        _stmt.setDouble(14, Double.parseDouble(getVersionedValue(doc, "timeoutInSeconds", version)));
-
-        _stmt.executeUpdate();
+        try(Connection conn = createConnection("")) {           	 
+            PreparedStatement stmt = conn.prepareStatement(insertQuery);
+	        stmt.clearParameters();
+	        stmt.setString(1, containerFileName);
+	        stmt.setString(2, getVersionedValue(doc, "experimentID", version));
+	        stmt.setString(3, getVersionedValue(doc, "problemID", version));
+	        stmt.setString(4, getVersionedValue(doc, "instanceID", version));
+	        stmt.setString(5, getVersionedValue(doc, "algorithmID", version));
+	        stmt.setString(6, getVersionedValue(doc, "configID", version));
+	        stmt.setString(7, getVersionedValue(doc, "runID", version));
+	        stmt.setDouble(8, Double.parseDouble(getVersionedValue(doc, "initSolutionValue", version)));
+	        stmt.setDouble(9, Double.parseDouble(getVersionedValue(doc, "bestSolutionValue", version)));
+	        stmt.setDouble(10, Double.parseDouble(getVersionedValue(doc, "nrOfNewSolutions", version)));
+	        stmt.setDouble(11, Double.parseDouble(getVersionedValue(doc, "nrOfIterations", version)));
+	        stmt.setDouble(12, Double.parseDouble(getVersionedValue(doc, "lastIterNumberNewSol", version)));
+	        stmt.setDouble(13, Double.parseDouble(getVersionedValue(doc, "durationInSeconds", version)));
+	        stmt.setDouble(14, Double.parseDouble(getVersionedValue(doc, "timeoutInSeconds", version)));
+	
+	        stmt.executeUpdate();
+        } catch(SQLException ex) {
+        	_logger.error(ex.getMessage(), ex);
+        }
 
     }
 
