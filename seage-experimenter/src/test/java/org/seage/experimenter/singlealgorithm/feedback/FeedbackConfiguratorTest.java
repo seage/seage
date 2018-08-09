@@ -2,6 +2,7 @@ package org.seage.experimenter.singlealgorithm.feedback;
 
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;

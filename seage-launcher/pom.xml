@@ -149,7 +149,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>seage-spark</artifactId>
+			<artifactId>seage-experimenter-spark</artifactId>
 			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
