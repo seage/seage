@@ -19,7 +19,7 @@ public class App
         for(String p : args)
         	System.out.println( p );
         
-        SparkConf conf = new SparkConf().setAppName("MySparkApp").setMaster("local[2]");
+        SparkConf conf = new SparkConf().setAppName("SEAGE test app");
         if(args.length > 0 && args[0].equals("debug"))
         	conf.setMaster("local[1]");
   
