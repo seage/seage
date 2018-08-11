@@ -9,7 +9,7 @@ import org.seage.knowledgebase.importing.ProcessExperimentZipFileTask;
 import org.seage.knowledgebase.rapidminer.repository.AlgorithmParamsTableCreator;
 import org.seage.knowledgebase.rapidminer.repository.RMDataTableCreator;
 import org.seage.knowledgebase.rapidminer.repository.SingleAlgorithmTableCreator;
-import org.seage.thread.TaskRunnerEx;
+import org.seage.thread.TaskRunner3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,9 +63,8 @@ public class ExperimentDataRapidMinerImporter
                 tasks.add(
                         new ProcessExperimentZipFileTask((List<IDocumentProcessor>) (List<?>) _rmDataTableCreators, f));
             }
-
-            //new TaskRunner().runTasks(tasks, Runtime.getRuntime().availableProcessors());
-            new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(tasks.toArray(new Runnable[] {}));
+            
+            TaskRunner3.run(tasks.toArray(new Runnable[] {}), Runtime.getRuntime().availableProcessors());
         }
         catch (Exception ex)
         {

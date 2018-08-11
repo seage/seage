@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.algorithm.AlgorithmParams;
-import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimentTask;
+import org.seage.experimenter.ExperimentTask;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
-import org.seage.thread.TaskRunnerEx;
+import org.seage.thread.TaskRunner3;
 
 public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<SingleAlgorithmExperimentTaskSubject>
 {
-    private long _experimentID;
+    private String _experimentID;
     private String _problemID;
     private String _instanceID;
     private String _algorithmID;
@@ -23,8 +23,8 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 
     private HashMap<String, Double> _configCache;
 
-    public SingleAlgorithmExperimentTaskEvaluator(long experimentID, String problemID, String instanceID,
-            String algorithmID, long timeoutS, ZipOutputStream reportOutputStream)
+    public SingleAlgorithmExperimentTaskEvaluator(String experimentID, String problemID, String instanceID,
+            String algorithmID, long timeoutS)
     {
         super();
         _experimentID = experimentID;
@@ -39,8 +39,8 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
     @Override
     public void evaluateSubjects(List<SingleAlgorithmExperimentTaskSubject> subjects) throws Exception
     {
-        List<SingleAlgorithmExperimentTask> taskQueue = new ArrayList<SingleAlgorithmExperimentTask>();
-        HashMap<SingleAlgorithmExperimentTask, SingleAlgorithmExperimentTaskSubject> taskMap = new HashMap<SingleAlgorithmExperimentTask, SingleAlgorithmExperimentTaskSubject>();
+        List<ExperimentTask> taskQueue = new ArrayList<ExperimentTask>();
+        HashMap<ExperimentTask, SingleAlgorithmExperimentTaskSubject> taskMap = new HashMap<ExperimentTask, SingleAlgorithmExperimentTaskSubject>();
 
         for (SingleAlgorithmExperimentTaskSubject s : subjects)
         {
@@ -57,18 +57,18 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
             }
             else
             {
-                SingleAlgorithmExperimentTask task = new SingleAlgorithmExperimentTask("SingleAlgorithmEvolution",
-                        _experimentID, _problemID, _instanceID, _algorithmID, algorithmParams, evaluationID++,
-                        _timeoutS, _reportOutputStream);
+            	ExperimentTask task = new ExperimentTask(new ExperimentSetup("SingleAlgorithmEvolution",
+                        _experimentID, _problemID, _instanceID, _algorithmID, algorithmParams,
+                        _timeoutS));
 
                 taskMap.put(task, s);
                 taskQueue.add(task);
             }
         }
 
-        new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(taskQueue.toArray(new Runnable[] {}));
+        TaskRunner3.run(taskQueue.toArray(new Runnable[] {}), Runtime.getRuntime().availableProcessors());
 
-        for (SingleAlgorithmExperimentTask task : taskQueue)
+        for (ExperimentTask task : taskQueue)
         {
             SingleAlgorithmExperimentTaskSubject s = taskMap.get(task);
             double value = Double.MAX_VALUE;

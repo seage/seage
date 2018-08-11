@@ -12,7 +12,7 @@ import org.seage.knowledgebase.importing.db.tablecreator.AlgorithmParamsTableCre
 import org.seage.knowledgebase.importing.db.tablecreator.ExperimentTasksTableCreator;
 import org.seage.knowledgebase.importing.db.tablecreator.ExperimentsTableCreator;
 import org.seage.knowledgebase.importing.db.tablecreator.DataTableCreator;
-import org.seage.thread.TaskRunnerEx;
+import org.seage.thread.TaskRunner3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,7 +74,7 @@ public class ExperimentDataDBImporter
             {                
                 tasks.add(new ProcessExperimentZipFileTask((List<IDocumentProcessor>) (List<?>) _dataTableCreators, files[i]));                
             }
-            TaskRunnerEx.run(tasks.toArray(new Runnable[] {}), /*2*/Runtime.getRuntime().availableProcessors());
+            TaskRunner3.run(tasks.toArray(new Runnable[] {}), /*2*/Runtime.getRuntime().availableProcessors());
         }
         catch (Exception ex)
         {

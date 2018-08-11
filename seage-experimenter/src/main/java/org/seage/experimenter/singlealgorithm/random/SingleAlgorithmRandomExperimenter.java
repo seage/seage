@@ -1,16 +1,17 @@
-package org.seage.experimenter.singlealgorithm.random;
+package org.seage.experimenter._obsolete;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.experimenter.ExperimentSetup;
+import org.seage.experimenter.ExperimentTask;
 import org.seage.experimenter.Experimenter;
 import org.seage.experimenter.config.Configurator;
-import org.seage.experimenter.singlealgorithm.SingleAlgorithmExperimentTask;
-import org.seage.thread.TaskRunnerEx;
+import org.seage.experimenter.config.RandomConfigurator;
+import org.seage.thread.TaskRunner3;
 
 public class SingleAlgorithmRandomExperimenter extends Experimenter
 {
@@ -37,8 +38,8 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
     }
 
     @Override
-    protected void performExperiment(long experimentID, ProblemInfo problemInfo, ProblemInstanceInfo instanceInfo,
-            String[] algorithmIDs, ZipOutputStream zos) throws Exception
+    protected void performExperiment(String experimentID, ProblemInfo problemInfo, ProblemInstanceInfo instanceInfo,
+            String[] algorithmIDs) throws Exception
     {
         for (int i = 0; i < algorithmIDs.length; i++)
         {
@@ -57,11 +58,11 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
                 for (int runID = 1; runID <= NUM_RUNS; runID++)
                 {
                     //String reportName = problemInfo.getProblemID() + "-" + algorithmID + "-" + instanceInfo.getInstanceID() + "-" + configID + "-" + runID + ".xml";
-                    taskQueue.add(new SingleAlgorithmExperimentTask(_experimentName, experimentID, problemID,
-                            instanceID, algorithmID, config.getAlgorithmParams(), runID, _timeoutS, zos));
+                    taskQueue.add(new ExperimentTask( new ExperimentSetup(_experimentName, experimentID, problemID,
+                            instanceID, algorithmID, config.getAlgorithmParams(), _timeoutS)));
                 }
             }
-            new TaskRunnerEx(Runtime.getRuntime().availableProcessors()).run(taskQueue.toArray(new Runnable[] {}));
+            TaskRunner3.run(taskQueue.toArray(new Runnable[] {}), Runtime.getRuntime().availableProcessors());
         }
     }
 

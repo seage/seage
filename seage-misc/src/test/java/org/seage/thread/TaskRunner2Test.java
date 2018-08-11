@@ -3,23 +3,14 @@ package org.seage.thread;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class TaskRunnerExTest
+public class TaskRunner2Test
 {
-    @BeforeClass
-    public static void aa()
-    {
-        //LogHelper.setConsoleDefaultFormatter(_logger, Level.ALL);
-    }
-
     @Test
     public void testTaskRunnerEx() throws InterruptedException
     {
-        TaskRunnerEx _taskRunner = new TaskRunnerEx(4);
-
-        List<Task> taskList = new ArrayList<Task>();
+        List<Task2> taskList = new ArrayList<Task2>();
         taskList.add(new TestTask(1));
         taskList.add(new TestTask(10));
         taskList.add(new TestTask(3));
@@ -36,11 +27,11 @@ public class TaskRunnerExTest
         taskList.add(new TestTask(1));
         taskList.add(new TestTask(1));
 
-        _taskRunner.run(taskList.toArray(new Task[] {}));
+        TaskRunner2.run(taskList.toArray(new Task2[] {}), 4);
     }
 }
 
-class TestTask extends Task
+class TestTask extends Task2
 {
     private int _length;
 
