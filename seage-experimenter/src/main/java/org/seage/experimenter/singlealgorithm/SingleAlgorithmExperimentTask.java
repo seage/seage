@@ -73,12 +73,11 @@ import org.seage.experimenter.ExperimentTask;
  */
 public class SingleAlgorithmExperimentTask extends ExperimentTask
 {
-    public SingleAlgorithmExperimentTask(String experimentType, long experimentID, String problemID, String instanceID,
+    public SingleAlgorithmExperimentTask(String experimentType, String experimentID, String problemID, String instanceID,
             String algorithmID, AlgorithmParams algorithmParams, int runID, long timeoutS,
             ZipOutputStream reportOutputStream) throws Exception
     {
-        super(experimentType, experimentID, problemID, instanceID, algorithmID, algorithmParams, runID, timeoutS,
-                reportOutputStream);
+        super(experimentType, experimentID, problemID, instanceID, algorithmID, algorithmParams, runID, timeoutS);
     }
 
     @Override
@@ -98,7 +97,7 @@ public class SingleAlgorithmExperimentTask extends ExperimentTask
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
 
             Object[][] solutions = provider.generateInitialSolutions(instance,
-                    _algorithmParams.getValueInt("numSolutions"), _experimentID);
+                    _algorithmParams.getValueInt("numSolutions"), _experimentID.hashCode());
 
             long startTime = System.currentTimeMillis();
             algorithm.solutionsFromPhenotype(solutions);
@@ -112,7 +111,7 @@ public class SingleAlgorithmExperimentTask extends ExperimentTask
             _experimentTaskReport.putDataNode(algorithm.getReport());
             _experimentTaskReport.putValue("durationS", (endTime - startTime) / 1000);
 
-            XmlHelper.writeXml(_experimentTaskReport, _reportOutputStream, getReportName());
+            //XmlHelper.writeXml(_experimentTaskReport, _reportOutputStream, getReportName());
 
         }
         catch (Exception ex)

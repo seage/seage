@@ -38,8 +38,8 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
     }
 
     @Override
-    protected void performExperiment(long experimentID, ProblemInfo problemInfo, ProblemInstanceInfo instanceInfo,
-            String[] algorithmIDs, ZipOutputStream zos) throws Exception
+    protected void performExperiment(String experimentID, ProblemInfo problemInfo, ProblemInstanceInfo instanceInfo,
+            String[] algorithmIDs) throws Exception
     {
         String problemID = problemInfo.getProblemID();
         String instanceID = instanceInfo.getInstanceID();
@@ -61,7 +61,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
                         limits);
 
                 SingleAlgorithmExperimentTaskEvaluator evaluator = new SingleAlgorithmExperimentTaskEvaluator(
-                        experimentID, problemID, instanceID, algorithmID, _algorithmTimeoutS, zos);
+                        experimentID, problemID, instanceID, algorithmID, _algorithmTimeoutS);
                 GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = new GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject>(
                         realOperator, evaluator);
                 ga.addGeneticSearchListener(this);

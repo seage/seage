@@ -1,7 +1,5 @@
 package org.seage.experimenter.multialgorithm;
 
-import java.util.zip.ZipOutputStream;
-
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.experimenter.Experimenter;
@@ -16,8 +14,8 @@ public class MultiAlgorithmRandomExperimenter extends Experimenter
 	}
 
 	@Override
-	protected void performExperiment(long experimentID, ProblemInfo problemInfo, ProblemInstanceInfo instanceInfo,
-			String[] algorithmIDs, ZipOutputStream zos) throws Exception 
+	protected void performExperiment(String experimentID, ProblemInfo problemInfo, ProblemInstanceInfo instanceInfo,
+			String[] algorithmIDs) throws Exception 
 	{
 		// TODO Auto-generated method stub
 		

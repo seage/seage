@@ -110,7 +110,7 @@ public abstract class Experimenter
 
                 ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)));
 
-                performExperiment(experimentID, problemInfo, instanceInfo, algorithmIDs, zos);
+                performExperiment(String.valueOf(experimentID), problemInfo, instanceInfo, algorithmIDs);
 
                 zos.close();
             }
@@ -126,8 +126,8 @@ public abstract class Experimenter
                 getDurationBreakdown(System.currentTimeMillis() - experimentID)));
     }
 
-    protected abstract void performExperiment(long experimentID, ProblemInfo problemInfo,
-            ProblemInstanceInfo instanceInfo, String[] algorithmIDs, ZipOutputStream zos) throws Exception;
+    protected abstract void performExperiment(String experimentID, ProblemInfo problemInfo,
+            ProblemInstanceInfo instanceInfo, String[] algorithmIDs) throws Exception;
 
     protected abstract long getEstimatedTime(int instancesCount, int algorithmsCount);
 

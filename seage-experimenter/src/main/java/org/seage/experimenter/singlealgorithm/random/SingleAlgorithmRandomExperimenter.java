@@ -1,4 +1,4 @@
-package org.seage.experimenter._obsolete;
+package org.seage.experimenter.singlealgorithm.random;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,11 +6,9 @@ import java.util.List;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.experimenter.ExperimentSetup;
 import org.seage.experimenter.ExperimentTask;
 import org.seage.experimenter.Experimenter;
 import org.seage.experimenter.config.Configurator;
-import org.seage.experimenter.config.RandomConfigurator;
 import org.seage.thread.TaskRunner3;
 
 public class SingleAlgorithmRandomExperimenter extends Experimenter
@@ -58,8 +56,8 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
                 for (int runID = 1; runID <= NUM_RUNS; runID++)
                 {
                     //String reportName = problemInfo.getProblemID() + "-" + algorithmID + "-" + instanceInfo.getInstanceID() + "-" + configID + "-" + runID + ".xml";
-                    taskQueue.add(new ExperimentTask( new ExperimentSetup(_experimentName, experimentID, problemID,
-                            instanceID, algorithmID, config.getAlgorithmParams(), _timeoutS)));
+                    taskQueue.add(new ExperimentTask(_experimentName, experimentID, problemID,
+                            instanceID, algorithmID, config.getAlgorithmParams(), runID, _timeoutS));
                 }
             }
             TaskRunner3.run(taskQueue.toArray(new Runnable[] {}), Runtime.getRuntime().availableProcessors());

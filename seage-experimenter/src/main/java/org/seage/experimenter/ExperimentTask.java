@@ -2,6 +2,7 @@ package org.seage.experimenter;
 
 import java.net.UnknownHostException;
 
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.problem.IProblemProvider;
@@ -49,7 +50,7 @@ public class ExperimentTask implements Runnable
     protected static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
     //protected ProblemConfig _config;
     protected String _experimentType;
-    protected long _experimentID;
+    protected String _experimentID;
     protected String _problemID;
     protected String _instanceID;
     protected String _algorithmID;
@@ -60,7 +61,7 @@ public class ExperimentTask implements Runnable
 
     protected DataNode _experimentTaskReport;
 
-    public ExperimentTask(String experimentType, long experimentID, String problemID, String instanceID,
+    public ExperimentTask(String experimentType, String experimentID, String problemID, String instanceID,
             String algorithmID, AlgorithmParams algorithmParams, int runID, long timeoutS) throws Exception
     {
         _experimentType = experimentType;
@@ -74,7 +75,7 @@ public class ExperimentTask implements Runnable
         _timeoutS = timeoutS;
 
         //_reportName = reportName;
-        _reportOutputStream = reportOutputStream;
+        //_reportOutputStream = reportOutputStream;
 
         _experimentTaskReport = new DataNode("ExperimentTaskReport");
         _experimentTaskReport.putValue("version", "0.6");
@@ -137,22 +138,22 @@ public class ExperimentTask implements Runnable
         try
         {
             // provider and factory
-            IProblemProvider provider = ProblemProvider.getProblemProviders().get(_experimentSetup.ProblemID);
-            IAlgorithmFactory factory = provider.getAlgorithmFactory(_experimentSetup.AlgorithmID);
+            IProblemProvider provider = ProblemProvider.getProblemProviders().get(_problemID);
+            IAlgorithmFactory factory = provider.getAlgorithmFactory(_algorithmID);
 
             // problem instance
             ProblemInstance instance = provider
-                    .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_experimentSetup.InstanceID));
+                    .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_instanceID));
             instance.toString();
             // algorithm
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
 
             Object[][] solutions = provider.generateInitialSolutions(instance,
-            		_experimentSetup.AlgorithmParams.getValueInt("numSolutions"), _experimentSetup.ExperimentID.hashCode());
+            		_algorithmParams.getValueInt("numSolutions"), _experimentID.hashCode());
 
             long startTime = System.currentTimeMillis();
             algorithm.solutionsFromPhenotype(solutions);
-            algorithm.startSearching(_experimentSetup.AlgorithmParams, true);
+            algorithm.startSearching(_algorithmParams, true);
             waitForTimeout(algorithm);
             algorithm.stopSearching();
             long endTime = System.currentTimeMillis();
@@ -168,7 +169,7 @@ public class ExperimentTask implements Runnable
         catch (Exception ex)
         {
             _logger.error( ex.getMessage(), ex);
-            _logger.error( _experimentSetup.AlgorithmParams.toString());
+            _logger.error( _algorithmParams.toString());
 
         }
     }
@@ -176,7 +177,7 @@ public class ExperimentTask implements Runnable
     private void waitForTimeout(IAlgorithmAdapter alg) throws Exception
     {
         long time = System.currentTimeMillis();
-        while (alg.isRunning() && ((System.currentTimeMillis() - time) < _experimentSetup.TimeoutS * 1000))
+        while (alg.isRunning() && ((System.currentTimeMillis() - time) < _timeoutS * 1000))
             Thread.sleep(100);
     }
 

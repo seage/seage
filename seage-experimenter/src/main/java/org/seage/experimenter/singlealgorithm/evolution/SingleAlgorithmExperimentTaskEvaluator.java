@@ -32,7 +32,6 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
         _instanceID = instanceID;
         _algorithmID = algorithmID;
         _timeoutS = timeoutS;
-        _reportOutputStream = reportOutputStream;
         _configCache = new HashMap<String, Double>();
     }
 
@@ -57,9 +56,9 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
             }
             else
             {
-            	ExperimentTask task = new ExperimentTask(new ExperimentSetup("SingleAlgorithmEvolution",
-                        _experimentID, _problemID, _instanceID, _algorithmID, algorithmParams,
-                        _timeoutS));
+            	ExperimentTask task = new ExperimentTask("SingleAlgorithmEvolution",
+                        _experimentID, _problemID, _instanceID, _algorithmID, algorithmParams, 1,
+                        _timeoutS);
 
                 taskMap.put(task, s);
                 taskQueue.add(task);
