@@ -7,15 +7,14 @@ import org.seage.experimenter.Experimenter;
 public class MultiAlgorithmRandomExperimenter extends Experimenter 
 {
 
-	public MultiAlgorithmRandomExperimenter(String experimentName) 
+	public MultiAlgorithmRandomExperimenter(String experimentName) throws Exception 
 	{
-		super(experimentName);
+		super(experimentName, "", null, null);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	protected void performExperiment(String experimentID, ProblemInfo problemInfo, ProblemInstanceInfo instanceInfo,
-			String[] algorithmIDs) throws Exception 
+	protected void runExperiment(ProblemInstanceInfo instanceInfo) throws Exception 
 	{
 		// TODO Auto-generated method stub
 		

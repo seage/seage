@@ -43,12 +43,23 @@ public abstract class Experimenter
 {
     protected static Logger _logger = LoggerFactory.getLogger(Experimenter.class.getName());
     protected String _experimentName;
+    protected String _experimentID;
+    protected String _problemID;
+    protected String[] _instanceIDs;
+    protected String[] _algorithmIDs;
+    protected ProblemInfo _problemInfo;    
 
-    public Experimenter(String experimentName)
+    public Experimenter(String experimentName, String problemID, String[] instanceIDs, String[] algorithmIDs) throws Exception
     {
         _experimentName = experimentName;
+        _experimentID = String.valueOf(System.currentTimeMillis());
+        _problemID = problemID;
+        _instanceIDs = instanceIDs;
+        _algorithmIDs = algorithmIDs;
 
         new File("output/experiment-logs").mkdirs();
+        
+        _problemInfo = ProblemProvider.getProblemProviders().get(_problemID).getProblemInfo();
     }
 
     public void runFromConfigFile(String configPath) throws Exception
@@ -56,25 +67,25 @@ public abstract class Experimenter
         throw new Exception("Not implemented");
     }
 
-    public final void runExperiment(String problemID, String[] instanceIDs, String[] algorithmIDs) throws Exception
+    public final void runExperiment() throws Exception
     {
-        ProblemInfo problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
+        
 
         // *** Check arguments ***
-        if (instanceIDs[0].equals("-"))
+        if (_instanceIDs[0].equals("-"))
         {
             List<String> instIDs = new ArrayList<String>();
-            for (DataNode ins : problemInfo.getDataNode("Instances").getDataNodes("Instance"))
+            for (DataNode ins : _problemInfo.getDataNode("Instances").getDataNodes("Instance"))
                 instIDs.add(ins.getValueStr("id"));
-            instanceIDs = instIDs.toArray(new String[] {});
+            _instanceIDs = instIDs.toArray(new String[] {});
         }
 
-        if (algorithmIDs[0].equals("-"))
+        if (_algorithmIDs[0].equals("-"))
         {
             List<String> algIDs = new ArrayList<String>();
-            for (DataNode alg : problemInfo.getDataNode("Algorithms").getDataNodes("Algorithm"))
+            for (DataNode alg : _problemInfo.getDataNode("Algorithms").getDataNodes("Algorithm"))
                 algIDs.add(alg.getValueStr("id"));
-            algorithmIDs = algIDs.toArray(new String[] {});
+            _algorithmIDs = algIDs.toArray(new String[] {});
         }
         // ***********************
 
@@ -84,9 +95,9 @@ public abstract class Experimenter
         _logger.info("ExperimentID: " + experimentID);
         _logger.info("-------------------------------------");
 
-        long totalNumOfConfigs = getNumberOfConfigs(instanceIDs.length, algorithmIDs.length);
+        long totalNumOfConfigs = getNumberOfConfigs(_instanceIDs.length, _algorithmIDs.length);
         long totalRunsPerCpu = totalNumOfConfigs / Runtime.getRuntime().availableProcessors();
-        long totalEstimatedTime = getEstimatedTime(instanceIDs.length, algorithmIDs.length)
+        long totalEstimatedTime = getEstimatedTime(_instanceIDs.length, _algorithmIDs.length)
                 / Runtime.getRuntime().availableProcessors();
 
         _logger.info(String.format("%-25s: %s", "Total number of configs", totalNumOfConfigs));
@@ -94,25 +105,25 @@ public abstract class Experimenter
         _logger.info("Total estimated time: " + getDurationBreakdown(totalEstimatedTime) + " (DD:HH:mm:ss)");
         _logger.info("-------------------------------------");
 
-        for (int i = 0; i < instanceIDs.length; i++)
+        for (int i = 0; i < _instanceIDs.length; i++)
         {
             try
             {
-                ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceIDs[i]);
+                ProblemInstanceInfo instanceInfo = _problemInfo.getProblemInstanceInfo(_instanceIDs[i]);
 
                 _logger.info("-------------------------------------");
-                _logger.info(String.format("%-15s %s", "Problem:", problemID));
-                _logger.info(String.format("%-15s %-16s    (%d/%d)", "Instance:", instanceIDs[i], i + 1,
-                        instanceIDs.length));
+                _logger.info(String.format("%-15s %s", "Problem:", _problemID));
+                _logger.info(String.format("%-15s %-16s    (%d/%d)", "Instance:", _instanceIDs[i], i + 1,
+                        _instanceIDs.length));
 
-                String reportPath = String.format("output/experiment-logs/%s-%s-%s.zip", experimentID, problemID,
-                        instanceIDs[i]);
+//                String reportPath = String.format("output/experiment-logs/%s-%s-%s.zip", experimentID, _problemID,
+//                        _instanceIDs[i]);
 
-                ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)));
+//                ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)));
 
-                performExperiment(String.valueOf(experimentID), problemInfo, instanceInfo, algorithmIDs);
+                runExperiment(instanceInfo);
 
-                zos.close();
+//                zos.close();
             }
             catch (Exception ex)
             {
@@ -126,8 +137,7 @@ public abstract class Experimenter
                 getDurationBreakdown(System.currentTimeMillis() - experimentID)));
     }
 
-    protected abstract void performExperiment(String experimentID, ProblemInfo problemInfo,
-            ProblemInstanceInfo instanceInfo, String[] algorithmIDs) throws Exception;
+    protected abstract void runExperiment(ProblemInstanceInfo instanceInfo) throws Exception;
 
     protected abstract long getEstimatedTime(int instancesCount, int algorithmsCount);
 

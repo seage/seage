@@ -1,15 +1,20 @@
 package org.seage.experimenter.singlealgorithm.random;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.data.DataNode;
+import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.ExperimentTask;
 import org.seage.experimenter.Experimenter;
 import org.seage.experimenter.config.Configurator;
-import org.seage.thread.TaskRunner3;
 
 public class SingleAlgorithmRandomExperimenter extends Experimenter
 {
@@ -19,9 +24,9 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
 
     private final int NUM_RUNS = 3;
 
-    public SingleAlgorithmRandomExperimenter(int numConfigs, int timeoutS)
+    public SingleAlgorithmRandomExperimenter(String problemID, String[] instanceIDs, String[] algorithmIDs, int numConfigs, int timeoutS) throws Exception
     {
-        super("SingleAlgorithmRandom");
+        super("SingleAlgorithmRandom", problemID, instanceIDs, algorithmIDs);
 
         _numConfigs = numConfigs;
         _timeoutS = timeoutS;
@@ -29,38 +34,70 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter
         _configurator = new RandomConfigurator();
     }
 
-    protected SingleAlgorithmRandomExperimenter(String experimenterName, int numConfigs, int timeoutS)
-    {
-        this(numConfigs, timeoutS);
-        _experimentName = experimenterName;
-    }
+//    public SingleAlgorithmRandomExperimenter(String problemID, String[] instanceIDs, String[] algorithmIDs, int numConfigs, int timeoutS)
+//    {
+//        this(numConfigs, timeoutS);
+//        _experimentName = experimenterName;
+//    }
 
     @Override
-    protected void performExperiment(String experimentID, ProblemInfo problemInfo, ProblemInstanceInfo instanceInfo,
-            String[] algorithmIDs) throws Exception
+    protected void runExperiment(ProblemInstanceInfo instanceInfo) throws Exception
     {
-        for (int i = 0; i < algorithmIDs.length; i++)
-        {
-            String problemID = problemInfo.getProblemID();
+        for (int i = 0; i < _algorithmIDs.length; i++)
+        {            
+        	String algorithmID = _algorithmIDs[i];
             String instanceID = instanceInfo.getInstanceID();
-            String algorithmID = algorithmIDs[i];
 
-            _logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, algorithmIDs.length));
+            _logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, _algorithmIDs.length));
             _logger.info(String.format("%-44s", "   Running... "));
 
-            List<Runnable> taskQueue = new ArrayList<Runnable>();
-            ProblemConfig[] configs = _configurator.prepareConfigs(problemInfo, instanceInfo.getInstanceID(),
+            List<ExperimentTask> taskQueue = new ArrayList<ExperimentTask>();
+            ProblemConfig[] configs = _configurator.prepareConfigs(_problemInfo, instanceInfo.getInstanceID(),
                     algorithmID, _numConfigs);
             for (ProblemConfig config : configs)
             {
                 for (int runID = 1; runID <= NUM_RUNS; runID++)
                 {
                     //String reportName = problemInfo.getProblemID() + "-" + algorithmID + "-" + instanceInfo.getInstanceID() + "-" + configID + "-" + runID + ".xml";
-                    taskQueue.add(new ExperimentTask(_experimentName, experimentID, problemID,
+                    taskQueue.add(new ExperimentTask(_experimentName, _experimentID, _problemID,
                             instanceID, algorithmID, config.getAlgorithmParams(), runID, _timeoutS));
                 }
             }
-            TaskRunner3.run(taskQueue.toArray(new Runnable[] {}), Runtime.getRuntime().availableProcessors());
+            String reportPath = String.format("output/experiment-logs/%s-%s-%s.zip", _experimentID, _problemID,
+                    instanceID);
+
+            try(ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)))) {            
+	            List<DataNode> dn = taskQueue.parallelStream().map(t -> {	            	
+	            	DataNode r = null;
+	            	try {
+	            		t.run();
+	            		r = t.getExperimentTaskReport();
+						XmlHelper.writeXml(r, zos, t.getReportName());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            	return r;
+	            }).collect(Collectors.toList());
+            }
+            /*try(ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)))) {            
+	            Optional<Integer> n = taskQueue.parallelStream().map(t -> {
+	            	_logger.info("t.run()");
+	            	t.run();
+	            	return t;
+	            }).map(t -> {
+	            	DataNode r = null;
+	            	try {
+	            		_logger.info("XmlHelper.writeXml()");
+	            		r = t.getExperimentTaskReport();
+						XmlHelper.writeXml(r, zos, t.getReportName());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            	return 1;
+	            }).reduce((a, b) -> a+1);
+            }*/
         }
     }
 

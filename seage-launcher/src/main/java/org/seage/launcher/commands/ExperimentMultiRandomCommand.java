@@ -23,8 +23,8 @@ public class ExperimentMultiRandomCommand extends Command
     @Override
     public void performCommad() throws Exception
     {
-        new MultiAlgorithmRandomExperimenter("")
-            .runExperiment(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}));  
+//        new MultiAlgorithmRandomExperimenter("")
+//            .runExperiment(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}));  
     }
 
 }

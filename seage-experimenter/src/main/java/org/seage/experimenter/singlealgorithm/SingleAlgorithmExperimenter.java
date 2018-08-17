@@ -41,12 +41,18 @@ import org.seage.experimenter.config.Configurator;
 public abstract class SingleAlgorithmExperimenter extends Experimenter
 {
 
-    public SingleAlgorithmExperimenter(String experimentName, Configurator configurator)
-    {
-        super(experimentName);
-    }
+//    public SingleAlgorithmExperimenter(String experimentName, String problemID, String[] instanceIDs, String[] algorithmIDs, int numConfigs, int timeoutS)
+//    {
+//        super(experimentName);
+//    }
 
-    public void runExperiment(int numOfConfigs, long timeoutS, String problemID, String[] algorithmIDs,
+    public SingleAlgorithmExperimenter(String experimentName, String problemID, String[] instanceIDs,
+			String[] algorithmIDs) throws Exception {
+		super(experimentName, problemID, instanceIDs, algorithmIDs);
+		// TODO Auto-generated constructor stub
+	}
+
+	public void runExperiment(int numOfConfigs, long timeoutS, String problemID, String[] algorithmIDs,
             String[] instanceIDs) throws Exception
     {
         long experimentID = System.currentTimeMillis();

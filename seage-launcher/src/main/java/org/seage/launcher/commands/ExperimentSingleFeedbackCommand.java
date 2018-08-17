@@ -24,7 +24,7 @@ public class ExperimentSingleFeedbackCommand extends Command
     @Override
     public void performCommad() throws Exception 
     {
-        new SingleAlgorithmFeedbackExperimenter(numOfConfigs, algorithmTimeoutS)
-        .runExperiment(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}));       
+        new SingleAlgorithmFeedbackExperimenter(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}), numOfConfigs, algorithmTimeoutS)
+        .runExperiment();       
     }   
 }

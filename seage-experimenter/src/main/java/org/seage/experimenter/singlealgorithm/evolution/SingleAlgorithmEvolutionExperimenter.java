@@ -19,49 +19,58 @@ import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 public class SingleAlgorithmEvolutionExperimenter extends Experimenter
         implements IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject>>
 {
-    private FeedbackConfigurator _feedbackConfigurator;
+	private FeedbackConfigurator _feedbackConfigurator;
     private int _numSubjects;
     private int _numIterations;
     private int _algorithmTimeoutS;
 
-    public SingleAlgorithmEvolutionExperimenter(int numSubjects, int numIterations, int algorithmTimeoutS)
-            throws Exception
-    {
-        super("SingleAlgorithmEvolution");
-
-        _numSubjects = numSubjects;
+//    public SingleAlgorithmEvolutionExperimenter(int numSubjects, int numIterations, int algorithmTimeoutS)
+//            throws Exception
+//    {
+//        super("SingleAlgorithmEvolution");
+//
+//        _numSubjects = numSubjects;
+//        _numIterations = numIterations;
+//        _algorithmTimeoutS = algorithmTimeoutS;
+//
+//        _feedbackConfigurator = new FeedbackConfigurator();
+//        ;
+//    }
+    
+    public SingleAlgorithmEvolutionExperimenter(String experimentName, String problemID, String[] instanceIDs,
+			String[] algorithmIDs, int numSubjects, int numIterations, int algorithmTimeoutS) throws Exception {
+		super(experimentName, problemID, instanceIDs, algorithmIDs);
+		_numSubjects = numSubjects;
         _numIterations = numIterations;
         _algorithmTimeoutS = algorithmTimeoutS;
 
         _feedbackConfigurator = new FeedbackConfigurator();
-        ;
-    }
+	}
+    
 
-    @Override
-    protected void performExperiment(String experimentID, ProblemInfo problemInfo, ProblemInstanceInfo instanceInfo,
-            String[] algorithmIDs) throws Exception
-    {
-        String problemID = problemInfo.getProblemID();
+	@Override
+	protected void runExperiment(ProblemInstanceInfo instanceInfo) throws Exception {
+        String problemID = _problemInfo.getProblemID();
         String instanceID = instanceInfo.getInstanceID();
 
-        for (int i = 0; i < algorithmIDs.length; i++)
+        for (int i = 0; i < _algorithmIDs.length; i++)
         {
             try
             {
-                String algorithmID = algorithmIDs[i];
+                String algorithmID = _algorithmIDs[i];
 
-                if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null)
+                if (_problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null)
                     throw new Exception("Unknown algorithm: " + algorithmID);
 
                 _logger.info(
-                        String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, algorithmIDs.length));
+                        String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, _algorithmIDs.length));
 
-                ContinuousGeneticOperator.Limit[] limits = prepareAlgorithmParametersLimits(algorithmID, problemInfo);
+                ContinuousGeneticOperator.Limit[] limits = prepareAlgorithmParametersLimits(algorithmID, _problemInfo);
                 ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject> realOperator = new ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject>(
                         limits);
 
                 SingleAlgorithmExperimentTaskEvaluator evaluator = new SingleAlgorithmExperimentTaskEvaluator(
-                        experimentID, problemID, instanceID, algorithmID, _algorithmTimeoutS);
+                        _experimentID, problemID, instanceID, algorithmID, _algorithmTimeoutS);
                 GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = new GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject>(
                         realOperator, evaluator);
                 ga.addGeneticSearchListener(this);
@@ -73,7 +82,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
                 ga.setPopulationCount(_numSubjects);
                 ga.setRandomSubjectsPct(20);
 
-                List<SingleAlgorithmExperimentTaskSubject> subjects = initializeSubjects(problemInfo, instanceID,
+                List<SingleAlgorithmExperimentTaskSubject> subjects = initializeSubjects(_problemInfo, instanceID,
                         algorithmID, _numSubjects);
 
                 ga.startSearching(subjects);
@@ -174,4 +183,5 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
     {
         return _numIterations * _numSubjects * instancesCount * algorithmsCount;
     }
+
 }

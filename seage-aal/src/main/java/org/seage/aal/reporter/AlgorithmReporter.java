@@ -53,7 +53,7 @@ public class AlgorithmReporter
 
     public void putNewSolution(long time, long iterNumber, double objVal, String solution) throws Exception
     {
-        DataNode newSol = new DataNode("newSolution");
+        DataNode newSol = new DataNode("NewSolution");
         newSol.putValue("time", time);
         newSol.putValue("iterNumber", iterNumber);
         newSol.putValue("objVal", objVal);

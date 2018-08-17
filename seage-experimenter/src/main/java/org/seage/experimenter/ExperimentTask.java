@@ -114,10 +114,15 @@ public class ExperimentTask implements Runnable
         configNode.putDataNode(algorithmNode);
 
         _experimentTaskReport.putDataNode(configNode);
+        
+        DataNode solutionsNode = new DataNode("Solutions");
+        solutionsNode.putDataNode(new DataNode("Input"));
+        solutionsNode.putDataNode(new DataNode("Output"));
+        _experimentTaskReport.putDataNode(solutionsNode);
 
     }
 
-    protected String getReportName() throws Exception
+    public String getReportName() throws Exception
     {
         return _problemID + "-" + _instanceID + "-" + _algorithmID + "-" + _configID + "-" + _runID + ".xml";
     }
@@ -150,7 +155,8 @@ public class ExperimentTask implements Runnable
 
             Object[][] solutions = provider.generateInitialSolutions(instance,
             		_algorithmParams.getValueInt("numSolutions"), _experimentID.hashCode());
-
+            _experimentTaskReport.getDataNode("Solutions").getDataNode("Input").putValue("s", solutions);
+            
             long startTime = System.currentTimeMillis();
             algorithm.solutionsFromPhenotype(solutions);
             algorithm.startSearching(_algorithmParams, true);
@@ -159,6 +165,7 @@ public class ExperimentTask implements Runnable
             long endTime = System.currentTimeMillis();
 
             solutions = algorithm.solutionsToPhenotype();
+            _experimentTaskReport.getDataNode("Solutions").getDataNode("Output").putValue("s", solutions);
 
             _experimentTaskReport.putDataNode(algorithm.getReport());
             _experimentTaskReport.putValue("durationS", (endTime - startTime) / 1000);

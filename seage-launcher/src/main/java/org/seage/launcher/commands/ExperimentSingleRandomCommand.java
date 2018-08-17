@@ -23,7 +23,7 @@ public class ExperimentSingleRandomCommand extends Command
     @Override
     public void performCommad() throws Exception 
     {
-        new SingleAlgorithmRandomExperimenter(numOfConfigs, algorithmTimeoutS)
-        .runExperiment(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}));       
+        new SingleAlgorithmRandomExperimenter(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}), numOfConfigs, algorithmTimeoutS)
+        .runExperiment();       
     }   
 }

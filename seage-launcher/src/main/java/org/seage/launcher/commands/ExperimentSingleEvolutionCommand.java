@@ -25,7 +25,7 @@ public class ExperimentSingleEvolutionCommand extends Command
     @Override
     public void performCommad() throws Exception 
     {
-        new SingleAlgorithmEvolutionExperimenter(numOfSubjects, numOfIterations, algorithmTimeoutS )
-        .runExperiment(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}));       
+//        new SingleAlgorithmEvolutionExperimenter(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}), numOfSubjects, numOfIterations, algorithmTimeoutS )
+//        .runExperiment();       
     }   
 }
