@@ -34,6 +34,7 @@ import org.seage.aal.algorithm.particles.ParticleSwarmAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemInstance;
 
 /**
@@ -42,7 +43,7 @@ import org.seage.problem.tsp.TspProblemInstance;
  */
 @Annotations.AlgorithmId("ParticleSwarm")
 @Annotations.AlgorithmName("Particle Swarm")
-public class TspParticleSwarmFactory implements IAlgorithmFactory
+public class TspParticleSwarmFactory implements IAlgorithmFactory<TspPhenotype, TspParticle>
 {
     private int _numParticles;
 
@@ -55,46 +56,43 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
     }
 
     @Override
-    public IAlgorithmAdapter<TspParticle> createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<TspPhenotype, TspParticle> createAlgorithm(ProblemInstance instance) throws Exception
     {
     	final City[] cities = ((TspProblemInstance) instance).getCities();
 
         _objectiveFunction = new TspObjectiveFunction(cities);
 
-        IAlgorithmAdapter<TspParticle> algorithm = new ParticleSwarmAdapter<>(
+        IAlgorithmAdapter<TspPhenotype, TspParticle> algorithm = new ParticleSwarmAdapter<>(
                 generateInitialSolutions(cities),
                 _objectiveFunction,
                 false, "")
         {
             @Override
-            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception
             {
                 _numParticles = source.length;
-                _initialParticles = generateInitialSolutions(cities);
+                _initialParticles = new TspParticle[source.length];
                 for (int i = 0; i < source.length; i++)
                 {
                     Integer[] tour = ((TspParticle) _initialParticles[i]).getTour();
-                    for (int j = 0; j < source[i].length; j++)
+                    _initialParticles[i] = new TspSortedParticle(cities.length);
+                    for (int j = 0; j < source[i].getSolution().length; j++)
                     {
-                        tour[j] = (Integer) source[i][j];
+                    	//_initialParticles[i].setCoords(coords); ???                        
                     }
                 }
             }
 
             @Override
-            public Object[][] solutionsToPhenotype() throws Exception
+            public TspPhenotype[] solutionsToPhenotype() throws Exception
             {
-                int numOfParticles = _particleSwarm.getParticles().length;
-                Object[][] source = new Object[numOfParticles][cities.length];
+                //int numOfParticles = _particleSwarm.getParticles().length;
+                TspPhenotype[] source = new TspPhenotype[_initialParticles.length];
 
                 for (int i = 0; i < source.length; i++)
-                {
-                    source[i] = new Integer[cities.length];
-                    Integer[] tour = ((TspParticle) _particleSwarm.getParticles()[i]).getTour();
-                    for (int j = 0; j < source[i].length; j++)
-                    {
-                        source[i][j] = tour[j];
-                    }
+                {                    
+                	Integer[] tour = ((TspParticle) _initialParticles[i]).getTour();
+                    source[i] = new TspPhenotype(tour);
                 }
 
                 // TODO: A - need to sort source by fitness function of each tour
@@ -103,7 +101,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
             }
 
 			@Override
-			public Object[] solutionToPhenotype(TspParticle solution) throws Exception {
+			public TspPhenotype solutionToPhenotype(TspParticle solution) throws Exception {
 				// TODO Auto-generated method stub
 				return null;
 			}

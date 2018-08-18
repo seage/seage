@@ -27,6 +27,8 @@
 package org.seage.problem.tsp.antcolony;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
@@ -36,6 +38,7 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemInstance;
 
 /**
@@ -44,7 +47,7 @@ import org.seage.problem.tsp.TspProblemInstance;
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
-public class TspAntColonyFactory implements IAlgorithmFactory
+public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
 {
 	@Override
     public Class<?> getAlgorithmClass()
@@ -53,43 +56,36 @@ public class TspAntColonyFactory implements IAlgorithmFactory
     }
 
     @Override
-    public IAlgorithmAdapter<Ant> createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<TspPhenotype, Ant> createAlgorithm(ProblemInstance instance) throws Exception
     {
         City[] cities = ((TspProblemInstance) instance).getCities();
         TspGraph graph = new TspGraph(cities);
         AntBrain brain = new AntBrain(graph);
-        IAlgorithmAdapter<Ant> algorithm = new AntColonyAdapter<>(brain, graph)
+        IAlgorithmAdapter<TspPhenotype, Ant> algorithm = new AntColonyAdapter<>(brain, graph)
         {
             @Override
-            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception
             {
                 _ants = new Ant[source.length];
                 for (int i = 0; i < _ants.length; i++)
                 {
-                    ArrayList<Integer> nodes = new ArrayList<Integer>();
-                    for (int j = 0; j < source[i].length; j++)
-                        nodes.add((Integer) source[i][j]);
-                    _ants[i] = new Ant(nodes);
+                    _ants[i] = new Ant(Arrays.asList(source[i].getSolution()));
                 }
             }
 
             @Override
-            public Object[][] solutionsToPhenotype() throws Exception
+            public TspPhenotype[] solutionsToPhenotype() throws Exception
             {
-                Object[][] result = new Object[_ants.length][];
+            	TspPhenotype[] result = new TspPhenotype[_ants.length];
                 for (int i = 0; i < _ants.length; i++)
-                {
-                    result[i] = new Integer[_ants[i].getNodeIDsAlongPath().size()];
-                    for (int j = 0; j < result[i].length; j++)
-                    {
-                        result[i][j] = _ants[i].getNodeIDsAlongPath().get(j);
-                    }
+                {   
+                    result[i] = new TspPhenotype(_ants[i].getNodeIDsAlongPath().toArray(new Integer[0]));
                 }
                 return result;
             }
 
 			@Override
-			public Object[] solutionToPhenotype(Ant solution) throws Exception {
+			public TspPhenotype solutionToPhenotype(Ant solution) throws Exception {
 				// TODO Auto-generated method stub
 				return null;
 			}

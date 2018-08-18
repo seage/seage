@@ -1,10 +1,9 @@
 package org.seage.problem.tsp.sannealing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
@@ -19,25 +18,20 @@ public class TspObjectiveFunctionTest
     private TspObjectiveFunction _objFunc;
     private City[] _cities;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
 
         _optimalTour = new TspOptimalTourBerlin52();
         //_optimalTour =  new TspOptimalTourPcb442();
 
-        IProblemProvider provider = ProblemProvider.getProblemProviders().get("TSP");
+        IProblemProvider<?> provider = ProblemProvider.getProblemProviders().get("TSP");
         assertNotNull(provider);
         TspProblemInstance instance = (TspProblemInstance) provider
                 .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_optimalTour.Name));
 
         _cities = instance.getCities();
         _objFunc = new TspObjectiveFunction(_cities);
-    }
-
-    @After
-    public void tearDown() throws Exception
-    {
     }
 
     @Test

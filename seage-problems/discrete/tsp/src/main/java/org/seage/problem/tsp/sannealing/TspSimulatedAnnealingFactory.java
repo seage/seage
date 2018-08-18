@@ -34,6 +34,7 @@ import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemInstance;
 
 /**
@@ -42,7 +43,7 @@ import org.seage.problem.tsp.TspProblemInstance;
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
-public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
+public class TspSimulatedAnnealingFactory implements IAlgorithmFactory<TspPhenotype, TspSolution>
 {
     //	private TspSolution _tspSolution;
     //    private TspProblemProvider _provider;
@@ -69,16 +70,16 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
     }
 
     @Override
-    public IAlgorithmAdapter<TspSolution> createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<TspPhenotype, TspSolution> createAlgorithm(ProblemInstance instance) throws Exception
     {
         final City[] cities = ((TspProblemInstance) instance).getCities();
 
-        IAlgorithmAdapter<TspSolution> algorithm = new SimulatedAnnealingAdapter<>(
+        IAlgorithmAdapter<TspPhenotype, TspSolution> algorithm = new SimulatedAnnealingAdapter<>(
                 new TspObjectiveFunction(cities),
                 new TspMoveManager(), false, "")
         {
             @Override
-            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception
             {
                 _solutions = new Solution[source.length];
                 for (int j = 0; j < source.length; j++)
@@ -87,27 +88,27 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory
                     Integer[] tour = solution.getTour();
 
                     for (int i = 0; i < tour.length; i++)
-                        tour[i] = (Integer) source[j][i];
+                        tour[i] = (Integer) source[j].getSolution()[i];
 
                     _solutions[j] = solution;
                 }
             }
 
             @Override
-            public Object[][] solutionsToPhenotype() throws Exception
+            public TspPhenotype[] solutionsToPhenotype() throws Exception
             {
-                Object[][] result = new Object[_solutions.length][];
+            	TspPhenotype[] result = new TspPhenotype[_solutions.length];
 
                 for (int i = 0; i < _solutions.length; i++)
                 {
                     TspSolution solution = (TspSolution) _solutions[i];
-                    result[i] = solution.getTour().clone();
+                    result[i] = new TspPhenotype(solution.getTour());
                 }
                 return result;
             }
 
 			@Override
-			public Object[] solutionToPhenotype(TspSolution solution) throws Exception {
+			public TspPhenotype solutionToPhenotype(TspSolution solution) throws Exception {
 				// TODO Auto-generated method stub
 				return null;
 			}

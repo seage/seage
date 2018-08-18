@@ -3,8 +3,9 @@ package org.seage.problem.tsp.grasp;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.problem.tsp.TspPhenotype;
 
-public class TspGraspAlgorithmAdapter implements IAlgorithmAdapter
+public class TspGraspAlgorithmAdapter implements IAlgorithmAdapter<TspPhenotype, TspSolution>
 {
 
     @Override
@@ -44,21 +45,21 @@ public class TspGraspAlgorithmAdapter implements IAlgorithmAdapter
     }
 
     @Override
-    public void solutionsFromPhenotype(Object[][] source) throws Exception
+    public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception
     {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public Object[][] solutionsToPhenotype() throws Exception
+    public TspPhenotype[] solutionsToPhenotype() throws Exception
     {
         // TODO Auto-generated method stub
         return null;
     }
 
 	@Override
-	public Object[] solutionToPhenotype(Object solution) throws Exception {
+	public TspPhenotype solutionToPhenotype(TspSolution solution) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

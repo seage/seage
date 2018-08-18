@@ -1,11 +1,11 @@
 package org.seage.problem.tsp.sannealing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import java.util.Arrays;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
@@ -19,7 +19,7 @@ public class TspSolutionTest
     private TspOptimalTour _optimalTour;
     private City[] _cities;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
         _optimalTour = new TspOptimalTourBerlin52();
