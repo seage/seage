@@ -31,7 +31,7 @@ import java.util.Comparator;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public abstract class AlgorithmReportEvaluator implements Serializable, Comparator<AlgorithmReport>
 {

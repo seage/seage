@@ -31,7 +31,7 @@ import org.seage.aal.reporter.AlgorithmReportEvaluator;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class TabuSearchRuntimeEvaluator extends AlgorithmReportEvaluator
 {

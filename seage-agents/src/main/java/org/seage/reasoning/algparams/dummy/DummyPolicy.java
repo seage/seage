@@ -33,7 +33,7 @@ import org.seage.reasoning.algparams.Policy;
 /**
  * Dummy hypotheses generates random parameters at the beginning (in constructor, if desired)
  * and the parameters are not changed during suggestions.
- * @author rick
+ * @author Richard Malek
  */
 public class DummyPolicy extends Policy
 {

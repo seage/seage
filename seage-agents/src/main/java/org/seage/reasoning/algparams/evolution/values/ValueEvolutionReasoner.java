@@ -35,7 +35,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class ValueEvolutionReasoner extends EvolutionReasoner
 {

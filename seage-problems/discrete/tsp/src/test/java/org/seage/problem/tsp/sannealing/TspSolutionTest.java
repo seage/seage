@@ -1,7 +1,7 @@
 package org.seage.problem.tsp.sannealing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.assertNotSame;
 
 import java.util.Arrays;
 

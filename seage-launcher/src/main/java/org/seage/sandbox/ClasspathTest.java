@@ -39,7 +39,7 @@ import org.seage.classutil.ClassPathAnalyzer;
 
 /**
  * 
- * @author rick
+ * @author Richard Malek
  */
 public class ClasspathTest
 {

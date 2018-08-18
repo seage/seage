@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class AlgorithmReport extends DataNode
 {

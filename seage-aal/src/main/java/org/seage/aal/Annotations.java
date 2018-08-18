@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public @interface Annotations
 {

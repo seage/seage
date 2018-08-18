@@ -47,7 +47,7 @@ import javax.xml.transform.TransformerConfigurationException;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class LogAnalyzer0
 {

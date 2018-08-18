@@ -37,7 +37,7 @@ import org.seage.experimenter.config.Configurator;
 
 /**
  * 
- * @author rick
+ * @author Richard Malek
  */
 public class RandomConfigurator extends Configurator
 {

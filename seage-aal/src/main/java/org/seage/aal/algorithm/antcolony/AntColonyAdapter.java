@@ -33,6 +33,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -45,7 +46,7 @@ import org.seage.metaheuristic.antcolony.Graph;
 
 /**
  * AntColony adapter class
- * @author rick
+ * @author Richard Malek
  *
  */
 @AlgorithmParameters({
@@ -57,7 +58,7 @@ import org.seage.metaheuristic.antcolony.Graph;
         @Parameter(name = "qantumOfPheromone", min = 1, max = 1000, init = 10),
         @Parameter(name = "localEvaporation", min = 0.5, max = 0.98, init = 0.95)
 })
-public abstract class AntColonyAdapter<S extends Ant> extends AlgorithmAdapterImpl<S>
+public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> extends AlgorithmAdapterImpl<P, S>
 {
     protected AntColony _antColony;
     //private AntColonyListener _algorithmListener;

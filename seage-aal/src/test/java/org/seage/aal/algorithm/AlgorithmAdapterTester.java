@@ -1,17 +1,20 @@
 package org.seage.aal.algorithm;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Random;
 
 import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 import org.seage.data.DataNode;
 
-import junit.framework.Assert;
-
 public class AlgorithmAdapterTester<S> extends AlgorithmAdapterTestBase<S>
 {
-    public AlgorithmAdapterTester(IAlgorithmAdapter<S> algorithm, AlgorithmParams algParams) throws Exception
+    public AlgorithmAdapterTester(IAlgorithmAdapter<TestPhenotype, S> algorithm, AlgorithmParams algParams) throws Exception
     {
         _algAdapter = algorithm;
         _algParams = algParams;
@@ -27,7 +30,7 @@ public class AlgorithmAdapterTester<S> extends AlgorithmAdapterTestBase<S>
     {
         _algAdapter.solutionsFromPhenotype(createPhenotypeSolutions());
         _algAdapter.startSearching(_algParams);
-        Assert.assertNull(_algAdapter.solutionsToPhenotype());
+        assertNull(_algAdapter.solutionsToPhenotype());
         _algAdapter.solutionsToPhenotype();
     }
 
@@ -38,7 +41,7 @@ public class AlgorithmAdapterTester<S> extends AlgorithmAdapterTestBase<S>
         {
             _algParams = null;
             testAlgorithm();
-            Assert.fail("Algorithm should throw an exception when parameters not set.");
+            fail("Algorithm should throw an exception when parameters not set.");
         }
         catch (Exception ex)
         {
@@ -57,11 +60,11 @@ public class AlgorithmAdapterTester<S> extends AlgorithmAdapterTestBase<S>
     {
         _algAdapter.solutionsFromPhenotype(createPhenotypeSolutions());
         _algAdapter.startSearching(_algParams, true);
-        Assert.assertTrue(_algAdapter.isRunning());
+        assertTrue(_algAdapter.isRunning());
 
         _algAdapter.stopSearching();
 
-        Assert.assertFalse(_algAdapter.isRunning());
+        assertFalse(_algAdapter.isRunning());
     }
 
     @Override
@@ -69,27 +72,27 @@ public class AlgorithmAdapterTester<S> extends AlgorithmAdapterTestBase<S>
     {
         testAlgorithm();
         _algReport = _algAdapter.getReport();
-        Assert.assertNotNull(_algReport);
-        Assert.assertTrue(_algReport.containsNode("Parameters"));
-        Assert.assertTrue(_algReport.containsNode("Log"));
-        Assert.assertTrue(_algReport.containsNode("Statistics"));
+        assertNotNull(_algReport);
+        assertTrue(_algReport.containsNode("Parameters"));
+        assertTrue(_algReport.containsNode("Log"));
+        assertTrue(_algReport.containsNode("Statistics"));
 
         for (String attName : _algReport.getDataNode("Parameters").getValueNames())
-            Assert.assertEquals(_algParams.getValue(attName), _algReport.getDataNode("Parameters").getValue(attName));
+            assertEquals(_algParams.getValue(attName), _algReport.getDataNode("Parameters").getValue(attName));
 
         DataNode stats = _algReport.getDataNode("Statistics");
-        Assert.assertTrue(stats.getValueInt("numberOfIter") > 1);
-        Assert.assertTrue(stats.getValueDouble("initObjVal") > 0);
-        Assert.assertTrue(stats.getValueInt("avgObjVal") > 0);
-        Assert.assertTrue(stats.getValueInt("bestObjVal") > 0);
-        Assert.assertFalse(stats.getValueInt("initObjVal") < stats.getValueInt("bestObjVal"));
-        Assert.assertTrue((stats.getValueInt("initObjVal") != stats.getValueInt("bestObjVal"))
+        assertTrue(stats.getValueInt("numberOfIter") > 1);
+        assertTrue(stats.getValueDouble("initObjVal") > 0);
+        assertTrue(stats.getValueInt("avgObjVal") > 0);
+        assertTrue(stats.getValueInt("bestObjVal") > 0);
+        assertFalse(stats.getValueInt("initObjVal") < stats.getValueInt("bestObjVal"));
+        assertTrue((stats.getValueInt("initObjVal") != stats.getValueInt("bestObjVal"))
                 || (stats.getValueInt("numberOfNewSolutions") == 1));
-        Assert.assertTrue(stats.getValueInt("bestObjVal") == stats.getValueDouble("initObjVal")
+        assertTrue(stats.getValueInt("bestObjVal") == stats.getValueDouble("initObjVal")
                 || stats.getValueInt("lastIterNumberNewSol") > 1);
-        Assert.assertTrue(
+        assertTrue(
                 stats.getValueInt("numberOfNewSolutions") > 0 || stats.getValueInt("lastIterNumberNewSol") == 0);
-        Assert.assertTrue(
+        assertTrue(
                 stats.getValueInt("lastIterNumberNewSol") > 1 || stats.getValueInt("numberOfNewSolutions") == 1);
     }
 

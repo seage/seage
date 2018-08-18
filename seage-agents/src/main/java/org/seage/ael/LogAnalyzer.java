@@ -40,7 +40,7 @@ import javax.xml.transform.TransformerFactory;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class LogAnalyzer
 {

@@ -31,15 +31,16 @@ import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
+import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
-public class AntColonyAdapterTest extends AlgorithmAdapterTestBase
+public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant>
 {
 
     public AntColonyAdapterTest() throws Exception
@@ -68,7 +69,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase
         _algParams.putValue("qantumOfPheromone", 1);
         _algParams.putValue("localEvaporation", 1);
 
-        _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
+        _tester = new AlgorithmAdapterTester<>(_algAdapter, /*_solutions,*/ _algParams);
     }
 
     @Test

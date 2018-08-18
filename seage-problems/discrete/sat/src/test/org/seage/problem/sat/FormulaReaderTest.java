@@ -23,11 +23,11 @@ package org.seage.problem.sat;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import static org.junit.Assert.*;
+import static org.junit.*;
 
 /**
  *
- * @author RMalek
+ * @author Richard Malek
  */
 public class FormulaReaderTest {
 

@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Rick
+ * @author Richard Malek
  */
 public class AdviserAgent extends AelAgent
 {

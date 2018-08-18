@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class ClassUtil
 {

@@ -37,7 +37,7 @@ import org.seage.data.xml.XmlHelper;
 
 /**
  *
- * @author RMalek
+ * @author Richard Malek
  */
 @SuppressWarnings("all")
 public class ProblemProviderTester

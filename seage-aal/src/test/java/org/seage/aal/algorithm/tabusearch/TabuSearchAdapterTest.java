@@ -35,7 +35,7 @@ import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution>
 {
@@ -70,11 +70,11 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
             @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
-                Assert.assertEquals(_solutions0.length, _solutions.length);
-                Assert.assertNotSame(_solutions0[0], _solutions[0]);
+                assertEquals(_solutions0.length, _solutions.length);
+                assertNotSame(_solutions0[0], _solutions[0]);
                 for (int i = 1; i < _solutions.length; i++)
                 {
-                    Assert.assertSame(_solutions0[i], _solutions[i]);
+                    assertSame(_solutions0[i], _solutions[i]);
                 }
                 return null;
             }

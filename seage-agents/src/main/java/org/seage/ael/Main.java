@@ -21,7 +21,7 @@ package org.seage.ael;
 
 /**
  *
- * @author Rick
+ * @author Richard Malek
  */
 import aglobe.platform.Platform;
 import org.seage.data.DataNode;

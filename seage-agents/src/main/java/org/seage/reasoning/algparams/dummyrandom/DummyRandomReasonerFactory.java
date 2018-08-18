@@ -35,7 +35,7 @@ import java.util.Vector;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class DummyRandomReasonerFactory implements  ReasonerFactory{
 

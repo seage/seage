@@ -37,7 +37,7 @@ import java.util.zip.ZipException;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class ClassPathAnalyzer
 {

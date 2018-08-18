@@ -40,7 +40,7 @@ import java.util.jar.JarFile;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 @Deprecated
 @SuppressWarnings(value = { "all" })

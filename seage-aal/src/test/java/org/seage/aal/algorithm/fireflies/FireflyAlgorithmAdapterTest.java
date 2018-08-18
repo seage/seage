@@ -34,7 +34,7 @@ import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 //@Ignore("Adapter class not fully implemented yet")
 public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase<TestSolution>

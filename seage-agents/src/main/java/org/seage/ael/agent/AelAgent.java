@@ -43,7 +43,7 @@ import java.util.logging.SimpleFormatter;
 
 /**
  *
- * @author Rick
+ * @author Richard Malek
  */
 public abstract class AelAgent extends CMAgent implements DirectoryListener
 {

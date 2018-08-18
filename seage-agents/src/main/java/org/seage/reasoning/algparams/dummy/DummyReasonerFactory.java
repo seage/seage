@@ -27,7 +27,7 @@ import org.seage.aal.reporter.AlgorithmReportEvaluator;
 import java.util.Vector;
 
 /**
- * @author rick
+ * @author Richard Malek
  */
 public class DummyReasonerFactory implements  ReasonerFactory
 {

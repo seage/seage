@@ -68,7 +68,7 @@ import org.seage.experimenter.ExperimentTask;
  *  	|_ Statistics
  *  	|_ Minutes
  * 
- * @author rick
+ * @author Richard Malek
  */
 public class SingleAlgorithmExperimentTask extends ExperimentTask
 {

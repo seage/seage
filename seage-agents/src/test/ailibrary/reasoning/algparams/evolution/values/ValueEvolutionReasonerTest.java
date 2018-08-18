@@ -33,11 +33,11 @@ import org.seage.reasoning.algparams.Policy;
 import org.seage.reasoning.algparams.Reasoner;
 import org.seage.reasoning.algparams.ReasonerFactory;
 import org.junit.jupiter.api.Test;
-import static org.junit.Assert.*;
+import static org.junit.*;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class ValueEvolutionReasonerTest
 {

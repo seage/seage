@@ -19,7 +19,7 @@
  */
 package org.seage.metaheuristic.sannealing;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.assertTrue;
 
 import org.junit.jupiter.api.Test;
 

@@ -31,7 +31,7 @@ import org.seage.aal.reporter.AlgorithmReportEvaluator;
 
 /**
  * Reasoner interface hides an implementation of policy evolution
- * @author rick
+ * @author Richard Malek
  */
 public abstract class Reasoner
 {

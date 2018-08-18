@@ -31,7 +31,7 @@ import org.seage.aal.algorithm.Phenotype;
 
 /**
  * TSP phenotype is a sequence of city IDs starting at _1_ 
- * @author Rick
+ * @author Richard Malek
  */
 public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<Integer[]>
 {

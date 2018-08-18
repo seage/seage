@@ -46,7 +46,7 @@ import ch.qos.logback.core.joran.spi.JoranException;
 
 /**
  * 
- * @author rick
+ * @author Richard Malek
  */
 public class LogHelper
 {

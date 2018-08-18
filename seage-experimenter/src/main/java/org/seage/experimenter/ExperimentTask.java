@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  *  	|_ Statistics
  *  	|_ Minutes
  * 
- * @author rick
+ * @author Richard Malek
  */
 public class ExperimentTask implements Runnable
 {

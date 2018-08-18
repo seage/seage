@@ -23,7 +23,7 @@ import org.seage.data.DataNode;
 
 /**
  * A factory interface for a Reasoner creation
- * @author rick
+ * @author Richard Malek
  */
 public interface ReasonerFactory
 {

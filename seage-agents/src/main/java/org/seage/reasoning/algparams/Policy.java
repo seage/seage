@@ -32,7 +32,7 @@ import org.seage.data.DataNode;
 import java.io.Serializable;
 
 /**
- * @author rick
+ * @author Richard Malek
  * Functor class for generating the algorithm parameters according to the Policy
  */
 public abstract class Policy implements Serializable

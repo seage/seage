@@ -21,7 +21,7 @@ package org.seage.data;
 
 /**
  *
- * @author RMalek
+ * @author Richard Malek
  */
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

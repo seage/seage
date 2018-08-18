@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 
- * @author rick
+ * @author Richard Malek
  */
 public abstract class Configurator
 {

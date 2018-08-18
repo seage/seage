@@ -27,7 +27,7 @@ import org.seage.reasoning.algparams.Policy;
 import java.util.HashMap;
 
 /**
- * @author rick
+ * @author Richard Malek
  */
 public class DummyRandomPolicy extends Policy
 {

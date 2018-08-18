@@ -33,7 +33,7 @@ import org.seage.data.DataNode;
 
 /**
  * A structure describing a problem (name, id, available algorithms and instances)
- * @author rick
+ * @author Richard Malek
  * 
  * ProblemInfo
  *  |_ id

@@ -31,6 +31,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -52,7 +53,7 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
         @Parameter(name = "mutateSubjectPct", min = 0, max = 100, init = 10),
         @Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),
         @Parameter(name = "randomSubjectPct", min = 0, max = 100, init = 10) })
-public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends AlgorithmAdapterImpl<S>
+public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends Subject<?>> extends AlgorithmAdapterImpl<P, S>
 {
 
     protected List<S> _solutions;

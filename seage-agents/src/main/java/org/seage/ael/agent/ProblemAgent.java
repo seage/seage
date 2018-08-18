@@ -21,7 +21,7 @@ package org.seage.ael.agent;
 
 /**
  *
- * @author Rick
+ * @author Richard Malek
  */
 
 import aglobe.container.AgentContainer;

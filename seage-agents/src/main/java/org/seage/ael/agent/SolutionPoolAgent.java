@@ -37,7 +37,7 @@ import java.util.Random;
 
 /**
  * 
- * @author Rick
+ * @author Richard Malek
  */
 public class SolutionPoolAgent extends AelAgent
 {

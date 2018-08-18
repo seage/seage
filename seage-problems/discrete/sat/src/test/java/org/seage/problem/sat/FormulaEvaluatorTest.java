@@ -18,27 +18,27 @@ public class FormulaEvaluatorTest
         clauses.add(new Clause(new Literal[] { new Literal(0, true), new Literal(1, true), new Literal(2, false) }));
 
         Formula f = new Formula(null, clauses);
-        Assert.assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] { false, false, false }));
-        Assert.assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] { true, true, true }));
+        assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] { false, false, false }));
+        assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] { true, true, true }));
 
-        Assert.assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] { true, false, false }));
-        Assert.assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] { false, true, false }));
-        Assert.assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] { false, false, true }));
+        assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] { true, false, false }));
+        assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] { false, true, false }));
+        assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] { false, false, true }));
 
-        Assert.assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] { true, true, false }));
-        Assert.assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] { false, true, true }));
-        Assert.assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] { true, false, true }));
+        assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] { true, true, false }));
+        assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] { false, true, true }));
+        assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] { true, false, true }));
 
         //
         FormulaEvaluator formulaEvaluator = new FormulaEvaluator(f);
-        // Assert.assertEquals(2.0, formulaEvaluator.evaluate(f, -1));
-        // Assert.assertEquals(0.5, formulaEvaluator.evaluate(f, 1));
+        // assertEquals(2.0, formulaEvaluator.evaluate(f, -1));
+        // assertEquals(0.5, formulaEvaluator.evaluate(f, 1));
         //
-        // Assert.assertEquals(2.0, formulaEvaluator.evaluate(f, -2));
-        // Assert.assertEquals(0.5, formulaEvaluator.evaluate(f, 2));
+        // assertEquals(2.0, formulaEvaluator.evaluate(f, -2));
+        // assertEquals(0.5, formulaEvaluator.evaluate(f, 2));
         //
-        // Assert.assertEquals(2.0, formulaEvaluator.evaluate(f, -3));
-        // Assert.assertEquals(0.5, formulaEvaluator.evaluate(f, 3));
+        // assertEquals(2.0, formulaEvaluator.evaluate(f, -3));
+        // assertEquals(0.5, formulaEvaluator.evaluate(f, 3));
 
         printObjectiveValues(formulaEvaluator, f, new Boolean[] { false, false, false });
         printObjectiveValues(formulaEvaluator, f, new Boolean[] { false, false, true });

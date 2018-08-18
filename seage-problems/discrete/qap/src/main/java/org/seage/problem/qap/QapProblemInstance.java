@@ -31,7 +31,7 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class QapProblemInstance extends ProblemInstance
 {

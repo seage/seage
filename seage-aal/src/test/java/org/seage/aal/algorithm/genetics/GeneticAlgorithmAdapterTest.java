@@ -26,14 +26,18 @@
 
 package org.seage.aal.algorithm.genetics;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 import org.seage.metaheuristic.genetics.BasicGeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
@@ -41,7 +45,7 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subject<Integer>>
 {
@@ -51,7 +55,7 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subjec
         super();
     }
 
-    @Before
+    @BeforeEach
     public void initAlgorithm() throws Exception
     {
         SubjectEvaluator<Subject<Integer>> se = new SubjectEvaluator<Subject<Integer>>()
@@ -69,38 +73,38 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subjec
             }
         };
 
-        _algAdapter = new GeneticAlgorithmAdapter<Subject<Integer>>(
+        _algAdapter = new GeneticAlgorithmAdapter<>(
                 new BasicGeneticOperator<Subject<Integer>, Integer>(), se, false, "")
         {
             private List<Subject<Integer>> _solutions0;
 
             @Override
-            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception
             {
                 _solutions = new ArrayList<Subject<Integer>>(source.length);
                 _solutions0 = new ArrayList<Subject<Integer>>(source.length);
                 for (int i = 0; i < source.length; i++)
                 {
-                    Subject<Integer> s = new Subject<Integer>((Integer[]) source[i]);
+                    Subject<Integer> s = new Subject<Integer>(source[i].getSolution());
                     _solutions.add(s);
                     _solutions0.add(s);
                 }
             }
 
             @Override
-            public Object[][] solutionsToPhenotype() throws Exception
+            public TestPhenotype[] solutionsToPhenotype() throws Exception
             {
-                Assert.assertEquals(_solutions0.size(), _solutions.size());
+                assertEquals(_solutions0.size(), _solutions.size());
 
                 for (int i = 0; i < _solutions.size(); i++)
                 {
-                    Assert.assertNotSame(_solutions0.get(i), _solutions.get(i));
+                    assertNotSame(_solutions0.get(i), _solutions.get(i));
                 }
                 return null;
             }
 
 			@Override
-			public Object[] solutionToPhenotype(Subject<Integer> solution) throws Exception {
+			public TestPhenotype solutionToPhenotype(Subject<Integer> solution) throws Exception {
 				// TODO Auto-generated method stub
 				return null;
 			}
@@ -115,7 +119,7 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subjec
         _algParams.putValue("numSolutions", NUM_SOLUTIONS);
         _algParams.putValue("randomSubjectPct", 1);
 
-        _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
+        _tester = new AlgorithmAdapterTester<>(_algAdapter, /*_solutions,*/ _algParams);
     }
 
     @Override

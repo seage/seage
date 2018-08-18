@@ -29,7 +29,7 @@ import java.net.URL;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class ClassInfo
 {

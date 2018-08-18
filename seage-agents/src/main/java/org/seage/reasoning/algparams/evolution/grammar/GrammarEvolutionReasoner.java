@@ -34,7 +34,7 @@ import org.seage.reasoning.algparams.evolution.EvolutionReasoner;
 
 /**
  * Evolution of grammar rules used for algorithm parameter settings.
- * @author rick
+ * @author Richard Malek
  */
 public class GrammarEvolutionReasoner extends EvolutionReasoner
 {

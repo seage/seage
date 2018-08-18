@@ -36,7 +36,7 @@ import java.util.HashMap;
 
 /**
  * A policy based on grammar rules
- * @author rick
+ * @author Richard Malek
  */
 public class GrammarRulePolicy extends Policy
 {

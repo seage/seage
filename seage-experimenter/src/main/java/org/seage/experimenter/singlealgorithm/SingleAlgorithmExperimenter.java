@@ -35,7 +35,7 @@ import org.seage.experimenter.Experimenter;
 
 /**
  * 
- * @author rick
+ * @author Richard Malek
  */
 public abstract class SingleAlgorithmExperimenter extends Experimenter
 {

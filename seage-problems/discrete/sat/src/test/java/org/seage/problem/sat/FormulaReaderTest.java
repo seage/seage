@@ -34,7 +34,7 @@ import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 
 /**
  *
- * @author RMalek
+ * @author Richard Malek
  */
 public class FormulaReaderTest
 {

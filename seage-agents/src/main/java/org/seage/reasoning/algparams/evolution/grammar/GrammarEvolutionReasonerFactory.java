@@ -36,7 +36,7 @@ import java.util.Vector;
 
 /**
  * A factory that creates a GrammarReasoner
- * @author rick
+ * @author Richard Malek
  */
 public class GrammarEvolutionReasonerFactory implements  ReasonerFactory
 {

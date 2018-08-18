@@ -28,17 +28,19 @@ package org.seage.aal.algorithm.algbase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.Phenotype;
+import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public abstract class AlgorithmAdapterTestBase<S>
 {
     protected AlgorithmAdapterTester<S> _tester;
 
-    protected IAlgorithmAdapter<S> _algAdapter;
+    protected IAlgorithmAdapter<TestPhenotype, S> _algAdapter;
     protected AlgorithmParams _algParams;
     protected AlgorithmReport _algReport;
 

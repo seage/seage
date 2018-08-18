@@ -30,10 +30,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  * @param <S>
  */
-public abstract class AlgorithmAdapterImpl<S> implements IAlgorithmAdapter<S>
+public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S> implements IAlgorithmAdapter<P, S>
 {
     protected static final Logger _logger = LoggerFactory.getLogger(AlgorithmAdapterImpl.class.getName());
 

@@ -30,7 +30,7 @@ import java.util.Comparator;
 
 /**
  *
- * @author Rick
+ * @author Richard Malek
  */
 public interface IPhenotypeEvaluator<T> extends Comparator<double[]>
 {

@@ -32,7 +32,7 @@ import org.seage.aal.reporter.AlgorithmReport;
  *
  * @author Richard Malek
  */
-public interface IAlgorithmAdapter<S>
+public interface IAlgorithmAdapter<P extends Phenotype<?>, S>
 {
     //    // Returns meta-data on the algorithm
     //    //  |_ id
@@ -57,10 +57,10 @@ public interface IAlgorithmAdapter<S>
     AlgorithmReport getReport() throws Exception;
 
     // Converts solution from outer representation to the inner one.
-    void solutionsFromPhenotype(Phenotype<?>[] source) throws Exception;
+    void solutionsFromPhenotype(P[] source) throws Exception;
 
     // Converts solution from inner representation to the outer one.
     // Solutions are ordered in descendent (best first) order according to the quality.
-    Phenotype<?>[] solutionsToPhenotype() throws Exception;
-    Phenotype<?>   solutionToPhenotype(S solution) throws Exception;
+    P[] solutionsToPhenotype() throws Exception;
+    P   solutionToPhenotype(S solution) throws Exception;
 }

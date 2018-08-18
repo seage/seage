@@ -27,7 +27,7 @@ public class TspObjectiveFunctionTest
         //_optimalTour =  new TspOptimalTourPcb442();
 
         IProblemProvider provider = ProblemProvider.getProblemProviders().get("TSP");
-        Assert.assertNotNull(provider);
+        assertNotNull(provider);
         TspProblemInstance instance = (TspProblemInstance) provider
                 .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_optimalTour.Name));
 

@@ -46,7 +46,7 @@ import org.seage.aal.data.AlgorithmParams;
  *      <runStatistics/>
  * </report>
  *
- * @author rick
+ * @author Richard Malek
  */
 public class AlgorithmAgent extends AelAgent
 {    

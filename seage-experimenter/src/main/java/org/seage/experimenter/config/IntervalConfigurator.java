@@ -34,7 +34,7 @@ import org.seage.data.DataNode;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class IntervalConfigurator extends Configurator
 {

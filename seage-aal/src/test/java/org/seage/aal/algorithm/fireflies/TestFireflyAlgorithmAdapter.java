@@ -36,11 +36,11 @@ public class TestFireflyAlgorithmAdapter extends FireflyAlgorithmAdapter<TestSol
     @Override
     public Object[][] solutionsToPhenotype() throws Exception
     {
-        Assert.assertEquals(_solutions0.size(), _solutions.size());
+        assertEquals(_solutions0.size(), _solutions.size());
 
         for (int i = 1; i < _solutions.size(); i++)
         {
-            Assert.assertNotSame(_solutions0.get(i), _solutions.get(i));
+            assertNotSame(_solutions0.get(i), _solutions.get(i));
         }
 
         return null;

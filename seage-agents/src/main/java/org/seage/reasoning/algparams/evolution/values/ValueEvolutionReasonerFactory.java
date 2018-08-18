@@ -28,7 +28,7 @@ import java.util.Vector;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class ValueEvolutionReasonerFactory implements ReasonerFactory
 {

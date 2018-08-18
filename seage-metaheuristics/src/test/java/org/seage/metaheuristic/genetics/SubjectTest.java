@@ -1,10 +1,10 @@
 package org.seage.metaheuristic.genetics;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.assertArrayEquals;
+import static org.junit.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.assertNotSame;
+import static org.junit.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

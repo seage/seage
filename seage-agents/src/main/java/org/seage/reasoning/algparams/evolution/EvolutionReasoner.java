@@ -36,7 +36,7 @@ import java.util.List;
 
 /**
  * Reasoner working with evolution to adapt policies
- * @author rick
+ * @author Richard Malek
  */
 public abstract class EvolutionReasoner extends Reasoner
 {

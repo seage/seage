@@ -33,7 +33,7 @@ import org.seage.grammar.NonterminalSymbol;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class IifGrammar extends Grammar
 {

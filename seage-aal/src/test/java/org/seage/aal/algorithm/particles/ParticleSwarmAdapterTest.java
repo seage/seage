@@ -40,7 +40,7 @@ import org.seage.metaheuristic.particles.Particle;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 @Ignore("Adapter class not fully implemented yet")
 public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle>

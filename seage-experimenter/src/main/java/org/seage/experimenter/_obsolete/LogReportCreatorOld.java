@@ -46,7 +46,7 @@ import com.rapidminer.RapidMiner;
 
 /**
  *
- * @author rick
+ * @author Richard Malek
  */
 public class LogReportCreatorOld implements ILogReport
 {
