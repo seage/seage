@@ -4,28 +4,30 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
+import org.seage.data.ObjectCloner;
 
-public abstract class AlgorithmFactoryTestBase
+public abstract class AlgorithmFactoryTestBase<P extends Phenotype<?>>
 {
-    protected IAlgorithmFactory _algorithmFactory;
-    protected IProblemProvider<?> _problemProvider;
+    protected IAlgorithmFactory<P, ?> _algorithmFactory;
+    protected IProblemProvider<P> _problemProvider;
     protected String _algorithmID;
 
-    public AlgorithmFactoryTestBase(IProblemProvider<?> problemProvider, String algorithmID)
+    public AlgorithmFactoryTestBase(IProblemProvider<P> problemProvider, String algorithmID)
     {
         _problemProvider = problemProvider;
         _algorithmID = algorithmID;
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
         assertNotNull(_problemProvider);
@@ -48,7 +50,7 @@ public abstract class AlgorithmFactoryTestBase
         assertTrue(infos.size() > 0);
         ProblemInstanceInfo pii = infos.get(0);
 
-        IAlgorithmAdapter<?> aa = _algorithmFactory.createAlgorithm(_problemProvider.initProblemInstance(pii));
+        IAlgorithmAdapter<?, ?> aa = _algorithmFactory.createAlgorithm(_problemProvider.initProblemInstance(pii));
         assertNotNull(aa);
     }
 
@@ -60,26 +62,26 @@ public abstract class AlgorithmFactoryTestBase
         assertTrue(infos.size() > 0);
         ProblemInstanceInfo pii = infos.get(0);
 
-        IAlgorithmAdapter<?> aa = _algorithmFactory.createAlgorithm(_problemProvider.initProblemInstance(pii));
+        IAlgorithmAdapter<P, ?> aa = _algorithmFactory.createAlgorithm(_problemProvider.initProblemInstance(pii));
         assertNotNull(aa);
 
-        Phenotype<?>[] solutions = _problemProvider.generateInitialSolutions(_problemProvider.initProblemInstance(pii), 10,
-                1);
+        P[] solutions = _problemProvider.generateInitialSolutions(_problemProvider.initProblemInstance(pii), 10, 1);
         assertNotNull(solutions);
         aa.solutionsFromPhenotype(solutions);
-        Phenotype<?>[] solutions2 = aa.solutionsToPhenotype();
+        P[] solutions2 = aa.solutionsToPhenotype();
         assertNotNull(solutions2);
         assertEquals(solutions.length, solutions2.length);
 
         for (int i = 0; i < solutions.length; i++)
         {
             assertNotNull(solutions[i]);
+            assertNotNull(solutions[i].getSolution());
             assertNotNull(solutions2[i]);
-            assertEquals(solutions[i].getSolution(), solutions2[i].getSolution());
-//            for (int j = 0; j < solutions[i]..length; j++)
-//            {
-//                assertEquals(solutions[i][j], solutions2[i][j]);
-//            }
+            assertNotNull(solutions2[i].getSolution());
+            
+            byte[] b1 = ObjectCloner.getBytes(solutions[i].getSolution());
+            byte[] b2 = ObjectCloner.getBytes(solutions2[i].getSolution());
+            assertTrue(Arrays.equals(b1, b2));
         }
 
         AlgorithmParams params = createAlgorithmParams(_problemProvider.getProblemInfo());

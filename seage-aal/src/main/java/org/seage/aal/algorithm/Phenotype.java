@@ -14,5 +14,6 @@ public abstract class Phenotype<T> {
 	public abstract String toText();
 	public abstract void fromText(String text);
 	
+	//public abstract boolean isSame(Phenotype<T> p);
 	
 }

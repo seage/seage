@@ -36,28 +36,28 @@ import org.seage.aal.algorithm.Phenotype;
  * @author Richard Malek
  * 
  */
-public interface IProblemProvider<T>
+public interface IProblemProvider<P extends Phenotype<?>>
 {
     // Returns meta-data on the problem to be solved
     // @see ProblemInfo
     ProblemInfo getProblemInfo() throws Exception;
 
     // Returns the algorithm factory by id
-    IAlgorithmFactory getAlgorithmFactory(String algorithmID) throws Exception;
+    IAlgorithmFactory<P, ?> getAlgorithmFactory(String algorithmID) throws Exception;
 
     // Returns all algorithm factories
-    Map<String, IAlgorithmFactory> getAlgorithmFactories();
+    Map<String, IAlgorithmFactory<P, ?>> getAlgorithmFactories();
 
     // Initializes (reads) a problem instance.
     ProblemInstance initProblemInstance(ProblemInstanceInfo problemInstanceInfo) throws Exception;
 
     //  Initializes an evaluator of solutions in phenotype representation
     // (i.e. in general representation of a problem solution).
-    IPhenotypeEvaluator<T> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception;
+    IPhenotypeEvaluator<P> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception;
 
     // Generates the very first solution(s).
     // Solutions can be random, hungry, or other.
-    Phenotype<T>[] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
+    P[] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
             throws Exception;
 
     // Visualizes solution, usually produces a picture.

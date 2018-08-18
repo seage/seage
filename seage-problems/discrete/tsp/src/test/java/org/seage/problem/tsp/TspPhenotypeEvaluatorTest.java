@@ -22,7 +22,7 @@ public class TspPhenotypeEvaluatorTest
 
     private void testEvaluateTour(TspOptimalTour tour) throws Exception
     {
-        IProblemProvider provider = ProblemProvider.getProblemProviders().get("TSP");
+        IProblemProvider<?> provider = ProblemProvider.getProblemProviders().get("TSP");
         ProblemInstance instance = provider
                 .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(tour.Name));
         TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());

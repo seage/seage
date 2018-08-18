@@ -42,7 +42,7 @@ import org.seage.aal.problem.ProblemProvider;
  */
 @Annotations.ProblemId("TSP")
 @Annotations.ProblemName("Travelling Salesman Problem")
-public class TspProblemProvider extends ProblemProvider
+public class TspProblemProvider extends ProblemProvider<TspPhenotype>
 {
 
     @Override
@@ -74,16 +74,16 @@ public class TspProblemProvider extends ProblemProvider
     }
 
     @Override
-    public Object[][] generateInitialSolutions(ProblemInstance instance, int numSolutions, long randomSeed)
+    public TspPhenotype[] generateInitialSolutions(ProblemInstance instance, int numSolutions, long randomSeed)
             throws Exception
     {
         int numTours = numSolutions;
         City[] cities = ((TspProblemInstance) instance).getCities();
-        Integer[][] result = new Integer[numTours][];
+        TspPhenotype[] result = new TspPhenotype[numTours];
 
-        result[0] = TourProvider.createGreedyTour(cities, randomSeed);
+        result[0] = new TspPhenotype(TourProvider.createGreedyTour(cities, randomSeed));
         for (int i = 1; i < numTours; i++)
-            result[i] = TourProvider.createRandomTour(cities.length);
+            result[i] = new TspPhenotype(TourProvider.createRandomTour(cities.length));
 
         return result;
     }
@@ -102,7 +102,7 @@ public class TspProblemProvider extends ProblemProvider
     }
 
     @Override
-    public IPhenotypeEvaluator<?> initPhenotypeEvaluator(ProblemInstance instance) throws Exception
+    public IPhenotypeEvaluator<TspPhenotype> initPhenotypeEvaluator(ProblemInstance instance) throws Exception
     {
         return new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
     }

@@ -32,7 +32,7 @@ import java.util.Comparator;
  *
  * @author Richard Malek
  */
-public interface IPhenotypeEvaluator<T> extends Comparator<double[]>
+public interface IPhenotypeEvaluator<P extends Phenotype<?>> extends Comparator<double[]>
 {
-    double[] evaluate(Phenotype<T> phenotypeSubject) throws Exception;
+    double[] evaluate(P phenotypeSubject) throws Exception;
 }

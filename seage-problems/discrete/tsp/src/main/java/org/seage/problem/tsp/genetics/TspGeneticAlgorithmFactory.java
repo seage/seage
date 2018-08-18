@@ -36,6 +36,7 @@ import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemInstance;
 
 /**
@@ -44,7 +45,7 @@ import org.seage.problem.tsp.TspProblemInstance;
  */
 @Annotations.AlgorithmId("GeneticAlgorithm")
 @Annotations.AlgorithmName("GeneticAlgorithm")
-public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
+public class TspGeneticAlgorithmFactory implements IAlgorithmFactory<TspPhenotype, Subject<Integer>>
 {
 
     @Override
@@ -54,37 +55,35 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
     }
 
     @Override
-    public IAlgorithmAdapter<Subject<Integer>> createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<TspPhenotype, Subject<Integer>> createAlgorithm(ProblemInstance instance) throws Exception
     {
         City[] cities = ((TspProblemInstance) instance).getCities();
-        IAlgorithmAdapter<Subject<Integer>> algorithm = new GeneticAlgorithmAdapter<>(new TspGeneticOperator(), new TspEvaluator(cities),
+        IAlgorithmAdapter<TspPhenotype, Subject<Integer>> algorithm = new GeneticAlgorithmAdapter<>(new TspGeneticOperator(), new TspEvaluator(cities),
                 false, "")
         {
             @Override
-            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception
             {
                 _solutions = new ArrayList<Subject<Integer>>(source.length);
                 for (int i = 0; i < source.length; i++)
-                    _solutions.add(new Subject<Integer>((Integer[]) source[i]));
+                    _solutions.add(new Subject<Integer>(source[i].getSolution()));
             }
 
             @Override
-            public Object[][] solutionsToPhenotype() throws Exception
+            public TspPhenotype[] solutionsToPhenotype() throws Exception
             {
-                Object[][] result = new Object[_solutions.size()][];
+            	TspPhenotype[] result = new TspPhenotype[_solutions.size()];
 
                 for (int i = 0; i < _solutions.size(); i++)
-                {
-                    int numGenes = _solutions.get(i).getChromosome().getLength();
-                    result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
+                {                    
+                    result[i] = solutionToPhenotype(_solutions.get(i));
                 }
                 return result;
             }
             
-            public Object[] solutionToPhenotype(Subject<Integer> solution) throws Exception
+            public TspPhenotype solutionToPhenotype(Subject<Integer> solution) throws Exception
             {
-                int numGenes = solution.getChromosome().getLength();
-                return Arrays.copyOf(solution.getChromosome().getGenes(), numGenes);                
+                return new TspPhenotype(solution.getChromosome().getGenes());                
             }
         };
 

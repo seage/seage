@@ -1,5 +1,7 @@
 package org.seage.problem.tsp;
 
+import java.util.Arrays;
+
 import org.seage.aal.algorithm.Phenotype;
 
 public class TspPhenotype extends Phenotype<Integer[]> {
@@ -19,5 +21,10 @@ public class TspPhenotype extends Phenotype<Integer[]> {
 		// TODO Auto-generated method stub
 		
 	}
+
+//	@Override
+//	public boolean isSame(Phenotype<Integer[]> p) {		
+//		return Arrays.equals(_solution, p.getSolution());
+//	}
 
 }

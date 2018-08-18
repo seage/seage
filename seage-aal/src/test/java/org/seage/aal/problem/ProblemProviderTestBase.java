@@ -2,27 +2,28 @@ package org.seage.aal.problem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 
 //@Ignore 
-public abstract class ProblemProviderTestBase
+public abstract class ProblemProviderTestBase<P extends Phenotype<?>>
 {
-    protected IProblemProvider _problemProvider;
+    protected IProblemProvider<P> _problemProvider;
     protected ProblemInstance _problemInstance;
 
-    public ProblemProviderTestBase(IProblemProvider provider)
+    public ProblemProviderTestBase(IProblemProvider<P> provider)
     {
         _problemProvider = provider;
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
         assertNotNull(_problemProvider);
@@ -50,14 +51,14 @@ public abstract class ProblemProviderTestBase
     @Test
     public void testInitPhenotypeEvaluator() throws Exception
     {
-        IPhenotypeEvaluator phenotypeEvaluator = _problemProvider.initPhenotypeEvaluator(_problemInstance);
+        IPhenotypeEvaluator<?> phenotypeEvaluator = _problemProvider.initPhenotypeEvaluator(_problemInstance);
         assertNotNull(phenotypeEvaluator);
     }
 
     @Test
     public void testGenerateInitialSolutions() throws Exception
     {
-        Object[][] solutions = _problemProvider.generateInitialSolutions(_problemInstance, 10, 10);
+        Phenotype<?>[] solutions = _problemProvider.generateInitialSolutions(_problemInstance, 10, 10);
         assertNotNull(solutions);
         assertEquals(10, solutions.length);
     }
@@ -65,9 +66,9 @@ public abstract class ProblemProviderTestBase
     @Test
     public void testPhenotypeEvaluator() throws Exception
     {
-        IPhenotypeEvaluator<?> phenotypeEvaluator = _problemProvider.initPhenotypeEvaluator(_problemInstance);
+        IPhenotypeEvaluator<P> phenotypeEvaluator = _problemProvider.initPhenotypeEvaluator(_problemInstance);
         assertNotNull(phenotypeEvaluator);
-        Phenotype<?>[] solutions = _problemProvider.generateInitialSolutions(_problemInstance, 10, 10);
+        P[] solutions = _problemProvider.generateInitialSolutions(_problemInstance, 10, 10);
 
         for (int i = 0; i < 10; i++)
         {

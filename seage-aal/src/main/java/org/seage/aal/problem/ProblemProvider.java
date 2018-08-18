@@ -30,6 +30,7 @@ import java.util.HashMap;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.classutil.ClassInfo;
 import org.seage.classutil.ClassUtil;
@@ -42,12 +43,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Richard Malek
  */
-public abstract class ProblemProvider implements IProblemProvider
+public abstract class ProblemProvider<P extends Phenotype<?>> implements IProblemProvider<P>
 {
     private static Logger _logger = LoggerFactory.getLogger(ProblemProvider.class.getName());
-    private static HashMap<String, IProblemProvider> _providers;
+    private static HashMap<String, IProblemProvider<?>> _providers;
     private ProblemInfo _problemInfo;
-    private HashMap<String, IAlgorithmFactory> _algFactories;
+    private HashMap<String, IAlgorithmFactory<P, ?>> _algFactories;
 
     @Override
     public ProblemInfo getProblemInfo() throws Exception
@@ -93,7 +94,7 @@ public abstract class ProblemProvider implements IProblemProvider
 
         // Algorithms
         DataNode algorithms = new DataNode("Algorithms");
-        _algFactories = new HashMap<String, IAlgorithmFactory>();
+        _algFactories = new HashMap<String, IAlgorithmFactory<P, ?>>();
 
         for (ClassInfo ci : ClassUtil.searchForClasses(IAlgorithmFactory.class, this.getClass().getPackage().getName()))
         {
@@ -155,7 +156,7 @@ public abstract class ProblemProvider implements IProblemProvider
     }
 
     @Override
-    public IAlgorithmFactory getAlgorithmFactory(String algId) throws Exception
+    public IAlgorithmFactory<P, ?> getAlgorithmFactory(String algId) throws Exception
     {
         if (!_algFactories.containsKey(algId))
             throw new Exception("Unknown algorithm id: " + algId);
@@ -163,25 +164,25 @@ public abstract class ProblemProvider implements IProblemProvider
     }
 
     @Override
-    public HashMap<String, IAlgorithmFactory> getAlgorithmFactories()
+    public HashMap<String, IAlgorithmFactory<P, ?>> getAlgorithmFactories()
     {
         return _algFactories;
     }
 
     ///////////////////////////////////////////////////////////////////////////
 
-    public static synchronized HashMap<String, IProblemProvider> getProblemProviders() throws Exception
+    public static synchronized HashMap<String, IProblemProvider<?>> getProblemProviders() throws Exception
     {
         if (_providers != null)
             return _providers;
 
-        _providers = new HashMap<String, IProblemProvider>();
+        _providers = new HashMap<String, IProblemProvider<?>>();
 
         for (ClassInfo ci : ClassUtil.searchForClasses(IProblemProvider.class, "org.seage.problem"))
         {
             try
             {
-                IProblemProvider pp = (IProblemProvider) Class.forName(ci.getClassName()).newInstance();
+                IProblemProvider<?> pp = (IProblemProvider<?>) Class.forName(ci.getClassName()).newInstance();
 
                 _providers.put(pp.getProblemInfo().getValueStr("id"), pp);
             }
