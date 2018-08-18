@@ -29,6 +29,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
@@ -47,7 +48,7 @@ import org.seage.metaheuristic.tabusearch.TabuSearchListener;
         @Parameter(name = "iterationCount", min = 1, max = 1000000, init = 1000),
         @Parameter(name = "numSolutions", min = 1, max = 1, init = 1),
         @Parameter(name = "tabuListLength", min = 1, max = 1000, init = 30) })
-public abstract class TabuSearchAdapter<S extends Solution> extends AlgorithmAdapterImpl<S>
+public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Solution> extends AlgorithmAdapterImpl<P, S>
 {
 
     private TabuSearch _tabuSearch;

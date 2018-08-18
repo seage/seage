@@ -32,6 +32,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.data.DataNode;
@@ -54,7 +55,7 @@ import org.seage.metaheuristic.particles.ParticleSwarmEvent;
         @Parameter(name = "alpha", min = 0, max = 100, init = 1),
         @Parameter(name = "beta", min = 0, max = 100, init = 1)
 })
-public abstract class ParticleSwarmAdapter<S extends Particle> extends AlgorithmAdapterImpl<S> implements IParticleSwarmListener
+public abstract class ParticleSwarmAdapter<P extends Phenotype<?>, S extends Particle> extends AlgorithmAdapterImpl<P, S> implements IParticleSwarmListener
 {
     protected ParticleSwarm _particleSwarm;
     protected Particle[] _initialParticles;

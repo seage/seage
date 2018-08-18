@@ -19,7 +19,7 @@
  */
 package org.seage.metaheuristic.particles;
 
-import static org.junit.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 

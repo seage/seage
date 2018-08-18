@@ -32,6 +32,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -50,7 +51,7 @@ import org.seage.metaheuristic.sannealing.Solution;
         @Parameter(name = "maxTemperature", min = 1000, max = 999999999, init = 100),
         @Parameter(name = "minTemperature", min = 0, max = 99999, init = 1),
         @Parameter(name = "numSolutions", min = 1, max = 1, init = 1) })
-public abstract class SimulatedAnnealingAdapter<S extends Solution> extends AlgorithmAdapterImpl<S>
+public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extends Solution> extends AlgorithmAdapterImpl<P, S>
 {
     protected SimulatedAnnealing _simulatedAnnealing;
     protected Solution[] _solutions;

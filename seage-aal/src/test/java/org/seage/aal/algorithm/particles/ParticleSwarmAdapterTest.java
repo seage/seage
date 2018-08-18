@@ -26,14 +26,13 @@
 
 package org.seage.aal.algorithm.particles;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.particles.Particle;
@@ -42,7 +41,7 @@ import org.seage.metaheuristic.particles.Particle;
  *
  * @author Richard Malek
  */
-@Ignore("Adapter class not fully implemented yet")
+@Disabled("Adapter class not fully implemented yet")
 public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle>
 {
 
@@ -51,45 +50,45 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle>
         super();
     }
 
-    @Before
+    @BeforeEach
     public void initAlgorithm() throws Exception
     {
-        _algAdapter = new ParticleSwarmAdapter<Particle>(null, null, false, "")
+        _algAdapter = new ParticleSwarmAdapter<TestPhenotype, Particle>(null, null, false, "")
         {
 
             @Override
-            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception
             {
                 _initialParticles = new Particle[source.length];
 
                 for (int i = 0; i < source.length; i++)
                 {
-                    _initialParticles[i] = new Particle(source[i].length);
-                    double[] coords = new double[source[i].length];
+                    _initialParticles[i] = new Particle(source[i].getSolution().length);
+                    double[] coords = new double[source[i].getSolution().length];
                     for (int j = 0; j < coords.length; j++)
-                        coords[j] = (Integer) source[i][j];
+                        coords[j] = source[i].getSolution()[j];
                     _initialParticles[i].setCoords(coords);
                 }
 
             }
 
             @Override
-            public Object[][] solutionsToPhenotype() throws Exception
+            public TestPhenotype[] solutionsToPhenotype() throws Exception
             {
-                List<Object[]> result = new ArrayList<Object[]>();
+            	TestPhenotype[] result = new TestPhenotype[_initialParticles.length];
 
                 for (int i = 0; i < _initialParticles.length; i++)
                 {
-                    Object[] coords = new Object[_initialParticles[i].getCoords().length];
+                    Integer[] coords = new Integer[_initialParticles[i].getCoords().length];
                     for (int j = 0; j < coords.length; j++)
                         coords[j] = (int) _initialParticles[i].getCoords()[j];
-                    result.add(coords);
+                    result[i] = new TestPhenotype(coords);
                 }
-                return result.toArray(new Object[][] {});
+                return result;
             }
 
 			@Override
-			public Object[] solutionToPhenotype(Particle solution) throws Exception {
+			public TestPhenotype solutionToPhenotype(Particle solution) throws Exception {
 				// TODO Auto-generated method stub
 				return null;
 			}

@@ -32,6 +32,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.metaheuristic.fireflies.FireflyOperator;
@@ -57,7 +58,7 @@ import org.seage.metaheuristic.fireflies.SolutionComparator;
         @Parameter(name = "absorption", min = 0, max = 1, init = 0.025)
         // @Parameter(name="populationSize", min=0, max=10000, init=0.1)
 })
-public abstract class FireflyAlgorithmAdapter<S extends Solution> extends AlgorithmAdapterImpl<S>
+public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends Solution> extends AlgorithmAdapterImpl<P, S>
 {
     protected List<S> _solutions;
     protected FireflySearch<S> _fireflySearch;

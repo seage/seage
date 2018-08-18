@@ -1,10 +1,8 @@
 package org.seage.classutil;
 
-import java.util.List;
-
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
-
-import junit.framework.Assert;
+import java.util.List;
 
 public class ClassPathAnalyzerTest
 {

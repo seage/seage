@@ -1,6 +1,6 @@
 package org.seage.experimenter.singlealgorithm.feedback;
 
-import static org.junit.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;

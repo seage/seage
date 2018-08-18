@@ -21,13 +21,13 @@ public class ListCommand extends Command
         _logger.info("--------------------------------------------");
 
         DataNode problems = new DataNode("Problems");
-        Map<String, IProblemProvider> providers = ProblemProvider.getProblemProviders();
+        Map<String, IProblemProvider<?>> providers = ProblemProvider.getProblemProviders();
 
         for (String problemId : providers.keySet())
         {
             try
             {
-                IProblemProvider pp = providers.get(problemId);
+                IProblemProvider<?> pp = providers.get(problemId);
                 DataNode pi = pp.getProblemInfo();
                 problems.putDataNode(pi);
 

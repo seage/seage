@@ -1,5 +1,8 @@
 package org.seage.aal.algorithm.antcolony;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -7,8 +10,6 @@ import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
-
-import junit.framework.Assert;
 
 public class TestAntColonyAdapter extends AntColonyAdapter<TestPhenotype, Ant>
 {

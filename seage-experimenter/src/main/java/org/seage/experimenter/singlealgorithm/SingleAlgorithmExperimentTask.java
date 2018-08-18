@@ -32,6 +32,7 @@ import java.util.zip.ZipOutputStream;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
@@ -95,7 +96,7 @@ public class SingleAlgorithmExperimentTask extends ExperimentTask
             // algorithm
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
 
-            Object[][] solutions = provider.generateInitialSolutions(instance,
+            Phenotype<?>[] solutions = provider.generateInitialSolutions(instance,
                     _algorithmParams.getValueInt("numSolutions"), _experimentID.hashCode());
 
             long startTime = System.currentTimeMillis();
