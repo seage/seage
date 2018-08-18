@@ -155,13 +155,6 @@ public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends Algo
         return _reporter.getReport();
     }
 
-    @Override
-    public abstract void solutionsFromPhenotype(Object[][] source) throws Exception;
-
-    // Returns solutions in best-first order
-    @Override
-    public abstract Object[][] solutionsToPhenotype() throws Exception;
-
     private class GeneticAlgorithmListener implements IAlgorithmListener<GeneticAlgorithmEvent<S>>
     {
         @Override
@@ -181,8 +174,8 @@ public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends Algo
                 _statBestObjVal = s.getObjectiveValue()[0];
         }
 
-        @Override
         @SuppressWarnings("unchecked")
+		@Override
         public void newBestSolutionFound(GeneticAlgorithmEvent<S> e)
         {
             try
@@ -194,7 +187,7 @@ public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends Algo
 
                 _bestEverSolution = (S) gs.getBestSubject().clone();
                 _reporter.putNewSolution(System.currentTimeMillis(), gs.getCurrentIteration(),
-                        subject.getObjectiveValue()[0], subject.toString());
+                        subject.getObjectiveValue()[0], solutionToPhenotype(subject).toString());
                 _statNumNewSol++;
                 _statLastImprovingIteration = gs.getCurrentIteration();
 

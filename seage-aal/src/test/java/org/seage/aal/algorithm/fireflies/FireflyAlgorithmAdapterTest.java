@@ -27,7 +27,7 @@
 package org.seage.aal.algorithm.fireflies;
 
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;

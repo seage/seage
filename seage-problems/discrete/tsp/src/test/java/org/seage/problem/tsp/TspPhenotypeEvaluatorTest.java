@@ -1,8 +1,8 @@
 package org.seage.problem.tsp;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
@@ -12,11 +12,6 @@ import org.seage.problem.tsp.tour.TspOptimalTourPcb442;
 
 public class TspPhenotypeEvaluatorTest
 {
-
-    //	@Test
-    //	public void testTspPhenotypeEvaluator() {
-    //		fail("Not yet implemented");
-    //	}
 
     @Test
     public void testEvaluate() throws Exception
@@ -32,19 +27,19 @@ public class TspPhenotypeEvaluatorTest
                 .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(tour.Name));
         TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
 
-        Integer[] s = tour.OptimalTour;
+        TspPhenotype s = new TspPhenotype(tour.OptimalTour);
         TspOptimalTour.printTour(s);
         assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
 
-        s = TspOptimalTour.mirrorTour(tour.OptimalTour);
+        s = TspOptimalTour.mirrorTour(s);
         TspOptimalTour.printTour(s);
         assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
 
-        s = TspOptimalTour.shiftTour(tour.OptimalTour, 10);
+        s = TspOptimalTour.shiftTour(s, 10);
         TspOptimalTour.printTour(s);
         assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
 
-        s = TspOptimalTour.mirrorTour(TspOptimalTour.shiftTour(tour.OptimalTour, 10));
+        s = TspOptimalTour.mirrorTour(TspOptimalTour.shiftTour(s, 10));
         TspOptimalTour.printTour(s);
         assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
 

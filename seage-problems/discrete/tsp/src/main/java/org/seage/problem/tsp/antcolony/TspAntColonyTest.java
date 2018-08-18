@@ -35,6 +35,7 @@ import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspPhenotypeEvaluator;
 
 /**
@@ -120,7 +121,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
         for(Integer t : tour)
         	System.out.print(t+" ");
         System.out.println();
-        System.out.println(new TspPhenotypeEvaluator(cities).evaluate(tour)[0]);
+        System.out.println(new TspPhenotypeEvaluator(cities).evaluate(new TspPhenotype(tour))[0]);
     }
 
     private Integer[] createTour(List<Edge> bestPath) 

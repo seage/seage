@@ -9,7 +9,7 @@ import org.seage.data.DataNode;
 public class FeedbackConfiguratorTest
 {
 
-    //@BeforeClass
+    //@BeforeAll
     public static void setUpBeforeClass() throws Exception
     {
     }

@@ -1,14 +1,15 @@
 package org.seage.aal.problem;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.Phenotype;
 
 //@Ignore 
 public abstract class ProblemProviderTestBase
@@ -64,9 +65,9 @@ public abstract class ProblemProviderTestBase
     @Test
     public void testPhenotypeEvaluator() throws Exception
     {
-        IPhenotypeEvaluator phenotypeEvaluator = _problemProvider.initPhenotypeEvaluator(_problemInstance);
+        IPhenotypeEvaluator<?> phenotypeEvaluator = _problemProvider.initPhenotypeEvaluator(_problemInstance);
         assertNotNull(phenotypeEvaluator);
-        Object[][] solutions = _problemProvider.generateInitialSolutions(_problemInstance, 10, 10);
+        Phenotype<?>[] solutions = _problemProvider.generateInitialSolutions(_problemInstance, 10, 10);
 
         for (int i = 0; i < 10; i++)
         {

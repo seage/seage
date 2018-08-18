@@ -57,10 +57,10 @@ public interface IAlgorithmAdapter<S>
     AlgorithmReport getReport() throws Exception;
 
     // Converts solution from outer representation to the inner one.
-    void solutionsFromPhenotype(Object[][] source) throws Exception;
+    void solutionsFromPhenotype(Phenotype<?>[] source) throws Exception;
 
     // Converts solution from inner representation to the outer one.
     // Solutions are ordered in descendent (best first) order according to the quality.
-    Object[][] solutionsToPhenotype() throws Exception;
-    Object[]   solutionToPhenotype(S solution) throws Exception;
+    Phenotype<?>[] solutionsToPhenotype() throws Exception;
+    Phenotype<?>   solutionToPhenotype(S solution) throws Exception;
 }

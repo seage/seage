@@ -1,5 +1,7 @@
 package org.seage.aal.algorithm;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
@@ -91,26 +93,28 @@ public class AlgorithmAdapterTester<S> extends AlgorithmAdapterTestBase<S>
                 stats.getValueInt("lastIterNumberNewSol") > 1 || stats.getValueInt("numberOfNewSolutions") == 1);
     }
 
-    private Object[][] createPhenotypeSolutions()
+    private TestPhenotype[] createPhenotypeSolutions()
     {
         Random rnd = new Random(4);
-        Object[][] solutions = new Integer[NUM_SOLUTIONS][];
+        TestPhenotype[] solutions = new TestPhenotype[NUM_SOLUTIONS];
 
         for (int i = 0; i < NUM_SOLUTIONS; i++)
-        {
-            solutions[i] = new Integer[SOLUTION_LENGTH];
+        {            
+            Integer[] array = new Integer[SOLUTION_LENGTH]; 
             for (int j = 0; j < SOLUTION_LENGTH; j++)
             {
-                solutions[i][j] = j + 1;
+                array[j] = j + 1;
             }
+            
             for (int j = 0; j < SOLUTION_LENGTH; j++)
             {
                 int ix1 = rnd.nextInt(SOLUTION_LENGTH);
                 int ix2 = rnd.nextInt(SOLUTION_LENGTH);
-                Object a = solutions[i][ix1];
-                solutions[i][ix1] = solutions[i][ix2];
-                solutions[i][ix2] = a;
+                Integer a = array[ix1];
+                array[ix1] = array[ix2];
+                array[ix2] = a;
             }
+            solutions[i] = new TestPhenotype(array);
         }
 
         return solutions;

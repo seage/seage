@@ -29,13 +29,14 @@ import java.util.Map;
 
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.Phenotype;
 
 /**
  * Problem provider interface
  * @author Richard Malek
  * 
  */
-public interface IProblemProvider
+public interface IProblemProvider<T>
 {
     // Returns meta-data on the problem to be solved
     // @see ProblemInfo
@@ -52,11 +53,11 @@ public interface IProblemProvider
 
     //  Initializes an evaluator of solutions in phenotype representation
     // (i.e. in general representation of a problem solution).
-    IPhenotypeEvaluator initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception;
+    IPhenotypeEvaluator<T> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception;
 
     // Generates the very first solution(s).
     // Solutions can be random, hungry, or other.
-    Object[][] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
+    Phenotype<T>[] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
             throws Exception;
 
     // Visualizes solution, usually produces a picture.

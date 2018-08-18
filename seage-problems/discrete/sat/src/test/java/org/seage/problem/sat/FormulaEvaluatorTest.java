@@ -2,7 +2,7 @@ package org.seage.problem.sat;
 
 import java.util.ArrayList;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import junit.framework.Assert;
 

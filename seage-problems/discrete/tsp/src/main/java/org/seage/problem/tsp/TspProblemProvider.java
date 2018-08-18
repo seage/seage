@@ -102,7 +102,7 @@ public class TspProblemProvider extends ProblemProvider
     }
 
     @Override
-    public IPhenotypeEvaluator initPhenotypeEvaluator(ProblemInstance instance) throws Exception
+    public IPhenotypeEvaluator<?> initPhenotypeEvaluator(ProblemInstance instance) throws Exception
     {
         return new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
     }

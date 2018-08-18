@@ -32,7 +32,7 @@ import org.seage.data.DataNode;
 import org.seage.reasoning.algparams.Policy;
 import org.seage.reasoning.algparams.Reasoner;
 import org.seage.reasoning.algparams.ReasonerFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import static org.junit.Assert.*;
 
 /**

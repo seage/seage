@@ -2,18 +2,18 @@ package org.seage.metaheuristic.genetics;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class SubjectTest
 {
     private static Subject<Integer> s;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() throws Exception
     {
         s = new Subject<Integer>(new Integer[] { 1, 2, 3, 4 });

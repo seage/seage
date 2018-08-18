@@ -2,13 +2,15 @@ package org.seage.aal.algorithm.antcolony;
 
 import java.util.ArrayList;
 
+import org.seage.aal.algorithm.Phenotype;
+import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
 
 import junit.framework.Assert;
 
-public class TestAntColonyAdapter<S extends Ant> extends AntColonyAdapter<S>
+public class TestAntColonyAdapter extends AntColonyAdapter<Ant>
 {
     private Ant[] _ants0;
 
@@ -18,7 +20,7 @@ public class TestAntColonyAdapter<S extends Ant> extends AntColonyAdapter<S>
     }
 
     @Override
-    public void solutionsFromPhenotype(Object[][] source) throws Exception
+    public void solutionsFromPhenotype(Phenotype<>[] source) throws Exception
     {
         _ants0 = new Ant[source.length];
         _ants = new Ant[source.length];
@@ -36,7 +38,7 @@ public class TestAntColonyAdapter<S extends Ant> extends AntColonyAdapter<S>
 
     @SuppressWarnings("unused")
     @Override
-    public Object[][] solutionsToPhenotype() throws Exception
+    public Phenotype<?>[] solutionsToPhenotype() throws Exception
     {
         Assert.assertEquals(_ants0.length, _ants.length);
 
@@ -60,9 +62,8 @@ public class TestAntColonyAdapter<S extends Ant> extends AntColonyAdapter<S>
     }
 
 	@Override
-	public Object[] solutionToPhenotype(Ant solution) throws Exception {
+	public Phenotype<?> solutionToPhenotype(Ant solution) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

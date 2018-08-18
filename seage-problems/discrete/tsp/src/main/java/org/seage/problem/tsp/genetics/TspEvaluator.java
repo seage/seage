@@ -29,6 +29,7 @@ package org.seage.problem.tsp.genetics;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspPhenotypeEvaluator;
 
 /**
@@ -49,7 +50,7 @@ public class TspEvaluator extends SubjectEvaluator<Subject<Integer>>
     @Override
     public double[] evaluate(Subject<Integer> solution) throws Exception
     {
-        return _phenotypeEvaluator.evaluate(solution.getChromosome().getGenes());
+        return _phenotypeEvaluator.evaluate(new TspPhenotype(solution.getChromosome().getGenes()));
     }
 
     //    private double[] evaluate(Integer[] phenotypeSubject) throws Exception
