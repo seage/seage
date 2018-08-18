@@ -33,7 +33,6 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.jssp.JobsDefinition;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
-import org.seage.problem.jssp.tabusearch.JsspSolution;
 
 /**
  *

@@ -35,7 +35,6 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
-import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.ExperimentTask;
 
 /**

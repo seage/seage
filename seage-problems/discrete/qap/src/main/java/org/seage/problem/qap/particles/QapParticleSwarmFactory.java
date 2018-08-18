@@ -34,7 +34,6 @@ import org.seage.aal.algorithm.particles.ParticleSwarmAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.qap.QapProblemInstance;
-import org.seage.problem.qap.particles.QapParticle;
 
 /**
  *

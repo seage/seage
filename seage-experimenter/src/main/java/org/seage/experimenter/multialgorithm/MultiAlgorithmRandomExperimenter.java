@@ -1,6 +1,5 @@
 package org.seage.experimenter.multialgorithm;
 
-import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.experimenter.Experimenter;
 

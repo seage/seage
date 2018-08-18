@@ -2,8 +2,6 @@ package org.seage.launcher.commands;
 
 import java.util.List;
 
-import org.seage.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;
-
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 

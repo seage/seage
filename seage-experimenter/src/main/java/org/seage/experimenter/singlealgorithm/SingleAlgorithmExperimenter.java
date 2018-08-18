@@ -32,7 +32,6 @@ import java.io.FileOutputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.seage.experimenter.Experimenter;
-import org.seage.experimenter.config.Configurator;
 
 /**
  * 

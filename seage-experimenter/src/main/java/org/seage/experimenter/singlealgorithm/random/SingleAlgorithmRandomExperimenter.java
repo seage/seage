@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.problem.ProblemConfig;
-import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;

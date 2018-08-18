@@ -32,7 +32,6 @@ import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.problem.ProblemInstance;
-import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.sannealing.Solution;
 
 /**

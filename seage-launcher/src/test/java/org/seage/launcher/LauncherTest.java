@@ -1,7 +1,6 @@
 package org.seage.launcher;
 
 import org.junit.Test;
-import org.seage.launcher.Launcher;
 
 public class LauncherTest
 {

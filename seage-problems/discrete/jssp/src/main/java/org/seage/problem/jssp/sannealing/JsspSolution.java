@@ -27,7 +27,6 @@ package org.seage.problem.jssp.sannealing;
 
 
 import org.seage.metaheuristic.sannealing.Solution;
-import org.slf4j.LoggerFactory;
 
 /**
  *

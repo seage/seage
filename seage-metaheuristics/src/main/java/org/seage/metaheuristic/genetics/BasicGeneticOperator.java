@@ -27,7 +27,6 @@ package org.seage.metaheuristic.genetics;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author Richard Malek (original)

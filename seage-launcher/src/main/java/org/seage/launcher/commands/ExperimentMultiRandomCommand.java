@@ -2,8 +2,6 @@ package org.seage.launcher.commands;
 
 import java.util.List;
 
-import org.seage.experimenter.multialgorithm.MultiAlgorithmRandomExperimenter;
-
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 

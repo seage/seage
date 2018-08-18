@@ -1,12 +1,9 @@
 package org.seage.knowledgebase.importing.db.tablecreator;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Hashtable;
-import java.util.Properties;
 
-import org.postgresql.ds.PGPoolingDataSource;
 import org.postgresql.jdbc3.Jdbc3PoolingDataSource;
 import org.seage.data.xml.XmlHelper;
 import org.w3c.dom.Document;
