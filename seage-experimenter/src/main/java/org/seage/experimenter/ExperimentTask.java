@@ -78,7 +78,7 @@ public class ExperimentTask implements Runnable
         //_reportOutputStream = reportOutputStream;
 
         _experimentTaskReport = new DataNode("ExperimentTaskReport");
-        _experimentTaskReport.putValue("version", "0.6");
+        _experimentTaskReport.putValue("version", "0.7");
         _experimentTaskReport.putValue("experimentType", experimentType);
         _experimentTaskReport.putValue("experimentID", experimentID);
         _experimentTaskReport.putValue("timeoutS", timeoutS);

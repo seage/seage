@@ -40,7 +40,7 @@ public class AlgorithmReporter
     public AlgorithmReporter(String searchID) throws Exception
     {
         _report = new AlgorithmReport("AlgorithmReport");
-        _report.putDataNode(new DataNode("Minutes"));
+        _report.putDataNode(new DataNode("Log"));
         _report.putDataNode(new DataNode("Statistics"));
 
     }
@@ -59,7 +59,7 @@ public class AlgorithmReporter
         newSol.putValue("objVal", objVal);
         newSol.putValue("solution", solution);
 
-        _report.getDataNode("Minutes").putDataNode(newSol);
+        _report.getDataNode("Log").putDataNode(newSol);
     }
 
     public void putStatistics(
