@@ -51,10 +51,10 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<Subject<Integer>> createAlgorithm(ProblemInstance instance) throws Exception
     {
         JobsDefinition jobsDefinition = (JobsDefinition) instance;
-        IAlgorithmAdapter algorithm = new GeneticAlgorithmAdapter<Subject<Integer>>(
+        IAlgorithmAdapter<Subject<Integer>> algorithm = new GeneticAlgorithmAdapter<>(
                 new JsspGeneticOperator(jobsDefinition.getJobInfos()[0].getOperationInfos().length),
                 new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(jobsDefinition)), false, "")
         {
@@ -78,6 +78,12 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory
                 }
                 return result;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(Subject<Integer> solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
 
         return algorithm;

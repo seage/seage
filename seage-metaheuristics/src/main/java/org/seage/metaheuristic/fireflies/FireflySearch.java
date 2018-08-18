@@ -30,6 +30,7 @@
 package org.seage.metaheuristic.fireflies;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -43,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Karel Durkota
  */
-public class FireflySearch extends FireflySearchBase
+public class FireflySearch<S extends Solution> extends FireflySearchBase<S>
 {
 
     private static final Logger _logger = LoggerFactory.getLogger(FireflySearchBase.class.getName());
@@ -69,11 +70,11 @@ public class FireflySearch extends FireflySearchBase
     private boolean _keepSearching;
     private boolean _isRunning;
 
-    private Population _population;
+    private Population<S> _population;
     private FireflyOperator _operator;
     private ObjectiveFunction _objectiveFunction;
 
-    private Solution _bestSolution;
+    private S _bestSolution;
     private SolutionComparator _solutionComparator;
 
     private boolean _maximizing;
@@ -90,7 +91,7 @@ public class FireflySearch extends FireflySearchBase
     {
         _operator = operator;
         _objectiveFunction = objectiveFunction;
-        _population = new Population();
+        _population = new Population<S>();
         new Random();
 
         _bestSolution = null;
@@ -104,7 +105,7 @@ public class FireflySearch extends FireflySearchBase
         return _operator;
     }
 
-    public Solution[] getSolutions() throws Exception
+    public List<S> getSolutions() throws Exception
     {
         try
         {
@@ -128,12 +129,12 @@ public class FireflySearch extends FireflySearchBase
         return _isRunning;
     }
 
-    public Solution getBestSubject()
+    public S getBestSubject()
     {
         return _bestSolution;
     }
 
-    private void evaluatePopulation(Population population) throws Exception
+    private void evaluatePopulation(Population<S> population) throws Exception
     {
         try
         {
@@ -152,7 +153,7 @@ public class FireflySearch extends FireflySearchBase
     }
 
     @Override
-    public void startSolving(Solution[] solutions) throws Exception
+    public void startSolving(List<S> solutions) throws Exception
     {
         try
         {
@@ -163,13 +164,13 @@ public class FireflySearch extends FireflySearchBase
             _bestSolution = null;
             _currentIteration = 0;
 
-            Population workPopulation = new Population();
+            Population<S> workPopulation = new Population<>();
             _population.removeAll();
             for (int i = 0; i < _populationCount; i++)
             {
                 // System.out.println(subjects[i].hashCode());
-                if (i < solutions.length)
-                    _population.addSolution(solutions[i]);
+                if (i < solutions.size())
+                    _population.addSolution(solutions.get(i));
                 else
                     break;
             }
@@ -194,7 +195,7 @@ public class FireflySearch extends FireflySearchBase
                 {
                     for (int s2 = s1 + 1; s2 < _population.getSize(); s2++)
                     {
-                        d = d + _operator.getDistance(_population.getSolutions()[s1], _population.getSolutions()[s2]);
+                        d = d + _operator.getDistance(_population.getSolutions().get(s1), _population.getSolutions().get(s2));
                     }
                 }
                 // System.out.println("average distance = "+(double)d/(_population.getSize()*(_population.getSize()+1)/2));
@@ -207,7 +208,7 @@ public class FireflySearch extends FireflySearchBase
                 if (_bestSolution == null
                         || _solutionComparator.compare(_population.getBestSolution(), _bestSolution) < 0)
                 {
-                    _bestSolution = (Solution) _population.getBestSolution().clone();
+                    _bestSolution = _population.getBestSolution();
                     // System.out.print(i+"\t");
                     fireNewBestSolution();
                 }
@@ -239,21 +240,21 @@ public class FireflySearch extends FireflySearchBase
                                                 .getSolution(s2).getObjectiveValue()[0]))
                         {
                             isBest = false;
-                            _operator.attract(_population.getSolutions()[s1], workPopulation.getSolutions()[s2],
+                            _operator.attract(_population.getSolutions().get(s1), workPopulation.getSolutions().get(s2),
                                     _currentIteration);
 
-                            if (_population.getSolutions()[s1].equals(workPopulation.getSolutions()[s2]))
+                            if (_population.getSolutions().get(s1).equals(workPopulation.getSolutions().get(s2)))
                             {
                                 // System.out.println("EQUALS\nOLD:"+_population.getSolutions()[s1].toString());
                                 // _operator.randomSolution(_population.getSolutions()[s1]);
-                                _operator.modifySolution(_population.getSolutions()[s1]);
+                                _operator.modifySolution(_population.getSolutions().get(s1));
                                 // System.out.println("NEW:"+_population.getSolutions()[s1].toString());
                             }
                         }
                     }
                     if (!getBestSolutionNoMove() && isBest == true)
                     {
-                        _operator.modifySolution(_population.getSolutions()[s1]);
+                        _operator.modifySolution(_population.getSolutions().get(s1));
                     }
                 }
                 // hill climbing of best solution
@@ -261,12 +262,12 @@ public class FireflySearch extends FireflySearchBase
                 // _population.getBestSolution().getObjectiveValue()[0];
                 if (this.getWithHillClimbingBestSolution())
                 {
-                    Solution best = (Solution) _population.getBestSolution().clone();
+                    S best = (S) _population.getBestSolution();
                     _operator.modifySolution(best);
                     if (_solutionComparator.compare(best, _population.getBestSolution()) < 0)
                         _population.addSolution(best);
                 }
-                _logger.trace(new Double(_bestSolution.getObjectiveValue()[0]).toString());
+                _logger.trace(String.format("%f", _bestSolution.getObjectiveValue()[0]));
             }
 
             evaluatePopulation(_population);
@@ -288,7 +289,7 @@ public class FireflySearch extends FireflySearchBase
     }
 
     @Override
-    public void setBestSolution(Solution solution)
+    public void setBestSolution(S solution)
     {
         _bestSolution = solution;
     }
@@ -322,7 +323,7 @@ public class FireflySearch extends FireflySearchBase
     }
 
     @Override
-    public Solution getBestSolution()
+    public S getBestSolution()
     {
         return _bestSolution;
     }

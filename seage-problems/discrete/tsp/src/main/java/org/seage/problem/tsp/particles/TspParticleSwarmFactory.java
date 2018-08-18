@@ -48,22 +48,20 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 
     private TspObjectiveFunction _objectiveFunction;
 
-    @Override
-    public Class<ParticleSwarmAdapter> getAlgorithmClass()
+	@Override
+    public Class<?> getAlgorithmClass()
     {
         return ParticleSwarmAdapter.class;
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<TspParticle> createAlgorithm(ProblemInstance instance) throws Exception
     {
-        IAlgorithmAdapter algorithm;
-
-        final City[] cities = ((TspProblemInstance) instance).getCities();
+    	final City[] cities = ((TspProblemInstance) instance).getCities();
 
         _objectiveFunction = new TspObjectiveFunction(cities);
 
-        algorithm = new ParticleSwarmAdapter(
+        IAlgorithmAdapter<TspParticle> algorithm = new ParticleSwarmAdapter<>(
                 generateInitialSolutions(cities),
                 _objectiveFunction,
                 false, "")
@@ -103,6 +101,12 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory
 
                 return source;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(TspParticle solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
 
         return algorithm;

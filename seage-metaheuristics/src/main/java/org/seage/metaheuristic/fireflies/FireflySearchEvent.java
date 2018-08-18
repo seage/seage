@@ -40,7 +40,7 @@ package org.seage.metaheuristic.fireflies;
  * @version 1.0
  * @since 1.0
  */
-public class FireflySearchEvent extends java.util.EventObject
+public class FireflySearchEvent<S extends Solution> extends java.util.EventObject
 {
 
     /**
@@ -67,9 +67,10 @@ public class FireflySearchEvent extends java.util.EventObject
      * @return source as {@link FireflySearch}
      * @since 1.0
      */
-    public final IFireflySearch getFireflySearch()
+    @SuppressWarnings("unchecked")
+	public final IFireflySearch<S> getFireflySearch()
     {
-        return (IFireflySearch) source;
+        return (IFireflySearch<S>) source;
     } // end getFireflySearch
 
 } // end class FireflySearchEvent

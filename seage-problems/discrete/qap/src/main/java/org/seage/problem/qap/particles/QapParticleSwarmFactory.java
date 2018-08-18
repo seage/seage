@@ -34,6 +34,7 @@ import org.seage.aal.algorithm.particles.ParticleSwarmAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.qap.QapProblemInstance;
+import org.seage.problem.qap.particles.QapParticle;
 
 /**
  *
@@ -50,20 +51,19 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
     private QapObjectiveFunction _objectiveFunction;
 
     @Override
-    public Class<ParticleSwarmAdapter> getAlgorithmClass()
+    public Class<?> getAlgorithmClass()
     {
         return ParticleSwarmAdapter.class;
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<QapParticle> createAlgorithm(ProblemInstance instance) throws Exception
     {
-        IAlgorithmAdapter algorithm;
         final Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
 
         _objectiveFunction = new QapObjectiveFunction(facilityLocation);
 
-        algorithm = new ParticleSwarmAdapter(
+        IAlgorithmAdapter<QapParticle> algorithm = new ParticleSwarmAdapter<> (
                 generateInitialSolutions(facilityLocation.length),
                 _objectiveFunction,
                 false, "")
@@ -103,6 +103,12 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
 
                 return source;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(QapParticle solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
 
         return algorithm;

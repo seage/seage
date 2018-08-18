@@ -37,7 +37,7 @@ import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
  * @author rick
  */
 //@Ignore("Adapter class not fully implemented yet")
-public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase
+public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase<TestSolution>
 {
 
     public FireflyAlgorithmAdapterTest() throws Exception
@@ -58,7 +58,7 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase
         _algParams.putValue("withDecreasingRandomness", 1);
         _algParams.putValue("absorption", 1);
 
-        _tester = new AlgorithmAdapterTester(_algAdapter, _algParams);
+        _tester = new AlgorithmAdapterTester<TestSolution>(_algAdapter, _algParams);
     }
 
     @Override

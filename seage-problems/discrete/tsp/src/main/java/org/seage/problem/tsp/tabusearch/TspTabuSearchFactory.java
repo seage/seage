@@ -43,21 +43,18 @@ import org.seage.problem.tsp.TspProblemInstance;
 @Annotations.AlgorithmName("Tabu Search")
 public class TspTabuSearchFactory implements IAlgorithmFactory
 {
-
-    @Override
-    public Class<TabuSearchAdapter> getAlgorithmClass()
+	@Override
+    public Class<?> getAlgorithmClass()
     {
         return TabuSearchAdapter.class;
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<TspSolution> createAlgorithm(ProblemInstance instance) throws Exception
     {
-        IAlgorithmAdapter algorithm;
-
         final City[] cities = ((TspProblemInstance) instance).getCities();
 
-        algorithm = new TabuSearchAdapter(new TspMoveManager(), new TspObjectiveFunction(cities), "")
+        IAlgorithmAdapter<TspSolution> algorithm = new TabuSearchAdapter<>(new TspMoveManager(), new TspObjectiveFunction(cities), "")
         {
 
             @Override
@@ -91,6 +88,12 @@ public class TspTabuSearchFactory implements IAlgorithmFactory
                 }
                 return result;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(TspSolution solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
 
         //Object[][] solutions = _provider.generateInitialSolutions( _algParams.getValueInt("numSolution"));

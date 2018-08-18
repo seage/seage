@@ -24,13 +24,13 @@ public class SatAntColonyFactory implements IAlgorithmFactory
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<Ant> createAlgorithm(ProblemInstance instance) throws Exception
     {
         Formula formula = (Formula) instance;
         Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
         SatAntBrain brain = new SatAntBrain(graph, formula);
 
-        return new AntColonyAdapter(brain, graph)
+        return new AntColonyAdapter<>(brain, graph)
         {
 
             @Override
@@ -61,6 +61,12 @@ public class SatAntColonyFactory implements IAlgorithmFactory
                 }
                 return result;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(Ant solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
 
         };
     }

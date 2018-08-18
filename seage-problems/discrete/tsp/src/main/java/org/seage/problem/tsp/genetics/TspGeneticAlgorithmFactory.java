@@ -54,11 +54,10 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<Subject<Integer>> createAlgorithm(ProblemInstance instance) throws Exception
     {
-        IAlgorithmAdapter algorithm;
         City[] cities = ((TspProblemInstance) instance).getCities();
-        algorithm = new GeneticAlgorithmAdapter<Subject<Integer>>(new TspGeneticOperator(), new TspEvaluator(cities),
+        IAlgorithmAdapter<Subject<Integer>> algorithm = new GeneticAlgorithmAdapter<>(new TspGeneticOperator(), new TspEvaluator(cities),
                 false, "")
         {
             @Override
@@ -80,6 +79,12 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory
                     result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
                 }
                 return result;
+            }
+            
+            public Object[] solutionToPhenotype(Subject<Integer> solution) throws Exception
+            {
+                int numGenes = solution.getChromosome().getLength();
+                return Arrays.copyOf(solution.getChromosome().getGenes(), numGenes);                
             }
         };
 

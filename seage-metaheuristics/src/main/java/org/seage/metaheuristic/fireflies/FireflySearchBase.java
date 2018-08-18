@@ -39,7 +39,7 @@ package org.seage.metaheuristic.fireflies;
  * @since 1.0
  */
 
-public abstract class FireflySearchBase implements IFireflySearch
+public abstract class FireflySearchBase<S extends Solution> implements IFireflySearch<S>
 {
     /**
      * 

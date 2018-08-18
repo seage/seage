@@ -26,13 +26,14 @@
 
 package org.seage.problem.qap.fireflies;
 
+import java.util.ArrayList;
+
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.fireflies.FireflyAlgorithmAdapter;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInstance;
-import org.seage.metaheuristic.fireflies.Solution;
 import org.seage.problem.qap.QapProblemInstance;
 
 /** 
@@ -49,17 +50,16 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
     }
 
     @Override
-    public Class<FireflyAlgorithmAdapter> getAlgorithmClass()
+    public Class<?> getAlgorithmClass()
     {
         return FireflyAlgorithmAdapter.class;
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<QapSolution> createAlgorithm(ProblemInstance instance) throws Exception
     {
-        IAlgorithmAdapter algorithm;
         Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
-        algorithm = new FireflyAlgorithmAdapter(new QapFireflyOperator(), new QapObjectiveFunction(facilityLocation),
+        IAlgorithmAdapter<QapSolution> algorithm = new FireflyAlgorithmAdapter<>(new QapFireflyOperator(), new QapObjectiveFunction(facilityLocation),
                 false, "")
         {
 
@@ -68,7 +68,7 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
             {
                 int height = source.length;
                 int width = source[0].length;
-                Solution[] sols = new Solution[height];
+                ArrayList<QapSolution> sols = new ArrayList<>(height);
                 for (int i = 0; i < height; i++)
                 {
                     Integer[] result = new Integer[width];
@@ -76,7 +76,7 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
                     {
                         result[j] = (Integer) source[i][j];
                     }
-                    sols[i] = new QapSolution(result);
+                    sols.add(new QapSolution(result));
                 }
                 this._solutions = sols;
             }
@@ -84,18 +84,24 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
             @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
-                int height = _solutions.length;
-                int width = ((QapSolution) this._solutions[0])._assign.length;
+                int height = _solutions.size();
+                int width = ((QapSolution) this._solutions.get(0))._assign.length;
                 Object[][] r = new Object[height][width];
                 for (int i = 0; i < height; i++)
                 {
                     for (int j = 0; j < width; j++)
                     {
-                        r[i][j] = ((QapSolution) this._solutions[i])._assign[j];
+                        r[i][j] = ((QapSolution) this._solutions.get(i))._assign[j];
                     }
                 }
                 return r;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(QapSolution solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
 
         //        Object[][] solutions = _provider.generateInitialSolutions(_algParams.getValueInt("numSolution"));

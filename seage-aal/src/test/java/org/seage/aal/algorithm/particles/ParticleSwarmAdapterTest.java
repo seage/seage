@@ -43,7 +43,7 @@ import org.seage.metaheuristic.particles.Particle;
  * @author rick
  */
 @Ignore("Adapter class not fully implemented yet")
-public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase
+public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle>
 {
 
     public ParticleSwarmAdapterTest() throws Exception
@@ -54,7 +54,7 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algAdapter = new ParticleSwarmAdapter(null, null, false, "")
+        _algAdapter = new ParticleSwarmAdapter<Particle>(null, null, false, "")
         {
 
             @Override
@@ -87,6 +87,12 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase
                 }
                 return result.toArray(new Object[][] {});
             }
+
+			@Override
+			public Object[] solutionToPhenotype(Particle solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
 
         _algParams = new AlgorithmParams();

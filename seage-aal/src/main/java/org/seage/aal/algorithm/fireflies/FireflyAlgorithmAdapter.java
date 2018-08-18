@@ -26,6 +26,8 @@
  */
 package org.seage.aal.algorithm.fireflies;
 
+import java.util.List;
+
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
@@ -55,14 +57,14 @@ import org.seage.metaheuristic.fireflies.SolutionComparator;
         @Parameter(name = "absorption", min = 0, max = 1, init = 0.025)
         // @Parameter(name="populationSize", min=0, max=10000, init=0.1)
 })
-public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
+public abstract class FireflyAlgorithmAdapter<S extends Solution> extends AlgorithmAdapterImpl<S>
 {
-    protected Solution[] _solutions;
-    protected FireflySearch _fireflySearch;
+    protected List<S> _solutions;
+    protected FireflySearch<S> _fireflySearch;
     protected ObjectiveFunction _evaluator;
     protected SolutionComparator _comparator;
     protected FireflySearchObserver _observer;
-    protected Solution _bestEverSolution;
+    protected S _bestEverSolution;
     protected AlgorithmParams _params;
     private String _searchID;
 
@@ -82,7 +84,7 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
         _evaluator = evaluator;
         _observer = new FireflySearchObserver();
         _comparator = new SolutionComparator();
-        _fireflySearch = new FireflySearch(operator, evaluator);
+        _fireflySearch = new FireflySearch<S>(operator, evaluator);
         _fireflySearch.addFireflySearchListener(_observer);
         _searchID = searchID;
     }
@@ -141,10 +143,10 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
     @Override
     public AlgorithmReport getReport() throws Exception
     {
-        int num = _solutions.length;// > 10 ? 10 : solutions.length;
+        int num = _solutions.size();// > 10 ? 10 : solutions.length;
         double avg = 0;
         for (int i = 0; i < num; i++)
-            avg += _solutions[i].getObjectiveValue()[0];
+            avg += _solutions.get(i).getObjectiveValue()[0];
         avg /= num;
 
         _reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg,
@@ -153,17 +155,17 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
         return _reporter.getReport();
     }
 
-    private class FireflySearchObserver implements FireflySearchListener
+    private class FireflySearchObserver implements FireflySearchListener<S>
     {
         @Override
-        public void FireflySearchStarted(FireflySearchEvent e)
+        public void FireflySearchStarted(FireflySearchEvent<S> e)
         {
             _statNumNewSol = _statLastIterNewSol = 0;
             _algorithmStarted = true;
         }
 
         @Override
-        public void FireflySearchStopped(FireflySearchEvent e)
+        public void FireflySearchStopped(FireflySearchEvent<S> e)
         {
             Solution best = e.getFireflySearch().getBestSolution();
             if (best != null)
@@ -172,12 +174,12 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
         }
 
         @Override
-        public void newBestSolutionFound(FireflySearchEvent e)
+        public void newBestSolutionFound(FireflySearchEvent<S> e)
         {
             try
             {
-                Solution solution = e.getFireflySearch().getBestSolution();
-                _bestEverSolution = (Solution) e.getFireflySearch().getBestSolution().clone();
+                S solution = e.getFireflySearch().getBestSolution();
+                _bestEverSolution = solution;
                 if (_statNumNewSol == 0)
                     _statInitObjVal = solution.getObjectiveValue()[0];
 
@@ -194,7 +196,7 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
         }
 
         @SuppressWarnings("unused")
-        public void noChangeInValueIterationMade(FireflySearchEvent e)
+        public void noChangeInValueIterationMade(FireflySearchEvent<S> e)
         {
 
         }
@@ -202,25 +204,25 @@ public abstract class FireflyAlgorithmAdapter extends AlgorithmAdapterImpl
         // HAD TO IMPLEMENT BECAUSE OF INTERFACE, MAY CAUSE ALGORITHM NOT TO
         // WORK CORRECTLY
         @Override
-        public void newCurrentSolutionFound(FireflySearchEvent e)
+        public void newCurrentSolutionFound(FireflySearchEvent<S> e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Override
-        public void unimprovingMoveMade(FireflySearchEvent e)
+        public void unimprovingMoveMade(FireflySearchEvent<S> e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Override
-        public void improvingMoveMade(FireflySearchEvent e)
+        public void improvingMoveMade(FireflySearchEvent<S> e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Override
-        public void noChangeInValueMoveMade(FireflySearchEvent e)
+        public void noChangeInValueMoveMade(FireflySearchEvent<S> e)
         {
             throw new UnsupportedOperationException("Not supported yet.");
         }

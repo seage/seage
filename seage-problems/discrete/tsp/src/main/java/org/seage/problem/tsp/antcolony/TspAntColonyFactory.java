@@ -46,20 +46,19 @@ import org.seage.problem.tsp.TspProblemInstance;
 @Annotations.AlgorithmName("AntColony")
 public class TspAntColonyFactory implements IAlgorithmFactory
 {
-    @Override
-    public Class<AntColonyAdapter> getAlgorithmClass()
+	@Override
+    public Class<?> getAlgorithmClass()
     {
         return AntColonyAdapter.class;
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<Ant> createAlgorithm(ProblemInstance instance) throws Exception
     {
-        IAlgorithmAdapter algorithm;
         City[] cities = ((TspProblemInstance) instance).getCities();
         TspGraph graph = new TspGraph(cities);
         AntBrain brain = new AntBrain(graph);
-        algorithm = new AntColonyAdapter(brain, graph)
+        IAlgorithmAdapter<Ant> algorithm = new AntColonyAdapter<>(brain, graph)
         {
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
@@ -88,6 +87,12 @@ public class TspAntColonyFactory implements IAlgorithmFactory
                 }
                 return result;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(Ant solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
 
         return algorithm;

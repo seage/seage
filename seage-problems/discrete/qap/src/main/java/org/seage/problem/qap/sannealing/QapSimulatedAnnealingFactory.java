@@ -56,19 +56,17 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
     //    }
 
     @Override
-    public Class<SimulatedAnnealingAdapter> getAlgorithmClass()
+    public Class<?> getAlgorithmClass()
     {
         return SimulatedAnnealingAdapter.class;
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<QapSolution> createAlgorithm(ProblemInstance instance) throws Exception
     {
         final Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
 
-        IAlgorithmAdapter algorithm;
-
-        algorithm = new SimulatedAnnealingAdapter(
+        IAlgorithmAdapter<QapSolution> algorithm = new SimulatedAnnealingAdapter<>(
                 new QapObjectiveFunction(),
                 new QapMoveManager(), false, "")
         {
@@ -102,6 +100,12 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
                 }
                 return source;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(QapSolution solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
 
         };
 

@@ -40,5 +40,5 @@ public interface IAlgorithmFactory
      * @return IAlgorithmAdapter
      * @throws Exception
      */
-    IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception;
+    IAlgorithmAdapter<?> createAlgorithm(ProblemInstance instance) throws Exception;
 }

@@ -31,8 +31,9 @@ import org.slf4j.LoggerFactory;
 /**
  *
  * @author rick
+ * @param <S>
  */
-public abstract class AlgorithmAdapterImpl implements IAlgorithmAdapter
+public abstract class AlgorithmAdapterImpl<S> implements IAlgorithmAdapter<S>
 {
     protected static final Logger _logger = LoggerFactory.getLogger(AlgorithmAdapterImpl.class.getName());
 

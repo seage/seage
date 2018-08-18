@@ -31,6 +31,7 @@ import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
 import org.seage.aal.problem.ProblemInstance;
+import org.seage.metaheuristic.antcolony.Ant;
 
 /**
  *
@@ -41,15 +42,15 @@ import org.seage.aal.problem.ProblemInstance;
 public class JsspAntColonyFactory implements IAlgorithmFactory
 {
     @Override
-    public Class<AntColonyAdapter> getAlgorithmClass()
+    public Class<?> getAlgorithmClass()
     {
         return AntColonyAdapter.class;
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<Ant> createAlgorithm(ProblemInstance instance) throws Exception
     {
-        IAlgorithmAdapter algorithm = null;
+        IAlgorithmAdapter<Ant> algorithm = null;
 //        City[] cities = ((TspProblemInstance) instance).getCities();
 //        JsspGraph graph = new JsspGraph(cities);
 //        AntBrain brain = new AntBrain(graph);

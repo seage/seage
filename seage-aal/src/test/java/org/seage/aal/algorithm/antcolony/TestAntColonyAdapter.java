@@ -8,7 +8,7 @@ import org.seage.metaheuristic.antcolony.Graph;
 
 import junit.framework.Assert;
 
-public class TestAntColonyAdapter extends AntColonyAdapter
+public class TestAntColonyAdapter<S extends Ant> extends AntColonyAdapter<S>
 {
     private Ant[] _ants0;
 
@@ -58,5 +58,11 @@ public class TestAntColonyAdapter extends AntColonyAdapter
         Assert.assertTrue(notSame);
         return null;
     }
+
+	@Override
+	public Object[] solutionToPhenotype(Ant solution) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

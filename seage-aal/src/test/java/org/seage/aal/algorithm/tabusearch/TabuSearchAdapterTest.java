@@ -37,7 +37,7 @@ import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
  *
  * @author rick
  */
-public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase
+public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution>
 {
 
     public TabuSearchAdapterTest() throws Exception
@@ -48,7 +48,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase
     @Before
     public void initAlgorithm() throws Exception
     {
-        _algAdapter = new TabuSearchAdapter(new TestMoveManager(), new TestObjectiveFunction(), "")
+        _algAdapter = new TabuSearchAdapter<TestSolution>(new TestMoveManager(), new TestObjectiveFunction(), "")
         {
             private TestSolution[] _solutions0;
 
@@ -78,6 +78,12 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase
                 }
                 return null;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(TestSolution solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
 
         _algParams = new AlgorithmParams();

@@ -26,6 +26,7 @@
  */
 package org.seage.metaheuristic.fireflies;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -37,7 +38,7 @@ import java.util.function.Function;
  * popular techniques such as intensification, diversification,
  * and strategic oscillation.
  */
-public interface IFireflySearch extends java.io.Serializable
+public interface IFireflySearch<S extends Solution> extends java.io.Serializable
 {
 
     /* ********  C O N T R O L   M E T H O D S  ******** */
@@ -49,7 +50,7 @@ public interface IFireflySearch extends java.io.Serializable
      * @see #getIterationsToGo
      * @since 1.0
      */
-    public abstract void startSolving(Solution[] solutions) throws Exception;
+    public abstract void startSolving(List<S> solutions) throws Exception;
 
     /**
      * Stops the firefly search after the current iteration finishes
@@ -119,7 +120,7 @@ public interface IFireflySearch extends java.io.Serializable
      * @see Solution
      * @since 1.0
      */
-    public abstract void setBestSolution(Solution solution);
+    public abstract void setBestSolution(S solution);
 
     /**
      * Sets the iterations remaining to be solved. 
@@ -170,7 +171,7 @@ public interface IFireflySearch extends java.io.Serializable
      * @see Solution
      * @since 1.0
      */
-    public abstract Solution getBestSolution();
+    public abstract S getBestSolution();
 
     /**
      * Returns the number of iterations left to go.

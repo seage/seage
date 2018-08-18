@@ -43,7 +43,7 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
  *
  * @author rick
  */
-public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase
+public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subject<Integer>>
 {
 
     public GeneticAlgorithmAdapterTest() throws Exception
@@ -98,6 +98,12 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase
                 }
                 return null;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(Subject<Integer> solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
 
         _algParams = new AlgorithmParams();

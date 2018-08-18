@@ -7,9 +7,9 @@ import org.seage.data.DataNode;
 
 import junit.framework.Assert;
 
-public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
+public class AlgorithmAdapterTester<S> extends AlgorithmAdapterTestBase<S>
 {
-    public AlgorithmAdapterTester(IAlgorithmAdapter algorithm, AlgorithmParams algParams) throws Exception
+    public AlgorithmAdapterTester(IAlgorithmAdapter<S> algorithm, AlgorithmParams algParams) throws Exception
     {
         _algAdapter = algorithm;
         _algParams = algParams;
@@ -69,7 +69,7 @@ public class AlgorithmAdapterTester extends AlgorithmAdapterTestBase
         _algReport = _algAdapter.getReport();
         Assert.assertNotNull(_algReport);
         Assert.assertTrue(_algReport.containsNode("Parameters"));
-        Assert.assertTrue(_algReport.containsNode("Minutes"));
+        Assert.assertTrue(_algReport.containsNode("Log"));
         Assert.assertTrue(_algReport.containsNode("Statistics"));
 
         for (String attName : _algReport.getDataNode("Parameters").getValueNames())

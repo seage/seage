@@ -47,7 +47,7 @@ import org.seage.metaheuristic.tabusearch.TabuSearchListener;
         @Parameter(name = "iterationCount", min = 1, max = 1000000, init = 1000),
         @Parameter(name = "numSolutions", min = 1, max = 1, init = 1),
         @Parameter(name = "tabuListLength", min = 1, max = 1000, init = 30) })
-public abstract class TabuSearchAdapter extends AlgorithmAdapterImpl
+public abstract class TabuSearchAdapter<S extends Solution> extends AlgorithmAdapterImpl<S>
 {
 
     private TabuSearch _tabuSearch;

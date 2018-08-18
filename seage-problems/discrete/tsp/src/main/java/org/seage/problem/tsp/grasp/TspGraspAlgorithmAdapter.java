@@ -57,4 +57,10 @@ public class TspGraspAlgorithmAdapter implements IAlgorithmAdapter
         return null;
     }
 
+	@Override
+	public Object[] solutionToPhenotype(Object solution) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

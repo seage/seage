@@ -25,10 +25,12 @@
  */
 package org.seage.problem.qap.fireflies;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.seage.metaheuristic.fireflies.FireflySearch;
 import org.seage.metaheuristic.fireflies.FireflySearchEvent;
 import org.seage.metaheuristic.fireflies.FireflySearchListener;
-import org.seage.metaheuristic.fireflies.Solution;
 import org.seage.problem.qap.FacilityLocationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,13 +39,13 @@ import org.slf4j.LoggerFactory;
  *
  * @author Richard Malek
  */
-public class QapFireflyAlgorithmTest implements FireflySearchListener
+public class QapFireflyAlgorithmTest implements FireflySearchListener<QapSolution>
 {
     @SuppressWarnings("unused")
     private static final Logger log = LoggerFactory.getLogger("org.seage");
     private static String _dataPath = "data/chr12a.dat";
     //    private static String _dataPath = "D:\\qap\\bur26a.dat";
-    public FireflySearch fs;
+    public FireflySearch<QapSolution> fs;
     public static int iters = 2;
 
     public static void main(String[] args)
@@ -93,7 +95,7 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
         QapFireflyOperator._facilityLocations = facilityLocations;
         QapObjectiveFunction qof = new QapObjectiveFunction(facilityLocations);
 
-        fs = new FireflySearch(qfo, qof);
+        fs = new FireflySearch<>(qfo, qof);
         fs.addFireflySearchListener(this);
         fs.setWithDecreasingRandomness(_withDecreasingRandomness);
         fs.setWithHillClimbingBestSolution(_withHillClimbingBestSolution);
@@ -110,60 +112,60 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener
         fs.startSolving(generateInitialSolutions(facilityLocations, populationSize));
     }
 
-    private Solution[] generateInitialSolutions(Double[][][] fl, int count) throws Exception
+    private List<QapSolution> generateInitialSolutions(Double[][][] fl, int count) throws Exception
     {
-        Solution[] result = new Solution[count];
+        ArrayList<QapSolution> result = new ArrayList<>(count);
         //        result[0]=new QapGreedyStartSolution(fl);
         for (int i = 0; i < count; i++)
         {
-            result[i] = new QapRandomSolution(fl);
+            result.add(new QapRandomSolution(fl));
         }
         return result;
     }
 
     @Override
-    public void FireflySearchStarted(FireflySearchEvent e)
+    public void FireflySearchStarted(FireflySearchEvent<QapSolution> e)
     {
         System.out.println("Firefly Algorithm for QAP started.");
     }
 
     @Override
-    public void FireflySearchStopped(FireflySearchEvent e)
+    public void FireflySearchStopped(FireflySearchEvent<QapSolution> e)
     {
         System.out.println("Firefly Algorithm for QAP stopped.");
     }
 
     @Override
-    public void newBestSolutionFound(FireflySearchEvent e)
+    public void newBestSolutionFound(FireflySearchEvent<QapSolution> e)
     {
         System.out.println("New best: " + e.getFireflySearch().getBestSolution().getObjectiveValue()[0]);
     }
 
-    public void noChangeInValueIterationMade(FireflySearchEvent e)
+    public void noChangeInValueIterationMade(FireflySearchEvent<QapSolution> e)
     {
         System.out.println("Firefly Algorithm for QAP - no change in value iteration made.");
     }
 
     @Override
-    public void newCurrentSolutionFound(FireflySearchEvent e)
+    public void newCurrentSolutionFound(FireflySearchEvent<QapSolution> e)
     {
         System.out.println("Firefly Algorithm for QAP - new current solution found.");
     }
 
     @Override
-    public void unimprovingMoveMade(FireflySearchEvent e)
+    public void unimprovingMoveMade(FireflySearchEvent<QapSolution> e)
     {
         System.out.println("Firefly Algorithm for QAP - unimproving move made.");
     }
 
     @Override
-    public void improvingMoveMade(FireflySearchEvent e)
+    public void improvingMoveMade(FireflySearchEvent<QapSolution> e)
     {
         System.out.println("Firefly Algorithm for QAP - improving move made.");
     }
 
     @Override
-    public void noChangeInValueMoveMade(FireflySearchEvent e)
+    public void noChangeInValueMoveMade(FireflySearchEvent<QapSolution> e)
     {
         System.out.println("Firefly Algorithm for QAP - no change in value made.");
     }

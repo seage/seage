@@ -45,10 +45,10 @@ public class SatSimulatedAnnealingFactory implements IAlgorithmFactory
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<SatSolution> createAlgorithm(ProblemInstance instance) throws Exception
     {
         Formula formula = (Formula) instance;
-        IAlgorithmAdapter algorithm = new SimulatedAnnealingAdapter(new SatObjectiveFunction(formula), 
+        IAlgorithmAdapter<SatSolution> algorithm = new SimulatedAnnealingAdapter<>(new SatObjectiveFunction(formula), 
                 new SatMoveManager(), false, "")
         {
 
@@ -82,6 +82,12 @@ public class SatSimulatedAnnealingFactory implements IAlgorithmFactory
                 }
                 return result;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(SatSolution solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
         return algorithm;
     }

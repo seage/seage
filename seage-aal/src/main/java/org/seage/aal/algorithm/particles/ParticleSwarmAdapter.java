@@ -54,7 +54,7 @@ import org.seage.metaheuristic.particles.ParticleSwarmEvent;
         @Parameter(name = "alpha", min = 0, max = 100, init = 1),
         @Parameter(name = "beta", min = 0, max = 100, init = 1)
 })
-public abstract class ParticleSwarmAdapter extends AlgorithmAdapterImpl implements IParticleSwarmListener
+public abstract class ParticleSwarmAdapter<S extends Particle> extends AlgorithmAdapterImpl<S> implements IParticleSwarmListener
 {
     protected ParticleSwarm _particleSwarm;
     protected Particle[] _initialParticles;

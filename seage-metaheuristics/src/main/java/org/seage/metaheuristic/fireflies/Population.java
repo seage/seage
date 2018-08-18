@@ -32,21 +32,21 @@ import java.util.List;
 /**
  * @author Karel Durkota
  */
-public class Population
+public class Population<S extends Solution>
 {
-    private ArrayList<Solution> _population;
+    private ArrayList<S> _population;
 
     public Population()
     {
-        _population = new ArrayList<Solution>();
+        _population = new ArrayList<S>();
     }
 
-    public void addSolution(Solution solution)
+    public void addSolution(S solution)
     {
         _population.add(solution);
     }
 
-    public Solution getSolution(int ix) throws Exception
+    public S getSolution(int ix) throws Exception
     {
         try
         {
@@ -68,7 +68,7 @@ public class Population
         return _population.size();
     }
 
-    public List<Solution> getList()
+    public List<S> getList()
     {
         return _population;
     }
@@ -77,12 +77,12 @@ public class Population
     {
         try
         {
-            ArrayList<Solution> newPopulation = new ArrayList<Solution>();
+            ArrayList<S> newPopulation = new ArrayList<S>();
             newPopulation.add(getSolution(0));
             for (int i = 1; i < _population.size(); i++)
             {
-                Solution prev = _population.get(i - 1);
-                Solution curr = _population.get(i);
+                S prev = _population.get(i - 1);
+                S curr = _population.get(i);
                 if (curr.hashCode() != prev.hashCode())
                 {
                     newPopulation.add(curr);
@@ -100,33 +100,34 @@ public class Population
     public void resize(int newLength)
     {
         if (getSize() > newLength)
-            _population = new ArrayList<Solution>(_population.subList(0, newLength));
+            _population = new ArrayList<S>(_population.subList(0, newLength));
     }
 
-    public Solution getBestSolution()
+    @SuppressWarnings("unchecked")
+	public S getBestSolution()
     {
-        return _population.get(0);
+        return (S)_population.get(0).clone();
     }
 
-    public void mergePopulation(Population population)
+    public void mergePopulation(Population<S> population)
     {
         _population.addAll(population._population);
     }
 
-    public Solution[] getSolutions() throws Exception
+    public List<S> getSolutions() throws Exception
     {
         return getSolutions(_population.size());
     }
 
-    public Solution[] getSolutions(int numSubjects) throws Exception
+	public List<S> getSolutions(int numSubjects) throws Exception
     {
         try
         {
             int length = _population.size();
             if (length > numSubjects)
-                return _population.subList(0, numSubjects).toArray(new Solution[0]);
+                return _population.subList(0, numSubjects);
             else
-                return _population.toArray(new Solution[0]);
+                return _population;
         }
         catch (Exception ex)
         {

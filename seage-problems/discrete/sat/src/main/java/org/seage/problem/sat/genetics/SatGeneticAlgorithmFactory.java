@@ -51,11 +51,10 @@ public class SatGeneticAlgorithmFactory implements IAlgorithmFactory
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<Subject<Boolean>> createAlgorithm(ProblemInstance instance) throws Exception
     {
-        IAlgorithmAdapter algorithm;
         Formula formula = (Formula) instance;
-        algorithm = new GeneticAlgorithmAdapter<Subject<Boolean>>(new SatGeneticOperator(),
+        IAlgorithmAdapter<Subject<Boolean>> algorithm = new GeneticAlgorithmAdapter<>(new SatGeneticOperator(),
                 new SatEvaluator(new SatPhenotypeEvaluator(formula)), false, "")
         {
             @Override
@@ -78,6 +77,12 @@ public class SatGeneticAlgorithmFactory implements IAlgorithmFactory
                 }
                 return result;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(Subject<Boolean> solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
 
         return algorithm;

@@ -36,6 +36,12 @@ public class SatGraspAlgorithmFactory implements IAlgorithmFactory
                 // TODO Auto-generated method stub
 
             }
+
+			@Override
+			public Object[] solutionToPhenotype(Object solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
     }
 

@@ -32,6 +32,7 @@ import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.problem.ProblemInstance;
+import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.sannealing.Solution;
 
 /**
@@ -61,15 +62,15 @@ public class JsspSimulatedAnnealingFactory implements IAlgorithmFactory
     //    }
 
     @Override
-    public Class<SimulatedAnnealingAdapter> getAlgorithmClass()
+    public Class<?> getAlgorithmClass()
     {
         return SimulatedAnnealingAdapter.class;
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<JsspSolution> createAlgorithm(ProblemInstance instance) throws Exception
     {
-         IAlgorithmAdapter algorithm = new SimulatedAnnealingAdapter(
+    	IAlgorithmAdapter<JsspSolution> algorithm = new SimulatedAnnealingAdapter<>(
                 new JsspObjectiveFunction(),
                 new JsspMoveManager(), false, "")
         {
@@ -103,6 +104,12 @@ public class JsspSimulatedAnnealingFactory implements IAlgorithmFactory
                 }
                 return result;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(JsspSolution solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
 
         };
 

@@ -57,7 +57,7 @@ import org.seage.metaheuristic.antcolony.Graph;
         @Parameter(name = "qantumOfPheromone", min = 1, max = 1000, init = 10),
         @Parameter(name = "localEvaporation", min = 0.5, max = 0.98, init = 0.95)
 })
-public abstract class AntColonyAdapter extends AlgorithmAdapterImpl
+public abstract class AntColonyAdapter<S extends Ant> extends AlgorithmAdapterImpl<S>
 {
     protected AntColony _antColony;
     //private AntColonyListener _algorithmListener;

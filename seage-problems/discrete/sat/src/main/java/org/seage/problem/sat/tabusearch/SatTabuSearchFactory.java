@@ -42,17 +42,17 @@ public class SatTabuSearchFactory implements IAlgorithmFactory
 {
 
     @Override
-    public Class<TabuSearchAdapter> getAlgorithmClass()
+    public Class<?> getAlgorithmClass()
     {
         return TabuSearchAdapter.class;
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<Solution> createAlgorithm(ProblemInstance instance) throws Exception
     {
         Formula formula = (Formula) instance;
 
-        IAlgorithmAdapter algorithm = new TabuSearchAdapter(new SatMoveManager(),
+        IAlgorithmAdapter<Solution> algorithm = new TabuSearchAdapter<>(new SatMoveManager(),
                 new SatObjectiveFunction(new SatPhenotypeEvaluator(formula)), "")
         {
 
@@ -86,6 +86,12 @@ public class SatTabuSearchFactory implements IAlgorithmFactory
                 }
                 return result;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(Solution solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
 
         return algorithm;

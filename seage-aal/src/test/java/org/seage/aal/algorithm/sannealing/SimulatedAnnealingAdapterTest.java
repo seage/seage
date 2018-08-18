@@ -36,7 +36,7 @@ import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
  *
  * @author rick
  */
-public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase
+public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<TestSolution>
 {
 
     public SimulatedAnnealingAdapterTest() throws Exception

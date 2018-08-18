@@ -33,6 +33,7 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.jssp.JobsDefinition;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
+import org.seage.problem.jssp.tabusearch.JsspSolution;
 
 /**
  *
@@ -44,17 +45,17 @@ public class JsspTabuSearchFactory implements IAlgorithmFactory
 {
 
     @Override
-    public Class<TabuSearchAdapter> getAlgorithmClass()
+    public Class<?> getAlgorithmClass()
     {
         return TabuSearchAdapter.class;
     }
 
     @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<JsspSolution> createAlgorithm(ProblemInstance instance) throws Exception
     {
         JsspPhenotypeEvaluator evaluator = new JsspPhenotypeEvaluator((JobsDefinition) instance);
        
-        IAlgorithmAdapter algorithm = new TabuSearchAdapter(new JsspMoveManager(evaluator),
+        IAlgorithmAdapter<JsspSolution> algorithm = new TabuSearchAdapter<>(new JsspMoveManager(evaluator),
                 new JsspObjectiveFunction(evaluator), "")
         {
 
@@ -84,6 +85,12 @@ public class JsspTabuSearchFactory implements IAlgorithmFactory
                 }
                 return result;
             }
+
+			@Override
+			public Object[] solutionToPhenotype(JsspSolution solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
 
         return algorithm;

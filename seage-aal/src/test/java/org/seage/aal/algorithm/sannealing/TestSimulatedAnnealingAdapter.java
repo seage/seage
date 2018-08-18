@@ -5,7 +5,7 @@ import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
 import org.seage.metaheuristic.sannealing.Solution;
 
-public class TestSimulatedAnnealingAdapter extends SimulatedAnnealingAdapter
+public class TestSimulatedAnnealingAdapter extends SimulatedAnnealingAdapter<TestSolution>
 {
     private TestSolution[] _solutions0;
 
@@ -40,5 +40,11 @@ public class TestSimulatedAnnealingAdapter extends SimulatedAnnealingAdapter
         }
         return null;
     }
+
+	@Override
+	public Object[] solutionToPhenotype(TestSolution solution) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

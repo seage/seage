@@ -34,11 +34,11 @@ import org.seage.aal.reporter.AlgorithmReport;
  *
  * @author rick
  */
-public abstract class AlgorithmAdapterTestBase
+public abstract class AlgorithmAdapterTestBase<S>
 {
-    protected AlgorithmAdapterTester _tester;
+    protected AlgorithmAdapterTester<S> _tester;
 
-    protected IAlgorithmAdapter _algAdapter;
+    protected IAlgorithmAdapter<S> _algAdapter;
     protected AlgorithmParams _algParams;
     protected AlgorithmReport _algReport;
 

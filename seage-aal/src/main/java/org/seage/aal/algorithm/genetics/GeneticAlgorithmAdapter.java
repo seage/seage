@@ -52,7 +52,7 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
         @Parameter(name = "mutateSubjectPct", min = 0, max = 100, init = 10),
         @Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),
         @Parameter(name = "randomSubjectPct", min = 0, max = 100, init = 10) })
-public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends AlgorithmAdapterImpl
+public abstract class GeneticAlgorithmAdapter<S extends Subject<?>> extends AlgorithmAdapterImpl<S>
 {
 
     protected List<S> _solutions;
