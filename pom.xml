@@ -9,6 +9,8 @@
 	
 	<properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    	<maven.compiler.source>9</maven.compiler.source>
+    	<maven.compiler.target>9</maven.compiler.target>
   	</properties>
 
 	<modules>
@@ -27,14 +29,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
-			    <configuration>
-			        <release>9</release>
-			    </configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
