@@ -26,6 +26,7 @@
 package org.seage.aal.reporter;
 
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.Phenotype;
 import org.seage.data.DataNode;
 
 /**
@@ -51,13 +52,13 @@ public class AlgorithmReporter
         _report.putDataNode(params);
     }
 
-    public void putNewSolution(long time, long iterNumber, double objVal, String solution) throws Exception
+    public void putNewSolution(long time, long iterNumber, double objVal, Phenotype<?> solution) throws Exception
     {
         DataNode newSol = new DataNode("NewSolution");
         newSol.putValue("time", time);
         newSol.putValue("iterNumber", iterNumber);
         newSol.putValue("objVal", objVal);
-        newSol.putValue("solution", solution);
+        newSol.putValue("solution", solution.toText());
 
         _report.getDataNode("Log").putDataNode(newSol);
     }

@@ -188,7 +188,7 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
 
                 _bestEverSolution = (S) gs.getBestSubject().clone();
                 _reporter.putNewSolution(System.currentTimeMillis(), gs.getCurrentIteration(),
-                        subject.getObjectiveValue()[0], solutionToPhenotype(subject).toString());
+                        subject.getObjectiveValue()[0], solutionToPhenotype(subject));
                 _statNumNewSol++;
                 _statLastImprovingIteration = gs.getCurrentIteration();
 

@@ -26,11 +26,15 @@
 
 package org.seage.aal.algorithm.tabusearch;
 
-import org.junit.Assert;
-import org.junit.Before;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 
 /**
@@ -45,22 +49,22 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
         super();
     }
 
-    @Before
+    @BeforeEach
     public void initAlgorithm() throws Exception
     {
-        _algAdapter = new TabuSearchAdapter<TestSolution>(new TestMoveManager(), new TestObjectiveFunction(), "")
+        _algAdapter = new TabuSearchAdapter<>(new TestMoveManager(), new TestObjectiveFunction(), "")
         {
             private TestSolution[] _solutions0;
 
             @Override
-            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception
             {
                 _solutions0 = new TestSolution[source.length];
                 _solutions = new TestSolution[source.length];
 
                 for (int i = 0; i < source.length; i++)
                 {
-                    TestSolution s = new TestSolution(source[i]);
+                    TestSolution s = new TestSolution(source[i].getSolution());
                     _solutions0[i] = s;
                     _solutions[i] = s;
                 }
@@ -68,7 +72,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
             }
 
             @Override
-            public Object[][] solutionsToPhenotype() throws Exception
+            public TestPhenotype[] solutionsToPhenotype() throws Exception
             {
                 assertEquals(_solutions0.length, _solutions.length);
                 assertNotSame(_solutions0[0], _solutions[0]);
@@ -80,7 +84,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
             }
 
 			@Override
-			public Object[] solutionToPhenotype(TestSolution solution) throws Exception {
+			public TestPhenotype solutionToPhenotype(TestSolution solution) throws Exception {
 				// TODO Auto-generated method stub
 				return null;
 			}

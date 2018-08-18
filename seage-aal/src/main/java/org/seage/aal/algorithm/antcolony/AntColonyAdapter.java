@@ -177,8 +177,8 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> ex
             {
                 _reporter.putNewSolution(System.currentTimeMillis(),
                         alg.getCurrentIteration(),
-                        alg.getGlobalBest(),
-                        createNodeListString(alg.getBestPath()));
+                        alg.getGlobalBest(), null); // TODO: A - Solve this AntColony issue
+                        //solutionToPhenotype(createNodeListString(alg.getBestPath())));
             }
             catch (Exception ex)
             {

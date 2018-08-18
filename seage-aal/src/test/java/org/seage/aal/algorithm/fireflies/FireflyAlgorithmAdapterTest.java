@@ -26,7 +26,7 @@
 
 package org.seage.aal.algorithm.fireflies;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
@@ -45,7 +45,7 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase<TestSo
         super();
     }
 
-    @Before
+    @BeforeEach
     public void initAlgorithm() throws Exception
     {
         _algAdapter = new TestFireflyAlgorithmAdapter(new TestOperator(), new TestObjectiveFunction(), false, "");

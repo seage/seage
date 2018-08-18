@@ -143,10 +143,11 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
         {
             try
             {
-                Solution s = e.getSimulatedAnnealing().getBestSolution();
+            	// TODO: A - Remove casting
+                S s = (S) e.getSimulatedAnnealing().getBestSolution();
 
                 _reporter.putNewSolution(System.currentTimeMillis(), e.getSimulatedAnnealing().getCurrentIteration(),
-                        s.getObjectiveValue(), s.toString());
+                        s.getObjectiveValue(), solutionToPhenotype(s));
 
                 if (_numberOfNewSolutions == 0)
                     _initObjectiveValue = s.getObjectiveValue();

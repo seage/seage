@@ -170,7 +170,8 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
         {
             try
             {
-                Solution newBest = e.getTabuSearch().getBestSolution();
+            	// TODO: A - Remove casting
+                S newBest = (S) e.getTabuSearch().getBestSolution();
                 _bestEverSolution = newBest;
 
                 _statLastIterNewSol = e.getTabuSearch().getIterationsCompleted();
@@ -182,7 +183,7 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
                     _statInitObjVal = _statEndObjVal;
 
                 _reporter.putNewSolution(System.currentTimeMillis(), e.getTabuSearch().getIterationsCompleted(),
-                        newBest.getObjectiveValue()[0], newBest.toString());
+                        newBest.getObjectiveValue()[0], solutionToPhenotype(newBest));
             }
             catch (Exception ex)
             {

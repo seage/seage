@@ -185,7 +185,7 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
                     _statInitObjVal = solution.getObjectiveValue()[0];
 
                 _reporter.putNewSolution(System.currentTimeMillis(), e.getFireflySearch().getCurrentIteration(),
-                        solution.getObjectiveValue()[0], solution.toString());
+                        solution.getObjectiveValue()[0], solutionToPhenotype(solution));
                 _statNumNewSol++;
                 _statLastIterNewSol = e.getFireflySearch().getCurrentIteration();
 

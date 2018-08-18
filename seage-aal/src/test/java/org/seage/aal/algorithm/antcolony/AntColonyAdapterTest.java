@@ -26,7 +26,7 @@
 
 package org.seage.aal.algorithm.antcolony;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
@@ -48,7 +48,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant>
         super();
     }
 
-    @Before
+    @BeforeEach
     public void initAlgorithm() throws Exception
     {
         Graph graph = new TestGraph();
