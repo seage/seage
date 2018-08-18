@@ -43,7 +43,7 @@ import org.seage.data.xml.XmlHelper;
 public class ProblemProviderTester
 {
 
-    private Map<String, IProblemProvider> _providers;
+    private Map<String, IProblemProvider<?>> _providers;
 
     public ProblemProviderTester() throws Exception
     {
@@ -119,15 +119,15 @@ public class ProblemProviderTester
             IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
             @SuppressWarnings("null")
             AlgorithmParams algNode = config.getAlgorithmParams();
-            Object[][] solutions = provider.generateInitialSolutions(instance,
-                    algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
-            algorithm.solutionsFromPhenotype(solutions);
-            algorithm.startSearching(algNode);
-            solutions = algorithm.solutionsToPhenotype();
-            algorithm.solutionsFromPhenotype(solutions);
-            algorithm.startSearching(algNode);
-
-            System.out.printf("%" + (50 - algorithmID.length()) + "s", "OK\n");
+//            Object[][] solutions = provider.generateInitialSolutions(instance,
+//                    algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
+//            algorithm.solutionsFromPhenotype(solutions);
+//            algorithm.startSearching(algNode);
+//            solutions = algorithm.solutionsToPhenotype();
+//            algorithm.solutionsFromPhenotype(solutions);
+//            algorithm.startSearching(algNode);
+//
+//            System.out.printf("%" + (50 - algorithmID.length()) + "s", "OK\n");
 
         }
         catch (Exception ex)

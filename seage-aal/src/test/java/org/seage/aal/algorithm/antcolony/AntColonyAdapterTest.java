@@ -28,9 +28,9 @@ package org.seage.aal.algorithm.antcolony;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
-import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;

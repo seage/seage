@@ -34,11 +34,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.TestPhenotype;
-import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 import org.seage.metaheuristic.genetics.BasicGeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;

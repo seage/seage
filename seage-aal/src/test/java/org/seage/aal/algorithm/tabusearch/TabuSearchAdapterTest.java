@@ -32,10 +32,10 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.TestPhenotype;
-import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 
 /**
  *

@@ -30,10 +30,10 @@ import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTester;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.TestPhenotype;
-import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.particles.Particle;
 

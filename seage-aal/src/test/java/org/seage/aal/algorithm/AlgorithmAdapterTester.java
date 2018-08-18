@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Random;
 
-import org.seage.aal.algorithm.algbase.AlgorithmAdapterTestBase;
 import org.seage.data.DataNode;
 
 public class AlgorithmAdapterTester<S> extends AlgorithmAdapterTestBase<S>
