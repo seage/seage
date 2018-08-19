@@ -30,7 +30,15 @@ public abstract class ProblemProviderTestBase<P extends Phenotype<?>> {
         try {
             _problemProvider = problemProvider;
             assertNotNull(_problemProvider);        
-            assertNotNull(_problemProvider.getProblemInfo());         
+            assertNotNull(_problemProvider.getProblemInfo());            
+        } catch (Exception e) {
+            fail(e);
+        }
+    }
+    
+    @BeforeEach
+    public void setUp() {
+        try {
             ProblemInfo pi = _problemProvider.getProblemInfo();
             assertNotNull(pi.getProblemInstanceInfos());
             _problemInstanceInfo = pi.getProblemInstanceInfos().get(0); 

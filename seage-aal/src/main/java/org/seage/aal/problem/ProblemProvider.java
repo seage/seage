@@ -58,7 +58,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
         _problemInfo = new ProblemInfo("ProblemInfo");
 
-        Class<? extends ProblemProvider> problemClass = this.getClass();
+        Class<?> problemClass = this.getClass();
         Annotation an = null;
 
         an = problemClass.getAnnotation(Annotations.ProblemId.class);
@@ -158,6 +158,8 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
     @Override
     public IAlgorithmFactory<P, ?> getAlgorithmFactory(String algId) throws Exception
     {
+        if (_algFactories == null)
+            throw new Exception("ProblemProvider not initialized, call getProblemInfo() first");
         if (!_algFactories.containsKey(algId))
             throw new Exception("Unknown algorithm id: " + algId);
         return _algFactories.get(algId);
