@@ -28,6 +28,7 @@ package org.seage.classutil;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -35,12 +36,16 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.zip.ZipException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  * @author Richard Malek
  */
 public class ClassPathAnalyzer
 {
+    private static final Logger _logger = LoggerFactory.getLogger(ClassPathAnalyzer.class.getName());
 
     String _filter = "";
     private List<String> _classNames;
@@ -80,7 +85,7 @@ public class ClassPathAnalyzer
             }
             catch (Exception ex)
             {
-                ex.printStackTrace();
+                _logger.debug(ex.getMessage(), ex);
             }
         }
 
@@ -106,7 +111,7 @@ public class ClassPathAnalyzer
         }
     }
 
-    private void analyzeJar(File f) throws IOException
+    private void analyzeJar(File f) throws Exception
     {
         JarFile jf = new JarFile(f);
         Manifest mf = jf.getManifest();
@@ -130,8 +135,7 @@ public class ClassPathAnalyzer
                 }
                 catch (ZipException ex)
                 {
-                    System.err.println("'" + p + "'");
-                    ex.printStackTrace();
+                    _logger.error("'" + p + "'", ex);
                 }
             }
         }
