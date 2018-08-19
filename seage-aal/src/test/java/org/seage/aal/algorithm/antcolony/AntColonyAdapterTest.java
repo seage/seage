@@ -59,7 +59,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant>
 
         }
 
-        _algAdapter = new TestAntColonyAdapter(new AntBrain(graph), graph);
+        _algAdapter = new TestAntColonyAdapter(new AntBrain(graph), graph, null);
         _algParams = new AlgorithmParams();
 
         _algParams.putValue("iterationCount", 3);
@@ -68,15 +68,13 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant>
         _algParams.putValue("defaultPheromone", 1);
         _algParams.putValue("qantumOfPheromone", 1);
         _algParams.putValue("localEvaporation", 1);
-
-        _tester = new AlgorithmAdapterTestBase<>(_algAdapter, /*_solutions,*/ _algParams);
     }
 
     @Test
     @Override
     public void testAlgorithm() throws Exception
     {
-        _tester.testAlgorithm();
+        super.testAlgorithm();
     }
 
     @Test
@@ -91,8 +89,8 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant>
         params.putValue("defaultPheromone", 0);
         params.putValue("qantumOfPheromone", 0);
         params.putValue("localEvaporation", 0);
-        _tester.setAlgParameters(params);
-        _tester.testAlgorithmWithParamsAtZero();
+        super.setAlgParameters(params);
+        super.testAlgorithmWithParamsAtZero();
     }
 
     @Test
@@ -108,21 +106,21 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant>
         params.putValue("qantumOfPheromone", 1);
         params.putValue("localEvaporation", 1);
 
-        _tester.setAlgParameters(params);
-        _tester.testAsyncRunning();
+        super.setAlgParameters(params);
+        super.testAsyncRunning();
     }
 
     @Test
     @Override
     public void testReport() throws Exception
     {
-        _tester.testReport();
+        super.testReport();
     }
 
     @Test
     @Override
     public void testAlgorithmWithParamsNull() throws Exception
     {
-        _tester.testAlgorithmWithParamsNull();
+        super.testAlgorithmWithParamsNull();
     }
 }

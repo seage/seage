@@ -48,7 +48,7 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase<TestSo
     @BeforeEach
     public void initAlgorithm() throws Exception
     {
-        _algAdapter = new TestFireflyAlgorithmAdapter(new TestOperator(), new TestObjectiveFunction(), false, "");
+        _algAdapter = new TestFireflyAlgorithmAdapter(new TestOperator(), new TestObjectiveFunction(), null, false);
 
         _algParams = new AlgorithmParams();
 
@@ -57,15 +57,13 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase<TestSo
         _algParams.putValue("timeStep", 1);
         _algParams.putValue("withDecreasingRandomness", 1);
         _algParams.putValue("absorption", 1);
-
-        _tester = new AlgorithmAdapterTestBase<TestSolution>(_algAdapter, _algParams);
     }
 
     @Override
     @Test
     public void testAlgorithm() throws Exception
     {
-        _tester.testAlgorithm();
+        super.testAlgorithm();
     }
 
     @Override
@@ -78,8 +76,8 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase<TestSo
         params.putValue("timeStep", 0);
         params.putValue("withDecreasingRandomness", 0);
         params.putValue("absorption", 0);
-        _tester.setAlgParameters(params);
-        _tester.testAlgorithmWithParamsAtZero();
+        super.setAlgParameters(params);
+        super.testAlgorithmWithParamsAtZero();
     }
 
     @Test
@@ -92,21 +90,21 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase<TestSo
         params.putValue("timeStep", 1);
         params.putValue("withDecreasingRandomness", 1);
         params.putValue("absorption", 0);
-        _tester.setAlgParameters(params);
-        _tester.testAsyncRunning();
+        super.setAlgParameters(params);
+        super.testAsyncRunning();
     }
 
     @Test
     @Override
     public void testReport() throws Exception
     {
-        _tester.testReport();
+        super.testReport();
     }
 
     @Test
     @Override
     public void testAlgorithmWithParamsNull() throws Exception
     {
-        _tester.testAlgorithmWithParamsNull();
+        super.testAlgorithmWithParamsNull();
     }
 }

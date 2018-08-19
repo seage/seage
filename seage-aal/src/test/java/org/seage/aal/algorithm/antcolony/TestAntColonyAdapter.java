@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
@@ -15,9 +16,9 @@ public class TestAntColonyAdapter extends AntColonyAdapter<TestPhenotype, Ant>
 {
     private Ant[] _ants0;
 
-    public TestAntColonyAdapter(AntBrain brain, Graph graph)
+    public TestAntColonyAdapter(AntBrain brain, Graph graph, IPhenotypeEvaluator<TestPhenotype> phenotypeEvaluator)
     {
-        super(brain, graph);
+        super(brain, graph, phenotypeEvaluator);
     }
 
     @Override

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
@@ -14,9 +15,9 @@ public class TestSimulatedAnnealingAdapter extends SimulatedAnnealingAdapter<Tes
     private TestSolution[] _solutions0;
 
     public TestSimulatedAnnealingAdapter(Solution initialSolution, IObjectiveFunction objectiveFunction,
-            IMoveManager moveManager, boolean maximizing, String searchID) throws Exception
+            IMoveManager moveManager, IPhenotypeEvaluator<TestPhenotype> phenotypeEvaluator, boolean maximizing) throws Exception
     {
-        super(objectiveFunction, moveManager, maximizing, searchID);
+        super(objectiveFunction, moveManager, phenotypeEvaluator, maximizing);
     }
 
     @Override

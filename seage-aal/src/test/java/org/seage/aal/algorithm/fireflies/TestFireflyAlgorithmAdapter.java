@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.metaheuristic.fireflies.FireflyOperator;
 import org.seage.metaheuristic.fireflies.ObjectiveFunction;
@@ -16,10 +17,10 @@ public class TestFireflyAlgorithmAdapter extends FireflyAlgorithmAdapter<TestPhe
 
     public TestFireflyAlgorithmAdapter(FireflyOperator operator,
             ObjectiveFunction evaluator,
-            boolean maximizing,
-            String searchID)
+            IPhenotypeEvaluator<TestPhenotype> phenotypeEvaluator,
+            boolean maximizing)
     {
-        super(operator, evaluator, maximizing, "");
+        super(operator, evaluator, phenotypeEvaluator, maximizing);
     }
 
     @Override

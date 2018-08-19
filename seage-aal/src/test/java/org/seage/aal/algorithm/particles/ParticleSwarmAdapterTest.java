@@ -26,11 +26,9 @@
 
 package org.seage.aal.algorithm.particles;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.TestPhenotype;
@@ -53,7 +51,7 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle>
     @BeforeEach
     public void initAlgorithm() throws Exception
     {
-        _algAdapter = new ParticleSwarmAdapter<TestPhenotype, Particle>(null, null, false, "")
+        _algAdapter = new ParticleSwarmAdapter<TestPhenotype, Particle>(null, null, null, false)
         {
 
             @Override
@@ -108,42 +106,40 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle>
         params.putValue("beta", 0);
 
         _algParams.putDataNodeRef(params);
-
-        _tester = new AlgorithmAdapterTestBase(_algAdapter, /*_solutions,*/ _algParams);
     }
 
     @Override
     @Test
     public void testAlgorithm() throws Exception
     {
-        _tester.testAlgorithm();
+        super.testAlgorithm();
     }
 
     @Override
     @Test
     public void testAlgorithmWithParamsAtZero() throws Exception
     {
-        _tester.testAlgorithmWithParamsAtZero();
+        super.testAlgorithmWithParamsAtZero();
     }
 
     @Test
     @Override
     public void testAsyncRunning() throws Exception
     {
-        _tester.testAsyncRunning();
+        super.testAsyncRunning();
     }
 
     @Test
     @Override
     public void testReport() throws Exception
     {
-        _tester.testReport();
+        super.testReport();
     }
 
     @Test
     @Override
     public void testAlgorithmWithParamsNull() throws Exception
     {
-        _tester.testAlgorithmWithParamsNull();
+        super.testAlgorithmWithParamsNull();
     }
 }

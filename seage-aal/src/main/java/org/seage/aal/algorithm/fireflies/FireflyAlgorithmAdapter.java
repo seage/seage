@@ -32,6 +32,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
@@ -67,7 +68,6 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
     protected FireflySearchObserver _observer;
     protected S _bestEverSolution;
     protected AlgorithmParams _params;
-    private String _searchID;
 
     private double _statInitObjVal;
     private double _statEndObjVal;
@@ -75,19 +75,19 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
     private int _statNumNewSol;
     private int _statLastIterNewSol;
 
-    private AlgorithmReporter _reporter;
+    private AlgorithmReporter<P> _reporter;
+    private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
     // private DataNode _minutes;
 
-    public FireflyAlgorithmAdapter(FireflyOperator operator, ObjectiveFunction evaluator, boolean maximizing,
-            String searchID)
+    public FireflyAlgorithmAdapter(FireflyOperator operator, ObjectiveFunction evaluator, IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing)
     {
         _evaluator = evaluator;
         _observer = new FireflySearchObserver();
         _comparator = new SolutionComparator();
         _fireflySearch = new FireflySearch<S>(operator, evaluator);
         _fireflySearch.addFireflySearchListener(_observer);
-        _searchID = searchID;
+        _phenotypeEvaluator = phenotypeEvaluator;
     }
 
     /**
@@ -103,7 +103,7 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
             throw new Exception("Parameters not set");
         setParameters(params);
 
-        _reporter = new AlgorithmReporter(_searchID);
+        _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
         _reporter.putParameters(_params);
 
         _fireflySearch.startSolving(_solutions);
@@ -185,7 +185,7 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
                     _statInitObjVal = solution.getObjectiveValue()[0];
 
                 _reporter.putNewSolution(System.currentTimeMillis(), e.getFireflySearch().getCurrentIteration(),
-                        solution.getObjectiveValue()[0], solutionToPhenotype(solution));
+                        solutionToPhenotype(solution));
                 _statNumNewSol++;
                 _statLastIterNewSol = e.getFireflySearch().getCurrentIteration();
 

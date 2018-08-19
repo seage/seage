@@ -47,24 +47,20 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
     @BeforeEach
     public void initAlgorithm() throws Exception
     {
-        _algAdapter = new TestSimulatedAnnealingAdapter(null, new TestObjectiveFunction(), new TestMoveManager(), false,
-                "");
-
+        _algAdapter = new TestSimulatedAnnealingAdapter(null, new TestObjectiveFunction(), new TestMoveManager(), null, false);
         _algParams = new AlgorithmParams();
 
         //_algParams.putValue("annealCoeficient", 0.1);
         _algParams.putValue("numIterations", 10);
         _algParams.putValue("maxTemperature", 100);
         _algParams.putValue("minTemperature", 1);
-
-        _tester = new AlgorithmAdapterTestBase(_algAdapter, /*_solutions,*/ _algParams);
     }
 
     @Override
     @Test
     public void testAlgorithm() throws Exception
     {
-        _tester.testAlgorithm();
+        super.testAlgorithm();
     }
 
     @Override
@@ -75,8 +71,8 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
         params.putValue("numIterations", 0);
         params.putValue("maxTemperature", 0);
         params.putValue("minTemperature", 0);
-        _tester.setAlgParameters(params);
-        _tester.testAlgorithmWithParamsAtZero();
+        super.setAlgParameters(params);
+        super.testAlgorithmWithParamsAtZero();
     }
 
     @Test
@@ -87,21 +83,21 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
         params.putValue("numIterations", 1000000);
         params.putValue("maxTemperature", 100000);
         params.putValue("minTemperature", 1);
-        _tester.setAlgParameters(params);
-        _tester.testAsyncRunning();
+        super.setAlgParameters(params);
+        super.testAsyncRunning();
     }
 
     @Test
     @Override
     public void testReport() throws Exception
     {
-        _tester.testReport();
+        super.testReport();
     }
 
     @Test
     @Override
     public void testAlgorithmWithParamsNull() throws Exception
     {
-        _tester.testAlgorithmWithParamsNull();
+        super.testAlgorithmWithParamsNull();
     }
 }
