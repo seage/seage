@@ -80,16 +80,14 @@ public class TspTabuSearchFactory implements IAlgorithmFactory<TspPhenotype, Tsp
 
                 for (int i = 0; i < _solutions.length; i++)
                 {
-                    TspSolution s = (TspSolution) _solutions[i];
-                    result[i] = new TspPhenotype(s.getTour());                    
+                    result[i] = solutionToPhenotype((TspSolution)_solutions[i]);                    
                 }
                 return result;
             }
 
 			@Override
 			public TspPhenotype solutionToPhenotype(TspSolution solution) throws Exception {
-				// TODO Auto-generated method stub
-				return null;
+                return new TspPhenotype(solution.getTour());  
 			}
         };
 

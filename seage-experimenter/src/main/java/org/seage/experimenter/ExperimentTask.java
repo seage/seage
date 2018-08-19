@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInstance;
@@ -138,25 +139,29 @@ public class ExperimentTask implements Runnable
         return _experimentTaskReport;
     }
     
-    @Override
+	@Override
     public void run()
     {
         try
         {
             // provider and factory
-            IProblemProvider provider = ProblemProvider.getProblemProviders().get(_problemID);
-            IAlgorithmFactory factory = provider.getAlgorithmFactory(_algorithmID);
+            IProblemProvider<?> provider = ProblemProvider.getProblemProviders().get(_problemID);
+            IAlgorithmFactory<?, ?> factory = provider.getAlgorithmFactory(_algorithmID);
 
             // problem instance
             ProblemInstance instance = provider
                     .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_instanceID));
-            instance.toString();
+            
+            @SuppressWarnings("unchecked")
+			IPhenotypeEvaluator<Phenotype<?>> evaluator = (IPhenotypeEvaluator<Phenotype<?>>) provider.initPhenotypeEvaluator(instance);
+            
             // algorithm
-            IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
+            @SuppressWarnings("unchecked")
+			IAlgorithmAdapter<Phenotype<?>, ?> algorithm = (IAlgorithmAdapter<Phenotype<?>, ?>) factory.createAlgorithm(instance);
 
             Phenotype<?>[] solutions = provider.generateInitialSolutions(instance,
             		_algorithmParams.getValueInt("numSolutions"), _experimentID.hashCode());
-            _experimentTaskReport.getDataNode("Solutions").getDataNode("Input").putValue("s", solutions);
+            writeSolutions(evaluator, _experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
             
             long startTime = System.currentTimeMillis();
             algorithm.solutionsFromPhenotype(solutions);
@@ -166,7 +171,7 @@ public class ExperimentTask implements Runnable
             long endTime = System.currentTimeMillis();
 
             solutions = algorithm.solutionsToPhenotype();
-            _experimentTaskReport.getDataNode("Solutions").getDataNode("Output").putValue("s", solutions);
+            writeSolutions(evaluator, _experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
 
             _experimentTaskReport.putDataNode(algorithm.getReport());
             _experimentTaskReport.putValue("durationS", (endTime - startTime) / 1000);
@@ -182,11 +187,25 @@ public class ExperimentTask implements Runnable
         }
     }
 
-    private void waitForTimeout(IAlgorithmAdapter alg) throws Exception
+    private void waitForTimeout(IAlgorithmAdapter<?, ?> alg) throws Exception
     {
         long time = System.currentTimeMillis();
         while (alg.isRunning() && ((System.currentTimeMillis() - time) < _timeoutS * 1000))
             Thread.sleep(100);
+    }
+    
+    private void writeSolutions(IPhenotypeEvaluator<Phenotype<?>> evaluator, DataNode dataNode, Phenotype<?>[] solutions) {    	
+    	for(Phenotype<?> p : solutions) {
+    		try {
+	    		DataNode solutionNode = new DataNode("Solution");
+	    		solutionNode.putValue("objValue", evaluator.evaluate(p)[0]);
+	    		solutionNode.putValue("solution", p.toText());
+    		
+				dataNode.putDataNode(solutionNode);
+			} catch (Exception ex) {
+				_logger.error("Cannot write solution", ex);
+			}
+    	}
     }
 
 }

@@ -81,8 +81,8 @@ public class TspProblemProvider extends ProblemProvider<TspPhenotype>
         City[] cities = ((TspProblemInstance) instance).getCities();
         TspPhenotype[] result = new TspPhenotype[numTours];
 
-        result[0] = new TspPhenotype(TourProvider.createGreedyTour(cities, randomSeed));
-        for (int i = 1; i < numTours; i++)
+        //result[0] = new TspPhenotype(TourProvider.createGreedyTour(cities, randomSeed));
+        for (int i = 0; i < numTours; i++)
             result[i] = new TspPhenotype(TourProvider.createRandomTour(cities.length));
 
         return result;
