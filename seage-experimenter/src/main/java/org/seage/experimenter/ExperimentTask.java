@@ -1,5 +1,6 @@
 package org.seage.experimenter;
 
+import java.io.Serializable;
 import java.net.UnknownHostException;
 
 import org.seage.aal.algorithm.AlgorithmParams;
@@ -47,8 +48,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Richard Malek
  */
-public class ExperimentTask implements Runnable
+public class ExperimentTask implements Runnable, Serializable
 {
+    private static final long serialVersionUID = -1342525824503090535L;
+
     protected static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
     //protected ProblemConfig _config;
     protected String _experimentType;
@@ -139,7 +142,7 @@ public class ExperimentTask implements Runnable
         return _experimentTaskReport;
     }
     
-	@Override
+    @Override
     public void run()
     {
         try

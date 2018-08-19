@@ -33,10 +33,10 @@ public class App
 	        	return true;
 	        }).count();
 	        //ArrayList<Double> a =  [{10.0}, 2.0];
-//	        List<Double> list = Arrays.asList(1.38, 2.56, 4.3);
-//	        
-//	        List<Double> l = distData.flatMap(i -> list.iterator()).collect();
-//	        System.out.println(l);
+	        List<Double> list = Arrays.asList(1.38, 2.56, 4.3);
+	        
+	        List<Double> l = distData.flatMap(i -> list.iterator()).collect();
+	        System.out.println(l);
 //	        List<Double> l2 = distData.map(i -> 3.2).collect();
 //	        l2.forEach(i -> System.out.println(i));        
 	        
