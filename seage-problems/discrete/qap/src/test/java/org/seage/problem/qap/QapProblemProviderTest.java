@@ -19,9 +19,9 @@
  */
 package org.seage.problem.qap;
 
-import org.seage.aal.problem.ProblemProviderTestBase;
+import org.seage.aal.problem._ProblemProviderTestBase;
 
-public class QapProblemProviderTest extends ProblemProviderTestBase
+public class QapProblemProviderTest extends _ProblemProviderTestBase
 {
 
     public QapProblemProviderTest()

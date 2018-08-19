@@ -31,7 +31,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTester;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.data.DataNode;
@@ -109,7 +109,7 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle>
 
         _algParams.putDataNodeRef(params);
 
-        _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
+        _tester = new AlgorithmAdapterTestBase(_algAdapter, /*_solutions,*/ _algParams);
     }
 
     @Override

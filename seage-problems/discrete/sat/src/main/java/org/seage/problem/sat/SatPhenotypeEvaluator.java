@@ -2,7 +2,7 @@ package org.seage.problem.sat;
 
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 
-public class SatPhenotypeEvaluator implements IPhenotypeEvaluator
+public class SatPhenotypeEvaluator implements IPhenotypeEvaluator<SatPhenotype>
 {
     private Formula _formula;
 
@@ -18,9 +18,9 @@ public class SatPhenotypeEvaluator implements IPhenotypeEvaluator
     }
 
     @Override
-    public double[] evaluate(Object[] phenotypeSubject) throws Exception
+    public double[] evaluate(SatPhenotype phenotypeSubject) throws Exception
     {
-        return new double[] { FormulaEvaluator.evaluate(_formula, (Boolean[]) phenotypeSubject) };
+        return new double[] { FormulaEvaluator.evaluate(_formula, phenotypeSubject.getSolution()) };
     }
 
 }

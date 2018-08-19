@@ -35,7 +35,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTester;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.metaheuristic.genetics.BasicGeneticOperator;
@@ -73,7 +73,7 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subjec
         };
 
         _algAdapter = new GeneticAlgorithmAdapter<>(
-                new BasicGeneticOperator<Subject<Integer>, Integer>(), se, false, "")
+                new BasicGeneticOperator<Subject<Integer>, Integer>(), se, null, false)
         {
             private List<Subject<Integer>> _solutions0;
 
@@ -118,14 +118,14 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subjec
         _algParams.putValue("numSolutions", NUM_SOLUTIONS);
         _algParams.putValue("randomSubjectPct", 1);
 
-        _tester = new AlgorithmAdapterTester<>(_algAdapter, /*_solutions,*/ _algParams);
+        //_tester = new AlgorithmAdapterTestImpl<>(_algAdapter, /*_solutions,*/ _algParams);
     }
 
     @Override
     @Test
     public void testAlgorithm() throws Exception
     {
-        _tester.testAlgorithm();
+        super.testAlgorithm();
     }
 
     @Override
@@ -140,8 +140,8 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subjec
         params.putValue("mutateSubjectPct", 0);
         params.putValue("numSolutions", 0);
         params.putValue("randomSubjectPct", 0);
-        _tester.setAlgParameters(params);
-        _tester.testAlgorithmWithParamsAtZero();
+        super.setAlgParameters(params);
+        super.testAlgorithmWithParamsAtZero();
     }
 
     @Test
@@ -156,21 +156,21 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subjec
         params.putValue("mutateSubjectPct", 1);
         params.putValue("numSolutions", 10);
         params.putValue("randomSubjectPct", 1);
-        _tester.setAlgParameters(params);
-        _tester.testAsyncRunning();
+        super.setAlgParameters(params);
+        super.testAsyncRunning();
     }
 
     @Test
     @Override
     public void testReport() throws Exception
     {
-        _tester.testReport();
+    	super.testReport();
     }
 
     @Test
     @Override
     public void testAlgorithmWithParamsNull() throws Exception
     {
-        _tester.testAlgorithmWithParamsNull();
+    	super.testAlgorithmWithParamsNull();
     }
 }

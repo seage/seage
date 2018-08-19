@@ -2,10 +2,8 @@ package org.seage.problem.sat;
 
 import org.seage.aal.problem.ProblemProviderTestBase;
 
-// @Ignore
-public class SatProblemProviderTest extends ProblemProviderTestBase
+public class SatProblemProviderTest extends ProblemProviderTestBase<SatPhenotype>
 {
-
     public SatProblemProviderTest()
     {
         super(new SatProblemProvider());

@@ -1,9 +1,9 @@
 package org.seage.problem.qap.tabusearch;
 
-import org.seage.aal.algorithm.AlgorithmFactoryTestBase;
+import org.seage.aal.problem.ProblemProviderTestBase;
 import org.seage.problem.qap.QapProblemProvider;
 
-public class QapTabuSearchFactoryTest extends AlgorithmFactoryTestBase
+public class QapTabuSearchFactoryTest extends ProblemProviderTestBase
 {
 
     public QapTabuSearchFactoryTest()

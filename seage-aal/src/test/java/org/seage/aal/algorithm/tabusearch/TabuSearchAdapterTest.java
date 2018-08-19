@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTester;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.TestPhenotype;
 
@@ -52,7 +52,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
     @BeforeEach
     public void initAlgorithm() throws Exception
     {
-        _algAdapter = new TabuSearchAdapter<>(new TestMoveManager(), new TestObjectiveFunction(), "")
+        _algAdapter = new TabuSearchAdapter<>(new TestMoveManager(), new TestObjectiveFunction(), null)
         {
             private TestSolution[] _solutions0;
 
@@ -91,20 +91,17 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
         };
 
         _algParams = new AlgorithmParams();
-
         _algParams.putValue("numIterDivers", 1);
         _algParams.putValue("iterationCount", 3);
         _algParams.putValue("numSolutions", 1);
         _algParams.putValue("tabuListLength", 1);
-
-        _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
     }
 
     @Override
     @Test
     public void testAlgorithm() throws Exception
     {
-        _tester.testAlgorithm();
+        super.testAlgorithm();
     }
 
     @Override
@@ -116,9 +113,8 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
         params.putValue("iterationCount", 0);
         params.putValue("numSolutions", 0);
         params.putValue("tabuListLength", 0);
-        _tester.setAlgParameters(params);
-
-        _tester.testAlgorithmWithParamsAtZero();
+        super.setAlgParameters(params);
+        super.testAlgorithmWithParamsAtZero();
     }
 
     @Test
@@ -130,22 +126,21 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
         params.putValue("iterationCount", 1000000);
         params.putValue("numSolutions", 1);
         params.putValue("tabuListLength", 1);
-        _tester.setAlgParameters(params);
-
-        _tester.testAsyncRunning();
+        super.setAlgParameters(params);
+        super.testAsyncRunning();
     }
 
     @Test
     @Override
     public void testReport() throws Exception
     {
-        _tester.testReport();
+    	super.testReport();
     }
 
     @Test
     @Override
     public void testAlgorithmWithParamsNull() throws Exception
     {
-        _tester.testAlgorithmWithParamsNull();
+    	super.testAlgorithmWithParamsNull();
     }
 }

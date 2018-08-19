@@ -1,42 +1,19 @@
-/*******************************************************************************
- * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
- * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
-/**
- * Contributors:
- *     Richard Malek
- *     - Initial implementation
- */
 package org.seage.aal.algorithm;
 
-import org.seage.aal.algorithm.AlgorithmParams;
-import org.seage.aal.algorithm.IAlgorithmAdapter;
-import org.seage.aal.algorithm.Phenotype;
-import org.seage.aal.reporter.AlgorithmReport;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-/**
- *
- * @author Richard Malek
- */
-public abstract class AlgorithmAdapterTestBase<S>
+import java.util.Random;
+
+import org.seage.aal.reporter.AlgorithmReport;
+import org.seage.data.DataNode;
+
+public class AlgorithmAdapterTestBase<S>
 {
-    protected AlgorithmAdapterTester<S> _tester;
 
     protected IAlgorithmAdapter<TestPhenotype, S> _algAdapter;
     protected AlgorithmParams _algParams;
@@ -44,15 +21,103 @@ public abstract class AlgorithmAdapterTestBase<S>
 
     protected final int NUM_SOLUTIONS = 10;
     protected final int SOLUTION_LENGTH = 100;
+    
+    public void setAlgParameters(AlgorithmParams params) throws Exception
+    {
+        _algParams = params;
+    }
 
-    public abstract void testAlgorithm() throws Exception;
+    public void testAlgorithm() throws Exception
+    {
+        _algAdapter.solutionsFromPhenotype(createTestPhenotypeSolutions());
+        _algAdapter.startSearching(_algParams);
+        assertNull(_algAdapter.solutionsToPhenotype());
+        _algAdapter.solutionsToPhenotype();
+    }
 
-    public abstract void testAlgorithmWithParamsAtZero() throws Exception;
+    public void testAlgorithmWithParamsNull() throws Exception
+    {
+        try
+        {
+            _algParams = null;
+            testAlgorithm();
+            fail("Algorithm should throw an exception when parameters not set.");
+        }
+        catch (Exception ex)
+        {
+        }
+    }
 
-    public abstract void testAlgorithmWithParamsNull() throws Exception;
+    public void testAlgorithmWithParamsAtZero() throws Exception
+    {
+        _algAdapter.solutionsFromPhenotype(createTestPhenotypeSolutions());
+        _algAdapter.startSearching(_algParams);
+    }
 
-    public abstract void testAsyncRunning() throws Exception;
+    public void testAsyncRunning() throws Exception
+    {
+        _algAdapter.solutionsFromPhenotype(createTestPhenotypeSolutions());
+        _algAdapter.startSearching(_algParams, true);
+        assertTrue(_algAdapter.isRunning());
 
-    public abstract void testReport() throws Exception;
+        _algAdapter.stopSearching();
 
+        assertFalse(_algAdapter.isRunning());
+    }
+
+    public void testReport() throws Exception
+    {
+        testAlgorithm();
+        _algReport = _algAdapter.getReport();
+        assertNotNull(_algReport);
+        assertTrue(_algReport.containsNode("Parameters"));
+        assertTrue(_algReport.containsNode("Log"));
+        assertTrue(_algReport.containsNode("Statistics"));
+
+        for (String attName : _algReport.getDataNode("Parameters").getValueNames())
+            assertEquals(_algParams.getValue(attName), _algReport.getDataNode("Parameters").getValue(attName));
+
+        DataNode stats = _algReport.getDataNode("Statistics");
+        assertTrue(stats.getValueInt("numberOfIter") > 1);
+        assertTrue(stats.getValueDouble("initObjVal") > 0);
+        assertTrue(stats.getValueInt("avgObjVal") > 0);
+        assertTrue(stats.getValueInt("bestObjVal") > 0);
+        assertFalse(stats.getValueInt("initObjVal") < stats.getValueInt("bestObjVal"));
+        assertTrue((stats.getValueInt("initObjVal") != stats.getValueInt("bestObjVal"))
+                || (stats.getValueInt("numberOfNewSolutions") == 1));
+        assertTrue(stats.getValueInt("bestObjVal") == stats.getValueDouble("initObjVal")
+                || stats.getValueInt("lastIterNumberNewSol") > 1);
+        assertTrue(
+                stats.getValueInt("numberOfNewSolutions") > 0 || stats.getValueInt("lastIterNumberNewSol") == 0);
+        assertTrue(
+                stats.getValueInt("lastIterNumberNewSol") > 1 || stats.getValueInt("numberOfNewSolutions") == 1);
+    }
+
+    private TestPhenotype[] createTestPhenotypeSolutions()
+    {
+        Random rnd = new Random(4);
+        TestPhenotype[] solutions = new TestPhenotype[NUM_SOLUTIONS];
+
+        for (int i = 0; i < NUM_SOLUTIONS; i++)
+        {            
+            Integer[] array = new Integer[SOLUTION_LENGTH]; 
+            for (int j = 0; j < SOLUTION_LENGTH; j++)
+            {
+                array[j] = j + 1;
+            }
+            
+            for (int j = 0; j < SOLUTION_LENGTH; j++)
+            {
+                int ix1 = rnd.nextInt(SOLUTION_LENGTH);
+                int ix2 = rnd.nextInt(SOLUTION_LENGTH);
+                Integer a = array[ix1];
+                array[ix1] = array[ix2];
+                array[ix2] = a;
+            }
+            solutions[i] = new TestPhenotype(array);
+        }
+
+        return solutions;
+
+    }
 }

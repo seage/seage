@@ -1,9 +1,9 @@
 package org.seage.problem.jssp;
 
-import org.seage.aal.problem.ProblemProviderTestBase;
+import org.seage.aal.problem._ProblemProviderTestBase;
 
 // @Ignore
-public class JsspProblemProviderTest extends ProblemProviderTestBase
+public class JsspProblemProviderTest extends _ProblemProviderTestBase
 {
 
     public JsspProblemProviderTest()

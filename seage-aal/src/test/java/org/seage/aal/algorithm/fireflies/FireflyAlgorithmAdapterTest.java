@@ -29,7 +29,7 @@ package org.seage.aal.algorithm.fireflies;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTester;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
 
 /**
@@ -58,7 +58,7 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase<TestSo
         _algParams.putValue("withDecreasingRandomness", 1);
         _algParams.putValue("absorption", 1);
 
-        _tester = new AlgorithmAdapterTester<TestSolution>(_algAdapter, _algParams);
+        _tester = new AlgorithmAdapterTestBase<TestSolution>(_algAdapter, _algParams);
     }
 
     @Override

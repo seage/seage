@@ -29,7 +29,7 @@ package org.seage.aal.algorithm.antcolony;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTester;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
@@ -69,7 +69,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant>
         _algParams.putValue("qantumOfPheromone", 1);
         _algParams.putValue("localEvaporation", 1);
 
-        _tester = new AlgorithmAdapterTester<>(_algAdapter, /*_solutions,*/ _algParams);
+        _tester = new AlgorithmAdapterTestBase<>(_algAdapter, /*_solutions,*/ _algParams);
     }
 
     @Test

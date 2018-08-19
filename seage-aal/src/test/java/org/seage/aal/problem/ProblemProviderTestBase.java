@@ -3,39 +3,45 @@ package org.seage.aal.problem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
+import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
+import org.seage.aal.problem.IProblemProvider;
+import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.data.DataNode;
+import org.seage.data.ObjectCloner;
 
-//@Ignore 
-public abstract class ProblemProviderTestBase<P extends Phenotype<?>>
-{
+public abstract class ProblemProviderTestBase<P extends Phenotype<?>> {
+    // protected IAlgorithmFactory<P, ?> _algorithmFactory;
     protected IProblemProvider<P> _problemProvider;
-    protected ProblemInstance _problemInstance;
-
-    public ProblemProviderTestBase(IProblemProvider<P> provider)
-    {
-        _problemProvider = provider;
+    protected ProblemInstanceInfo _problemInstanceInfo;
+    
+    public ProblemProviderTestBase(IProblemProvider<P> problemProvider) {
+        try {
+            _problemProvider = problemProvider;
+            assertNotNull(_problemProvider);        
+            assertNotNull(_problemProvider.getProblemInfo());         
+            ProblemInfo pi = _problemProvider.getProblemInfo();
+            assertNotNull(pi.getProblemInstanceInfos());
+            _problemInstanceInfo = pi.getProblemInstanceInfos().get(0); 
+            assertNotNull(_problemInstanceInfo);
+        } catch (Exception e) {
+            fail(e);
+        }
     }
-
-    @BeforeEach
-    public void setUp() throws Exception
-    {
-        assertNotNull(_problemProvider);
-        List<ProblemInstanceInfo> infos = _problemProvider.getProblemInfo().getProblemInstanceInfos();
-        assertTrue(infos.size() > 0);
-        ProblemInstanceInfo pii = infos.get(0);
-        _problemInstance = _problemProvider.initProblemInstance(pii);
-    }
-
+    
     @Test
-    public void testProblemInfo() throws Exception
-    {
+    public void testProblemInfo() throws Exception {
         ProblemInfo pi = _problemProvider.getProblemInfo();
         assertNotNull(pi);
         assertEquals(pi.getDataNode("Algorithms").getDataNodes("Algorithm").size(),
@@ -43,44 +49,21 @@ public abstract class ProblemProviderTestBase<P extends Phenotype<?>>
     }
 
     @Test
-    public void testInitProblemInstance() throws Exception
-    {
-        assertNotNull(_problemInstance);
+    public void testInitProblemInstance() throws Exception {        
+        ProblemInstance pin = _problemProvider.initProblemInstance(_problemInstanceInfo);
+        assertNotNull(pin);
     }
 
     @Test
-    public void testInitPhenotypeEvaluator() throws Exception
-    {
-        IPhenotypeEvaluator<?> phenotypeEvaluator = _problemProvider.initPhenotypeEvaluator(_problemInstance);
+    public void testPhenotypeEvaluator() throws Exception {
+        ProblemInstance pin = _problemProvider.initProblemInstance(_problemInstanceInfo);
+        IPhenotypeEvaluator<P> phenotypeEvaluator = _problemProvider.initPhenotypeEvaluator(pin);
         assertNotNull(phenotypeEvaluator);
-    }
+        P[] solutions = _problemProvider.generateInitialSolutions(pin, 10, 10);
 
-    @Test
-    public void testGenerateInitialSolutions() throws Exception
-    {
-        Phenotype<?>[] solutions = _problemProvider.generateInitialSolutions(_problemInstance, 10, 10);
-        assertNotNull(solutions);
-        assertEquals(10, solutions.length);
-    }
-
-    @Test
-    public void testPhenotypeEvaluator() throws Exception
-    {
-        IPhenotypeEvaluator<P> phenotypeEvaluator = _problemProvider.initPhenotypeEvaluator(_problemInstance);
-        assertNotNull(phenotypeEvaluator);
-        P[] solutions = _problemProvider.generateInitialSolutions(_problemInstance, 10, 10);
-
-        for (int i = 0; i < 10; i++)
-        {
+        for (int i = 0; i < 10; i++) {
             double[] value = phenotypeEvaluator.evaluate(solutions[i]);
             assertNotNull(value);
         }
     }
-    //	
-    //	@Test
-    //	public void testAlgorithmFactories() throws Exception
-    //	{
-    //		_problemProvider.getProblemInfo().get
-    //	}
-
 }

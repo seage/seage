@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
@@ -14,47 +13,45 @@ import org.seage.problem.tsp.tour.TspOptimalTour;
 import org.seage.problem.tsp.tour.TspOptimalTourBerlin52;
 import org.seage.problem.tsp.tour.TspOptimalTourPcb442;
 
-public class TspPhenotypeTest
-{
-	private IProblemProvider<?> _provider;
-	
-	@BeforeEach
-	public void initEvaluator() throws Exception {
-		_provider = ProblemProvider.getProblemProviders().get("TSP");
-	}
-	
-	@Test
-	public void testPhenotypeDeserialization() throws Exception {		
-		TspOptimalTour tour = new TspOptimalTourBerlin52();
-		ProblemInstance instance = _provider
-                .initProblemInstance(_provider.getProblemInfo().getProblemInstanceInfo(tour.Name));
-    	TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
-		
-		TspPhenotype p1 = new TspPhenotype(tour.OptimalTour);				
-		String t1 = p1.toText();
-		assertNotNull(t1);
-		double[] v1 = evaluator.evaluate(p1);
-		
-		TspPhenotype p2 = new TspPhenotype(new Integer[tour.OptimalTour.length]);
-		p2.fromText(t1);
-		assertNotNull(p2.getSolution()[0]);
-		double[] v2 = evaluator.evaluate(p2);
-		
-		assertArrayEquals(v1, v2);		
-	}
+public class TspPhenotypeTest {
+    private IProblemProvider<?> _provider;
+
+    @BeforeEach
+    public void initEvaluator() throws Exception {
+        _provider = ProblemProvider.getProblemProviders().get("TSP");
+    }
 
     @Test
-    public void testEvaluate() throws Exception
-    {
+    public void testPhenotypeDeserialization() throws Exception {
+        TspOptimalTour tour = new TspOptimalTourBerlin52();
+        ProblemInstance instance = _provider
+                .initProblemInstance(_provider.getProblemInfo().getProblemInstanceInfo(tour.Name));
+        TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
+
+        TspPhenotype p1 = new TspPhenotype(tour.OptimalTour);
+        String t1 = p1.toText();
+        assertNotNull(t1);
+        double[] v1 = evaluator.evaluate(p1);
+        assertEquals(tour.OptimalLength, v1[0]);
+
+        TspPhenotype p2 = new TspPhenotype(new Integer[tour.OptimalTour.length]);
+        p2.fromText(t1);
+        assertNotNull(p2.getSolution()[0]);
+        double[] v2 = evaluator.evaluate(p2);
+
+        assertArrayEquals(v1, v2);
+    }
+
+    @Test
+    public void testEvaluate() throws Exception {
         testEvaluateTour(new TspOptimalTourBerlin52());
         testEvaluateTour(new TspOptimalTourPcb442());
     }
 
-    private void testEvaluateTour(TspOptimalTour tour) throws Exception
-    {
-    	ProblemInstance instance = _provider
+    private void testEvaluateTour(TspOptimalTour tour) throws Exception {
+        ProblemInstance instance = _provider
                 .initProblemInstance(_provider.getProblemInfo().getProblemInstanceInfo(tour.Name));
-    	TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
+        TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
 
         TspPhenotype s = new TspPhenotype(tour.OptimalTour);
         TspOptimalTour.printTour(s);
@@ -84,10 +81,4 @@ public class TspPhenotypeTest
         s = TspOptimalTour.applySwapMove(s, new int[] { 3, 7 });
         assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
     }
-
-    //	@Test
-    //	public void testCompare() {
-    //		fail("Not yet implemented");
-    //	}
-
 }

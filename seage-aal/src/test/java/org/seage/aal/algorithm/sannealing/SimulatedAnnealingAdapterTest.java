@@ -29,7 +29,7 @@ package org.seage.aal.algorithm.sannealing;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTester;
+import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
 
 /**
@@ -57,7 +57,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
         _algParams.putValue("maxTemperature", 100);
         _algParams.putValue("minTemperature", 1);
 
-        _tester = new AlgorithmAdapterTester(_algAdapter, /*_solutions,*/ _algParams);
+        _tester = new AlgorithmAdapterTestBase(_algAdapter, /*_solutions,*/ _algParams);
     }
 
     @Override

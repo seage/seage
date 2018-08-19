@@ -23,7 +23,6 @@ import org.seage.aal.problem.ProblemProviderTestBase;
 
 public class TspProblemProviderTest extends ProblemProviderTestBase<TspPhenotype>
 {
-
     public TspProblemProviderTest()
     {
         super(new TspProblemProvider());

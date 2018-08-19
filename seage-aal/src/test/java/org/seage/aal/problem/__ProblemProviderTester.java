@@ -40,12 +40,12 @@ import org.seage.data.xml.XmlHelper;
  * @author Richard Malek
  */
 @SuppressWarnings("all")
-public class ProblemProviderTester
+public class __ProblemProviderTester
 {
 
     private Map<String, IProblemProvider<?>> _providers;
 
-    public ProblemProviderTester() throws Exception
+    public __ProblemProviderTester() throws Exception
     {
         _providers = ProblemProvider.getProblemProviders();
     }
@@ -116,9 +116,9 @@ public class ProblemProviderTester
 
             ProblemInstance instance = provider
                     .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(instanceID));
-            IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
-            @SuppressWarnings("null")
-            AlgorithmParams algNode = config.getAlgorithmParams();
+//            IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
+//            @SuppressWarnings("null")
+//            AlgorithmParams algNode = config.getAlgorithmParams();
 //            Object[][] solutions = provider.generateInitialSolutions(instance,
 //                    algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
 //            algorithm.solutionsFromPhenotype(solutions);
@@ -154,11 +154,11 @@ public class ProblemProviderTester
                 .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(instanceID));
 
         // algorithm
-        IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
-
-        AlgorithmParams algNode = config.getAlgorithmParams();
-        //Object[][] solutions = (Object[][])
-        provider.generateInitialSolutions(instance, algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
+//        IAlgorithmAdapter algorithm = factory.createAlgorithm(instance);
+//
+//        AlgorithmParams algNode = config.getAlgorithmParams();
+//        //Object[][] solutions = (Object[][])
+//        provider.generateInitialSolutions(instance, algNode.getDataNode("Parameters").getValueInt("numSolutions"), 1);
         //
         //
         //        System.out.printf("%s: %4s %s\n", "Problem","", problemID);

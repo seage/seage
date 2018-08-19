@@ -40,7 +40,7 @@ import org.seage.aal.problem.ProblemProvider;
  */
 @Annotations.ProblemId("SAT")
 @Annotations.ProblemName("Boolean Satisfiability Problem")
-public class SatProblemProvider extends ProblemProvider
+public class SatProblemProvider extends ProblemProvider<SatPhenotype>
 {
     @Override
     public Formula initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
@@ -71,24 +71,26 @@ public class SatProblemProvider extends ProblemProvider
     }
 
     @Override
-    public IPhenotypeEvaluator initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception
+    public IPhenotypeEvaluator<SatPhenotype> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception
     {
         Formula f = (Formula) problemInstance;
         return new SatPhenotypeEvaluator(f);
     }
 
     @Override
-    public Object[][] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
+    public SatPhenotype[] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
             throws Exception
     {
         Random rnd = new Random(randomSeed);
         Formula f = (Formula) problemInstance;
-        Boolean[][] result = new Boolean[numSolutions][];
+        SatPhenotype[] result = new SatPhenotype[numSolutions];
+        
         for (int i = 0; i < numSolutions; i++)
         {
-            result[i] = new Boolean[f.getLiteralCount()];
+            Boolean[] array = new Boolean[f.getLiteralCount()];
             for (int j = 0; j < f.getLiteralCount(); j++)
-                result[i][j] = rnd.nextBoolean();
+                array[j] = rnd.nextBoolean();
+            result[i] = new SatPhenotype(array);
         }
         return result;
     }
