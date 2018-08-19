@@ -1,6 +1,10 @@
 package org.seage.problem.tsp;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.seage.aal.problem.IProblemProvider;
@@ -10,8 +14,34 @@ import org.seage.problem.tsp.tour.TspOptimalTour;
 import org.seage.problem.tsp.tour.TspOptimalTourBerlin52;
 import org.seage.problem.tsp.tour.TspOptimalTourPcb442;
 
-public class TspPhenotypeEvaluatorTest
+public class TspPhenotypeTest
 {
+	private IProblemProvider<?> _provider;
+	
+	@BeforeEach
+	public void initEvaluator() throws Exception {
+		_provider = ProblemProvider.getProblemProviders().get("TSP");
+	}
+	
+	@Test
+	public void testPhenotypeDeserialization() throws Exception {		
+		TspOptimalTour tour = new TspOptimalTourBerlin52();
+		ProblemInstance instance = _provider
+                .initProblemInstance(_provider.getProblemInfo().getProblemInstanceInfo(tour.Name));
+    	TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
+		
+		TspPhenotype p1 = new TspPhenotype(tour.OptimalTour);				
+		String t1 = p1.toText();
+		assertNotNull(t1);
+		double[] v1 = evaluator.evaluate(p1);
+		
+		TspPhenotype p2 = new TspPhenotype(new Integer[tour.OptimalTour.length]);
+		p2.fromText(t1);
+		assertNotNull(p2.getSolution()[0]);
+		double[] v2 = evaluator.evaluate(p2);
+		
+		assertArrayEquals(v1, v2);		
+	}
 
     @Test
     public void testEvaluate() throws Exception
@@ -22,10 +52,9 @@ public class TspPhenotypeEvaluatorTest
 
     private void testEvaluateTour(TspOptimalTour tour) throws Exception
     {
-        IProblemProvider<?> provider = ProblemProvider.getProblemProviders().get("TSP");
-        ProblemInstance instance = provider
-                .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(tour.Name));
-        TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
+    	ProblemInstance instance = _provider
+                .initProblemInstance(_provider.getProblemInfo().getProblemInstanceInfo(tour.Name));
+    	TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
 
         TspPhenotype s = new TspPhenotype(tour.OptimalTour);
         TspOptimalTour.printTour(s);
