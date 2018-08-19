@@ -34,6 +34,7 @@ import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
+import org.seage.experimenter.runner.LocalExperimentTasksRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +46,8 @@ public abstract class Experimenter
     protected String _problemID;
     protected String[] _instanceIDs;
     protected String[] _algorithmIDs;
-    protected ProblemInfo _problemInfo;    
+    protected ProblemInfo _problemInfo;
+    protected LocalExperimentTasksRunner _experimentTasksRunner;    
 
     public Experimenter(String experimentName, String problemID, String[] instanceIDs, String[] algorithmIDs) throws Exception
     {
@@ -58,6 +60,7 @@ public abstract class Experimenter
         new File("output/experiment-logs").mkdirs();
         
         _problemInfo = ProblemProvider.getProblemProviders().get(_problemID).getProblemInfo();
+        _experimentTasksRunner = new LocalExperimentTasksRunner();
     }
 
     public void runFromConfigFile(String configPath) throws Exception

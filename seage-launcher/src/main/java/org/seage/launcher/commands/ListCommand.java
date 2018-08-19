@@ -2,6 +2,7 @@ package org.seage.launcher.commands;
 
 import java.util.Map;
 
+import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
@@ -21,7 +22,7 @@ public class ListCommand extends Command
         _logger.info("--------------------------------------------");
 
         DataNode problems = new DataNode("Problems");
-        Map<String, IProblemProvider<?>> providers = ProblemProvider.getProblemProviders();
+        Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
 
         for (String problemId : providers.keySet())
         {

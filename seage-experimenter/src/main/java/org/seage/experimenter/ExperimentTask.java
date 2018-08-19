@@ -126,7 +126,7 @@ public class ExperimentTask implements Runnable
 
     public String getReportName() throws Exception
     {
-        return _problemID + "-" + _instanceID + "-" + _algorithmID + "-" + _configID + "-" + _runID + ".xml";
+        return _configID + "-" + _runID + ".xml";
     }
 
     public String getConfigID()
@@ -145,19 +145,17 @@ public class ExperimentTask implements Runnable
         try
         {
             // provider and factory
-            IProblemProvider<?> provider = ProblemProvider.getProblemProviders().get(_problemID);
-            IAlgorithmFactory<?, ?> factory = provider.getAlgorithmFactory(_algorithmID);
+            IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get(_problemID);
+            IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(_algorithmID);
 
             // problem instance
             ProblemInstance instance = provider
                     .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_instanceID));
-            
-            @SuppressWarnings("unchecked")
-			IPhenotypeEvaluator<Phenotype<?>> evaluator = (IPhenotypeEvaluator<Phenotype<?>>) provider.initPhenotypeEvaluator(instance);
+
+            IPhenotypeEvaluator<Phenotype<?>> evaluator = provider.initPhenotypeEvaluator(instance);
             
             // algorithm
-            @SuppressWarnings("unchecked")
-			IAlgorithmAdapter<Phenotype<?>, ?> algorithm = (IAlgorithmAdapter<Phenotype<?>, ?>) factory.createAlgorithm(instance, evaluator);
+            IAlgorithmAdapter<Phenotype<?>, ?> algorithm = factory.createAlgorithm(instance, evaluator);
 
             Phenotype<?>[] solutions = provider.generateInitialSolutions(instance,
             		_algorithmParams.getValueInt("numSolutions"), _experimentID.hashCode());

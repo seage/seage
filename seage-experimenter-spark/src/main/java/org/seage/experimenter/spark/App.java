@@ -13,7 +13,7 @@ import org.apache.spark.api.java.JavaSparkContext;
  */
 public class App 
 {
-	public static void main( String[] args )
+    public static void main( String[] args )
     {    	
         System.out.println( "Hello World!2" );
         for(String p : args)

@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 public abstract class ProblemProvider<P extends Phenotype<?>> implements IProblemProvider<P>
 {
     private static Logger _logger = LoggerFactory.getLogger(ProblemProvider.class.getName());
-    private static HashMap<String, IProblemProvider<?>> _providers;
+    private static HashMap<String, IProblemProvider<Phenotype<?>>> _providers;
     private ProblemInfo _problemInfo;
     private HashMap<String, IAlgorithmFactory<P, ?>> _algFactories;
 
@@ -173,18 +173,18 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
     ///////////////////////////////////////////////////////////////////////////
 
-    public static synchronized HashMap<String, IProblemProvider<?>> getProblemProviders() throws Exception
+    public static synchronized HashMap<String, IProblemProvider<Phenotype<?>>> getProblemProviders() throws Exception
     {
         if (_providers != null)
             return _providers;
 
-        _providers = new HashMap<String, IProblemProvider<?>>();
+        _providers = new HashMap<String, IProblemProvider<Phenotype<?>>>();
 
         for (ClassInfo ci : ClassUtil.searchForClasses(IProblemProvider.class, "org.seage.problem"))
         {
             try
             {
-                IProblemProvider<?> pp = (IProblemProvider<?>) Class.forName(ci.getClassName()).newInstance();
+                IProblemProvider<Phenotype<?>> pp = (IProblemProvider<Phenotype<?>>) Class.forName(ci.getClassName()).newInstance();
 
                 _providers.put(pp.getProblemInfo().getValueStr("id"), pp);
             }

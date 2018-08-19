@@ -31,6 +31,7 @@ import java.util.Map;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.Phenotype;
 import org.seage.data.DataNode;
 import org.seage.data.xml.XmlHelper;
 //import org.seage.experimenter.config.DefaultConfigurator;
@@ -43,7 +44,7 @@ import org.seage.data.xml.XmlHelper;
 public class __ProblemProviderTester
 {
 
-    private Map<String, IProblemProvider<?>> _providers;
+    private Map<String, IProblemProvider<Phenotype<?>>> _providers;
 
     public __ProblemProviderTester() throws Exception
     {

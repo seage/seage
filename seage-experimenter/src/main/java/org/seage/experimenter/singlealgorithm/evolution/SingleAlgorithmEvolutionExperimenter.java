@@ -18,7 +18,7 @@ import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 public class SingleAlgorithmEvolutionExperimenter extends Experimenter
         implements IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject>>
 {
-	private FeedbackConfigurator _feedbackConfigurator;
+    private FeedbackConfigurator _feedbackConfigurator;
     private int _numSubjects;
     private int _numIterations;
     private int _algorithmTimeoutS;
