@@ -30,6 +30,7 @@ package org.seage.problem.tsp.sannealing;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.sannealing.Solution;
@@ -70,13 +71,13 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory<TspPhenot
     }
 
     @Override
-    public IAlgorithmAdapter<TspPhenotype, TspSolution> createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<TspPhenotype, TspSolution> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception
     {
         final City[] cities = ((TspProblemInstance) instance).getCities();
 
         IAlgorithmAdapter<TspPhenotype, TspSolution> algorithm = new SimulatedAnnealingAdapter<>(
                 new TspObjectiveFunction(cities),
-                new TspMoveManager(), false, "")
+                new TspMoveManager(), phenotypeEvaluator, false)
         {
             @Override
             public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception

@@ -33,6 +33,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
@@ -67,20 +68,21 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> ex
     protected AntBrain _brain;
     protected Ant[] _ants;
 
-    private AlgorithmReporter _reporter;
+    private AlgorithmReporter<P> _reporter;
     private long _statNumIterationsDone;
     private long _statNumNewBestSolutions;
     private long _statLastImprovingIteration;
     private double _initialSolutionValue;
     private double _bestSolutionValue;
     public double _averageSolutionValue;
+    private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
-    public AntColonyAdapter(AntBrain brain, Graph graph)
+    public AntColonyAdapter(AntBrain brain, Graph graph, IPhenotypeEvaluator<P> phenotypeEvaluator)
     {
         _params = null;
         _brain = brain;
         _graph = graph;
-        //_algorithmListener = ;
+        _phenotypeEvaluator = phenotypeEvaluator;
         _antColony = new AntColony(graph, brain);
         _antColony.addAntColonyListener(new AntColonyListener());
     }
@@ -106,7 +108,7 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> ex
             throw new Exception("Parameters not set");
         setParameters(params);
 
-        _reporter = new AlgorithmReporter("AntColony");
+        _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
         _reporter.putParameters(_params);
 
         _statLastImprovingIteration = 0;
@@ -177,7 +179,7 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> ex
             {
                 _reporter.putNewSolution(System.currentTimeMillis(),
                         alg.getCurrentIteration(),
-                        alg.getGlobalBest(), null); // TODO: A - Solve this AntColony issue
+                        null); // TODO: A - Solve this AntColony issue
                         //solutionToPhenotype(createNodeListString(alg.getBestPath())));
             }
             catch (Exception ex)

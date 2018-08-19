@@ -30,6 +30,7 @@ package org.seage.problem.tsp.particles;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.particles.ParticleSwarmAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.particles.Particle;
@@ -56,7 +57,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory<TspPhenotype, 
     }
 
     @Override
-    public IAlgorithmAdapter<TspPhenotype, TspParticle> createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<TspPhenotype, TspParticle> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception
     {
     	final City[] cities = ((TspProblemInstance) instance).getCities();
 
@@ -64,8 +65,8 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory<TspPhenotype, 
 
         IAlgorithmAdapter<TspPhenotype, TspParticle> algorithm = new ParticleSwarmAdapter<>(
                 generateInitialSolutions(cities),
-                _objectiveFunction,
-                false, "")
+                _objectiveFunction, phenotypeEvaluator,
+                false)
         {
             @Override
             public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception

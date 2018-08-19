@@ -33,6 +33,7 @@ import java.util.Collections;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.antcolony.Ant;
@@ -56,12 +57,12 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
     }
 
     @Override
-    public IAlgorithmAdapter<TspPhenotype, Ant> createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<TspPhenotype, Ant> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception
     {
         City[] cities = ((TspProblemInstance) instance).getCities();
         TspGraph graph = new TspGraph(cities);
         AntBrain brain = new AntBrain(graph);
-        IAlgorithmAdapter<TspPhenotype, Ant> algorithm = new AntColonyAdapter<>(brain, graph)
+        IAlgorithmAdapter<TspPhenotype, Ant> algorithm = new AntColonyAdapter<>(brain, graph, phenotypeEvaluator)
         {
             @Override
             public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception

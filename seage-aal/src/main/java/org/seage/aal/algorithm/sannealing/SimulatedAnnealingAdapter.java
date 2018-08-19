@@ -32,6 +32,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
@@ -46,40 +47,36 @@ import org.seage.metaheuristic.sannealing.Solution;
  * 
  * @author Jan Zmatlik
  */
-@AlgorithmParameters({
-        @Parameter(name = "numIterations", min = 1, max = 999999999, init = 100),
+@AlgorithmParameters({ @Parameter(name = "numIterations", min = 1, max = 999999999, init = 100),
         @Parameter(name = "maxTemperature", min = 1000, max = 999999999, init = 100),
         @Parameter(name = "minTemperature", min = 0, max = 99999, init = 1),
         @Parameter(name = "numSolutions", min = 1, max = 1, init = 1) })
-public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extends Solution> extends AlgorithmAdapterImpl<P, S>
-{
+public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extends Solution> extends AlgorithmAdapterImpl<P, S> {
     protected SimulatedAnnealing _simulatedAnnealing;
     protected Solution[] _solutions;
     private AlgorithmParams _params;
     // private Solution _bestSolution;
-    private AlgorithmReporter _reporter;
-    private String _searchID;
+    private AlgorithmReporter<P> _reporter;
     private long _numberOfIterationsDone = 0;
     private long _numberOfNewSolutions = 0;
     private long _lastImprovingIteration = 0;
     private double _initObjectiveValue = Double.MAX_VALUE;
+    private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
-    public SimulatedAnnealingAdapter(IObjectiveFunction objectiveFunction, IMoveManager moveManager, boolean maximizing,
-            String searchID) throws Exception
-    {
+    public SimulatedAnnealingAdapter(IObjectiveFunction objectiveFunction, IMoveManager moveManager,
+            IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing) throws Exception {
         _simulatedAnnealing = new SimulatedAnnealing(objectiveFunction, moveManager);
         _simulatedAnnealing.addSimulatedAnnealingListener(new SimulatedAnnealingListener());
-        _reporter = new AlgorithmReporter(searchID);
+        _phenotypeEvaluator = phenotypeEvaluator;
     }
 
     @Override
-    public void startSearching(AlgorithmParams params) throws Exception
-    {
+    public void startSearching(AlgorithmParams params) throws Exception {
         if (params == null)
             throw new Exception("Parameters not set");
         setParameters(params);
 
-        _reporter = new AlgorithmReporter(_searchID);
+        _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
         _reporter.putParameters(_params);
 
         _numberOfIterationsDone = _numberOfNewSolutions = _lastImprovingIteration = 0;
@@ -89,8 +86,7 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
     }
 
     @Override
-    public void stopSearching() throws Exception
-    {
+    public void stopSearching() throws Exception {
         _simulatedAnnealing.stopSearching();
 
         while (isRunning())
@@ -98,14 +94,12 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
     }
 
     @Override
-    public boolean isRunning()
-    {
+    public boolean isRunning() {
         return _simulatedAnnealing.isRunning();
     }
 
     @Override
-    public AlgorithmReport getReport() throws Exception
-    {
+    public AlgorithmReport getReport() throws Exception {
         _reporter.putStatistics(_numberOfIterationsDone, _numberOfNewSolutions, _lastImprovingIteration,
                 _initObjectiveValue, _simulatedAnnealing.getBestSolution().getObjectiveValue(),
                 _simulatedAnnealing.getBestSolution().getObjectiveValue());
@@ -113,63 +107,53 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
         return _reporter.getReport();
     }
 
-    public void setParameters(AlgorithmParams params) throws Exception
-    {
+    public void setParameters(AlgorithmParams params) throws Exception {
         _params = params;
 
         _simulatedAnnealing.setMaximalTemperature(_params.getValueInt("maxTemperature"));
         _simulatedAnnealing.setMinimalTemperature(_params.getValueDouble("minTemperature"));
-        //_simulatedAnnealing.setAnnealingCoefficient(_params.getValueDouble("annealCoeficient"));
+        // _simulatedAnnealing.setAnnealingCoefficient(_params.getValueDouble("annealCoeficient"));
         _simulatedAnnealing.setMaximalIterationCount(_params.getValueInt("numIterations"));
-        //_simulatedAnnealing.setMaximalAcceptedSolutionsPerOneStepCount(_params.getValueInt("maxOneStepAcceptedSolutions"));        
+        // _simulatedAnnealing.setMaximalAcceptedSolutionsPerOneStepCount(_params.getValueInt("maxOneStepAcceptedSolutions"));
     }
 
-    private class SimulatedAnnealingListener implements IAlgorithmListener<SimulatedAnnealingEvent>
-    {
+    private class SimulatedAnnealingListener implements IAlgorithmListener<SimulatedAnnealingEvent> {
         @Override
-        public void algorithmStarted(SimulatedAnnealingEvent e)
-        {
+        public void algorithmStarted(SimulatedAnnealingEvent e) {
             _algorithmStarted = true;
         }
 
         @Override
-        public void algorithmStopped(SimulatedAnnealingEvent e)
-        {
+        public void algorithmStopped(SimulatedAnnealingEvent e) {
             _numberOfIterationsDone = e.getSimulatedAnnealing().getCurrentIteration();
         }
 
         @Override
-        public void newBestSolutionFound(SimulatedAnnealingEvent e)
-        {
-            try
-            {
-            	// TODO: A - Remove casting
+        public void newBestSolutionFound(SimulatedAnnealingEvent e) {
+            try {
+                // TODO: A - Remove casting
                 S s = (S) e.getSimulatedAnnealing().getBestSolution();
 
                 _reporter.putNewSolution(System.currentTimeMillis(), e.getSimulatedAnnealing().getCurrentIteration(),
-                        s.getObjectiveValue(), solutionToPhenotype(s));
+                        solutionToPhenotype(s));
 
                 if (_numberOfNewSolutions == 0)
                     _initObjectiveValue = s.getObjectiveValue();
 
                 _numberOfNewSolutions++;
                 _lastImprovingIteration = e.getSimulatedAnnealing().getCurrentIteration();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
 
         @Override
-        public void iterationPerformed(SimulatedAnnealingEvent e)
-        {
+        public void iterationPerformed(SimulatedAnnealingEvent e) {
 
         }
 
         @Override
-        public void noChangeInValueIterationMade(SimulatedAnnealingEvent e)
-        {
+        public void noChangeInValueIterationMade(SimulatedAnnealingEvent e) {
 
         }
     }

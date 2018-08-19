@@ -32,6 +32,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
@@ -61,8 +62,7 @@ public abstract class ParticleSwarmAdapter<P extends Phenotype<?>, S extends Par
     protected Particle[] _initialParticles;
     private Particle _bestParticle;
     private AlgorithmParams _params;
-    private AlgorithmReporter _reporter;
-    private String _searchID;
+    private AlgorithmReporter<P> _reporter;
 
     private long _numberOfIterations = 0;
     private long _numberOfNewSolutions = 0;
@@ -70,16 +70,16 @@ public abstract class ParticleSwarmAdapter<P extends Phenotype<?>, S extends Par
     private double _initObjectiveValue = Double.MAX_VALUE;
     private double _evaluationsOfParticles = 0;
     private double _avgOfBestSolutions = 0;
+    private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
     public ParticleSwarmAdapter(Particle[] initialParticles,
             IObjectiveFunction objectiveFunction,
-            boolean maximizing,
-            String searchID) throws Exception
+            IPhenotypeEvaluator<P> phenotypeEvaluator,
+            boolean maximizing) throws Exception
     {
         _initialParticles = initialParticles;
+        _phenotypeEvaluator = phenotypeEvaluator;
         _particleSwarm = new ParticleSwarm(objectiveFunction);
-
-        _reporter = new AlgorithmReporter(searchID);
     }
 
     @Override
@@ -89,7 +89,7 @@ public abstract class ParticleSwarmAdapter<P extends Phenotype<?>, S extends Par
             throw new Exception("Parameters not set");
         setParameters(params);
 
-        _reporter = new AlgorithmReporter(_searchID);
+        _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
         _reporter.putParameters(_params);
         _particleSwarm.startSearching(_initialParticles);
     }
