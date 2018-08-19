@@ -1,4 +1,4 @@
-package org.seage.experimenter.singlealgorithm.random;
+package org.seage.experimenter.singlealgorithm;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,6 +14,7 @@ import org.seage.data.xml.XmlHelper;
 import org.seage.experimenter.ExperimentTask;
 import org.seage.experimenter.Experimenter;
 import org.seage.experimenter.config.Configurator;
+import org.seage.experimenter.config.RandomConfigurator;
 
 public class SingleAlgorithmRandomExperimenter extends Experimenter
 {

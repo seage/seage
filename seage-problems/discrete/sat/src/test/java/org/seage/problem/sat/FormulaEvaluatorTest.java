@@ -1,10 +1,10 @@
 package org.seage.problem.sat;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
-
-import junit.framework.Assert;
 
 public class FormulaEvaluatorTest
 {

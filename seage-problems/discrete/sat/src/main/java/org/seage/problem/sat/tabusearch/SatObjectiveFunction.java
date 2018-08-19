@@ -3,6 +3,7 @@ package org.seage.problem.sat.tabusearch;
 import org.seage.metaheuristic.tabusearch.Move;
 import org.seage.metaheuristic.tabusearch.ObjectiveFunction;
 import org.seage.metaheuristic.tabusearch.Solution;
+import org.seage.problem.sat.SatPhenotype;
 import org.seage.problem.sat.SatPhenotypeEvaluator;
 
 /**
@@ -36,7 +37,7 @@ public class SatObjectiveFunction implements ObjectiveFunction
                 literalValues[satMove.getIndexes()[1]] = satMove.getValues()[1] == 1 ? true : false;
             }
 
-            return _evaluator.evaluate(literalValues);
+            return _evaluator.evaluate(new SatPhenotype(literalValues));
         }
         catch (Exception ex)
         {

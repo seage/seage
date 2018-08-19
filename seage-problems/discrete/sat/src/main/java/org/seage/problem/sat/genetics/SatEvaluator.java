@@ -3,6 +3,7 @@ package org.seage.problem.sat.genetics;
 import org.seage.metaheuristic.genetics.Chromosome;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
+import org.seage.problem.sat.SatPhenotype;
 import org.seage.problem.sat.SatPhenotypeEvaluator;
 
 /**
@@ -26,7 +27,6 @@ public class SatEvaluator extends SubjectEvaluator<Subject<Boolean>>
         {
             array[i] = chrom.getGene(i);
         }
-        double[] val = _evaluator.evaluate(array);
-        return new double[] { val[0] };
+        return _evaluator.evaluate(new SatPhenotype(array));
     }
 }

@@ -1,6 +1,6 @@
-package org.seage.experimenter.singlealgorithm.feedback;
+package org.seage.experimenter.singlealgorithm;
 
-import org.seage.experimenter.singlealgorithm.random.SingleAlgorithmRandomExperimenter;
+import org.seage.experimenter.config.FeedbackConfigurator;
 
 public class SingleAlgorithmFeedbackExperimenter extends SingleAlgorithmRandomExperimenter
 {

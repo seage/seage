@@ -23,7 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.experimenter.singlealgorithm.random;
+package org.seage.experimenter.config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,6 @@ import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
 import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
-import org.seage.experimenter.config.Configurator;
 
 /**
  * 
