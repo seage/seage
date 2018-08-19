@@ -32,6 +32,8 @@ import java.util.Arrays;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.genetics.Subject;
@@ -55,11 +57,11 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory<TspPhenotyp
     }
 
     @Override
-    public IAlgorithmAdapter<TspPhenotype, Subject<Integer>> createAlgorithm(ProblemInstance instance) throws Exception
+	public IAlgorithmAdapter<TspPhenotype, Subject<Integer>> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception
     {
         City[] cities = ((TspProblemInstance) instance).getCities();
         IAlgorithmAdapter<TspPhenotype, Subject<Integer>> algorithm = new GeneticAlgorithmAdapter<>(new TspGeneticOperator(), new TspEvaluator(cities),
-                false, "")
+        		phenotypeEvaluator, false)
         {
             @Override
             public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception
@@ -89,5 +91,4 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory<TspPhenotyp
 
         return algorithm;
     }
-
 }

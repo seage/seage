@@ -31,6 +31,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
@@ -63,29 +64,27 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
     private GeneticAlgorithmListener _algorithmListener;
     protected S _bestEverSolution;
     protected AlgorithmParams _params;
-    private String _searchID;
-    // private String _paramID;
 
     private double _statInitObjVal;
     private double _statBestObjVal;
     private int _statNrOfIterationsDone;
     private int _statNumNewSol;
     private int _statLastImprovingIteration;
-    // private int _nrOfIterationsDone;
 
-    private AlgorithmReporter _reporter;
+    private AlgorithmReporter<P> _reporter;
+	private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
-    // private DataNode _minutes;
-
-    public GeneticAlgorithmAdapter(GeneticOperator<S> operator, SubjectEvaluator<S> evaluator, boolean maximizing,
-            String searchID)
+    public GeneticAlgorithmAdapter(GeneticOperator<S> operator, 
+    		SubjectEvaluator<S> evaluator,
+    		IPhenotypeEvaluator<P> phenotypeEvaluator,
+    		boolean maximizing)
     {
         _evaluator = evaluator;
+        _phenotypeEvaluator = phenotypeEvaluator;
         _algorithmListener = new GeneticAlgorithmListener();
         _comparator = new SubjectComparator<S>();
         _geneticSearch = new GeneticAlgorithm<S>(operator, evaluator);
         _geneticSearch.addGeneticSearchListener(_algorithmListener);
-        _searchID = searchID;
     }
 
     /**
@@ -101,7 +100,7 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
             throw new Exception("Parameters not set");
         setParameters(params);
 
-        _reporter = new AlgorithmReporter(_searchID);
+        _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
         _reporter.putParameters(_params);
 
         _geneticSearch.startSearching(_solutions);
@@ -187,8 +186,7 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
                     _statInitObjVal = subject.getObjectiveValue()[0];
 
                 _bestEverSolution = (S) gs.getBestSubject().clone();
-                _reporter.putNewSolution(System.currentTimeMillis(), gs.getCurrentIteration(),
-                        subject.getObjectiveValue()[0], solutionToPhenotype(subject));
+                _reporter.putNewSolution(System.currentTimeMillis(), gs.getCurrentIteration(), solutionToPhenotype(subject));
                 _statNumNewSol++;
                 _statLastImprovingIteration = gs.getCurrentIteration();
 

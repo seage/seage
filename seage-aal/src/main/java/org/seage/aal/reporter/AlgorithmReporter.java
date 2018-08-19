@@ -26,6 +26,7 @@
 package org.seage.aal.reporter;
 
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.data.DataNode;
 
@@ -34,12 +35,14 @@ import org.seage.data.DataNode;
  *
  * @author Richard Malek
  */
-public class AlgorithmReporter
+public class AlgorithmReporter<P extends Phenotype<?>>
 {
     private AlgorithmReport _report;
+	private IPhenotypeEvaluator<P> _evaluator;
 
-    public AlgorithmReporter(String searchID) throws Exception
+    public AlgorithmReporter(IPhenotypeEvaluator<P> evaluator) throws Exception
     {
+    	_evaluator = evaluator;
         _report = new AlgorithmReport("AlgorithmReport");
         _report.putDataNode(new DataNode("Log"));
         _report.putDataNode(new DataNode("Statistics"));
@@ -52,12 +55,12 @@ public class AlgorithmReporter
         _report.putDataNode(params);
     }
 
-    public void putNewSolution(long time, long iterNumber, double objVal, Phenotype<?> solution) throws Exception
+    public void putNewSolution(long time, long iterNumber, P solution) throws Exception
     {
         DataNode newSol = new DataNode("NewSolution");
         newSol.putValue("time", time);
         newSol.putValue("iterNumber", iterNumber);
-        newSol.putValue("objVal", objVal);
+        newSol.putValue("objVal", _evaluator.evaluate(solution)[0]);
         newSol.putValue("solution", solution.toText());
 
         _report.getDataNode("Log").putDataNode(newSol);

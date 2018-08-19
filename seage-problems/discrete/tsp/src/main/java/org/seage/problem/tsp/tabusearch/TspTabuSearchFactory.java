@@ -28,6 +28,7 @@ package org.seage.problem.tsp.tabusearch;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.data.DataNode;
@@ -51,11 +52,11 @@ public class TspTabuSearchFactory implements IAlgorithmFactory<TspPhenotype, Tsp
     }
 
     @Override
-    public IAlgorithmAdapter<TspPhenotype, TspSolution> createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<TspPhenotype, TspSolution> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception
     {
         final City[] cities = ((TspProblemInstance) instance).getCities();
 
-        IAlgorithmAdapter<TspPhenotype, TspSolution> algorithm = new TabuSearchAdapter<>(new TspMoveManager(), new TspObjectiveFunction(cities), "")
+        IAlgorithmAdapter<TspPhenotype, TspSolution> algorithm = new TabuSearchAdapter<>(new TspMoveManager(), new TspObjectiveFunction(cities), phenotypeEvaluator)
         {
 
             @Override

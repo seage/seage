@@ -157,7 +157,7 @@ public class ExperimentTask implements Runnable
             
             // algorithm
             @SuppressWarnings("unchecked")
-			IAlgorithmAdapter<Phenotype<?>, ?> algorithm = (IAlgorithmAdapter<Phenotype<?>, ?>) factory.createAlgorithm(instance);
+			IAlgorithmAdapter<Phenotype<?>, ?> algorithm = (IAlgorithmAdapter<Phenotype<?>, ?>) factory.createAlgorithm(instance, evaluator);
 
             Phenotype<?>[] solutions = provider.generateInitialSolutions(instance,
             		_algorithmParams.getValueInt("numSolutions"), _experimentID.hashCode());

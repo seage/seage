@@ -40,5 +40,5 @@ public interface IAlgorithmFactory<P extends Phenotype<?>, S>
      * @return IAlgorithmAdapter
      * @throws Exception
      */
-    IAlgorithmAdapter<P, S> createAlgorithm(ProblemInstance instance) throws Exception;
+    IAlgorithmAdapter<P, S> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<P> phenotypeEvaluator) throws Exception;
 }

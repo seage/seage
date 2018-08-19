@@ -29,6 +29,7 @@ import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
@@ -65,19 +66,18 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
     private int _statNumIter;
     private int _statNumNewSol;
     private int _statLastIterNewSol;
-    private String _searchID;
-    private AlgorithmReporter _reporter;
+    private AlgorithmReporter<P> _reporter;
+	private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
-    public TabuSearchAdapter(MoveManager moveManager, ObjectiveFunction objectiveFunction, String searchID)
+    public TabuSearchAdapter(MoveManager moveManager, ObjectiveFunction objectiveFunction, IPhenotypeEvaluator<P> phenotypeEvaluator)
     {
         _observer = new TabuSearchObserver();
         _tabuSearch = new TabuSearch(moveManager, objectiveFunction, false);
         _tabuSearch.addTabuSearchListener(_observer);
-
         _tabuSearch.setAspirationCriteria(new BestEverAspirationCriteria());
+        _phenotypeEvaluator = phenotypeEvaluator;
         _iterationToGo = 0;
         _tabuListLength = 0;
-        _searchID = searchID;
     }
 
     @Override
@@ -87,7 +87,7 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
             throw new Exception("Parameters not set");
         setParameters(params);
 
-        _reporter = new AlgorithmReporter(_searchID);
+        _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
         _reporter.putParameters(_params);
 
         if (_solutions.length > 1)
@@ -183,7 +183,7 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
                     _statInitObjVal = _statEndObjVal;
 
                 _reporter.putNewSolution(System.currentTimeMillis(), e.getTabuSearch().getIterationsCompleted(),
-                        newBest.getObjectiveValue()[0], solutionToPhenotype(newBest));
+                        solutionToPhenotype(newBest));
             }
             catch (Exception ex)
             {
