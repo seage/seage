@@ -97,7 +97,7 @@
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+<!-- 	<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>seage-problem-qap</artifactId>
 			<version>${project.version}</version>
@@ -138,7 +138,7 @@
 			<version>${project.version}</version>
 			<type>test-jar</type>
 			<scope>test</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>seage-knowledgebase</artifactId>

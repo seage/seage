@@ -23,10 +23,10 @@
 		<module>seage-experimenter-spark</module>
 		<module>seage-knowledgebase</module>
 		<module>seage-problems/discrete/tsp</module>
-		<module>seage-problems/discrete/qap</module>
+<!-- 	<module>seage-problems/discrete/qap</module>
 		<module>seage-problems/discrete/sat</module>
-		<module>seage-problems/discrete/jssp</module>
-		<module>seage-launcher</module>
+		<module>seage-problems/discrete/jssp</module> -->
+		<module>seage-launcher</module>  
   </modules>
   
   <dependencies>
