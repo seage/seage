@@ -60,12 +60,12 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter {
             String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", _experimentID, _problemID, 
                     instanceID, algorithmID);
             
-            _experimentTasksRunner.performExperimentTasks(taskQueue);
-            try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)))) {                
-                for(ExperimentTask et : taskQueue) {
-                    XmlHelper.writeXml(et.getExperimentTaskReport(), zos, et.getReportName());
-                }
-            }
+            _experimentTasksRunner.performExperimentTasks(taskQueue, reportPath);
+//            try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)))) {                
+//                for(ExperimentTask et : taskQueue) {
+//                    XmlHelper.writeXml(et.getExperimentTaskReport(), zos, et.getReportName());
+//                }
+//            }
             /*
              * try(ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new
              * File(reportPath)))) { Optional<Integer> n = taskQueue.parallelStream().map(t
