@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org</groupId>
+    <artifactId>seage</artifactId>
+    <version>0.9.0-SNAPSHOT</version>
+  </parent>
+  <groupId>org.seage</groupId>
+  <artifactId>seage-problems</artifactId>
+  <name>seage-problems</name>
+  <packaging>jar</packaging>
+  <dependencies>
+    <dependency>
+	    <groupId>${project.groupId}</groupId>
+	    <artifactId>seage-aal</artifactId>
+	    <version>${project.version}</version>
+	    <type>jar</type>
+	    <scope>compile</scope>          
+	</dependency>
+<!--<dependency>
+  		<groupId>org.seage</groupId>
+  		<artifactId>seage-problem-jssp</artifactId>
+  		<version>0.8.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.seage</groupId>
+  		<artifactId>seage-problem-qap</artifactId>
+  		<version>0.8.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.seage</groupId>
+  		<artifactId>seage-problem-sat</artifactId>
+  		<version>0.8.0</version>
+  	</dependency> -->
+  	<dependency>
+         <groupId>${project.groupId}</groupId>
+         <artifactId>seage-problem-tsp</artifactId>
+         <version>${project.version}</version>
+         <type>jar</type>
+         <scope>compile</scope>
+     </dependency>
+  </dependencies>
+</project>

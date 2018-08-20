@@ -25,8 +25,14 @@
  */
 package org.seage.classutil;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.reflect.ClassPath;
 
 /**
  *
@@ -34,16 +40,15 @@ import java.util.List;
  */
 public class ClassUtil
 {
-    private static List<String> paths = new ClassPathAnalyzer("seage.problem").analyzeClassPath();
-
     public static ClassInfo[] searchForClasses(Class<?> classObj, String pkgName) throws Exception
-    {
+    {        
+        ClassPath classPath = ClassPath.from(Thread.currentThread().getContextClassLoader());
+        ImmutableSet<ClassPath.ClassInfo> classes = classPath.getTopLevelClassesRecursive(pkgName);
+        
         List<ClassInfo> result = new ArrayList<ClassInfo>();
-        for (String p : paths)
+        for (ClassPath.ClassInfo ci : classes)
         {
-
-            if (!p.contains(".class"))
-                continue;
+            String p = ci.getName();//u.getPath();
 
             String className = p.replace(".class", "").replace('/', '.').replace('\\', '.');
             if (!className.startsWith(pkgName))
@@ -51,7 +56,6 @@ public class ClassUtil
 
             Class<?> c = Class.forName(className);
             if (searchForParent(classObj, c))
-                //result.add(createClassInfo(jarFile, f.getCanonicalPath(), c));
                 result.add(new ClassInfo(c.getCanonicalName(), null));
         }
         return result.toArray(new ClassInfo[0]);
@@ -59,10 +63,14 @@ public class ClassUtil
 
     public static String[] searchForInstancesInJar(final String instanceDir, String pkgName) throws Exception
     {
+        ClassPath classPath = ClassPath.from(Thread.currentThread().getContextClassLoader());
+        ImmutableSet<ClassPath.ResourceInfo> resources = classPath.getResources();
+        
         List<String> result = new ArrayList<String>();
         pkgName = pkgName.replace('.', '/');
-        for (String resName : paths)
+        for (ClassPath.ResourceInfo ri : resources)
         {
+            String resName = ri.getResourceName();
             resName = resName.replace(System.getProperty("file.separator"), "/");
 
             if (resName.contains(".class"))

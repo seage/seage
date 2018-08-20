@@ -37,6 +37,7 @@ import org.seage.data.DataNode;
 import org.seage.experimenter.runner.IExperimentTasksRunner;
 import org.seage.experimenter.runner.LocalExperimentTasksRunner;
 import org.seage.experimenter.runner.SparkExperimentTasksRunner;
+import org.seage.problem.ProblemProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,7 +62,7 @@ public abstract class Experimenter
 
         new File("output/experiment-logs").mkdirs();
         _logger.info("Experimenter created, getting problem info");
-        _problemInfo = ProblemProvider.getProblemProviders().get(_problemID).getProblemInfo();
+        _problemInfo = ProblemProviderFactory.getProblemProviders().get(_problemID).getProblemInfo();
         //_experimentTasksRunner = new LocalExperimentTasksRunner();
         _experimentTasksRunner = new SparkExperimentTasksRunner();
     }

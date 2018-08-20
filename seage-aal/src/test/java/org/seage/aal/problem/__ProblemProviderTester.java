@@ -48,7 +48,7 @@ public class __ProblemProviderTester
 
     public __ProblemProviderTester() throws Exception
     {
-        _providers = ProblemProvider.getProblemProviders();
+        _providers = null;//ProblemProvider.getProblemProviders();
     }
 
     public void test() throws Exception
@@ -147,7 +147,7 @@ public class __ProblemProviderTester
         String algorithmID = config.getDataNode("Algorithm").getValueStr("id");
         String instanceID = config.getDataNode("Problem").getDataNode("Instance").getValueStr("id");
         // provider and factory
-        IProblemProvider provider = ProblemProvider.getProblemProviders().get(problemID);
+        IProblemProvider provider = null;//ProblemProvider.getProblemProviders().get(problemID);
         IAlgorithmFactory factory = provider.getAlgorithmFactory(algorithmID);
 
         // problem instance

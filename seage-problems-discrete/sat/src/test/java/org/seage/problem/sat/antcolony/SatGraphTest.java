@@ -8,13 +8,14 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
+import org.seage.problem.sat.SatProblemProvider;
 
 public class SatGraphTest
 {
     @Test
     public void testSatGraph() throws Exception
     {
-        IProblemProvider provider = ProblemProvider.getProblemProviders().get("SAT");
+        SatProblemProvider provider = new SatProblemProvider();        
         ProblemInstanceInfo pii = provider.getProblemInfo().getProblemInstanceInfo("uf20-01");
         Formula formula = (Formula) provider.initProblemInstance(pii);
 

@@ -173,7 +173,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
     ///////////////////////////////////////////////////////////////////////////
 
-    public static synchronized HashMap<String, IProblemProvider<Phenotype<?>>> getProblemProviders() throws Exception
+    /*public static synchronized HashMap<String, IProblemProvider<Phenotype<?>>> getProblemProviders0() throws Exception
     {
         if (_providers != null)
             return _providers;
@@ -197,5 +197,20 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
         _logger.info(String.format("Providers count: %d", _providers.keySet().size()));
         return _providers;
     }
+    
+    public static synchronized HashMap<String, IProblemProvider<Phenotype<?>>> getProblemProviders() throws Exception
+    {
+        if (_providers != null)
+            return _providers;
+
+        _providers = new HashMap<String, IProblemProvider<Phenotype<?>>>();
+        IProblemProvider<Phenotype<?>> pp = (IProblemProvider<Phenotype<?>>) Class.forName(ci.getClassName()).newInstance();
+
+        _providers.put(pp.getProblemInfo().getValueStr("id"), pp);
+        
+        
+        _logger.info(String.format("Providers count: %d", _providers.keySet().size()));
+        return _providers;
+    }*/
 
 }

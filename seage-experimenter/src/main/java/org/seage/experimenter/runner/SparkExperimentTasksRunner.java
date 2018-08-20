@@ -19,7 +19,7 @@ public class SparkExperimentTasksRunner implements IExperimentTasksRunner {
   
         try(JavaSparkContext sc = new JavaSparkContext(conf)) {
         
-                JavaRDD<ExperimentTask> distTasks = sc.parallelize(tasks);
+                JavaRDD<ExperimentTask> distTasks = sc.parallelize(tasks, 32);
                 
                 List<DataNode> dn = distTasks.map(t -> {
                     t.run();

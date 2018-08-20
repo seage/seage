@@ -60,7 +60,7 @@ public class Launcher {
 
     private void run(Command cmd) throws Exception {
         _logger.info("SEAGE running ...");        
-        // LogHelper.configure(Launcher.class.getClassLoader().getResourceAsStream("logback.xml"));
+        LogHelper.configure(Launcher.class.getClassLoader().getResourceAsStream("logback.xml"));
         cmd.performCommad();
         _logger.info("SEAGE finished ...");
     }

@@ -18,7 +18,7 @@ public class TspPhenotypeTest {
 
     @BeforeEach
     public void initEvaluator() throws Exception {
-        _provider = ProblemProvider.getProblemProviders().get("TSP");
+        _provider = new TspProblemProvider();
     }
 
     @Test

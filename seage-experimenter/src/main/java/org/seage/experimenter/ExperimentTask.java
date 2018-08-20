@@ -13,6 +13,7 @@ import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
+import org.seage.problem.ProblemProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -149,7 +150,7 @@ public class ExperimentTask implements Runnable, Serializable
         try
         {
             // provider and factory
-            IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get(_problemID);
+            IProblemProvider<Phenotype<?>> provider = ProblemProviderFactory.getProblemProviders().get(_problemID);
             ProblemInfo pi = provider.getProblemInfo();
             IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(_algorithmID);
 

@@ -6,6 +6,7 @@ import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
+import org.seage.problem.ProblemProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,7 @@ public class ListCommand extends Command
         _logger.info("--------------------------------------------");
 
         DataNode problems = new DataNode("Problems");
-        Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
+        Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProviderFactory.getProblemProviders();
 
         for (String problemId : providers.keySet())
         {

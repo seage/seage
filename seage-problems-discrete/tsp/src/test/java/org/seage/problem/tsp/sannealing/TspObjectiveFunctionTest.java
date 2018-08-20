@@ -9,6 +9,7 @@ import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspProblemInstance;
+import org.seage.problem.tsp.TspProblemProvider;
 import org.seage.problem.tsp.tour.TspOptimalTour;
 import org.seage.problem.tsp.tour.TspOptimalTourBerlin52;
 
@@ -24,8 +25,7 @@ public class TspObjectiveFunctionTest
 
         _optimalTour = new TspOptimalTourBerlin52();
         //_optimalTour =  new TspOptimalTourPcb442();
-
-        IProblemProvider<?> provider = ProblemProvider.getProblemProviders().get("TSP");
+        TspProblemProvider provider = new TspProblemProvider();        
         assertNotNull(provider);
         TspProblemInstance instance = (TspProblemInstance) provider
                 .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_optimalTour.Name));
