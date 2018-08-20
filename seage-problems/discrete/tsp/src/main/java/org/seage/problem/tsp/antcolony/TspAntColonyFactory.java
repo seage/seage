@@ -62,7 +62,7 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
         City[] cities = ((TspProblemInstance) instance).getCities();
         TspGraph graph = new TspGraph(cities);
         AntBrain brain = new AntBrain(graph);
-        IAlgorithmAdapter<TspPhenotype, Ant> algorithm = new AntColonyAdapter<>(brain, graph, phenotypeEvaluator)
+        IAlgorithmAdapter<TspPhenotype, Ant> algorithm = new AntColonyAdapter<TspPhenotype, Ant>(brain, graph, phenotypeEvaluator)
         {
             @Override
             public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception

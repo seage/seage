@@ -60,7 +60,7 @@ public abstract class Experimenter
         _algorithmIDs = algorithmIDs;
 
         new File("output/experiment-logs").mkdirs();
-        
+        _logger.info("Experimenter created, getting problem info");
         _problemInfo = ProblemProvider.getProblemProviders().get(_problemID).getProblemInfo();
         //_experimentTasksRunner = new LocalExperimentTasksRunner();
         _experimentTasksRunner = new SparkExperimentTasksRunner();

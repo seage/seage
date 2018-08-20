@@ -72,7 +72,7 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subjec
             }
         };
 
-        _algAdapter = new GeneticAlgorithmAdapter<>(
+        _algAdapter = new GeneticAlgorithmAdapter<TestPhenotype, Subject<Integer>>(
                 new BasicGeneticOperator<Subject<Integer>, Integer>(), se, null, false)
         {
             private List<Subject<Integer>> _solutions0;

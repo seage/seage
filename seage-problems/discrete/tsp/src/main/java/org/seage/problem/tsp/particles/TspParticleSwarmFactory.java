@@ -63,7 +63,7 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory<TspPhenotype, 
 
         _objectiveFunction = new TspObjectiveFunction(cities);
 
-        IAlgorithmAdapter<TspPhenotype, TspParticle> algorithm = new ParticleSwarmAdapter<>(
+        IAlgorithmAdapter<TspPhenotype, TspParticle> algorithm = new ParticleSwarmAdapter<TspPhenotype, TspParticle>(
                 generateInitialSolutions(cities),
                 _objectiveFunction, phenotypeEvaluator,
                 false)

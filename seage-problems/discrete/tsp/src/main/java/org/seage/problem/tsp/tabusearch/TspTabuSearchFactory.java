@@ -56,7 +56,7 @@ public class TspTabuSearchFactory implements IAlgorithmFactory<TspPhenotype, Tsp
     {
         final City[] cities = ((TspProblemInstance) instance).getCities();
 
-        IAlgorithmAdapter<TspPhenotype, TspSolution> algorithm = new TabuSearchAdapter<>(new TspMoveManager(), new TspObjectiveFunction(cities), phenotypeEvaluator)
+        IAlgorithmAdapter<TspPhenotype, TspSolution> algorithm = new TabuSearchAdapter<TspPhenotype, TspSolution>(new TspMoveManager(), new TspObjectiveFunction(cities), phenotypeEvaluator)
         {
 
             @Override

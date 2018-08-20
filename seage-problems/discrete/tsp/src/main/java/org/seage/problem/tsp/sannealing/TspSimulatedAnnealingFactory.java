@@ -75,7 +75,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory<TspPhenot
     {
         final City[] cities = ((TspProblemInstance) instance).getCities();
 
-        IAlgorithmAdapter<TspPhenotype, TspSolution> algorithm = new SimulatedAnnealingAdapter<>(
+        IAlgorithmAdapter<TspPhenotype, TspSolution> algorithm = new SimulatedAnnealingAdapter<TspPhenotype, TspSolution>(
                 new TspObjectiveFunction(cities),
                 new TspMoveManager(), phenotypeEvaluator, false)
         {

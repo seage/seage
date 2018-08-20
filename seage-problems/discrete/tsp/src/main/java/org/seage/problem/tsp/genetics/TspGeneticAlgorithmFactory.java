@@ -60,7 +60,7 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory<TspPhenotyp
     public IAlgorithmAdapter<TspPhenotype, Subject<Integer>> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception
     {
         City[] cities = ((TspProblemInstance) instance).getCities();
-        IAlgorithmAdapter<TspPhenotype, Subject<Integer>> algorithm = new GeneticAlgorithmAdapter<>(new TspGeneticOperator(), new TspEvaluator(cities),
+        IAlgorithmAdapter<TspPhenotype, Subject<Integer>> algorithm = new GeneticAlgorithmAdapter<TspPhenotype, Subject<Integer>>(new TspGeneticOperator(), new TspEvaluator(cities),
         		phenotypeEvaluator, false)
         {
             @Override

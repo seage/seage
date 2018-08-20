@@ -52,7 +52,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
     @BeforeEach
     public void initAlgorithm() throws Exception
     {
-        _algAdapter = new TabuSearchAdapter<>(new TestMoveManager(), new TestObjectiveFunction(), null)
+        _algAdapter = new TabuSearchAdapter<TestPhenotype, TestSolution>(new TestMoveManager(), new TestObjectiveFunction(), null)
         {
             private TestSolution[] _solutions0;
 

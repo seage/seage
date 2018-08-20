@@ -179,11 +179,12 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
             return _providers;
 
         _providers = new HashMap<String, IProblemProvider<Phenotype<?>>>();
-
+        _logger.info("Searching for Providers");
         for (ClassInfo ci : ClassUtil.searchForClasses(IProblemProvider.class, "org.seage.problem"))
         {
             try
             {
+                _logger.info(ci.getClassName());
                 IProblemProvider<Phenotype<?>> pp = (IProblemProvider<Phenotype<?>>) Class.forName(ci.getClassName()).newInstance();
 
                 _providers.put(pp.getProblemInfo().getValueStr("id"), pp);
@@ -193,7 +194,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
                 _logger.error(ci.getClassName(), ex);
             }
         }
-
+        _logger.info(String.format("Providers count: %d", _providers.keySet().size()));
         return _providers;
     }
 
