@@ -89,18 +89,6 @@ public class ExperimentTask implements Runnable, Serializable
         _experimentTaskReport.putValue("experimentID", experimentID);
         _experimentTaskReport.putValue("timeoutS", timeoutS);
 
-        try
-        {
-            _experimentTaskReport.putValue("machineName", java.net.InetAddress.getLocalHost().getHostName());
-        }
-        catch (UnknownHostException e)
-        {
-            _logger.warn( e.getMessage());
-        }
-        _experimentTaskReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
-        _experimentTaskReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());
-        _experimentTaskReport.putValue("availRAM", Runtime.getRuntime().maxMemory());
-
         DataNode configNode = new DataNode("Config");
         configNode.putValue("configID", _configID);
         configNode.putValue("runID", _runID);
@@ -146,8 +134,21 @@ public class ExperimentTask implements Runnable, Serializable
     @Override
     public void run()
     {
+        _logger.info("ExperimentTask started ({})", _configID);
         try
         {
+            try
+            {
+                _experimentTaskReport.putValue("machineName", java.net.InetAddress.getLocalHost().getHostName());
+            }
+            catch (UnknownHostException e)
+            {
+                _logger.warn( e.getMessage());
+            }
+            _experimentTaskReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
+            _experimentTaskReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());
+            _experimentTaskReport.putValue("availRAM", Runtime.getRuntime().maxMemory());
+            
             // provider and factory
             IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get(_problemID);
             ProblemInfo pi = provider.getProblemInfo();
@@ -169,8 +170,10 @@ public class ExperimentTask implements Runnable, Serializable
             long startTime = System.currentTimeMillis();
             algorithm.solutionsFromPhenotype(solutions);
             algorithm.startSearching(_algorithmParams, true);
+            _logger.info("Algorithm started");
             waitForTimeout(algorithm);
             algorithm.stopSearching();
+            _logger.info("Algorithm started");
             long endTime = System.currentTimeMillis();
 
             solutions = algorithm.solutionsToPhenotype();
@@ -178,7 +181,7 @@ public class ExperimentTask implements Runnable, Serializable
 
             _experimentTaskReport.putDataNode(algorithm.getReport());
             _experimentTaskReport.putValue("durationS", (endTime - startTime) / 1000);
-
+            _logger.info("Algorithm run duration: {}", _experimentTaskReport.getValue("durationS"));
             //XmlHelper.writeXml(_experimentTaskReport, _reportOutputStream, getReportName());
 
         }
@@ -188,6 +191,7 @@ public class ExperimentTask implements Runnable, Serializable
             _logger.error( _algorithmParams.toString());
 
         }
+        _logger.info("ExperimentTask finished ({})", _configID);
     }
 
     private void waitForTimeout(IAlgorithmAdapter<?, ?> alg) throws Exception
