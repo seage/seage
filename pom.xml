@@ -19,7 +19,7 @@
 		<module>seage-aal</module>
 		<module>seage-misc</module>
 		<module>seage-metaheuristics</module>
-		<module>seage-experimenter</module>
+		<module>seage-hyperheuristics</module>
 		<module>seage-experimenter-spark</module>
 		<module>seage-knowledgebase</module>
 		<module>seage-problems/discrete/tsp</module>

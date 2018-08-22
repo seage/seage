@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.rickq.fileindex.db.ScanInfoMapper" >
+	<resultMap id="scanInfoResult" type="scanInfo">
+		<id property="id" column="id" />
+		<result property="hostname" column="host"/>
+		<result property="scanDate" column="scanDate"/>
+		<result property="rootPath" column="rootPath"/>
+	</resultMap>
+	
+	<select id="getScanInfo" resultType="scanInfo" parameterType="int" resultMap="scanInfoResult">
+	    SELECT id, hostname, scanDate, rootPath from scanInfos WHERE id = #{id}
+	</select>
+	
+	<insert id="insertScanInfo" parameterType="scanInfo"  keyProperty="scanId" useGeneratedKeys="true">
+		INSERT into scanInfos(hostname, scanDate, rootPath) VALUES(#{hostname}, #{scanDate}, #{rootPath}) 	    
+	</insert>
+	<!-- 
+	<update id="updateFileInfo" parameterType="fileInfo">
+		UPDATE fileInfos SET name=#{name}, district =#{district} WHERE id =#{id}  	    
+	</update>
+	
+	<delete id="deleteFileInfo" parameterType="int">
+		DELETE FROM fileInfos WHERE id =#{id}  	    
+	</delete>
+     -->
+</mapper>
