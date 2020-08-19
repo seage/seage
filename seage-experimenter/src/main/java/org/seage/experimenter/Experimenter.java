@@ -62,8 +62,8 @@ public abstract class Experimenter
         new File("output/experiment-logs").mkdirs();
         _logger.info("Experimenter created, getting problem info");
         _problemInfo = ProblemProvider.getProblemProviders().get(_problemID).getProblemInfo();
-        //_experimentTasksRunner = new LocalExperimentTasksRunner();
-        _experimentTasksRunner = new SparkExperimentTasksRunner();
+        _experimentTasksRunner = new LocalExperimentTasksRunner();
+        //_experimentTasksRunner = new SparkExperimentTasksRunner();
     }
 
     public void runFromConfigFile(String configPath) throws Exception
