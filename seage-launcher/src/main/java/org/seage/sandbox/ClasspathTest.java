@@ -35,7 +35,8 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.zip.ZipException;
 
-import org.seage.classutil.ClassPathAnalyzer;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.reflect.ClassPath;
 
 /**
  * 
@@ -47,7 +48,9 @@ public class ClasspathTest
     public static void main(String[] args) throws Exception
     {
         new ClasspathTest().foo();
-        List<String> classes = new ClassPathAnalyzer().analyzeClassPath();
+        ClassPath classPath = ClassPath.from(Thread.currentThread().getContextClassLoader());
+        ImmutableSet<ClassPath.ClassInfo> classes = classPath.getTopLevelClassesRecursive("org.seage.problem");
+        
 
         //for (String c : classes) {
         // System.out.println(c);
