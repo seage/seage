@@ -30,16 +30,16 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 public class SatSolution extends Solution
 {
-    private boolean[] _literalValues;
+    private Boolean[] _literalValues;
     private int _hash;
    
-    public SatSolution(boolean[] literalValues)
+    public SatSolution(Boolean[] literalValues)
     {
         _literalValues = literalValues.clone();
         // _hash = SatPhenotypeEvaluator.hashCode(_literalValues);
     }
 
-    public boolean[] getLiteralValues()
+    public Boolean[] getLiteralValues()
     {
         return _literalValues;
     }
@@ -49,7 +49,7 @@ public class SatSolution extends Solution
     {
         SatSolution copy = (SatSolution) super.clone();
 
-        copy._literalValues = new boolean[_literalValues.length];
+        copy._literalValues = new Boolean[_literalValues.length];
         for (int i = 0; i < _literalValues.length; i++)
         {
             copy._literalValues[i] = _literalValues[i];

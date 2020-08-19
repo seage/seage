@@ -26,16 +26,19 @@ package org.seage.problem.sat.sannealing;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.SatPhenotype;
+
 /**
  *
  * @author Richard Malek
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
-public class SatSimulatedAnnealingFactory implements IAlgorithmFactory
+public class SatSimulatedAnnealingFactory implements IAlgorithmFactory<SatPhenotype, SatSolution>
 {
 
     @Override
@@ -45,49 +48,41 @@ public class SatSimulatedAnnealingFactory implements IAlgorithmFactory
     }
 
     @Override
-    public IAlgorithmAdapter<SatSolution> createAlgorithm(ProblemInstance instance) throws Exception
+    public IAlgorithmAdapter<SatPhenotype, SatSolution> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<SatPhenotype> phenotypeEvaluator) throws Exception
     {
         Formula formula = (Formula) instance;
-        IAlgorithmAdapter<SatSolution> algorithm = new SimulatedAnnealingAdapter<>(new SatObjectiveFunction(formula), 
-                new SatMoveManager(), false, "")
+        IAlgorithmAdapter<SatPhenotype, SatSolution> algorithm = new SimulatedAnnealingAdapter<SatPhenotype, SatSolution>(new SatObjectiveFunction(formula), 
+                new SatMoveManager(), phenotypeEvaluator, false)
         {
 
             @Override
-            public void solutionsFromPhenotype(Object[][] source) throws Exception
+            public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception
             {
                 _solutions = new SatSolution[source.length];
                 for (int i = 0; i < source.length; i++)
                 {
-                    boolean[] sol = new boolean[source[i].length];
-                    for (int j = 0; j < sol.length; j++)
-                        sol[j] = (Boolean) source[i][j];
-
-                    _solutions[i] = new SatSolution(sol);
+                    _solutions[i] = new SatSolution(source[i].getSolution());
                 }
             }
 
             @Override
-            public Object[][] solutionsToPhenotype() throws Exception
+            public SatPhenotype[] solutionsToPhenotype() throws Exception
             {
-                Object[][] result = new Object[_solutions.length][];
+                SatPhenotype[] result = new SatPhenotype[_solutions.length];
 
                 for (int i = 0; i < _solutions.length; i++)
                 {
                     SatSolution s = (SatSolution) _solutions[i];
-                    result[i] = new Boolean[s.getLiteralValues().length];
-                    for (int j = 0; j < s.getLiteralValues().length; j++)
-                    {
-                        result[i][j] = s.getLiteralValues()[j];
-                    }
+                    result[i] = new SatPhenotype(s.getLiteralValues());
                 }
                 return result;
             }
 
-			@Override
-			public Object[] solutionToPhenotype(SatSolution solution) throws Exception {
-				// TODO Auto-generated method stub
-				return null;
-			}
+            @Override
+            public SatPhenotype solutionToPhenotype(SatSolution solution) throws Exception {
+                // TODO Auto-generated method stub
+                return null;
+            }
         };
         return algorithm;
     }

@@ -44,7 +44,7 @@ public class SatSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         try
         {
             // String path = "data/sat/uf20-01.cnf";
-            String path = "data/sat/uf100-01.cnf";
+            String path = "data/uf100/uf100-01.cnf";
             
             new SatSimulatedAnnealingTest().run(path);
         }
@@ -68,7 +68,7 @@ public class SatSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         
         sa.addSimulatedAnnealingListener( this );
         
-        SatSolution solution = new SatSolution(new boolean[formula.getLiteralCount()]);
+        SatSolution solution = new SatSolution(new Boolean[formula.getLiteralCount()]);
         sa.startSearching(solution);
         
     }
