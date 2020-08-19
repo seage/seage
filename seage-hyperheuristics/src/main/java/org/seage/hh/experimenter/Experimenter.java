@@ -37,7 +37,7 @@ import org.seage.data.DataNode;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.SparkExperimentTasksRunner;
-import org.seage.problem.ProblemProviderFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,9 +62,9 @@ public abstract class Experimenter
 
         new File("output/experiment-logs").mkdirs();
         _logger.info("Experimenter created, getting problem info");
-        _problemInfo = ProblemProviderFactory.getProblemProviders().get(_problemID).getProblemInfo();
-        //_experimentTasksRunner = new LocalExperimentTasksRunner();
-        _experimentTasksRunner = new SparkExperimentTasksRunner();
+        _problemInfo = ProblemProvider.getProblemProviders().get(_problemID).getProblemInfo();
+        _experimentTasksRunner = new LocalExperimentTasksRunner();
+        //_experimentTasksRunner = new SparkExperimentTasksRunner();
     }
 
     public void runFromConfigFile(String configPath) throws Exception
