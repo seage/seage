@@ -51,7 +51,8 @@ import org.seage.metaheuristic.sannealing.Solution;
         @Parameter(name = "maxTemperature", min = 1000, max = 999999999, init = 100),
         @Parameter(name = "minTemperature", min = 0, max = 99999, init = 1),
         @Parameter(name = "numSolutions", min = 1, max = 1, init = 1) })
-public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extends Solution> extends AlgorithmAdapterImpl<P, S> {
+public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extends Solution>
+        extends AlgorithmAdapterImpl<P, S> {
     protected SimulatedAnnealing _simulatedAnnealing;
     protected Solution[] _solutions;
     private AlgorithmParams _params;

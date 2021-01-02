@@ -2,6 +2,7 @@ package org.seage.aal.problem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -18,6 +19,7 @@ import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.data.DataNode;
 import org.seage.data.ObjectCloner;
 
@@ -64,6 +66,7 @@ public abstract class ProblemAlgorithmAdapterTestBase<P extends Phenotype<?>> {
         P[] solutions2 = aa.solutionsToPhenotype();
         assertNotNull(solutions2);
         assertEquals(solutions.length, solutions2.length);
+        
 
         for (int i = 0; i < solutions.length; i++) {
             assertNotNull(solutions[i]);
@@ -100,6 +103,9 @@ public abstract class ProblemAlgorithmAdapterTestBase<P extends Phenotype<?>> {
             // }
             // assertFalse(theSame);
         }
+        AlgorithmReport report = aa.getReport();
+        assertNotNull(report);
+        assertNotSame(report.getDataNode("Log").getDataNodes("NewSolution").size(), 0);
     }
 
     private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
