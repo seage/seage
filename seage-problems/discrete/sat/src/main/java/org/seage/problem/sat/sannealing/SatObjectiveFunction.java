@@ -47,6 +47,6 @@ public class SatObjectiveFunction implements IObjectiveFunction
         Boolean[] vals = new Boolean[sol.getLiteralValues().length];
         for(int i=0;i<vals.length;i++)
             vals[i] = sol.getLiteralValues()[i];
-        return _evaluator.evaluate(vals)[0];
+        return 0.0;//_evaluator.evaluate(vals)[0];
     }
 }

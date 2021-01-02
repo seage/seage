@@ -51,7 +51,7 @@ public class TspProblemProvider extends ProblemProvider<TspPhenotype>
         City[] cities;
 
         ProblemInstanceOrigin origin = instanceInfo.getOrigin();
-        String path = instanceInfo.getValueStr("path");
+        String path = instanceInfo.getValue("path").toString();
 
         InputStream stream0;
         if (origin == ProblemInstanceOrigin.RESOURCE)

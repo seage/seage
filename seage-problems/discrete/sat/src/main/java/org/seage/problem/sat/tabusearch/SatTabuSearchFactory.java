@@ -51,7 +51,7 @@ public class SatTabuSearchFactory implements IAlgorithmFactory<SatPhenotype, Sat
             IPhenotypeEvaluator<SatPhenotype> phenotypeEvaluator) throws Exception {
         Formula formula = (Formula) instance;
 
-        IAlgorithmAdapter<SatPhenotype, SatSolution> algorithm = new TabuSearchAdapter<>(new SatMoveManager(),
+        IAlgorithmAdapter<SatPhenotype, SatSolution> algorithm = new TabuSearchAdapter<SatPhenotype, SatSolution>(new SatMoveManager(),
                 new SatObjectiveFunction(new SatPhenotypeEvaluator(formula)), phenotypeEvaluator) {
 
             @Override
@@ -82,9 +82,12 @@ public class SatTabuSearchFactory implements IAlgorithmFactory<SatPhenotype, Sat
             }
 
             @Override
-            public SatPhenotype solutionToPhenotype(SatSolution solution) throws Exception {
-                // TODO Auto-generated method stub
-                return null;
+            public SatPhenotype solutionToPhenotype(SatSolution s) throws Exception { 
+                Boolean[] array = new Boolean[s.getLiteralValues().length];
+                for (int j = 0; j < s.getLiteralValues().length; j++) {
+                    array[j] = s.getLiteralValues()[j];
+                }
+                return new SatPhenotype(array);
             }
         };
 

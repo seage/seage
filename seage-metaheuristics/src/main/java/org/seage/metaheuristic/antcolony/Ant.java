@@ -34,7 +34,7 @@ import java.util.List;
  *
  * @author Martin Zaloga
  */
-public class Ant
+public class Ant<B extends AntBrain>
 {
 
     protected Graph _graph;
@@ -42,7 +42,7 @@ public class Ant
     protected List<Edge> _edgePath;
     protected List<Integer> _nodeIDsAlongPath;
 
-    protected AntBrain _brain;
+    protected B _brain;
 
     public Ant(List<Integer> nodeIDs)
     {
@@ -50,7 +50,7 @@ public class Ant
         _edgePath = new ArrayList<Edge>();
     }
 
-    void setParameters(Graph graph, AntBrain brain, double alpha, double beta, double quantumPheromone)
+    void setParameters(Graph graph, B brain, double alpha, double beta, double quantumPheromone)
     {
         _graph = graph;
         _brain = brain;
@@ -133,7 +133,7 @@ public class Ant
         }
     }
 
-    public AntBrain getBrain()
+    public B getBrain()
     {
         return _brain;
     }
