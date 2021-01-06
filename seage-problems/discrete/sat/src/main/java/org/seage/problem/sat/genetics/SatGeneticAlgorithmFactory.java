@@ -52,41 +52,37 @@ public class SatGeneticAlgorithmFactory implements IAlgorithmFactory<SatPhenotyp
     @Override
     public IAlgorithmAdapter<SatPhenotype, Subject<Boolean>> createAlgorithm(ProblemInstance instance,
             IPhenotypeEvaluator<SatPhenotype> phenotypeEvaluator) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
-    }
+        Formula formula = (Formula) instance;
+        IAlgorithmAdapter<SatPhenotype, Subject<Boolean>> algorithm = new GeneticAlgorithmAdapter<SatPhenotype, Subject<Boolean>>(new SatGeneticOperator(),
+                new SatEvaluator(new SatPhenotypeEvaluator(formula)), phenotypeEvaluator, false) {
+            @Override
+            public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
+                _solutions = new ArrayList<Subject<Boolean>>(source.length);
+                for (int i = 0; i < source.length; i++)
+                    _solutions.add(new Subject<Boolean>(source[i].getSolution()));
+            }
 
-//    @Override
-//    public IAlgorithmAdapter<SatPhenotype, Subject<Boolean>> createAlgorithm(ProblemInstance instance,
-//            IPhenotypeEvaluator<SatPhenotype> phenotypeEvaluator) throws Exception {
-//        Formula formula = (Formula) instance;
-//        IAlgorithmAdapter<SatPhenotype, Subject<Boolean>> algorithm = new GeneticAlgorithmAdapter<>(new SatGeneticOperator(),
-//                new SatEvaluator(new SatPhenotypeEvaluator(formula)), phenotypeEvaluator, false) {
-//            @Override
-//            public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
-//                _solutions = new ArrayList<Subject<Boolean>>(source.length);
-//                for (int i = 0; i < source.length; i++)
-//                    _solutions.add(new Subject<Boolean>(source[i].getSolution()));
-//            }
-//
-//            @Override
-//            public SatPhenotype[] solutionsToPhenotype() throws Exception {
-//                SatPhenotype[] result = new SatPhenotype[_solutions.size()];
-//
-//                for (int i = 0; i < _solutions.size(); i++) {                    
-//                    result[i] = new SatPhenotype(_solutions.get(i).getChromosome().getGenes());
-//                }
-//                return result;
-//            }
-//
-//            @Override
-//            public SatPhenotype solutionToPhenotype(Subject<Boolean> solution) throws Exception {
-//                // TODO Auto-generated method stub
-//                return null;
-//            }
-//        };
-//
-//        return algorithm;
-//    }
+            @Override
+            public SatPhenotype[] solutionsToPhenotype() throws Exception {
+                SatPhenotype[] result = new SatPhenotype[_solutions.size()];
+
+                for (int i = 0; i < _solutions.size(); i++) {                    
+                    result[i] = new SatPhenotype(_solutions.get(i).getChromosome().getGenes());
+                }
+                return result;
+            }
+
+            @Override
+            public SatPhenotype solutionToPhenotype(Subject<Boolean> s) throws Exception {
+                Boolean[] array = new Boolean[s.getChromosome().getLength()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = s.getChromosome().getGene(j);
+                }
+                return new SatPhenotype(array);
+            }
+        };
+
+        return algorithm;
+    }
 
 }

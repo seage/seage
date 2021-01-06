@@ -44,20 +44,19 @@ public class FormulaReader
 
         while ((dataLine = readLine(stok)) != null)
         {
-            if (dataLine.length < 3)
+            // System.out.println(dataLine[0]);
+            if(dataLine.length == 0 || dataLine[0] == 0) continue;
+            List<Literal> literals = new ArrayList<Literal>();
+            for (int i=0;i<dataLine.length;i++)
             {
-                continue;
-            }
-            Literal[] literals = new Literal[3];
-            for (int i = 0; i < 3; i++)
-            {
-                boolean neg = dataLine[i] < 0 ? true : false;
-                int ix = Math.abs(dataLine[i]) - 1;
+                int literalValue = dataLine[i];
+                if (literalValue == 0) break;
+                boolean neg = literalValue < 0 ? true : false;
+                int ix = Math.abs(literalValue) - 1;
 
-                literals[i] = new Literal(ix, neg); /////////////////////
-            }
-
-            Clause newClause = new Clause(literals);
+                literals.add(new Literal(ix, neg)); /////////////////////
+            }            
+            Clause newClause = new Clause(literals.toArray(new Literal[0]));
 
             clauses.add(newClause);
         }
