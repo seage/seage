@@ -1,0 +1,6 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.dependency.packagePresentation": "flat",
+  "java.dependency.syncWithFolderExplorer": true,
+  "java.checkstyle.configuration": "/google_checks.xml"
+}
