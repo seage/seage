@@ -55,13 +55,6 @@
     },
     {
       "type": "java",
-      "name": "Debug (Launch)-RapidMinerTest<seage-launcher>",
-      "request": "launch",
-      "mainClass": "org.seage.sandbox.RapidMinerTest",
-      "projectName": "seage-launcher"
-    },
-    {
-      "type": "java",
       "name": "Debug (Launch)-TourProvider<seage-problem-tsp>",
       "request": "launch",
       "mainClass": "org.seage.problem.tsp.TourProvider",
