@@ -15,14 +15,14 @@
 		<dependency>
 		    <groupId>org.junit.platform</groupId>
 		    <artifactId>junit-platform-suite-api</artifactId>
-		    <version>1.2.0</version>
+		    <version>1.7.0</version>
 		    <scope>test</scope>
 		</dependency>
 		  <!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner -->
 		<dependency>
 		    <groupId>org.junit.platform</groupId>
 		    <artifactId>junit-platform-runner</artifactId>
-		    <version>1.2.0</version>
+		    <version>1.7.0</version>
 		    <scope>test</scope>
 		</dependency>
 		  
@@ -164,7 +164,7 @@
 		<dependency>
 		  <groupId>com.beust</groupId>
 		  <artifactId>jcommander</artifactId>
-		  <version>1.72</version>
+		  <version>1.78</version>
 		</dependency>
 	</dependencies>
 	<build>
