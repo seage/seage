@@ -4,3 +4,5 @@ WORKDIR /seage
 
 COPY . .
 
+RUN /bin/sh ./target/build.sh
+

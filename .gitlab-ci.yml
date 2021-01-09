@@ -1,12 +1,9 @@
 image: docker:stable
 
-services:
-  - name: docker:stable-dind
-    command: ["--insecure-registry=snoopy.dmz:5000"]
-
 stages:
   - build
   - test
+  - report
   - integration-test
   - functional-test
   - release
@@ -25,4 +22,9 @@ build-seage:
 test-seage:
   stage: test
   script:
-    - docker run --rm $SEAGE_TEST_IMAGE mvn clean package
+    - docker run --rm $SEAGE_TEST_IMAGE mvn test
+
+report-seage:
+  stage: report
+  script:
+    - docker run --rm $SEAGE_TEST_IMAGE mvn verify sonar:sonar -Dsonar.projectKey=seage -Dsonar.host.url=https://sonarqube.rickq.net -Dsonar.login=$SONAR_SECRET
