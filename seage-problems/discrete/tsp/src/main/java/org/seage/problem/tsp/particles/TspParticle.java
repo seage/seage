@@ -31,23 +31,20 @@ import org.seage.metaheuristic.particles.Particle;
  *
  * @author Jan Zmatlik
  */
-public abstract class TspParticle extends Particle
-{
-    public TspParticle(int dimension)
-    {
-        super(dimension);
-    }
+public abstract class TspParticle extends Particle {
+  public TspParticle(int dimension) {
+    super(dimension);
+  }
 
-    public Integer[] getTour()
-    {
-        Integer[] tour = new Integer[getCoords().length];
+  public Integer[] getTour() {
+    Integer[] tour = new Integer[getCoords().length];
 
-        for (int i = 0; i < tour.length; i++)
-            tour[i] = i;
+    for (int i = 0; i < tour.length; i++)
+      tour[i] = i;
 
-        java.util.Arrays.sort(tour, new CoordComparator(getCoords()));
+    java.util.Arrays.sort(tour, new CoordComparator(getCoords()));
 
-        return tour;
-    }
+    return tour;
+  }
 
 }

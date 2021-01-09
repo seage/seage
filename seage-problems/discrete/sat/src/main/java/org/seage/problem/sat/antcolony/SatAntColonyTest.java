@@ -39,88 +39,76 @@ import org.seage.problem.sat.FormulaReader;
  *
  * @author Zagy
  */
-public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent>
-{
-    /**
-     * @param args
-     *            the command line arguments
-     */
-    public static void main(String[] args) throws Exception
-    {
-        try
-        {
-            // String path = "data/sat/uf20-01.cnf";
-            String path = "data/sat/uf100-01.cnf";
+public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
+  /**
+   * @param args the command line arguments
+   */
+  public static void main(String[] args) throws Exception {
+    try {
+      // String path = "data/sat/uf20-01.cnf";
+      String path = "data/sat/uf100-01.cnf";
 
-            long start = System.currentTimeMillis();
-            new SatAntColonyTest().run(path);
-            long end = System.currentTimeMillis();
+      long start = System.currentTimeMillis();
+      new SatAntColonyTest().run(path);
+      long end = System.currentTimeMillis();
 
-            System.out.println((end - start) + " ms");
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+      System.out.println((end - start) + " ms");
+    } catch (Exception ex) {
+      ex.printStackTrace();
     }
+  }
 
-    public void run(String path) throws Exception
-    {
-        // args[0];
-        Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
-                FormulaReader.readClauses(new FileInputStream(path)));
+  public void run(String path) throws Exception {
+    // args[0];
+    Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
+        FormulaReader.readClauses(new FileInputStream(path)));
 
-        double quantumPheromone = 462, evaporation = 0.76, defaultPheromone = 0.33;
-        double alpha = 1.15, beta = 1.18;
-        int numAnts = 865, iterations = 3337;
+    double quantumPheromone = 462, evaporation = 0.76, defaultPheromone = 0.33;
+    double alpha = 1.15, beta = 1.18;
+    int numAnts = 865, iterations = 3337;
 
-        Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
-        SatAntBrain brain = new SatAntBrain(graph, formula);
-        AntColony colony = new AntColony(graph, brain);
-        colony.addAntColonyListener(this);
-        colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
+    Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
+    SatAntBrain brain = new SatAntBrain(graph, formula);
+    AntColony colony = new AntColony(graph, brain);
+    colony.addAntColonyListener(this);
+    colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
 
-        Ant ants[] = new Ant[numAnts];
-        for (int i = 0; i < numAnts; i++)
-            ants[i] = new Ant(null);
+    Ant ants[] = new Ant[numAnts];
+    for (int i = 0; i < numAnts; i++)
+      ants[i] = new Ant(null);
 
-        colony.startExploring(graph.getNodes().get(0), ants);
+    colony.startExploring(graph.getNodes().get(0), ants);
 
-        System.out.println("Global best: " + colony.getGlobalBest());
+    System.out.println("Global best: " + colony.getGlobalBest());
 
-    }
+  }
 
-    @Override
-    public void algorithmStarted(AntColonyEvent e)
-    {
+  @Override
+  public void algorithmStarted(AntColonyEvent e) {
 
-    }
+  }
 
-    @Override
-    public void algorithmStopped(AntColonyEvent e)
-    {
+  @Override
+  public void algorithmStopped(AntColonyEvent e) {
 
-    }
+  }
 
-    @Override
-    public void newBestSolutionFound(AntColonyEvent e)
-    {
-        System.out.println(String.format("%d - %f - %d/%d", e.getAntColony().getCurrentIteration(),
-                e.getAntColony().getGlobalBest(), e.getAntColony().getGraph().getEdges().size(),
-                e.getAntColony().getGraph().getNodes().size() * e.getAntColony().getGraph().getNodes().size() / 2));
+  @Override
+  public void newBestSolutionFound(AntColonyEvent e) {
+    System.out.println(String.format("%d - %f - %d/%d", e.getAntColony().getCurrentIteration(),
+        e.getAntColony().getGlobalBest(), e.getAntColony().getGraph().getEdges().size(),
+        e.getAntColony().getGraph().getNodes().size() * e.getAntColony().getGraph().getNodes().size() / 2));
 
-    }
+  }
 
-    @Override
-    public void iterationPerformed(AntColonyEvent e)
-    {
-        // System.out.println(e.getAntColony().getCurrentIteration());
+  @Override
+  public void iterationPerformed(AntColonyEvent e) {
+    // System.out.println(e.getAntColony().getCurrentIteration());
 
-    }
+  }
 
-    @Override
-    public void noChangeInValueIterationMade(AntColonyEvent e)
-    {
+  @Override
+  public void noChangeInValueIterationMade(AntColonyEvent e) {
 
-    }
+  }
 }

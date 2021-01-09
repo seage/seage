@@ -29,22 +29,19 @@ package org.seage.metaheuristic.sannealing;
  *
  * @author Jan Zmatlik
  */
-public class SimulatedAnnealingEvent extends java.util.EventObject
-{
+public class SimulatedAnnealingEvent extends java.util.EventObject {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -4881075819649384756L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -4881075819649384756L;
 
-    public SimulatedAnnealingEvent(Object source)
-    {
-        super(source);
-    }
+  public SimulatedAnnealingEvent(Object source) {
+    super(source);
+  }
 
-    public ISimulatedAnnealing getSimulatedAnnealing()
-    {
-        return (ISimulatedAnnealing) source;
-    }
+  public ISimulatedAnnealing getSimulatedAnnealing() {
+    return (ISimulatedAnnealing) source;
+  }
 
 }

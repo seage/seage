@@ -31,31 +31,27 @@ import org.seage.problem.sat.FormulaEvaluator;
  *
  * @author Zagy
  */
-public class SatGraph extends Graph implements java.lang.Cloneable
-{
-    private Formula _formula;
-    FormulaEvaluator _formulaEvaluator;
+public class SatGraph extends Graph implements java.lang.Cloneable {
+  private Formula _formula;
+  FormulaEvaluator _formulaEvaluator;
 
-    public SatGraph(Formula formula, FormulaEvaluator formulaEvaluator) throws Exception
-    {
-        super();
-        _formula = formula;
-        _formulaEvaluator = formulaEvaluator;
-        // /~ 1 ~ 2 ~ 3 ~ ... n
-        // 0
-        // \~ -1 ~ -2 ~ -3 ~ ... -n
-        _nodes.put(new Integer(0), new Node(0));
+  public SatGraph(Formula formula, FormulaEvaluator formulaEvaluator) throws Exception {
+    super();
+    _formula = formula;
+    _formulaEvaluator = formulaEvaluator;
+    // /~ 1 ~ 2 ~ 3 ~ ... n
+    // 0
+    // \~ -1 ~ -2 ~ -3 ~ ... -n
+    _nodes.put(new Integer(0), new Node(0));
 
-        for (int i = 1; i <= formula.getLiteralCount(); i++)
-        {
-            _nodes.put(new Integer(i), new Node(i));
-            _nodes.put(new Integer(-i), new Node(-i));
-        }
+    for (int i = 1; i <= formula.getLiteralCount(); i++) {
+      _nodes.put(new Integer(i), new Node(i));
+      _nodes.put(new Integer(-i), new Node(-i));
     }
+  }
 
-    @Override
-    public double getNodesDistance(Node n1, Node n2)
-    {
-        return _formulaEvaluator.evaluate(_formula, n2.getID());
-    }
+  @Override
+  public double getNodesDistance(Node n1, Node n2) {
+    return _formulaEvaluator.evaluate(_formula, n2.getID());
+  }
 }

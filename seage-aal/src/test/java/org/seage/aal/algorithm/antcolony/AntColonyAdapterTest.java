@@ -40,87 +40,78 @@ import org.seage.metaheuristic.antcolony.Node;
  *
  * @author Richard Malek
  */
-public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant>
-{
+public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant> {
 
-    public AntColonyAdapterTest() throws Exception
-    {
-        super();
+  public AntColonyAdapterTest() throws Exception {
+    super();
+  }
+
+  @BeforeEach
+  public void initAlgorithm() throws Exception {
+    Graph graph = new TestGraph();
+    for (int i = 0; i < SOLUTION_LENGTH; i++) {
+      Node n1 = new Node(i + 1);
+      graph.getNodes().put(i + 1, n1);
+
     }
 
-    @BeforeEach
-    public void initAlgorithm() throws Exception
-    {
-        Graph graph = new TestGraph();
-        for (int i = 0; i < SOLUTION_LENGTH; i++)
-        {
-            Node n1 = new Node(i + 1);
-            graph.getNodes().put(i + 1, n1);
+    _algAdapter = new TestAntColonyAdapter(new AntBrain(graph), graph, null);
+    _algParams = new AlgorithmParams();
 
-        }
+    _algParams.putValue("iterationCount", 3);
+    _algParams.putValue("alpha", 100);
+    _algParams.putValue("beta", 1);
+    _algParams.putValue("defaultPheromone", 1);
+    _algParams.putValue("qantumOfPheromone", 1);
+    _algParams.putValue("localEvaporation", 1);
+  }
 
-        _algAdapter = new TestAntColonyAdapter(new AntBrain(graph), graph, null);
-        _algParams = new AlgorithmParams();
+  @Test
+  @Override
+  public void testAlgorithm() throws Exception {
+    super.testAlgorithm();
+  }
 
-        _algParams.putValue("iterationCount", 3);
-        _algParams.putValue("alpha", 100);
-        _algParams.putValue("beta", 1);
-        _algParams.putValue("defaultPheromone", 1);
-        _algParams.putValue("qantumOfPheromone", 1);
-        _algParams.putValue("localEvaporation", 1);
-    }
+  @Test
+  @Override
+  public void testAlgorithmWithParamsAtZero() throws Exception {
+    AlgorithmParams params = new AlgorithmParams();
+    // params.putValue("numAnts", 0);
+    params.putValue("iterationCount", 0);
+    params.putValue("alpha", 0);
+    params.putValue("beta", 0);
+    params.putValue("defaultPheromone", 0);
+    params.putValue("qantumOfPheromone", 0);
+    params.putValue("localEvaporation", 0);
+    super.setAlgParameters(params);
+    super.testAlgorithmWithParamsAtZero();
+  }
 
-    @Test
-    @Override
-    public void testAlgorithm() throws Exception
-    {
-        super.testAlgorithm();
-    }
+  @Test
+  @Override
+  public void testAsyncRunning() throws Exception {
+    AlgorithmParams params = new AlgorithmParams();
+    // params.putValue("numAnts", 0.1);
+    params.putValue("iterationCount", 1000000);
+    params.putValue("alpha", 100);
+    params.putValue("beta", 1);
+    params.putValue("defaultPheromone", 1);
+    params.putValue("qantumOfPheromone", 1);
+    params.putValue("localEvaporation", 1);
 
-    @Test
-    @Override
-    public void testAlgorithmWithParamsAtZero() throws Exception
-    {
-        AlgorithmParams params = new AlgorithmParams();
-        //params.putValue("numAnts", 0);
-        params.putValue("iterationCount", 0);
-        params.putValue("alpha", 0);
-        params.putValue("beta", 0);
-        params.putValue("defaultPheromone", 0);
-        params.putValue("qantumOfPheromone", 0);
-        params.putValue("localEvaporation", 0);
-        super.setAlgParameters(params);
-        super.testAlgorithmWithParamsAtZero();
-    }
+    super.setAlgParameters(params);
+    super.testAsyncRunning();
+  }
 
-    @Test
-    @Override
-    public void testAsyncRunning() throws Exception
-    {
-        AlgorithmParams params = new AlgorithmParams();
-        //params.putValue("numAnts", 0.1);
-        params.putValue("iterationCount", 1000000);
-        params.putValue("alpha", 100);
-        params.putValue("beta", 1);
-        params.putValue("defaultPheromone", 1);
-        params.putValue("qantumOfPheromone", 1);
-        params.putValue("localEvaporation", 1);
+  @Test
+  @Override
+  public void testReport() throws Exception {
+    super.testReport();
+  }
 
-        super.setAlgParameters(params);
-        super.testAsyncRunning();
-    }
-
-    @Test
-    @Override
-    public void testReport() throws Exception
-    {
-        super.testReport();
-    }
-
-    @Test
-    @Override
-    public void testAlgorithmWithParamsNull() throws Exception
-    {
-        super.testAlgorithmWithParamsNull();
-    }
+  @Test
+  @Override
+  public void testAlgorithmWithParamsNull() throws Exception {
+    super.testAlgorithmWithParamsNull();
+  }
 }

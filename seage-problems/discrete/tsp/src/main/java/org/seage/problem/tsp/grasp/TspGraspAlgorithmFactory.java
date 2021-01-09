@@ -10,18 +10,16 @@ import org.seage.problem.tsp.TspPhenotype;
 
 @Annotations.AlgorithmId("GRASP")
 @Annotations.AlgorithmName("GRASP")
-public class TspGraspAlgorithmFactory implements IAlgorithmFactory<TspPhenotype, TspSolution>
-{
-    @Override
-    public Class<GraspAlgorithmAdapter> getAlgorithmClass()
-    {
-        return GraspAlgorithmAdapter.class;
-    }
+public class TspGraspAlgorithmFactory implements IAlgorithmFactory<TspPhenotype, TspSolution> {
+  @Override
+  public Class<GraspAlgorithmAdapter> getAlgorithmClass() {
+    return GraspAlgorithmAdapter.class;
+  }
 
-    @Override
-    public IAlgorithmAdapter<TspPhenotype, TspSolution> createAlgorithm(ProblemInstance instance,
-            IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
-        return new TspGraspAlgorithmAdapter();
-    }
+  @Override
+  public IAlgorithmAdapter<TspPhenotype, TspSolution> createAlgorithm(ProblemInstance instance,
+      IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
+    return new TspGraspAlgorithmAdapter();
+  }
 
 }

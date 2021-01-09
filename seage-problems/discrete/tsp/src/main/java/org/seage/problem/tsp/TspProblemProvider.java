@@ -42,69 +42,63 @@ import org.seage.aal.problem.ProblemProvider;
  */
 @Annotations.ProblemId("TSP")
 @Annotations.ProblemName("Travelling Salesman Problem")
-public class TspProblemProvider extends ProblemProvider<TspPhenotype>
-{
+public class TspProblemProvider extends ProblemProvider<TspPhenotype> {
 
-    @Override
-    public TspProblemInstance initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
-    {
-        City[] cities;
+  @Override
+  public TspProblemInstance initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception {
+    City[] cities;
 
-        ProblemInstanceOrigin origin = instanceInfo.getOrigin();
-        String path = instanceInfo.getValue("path").toString();
+    ProblemInstanceOrigin origin = instanceInfo.getOrigin();
+    String path = instanceInfo.getValue("path").toString();
 
-        InputStream stream0;
-        if (origin == ProblemInstanceOrigin.RESOURCE)
-            stream0 = getClass().getResourceAsStream(path);
-        else
-            stream0 = new FileInputStream(path);
+    InputStream stream0;
+    if (origin == ProblemInstanceOrigin.RESOURCE)
+      stream0 = getClass().getResourceAsStream(path);
+    else
+      stream0 = new FileInputStream(path);
 
-        try(InputStream stream = stream0)
-        {
-            cities = CityProvider.readCities(stream);
-        }
-        catch (Exception ex)
-        {
-            System.err.println("TspProblemProvider.initProblemInstance - readCities failed, path: " + path);
-            throw ex;
-        }
-
-        return new TspProblemInstance(instanceInfo, cities);
-
+    try (InputStream stream = stream0) {
+      cities = CityProvider.readCities(stream);
+    } catch (Exception ex) {
+      System.err.println("TspProblemProvider.initProblemInstance - readCities failed, path: " + path);
+      throw ex;
     }
 
-    @Override
-    public TspPhenotype[] generateInitialSolutions(ProblemInstance instance, int numSolutions, long randomSeed)
-            throws Exception
-    {
-        int numTours = numSolutions;
-        City[] cities = ((TspProblemInstance) instance).getCities();
-        TspPhenotype[] result = new TspPhenotype[numTours];
+    return new TspProblemInstance(instanceInfo, cities);
 
-        //result[0] = new TspPhenotype(TourProvider.createGreedyTour(cities, randomSeed));
-        for (int i = 0; i < numTours; i++)
-            result[i] = new TspPhenotype(TourProvider.createRandomTour(cities.length));
+  }
 
-        return result;
-    }
+  @Override
+  public TspPhenotype[] generateInitialSolutions(ProblemInstance instance, int numSolutions, long randomSeed)
+      throws Exception {
+    int numTours = numSolutions;
+    City[] cities = ((TspProblemInstance) instance).getCities();
+    TspPhenotype[] result = new TspPhenotype[numTours];
 
-    @Override
-    public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception
-    {
-        //        Integer[] tour = (Integer[])solution;
+    // result[0] = new TspPhenotype(TourProvider.createGreedyTour(cities,
+    // randomSeed));
+    for (int i = 0; i < numTours; i++)
+      result[i] = new TspPhenotype(TourProvider.createRandomTour(cities.length));
 
-        // TODO: A - Implement visualize method
-        //        String outPath = _problemParams.getDataNode("visualizer").getValueStr("outPath");
-        //        int width = _problemParams.getDataNode("visualizer").getValueInt("width");
-        //        int height = _problemParams.getDataNode("visualizer").getValueInt("height");
-        //
-        //        Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
-    }
+    return result;
+  }
 
-    @Override
-    public IPhenotypeEvaluator<TspPhenotype> initPhenotypeEvaluator(ProblemInstance instance) throws Exception
-    {
-        return new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
-    }
+  @Override
+  public void visualizeSolution(Object[] solution, ProblemInstanceInfo instance) throws Exception {
+    // Integer[] tour = (Integer[])solution;
+
+    // TODO: A - Implement visualize method
+    // String outPath =
+    // _problemParams.getDataNode("visualizer").getValueStr("outPath");
+    // int width = _problemParams.getDataNode("visualizer").getValueInt("width");
+    // int height = _problemParams.getDataNode("visualizer").getValueInt("height");
+    //
+    // Visualizer.instance().createGraph(_cities, tour, outPath, width, height);
+  }
+
+  @Override
+  public IPhenotypeEvaluator<TspPhenotype> initPhenotypeEvaluator(ProblemInstance instance) throws Exception {
+    return new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
+  }
 
 }

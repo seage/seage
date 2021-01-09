@@ -30,61 +30,56 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 
 /**
- * TSP phenotype is a sequence of city IDs starting at _1_ 
+ * TSP phenotype is a sequence of city IDs starting at _1_
+ * 
  * @author Richard Malek
  */
-public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<TspPhenotype>
-{
-    protected TspProblemInstance _instance;
-    protected City[] _cities;
+public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<TspPhenotype> {
+  protected TspProblemInstance _instance;
+  protected City[] _cities;
 
-    public TspPhenotypeEvaluator(City[] cities)
-    {
-        super();
-        _cities = cities;
+  public TspPhenotypeEvaluator(City[] cities) {
+    super();
+    _cities = cities;
+  }
+
+  @Override
+  public double[] evaluate(TspPhenotype phenotype) throws Exception {
+    double tourLength = 0;
+
+    int numCities = _cities.length;
+
+    for (int i = 0; i < numCities; i++) {
+      int k = i + 1;
+      if (i == numCities - 1)
+        k = 0;
+
+      int ix1 = phenotype.getSolution()[i] - 1;
+      int ix2 = phenotype.getSolution()[k] - 1;
+      double x1 = _cities[ix1].X;
+      double y1 = _cities[ix1].Y;
+      double x2 = _cities[ix2].X;
+      double y2 = _cities[ix2].Y;
+      tourLength += Math.round(Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)));
     }
+    return new double[] { tourLength };
+  }
 
-    @Override
-    public double[] evaluate(TspPhenotype phenotype) throws Exception
-    {
-        double tourLength = 0;
+  @Override
+  public int compare(double[] o1, double[] o2) {
+    if (o1 == null)
+      return -1;
+    if (o2 == null)
+      return 1;
 
-        int numCities = _cities.length;
+    int length = o1.length <= o2.length ? o1.length : o2.length;
 
-        for (int i = 0; i < numCities; i++)
-        {
-            int k = i + 1;
-            if (i == numCities - 1)
-                k = 0;
-
-            int ix1 = phenotype.getSolution()[i] - 1;
-            int ix2 = phenotype.getSolution()[k] - 1;
-            double x1 = _cities[ix1].X;
-            double y1 = _cities[ix1].Y;
-            double x2 = _cities[ix2].X;
-            double y2 = _cities[ix2].Y;
-            tourLength += Math.round(Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)));
-        }
-        return new double[] { tourLength };
+    for (int i = 0; i < length; i++) {
+      if (o1[i] < o2[i])
+        return 1;
+      if (o1[i] > o2[i])
+        return -1;
     }
-
-    @Override
-    public int compare(double[] o1, double[] o2)
-    {
-        if (o1 == null)
-            return -1;
-        if (o2 == null)
-            return 1;
-
-        int length = o1.length <= o2.length ? o1.length : o2.length;
-
-        for (int i = 0; i < length; i++)
-        {
-            if (o1[i] < o2[i])
-                return 1;
-            if (o1[i] > o2[i])
-                return -1;
-        }
-        return 0;
-    }
+    return 0;
+  }
 }

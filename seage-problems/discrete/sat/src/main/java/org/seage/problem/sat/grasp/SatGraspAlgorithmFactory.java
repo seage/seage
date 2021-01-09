@@ -9,20 +9,18 @@ import org.seage.aal.problem.ProblemInstance;
 
 @Annotations.AlgorithmId("GRASP")
 @Annotations.AlgorithmName("GRASP")
-public class SatGraspAlgorithmFactory implements IAlgorithmFactory
-{
+public class SatGraspAlgorithmFactory implements IAlgorithmFactory {
 
-    @Override
-    public Class<?> getAlgorithmClass()
-    {
-        return GraspAlgorithmAdapter.class;
-    }
+  @Override
+  public Class<?> getAlgorithmClass() {
+    return GraspAlgorithmAdapter.class;
+  }
 
-    @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator phenotypeEvaluator)
-            throws Exception {
-        // TODO Auto-generated method stub
-        return null;
-    }
+  @Override
+  public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator phenotypeEvaluator)
+      throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 }

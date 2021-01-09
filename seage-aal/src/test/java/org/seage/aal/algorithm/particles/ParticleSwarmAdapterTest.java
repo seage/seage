@@ -40,106 +40,93 @@ import org.seage.metaheuristic.particles.Particle;
  * @author Richard Malek
  */
 @Disabled("Adapter class not fully implemented yet")
-public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle>
-{
+public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle> {
 
-    public ParticleSwarmAdapterTest() throws Exception
-    {
-        super();
-    }
+  public ParticleSwarmAdapterTest() throws Exception {
+    super();
+  }
 
-    @BeforeEach
-    public void initAlgorithm() throws Exception
-    {
-        _algAdapter = new ParticleSwarmAdapter<TestPhenotype, Particle>(null, null, null, false)
-        {
+  @BeforeEach
+  public void initAlgorithm() throws Exception {
+    _algAdapter = new ParticleSwarmAdapter<TestPhenotype, Particle>(null, null, null, false) {
 
-            @Override
-            public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception
-            {
-                _initialParticles = new Particle[source.length];
+      @Override
+      public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception {
+        _initialParticles = new Particle[source.length];
 
-                for (int i = 0; i < source.length; i++)
-                {
-                    _initialParticles[i] = new Particle(source[i].getSolution().length);
-                    double[] coords = new double[source[i].getSolution().length];
-                    for (int j = 0; j < coords.length; j++)
-                        coords[j] = source[i].getSolution()[j];
-                    _initialParticles[i].setCoords(coords);
-                }
+        for (int i = 0; i < source.length; i++) {
+          _initialParticles[i] = new Particle(source[i].getSolution().length);
+          double[] coords = new double[source[i].getSolution().length];
+          for (int j = 0; j < coords.length; j++)
+            coords[j] = source[i].getSolution()[j];
+          _initialParticles[i].setCoords(coords);
+        }
 
-            }
+      }
 
-            @Override
-            public TestPhenotype[] solutionsToPhenotype() throws Exception
-            {
-            	TestPhenotype[] result = new TestPhenotype[_initialParticles.length];
+      @Override
+      public TestPhenotype[] solutionsToPhenotype() throws Exception {
+        TestPhenotype[] result = new TestPhenotype[_initialParticles.length];
 
-                for (int i = 0; i < _initialParticles.length; i++)
-                {
-                    Integer[] coords = new Integer[_initialParticles[i].getCoords().length];
-                    for (int j = 0; j < coords.length; j++)
-                        coords[j] = (int) _initialParticles[i].getCoords()[j];
-                    result[i] = new TestPhenotype(coords);
-                }
-                return result;
-            }
+        for (int i = 0; i < _initialParticles.length; i++) {
+          Integer[] coords = new Integer[_initialParticles[i].getCoords().length];
+          for (int j = 0; j < coords.length; j++)
+            coords[j] = (int) _initialParticles[i].getCoords()[j];
+          result[i] = new TestPhenotype(coords);
+        }
+        return result;
+      }
 
-			@Override
-			public TestPhenotype solutionToPhenotype(Particle solution) throws Exception {
-				// TODO Auto-generated method stub
-				return null;
-			}
-        };
+      @Override
+      public TestPhenotype solutionToPhenotype(Particle solution) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+      }
+    };
 
-        _algParams = new AlgorithmParams();
-        //_algParams.putValue("problemID", "ParticleSwarmTest");
-        //_algParams.putValue("instance", "TestInstance");
+    _algParams = new AlgorithmParams();
+    // _algParams.putValue("problemID", "ParticleSwarmTest");
+    // _algParams.putValue("instance", "TestInstance");
 
-        DataNode params = new DataNode("Parameters");
-        params.putValue("maxIterationCount", 0);
-        params.putValue("numSolutions", 0);
-        params.putValue("maxVelocity", 0);
-        params.putValue("minVelocity", 1);
-        params.putValue("inertia", 0);
-        params.putValue("alpha", 1);
-        params.putValue("beta", 0);
+    DataNode params = new DataNode("Parameters");
+    params.putValue("maxIterationCount", 0);
+    params.putValue("numSolutions", 0);
+    params.putValue("maxVelocity", 0);
+    params.putValue("minVelocity", 1);
+    params.putValue("inertia", 0);
+    params.putValue("alpha", 1);
+    params.putValue("beta", 0);
 
-        _algParams.putDataNodeRef(params);
-    }
+    _algParams.putDataNodeRef(params);
+  }
 
-    @Override
-    @Test
-    public void testAlgorithm() throws Exception
-    {
-        super.testAlgorithm();
-    }
+  @Override
+  @Test
+  public void testAlgorithm() throws Exception {
+    super.testAlgorithm();
+  }
 
-    @Override
-    @Test
-    public void testAlgorithmWithParamsAtZero() throws Exception
-    {
-        super.testAlgorithmWithParamsAtZero();
-    }
+  @Override
+  @Test
+  public void testAlgorithmWithParamsAtZero() throws Exception {
+    super.testAlgorithmWithParamsAtZero();
+  }
 
-    @Test
-    @Override
-    public void testAsyncRunning() throws Exception
-    {
-        super.testAsyncRunning();
-    }
+  @Test
+  @Override
+  public void testAsyncRunning() throws Exception {
+    super.testAsyncRunning();
+  }
 
-    @Test
-    @Override
-    public void testReport() throws Exception
-    {
-        super.testReport();
-    }
+  @Test
+  @Override
+  public void testReport() throws Exception {
+    super.testReport();
+  }
 
-    @Test
-    @Override
-    public void testAlgorithmWithParamsNull() throws Exception
-    {
-        super.testAlgorithmWithParamsNull();
-    }
+  @Test
+  @Override
+  public void testAlgorithmWithParamsNull() throws Exception {
+    super.testAlgorithmWithParamsNull();
+  }
 }

@@ -36,44 +36,42 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Richard Malek
  */
-public abstract class Configurator
-{
-    protected static Logger _logger = LoggerFactory.getLogger(Configurator.class.getName());
+public abstract class Configurator {
+  protected static Logger _logger = LoggerFactory.getLogger(Configurator.class.getName());
 
-    public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID,
-            int numConfigs) throws Exception;
+  public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID,
+      int numConfigs) throws Exception;
 
-    protected ProblemConfig createProblemConfig(ProblemInfo problemInfo, String instanceID, String algorithmID)
-            throws Exception
-    {
-        ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
-        // Config
-        ProblemConfig config = new ProblemConfig("Config");
-        // |_ Problem
-        DataNode problem = new DataNode("Problem");
-        // | |_ Instance
-        DataNode instance = new DataNode("Instance");
-        // |_ Algorithm
-        DataNode algorithm = new DataNode("Algorithm");
-        //   |_ Parameters
-        DataNode params = new DataNode("Parameters");
+  protected ProblemConfig createProblemConfig(ProblemInfo problemInfo, String instanceID, String algorithmID)
+      throws Exception {
+    ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
+    // Config
+    ProblemConfig config = new ProblemConfig("Config");
+    // |_ Problem
+    DataNode problem = new DataNode("Problem");
+    // | |_ Instance
+    DataNode instance = new DataNode("Instance");
+    // |_ Algorithm
+    DataNode algorithm = new DataNode("Algorithm");
+    // |_ Parameters
+    DataNode params = new DataNode("Parameters");
 
-        problem.putValue("id", problemInfo.getValue("id"));
-        algorithm.putValue("id", algorithmID);
+    problem.putValue("id", problemInfo.getValue("id"));
+    algorithm.putValue("id", algorithmID);
 
-        algorithm.putDataNodeRef(params);
-        problem.putDataNodeRef(instance);
-        config.putDataNodeRef(algorithm);
-        config.putDataNodeRef(problem);
+    algorithm.putDataNodeRef(params);
+    problem.putDataNodeRef(instance);
+    config.putDataNodeRef(algorithm);
+    config.putDataNodeRef(problem);
 
-        // ProblemConfig instanceCfg = (ProblemConfig)config.clone();
-        config.getDataNode("Problem").getDataNode("Instance").putValue("name", instanceInfo.getValue("name"));
-        config.getDataNode("Problem").getDataNode("Instance").putValue("type", instanceInfo.getValue("type"));
-        config.getDataNode("Problem").getDataNode("Instance").putValue("path", instanceInfo.getValue("path"));
+    // ProblemConfig instanceCfg = (ProblemConfig)config.clone();
+    config.getDataNode("Problem").getDataNode("Instance").putValue("name", instanceInfo.getValue("name"));
+    config.getDataNode("Problem").getDataNode("Instance").putValue("type", instanceInfo.getValue("type"));
+    config.getDataNode("Problem").getDataNode("Instance").putValue("path", instanceInfo.getValue("path"));
 
-        if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null)
-            throw new Exception("Unknown algorithm id: " + algorithmID);
+    if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null)
+      throw new Exception("Unknown algorithm id: " + algorithmID);
 
-        return config;
-    }
+    return config;
+  }
 }

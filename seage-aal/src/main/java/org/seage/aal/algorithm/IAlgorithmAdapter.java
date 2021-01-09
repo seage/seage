@@ -32,35 +32,36 @@ import org.seage.aal.reporter.AlgorithmReport;
  *
  * @author Richard Malek
  */
-public interface IAlgorithmAdapter<P extends Phenotype<?>, S>
-{
-    //    // Returns meta-data on the algorithm
-    //    //  |_ id
-    //    //  |_ name
-    //    //  |_ class
-    //    //  |_ parameters
-    //    DataNode getAlgorithmInfo() throws Exception;
+public interface IAlgorithmAdapter<P extends Phenotype<?>, S> {
+  // // Returns meta-data on the algorithm
+  // // |_ id
+  // // |_ name
+  // // |_ class
+  // // |_ parameters
+  // DataNode getAlgorithmInfo() throws Exception;
 
-    // Runs the algorithm.
-    void startSearching(final AlgorithmParams params) throws Exception;
+  // Runs the algorithm.
+  void startSearching(final AlgorithmParams params) throws Exception;
 
-    // Runs the algorithm.
-    void startSearching(final AlgorithmParams params, boolean async) throws Exception;
+  // Runs the algorithm.
+  void startSearching(final AlgorithmParams params, boolean async) throws Exception;
 
-    // Stops the algorithm.
-    void stopSearching() throws Exception;
+  // Stops the algorithm.
+  void stopSearching() throws Exception;
 
-    // Checks if the algorithm is running
-    boolean isRunning();
+  // Checks if the algorithm is running
+  boolean isRunning();
 
-    // Returns the runtime report collected during the algorithm run.
-    AlgorithmReport getReport() throws Exception;
+  // Returns the runtime report collected during the algorithm run.
+  AlgorithmReport getReport() throws Exception;
 
-    // Converts solution from outer representation to the inner one.
-    void solutionsFromPhenotype(P[] source) throws Exception;
+  // Converts solution from outer representation to the inner one.
+  void solutionsFromPhenotype(P[] source) throws Exception;
 
-    // Converts solution from inner representation to the outer one.
-    // Solutions are ordered in descendent (best first) order according to the quality.
-    P[] solutionsToPhenotype() throws Exception;
-    P   solutionToPhenotype(S solution) throws Exception;
+  // Converts solution from inner representation to the outer one.
+  // Solutions are ordered in descendent (best first) order according to the
+  // quality.
+  P[] solutionsToPhenotype() throws Exception;
+
+  P solutionToPhenotype(S solution) throws Exception;
 }

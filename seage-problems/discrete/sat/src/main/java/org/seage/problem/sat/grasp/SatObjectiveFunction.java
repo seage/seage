@@ -33,39 +33,33 @@ import org.seage.problem.sat.FormulaEvaluator;
  *
  * @author Martin Zaloga
  */
-public class SatObjectiveFunction implements IObjectiveFunction
-{
+public class SatObjectiveFunction implements IObjectiveFunction {
 
-    private Formula _formula;
+  private Formula _formula;
 
-    public SatObjectiveFunction(Formula formula)
-    {
-        _formula = formula;
+  public SatObjectiveFunction(Formula formula) {
+    _formula = formula;
+  }
+
+  @Override
+  public void reset() {
+  }
+
+  // OK
+  @Override
+  public double evaluateMove(Solution sol, IMove move) throws Exception {
+
+    if (move == null)
+      return evaluate((SatSolution) sol);
+    else {
+      SatSolution s = (SatSolution) ObjectCloner.deepCopy(sol);
+      move.apply(s);
+      return evaluate(s);
     }
+  }
 
-    @Override
-    public void reset()
-    {
-    }
-
-    // OK
-    @Override
-    public double evaluateMove(Solution sol, IMove move) throws Exception
-    {
-
-        if (move == null)
-            return evaluate((SatSolution) sol);
-        else
-        {
-            SatSolution s = (SatSolution) ObjectCloner.deepCopy(sol);
-            move.apply(s);
-            return evaluate(s);
-        }
-    }
-
-    private int evaluate(SatSolution sol)
-    {
-        return FormulaEvaluator.evaluate(_formula, sol.getLiteralValues());
-    }
+  private int evaluate(SatSolution sol) {
+    return FormulaEvaluator.evaluate(_formula, sol.getLiteralValues());
+  }
 
 }

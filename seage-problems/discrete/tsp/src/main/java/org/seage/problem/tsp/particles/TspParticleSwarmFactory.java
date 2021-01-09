@@ -44,106 +44,92 @@ import org.seage.problem.tsp.TspProblemInstance;
  */
 @Annotations.AlgorithmId("ParticleSwarm")
 @Annotations.AlgorithmName("Particle Swarm")
-public class TspParticleSwarmFactory implements IAlgorithmFactory<TspPhenotype, TspParticle>
-{
-    private int _numParticles;
+public class TspParticleSwarmFactory implements IAlgorithmFactory<TspPhenotype, TspParticle> {
+  private int _numParticles;
 
-    private TspObjectiveFunction _objectiveFunction;
+  private TspObjectiveFunction _objectiveFunction;
 
-	@Override
-    public Class<?> getAlgorithmClass()
-    {
-        return ParticleSwarmAdapter.class;
-    }
+  @Override
+  public Class<?> getAlgorithmClass() {
+    return ParticleSwarmAdapter.class;
+  }
 
-    @Override
-    public IAlgorithmAdapter<TspPhenotype, TspParticle> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception
-    {
-    	final City[] cities = ((TspProblemInstance) instance).getCities();
+  @Override
+  public IAlgorithmAdapter<TspPhenotype, TspParticle> createAlgorithm(ProblemInstance instance,
+      IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
+    final City[] cities = ((TspProblemInstance) instance).getCities();
 
-        _objectiveFunction = new TspObjectiveFunction(cities);
+    _objectiveFunction = new TspObjectiveFunction(cities);
 
-        IAlgorithmAdapter<TspPhenotype, TspParticle> algorithm = new ParticleSwarmAdapter<TspPhenotype, TspParticle>(
-                generateInitialSolutions(cities),
-                _objectiveFunction, phenotypeEvaluator,
-                false)
-        {
-            @Override
-            public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception
-            {
-                _numParticles = source.length;
-                _initialParticles = new TspParticle[source.length];
-                for (int i = 0; i < source.length; i++)
-                {
-                    Integer[] tour = ((TspParticle) _initialParticles[i]).getTour();
-                    _initialParticles[i] = new TspSortedParticle(cities.length);
-                    for (int j = 0; j < source[i].getSolution().length; j++)
-                    {
-                    	//_initialParticles[i].setCoords(coords); ???                        
-                    }
-                }
-            }
+    IAlgorithmAdapter<TspPhenotype, TspParticle> algorithm = new ParticleSwarmAdapter<TspPhenotype, TspParticle>(
+        generateInitialSolutions(cities), _objectiveFunction, phenotypeEvaluator, false) {
+      @Override
+      public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
+        _numParticles = source.length;
+        _initialParticles = new TspParticle[source.length];
+        for (int i = 0; i < source.length; i++) {
+          Integer[] tour = ((TspParticle) _initialParticles[i]).getTour();
+          _initialParticles[i] = new TspSortedParticle(cities.length);
+          for (int j = 0; j < source[i].getSolution().length; j++) {
+            // _initialParticles[i].setCoords(coords); ???
+          }
+        }
+      }
 
-            @Override
-            public TspPhenotype[] solutionsToPhenotype() throws Exception
-            {
-                //int numOfParticles = _particleSwarm.getParticles().length;
-                TspPhenotype[] source = new TspPhenotype[_initialParticles.length];
+      @Override
+      public TspPhenotype[] solutionsToPhenotype() throws Exception {
+        // int numOfParticles = _particleSwarm.getParticles().length;
+        TspPhenotype[] source = new TspPhenotype[_initialParticles.length];
 
-                for (int i = 0; i < source.length; i++)
-                {                    
-                	Integer[] tour = ((TspParticle) _initialParticles[i]).getTour();
-                    source[i] = new TspPhenotype(tour);
-                }
-
-                // TODO: A - need to sort source by fitness function of each tour
-
-                return source;
-            }
-
-			@Override
-			public TspPhenotype solutionToPhenotype(TspParticle solution) throws Exception {
-				// TODO Auto-generated method stub
-				return null;
-			}
-        };
-
-        return algorithm;
-    }
-
-    private Particle[] generateInitialSolutions(City[] cities) throws Exception
-    {
-        Particle[] particles = generateTspRandomParticles(_numParticles, cities);
-
-        for (Particle particle : particles)
-        {
-            // Initial coords
-            for (int i = 0; i < cities.length; i++)
-                particle.getCoords()[i] = Math.random();
-
-            // Initial velocity
-            for (int i = 0; i < cities.length; i++)
-                particle.getVelocity()[i] = Math.random();
-
-            // Evaluate
-            _objectiveFunction.setObjectiveValue(particle);
+        for (int i = 0; i < source.length; i++) {
+          Integer[] tour = ((TspParticle) _initialParticles[i]).getTour();
+          source[i] = new TspPhenotype(tour);
         }
 
-        return particles;
+        // TODO: A - need to sort source by fitness function of each tour
+
+        return source;
+      }
+
+      @Override
+      public TspPhenotype solutionToPhenotype(TspParticle solution) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+      }
+    };
+
+    return algorithm;
+  }
+
+  private Particle[] generateInitialSolutions(City[] cities) throws Exception {
+    Particle[] particles = generateTspRandomParticles(_numParticles, cities);
+
+    for (Particle particle : particles) {
+      // Initial coords
+      for (int i = 0; i < cities.length; i++)
+        particle.getCoords()[i] = Math.random();
+
+      // Initial velocity
+      for (int i = 0; i < cities.length; i++)
+        particle.getVelocity()[i] = Math.random();
+
+      // Evaluate
+      _objectiveFunction.setObjectiveValue(particle);
     }
 
-    void printArray(Integer[] array)
-    {
-        for (int i = 0; i < array.length; i++)
-            System.out.print(" " + array[i]);
-    }
+    return particles;
+  }
 
-    private Particle[] generateTspRandomParticles(int count, City[] cities)
-    {
-        TspRandomParticle[] particles = new TspRandomParticle[count];
-        for (int i = 0; i < count; i++)
-            particles[i] = new TspRandomParticle(cities.length);
+  void printArray(Integer[] array) {
+    for (int i = 0; i < array.length; i++)
+      System.out.print(" " + array[i]);
+  }
 
-        return particles;
-    }
+  private Particle[] generateTspRandomParticles(int count, City[] cities) {
+    TspRandomParticle[] particles = new TspRandomParticle[count];
+    for (int i = 0; i < count; i++)
+      particles[i] = new TspRandomParticle(cities.length);
+
+    return particles;
+  }
 }

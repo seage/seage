@@ -30,20 +30,19 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.problem.sat.Formula;
+
 /**
  *
  * @author Richard Malek
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
-public class SatSimulatedAnnealingFactory implements IAlgorithmFactory
-{
+public class SatSimulatedAnnealingFactory implements IAlgorithmFactory {
 
-    @Override
-    public Class<?> getAlgorithmClass()
-    {
-        return SimulatedAnnealingAdapter.class;
-    }
+  @Override
+  public Class<?> getAlgorithmClass() {
+    return SimulatedAnnealingAdapter.class;
+  }
 
 //    @Override
 //    public IAlgorithmAdapter<SatSolution> createAlgorithm(ProblemInstance instance) throws Exception
@@ -93,11 +92,11 @@ public class SatSimulatedAnnealingFactory implements IAlgorithmFactory
 //        return algorithm;
 //    }
 
-    @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator phenotypeEvaluator)
-            throws Exception {
-        // TODO Auto-generated method stub
-        return null;
-    }
+  @Override
+  public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator phenotypeEvaluator)
+      throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 }

@@ -34,28 +34,25 @@ import org.seage.metaheuristic.sannealing.Solution;
  *
  * @author Jan Zmatlik
  */
-public class TspMoveManager implements IMoveManager
-{
-    Random rnd = new Random();
+public class TspMoveManager implements IMoveManager {
+  Random rnd = new Random();
 
-    @Override
-    public Solution getModifiedSolution(Solution solution, double ct)
-    {
-        TspSolution tspSolution = ((TspSolution) solution).clone();
+  @Override
+  public Solution getModifiedSolution(Solution solution, double ct) {
+    TspSolution tspSolution = ((TspSolution) solution).clone();
 
-        int tspSolutionLength = tspSolution.getTour().length;
-        int a = rnd.nextInt(tspSolutionLength);
-        int b = rnd.nextInt(tspSolutionLength);
+    int tspSolutionLength = tspSolution.getTour().length;
+    int a = rnd.nextInt(tspSolutionLength);
+    int b = rnd.nextInt(tspSolutionLength);
 
-        // Swap values if indices are different
-        if (a != b)
-        {
-            int tmp = tspSolution.getTour()[a];
-            tspSolution.getTour()[a] = tspSolution.getTour()[b];
-            tspSolution.getTour()[b] = tmp;
-        }
-
-        return tspSolution;
+    // Swap values if indices are different
+    if (a != b) {
+      int tmp = tspSolution.getTour()[a];
+      tspSolution.getTour()[a] = tspSolution.getTour()[b];
+      tspSolution.getTour()[b] = tmp;
     }
+
+    return tspSolution;
+  }
 
 }

@@ -29,13 +29,12 @@ package org.seage.metaheuristic.grasp;
  *
  * @author Martin Zaloga
  */
-public interface IMoveManager
-{
+public interface IMoveManager {
 
-    /**
-     *
-     * @param solution - Solutions for which are generated following steps
-     * @return - Returns moves for a given solution
-     */
-    IMove[] getAllMoves(Solution solution);
+  /**
+   *
+   * @param solution - Solutions for which are generated following steps
+   * @return - Returns moves for a given solution
+   */
+  IMove[] getAllMoves(Solution solution);
 }

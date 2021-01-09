@@ -43,64 +43,58 @@ import org.seage.problem.tsp.TspProblemInstance;
  */
 @Annotations.AlgorithmId("TabuSearch")
 @Annotations.AlgorithmName("Tabu Search")
-public class TspTabuSearchFactory implements IAlgorithmFactory<TspPhenotype, TspSolution>
-{
-	@Override
-    public Class<?> getAlgorithmClass()
-    {
-        return TabuSearchAdapter.class;
-    }
+public class TspTabuSearchFactory implements IAlgorithmFactory<TspPhenotype, TspSolution> {
+  @Override
+  public Class<?> getAlgorithmClass() {
+    return TabuSearchAdapter.class;
+  }
 
-    @Override
-    public IAlgorithmAdapter<TspPhenotype, TspSolution> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception
-    {
-        final City[] cities = ((TspProblemInstance) instance).getCities();
+  @Override
+  public IAlgorithmAdapter<TspPhenotype, TspSolution> createAlgorithm(ProblemInstance instance,
+      IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
+    final City[] cities = ((TspProblemInstance) instance).getCities();
 
-        IAlgorithmAdapter<TspPhenotype, TspSolution> algorithm = new TabuSearchAdapter<TspPhenotype, TspSolution>(new TspMoveManager(), new TspObjectiveFunction(cities), phenotypeEvaluator)
-        {
+    IAlgorithmAdapter<TspPhenotype, TspSolution> algorithm = new TabuSearchAdapter<TspPhenotype, TspSolution>(
+        new TspMoveManager(), new TspObjectiveFunction(cities), phenotypeEvaluator) {
 
-            @Override
-            public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception
-            {
-                _solutions = new Solution[source.length];
-                for (int i = 0; i < source.length; i++)
-                {
-                    TspSolution s = new TspSolution();
-                    Integer[] tour = new Integer[source[i].getSolution().length];
-                    for (int j = 0; j < tour.length; j++)
-                        tour[j] = (Integer) source[i].getSolution()[j];
-                    s.setTour(tour);
-                    _solutions[i] = s;
-                }
-            }
+      @Override
+      public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
+        _solutions = new Solution[source.length];
+        for (int i = 0; i < source.length; i++) {
+          TspSolution s = new TspSolution();
+          Integer[] tour = new Integer[source[i].getSolution().length];
+          for (int j = 0; j < tour.length; j++)
+            tour[j] = (Integer) source[i].getSolution()[j];
+          s.setTour(tour);
+          _solutions[i] = s;
+        }
+      }
 
-            @Override
-            public TspPhenotype[] solutionsToPhenotype() throws Exception
-            {
-            	TspPhenotype[] result = new TspPhenotype[_solutions.length];
+      @Override
+      public TspPhenotype[] solutionsToPhenotype() throws Exception {
+        TspPhenotype[] result = new TspPhenotype[_solutions.length];
 
-                for (int i = 0; i < _solutions.length; i++)
-                {
-                    result[i] = solutionToPhenotype((TspSolution)_solutions[i]);                    
-                }
-                return result;
-            }
+        for (int i = 0; i < _solutions.length; i++) {
+          result[i] = solutionToPhenotype((TspSolution) _solutions[i]);
+        }
+        return result;
+      }
 
-			@Override
-			public TspPhenotype solutionToPhenotype(TspSolution solution) throws Exception {
-                return new TspPhenotype(solution.getTour());  
-			}
-        };
+      @Override
+      public TspPhenotype solutionToPhenotype(TspSolution solution) throws Exception {
+        return new TspPhenotype(solution.getTour());
+      }
+    };
 
-        //Object[][] solutions = _provider.generateInitialSolutions( _algParams.getValueInt("numSolution"));
-        //algorithm.solutionsFromPhenotype(solutions);
+    // Object[][] solutions = _provider.generateInitialSolutions(
+    // _algParams.getValueInt("numSolution"));
+    // algorithm.solutionsFromPhenotype(solutions);
 
-        return algorithm;
-    }
+    return algorithm;
+  }
 
-    public DataNode getAlgorithmParameters(DataNode params) throws Exception
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+  public DataNode getAlgorithmParameters(DataNode params) throws Exception {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 
 }

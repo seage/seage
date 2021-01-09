@@ -36,61 +36,56 @@ import org.seage.problem.tsp.TspPhenotypeEvaluator;
  *
  * @author Richard Malek
  */
-public class TspEvaluator extends SubjectEvaluator<Subject<Integer>>
-{
-    private City[] _cities;
-    private TspPhenotypeEvaluator _phenotypeEvaluator;
+public class TspEvaluator extends SubjectEvaluator<Subject<Integer>> {
+  private City[] _cities;
+  private TspPhenotypeEvaluator _phenotypeEvaluator;
 
-    public TspEvaluator(City[] cities)
-    {
-        _cities = cities.clone();
-        _phenotypeEvaluator = new TspPhenotypeEvaluator(_cities);
+  public TspEvaluator(City[] cities) {
+    _cities = cities.clone();
+    _phenotypeEvaluator = new TspPhenotypeEvaluator(_cities);
+  }
+
+  @Override
+  public double[] evaluate(Subject<Integer> solution) throws Exception {
+    return _phenotypeEvaluator.evaluate(new TspPhenotype(solution.getChromosome().getGenes()));
+  }
+
+  // private double[] evaluate(Integer[] phenotypeSubject) throws Exception
+  // {
+  // double tourLength = 0;
+  // int numCities = _cities.length;
+  //
+  // for (int i = 0; i < numCities; i++)
+  // {
+  // int k = i + 1;
+  // if (i == numCities - 1)
+  // k = 0;
+  //
+  // int ix1 = (Integer)phenotypeSubject[i];
+  // int ix2 = (Integer)phenotypeSubject[k];
+  // double x1 = _cities[ix1].X;
+  // double y1 = _cities[ix1].Y;
+  // double x2 = _cities[ix2].X;
+  // double y2 = _cities[ix2].Y;
+  // tourLength += Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+  // }
+  // return new double[] {tourLength };
+  // }
+
+  public int compare(double[] o1, double[] o2) {
+    if (o1 == null)
+      return -1;
+    if (o2 == null)
+      return 1;
+
+    int length = o1.length <= o2.length ? o1.length : o2.length;
+
+    for (int i = 0; i < length; i++) {
+      if (o1[i] < o2[i])
+        return 1;
+      if (o1[i] > o2[i])
+        return -1;
     }
-
-    @Override
-    public double[] evaluate(Subject<Integer> solution) throws Exception
-    {
-        return _phenotypeEvaluator.evaluate(new TspPhenotype(solution.getChromosome().getGenes()));
-    }
-
-    //    private double[] evaluate(Integer[] phenotypeSubject) throws Exception
-    //    {
-    //        double tourLength = 0;
-    //        int numCities = _cities.length;
-    //
-    //        for (int i = 0; i < numCities; i++)
-    //        {				
-    //            int k = i + 1;
-    //            if (i == numCities - 1)
-    //                k = 0;
-    //
-    //            int ix1 = (Integer)phenotypeSubject[i];
-    //            int ix2 = (Integer)phenotypeSubject[k];
-    //            double x1 = _cities[ix1].X;
-    //            double y1 = _cities[ix1].Y;
-    //            double x2 = _cities[ix2].X;
-    //            double y2 = _cities[ix2].Y;
-    //            tourLength += Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-    //        }
-    //        return new double[] {tourLength };		
-    //    }
-
-    public int compare(double[] o1, double[] o2)
-    {
-        if (o1 == null)
-            return -1;
-        if (o2 == null)
-            return 1;
-
-        int length = o1.length <= o2.length ? o1.length : o2.length;
-
-        for (int i = 0; i < length; i++)
-        {
-            if (o1[i] < o2[i])
-                return 1;
-            if (o1[i] > o2[i])
-                return -1;
-        }
-        return 0;
-    }
+    return 0;
+  }
 }

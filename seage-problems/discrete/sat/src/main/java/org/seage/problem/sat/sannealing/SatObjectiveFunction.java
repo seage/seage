@@ -31,22 +31,19 @@ import org.seage.problem.sat.SatPhenotypeEvaluator;
  *
  * @author Richard Malek
  */
-public class SatObjectiveFunction implements IObjectiveFunction
-{
-    private SatPhenotypeEvaluator _evaluator;
-    
-    public SatObjectiveFunction(Formula formula)
-    {
-        _evaluator = new SatPhenotypeEvaluator(formula);        
-    }
-    
-    @Override
-    public double getObjectiveValue(Solution solution) throws Exception
-    {
-        SatSolution sol = (SatSolution)solution;
-        Boolean[] vals = new Boolean[sol.getLiteralValues().length];
-        for(int i=0;i<vals.length;i++)
-            vals[i] = sol.getLiteralValues()[i];
-        return 0.0;//_evaluator.evaluate(vals)[0];
-    }
+public class SatObjectiveFunction implements IObjectiveFunction {
+  private SatPhenotypeEvaluator _evaluator;
+
+  public SatObjectiveFunction(Formula formula) {
+    _evaluator = new SatPhenotypeEvaluator(formula);
+  }
+
+  @Override
+  public double getObjectiveValue(Solution solution) throws Exception {
+    SatSolution sol = (SatSolution) solution;
+    Boolean[] vals = new Boolean[sol.getLiteralValues().length];
+    for (int i = 0; i < vals.length; i++)
+      vals[i] = sol.getLiteralValues()[i];
+    return 0.0;// _evaluator.evaluate(vals)[0];
+  }
 }

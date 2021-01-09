@@ -36,137 +36,120 @@ import org.seage.problem.sat.FormulaReader;
  *
  * @author Zagy
  */
-public class SatHillClimberTest
-{
+public class SatHillClimberTest {
 
-    private Date _date;
-    private SimpleDateFormat _hours = new SimpleDateFormat("h");
-    private SimpleDateFormat _minutes = new SimpleDateFormat("m");
-    private SimpleDateFormat _seconds = new SimpleDateFormat("s");
-    private SimpleDateFormat _milisec = new SimpleDateFormat("S");
-    private int _h, _m, _s;
-    private double _actualTime, _ms;
+  private Date _date;
+  private SimpleDateFormat _hours = new SimpleDateFormat("h");
+  private SimpleDateFormat _minutes = new SimpleDateFormat("m");
+  private SimpleDateFormat _seconds = new SimpleDateFormat("s");
+  private SimpleDateFormat _milisec = new SimpleDateFormat("S");
+  private int _h, _m, _s;
+  private double _actualTime, _ms;
 
-    public double getTime()
-    {
-        _date = new Date();
-        _h = Integer.parseInt(_hours.format(_date));
-        _m = Integer.parseInt(_minutes.format(_date));
-        _s = Integer.parseInt(_seconds.format(_date));
-        _ms = Double.parseDouble(_milisec.format(_date));
-        _actualTime = _h * 3600 + _m * 60 + _s + _ms / 1000;
-        return _actualTime;
-    }
+  public double getTime() {
+    _date = new Date();
+    _h = Integer.parseInt(_hours.format(_date));
+    _m = Integer.parseInt(_minutes.format(_date));
+    _s = Integer.parseInt(_seconds.format(_date));
+    _ms = Double.parseDouble(_milisec.format(_date));
+    _actualTime = _h * 3600 + _m * 60 + _s + _ms / 1000;
+    return _actualTime;
+  }
 
-    public void testing1(Formula formula) throws Exception
-    {
-        SatObjectiveFunction objFce = new SatObjectiveFunction(formula);
-        SatSolutionGenerator solGen;
-        HillClimber hc;
+  public void testing1(Formula formula) throws Exception {
+    SatObjectiveFunction objFce = new SatObjectiveFunction(formula);
+    SatSolutionGenerator solGen;
+    HillClimber hc;
 
-        String solutionType = "";
-        int[] iterations = { 1, 10, 100, 1000 };
-        int[] restarts = { 1, 5, 10, 50, 100 };
+    String solutionType = "";
+    int[] iterations = { 1, 10, 100, 1000 };
+    int[] restarts = { 1, 5, 10, 50, 100 };
 
-        int repeats = 10;
-        double sumSol, sumTime, hlpTime;
-        SatSolution actualBestSol, bestSol = null;
+    int repeats = 10;
+    double sumSol, sumTime, hlpTime;
+    SatSolution actualBestSol, bestSol = null;
 
-        // solGen = new SatSolutionGenerator("greedy", formula);
-        // hc = new HillClimber(objFce, new SatMoveManager(), solGen, iter);
-        // hc.startRestartedSearching(classic, 10);
-        // SatSolution actualBestSol = (SatSolution) hc.getBestSolution();
-        // System.out.println(" false clauses: " +
-        // actualBestSol.getObjectiveValue());
+    // solGen = new SatSolutionGenerator("greedy", formula);
+    // hc = new HillClimber(objFce, new SatMoveManager(), solGen, iter);
+    // hc.startRestartedSearching(classic, 10);
+    // SatSolution actualBestSol = (SatSolution) hc.getBestSolution();
+    // System.out.println(" false clauses: " +
+    // actualBestSol.getObjectiveValue());
 
-        for (int i = 1; i <= 2; i++)
-        {
-            switch (i)
-            {
-            case 1:
-                solutionType = "random";
-                break;
-            case 2:
-                solutionType = "greedy";
-                break;
+    for (int i = 1; i <= 2; i++) {
+      switch (i) {
+      case 1:
+        solutionType = "random";
+        break;
+      case 2:
+        solutionType = "greedy";
+        break;
+      }
+      solGen = new SatSolutionGenerator(solutionType, formula);
+      for (int res : restarts) {
+        for (int iter : iterations) {
+          sumSol = 0;
+          sumTime = 0;
+          for (int j = 1; j <= repeats; j++) {
+            hc = new HillClimber(objFce, new SatMoveManager(), solGen, iter);
+            hlpTime = getTime();
+            hc.startRestartedSearching(res);
+            sumTime = getTime() - hlpTime;
+            actualBestSol = (SatSolution) hc.getBestSolution();
+            if (j > 1) {
+              if (actualBestSol.getObjectiveValue() < bestSol.getObjectiveValue()) {
+                bestSol = actualBestSol;
+              }
+            } else {
+              bestSol = actualBestSol;
             }
-            solGen = new SatSolutionGenerator(solutionType, formula);
-            for (int res : restarts)
-            {
-                for (int iter : iterations)
-                {
-                    sumSol = 0;
-                    sumTime = 0;
-                    for (int j = 1; j <= repeats; j++)
-                    {
-                        hc = new HillClimber(objFce, new SatMoveManager(), solGen, iter);
-                        hlpTime = getTime();
-                        hc.startRestartedSearching(res);
-                        sumTime = getTime() - hlpTime;
-                        actualBestSol = (SatSolution) hc.getBestSolution();
-                        if (j > 1)
-                        {
-                            if (actualBestSol.getObjectiveValue() < bestSol.getObjectiveValue())
-                            {
-                                bestSol = actualBestSol;
-                            }
-                        }
-                        else
-                        {
-                            bestSol = actualBestSol;
-                        }
-                        sumSol += actualBestSol.getObjectiveValue();
-                    }
-                    System.out.print(solutionType);
-                    System.out.print("\t" + res + "\t" + iter);
-                    System.out.print("\t" + (sumSol / repeats));
-                    System.out.print("\t" + bestSol.getObjectiveValue());
-                    System.out.println("\t" + (sumTime / repeats));
-                }
-            }
+            sumSol += actualBestSol.getObjectiveValue();
+          }
+          System.out.print(solutionType);
+          System.out.print("\t" + res + "\t" + iter);
+          System.out.print("\t" + (sumSol / repeats));
+          System.out.print("\t" + bestSol.getObjectiveValue());
+          System.out.println("\t" + (sumTime / repeats));
         }
+      }
     }
+  }
 
-    public void testing2(Formula formula) throws Exception
-    {
-        SatObjectiveFunction objFce = new SatObjectiveFunction(formula);
-        SatMoveManager moveManager = new SatMoveManager();
-        SatSolutionGenerator solGen = new SatSolutionGenerator("Greedy", formula);
+  public void testing2(Formula formula) throws Exception {
+    SatObjectiveFunction objFce = new SatObjectiveFunction(formula);
+    SatMoveManager moveManager = new SatMoveManager();
+    SatSolutionGenerator solGen = new SatSolutionGenerator("Greedy", formula);
 
-        HillClimber hc;
+    HillClimber hc;
 
-        int[] iterations = { 2000 };
-        int[] restarts = { 5000 };
+    int[] iterations = { 2000 };
+    int[] restarts = { 5000 };
 
-        double sumTime, hlpTime;
+    double sumTime, hlpTime;
 
-        for (int res : restarts)
-        {
-            for (int iter : iterations)
-            {
-                hc = new HillClimber(objFce, moveManager, solGen, iter);
-                hlpTime = getTime();
-                hc.startRestartedSearching(res);
-                sumTime = getTime() - hlpTime;
-                System.out.print("\t" + res);
-                System.out.print("\t" + hc.getBestSolution().getObjectiveValue());
-                System.out.println("\t" + sumTime);
-            }
-        }
+    for (int res : restarts) {
+      for (int iter : iterations) {
+        hc = new HillClimber(objFce, moveManager, solGen, iter);
+        hlpTime = getTime();
+        hc.startRestartedSearching(res);
+        sumTime = getTime() - hlpTime;
+        System.out.print("\t" + res);
+        System.out.print("\t" + hc.getBestSolution().getObjectiveValue());
+        System.out.println("\t" + sumTime);
+      }
     }
+  }
 
-    /**
-     * @param args
-     *            the command line arguments
-     */
-    public static void main(String[] args) throws Exception
-    {
-        String path = "data/sat/uf100-01.cnf";
-        
-        SatHillClimberTest test = new SatHillClimberTest();
-        Formula formula = new Formula(new ProblemInstanceInfo("uf20", ProblemInstanceOrigin.FILE, path),
-                FormulaReader.readClauses(new FileInputStream(path)));
+  /**
+   * @param args the command line arguments
+   */
+  public static void main(String[] args) throws Exception {
+    String path = "data/sat/uf100-01.cnf";
 
-        test.testing2(formula);
-    }
+    SatHillClimberTest test = new SatHillClimberTest();
+    Formula formula = new Formula(new ProblemInstanceInfo("uf20", ProblemInstanceOrigin.FILE, path),
+        FormulaReader.readClauses(new FileInputStream(path)));
+
+    test.testing2(formula);
+  }
 }

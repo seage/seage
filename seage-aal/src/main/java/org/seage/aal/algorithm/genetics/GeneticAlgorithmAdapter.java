@@ -46,167 +46,149 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
 /**
  * GeneticSearchAdapter class
  */
-@AlgorithmParameters({
-        @Parameter(name = "crossLengthPct", min = 0, max = 100, init = 10),
-        @Parameter(name = "eliteSubjectPct", min = 0, max = 100, init = 10),
-        @Parameter(name = "iterationCount", min = 100, max = 100000, init = 100),
-        @Parameter(name = "mutateLengthPct", min = 0, max = 100, init = 10),
-        @Parameter(name = "mutateSubjectPct", min = 0, max = 100, init = 10),
-        @Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),
-        @Parameter(name = "randomSubjectPct", min = 0, max = 100, init = 10) })
-public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends Subject<?>> extends AlgorithmAdapterImpl<P, S>
-{
+@AlgorithmParameters({ @Parameter(name = "crossLengthPct", min = 0, max = 100, init = 10),
+    @Parameter(name = "eliteSubjectPct", min = 0, max = 100, init = 10),
+    @Parameter(name = "iterationCount", min = 100, max = 100000, init = 100),
+    @Parameter(name = "mutateLengthPct", min = 0, max = 100, init = 10),
+    @Parameter(name = "mutateSubjectPct", min = 0, max = 100, init = 10),
+    @Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),
+    @Parameter(name = "randomSubjectPct", min = 0, max = 100, init = 10) })
+public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends Subject<?>>
+    extends AlgorithmAdapterImpl<P, S> {
 
-    protected List<S> _solutions;
-    protected GeneticAlgorithm<S> _geneticSearch;
-    protected SubjectEvaluator<S> _evaluator;
-    protected SubjectComparator<S> _comparator;
-    private GeneticAlgorithmListener _algorithmListener;
-    protected S _bestEverSolution;
-    protected AlgorithmParams _params;
+  protected List<S> _solutions;
+  protected GeneticAlgorithm<S> _geneticSearch;
+  protected SubjectEvaluator<S> _evaluator;
+  protected SubjectComparator<S> _comparator;
+  private GeneticAlgorithmListener _algorithmListener;
+  protected S _bestEverSolution;
+  protected AlgorithmParams _params;
 
-    private double _statInitObjVal;
-    private double _statBestObjVal;
-    private int _statNrOfIterationsDone;
-    private int _statNumNewSol;
-    private int _statLastImprovingIteration;
+  private double _statInitObjVal;
+  private double _statBestObjVal;
+  private int _statNrOfIterationsDone;
+  private int _statNumNewSol;
+  private int _statLastImprovingIteration;
 
-    private AlgorithmReporter<P> _reporter;
-	private IPhenotypeEvaluator<P> _phenotypeEvaluator;
+  private AlgorithmReporter<P> _reporter;
+  private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
-    public GeneticAlgorithmAdapter(GeneticOperator<S> operator, 
-    		SubjectEvaluator<S> evaluator,
-    		IPhenotypeEvaluator<P> phenotypeEvaluator,
-    		boolean maximizing)
-    {
-        _evaluator = evaluator;
-        _phenotypeEvaluator = phenotypeEvaluator;
-        _algorithmListener = new GeneticAlgorithmListener();
-        _comparator = new SubjectComparator<S>();
-        _geneticSearch = new GeneticAlgorithm<S>(operator, evaluator);
-        _geneticSearch.addGeneticSearchListener(_algorithmListener);
-    }
+  public GeneticAlgorithmAdapter(GeneticOperator<S> operator, SubjectEvaluator<S> evaluator,
+      IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing) {
+    _evaluator = evaluator;
+    _phenotypeEvaluator = phenotypeEvaluator;
+    _algorithmListener = new GeneticAlgorithmListener();
+    _comparator = new SubjectComparator<S>();
+    _geneticSearch = new GeneticAlgorithm<S>(operator, evaluator);
+    _geneticSearch.addGeneticSearchListener(_algorithmListener);
+  }
 
-    /**
-     * <running> <parameters/> <minutes/> <statistics/> </running>
-     * 
-     * @param param
-     * @throws java.lang.Exception
-     */
+  /**
+   * <running> <parameters/> <minutes/> <statistics/> </running>
+   * 
+   * @param param
+   * @throws java.lang.Exception
+   */
+  @Override
+  public void startSearching(final AlgorithmParams params) throws Exception {
+    if (params == null)
+      throw new Exception("Parameters not set");
+    setParameters(params);
+
+    _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
+    _reporter.putParameters(_params);
+
+    _geneticSearch.startSearching(_solutions);
+
+    _solutions = _geneticSearch.getSubjects();
+    if (_solutions == null)
+      throw new Exception("Solutions null");
+  }
+
+  @Override
+  public boolean isRunning() {
+    return _geneticSearch.isRunning();
+  }
+
+  @Override
+  public void stopSearching() throws Exception {
+    _geneticSearch.stopSolving();
+
+    while (isRunning())
+      Thread.sleep(100);
+  }
+
+  public void setParameters(AlgorithmParams params) throws Exception {
+    _params = params;
+
+    _geneticSearch.getOperator().setCrossLengthCoef(_params.getValueDouble("crossLengthPct") / 100);
+    _geneticSearch.getOperator().setMutateLengthCoef(_params.getValueDouble("mutateLengthPct") / 100);
+    _geneticSearch.setEliteSubjectsPct(_params.getValueDouble("eliteSubjectPct"));
+    _geneticSearch.setIterationToGo(_params.getValueInt("iterationCount"));
+    _geneticSearch.setMutatePopulationPct(_params.getValueDouble("mutateSubjectPct"));
+    _geneticSearch.setPopulationCount(_params.getValueInt("numSolutions"));
+    _geneticSearch.setRandomSubjectsPct(_params.getValueDouble("randomSubjectPct"));
+
+    // _paramID = param.getValue("ID");
+  }
+
+  @Override
+  public AlgorithmReport getReport() throws Exception {
+    int num = _solutions.size();// > 10 ? 10 : solutions.length;
+    double avg = 0;
+    for (int i = 0; i < num; i++)
+      avg += _solutions.get(i).getObjectiveValue()[0];
+    avg /= num;
+
+    _reporter.putStatistics(_statNrOfIterationsDone, _statNumNewSol, _statLastImprovingIteration, _statInitObjVal, avg,
+        _statBestObjVal);
+
+    return _reporter.getReport();
+  }
+
+  private class GeneticAlgorithmListener implements IAlgorithmListener<GeneticAlgorithmEvent<S>> {
     @Override
-    public void startSearching(final AlgorithmParams params) throws Exception
-    {
-        if (params == null)
-            throw new Exception("Parameters not set");
-        setParameters(params);
-
-        _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
-        _reporter.putParameters(_params);
-
-        _geneticSearch.startSearching(_solutions);
-
-        _solutions = _geneticSearch.getSubjects();
-        if (_solutions == null)
-            throw new Exception("Solutions null");
+    public void algorithmStarted(GeneticAlgorithmEvent<S> e) {
+      _algorithmStarted = true;
+      _statNumNewSol = _statLastImprovingIteration = 0;
     }
 
     @Override
-    public boolean isRunning()
-    {
-        return _geneticSearch.isRunning();
+    public void algorithmStopped(GeneticAlgorithmEvent<S> e) {
+      _algorithmStopped = true;
+      _statNrOfIterationsDone = e.getGeneticSearch().getCurrentIteration();
+      S s = e.getGeneticSearch().getBestSubject();
+      if (s != null)
+        _statBestObjVal = s.getObjectiveValue()[0];
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void newBestSolutionFound(GeneticAlgorithmEvent<S> e) {
+      try {
+        GeneticAlgorithm<S> gs = e.getGeneticSearch();
+        S subject = gs.getBestSubject();
+        if (_statNumNewSol == 0)
+          _statInitObjVal = subject.getObjectiveValue()[0];
+
+        _bestEverSolution = (S) gs.getBestSubject().clone();
+        _reporter.putNewSolution(System.currentTimeMillis(), gs.getCurrentIteration(), solutionToPhenotype(subject));
+        _statNumNewSol++;
+        _statLastImprovingIteration = gs.getCurrentIteration();
+
+      } catch (Exception ex) {
+        _logger.warn(ex.getMessage(), ex);
+      }
     }
 
     @Override
-    public void stopSearching() throws Exception
-    {
-        _geneticSearch.stopSolving();
+    public void noChangeInValueIterationMade(GeneticAlgorithmEvent<S> e) {
 
-        while (isRunning())
-            Thread.sleep(100);
-    }
-
-    public void setParameters(AlgorithmParams params) throws Exception
-    {
-        _params = params;
-
-        _geneticSearch.getOperator().setCrossLengthCoef(_params.getValueDouble("crossLengthPct") / 100);
-        _geneticSearch.getOperator().setMutateLengthCoef(_params.getValueDouble("mutateLengthPct") / 100);
-        _geneticSearch.setEliteSubjectsPct(_params.getValueDouble("eliteSubjectPct"));
-        _geneticSearch.setIterationToGo(_params.getValueInt("iterationCount"));
-        _geneticSearch.setMutatePopulationPct(_params.getValueDouble("mutateSubjectPct"));
-        _geneticSearch.setPopulationCount(_params.getValueInt("numSolutions"));
-        _geneticSearch.setRandomSubjectsPct(_params.getValueDouble("randomSubjectPct"));
-
-        // _paramID = param.getValue("ID");
     }
 
     @Override
-    public AlgorithmReport getReport() throws Exception
-    {
-        int num = _solutions.size();// > 10 ? 10 : solutions.length;
-        double avg = 0;
-        for (int i = 0; i < num; i++)
-            avg += _solutions.get(i).getObjectiveValue()[0];
-        avg /= num;
+    public void iterationPerformed(GeneticAlgorithmEvent<S> e) {
 
-        _reporter.putStatistics(_statNrOfIterationsDone, _statNumNewSol, _statLastImprovingIteration, _statInitObjVal,
-                avg, _statBestObjVal);
-
-        return _reporter.getReport();
     }
-
-    private class GeneticAlgorithmListener implements IAlgorithmListener<GeneticAlgorithmEvent<S>>
-    {
-        @Override
-        public void algorithmStarted(GeneticAlgorithmEvent<S> e)
-        {
-            _algorithmStarted = true;
-            _statNumNewSol = _statLastImprovingIteration = 0;
-        }
-
-        @Override
-        public void algorithmStopped(GeneticAlgorithmEvent<S> e)
-        {
-            _algorithmStopped = true;
-            _statNrOfIterationsDone = e.getGeneticSearch().getCurrentIteration();
-            S s = e.getGeneticSearch().getBestSubject();
-            if (s != null)
-                _statBestObjVal = s.getObjectiveValue()[0];
-        }
-
-        @SuppressWarnings("unchecked")
-		@Override
-        public void newBestSolutionFound(GeneticAlgorithmEvent<S> e)
-        {
-            try
-            {
-                GeneticAlgorithm<S> gs = e.getGeneticSearch();
-                S subject = gs.getBestSubject();
-                if (_statNumNewSol == 0)
-                    _statInitObjVal = subject.getObjectiveValue()[0];
-
-                _bestEverSolution = (S) gs.getBestSubject().clone();
-                _reporter.putNewSolution(System.currentTimeMillis(), gs.getCurrentIteration(), solutionToPhenotype(subject));
-                _statNumNewSol++;
-                _statLastImprovingIteration = gs.getCurrentIteration();
-
-            }
-            catch (Exception ex)
-            {
-                _logger.warn( ex.getMessage(), ex);
-            }
-        }
-
-        @Override
-        public void noChangeInValueIterationMade(GeneticAlgorithmEvent<S> e)
-        {
-
-        }
-
-        @Override
-        public void iterationPerformed(GeneticAlgorithmEvent<S> e)
-        {
-
-        }
-    }
+  }
 }

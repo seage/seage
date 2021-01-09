@@ -29,13 +29,13 @@ package org.seage.metaheuristic.grasp;
  *
  * @author Martin Zaloga
  */
-public interface IMove
-{
+public interface IMove {
 
-    /**
-     * Defining the shape functions for apply the solution
-     * @param s - Solution which to have to apply
-     * @return - New actual slolution
-     */
-    Solution apply(Solution s);
+  /**
+   * Defining the shape functions for apply the solution
+   * 
+   * @param s - Solution which to have to apply
+   * @return - New actual slolution
+   */
+  Solution apply(Solution s);
 }

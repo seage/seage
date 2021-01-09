@@ -30,90 +30,79 @@ import java.util.List;
 /**
  * Summary description for InstanceReader.
  */
-public class FormulaReader
-{
+public class FormulaReader {
 
-    public static List<Clause> readClauses(InputStream stream) throws IOException
-    {
-        LineNumberReader lnr = new LineNumberReader(new BufferedReader(new InputStreamReader(stream)));
-        lnr.setLineNumber(1);
-        StreamTokenizer stok = new StreamTokenizer(lnr);
+  public static List<Clause> readClauses(InputStream stream) throws IOException {
+    LineNumberReader lnr = new LineNumberReader(new BufferedReader(new InputStreamReader(stream)));
+    lnr.setLineNumber(1);
+    StreamTokenizer stok = new StreamTokenizer(lnr);
 
-        int[] dataLine = null;
-        ArrayList<Clause> clauses = new ArrayList<Clause>();
+    int[] dataLine = null;
+    ArrayList<Clause> clauses = new ArrayList<Clause>();
 
-        while ((dataLine = readLine(stok)) != null)
-        {
-            // System.out.println(dataLine[0]);
-            if(dataLine.length == 0 || dataLine[0] == 0) continue;
-            List<Literal> literals = new ArrayList<Literal>();
-            for (int i=0;i<dataLine.length;i++)
-            {
-                int literalValue = dataLine[i];
-                if (literalValue == 0) break;
-                boolean neg = literalValue < 0 ? true : false;
-                int ix = Math.abs(literalValue) - 1;
+    while ((dataLine = readLine(stok)) != null) {
+      // System.out.println(dataLine[0]);
+      if (dataLine.length == 0 || dataLine[0] == 0)
+        continue;
+      List<Literal> literals = new ArrayList<Literal>();
+      for (int i = 0; i < dataLine.length; i++) {
+        int literalValue = dataLine[i];
+        if (literalValue == 0)
+          break;
+        boolean neg = literalValue < 0 ? true : false;
+        int ix = Math.abs(literalValue) - 1;
 
-                literals.add(new Literal(ix, neg)); /////////////////////
-            }            
-            Clause newClause = new Clause(literals.toArray(new Literal[0]));
+        literals.add(new Literal(ix, neg)); /////////////////////
+      }
+      Clause newClause = new Clause(literals.toArray(new Literal[0]));
 
-            clauses.add(newClause);
-        }
-
-        return clauses;
+      clauses.add(newClause);
     }
 
-    private static int[] readLine(StreamTokenizer stok) throws IOException
-    {
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        double sum = 0;
-        int[] result = null;
-        boolean comment = false;
-        stok.parseNumbers();
-        stok.eolIsSignificant(true);
-        stok.commentChar(35);
+    return clauses;
+  }
 
-        // if(stok.ttype == StreamTokenizer.TT_EOF) return null;
-        while (sum == 0)
-        {
-            stok.nextToken();
+  private static int[] readLine(StreamTokenizer stok) throws IOException {
+    ArrayList<Integer> res = new ArrayList<Integer>();
+    double sum = 0;
+    int[] result = null;
+    boolean comment = false;
+    stok.parseNumbers();
+    stok.eolIsSignificant(true);
+    stok.commentChar(35);
 
-            while (stok.ttype != StreamTokenizer.TT_EOL && stok.ttype != StreamTokenizer.TT_EOF)
-            {
-                if (stok.ttype == StreamTokenizer.TT_NUMBER)
-                {
-                    res.add(new Integer((int) stok.nval));
-                    sum++;// = stok.nval;
-                }
-                if (stok.ttype == StreamTokenizer.TT_WORD)
-                {
-                    comment = true;
-                    break;
-                }
+    // if(stok.ttype == StreamTokenizer.TT_EOF) return null;
+    while (sum == 0) {
+      stok.nextToken();
 
-                stok.nextToken();
-            }
-            if (stok.ttype == StreamTokenizer.TT_EOF)
-            {
-                if (sum != 0)
-                {
-                    break;
-                }
-                else
-                {
-                    return null;
-                }
-            }
+      while (stok.ttype != StreamTokenizer.TT_EOL && stok.ttype != StreamTokenizer.TT_EOF) {
+        if (stok.ttype == StreamTokenizer.TT_NUMBER) {
+          res.add(new Integer((int) stok.nval));
+          sum++;// = stok.nval;
         }
-        if (comment)
-            return new int[] {};
+        if (stok.ttype == StreamTokenizer.TT_WORD) {
+          comment = true;
+          break;
+        }
 
-        result = new int[res.size()];
-
-        for (int i = 0; i < result.length; i++)
-            result[i] = res.get(i).intValue();
-
-        return result;
+        stok.nextToken();
+      }
+      if (stok.ttype == StreamTokenizer.TT_EOF) {
+        if (sum != 0) {
+          break;
+        } else {
+          return null;
+        }
+      }
     }
+    if (comment)
+      return new int[] {};
+
+    result = new int[res.size()];
+
+    for (int i = 0; i < result.length; i++)
+      result[i] = res.get(i).intValue();
+
+    return result;
+  }
 }

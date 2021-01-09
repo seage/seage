@@ -41,93 +41,81 @@ import org.seage.problem.tsp.TourProvider;
  *
  * @author Richard Malek
  */
-public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>>
-{
-    public static void main(String[] args)
-    {
-        try
-        {
-            String path = "data/tsp/eil51.tsp";//args[0];		// 426
-            //String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
-            //String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
-            //String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
-            //String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
-            //String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
+public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>> {
+  public static void main(String[] args) {
+    try {
+      String path = "data/tsp/eil51.tsp";// args[0]; // 426
+      // String path = "data/tsp/berlin52.tsp";//args[0]; // 7542
+      // String path = "data/tsp/ch130.tsp";//args[0]; // 6110
+      // String path = "data/tsp/lin318.tsp";//args[0]; // 42029
+      // String path = "data/tsp/pcb442.tsp";//args[0]; // 50778
+      // String path = "data/tsp/u574.tsp";//args[0]; // 36905
 
-            new TspGeneticAlgorithmTest().run(path);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+      new TspGeneticAlgorithmTest().run(path);
+    } catch (Exception ex) {
+      ex.printStackTrace();
     }
+  }
 
-    public void run(String path) throws Exception
-    {
-        City[] cities = CityProvider.readCities(new FileInputStream(path));
+  public void run(String path) throws Exception {
+    City[] cities = CityProvider.readCities(new FileInputStream(path));
 
-        GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<Subject<Integer>>(new TspGeneticOperator(),
-                new TspEvaluator(cities));
-        gs.addGeneticSearchListener(this);
-        gs.setEliteSubjectsPct(5);
-        gs.setMutatePopulationPct(5);
-        gs.setMutateChromosomeLengthPct(30);
-        gs.setPopulationCount(500);
-        gs.setRandomSubjectsPct(5);
-        gs.setCrossLengthPct(30);
-        gs.setIterationToGo(100000);
-        gs.startSearching(generateInitialSubjects(cities, 100));
-    }
+    GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<Subject<Integer>>(new TspGeneticOperator(),
+        new TspEvaluator(cities));
+    gs.addGeneticSearchListener(this);
+    gs.setEliteSubjectsPct(5);
+    gs.setMutatePopulationPct(5);
+    gs.setMutateChromosomeLengthPct(30);
+    gs.setPopulationCount(500);
+    gs.setRandomSubjectsPct(5);
+    gs.setCrossLengthPct(30);
+    gs.setIterationToGo(100000);
+    gs.startSearching(generateInitialSubjects(cities, 100));
+  }
 
-    private List<Subject<Integer>> generateInitialSubjects(City[] cities, int count) throws Exception
-    {
-        int numTours = count;
-        int tourLenght = cities.length;
-        //Integer[][] tours = new Integer[numTours][tourLenght];
-        ArrayList<Subject<Integer>> result = new ArrayList<Subject<Integer>>(numTours);
+  private List<Subject<Integer>> generateInitialSubjects(City[] cities, int count) throws Exception {
+    int numTours = count;
+    int tourLenght = cities.length;
+    // Integer[][] tours = new Integer[numTours][tourLenght];
+    ArrayList<Subject<Integer>> result = new ArrayList<Subject<Integer>>(numTours);
 
-        for (int k = 0; k < tourLenght; k++)
-            result.add(new Subject<Integer>(TourProvider.createRandomTour(cities.length)));
-        //tours[k] = TourProvider.createRandomTour(cities);
+    for (int k = 0; k < tourLenght; k++)
+      result.add(new Subject<Integer>(TourProvider.createRandomTour(cities.length)));
+    // tours[k] = TourProvider.createRandomTour(cities);
 
-        //        for(int k=0;k<tours.length;k++)
-        //        {
-        //            Subject s = new Subject(new Genome(1, tourLenght));
-        //            s.getChromosome().setGeneArray(tours[k]);
-        //
-        //            result[k] = s;
-        //        }
-        return result;
-    }
+    // for(int k=0;k<tours.length;k++)
+    // {
+    // Subject s = new Subject(new Genome(1, tourLenght));
+    // s.getChromosome().setGeneArray(tours[k]);
+    //
+    // result[k] = s;
+    // }
+    return result;
+  }
 
-    @Override
-    public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e)
-    {
-        System.out.println("Genetic Algorithm for TSP started.");
-    }
+  @Override
+  public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e) {
+    System.out.println("Genetic Algorithm for TSP started.");
+  }
 
-    @Override
-    public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e)
-    {
-        System.out.println("Genetic Algorithm for TSP stopped.");
-    }
+  @Override
+  public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e) {
+    System.out.println("Genetic Algorithm for TSP stopped.");
+  }
 
-    @Override
-    public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e)
-    {
-        System.out.println("New best: " + e.getGeneticSearch().getBestSubject().getFitness()[0]);
-    }
+  @Override
+  public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e) {
+    System.out.println("New best: " + e.getGeneticSearch().getBestSubject().getFitness()[0]);
+  }
 
-    @Override
-    public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Integer>> e)
-    {
+  @Override
+  public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Integer>> e) {
 
-    }
+  }
 
-    @Override
-    public void iterationPerformed(GeneticAlgorithmEvent<Subject<Integer>> e)
-    {
+  @Override
+  public void iterationPerformed(GeneticAlgorithmEvent<Subject<Integer>> e) {
 
-    }
+  }
 
 }
