@@ -4,15 +4,10 @@ stages:
   - build
   - test
   - report
-  - integration-test
-  - functional-test
-  - release
-  - deploy
 
 variables:
   DOCKER_DRIVER: overlay2
   SEAGE_TEST_IMAGE: seage:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID
-  SEAGE_RELEASE_IMAGE: snoopy.dmz:5000/ci/seage:latest
 
 build-seage:
   stage: build
@@ -26,5 +21,7 @@ test-seage:
 
 report-seage:
   stage: report
+  only:
+    - master
   script:
     - docker run --rm $SEAGE_TEST_IMAGE mvn verify sonar:sonar -Dsonar.projectKey=seage -Dsonar.host.url=https://sonarqube.rickq.net -Dsonar.login=$SONAR_SECRET
