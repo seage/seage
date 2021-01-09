@@ -42,12 +42,10 @@ public abstract class ProblemAlgorithmAdapterTestBase<P extends Phenotype<?>> {
     }
   }
 
-  @Test
   void testGetAlgorithmClass() {
     assertNotNull(_algorithmFactory.getAlgorithmClass());
   }
 
-  @Test
   void testAlgorithmAdapter() throws Exception {
     List<ProblemInstanceInfo> infos = _problemProvider.getProblemInfo().getProblemInstanceInfos();
     assertTrue(infos.size() > 0);
