@@ -30,7 +30,6 @@ package org.seage.data;
  *
  * @author Richard Malek
  */
-public interface DataNodeListener
-{
-    void dataChanged(DataNode dataSet);
+public interface DataNodeListener {
+  void dataChanged(DataNode dataSet);
 }

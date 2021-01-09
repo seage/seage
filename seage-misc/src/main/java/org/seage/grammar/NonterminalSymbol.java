@@ -36,156 +36,129 @@ import org.seage.data.DataNode;
  *
  * @author jenik
  */
-public class NonterminalSymbol implements Symbol
-{
+public class NonterminalSymbol implements Symbol {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -1930442234125327450L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -1930442234125327450L;
 
-    public NonterminalSymbol(String name)
-    {
-        this.name = name;
-        children = new Vector<Symbol>();
-        rule = null;
+  public NonterminalSymbol(String name) {
+    this.name = name;
+    children = new Vector<Symbol>();
+    rule = null;
+  }
+
+  public NonterminalSymbol(NonterminalSymbol other) {
+    this(other.name);
+  }
+
+  @Override
+  public Object eval(DataNode symbolTable) {
+    try {
+      return rule.eval(symbolTable, this);
+    } catch (Exception e) {
+      System.err.println("GOT ERROR: " + e);
+      e.printStackTrace();
+      return null;
     }
+  }
 
-    public NonterminalSymbol(NonterminalSymbol other)
-    {
-        this(other.name);
+  @Override
+  public Symbol optimize() {
+    try {
+      return rule.optimize(this);
+    } catch (Exception e) {
+      System.err.println("GOT ERROR: " + e);
+      return null;
     }
+  }
 
-    @Override
-    public Object eval(DataNode symbolTable)
-    {
-        try
-        {
-            return rule.eval(symbolTable, this);
-        }
-        catch (Exception e)
-        {
-            System.err.println("GOT ERROR: " + e);
-            e.printStackTrace();
-            return null;
-        }
+  /**
+   * @brief expand nontermial by given rule, on given stack
+   * @param generator functor that will generate constant values
+   */
+  public void expand(Stack<NonterminalSymbol> stack, GrammarRule rule) {
+    /// save reference to rule
+    this.rule = rule;
+    /// add children
+    Vector<Symbol> right = rule.getRight();
+    Iterator<Symbol> it = right.iterator();
+    int i = stack.size();
+    while (it.hasNext()) {
+      Symbol s = it.next();
+      if (s.getType() == Symbol.Type.NONTERMINAL) {
+        NonterminalSymbol sn = new NonterminalSymbol((NonterminalSymbol) s);
+        children.add(sn);
+        stack.add(i, sn);
+      } else {
+        TerminalSymbol ts = (TerminalSymbol) s.copy();
+        ts.pick();
+        children.add(ts);
+      }
     }
+  }
 
-    @Override
-    public Symbol optimize()
-    {
-        try
-        {
-            return rule.optimize(this);
-        }
-        catch (Exception e)
-        {
-            System.err.println("GOT ERROR: " + e);
-            return null;
-        }
+  public Vector<Symbol> getChildren() {
+    return children;
+  }
+
+  @Override
+  public String toString() {
+    return name;
+  }
+
+  /** @brief get string representation of this subtree */
+  public String getStringTree() {
+    String ret = new String();
+    for (Symbol s : children) {
+      if (s.getType() == Symbol.Type.TERMINAL)
+        ret += s.toString();
+      else {
+        ret += ((NonterminalSymbol) (s)).getStringTree();
+      }
     }
+    return ret;
+  }
 
-    /** @brief expand nontermial by given rule, on given stack
-      * @param generator functor that will generate constant values 
-      */
-    public void expand(Stack<NonterminalSymbol> stack, GrammarRule rule)
-    {
-        ///save reference to rule
-        this.rule = rule;
-        ///add children        
-        Vector<Symbol> right = rule.getRight();
-        Iterator<Symbol> it = right.iterator();
-        int i = stack.size();
-        while (it.hasNext())
-        {
-            Symbol s = it.next();
-            if (s.getType() == Symbol.Type.NONTERMINAL)
-            {
-                NonterminalSymbol sn = new NonterminalSymbol((NonterminalSymbol) s);
-                children.add(sn);
-                stack.add(i, sn);
-            }
-            else
-            {
-                TerminalSymbol ts = (TerminalSymbol) s.copy();
-                ts.pick();
-                children.add(ts);
-            }
-        }
+  public String getSymbolTree() {
+    Iterator<Symbol> it = children.iterator();
+    Iterator<?> rit = rule.getRight().iterator();
+    String ret = new String();
+    while (rit.hasNext()) {
+      Symbol s = (Symbol) rit.next();
+      if (s.getType() == Symbol.Type.TERMINAL)
+        ret += s.toString();
+      else {
+        ret += ((NonterminalSymbol) (it.next())).getStringTree();
+      }
     }
+    return ret;
+  }
 
-    public Vector<Symbol> getChildren()
-    {
-        return children;
-    }
+  /** @brief copy ourself, and return new instance */
+  @Override
+  public Symbol copy() {
+    return new NonterminalSymbol(this);
+  }
 
-    @Override
-    public String toString()
-    {
-        return name;
-    }
+  protected Vector<Symbol> children;
+  protected GrammarRule rule; /// by which grammar rule were we expanded?
+  protected String name;
 
-    /** @brief get string representation of this subtree */
-    public String getStringTree()
-    {
-        String ret = new String();
-        for (Symbol s : children)
-        {
-            if (s.getType() == Symbol.Type.TERMINAL)
-                ret += s.toString();
-            else
-            {
-                ret += ((NonterminalSymbol) (s)).getStringTree();
-            }
-        }
-        return ret;
-    }
+  @Override
+  public boolean equals(Object b) {
+    return (b instanceof NonterminalSymbol) && ((NonterminalSymbol) b).name.equals(this.name);
+  }
 
-    public String getSymbolTree()
-    {
-        Iterator<Symbol> it = children.iterator();
-        Iterator<?> rit = rule.getRight().iterator();
-        String ret = new String();
-        while (rit.hasNext())
-        {
-            Symbol s = (Symbol) rit.next();
-            if (s.getType() == Symbol.Type.TERMINAL)
-                ret += s.toString();
-            else
-            {
-                ret += ((NonterminalSymbol) (it.next())).getStringTree();
-            }
-        }
-        return ret;
-    }
+  @Override
+  public int hashCode() {
+    return name.hashCode();
+  }
 
-    /** @brief copy ourself, and return new instance */
-    @Override
-    public Symbol copy()
-    {
-        return new NonterminalSymbol(this);
-    }
-
-    protected Vector<Symbol> children;
-    protected GrammarRule rule; ///by which grammar rule were we expanded?
-    protected String name;
-
-    @Override
-    public boolean equals(Object b)
-    {
-        return (b instanceof NonterminalSymbol) && ((NonterminalSymbol) b).name.equals(this.name);
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public Type getType()
-    {
-        return Symbol.Type.NONTERMINAL;
-    }
+  @Override
+  public Type getType() {
+    return Symbol.Type.NONTERMINAL;
+  }
 
 }

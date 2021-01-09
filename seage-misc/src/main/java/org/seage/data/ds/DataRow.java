@@ -24,46 +24,39 @@ import java.util.ArrayList;
 /**
  * Summary description for DataRow.
  */
-public class DataRow extends ArrayList<DataCell>
-{
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1940031810667352202L;
-    protected Object _rowProperty;
+public class DataRow extends ArrayList<DataCell> {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1940031810667352202L;
+  protected Object _rowProperty;
 
-    public DataRow()
-    {
-    }
+  public DataRow() {
+  }
 
-    public DataRow(int numCells)
-    {
-        for (int i = 0; i < numCells; i++)
-            add(new DataCell());
-    }
+  public DataRow(int numCells) {
+    for (int i = 0; i < numCells; i++)
+      add(new DataCell());
+  }
 
-    public Object getRowProperty()
-    {
-        return _rowProperty;
-    }
+  public Object getRowProperty() {
+    return _rowProperty;
+  }
 
-    public void setRowProperty(Object o)
-    {
-        _rowProperty = o;
-    }
+  public void setRowProperty(Object o) {
+    _rowProperty = o;
+  }
 
-    @Override
-    public String toString()
-    {
-        String res = "";
-        for (int i = 0; i < size(); i++)
-            res += get(i).toString() + "\n";
-        return res;
-    }
+  @Override
+  public String toString() {
+    String res = "";
+    for (int i = 0; i < size(); i++)
+      res += get(i).toString() + "\n";
+    return res;
+  }
 
-    public void initDataCells(int size)
-    {
-        // TODO Auto-generated method stub
+  public void initDataCells(int size) {
+    // TODO Auto-generated method stub
 
-    }
+  }
 }

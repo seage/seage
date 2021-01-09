@@ -22,23 +22,19 @@ package org.seage.data.ds;
 /**
  * Summary description for DataCell.
  */
-public class DataCell
-{
-    protected Object _cellProperty;
+public class DataCell {
+  protected Object _cellProperty;
 
-    public Object getCellProperty()
-    {
-        return _cellProperty;
-    }
+  public Object getCellProperty() {
+    return _cellProperty;
+  }
 
-    public void setCellProperty(Object o)
-    {
-        _cellProperty = o;
-    }
+  public void setCellProperty(Object o) {
+    _cellProperty = o;
+  }
 
-    @Override
-    public String toString()
-    {
-        return _cellProperty.toString();
-    }
+  @Override
+  public String toString() {
+    return _cellProperty.toString();
+  }
 }
