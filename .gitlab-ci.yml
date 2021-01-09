@@ -1,0 +1,28 @@
+image: docker:stable
+
+services:
+  - name: docker:stable-dind
+    command: ["--insecure-registry=snoopy.dmz:5000"]
+
+stages:
+  - build
+  - test
+  - integration-test
+  - functional-test
+  - release
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  SEAGE_TEST_IMAGE: seage:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID
+  SEAGE_RELEASE_IMAGE: snoopy.dmz:5000/ci/seage:latest
+
+build-seage:
+  stage: build
+  script:
+    - docker build -t $SEAGE_TEST_IMAGE -f Dockerfile .
+
+test-seage:
+  stage: test
+  script:
+    - docker run --rm $SEAGE_TEST_IMAGE mvn clean package
