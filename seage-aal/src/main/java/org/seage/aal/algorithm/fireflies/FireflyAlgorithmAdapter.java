@@ -60,7 +60,7 @@ import org.seage.metaheuristic.fireflies.SolutionComparator;
 })
 public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends Solution>
     extends AlgorithmAdapterImpl<P, S> {
-  protected List<S> _solutions;
+  protected List<S> solutions;
   protected FireflySearch<S> _fireflySearch;
   protected ObjectiveFunction _evaluator;
   protected SolutionComparator _comparator;
@@ -84,7 +84,7 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
     _evaluator = evaluator;
     _observer = new FireflySearchObserver();
     _comparator = new SolutionComparator();
-    _fireflySearch = new FireflySearch<S>(operator, evaluator);
+    _fireflySearch = new FireflySearch<>(operator, evaluator);
     _fireflySearch.addFireflySearchListener(_observer);
     _phenotypeEvaluator = phenotypeEvaluator;
   }
@@ -104,9 +104,9 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
     _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
     _reporter.putParameters(_params);
 
-    _fireflySearch.startSolving(_solutions);
-    _solutions = _fireflySearch.getSolutions();
-    if (_solutions == null)
+    _fireflySearch.startSolving(this.solutions);
+    this.solutions = _fireflySearch.getSolutions();
+    if (this.solutions == null)
       throw new Exception("Solutions null");
   }
 
@@ -130,18 +130,18 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
     _statNumIter = _params.getValueInt("iterationCount");
     _fireflySearch.setAbsorption(_params.getValueDouble("absorption"));
     _fireflySearch.setTimeStep(_params.getValueDouble("timeStep"));
-    _fireflySearch
-        .setWithDecreasingRandomness(((_params.getValueDouble("withDecreasingRandomness") > 0) ? true : false));
+    _fireflySearch.setWithDecreasingRandomness(
+        ((_params.getValueDouble("withDecreasingRandomness") > 0) ? true : false));
     _fireflySearch.setPopulationCount(_params.getValueInt("numSolutions"));
     // EDD OWN PARAMETERS
   }
 
   @Override
   public AlgorithmReport getReport() throws Exception {
-    int num = _solutions.size();// > 10 ? 10 : solutions.length;
+    int num = this.solutions.size();// > 10 ? 10 : solutions.length;
     double avg = 0;
     for (int i = 0; i < num; i++)
-      avg += _solutions.get(i).getObjectiveValue()[0];
+      avg += this.solutions.get(i).getObjectiveValue()[0];
     avg /= num;
 
     _reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);

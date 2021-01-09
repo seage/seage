@@ -29,8 +29,8 @@ package org.seage.aal.algorithm.antcolony;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.problem.TestPhenotypeEvaluator;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
@@ -40,7 +40,7 @@ import org.seage.metaheuristic.antcolony.Node;
  *
  * @author Richard Malek
  */
-public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant> {
+public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant<AntBrain>> {
 
   public AntColonyAdapterTest() throws Exception {
     super();
@@ -55,15 +55,16 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant> {
 
     }
 
-    _algAdapter = new TestAntColonyAdapter(new AntBrain(graph), graph, null);
-    _algParams = new AlgorithmParams();
+    this.algAdapter = new TestAntColonyAdapter(
+        new AntBrain(graph), graph, new TestPhenotypeEvaluator());
+    this.algParams = new AlgorithmParams();
 
-    _algParams.putValue("iterationCount", 3);
-    _algParams.putValue("alpha", 100);
-    _algParams.putValue("beta", 1);
-    _algParams.putValue("defaultPheromone", 1);
-    _algParams.putValue("qantumOfPheromone", 1);
-    _algParams.putValue("localEvaporation", 1);
+    this.algParams.putValue("iterationCount", 3);
+    this.algParams.putValue("alpha", 100);
+    this.algParams.putValue("beta", 1);
+    this.algParams.putValue("defaultPheromone", 1);
+    this.algParams.putValue("qantumOfPheromone", 1);
+    this.algParams.putValue("localEvaporation", 1);
   }
 
   @Test

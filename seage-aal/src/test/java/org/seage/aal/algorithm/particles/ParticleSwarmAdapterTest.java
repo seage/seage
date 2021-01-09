@@ -48,7 +48,7 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle>
 
   @BeforeEach
   public void initAlgorithm() throws Exception {
-    _algAdapter = new ParticleSwarmAdapter<TestPhenotype, Particle>(null, null, null, false) {
+    algAdapter = new ParticleSwarmAdapter<TestPhenotype, Particle>(null, null, null, false) {
 
       @Override
       public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception {
@@ -84,7 +84,7 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle>
       }
     };
 
-    _algParams = new AlgorithmParams();
+    algParams = new AlgorithmParams();
     // _algParams.putValue("problemID", "ParticleSwarmTest");
     // _algParams.putValue("instance", "TestInstance");
 
@@ -97,7 +97,7 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle>
     params.putValue("alpha", 1);
     params.putValue("beta", 0);
 
-    _algParams.putDataNodeRef(params);
+    algParams.putDataNodeRef(params);
   }
 
   @Override

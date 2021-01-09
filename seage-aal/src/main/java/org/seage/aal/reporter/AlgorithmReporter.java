@@ -44,7 +44,6 @@ public class AlgorithmReporter<P extends Phenotype<?>> {
     _report = new AlgorithmReport("AlgorithmReport");
     _report.putDataNode(new DataNode("Log"));
     _report.putDataNode(new DataNode("Statistics"));
-
   }
 
   public void putParameters(AlgorithmParams params) throws Exception {

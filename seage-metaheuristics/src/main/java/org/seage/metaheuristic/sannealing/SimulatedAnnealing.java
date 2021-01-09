@@ -23,6 +23,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
+
 package org.seage.metaheuristic.sannealing;
 
 import org.seage.metaheuristic.AlgorithmEventProducer;
@@ -32,7 +33,7 @@ import org.seage.metaheuristic.IAlgorithmListener;
  * @author Jan Zmatlik
  */
 
-public class SimulatedAnnealing implements ISimulatedAnnealing {
+public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnnealing<S> {
 
   /**
    * The current temperature.
@@ -68,12 +69,12 @@ public class SimulatedAnnealing implements ISimulatedAnnealing {
   /**
    * The Solution which is actual
    */
-  private Solution _currentSolution;
+  private S _currentSolution;
 
   /**
    * The Solution which is best
    */
-  private Solution _bestSolution;
+  private S _bestSolution;
 
   /**
    * Modifying current solution
@@ -119,7 +120,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing {
    * @throws Exception
    */
   @Override
-  public void startSearching(Solution solution) throws Exception {
+  public void startSearching(S solution) throws Exception {
     _eventProducer.fireAlgorithmStarted();
     // Searching is starting
     _stopSearching = false;
@@ -153,7 +154,8 @@ public class SimulatedAnnealing implements ISimulatedAnnealing {
         _currentIteration++;
 
         // Move to new locations
-        Solution modifiedSolution = _moveManager.getModifiedSolution(_currentSolution, _currentTemperature);
+        S modifiedSolution = (S)_moveManager.getModifiedSolution(
+            (S)_currentSolution, _currentTemperature);
 
         // Calculate objective function and set value to modified
         // solution
@@ -168,7 +170,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing {
         if (Math.random() <= probability) {
           _currentSolution = modifiedSolution;
           if (modifiedSolution.compareTo(_bestSolution) > 0) {
-            _bestSolution = modifiedSolution.clone();
+            _bestSolution = (S)modifiedSolution.clone();
             _eventProducer.fireNewBestSolutionFound();
           }
         }
@@ -183,11 +185,11 @@ public class SimulatedAnnealing implements ISimulatedAnnealing {
   }
 
   @Override
-  public Solution getCurrentSolution() {
+  public S getCurrentSolution() {
     return _currentSolution;
   }
 
-  public void setCurrentSolution(Solution _currentSolution) {
+  public void setCurrentSolution(S _currentSolution) {
     this._currentSolution = _currentSolution;
   }
 
@@ -231,7 +233,7 @@ public class SimulatedAnnealing implements ISimulatedAnnealing {
   }
 
   @Override
-  public Solution getBestSolution() {
+  public S getBestSolution() {
     return _bestSolution;
   }
 

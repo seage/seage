@@ -11,8 +11,8 @@ import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.metaheuristic.fireflies.FireflyOperator;
 import org.seage.metaheuristic.fireflies.ObjectiveFunction;
 
-public class TestFireflyAlgorithmAdapter extends FireflyAlgorithmAdapter<TestPhenotype, TestSolution> {
-  private List<TestSolution> _solutions0;
+public class TestFireflyAlgorithmAdapter 
+    extends FireflyAlgorithmAdapter<TestPhenotype, TestSolution> {
 
   public TestFireflyAlgorithmAdapter(FireflyOperator operator, ObjectiveFunction evaluator,
       IPhenotypeEvaluator<TestPhenotype> phenotypeEvaluator, boolean maximizing) {
@@ -21,31 +21,26 @@ public class TestFireflyAlgorithmAdapter extends FireflyAlgorithmAdapter<TestPhe
 
   @Override
   public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception {
-    _solutions0 = new ArrayList<TestSolution>(source.length);
-    _solutions = new ArrayList<TestSolution>(source.length);
+    this.solutions = new ArrayList<TestSolution>(source.length);
 
     for (int i = 0; i < source.length; i++) {
       TestSolution s = new TestSolution(source[i].getSolution());
-      _solutions0.add(s);
-      _solutions.add(s);
+      this.solutions.add(s);
     }
   }
 
   @Override
   public TestPhenotype[] solutionsToPhenotype() throws Exception {
-    assertEquals(_solutions0.size(), _solutions.size());
-
-    for (int i = 1; i < _solutions.size(); i++) {
-      assertNotSame(_solutions0.get(i), _solutions.get(i));
+    TestPhenotype[] result = new TestPhenotype[this.solutions.size()];
+    for (int i = 0; i < this.solutions.size(); i++) {
+      result[i] = solutionToPhenotype(this.solutions.get(i));
     }
-
-    return null;
+    return result;
   }
 
   @Override
   public TestPhenotype solutionToPhenotype(TestSolution solution) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+    return new TestPhenotype((Integer[])solution.solution);
   }
 
 }

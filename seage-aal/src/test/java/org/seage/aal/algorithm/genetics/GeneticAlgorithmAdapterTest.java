@@ -35,9 +35,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.TestPhenotype;
+import org.seage.aal.problem.TestPhenotypeEvaluator;
 import org.seage.metaheuristic.genetics.BasicGeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
@@ -46,7 +46,7 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
  *
  * @author Richard Malek
  */
-public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subject<Integer>> {
+class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subject<Integer>> {
 
   public GeneticAlgorithmAdapterTest() throws Exception {
     super();
@@ -66,48 +66,44 @@ public class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subjec
       }
     };
 
-    _algAdapter = new GeneticAlgorithmAdapter<TestPhenotype, Subject<Integer>>(
-        new BasicGeneticOperator<Subject<Integer>, Integer>(), se, null, false) {
-      private List<Subject<Integer>> _solutions0;
+    algAdapter = new GeneticAlgorithmAdapter<TestPhenotype, Subject<Integer>>(
+        new BasicGeneticOperator<Subject<Integer>, Integer>(), 
+        se, new TestPhenotypeEvaluator(), false) {
 
       @Override
       public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception {
-        _solutions = new ArrayList<Subject<Integer>>(source.length);
-        _solutions0 = new ArrayList<Subject<Integer>>(source.length);
+        this.solutions = new ArrayList<Subject<Integer>>(source.length);
         for (int i = 0; i < source.length; i++) {
           Subject<Integer> s = new Subject<Integer>(source[i].getSolution());
-          _solutions.add(s);
-          _solutions0.add(s);
+          this.solutions.add(s);
         }
       }
 
       @Override
       public TestPhenotype[] solutionsToPhenotype() throws Exception {
-        assertEquals(_solutions0.size(), _solutions.size());
-
-        for (int i = 0; i < _solutions.size(); i++) {
-          assertNotSame(_solutions0.get(i), _solutions.get(i));
+        TestPhenotype[] result = new TestPhenotype[this.solutions.size()];
+        for (int i = 0; i < this.solutions.size(); i++) {
+          result[i] = solutionToPhenotype(this.solutions.get(i));
         }
-        return null;
+        return result;
       }
 
       @Override
       public TestPhenotype solutionToPhenotype(Subject<Integer> solution) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        return new TestPhenotype(solution.getChromosome().getGenes());
       }
     };
 
-    _algParams = new AlgorithmParams();
-    _algParams.putValue("crossLengthPct", 40);
-    _algParams.putValue("mutateLengthPct", 20);
-    _algParams.putValue("eliteSubjectPct", 1);
-    _algParams.putValue("iterationCount", 10);
-    _algParams.putValue("mutateSubjectPct", 10);
-    _algParams.putValue("numSolutions", NUM_SOLUTIONS);
-    _algParams.putValue("randomSubjectPct", 1);
+    algParams = new AlgorithmParams();
+    algParams.putValue("crossLengthPct", 40);
+    algParams.putValue("mutateLengthPct", 20);
+    algParams.putValue("eliteSubjectPct", 1);
+    algParams.putValue("iterationCount", 10);
+    algParams.putValue("mutateSubjectPct", 10);
+    algParams.putValue("numSolutions", NUM_SOLUTIONS);
+    algParams.putValue("randomSubjectPct", 1);
 
-    // _tester = new AlgorithmAdapterTestImpl<>(_algAdapter, /*_solutions,*/
+    // _tester = new AlgorithmAdapterTestImpl<>(_algAdapter, /*this.solutions,*/
     // _algParams);
   }
 

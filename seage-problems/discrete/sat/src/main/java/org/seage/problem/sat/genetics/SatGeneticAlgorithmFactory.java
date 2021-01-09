@@ -57,17 +57,17 @@ public class SatGeneticAlgorithmFactory implements IAlgorithmFactory<SatPhenotyp
         new SatGeneticOperator(), new SatEvaluator(new SatPhenotypeEvaluator(formula)), phenotypeEvaluator, false) {
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
-        _solutions = new ArrayList<Subject<Boolean>>(source.length);
+        this.solutions = new ArrayList<Subject<Boolean>>(source.length);
         for (int i = 0; i < source.length; i++)
-          _solutions.add(new Subject<Boolean>(source[i].getSolution()));
+          this.solutions.add(new Subject<Boolean>(source[i].getSolution()));
       }
 
       @Override
       public SatPhenotype[] solutionsToPhenotype() throws Exception {
-        SatPhenotype[] result = new SatPhenotype[_solutions.size()];
+        SatPhenotype[] result = new SatPhenotype[this.solutions.size()];
 
-        for (int i = 0; i < _solutions.size(); i++) {
-          result[i] = new SatPhenotype(_solutions.get(i).getChromosome().getGenes());
+        for (int i = 0; i < this.solutions.size(); i++) {
+          result[i] = new SatPhenotype(this.solutions.get(i).getChromosome().getGenes());
         }
         return result;
       }

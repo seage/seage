@@ -76,7 +76,7 @@ public class JsspSimulatedAnnealingFactory implements IAlgorithmFactory
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-                _solutions = new Solution[source.length];
+                this.solutions = new Solution[source.length];
                 for (int j = 0; j < source.length; j++)
                 {
                     JsspSolution solution = new JsspSolution(0)
@@ -87,18 +87,18 @@ public class JsspSimulatedAnnealingFactory implements IAlgorithmFactory
                     for (int i = 0; i < tour.length; i++)
                         tour[i] = (Integer) source[j][i];
 
-                    _solutions[j] = solution;
+                    this.solutions[j] = solution;
                 }
             }
 
             @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
-                Object[][] result = new Object[_solutions.length][];
+                Object[][] result = new Object[this.solutions.length][];
 
-                for (int i = 0; i < _solutions.length; i++)
+                for (int i = 0; i < this.solutions.length; i++)
                 {
-                    JsspSolution solution = (JsspSolution) _solutions[i];
+                    JsspSolution solution = (JsspSolution) this.solutions[i];
                     result[i] = solution.getTour().clone();
                 }
                 return result;

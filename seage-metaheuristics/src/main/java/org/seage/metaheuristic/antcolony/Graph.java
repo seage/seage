@@ -41,7 +41,7 @@ public abstract class Graph {
   protected double _evaporCoeff = 0.95;
   private double _defaultPheromone;
 
-  public Graph() {
+  protected Graph() {
     _nodes = new HashMap<Integer, Node>();
     _edges = new ArrayList<Edge>();
   }

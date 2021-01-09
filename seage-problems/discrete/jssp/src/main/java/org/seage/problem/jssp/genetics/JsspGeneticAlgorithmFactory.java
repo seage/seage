@@ -61,20 +61,20 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-                _solutions = new ArrayList<Subject<Integer>>(source.length);
+                this.solutions = new ArrayList<Subject<Integer>>(source.length);
                 for (int i = 0; i < source.length; i++)
-                    _solutions.add(new Subject<Integer>((Integer[]) source[i]));
+                    this.solutions.add(new Subject<Integer>((Integer[]) source[i]));
             }
 
             @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
-                Object[][] result = new Object[_solutions.size()][];
+                Object[][] result = new Object[this.solutions.size()][];
 
-                for (int i = 0; i < _solutions.size(); i++)
+                for (int i = 0; i < this.solutions.size(); i++)
                 {
-                    int numGenes = _solutions.get(i).getChromosome().getLength();
-                    result[i] = Arrays.copyOf(_solutions.get(i).getChromosome().getGenes(), numGenes);
+                    int numGenes = this.solutions.get(i).getChromosome().getLength();
+                    result[i] = Arrays.copyOf(this.solutions.get(i).getChromosome().getGenes(), numGenes);
                 }
                 return result;
             }

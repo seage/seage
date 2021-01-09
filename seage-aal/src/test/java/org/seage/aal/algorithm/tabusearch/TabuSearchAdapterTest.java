@@ -33,9 +33,9 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.TestPhenotype;
+import org.seage.aal.problem.TestPhenotypeEvaluator;
 
 /**
  *
@@ -49,45 +49,39 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
 
   @BeforeEach
   public void initAlgorithm() throws Exception {
-    _algAdapter = new TabuSearchAdapter<TestPhenotype, TestSolution>(new TestMoveManager(), new TestObjectiveFunction(),
-        null) {
-      private TestSolution[] _solutions0;
+    algAdapter = new TabuSearchAdapter<TestPhenotype, TestSolution>(
+        new TestMoveManager(), new TestObjectiveFunction(), new TestPhenotypeEvaluator()) {
 
       @Override
       public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception {
-        _solutions0 = new TestSolution[source.length];
-        _solutions = new TestSolution[source.length];
+        this.solutions = new TestSolution[source.length];
 
         for (int i = 0; i < source.length; i++) {
           TestSolution s = new TestSolution(source[i].getSolution());
-          _solutions0[i] = s;
-          _solutions[i] = s;
+          this.solutions[i] = s;
         }
-
       }
 
       @Override
       public TestPhenotype[] solutionsToPhenotype() throws Exception {
-        assertEquals(_solutions0.length, _solutions.length);
-        assertNotSame(_solutions0[0], _solutions[0]);
-        for (int i = 1; i < _solutions.length; i++) {
-          assertSame(_solutions0[i], _solutions[i]);
+        TestPhenotype[] result = new TestPhenotype[this.solutions.length];
+        for (int i = 0; i < this.solutions.length; i++) {
+          result[i] = solutionToPhenotype(this.solutions[i]);
         }
-        return null;
+        return result;
       }
 
       @Override
       public TestPhenotype solutionToPhenotype(TestSolution solution) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        return new TestPhenotype((Integer[])solution.solution);
       }
     };
 
-    _algParams = new AlgorithmParams();
-    _algParams.putValue("numIterDivers", 1);
-    _algParams.putValue("iterationCount", 3);
-    _algParams.putValue("numSolutions", 1);
-    _algParams.putValue("tabuListLength", 1);
+    algParams = new AlgorithmParams();
+    algParams.putValue("numIterDivers", 1);
+    algParams.putValue("iterationCount", 3);
+    algParams.putValue("numSolutions", 1);
+    algParams.putValue("tabuListLength", 1);
   }
 
   @Override

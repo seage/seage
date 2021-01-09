@@ -51,7 +51,7 @@ import org.seage.aal.data.AlgorithmParams;
 public class AlgorithmAgent extends AelAgent
 {    
     protected IAlgorithmAdapter _algorithm;
-    protected Object[][] _solutions;
+    protected Object[][] this.solutions;
     protected DataNode _algorithmParams;
     protected Policy _policy;
     
@@ -215,19 +215,19 @@ public class AlgorithmAgent extends AelAgent
                         do
                         {
                             logInfo("algorithm run");
-                            _algorithm.solutionsFromPhenotype(_solutions);
+                            _algorithm.solutionsFromPhenotype(this.solutions);
                             _algorithm.setParameters(new AlgorithmParams(_algorithmParams));
                             _algorithm.startSearching();
                             // TODO: A - Handle INIT
                             _report = _algorithm.getReport();
                             _report.setId(_policy.getID());
                             _reportLog.putDataNode(_report);
-                            _solutions = _algorithm.solutionsToPhenotype();
-                            if(_solutions == null)
-                                throw new Exception("_solutions is null");
+                            this.solutions = _algorithm.solutionsToPhenotype();
+                            if(this.solutions == null)
+                                throw new Exception("this.solutions is null");
 
-                            sendBestSolutionToProblemAgent(_solutions[0]);
-                            //assert (_solutions != null);
+                            sendBestSolutionToProblemAgent(this.solutions[0]);
+                            //assert (this.solutions != null);
                             _algorithmParams = _policy.suggest(_report);
                             
                         }
@@ -247,18 +247,18 @@ public class AlgorithmAgent extends AelAgent
                 return;
             case stBREAK:
 //                if(currentStateInfo ( StateInfo.Ready))
-//                    if(_solutionPoolAddresses != null && _solutions != null)
+//                    if(_solutionPoolAddresses != null && this.solutions != null)
 //                    {
 //                        logInfo(getName() + " - " + stNames[getStateEx()]);
 //                        setStateInfo(stBREAK, StateInfo.InProgress);
-//                        new StoreSolutionCNPInitiatorTask(this, _solutionPoolAddresses, _solutions, stBREAK);
+//                        new StoreSolutionCNPInitiatorTask(this, _solutionPoolAddresses, this.solutions, stBREAK);
 //                    }
 //                    else
 //                        setStateInfo(stBREAK, StateInfo.Success);
                 if(currentStateInfo (StateInfo.Ready))
                 {
                     setState(stDONE);
-                    _solutions = null;
+                    this.solutions = null;
                     _breakTask.sendDone();
                     
                     return;
@@ -273,15 +273,15 @@ public class AlgorithmAgent extends AelAgent
 //                return;
             case stSTORESOLUTION:
                 if(currentStateInfo ( StateInfo.Ready))
-                    if(_solutionPoolAddresses != null && _solutions != null)
+                    if(_solutionPoolAddresses != null && this.solutions != null)
                     {
                         logInfo(getName() + " - " + stNames[getStateEx()]);
                         setStateInfo(stSTORESOLUTION, StateInfo.InProgress);
-                        new StoreSolutionCNPInitiatorTask(this, _solutionPoolAddresses, _solutions, stSTORESOLUTION);
+                        new StoreSolutionCNPInitiatorTask(this, _solutionPoolAddresses, this.solutions, stSTORESOLUTION);
                     }
                 if(currentStateInfo ( StateInfo.Success))
                 {
-                    _solutions = null;
+                    this.solutions = null;
                     setState(stASKINGADVISER);
                 }
                 if(currentStateInfo ( StateInfo.Failure))
@@ -447,10 +447,10 @@ public class AlgorithmAgent extends AelAgent
         @Override
         protected boolean evaluateAcceptReply(Message m)
         {
-            _solutions = (Object[][])m.getContent();
+            this.solutions = (Object[][])m.getContent();
             setStateInfo(stLOADSOLUTION, StateInfo.Success);
 
-            logFine("LoadSolutionCNPInitiatorTask recieved " + _solutions.length + " solutions");
+            logFine("LoadSolutionCNPInitiatorTask recieved " + this.solutions.length + " solutions");
             return false;
         }
 
@@ -471,13 +471,13 @@ public class AlgorithmAgent extends AelAgent
     private class StoreSolutionCNPInitiatorTask extends CNPInitiatorTask
     {
         AlgorithmAgent _agent;
-        Object[][] _solutions;
+        Object[][] this.solutions;
         int _currentTask;
         public StoreSolutionCNPInitiatorTask(AlgorithmAgent agent, Collection<Address> participants, Object[][] solutions, int currentTask)
         {
             super(agent, participants, "<put amount='"+solutions.length+"'/>", 2000, "", true);
             _agent = agent;
-            _solutions = solutions;
+            this.solutions = solutions;
             _currentTask = currentTask;
             logFine("StoreSolutionCNPInitiatorTask sent request for " + solutions.length + " solutions");
         }
@@ -502,8 +502,8 @@ public class AlgorithmAgent extends AelAgent
             for(Address a : arg0.keySet())
             {
                 //arg0.remove(a);
-                //logFinest(_solutions.toString());
-                acceptedParticipants.put(a, _solutions);
+                //logFinest(this.solutions.toString());
+                acceptedParticipants.put(a, this.solutions);
             }
             
             super.sendAnswersToParticipants(acceptedParticipants);

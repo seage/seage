@@ -78,20 +78,20 @@ public class QapFireflyAlgorithmFactory implements IAlgorithmFactory
                     }
                     sols.add(new QapSolution(result));
                 }
-                this._solutions = sols;
+                this.solutions = sols;
             }
 
             @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
-                int height = _solutions.size();
-                int width = ((QapSolution) this._solutions.get(0))._assign.length;
+                int height = this.solutions.size();
+                int width = ((QapSolution) this.solutions.get(0))._assign.length;
                 Object[][] r = new Object[height][width];
                 for (int i = 0; i < height; i++)
                 {
                     for (int j = 0; j < width; j++)
                     {
-                        r[i][j] = ((QapSolution) this._solutions.get(i))._assign[j];
+                        r[i][j] = ((QapSolution) this.solutions.get(i))._assign[j];
                     }
                 }
                 return r;

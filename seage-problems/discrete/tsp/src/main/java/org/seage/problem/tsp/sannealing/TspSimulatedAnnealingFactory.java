@@ -77,7 +77,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory<TspPhenot
         new TspObjectiveFunction(cities), new TspMoveManager(), phenotypeEvaluator, false) {
       @Override
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
-        _solutions = new Solution[source.length];
+        this.solutions = new TspSolution[source.length];
         for (int j = 0; j < source.length; j++) {
           TspSolution solution = new TspGreedySolution(cities);
           Integer[] tour = solution.getTour();
@@ -85,16 +85,16 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory<TspPhenot
           for (int i = 0; i < tour.length; i++)
             tour[i] = (Integer) source[j].getSolution()[i];
 
-          _solutions[j] = solution;
+          this.solutions[j] = solution;
         }
       }
 
       @Override
       public TspPhenotype[] solutionsToPhenotype() throws Exception {
-        TspPhenotype[] result = new TspPhenotype[_solutions.length];
+        TspPhenotype[] result = new TspPhenotype[this.solutions.length];
 
-        for (int i = 0; i < _solutions.length; i++) {
-          TspSolution solution = (TspSolution) _solutions[i];
+        for (int i = 0; i < this.solutions.length; i++) {
+          TspSolution solution = (TspSolution) this.solutions[i];
           result[i] = new TspPhenotype(solution.getTour());
         }
         return result;

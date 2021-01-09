@@ -29,8 +29,8 @@ package org.seage.aal.algorithm.fireflies;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.problem.TestPhenotypeEvaluator;
 
 /**
  *
@@ -45,15 +45,19 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase<TestSo
 
   @BeforeEach
   public void initAlgorithm() throws Exception {
-    _algAdapter = new TestFireflyAlgorithmAdapter(new TestOperator(), new TestObjectiveFunction(), null, false);
+    this.algAdapter = new TestFireflyAlgorithmAdapter(
+        new TestOperator(), 
+        new TestObjectiveFunction(), 
+        new TestPhenotypeEvaluator(), 
+        false);
 
-    _algParams = new AlgorithmParams();
+    algParams = new AlgorithmParams();
 
-    _algParams.putValue("iterationCount", 10);
-    _algParams.putValue("numSolutions", NUM_SOLUTIONS);
-    _algParams.putValue("timeStep", 1);
-    _algParams.putValue("withDecreasingRandomness", 1);
-    _algParams.putValue("absorption", 1);
+    algParams.putValue("iterationCount", 10);
+    algParams.putValue("numSolutions", NUM_SOLUTIONS);
+    algParams.putValue("timeStep", 1);
+    algParams.putValue("withDecreasingRandomness", 1);
+    algParams.putValue("absorption", 1);
   }
 
   @Override

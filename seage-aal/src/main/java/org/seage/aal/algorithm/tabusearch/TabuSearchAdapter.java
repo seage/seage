@@ -54,9 +54,9 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
   private TabuSearchObserver _observer;
   private int _iterationToGo;
   private int _tabuListLength;
-  protected Solution[] _solutions;
-  protected int _solutionsToExplore;
-  protected Solution _bestEverSolution; // best of all solution
+  protected S[] solutions;
+  protected int solutionsToExplore;
+  protected S _bestEverSolution; // best of all solution
   private AlgorithmParams _params;
 
   private double _statInitObjVal;
@@ -87,19 +87,19 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
     _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
     _reporter.putParameters(_params);
 
-    if (_solutions.length > 1) {
+    if (this.solutions.length > 1) {
       _logger.warn("More than one solutions to solve, used just the first one.");
     }
 
     _statNumNewSol = 0;
 
-    _tabuSearch.setCurrentSolution(_solutions[0]);
+    _tabuSearch.setCurrentSolution(this.solutions[0]);
     _tabuSearch.setTabuList(new SimpleTabuList(_tabuListLength));
     _tabuSearch.setIterationsToGo(_iterationToGo);
 
     _tabuSearch.startSolving();
 
-    _solutions[0] = _tabuSearch.getBestSolution();
+    this.solutions[0] = (S)_tabuSearch.getBestSolution();
 
   }
 
@@ -122,7 +122,7 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
     _iterationToGo = _statNumIter = _params.getValueInt("iterationCount");
 
     _tabuListLength = _params.getValueInt("tabuListLength");
-    _solutionsToExplore = _params.getValueInt("numSolutions");
+    this.solutionsToExplore = _params.getValueInt("numSolutions");
 
   }
 

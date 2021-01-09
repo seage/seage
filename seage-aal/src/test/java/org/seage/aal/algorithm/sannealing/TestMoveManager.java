@@ -12,7 +12,7 @@ public class TestMoveManager implements IMoveManager {
   public Solution getModifiedSolution(Solution solution, double ct) {
     TestSolution s = (TestSolution) solution.clone();
     int ix = rnd.nextInt(s.solution.length);
-    Object o = s.solution[0];
+    Integer o = s.solution[0];
     s.solution[0] = s.solution[ix];
     s.solution[ix] = o;
     return s;

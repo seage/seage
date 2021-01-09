@@ -149,7 +149,6 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> ex
     @Override
     public void newBestSolutionFound(AntColonyEvent e) {
       AntColony alg = e.getAntColony();
-
       _averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();
       _statLastImprovingIteration = alg.getCurrentIteration();
       _averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();

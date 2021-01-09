@@ -53,8 +53,8 @@ import org.seage.metaheuristic.sannealing.Solution;
     @Parameter(name = "numSolutions", min = 1, max = 1, init = 1) })
 public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extends Solution>
     extends AlgorithmAdapterImpl<P, S> {
-  protected SimulatedAnnealing _simulatedAnnealing;
-  protected Solution[] _solutions;
+  protected SimulatedAnnealing<S> _simulatedAnnealing;
+  protected S[] solutions;
   private AlgorithmParams _params;
   // private Solution _bestSolution;
   private AlgorithmReporter<P> _reporter;
@@ -81,9 +81,9 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
     _reporter.putParameters(_params);
 
     _numberOfIterationsDone = _numberOfNewSolutions = _lastImprovingIteration = 0;
-    _simulatedAnnealing.startSearching(_solutions[0]);
+    _simulatedAnnealing.startSearching(this.solutions[0]);
 
-    _solutions[0] = _simulatedAnnealing.getBestSolution();
+    this.solutions[0] = _simulatedAnnealing.getBestSolution();
   }
 
   @Override

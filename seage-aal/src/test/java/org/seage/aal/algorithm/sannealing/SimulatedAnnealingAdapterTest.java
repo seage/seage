@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.problem.TestPhenotypeEvaluator;
 
 /**
  *
@@ -44,14 +45,15 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
 
   @BeforeEach
   public void initAlgorithm() throws Exception {
-    _algAdapter = new TestSimulatedAnnealingAdapter(null, new TestObjectiveFunction(), new TestMoveManager(), null,
-        false);
-    _algParams = new AlgorithmParams();
+    algAdapter = new TestSimulatedAnnealingAdapter(
+        null, new TestObjectiveFunction(), new TestMoveManager(), 
+        new TestPhenotypeEvaluator(), false);
+    algParams = new AlgorithmParams();
 
     // _algParams.putValue("annealCoeficient", 0.1);
-    _algParams.putValue("numIterations", 10);
-    _algParams.putValue("maxTemperature", 100);
-    _algParams.putValue("minTemperature", 1);
+    algParams.putValue("numIterations", 10);
+    algParams.putValue("maxTemperature", 100);
+    algParams.putValue("minTemperature", 1);
   }
 
   @Override

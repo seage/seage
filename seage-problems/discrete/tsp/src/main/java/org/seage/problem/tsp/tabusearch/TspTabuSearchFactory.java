@@ -59,23 +59,23 @@ public class TspTabuSearchFactory implements IAlgorithmFactory<TspPhenotype, Tsp
 
       @Override
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
-        _solutions = new Solution[source.length];
+        this.solutions = new TspSolution[source.length];
         for (int i = 0; i < source.length; i++) {
           TspSolution s = new TspSolution();
           Integer[] tour = new Integer[source[i].getSolution().length];
           for (int j = 0; j < tour.length; j++)
             tour[j] = (Integer) source[i].getSolution()[j];
           s.setTour(tour);
-          _solutions[i] = s;
+          this.solutions[i] = s;
         }
       }
 
       @Override
       public TspPhenotype[] solutionsToPhenotype() throws Exception {
-        TspPhenotype[] result = new TspPhenotype[_solutions.length];
+        TspPhenotype[] result = new TspPhenotype[this.solutions.length];
 
-        for (int i = 0; i < _solutions.length; i++) {
-          result[i] = solutionToPhenotype((TspSolution) _solutions[i]);
+        for (int i = 0; i < this.solutions.length; i++) {
+          result[i] = solutionToPhenotype((TspSolution) this.solutions[i]);
         }
         return result;
       }

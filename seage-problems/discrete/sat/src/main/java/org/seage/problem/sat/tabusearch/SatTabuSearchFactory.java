@@ -56,22 +56,22 @@ public class SatTabuSearchFactory implements IAlgorithmFactory<SatPhenotype, Sat
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
-        _solutions = new SatSolution[source.length];
+        this.solutions = new SatSolution[source.length];
         for (int i = 0; i < source.length; i++) {
           boolean[] sol = new boolean[source[i].getSolution().length];
           for (int j = 0; j < sol.length; j++)
             sol[j] = (Boolean) source[i].getSolution()[j];
 
-          _solutions[i] = new SatSolution(sol);
+          this.solutions[i] = new SatSolution(sol);
         }
       }
 
       @Override
       public SatPhenotype[] solutionsToPhenotype() throws Exception {
-        SatPhenotype[] result = new SatPhenotype[_solutions.length];
+        SatPhenotype[] result = new SatPhenotype[this.solutions.length];
 
-        for (int i = 0; i < _solutions.length; i++) {
-          SatSolution s = (SatSolution) _solutions[i];
+        for (int i = 0; i < this.solutions.length; i++) {
+          SatSolution s = (SatSolution) this.solutions[i];
           Boolean[] array = new Boolean[s.getLiteralValues().length];
           for (int j = 0; j < s.getLiteralValues().length; j++) {
             array[j] = s.getLiteralValues()[j];

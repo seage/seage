@@ -30,18 +30,18 @@ public class TaskRunner2Test {
 }
 
 class TestTask extends Task2 {
-  private int _length;
+  private int length;
 
   public TestTask(int coresNeeded) {
     super(coresNeeded);
-    _length = 5 + (int) (Math.random() * 10);
-    // System.out.println("creating " + getName() + " "+_length+"ms");
+    this.length = 5 + (int) (Math.random() * 10);
+    // System.out.println("creating " + getName() + " "+this.length+"ms");
   }
 
   @Override
   public void run() {
     try {
-      Thread.sleep(_length);
+      Thread.sleep(this.length);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }

@@ -16,7 +16,7 @@ public class TestMoveManager implements MoveManager {
       public void operateOn(Solution soln) {
         TestSolution s = (TestSolution) soln;
         int ix = rnd.nextInt(s.solution.length);
-        Object o = s.solution[0];
+        Integer o = s.solution[0];
         s.solution[0] = s.solution[ix];
         s.solution[ix] = o;
       }

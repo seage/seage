@@ -4,70 +4,77 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Random;
 
+import org.junit.jupiter.api.Assertions;
 import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.data.DataNode;
 
 public class AlgorithmAdapterTestBase<S> {
 
-  protected IAlgorithmAdapter<TestPhenotype, S> _algAdapter;
-  protected AlgorithmParams _algParams;
-  protected AlgorithmReport _algReport;
+  protected IAlgorithmAdapter<TestPhenotype, S> algAdapter;
+  protected AlgorithmParams algParams;
+  protected AlgorithmReport algReport;
 
-  protected final int NUM_SOLUTIONS = 10;
-  protected final int SOLUTION_LENGTH = 100;
+  protected static final int NUM_SOLUTIONS = 10;
+  protected static final int SOLUTION_LENGTH = 100;
 
   public void setAlgParameters(AlgorithmParams params) throws Exception {
-    _algParams = params;
+    this.algParams = params;
   }
 
+  /** Test method testAlgorithm().*/
   public void testAlgorithm() throws Exception {
-    _algAdapter.solutionsFromPhenotype(createTestPhenotypeSolutions());
-    _algAdapter.startSearching(_algParams);
-    assertNull(_algAdapter.solutionsToPhenotype());
-    _algAdapter.solutionsToPhenotype();
+    TestPhenotype[] p1 = createTestPhenotypeSolutions();
+    this.algAdapter.solutionsFromPhenotype(p1);
+    this.algAdapter.startSearching(this.algParams);
+    TestPhenotype[] p2 = this.algAdapter.solutionsToPhenotype();
+    assertEquals(p1.length, p2.length);
   }
 
+  /** Test method testAlgorithmWithParamsNull().*/
   public void testAlgorithmWithParamsNull() throws Exception {
-    try {
-      _algParams = null;
+    assertThrows(Exception.class, () -> {
+      this.algParams = null;
       testAlgorithm();
-      fail("Algorithm should throw an exception when parameters not set.");
-    } catch (Exception ex) {
-    }
+    });
   }
 
+  /** Test method testAlgorithmWithParamsAtZero().*/
   public void testAlgorithmWithParamsAtZero() throws Exception {
-    _algAdapter.solutionsFromPhenotype(createTestPhenotypeSolutions());
-    _algAdapter.startSearching(_algParams);
+    this.algAdapter.solutionsFromPhenotype(createTestPhenotypeSolutions());
+    this.algAdapter.startSearching(this.algParams);
   }
 
+  /** Test method testAsyncRunning().*/
   public void testAsyncRunning() throws Exception {
-    _algAdapter.solutionsFromPhenotype(createTestPhenotypeSolutions());
-    _algAdapter.startSearching(_algParams, true);
-    assertTrue(_algAdapter.isRunning());
+    this.algAdapter.solutionsFromPhenotype(createTestPhenotypeSolutions());
+    this.algAdapter.startSearching(this.algParams, true);
+    assertTrue(this.algAdapter.isRunning());
 
-    _algAdapter.stopSearching();
+    this.algAdapter.stopSearching();
 
-    assertFalse(_algAdapter.isRunning());
+    assertFalse(this.algAdapter.isRunning());
   }
 
+  /** Test method testReport().*/
   public void testReport() throws Exception {
     testAlgorithm();
-    _algReport = _algAdapter.getReport();
-    assertNotNull(_algReport);
-    assertTrue(_algReport.containsNode("Parameters"));
-    assertTrue(_algReport.containsNode("Log"));
-    assertTrue(_algReport.containsNode("Statistics"));
+    algReport = this.algAdapter.getReport();
+    assertNotNull(algReport);
+    assertTrue(this.algReport.containsNode("Parameters"));
+    assertTrue(this.algReport.containsNode("Log"));
+    assertTrue(this.algReport.containsNode("Statistics"));
 
-    for (String attName : _algReport.getDataNode("Parameters").getValueNames())
-      assertEquals(_algParams.getValue(attName), _algReport.getDataNode("Parameters").getValue(attName));
+    for (String attName : this.algReport.getDataNode("Parameters").getValueNames()) {
+      assertEquals(this.algParams.getValue(attName), 
+          this.algReport.getDataNode("Parameters").getValue(attName));
+    }
 
-    DataNode stats = _algReport.getDataNode("Statistics");
+    DataNode stats = this.algReport.getDataNode("Statistics");
     assertTrue(stats.getValueInt("numberOfIter") > 1);
     assertTrue(stats.getValueDouble("initObjVal") > 0);
     assertTrue(stats.getValueInt("avgObjVal") > 0);
@@ -77,8 +84,10 @@ public class AlgorithmAdapterTestBase<S> {
         || (stats.getValueInt("numberOfNewSolutions") == 1));
     assertTrue(stats.getValueInt("bestObjVal") == stats.getValueDouble("initObjVal")
         || stats.getValueInt("lastIterNumberNewSol") > 1);
-    assertTrue(stats.getValueInt("numberOfNewSolutions") > 0 || stats.getValueInt("lastIterNumberNewSol") == 0);
-    assertTrue(stats.getValueInt("lastIterNumberNewSol") > 1 || stats.getValueInt("numberOfNewSolutions") == 1);
+    assertTrue(stats.getValueInt("numberOfNewSolutions") > 0 
+        || stats.getValueInt("lastIterNumberNewSol") == 0);
+    assertTrue(stats.getValueInt("lastIterNumberNewSol") > 1 
+        || stats.getValueInt("numberOfNewSolutions") == 1);
   }
 
   private TestPhenotype[] createTestPhenotypeSolutions() {
