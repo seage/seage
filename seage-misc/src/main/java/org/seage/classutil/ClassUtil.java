@@ -58,7 +58,7 @@ public class ClassUtil {
     return result.toArray(new ClassInfo[0]);
   }
 
-  public static String[] searchForInstancesInJar(final String instanceDir, String pkgName) throws Exception {
+  public static String[] searchForInstances(final String instanceDir, String pkgName) throws Exception {
     ClassPath classPath = ClassPath.from(Thread.currentThread().getContextClassLoader());
     ImmutableSet<ClassPath.ResourceInfo> resources = classPath.getResources();
 

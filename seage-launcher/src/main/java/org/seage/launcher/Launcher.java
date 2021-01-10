@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
+import org.seage.aal.problem.ProblemProvider;
 import org.seage.launcher.commands.Command;
 import org.seage.launcher.commands.ExperimentMultiRandomCommand;
 import org.seage.launcher.commands.ExperimentSingleEvolutionCommand;
@@ -14,6 +15,8 @@ import org.seage.launcher.commands.ExperimentSingleRandomCommand;
 import org.seage.launcher.commands.ListCommand;
 import org.seage.launcher.commands.ReportCommand;
 import org.seage.logging.LogHelper;
+import org.seage.problem.sat.SatProblemProvider;
+import org.seage.problem.tsp.TspProblemProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +25,12 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 
 public class Launcher {
+  static {
+    ProblemProvider.providers = new Class<?>[] {
+      TspProblemProvider.class,
+      SatProblemProvider.class
+    };
+  }
   private static final Logger _logger = LoggerFactory.getLogger(Launcher.class.getName());
 
   @Parameter(names = "--help", help = true)

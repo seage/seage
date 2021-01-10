@@ -44,6 +44,7 @@ import org.slf4j.LoggerFactory;
  * @author Richard Malek
  */
 public abstract class ProblemProvider<P extends Phenotype<?>> implements IProblemProvider<P> {
+  public static Class<?>[] providers = {};
   private static Logger _logger = LoggerFactory.getLogger(ProblemProvider.class.getName());
   private static HashMap<String, IProblemProvider<Phenotype<?>>> _providers;
   private ProblemInfo _problemInfo;
@@ -75,7 +76,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
     // Instances
     DataNode instances = new DataNode("Instances");
-    for (String in : ClassUtil.searchForInstancesInJar("instances", this.getClass().getPackage().getName())) {
+    for (String in : ClassUtil.searchForInstances("instances", this.getClass().getPackage().getName())) {
       DataNode instance = new DataNode("Instance");
       instance.putValue("type", ProblemInstanceOrigin.RESOURCE);
       instance.putValue("path", in);
@@ -162,8 +163,18 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
   }
 
   ///////////////////////////////////////////////////////////////////////////
-
   public static synchronized HashMap<String, IProblemProvider<Phenotype<?>>> getProblemProviders() throws Exception {
+    HashMap<String, IProblemProvider<Phenotype<?>>> result = new HashMap<String, IProblemProvider<Phenotype<?>>>();
+
+    for (Class<?> c : providers) {
+      result.put(c.getAnnotation(Annotations.ProblemId.class).value(),
+          (IProblemProvider<Phenotype<?>>) c.newInstance());
+    }
+
+    return result;
+  }
+
+  public static synchronized HashMap<String, IProblemProvider<Phenotype<?>>> getProblemProviders0() throws Exception {
     if (_providers != null)
       return _providers;
 
