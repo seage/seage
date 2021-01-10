@@ -58,21 +58,21 @@ public class SatSimulatedAnnealingFactory implements IAlgorithmFactory<SatPhenot
             @Override
             public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception
             {
-                _solutions = new SatSolution[source.length];
+                this.solutions = new SatSolution[source.length];
                 for (int i = 0; i < source.length; i++)
                 {
-                    _solutions[i] = new SatSolution(source[i].getSolution());
+                    this.solutions[i] = new SatSolution(source[i].getSolution());
                 }
             }
 
             @Override
             public SatPhenotype[] solutionsToPhenotype() throws Exception
             {
-                SatPhenotype[] result = new SatPhenotype[_solutions.length];
+                SatPhenotype[] result = new SatPhenotype[this.solutions.length];
 
-                for (int i = 0; i < _solutions.length; i++)
+                for (int i = 0; i < this.solutions.length; i++)
                 {
-                    SatSolution s = (SatSolution) _solutions[i];
+                    SatSolution s = (SatSolution) this.solutions[i];
                     result[i] = new SatPhenotype(s.getLiteralValues());
                 }
                 return result;

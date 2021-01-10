@@ -29,7 +29,6 @@ package org.seage.aal.algorithm.sannealing;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.problem.TestPhenotypeEvaluator;
 
