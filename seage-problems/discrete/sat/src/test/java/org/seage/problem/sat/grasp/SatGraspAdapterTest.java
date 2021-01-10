@@ -7,8 +7,8 @@ import org.seage.problem.sat.SatProblemProvider;
 
 @Ignore("Adapter class not fully implemented yet")
 public class SatGraspAdapterTest extends ProblemAlgorithmAdapterTestBase<SatPhenotype> {
-    
-    public SatGraspAdapterTest() {
-        super(new SatProblemProvider(), "GRASP");
-    }
+
+  public SatGraspAdapterTest() {
+    super(new SatProblemProvider(), "GRASP");
+  }
 }

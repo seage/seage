@@ -33,32 +33,26 @@ import org.seage.metaheuristic.tabusearch.Solution;
  * @author Richard Malek
  */
 
-public class TspLongTermMemory implements LongTermMemory
-{
+public class TspLongTermMemory implements LongTermMemory {
 
-    public TspLongTermMemory()
-    {
-    }
+  public TspLongTermMemory() {
+  }
 
-    @Override
-    public void clearMemory()
-    {
-    }
+  @Override
+  public void clearMemory() {
+  }
 
-    @Override
-    public void memorizeSolution(Solution soln, boolean newBestSoln)
-    {
-    }
+  @Override
+  public void memorizeSolution(Solution soln, boolean newBestSoln) {
+  }
 
-    @Override
-    public Solution diversifySolution()
-    {
-        return null;
-    }
+  @Override
+  public Solution diversifySolution() {
+    return null;
+  }
 
-    @Override
-    public void resetIterNumber()
-    {
+  @Override
+  public void resetIterNumber() {
 
-    }
+  }
 }

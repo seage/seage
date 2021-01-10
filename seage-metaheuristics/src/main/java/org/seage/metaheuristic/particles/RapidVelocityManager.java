@@ -31,20 +31,17 @@ import java.util.Random;
  *
  * @author Jan Zmátlík
  */
-public class RapidVelocityManager implements IVelocityManager
-{
+public class RapidVelocityManager implements IVelocityManager {
 
-    Random _rnd = new Random();
+  Random _rnd = new Random();
 
-    @Override
-    public void calculateNewVelocityAndPosition(Particle particle, Particle localMinimum, Particle globalMinimum,
-            double alpha, double beta, double inertia)
-    {
-        for (int i = 0; i < particle.getCoords().length; i++)
-        {
-            particle.getCoords()[i] = (1 - beta) * particle.getCoords()[i]
-                    + beta * globalMinimum.getCoords()[i] + alpha * (_rnd.nextDouble() - 0.5d);
-        }
+  @Override
+  public void calculateNewVelocityAndPosition(Particle particle, Particle localMinimum, Particle globalMinimum,
+      double alpha, double beta, double inertia) {
+    for (int i = 0; i < particle.getCoords().length; i++) {
+      particle.getCoords()[i] = (1 - beta) * particle.getCoords()[i] + beta * globalMinimum.getCoords()[i]
+          + alpha * (_rnd.nextDouble() - 0.5d);
     }
+  }
 
 }

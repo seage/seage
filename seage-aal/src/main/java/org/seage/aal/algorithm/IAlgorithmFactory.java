@@ -32,13 +32,13 @@ import org.seage.aal.problem.ProblemInstance;
  *
  * @author Richard Malek
  */
-public interface IAlgorithmFactory<P extends Phenotype<?>, S>
-{
-    Class<?> getAlgorithmClass();
+public interface IAlgorithmFactory<P extends Phenotype<?>, S> {
+  Class<?> getAlgorithmClass();
 
-    /**
-     * @return IAlgorithmAdapter
-     * @throws Exception
-     */
-    IAlgorithmAdapter<P, S> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<P> phenotypeEvaluator) throws Exception;
+  /**
+   * @return IAlgorithmAdapter
+   * @throws Exception
+   */
+  IAlgorithmAdapter<P, S> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<P> phenotypeEvaluator)
+      throws Exception;
 }

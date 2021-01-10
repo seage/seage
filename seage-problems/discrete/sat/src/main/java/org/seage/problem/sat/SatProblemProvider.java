@@ -40,64 +40,55 @@ import org.seage.aal.problem.ProblemProvider;
  */
 @Annotations.ProblemId("SAT")
 @Annotations.ProblemName("Boolean Satisfiability Problem")
-public class SatProblemProvider extends ProblemProvider<SatPhenotype>
-{
-    @Override
-    public Formula initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
-    {
-        ProblemInstanceOrigin origin = instanceInfo.getOrigin();
-        String path = instanceInfo.getPath();
+public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
+  @Override
+  public Formula initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception {
+    ProblemInstanceOrigin origin = instanceInfo.getOrigin();
+    String path = instanceInfo.getPath();
 
-        InputStream stream0;
-        if (origin == ProblemInstanceOrigin.RESOURCE)
-            stream0 = getClass().getResourceAsStream(path);
-        else
-            stream0 = new FileInputStream(path);
+    InputStream stream0;
+    if (origin == ProblemInstanceOrigin.RESOURCE)
+      stream0 = getClass().getResourceAsStream(path);
+    else
+      stream0 = new FileInputStream(path);
 
-        Formula formula = null;
+    Formula formula = null;
 
-        try(InputStream stream = stream0)
-        {
-            formula = new Formula(instanceInfo, FormulaReader.readClauses(stream0));
-        }
-        catch (Exception ex)
-        {
-            System.err.println("SatProblemProvider.initProblemInstance - readCities failed, path: " + path);
-            throw ex;
-        }
-
-        return formula;
-
+    try (InputStream stream = stream0) {
+      formula = new Formula(instanceInfo, FormulaReader.readClauses(stream0));
+    } catch (Exception ex) {
+      System.err.println("SatProblemProvider.initProblemInstance - readCities failed, path: " + path);
+      throw ex;
     }
 
-    @Override
-    public IPhenotypeEvaluator<SatPhenotype> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception
-    {
-        Formula f = (Formula) problemInstance;
-        return new SatPhenotypeEvaluator(f);
-    }
+    return formula;
 
-    @Override
-    public SatPhenotype[] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
-            throws Exception
-    {
-        Random rnd = new Random(randomSeed);
-        Formula f = (Formula) problemInstance;
-        SatPhenotype[] result = new SatPhenotype[numSolutions];
-        
-        for (int i = 0; i < numSolutions; i++)
-        {
-            Boolean[] array = new Boolean[f.getLiteralCount()];
-            for (int j = 0; j < f.getLiteralCount(); j++)
-                array[j] = rnd.nextBoolean();
-            result[i] = new SatPhenotype(array);
-        }
-        return result;
-    }
+  }
 
-    @Override
-    public void visualizeSolution(Object[] solution, ProblemInstanceInfo problemInstanceInfo) throws Exception
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
+  @Override
+  public IPhenotypeEvaluator<SatPhenotype> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception {
+    Formula f = (Formula) problemInstance;
+    return new SatPhenotypeEvaluator(f);
+  }
+
+  @Override
+  public SatPhenotype[] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
+      throws Exception {
+    Random rnd = new Random(randomSeed);
+    Formula f = (Formula) problemInstance;
+    SatPhenotype[] result = new SatPhenotype[numSolutions];
+
+    for (int i = 0; i < numSolutions; i++) {
+      Boolean[] array = new Boolean[f.getLiteralCount()];
+      for (int j = 0; j < f.getLiteralCount(); j++)
+        array[j] = rnd.nextBoolean();
+      result[i] = new SatPhenotype(array);
     }
+    return result;
+  }
+
+  @Override
+  public void visualizeSolution(Object[] solution, ProblemInstanceInfo problemInstanceInfo) throws Exception {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

@@ -7,8 +7,8 @@ import org.seage.problem.tsp.TspProblemProvider;
 
 @Disabled("Adapter class not fully implemented yet")
 public class TspGraspAdapterTest extends ProblemAlgorithmAdapterTestBase<TspPhenotype> {
-    public TspGraspAdapterTest() {
-        super(new TspProblemProvider(), "GRASP");
-    }
+  public TspGraspAdapterTest() {
+    super(new TspProblemProvider(), "GRASP");
+  }
 
 }

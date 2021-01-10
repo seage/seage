@@ -32,65 +32,41 @@ import java.util.List;
 import org.seage.data.DataNode;
 
 /**
- * A structure describing a problem (name, id, available algorithms and instances)
+ * A structure describing a problem (name, id, available algorithms and
+ * instances)
+ * 
  * @author Richard Malek
  * 
- * ProblemInfo
- *  |_ id
- *  |_ name
- *  |_ class
- *  |_ Algorithms
- *  |   |_ Algorithm
- *  |   |   |_ id
- *  |   |   |_ name
- *  |   |   |_ factoryClass
- *  |   |   |_ Parameter
- *  |   |   |   |_ name
- *  |   |   |   |_ max
- *  |   |   |   |_ min
- *  |   |   |   |_ init
- *  |   |   |_ ...
- *  |   |   |_ Parameter
- *  |   |_ Algorithm
- *  |       |_ ...
- *  |_ Instances
- *      |_ Instance
- *      |	|_ id
- *      |	|_ name
- *      |   |_ type ("file" | "resource")
- *      |   |_ path
- *      |_ ...
- *      |_ Instance
+ *         ProblemInfo |_ id |_ name |_ class |_ Algorithms | |_ Algorithm | |
+ *         |_ id | | |_ name | | |_ factoryClass | | |_ Parameter | | | |_ name
+ *         | | | |_ max | | | |_ min | | | |_ init | | |_ ... | | |_ Parameter |
+ *         |_ Algorithm | |_ ... |_ Instances |_ Instance | |_ id | |_ name | |_
+ *         type ("file" | "resource") | |_ path |_ ... |_ Instance
  */
-public class ProblemInfo extends DataNode
-{
+public class ProblemInfo extends DataNode {
 
-    private static final long serialVersionUID = 7658277873739208135L;
+  private static final long serialVersionUID = 7658277873739208135L;
 
-    public ProblemInfo(String name)
-    {
-        super(name);
-    }
+  public ProblemInfo(String name) {
+    super(name);
+  }
 
-    public String getProblemID() throws Exception
-    {
-        return getValueStr("id");
-    }
+  public String getProblemID() throws Exception {
+    return getValueStr("id");
+  }
 
-    public ProblemInstanceInfo getProblemInstanceInfo(String instanceID) throws Exception
-    {
-        DataNode dn = getDataNode("Instances").getDataNodeById(instanceID);
-        if (dn == null)
-            throw new Exception("ProblemInfo does not contain any information on instanceID: " + instanceID);
-        return new ProblemInstanceInfo(dn);
-    }
+  public ProblemInstanceInfo getProblemInstanceInfo(String instanceID) throws Exception {
+    DataNode dn = getDataNode("Instances").getDataNodeById(instanceID);
+    if (dn == null)
+      throw new Exception("ProblemInfo does not contain any information on instanceID: " + instanceID);
+    return new ProblemInstanceInfo(dn);
+  }
 
-    public List<ProblemInstanceInfo> getProblemInstanceInfos() throws Exception
-    {
-        List<ProblemInstanceInfo> result = new ArrayList<ProblemInstanceInfo>();
-        for (DataNode dn : getDataNode("Instances").getDataNodes())
-            result.add(new ProblemInstanceInfo(dn));
-        return result;
-    }
+  public List<ProblemInstanceInfo> getProblemInstanceInfos() throws Exception {
+    List<ProblemInstanceInfo> result = new ArrayList<ProblemInstanceInfo>();
+    for (DataNode dn : getDataNode("Instances").getDataNodes())
+      result.add(new ProblemInstanceInfo(dn));
+    return result;
+  }
 
 }

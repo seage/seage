@@ -39,81 +39,71 @@ import org.seage.problem.tsp.CityProvider;
  *
  * @author Jan Zmatlik
  */
-public class TspParticleSwarmTest implements IParticleSwarmListener
-{
-    private City[] _cities;
-    //private static String _dataPath = "data/eil51.tsp";
-    private static String _dataPath = "data/berlin52.tsp";
+public class TspParticleSwarmTest implements IParticleSwarmListener {
+  private City[] _cities;
+  // private static String _dataPath = "data/eil51.tsp";
+  private static String _dataPath = "data/berlin52.tsp";
 
-    public static void main(String[] args)
-    {
-        try
-        {
-            if (args.length != 0)
-                _dataPath = args[0];
-            new TspParticleSwarmTest().run(_dataPath);
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
+  public static void main(String[] args) {
+    try {
+      if (args.length != 0)
+        _dataPath = args[0];
+      new TspParticleSwarmTest().run(_dataPath);
+    } catch (Exception ex) {
+      System.out.println(ex.getMessage());
+      ex.printStackTrace();
     }
+  }
 
-    public void run(String path) throws Exception
-    {
-        _cities = CityProvider.readCities(new FileInputStream(path));
-        System.out.println("Loading cities from path: " + path);
-        System.out.println("Number of cities: " + _cities.length);
+  public void run(String path) throws Exception {
+    _cities = CityProvider.readCities(new FileInputStream(path));
+    System.out.println("Loading cities from path: " + path);
+    System.out.println("Number of cities: " + _cities.length);
 
-        ParticleSwarm pso = new ParticleSwarm(new TspObjectiveFunction(_cities));
+    ParticleSwarm pso = new ParticleSwarm(new TspObjectiveFunction(_cities));
 
-        pso.setMaximalIterationCount(10000);
-        //        pso.setMaximalVelocity(10);
-        //        pso.setMinimalVelocity(-10);
-        //        pso.setInertia( 0.9 );
-        //        pso.setAlpha(1.193);
-        //        pso.setBeta(0.721);
+    pso.setMaximalIterationCount(10000);
+    // pso.setMaximalVelocity(10);
+    // pso.setMinimalVelocity(-10);
+    // pso.setInertia( 0.9 );
+    // pso.setAlpha(1.193);
+    // pso.setBeta(0.721);
 
-        pso.setMinimalVectorValue(-10);
-        pso.setMaximalVectorValue(10);
+    pso.setMinimalVectorValue(-10);
+    pso.setMaximalVectorValue(10);
 
-        pso.setInertia(0.721);
-        pso.setAlpha(0.5);
-        pso.setBeta(0.2);
+    pso.setInertia(0.721);
+    pso.setAlpha(0.5);
+    pso.setBeta(0.2);
 
-        pso.addParticleSwarmOptimizationListener(this);
+    pso.addParticleSwarmOptimizationListener(this);
 
-        Particle[] particles = new Particle[10000];
-        for (int i = 0; i < particles.length; i++)
-            particles[i] = new TspRandomParticle(_cities.length);
-        pso.startSearching(particles);
-    }
+    Particle[] particles = new Particle[10000];
+    for (int i = 0; i < particles.length; i++)
+      particles[i] = new TspRandomParticle(_cities.length);
+    pso.startSearching(particles);
+  }
 
-    @Override
-    public void newBestSolutionFound(ParticleSwarmEvent e)
-    {
+  @Override
+  public void newBestSolutionFound(ParticleSwarmEvent e) {
 
-        String s = String.format("Best (%d): %f", e.getParticleSwarm().getCurrentIteration(),
-                e.getParticleSwarm().getBestParticle().getEvaluation());
-        System.out.println(s);
-    }
+    String s = String.format("Best (%d): %f", e.getParticleSwarm().getCurrentIteration(),
+        e.getParticleSwarm().getBestParticle().getEvaluation());
+    System.out.println(s);
+  }
 
-    @Override
-    public void newIterationStarted(ParticleSwarmEvent e)
-    {
-    }
+  @Override
+  public void newIterationStarted(ParticleSwarmEvent e) {
+  }
 
-    @Override
-    public void particleSwarmStarted(ParticleSwarmEvent e)
-    {
-        System.out.println("Started");
-    }
+  @Override
+  public void particleSwarmStarted(ParticleSwarmEvent e) {
+    System.out.println("Started");
+  }
 
-    @Override
-    public void particleSwarmStopped(ParticleSwarmEvent e)
-    {
-        System.out.println("Stopped");
-    }
+  @Override
+  public void particleSwarmStopped(ParticleSwarmEvent e) {
+    System.out.println("Stopped");
+  }
 
 }

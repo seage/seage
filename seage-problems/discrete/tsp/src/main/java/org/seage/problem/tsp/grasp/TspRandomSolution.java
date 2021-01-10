@@ -34,51 +34,49 @@ import org.seage.problem.tsp.City;
  *
  * @author Martin Zaloga
  */
-public class TspRandomSolution extends TspSolution
-{
-    private static final long serialVersionUID = 6408615829159721770L;
+public class TspRandomSolution extends TspSolution {
+  private static final long serialVersionUID = 6408615829159721770L;
 
-    /**
-     * Constructor the solution with using the random algorithm for initial solution
-     * @param cities - List of cities with their coordinates
-     */
-    public TspRandomSolution(City[] cities)
-    {
-        super();
-        initRandTour(cities);
+  /**
+   * Constructor the solution with using the random algorithm for initial solution
+   * 
+   * @param cities - List of cities with their coordinates
+   */
+  public TspRandomSolution(City[] cities) {
+    super();
+    initRandTour(cities);
+  }
+
+  /**
+   * Creating the initial random solution
+   * 
+   * @param c - The input list of cities
+   */
+  private void initRandTour(City[] c) {
+    List<Integer> listTour = new ArrayList<Integer>();
+
+    /* Moving the cities in ArrayList for a next processing */
+    for (int i = 0; i < c.length; i++) {
+      listTour.add(i);
     }
 
-    /**
-     * Creating the initial random solution
-     * @param c - The input list of cities
-     */
-    private void initRandTour(City[] c)
-    {
-        List<Integer> listTour = new ArrayList<Integer>();
+    List<Integer> randTour = new ArrayList<Integer>();
+    Integer pom = null;
 
-        /*Moving the cities in ArrayList for a next processing*/
-        for (int i = 0; i < c.length; i++)
-        {
-            listTour.add(i);
-        }
-
-        List<Integer> randTour = new ArrayList<Integer>();
-        Integer pom = null;
-
-        /*Cycle the random algorithm*/
-        for (int i = 0; i < c.length; i++)
-        {
-            pom = listTour.get(_rnd.nextInt(listTour.size()));
-            randTour.add(pom);
-            listTour.remove(pom);
-        }
-
-        _tour = new Integer[c.length];
-
-        /*Transform the list of cities, generated wiht random algorithm, in array IDs*/
-        for (int i = 0; i < c.length; i++)
-        {
-            _tour[i] = randTour.get(i);
-        }
+    /* Cycle the random algorithm */
+    for (int i = 0; i < c.length; i++) {
+      pom = listTour.get(_rnd.nextInt(listTour.size()));
+      randTour.add(pom);
+      listTour.remove(pom);
     }
+
+    _tour = new Integer[c.length];
+
+    /*
+     * Transform the list of cities, generated wiht random algorithm, in array IDs
+     */
+    for (int i = 0; i < c.length; i++) {
+      _tour[i] = randTour.get(i);
+    }
+  }
 }

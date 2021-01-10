@@ -29,13 +29,11 @@ package org.seage.problem.tsp.particles;
  *
  * @author Jan Zmatlik
  */
-public class TspGreedyParticle extends TspParticle
-{
+public class TspGreedyParticle extends TspParticle {
 
-    public TspGreedyParticle(int dimension) throws Exception
-    {
-        super(dimension);
-        //        _tour = TourProvider.createGreedyTour( cities );
-    }
+  public TspGreedyParticle(int dimension) throws Exception {
+    super(dimension);
+    // _tour = TourProvider.createGreedyTour( cities );
+  }
 
 }

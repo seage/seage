@@ -29,55 +29,48 @@ package org.seage.metaheuristic.particles;
  *
  * @author Jan Zmatlik
  */
-public class ParticleSwarmListenerProvider
-{
+public class ParticleSwarmListenerProvider {
 
-    private IParticleSwarmListener[] _particleSwarmOptimizationListenerList = {};
+  private IParticleSwarmListener[] _particleSwarmOptimizationListenerList = {};
 
-    private final ParticleSwarmEvent _particleSwarmOptimizationEvent;
+  private final ParticleSwarmEvent _particleSwarmOptimizationEvent;
 
-    public ParticleSwarmListenerProvider(IParticleSwarm particleSwarmOptimization)
-    {
-        _particleSwarmOptimizationEvent = new ParticleSwarmEvent(particleSwarmOptimization);
-    }
+  public ParticleSwarmListenerProvider(IParticleSwarm particleSwarmOptimization) {
+    _particleSwarmOptimizationEvent = new ParticleSwarmEvent(particleSwarmOptimization);
+  }
 
-    public final void addParticleSwarmListener(IParticleSwarmListener listener)
-    {
-        IParticleSwarmListener[] list = new IParticleSwarmListener[_particleSwarmOptimizationListenerList.length + 1];
+  public final void addParticleSwarmListener(IParticleSwarmListener listener) {
+    IParticleSwarmListener[] list = new IParticleSwarmListener[_particleSwarmOptimizationListenerList.length + 1];
 
-        int length = list.length;
-        for (int i = 0; i < length - 1; i++)
-            list[i] = _particleSwarmOptimizationListenerList[i];
+    int length = list.length;
+    for (int i = 0; i < length - 1; i++)
+      list[i] = _particleSwarmOptimizationListenerList[i];
 
-        list[list.length - 1] = listener;
-        _particleSwarmOptimizationListenerList = list;
-    }
+    list[list.length - 1] = listener;
+    _particleSwarmOptimizationListenerList = list;
+  }
 
-    protected final void fireParticleSwarmStarted()
-    {
-        int length = _particleSwarmOptimizationListenerList.length;
-        for (int i = 0; i < length; i++)
-            _particleSwarmOptimizationListenerList[i].particleSwarmStarted(_particleSwarmOptimizationEvent);
-    }
+  protected final void fireParticleSwarmStarted() {
+    int length = _particleSwarmOptimizationListenerList.length;
+    for (int i = 0; i < length; i++)
+      _particleSwarmOptimizationListenerList[i].particleSwarmStarted(_particleSwarmOptimizationEvent);
+  }
 
-    protected final void fireParticleSwarmStopped()
-    {
-        int length = _particleSwarmOptimizationListenerList.length;
-        for (int i = 0; i < length; i++)
-            _particleSwarmOptimizationListenerList[i].particleSwarmStopped(_particleSwarmOptimizationEvent);
-    }
+  protected final void fireParticleSwarmStopped() {
+    int length = _particleSwarmOptimizationListenerList.length;
+    for (int i = 0; i < length; i++)
+      _particleSwarmOptimizationListenerList[i].particleSwarmStopped(_particleSwarmOptimizationEvent);
+  }
 
-    protected final void fireNewBestSolutionFound()
-    {
-        int length = _particleSwarmOptimizationListenerList.length;
-        for (int i = 0; i < length; i++)
-            _particleSwarmOptimizationListenerList[i].newBestSolutionFound(_particleSwarmOptimizationEvent);
-    }
+  protected final void fireNewBestSolutionFound() {
+    int length = _particleSwarmOptimizationListenerList.length;
+    for (int i = 0; i < length; i++)
+      _particleSwarmOptimizationListenerList[i].newBestSolutionFound(_particleSwarmOptimizationEvent);
+  }
 
-    protected final void fireNewIterationStarted()
-    {
-        int length = _particleSwarmOptimizationListenerList.length;
-        for (int i = 0; i < length; i++)
-            _particleSwarmOptimizationListenerList[i].newIterationStarted(_particleSwarmOptimizationEvent);
-    }
+  protected final void fireNewIterationStarted() {
+    int length = _particleSwarmOptimizationListenerList.length;
+    for (int i = 0; i < length; i++)
+      _particleSwarmOptimizationListenerList[i].newIterationStarted(_particleSwarmOptimizationEvent);
+  }
 }

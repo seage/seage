@@ -33,53 +33,42 @@ import org.slf4j.LoggerFactory;
  * @author Richard Malek
  * @param <S>
  */
-public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S> implements IAlgorithmAdapter<P, S>
-{
-    protected static final Logger _logger = LoggerFactory.getLogger(AlgorithmAdapterImpl.class.getName());
+public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S> implements IAlgorithmAdapter<P, S> {
+  protected static final Logger _logger = LoggerFactory.getLogger(AlgorithmAdapterImpl.class.getName());
 
-    protected boolean _algorithmStarted = false;
-    protected boolean _algorithmStopped = false;
+  protected boolean _algorithmStarted = false;
+  protected boolean _algorithmStopped = false;
 
-    @Override
-    public void startSearching(final AlgorithmParams params, boolean async) throws Exception
-    {
-        if (_algorithmStarted && !_algorithmStopped)
-            throw new Exception("Algorithm already started, running.");
+  @Override
+  public void startSearching(final AlgorithmParams params, boolean async) throws Exception {
+    if (_algorithmStarted && !_algorithmStopped)
+      throw new Exception("Algorithm already started, running.");
 
-        _algorithmStarted = false;
+    _algorithmStarted = false;
 
-        if (async == true)
-        {
-            new Thread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    try
-                    {
-                        startSearching(params);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.error(ex.getMessage(), ex);
-                    }
-                }
-            }, this.getClass().getName()).start();
-
-            int i = 0;
-            while (!_algorithmStarted)
-            {
-                Thread.sleep(10);
-                if (i++ < 10)
-                    ;//System.out.print("+");
-                else
-                {
-                    stopSearching();
-                    throw new Exception("Unable to start the algorithm asynchronously.");
-                }
-            }
-        }
-        else
+    if (async == true) {
+      new Thread(new Runnable() {
+        @Override
+        public void run() {
+          try {
             startSearching(params);
-    }
+          } catch (Exception ex) {
+            _logger.error(ex.getMessage(), ex);
+          }
+        }
+      }, this.getClass().getName()).start();
+
+      int i = 0;
+      while (!_algorithmStarted) {
+        Thread.sleep(10);
+        if (i++ < 10)
+          ;// System.out.print("+");
+        else {
+          stopSearching();
+          throw new Exception("Unable to start the algorithm asynchronously.");
+        }
+      }
+    } else
+      startSearching(params);
+  }
 }

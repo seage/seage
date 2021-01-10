@@ -32,41 +32,36 @@ import org.seage.metaheuristic.tabusearch.Solution;
  *
  * @author Richard Malek
  */
-public class TspMove implements Move
-{
-    public int ix1;
-    public int ix2;
+public class TspMove implements Move {
+  public int ix1;
+  public int ix2;
 
-    public TspMove(int ix1, int ix2)
-    {
-        this.ix1 = ix1;
-        this.ix2 = ix2;
-    } // end constructor
+  public TspMove(int ix1, int ix2) {
+    this.ix1 = ix1;
+    this.ix2 = ix2;
+  } // end constructor
 
-    @Override
-    public void operateOn(Solution soln)
-    {
-        TspSolution tspSoln = (TspSolution) soln;
-        Integer[] tour = tspSoln._tour;
+  @Override
+  public void operateOn(Solution soln) {
+    TspSolution tspSoln = (TspSolution) soln;
+    Integer[] tour = tspSoln._tour;
 
-        // Swap
-        int tmpIx = tour[ix1];
-        tour[ix1] = tour[ix2];
-        tour[ix2] = tmpIx;
-    } // end operateOn
+    // Swap
+    int tmpIx = tour[ix1];
+    tour[ix1] = tour[ix2];
+    tour[ix2] = tmpIx;
+  } // end operateOn
 
-    /** Identify a move for SimpleTabuList */
-    @Override
-    public int hashCode()
-    {
-        //return _hashCode;
-        return ix1 * 1000000 + ix2;
-    } // end hashCode
+  /** Identify a move for SimpleTabuList */
+  @Override
+  public int hashCode() {
+    // return _hashCode;
+    return ix1 * 1000000 + ix2;
+  } // end hashCode
 
-    @Override
-    public String toString()
-    {
-        return "{" + ix1 + ", " + ix2 + "}";
-    }
+  @Override
+  public String toString() {
+    return "{" + ix1 + ", " + ix2 + "}";
+  }
 
 } // end class MySwapMove

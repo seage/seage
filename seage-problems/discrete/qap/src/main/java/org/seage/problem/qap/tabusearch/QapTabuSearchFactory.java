@@ -61,7 +61,7 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-                _solutions = new Solution[source.length];
+                this.solutions = new Solution[source.length];
                 for (int i = 0; i < source.length; i++)
                 {
                     QapSolution s = new QapSolution();
@@ -69,18 +69,18 @@ public class QapTabuSearchFactory implements IAlgorithmFactory
                     for (int j = 0; j < assign.length; j++)
                         assign[j] = (Integer) source[i][j];
                     s.setAssign(assign);
-                    _solutions[i] = s;
+                    this.solutions[i] = s;
                 }
             }
 
             @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
-                Object[][] result = new Object[_solutions.length][];
+                Object[][] result = new Object[this.solutions.length][];
 
-                for (int i = 0; i < _solutions.length; i++)
+                for (int i = 0; i < this.solutions.length; i++)
                 {
-                    QapSolution s = (QapSolution) _solutions[i];
+                    QapSolution s = (QapSolution) this.solutions[i];
                     result[i] = new Integer[s.getAssign().length];
                     for (int j = 0; j < s.getAssign().length; j++)
                     {

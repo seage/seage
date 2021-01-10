@@ -33,72 +33,63 @@ import java.util.Vector;
  *
  * @author jenik
  */
-public class IntTerminalSymbol extends TerminalSymbol
-{
+public class IntTerminalSymbol extends TerminalSymbol {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 2125599928130063879L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 2125599928130063879L;
 
-    public IntTerminalSymbol(Vector<String> names, int id)
-    {
-        super(names, new IntGeneratorFunctor(id));
-        //value = -1;
-    }
+  public IntTerminalSymbol(Vector<String> names, int id) {
+    super(names, new IntGeneratorFunctor(id));
+    // value = -1;
+  }
 
-    public IntTerminalSymbol(String name, int id)
-    {
-        super(name, new IntGeneratorFunctor(id));
-        //value = -1;
-    }
+  public IntTerminalSymbol(String name, int id) {
+    super(name, new IntGeneratorFunctor(id));
+    // value = -1;
+  }
 
-    public IntTerminalSymbol(IntTerminalSymbol other)
-    {
-        super(other.names, other.generator);
-        low = other.low;
-        high = other.high;
-    }
+  public IntTerminalSymbol(IntTerminalSymbol other) {
+    super(other.names, other.generator);
+    low = other.low;
+    high = other.high;
+  }
 
-    /** @brief sets range of allowed values of this terminal */
-    public void setDomain(int low, int high)
-    {
-        this.low = low;
-        this.high = high;
-    }
+  /** @brief sets range of allowed values of this terminal */
+  public void setDomain(int low, int high) {
+    this.low = low;
+    this.high = high;
+  }
 
-    public Object eval(HashMap<?, ?> symbolTable)
-    {
-        return pick();
-    }
+  public Object eval(HashMap<?, ?> symbolTable) {
+    return pick();
+  }
 
-    /** @brief picks integer constant */
-    @Override
-    public Integer pick()
-    {
-        Integer result = (Integer) generator.call();
-        if (result < 0)
-            result *= -1;
-        result %= (high - low);
-        result += low;
-        _value = result;
-        return (int) result;
-    }
+  /** @brief picks integer constant */
+  @Override
+  public Integer pick() {
+    Integer result = (Integer) generator.call();
+    if (result < 0)
+      result *= -1;
+    result %= (high - low);
+    result += low;
+    _value = result;
+    return (int) result;
+  }
 
-    @Override
-    public Integer getValue()
-    {
-        return (Integer) _value;
-    }
+  @Override
+  public Integer getValue() {
+    return (Integer) _value;
+  }
 
-    /** @brief copy ourself, and return new instance */
-    @Override
-    public Symbol copy()
-    {
-        return new IntTerminalSymbol(this);
-    }
+  /** @brief copy ourself, and return new instance */
+  @Override
+  public Symbol copy() {
+    return new IntTerminalSymbol(this);
+  }
 
-    private int low;
-    private int high;
+  private int low;
+  private int high;
 
 }

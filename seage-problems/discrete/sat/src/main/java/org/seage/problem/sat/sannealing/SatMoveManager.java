@@ -40,7 +40,7 @@ public class SatMoveManager implements IMoveManager
     public Solution getModifiedSolution(Solution solution)
     {
         SatSolution satSolution = (SatSolution) solution.clone();
-        Boolean[] values = satSolution.getLiteralValues();
+        boolean[] values = satSolution.getLiteralValues();
         int ix = _rnd.nextInt(values.length);
         values[ix] = !values[ix];
         return satSolution;

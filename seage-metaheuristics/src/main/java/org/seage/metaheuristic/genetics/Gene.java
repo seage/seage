@@ -30,52 +30,44 @@ import java.io.Serializable;
 /**
  * @author Richard Malek (original)
  */
-public class Gene implements Serializable
-{
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -2263063124222499089L;
-    protected Object _value;
+public class Gene implements Serializable {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -2263063124222499089L;
+  protected Object _value;
 
-    private Gene()
-    {
-    }
+  private Gene() {
+  }
 
-    public Gene(Object value)
-    {
-        //if(value[0] == 0) throw new Exception("Invalid gene value");
-        _value = value;
-    }
+  public Gene(Object value) {
+    // if(value[0] == 0) throw new Exception("Invalid gene value");
+    _value = value;
+  }
 
-    @Override
-    public String toString()
-    {
-        Integer i = Integer.parseInt(_value.toString());
-        return i.toString();//value.toString();
-    }
+  @Override
+  public String toString() {
+    Integer i = Integer.parseInt(_value.toString());
+    return i.toString();// value.toString();
+  }
 
-    public Object getValue()
-    {
-        return _value;
-    }
+  public Object getValue() {
+    return _value;
+  }
 
-    public void setValue(Object value)
-    {
-        _value = value;
-    }
+  public void setValue(Object value) {
+    _value = value;
+  }
 
-    @Override
-    public int hashCode()
-    {
-        return _value.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    return _value.hashCode();
+  }
 
-    @Override
-    public Object clone()
-    {
-        Gene gene = new Gene();
-        gene._value = _value;
-        return gene;
-    }
+  @Override
+  public Object clone() {
+    Gene gene = new Gene();
+    gene._value = _value;
+    return gene;
+  }
 }

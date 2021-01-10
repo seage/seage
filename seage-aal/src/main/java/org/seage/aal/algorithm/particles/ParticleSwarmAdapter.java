@@ -47,124 +47,104 @@ import org.seage.metaheuristic.particles.ParticleSwarmEvent;
  *
  * @author Jan Zmatlik
  */
-@AlgorithmParameters({
-        @Parameter(name = "maxIterationCount", min = 0, max = 1000000, init = 1000),
-        @Parameter(name = "numSolutions", min = 1, max = 1000000, init = 100),
-        @Parameter(name = "maxVelocity", min = 0, max = 10000, init = 1),
-        @Parameter(name = "minVelocity", min = 0, max = 10000, init = 1),
-        @Parameter(name = "inertia", min = 0, max = 10000, init = 10),
-        @Parameter(name = "alpha", min = 0, max = 100, init = 1),
-        @Parameter(name = "beta", min = 0, max = 100, init = 1)
-})
-public abstract class ParticleSwarmAdapter<P extends Phenotype<?>, S extends Particle> extends AlgorithmAdapterImpl<P, S> implements IParticleSwarmListener
-{
-    protected ParticleSwarm _particleSwarm;
-    protected Particle[] _initialParticles;
-    private Particle _bestParticle;
-    private AlgorithmParams _params;
-    private AlgorithmReporter<P> _reporter;
+@AlgorithmParameters({ @Parameter(name = "maxIterationCount", min = 0, max = 1000000, init = 1000),
+    @Parameter(name = "numSolutions", min = 1, max = 1000000, init = 100),
+    @Parameter(name = "maxVelocity", min = 0, max = 10000, init = 1),
+    @Parameter(name = "minVelocity", min = 0, max = 10000, init = 1),
+    @Parameter(name = "inertia", min = 0, max = 10000, init = 10),
+    @Parameter(name = "alpha", min = 0, max = 100, init = 1), @Parameter(name = "beta", min = 0, max = 100, init = 1) })
+public abstract class ParticleSwarmAdapter<P extends Phenotype<?>, S extends Particle>
+    extends AlgorithmAdapterImpl<P, S> implements IParticleSwarmListener {
+  protected ParticleSwarm _particleSwarm;
+  protected Particle[] _initialParticles;
+  private Particle _bestParticle;
+  private AlgorithmParams _params;
+  private AlgorithmReporter<P> _reporter;
 
-    private long _numberOfIterations = 0;
-    private long _numberOfNewSolutions = 0;
-    private long _lastIterationNumberNewSolution = 0;
-    private double _initObjectiveValue = Double.MAX_VALUE;
-    private double _evaluationsOfParticles = 0;
-    private double _avgOfBestSolutions = 0;
-    private IPhenotypeEvaluator<P> _phenotypeEvaluator;
+  private long _numberOfIterations = 0;
+  private long _numberOfNewSolutions = 0;
+  private long _lastIterationNumberNewSolution = 0;
+  private double _initObjectiveValue = Double.MAX_VALUE;
+  private double _evaluationsOfParticles = 0;
+  private double _avgOfBestSolutions = 0;
+  private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
-    public ParticleSwarmAdapter(Particle[] initialParticles,
-            IObjectiveFunction objectiveFunction,
-            IPhenotypeEvaluator<P> phenotypeEvaluator,
-            boolean maximizing) throws Exception
-    {
-        _initialParticles = initialParticles;
-        _phenotypeEvaluator = phenotypeEvaluator;
-        _particleSwarm = new ParticleSwarm(objectiveFunction);
-    }
+  public ParticleSwarmAdapter(Particle[] initialParticles, IObjectiveFunction objectiveFunction,
+      IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing) throws Exception {
+    _initialParticles = initialParticles;
+    _phenotypeEvaluator = phenotypeEvaluator;
+    _particleSwarm = new ParticleSwarm(objectiveFunction);
+  }
 
-    @Override
-    public void startSearching(AlgorithmParams params) throws Exception
-    {
-        if (params == null)
-            throw new Exception("Parameters not set");
-        setParameters(params);
+  @Override
+  public void startSearching(AlgorithmParams params) throws Exception {
+    if (params == null)
+      throw new Exception("Parameters not set");
+    setParameters(params);
 
-        _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
-        _reporter.putParameters(_params);
-        _particleSwarm.startSearching(_initialParticles);
-    }
+    _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
+    _reporter.putParameters(_params);
+    _particleSwarm.startSearching(_initialParticles);
+  }
 
-    @Override
-    public void stopSearching() throws Exception
-    {
-        _particleSwarm.stopSearching();
+  @Override
+  public void stopSearching() throws Exception {
+    _particleSwarm.stopSearching();
 
-        while (isRunning())
-            Thread.sleep(100);
-    }
+    while (isRunning())
+      Thread.sleep(100);
+  }
 
-    @Override
-    public boolean isRunning()
-    {
-        return _particleSwarm.isRunning();
-    }
+  @Override
+  public boolean isRunning() {
+    return _particleSwarm.isRunning();
+  }
 
-    @Override
-    public AlgorithmReport getReport() throws Exception
-    {
-        _reporter.putStatistics(
-                _numberOfIterations,
-                _numberOfNewSolutions,
-                _lastIterationNumberNewSolution,
-                _initObjectiveValue,
-                _avgOfBestSolutions,
-                _bestParticle.getEvaluation());
+  @Override
+  public AlgorithmReport getReport() throws Exception {
+    _reporter.putStatistics(_numberOfIterations, _numberOfNewSolutions, _lastIterationNumberNewSolution,
+        _initObjectiveValue, _avgOfBestSolutions, _bestParticle.getEvaluation());
 
-        return _reporter.getReport();
-    }
+    return _reporter.getReport();
+  }
 
-    public void setParameters(AlgorithmParams params) throws Exception
-    {
-        _params = params;
-        _params.putValue("id", "ParticleSwarm");
-        DataNode p = params.getDataNode("Parameters");
-        _particleSwarm.setMaximalIterationCount(p.getValueLong("maxIterationCount"));
-        _particleSwarm.setMaximalVectorValue(p.getValueDouble("maxVelocity"));
-        _particleSwarm.setMinimalVectorValue(p.getValueDouble("minVelocity"));
-        _particleSwarm.setInertia(p.getValueDouble("inertia"));
-        _particleSwarm.setAlpha(p.getValueDouble("alpha"));
-        _particleSwarm.setBeta(p.getValueDouble("beta"));
+  public void setParameters(AlgorithmParams params) throws Exception {
+    _params = params;
+    _params.putValue("id", "ParticleSwarm");
+    DataNode p = params.getDataNode("Parameters");
+    _particleSwarm.setMaximalIterationCount(p.getValueLong("maxIterationCount"));
+    _particleSwarm.setMaximalVectorValue(p.getValueDouble("maxVelocity"));
+    _particleSwarm.setMinimalVectorValue(p.getValueDouble("minVelocity"));
+    _particleSwarm.setInertia(p.getValueDouble("inertia"));
+    _particleSwarm.setAlpha(p.getValueDouble("alpha"));
+    _particleSwarm.setBeta(p.getValueDouble("beta"));
 
-        _particleSwarm.addParticleSwarmOptimizationListener(this);
-    }
+    _particleSwarm.addParticleSwarmOptimizationListener(this);
+  }
 
-    //############################ EVENTS ###############################//
-    @Override
-    public void newBestSolutionFound(ParticleSwarmEvent e)
-    {
-        _bestParticle = e.getParticleSwarm().getBestParticle();
-        _numberOfNewSolutions++;
-        _evaluationsOfParticles += _bestParticle.getEvaluation();
-        _avgOfBestSolutions = _evaluationsOfParticles / _numberOfNewSolutions;
-        _lastIterationNumberNewSolution = _numberOfIterations;
-    }
+  // ############################ EVENTS ###############################//
+  @Override
+  public void newBestSolutionFound(ParticleSwarmEvent e) {
+    _bestParticle = e.getParticleSwarm().getBestParticle();
+    _numberOfNewSolutions++;
+    _evaluationsOfParticles += _bestParticle.getEvaluation();
+    _avgOfBestSolutions = _evaluationsOfParticles / _numberOfNewSolutions;
+    _lastIterationNumberNewSolution = _numberOfIterations;
+  }
 
-    @Override
-    public void newIterationStarted(ParticleSwarmEvent e)
-    {
-        _numberOfIterations++;
-    }
+  @Override
+  public void newIterationStarted(ParticleSwarmEvent e) {
+    _numberOfIterations++;
+  }
 
-    @Override
-    public void particleSwarmStarted(ParticleSwarmEvent e)
-    {
-        _initObjectiveValue = e.getParticleSwarm().getBestParticle().getEvaluation();
-    }
+  @Override
+  public void particleSwarmStarted(ParticleSwarmEvent e) {
+    _initObjectiveValue = e.getParticleSwarm().getBestParticle().getEvaluation();
+  }
 
-    @Override
-    public void particleSwarmStopped(ParticleSwarmEvent e)
-    {
-        _bestParticle = e.getParticleSwarm().getBestParticle();
-    }
+  @Override
+  public void particleSwarmStopped(ParticleSwarmEvent e) {
+    _bestParticle = e.getParticleSwarm().getBestParticle();
+  }
 
 }

@@ -29,19 +29,19 @@ package org.seage.metaheuristic.grasp;
  *
  * @author Martin Zaloga
  */
-public interface IObjectiveFunction
-{
+public interface IObjectiveFunction {
 
-    /**
-     * Function that returns the rating for the next step
-     * @param s - Solutions for which was generated the steps
-     * @param move - The next step
-     * @return - Rating for the step
-     */
-    double evaluateMove(Solution s, IMove move) throws Exception;
+  /**
+   * Function that returns the rating for the next step
+   * 
+   * @param s    - Solutions for which was generated the steps
+   * @param move - The next step
+   * @return - Rating for the step
+   */
+  double evaluateMove(Solution s, IMove move) throws Exception;
 
-    /**
-     * Function that sets this to indicate that this is the first step
-     */
-    void reset();
+  /**
+   * Function that sets this to indicate that this is the first step
+   */
+  void reset();
 }

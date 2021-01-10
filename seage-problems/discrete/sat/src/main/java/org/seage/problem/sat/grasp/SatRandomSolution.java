@@ -31,27 +31,23 @@ import org.seage.problem.sat.FormulaEvaluator;
  *
  * @author Martin Zaloga
  */
-public class SatRandomSolution extends SatSolution
-{
-    private static final long serialVersionUID = -3426994807179668189L;
-    
-    private int _countLiterals;
+public class SatRandomSolution extends SatSolution {
+  private static final long serialVersionUID = -3426994807179668189L;
 
-    public SatRandomSolution(Formula formula)
-    {
-        super();
-        _countLiterals = formula.getLiteralCount();
-        initRandSol(formula);
-    }
+  private int _countLiterals;
 
-    private void initRandSol(Formula formula)
-    {
-        Random rnd = new Random();
-        _litValues = new Boolean[_countLiterals];
-        for (int i = 0; i < _countLiterals; i++)
-        {
-            _litValues[i] = rnd.nextBoolean();
-        }
-        setObjectiveValue(FormulaEvaluator.evaluate(formula, _litValues));
+  public SatRandomSolution(Formula formula) {
+    super();
+    _countLiterals = formula.getLiteralCount();
+    initRandSol(formula);
+  }
+
+  private void initRandSol(Formula formula) {
+    Random rnd = new Random();
+    _litValues = new Boolean[_countLiterals];
+    for (int i = 0; i < _countLiterals; i++) {
+      _litValues[i] = rnd.nextBoolean();
     }
+    setObjectiveValue(FormulaEvaluator.evaluate(formula, _litValues));
+  }
 }

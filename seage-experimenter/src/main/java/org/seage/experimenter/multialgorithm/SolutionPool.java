@@ -1,6 +1,5 @@
 package org.seage.experimenter.multialgorithm;
 
-public class SolutionPool
-{
+public class SolutionPool {
 
 }

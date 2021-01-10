@@ -22,9 +22,8 @@ package org.seage.data.ds;
 /**
  * Summary description for DataProvider.
  */
-public interface DataProvider
-{
-    DataTable getDataTable(String queryString);
+public interface DataProvider {
+  DataTable getDataTable(String queryString);
 
-    void saveDataTable(String queryString);
+  void saveDataTable(String queryString);
 }

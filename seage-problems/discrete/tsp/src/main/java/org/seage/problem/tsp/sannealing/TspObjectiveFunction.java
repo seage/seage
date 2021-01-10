@@ -34,24 +34,20 @@ import org.seage.problem.tsp.TspMoveBasedEvaluator;
  *
  * @author Jan Zmatlik
  */
-public class TspObjectiveFunction implements IObjectiveFunction
-{
-    protected TspMoveBasedEvaluator _evaluator;
+public class TspObjectiveFunction implements IObjectiveFunction {
+  protected TspMoveBasedEvaluator _evaluator;
 
-    public TspObjectiveFunction(City[] cities)
-    {
-        _evaluator = new TspMoveBasedEvaluator(cities.clone());
-    }
+  public TspObjectiveFunction(City[] cities) {
+    _evaluator = new TspMoveBasedEvaluator(cities.clone());
+  }
 
-    public double[] evaluate(TspSolution solution, int[] move) throws Exception
-    {
-        return _evaluator.evaluate(solution._tour, move, solution.getObjectiveValue());
-    }
+  public double[] evaluate(TspSolution solution, int[] move) throws Exception {
+    return _evaluator.evaluate(solution._tour, move, solution.getObjectiveValue());
+  }
 
-    @Override
-    public double getObjectiveValue(Solution s) throws Exception
-    {
-        return evaluate((TspSolution) s, null)[0];
-    }
+  @Override
+  public double getObjectiveValue(Solution s) throws Exception {
+    return evaluate((TspSolution) s, null)[0];
+  }
 
 }

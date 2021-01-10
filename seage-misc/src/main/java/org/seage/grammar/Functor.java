@@ -30,15 +30,13 @@ import java.util.Vector;
 
 /**
  *
- * @author jenik
-   F -> a
+ * @author jenik F -> a
  */
-public interface Functor
-{
+public interface Functor {
 
-    /** @brief retrieve value */
-    abstract public Object call();
+  /** @brief retrieve value */
+  abstract public Object call();
 
-    abstract public void setVector(Vector<Integer> source);
+  abstract public void setVector(Vector<Integer> source);
 
 }

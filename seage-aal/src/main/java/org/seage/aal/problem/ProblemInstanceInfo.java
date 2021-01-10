@@ -32,54 +32,46 @@ import org.seage.data.DataNode;
  *
  * @author Richard Malek
  */
-public class ProblemInstanceInfo extends DataNode
-{
-    public enum ProblemInstanceOrigin
-    {
-        FILE, RESOURCE
-    };
+public class ProblemInstanceInfo extends DataNode {
+  public enum ProblemInstanceOrigin {
+    FILE, RESOURCE
+  };
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected String _instanceID;
-    protected ProblemInstanceOrigin _origin;
-    protected String _path;
+  protected String _instanceID;
+  protected ProblemInstanceOrigin _origin;
+  protected String _path;
 
-    public ProblemInstanceInfo(DataNode instance) throws Exception
-    {
-        super(instance);
-        _instanceID = getValueStr("id");
-        _origin = ProblemInstanceOrigin.valueOf(getValueStr("type").toUpperCase());
-        _path = getValueStr("path");
-    }
+  public ProblemInstanceInfo(DataNode instance) throws Exception {
+    super(instance);
+    _instanceID = getValueStr("id");
+    _origin = ProblemInstanceOrigin.valueOf(getValueStr("type").toUpperCase());
+    _path = getValueStr("path");
+  }
 
-    public ProblemInstanceInfo(String id, ProblemInstanceOrigin type, String path)
-    {
-        super("Instance");
-        _instanceID = id;
-        _origin = type;
-        _path = path;
-    }
+  public ProblemInstanceInfo(String id, ProblemInstanceOrigin type, String path) {
+    super("Instance");
+    _instanceID = id;
+    _origin = type;
+    _path = path;
+  }
 
-    public ProblemInstanceOrigin getOrigin()
-    {
-        return _origin;
-    }
+  public ProblemInstanceOrigin getOrigin() {
+    return _origin;
+  }
 
-    public String getPath()
-    {
-        return _path;
-    }
+  public String getPath() {
+    return _path;
+  }
 
-    public String getInstanceID()
-    {
-        return _instanceID;
-    }
+  public String getInstanceID() {
+    return _instanceID;
+  }
 
-    @Override
-    public String toString()
-    {
-        return _instanceID + " - " + _origin + " - " + _path;
-    }
+  @Override
+  public String toString() {
+    return _instanceID + " - " + _origin + " - " + _path;
+  }
 
 }

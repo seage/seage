@@ -35,21 +35,17 @@ import org.seage.metaheuristic.antcolony.Node;
  *
  * @author Zagy
  */
-public class TspAntBrain extends AntBrain
-{
-    public TspAntBrain(Graph graph)
-    {
-        super(graph);
-    }
+public class TspAntBrain extends AntBrain {
+  public TspAntBrain(Graph graph) {
+    super(graph);
+  }
 
-    @Override
-    protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode)
-    {
-        HashSet<Node> result = super.getAvailableNodes(startingNode, currentNode);
-        if (currentNode != startingNode && result.size() == 0)
-        {
-            result.add(startingNode);
-        }
-        return result;
+  @Override
+  protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode) {
+    HashSet<Node> result = super.getAvailableNodes(startingNode, currentNode);
+    if (currentNode != startingNode && result.size() == 0) {
+      result.add(startingNode);
     }
+    return result;
+  }
 }

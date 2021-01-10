@@ -29,9 +29,9 @@
 package org.seage.metaheuristic.fireflies;
 
 /**
- * These events are fired off by the {@link FireflySearch} and are useful
- * for extending the firefly search extras. These are lightweight events that only contain
- * a reference to their source object.
+ * These events are fired off by the {@link FireflySearch} and are useful for
+ * extending the firefly search extras. These are lightweight events that only
+ * contain a reference to their source object.
  *
  * @author Robert Harder, rharder@usa.net
  * @see FireflySearch
@@ -40,37 +40,33 @@ package org.seage.metaheuristic.fireflies;
  * @version 1.0
  * @since 1.0
  */
-public class FireflySearchEvent<S extends Solution> extends java.util.EventObject
-{
+public class FireflySearchEvent<S extends Solution> extends java.util.EventObject {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 3418158366582283978L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 3418158366582283978L;
 
-    /**
-     * Constructor that accepts the source of the event.
-     * 
-     * @param source The source of the event.
-     * @since 1.0
-     */
-    public FireflySearchEvent(Object source)
-    {
-        super(source);
-    } // end constructor
+  /**
+   * Constructor that accepts the source of the event.
+   * 
+   * @param source The source of the event.
+   * @since 1.0
+   */
+  public FireflySearchEvent(Object source) {
+    super(source);
+  } // end constructor
 
-    /**
-     * Casts the <tt>source</tt> as a {@link FireflySearch}
-     * prior to returning. It is equivalent to
-     * <code>(FireflySearch) getSource()</code>.
-     *
-     * @return source as {@link FireflySearch}
-     * @since 1.0
-     */
-    @SuppressWarnings("unchecked")
-	public final IFireflySearch<S> getFireflySearch()
-    {
-        return (IFireflySearch<S>) source;
-    } // end getFireflySearch
+  /**
+   * Casts the <tt>source</tt> as a {@link FireflySearch} prior to returning. It
+   * is equivalent to <code>(FireflySearch) getSource()</code>.
+   *
+   * @return source as {@link FireflySearch}
+   * @since 1.0
+   */
+  @SuppressWarnings("unchecked")
+  public final IFireflySearch<S> getFireflySearch() {
+    return (IFireflySearch<S>) source;
+  } // end getFireflySearch
 
 } // end class FireflySearchEvent

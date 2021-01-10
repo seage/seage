@@ -5,7 +5,7 @@ import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemProvider;
 
 public class TspTabuSearchAdapterTest extends ProblemAlgorithmAdapterTestBase<TspPhenotype> {
-    public TspTabuSearchAdapterTest() {
-        super(new TspProblemProvider(), "TabuSearch");
-    }
+  public TspTabuSearchAdapterTest() {
+    super(new TspProblemProvider(), "TabuSearch");
+  }
 }

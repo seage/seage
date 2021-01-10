@@ -62,182 +62,161 @@ import org.w3c.dom.NodeList;
 /**
  * @author Richard Malek
  */
-public class XmlHelper
-{
-    public static DataNode readXml(String xml) throws Exception
-    {
-        InputStream is = new ByteArrayInputStream(xml.getBytes());
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setXIncludeAware(true);
-        DocumentBuilder builder = factory.newDocumentBuilder();
+public class XmlHelper {
+  public static DataNode readXml(String xml) throws Exception {
+    InputStream is = new ByteArrayInputStream(xml.getBytes());
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setXIncludeAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
 
-        Document doc = builder.parse(is);
+    Document doc = builder.parse(is);
 
-        return readElement(doc.getDocumentElement());
+    return readElement(doc.getDocumentElement());
+  }
+
+  public static DataNode readXml(File file) throws Exception {
+    return readXml(new FileInputStream(file), null);
+  }
+
+  public static DataNode readXml(InputStream is) throws Exception {
+    return readXml(is, null);
+  }
+
+  public static DataNode readXml(InputStream is, InputStream schema) throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    if (schema != null)
+      factory.setNamespaceAware(true);
+    else
+      factory.setNamespaceAware(false);
+
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(is);
+
+    if (schema != null) {
+      // get validation driver:
+      SchemaFactory factory2 = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+      // create schema by reading it from an XSD file:
+      Schema schemaObj = factory2.newSchema(new StreamSource(schema));
+      Validator validator = schemaObj.newValidator();
+      // at last perform validation:
+      validator.validate(new DOMSource(doc));
     }
 
-    public static DataNode readXml(File file) throws Exception
-    {
-        return readXml(new FileInputStream(file), null);
+    return readElement(doc.getDocumentElement());
+  }
+
+  private static DataNode readElement(Element xmlElem) throws Exception {
+
+    DataNode result = new DataNode(xmlElem.getNodeName());
+
+    NamedNodeMap atributes = xmlElem.getAttributes();
+    for (int i = 0; i < atributes.getLength(); i++) {
+      String attName = atributes.item(i).getNodeName();
+      if (attName.startsWith("xmlns") || attName.contains(":"))
+        continue;
+      result.putValue(attName, atributes.item(i).getNodeValue());
     }
 
-    public static DataNode readXml(InputStream is) throws Exception
-    {
-        return readXml(is, null);
+    NodeList nodeList = xmlElem.getChildNodes();
+    for (int i = 0; i < nodeList.getLength(); i++) {
+      if (nodeList.item(i).getNodeType() == Node.ELEMENT_NODE) {
+        Element elem = (Element) nodeList.item(i);
+        result.putDataNodeRef(readElement(elem));
+      }
     }
 
-    public static DataNode readXml(InputStream is, InputStream schema) throws Exception
-    {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        if (schema != null)
-            factory.setNamespaceAware(true);
+    return result;
+
+  }
+
+  public static synchronized void writeXml(DataNode dataSet, String path) throws Exception {
+    writeXml(dataSet, new FileOutputStream(new File(path)));
+  }
+
+  public static void writeXml(DataNode dataSet, File f) throws Exception {
+    writeXml(dataSet, new FileOutputStream(f));
+  }
+
+  public static synchronized void writeXml(DataNode dataSet, ZipOutputStream outputStream, String entryName)
+      throws Exception {
+    outputStream.putNextEntry(new ZipEntry(entryName));
+    writeXml(dataSet, outputStream);
+  }
+
+  public static synchronized void writeXml(DataNode dataSet, OutputStream outputStream) throws Exception {
+    TransformerFactory tFactory = TransformerFactory.newInstance();
+    Transformer transformer = tFactory.newTransformer();
+    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+    DOMSource source = new DOMSource(dataSet.toXml());
+    StreamResult result = new StreamResult(outputStream);
+    transformer.transform(source, result);
+  }
+
+  public static String getStringFromDocument(Document doc) throws TransformerException {
+    DOMSource domSource = new DOMSource(doc);
+    StringWriter writer = new StringWriter();
+    StreamResult result = new StreamResult(writer);
+    TransformerFactory tf = TransformerFactory.newInstance();
+    Transformer transformer = tf.newTransformer();
+    transformer.transform(domSource, result);
+    return writer.toString();
+  }
+
+  public static void validate(DataNode dataNode, String schemaPath) throws Exception {
+    validate(dataNode.toXml(), schemaPath);
+  }
+
+  public static void validate(Document document, String schemaPath) throws Exception {
+
+    // create a SchemaFactory capable of understanding WXS schemas
+    SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+    // load a WXS schema, represented by a Schema instance
+    Source schemaFile = new StreamSource(new File(schemaPath));
+    Schema schema = factory.newSchema(schemaFile);
+
+    // create a Validator instance, which can be used to validate an
+    // instance document
+    Validator validator = schema.newValidator();
+
+    // validate the DOM tree
+
+    validator.validate(new DOMSource(document));
+  }
+
+  public static class XPath // Java's XPath is too slow, this is a hack
+  {
+    public String XPathStr;
+    public List<String> Nodes;
+
+    public XPath(String xPath) {
+      XPathStr = xPath;
+      Nodes = new ArrayList<String>();
+      String[] split = xPath.split("/");
+      for (int i = 2; i < split.length; i++) // i=2 -> skip '/ExperimentTask'
+      {
+        if (split[i].startsWith("@"))
+          Nodes.add(split[i].substring(1));
         else
-            factory.setNamespaceAware(false);
+          Nodes.add(split[i]);
 
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse(is);
-
-        if (schema != null)
-        {
-            // get validation driver:
-            SchemaFactory factory2 = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-            // create schema by reading it from an XSD file:
-            Schema schemaObj = factory2.newSchema(new StreamSource(schema));
-            Validator validator = schemaObj.newValidator();
-            // at last perform validation:
-            validator.validate(new DOMSource(doc));
-        }
-
-        return readElement(doc.getDocumentElement());
+      }
     }
 
-    private static DataNode readElement(Element xmlElem) throws Exception
-    {
+  }
 
-        DataNode result = new DataNode(xmlElem.getNodeName());
+  public static String getValueFromDocument(Element elem, XPath xPath) {
+    return getValueFromDocument(elem, xPath, 0);
+  }
 
-        NamedNodeMap atributes = xmlElem.getAttributes();
-        for (int i = 0; i < atributes.getLength(); i++)
-        {
-            String attName = atributes.item(i).getNodeName();
-            if (attName.startsWith("xmlns") || attName.contains(":"))
-                continue;
-            result.putValue(attName, atributes.item(i).getNodeValue());
-        }
-
-        NodeList nodeList = xmlElem.getChildNodes();
-        for (int i = 0; i < nodeList.getLength(); i++)
-        {
-            if (nodeList.item(i).getNodeType() == Node.ELEMENT_NODE)
-            {
-                Element elem = (Element) nodeList.item(i);
-                result.putDataNodeRef(readElement(elem));
-            }
-        }
-
-        return result;
-
+  public static String getValueFromDocument(Element elem, XPath xPath, int level) {
+    if (level + 1 == xPath.Nodes.size())
+      return elem.getAttribute(xPath.Nodes.get(level));
+    else {
+      String s = xPath.Nodes.get(level);
+      return getValueFromDocument((Element) elem.getElementsByTagName(s).item(0), xPath, level + 1);
     }
-
-    public static synchronized void writeXml(DataNode dataSet, String path) throws Exception
-    {
-        writeXml(dataSet, new FileOutputStream(new File(path)));
-    }
-
-    public static void writeXml(DataNode dataSet, File f) throws Exception
-    {
-        writeXml(dataSet, new FileOutputStream(f));
-    }
-
-    public static synchronized void writeXml(DataNode dataSet, ZipOutputStream outputStream, String entryName)
-            throws Exception
-    {
-        outputStream.putNextEntry(new ZipEntry(entryName));
-        writeXml(dataSet, outputStream);
-    }
-
-    public static synchronized void writeXml(DataNode dataSet, OutputStream outputStream) throws Exception
-    {
-        TransformerFactory tFactory = TransformerFactory.newInstance();
-        Transformer transformer = tFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-
-        DOMSource source = new DOMSource(dataSet.toXml());
-        StreamResult result = new StreamResult(outputStream);
-        transformer.transform(source, result);
-    }
-
-    public static String getStringFromDocument(Document doc) throws TransformerException
-    {
-        DOMSource domSource = new DOMSource(doc);
-        StringWriter writer = new StringWriter();
-        StreamResult result = new StreamResult(writer);
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.transform(domSource, result);
-        return writer.toString();
-    }
-
-    public static void validate(DataNode dataNode, String schemaPath) throws Exception
-    {
-        validate(dataNode.toXml(), schemaPath);
-    }
-
-    public static void validate(Document document, String schemaPath) throws Exception
-    {
-
-        // create a SchemaFactory capable of understanding WXS schemas
-        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-
-        // load a WXS schema, represented by a Schema instance
-        Source schemaFile = new StreamSource(new File(schemaPath));
-        Schema schema = factory.newSchema(schemaFile);
-
-        // create a Validator instance, which can be used to validate an
-        // instance document
-        Validator validator = schema.newValidator();
-
-        // validate the DOM tree
-
-        validator.validate(new DOMSource(document));
-    }
-
-    public static class XPath // Java's XPath is too slow, this is a hack
-    {
-        public String XPathStr;
-        public List<String> Nodes;
-
-        public XPath(String xPath)
-        {
-            XPathStr = xPath;
-            Nodes = new ArrayList<String>();
-            String[] split = xPath.split("/");
-            for (int i = 2; i < split.length; i++) // i=2 -> skip '/ExperimentTask'
-            {
-                if (split[i].startsWith("@"))
-                    Nodes.add(split[i].substring(1));
-                else
-                    Nodes.add(split[i]);
-
-            }
-        }
-
-    }
-
-    public static String getValueFromDocument(Element elem, XPath xPath)
-    {
-        return getValueFromDocument(elem, xPath, 0);
-    }
-
-    public static String getValueFromDocument(Element elem, XPath xPath, int level)
-    {
-        if (level + 1 == xPath.Nodes.size())
-            return elem.getAttribute(xPath.Nodes.get(level));
-        else
-        {
-            String s = xPath.Nodes.get(level);
-            return getValueFromDocument((Element) elem.getElementsByTagName(s).item(0), xPath, level + 1);
-        }
-    }
+  }
 }

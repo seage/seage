@@ -29,15 +29,14 @@ package org.seage.metaheuristic.particles;
  *
  * @author Jan Zmatlik
  */
-public interface IParticleSwarmListener
-{
+public interface IParticleSwarmListener {
 
-    public void particleSwarmStarted(ParticleSwarmEvent e);
+  public void particleSwarmStarted(ParticleSwarmEvent e);
 
-    public void particleSwarmStopped(ParticleSwarmEvent e);
+  public void particleSwarmStopped(ParticleSwarmEvent e);
 
-    public void newBestSolutionFound(ParticleSwarmEvent e);
+  public void newBestSolutionFound(ParticleSwarmEvent e);
 
-    public void newIterationStarted(ParticleSwarmEvent e);
+  public void newIterationStarted(ParticleSwarmEvent e);
 
 }

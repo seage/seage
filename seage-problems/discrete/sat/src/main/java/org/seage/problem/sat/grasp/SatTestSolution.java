@@ -26,22 +26,18 @@ package org.seage.problem.sat.grasp;
  *
  * @author Martin Zaloga
  */
-public class SatTestSolution extends SatSolution
-{
-    private static final long serialVersionUID = -1532470194515354499L;
+public class SatTestSolution extends SatSolution {
+  private static final long serialVersionUID = -1532470194515354499L;
 
-    public SatTestSolution(int countLiterals)
-    {
-        super();
-        initTestSol(countLiterals);
-    }
+  public SatTestSolution(int countLiterals) {
+    super();
+    initTestSol(countLiterals);
+  }
 
-    private void initTestSol(int countLiterals)
-    {
-        _litValues = new Boolean[countLiterals];
-        for (int i = 0; i < countLiterals; i++)
-        {
-            _litValues[i] = true;
-        }
+  private void initTestSol(int countLiterals) {
+    _litValues = new Boolean[countLiterals];
+    for (int i = 0; i < countLiterals; i++) {
+      _litValues[i] = true;
     }
+  }
 }

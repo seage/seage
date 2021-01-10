@@ -33,39 +33,37 @@ import org.seage.metaheuristic.grasp.Solution;
  *
  * @author Martin Zaloga
  */
-public class TspSolution extends Solution
-{
-    private static final long serialVersionUID = -5562176621423616108L;
-    /**
-     * _tour - Contains the tour of the solution
-     * _rnd - Variable for the purposes of generating the random numbers
-     */
-    protected Integer[] _tour;
-    protected Random _rnd;
+public class TspSolution extends Solution {
+  private static final long serialVersionUID = -5562176621423616108L;
+  /**
+   * _tour - Contains the tour of the solution _rnd - Variable for the purposes of
+   * generating the random numbers
+   */
+  protected Integer[] _tour;
+  protected Random _rnd;
 
-    /**
-     * Constructor the solution with using the random algorithm for initial solution
-     */
-    public TspSolution()
-    {
-        _rnd = new Random();
-    }
+  /**
+   * Constructor the solution with using the random algorithm for initial solution
+   */
+  public TspSolution() {
+    _rnd = new Random();
+  }
 
-    /**
-     * Function for getting tour
-     * @return - actual tour
-     */
-    public Integer[] getTour()
-    {
-        return _tour;
-    }
+  /**
+   * Function for getting tour
+   * 
+   * @return - actual tour
+   */
+  public Integer[] getTour() {
+    return _tour;
+  }
 
-    /**
-     * Method for setting tour
-     * @param tour - Setting tour
-     */
-    public void setTour(Integer[] tour)
-    {
-        _tour = tour;
-    }
+  /**
+   * Method for setting tour
+   * 
+   * @param tour - Setting tour
+   */
+  public void setTour(Integer[] tour) {
+    _tour = tour;
+  }
 }

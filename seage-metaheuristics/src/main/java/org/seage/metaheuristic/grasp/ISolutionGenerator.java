@@ -29,12 +29,12 @@ package org.seage.metaheuristic.grasp;
  *
  * @author Martin Zaloga
  */
-public interface ISolutionGenerator
-{
+public interface ISolutionGenerator {
 
-    /**
-     * Function to generate initial solution
-     * @return
-     */
-    Solution generateSolution() throws Exception;
+  /**
+   * Function to generate initial solution
+   * 
+   * @return
+   */
+  Solution generateSolution() throws Exception;
 }

@@ -33,21 +33,21 @@ import java.util.Comparator;
  *
  * @author Richard Malek
  */
-public abstract class AlgorithmReportEvaluator implements Serializable, Comparator<AlgorithmReport>
-{
+public abstract class AlgorithmReportEvaluator implements Serializable, Comparator<AlgorithmReport> {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 7128431164404468045L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 7128431164404468045L;
 
-    /**
-     * Evaluates statistics of previous algorithm run
-     * @param statistics
-     * @return A number between 0 and 100 (0 is the best, 100 is the worst)
-     */
-    public abstract int evaluate(AlgorithmReport statistics);
+  /**
+   * Evaluates statistics of previous algorithm run
+   * 
+   * @param statistics
+   * @return A number between 0 and 100 (0 is the best, 100 is the worst)
+   */
+  public abstract int evaluate(AlgorithmReport statistics);
 
-    @Override
-    public abstract int compare(AlgorithmReport o1, AlgorithmReport o2);
+  @Override
+  public abstract int compare(AlgorithmReport o1, AlgorithmReport o2);
 }

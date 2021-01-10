@@ -47,48 +47,41 @@ import org.seage.problem.tsp.TspProblemInstance;
  */
 @Annotations.AlgorithmId("GeneticAlgorithm")
 @Annotations.AlgorithmName("GeneticAlgorithm")
-public class TspGeneticAlgorithmFactory implements IAlgorithmFactory<TspPhenotype, Subject<Integer>>
-{
+public class TspGeneticAlgorithmFactory implements IAlgorithmFactory<TspPhenotype, Subject<Integer>> {
 
-    @Override
-    public Class<?> getAlgorithmClass()
-    {
-        return GeneticAlgorithmAdapter.class;
-    }
+  @Override
+  public Class<?> getAlgorithmClass() {
+    return GeneticAlgorithmAdapter.class;
+  }
 
-    @Override
-    public IAlgorithmAdapter<TspPhenotype, Subject<Integer>> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception
-    {
-        City[] cities = ((TspProblemInstance) instance).getCities();
-        IAlgorithmAdapter<TspPhenotype, Subject<Integer>> algorithm = new GeneticAlgorithmAdapter<TspPhenotype, Subject<Integer>>(new TspGeneticOperator(), new TspEvaluator(cities),
-        		phenotypeEvaluator, false)
-        {
-            @Override
-            public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception
-            {
-                _solutions = new ArrayList<Subject<Integer>>(source.length);
-                for (int i = 0; i < source.length; i++)
-                    _solutions.add(new Subject<Integer>(source[i].getSolution()));
-            }
+  @Override
+  public IAlgorithmAdapter<TspPhenotype, Subject<Integer>> createAlgorithm(ProblemInstance instance,
+      IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
+    City[] cities = ((TspProblemInstance) instance).getCities();
+    IAlgorithmAdapter<TspPhenotype, Subject<Integer>> algorithm = new GeneticAlgorithmAdapter<TspPhenotype, Subject<Integer>>(
+        new TspGeneticOperator(), new TspEvaluator(cities), phenotypeEvaluator, false) {
+      @Override
+      public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
+        this.solutions = new ArrayList<Subject<Integer>>(source.length);
+        for (int i = 0; i < source.length; i++)
+          this.solutions.add(new Subject<Integer>(source[i].getSolution()));
+      }
 
-            @Override
-            public TspPhenotype[] solutionsToPhenotype() throws Exception
-            {
-            	TspPhenotype[] result = new TspPhenotype[_solutions.size()];
+      @Override
+      public TspPhenotype[] solutionsToPhenotype() throws Exception {
+        TspPhenotype[] result = new TspPhenotype[this.solutions.size()];
 
-                for (int i = 0; i < _solutions.size(); i++)
-                {                    
-                    result[i] = solutionToPhenotype(_solutions.get(i));
-                }
-                return result;
-            }
-            
-            public TspPhenotype solutionToPhenotype(Subject<Integer> solution) throws Exception
-            {
-                return new TspPhenotype(solution.getChromosome().getGenes());                
-            }
-        };
+        for (int i = 0; i < this.solutions.size(); i++) {
+          result[i] = solutionToPhenotype(this.solutions.get(i));
+        }
+        return result;
+      }
 
-        return algorithm;
-    }
+      public TspPhenotype solutionToPhenotype(Subject<Integer> solution) throws Exception {
+        return new TspPhenotype(solution.getChromosome().getGenes());
+      }
+    };
+
+    return algorithm;
+  }
 }

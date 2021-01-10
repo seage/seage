@@ -28,10 +28,9 @@
 package org.seage.metaheuristic.tabusearch;
 
 /**
- * The <tt>MoveManager</tt> determines which moves are available
- * at any given time (or given solution). As a performance boost, you
- * may want to consider reusing {@link Move}s after each
- * iteration to avoid expensive instantiation.
+ * The <tt>MoveManager</tt> determines which moves are available at any given
+ * time (or given solution). As a performance boost, you may want to consider
+ * reusing {@link Move}s after each iteration to avoid expensive instantiation.
  *
  * @author Robert Harder
  * @see Move
@@ -40,23 +39,20 @@ package org.seage.metaheuristic.tabusearch;
  * @since 1.0
  */
 
-public interface MoveManager
-{
+public interface MoveManager {
 
-    /**
-     * This method should return an array of all possible
-     * moves to try at an iteration based on the passed
-     * current solution. Note that the moves generated should
-     * not depend on this exact solution object being the
-     * one to be operated on. It may be a copy of the current
-     * solution that is operated on.
-     * 
-     * @param solution The current solution.
-     * @return All possible moves for this iteration from given solution
-     * @see Solution
-     * @see Move
-     * @since 1.0
-     */
-    public abstract Move[] getAllMoves(Solution solution) throws Exception;
+  /**
+   * This method should return an array of all possible moves to try at an
+   * iteration based on the passed current solution. Note that the moves generated
+   * should not depend on this exact solution object being the one to be operated
+   * on. It may be a copy of the current solution that is operated on.
+   * 
+   * @param solution The current solution.
+   * @return All possible moves for this iteration from given solution
+   * @see Solution
+   * @see Move
+   * @since 1.0
+   */
+  public abstract Move[] getAllMoves(Solution solution) throws Exception;
 
 } // end class MoveManager

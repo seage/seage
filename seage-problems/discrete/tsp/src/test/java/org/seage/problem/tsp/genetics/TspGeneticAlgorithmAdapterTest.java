@@ -5,12 +5,10 @@ import org.seage.aal.problem.ProblemProviderTestBase;
 import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemProvider;
 
-public class TspGeneticAlgorithmAdapterTest extends ProblemAlgorithmAdapterTestBase<TspPhenotype>
-{
+public class TspGeneticAlgorithmAdapterTest extends ProblemAlgorithmAdapterTestBase<TspPhenotype> {
 
-    public TspGeneticAlgorithmAdapterTest()
-    {
-        super(new TspProblemProvider(), "GeneticAlgorithm");
-    }
+  public TspGeneticAlgorithmAdapterTest() {
+    super(new TspProblemProvider(), "GeneticAlgorithm");
+  }
 
 }

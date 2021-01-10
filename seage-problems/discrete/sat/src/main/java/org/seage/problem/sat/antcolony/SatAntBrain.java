@@ -35,48 +35,39 @@ import org.seage.problem.sat.FormulaEvaluator;
  *
  * @author Zagy
  */
-public class SatAntBrain extends AntBrain
-{
+public class SatAntBrain extends AntBrain {
 
-    private Formula _formula;
+  private Formula _formula;
 
-    public SatAntBrain(Graph graph, Formula formula)
-    {
-        super(graph);
-        _formula = formula;
+  public SatAntBrain(Graph graph, Formula formula) {
+    super(graph);
+    _formula = formula;
+  }
+
+  @Override
+  protected void markSelected(Node nextNode) {
+    super.markSelected(nextNode);
+
+    if (nextNode != null) {
+      Node n2 = _graph.getNodes().get(-nextNode.getID());
+      _availableNodes.remove(n2);
     }
+  }
 
-    @Override
-    protected void markSelected(Node nextNode)
-    {
-        super.markSelected(nextNode);
+  @Override
+  public double getPathCost(List<Edge> path) {
+    Boolean[] solution = new Boolean[_formula.getLiteralCount()];
+    List<Node> nodeList = edgeListToNodeList(path);
 
-        if (nextNode != null)
-        {
-            Node n2 = _graph.getNodes().get(-nextNode.getID());
-            _availableNodes.remove(n2);
-        }
+    for (Node n : nodeList) {
+      if (n.getID() == 0)
+        continue;
+      if (n.getID() < 0) {
+        solution[-n.getID() - 1] = false;
+      } else {
+        solution[n.getID() - 1] = true;
+      }
     }
-
-    @Override
-    public double getPathCost(List<Edge> path)
-    {
-        Boolean[] solution = new Boolean[_formula.getLiteralCount()];
-        List<Node> nodeList = edgeListToNodeList(path);
-
-        for (Node n : nodeList)
-        {
-            if (n.getID() == 0)
-                continue;
-            if (n.getID() < 0)
-            {
-                solution[-n.getID() - 1] = false;
-            }
-            else
-            {
-                solution[n.getID() - 1] = true;
-            }
-        }
-        return (FormulaEvaluator.evaluate(_formula, solution) + 0.1);
-    }
+    return (FormulaEvaluator.evaluate(_formula, solution) + 0.1);
+  }
 }

@@ -6,7 +6,7 @@ import org.seage.problem.sat.SatProblemProvider;
 
 public class SatSimulatedAnnealingAdapterTest extends ProblemAlgorithmAdapterTestBase<SatPhenotype> {
 
-    public SatSimulatedAnnealingAdapterTest() {
-        super(new SatProblemProvider(), "SimulatedAnnealing");
-    }
+  public SatSimulatedAnnealingAdapterTest() {
+    super(new SatProblemProvider(), "SimulatedAnnealing");
+  }
 }

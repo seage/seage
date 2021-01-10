@@ -1,0 +1,27 @@
+image: docker:stable
+
+stages:
+  - build
+  - test
+  - report
+
+variables:
+  DOCKER_DRIVER: overlay2
+  SEAGE_TEST_IMAGE: seage:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID
+
+build-seage:
+  stage: build
+  script:
+    - docker build -t $SEAGE_TEST_IMAGE -f Dockerfile .
+
+test-seage:
+  stage: test
+  script:
+    - docker run --rm $SEAGE_TEST_IMAGE mvn test
+
+report-seage:
+  stage: report
+  only:
+    - master
+  script:
+    - docker run --rm $SEAGE_TEST_IMAGE mvn verify sonar:sonar -Dsonar.projectKey=seage -Dsonar.host.url=https://sonarqube.rickq.net -Dsonar.login=$SONAR_SECRET
