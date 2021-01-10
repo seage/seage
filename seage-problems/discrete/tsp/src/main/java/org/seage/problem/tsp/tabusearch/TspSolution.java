@@ -32,44 +32,37 @@ import org.seage.problem.tsp.City;
  *
  * @author Richard Malek
  */
-public class TspSolution extends SolutionAdapter
-{
-    protected Integer[] _tour;
+public class TspSolution extends SolutionAdapter {
+  protected Integer[] _tour;
 
-    public TspSolution()
-    {
-    } // Appease clone()
+  public TspSolution() {
+  } // Appease clone()
 
-    public TspSolution(City[] customers)
-    {
-        // Crudely initialize solution
-        _tour = new Integer[customers.length];
-        for (int i = 0; i < customers.length; i++)
-            _tour[i] = i + 1;
-    } // end constructor
+  public TspSolution(City[] customers) {
+    // Crudely initialize solution
+    _tour = new Integer[customers.length];
+    for (int i = 0; i < customers.length; i++)
+      _tour[i] = i + 1;
+  } // end constructor
 
-    @Override
-    public Object clone()
-    {
-        TspSolution copy = (TspSolution) super.clone();
-        copy._tour = this._tour.clone();
-        return copy;
-    } // end clone
+  @Override
+  public Object clone() {
+    TspSolution copy = (TspSolution) super.clone();
+    copy._tour = this._tour.clone();
+    return copy;
+  } // end clone
 
-    public Integer[] getTour()
-    {
-        return _tour;
-    }
+  public Integer[] getTour() {
+    return _tour;
+  }
 
-    public void setTour(Integer[] tour)
-    {
-        _tour = tour;
-    }
+  public void setTour(Integer[] tour) {
+    _tour = tour;
+  }
 
-    @Override
-    public String toString()
-    {
-        return String.format("%f - %d", getObjectiveValue()[0], hashCode());
-    } // end toString
+  @Override
+  public String toString() {
+    return String.format("%f - %d", getObjectiveValue()[0], hashCode());
+  } // end toString
 
 } // end class MySolution

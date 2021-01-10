@@ -39,90 +39,73 @@ import org.seage.problem.tsp.CityProvider;
  *
  * @author Richard Malek
  */
-public class TspTabuSearchTest implements TabuSearchListener
-{
-    public static void main(String[] args)
-    {
-        try
-        {
-            //String path = "data/tsp/eil51.tsp";//args[0];		// 426
-            //String path = "data/tsp/eil101.tsp";//args[0];		// 
-            //String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
-            //String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
-            //String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
-            //String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
-            String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
+public class TspTabuSearchTest implements TabuSearchListener {
+  public static void main(String[] args) {
+    try {
+      // String path = "data/tsp/eil51.tsp";//args[0]; // 426
+      // String path = "data/tsp/eil101.tsp";//args[0]; //
+      // String path = "data/tsp/berlin52.tsp";//args[0]; // 7542
+      // String path = "data/tsp/ch130.tsp";//args[0]; // 6110
+      // String path = "data/tsp/lin318.tsp";//args[0]; // 42029
+      // String path = "data/tsp/pcb442.tsp";//args[0]; // 50778
+      String path = "data/tsp/u574.tsp";// args[0]; // 36905
 
-            new TspTabuSearchTest().run(path);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+      new TspTabuSearchTest().run(path);
+    } catch (Exception ex) {
+      ex.printStackTrace();
     }
+  }
 
-    public void run(String path) throws Exception
-    {
-        City[] cities = CityProvider.readCities(new FileInputStream(path));
-        System.out.println("Loading cities from path: " + path);
-        System.out.println("Number of cities: " + cities.length);
+  public void run(String path) throws Exception {
+    City[] cities = CityProvider.readCities(new FileInputStream(path));
+    System.out.println("Loading cities from path: " + path);
+    System.out.println("Number of cities: " + cities.length);
 
-        TabuSearch ts = new TabuSearch(
-                //new Tspr
-                //new TspRandomSolution(cities),
-                new TspGreedySolution(cities),
-                new TspMoveManager(),
-                new TspObjectiveFunction(cities),
-                new SimpleTabuList(50),
-                new BestEverAspirationCriteria(),
-                false);
+    TabuSearch ts = new TabuSearch(
+        // new Tspr
+        // new TspRandomSolution(cities),
+        new TspGreedySolution(cities), new TspMoveManager(), new TspObjectiveFunction(cities), new SimpleTabuList(50),
+        new BestEverAspirationCriteria(), false);
 
-        ts.addTabuSearchListener(this);
-        ts.setIterationsToGo(1500000);
-        ts.startSolving();
-    }
+    ts.addTabuSearchListener(this);
+    ts.setIterationsToGo(1500000);
+    ts.startSolving();
+  }
 
-    @Override
-    public void newBestSolutionFound(TabuSearchEvent e)
-    {
-        System.out.println(
-                e.getTabuSearch().getBestSolution().toString() + " - " + e.getTabuSearch().getIterationsCompleted());
-    }
+  @Override
+  public void newBestSolutionFound(TabuSearchEvent e) {
+    System.out
+        .println(e.getTabuSearch().getBestSolution().toString() + " - " + e.getTabuSearch().getIterationsCompleted());
+  }
 
-    @Override
-    public void improvingMoveMade(TabuSearchEvent e)
-    {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
+  @Override
+  public void improvingMoveMade(TabuSearchEvent e) {
+    // throw new UnsupportedOperationException("Not supported yet.");
+  }
 
-    @Override
-    public void newCurrentSolutionFound(TabuSearchEvent e)
-    {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
+  @Override
+  public void newCurrentSolutionFound(TabuSearchEvent e) {
+    // throw new UnsupportedOperationException("Not supported yet.");
+  }
 
-    @Override
-    public void noChangeInValueMoveMade(TabuSearchEvent e)
-    {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
+  @Override
+  public void noChangeInValueMoveMade(TabuSearchEvent e) {
+    // throw new UnsupportedOperationException("Not supported yet.");
+  }
 
-    @Override
-    public void tabuSearchStarted(TabuSearchEvent e)
-    {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
+  @Override
+  public void tabuSearchStarted(TabuSearchEvent e) {
+    // throw new UnsupportedOperationException("Not supported yet.");
+  }
 
-    @Override
-    public void tabuSearchStopped(TabuSearchEvent e)
-    {
-        System.out.println("finished");
-    }
+  @Override
+  public void tabuSearchStopped(TabuSearchEvent e) {
+    System.out.println("finished");
+  }
 
-    @Override
-    public void unimprovingMoveMade(TabuSearchEvent e)
-    {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
+  @Override
+  public void unimprovingMoveMade(TabuSearchEvent e) {
+    // throw new UnsupportedOperationException("Not supported yet.");
+  }
 
 }

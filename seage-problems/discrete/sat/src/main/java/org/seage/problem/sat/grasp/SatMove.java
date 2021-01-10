@@ -29,37 +29,30 @@ import org.seage.metaheuristic.grasp.Solution;
  *
  * @author Martin Zaloga
  */
-public class SatMove implements IMove
-{
+public class SatMove implements IMove {
 
-    private int _literalIx;
+  private int _literalIx;
 
-    public SatMove(int literalIx)
-    {
-        _literalIx = literalIx;
+  public SatMove(int literalIx) {
+    _literalIx = literalIx;
+  }
+
+  public int getLiteralIx() {
+    return _literalIx;
+  }
+
+  @Override
+  public Solution apply(Solution s) {
+    // TODO: A - tady se musi 's' klonovat - (hluboka kopie)
+    SatSolution newSol = (SatSolution) s;
+    Boolean[] litValues = newSol._litValues.clone();
+    if (litValues[_literalIx]) {
+      litValues[_literalIx] = false;
+    } else {
+      litValues[_literalIx] = true;
     }
-
-    public int getLiteralIx()
-    {
-        return _literalIx;
-    }
-
-    @Override
-    public Solution apply(Solution s)
-    {
-        // TODO: A - tady se musi 's' klonovat - (hluboka kopie)
-        SatSolution newSol = (SatSolution) s;
-        Boolean[] litValues = newSol._litValues.clone();
-        if (litValues[_literalIx])
-        {
-            litValues[_literalIx] = false;
-        }
-        else
-        {
-            litValues[_literalIx] = true;
-        }
-        newSol = new SatSolution();
-        newSol.setLiteralValues(litValues);
-        return newSol;
-    }
+    newSol = new SatSolution();
+    newSol.setLiteralValues(litValues);
+    return newSol;
+  }
 }

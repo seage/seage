@@ -31,13 +31,11 @@ import org.seage.problem.tsp.TourProvider;
  *
  * @author Jan Zmatlik
  */
-public class TspSortedSolution extends TspSolution
-{
+public class TspSortedSolution extends TspSolution {
 
-    public TspSortedSolution(int length)
-    {
-        super(length);
-        _tour = TourProvider.createSortedTour(length);
-    }
+  public TspSortedSolution(int length) {
+    super(length);
+    _tour = TourProvider.createSortedTour(length);
+  }
 
 }

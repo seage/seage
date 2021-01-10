@@ -31,86 +31,82 @@ package org.seage.metaheuristic.antcolony;
  *
  * @author Martin Zaloga
  */
-public class Edge
-{
-    private Node _node1;
-    private Node _node2;
-    private double _edgePrice;
-    private double _pheromone;
+public class Edge {
+  private Node _node1;
+  private Node _node2;
+  private double _edgePrice;
+  private double _pheromone;
 
-    public Edge(Node start, Node end) throws Exception
-    {
-        _node1 = start;
-        _node2 = end;
-        _node1.addEdge(this);
-        _node2.addEdge(this);
-        _edgePrice = 0;
-        _pheromone = 0;
-    }
+  public Edge(Node start, Node end) throws Exception {
+    _node1 = start;
+    _node2 = end;
+    _node1.addEdge(this);
+    _node2.addEdge(this);
+    _edgePrice = 0;
+    _pheromone = 0;
+  }
 
-    /**
-     * Pheromone on edge finding
-     * @return - Value of pheromone
-     */
-    public double getLocalPheromone()
-    {
-        return _pheromone;
-    }
+  /**
+   * Pheromone on edge finding
+   * 
+   * @return - Value of pheromone
+   */
+  public double getLocalPheromone() {
+    return _pheromone;
+  }
 
-    /**
-     * Local pheromone addition
-     * @param pheromone
-     */
-    public void addLocalPheromone(double pheromone)
-    {
-        _pheromone += pheromone;
-    }
+  /**
+   * Local pheromone addition
+   * 
+   * @param pheromone
+   */
+  public void addLocalPheromone(double pheromone) {
+    _pheromone += pheromone;
+  }
 
-    /**
-     * Pheromone evaporation
-     */
-    public void evaporateFromEdge(double evapoCoef)
-    {
-        _pheromone = _pheromone * evapoCoef;
-        if (_pheromone < 0.00001)
-        {
-            _pheromone = 0.00001;
-        }
+  /**
+   * Pheromone evaporation
+   */
+  public void evaporateFromEdge(double evapoCoef) {
+    _pheromone = _pheromone * evapoCoef;
+    if (_pheromone < 0.00001) {
+      _pheromone = 0.00001;
     }
+  }
 
-    /**
-     * Edge length finding
-     * @return - Edge length
-     */
-    public double getEdgePrice()
-    {
-        return _edgePrice;
-    }
+  /**
+   * Edge length finding
+   * 
+   * @return - Edge length
+   */
+  public double getEdgePrice() {
+    return _edgePrice;
+  }
 
-    /**
-     * Edge length setting
-     * @param length - Edge length
-     */
-    public void setEdgePrice(double length)
-    {
-        _edgePrice = length;
-    }
+  /**
+   * Edge length setting
+   * 
+   * @param length - Edge length
+   */
+  public void setEdgePrice(double length) {
+    _edgePrice = length;
+  }
 
-    /**
-     * Firs of nodes
-     * @return - First node
-     */
-    public Node getNode2()
-    {
-        return _node2;
-    }
+  /**
+   * Firs of nodes
+   * 
+   * @return - First node
+   */
+  public Node getNode2() {
+    return _node2;
+  }
 
-    /**
-     * Second of nodes
-     * @return - Second node
-     */
-    public Node getNode1()
-    {
-        return _node1;
-    }
+  /**
+   * Second of nodes
+   * 
+   * @return - Second node
+   */
+  public Node getNode1() {
+    return _node1;
+  }
 }

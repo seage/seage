@@ -29,29 +29,28 @@ package org.seage.metaheuristic.grasp;
  *
  * @author Martin Zaloga
  */
-public class Solution implements java.lang.Cloneable, java.io.Serializable
-{
-    private static final long serialVersionUID = -5024798712835848962L;
-    /**
-     * The _value is value of Solution
-     */
-    double _value = Double.MAX_VALUE;
+public class Solution implements java.lang.Cloneable, java.io.Serializable {
+  private static final long serialVersionUID = -5024798712835848962L;
+  /**
+   * The _value is value of Solution
+   */
+  double _value = Double.MAX_VALUE;
 
-    /**
-     * Returns the value of Solution
-     * @return - The rating of Solution
-     */
-    public double getObjectiveValue()
-    {
-        return _value;
-    }
+  /**
+   * Returns the value of Solution
+   * 
+   * @return - The rating of Solution
+   */
+  public double getObjectiveValue() {
+    return _value;
+  }
 
-    /**
-     * Sets the value of Solution
-     * @param objValue - Evaluation of the solution
-     */
-    public void setObjectiveValue(double objValue)
-    {
-        _value = objValue;
-    }
+  /**
+   * Sets the value of Solution
+   * 
+   * @param objValue - Evaluation of the solution
+   */
+  public void setObjectiveValue(double objValue) {
+    _value = objValue;
+  }
 }

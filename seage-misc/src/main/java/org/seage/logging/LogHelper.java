@@ -48,11 +48,9 @@ import ch.qos.logback.core.joran.spi.JoranException;
  * 
  * @author Richard Malek
  */
-public class LogHelper
-{
+public class LogHelper {
 
-    public static void createFileAppenderConfig(Logger logger)
-    {
+  public static void createFileAppenderConfig(Logger logger) {
 //        final LoggerContext ctx = (LoggerContext) LogManager.getContext(true);
 //        final Configuration config = ctx.getConfiguration();
 //        Layout layout = PatternLayout.createLayout(PatternLayout.SIMPLE_CONVERSION_PATTERN,null, config, null,
@@ -69,10 +67,9 @@ public class LogHelper
 //        loggerConfig.addAppender(appender, Level.ALL, null);
 //        config.addLogger("org.apache.logging.log4j", loggerConfig);
 //        ctx.updateLoggers();
-    }
-    
-    public static void loadConfig(String path)
-    {
+  }
+
+  public static void loadConfig(String path) {
 //        try
 //        {
 //            FileInputStream configFile = new FileInputStream(path);
@@ -87,24 +84,23 @@ public class LogHelper
 //
 //            setConsoleDefaultFormatter(LoggerFactory.getLogger("org.seage"), Level.ALL);
 //        }
+  }
+
+  public static void configure(InputStream config) {
+    LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+
+    try {
+      JoranConfigurator configurator = new JoranConfigurator();
+      configurator.setContext(context);
+      // Call context.reset() to clear any previous configuration, e.g. default
+      // configuration. For multi-step configuration, omit calling context.reset().
+      context.reset();
+      configurator.doConfigure(config);
+    } catch (JoranException je) {
+      // StatusPrinter will handle this
     }
 
-    public static void configure(InputStream config)
-    {
-        LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-        
-        try {            
-          JoranConfigurator configurator = new JoranConfigurator();
-          configurator.setContext(context);
-          // Call context.reset() to clear any previous configuration, e.g. default 
-          // configuration. For multi-step configuration, omit calling context.reset().
-          context.reset(); 
-          configurator.doConfigure(config);
-        } catch (JoranException je) {
-          // StatusPrinter will handle this
-        }
-        
-    }
+  }
 
 //    public static void setConsoleLevel(Logger logger, Level level)
 //    {
@@ -120,12 +116,12 @@ public class LogHelper
 //        }
 //    }
 
-    //    public static void setConsoleDefaultFormatter()
-    //    {
-    //    	Logger logger = LoggerFactory.getLogger("org.seage");
-    //    	setConsoleDefaultFormatter(logger);
-    //        
-    //    }
+  // public static void setConsoleDefaultFormatter()
+  // {
+  // Logger logger = LoggerFactory.getLogger("org.seage");
+  // setConsoleDefaultFormatter(logger);
+  //
+  // }
 //    public static void setConsoleDefaultFormatter(Logger logger, Level level)
 //    {
 //        Formatter formatter = new LogFormatter();

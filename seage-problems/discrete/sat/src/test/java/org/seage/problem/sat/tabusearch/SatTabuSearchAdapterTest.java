@@ -6,7 +6,7 @@ import org.seage.problem.sat.SatProblemProvider;
 
 public class SatTabuSearchAdapterTest extends ProblemAlgorithmAdapterTestBase<SatPhenotype> {
 
-    public SatTabuSearchAdapterTest() {
-        super(new SatProblemProvider(), "TabuSearch");
-    }
+  public SatTabuSearchAdapterTest() {
+    super(new SatProblemProvider(), "TabuSearch");
+  }
 }

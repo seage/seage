@@ -29,50 +29,44 @@ package org.seage.metaheuristic.sannealing;
  *
  * @author Jan Zmatlik
  */
-public class Solution implements Cloneable, Comparable<Solution>
-{
+public class Solution implements Cloneable, Comparable<Solution> {
 
-    /**
-     * The value is value of Solution
-     */
-    private double _value;
+  /**
+   * The value is value of Solution
+   */
+  private double _value;
 
-    /**
-     * Returns the value of Solution
-     * @return double value
-     */
-    public double getObjectiveValue()
-    {
-        return _value;
+  /**
+   * Returns the value of Solution
+   * 
+   * @return double value
+   */
+  public double getObjectiveValue() {
+    return _value;
+  }
+
+  /**
+   * Sets the value of Solution
+   * 
+   * @param double objValue
+   */
+  public void setObjectiveValue(double objValue) {
+    _value = objValue;
+  }
+
+  @Override
+  public Solution clone() {
+    try {
+      Solution sol = (Solution) super.clone();
+      sol._value = _value;
+      return sol;
+    } catch (CloneNotSupportedException e) {
+      throw new InternalError(e.toString());
     }
+  }
 
-    /**
-     * Sets the value of Solution
-     * @param double objValue
-     */
-    public void setObjectiveValue(double objValue)
-    {
-        _value = objValue;
-    }
-
-    @Override
-    public Solution clone()
-    {
-        try
-        {
-            Solution sol = (Solution) super.clone();
-            sol._value = _value;
-            return sol;
-        }
-        catch (CloneNotSupportedException e)
-        {
-            throw new InternalError(e.toString());
-        }
-    }
-
-    @Override
-    public int compareTo(Solution sol)
-    {
-        return (int) (sol._value - _value);
-    }
+  @Override
+  public int compareTo(Solution sol) {
+    return (int) (sol._value - _value);
+  }
 }

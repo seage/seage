@@ -29,13 +29,11 @@ package org.seage.problem.tsp.particles;
  *
  * @author Jan Zmatlik
  */
-public class TspSortedParticle extends TspParticle
-{
+public class TspSortedParticle extends TspParticle {
 
-    public TspSortedParticle(int dimension)
-    {
-        super(dimension);
-        //        _tour = TourProvider.createSortedTour( cities );
-    }
+  public TspSortedParticle(int dimension) {
+    super(dimension);
+    // _tour = TourProvider.createSortedTour( cities );
+  }
 
 }

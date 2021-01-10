@@ -5,7 +5,7 @@ import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemProvider;
 
 public class TspSimulatedAnnealingAdapterTest extends ProblemAlgorithmAdapterTestBase<TspPhenotype> {
-    public TspSimulatedAnnealingAdapterTest() {
-        super(new TspProblemProvider(), "SimulatedAnnealing");
-    }
+  public TspSimulatedAnnealingAdapterTest() {
+    super(new TspProblemProvider(), "SimulatedAnnealing");
+  }
 }

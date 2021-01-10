@@ -32,39 +32,33 @@ import org.seage.metaheuristic.grasp.Solution;
  *
  * @author Martin Zaloga
  */
-public class SatMoveManager implements IMoveManager
-{
+public class SatMoveManager implements IMoveManager {
 
-    private Random _rnd = new Random();
-    private SatMove[] _moves;
+  private Random _rnd = new Random();
+  private SatMove[] _moves;
 
-    /**
-     * Function which generates the next steps algorithm
-     * 
-     * @param solution
-     *            - Current solutions for which are generated further steps
-     * @return - The next steps algorithm
-     */
-    @Override
-    public IMove[] getAllMoves(Solution solution)
-    {
-        SatSolution sol = (SatSolution) solution;
-        SatMove[] moves = new SatMove[sol.getLiteralCount()];
+  /**
+   * Function which generates the next steps algorithm
+   * 
+   * @param solution - Current solutions for which are generated further steps
+   * @return - The next steps algorithm
+   */
+  @Override
+  public IMove[] getAllMoves(Solution solution) {
+    SatSolution sol = (SatSolution) solution;
+    SatMove[] moves = new SatMove[sol.getLiteralCount()];
 
-        /* random selection of sequence the steps */
-        for (int i = 0; i < sol.getLiteralCount(); i++)
-        {
-            moves[i] = new SatMove(_rnd.nextInt(sol.getLiteralCount()));
-        }
-        _moves = moves;
-        return moves;
+    /* random selection of sequence the steps */
+    for (int i = 0; i < sol.getLiteralCount(); i++) {
+      moves[i] = new SatMove(_rnd.nextInt(sol.getLiteralCount()));
     }
+    _moves = moves;
+    return moves;
+  }
 
-    public void printMoves()
-    {
-        for (int i = 0; i < _moves.length; i++)
-        {
-            System.out.println("move[" + i + "] " + _moves[i].toString());
-        }
+  public void printMoves() {
+    for (int i = 0; i < _moves.length; i++) {
+      System.out.println("move[" + i + "] " + _moves[i].toString());
     }
+  }
 }

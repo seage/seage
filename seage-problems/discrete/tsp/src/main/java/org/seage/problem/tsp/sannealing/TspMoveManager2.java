@@ -34,83 +34,73 @@ import org.seage.metaheuristic.sannealing.Solution;
  *
  * @author Jan Zmatlik
  */
-public class TspMoveManager2 implements IMoveManager
-{
-    Random rnd = new Random(1);
-    private TspObjectiveFunction _objFunc;
+public class TspMoveManager2 implements IMoveManager {
+  Random rnd = new Random(1);
+  private TspObjectiveFunction _objFunc;
 
-    public TspMoveManager2(TspObjectiveFunction objFunc)
-    {
-        _objFunc = objFunc;
+  public TspMoveManager2(TspObjectiveFunction objFunc) {
+    _objFunc = objFunc;
+  }
+
+  public Solution getModifiedSolution0(Solution solution) throws Exception {
+    TspSolution tspSolution = ((TspSolution) solution).clone();
+
+    int tspSolutionLength = tspSolution.getTour().length;
+    int a = Math.min(Math.max(1, rnd.nextInt(tspSolutionLength)), tspSolutionLength - 1);
+    int[] move = new int[2];
+    int[] bestMove = null;
+    move[0] = a;
+    move[1] = 0;
+    double bestVal = _objFunc.evaluate(tspSolution, move)[0];
+
+    for (int i = 1; i < tspSolutionLength; i++) {
+      if (i == a)
+        continue;
+      move[1] = i;
+      double val = _objFunc.evaluate(tspSolution, move)[0];
+      if (val < bestVal) {
+        bestVal = val;
+        bestMove = move;
+      }
     }
 
-    public Solution getModifiedSolution0(Solution solution) throws Exception
-    {
-        TspSolution tspSolution = ((TspSolution) solution).clone();
-
-        int tspSolutionLength = tspSolution.getTour().length;
-        int a = Math.min(Math.max(1, rnd.nextInt(tspSolutionLength)), tspSolutionLength - 1);
-        int[] move = new int[2];
-        int[] bestMove = null;
-        move[0] = a;
-        move[1] = 0;
-        double bestVal = _objFunc.evaluate(tspSolution, move)[0];
-
-        for (int i = 1; i < tspSolutionLength; i++)
-        {
-            if (i == a)
-                continue;
-            move[1] = i;
-            double val = _objFunc.evaluate(tspSolution, move)[0];
-            if (val < bestVal)
-            {
-                bestVal = val;
-                bestMove = move;
-            }
-        }
-
-        // Swap values if indices are different
-        if (bestMove != null)
-        {
-            int tmp = tspSolution.getTour()[bestMove[0]];
-            tspSolution.getTour()[bestMove[0]] = tspSolution.getTour()[bestMove[1]];
-            tspSolution.getTour()[bestMove[1]] = tmp;
-        }
-
-        return tspSolution;
+    // Swap values if indices are different
+    if (bestMove != null) {
+      int tmp = tspSolution.getTour()[bestMove[0]];
+      tspSolution.getTour()[bestMove[0]] = tspSolution.getTour()[bestMove[1]];
+      tspSolution.getTour()[bestMove[1]] = tmp;
     }
 
-    @Override
-    public Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception
-    {
-        TspSolution tspSolution = ((TspSolution) solution).clone();
-        Integer[] next = neighbour(tspSolution.getTour(), currentTemperature);
-        for (int i = 0; i < tspSolution.getTour().length; i++)
-        {
-            tspSolution._tour[i] = next[i];
-        }
+    return tspSolution;
+  }
 
-        return tspSolution;
+  @Override
+  public Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception {
+    TspSolution tspSolution = ((TspSolution) solution).clone();
+    Integer[] next = neighbour(tspSolution.getTour(), currentTemperature);
+    for (int i = 0; i < tspSolution.getTour().length; i++) {
+      tspSolution._tour[i] = next[i];
     }
 
-    Integer[] neighbour(Integer[] state, double curTemp)
-    {
-        int n = state.length;
-        int i = rnd.nextInt(n);
-        int w = (int) Math.min(n * curTemp / 2, (Integer.MAX_VALUE / 2 - 1));
-        int j = Math.abs(i + rnd.nextInt(2 * w + 1) - w + n) % n;
-        Integer[] newState = state.clone();
-        int sign = i - j;
-        // reverse order from i to j
-        while (sign * (i - j) > 0)
-        {
-            int t = newState[i];
-            newState[i] = newState[j];
-            newState[j] = t;
-            i = (i + 1) % n;
-            j = (j - 1 + n) % n;
-        }
-        return newState;
+    return tspSolution;
+  }
+
+  Integer[] neighbour(Integer[] state, double curTemp) {
+    int n = state.length;
+    int i = rnd.nextInt(n);
+    int w = (int) Math.min(n * curTemp / 2, (Integer.MAX_VALUE / 2 - 1));
+    int j = Math.abs(i + rnd.nextInt(2 * w + 1) - w + n) % n;
+    Integer[] newState = state.clone();
+    int sign = i - j;
+    // reverse order from i to j
+    while (sign * (i - j) > 0) {
+      int t = newState[i];
+      newState[i] = newState[j];
+      newState[j] = t;
+      i = (i + 1) % n;
+      j = (j - 1 + n) % n;
     }
+    return newState;
+  }
 
 }

@@ -28,10 +28,10 @@
 package org.seage.metaheuristic.tabusearch;
 
 /**
- * This extends the {@link Move} interface and requires you to implement
- * a <code>public int[] attributes()</code> method that returns attributes
- * of that move. The length of the array is the number of attributes
- * you are tracking in your {@link ComplexTabuList}.
+ * This extends the {@link Move} interface and requires you to implement a
+ * <code>public int[] attributes()</code> method that returns attributes of that
+ * move. The length of the array is the number of attributes you are tracking in
+ * your {@link ComplexTabuList}.
  *
  * @author Robert Harder
  * @see ObjectiveFunction
@@ -40,16 +40,14 @@ package org.seage.metaheuristic.tabusearch;
  * @since 1.0-exp9
  */
 
-public interface ComplexMove extends Move
-{
+public interface ComplexMove extends Move {
 
-    /**
-     * Returns an array of attributes to track in the
-     * {@link ComplexTabuList}.
-     *
-     * @return array of attributes
-     * @since 1.0-exp9
-     */
-    public abstract int[] attributes();
+  /**
+   * Returns an array of attributes to track in the {@link ComplexTabuList}.
+   *
+   * @return array of attributes
+   * @since 1.0-exp9
+   */
+  public abstract int[] attributes();
 
 } // end class ComplexMove

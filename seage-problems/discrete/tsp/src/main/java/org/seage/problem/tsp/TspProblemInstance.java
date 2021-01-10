@@ -33,19 +33,16 @@ import org.seage.aal.problem.ProblemInstanceInfo;
  *
  * @author Richard Malek
  */
-public class TspProblemInstance extends ProblemInstance
-{
+public class TspProblemInstance extends ProblemInstance {
 
-    private City[] _cities;
+  private City[] _cities;
 
-    public TspProblemInstance(ProblemInstanceInfo instanceInfo, City[] cities) throws Exception
-    {
-        super(instanceInfo);
-        _cities = cities;
-    }
+  public TspProblemInstance(ProblemInstanceInfo instanceInfo, City[] cities) throws Exception {
+    super(instanceInfo);
+    _cities = cities;
+  }
 
-    public City[] getCities()
-    {
-        return _cities;
-    }
+  public City[] getCities() {
+    return _cities;
+  }
 }

@@ -43,159 +43,156 @@ import org.slf4j.LoggerFactory;
  *
  * @author Richard Malek
  */
-public abstract class ProblemProvider<P extends Phenotype<?>> implements IProblemProvider<P>
-{
-    private static Logger _logger = LoggerFactory.getLogger(ProblemProvider.class.getName());
-    private static HashMap<String, IProblemProvider<Phenotype<?>>> _providers;
-    private ProblemInfo _problemInfo;
-    private HashMap<String, IAlgorithmFactory<P, ?>> _algFactories;
+public abstract class ProblemProvider<P extends Phenotype<?>> implements IProblemProvider<P> {
+  public static Class<?>[] providers = {};
+  private static Logger _logger = LoggerFactory.getLogger(ProblemProvider.class.getName());
+  private static HashMap<String, IProblemProvider<Phenotype<?>>> _providers;
+  private ProblemInfo _problemInfo;
+  private HashMap<String, IAlgorithmFactory<P, ?>> _algFactories;
 
-    @Override
-    public ProblemInfo getProblemInfo() throws Exception
-    {
-        if (_problemInfo != null)
-            return _problemInfo;
+  @Override
+  public ProblemInfo getProblemInfo() throws Exception {
+    if (_problemInfo != null)
+      return _problemInfo;
 
-        _problemInfo = new ProblemInfo("ProblemInfo");
+    _problemInfo = new ProblemInfo("ProblemInfo");
 
-        Class<?> problemClass = this.getClass();
-        Annotation an = null;
+    Class<?> problemClass = this.getClass();
+    Annotation an = null;
 
-        an = problemClass.getAnnotation(Annotations.ProblemId.class);
-        if (an == null)
-            throw new Exception("Unable to get annotation ProblemId");
-        String problemId = ((Annotations.ProblemId) an).value();
+    an = problemClass.getAnnotation(Annotations.ProblemId.class);
+    if (an == null)
+      throw new Exception("Unable to get annotation ProblemId");
+    String problemId = ((Annotations.ProblemId) an).value();
 
-        an = problemClass.getAnnotation(Annotations.ProblemName.class);
-        if (an == null)
-            throw new Exception("Unable to get annotation ProblemName");
-        String problemName = ((Annotations.ProblemName) an).value();
+    an = problemClass.getAnnotation(Annotations.ProblemName.class);
+    if (an == null)
+      throw new Exception("Unable to get annotation ProblemName");
+    String problemName = ((Annotations.ProblemName) an).value();
 
-        _problemInfo.putValue("id", problemId);
-        _problemInfo.putValue("name", problemName);
-        _problemInfo.putValue("class", getClass().getCanonicalName());
+    _problemInfo.putValue("id", problemId);
+    _problemInfo.putValue("name", problemName);
+    _problemInfo.putValue("class", getClass().getCanonicalName());
 
-        // Instances
-        DataNode instances = new DataNode("Instances");
-        for (String in : ClassUtil.searchForInstancesInJar("instances", this.getClass().getPackage().getName()))
-        {
-            DataNode instance = new DataNode("Instance");
-            instance.putValue("type", ProblemInstanceOrigin.RESOURCE);
-            instance.putValue("path", in);
-            String instanceFileName = in.substring(in.lastIndexOf('/') + 1);
-            String instanceID = in.substring(in.lastIndexOf('/') + 1);
-            if (instanceID.contains("."))
-                instanceID = instanceID.substring(0, instanceID.lastIndexOf('.'));
-            instance.putValue("id", instanceID);
-            instance.putValue("name", instanceFileName);
-            instances.putDataNode(instance);
+    // Instances
+    DataNode instances = new DataNode("Instances");
+    for (String in : ClassUtil.searchForInstances("instances", this.getClass().getPackage().getName())) {
+      DataNode instance = new DataNode("Instance");
+      instance.putValue("type", ProblemInstanceOrigin.RESOURCE);
+      instance.putValue("path", in);
+      String instanceFileName = in.substring(in.lastIndexOf('/') + 1);
+      String instanceID = in.substring(in.lastIndexOf('/') + 1);
+      if (instanceID.contains("."))
+        instanceID = instanceID.substring(0, instanceID.lastIndexOf('.'));
+      instance.putValue("id", instanceID);
+      instance.putValue("name", instanceFileName);
+      instances.putDataNode(instance);
+    }
+    _problemInfo.putDataNode(instances);
+
+    // Algorithms
+    DataNode algorithms = new DataNode("Algorithms");
+    _algFactories = new HashMap<String, IAlgorithmFactory<P, ?>>();
+
+    for (ClassInfo ci : ClassUtil.searchForClasses(IAlgorithmFactory.class, this.getClass().getPackage().getName())) {
+      try {
+        Class<?> algFactoryClass = Class.forName(ci.getClassName());
+        Annotation an2 = null;
+
+        // Algorithm adapters
+        DataNode algorithm = new DataNode("Algorithm");
+
+        an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmId.class);
+        if (an2 == null)
+          throw new Exception(String.format("Unable to get annotation AlgorithmId: %s", algFactoryClass));
+        String algId = ((Annotations.AlgorithmId) an2).value();
+
+        an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmName.class);
+        if (an2 == null)
+          throw new Exception("Unable to get annotation AlgorithmName");
+        String algName = ((Annotations.AlgorithmName) an2).value();
+
+        algorithm.putValue("id", algId);
+        algorithm.putValue("name", algName);
+        algorithm.putValue("factoryClass", ci.getClassName());
+
+        IAlgorithmFactory factory = (IAlgorithmFactory) algFactoryClass.newInstance();
+        // factory.setProblemProvider((IProblemProvider)ObjectCloner.deepCopy(this));
+        _algFactories.put(algId, factory);
+
+        // Algorithm parameters
+
+        Class<?> algAdapterClass = ((IAlgorithmFactory) algFactoryClass.newInstance()).getAlgorithmClass();
+        an2 = algAdapterClass.getAnnotation(Annotations.AlgorithmParameters.class);
+        if (an2 == null)
+          throw new Exception("Unable to get annotation AlgorithmParameters");
+        Annotations.Parameter[] params = ((Annotations.AlgorithmParameters) an2).value();
+
+        for (Annotations.Parameter p : params) {
+          DataNode parameter = new DataNode("Parameter");
+          parameter.putValue("name", p.name());
+          parameter.putValue("min", p.min());
+          parameter.putValue("max", p.max());
+          parameter.putValue("init", p.init());
+          algorithm.putDataNode(parameter);
         }
-        _problemInfo.putDataNode(instances);
+        // ---
+        algorithms.putDataNode(algorithm);
+      } catch (Exception ex) {
+        // System.err.println(ci.getClassName()+": "+ex.getMessage());
+        ex.printStackTrace();
+      }
+    }
+    _problemInfo.putDataNode(algorithms);
 
-        // Algorithms
-        DataNode algorithms = new DataNode("Algorithms");
-        _algFactories = new HashMap<String, IAlgorithmFactory<P, ?>>();
+    return _problemInfo;
+  }
 
-        for (ClassInfo ci : ClassUtil.searchForClasses(IAlgorithmFactory.class, this.getClass().getPackage().getName()))
-        {
-            try
-            {
-                Class<?> algFactoryClass = Class.forName(ci.getClassName());
-                Annotation an2 = null;
+  @Override
+  public IAlgorithmFactory<P, ?> getAlgorithmFactory(String algId) throws Exception {
+    if (_algFactories == null)
+      throw new Exception("ProblemProvider not initialized, call getProblemInfo() first");
+    if (!_algFactories.containsKey(algId))
+      throw new Exception("Unknown algorithm id: " + algId);
+    return _algFactories.get(algId);
+  }
 
-                // Algorithm adapters
-                DataNode algorithm = new DataNode("Algorithm");
+  @Override
+  public HashMap<String, IAlgorithmFactory<P, ?>> getAlgorithmFactories() {
+    return _algFactories;
+  }
 
-                an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmId.class);
-                if (an2 == null)
-                    throw new Exception(String.format("Unable to get annotation AlgorithmId: %s", algFactoryClass));
-                String algId = ((Annotations.AlgorithmId) an2).value();
+  ///////////////////////////////////////////////////////////////////////////
+  public static synchronized HashMap<String, IProblemProvider<Phenotype<?>>> getProblemProviders() throws Exception {
+    HashMap<String, IProblemProvider<Phenotype<?>>> result = new HashMap<String, IProblemProvider<Phenotype<?>>>();
 
-                an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmName.class);
-                if (an2 == null)
-                    throw new Exception("Unable to get annotation AlgorithmName");
-                String algName = ((Annotations.AlgorithmName) an2).value();
-
-                algorithm.putValue("id", algId);
-                algorithm.putValue("name", algName);
-                algorithm.putValue("factoryClass", ci.getClassName());
-
-                IAlgorithmFactory factory = (IAlgorithmFactory) algFactoryClass.newInstance();
-                //factory.setProblemProvider((IProblemProvider)ObjectCloner.deepCopy(this));
-                _algFactories.put(algId, factory);
-
-                // Algorithm parameters                
-
-                Class<?> algAdapterClass = ((IAlgorithmFactory) algFactoryClass.newInstance()).getAlgorithmClass();
-                an2 = algAdapterClass.getAnnotation(Annotations.AlgorithmParameters.class);
-                if (an2 == null)
-                    throw new Exception("Unable to get annotation AlgorithmParameters");
-                Annotations.Parameter[] params = ((Annotations.AlgorithmParameters) an2).value();
-
-                for (Annotations.Parameter p : params)
-                {
-                    DataNode parameter = new DataNode("Parameter");
-                    parameter.putValue("name", p.name());
-                    parameter.putValue("min", p.min());
-                    parameter.putValue("max", p.max());
-                    parameter.putValue("init", p.init());
-                    algorithm.putDataNode(parameter);
-                }
-                // ---
-                algorithms.putDataNode(algorithm);
-            }
-            catch (Exception ex)
-            {
-                //System.err.println(ci.getClassName()+": "+ex.getMessage());
-                ex.printStackTrace();
-            }
-        }
-        _problemInfo.putDataNode(algorithms);
-
-        return _problemInfo;
+    for (Class<?> c : providers) {
+      result.put(c.getAnnotation(Annotations.ProblemId.class).value(),
+          (IProblemProvider<Phenotype<?>>) c.newInstance());
     }
 
-    @Override
-    public IAlgorithmFactory<P, ?> getAlgorithmFactory(String algId) throws Exception
-    {
-        if (_algFactories == null)
-            throw new Exception("ProblemProvider not initialized, call getProblemInfo() first");
-        if (!_algFactories.containsKey(algId))
-            throw new Exception("Unknown algorithm id: " + algId);
-        return _algFactories.get(algId);
+    return result;
+  }
+
+  public static synchronized HashMap<String, IProblemProvider<Phenotype<?>>> getProblemProviders0() throws Exception {
+    if (_providers != null)
+      return _providers;
+
+    _providers = new HashMap<String, IProblemProvider<Phenotype<?>>>();
+    _logger.info("Searching for Providers");
+    for (ClassInfo ci : ClassUtil.searchForClasses(IProblemProvider.class, "org.seage.problem")) {
+      try {
+        _logger.info(ci.getClassName());
+        IProblemProvider<Phenotype<?>> pp = (IProblemProvider<Phenotype<?>>) Class.forName(ci.getClassName())
+            .newInstance();
+
+        _providers.put(pp.getProblemInfo().getValueStr("id"), pp);
+      } catch (Exception ex) {
+        _logger.error(ci.getClassName(), ex);
+      }
     }
-
-    @Override
-    public HashMap<String, IAlgorithmFactory<P, ?>> getAlgorithmFactories()
-    {
-        return _algFactories;
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    public static synchronized HashMap<String, IProblemProvider<Phenotype<?>>> getProblemProviders() throws Exception
-    {
-        if (_providers != null)
-            return _providers;
-
-        _providers = new HashMap<String, IProblemProvider<Phenotype<?>>>();
-        _logger.info("Searching for Providers");
-        for (ClassInfo ci : ClassUtil.searchForClasses(IProblemProvider.class, "org.seage.problem"))
-        {
-            try
-            {
-                _logger.info(ci.getClassName());
-                IProblemProvider<Phenotype<?>> pp = (IProblemProvider<Phenotype<?>>) Class.forName(ci.getClassName()).newInstance();
-
-                _providers.put(pp.getProblemInfo().getValueStr("id"), pp);
-            }
-            catch (Exception ex)
-            {
-                _logger.error(ci.getClassName(), ex);
-            }
-        }
-        _logger.info(String.format("Providers count: %d", _providers.keySet().size()));
-        return _providers;
-    }
+    _logger.info(String.format("Providers count: %d", _providers.keySet().size()));
+    return _providers;
+  }
 
 }

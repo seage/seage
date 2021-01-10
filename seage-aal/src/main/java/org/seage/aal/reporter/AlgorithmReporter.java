@@ -35,52 +35,44 @@ import org.seage.data.DataNode;
  *
  * @author Richard Malek
  */
-public class AlgorithmReporter<P extends Phenotype<?>>
-{
-    private AlgorithmReport _report;
-	private IPhenotypeEvaluator<P> _evaluator;
+public class AlgorithmReporter<P extends Phenotype<?>> {
+  private AlgorithmReport _report;
+  private IPhenotypeEvaluator<P> _evaluator;
 
-    public AlgorithmReporter(IPhenotypeEvaluator<P> evaluator) throws Exception
-    {
-    	_evaluator = evaluator;
-        _report = new AlgorithmReport("AlgorithmReport");
-        _report.putDataNode(new DataNode("Log"));
-        _report.putDataNode(new DataNode("Statistics"));
+  public AlgorithmReporter(IPhenotypeEvaluator<P> evaluator) throws Exception {
+    _evaluator = evaluator;
+    _report = new AlgorithmReport("AlgorithmReport");
+    _report.putDataNode(new DataNode("Log"));
+    _report.putDataNode(new DataNode("Statistics"));
+  }
 
-    }
+  public void putParameters(AlgorithmParams params) throws Exception {
+    _report.putValue("created", System.currentTimeMillis());
+    _report.putDataNode(params);
+  }
 
-    public void putParameters(AlgorithmParams params) throws Exception
-    {
-        _report.putValue("created", System.currentTimeMillis());
-        _report.putDataNode(params);
-    }
+  public void putNewSolution(long time, long iterNumber, P solution) throws Exception {
+    DataNode newSol = new DataNode("NewSolution");
+    newSol.putValue("time", time);
+    newSol.putValue("iterNumber", iterNumber);
+    newSol.putValue("objVal", _evaluator.evaluate(solution)[0]);
+    newSol.putValue("solution", solution.toText());
 
-    public void putNewSolution(long time, long iterNumber, P solution) throws Exception
-    {
-        DataNode newSol = new DataNode("NewSolution");
-        newSol.putValue("time", time);
-        newSol.putValue("iterNumber", iterNumber);
-        newSol.putValue("objVal", _evaluator.evaluate(solution)[0]);
-        newSol.putValue("solution", solution.toText());
+    _report.getDataNode("Log").putDataNode(newSol);
+  }
 
-        _report.getDataNode("Log").putDataNode(newSol);
-    }
+  public void putStatistics(long numberOfIterationsDone, long numberOfNewSolutions, long lastImprovingIteration,
+      double initObjVal, double avgObjVal, double bestObjVal) throws Exception {
+    DataNode stats = _report.getDataNode("Statistics");
+    stats.putValue("numberOfIter", numberOfIterationsDone);
+    stats.putValue("numberOfNewSolutions", numberOfNewSolutions);
+    stats.putValue("lastIterNumberNewSol", lastImprovingIteration);
+    stats.putValue("initObjVal", initObjVal);
+    stats.putValue("avgObjVal", avgObjVal);
+    stats.putValue("bestObjVal", bestObjVal);
+  }
 
-    public void putStatistics(
-            long numberOfIterationsDone, long numberOfNewSolutions, long lastImprovingIteration,
-            double initObjVal, double avgObjVal, double bestObjVal) throws Exception
-    {
-        DataNode stats = _report.getDataNode("Statistics");
-        stats.putValue("numberOfIter", numberOfIterationsDone);
-        stats.putValue("numberOfNewSolutions", numberOfNewSolutions);
-        stats.putValue("lastIterNumberNewSol", lastImprovingIteration);
-        stats.putValue("initObjVal", initObjVal);
-        stats.putValue("avgObjVal", avgObjVal);
-        stats.putValue("bestObjVal", bestObjVal);
-    }
-
-    public AlgorithmReport getReport() throws Exception
-    {
-        return (AlgorithmReport) _report.clone();
-    }
+  public AlgorithmReport getReport() throws Exception {
+    return (AlgorithmReport) _report.clone();
+  }
 }

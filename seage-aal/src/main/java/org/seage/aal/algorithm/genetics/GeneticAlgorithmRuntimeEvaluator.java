@@ -33,32 +33,27 @@ import org.seage.aal.reporter.AlgorithmReportEvaluator;
  *
  * @author Richard Malek
  */
-public class GeneticAlgorithmRuntimeEvaluator extends AlgorithmReportEvaluator
-{
+public class GeneticAlgorithmRuntimeEvaluator extends AlgorithmReportEvaluator {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -2908274605434683758L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -2908274605434683758L;
 
-    @Override
-    public int evaluate(AlgorithmReport report)
-    {
-        //InputStream is = AlgorithmAdapter.class.getResourceAsStream("reportSchema.xsd");
-        try
-        {
-            return Math.max(report.getDataNode("statistics").getValueInt("numberOfNewSolutions") - 5, 0);
-        }
-        catch (Exception ex)
-        {
-            return 0;
-        }
+  @Override
+  public int evaluate(AlgorithmReport report) {
+    // InputStream is =
+    // AlgorithmAdapter.class.getResourceAsStream("reportSchema.xsd");
+    try {
+      return Math.max(report.getDataNode("statistics").getValueInt("numberOfNewSolutions") - 5, 0);
+    } catch (Exception ex) {
+      return 0;
     }
+  }
 
-    @Override
-    public int compare(AlgorithmReport o1, AlgorithmReport o2)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+  @Override
+  public int compare(AlgorithmReport o1, AlgorithmReport o2) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 
 }

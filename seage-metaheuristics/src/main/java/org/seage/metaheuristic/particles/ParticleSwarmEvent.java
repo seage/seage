@@ -29,22 +29,19 @@ package org.seage.metaheuristic.particles;
  *
  * @author Jan Zmatlik
  */
-public class ParticleSwarmEvent extends java.util.EventObject
-{
+public class ParticleSwarmEvent extends java.util.EventObject {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -6183156859352794637L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -6183156859352794637L;
 
-    public ParticleSwarmEvent(Object source)
-    {
-        super(source);
-    }
+  public ParticleSwarmEvent(Object source) {
+    super(source);
+  }
 
-    public IParticleSwarm getParticleSwarm()
-    {
-        return (IParticleSwarm) source;
-    }
+  public IParticleSwarm getParticleSwarm() {
+    return (IParticleSwarm) source;
+  }
 
 }

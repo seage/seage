@@ -25,6 +25,7 @@ package org.seage.problem.sat.sannealing;
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
 import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.SatPhenotype;
 import org.seage.problem.sat.SatPhenotypeEvaluator;
 
 /**
@@ -44,9 +45,7 @@ public class SatObjectiveFunction implements IObjectiveFunction
     public double getObjectiveValue(Solution solution) throws Exception
     {
         SatSolution sol = (SatSolution)solution;
-        Boolean[] vals = new Boolean[sol.getLiteralValues().length];
-        for(int i=0;i<vals.length;i++)
-            vals[i] = sol.getLiteralValues()[i];
-        return _evaluator.evaluate(vals)[0];
+        SatPhenotype phenotype = new SatPhenotype(sol.getLiteralValues());
+        return _evaluator.evaluate(phenotype)[0];
     }
 }

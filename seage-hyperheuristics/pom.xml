@@ -38,7 +38,7 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-	 	<dependency>
+	 	<!-- <dependency>
 			<groupId>rapidminer</groupId>
 			<artifactId>rapidminer-launcher</artifactId>
 			<version>5.3.5</version>
@@ -56,7 +56,7 @@
 			<groupId>encog</groupId>
 			<artifactId>encog</artifactId>
 			<version>1.0</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>net.sourceforge.jexcelapi</groupId>
 			<artifactId>jxl</artifactId>
@@ -67,13 +67,13 @@
 			<artifactId>jep</artifactId>
 			<version>2.24</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>joone-engine</groupId>
 			<artifactId>joone-engine</artifactId>
 			<version>1.0</version>
 			<type>jar</type>
 			<scope>compile</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 		    <groupId>org.eobjects.sassyreader</groupId>
 			<artifactId>SassyReader</artifactId>
@@ -82,23 +82,23 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.17</version>
+			<version>4.1.2</version>
 		</dependency>            
-		<dependency>
+		<!-- <dependency>
 		    <groupId>vldocking</groupId>
 		    <artifactId>vldocking</artifactId>
 		    <version>1.0</version>
 		    <scope>compile</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
             <groupId>com.h2database</groupId>
 		    <artifactId>h2</artifactId>
-		    <version>1.4.197</version>
+		    <version>1.4.200</version>
 		</dependency>
 		<dependency>
 	        <groupId>org.apache.spark</groupId>
 	        <artifactId>spark-core_2.11</artifactId>
-	        <version>2.2.0</version>
+	        <version>2.4.7</version>
 	    </dependency>
 	    <dependency>
 		  <groupId>org.mybatis</groupId>

@@ -28,17 +28,14 @@ package org.seage.metaheuristic.antcolony;
 /**
  * @author Richard Malek (original)
  */
-public class AntColonyEvent
-{
-    private AntColony _algorithm;
+public class AntColonyEvent {
+  private AntColony _algorithm;
 
-    public AntColonyEvent(AntColony algorithm)
-    {
-        _algorithm = algorithm;
-    }
+  public AntColonyEvent(AntColony algorithm) {
+    _algorithm = algorithm;
+  }
 
-    public final AntColony getAntColony()
-    {
-        return _algorithm;
-    }
+  public final AntColony getAntColony() {
+    return _algorithm;
+  }
 }

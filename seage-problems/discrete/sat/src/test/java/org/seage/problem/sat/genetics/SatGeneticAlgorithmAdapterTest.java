@@ -5,7 +5,7 @@ import org.seage.problem.sat.SatPhenotype;
 import org.seage.problem.sat.SatProblemProvider;
 
 public class SatGeneticAlgorithmAdapterTest extends ProblemAlgorithmAdapterTestBase<SatPhenotype> {
-    public SatGeneticAlgorithmAdapterTest() {
-        super(new SatProblemProvider(), "GeneticAlgorithm");
-    }
+  public SatGeneticAlgorithmAdapterTest() {
+    super(new SatProblemProvider(), "GeneticAlgorithm");
+  }
 }

@@ -38,56 +38,52 @@ import org.seage.problem.tsp.Visualizer;
  * @deprecated Replaced by TspProblemSolver
  */
 @Deprecated
-public class TspHillClimberTest
-{
+public class TspHillClimberTest {
 
-    /**
-     * _cities - List of a loaded cities
-     * _tour - Index list of cities that make up the path
-     * _hc - Object containing hill climber algorithm
-     */
-    private City[] _cities;
-    private Integer[] _tour;
-    private HillClimber _hc;
+  /**
+   * _cities - List of a loaded cities _tour - Index list of cities that make up
+   * the path _hc - Object containing hill climber algorithm
+   */
+  private City[] _cities;
+  private Integer[] _tour;
+  private HillClimber _hc;
 
-    /**
-     * The main trigger method
-     * @param args - the argument is the path to the data
-     */
-    public static void main(String[] args)
-    {
-        try
-        {
-            new TspHillClimberTest().run(args[0], "greedy", 100000, 10000);
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
+  /**
+   * The main trigger method
+   * 
+   * @param args - the argument is the path to the data
+   */
+  public static void main(String[] args) {
+    try {
+      new TspHillClimberTest().run(args[0], "greedy", 100000, 10000);
+    } catch (Exception ex) {
+      System.out.println(ex.getMessage());
+      ex.printStackTrace();
     }
+  }
 
-    /**
-     * Function for the run the program
-     * @param path - Path where is fyle of data the cities
-     * @param clasic - Switching between the classical and improved algorithm Hill-Climber
-     * @param switcher - Switching between the Geedy and Random initial solution
-     * @param restarts - Numer of repeat optimalizations algorithm
-     * @param iteration - Number of iteration algorthm
-     */
-    public void run(String path, String switcher, int restarts, int iteration) throws Exception
-    {
-        _cities = CityProvider.readCities(new FileInputStream(path));
-        System.out.println("Loading cities from path: " + path);
-        System.out.println("Number of cities: " + _cities.length);
+  /**
+   * Function for the run the program
+   * 
+   * @param path      - Path where is fyle of data the cities
+   * @param clasic    - Switching between the classical and improved algorithm
+   *                  Hill-Climber
+   * @param switcher  - Switching between the Geedy and Random initial solution
+   * @param restarts  - Numer of repeat optimalizations algorithm
+   * @param iteration - Number of iteration algorthm
+   */
+  public void run(String path, String switcher, int restarts, int iteration) throws Exception {
+    _cities = CityProvider.readCities(new FileInputStream(path));
+    System.out.println("Loading cities from path: " + path);
+    System.out.println("Number of cities: " + _cities.length);
 
-        _hc = new HillClimber(new TspObjectiveFunction(_cities), new TspMoveManager(),
-                new TspSolutionGenerator(switcher, _cities), iteration);
-        _hc.startRestartedSearching(restarts);
-        TspSolution bestSol = (TspSolution) _hc.getBestSolution();
-        _tour = bestSol.getTour();
+    _hc = new HillClimber(new TspObjectiveFunction(_cities), new TspMoveManager(),
+        new TspSolutionGenerator(switcher, _cities), iteration);
+    _hc.startRestartedSearching(restarts);
+    TspSolution bestSol = (TspSolution) _hc.getBestSolution();
+    _tour = bestSol.getTour();
 
-        Visualizer.instance().createGraph(_cities, _tour, "tsphcgraph.png", 600, 400);
-        System.out.println("length: " + bestSol.getObjectiveValue());
-    }
+    Visualizer.instance().createGraph(_cities, _tour, "tsphcgraph.png", 600, 400);
+    System.out.println("length: " + bestSol.getObjectiveValue());
+  }
 }

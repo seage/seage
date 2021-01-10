@@ -23,12 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class AlgorithmTest
-{
+public class AlgorithmTest {
 
-    @Test
-    public void testProblem()
-    {
-        assertTrue(true);
-    }
+  @Test
+  public void testProblem() {
+    assertTrue(true);
+  }
 }

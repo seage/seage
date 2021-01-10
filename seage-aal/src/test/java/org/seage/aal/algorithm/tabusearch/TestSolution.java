@@ -2,13 +2,11 @@ package org.seage.aal.algorithm.tabusearch;
 
 import org.seage.metaheuristic.tabusearch.SolutionAdapter;
 
-public class TestSolution extends SolutionAdapter
-{
-    public Object[] solution;
+public class TestSolution extends SolutionAdapter {
+  public Integer[] solution;
 
-    public TestSolution(Object[] sol)
-    {
-        solution = sol;
-    }
+  public TestSolution(Integer[] sol) {
+    solution = sol;
+  }
 
 }

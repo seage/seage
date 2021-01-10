@@ -29,13 +29,13 @@ package org.seage.metaheuristic.sannealing;
  *
  * @author Jan Zmatlik
  */
-public interface IMoveManager
-{
+public interface IMoveManager {
 
-    /**
-     * Returns modified clone of solution in parameter
-     * @param Solution solution
-     * @throws Exception 
-     */
-    Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception;
+  /**
+   * Returns modified clone of solution in parameter
+   * 
+   * @param Solution solution
+   * @throws Exception
+   */
+  Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception;
 }

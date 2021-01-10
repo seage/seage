@@ -5,5 +5,5 @@ import java.util.List;
 import org.seage.hh.experimenter.ExperimentTask;
 
 public interface IExperimentTasksRunner {
-    void performExperimentTasks(List<ExperimentTask> tasks, String reportPath);
+  void performExperimentTasks(List<ExperimentTask> tasks, String reportPath);
 }

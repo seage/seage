@@ -30,13 +30,12 @@ package org.seage.metaheuristic.tabusearch;
  * 
  * @author Richard Malek
  */
-public interface LongTermMemory
-{
-    public void clearMemory();
+public interface LongTermMemory {
+  public void clearMemory();
 
-    public void memorizeSolution(Solution soln, boolean newBestSoln);
+  public void memorizeSolution(Solution soln, boolean newBestSoln);
 
-    public Solution diversifySolution();
+  public Solution diversifySolution();
 
-    public void resetIterNumber();
+  public void resetIterNumber();
 }

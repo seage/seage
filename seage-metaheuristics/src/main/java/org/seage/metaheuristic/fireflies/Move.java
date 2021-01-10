@@ -30,9 +30,8 @@ package org.seage.metaheuristic.fireflies;
  *
  * @author Administrator
  */
-public interface Move
-{
+public interface Move {
 
-    public void operateOn(Solution soln);
+  public void operateOn(Solution soln);
 
 }

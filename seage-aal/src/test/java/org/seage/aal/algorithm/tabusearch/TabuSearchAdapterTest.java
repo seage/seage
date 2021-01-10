@@ -33,114 +33,96 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.TestPhenotype;
+import org.seage.aal.problem.TestPhenotypeEvaluator;
 
 /**
  *
  * @author Richard Malek
  */
-public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution>
-{
+public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution> {
 
-    public TabuSearchAdapterTest() throws Exception
-    {
-        super();
-    }
+  public TabuSearchAdapterTest() throws Exception {
+    super();
+  }
 
-    @BeforeEach
-    public void initAlgorithm() throws Exception
-    {
-        _algAdapter = new TabuSearchAdapter<TestPhenotype, TestSolution>(new TestMoveManager(), new TestObjectiveFunction(), null)
-        {
-            private TestSolution[] _solutions0;
+  @BeforeEach
+  public void initAlgorithm() throws Exception {
+    algAdapter = new TabuSearchAdapter<TestPhenotype, TestSolution>(
+        new TestMoveManager(), new TestObjectiveFunction(), new TestPhenotypeEvaluator()) {
 
-            @Override
-            public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception
-            {
-                _solutions0 = new TestSolution[source.length];
-                _solutions = new TestSolution[source.length];
+      @Override
+      public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception {
+        this.solutions = new TestSolution[source.length];
 
-                for (int i = 0; i < source.length; i++)
-                {
-                    TestSolution s = new TestSolution(source[i].getSolution());
-                    _solutions0[i] = s;
-                    _solutions[i] = s;
-                }
+        for (int i = 0; i < source.length; i++) {
+          TestSolution s = new TestSolution(source[i].getSolution());
+          this.solutions[i] = s;
+        }
+      }
 
-            }
+      @Override
+      public TestPhenotype[] solutionsToPhenotype() throws Exception {
+        TestPhenotype[] result = new TestPhenotype[this.solutions.length];
+        for (int i = 0; i < this.solutions.length; i++) {
+          result[i] = solutionToPhenotype(this.solutions[i]);
+        }
+        return result;
+      }
 
-            @Override
-            public TestPhenotype[] solutionsToPhenotype() throws Exception
-            {
-                assertEquals(_solutions0.length, _solutions.length);
-                assertNotSame(_solutions0[0], _solutions[0]);
-                for (int i = 1; i < _solutions.length; i++)
-                {
-                    assertSame(_solutions0[i], _solutions[i]);
-                }
-                return null;
-            }
+      @Override
+      public TestPhenotype solutionToPhenotype(TestSolution solution) throws Exception {
+        return new TestPhenotype((Integer[])solution.solution);
+      }
+    };
 
-			@Override
-			public TestPhenotype solutionToPhenotype(TestSolution solution) throws Exception {
-				// TODO Auto-generated method stub
-				return null;
-			}
-        };
+    algParams = new AlgorithmParams();
+    algParams.putValue("numIterDivers", 1);
+    algParams.putValue("iterationCount", 3);
+    algParams.putValue("numSolutions", 1);
+    algParams.putValue("tabuListLength", 1);
+  }
 
-        _algParams = new AlgorithmParams();
-        _algParams.putValue("numIterDivers", 1);
-        _algParams.putValue("iterationCount", 3);
-        _algParams.putValue("numSolutions", 1);
-        _algParams.putValue("tabuListLength", 1);
-    }
+  @Override
+  @Test
+  public void testAlgorithm() throws Exception {
+    super.testAlgorithm();
+  }
 
-    @Override
-    @Test
-    public void testAlgorithm() throws Exception
-    {
-        super.testAlgorithm();
-    }
+  @Override
+  @Test
+  public void testAlgorithmWithParamsAtZero() throws Exception {
+    AlgorithmParams params = new AlgorithmParams();
+    params.putValue("numIterDivers", 0);
+    params.putValue("iterationCount", 0);
+    params.putValue("numSolutions", 0);
+    params.putValue("tabuListLength", 0);
+    super.setAlgParameters(params);
+    super.testAlgorithmWithParamsAtZero();
+  }
 
-    @Override
-    @Test
-    public void testAlgorithmWithParamsAtZero() throws Exception
-    {
-        AlgorithmParams params = new AlgorithmParams();
-        params.putValue("numIterDivers", 0);
-        params.putValue("iterationCount", 0);
-        params.putValue("numSolutions", 0);
-        params.putValue("tabuListLength", 0);
-        super.setAlgParameters(params);
-        super.testAlgorithmWithParamsAtZero();
-    }
+  @Test
+  @Override
+  public void testAsyncRunning() throws Exception {
+    AlgorithmParams params = new AlgorithmParams();
+    params.putValue("numIterDivers", 1);
+    params.putValue("iterationCount", 1000000);
+    params.putValue("numSolutions", 1);
+    params.putValue("tabuListLength", 1);
+    super.setAlgParameters(params);
+    super.testAsyncRunning();
+  }
 
-    @Test
-    @Override
-    public void testAsyncRunning() throws Exception
-    {
-        AlgorithmParams params = new AlgorithmParams();
-        params.putValue("numIterDivers", 1);
-        params.putValue("iterationCount", 1000000);
-        params.putValue("numSolutions", 1);
-        params.putValue("tabuListLength", 1);
-        super.setAlgParameters(params);
-        super.testAsyncRunning();
-    }
+  @Test
+  @Override
+  public void testReport() throws Exception {
+    super.testReport();
+  }
 
-    @Test
-    @Override
-    public void testReport() throws Exception
-    {
-    	super.testReport();
-    }
-
-    @Test
-    @Override
-    public void testAlgorithmWithParamsNull() throws Exception
-    {
-    	super.testAlgorithmWithParamsNull();
-    }
+  @Test
+  @Override
+  public void testAlgorithmWithParamsNull() throws Exception {
+    super.testAlgorithmWithParamsNull();
+  }
 }

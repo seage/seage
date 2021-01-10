@@ -61,25 +61,25 @@ public class JsspTabuSearchFactory implements IAlgorithmFactory
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-                _solutions = new Solution[source.length];
+                this.solutions = new Solution[source.length];
                 for (int i = 0; i < source.length; i++)
                 {
                     Integer[] sol = new Integer[source[i].length];
                     for (int j = 0; j < sol.length; j++)
                         sol[j] = (Integer) source[i][j];
 
-                    _solutions[i] = new JsspSolution(sol);
+                    this.solutions[i] = new JsspSolution(sol);
                 }
             }
 
             @Override
             public Object[][] solutionsToPhenotype() throws Exception
             {
-                Object[][] result = new Object[_solutions.length][];
+                Object[][] result = new Object[this.solutions.length][];
 
-                for (int i = 0; i < _solutions.length; i++)
+                for (int i = 0; i < this.solutions.length; i++)
                 {
-                    JsspSolution s = (JsspSolution) _solutions[i];
+                    JsspSolution s = (JsspSolution) this.solutions[i];
                     result[i] = s.getJobArray();                        
                 }
                 return result;

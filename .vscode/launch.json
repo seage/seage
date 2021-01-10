@@ -1,0 +1,106 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Debug (Launch) - Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-App<seage-experimenter-spark>",
+      "request": "launch",
+      "mainClass": "org.seage.experimenter.spark.App",
+      "projectName": "seage-experimenter-spark"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-HsqldbTest<seage-knowledgebase>",
+      "request": "launch",
+      "mainClass": "org.seage.knowledgebase.HsqldbTest",
+      "projectName": "seage-knowledgebase"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-Launcher<seage-launcher>",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "args": "list"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-ClasspathTest<seage-launcher>",
+      "request": "launch",
+      "mainClass": "org.seage.sandbox.ClasspathTest",
+      "projectName": "seage-launcher"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-H2Test<seage-launcher>",
+      "request": "launch",
+      "mainClass": "org.seage.sandbox.H2Test",
+      "projectName": "seage-launcher"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-ProcessorInfo<seage-launcher>",
+      "request": "launch",
+      "mainClass": "org.seage.sandbox.ProcessorInfo",
+      "projectName": "seage-launcher"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-TourProvider<seage-problem-tsp>",
+      "request": "launch",
+      "mainClass": "org.seage.problem.tsp.TourProvider",
+      "projectName": "seage-problem-tsp"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-TspAntColonyTest<seage-problem-tsp>",
+      "request": "launch",
+      "mainClass": "org.seage.problem.tsp.antcolony.TspAntColonyTest",
+      "projectName": "seage-problem-tsp"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-TspGeneticAlgorithmTest<seage-problem-tsp>",
+      "request": "launch",
+      "mainClass": "org.seage.problem.tsp.genetics.TspGeneticAlgorithmTest",
+      "projectName": "seage-problem-tsp"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-TspHillClimberTest<seage-problem-tsp>",
+      "request": "launch",
+      "mainClass": "org.seage.problem.tsp.grasp.TspHillClimberTest",
+      "projectName": "seage-problem-tsp"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-TspParticleSwarmTest<seage-problem-tsp>",
+      "request": "launch",
+      "mainClass": "org.seage.problem.tsp.particles.TspParticleSwarmTest",
+      "projectName": "seage-problem-tsp"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-TspSimulatedAnnealingTest<seage-problem-tsp>",
+      "request": "launch",
+      "mainClass": "org.seage.problem.tsp.sannealing.TspSimulatedAnnealingTest",
+      "projectName": "seage-problem-tsp"
+    },
+    {
+      "type": "java",
+      "name": "Debug (Launch)-TspTabuSearchTest<seage-problem-tsp>",
+      "request": "launch",
+      "mainClass": "org.seage.problem.tsp.tabusearch.TspTabuSearchTest",
+      "projectName": "seage-problem-tsp"
+    }
+  ]
+}

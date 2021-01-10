@@ -37,46 +37,45 @@ import org.seage.grammar.TerminalSymbol;
 
 /**
  *
- * @author jenik
-   F -> a
+ * @author jenik F -> a
  */
-public class VariableGrammarRule extends GrammarRule
-{
+public class VariableGrammarRule extends GrammarRule {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -5141651675216468628L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -5141651675216468628L;
 
-    public VariableGrammarRule(Vector<String> names, int uniqueId)
-    {
-        super(new NonterminalSymbol("VAR"), new Vector<Symbol>(), uniqueId);
-        //        Vector<ISymbol> right = getRight();
-        TerminalSymbol vt = new TerminalSymbol(names, new IntGeneratorFunctor(uniqueId));
-        right.add(vt);
-    }
+  public VariableGrammarRule(Vector<String> names, int uniqueId) {
+    super(new NonterminalSymbol("VAR"), new Vector<Symbol>(), uniqueId);
+    // Vector<ISymbol> right = getRight();
+    TerminalSymbol vt = new TerminalSymbol(names, new IntGeneratorFunctor(uniqueId));
+    right.add(vt);
+  }
 
-    /** @brief semantical actions for given rule
-      * @param symbolTable table of symbols
-      * @param treePos position in parse tree (reference to left non terminal)
-      */
-    @Override
-    public Object eval(DataNode symbolTable, NonterminalSymbol treePos) throws Exception
-    {
-        //we should have one children - constant value
-        Vector<Symbol> children = treePos.getChildren();
-        if (children.size() != 1)
-            throw new Exception("Arity error: expected 1 children, found: " + children.size());
-        ///count the result
-        Object o = children.get(0).eval(symbolTable);
-        return o;
-    }
+  /**
+   * @brief semantical actions for given rule
+   * @param symbolTable table of symbols
+   * @param treePos     position in parse tree (reference to left non terminal)
+   */
+  @Override
+  public Object eval(DataNode symbolTable, NonterminalSymbol treePos) throws Exception {
+    // we should have one children - constant value
+    Vector<Symbol> children = treePos.getChildren();
+    if (children.size() != 1)
+      throw new Exception("Arity error: expected 1 children, found: " + children.size());
+    /// count the result
+    Object o = children.get(0).eval(symbolTable);
+    return o;
+  }
 
-    /** @brief optimize derivate tree (eg. create result of arithmetical operations on contants) */
-    @Override
-    public Symbol optimize(NonterminalSymbol treePos) throws Exception
-    {
-        return null;
-    }
+  /**
+   * @brief optimize derivate tree (eg. create result of arithmetical operations
+   *        on contants)
+   */
+  @Override
+  public Symbol optimize(NonterminalSymbol treePos) throws Exception {
+    return null;
+  }
 
 }

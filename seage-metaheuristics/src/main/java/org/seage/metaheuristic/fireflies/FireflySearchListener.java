@@ -37,85 +37,85 @@ package org.seage.metaheuristic.fireflies;
  * @version 1.0
  * @since 1.0
  */
-public interface FireflySearchListener<S extends Solution> extends java.util.EventListener
-{
+public interface FireflySearchListener<S extends Solution> extends java.util.EventListener {
 
-    /**
-     * Called when the firefly search has started.
-     * 
-     * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch} that started.
-     * @see FireflySearchEvent
-     * @see FireflySearch
-     * @since 1.0
-     */
-    public void FireflySearchStarted(FireflySearchEvent<S> e);
+  /**
+   * Called when the firefly search has started.
+   * 
+   * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch}
+   *          that started.
+   * @see FireflySearchEvent
+   * @see FireflySearch
+   * @since 1.0
+   */
+  public void FireflySearchStarted(FireflySearchEvent<S> e);
 
-    /**
-     * Called when the firefly search stops solving, either because all requested
-     * iterations are completed or someone has called 
-     * {@link FireflySearch#stopSolving myFireflySearch.stopSolving()}.
-     * 
-     * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch} that stopped.
-     * @see FireflySearchEvent
-     * @see FireflySearch
-     * @since 1.0
-     */
-    public void FireflySearchStopped(FireflySearchEvent<S> e);
+  /**
+   * Called when the firefly search stops solving, either because all requested
+   * iterations are completed or someone has called
+   * {@link FireflySearch#stopSolving myFireflySearch.stopSolving()}.
+   * 
+   * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch}
+   *          that stopped.
+   * @see FireflySearchEvent
+   * @see FireflySearch
+   * @since 1.0
+   */
+  public void FireflySearchStopped(FireflySearchEvent<S> e);
 
-    /**
-     * Called when a new best solution is found.
-     * 
-     * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch} that found
-     * the new best solution.
-     * @see FireflySearchEvent
-     * @since 1.0
-     */
-    public void newBestSolutionFound(FireflySearchEvent<S> e);
+  /**
+   * Called when a new best solution is found.
+   * 
+   * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch}
+   *          that found the new best solution.
+   * @see FireflySearchEvent
+   * @since 1.0
+   */
+  public void newBestSolutionFound(FireflySearchEvent<S> e);
 
-    /**
-     * Called when a new current solution is found, which, by defintion,
-     * is at every iteration, even if your "move" doesn't perceptibly
-     * alter the solution.
-     * 
-     * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch} that found
-     * a new current solution.
-     * @see FireflySearchEvent
-     * @see FireflySearch
-     * @since 1.0
-     */
-    public void newCurrentSolutionFound(FireflySearchEvent<S> e);
+  /**
+   * Called when a new current solution is found, which, by defintion, is at every
+   * iteration, even if your "move" doesn't perceptibly alter the solution.
+   * 
+   * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch}
+   *          that found a new current solution.
+   * @see FireflySearchEvent
+   * @see FireflySearch
+   * @since 1.0
+   */
+  public void newCurrentSolutionFound(FireflySearchEvent<S> e);
 
-    /**
-     * Called when the firefly search makes an unimproving move.
-     * 
-     * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch} that made
-     * the unimproving move.
-     * @see FireflySearchEvent
-     * @see FireflySearch
-     * @since 1.0
-     */
-    public void unimprovingMoveMade(FireflySearchEvent<S> e);
+  /**
+   * Called when the firefly search makes an unimproving move.
+   * 
+   * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch}
+   *          that made the unimproving move.
+   * @see FireflySearchEvent
+   * @see FireflySearch
+   * @since 1.0
+   */
+  public void unimprovingMoveMade(FireflySearchEvent<S> e);
 
-    /**
-     * Called when the firefly search makes an improving move.
-     * 
-     * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch} that made
-     * the improving move.
-     * @see FireflySearchEvent
-     * @see FireflySearch
-     * @since 1.0-exp7
-     */
-    public void improvingMoveMade(FireflySearchEvent<S> e);
+  /**
+   * Called when the firefly search makes an improving move.
+   * 
+   * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch}
+   *          that made the improving move.
+   * @see FireflySearchEvent
+   * @see FireflySearch
+   * @since 1.0-exp7
+   */
+  public void improvingMoveMade(FireflySearchEvent<S> e);
 
-    /**
-     * Called when the firefly search makes a no change in value move.
-     * 
-     * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch} that made
-     * the no change in solution value move.
-     * @see FireflySearchEvent
-     * @see FireflySearch
-     * @since 1.0-exp7
-     */
-    public void noChangeInValueMoveMade(FireflySearchEvent<S> e);
+  /**
+   * Called when the firefly search makes a no change in value move.
+   * 
+   * @param e The {@link FireflySearchEvent} referencing the {@link FireflySearch}
+   *          that made the no change in solution value move.
+   * @see FireflySearchEvent
+   * @see FireflySearch
+   * @since 1.0-exp7
+   */
+  public void noChangeInValueMoveMade(FireflySearchEvent<S> e);
 
 } // end interface FireflySearchListener

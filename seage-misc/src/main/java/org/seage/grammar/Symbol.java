@@ -34,27 +34,26 @@ import org.seage.data.DataNode;
  *
  * @author jenik
  */
-public interface Symbol extends Serializable
-{
+public interface Symbol extends Serializable {
 
-    public enum Type
-    {
-        TERMINAL, NONTERMINAL
-    };
+  public enum Type {
+    TERMINAL, NONTERMINAL
+  };
 
-    /** @brief evaluate derivate tree
-     *  @param symbolTable table of symbols and their values
-     *  @retval result of the operation(s)
-     */
-    abstract public Object eval(DataNode symbolTable);
+  /**
+   * @brief evaluate derivate tree
+   * @param symbolTable table of symbols and their values
+   * @retval result of the operation(s)
+   */
+  abstract public Object eval(DataNode symbolTable);
 
-    /** @brief optimize derivate tree, return new derivate (sub)tree */
-    abstract public Symbol optimize();
+  /** @brief optimize derivate tree, return new derivate (sub)tree */
+  abstract public Symbol optimize();
 
-    /** @brief gets type of this symbol (termina, nonterminal) */
-    abstract public Type getType();
+  /** @brief gets type of this symbol (termina, nonterminal) */
+  abstract public Type getType();
 
-    /** @brief copy ourself, and return new instance */
-    abstract public Symbol copy();
+  /** @brief copy ourself, and return new instance */
+  abstract public Symbol copy();
 
 }

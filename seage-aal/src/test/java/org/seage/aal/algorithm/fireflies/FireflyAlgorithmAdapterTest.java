@@ -29,82 +29,78 @@ package org.seage.aal.algorithm.fireflies;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
-import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.problem.TestPhenotypeEvaluator;
 
 /**
  *
  * @author Richard Malek
  */
 //@Ignore("Adapter class not fully implemented yet")
-public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase<TestSolution>
-{
+public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase<TestSolution> {
 
-    public FireflyAlgorithmAdapterTest() throws Exception
-    {
-        super();
-    }
+  public FireflyAlgorithmAdapterTest() throws Exception {
+    super();
+  }
 
-    @BeforeEach
-    public void initAlgorithm() throws Exception
-    {
-        _algAdapter = new TestFireflyAlgorithmAdapter(new TestOperator(), new TestObjectiveFunction(), null, false);
+  @BeforeEach
+  public void initAlgorithm() throws Exception {
+    this.algAdapter = new TestFireflyAlgorithmAdapter(
+        new TestOperator(), 
+        new TestObjectiveFunction(), 
+        new TestPhenotypeEvaluator(), 
+        false);
 
-        _algParams = new AlgorithmParams();
+    algParams = new AlgorithmParams();
 
-        _algParams.putValue("iterationCount", 10);
-        _algParams.putValue("numSolutions", NUM_SOLUTIONS);
-        _algParams.putValue("timeStep", 1);
-        _algParams.putValue("withDecreasingRandomness", 1);
-        _algParams.putValue("absorption", 1);
-    }
+    algParams.putValue("iterationCount", 10);
+    algParams.putValue("numSolutions", NUM_SOLUTIONS);
+    algParams.putValue("timeStep", 1);
+    algParams.putValue("withDecreasingRandomness", 1);
+    algParams.putValue("absorption", 1);
+  }
 
-    @Override
-    @Test
-    public void testAlgorithm() throws Exception
-    {
-        super.testAlgorithm();
-    }
+  @Override
+  @Test
+  public void testAlgorithm() throws Exception {
+    super.testAlgorithm();
+  }
 
-    @Override
-    @Test
-    public void testAlgorithmWithParamsAtZero() throws Exception
-    {
-        AlgorithmParams params = new AlgorithmParams();
-        params.putValue("iterationCount", 0);
-        params.putValue("numSolutions", 0);
-        params.putValue("timeStep", 0);
-        params.putValue("withDecreasingRandomness", 0);
-        params.putValue("absorption", 0);
-        super.setAlgParameters(params);
-        super.testAlgorithmWithParamsAtZero();
-    }
+  @Override
+  @Test
+  public void testAlgorithmWithParamsAtZero() throws Exception {
+    AlgorithmParams params = new AlgorithmParams();
+    params.putValue("iterationCount", 0);
+    params.putValue("numSolutions", 0);
+    params.putValue("timeStep", 0);
+    params.putValue("withDecreasingRandomness", 0);
+    params.putValue("absorption", 0);
+    super.setAlgParameters(params);
+    super.testAlgorithmWithParamsAtZero();
+  }
 
-    @Test
-    @Override
-    public void testAsyncRunning() throws Exception
-    {
-        AlgorithmParams params = new AlgorithmParams();
-        params.putValue("iterationCount", 10000000);
-        params.putValue("numSolutions", 5);
-        params.putValue("timeStep", 1);
-        params.putValue("withDecreasingRandomness", 1);
-        params.putValue("absorption", 0);
-        super.setAlgParameters(params);
-        super.testAsyncRunning();
-    }
+  @Test
+  @Override
+  public void testAsyncRunning() throws Exception {
+    AlgorithmParams params = new AlgorithmParams();
+    params.putValue("iterationCount", 10000000);
+    params.putValue("numSolutions", 5);
+    params.putValue("timeStep", 1);
+    params.putValue("withDecreasingRandomness", 1);
+    params.putValue("absorption", 0);
+    super.setAlgParameters(params);
+    super.testAsyncRunning();
+  }
 
-    @Test
-    @Override
-    public void testReport() throws Exception
-    {
-        super.testReport();
-    }
+  @Test
+  @Override
+  public void testReport() throws Exception {
+    super.testReport();
+  }
 
-    @Test
-    @Override
-    public void testAlgorithmWithParamsNull() throws Exception
-    {
-        super.testAlgorithmWithParamsNull();
-    }
+  @Test
+  @Override
+  public void testAlgorithmWithParamsNull() throws Exception {
+    super.testAlgorithmWithParamsNull();
+  }
 }

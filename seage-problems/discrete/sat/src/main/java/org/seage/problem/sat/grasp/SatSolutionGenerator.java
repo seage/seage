@@ -30,52 +30,45 @@ import org.seage.problem.sat.Formula;
  *
  * @author Zagy
  */
-public class SatSolutionGenerator implements ISolutionGenerator
-{
+public class SatSolutionGenerator implements ISolutionGenerator {
 
-    /**
-     * _cities - Loaded cities _switcher - Parameter setting random or greedy
-     * initial solution
-     */
-    private Formula _formula;
-    private String _switcher;
+  /**
+   * _cities - Loaded cities _switcher - Parameter setting random or greedy
+   * initial solution
+   */
+  private Formula _formula;
+  private String _switcher;
 
-    /**
-     * The constructor of object TSPSolutionGenerator
-     * 
-     * @param switcher
-     *            - Loaded cities
-     * @param cities
-     *            - Parameter setting random or greedy initial solution
-     */
-    public SatSolutionGenerator(String switcher, Formula formula)
-    {
-        _formula = formula;
-        _switcher = switcher;
+  /**
+   * The constructor of object TSPSolutionGenerator
+   * 
+   * @param switcher - Loaded cities
+   * @param cities   - Parameter setting random or greedy initial solution
+   */
+  public SatSolutionGenerator(String switcher, Formula formula) {
+    _formula = formula;
+    _switcher = switcher;
+  }
+
+  /**
+   * Function to generate the initial solution
+   * 
+   * @return
+   */
+  @Override
+  public Solution generateSolution() throws Exception {
+
+    SatSolution satSolution = null;
+
+    /* Initialization for the random initial solution */
+    if (_switcher.equals("Random") || _switcher.equals("random")) {
+      satSolution = new SatRandomSolution(_formula);
     }
 
-    /**
-     * Function to generate the initial solution
-     * 
-     * @return
-     */
-    @Override
-    public Solution generateSolution() throws Exception
-    {
-
-        SatSolution satSolution = null;
-
-        /* Initialization for the random initial solution */
-        if (_switcher.equals("Random") || _switcher.equals("random"))
-        {
-            satSolution = new SatRandomSolution(_formula);
-        }
-
-        /* Initialization for the greedy initial solution */
-        if (_switcher.equals("Greedy") || _switcher.equals("greedy"))
-        {
-            satSolution = new SatGreedySolution(_formula);
-        }
-        return satSolution;
+    /* Initialization for the greedy initial solution */
+    if (_switcher.equals("Greedy") || _switcher.equals("greedy")) {
+      satSolution = new SatGreedySolution(_formula);
     }
+    return satSolution;
+  }
 }

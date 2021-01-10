@@ -38,38 +38,34 @@ import org.seage.data.xml.XmlHelper;
  * 
  * @author Richard Malek
  */
-public class RandomConfigurator extends Configurator
-{
-    @Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID,
-            int numConfigs) throws Exception
-    {
+public class RandomConfigurator extends Configurator {
+  @Override
+  public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs)
+      throws Exception {
 
-        List<ProblemConfig> results = new ArrayList<ProblemConfig>();
-        // List<List<Double>> values = new ArrayList<List<Double>>();
+    List<ProblemConfig> results = new ArrayList<ProblemConfig>();
+    // List<List<Double>> values = new ArrayList<List<Double>>();
 
-        //System.out.println(instanceInfo.getValue("path"));
+    // System.out.println(instanceInfo.getValue("path"));
 
-        for (int i = 0; i < numConfigs; i++)
-        {
-            ProblemConfig config = createProblemConfig(problemInfo, instanceID, algorithmID);
+    for (int i = 0; i < numConfigs; i++) {
+      ProblemConfig config = createProblemConfig(problemInfo, instanceID, algorithmID);
 
-            for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
-                    .getDataNodes("Parameter"))
-            {
-                String name = paramNode.getValueStr("name");
-                double min = paramNode.getValueDouble("min");
-                double max = paramNode.getValueDouble("max");
-                double val = min + (max - min) * Math.random();
-                config.getDataNode("Algorithm").getDataNode("Parameters").putValue(name, val);
-            }
+      for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
+          .getDataNodes("Parameter")) {
+        String name = paramNode.getValueStr("name");
+        double min = paramNode.getValueDouble("min");
+        double max = paramNode.getValueDouble("max");
+        double val = min + (max - min) * Math.random();
+        config.getDataNode("Algorithm").getDataNode("Parameters").putValue(name, val);
+      }
 
-            config.putValue("configID", FileHelper.md5fromString(XmlHelper.getStringFromDocument(config.toXml())));
-            results.add(config);
-        }
-
-        //
-
-        return results.toArray(new ProblemConfig[0]);
+      config.putValue("configID", FileHelper.md5fromString(XmlHelper.getStringFromDocument(config.toXml())));
+      results.add(config);
     }
+
+    //
+
+    return results.toArray(new ProblemConfig[0]);
+  }
 }

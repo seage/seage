@@ -28,10 +28,9 @@
 package org.seage.metaheuristic.tabusearch;
 
 /**
- * This exception is thrown when {@link MoveManager#getAllMoves}
- * (in the {@link MoveManager}returns no moves.
- * Execution does not stop. The {@link TabuSearch} moves
- * on to the next iteration and again requests
+ * This exception is thrown when {@link MoveManager#getAllMoves} (in the
+ * {@link MoveManager}returns no moves. Execution does not stop. The
+ * {@link TabuSearch} moves on to the next iteration and again requests
  * {@link MoveManager#getAllMoves} from the {@link MoveManager}.
  * 
  * @author Robert Harder
@@ -40,36 +39,33 @@ package org.seage.metaheuristic.tabusearch;
  * @version 1.0
  * @since 1.0
  */
-public class NoMovesGeneratedException extends java.lang.Exception
-{
+public class NoMovesGeneratedException extends java.lang.Exception {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 4796075708422074369L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 4796075708422074369L;
 
-    /**
-     * Constructs generic <tt>NoMovesGeneratedException</tt>.
-     * This constructor only calls <code>super()</code> and quits.
-     *
-     * @since 1.0
-     */
-    public NoMovesGeneratedException()
-    {
-        super();
-    } // end constructor
+  /**
+   * Constructs generic <tt>NoMovesGeneratedException</tt>. This constructor only
+   * calls <code>super()</code> and quits.
+   *
+   * @since 1.0
+   */
+  public NoMovesGeneratedException() {
+    super();
+  } // end constructor
 
-    /**
-     * Constructs a <tt>NoMovesGeneratedException</tt> with
-     * the specified {@link java.lang.String}. This constructor calls
-     * <code>super( s )</code> and quits.
-     *
-     * @param s {@link String} describing the exception
-     * @since 1.0
-     **/
-    public NoMovesGeneratedException(String s)
-    {
-        super(s);
-    } // end constructor
+  /**
+   * Constructs a <tt>NoMovesGeneratedException</tt> with the specified
+   * {@link java.lang.String}. This constructor calls <code>super( s )</code> and
+   * quits.
+   *
+   * @param s {@link String} describing the exception
+   * @since 1.0
+   **/
+  public NoMovesGeneratedException(String s) {
+    super(s);
+  } // end constructor
 
 } // end NoMovesGeneratedException

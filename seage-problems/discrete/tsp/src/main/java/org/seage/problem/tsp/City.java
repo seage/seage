@@ -26,18 +26,16 @@
 package org.seage.problem.tsp;
 
 /**
- *  @author Richard Malek
+ * @author Richard Malek
  */
-public class City
-{
-    public int ID = 0;
-    public double X = 0;
-    public double Y = 0;
+public class City {
+  public int ID = 0;
+  public double X = 0;
+  public double Y = 0;
 
-    public City(int id, Double x, Double y)
-    {
-        ID = id;
-        X = x;
-        Y = y;
-    }
+  public City(int id, Double x, Double y) {
+    ID = id;
+    X = x;
+    Y = y;
+  }
 }

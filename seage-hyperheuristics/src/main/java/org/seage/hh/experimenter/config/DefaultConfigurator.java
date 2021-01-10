@@ -34,31 +34,29 @@ import org.seage.data.DataNode;
  * 
  * @author Richard Malek
  */
-public class DefaultConfigurator extends Configurator
-{
-    @Override
-    public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algID, int numConfigs)
-            throws Exception
-    {
-        ProblemConfig result = new ProblemConfig("Config");
-        // result.putDataNode(problemInfo.getDataNode("Algorithms").getDataNodeById(_algID));
-        DataNode problem = new DataNode("Problem");
-        problem.putValue("id", problemInfo.getValue("id"));
-        problem.putDataNode(problemInfo.getDataNode("Instances").getDataNodeById(instanceID));
+public class DefaultConfigurator extends Configurator {
+  @Override
+  public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algID, int numConfigs)
+      throws Exception {
+    ProblemConfig result = new ProblemConfig("Config");
+    // result.putDataNode(problemInfo.getDataNode("Algorithms").getDataNodeById(_algID));
+    DataNode problem = new DataNode("Problem");
+    problem.putValue("id", problemInfo.getValue("id"));
+    problem.putDataNode(problemInfo.getDataNode("Instances").getDataNodeById(instanceID));
 
-        DataNode algorithm = new DataNode("Algorithm");
-        algorithm.putValue("id", algID);
+    DataNode algorithm = new DataNode("Algorithm");
+    algorithm.putValue("id", algID);
 
-        DataNode params = new DataNode("Parameters");
-        for (DataNode dn : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
-            params.putValue(dn.getValueStr("name"), dn.getValue("init"));
+    DataNode params = new DataNode("Parameters");
+    for (DataNode dn : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
+      params.putValue(dn.getValueStr("name"), dn.getValue("init"));
 
-        algorithm.putDataNode(params);
+    algorithm.putDataNode(params);
 
-        result.putDataNode(problem);
-        result.putDataNode(algorithm);
+    result.putDataNode(problem);
+    result.putDataNode(algorithm);
 
-        return new ProblemConfig[] { result };
-    }
+    return new ProblemConfig[] { result };
+  }
 
 }

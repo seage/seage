@@ -35,70 +35,63 @@ import java.lang.annotation.Target;
  *
  * @author Richard Malek
  */
-public @interface Annotations
-{
-    /**
-     * Associates an id to the problem.
-     */
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    public @interface ProblemId
-    {
-        String value();
-    }
+public @interface Annotations {
+  /**
+   * Associates an id to the problem.
+   */
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.TYPE)
+  public @interface ProblemId {
+    String value();
+  }
 
-    /**
-     * Associates a name to the problem.
-     */
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    public @interface ProblemName
-    {
-        String value();
-    }
+  /**
+   * Associates a name to the problem.
+   */
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.TYPE)
+  public @interface ProblemName {
+    String value();
+  }
 
-    /**
-     * Associates an id to the algorithm.
-     */
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    public @interface AlgorithmId
-    {
-        String value();
-    }
+  /**
+   * Associates an id to the algorithm.
+   */
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.TYPE)
+  public @interface AlgorithmId {
+    String value();
+  }
 
-    /**
-     * Associates a name to the algorithm.
-     */
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    public @interface AlgorithmName
-    {
-        String value();
-    }
+  /**
+   * Associates a name to the algorithm.
+   */
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.TYPE)
+  public @interface AlgorithmName {
+    String value();
+  }
 
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    public @interface AlgorithmParameters
-    {
-        Parameter[]value();
-    }
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.TYPE)
+  public @interface AlgorithmParameters {
+    Parameter[] value();
+  }
 
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    public @interface Parameter
-    {
-        String name();
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.TYPE)
+  public @interface Parameter {
+    String name();
 
-        double min();
+    double min();
 
-        double max();
+    double max();
 
-        double init();
-    }
+    double init();
+  }
 
-    //    public static Annotation get(String clsName, Class anotClass)
-    //    {
-    //
-    //    }
+  // public static Annotation get(String clsName, Class anotClass)
+  // {
+  //
+  // }
 }

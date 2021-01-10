@@ -33,24 +33,21 @@ import org.seage.aal.reporter.AlgorithmReportEvaluator;
  *
  * @author Richard Malek
  */
-public class ParticleSwarmRuntimeEvaluator extends AlgorithmReportEvaluator
-{
+public class ParticleSwarmRuntimeEvaluator extends AlgorithmReportEvaluator {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 8296539910157374484L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 8296539910157374484L;
 
-    @Override
-    public int evaluate(AlgorithmReport statistics)
-    {
-        return 0;
-    }
+  @Override
+  public int evaluate(AlgorithmReport statistics) {
+    return 0;
+  }
 
-    @Override
-    public int compare(AlgorithmReport o1, AlgorithmReport o2)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+  @Override
+  public int compare(AlgorithmReport o1, AlgorithmReport o2) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 
 }

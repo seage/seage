@@ -73,7 +73,7 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
             @Override
             public void solutionsFromPhenotype(Object[][] source) throws Exception
             {
-                _solutions = new Solution[source.length];
+                this.solutions = new Solution[source.length];
                 for (int j = 0; j < source.length; j++)
                 {
                     QapSolution solution = new QapGreedySolution(facilityLocation);
@@ -82,7 +82,7 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
                     for (int i = 0; i < assign.length; i++)
                         assign[i] = (Integer) source[0][i];
 
-                    _solutions[j] = solution;
+                    this.solutions[j] = solution;
                 }
             }
 

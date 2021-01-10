@@ -28,69 +28,54 @@ import org.seage.metaheuristic.grasp.Solution;
  *
  * @author Martin Zaloga
  */
-public class SatSolution extends Solution
-{
+public class SatSolution extends Solution {
 
-    protected static final long serialVersionUID = -7791570406526861971L;
-    protected Boolean[] _litValues;
-    // protected Random _rnd;
+  protected static final long serialVersionUID = -7791570406526861971L;
+  protected Boolean[] _litValues;
+  // protected Random _rnd;
 
-    public SatSolution()
-    {
-        // _rnd = new Random();
+  public SatSolution() {
+    // _rnd = new Random();
+  }
+
+  public void initLiterals(int size) {
+    _litValues = new Boolean[size];
+    for (int i = 0; i < size; i++) {
+      _litValues[i] = true;
     }
+  }
 
-    public void initLiterals(int size)
-    {
-        _litValues = new Boolean[size];
-        for (int i = 0; i < size; i++)
-        {
-            _litValues[i] = true;
-        }
-    }
+  public int getLiteralCount() {
+    return _litValues.length;
+  }
 
-    public int getLiteralCount()
-    {
-        return _litValues.length;
-    }
+  public Boolean[] getLiteralValues() {
+    return _litValues;
+  }
 
-    public Boolean[] getLiteralValues()
-    {
-        return _litValues;
-    }
+  public void setLiteralValues(Boolean[] litValues) {
+    _litValues = litValues;
+  }
 
-    public void setLiteralValues(Boolean[] litValues)
-    {
-        _litValues = litValues;
-    }
+  public boolean getLiteralValue(int index) {
+    return _litValues[index];
+  }
 
-    public boolean getLiteralValue(int index)
-    {
-        return _litValues[index];
-    }
+  public void setLiteralValue(int index, Boolean value) {
+    _litValues[index] = value;
+  }
 
-    public void setLiteralValue(int index, Boolean value)
-    {
-        _litValues[index] = value;
+  public void negLiteral(int index) {
+    if (_litValues[index]) {
+      _litValues[index] = false;
+    } else {
+      _litValues[index] = true;
     }
+  }
 
-    public void negLiteral(int index)
-    {
-        if (_litValues[index])
-        {
-            _litValues[index] = false;
-        }
-        else
-        {
-            _litValues[index] = true;
-        }
+  public void printLiterals() {
+    for (int i = 0; i < _litValues.length; i++) {
+      System.out.println("literal[" + i + "] = " + _litValues[i]);
     }
-
-    public void printLiterals()
-    {
-        for (int i = 0; i < _litValues.length; i++)
-        {
-            System.out.println("literal[" + i + "] = " + _litValues[i]);
-        }
-    }
+  }
 }

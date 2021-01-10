@@ -6,8 +6,8 @@ import org.seage.problem.sat.SatProblemProvider;
 
 public class SatAntColonyAdapterTest extends ProblemAlgorithmAdapterTestBase<SatPhenotype> {
 
-    public SatAntColonyAdapterTest() {
-        super(new SatProblemProvider(), "AntColony");
-    }
+  public SatAntColonyAdapterTest() {
+    super(new SatProblemProvider(), "AntColony");
+  }
 
 }

@@ -6,8 +6,8 @@ import org.seage.problem.tsp.TspProblemProvider;
 
 public class TspAntColonyAdapterTest extends ProblemAlgorithmAdapterTestBase<TspPhenotype> {
 
-    public TspAntColonyAdapterTest() {
-        super(new TspProblemProvider(), "AntColony");
-    }
+  public TspAntColonyAdapterTest() {
+    super(new TspProblemProvider(), "AntColony");
+  }
 
 }

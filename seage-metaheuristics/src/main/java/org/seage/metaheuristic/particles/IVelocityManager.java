@@ -29,10 +29,9 @@ package org.seage.metaheuristic.particles;
  *
  * @author Jan Zmatlik
  */
-public interface IVelocityManager
-{
+public interface IVelocityManager {
 
-    public void calculateNewVelocityAndPosition(Particle particle, Particle localMinimum, Particle globalMinimum,
-            double alpha, double beta, double inertia);
+  public void calculateNewVelocityAndPosition(Particle particle, Particle localMinimum, Particle globalMinimum,
+      double alpha, double beta, double inertia);
 
 }
