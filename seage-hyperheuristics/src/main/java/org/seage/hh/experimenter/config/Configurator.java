@@ -23,6 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.hh.experimenter.config;
 
 import org.seage.aal.problem.ProblemConfig;

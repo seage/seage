@@ -58,7 +58,7 @@
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>seage-experimenter</artifactId>
+			<artifactId>seage-hyperheuristics</artifactId>
 			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
