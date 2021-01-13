@@ -13,7 +13,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class DbManager {
 
     public enum DbType {
@@ -23,28 +22,30 @@ public class DbManager {
     private static Logger logger = LoggerFactory.getLogger(DbManager.class.getName());
 
     private static SqlSessionFactory sqlSessionFactory;
-    
+
     public static void init(DbType dbType) throws Exception {
         init(dbType, null);
     }
+
     public static void init(DbType dbType, Properties props) throws Exception {
-        String commonPrefix = "org/seage/knowledgebase/importing/db/dao/";
+        String commonPrefix = "org/seage/hh/knowledgebase/importing/db/dao/";
         String configResourcePath = commonPrefix + "mybatis-config.xml";
         String environment = "development";
-        String initSqlResourcePath = commonPrefix +  "create.sql";
+        String initSqlResourcePath = commonPrefix + "create.sql";
 
-        if(dbType == DbType.HSQLDB) 
+        if (dbType == DbType.HSQLDB)
             environment = "test";
-        if(props == null || !props.containsKey("url")) {
+        if (props == null || !props.containsKey("url")) {
             props = new Properties();
             props.put("url", "jdbc:postgresql://localhost:5432/seage");
         }
         try (InputStream inputStream = Resources.getResourceAsStream(configResourcePath);
                 Reader reader = Resources.getResourceAsReader(initSqlResourcePath);) {
-            
+
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, environment, props);
-            logger.info(sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection().getMetaData().getURL());
-            
+            logger.info(sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()
+                    .getMetaData().getURL());
+
             try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
                 ScriptRunner runner = new ScriptRunner(session.getConnection());
                 runner.setLogWriter(new PrintWriter(System.out));

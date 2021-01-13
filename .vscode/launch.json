@@ -12,13 +12,6 @@
     },
     {
       "type": "java",
-      "name": "Debug (Launch)-App<seage-experimenter-spark>",
-      "request": "launch",
-      "mainClass": "org.seage.experimenter.spark.App",
-      "projectName": "seage-experimenter-spark"
-    },
-    {
-      "type": "java",
       "name": "Debug (Launch)-HsqldbTest<seage-knowledgebase>",
       "request": "launch",
       "mainClass": "org.seage.knowledgebase.HsqldbTest",

@@ -4,8 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
   <typeAliases>
-     <typeAlias type="net.rickq.fileindex.FileInfo" alias="experiment"/>
-     <typeAlias type="net.rickq.fileindex.ScanInfo" alias="experimentTask"/>
+     <typeAlias type="org.seage.hh.experimenter.Experiment" alias="experiment"/>
+     <typeAlias type="org.seage.hh.experimenter.ExperimentTask" alias="experimentTask"/>
   </typeAliases>  
   <environments default="development">
     <environment id="development">
@@ -21,14 +21,14 @@
       <transactionManager type="JDBC"/>
       <dataSource type="POOLED">
         <property name="driver" value="org.hsqldb.jdbcDriver"/>
-        <property name="url" value="jdbc:hsqldb:file:/tmp/fileindex.test.db;sql.syntax_pgs=true;check_props=true"/>
+        <property name="url" value="jdbc:hsqldb:file:/tmp/seage.test.db;sql.syntax_pgs=true;check_props=true"/>
         <property name="username" value="SA"/>
         <property name="password" value=""/>
       </dataSource>
     </environment>
   </environments>
   <mappers>
-    <mapper resource="net/rickq/fileindex/db/mappers/FileInfoMapper.xml" />
-    <mapper resource="net/rickq/fileindex/db/mappers/ScanInfoMapper.xml" />
+    <mapper resource="org/seage/hh/knowledgebase/importing/db/dao/mappers/FileInfoMapper.xml" />
+    <mapper resource="org/seage/hh/knowledgebase/importing/db/dao/mappers/FileInfoMapper.xml" />
   </mappers>
 </configuration>
