@@ -99,7 +99,7 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
 
     _tabuSearch.startSolving();
 
-    this.solutions[0] = (S)_tabuSearch.getBestSolution();
+    this.solutions[0] = (S) _tabuSearch.getBestSolution();
 
   }
 

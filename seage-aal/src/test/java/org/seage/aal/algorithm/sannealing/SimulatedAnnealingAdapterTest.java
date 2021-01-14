@@ -45,8 +45,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
 
   @BeforeEach
   public void initAlgorithm() throws Exception {
-    algAdapter = new TestSimulatedAnnealingAdapter(
-        null, new TestObjectiveFunction(), new TestMoveManager(), 
+    algAdapter = new TestSimulatedAnnealingAdapter(null, new TestObjectiveFunction(), new TestMoveManager(),
         new TestPhenotypeEvaluator(), false);
     algParams = new AlgorithmParams();
 

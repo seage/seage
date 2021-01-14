@@ -38,53 +38,46 @@ import org.seage.problem.sat.SatPhenotype;
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
-public class SatSimulatedAnnealingFactory implements IAlgorithmFactory<SatPhenotype, SatSolution>
-{
+public class SatSimulatedAnnealingFactory implements IAlgorithmFactory<SatPhenotype, SatSolution> {
 
-    @Override
-    public Class<?> getAlgorithmClass()
-    {
-        return SimulatedAnnealingAdapter.class;
-    }
+  @Override
+  public Class<?> getAlgorithmClass() {
+    return SimulatedAnnealingAdapter.class;
+  }
 
-    @Override
-    public IAlgorithmAdapter<SatPhenotype, SatSolution> createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator<SatPhenotype> phenotypeEvaluator) throws Exception
-    {
-        Formula formula = (Formula) instance;
-        IAlgorithmAdapter<SatPhenotype, SatSolution> algorithm = new SimulatedAnnealingAdapter<SatPhenotype, SatSolution>(new SatObjectiveFunction(formula), 
-                new SatMoveManager(), phenotypeEvaluator, false)
-        {
+  @Override
+  public IAlgorithmAdapter<SatPhenotype, SatSolution> createAlgorithm(ProblemInstance instance,
+      IPhenotypeEvaluator<SatPhenotype> phenotypeEvaluator) throws Exception {
+    Formula formula = (Formula) instance;
+    IAlgorithmAdapter<SatPhenotype, SatSolution> algorithm = new SimulatedAnnealingAdapter<SatPhenotype, SatSolution>(
+        new SatObjectiveFunction(formula), new SatMoveManager(), phenotypeEvaluator, false) {
 
-            @Override
-            public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception
-            {
-                this.solutions = new SatSolution[source.length];
-                for (int i = 0; i < source.length; i++)
-                {
-                    this.solutions[i] = new SatSolution(source[i].getSolution());
-                }
-            }
+      @Override
+      public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
+        this.solutions = new SatSolution[source.length];
+        for (int i = 0; i < source.length; i++) {
+          this.solutions[i] = new SatSolution(source[i].getSolution());
+        }
+      }
 
-            @Override
-            public SatPhenotype[] solutionsToPhenotype() throws Exception
-            {
-                SatPhenotype[] result = new SatPhenotype[this.solutions.length];
+      @Override
+      public SatPhenotype[] solutionsToPhenotype() throws Exception {
+        SatPhenotype[] result = new SatPhenotype[this.solutions.length];
 
-                for (int i = 0; i < this.solutions.length; i++)
-                {
-                    SatSolution s = (SatSolution) this.solutions[i];
-                    result[i] = new SatPhenotype(s.getLiteralValues());
-                }
-                return result;
-            }
+        for (int i = 0; i < this.solutions.length; i++) {
+          SatSolution s = (SatSolution) this.solutions[i];
+          result[i] = new SatPhenotype(s.getLiteralValues());
+        }
+        return result;
+      }
 
-            @Override
-            public SatPhenotype solutionToPhenotype(SatSolution solution) throws Exception {
-                // TODO Auto-generated method stub
-                return null;
-            }
-        };
-        return algorithm;
-    }
+      @Override
+      public SatPhenotype solutionToPhenotype(SatSolution solution) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+      }
+    };
+    return algorithm;
+  }
 
 }

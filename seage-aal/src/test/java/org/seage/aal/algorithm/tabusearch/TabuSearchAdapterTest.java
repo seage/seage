@@ -49,8 +49,8 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
 
   @BeforeEach
   public void initAlgorithm() throws Exception {
-    algAdapter = new TabuSearchAdapter<TestPhenotype, TestSolution>(
-        new TestMoveManager(), new TestObjectiveFunction(), new TestPhenotypeEvaluator()) {
+    algAdapter = new TabuSearchAdapter<TestPhenotype, TestSolution>(new TestMoveManager(), new TestObjectiveFunction(),
+        new TestPhenotypeEvaluator()) {
 
       @Override
       public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception {
@@ -73,7 +73,7 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
 
       @Override
       public TestPhenotype solutionToPhenotype(TestSolution solution) throws Exception {
-        return new TestPhenotype((Integer[])solution.solution);
+        return new TestPhenotype((Integer[]) solution.solution);
       }
     };
 

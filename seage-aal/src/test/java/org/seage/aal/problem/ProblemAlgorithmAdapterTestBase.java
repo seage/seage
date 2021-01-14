@@ -42,7 +42,7 @@ public abstract class ProblemAlgorithmAdapterTestBase<P extends Phenotype<?>> {
       fail(e);
     }
   }
-  
+
   @Test
   void testGetAlgorithmClass() {
     assertNotNull(_algorithmFactory.getAlgorithmClass());

@@ -15,8 +15,8 @@ class ClassPathAnalyzerTest {
 
     List<String> list = cpa.analyzeClassPath();
     assertNotNull(list);
-    // TODO: A - Figure out how to test this 
-    //assertTrue(list.size() > 0);
+    // TODO: A - Figure out how to test this
+    // assertTrue(list.size() > 0);
   }
 
 }

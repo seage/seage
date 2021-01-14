@@ -55,8 +55,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant<AntBrain>
 
     }
 
-    this.algAdapter = new TestAntColonyAdapter(
-        new AntBrain(graph), graph, new TestPhenotypeEvaluator());
+    this.algAdapter = new TestAntColonyAdapter(new AntBrain(graph), graph, new TestPhenotypeEvaluator());
     this.algParams = new AlgorithmParams();
 
     this.algParams.putValue("iterationCount", 3);

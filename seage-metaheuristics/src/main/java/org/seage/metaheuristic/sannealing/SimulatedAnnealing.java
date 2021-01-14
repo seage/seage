@@ -154,8 +154,7 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
         _currentIteration++;
 
         // Move to new locations
-        S modifiedSolution = (S)_moveManager.getModifiedSolution(
-            (S)_currentSolution, _currentTemperature);
+        S modifiedSolution = (S) _moveManager.getModifiedSolution((S) _currentSolution, _currentTemperature);
 
         // Calculate objective function and set value to modified
         // solution
@@ -170,7 +169,7 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
         if (Math.random() <= probability) {
           _currentSolution = modifiedSolution;
           if (modifiedSolution.compareTo(_bestSolution) > 0) {
-            _bestSolution = (S)modifiedSolution.clone();
+            _bestSolution = (S) modifiedSolution.clone();
             _eventProducer.fireNewBestSolutionFound();
           }
         }

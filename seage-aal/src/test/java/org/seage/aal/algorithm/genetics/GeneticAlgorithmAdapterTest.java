@@ -67,8 +67,7 @@ class GeneticAlgorithmAdapterTest extends AlgorithmAdapterTestBase<Subject<Integ
     };
 
     algAdapter = new GeneticAlgorithmAdapter<TestPhenotype, Subject<Integer>>(
-        new BasicGeneticOperator<Subject<Integer>, Integer>(), 
-        se, new TestPhenotypeEvaluator(), false) {
+        new BasicGeneticOperator<Subject<Integer>, Integer>(), se, new TestPhenotypeEvaluator(), false) {
 
       @Override
       public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception {

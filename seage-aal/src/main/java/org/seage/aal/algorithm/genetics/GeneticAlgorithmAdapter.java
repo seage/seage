@@ -137,12 +137,7 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
     }
     avg /= num;
 
-    _reporter.putStatistics(
-        _statNrOfIterationsDone, 
-        _statNumNewSol, 
-        _statLastImprovingIteration, 
-        _statInitObjVal, 
-        avg,
+    _reporter.putStatistics(_statNrOfIterationsDone, _statNumNewSol, _statLastImprovingIteration, _statInitObjVal, avg,
         _statBestObjVal);
 
     return _reporter.getReport();
@@ -176,8 +171,7 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
         }
 
         _bestEverSolution = (S) gs.getBestSubject().clone();
-        _reporter.putNewSolution(System.currentTimeMillis(), 
-            gs.getCurrentIteration(), solutionToPhenotype(subject));
+        _reporter.putNewSolution(System.currentTimeMillis(), gs.getCurrentIteration(), solutionToPhenotype(subject));
         _statNumNewSol++;
         _statLastImprovingIteration = gs.getCurrentIteration();
 
