@@ -23,12 +23,10 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.classutil;
 
-import java.net.URL;
+ package org.seage.classutil;
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 
 import com.google.common.collect.ImmutableSet;
