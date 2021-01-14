@@ -1,10 +1,10 @@
 package org.seage.problem.tsp.antcolony;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 
 public class TspGraphTest {
 
-  @Before
+  @BeforeAll
   public void setUp() throws Exception {
   }
 

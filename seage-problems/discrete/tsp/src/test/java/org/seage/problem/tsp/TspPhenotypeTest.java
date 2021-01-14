@@ -1,8 +1,8 @@
 package org.seage.problem.tsp;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,19 +55,19 @@ public class TspPhenotypeTest {
     TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
 
     TspPhenotype s = new TspPhenotype(tour.OptimalTour);
-    TspOptimalTour.printTour(s);
+    // TspOptimalTour.printTour(s);
     assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
 
     s = TspOptimalTour.mirrorTour(s);
-    TspOptimalTour.printTour(s);
+    // TspOptimalTour.printTour(s);
     assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
 
     s = TspOptimalTour.shiftTour(s, 10);
-    TspOptimalTour.printTour(s);
+    // TspOptimalTour.printTour(s);
     assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
 
     s = TspOptimalTour.mirrorTour(TspOptimalTour.shiftTour(s, 10));
-    TspOptimalTour.printTour(s);
+    // TspOptimalTour.printTour(s);
     assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
 
     s = TspOptimalTour.applySwapMove(s, new int[] { 0, 1 });

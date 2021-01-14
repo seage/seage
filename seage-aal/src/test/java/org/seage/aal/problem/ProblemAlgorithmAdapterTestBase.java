@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
@@ -41,11 +42,13 @@ public abstract class ProblemAlgorithmAdapterTestBase<P extends Phenotype<?>> {
       fail(e);
     }
   }
-
+  
+  @Test
   void testGetAlgorithmClass() {
     assertNotNull(_algorithmFactory.getAlgorithmClass());
   }
 
+  @Test
   void testAlgorithmAdapter() throws Exception {
     List<ProblemInstanceInfo> infos = _problemProvider.getProblemInfo().getProblemInstanceInfos();
     assertTrue(infos.size() > 0);
