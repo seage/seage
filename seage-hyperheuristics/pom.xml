@@ -6,57 +6,31 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<name>seage-hyperheuristics</name>
-	 <groupId>org.seage</groupId>
-	 <artifactId>seage-hyperheuristics</artifactId>
-	 <packaging>jar</packaging>
-	 <dependencies>
-	 	<dependency>
-	 		<groupId>${project.groupId}</groupId>
-	 		<artifactId>seage-misc</artifactId>
-	 		<version>${project.version}</version>
-	 		<type>jar</type>
-	 		<scope>compile</scope>
-	 	</dependency>
-	 	<dependency>
-	 		<groupId>${project.groupId}</groupId>
-	 		<artifactId>seage-aal</artifactId>
-	 		<version>${project.version}</version>
-	 		<type>jar</type>
-	 		<scope>compile</scope>
-	 	</dependency>
-	 	<dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>seage-metaheuristics</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>seage-knowledgebase</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-	 	<!-- <dependency>
-			<groupId>rapidminer</groupId>
-			<artifactId>rapidminer-launcher</artifactId>
-			<version>5.3.5</version>
+	<groupId>org.seage</groupId>
+	<artifactId>seage-hyperheuristics</artifactId>
+	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>seage-misc</artifactId>
+			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>rapidminer</groupId>
-			<artifactId>rapidminer</artifactId>
-			<version>5.3.5</version>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>seage-aal</artifactId>
+			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>encog</groupId>
-			<artifactId>encog</artifactId>
-			<version>1.0</version>
-		</dependency> -->
+			<groupId>${project.groupId}</groupId>
+			<artifactId>seage-metaheuristics</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.jexcelapi</groupId>
 			<artifactId>jxl</artifactId>
@@ -67,15 +41,8 @@
 			<artifactId>jep</artifactId>
 			<version>2.24</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>joone-engine</groupId>
-			<artifactId>joone-engine</artifactId>
-			<version>1.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency> -->
 		<dependency>
-		    <groupId>org.eobjects.sassyreader</groupId>
+			<groupId>org.eobjects.sassyreader</groupId>
 			<artifactId>SassyReader</artifactId>
 			<version>0.5</version>
 		</dependency>
@@ -83,39 +50,31 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>4.1.2</version>
-		</dependency>            
-		<!-- <dependency>
-		    <groupId>vldocking</groupId>
-		    <artifactId>vldocking</artifactId>
-		    <version>1.0</version>
-		    <scope>compile</scope>
-		</dependency> -->
-		<dependency>
-            <groupId>com.h2database</groupId>
-		    <artifactId>h2</artifactId>
-		    <version>1.4.200</version>
 		</dependency>
 		<dependency>
-	        <groupId>org.apache.spark</groupId>
-	        <artifactId>spark-core_2.11</artifactId>
-	        <version>2.4.7</version>
-	    </dependency>
-	    <dependency>
-		  <groupId>org.mybatis</groupId>
-		  <artifactId>mybatis</artifactId>
-		  <version>3.4.6</version>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.200</version>
 		</dependency>
-		
 		<dependency>
-		    <groupId>postgresql</groupId>
-		    <artifactId>postgresql</artifactId>
-		    <version>9.1-901.jdbc3</version>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-core_2.11</artifactId>
+			<version>2.4.7</version>
 		</dependency>
-		
-	 </dependencies>
-	 <build>
-	 	<plugins>
-	 		<plugin>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.4.6</version>
+		</dependency>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901.jdbc3</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
@@ -127,6 +86,6 @@
 					</execution>
 				</executions>
 			</plugin>
-	 	</plugins>
-	 </build>
+		</plugins>
+	</build>
 </project>
