@@ -65,6 +65,37 @@
 					<artifactId>jacoco-maven-plugin</artifactId>
 					<!-- <version>0.8.7-SNAPSHOT</version> -->
 				</plugin>
+				<plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>3.1.1</version>
+          <configuration>
+						<configLocation>google_checks.xml</configLocation>
+            <suppressionsLocation>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml
+            </suppressionsLocation>
+            <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
+            <!-- Ensure generated source files are not style-checked -->
+            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+            <encoding>UTF-8</encoding>
+            <consoleOutput>false</consoleOutput>
+						<failsOnError>true</failsOnError>
+						<failOnViolation>false</failOnViolation>
+						<violationSeverity>warning</violationSeverity>
+            <linkXRef>false</linkXRef>
+            <outputFile>
+              ${project.build.directory}/reports/checkstyle/checkstyle-errors.xml
+            </outputFile>
+          </configuration>
+          <executions>
+            <execution>
+              <id>checkstyle</id>
+              <phase>validate</phase>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -130,26 +161,12 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
 		</plugins>
 	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.1.1</version>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>checkstyle</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-
-		</plugins>
-	</reporting>
-
 	<scm>
 		<connection>scm:git:git@github.com:seage/seage.git</connection>
 		<url>scm:git:git://github.com/seage/seage.git</url>
