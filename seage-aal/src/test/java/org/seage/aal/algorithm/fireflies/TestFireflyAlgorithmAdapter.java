@@ -11,8 +11,7 @@ import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.metaheuristic.fireflies.FireflyOperator;
 import org.seage.metaheuristic.fireflies.ObjectiveFunction;
 
-public class TestFireflyAlgorithmAdapter 
-    extends FireflyAlgorithmAdapter<TestPhenotype, TestSolution> {
+public class TestFireflyAlgorithmAdapter extends FireflyAlgorithmAdapter<TestPhenotype, TestSolution> {
 
   public TestFireflyAlgorithmAdapter(FireflyOperator operator, ObjectiveFunction evaluator,
       IPhenotypeEvaluator<TestPhenotype> phenotypeEvaluator, boolean maximizing) {
@@ -40,7 +39,7 @@ public class TestFireflyAlgorithmAdapter
 
   @Override
   public TestPhenotype solutionToPhenotype(TestSolution solution) throws Exception {
-    return new TestPhenotype((Integer[])solution.solution);
+    return new TestPhenotype((Integer[]) solution.solution);
   }
 
 }

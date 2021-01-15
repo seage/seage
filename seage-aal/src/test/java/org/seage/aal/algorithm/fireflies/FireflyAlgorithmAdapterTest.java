@@ -45,11 +45,8 @@ public class FireflyAlgorithmAdapterTest extends AlgorithmAdapterTestBase<TestSo
 
   @BeforeEach
   public void initAlgorithm() throws Exception {
-    this.algAdapter = new TestFireflyAlgorithmAdapter(
-        new TestOperator(), 
-        new TestObjectiveFunction(), 
-        new TestPhenotypeEvaluator(), 
-        false);
+    this.algAdapter = new TestFireflyAlgorithmAdapter(new TestOperator(), new TestObjectiveFunction(),
+        new TestPhenotypeEvaluator(), false);
 
     algParams = new AlgorithmParams();
 

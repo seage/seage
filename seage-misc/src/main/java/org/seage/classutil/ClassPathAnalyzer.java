@@ -23,12 +23,11 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.classutil;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;

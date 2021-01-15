@@ -1,7 +1,7 @@
 package org.seage.classutil;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ class ClassPathAnalyzerTest {
 
     List<String> list = cpa.analyzeClassPath();
     assertNotNull(list);
-    // TODO: A - Figure out how to test this 
+    // TODO: A - Figure out how to test this
     // assertTrue(list.size() > 0);
   }
 

@@ -33,23 +33,20 @@ import org.seage.metaheuristic.sannealing.Solution;
  *
  * @author Richard Malek
  */
-public class SatMoveManager implements IMoveManager
-{
-    private Random _rnd = new Random();
-    
-    public Solution getModifiedSolution(Solution solution)
-    {
-        SatSolution satSolution = (SatSolution) solution.clone();
-        Boolean[] values = satSolution.getLiteralValues();
-        int ix = _rnd.nextInt(values.length);
-        values[ix] = !values[ix];
-        return satSolution;
-    }
+public class SatMoveManager implements IMoveManager {
+  private Random _rnd = new Random();
 
-    @Override
-    public Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception
-    {
-        return getModifiedSolution(solution);
-    }
+  public Solution getModifiedSolution(Solution solution) {
+    SatSolution satSolution = (SatSolution) solution.clone();
+    Boolean[] values = satSolution.getLiteralValues();
+    int ix = _rnd.nextInt(values.length);
+    values[ix] = !values[ix];
+    return satSolution;
+  }
+
+  @Override
+  public Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception {
+    return getModifiedSolution(solution);
+  }
 
 }

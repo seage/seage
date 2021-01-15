@@ -37,70 +37,59 @@ import org.seage.problem.sat.FormulaReader;
  *
  * @author Richard Malek
  */
-public class SatSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAnnealingEvent>
-{
-    public static void main(String[] args)
-    {
-        try
-        {
-            // String path = "data/sat/uf20-01.cnf";
-            String path = "data/uf100/uf100-01.cnf";
-            
-            new SatSimulatedAnnealingTest().run(path);
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
+public class SatSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAnnealingEvent> {
+  public static void main(String[] args) {
+    try {
+      // String path = "data/sat/uf20-01.cnf";
+      String path = "data/uf100/uf100-01.cnf";
+
+      new SatSimulatedAnnealingTest().run(path);
+    } catch (Exception ex) {
+      System.out.println(ex.getMessage());
+      ex.printStackTrace();
     }
+  }
 
-    public void run(String path) throws Exception
-    {
-        Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
-                FormulaReader.readClauses(new FileInputStream(path)));
-        
-        SimulatedAnnealing sa = new SimulatedAnnealing( new SatObjectiveFunction(formula) , new SatMoveManager() );
-        
-        sa.setMaximalTemperature( 200000 );
-        sa.setMinimalTemperature( 0.1 );
-        sa.setMaximalIterationCount(250000);
-        
-        sa.addSimulatedAnnealingListener( this );
-        
-        SatSolution solution = new SatSolution(new Boolean[formula.getLiteralCount()]);
-        sa.startSearching(solution);
-        
-    }
+  public void run(String path) throws Exception {
+    Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
+        FormulaReader.readClauses(new FileInputStream(path)));
 
-    @Override
-    public void algorithmStarted(SimulatedAnnealingEvent e)
-    {
-        System.out.println("Started");
-    }
+    SimulatedAnnealing sa = new SimulatedAnnealing(new SatObjectiveFunction(formula), new SatMoveManager());
 
-    @Override
-    public void algorithmStopped(SimulatedAnnealingEvent e)
-    {
-        System.out.println("Stopped");
-    }
+    sa.setMaximalTemperature(200000);
+    sa.setMinimalTemperature(0.1);
+    sa.setMaximalIterationCount(250000);
 
-    @Override
-    public void newBestSolutionFound(SimulatedAnnealingEvent e)
-    {
-        System.out.println("Best: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
-    }
+    sa.addSimulatedAnnealingListener(this);
 
-    @Override
-    public void iterationPerformed(SimulatedAnnealingEvent e)
-    {
+    SatSolution solution = new SatSolution(new Boolean[formula.getLiteralCount()]);
+    sa.startSearching(solution);
 
-    }
+  }
 
-    @Override
-    public void noChangeInValueIterationMade(SimulatedAnnealingEvent e)
-    {
+  @Override
+  public void algorithmStarted(SimulatedAnnealingEvent e) {
+    System.out.println("Started");
+  }
 
-    }
+  @Override
+  public void algorithmStopped(SimulatedAnnealingEvent e) {
+    System.out.println("Stopped");
+  }
+
+  @Override
+  public void newBestSolutionFound(SimulatedAnnealingEvent e) {
+    System.out.println("Best: " + e.getSimulatedAnnealing().getBestSolution().getObjectiveValue());
+  }
+
+  @Override
+  public void iterationPerformed(SimulatedAnnealingEvent e) {
+
+  }
+
+  @Override
+  public void noChangeInValueIterationMade(SimulatedAnnealingEvent e) {
+
+  }
 
 }

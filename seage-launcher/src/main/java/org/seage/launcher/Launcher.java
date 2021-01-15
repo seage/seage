@@ -26,10 +26,7 @@ import com.beust.jcommander.ParameterException;
 
 public class Launcher {
   static {
-    ProblemProvider.providers = new Class<?>[] {
-      TspProblemProvider.class,
-      SatProblemProvider.class
-    };
+    ProblemProvider.providers = new Class<?>[] { TspProblemProvider.class, SatProblemProvider.class };
   }
   private static final Logger _logger = LoggerFactory.getLogger(Launcher.class.getName());
 

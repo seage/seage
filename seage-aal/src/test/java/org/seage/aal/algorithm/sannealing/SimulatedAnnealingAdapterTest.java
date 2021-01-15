@@ -27,6 +27,7 @@
 package org.seage.aal.algorithm.sannealing;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
@@ -44,8 +45,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
 
   @BeforeEach
   public void initAlgorithm() throws Exception {
-    algAdapter = new TestSimulatedAnnealingAdapter(
-        null, new TestObjectiveFunction(), new TestMoveManager(), 
+    algAdapter = new TestSimulatedAnnealingAdapter(null, new TestObjectiveFunction(), new TestMoveManager(),
         new TestPhenotypeEvaluator(), false);
     algParams = new AlgorithmParams();
 

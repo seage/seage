@@ -6,7 +6,6 @@ import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.antcolony.Ant;
@@ -14,7 +13,6 @@ import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 import org.seage.problem.sat.SatPhenotype;
-import org.seage.problem.sat.tabusearch.SatSolution;
 
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")

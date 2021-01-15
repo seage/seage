@@ -66,6 +66,7 @@ public interface Solution extends Cloneable {
    * </P>
    *
    * &#64;return A copy of <tt>this</tt>.
+   * 
    * @see java.lang.Cloneable
    * @since 1.0
    */

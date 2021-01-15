@@ -130,8 +130,8 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
     _statNumIter = _params.getValueInt("iterationCount");
     _fireflySearch.setAbsorption(_params.getValueDouble("absorption"));
     _fireflySearch.setTimeStep(_params.getValueDouble("timeStep"));
-    _fireflySearch.setWithDecreasingRandomness(
-        ((_params.getValueDouble("withDecreasingRandomness") > 0) ? true : false));
+    _fireflySearch
+        .setWithDecreasingRandomness(((_params.getValueDouble("withDecreasingRandomness") > 0) ? true : false));
     _fireflySearch.setPopulationCount(_params.getValueInt("numSolutions"));
     // EDD OWN PARAMETERS
   }

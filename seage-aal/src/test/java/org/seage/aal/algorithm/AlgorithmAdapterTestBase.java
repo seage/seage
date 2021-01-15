@@ -26,7 +26,7 @@ public class AlgorithmAdapterTestBase<S> {
     this.algParams = params;
   }
 
-  /** Test method testAlgorithm().*/
+  /** Test method testAlgorithm(). */
   public void testAlgorithm() throws Exception {
     TestPhenotype[] p1 = createTestPhenotypeSolutions();
     this.algAdapter.solutionsFromPhenotype(p1);
@@ -35,7 +35,7 @@ public class AlgorithmAdapterTestBase<S> {
     assertEquals(p1.length, p2.length);
   }
 
-  /** Test method testAlgorithmWithParamsNull().*/
+  /** Test method testAlgorithmWithParamsNull(). */
   public void testAlgorithmWithParamsNull() throws Exception {
     assertThrows(Exception.class, () -> {
       this.algParams = null;
@@ -43,13 +43,13 @@ public class AlgorithmAdapterTestBase<S> {
     });
   }
 
-  /** Test method testAlgorithmWithParamsAtZero().*/
+  /** Test method testAlgorithmWithParamsAtZero(). */
   public void testAlgorithmWithParamsAtZero() throws Exception {
     this.algAdapter.solutionsFromPhenotype(createTestPhenotypeSolutions());
     this.algAdapter.startSearching(this.algParams);
   }
 
-  /** Test method testAsyncRunning().*/
+  /** Test method testAsyncRunning(). */
   public void testAsyncRunning() throws Exception {
     this.algAdapter.solutionsFromPhenotype(createTestPhenotypeSolutions());
     this.algAdapter.startSearching(this.algParams, true);
@@ -60,7 +60,7 @@ public class AlgorithmAdapterTestBase<S> {
     assertFalse(this.algAdapter.isRunning());
   }
 
-  /** Test method testReport().*/
+  /** Test method testReport(). */
   public void testReport() throws Exception {
     testAlgorithm();
     algReport = this.algAdapter.getReport();
@@ -70,8 +70,7 @@ public class AlgorithmAdapterTestBase<S> {
     assertTrue(this.algReport.containsNode("Statistics"));
 
     for (String attName : this.algReport.getDataNode("Parameters").getValueNames()) {
-      assertEquals(this.algParams.getValue(attName), 
-          this.algReport.getDataNode("Parameters").getValue(attName));
+      assertEquals(this.algParams.getValue(attName), this.algReport.getDataNode("Parameters").getValue(attName));
     }
 
     DataNode stats = this.algReport.getDataNode("Statistics");
@@ -84,10 +83,8 @@ public class AlgorithmAdapterTestBase<S> {
         || (stats.getValueInt("numberOfNewSolutions") == 1));
     assertTrue(stats.getValueInt("bestObjVal") == stats.getValueDouble("initObjVal")
         || stats.getValueInt("lastIterNumberNewSol") > 1);
-    assertTrue(stats.getValueInt("numberOfNewSolutions") > 0 
-        || stats.getValueInt("lastIterNumberNewSol") == 0);
-    assertTrue(stats.getValueInt("lastIterNumberNewSol") > 1 
-        || stats.getValueInt("numberOfNewSolutions") == 1);
+    assertTrue(stats.getValueInt("numberOfNewSolutions") > 0 || stats.getValueInt("lastIterNumberNewSol") == 0);
+    assertTrue(stats.getValueInt("lastIterNumberNewSol") > 1 || stats.getValueInt("numberOfNewSolutions") == 1);
   }
 
   private TestPhenotype[] createTestPhenotypeSolutions() {
