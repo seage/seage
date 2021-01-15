@@ -23,7 +23,6 @@
 		<module>seage-misc</module>
 		<module>seage-metaheuristics</module>
 		<module>seage-hyperheuristics</module>
-		<module>seage-knowledgebase</module>
 		<module>seage-problems/discrete/tsp</module>
 		<module>seage-problems/discrete/sat</module>
 		<!-- <module>seage-problems/discrete/qap</module> <module>seage-problems/discrete/jssp</module> -->
