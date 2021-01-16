@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch HsqldbTest",
+      "request": "launch",
+      "mainClass": "org.seage.hh.knowledgebase.HsqldbTest",
+      "projectName": "seage-hyperheuristics"
+    },
+    {
+      "type": "java",
+      "name": "Launch App",
+      "request": "launch",
+      "mainClass": "org.seage.hh.spark.App",
+      "projectName": "seage-hyperheuristics"
+    },
+    {
+      "type": "java",
       "name": "Debug (Launch) - Current File",
       "request": "launch",
       "mainClass": "${file}"

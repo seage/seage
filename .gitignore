@@ -10,7 +10,6 @@ build/
 
 .classpath
 .project
-.settings/
 
 **/*.properties
 *.versionsBackup
@@ -23,18 +22,4 @@ target/report/
 target/repository/processes/*.properties
 target/repository/databases/experiments/
 
-/seage-problems/discrete/tsp/nbactions-*.xml
-/seage-problems/discrete/tsp/vizualization/
-/seage-problems/discrete/tsp/nb-configuration.xml
-
-/seage-launcher/nb-configuration.xml
-/seage-launcher/nbactions.xml
-/seage-launcher/nbactions-experimenter FireflySearch.xml
-/seage-launcher/nbactions-experimenter genetic.xml
-/seage-launcher/nbactions-experimenter SAT Ant.xml
-/seage-launcher/nbactions-experimenter simaneal qap.xml
-/seage-launcher/nbactions-experimenter tabu QAP.xml
-/seage-launcher/nbactions-experimenter-tsp-1-10-sa.xml
-/seage-launcher/nbactions-experimetner tabusearch.xml
-/seage-launcher/nbactions-reporter.xml
-
+seage-*/**/.settings

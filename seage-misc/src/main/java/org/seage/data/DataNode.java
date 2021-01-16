@@ -64,7 +64,7 @@ public class DataNode implements Serializable, Cloneable {
   private String _xslPath;
 
   public DataNode(String name) {
-    _name = name;
+       _name = name;
     _dataNodes = new HashMap<String, List<DataNode>>();
     _values = new HashMap<String, Object>();
     _ids = new HashMap<String, DataNode>();
