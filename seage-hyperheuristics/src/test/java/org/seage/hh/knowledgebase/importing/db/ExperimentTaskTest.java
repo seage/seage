@@ -13,7 +13,7 @@ import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 public class ExperimentTaskTest {
   @Test
   void test() throws Exception {
-    DbManager.init(DbType.HSQLDB);
+    DbManager.init();
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
       assertNotNull(mapper);

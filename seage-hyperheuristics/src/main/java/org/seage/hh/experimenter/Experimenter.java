@@ -34,14 +34,14 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
-// import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
-import org.seage.hh.experimenter.runner.SparkExperimentTasksRunner;
+import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
+// import org.seage.hh.experimenter.runner.SparkExperimentTasksRunner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class Experimenter {
-  protected static Logger _logger = LoggerFactory.getLogger(Experimenter.class.getName());
+  protected static Logger logger = LoggerFactory.getLogger(Experimenter.class.getName());
   protected String experimentName;
   protected String experimentID;
   protected String problemID;
@@ -68,10 +68,10 @@ public abstract class Experimenter {
     this.algorithmIDs = algorithmIDs;
 
     new File("output/experiment-logs").mkdirs();
-    _logger.info("Experimenter created, getting problem info");
+    logger.info("Experimenter created, getting problem info");
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
-    // this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    this.experimentTasksRunner = new SparkExperimentTasksRunner();
+    this.experimentTasksRunner = new LocalExperimentTasksRunner();
+    //this.experimentTasksRunner = new SparkExperimentTasksRunner();
   }
 
   public void runFromConfigFile(String configPath) throws Exception {
@@ -79,12 +79,13 @@ public abstract class Experimenter {
   }
 
   /**
-   * This method is here as an example implementation.
+   * The entry point of the experiment.
    * @throws Exception Throws exception in case of a trouble.
    */
   public final void runExperiment() throws Exception {
 
     // *** Check arguments ***
+    // Problem instances
     if (this.instanceIDs[0].equals("-")) {
       List<String> instIDs = new ArrayList<String>();
       for (DataNode ins : this.problemInfo.getDataNode("Instances").getDataNodes("Instance")) {
@@ -92,7 +93,7 @@ public abstract class Experimenter {
       }
       this.instanceIDs = instIDs.toArray(new String[] {});
     }
-
+    // Algorithms
     if (this.algorithmIDs[0].equals("-")) {
       List<String> algIDs = new ArrayList<String>();
       for (DataNode alg : this.problemInfo.getDataNode("Algorithms").getDataNodes("Algorithm")) {
@@ -103,39 +104,39 @@ public abstract class Experimenter {
     // ***********************
 
     long experimentID = System.currentTimeMillis();
-    _logger.info("-------------------------------------");
-    _logger.info("Experimenter: " + this.experimentName);
-    _logger.info("ExperimentID: " + experimentID);
-    _logger.info("-------------------------------------");
+    logger.info("-------------------------------------");
+    logger.info("Experimenter: " + this.experimentName);
+    logger.info("ExperimentID: " + experimentID);
+    logger.info("-------------------------------------");
 
     long totalNumOfConfigs = getNumberOfConfigs(this.instanceIDs.length, this.algorithmIDs.length);
     long totalRunsPerCpu = totalNumOfConfigs / Runtime.getRuntime().availableProcessors();
     long totalEstimatedTime = getEstimatedTime(this.instanceIDs.length, this.algorithmIDs.length)
         / Runtime.getRuntime().availableProcessors();
 
-    _logger.info(String.format("%-25s: %s", "Total number of configs", totalNumOfConfigs));
-    _logger.info("Total number of configs per cpu core: " + totalRunsPerCpu);
-    _logger.info(String.format("Total estimated time: %s (DD:HH:mm:ss)", 
+    logger.info(String.format("%-25s: %s", "Total number of configs", totalNumOfConfigs));
+    logger.info("Total number of configs per cpu core: " + totalRunsPerCpu);
+    logger.info(String.format("Total estimated time: %s (DD:HH:mm:ss)", 
         getDurationBreakdown(totalEstimatedTime)));
-    _logger.info("-------------------------------------");
+    logger.info("-------------------------------------");
 
+    // Run experiment tasks for each instance
     for (int i = 0; i < this.instanceIDs.length; i++) {
       try {
-        _logger.info("-------------------------------------");
-        _logger.info(String.format("%-15s %s", "Problem:", this.problemID));
-        _logger.info(String.format("%-15s %-16s    (%d/%d)", "Instance:", 
+        logger.info("-------------------------------------");
+        logger.info(String.format("%-15s %s", "Problem:", this.problemID));
+        logger.info(String.format("%-15s %-16s    (%d/%d)", "Instance:", 
             this.instanceIDs[i], i + 1, this.instanceIDs.length));
         ProblemInstanceInfo instanceInfo = this.problemInfo.getProblemInstanceInfo(
             this.instanceIDs[i]);
         runExperiment(instanceInfo);
       } catch (Exception ex) {
-        _logger.warn(ex.getMessage(), ex);
+        logger.warn(ex.getMessage(), ex);
       }
-
     }
-    _logger.info("-------------------------------------");
-    _logger.info("Experiment " + experimentID + " finished ...");
-    _logger.info(String.format("Experiment duration: %s (DD:HH:mm:ss)",
+    logger.info("-------------------------------------");
+    logger.info("Experiment " + experimentID + " finished ...");
+    logger.info(String.format("Experiment duration: %s (DD:HH:mm:ss)",
         getDurationBreakdown(System.currentTimeMillis() - experimentID)));
   }
 

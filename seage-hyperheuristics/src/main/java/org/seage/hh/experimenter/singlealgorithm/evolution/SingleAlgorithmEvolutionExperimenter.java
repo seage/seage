@@ -57,7 +57,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
         if (this.problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null)
           throw new Exception("Unknown algorithm: " + algorithmID);
 
-        _logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, this.algorithmIDs.length));
+        logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, this.algorithmIDs.length));
 
         ContinuousGeneticOperator.Limit[] limits = prepareAlgorithmParametersLimits(algorithmID, this.problemInfo);
         ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject> realOperator = new ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject>(
@@ -80,9 +80,9 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
             _numSubjects);
 
         ga.startSearching(subjects);
-        // _logger.info(" " + ga.getBestSubject().toString());
+        // logger.info(" " + ga.getBestSubject().toString());
       } catch (Exception ex) {
-        _logger.warn(ex.getMessage(), ex);
+        logger.warn(ex.getMessage(), ex);
       }
 
     }
@@ -127,13 +127,13 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
 
   @Override
   public void algorithmStarted(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e) {
-    // _logger.info(" Started");
+    // logger.info(" Started");
 
   }
 
   @Override
   public void algorithmStopped(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e) {
-    // _logger.info(" Stopped");
+    // logger.info(" Stopped");
 
   }
 
@@ -144,8 +144,8 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
 
   @Override
   public void iterationPerformed(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e) {
-    // _logger.info(" Iteration " + e.getGeneticSearch().getCurrentIteration());
-    _logger.info(String.format("%-44s (%d/%d)", "   Iteration: ", e.getGeneticSearch().getCurrentIteration(),
+    // logger.info(" Iteration " + e.getGeneticSearch().getCurrentIteration());
+    logger.info(String.format("%-44s (%d/%d)", "   Iteration: ", e.getGeneticSearch().getCurrentIteration(),
         e.getGeneticSearch().getIterationToGo()));
   }
 

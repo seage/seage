@@ -3,15 +3,19 @@ package org.seage.hh.knowledgebase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 public class HsqldbTest {
+  private static Logger _logger = LoggerFactory.getLogger(HsqldbTest.class.getName());
+
   public static void main(String[] args) {
     try {
       Class.forName("org.hsqldb.jdbc.JDBCDriver");
-      @SuppressWarnings("unused")
-      Connection c = DriverManager.getConnection("jdbc:hsqldb:file:/tmp/testdb", "SA", "");
+      try (Connection c = DriverManager.getConnection("jdbc:hsqldb:file:/tmp/testdb", "SA", "")) {
+
+      }
     } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      _logger.error("HsqldbTest failed", e);
     }
   }
 }

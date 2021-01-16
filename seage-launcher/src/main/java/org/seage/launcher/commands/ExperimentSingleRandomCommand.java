@@ -1,11 +1,11 @@
 package org.seage.launcher.commands;
 
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 import java.util.List;
 
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperimenter;
 
-import com.beust.jcommander.Parameter;
-import com.beust.jcommander.Parameters;
 
 @Parameters(commandDescription = "Perform single random experiment")
 public class ExperimentSingleRandomCommand extends Command {

@@ -1,11 +1,20 @@
-DROP TABLE IF EXISTS experiments ;
-DROP TABLE IF EXISTS experimentTasks ;
+-- DROP TABLE IF EXISTS experiments;
+-- DROP TABLE IF EXISTS experiment_tasks;
+
+-- CREATE TABLE IF NOT EXISTS experiments (
+-- 	id SERIAL PRIMARY KEY,
+-- 	hostname VARCHAR(150),
+-- 	experimentType VARCHAR(100),
+-- 	experimentDate TIMESTAMP
+-- );
 
 CREATE TABLE IF NOT EXISTS experiments (
 	id SERIAL PRIMARY KEY,
-	hostname VARCHAR(150),
-	experimentType VARCHAR(100),
-	experimentDate TIMESTAMP
+	start_date TIMESTAMP,
+	duration DATETIME,
+	experiment_type VARCHAR(100),
+	hostname VARCHAR(100),
+	config JSON
 );
 
 -- CREATE TABLE IF NOT EXISTS fileInfos (

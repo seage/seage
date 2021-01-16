@@ -5,18 +5,27 @@
 <mapper namespace="org.seage.hh.knowledgebase.db.mapper.ExperimentMapper" >
 	<resultMap id="experimentResult" type="experiment">
 		<id property="id" column="id" />
-		<result property="hostname" column="host"/>
-		<result property="experimentDate" column="experimentDate"/>
-		<result property="experimentName" column="experimentName"/>
-		<result property="rootPath" column="rootPath"/>
+		<result property="startDate" column="start_date"/>
+		<result property="duration" column="duration"/>
+		<result property="experimentType" column="experiment_type"/>
+		<result property="hostname" column="hostname"/>
+		<result property="config" column="config"/>
 	</resultMap>
 	
-	<!-- <select id="getExperiment" resultType="experiment" parameterType="int" resultMap="experimentResult">
-	    SELECT id, hostname, scanDate, rootPath from experiments WHERE id = #{id}
-	</select> -->
+	<select id="getExperiment" resultType="experiment" parameterType="int" resultMap="experimentResult">
+	    SELECT id, start_date, duration, experiment_type, hostname FROM experiments WHERE id = #{id}
+	</select>
+
+	<select id="getExperimentCount" resultType="int">
+		SELECT COUNT(id) FROM experiments
+ </select>
+
+ <select id="getMaxExperimentId" resultType="int">
+	SELECT MAX(id) FROM experiments
+</select>
 	
-	<insert id="insertExperiment" parameterType="experiment"  keyProperty="experimentId" useGeneratedKeys="true">
-		INSERT into experiments(hostname, experimentDate, rootPath) VALUES(#{hostname}, #{experimentDate}, #{rootPath}) 	    
+	<insert id="insertExperiment" parameterType="experiment" useGeneratedKeys="true" keyProperty="id">
+		INSERT into experiments(start_date, duration, experiment_type, hostname, config) VALUES(#{duration}, #{startDate}, #{experimentType}, #{hostname}, #{config}) 	    
 	</insert>
 	<!-- 
 	<update id="updateFileInfo" parameterType="fileInfo">

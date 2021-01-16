@@ -33,8 +33,8 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter {
       String algorithmID = this.algorithmIDs[i];
       String instanceID = instanceInfo.getInstanceID();
 
-      _logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, this.algorithmIDs.length));
-      _logger.info(String.format("%-44s", "   Running... "));
+      logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, this.algorithmIDs.length));
+      logger.info(String.format("%-44s", "   Running... "));
 
       List<ExperimentTask> taskQueue = new ArrayList<ExperimentTask>();
       ProblemConfig[] configs = _configurator.prepareConfigs(

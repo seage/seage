@@ -1,8 +1,11 @@
 package org.seage.hh.knowledgebase.db;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.nio.file.Files;
+import java.sql.Connection;
 import java.util.Properties;
 
 import org.apache.ibatis.io.Resources;
@@ -23,39 +26,31 @@ public class DbManager {
 
   private static SqlSessionFactory sqlSessionFactory;
 
-  public static void init(DbType dbType) throws Exception {
-    init(dbType, null);
-  }
-
   /**
    * Initializes DbManager.
    */
-  public static void init(DbType dbType, Properties props) throws Exception {
+  public static void init() throws Exception {
     String commonPrefix = "org/seage/hh/knowledgebase/db/";
     String configResourcePath = commonPrefix + "mybatis-config.xml";
-    // String environment = "development";
-    String environment = "test";
     String initSqlResourcePath = commonPrefix + "create.sql";
 
-    // if (dbType == DbType.HSQLDB) {
-    //   environment = "test";
-    // }
-    // if (props == null || !props.containsKey("url")) {
-    //   props = new Properties();
-    //   props.put("url", "jdbc:postgresql://localhost:5432/seage");
-    // }
+    String dbUrl = null;
+    Properties props = null;
+    
+    if (dbUrl == null || dbUrl.isEmpty()) {
+      String tmpDirPath = System.getProperty("java.io.tmpdir");
+      props = new Properties();
+      props.put("url", String.format("jdbc:h2:file:%s/seage-test", tmpDirPath));
+    }
     try (InputStream inputStream = Resources.getResourceAsStream(configResourcePath);
         Reader reader = Resources.getResourceAsReader(initSqlResourcePath);) {
 
-      sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, environment, props);
-      logger.info(sqlSessionFactory
-          .getConfiguration()
-          .getEnvironment()
-          .getDataSource()
-          .getConnection()
-          .getMetaData()
-          .getURL()
-      );
+      sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, props);
+
+      // try (Connection c =
+      //     sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
+      //   logger.debug(c.getMetaData().getURL());
+      // }
 
       try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
         ScriptRunner runner = new ScriptRunner(session.getConnection());

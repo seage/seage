@@ -15,23 +15,24 @@ public class LocalExperimentTasksRunner implements IExperimentTasksRunner {
 
   @Override
   public void performExperimentTasks(List<ExperimentTask> tasks, String reportPath) {
-    try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)))) {
 
-      List<Integer> dn = tasks.parallelStream().map(t -> {
-        try {
-          t.run();
-
+    List<Integer> dn = tasks.parallelStream().map(t -> {
+      try {
+        t.run();
+        try (
+            ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)))) {
           XmlHelper.writeXml(t.getExperimentTaskReport(), zos, t.getReportName());
-        } catch (Exception e) {
+        } catch (Exception e1) {
           // TODO Auto-generated catch block
-          e.printStackTrace();
+          e1.printStackTrace();
         }
-        return 1;
-      }).collect(Collectors.toList());
-    } catch (Exception e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
+      } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      return 1;
+    }).collect(Collectors.toList());
+
   }
 
 }
