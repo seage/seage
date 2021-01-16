@@ -11,26 +11,23 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.thread.TaskRunner3;
 
 public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<SingleAlgorithmExperimentTaskSubject> {
-  private String _experimentID;
-  private String _problemID;
-  private String _instanceID;
-  private String _algorithmID;
-  private long _timeoutS;
-  private ZipOutputStream _reportOutputStream;
-  // private int iterationID = 1;
-  private int evaluationID = 1;
+  private String experimentID;
+  private String problemID;
+  private String instanceID;
+  private String algorithmID;
+  private long timeoutS;
 
-  private HashMap<String, Double> _configCache;
+  private HashMap<String, Double> configCache;
 
   public SingleAlgorithmExperimentTaskEvaluator(String experimentID, String problemID, String instanceID,
       String algorithmID, long timeoutS) {
     super();
-    _experimentID = experimentID;
-    _problemID = problemID;
-    _instanceID = instanceID;
-    _algorithmID = algorithmID;
-    _timeoutS = timeoutS;
-    _configCache = new HashMap<String, Double>();
+    this.experimentID = experimentID;
+    this.problemID = problemID;
+    this.instanceID = instanceID;
+    this.algorithmID = algorithmID;
+    this.timeoutS = timeoutS;
+    this.configCache = new HashMap<String, Double>();
   }
 
   @Override
@@ -45,11 +42,11 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
       }
 
       String configID = algorithmParams.hash();
-      if (_configCache.containsKey(configID)) {
-        s.setObjectiveValue(new double[] { _configCache.get(configID) });
+      if (this.configCache.containsKey(configID)) {
+        s.setObjectiveValue(new double[] { this.configCache.get(configID) });
       } else {
-        ExperimentTask task = new ExperimentTask("SingleAlgorithmEvolution", _experimentID, _problemID, _instanceID,
-            _algorithmID, algorithmParams, 1, _timeoutS);
+        ExperimentTask task = new ExperimentTask("SingleAlgorithmEvolution", this.experimentID, this.problemID, this.instanceID,
+            this.algorithmID, algorithmParams, 1, this.timeoutS);
 
         taskMap.put(task, s);
         taskQueue.add(task);
@@ -69,7 +66,7 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
       }
       s.setObjectiveValue(new double[] { value });
 
-      _configCache.put(task.getConfigID(), value);
+      this.configCache.put(task.getConfigID(), value);
     }
 
   }

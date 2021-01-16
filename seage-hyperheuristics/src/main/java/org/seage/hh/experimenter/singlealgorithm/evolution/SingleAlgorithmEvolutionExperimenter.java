@@ -47,23 +47,23 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
 
   @Override
   protected void runExperiment(ProblemInstanceInfo instanceInfo) throws Exception {
-    String problemID = _problemInfo.getProblemID();
+    String problemID = this.problemInfo.getProblemID();
     String instanceID = instanceInfo.getInstanceID();
 
-    for (int i = 0; i < _algorithmIDs.length; i++) {
+    for (int i = 0; i < this.algorithmIDs.length; i++) {
       try {
-        String algorithmID = _algorithmIDs[i];
+        String algorithmID = this.algorithmIDs[i];
 
-        if (_problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null)
+        if (this.problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null)
           throw new Exception("Unknown algorithm: " + algorithmID);
 
-        _logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, _algorithmIDs.length));
+        _logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, this.algorithmIDs.length));
 
-        ContinuousGeneticOperator.Limit[] limits = prepareAlgorithmParametersLimits(algorithmID, _problemInfo);
+        ContinuousGeneticOperator.Limit[] limits = prepareAlgorithmParametersLimits(algorithmID, this.problemInfo);
         ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject> realOperator = new ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject>(
             limits);
 
-        SingleAlgorithmExperimentTaskEvaluator evaluator = new SingleAlgorithmExperimentTaskEvaluator(_experimentID,
+        SingleAlgorithmExperimentTaskEvaluator evaluator = new SingleAlgorithmExperimentTaskEvaluator(this.experimentID,
             problemID, instanceID, algorithmID, _algorithmTimeoutS);
         GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = new GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject>(
             realOperator, evaluator);
@@ -76,7 +76,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
         ga.setPopulationCount(_numSubjects);
         ga.setRandomSubjectsPct(20);
 
-        List<SingleAlgorithmExperimentTaskSubject> subjects = initializeSubjects(_problemInfo, instanceID, algorithmID,
+        List<SingleAlgorithmExperimentTaskSubject> subjects = initializeSubjects(this.problemInfo, instanceID, algorithmID,
             _numSubjects);
 
         ga.startSearching(subjects);

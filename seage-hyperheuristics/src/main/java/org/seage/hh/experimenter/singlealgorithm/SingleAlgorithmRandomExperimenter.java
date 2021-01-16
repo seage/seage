@@ -29,29 +29,29 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter {
 
   @Override
   protected void runExperiment(ProblemInstanceInfo instanceInfo) throws Exception {
-    for (int i = 0; i < _algorithmIDs.length; i++) {
-      String algorithmID = _algorithmIDs[i];
+    for (int i = 0; i < this.algorithmIDs.length; i++) {
+      String algorithmID = this.algorithmIDs[i];
       String instanceID = instanceInfo.getInstanceID();
 
-      _logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, _algorithmIDs.length));
+      _logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, this.algorithmIDs.length));
       _logger.info(String.format("%-44s", "   Running... "));
 
       List<ExperimentTask> taskQueue = new ArrayList<ExperimentTask>();
       ProblemConfig[] configs = _configurator.prepareConfigs(
-          _problemInfo, instanceInfo.getInstanceID(), algorithmID, _numConfigs);
+          this.problemInfo, instanceInfo.getInstanceID(), algorithmID, _numConfigs);
       for (ProblemConfig config : configs) {
         for (int runID = 1; runID <= NUM_RUNS; runID++) {
           // String reportName = problemInfo.getProblemID() + "-" + algorithmID + "-" +
           // instanceInfo.getInstanceID() + "-" + configID + "-" + runID + ".xml";
-          taskQueue.add(new ExperimentTask(_experimentName, _experimentID, 
-              _problemID, instanceID, algorithmID,
+          taskQueue.add(new ExperimentTask(this.experimentName, this.experimentID, 
+              this.problemID, instanceID, algorithmID,
               config.getAlgorithmParams(), runID, _timeoutS));
         }
       }
-      String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", _experimentID, _problemID, instanceID,
+      String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", this.experimentID, this.problemID, instanceID,
           algorithmID);
 
-      _experimentTasksRunner.performExperimentTasks(taskQueue, reportPath);
+      this.experimentTasksRunner.performExperimentTasks(taskQueue, reportPath);
     }
   }
 

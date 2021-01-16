@@ -34,99 +34,99 @@ public class ExperimentTask implements Runnable, Serializable {
 
   protected static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
   // protected ProblemConfig _config;
-  protected String _experimentType;
-  protected String _experimentID;
-  protected String _problemID;
-  protected String _instanceID;
-  protected String _algorithmID;
-  protected String _configID;
-  protected AlgorithmParams _algorithmParams;
-  protected long _runID;
-  protected long _timeoutS;
+  protected String experimentType;
+  protected String experimentID;
+  protected String problemID;
+  protected String instanceID;
+  protected String algorithmID;
+  protected String configID;
+  protected AlgorithmParams algorithmParams;
+  protected long runID;
+  protected long timeoutS;
 
-  protected DataNode _experimentTaskReport;
+  protected DataNode experimentTaskReport;
 
   public ExperimentTask(String experimentType, String experimentID, String problemID, String instanceID,
       String algorithmID, AlgorithmParams algorithmParams, int runID, long timeoutS) throws Exception {
-    _experimentType = experimentType;
-    _experimentID = experimentID;
-    _problemID = problemID;
-    _instanceID = instanceID;
-    _algorithmID = algorithmID;
-    _algorithmParams = algorithmParams;
-    _configID = algorithmParams.hash();
-    _runID = runID;
-    _timeoutS = timeoutS;
+    this.experimentType = experimentType;
+    this.experimentID = experimentID;
+    this.problemID = problemID;
+    this.instanceID = instanceID;
+    this.algorithmID = algorithmID;
+    this.algorithmParams = algorithmParams;
+    this.configID = algorithmParams.hash();
+    this.runID = runID;
+    this.timeoutS = timeoutS;
 
     // _reportName = reportName;
     // _reportOutputStream = reportOutputStream;
 
-    _experimentTaskReport = new DataNode("ExperimentTaskReport");
-    _experimentTaskReport.putValue("version", "0.7");
-    _experimentTaskReport.putValue("experimentType", experimentType);
-    _experimentTaskReport.putValue("experimentID", experimentID);
-    _experimentTaskReport.putValue("timeoutS", timeoutS);
+    this.experimentTaskReport = new DataNode("ExperimentTaskReport");
+    this.experimentTaskReport.putValue("version", "0.7");
+    this.experimentTaskReport.putValue("experimentType", experimentType);
+    this.experimentTaskReport.putValue("experimentID", experimentID);
+    this.experimentTaskReport.putValue("timeoutS", timeoutS);
 
     DataNode configNode = new DataNode("Config");
-    configNode.putValue("configID", _configID);
-    configNode.putValue("runID", _runID);
+    configNode.putValue("configID", this.configID);
+    configNode.putValue("runID", this.runID);
 
     DataNode problemNode = new DataNode("Problem");
-    problemNode.putValue("problemID", _problemID);
+    problemNode.putValue("problemID", this.problemID);
 
     DataNode instanceNode = new DataNode("Instance");
-    instanceNode.putValue("name", _instanceID);
+    instanceNode.putValue("name", this.instanceID);
 
     DataNode algorithmNode = new DataNode("Algorithm");
-    algorithmNode.putValue("algorithmID", _algorithmID);
-    algorithmNode.putDataNode(_algorithmParams);
+    algorithmNode.putValue("algorithmID", this.algorithmID);
+    algorithmNode.putDataNode(this.algorithmParams);
 
     problemNode.putDataNode(instanceNode);
     configNode.putDataNode(problemNode);
     configNode.putDataNode(algorithmNode);
 
-    _experimentTaskReport.putDataNode(configNode);
+    this.experimentTaskReport.putDataNode(configNode);
 
     DataNode solutionsNode = new DataNode("Solutions");
     solutionsNode.putDataNode(new DataNode("Input"));
     solutionsNode.putDataNode(new DataNode("Output"));
-    _experimentTaskReport.putDataNode(solutionsNode);
+    this.experimentTaskReport.putDataNode(solutionsNode);
 
   }
 
   public String getReportName() throws Exception {
-    return _configID + "-" + _runID + ".xml";
+    return this.configID + "-" + this.runID + ".xml";
   }
 
   public String getConfigID() {
-    return _configID;
+    return this.configID;
   }
 
   public DataNode getExperimentTaskReport() {
-    return _experimentTaskReport;
+    return this.experimentTaskReport;
   }
 
   @Override
   public void run() {
-    _logger.info("ExperimentTask started ({})", _configID);
+    _logger.info("ExperimentTask started ({})", this.configID);
     try {
       try {
-        _experimentTaskReport.putValue("machineName", java.net.InetAddress.getLocalHost().getHostName());
+        this.experimentTaskReport.putValue("machineName", java.net.InetAddress.getLocalHost().getHostName());
       } catch (UnknownHostException e) {
         _logger.warn(e.getMessage());
       }
-      _experimentTaskReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
-      _experimentTaskReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());
-      _experimentTaskReport.putValue("availRAM", Runtime.getRuntime().maxMemory());
+      this.experimentTaskReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
+      this.experimentTaskReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());
+      this.experimentTaskReport.putValue("availRAM", Runtime.getRuntime().maxMemory());
 
       // provider and factory
-      IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get(_problemID);
+      IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get(this.problemID);
       ProblemInfo pi = provider.getProblemInfo();
-      IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(_algorithmID);
+      IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(this.algorithmID);
 
       // problem instance
       ProblemInstance instance = provider
-          .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(_instanceID));
+          .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(this.instanceID));
 
       IPhenotypeEvaluator<Phenotype<?>> evaluator = provider.initPhenotypeEvaluator(instance);
 
@@ -134,12 +134,12 @@ public class ExperimentTask implements Runnable, Serializable {
       IAlgorithmAdapter<Phenotype<?>, ?> algorithm = factory.createAlgorithm(instance, evaluator);
 
       Phenotype<?>[] solutions = provider.generateInitialSolutions(instance,
-          _algorithmParams.getValueInt("numSolutions"), _experimentID.hashCode());
-      writeSolutions(evaluator, _experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
+          this.algorithmParams.getValueInt("numSolutions"), this.experimentID.hashCode());
+      writeSolutions(evaluator, this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
 
       long startTime = System.currentTimeMillis();
       algorithm.solutionsFromPhenotype(solutions);
-      algorithm.startSearching(_algorithmParams, true);
+      algorithm.startSearching(this.algorithmParams, true);
       _logger.info("Algorithm started");
       waitForTimeout(algorithm);
       algorithm.stopSearching();
@@ -147,25 +147,25 @@ public class ExperimentTask implements Runnable, Serializable {
       long endTime = System.currentTimeMillis();
 
       solutions = algorithm.solutionsToPhenotype();
-      writeSolutions(evaluator, _experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
+      writeSolutions(evaluator, this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
 
-      _experimentTaskReport.putDataNode(algorithm.getReport());
-      _experimentTaskReport.putValue("durationS", (endTime - startTime) / 1000);
-      _logger.info("Algorithm run duration: {}", _experimentTaskReport.getValue("durationS"));
-      // XmlHelper.writeXml(_experimentTaskReport, _reportOutputStream,
+      this.experimentTaskReport.putDataNode(algorithm.getReport());
+      this.experimentTaskReport.putValue("durationS", (endTime - startTime) / 1000);
+      _logger.info("Algorithm run duration: {}", this.experimentTaskReport.getValue("durationS"));
+      // XmlHelper.writeXml(this.experimentTaskReport, _reportOutputStream,
       // getReportName());
 
     } catch (Exception ex) {
       _logger.error(ex.getMessage(), ex);
-      _logger.error(_algorithmParams.toString());
+      _logger.error(this.algorithmParams.toString());
 
     }
-    _logger.info("ExperimentTask finished ({})", _configID);
+    _logger.info("ExperimentTask finished ({})", this.configID);
   }
 
   private void waitForTimeout(IAlgorithmAdapter<?, ?> alg) throws Exception {
     long time = System.currentTimeMillis();
-    while (alg.isRunning() && ((System.currentTimeMillis() - time) < _timeoutS * 1000))
+    while (alg.isRunning() && ((System.currentTimeMillis() - time) < this.timeoutS * 1000))
       Thread.sleep(100);
   }
 

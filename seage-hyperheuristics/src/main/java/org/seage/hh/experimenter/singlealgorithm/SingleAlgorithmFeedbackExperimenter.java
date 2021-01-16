@@ -14,7 +14,7 @@ public class SingleAlgorithmFeedbackExperimenter extends SingleAlgorithmRandomEx
   // instanceIDs, String[] algorithmIDs,
   // int numConfigs, int timeoutS) throws Exception {
   // super(problemID, instanceIDs, algorithmIDs, numConfigs, timeoutS);
-  // _experimentName = "SingleAlgorithmFeedback";
+  // this.experimentName = "SingleAlgorithmFeedback";
   // _configurator = new FeedbackConfigurator();
   // }
 }
