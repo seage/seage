@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.seage.hh.knowledgebase.db.mapper.ExperimentMapper" >
+	<resultMap id="experimentResult" type="experiment">
+		<id property="id" column="id" />
+		<result property="hostname" column="host"/>
+		<result property="experimentDate" column="experimentDate"/>
+		<result property="experimentName" column="experimentName"/>
+		<result property="rootPath" column="rootPath"/>
+	</resultMap>
+	
+	<!-- <select id="getExperiment" resultType="experiment" parameterType="int" resultMap="experimentResult">
+	    SELECT id, hostname, scanDate, rootPath from experiments WHERE id = #{id}
+	</select> -->
+	
+	<insert id="insertExperiment" parameterType="experiment"  keyProperty="experimentId" useGeneratedKeys="true">
+		INSERT into experiments(hostname, experimentDate, rootPath) VALUES(#{hostname}, #{experimentDate}, #{rootPath}) 	    
+	</insert>
+	<!-- 
+	<update id="updateFileInfo" parameterType="fileInfo">
+		UPDATE fileInfos SET name=#{name}, district =#{district} WHERE id =#{id}  	    
+	</update>
+	
+	<delete id="deleteFileInfo" parameterType="int">
+		DELETE FROM fileInfos WHERE id =#{id}  	    
+	</delete>
+     -->
+</mapper>

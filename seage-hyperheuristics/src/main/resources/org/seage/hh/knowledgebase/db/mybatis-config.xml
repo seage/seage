@@ -4,8 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
   <typeAliases>
-     <typeAlias type="org.seage.hh.experimenter.Experiment" alias="experiment"/>
-     <typeAlias type="org.seage.hh.experimenter.ExperimentTask" alias="experimentTask"/>
+     <typeAlias type="org.seage.hh.knowledgebase.db.Experiment" alias="experiment"/>
+     <typeAlias type="org.seage.hh.knowledgebase.db.ExperimentTask" alias="experimentTask"/>
   </typeAliases>  
   <environments default="development">
     <environment id="development">
@@ -28,7 +28,7 @@
     </environment>
   </environments>
   <mappers>
-    <mapper resource="org/seage/hh/knowledgebase/importing/db/dao/mappers/FileInfoMapper.xml" />
-    <mapper resource="org/seage/hh/knowledgebase/importing/db/dao/mappers/FileInfoMapper.xml" />
+    <mapper resource="org/seage/hh/knowledgebase/db/mappers/ExperimentMapper.xml" />
+    <mapper resource="org/seage/hh/knowledgebase/db/mappers/ExperimentTaskMapper.xml" />
   </mappers>
 </configuration>

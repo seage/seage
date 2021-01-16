@@ -1,28 +1,27 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
  * Contributors:
- * 	   Richard Malek
- * 	   - Interface definition
+ *    Richard Malek
+ *    - Interface definition
  */
+
 package org.seage.hh.experimenter;
 
 import java.io.File;
@@ -35,7 +34,7 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
-import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
+// import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.SparkExperimentTasksRunner;
 
 import org.slf4j.Logger;
@@ -43,83 +42,92 @@ import org.slf4j.LoggerFactory;
 
 public abstract class Experimenter {
   protected static Logger _logger = LoggerFactory.getLogger(Experimenter.class.getName());
-  protected String _experimentName;
-  protected String _experimentID;
-  protected String _problemID;
-  protected String[] _instanceIDs;
-  protected String[] _algorithmIDs;
-  protected ProblemInfo _problemInfo;
-  protected IExperimentTasksRunner _experimentTasksRunner;
+  protected String experimentName;
+  protected String experimentID;
+  protected String problemID;
+  protected String[] instanceIDs;
+  protected String[] algorithmIDs;
+  protected ProblemInfo problemInfo;
+  protected IExperimentTasksRunner experimentTasksRunner;
 
-  public Experimenter(String experimentName, String problemID, String[] instanceIDs, String[] algorithmIDs)
+  /**
+   * Experimenter performs experiment tasks.
+   * @param experimentName Name of the experiment, e.g. SingleAlgoritmhRandom
+   * @param problemID Problem identifier, e.g TSP, SAT or JSSP
+   * @param instanceIDs Array of instance identifiers
+   * @param algorithmIDs Array of algorithms involved in the experiment
+   * @throws Exception Throws exception in case of a trouble.
+   */
+  public Experimenter(
+      String experimentName, String problemID, String[] instanceIDs, String[] algorithmIDs)
       throws Exception {
-    _experimentName = experimentName;
-    _experimentID = String.valueOf(System.currentTimeMillis());
-    _problemID = problemID;
-    _instanceIDs = instanceIDs;
-    _algorithmIDs = algorithmIDs;
+    this.experimentName = experimentName;
+    this.experimentID = String.valueOf(System.currentTimeMillis());
+    this.problemID = problemID;
+    this.instanceIDs = instanceIDs;
+    this.algorithmIDs = algorithmIDs;
 
     new File("output/experiment-logs").mkdirs();
     _logger.info("Experimenter created, getting problem info");
-    _problemInfo = ProblemProvider.getProblemProviders().get(_problemID).getProblemInfo();
-    _experimentTasksRunner = new LocalExperimentTasksRunner();
-    // _experimentTasksRunner = new SparkExperimentTasksRunner();
+    this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
+    // this.experimentTasksRunner = new LocalExperimentTasksRunner();
+    this.experimentTasksRunner = new SparkExperimentTasksRunner();
   }
 
   public void runFromConfigFile(String configPath) throws Exception {
     throw new Exception("Not implemented");
   }
 
+  /**
+   * This method is here as an example implementation.
+   * @throws Exception Throws exception in case of a trouble.
+   */
   public final void runExperiment() throws Exception {
 
     // *** Check arguments ***
-    if (_instanceIDs[0].equals("-")) {
+    if (this.instanceIDs[0].equals("-")) {
       List<String> instIDs = new ArrayList<String>();
-      for (DataNode ins : _problemInfo.getDataNode("Instances").getDataNodes("Instance"))
+      for (DataNode ins : this.problemInfo.getDataNode("Instances").getDataNodes("Instance")) {
         instIDs.add(ins.getValueStr("id"));
-      _instanceIDs = instIDs.toArray(new String[] {});
+      }
+      this.instanceIDs = instIDs.toArray(new String[] {});
     }
 
-    if (_algorithmIDs[0].equals("-")) {
+    if (this.algorithmIDs[0].equals("-")) {
       List<String> algIDs = new ArrayList<String>();
-      for (DataNode alg : _problemInfo.getDataNode("Algorithms").getDataNodes("Algorithm"))
+      for (DataNode alg : this.problemInfo.getDataNode("Algorithms").getDataNodes("Algorithm")) {
         algIDs.add(alg.getValueStr("id"));
-      _algorithmIDs = algIDs.toArray(new String[] {});
+      }
+      this.algorithmIDs = algIDs.toArray(new String[] {});
     }
     // ***********************
 
     long experimentID = System.currentTimeMillis();
     _logger.info("-------------------------------------");
-    _logger.info("Experimenter: " + _experimentName);
+    _logger.info("Experimenter: " + this.experimentName);
     _logger.info("ExperimentID: " + experimentID);
     _logger.info("-------------------------------------");
 
-    long totalNumOfConfigs = getNumberOfConfigs(_instanceIDs.length, _algorithmIDs.length);
+    long totalNumOfConfigs = getNumberOfConfigs(this.instanceIDs.length, this.algorithmIDs.length);
     long totalRunsPerCpu = totalNumOfConfigs / Runtime.getRuntime().availableProcessors();
-    long totalEstimatedTime = getEstimatedTime(_instanceIDs.length, _algorithmIDs.length)
+    long totalEstimatedTime = getEstimatedTime(this.instanceIDs.length, this.algorithmIDs.length)
         / Runtime.getRuntime().availableProcessors();
 
     _logger.info(String.format("%-25s: %s", "Total number of configs", totalNumOfConfigs));
     _logger.info("Total number of configs per cpu core: " + totalRunsPerCpu);
-    _logger.info("Total estimated time: " + getDurationBreakdown(totalEstimatedTime) + " (DD:HH:mm:ss)");
+    _logger.info(String.format("Total estimated time: %s (DD:HH:mm:ss)", 
+        getDurationBreakdown(totalEstimatedTime)));
     _logger.info("-------------------------------------");
 
-    for (int i = 0; i < _instanceIDs.length; i++) {
+    for (int i = 0; i < this.instanceIDs.length; i++) {
       try {
-        ProblemInstanceInfo instanceInfo = _problemInfo.getProblemInstanceInfo(_instanceIDs[i]);
-
         _logger.info("-------------------------------------");
-        _logger.info(String.format("%-15s %s", "Problem:", _problemID));
-        _logger.info(String.format("%-15s %-16s    (%d/%d)", "Instance:", _instanceIDs[i], i + 1, _instanceIDs.length));
-
-//                String reportPath = String.format("output/experiment-logs/%s-%s-%s.zip", experimentID, _problemID,
-//                        _instanceIDs[i]);
-
-//                ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)));
-
+        _logger.info(String.format("%-15s %s", "Problem:", this.problemID));
+        _logger.info(String.format("%-15s %-16s    (%d/%d)", "Instance:", 
+            this.instanceIDs[i], i + 1, this.instanceIDs.length));
+        ProblemInstanceInfo instanceInfo = this.problemInfo.getProblemInstanceInfo(
+            this.instanceIDs[i]);
         runExperiment(instanceInfo);
-
-//                zos.close();
       } catch (Exception ex) {
         _logger.warn(ex.getMessage(), ex);
       }

@@ -8,26 +8,25 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 
 /**
- * Hello world!
+ * Hello Spark App.
  *
  */
-public class App {
+public class HelloSparkApp {
+  /**
+   * The main fn.
+   */
   public static void main(String[] args) {
-    System.out.println("Hello World!2");
-    for (String p : args)
-      System.out.println(p);
+    System.out.println("Hello Spark!");
 
     SparkConf conf = new SparkConf().setAppName("SEAGE test app");
-    if (args.length > 0 && args[0].equals("debug")) {
-      conf.setMaster("local[1]");
-    }
+    conf.setMaster("local[2]");
 
     try (JavaSparkContext sc = new JavaSparkContext(conf)) {
 
       List<Integer> data = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
       JavaRDD<Integer> distData = sc.parallelize(data);
 
-      long count = distData.filter(i -> {
+      distData.filter(i -> {
         System.out.println(i);
         return true;
       }).count();
@@ -36,8 +35,8 @@ public class App {
 
       List<Double> l = distData.flatMap(i -> list.iterator()).collect();
       System.out.println(l);
-//	        List<Double> l2 = distData.map(i -> 3.2).collect();
-//	        l2.forEach(i -> System.out.println(i));        
+      List<Double> l2 = distData.map(i -> 3.2).collect();
+      l2.forEach(i -> System.out.println(i));        
 
       Integer sum = distData.reduce((a, i) -> {
         System.out.println(Thread.currentThread().getName() + " --- " + a + " - " + i);

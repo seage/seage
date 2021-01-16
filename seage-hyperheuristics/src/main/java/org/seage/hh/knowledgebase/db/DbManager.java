@@ -1,4 +1,4 @@
-package org.seage.hh.knowledgebase.db.dao;
+package org.seage.hh.knowledgebase.db;
 
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -27,24 +27,35 @@ public class DbManager {
     init(dbType, null);
   }
 
+  /**
+   * Initializes DbManager.
+   */
   public static void init(DbType dbType, Properties props) throws Exception {
-    String commonPrefix = "org/seage/hh/knowledgebase/importing/db/dao/";
+    String commonPrefix = "org/seage/hh/knowledgebase/db/";
     String configResourcePath = commonPrefix + "mybatis-config.xml";
-    String environment = "development";
+    // String environment = "development";
+    String environment = "test";
     String initSqlResourcePath = commonPrefix + "create.sql";
 
-    if (dbType == DbType.HSQLDB)
-      environment = "test";
-    if (props == null || !props.containsKey("url")) {
-      props = new Properties();
-      props.put("url", "jdbc:postgresql://localhost:5432/seage");
-    }
+    // if (dbType == DbType.HSQLDB) {
+    //   environment = "test";
+    // }
+    // if (props == null || !props.containsKey("url")) {
+    //   props = new Properties();
+    //   props.put("url", "jdbc:postgresql://localhost:5432/seage");
+    // }
     try (InputStream inputStream = Resources.getResourceAsStream(configResourcePath);
         Reader reader = Resources.getResourceAsReader(initSqlResourcePath);) {
 
       sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, environment, props);
-      logger.info(
-          sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection().getMetaData().getURL());
+      logger.info(sqlSessionFactory
+          .getConfiguration()
+          .getEnvironment()
+          .getDataSource()
+          .getConnection()
+          .getMetaData()
+          .getURL()
+      );
 
       try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
         ScriptRunner runner = new ScriptRunner(session.getConnection());
@@ -55,9 +66,13 @@ public class DbManager {
     }
   }
 
+  /**
+   * Gets valied SqlSessionFactory instance or fails.
+   */
   public static SqlSessionFactory getSqlSessionFactory() throws Exception {
-    if (sqlSessionFactory == null)
+    if (sqlSessionFactory == null) {
       throw new Exception("DbManager not initialized");
+    }
     return sqlSessionFactory;
   }
 }
