@@ -13,7 +13,7 @@ class DbManagerTest {
 
   @Test
   void test() throws Exception {
-    DbManager.init();
+    DbManager.initTest();
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       assertNotNull(session);
       try (Connection c =

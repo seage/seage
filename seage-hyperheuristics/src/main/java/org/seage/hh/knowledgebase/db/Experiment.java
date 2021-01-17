@@ -19,6 +19,10 @@ public class Experiment {
     this.config = "{a: 1}";
   }
 
+  public Experiment(String experimentID, String experimentName, String problemID, String instances,
+      String algorithms, Date startDate2) {
+  }
+
   public void setId(int id) {
     this.id = id;
   }
@@ -46,7 +50,7 @@ public class Experiment {
   public int getId() {
     return id;
   }
-  
+
   public Date getStartDate() {
     return startDate;
   }

@@ -17,15 +17,14 @@
  */
 
 /**
- * Contributors:
- *    Richard Malek
- *    - Interface definition
+ * Contributors: Richard Malek - Interface definition
  */
 
 package org.seage.hh.experimenter;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +48,7 @@ public abstract class Experimenter {
   protected String[] algorithmIDs;
   protected ProblemInfo problemInfo;
   protected IExperimentTasksRunner experimentTasksRunner;
+  protected ExperimentReporter experimentReporter;
 
   /**
    * Experimenter performs experiment tasks.
@@ -72,6 +72,8 @@ public abstract class Experimenter {
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
     //this.experimentTasksRunner = new SparkExperimentTasksRunner();
+
+    this.experimentReporter = new ExperimentReporter();
   }
 
   public void runFromConfigFile(String configPath) throws Exception {
@@ -119,6 +121,15 @@ public abstract class Experimenter {
     logger.info(String.format("Total estimated time: %s (DD:HH:mm:ss)", 
         getDurationBreakdown(totalEstimatedTime)));
     logger.info("-------------------------------------");
+
+    this.experimentReporter.createExperimentReport(
+      this.experimentID,
+      this.experimentName,
+      this.problemID,
+      this.instanceIDs,
+      this.algorithmIDs,
+      new Date(this.experimentID)
+    );
 
     // Run experiment tasks for each instance
     for (int i = 0; i < this.instanceIDs.length; i++) {

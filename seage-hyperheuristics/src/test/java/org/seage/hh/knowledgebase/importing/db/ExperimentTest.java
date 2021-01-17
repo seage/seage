@@ -16,7 +16,7 @@ import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 public class ExperimentTest {
   @BeforeEach
   void setUp() throws Exception {
-    DbManager.init();
+    DbManager.initTest();
   }
 
   @Test

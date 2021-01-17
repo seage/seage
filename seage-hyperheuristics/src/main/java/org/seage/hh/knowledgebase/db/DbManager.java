@@ -28,10 +28,19 @@ public class DbManager {
 
   private static SqlSessionFactory sqlSessionFactory;
 
+  
+  public static void initTest() throws Exception {
+    DbManager.init(true);
+  }
+
   /**
-   * Initializes DbManager.
-   */
+  * Initializes DbManager.
+  */
   public static void init() throws Exception {
+    DbManager.init(false);
+  }  
+  
+  private static void init(boolean testMode) throws Exception {
     String commonPrefix = "org/seage/hh/knowledgebase/db/";
     String configResourcePath = commonPrefix + "mybatis-config.xml";
     String initSqlResourcePath = commonPrefix + "create-schema.sql";
@@ -40,7 +49,6 @@ public class DbManager {
     String username = "SA";
     String password = ""; 
     String environment = "local";   
-    boolean testMode = dbUrl == null || dbUrl.isEmpty();
 
     Properties props = new Properties();
     props.setProperty("username", username);
