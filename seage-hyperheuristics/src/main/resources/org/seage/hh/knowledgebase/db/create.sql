@@ -7,14 +7,16 @@
 -- 	experimentType VARCHAR(100),
 -- 	experimentDate TIMESTAMP
 -- );
+CREATE SCHEMA seage;
+-- GRANT ALL ON SCHEMA seage TO SA;
 
-CREATE TABLE IF NOT EXISTS experiments (
+CREATE TABLE IF NOT EXISTS seage.experiments (
 	id SERIAL PRIMARY KEY,
 	start_date TIMESTAMP,
 	duration DATETIME,
 	experiment_type VARCHAR(100),
 	hostname VARCHAR(100),
-	config JSON
+	config VARCHAR(100)
 );
 
 -- CREATE TABLE IF NOT EXISTS fileInfos (

@@ -5,17 +5,29 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
 import org.apache.ibatis.session.SqlSession;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.hh.knowledgebase.db.DbManager;
 import org.seage.hh.knowledgebase.db.Experiment;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 
 public class ExperimentTest {
-  @BeforeAll
-  static void setUp() throws Exception {
+  @BeforeEach
+  void setUp() throws Exception {
     DbManager.init();
+  }
+
+  @Test
+  void testEmptyDatabase() throws Exception {    
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
+      assertNotNull(mapper);
+
+      int count = mapper.getExperimentCount();      
+      assertEquals(0, count);
+    }
   }
 
   @Test
@@ -23,7 +35,7 @@ public class ExperimentTest {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
       assertNotNull(mapper);
-      
+
       Experiment experiment1 = new Experiment();
       mapper.insertExperiment(experiment1);
       session.commit();
@@ -34,7 +46,7 @@ public class ExperimentTest {
   }
 
   @Test
-  void testInsertExperiment() throws Exception {    
+  void testSelectExperiments() throws Exception {    
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
       assertNotNull(mapper);
@@ -45,8 +57,11 @@ public class ExperimentTest {
       mapper.insertExperiment(experiment2);
       session.commit();
       assertNotEquals(0, experiment1.getId());
-      int count = mapper.getExperimentCount();
-      assertTrue(count >= 2);
+      List<Experiment> experiments = mapper.getExperiments();
+      assertTrue(experiments.size() >= 2);
+
+      int count = mapper.getExperimentCount();      
+      assertEquals(2, count);
     }
   }
 }

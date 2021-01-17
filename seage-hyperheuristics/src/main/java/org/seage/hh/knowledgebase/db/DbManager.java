@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.util.Properties;
 
@@ -34,28 +36,37 @@ public class DbManager {
     String configResourcePath = commonPrefix + "mybatis-config.xml";
     String initSqlResourcePath = commonPrefix + "create.sql";
 
-    String dbUrl = null;
-    Properties props = null;
-    
-    if (dbUrl == null || dbUrl.isEmpty()) {
-      String tmpDirPath = System.getProperty("java.io.tmpdir");
-      props = new Properties();
-      props.put("url", String.format("jdbc:h2:file:%s/seage-test", tmpDirPath));
+    String dbUrl = null;    
+    String username = "SA";
+    String password = "";    
+    boolean testMode = dbUrl == null || dbUrl.isEmpty();
+
+    Properties props = new Properties();
+    props.setProperty("username", username);
+    props.setProperty("password", password);
+
+    if (testMode) {
+      Path testDbPath = Path.of(System.getProperty("java.io.tmpdir"), "seage-test-hyper");
+      // props.put("driver", "org.hsqldb.jdbcDriver");
+      // props.put("url", String.format("jdbc:hsqldb:file:%s;sql.syntax_pgs=true;check_props=true", testDbPath.toAbsolutePath()));
+
+      props.put("driver", "org.h2.Driver");
+      props.put("url", String.format("jdbc:h2:file:%s", testDbPath.toAbsolutePath()));
     }
+
     try (InputStream inputStream = Resources.getResourceAsStream(configResourcePath);
         Reader reader = Resources.getResourceAsReader(initSqlResourcePath);) {
 
       sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, props);
 
-      // try (Connection c =
-      //     sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
-      //   logger.debug(c.getMetaData().getURL());
-      // }
-
-      try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {       
         ScriptRunner runner = new ScriptRunner(session.getConnection());
         runner.setLogWriter(new PrintWriter(System.out));
         runner.setErrorLogWriter(new PrintWriter(System.err));
+
+        if (testMode) {
+          runner.runScript(new StringReader("DROP SCHEMA seage CASCADE;"));
+        }
         runner.runScript(reader);
       }
     }
