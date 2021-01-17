@@ -10,8 +10,8 @@ import org.seage.hh.knowledgebase.db.Experiment;
 
 public interface ExperimentMapper {
   
-  // @Insert("INSERT INTO experiments(start_date, duration, experiment_type, hostname) VALUES(#{duration}, #{startDate}, #{experimentType}, #{hostname}")
-  // @SelectKey(statement="call identity()", keyProperty="id", before=false, resultType=int.class)
+  @Insert("INSERT INTO seage.experiments(start_date, duration, experiment_type, hostname, config) VALUES(#{duration}, #{startDate}, #{experimentType}, #{hostname}, #{config})")
+  @SelectKey(statement="call identity()", keyProperty="id", before=false, resultType=int.class)
   int insertExperiment(Experiment experiment);
 
   // @Results(id = "userResult", value = {

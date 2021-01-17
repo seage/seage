@@ -34,11 +34,12 @@ public class DbManager {
   public static void init() throws Exception {
     String commonPrefix = "org/seage/hh/knowledgebase/db/";
     String configResourcePath = commonPrefix + "mybatis-config.xml";
-    String initSqlResourcePath = commonPrefix + "create.sql";
+    String initSqlResourcePath = commonPrefix + "create-schema.sql";
 
     String dbUrl = null;    
     String username = "SA";
-    String password = "";    
+    String password = ""; 
+    String environment = "local";   
     boolean testMode = dbUrl == null || dbUrl.isEmpty();
 
     Properties props = new Properties();
@@ -46,18 +47,19 @@ public class DbManager {
     props.setProperty("password", password);
 
     if (testMode) {
-      Path testDbPath = Path.of(System.getProperty("java.io.tmpdir"), "seage-test-hyper");
+      environment = "test";
+      // Path testDbPath = Path.of(System.getProperty("java.io.tmpdir"), "seage-test-hyper");
       // props.put("driver", "org.hsqldb.jdbcDriver");
-      // props.put("url", String.format("jdbc:hsqldb:file:%s;sql.syntax_pgs=true;check_props=true", testDbPath.toAbsolutePath()));
-
-      props.put("driver", "org.h2.Driver");
-      props.put("url", String.format("jdbc:h2:file:%s", testDbPath.toAbsolutePath()));
+      // props.put("url", String.format("jdbc:hsqldb:file:%s;sql.syntax_pgs=true;check_props=true", 
+      //     testDbPath.toAbsolutePath()));
+      // props.put("driver", "org.h2.Driver");
+      // props.put("url", String.format("jdbc:h2:file:%s", testDbPath.toAbsolutePath()));
     }
 
     try (InputStream inputStream = Resources.getResourceAsStream(configResourcePath);
         Reader reader = Resources.getResourceAsReader(initSqlResourcePath);) {
 
-      sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, props);
+      sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, environment, props);
 
       try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {       
         ScriptRunner runner = new ScriptRunner(session.getConnection());

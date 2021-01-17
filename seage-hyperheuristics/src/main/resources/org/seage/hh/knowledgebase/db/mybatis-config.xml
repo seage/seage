@@ -7,8 +7,8 @@
      <typeAlias type="org.seage.hh.knowledgebase.db.Experiment" alias="experiment"/>
      <typeAlias type="org.seage.hh.knowledgebase.db.ExperimentTask" alias="experimentTask"/>
   </typeAliases>  
-  <environments default="development">
-    <environment id="development">
+  <environments default="local">
+    <environment id="postgres">
       <transactionManager type="JDBC"/>
       <dataSource type="POOLED">
         <property name="driver" value="org.postgresql.Driver"/>
@@ -17,27 +17,37 @@
         <property name="password" value="test"/>
       </dataSource>
     </environment>
+    <environment id="local">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:file:/tmp/seage.local.h2"/>
+        <property name="username" value="sa"/>
+        <property name="password" value=""/>
+      </dataSource>
+    </environment>
     <environment id="test">
       <transactionManager type="JDBC"/>
       <dataSource type="POOLED">
-        <property name="driver" value="org.hsqldb.jdbcDriver"/>
-        <property name="url" value="jdbc:hsqldb:file:/tmp/seage2.test.hyper;sql.syntax_pgs=true;check_props=true"/>
-        <property name="username" value="SA"/>
+        <property name="driver" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:file:/tmp/seage.test.h2"/>
+        <property name="username" value="sa"/>
         <property name="password" value=""/>
       </dataSource>
     </environment>
     <environment id="test2">
       <transactionManager type="JDBC"/>
       <dataSource type="POOLED">
-        <property name="driver" value="org.h2.Driver"/>
-        <property name="url" value="jdbc:h2:/tmp/seage2.test.h2"/>
+        <property name="driver" value="org.hsqldb.jdbcDriver"/>
+        <property name="url" value="jdbc:hsqldb:file:/tmp/seage.test.hyper;sql.syntax_pgs=true;check_props=true"/>
         <property name="username" value="sa"/>
         <property name="password" value=""/>
       </dataSource>
     </environment>
+
   </environments>
   <mappers>
-    <mapper resource="org/seage/hh/knowledgebase/db/mappers/ExperimentMapper.xml" />
-    <mapper resource="org/seage/hh/knowledgebase/db/mappers/ExperimentTaskMapper.xml" />
+    <mapper class="org.seage.hh.knowledgebase.db.mapper.ExperimentMapper" />
+    <mapper class="org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper" />
   </mappers>
 </configuration>

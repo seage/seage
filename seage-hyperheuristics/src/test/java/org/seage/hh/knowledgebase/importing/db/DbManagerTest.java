@@ -19,7 +19,7 @@ class DbManagerTest {
       try (Connection c =
           session.getConfiguration().getEnvironment().getDataSource().getConnection()) {
         assertTrue(c.getMetaData().getURL().startsWith("jdbc:h2:file:"));
-        assertTrue(c.getMetaData().getURL().endsWith("seage-test"));
+        assertTrue(c.getMetaData().getURL().contains("seage.test"));
       }
     }
   }
