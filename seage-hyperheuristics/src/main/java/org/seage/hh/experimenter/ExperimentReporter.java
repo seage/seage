@@ -24,7 +24,7 @@ public class ExperimentReporter {
    */
   public void createExperimentReport(
       String experimentID, String experimentName, String problemID,
-      String[] instanceIDs, String[] algorithmIDs, Date startDate) throws Exception {
+      String[] instanceIDs, String[] algorithmIDs, Date startDate, Date duration) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       
       String instances = String.join(",", instanceIDs);
@@ -35,11 +35,15 @@ public class ExperimentReporter {
           problemID,
           instances,
           algorithms,
-          startDate
+          "config",
+          startDate,
+          duration,
+          "this-machine"
       );
 
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
       mapper.insertExperiment(experiment);
+      session.commit();
     }    
   }
   

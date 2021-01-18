@@ -23,6 +23,7 @@
 package org.seage.hh.experimenter;
 
 import java.io.File;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -123,12 +124,13 @@ public abstract class Experimenter {
     logger.info("-------------------------------------");
 
     this.experimentReporter.createExperimentReport(
-      this.experimentID,
-      this.experimentName,
-      this.problemID,
-      this.instanceIDs,
-      this.algorithmIDs,
-      new Date(this.experimentID)
+        this.experimentID,
+        this.experimentName,
+        this.problemID,
+        this.instanceIDs,
+        this.algorithmIDs,
+        Date.from(Instant.now()),
+        Date.from(Instant.now())
     );
 
     // Run experiment tasks for each instance

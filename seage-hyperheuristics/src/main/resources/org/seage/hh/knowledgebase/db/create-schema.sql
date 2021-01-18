@@ -12,11 +12,15 @@ CREATE SCHEMA seage;
 
 CREATE TABLE IF NOT EXISTS seage.experiments (
 	id SERIAL PRIMARY KEY,
+	experiment_id VARCHAR(100),
+	experiment_name VARCHAR(100),
+	problem_id VARCHAR(100),
+	instance_id VARCHAR(100),
+	algorithm_id VARCHAR(100),
+	config VARCHAR(100),
 	start_date TIMESTAMP,
-	duration DATETIME,
-	experiment_type VARCHAR(100),
-	hostname VARCHAR(100),
-	config VARCHAR(100)
+	duration DATETIME,	
+	hostname VARCHAR(100)	
 );
 
 -- CREATE TABLE IF NOT EXISTS fileInfos (
