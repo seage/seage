@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
@@ -45,7 +46,8 @@ public interface ExperimentMapper {
 
   // @Insert("INSERT INTO seage.experiments(start_date, duration, experiment_type, hostname, config) VALUES(#{duration}, #{startDate}, #{experimentType}, #{hostname}, #{config})")
   @InsertProvider(type = ExperimentSqlProvider.class, method = "insertExperiment")
-  @SelectKey(statement="call identity()", keyProperty="id", before=false, resultType=int.class)
+  @Options(useGeneratedKeys=true, keyProperty="id")
+  // @SelectKey(statement="call identity()", keyProperty="id", before=false, resultType=int.class)
   int insertExperiment(Experiment experiment);
 
   // @Results(id = "userResult", value = {

@@ -7,7 +7,7 @@
 -- 	experimentType VARCHAR(100),
 -- 	experimentDate TIMESTAMP
 -- );
-CREATE SCHEMA seage;
+CREATE SCHEMA IF NOT EXISTS seage;
 -- GRANT ALL ON SCHEMA seage TO SA;
 
 CREATE TABLE IF NOT EXISTS seage.experiments (
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS seage.experiments (
 	algorithm_id VARCHAR(100),
 	config VARCHAR(100),
 	start_date TIMESTAMP,
-	duration DATETIME,	
+	duration TIMESTAMP,	
 	hostname VARCHAR(100)	
 );
 

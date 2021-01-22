@@ -8,6 +8,7 @@ import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.apache.ibatis.io.Resources;
@@ -45,23 +46,21 @@ public class DbManager {
     String configResourcePath = commonPrefix + "mybatis-config.xml";
     String initSqlResourcePath = commonPrefix + "create-schema.sql";
 
-    String dbUrl = null;    
-    String username = "SA";
-    String password = ""; 
-    String environment = "local";   
+    String dbUrl = Optional.ofNullable(System.getenv("DB_URL")).orElse("");
+    if (!dbUrl.isEmpty() && !dbUrl.startsWith("jdbc:")) {
+      throw new Exception(String.format("Incorrect DB_URL value: %s", dbUrl));
+    }
+    String environment = dbUrl.startsWith("jdbc:postgresql") ? "postgres" : "local";
+
+    logger.info("DB_URL: {}", dbUrl);
 
     Properties props = new Properties();
-    props.setProperty("username", username);
-    props.setProperty("password", password);
+    props.setProperty("url", dbUrl);
+    props.setProperty("username", Optional.ofNullable(System.getenv("DB_USER")).orElse("test"));
+    props.setProperty("password", Optional.ofNullable(System.getenv("DB_PASSWORD")).orElse("test"));
 
     if (testMode) {
       environment = "test";
-      // Path testDbPath = Path.of(System.getProperty("java.io.tmpdir"), "seage-test-hyper");
-      // props.put("driver", "org.hsqldb.jdbcDriver");
-      // props.put("url", String.format("jdbc:hsqldb:file:%s;sql.syntax_pgs=true;check_props=true", 
-      //     testDbPath.toAbsolutePath()));
-      // props.put("driver", "org.h2.Driver");
-      // props.put("url", String.format("jdbc:h2:file:%s", testDbPath.toAbsolutePath()));
     }
 
     try (InputStream inputStream = Resources.getResourceAsStream(configResourcePath);

@@ -6,6 +6,35 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Debug Launcher (list)",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "args": "list"
+    },
+    {
+      "type": "java",
+      "name": "Debug Launcher (experimenter)",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "args": [
+        "experiment-single-random",
+        "-p",
+        "TSP",
+        "-a",
+        "GeneticAlgorithm",
+        "-i",
+        "berlin52",
+        "-t",
+        "1",
+        "-n",
+        "1",
+      ],
+      "env": {"DB_URL": "jdbc:postgresql://snoopy.lan/"}
+    },
+    {
+      "type": "java",
       "name": "Launch HelloSparkApp",
       "request": "launch",
       "mainClass": "org.seage.hh.spark.HelloSparkApp",
@@ -37,14 +66,6 @@
       "request": "launch",
       "mainClass": "org.seage.knowledgebase.HsqldbTest",
       "projectName": "seage-knowledgebase"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-Launcher<seage-launcher>",
-      "request": "launch",
-      "mainClass": "org.seage.launcher.Launcher",
-      "projectName": "seage-launcher",
-      "args": "list"
     },
     {
       "type": "java",
