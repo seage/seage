@@ -2,13 +2,11 @@ package org.seage.hh.knowledgebase.db.mapper;
 
 import java.util.Date;
 import java.util.List;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
 import org.seage.hh.knowledgebase.db.Experiment;
@@ -25,8 +23,9 @@ public interface ExperimentMapper {
           VALUES("algorithm_id", "#{algorithmID}");
           VALUES("config", "#{config}");
           VALUES("start_date", "#{startDate}");
-          VALUES("duration", "#{duration}");
+          VALUES("end_date", "#{endDate}");
           VALUES("hostname", "#{hostname}");
+          VALUES("score", "#{score}");
         }
       }.toString();
     }
@@ -44,10 +43,8 @@ public interface ExperimentMapper {
     }
   }
 
-  // @Insert("INSERT INTO seage.experiments(start_date, duration, experiment_type, hostname, config) VALUES(#{duration}, #{startDate}, #{experimentType}, #{hostname}, #{config})")
   @InsertProvider(type = ExperimentSqlProvider.class, method = "insertExperiment")
   @Options(useGeneratedKeys=true, keyProperty="id")
-  // @SelectKey(statement="call identity()", keyProperty="id", before=false, resultType=int.class)
   int insertExperiment(Experiment experiment);
 
   // @Results(id = "userResult", value = {
@@ -64,8 +61,12 @@ public interface ExperimentMapper {
   @Select("SELECT * FROM seage.experiments")
   List<Experiment> getExperiments();
 
-  // int getMaxExperimentId();
-
   @Select("SELECT count(*) FROM seage.experiments")
   int getExperimentCount();
+
+  @Update("UPDATE seage.experiments SET end_date = #{endDate} WHERE experiment_id = #{experimentId}")
+  void updateEndDate(@Param("experimentId") String experimentId, @Param("endDate") Date endDate);
+
+  @Update("UPDATE seage.experiments SET score = #{score} WHERE experiment_id = #{experimentId}")
+  void updateScore(@Param("experimentId") String experimentId, @Param("score") double score);
 }

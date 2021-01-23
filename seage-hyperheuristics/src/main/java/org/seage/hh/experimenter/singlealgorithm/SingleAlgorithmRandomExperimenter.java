@@ -5,26 +5,34 @@ import java.util.List;
 
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.Experimenter;
 import org.seage.hh.experimenter.config.Configurator;
 import org.seage.hh.experimenter.config.RandomConfigurator;
 
+/**
+ * Experimenter running producing random configs according to the metadata.
+ */
 public class SingleAlgorithmRandomExperimenter extends Experimenter {
-  protected Configurator _configurator;
-  private int _numConfigs;
-  private int _timeoutS;
+  protected Configurator configurator;
+  private int numConfigs;
+  private int timeoutS;
 
-  private final int NUM_RUNS = 3;
+  private static final int NUM_RUNS = 3;
 
-  public SingleAlgorithmRandomExperimenter(String problemID, String[] instanceIDs, String[] algorithmIDs,
+  /**
+   * SingleAlgorithmRandomExperimenter constructor - nothing special.
+  */
+  public SingleAlgorithmRandomExperimenter(
+      String problemID, String[] instanceIDs, String[] algorithmIDs,
       int numConfigs, int timeoutS) throws Exception {
     super("SingleAlgorithmRandom", problemID, instanceIDs, algorithmIDs);
 
-    _numConfigs = numConfigs;
-    _timeoutS = timeoutS;
+    this.numConfigs = numConfigs;
+    this.timeoutS = timeoutS;
 
-    _configurator = new RandomConfigurator();
+    configurator = new RandomConfigurator();
   }
 
   @Override
@@ -33,35 +41,53 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter {
       String algorithmID = this.algorithmIDs[i];
       String instanceID = instanceInfo.getInstanceID();
 
-      logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, this.algorithmIDs.length));
+      logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", 
+          algorithmID, i + 1, this.algorithmIDs.length));
       logger.info(String.format("%-44s", "   Running... "));
 
       List<ExperimentTask> taskQueue = new ArrayList<ExperimentTask>();
-      ProblemConfig[] configs = _configurator.prepareConfigs(
-          this.problemInfo, instanceInfo.getInstanceID(), algorithmID, _numConfigs);
+      ProblemConfig[] configs = configurator.prepareConfigs(
+          this.problemInfo, instanceInfo.getInstanceID(), algorithmID, this.numConfigs);
       for (ProblemConfig config : configs) {
         for (int runID = 1; runID <= NUM_RUNS; runID++) {
           // String reportName = problemInfo.getProblemID() + "-" + algorithmID + "-" +
           // instanceInfo.getInstanceID() + "-" + configID + "-" + runID + ".xml";
           taskQueue.add(new ExperimentTask(this.experimentName, this.experimentID, 
               this.problemID, instanceID, algorithmID,
-              config.getAlgorithmParams(), runID, _timeoutS));
+              config.getAlgorithmParams(), runID, this.timeoutS));
         }
       }
-      String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", this.experimentID, this.problemID, instanceID,
-          algorithmID);
+      // String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip", 
+      //     this.experimentID, this.problemID, instanceID, algorithmID);
 
-      this.experimentTasksRunner.performExperimentTasks(taskQueue, reportPath);
+      // RUN EXPERIMENTS
+      List<DataNode> stats = this.experimentTasksRunner.performExperimentTasks(taskQueue);
+
+      // Update score
+      double bestObjVal = Double.MAX_VALUE;
+      for (DataNode s : stats) {
+        double objVal = s.getValueDouble("bestObjVal");
+        if (objVal < bestObjVal) {
+          bestObjVal = objVal;
+        }
+      }
+      this.experimentReporter.updateScore(this.experimentID, bestObjVal);
     }
   }
 
   @Override
+  protected String getExperimentConfig() {
+    return String.format("<Config timeoutS=\"%s\" numConfigs=\"%s\" />", 
+        this.timeoutS, this.numConfigs);
+  }
+
+  @Override
   protected long getEstimatedTime(int instancesCount, int algorithmsCount) {
-    return getNumberOfConfigs(instancesCount, algorithmsCount) * _timeoutS * 1000;
+    return getNumberOfConfigs(instancesCount, algorithmsCount) * this.timeoutS * 1000;
   }
 
   @Override
   protected long getNumberOfConfigs(int instancesCount, int algorithmsCount) {
-    return _numConfigs * NUM_RUNS * instancesCount * algorithmsCount;
+    return this.numConfigs * NUM_RUNS * instancesCount * algorithmsCount;
   }
 }

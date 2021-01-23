@@ -1,25 +1,32 @@
 package org.seage.hh.knowledgebase.db;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Experiment {
   private int id;
-  private Date startDate;  
+ 
   private String experimentID;
   private String experimentName;
   private String problemID;
   private String instanceID;
   private String algorithmID;
-  private String hostname;
+  private Date startDate; 
+  private Date endDate;
   private String config;
-  private Date duration;
+  private String hostname;
+  private Double score;
   
   public Experiment() {
     this.id = 0;
     this.startDate = new Date();
-    this.duration = new Date();
+    this.endDate = new Date();
 
+    this.experimentID = UUID.randomUUID().toString();
     this.experimentName = "SomeExperimentType";
+    this.problemID = "SomeProblem";
+    this.instanceID = "SomeInstance";
+    this.algorithmID = "SomeAlgorithm";
     this.hostname = "SomeHostname";
     this.config = "{a: 1}";
   }
@@ -28,15 +35,18 @@ public class Experiment {
       String experimentID, String experimentName, 
       String problemID, String instanceID,
       String algorithmID, String config, 
-      Date startDate, Date duration, String hostname) {
+      Date startDate, Date duration, 
+      String hostname, Double score) {
     this.experimentID = experimentID;
     this.experimentName = experimentName;
     this.problemID = problemID;
     this.instanceID = instanceID;
     this.algorithmID = algorithmID;
+    this.config = config;
     this.startDate = startDate;
-    this.duration = duration;
+    this.endDate = duration;
     this.hostname = hostname;
+    this.score = score;
   }
 
   public int getId() {
@@ -45,14 +55,6 @@ public class Experiment {
 
   public void setId(int id) {
     this.id = id;
-  }
-
-  public Date getStartDate() {
-    return startDate;
-  }
-
-  public void setStartDate(Date startDate) {
-    this.startDate = startDate;
   }
 
   public String getExperimentID() {
@@ -95,12 +97,20 @@ public class Experiment {
     this.algorithmID = algorithmID;
   }
 
-  public String getHostname() {
-    return hostname;
+  public Date getStartDate() {
+    return startDate;
   }
 
-  public void setHostname(String hostname) {
-    this.hostname = hostname;
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
+  }
+
+  public Date getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(Date endDate) {
+    this.endDate = endDate;
   }
 
   public String getConfig() {
@@ -111,11 +121,20 @@ public class Experiment {
     this.config = config;
   }
 
-  public Date getDuration() {
-    return duration;
+  public String getHostname() {
+    return hostname;
   }
 
-  public void setDuration(Date duration) {
-    this.duration = duration;
+  public void setHostname(String hostname) {
+    this.hostname = hostname;
   }
+
+  public Double getScore() {
+    return score;
+  }
+
+  public void setScore(Double score) {
+    this.score = score;
+  }
+
 }

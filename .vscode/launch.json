@@ -31,7 +31,7 @@
         "-n",
         "1",
       ],
-      "env": {"DB_URL": "jdbc:postgresql://snoopy.lan/"}
+      "env": {"DB_URL": "jdbc:postgresql://snoopy.lan/seage"}
     },
     {
       "type": "java",

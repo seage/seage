@@ -73,8 +73,9 @@ public class DbManager {
         runner.setLogWriter(new PrintWriter(System.out));
         runner.setErrorLogWriter(new PrintWriter(System.err));
 
-        if (testMode) {
+        if (testMode) {          
           runner.runScript(new StringReader("DROP SCHEMA seage CASCADE;"));
+          runner.runScript(new StringReader("CREATE TYPE 'JSONB' AS json;"));
         }
         runner.runScript(reader);
       }

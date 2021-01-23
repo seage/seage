@@ -1,37 +1,30 @@
 package org.seage.hh.experimenter.runner;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.zip.ZipOutputStream;
-
-import org.seage.data.xml.XmlHelper;
+import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LocalExperimentTasksRunner implements IExperimentTasksRunner {
+  private static Logger logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
 
   @Override
-  public void performExperimentTasks(List<ExperimentTask> tasks, String reportPath) {
+  public List<DataNode> performExperimentTasks(List<ExperimentTask> tasks) {
 
-    List<Integer> dn = tasks.parallelStream().map(t -> {
+    return tasks.parallelStream().map(t -> {
       try {
         t.run();
-        try (
-            ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(reportPath)))) {
-          XmlHelper.writeXml(t.getExperimentTaskReport(), zos, t.getReportName());
-        } catch (Exception e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
-        }
+        return t.getExperimentTaskReport()
+            .getDataNode("AlgorithmReport")
+            .getDataNode("Statistics");               
       } catch (Exception e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        logger.error("Experiment task execution failed!", e);
       }
-      return 1;
-    }).collect(Collectors.toList());
+      return null;
+    }).filter(e -> e != null)
+      .collect(Collectors.toList());
 
   }
 

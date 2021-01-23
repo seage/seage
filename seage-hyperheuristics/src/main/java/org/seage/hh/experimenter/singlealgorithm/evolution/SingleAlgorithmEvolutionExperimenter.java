@@ -164,4 +164,10 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
     return _numIterations * _numSubjects * instancesCount * algorithmsCount;
   }
 
+  @Override
+  protected String getExperimentConfig() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

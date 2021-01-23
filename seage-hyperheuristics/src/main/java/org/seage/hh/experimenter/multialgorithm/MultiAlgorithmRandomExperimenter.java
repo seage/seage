@@ -28,4 +28,10 @@ public class MultiAlgorithmRandomExperimenter extends Experimenter {
     return 0;
   }
 
+  @Override
+  protected String getExperimentConfig() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

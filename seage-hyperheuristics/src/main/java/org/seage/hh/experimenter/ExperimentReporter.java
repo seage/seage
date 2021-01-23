@@ -1,5 +1,6 @@
 package org.seage.hh.experimenter;
 
+import java.net.InetAddress;
 import java.sql.Connection;
 import java.util.Date;
 import org.apache.ibatis.session.SqlSession;
@@ -24,7 +25,8 @@ public class ExperimentReporter {
    */
   public void createExperimentReport(
       String experimentID, String experimentName, String problemID,
-      String[] instanceIDs, String[] algorithmIDs, Date startDate, Date duration) throws Exception {
+      String[] instanceIDs, String[] algorithmIDs, String config, 
+      Date startDate, Date duration) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       
       String instances = String.join(",", instanceIDs);
@@ -35,16 +37,35 @@ public class ExperimentReporter {
           problemID,
           instances,
           algorithms,
-          "config",
+          config,
           startDate,
-          duration,
-          "this-machine"
+          null,
+          InetAddress.getLocalHost().getHostName(),
+          null
       );
 
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
       mapper.insertExperiment(experiment);
       session.commit();
     }    
+  }
+
+  public void updateEndDate(String experimentId, Date endDate) throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      
+      ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
+      mapper.updateEndDate(experimentId, endDate);
+      session.commit();
+    }    
+  }
+
+  public void updateScore(String experimentId, double bestObjVal) throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      
+      ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
+      mapper.updateScore(experimentId, bestObjVal);
+      session.commit();
+    }  
   }
   
 }

@@ -36,7 +36,7 @@ import org.seage.data.DataNode;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
 // import org.seage.hh.experimenter.runner.SparkExperimentTasksRunner;
-
+import org.seage.hh.experimenter.runner.SparkExperimentTasksRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +63,7 @@ public abstract class Experimenter {
       String experimentName, String problemID, String[] instanceIDs, String[] algorithmIDs)
       throws Exception {
     this.experimentName = experimentName;
-    this.experimentID = String.valueOf(System.currentTimeMillis());
+    this.experimentID = "";
     this.problemID = problemID;
     this.instanceIDs = instanceIDs;
     this.algorithmIDs = algorithmIDs;
@@ -72,7 +72,7 @@ public abstract class Experimenter {
     logger.info("Experimenter created, getting problem info");
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    //this.experimentTasksRunner = new SparkExperimentTasksRunner();
+    // this.experimentTasksRunner = new SparkExperimentTasksRunner();
 
     this.experimentReporter = new ExperimentReporter();
   }
@@ -85,7 +85,7 @@ public abstract class Experimenter {
    * The entry point of the experiment.
    * @throws Exception Throws exception in case of a trouble.
    */
-  public final void runExperiment() throws Exception {
+  public void runExperiment() throws Exception {
 
     // *** Check arguments ***
     // Problem instances
@@ -106,7 +106,9 @@ public abstract class Experimenter {
     }
     // ***********************
 
-    long experimentID = System.currentTimeMillis();
+    long startDate = System.currentTimeMillis();
+    long endDate = startDate;
+    this.experimentID = String.valueOf(startDate); // TODO: Change the id to UUID
     logger.info("-------------------------------------");
     logger.info("Experimenter: " + this.experimentName);
     logger.info("ExperimentID: " + experimentID);
@@ -129,6 +131,7 @@ public abstract class Experimenter {
         this.problemID,
         this.instanceIDs,
         this.algorithmIDs,
+        getExperimentConfig(),
         Date.from(Instant.now()),
         Date.from(Instant.now())
     );
@@ -147,13 +150,18 @@ public abstract class Experimenter {
         logger.warn(ex.getMessage(), ex);
       }
     }
+    endDate = System.currentTimeMillis();
     logger.info("-------------------------------------");
     logger.info("Experiment " + experimentID + " finished ...");
     logger.info(String.format("Experiment duration: %s (DD:HH:mm:ss)",
-        getDurationBreakdown(System.currentTimeMillis() - experimentID)));
+        getDurationBreakdown(endDate - startDate)));
+    
+    this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
   }
 
   protected abstract void runExperiment(ProblemInstanceInfo instanceInfo) throws Exception;
+
+  protected abstract String getExperimentConfig();
 
   protected abstract long getEstimatedTime(int instancesCount, int algorithmsCount);
 
