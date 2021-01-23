@@ -3,10 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Chsqldbonfig 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-  <typeAliases>
-     <typeAlias type="org.seage.hh.knowledgebase.db.Experiment" alias="experiment"/>
-     <typeAlias type="org.seage.hh.knowledgebase.db.ExperimentTask" alias="experimentTask"/>
-  </typeAliases>  
+  <!-- <typeAliases>
+     <typeAlias type="org.seage.hh.experimenter.Experiment" alias="experiment"/>
+     <typeAlias type="org.seage.hh.experimenter.ExperimentTask" alias="experimentTask"/>
+  </typeAliases>   -->
   <environments default="local">
     <environment id="postgres">
       <transactionManager type="JDBC"/>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.zip.ZipOutputStream;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
@@ -15,7 +16,7 @@ import org.seage.hh.experimenter.ExperimentTask;
 public class SparkExperimentTasksRunner implements IExperimentTasksRunner {
 
   @Override
-  public List<DataNode> performExperimentTasks(List<ExperimentTask> tasks) {
+  public List<DataNode> performExperimentTasks(List<ExperimentTask> tasks, Function<ExperimentTask, Void> reportFn) {
     SparkConf conf = new SparkConf().setAppName("SEAGE test app2");
     conf.setMaster("local[8]");
 

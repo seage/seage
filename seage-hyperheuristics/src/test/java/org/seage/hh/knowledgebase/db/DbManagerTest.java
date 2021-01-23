@@ -1,4 +1,4 @@
-package org.seage.hh.knowledgebase.importing.db;
+package org.seage.hh.knowledgebase.db;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.sql.Connection;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Test;
-
-import org.seage.hh.knowledgebase.db.DbManager;
 
 class DbManagerTest {
 

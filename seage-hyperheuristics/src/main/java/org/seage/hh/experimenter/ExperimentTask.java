@@ -2,7 +2,8 @@ package org.seage.hh.experimenter;
 
 import java.io.Serializable;
 import java.net.UnknownHostException;
-
+import java.util.Date;
+import java.util.UUID;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
@@ -21,11 +22,10 @@ import org.slf4j.LoggerFactory;
  * 
  * ExperimentTask # version 0.1 |_ ...
  * 
- * ExperimentTaskReport # version 0.2 |_ version (0.4) |_ experimentID |_
- * startTimeMS |_ timeoutS |_ durationS |_ machineName |_ nrOfCores |_ totalRAM
- * |_ availRAM |_ Config | |_ configID | |_ runID | |_ Problem | | |_ problemID
- * | | |_ Instance | | |_ name | |_ Algorithm | |_ algorithmID | |_ Parameters
- * |_ AlgorithmReport |_ Parameters |_ Statistics |_ Minutes
+ * ExperimentTaskReport # version 0.2 |_ version (0.4) |_ experimentID |_ startTimeMS |_ timeoutS |_
+ * durationS |_ machineName |_ nrOfCores |_ totalRAM |_ availRAM |_ Config | |_ configID | |_ runID
+ * | |_ Problem | | |_ problemID | | |_ Instance | | |_ name | |_ Algorithm | |_ algorithmID | |_
+ * Parameters |_ AlgorithmReport |_ Parameters |_ Statistics |_ Minutes
  * 
  * @author Richard Malek
  */
@@ -33,29 +33,48 @@ public class ExperimentTask implements Runnable, Serializable {
   private static final long serialVersionUID = -1342525824503090535L;
 
   protected static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
-  // protected ProblemConfig _config;
-  protected String experimentType;
+
+  protected int id;
+  protected String experimentTaskID;
   protected String experimentID;
+  protected int jobID;
+  protected int stageID;
+  protected String experimentType;
   protected String problemID;
   protected String instanceID;
   protected String algorithmID;
   protected String configID;
+  protected Date startDate;
+  protected Date endDate;
+  protected Double score;
+
   protected AlgorithmParams algorithmParams;
-  protected long runID;
   protected long timeoutS;
 
   protected DataNode experimentTaskReport;
 
-  public ExperimentTask(String experimentType, String experimentID, String problemID, String instanceID,
-      String algorithmID, AlgorithmParams algorithmParams, int runID, long timeoutS) throws Exception {
-    this.experimentType = experimentType;
+  ExperimentTask() {
+  }
+
+  /**
+   * ExperimentTask for running algorithm.
+   */
+  public ExperimentTask(String experimentID, int jobID, int stageID, String problemID,
+      String instanceID, String algorithmID, AlgorithmParams algorithmParams, long timeoutS)
+      throws Exception {
+    this.experimentTaskID = UUID.randomUUID().toString();
     this.experimentID = experimentID;
+    this.jobID = jobID;
+    this.stageID = stageID;
     this.problemID = problemID;
     this.instanceID = instanceID;
     this.algorithmID = algorithmID;
-    this.algorithmParams = algorithmParams;
     this.configID = algorithmParams.hash();
-    this.runID = runID;
+    this.startDate = new Date();
+    this.endDate = this.startDate;
+    this.score = Double.MAX_VALUE;
+
+    this.algorithmParams = algorithmParams;
     this.timeoutS = timeoutS;
 
     // _reportName = reportName;
@@ -69,7 +88,7 @@ public class ExperimentTask implements Runnable, Serializable {
 
     DataNode configNode = new DataNode("Config");
     configNode.putValue("configID", this.configID);
-    configNode.putValue("runID", this.runID);
+    // configNode.putValue("runID", this.runID);
 
     DataNode problemNode = new DataNode("Problem");
     problemNode.putValue("problemID", this.problemID);
@@ -94,9 +113,9 @@ public class ExperimentTask implements Runnable, Serializable {
 
   }
 
-  public String getReportName() throws Exception {
-    return this.configID + "-" + this.runID + ".xml";
-  }
+  // public String getReportName() throws Exception {
+  // return this.configID + "-" + this.runID + ".xml";
+  // }
 
   public String getConfigID() {
     return this.configID;
@@ -111,7 +130,8 @@ public class ExperimentTask implements Runnable, Serializable {
     _logger.info("ExperimentTask started ({})", this.configID);
     try {
       try {
-        this.experimentTaskReport.putValue("machineName", java.net.InetAddress.getLocalHost().getHostName());
+        this.experimentTaskReport.putValue("machineName",
+            java.net.InetAddress.getLocalHost().getHostName());
       } catch (UnknownHostException e) {
         _logger.warn(e.getMessage());
       }
@@ -120,7 +140,8 @@ public class ExperimentTask implements Runnable, Serializable {
       this.experimentTaskReport.putValue("availRAM", Runtime.getRuntime().maxMemory());
 
       // provider and factory
-      IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get(this.problemID);
+      IProblemProvider<Phenotype<?>> provider =
+          ProblemProvider.getProblemProviders().get(this.problemID);
       ProblemInfo pi = provider.getProblemInfo();
       IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(this.algorithmID);
 
@@ -135,7 +156,8 @@ public class ExperimentTask implements Runnable, Serializable {
 
       Phenotype<?>[] solutions = provider.generateInitialSolutions(instance,
           this.algorithmParams.getValueInt("numSolutions"), this.experimentID.hashCode());
-      writeSolutions(evaluator, this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
+      writeSolutions(evaluator,
+          this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
 
       long startTime = System.currentTimeMillis();
       algorithm.solutionsFromPhenotype(solutions);
@@ -147,7 +169,8 @@ public class ExperimentTask implements Runnable, Serializable {
       long endTime = System.currentTimeMillis();
 
       solutions = algorithm.solutionsToPhenotype();
-      writeSolutions(evaluator, this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
+      writeSolutions(evaluator,
+          this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
 
       this.experimentTaskReport.putDataNode(algorithm.getReport());
       this.experimentTaskReport.putValue("durationS", (endTime - startTime) / 1000);
@@ -174,14 +197,147 @@ public class ExperimentTask implements Runnable, Serializable {
     for (Phenotype<?> p : solutions) {
       try {
         DataNode solutionNode = new DataNode("Solution");
-        solutionNode.putValue("objValue", evaluator.evaluate(p)[0]);
+        double objValue = evaluator.evaluate(p)[0];        
+        solutionNode.putValue("objValue", objValue);
         solutionNode.putValue("solution", p.toText());
-
         dataNode.putDataNode(solutionNode);
+
+        if (this.score > objValue) {
+          this.score = objValue;
+        }
       } catch (Exception ex) {
         _logger.error("Cannot write solution", ex);
       }
     }
+  }
+
+  ////////////////////
+  public String getConfig() {
+    return this.algorithmParams.toString();
+  }
+
+  public String getStatistics() {
+    try {
+      return this.getExperimentTaskReport()
+          .getDataNode("AlgorithmReport")
+          .getDataNode("Statistics")
+          .toString();
+    } catch (Exception e) {
+      return null;
+    }
+  }
+  ////////////////////
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getExperimentTaskID() {
+    return experimentTaskID;
+  }
+
+  public void setExperimentTaskID(String experimentTaskID) {
+    this.experimentTaskID = experimentTaskID;
+  }
+
+  public String getExperimentID() {
+    return experimentID;
+  }
+
+  public void setExperimentID(String experimentID) {
+    this.experimentID = experimentID;
+  }
+
+  public int getJobID() {
+    return jobID;
+  }
+
+  public void setJobID(int jobID) {
+    this.jobID = jobID;
+  }
+
+  public int getStageID() {
+    return stageID;
+  }
+
+  public void setStageID(int stageID) {
+    this.stageID = stageID;
+  }
+
+  public String getExperimentType() {
+    return experimentType;
+  }
+
+  public void setExperimentType(String experimentType) {
+    this.experimentType = experimentType;
+  }
+
+  public String getProblemID() {
+    return problemID;
+  }
+
+  public void setProblemID(String problemID) {
+    this.problemID = problemID;
+  }
+
+  public String getInstanceID() {
+    return instanceID;
+  }
+
+  public void setInstanceID(String instanceID) {
+    this.instanceID = instanceID;
+  }
+
+  public String getAlgorithmID() {
+    return algorithmID;
+  }
+
+  public void setAlgorithmID(String algorithmID) {
+    this.algorithmID = algorithmID;
+  }
+
+  public void setConfigID(String configID) {
+    this.configID = configID;
+  }
+
+  public Date getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
+  }
+
+  public Date getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(Date endDate) {
+    this.endDate = endDate;
+  }
+
+  public Double getScore() {
+    return score;
+  }
+
+  public void setScore(Double score) {
+    this.score = score;
+  }
+
+  public long getTimeoutS() {
+    return timeoutS;
+  }
+
+  public void setTimeoutS(long timeoutS) {
+    this.timeoutS = timeoutS;
+  }
+
+  public void setExperimentTaskReport(DataNode experimentTaskReport) {
+    this.experimentTaskReport = experimentTaskReport;
   }
 
 }

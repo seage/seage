@@ -1,6 +1,7 @@
 package org.seage.hh.experimenter.runner;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTask;
@@ -11,14 +12,16 @@ public class LocalExperimentTasksRunner implements IExperimentTasksRunner {
   private static Logger logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
 
   @Override
-  public List<DataNode> performExperimentTasks(List<ExperimentTask> tasks) {
+  public List<DataNode> performExperimentTasks(
+      List<ExperimentTask> tasks, Function<ExperimentTask, Void> reportFn) {
 
     return tasks.parallelStream().map(t -> {
       try {
         t.run();
+        reportFn.apply(t);        
         return t.getExperimentTaskReport()
             .getDataNode("AlgorithmReport")
-            .getDataNode("Statistics");               
+            .getDataNode("Statistics");
       } catch (Exception e) {
         logger.error("Experiment task execution failed!", e);
       }

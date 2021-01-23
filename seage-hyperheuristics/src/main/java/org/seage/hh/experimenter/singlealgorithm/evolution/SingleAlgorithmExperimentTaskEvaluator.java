@@ -45,8 +45,15 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
       if (this.configCache.containsKey(configID)) {
         s.setObjectiveValue(new double[] { this.configCache.get(configID) });
       } else {
-        ExperimentTask task = new ExperimentTask("SingleAlgorithmEvolution", this.experimentID, this.problemID, this.instanceID,
-            this.algorithmID, algorithmParams, 1, this.timeoutS);
+        ExperimentTask task = new ExperimentTask(
+            this.experimentID,
+            1, 1,
+            this.problemID, 
+            this.instanceID,
+            this.algorithmID, 
+            algorithmParams, 
+            this.timeoutS
+        );
 
         taskMap.put(task, s);
         taskQueue.add(task);

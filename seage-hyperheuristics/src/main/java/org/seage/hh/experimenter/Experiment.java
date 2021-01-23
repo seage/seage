@@ -1,13 +1,12 @@
-package org.seage.hh.knowledgebase.db;
+package org.seage.hh.experimenter;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class Experiment {
   private int id;
  
   private String experimentID;
-  private String experimentName;
+  private String experimentType;
   private String problemID;
   private String instanceID;
   private String algorithmID;
@@ -16,35 +15,30 @@ public class Experiment {
   private String config;
   private String hostname;
   private Double score;
-  
-  public Experiment() {
-    this.id = 0;
-    this.startDate = new Date();
-    this.endDate = new Date();
 
-    this.experimentID = UUID.randomUUID().toString();
-    this.experimentName = "SomeExperimentType";
-    this.problemID = "SomeProblem";
-    this.instanceID = "SomeInstance";
-    this.algorithmID = "SomeAlgorithm";
-    this.hostname = "SomeHostname";
-    this.config = "{a: 1}";
-  }
+  /**
+   * Experiment class mainly for storing to database.
+   * This must be here because of mybatis
+   */
+  Experiment() {}
 
+  /**
+   * Experiment class mainly for storing to database.
+   */
   public Experiment(
-      String experimentID, String experimentName, 
+      String experimentID, String experimentType, 
       String problemID, String instanceID,
       String algorithmID, String config, 
-      Date startDate, Date duration, 
+      Date startDate, Date endDate, 
       String hostname, Double score) {
     this.experimentID = experimentID;
-    this.experimentName = experimentName;
+    this.experimentType = experimentType;
     this.problemID = problemID;
     this.instanceID = instanceID;
     this.algorithmID = algorithmID;
     this.config = config;
     this.startDate = startDate;
-    this.endDate = duration;
+    this.endDate = endDate;
     this.hostname = hostname;
     this.score = score;
   }
@@ -65,12 +59,12 @@ public class Experiment {
     this.experimentID = experimentID;
   }
 
-  public String getExperimentName() {
-    return experimentName;
+  public String getExperimentType() {
+    return experimentType;
   }
 
-  public void setExperimentName(String experimentName) {
-    this.experimentName = experimentName;
+  public void setExperimentType(String experimentType) {
+    this.experimentType = experimentType;
   }
 
   public String getProblemID() {
@@ -136,5 +130,6 @@ public class Experiment {
   public void setScore(Double score) {
     this.score = score;
   }
+
 
 }

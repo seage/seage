@@ -5,8 +5,8 @@ import java.sql.Connection;
 import java.util.Date;
 import org.apache.ibatis.session.SqlSession;
 import org.seage.hh.knowledgebase.db.DbManager;
-import org.seage.hh.knowledgebase.db.Experiment;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
+import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 
 public class ExperimentReporter {
   public ExperimentReporter() throws Exception {
@@ -66,6 +66,15 @@ public class ExperimentReporter {
       mapper.updateScore(experimentId, bestObjVal);
       session.commit();
     }  
+  }
+
+  public void reportExperimentTask(ExperimentTask experimentTask) throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      
+      ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
+      mapper.insertExperimentTask(experimentTask);
+      session.commit();
+    }
   }
   
 }
