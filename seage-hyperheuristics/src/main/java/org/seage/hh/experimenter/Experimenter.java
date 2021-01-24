@@ -27,6 +27,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.seage.aal.problem.ProblemInfo;
@@ -43,7 +44,7 @@ import org.slf4j.LoggerFactory;
 public abstract class Experimenter {
   protected static Logger logger = LoggerFactory.getLogger(Experimenter.class.getName());
   protected String experimentName;
-  protected String experimentID;
+  protected UUID experimentID;
   protected String problemID;
   protected String[] instanceIDs;
   protected String[] algorithmIDs;
@@ -63,7 +64,7 @@ public abstract class Experimenter {
       String experimentName, String problemID, String[] instanceIDs, String[] algorithmIDs)
       throws Exception {
     this.experimentName = experimentName;
-    this.experimentID = "";
+    this.experimentID = null;
     this.problemID = problemID;
     this.instanceIDs = instanceIDs;
     this.algorithmIDs = algorithmIDs;
@@ -108,7 +109,7 @@ public abstract class Experimenter {
 
     long startDate = System.currentTimeMillis();
     long endDate = startDate;
-    this.experimentID = String.valueOf(startDate); // TODO: Change the id to UUID
+    this.experimentID = UUID.randomUUID();
     logger.info("-------------------------------------");
     logger.info("Experimenter: " + this.experimentName);
     logger.info("ExperimentID: " + experimentID);

@@ -63,7 +63,8 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
         ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject> realOperator = new ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject>(
             limits);
 
-        SingleAlgorithmExperimentTaskEvaluator evaluator = new SingleAlgorithmExperimentTaskEvaluator(this.experimentID,
+        SingleAlgorithmExperimentTaskEvaluator evaluator = new SingleAlgorithmExperimentTaskEvaluator(
+            this.experimentID,
             problemID, instanceID, algorithmID, _algorithmTimeoutS);
         GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = new GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject>(
             realOperator, evaluator);

@@ -35,8 +35,8 @@ public class ExperimentTask implements Runnable, Serializable {
   protected static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
 
   protected int id;
-  protected String experimentTaskID;
-  protected String experimentID;
+  protected UUID experimentTaskID;
+  protected UUID experimentID;
   protected int jobID;
   protected int stageID;
   protected String experimentType;
@@ -59,10 +59,10 @@ public class ExperimentTask implements Runnable, Serializable {
   /**
    * ExperimentTask for running algorithm.
    */
-  public ExperimentTask(String experimentID, int jobID, int stageID, String problemID,
+  public ExperimentTask(UUID experimentID, int jobID, int stageID, String problemID,
       String instanceID, String algorithmID, AlgorithmParams algorithmParams, long timeoutS)
       throws Exception {
-    this.experimentTaskID = UUID.randomUUID().toString();
+    this.experimentTaskID = UUID.randomUUID();
     this.experimentID = experimentID;
     this.jobID = jobID;
     this.stageID = stageID;
@@ -236,19 +236,19 @@ public class ExperimentTask implements Runnable, Serializable {
     this.id = id;
   }
 
-  public String getExperimentTaskID() {
+  public UUID getExperimentTaskID() {
     return experimentTaskID;
   }
 
-  public void setExperimentTaskID(String experimentTaskID) {
+  public void setExperimentTaskID(UUID experimentTaskID) {
     this.experimentTaskID = experimentTaskID;
   }
 
-  public String getExperimentID() {
+  public UUID getExperimentID() {
     return experimentID;
   }
 
-  public void setExperimentID(String experimentID) {
+  public void setExperimentID(UUID experimentID) {
     this.experimentID = experimentID;
   }
 

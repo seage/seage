@@ -17,8 +17,8 @@ public interface ExperimentTaskMapper {
     public static String insertExperimentTask(ExperimentTask experimentTask) {
       String result = new SQL() {{
           INSERT_INTO("seage.experiment_tasks");
-          VALUES("experiment_task_id", "#{experimentTaskID}");
-          VALUES("experiment_id", "#{experimentID}");          
+          VALUES("experiment_task_id", "#{experimentTaskID}::uuid");
+          VALUES("experiment_id", "#{experimentID}::uuid");          
           VALUES("job_id", "#{jobID}");
           VALUES("stage_id", "#{stageID}");
           VALUES("problem_id", "#{problemID}");

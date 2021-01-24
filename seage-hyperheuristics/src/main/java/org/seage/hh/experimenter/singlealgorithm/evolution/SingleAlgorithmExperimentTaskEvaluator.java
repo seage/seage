@@ -3,6 +3,7 @@ package org.seage.hh.experimenter.singlealgorithm.evolution;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.algorithm.AlgorithmParams;
@@ -11,7 +12,7 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.thread.TaskRunner3;
 
 public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<SingleAlgorithmExperimentTaskSubject> {
-  private String experimentID;
+  private UUID experimentID;
   private String problemID;
   private String instanceID;
   private String algorithmID;
@@ -19,7 +20,7 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 
   private HashMap<String, Double> configCache;
 
-  public SingleAlgorithmExperimentTaskEvaluator(String experimentID, String problemID, String instanceID,
+  public SingleAlgorithmExperimentTaskEvaluator(UUID experimentID, String problemID, String instanceID,
       String algorithmID, long timeoutS) {
     super();
     this.experimentID = experimentID;

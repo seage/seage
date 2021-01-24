@@ -1,11 +1,12 @@
 package org.seage.hh.experimenter;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Experiment {
   private int id;
  
-  private String experimentID;
+  private UUID experimentID;
   private String experimentType;
   private String problemID;
   private String instanceID;
@@ -26,7 +27,7 @@ public class Experiment {
    * Experiment class mainly for storing to database.
    */
   public Experiment(
-      String experimentID, String experimentType, 
+      UUID experimentID, String experimentType, 
       String problemID, String instanceID,
       String algorithmID, String config, 
       Date startDate, Date endDate, 
@@ -51,11 +52,11 @@ public class Experiment {
     this.id = id;
   }
 
-  public String getExperimentID() {
+  public UUID getExperimentID() {
     return experimentID;
   }
 
-  public void setExperimentID(String experimentID) {
+  public void setExperimentID(UUID experimentID) {
     this.experimentID = experimentID;
   }
 

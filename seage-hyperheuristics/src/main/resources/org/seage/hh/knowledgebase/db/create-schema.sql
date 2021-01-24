@@ -13,8 +13,8 @@ CREATE SCHEMA IF NOT EXISTS seage;
 
 CREATE TABLE IF NOT EXISTS seage.experiments (
 	id SERIAL PRIMARY KEY,
+	experiment_id UUID NOT NULL UNIQUE,
 	experiment_type VARCHAR(100) NOT NULL,
-	experiment_id VARCHAR(100) NOT NULL UNIQUE,	
 	problem_id VARCHAR(100) NOT NULL,
 	instance_id VARCHAR(100) NOT NULL,
 	algorithm_id VARCHAR(100) NOT NULL,
@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS seage.experiments (
 
 CREATE TABLE IF NOT EXISTS seage.experiment_tasks (
 	id SERIAL PRIMARY KEY,
-	experiment_task_id VARCHAR(100) NOT NULL UNIQUE,
-	experiment_id VARCHAR(100) NOT NULL REFERENCES seage.experiments (experiment_id),
+	experiment_task_id UUID NOT NULL UNIQUE,
+	experiment_id UUID NOT NULL REFERENCES seage.experiments (experiment_id),
 	job_id INTEGER NOT NULL,
 	stage_id INTEGER NOT NULL,
 	problem_id VARCHAR(100) NOT NULL,

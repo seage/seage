@@ -2,6 +2,7 @@ package org.seage.hh.knowledgebase.db.mapper;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
@@ -20,7 +21,7 @@ public interface ExperimentMapper {
       String result = new SQL() {{
           INSERT_INTO("seage.experiments");
           VALUES("experiment_type", "#{experimentType}");
-          VALUES("experiment_id", "#{experimentID}");          
+          VALUES("experiment_id", "#{experimentID}::uuid");
           VALUES("problem_id", "#{problemID}");
           VALUES("instance_id", "#{instanceID}");
           VALUES("algorithm_id", "#{algorithmID}");
@@ -75,9 +76,9 @@ public interface ExperimentMapper {
   @Select("SELECT count(*) FROM seage.experiments")
   int getExperimentCount();
 
-  @Update("UPDATE seage.experiments SET end_date = #{endDate} WHERE experiment_id = #{experimentId}")
-  void updateEndDate(@Param("experimentId") String experimentId, @Param("endDate") Date endDate);
+  @Update("UPDATE seage.experiments SET end_date = #{endDate} WHERE experiment_id = #{experimentID}::uuid")
+  void updateEndDate(@Param("experimentID") UUID experimentID, @Param("endDate") Date endDate);
 
-  @Update("UPDATE seage.experiments SET score = #{score} WHERE experiment_id = #{experimentId}")
-  void updateScore(@Param("experimentId") String experimentId, @Param("score") double score);
+  @Update("UPDATE seage.experiments SET score = #{score} WHERE experiment_id = #{experimentID}::uuid")
+  void updateScore(@Param("experimentID") UUID experimentID, @Param("score") double score);
 }

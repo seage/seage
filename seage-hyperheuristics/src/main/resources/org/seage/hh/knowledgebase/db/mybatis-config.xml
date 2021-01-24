@@ -3,10 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Chsqldbonfig 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-  <!-- <typeAliases>
-     <typeAlias type="org.seage.hh.experimenter.Experiment" alias="experiment"/>
-     <typeAlias type="org.seage.hh.experimenter.ExperimentTask" alias="experimentTask"/>
-  </typeAliases>   -->
+  <typeHandlers>
+    <typeHandler javaType="java.util.UUID" handler="org.seage.hh.knowledgebase.db.handler.UuidTypeHandler"/>
+  </typeHandlers>
   <environments default="local">
     <environment id="postgres">
       <transactionManager type="JDBC"/>
@@ -44,7 +43,6 @@
         <property name="password" value=""/>
       </dataSource>
     </environment>
-
   </environments>
   <mappers>
     <mapper class="org.seage.hh.knowledgebase.db.mapper.ExperimentMapper" />

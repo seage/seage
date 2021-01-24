@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ public class ExperimentTest {
     DbManager.initTest();
 
     this.experiment1 = new Experiment(
-      "experimentID1", 
+      UUID.fromString("447ee273-3a5d-493a-a84c-0403690dfe0f"), 
       "experimentType1", 
       "problemID1", 
       "instanceID1", 
@@ -34,7 +35,7 @@ public class ExperimentTest {
     );
     
     this.experiment2 = new Experiment(
-      "experimentID2", 
+      UUID.fromString("3d03b29f-39d7-4993-b76d-607282be52d8"),
       "experimentType2", 
       "problemID2", 
       "instanceID2", 

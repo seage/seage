@@ -3,6 +3,7 @@ package org.seage.hh.experimenter;
 import java.net.InetAddress;
 import java.sql.Connection;
 import java.util.Date;
+import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
 import org.seage.hh.knowledgebase.db.DbManager;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
@@ -24,7 +25,7 @@ public class ExperimentReporter {
    * Puts experiment info into database.
    */
   public void createExperimentReport(
-      String experimentID, String experimentName, String problemID,
+      UUID experimentID, String experimentName, String problemID,
       String[] instanceIDs, String[] algorithmIDs, String config, 
       Date startDate, Date duration) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
@@ -50,20 +51,20 @@ public class ExperimentReporter {
     }    
   }
 
-  public void updateEndDate(String experimentId, Date endDate) throws Exception {
+  public void updateEndDate(UUID experimentID, Date endDate) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
-      mapper.updateEndDate(experimentId, endDate);
+      mapper.updateEndDate(experimentID, endDate);
       session.commit();
     }    
   }
 
-  public void updateScore(String experimentId, double bestObjVal) throws Exception {
+  public void updateScore(UUID experimentID, double bestObjVal) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
-      mapper.updateScore(experimentId, bestObjVal);
+      mapper.updateScore(experimentID, bestObjVal);
       session.commit();
     }  
   }
