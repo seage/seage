@@ -32,7 +32,7 @@ sh target/run-test.sh experiment-single-random -p SAT -a TabuSearch -i uf20-01 -
 ```
 ## Inspect results
 
-When running without no database uri specified, the result are stored in the local H2 database. You can inspect results as follows:
+When running with no database uri specified, the results are stored in the local H2 database. You can inspect the results as follows:
 ```
 java -jar target/bin/lib/h2-*.jar
 ```
