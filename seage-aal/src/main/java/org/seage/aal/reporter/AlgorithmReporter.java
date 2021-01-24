@@ -57,6 +57,7 @@ public class AlgorithmReporter<P extends Phenotype<?>> {
     newSol.putValue("iterNumber", iterNumber);
     newSol.putValue("objVal", _evaluator.evaluate(solution)[0]);
     newSol.putValue("solution", solution.toText());
+    newSol.putValue("hash", solution.computeHash());
 
     _report.getDataNode("Log").putDataNode(newSol);
   }

@@ -198,7 +198,7 @@ public class ExperimentTask implements Runnable, Serializable {
       try {
         DataNode solutionNode = new DataNode("Solution");
         double objValue = evaluator.evaluate(p)[0];        
-        solutionNode.putValue("objValue", objValue);
+        solutionNode.putValue("objVal", objValue);
         solutionNode.putValue("solution", p.toText());
         solutionNode.putValue("hash", p.computeHash());
         dataNode.putDataNode(solutionNode);
