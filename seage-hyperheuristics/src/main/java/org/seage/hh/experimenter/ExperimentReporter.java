@@ -16,13 +16,6 @@ public class ExperimentReporter {
     DbManager.init();
   }
 
-  // public void createExperimentReport() throws Exception {
-  //   try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
-  //     ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
-  //     mapper.insertExperiment(experiment)
-  //   }
-  // }
-
   /**
    * Puts experiment info into database.
    */
@@ -99,9 +92,9 @@ public class ExperimentReporter {
     SolutionMapper mapper = session.getMapper(SolutionMapper.class);
     for (DataNode dn : solutions.getDataNodes(elemName)) {
       Long iterNumber = 0L;
-      if (type == "final") {
+      if (type.equals("final")) {
         iterNumber = -1L;
-      } else if (type == "new") {
+      } else if (type.equals("new")) {
         iterNumber = dn.getValueLong("iterNumber");
       }
       Solution s = new Solution(
