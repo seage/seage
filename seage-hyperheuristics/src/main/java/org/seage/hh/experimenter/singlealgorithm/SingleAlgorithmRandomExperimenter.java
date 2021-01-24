@@ -81,8 +81,8 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter {
     try {
       this.experimentReporter.reportExperimentTask(experimentTask);
     } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      logger.error(String.format("Failed to report the experiment task: %s", 
+          experimentTask.getExperimentTaskID().toString()), e);
     }
     return null;
   }
