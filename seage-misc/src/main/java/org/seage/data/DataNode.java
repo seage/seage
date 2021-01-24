@@ -301,7 +301,7 @@ public class DataNode implements Serializable, Cloneable {
   }
 
   public String hash() throws Exception {
-    return FileHelper.md5fromString(toString());
+    return HashHelper.hashFromString(toString());
   }
 
   @Override

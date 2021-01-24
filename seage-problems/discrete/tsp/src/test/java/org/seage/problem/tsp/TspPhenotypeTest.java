@@ -37,6 +37,10 @@ public class TspPhenotypeTest {
 
     TspPhenotype p2 = new TspPhenotype(new Integer[tour.OptimalTour.length]);
     p2.fromText(t1);
+    
+    String t2 = p2.toText();
+    assertEquals(t1, t2);
+
     assertNotNull(p2.getSolution()[0]);
     double[] v2 = evaluator.evaluate(p2);
 

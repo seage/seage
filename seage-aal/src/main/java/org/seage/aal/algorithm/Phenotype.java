@@ -1,19 +1,25 @@
 package org.seage.aal.algorithm;
 
+import org.seage.data.HashHelper;
+
 public abstract class Phenotype<T> {
-  protected T _solution;
+  protected T solution;
 
   public Phenotype(T solution) {
-    _solution = solution;
+    this.solution = solution;
   }
 
   public T getSolution() {
-    return _solution;
+    return this.solution;
   }
 
   public abstract String toText();
 
   public abstract void fromText(String text);
+
+  public String computeHash() throws Exception {
+    return HashHelper.hashFromString(toText());    
+  }
 
   // public abstract boolean isSame(Phenotype<T> p);
 

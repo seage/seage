@@ -200,6 +200,7 @@ public class ExperimentTask implements Runnable, Serializable {
         double objValue = evaluator.evaluate(p)[0];        
         solutionNode.putValue("objValue", objValue);
         solutionNode.putValue("solution", p.toText());
+        solutionNode.putValue("hash", p.computeHash());
         dataNode.putDataNode(solutionNode);
 
         if (this.score > objValue) {

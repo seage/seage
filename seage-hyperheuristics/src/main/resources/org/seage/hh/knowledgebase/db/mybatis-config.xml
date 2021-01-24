@@ -47,5 +47,6 @@
   <mappers>
     <mapper class="org.seage.hh.knowledgebase.db.mapper.ExperimentMapper" />
     <mapper class="org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper" />
+    <mapper class="org.seage.hh.knowledgebase.db.mapper.SolutionMapper" />
   </mappers>
 </configuration>

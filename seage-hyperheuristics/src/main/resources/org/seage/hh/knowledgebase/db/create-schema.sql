@@ -1,13 +1,6 @@
 -- DROP TABLE IF EXISTS experiments;
 -- DROP TABLE IF EXISTS experiment_tasks;
 
--- CREATE TABLE IF NOT EXISTS experiments (
--- 	id SERIAL PRIMARY KEY,
--- 	hostname VARCHAR(150),
--- 	experimentType VARCHAR(100),
--- 	experimentDate TIMESTAMP
--- );
-
 CREATE SCHEMA IF NOT EXISTS seage;
 -- GRANT ALL ON SCHEMA seage TO SA;
 
@@ -39,16 +32,14 @@ CREATE TABLE IF NOT EXISTS seage.experiment_tasks (
 	end_date TIMESTAMP,	
 	score DOUBLE PRECISION,
 	config TEXT,
-	-- solutions_initial TEXT,
-	-- solutions_log TEXT,
-	-- solutions_final TEXT,
 	statistics TEXT
 );
 
--- CREATE TABLE IF NOT EXISTS seage.solutions (
--- 	id SERIAL PRIMARY KEY,
--- 	experiment_task_id VARCHAR(100) REFERENCES seage.experiment_tasks (experiment_task_id),
--- 	solution TEXT,
--- 	objective_value DOUBLE PRECISION,
--- 	iteration_number BIGINT
--- );
+CREATE TABLE IF NOT EXISTS seage.solutions (
+	id SERIAL PRIMARY KEY,
+	experiment_task_id UUID REFERENCES seage.experiment_tasks (experiment_task_id),
+	hash VARCHAR(1000),
+	solution TEXT,
+	objective_value DOUBLE PRECISION,
+	iteration_number BIGINT
+);

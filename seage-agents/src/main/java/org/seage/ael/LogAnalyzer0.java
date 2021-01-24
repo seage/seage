@@ -116,7 +116,7 @@ public class LogAnalyzer0
             String config = _outputPath+"/"+ s + "/config.xml";
             if(new File(config).exists())
             {
-                String hash = FileHelper.md5fromFile(config);
+                String hash = FileHelper.hashFromFile(config);
                 ArrayList<String> outputPathList = outputDataPaths.get(hash);
                 if(outputPathList == null)
                 {

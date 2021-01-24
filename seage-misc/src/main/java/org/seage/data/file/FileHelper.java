@@ -35,47 +35,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import org.seage.data.HashHelper;
 
 /**
  *
  * @author Richard Malek
  */
 public class FileHelper {
-
-  /**
-   * This function is passed a File name and it returns a md5 hash of this file.
-   * 
-   * @param FileToMd5
-   * @return The md5 string
-   */
-  public static String md5fromFile(String path) throws Exception {
-    return md5fromFile(new File(path));
-  }
-
-  public static String md5fromFile(File file) throws Exception {
-    return md5(new FileInputStream(file));
-  }
-
-  public static String md5fromString(String stringToMd5) throws Exception {
-    return md5(new ByteArrayInputStream(stringToMd5.getBytes()));
-  }
-
-  private static String md5(InputStream is) throws Exception {
-    MessageDigest digest = MessageDigest.getInstance("MD5");
-    byte[] buffer = new byte[8192];
-    int read = 0;
-
-    while ((read = is.read(buffer)) > 0) {
-      digest.update(buffer, 0, read);
-    }
-    byte[] md5sum = digest.digest();
-    BigInteger bigInt = new BigInteger(1, md5sum);
-    String output = bigInt.toString(16);
-
-    is.close();
-
-    return output;
-  }
 
   public static void copyfile(String srFile, String dtFile) throws Exception {
     File f1 = new File(srFile);
