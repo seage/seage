@@ -8,7 +8,7 @@ services:
       - POSTGRES_PASSWORD=seage
     restart: always
     volumes:
-      - seage-data:/var/lib/postgresql/data
+      - volume_database:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
@@ -26,8 +26,8 @@ services:
     build:
       context: .settings
       dockerfile: pgadmin.Dockerfile
-    # volumes:
-    #   - seage-data:/var/lib/pgadmin
+    volumes:
+      - volume_pgadmin:/var/lib/pgadmin
     environment:
       - PGADMIN_DEFAULT_EMAIL=seage@seage.org
       - PGADMIN_DEFAULT_PASSWORD=seage
@@ -38,4 +38,5 @@ services:
     restart: always
 
 volumes:
-  seage-data: {}
+  volume_database: {}
+  volume_pgadmin: {}

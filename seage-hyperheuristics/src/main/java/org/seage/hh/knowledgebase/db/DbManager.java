@@ -56,8 +56,8 @@ public class DbManager {
 
     Properties props = new Properties();
     props.setProperty("url", dbUrl);
-    props.setProperty("username", Optional.ofNullable(System.getenv("DB_USER")).orElse("test"));
-    props.setProperty("password", Optional.ofNullable(System.getenv("DB_PASSWORD")).orElse("test"));
+    props.setProperty("username", Optional.ofNullable(System.getenv("DB_USER")).orElse("seage"));
+    props.setProperty("password", Optional.ofNullable(System.getenv("DB_PASSWORD")).orElse("seage"));
 
     if (testMode) {
       environment = "test";
