@@ -1,0 +1,41 @@
+version: "3"
+services:
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_DB=seage
+      - POSTGRES_USER=seage
+      - POSTGRES_PASSWORD=seage
+    restart: always
+    volumes:
+      - seage-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  seage:
+    build: .
+    environment:
+      - DB_USER=seage
+      - DB_PASSWORD=seage
+      - DB_URL=jdbc:postgresql://database/seage
+    depends_on:
+      - database
+    restart: always
+
+  pgadmin:
+    build:
+      context: .settings
+      dockerfile: pgadmin.Dockerfile
+    # volumes:
+    #   - seage-data:/var/lib/pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=seage@seage.org
+      - PGADMIN_DEFAULT_PASSWORD=seage
+    ports:
+      - 8090:80
+    depends_on:
+      - database
+    restart: always
+
+volumes:
+  seage-data: {}

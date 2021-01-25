@@ -6,3 +6,5 @@ COPY . .
 
 RUN /bin/sh ./target/build.sh
 
+CMD tail -f /dev/null
+
