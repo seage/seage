@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
   <typeHandlers>
-    <typeHandler javaType="java.util.UUID" handler="org.seage.hh.knowledgebase.db.handler.UuidTypeHandler"/>
+    <typeHandler javaType="java.util.UUID" handler="org.seage.hh.knowledgebase.db.type.UuidTypeHandler"/>
   </typeHandlers>
   <environments default="local">
     <environment id="postgres">

@@ -23,7 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
-package org.seage.hh.experimenter.config;
+package org.seage.hh.experimenter.configurator;
 
 import java.util.ArrayList;
 import java.util.List;

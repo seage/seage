@@ -12,7 +12,7 @@
  * the License.
  */
 
-package org.seage.hh.knowledgebase.db.handler;
+package org.seage.hh.knowledgebase.db.type;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;

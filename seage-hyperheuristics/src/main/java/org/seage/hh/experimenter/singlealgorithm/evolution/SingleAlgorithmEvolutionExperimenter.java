@@ -8,7 +8,7 @@ import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.Experimenter;
-import org.seage.hh.experimenter.config.FeedbackConfigurator;
+import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator.Limit;

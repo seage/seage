@@ -8,8 +8,8 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.Experimenter;
-import org.seage.hh.experimenter.config.Configurator;
-import org.seage.hh.experimenter.config.RandomConfigurator;
+import org.seage.hh.experimenter.configurator.Configurator;
+import org.seage.hh.experimenter.configurator.RandomConfigurator;
 
 /**
  * Experimenter running producing random configs according to the metadata.

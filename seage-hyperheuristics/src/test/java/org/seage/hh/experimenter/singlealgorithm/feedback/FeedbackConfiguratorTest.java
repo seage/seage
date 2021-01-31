@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
-import org.seage.hh.experimenter.config.FeedbackConfigurator;
+import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 
 public class FeedbackConfiguratorTest {
 

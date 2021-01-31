@@ -20,7 +20,7 @@
  * Contributors: Richard Malek - Created the class Jan Zmatlik - Initial implementation
  */
 
-package org.seage.hh.experimenter.config;
+package org.seage.hh.experimenter.configurator;
 
 import java.util.ArrayList;
 import java.util.List;

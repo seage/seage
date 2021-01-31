@@ -24,7 +24,7 @@
  *     - Initial implementation
  */
 
-package org.seage.hh.experimenter.config;
+package org.seage.hh.experimenter.configurator;
 
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
@@ -40,10 +40,12 @@ import org.slf4j.LoggerFactory;
 public abstract class Configurator {
   protected static Logger _logger = LoggerFactory.getLogger(Configurator.class.getName());
 
-  public abstract ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID,
-      int numConfigs) throws Exception;
+  public abstract ProblemConfig[] prepareConfigs(
+      ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs) 
+      throws Exception;
 
-  protected ProblemConfig createProblemConfig(ProblemInfo problemInfo, String instanceID, String algorithmID)
+  protected ProblemConfig createProblemConfig(
+      ProblemInfo problemInfo, String instanceID, String algorithmID)
       throws Exception {
     ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
     // Config
@@ -70,8 +72,9 @@ public abstract class Configurator {
     config.getDataNode("Problem").getDataNode("Instance").putValue("type", instanceInfo.getValue("type"));
     config.getDataNode("Problem").getDataNode("Instance").putValue("path", instanceInfo.getValue("path"));
 
-    if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null)
+    if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null) {
       throw new Exception("Unknown algorithm id: " + algorithmID);
+    }
 
     return config;
   }

@@ -1,6 +1,6 @@
 package org.seage.hh.experimenter.singlealgorithm;
 
-import org.seage.hh.experimenter.config.FeedbackConfigurator;
+import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 
 public class SingleAlgorithmFeedbackExperimenter extends SingleAlgorithmRandomExperimenter {
 
