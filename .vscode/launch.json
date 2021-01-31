@@ -15,7 +15,7 @@
     },
     {
       "type": "java",
-      "name": "Debug Launcher (experimenter)",
+      "name": "Debug Launcher (experimenter, h2)",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
@@ -33,7 +33,28 @@
         "-n",
         "1",
       ],
-      "env": {"DB_URL": "jdbc:postgresql://snoopy.lan/seage"}
+    },
+    {
+      "type": "java",
+      "name": "Debug Launcher (experimenter, postgres)",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}/target",
+      "args": [
+        "experiment-single-random",
+        "-p",
+        "TSP",
+        "-a",
+        "GeneticAlgorithm",
+        "-i",
+        "berlin52",
+        "-t",
+        "1",
+        "-n",
+        "1",
+      ],
+      "env": {"DB_URL": "jdbc:postgresql://localhost/seage"}
     },
     {
       "type": "java",
