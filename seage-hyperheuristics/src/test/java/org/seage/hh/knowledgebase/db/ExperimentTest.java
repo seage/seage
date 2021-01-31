@@ -67,9 +67,9 @@ public class ExperimentTest {
 
       mapper.insertExperiment(this.experiment1);
       session.commit();
-      Experiment experiment = mapper.getExperiment(this.experiment1.getId());      
+      Experiment experiment = mapper.getExperiment(this.experiment1.getExperimentID());      
       assertNotNull(experiment);
-      assertEquals(this.experiment1.getId(), experiment.getId());
+      assertEquals(this.experiment1.getExperimentID(), experiment.getExperimentID());
     }
   }
 
@@ -83,14 +83,14 @@ public class ExperimentTest {
       mapper.insertExperiment(this.experiment2);
       session.commit();
       // Experiment got id
-      assertNotEquals(0, this.experiment1.getId());
+      assertNotEquals(0, this.experiment1.getExperimentID());
       // Exactly two experiments inserted
       int count = mapper.getExperimentCount();      
       assertEquals(2, count);
       // Expected experiments inserted
       List<Experiment> experiments = mapper.getExperiments();
       assertEquals(2, experiments.size());
-      assertEquals(this.experiment1.getId(), experiments.get(0).getId());
+      assertEquals(this.experiment1.getExperimentID(), experiments.get(0).getExperimentID());
       assertEquals(this.experiment1.getExperimentType(), experiments.get(0).getExperimentType());
       assertEquals(this.experiment1.getExperimentID(), experiments.get(0).getExperimentID());
       assertEquals(this.experiment1.getProblemID(), experiments.get(0).getProblemID());

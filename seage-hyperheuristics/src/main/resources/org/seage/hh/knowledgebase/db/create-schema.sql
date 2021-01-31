@@ -3,8 +3,7 @@
 CREATE SCHEMA IF NOT EXISTS seage;
 -- GRANT ALL ON SCHEMA seage TO SA;
 CREATE TABLE IF NOT EXISTS seage.experiments (
-	id SERIAL PRIMARY KEY,
-	experiment_id UUID NOT NULL UNIQUE,
+	experiment_id UUID NOT NULL PRIMARY KEY,
 	experiment_type VARCHAR(100) NOT NULL,
 	problem_id VARCHAR(100) NOT NULL,
 	instance_id VARCHAR(100) NOT NULL,
@@ -16,8 +15,7 @@ CREATE TABLE IF NOT EXISTS seage.experiments (
 	score DOUBLE PRECISION
 );
 CREATE TABLE IF NOT EXISTS seage.experiment_tasks (
-	id SERIAL PRIMARY KEY,
-	experiment_task_id UUID NOT NULL UNIQUE,
+	experiment_task_id UUID NOT NULL PRIMARY KEY,
 	experiment_id UUID NOT NULL REFERENCES seage.experiments (experiment_id) ON DELETE CASCADE,
 	job_id INTEGER NOT NULL,
 	stage_id INTEGER NOT NULL,
@@ -32,7 +30,7 @@ CREATE TABLE IF NOT EXISTS seage.experiment_tasks (
 	statistics TEXT
 );
 CREATE TABLE IF NOT EXISTS seage.solutions (
-	id SERIAL PRIMARY KEY,
+	solution_id PRIMARY KEY,
 	experiment_task_id UUID REFERENCES seage.experiment_tasks (experiment_task_id) ON DELETE CASCADE,
 	hash VARCHAR(1000),
 	solution TEXT,
@@ -42,7 +40,6 @@ CREATE TABLE IF NOT EXISTS seage.solutions (
 
 CREATE OR REPLACE VIEW seage.experiments_overview AS
 SELECT e.experiment_id,
-	min(e.id) AS id,
 	min(e.problem_id) AS problem_id,
 	min(e.algorithm_id) AS algorithm_id,
 	min(e.instance_id) AS instance_id,
@@ -54,4 +51,4 @@ FROM seage.solutions s
 	LEFT JOIN seage.experiment_tasks et ON s.experiment_task_id = et.experiment_task_id
 	LEFT JOIN seage.experiments e ON e.experiment_id = et.experiment_id
 GROUP BY e.experiment_id
-ORDER BY id;
+ORDER BY e.start_date;

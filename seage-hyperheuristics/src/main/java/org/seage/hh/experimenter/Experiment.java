@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Experiment {
-  private int id;
- 
   private UUID experimentID;
   private String experimentType;
   private String problemID;
@@ -42,14 +40,6 @@ public class Experiment {
     this.endDate = endDate;
     this.hostname = hostname;
     this.score = score;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
   }
 
   public UUID getExperimentID() {

@@ -49,13 +49,12 @@ public interface ExperimentMapper {
   }
 
   @InsertProvider(type = ExperimentSqlProvider.class, method = "insertExperiment")
-  @Options(useGeneratedKeys = true, keyProperty = "id")
+  // @Options(useGeneratedKeys = true, keyProperty = "id")
   int insertExperiment(Experiment experiment);
 
 
-  @Select("SELECT * FROM seage.experiments WHERE id = #{id}")
+  @Select("SELECT * FROM seage.experiments WHERE experiment_id = #{experimentId}")
   @Results(id = "experimentResult", value = {
-      @Result(property = "id", column = "id", id = true),
       @Result(property = "experimentType", column = "experiment_type"),
       @Result(property = "experimentID", column = "experiment_id"),
       @Result(property = "problemID", column = "problem_id"),
@@ -67,7 +66,7 @@ public interface ExperimentMapper {
       @Result(property = "hostname", column = "hostname"),
       @Result(property = "score", column = "score")
   })
-  Experiment getExperiment(int id);
+  Experiment getExperiment(UUID experimentId);
 
   @Select("SELECT * FROM seage.experiments")
   @ResultMap("experimentResult")
