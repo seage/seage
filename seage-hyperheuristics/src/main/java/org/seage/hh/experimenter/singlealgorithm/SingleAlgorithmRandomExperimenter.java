@@ -2,7 +2,7 @@ package org.seage.hh.experimenter.singlealgorithm;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
@@ -54,7 +54,7 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter {
           // taskQueue.add(new ExperimentTask(this.experimentName, this.experimentID,
           // this.problemID, instanceID, algorithmID,
           // config.getAlgorithmParams(), runID, this.timeoutS));
-          taskQueue.add(new ExperimentTask(this.experimentID, 1, 1, this.problemID, instanceID,
+          taskQueue.add(new ExperimentTask(UUID.randomUUID(), this.experimentID, 1, 1, this.problemID, instanceID,
               algorithmID, config.getAlgorithmParams(), this.timeoutS));
         }
       }

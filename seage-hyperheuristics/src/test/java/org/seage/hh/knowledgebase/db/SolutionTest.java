@@ -38,6 +38,7 @@ public class SolutionTest {
       1.0
     );
     this.experimentTask1 = new ExperimentTask(
+      UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"),
       1, 1,
       "problemID1", 

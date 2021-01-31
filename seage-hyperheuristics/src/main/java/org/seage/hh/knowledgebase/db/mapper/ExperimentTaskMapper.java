@@ -1,5 +1,6 @@
 package org.seage.hh.knowledgebase.db.mapper;
 
+import java.util.UUID;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Result;
@@ -37,13 +38,13 @@ public interface ExperimentTaskMapper {
   }
   
   @InsertProvider(type = ExperimentTaskSqlProvider.class, method = "insertExperimentTask")
-  @Options(useGeneratedKeys = true, keyProperty = "id")
+  // @Options(useGeneratedKeys = true, keyProperty = "id")
   int insertExperimentTask(ExperimentTask experimentTask);
 
-  @Select("SELECT * FROM seage.experiment_tasks WHERE id = #{id}")
+  @Select("SELECT * FROM seage.experiment_tasks WHERE experiment_task_id = #{experimentTaskID}")
   @Results(id = "experimentResult", value = {
-      @Result(property = "id", column = "id", id = true),
-      @Result(property = "experimentType", column = "experiment_task_id"),
+      @Result(property = "experimentTaskID", column = "experiment_task_id"),
+      @Result(property = "experimentType", column = "experiment_type"),
       @Result(property = "experimentID", column = "experiment_id"),
       @Result(property = "jobID", column = "job_id"),
       @Result(property = "stageID", column = "stage_id"),
@@ -57,5 +58,5 @@ public interface ExperimentTaskMapper {
       // @Result(property = "config", column = "config"),
       // @Result(property = "statistics", column = "statistics")
   })
-  ExperimentTask getExperimentTask(int id);
+  ExperimentTask getExperimentTask(UUID experimentTaskID);
 }

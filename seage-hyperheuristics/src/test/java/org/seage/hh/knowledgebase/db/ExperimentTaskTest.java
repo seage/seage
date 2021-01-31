@@ -36,6 +36,7 @@ public class ExperimentTaskTest {
     );
 
     this.experimentTask1 = new ExperimentTask(
+      UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"),
       1, 1,
       "problemID1", 
@@ -46,6 +47,7 @@ public class ExperimentTaskTest {
     );
     
     this.experimentTask2 = new ExperimentTask(
+      UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"), 
       2, 2,
       "problemID2", 
@@ -67,9 +69,9 @@ public class ExperimentTaskTest {
 
       mapper.insertExperimentTask(this.experimentTask1);
       session.commit();
-      ExperimentTask experimentTask = mapper.getExperimentTask(this.experimentTask1.getId());      
+      ExperimentTask experimentTask = mapper.getExperimentTask(this.experimentTask1.getExperimentTaskID());      
       assertNotNull(experimentTask);
-      assertEquals(this.experimentTask1.getId(), experimentTask.getId());
+      assertEquals(this.experimentTask1.getExperimentTaskID(), experimentTask.getExperimentTaskID());
     }
   }
 }

@@ -47,6 +47,7 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
         s.setObjectiveValue(new double[] { this.configCache.get(configID) });
       } else {
         ExperimentTask task = new ExperimentTask(
+            UUID.randomUUID(),
             this.experimentID,
             1, 1,
             this.problemID, 
