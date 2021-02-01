@@ -3,7 +3,7 @@ package org.seage.hh.experimenter;
 import java.util.UUID;
 
 public class Solution {
-  private int id;
+  private UUID solutionID;
  
   private UUID experimentTaskID;
   private String hash;
@@ -21,9 +21,11 @@ public class Solution {
    * Solution class mainly for storing to database.
    */
   public Solution(
+      UUID solutionID,
       UUID experimentTaskID, String hash, 
       String solution, Double objectiveValue,
       Long iterationNumber) {
+    this.solutionID = solutionID;
     this.experimentTaskID = experimentTaskID;
     this.hash = hash;
     this.solution = solution;
@@ -31,12 +33,12 @@ public class Solution {
     this.iterationNumber = iterationNumber;
   }
 
-  public int getId() {
-    return id;
+  public UUID getSolutionID() {
+    return solutionID;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public void setSolutionID(UUID solutionID) {
+    this.solutionID = solutionID;
   }
 
   public UUID getExperimentTaskID() {

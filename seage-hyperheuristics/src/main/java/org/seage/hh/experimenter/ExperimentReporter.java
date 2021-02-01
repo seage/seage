@@ -1,7 +1,6 @@
 package org.seage.hh.experimenter;
 
 import java.net.InetAddress;
-import java.sql.Connection;
 import java.util.Date;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
@@ -98,6 +97,7 @@ public class ExperimentReporter {
         iterNumber = dn.getValueLong("iterNumber");
       }
       Solution s = new Solution(
+          UUID.randomUUID(),
           experimentTaskID,
           dn.getValueStr("hash"),
           dn.getValueStr("solution"),

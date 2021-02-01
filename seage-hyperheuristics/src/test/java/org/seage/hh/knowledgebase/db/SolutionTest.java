@@ -49,6 +49,7 @@ public class SolutionTest {
     );
     
     this.solution1 = new Solution(
+      UUID.randomUUID(),
       experimentTask1.getExperimentTaskID(), 
       "123456789", 
       "[1, 2, 3, 4, 5, 6, 7, 8, 9]", 
@@ -72,9 +73,9 @@ public class SolutionTest {
       mapper.insertSolution(this.solution1);
       session.commit();
       
-      Solution solution = mapper.getSolution(this.solution1.getId());      
+      Solution solution = mapper.getSolution(this.solution1.getSolutionID());      
       assertNotNull(solution);
-      assertEquals(this.solution1.getId(), solution.getId());
+      assertEquals(this.solution1.getSolutionID(), solution.getSolutionID());
     }
   }
 }

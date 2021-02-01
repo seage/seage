@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS seage.experiment_tasks (
 	statistics TEXT
 );
 CREATE TABLE IF NOT EXISTS seage.solutions (
-	solution_id PRIMARY KEY,
+	solution_id UUID PRIMARY KEY,
 	experiment_task_id UUID REFERENCES seage.experiment_tasks (experiment_task_id) ON DELETE CASCADE,
 	hash VARCHAR(1000),
 	solution TEXT,
@@ -39,13 +39,15 @@ CREATE TABLE IF NOT EXISTS seage.solutions (
 );
 
 CREATE OR REPLACE VIEW seage.experiments_overview AS
-SELECT e.experiment_id,
+SELECT 
+	min(e.start_date),
+	e.experiment_id,
 	min(e.problem_id) AS problem_id,
 	min(e.algorithm_id) AS algorithm_id,
 	min(e.instance_id) AS instance_id,
 	min(e.config) AS config,
-	count(DISTINCT et.id) AS experiment_tasks_count,
-	count(s.id) AS solutions_count,
+	count(DISTINCT et.experiment_task_id) AS experiment_tasks_count,
+	count(s.solution_id) AS solutions_count,
 	min(e.score) AS score
 FROM seage.solutions s
 	LEFT JOIN seage.experiment_tasks et ON s.experiment_task_id = et.experiment_task_id
