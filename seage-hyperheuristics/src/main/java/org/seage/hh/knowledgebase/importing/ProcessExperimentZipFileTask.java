@@ -7,7 +7,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -32,7 +32,10 @@ public class ProcessExperimentZipFileTask implements Runnable {
       zf = new ZipFile(_zipFile);
       _logger.info(Thread.currentThread().getName() + " - importing file: " + _zipFile.getName());
 
-      DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+      DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
+      df.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+      df.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+      DocumentBuilder builder = df.newDocumentBuilder();
       boolean isProcessed = false;
       for (Enumeration<? extends ZipEntry> e = zf.entries(); e.hasMoreElements();) {
         ZipEntry ze = e.nextElement();

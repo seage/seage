@@ -1,20 +1,18 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -63,9 +61,14 @@ import org.w3c.dom.NodeList;
  * @author Richard Malek
  */
 public class XmlHelper {
+  /**
+   * Parse xml from string and create DataNode.
+   */
   public static DataNode readXml(String xml) throws Exception {
     InputStream is = new ByteArrayInputStream(xml.getBytes());
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
     factory.setXIncludeAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
 
@@ -84,10 +87,13 @@ public class XmlHelper {
 
   public static DataNode readXml(InputStream is, InputStream schema) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    if (schema != null)
+    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+    if (schema != null) {
       factory.setNamespaceAware(true);
-    else
+    } else {
       factory.setNamespaceAware(false);
+    }
 
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.parse(is);
@@ -95,6 +101,8 @@ public class XmlHelper {
     if (schema != null) {
       // get validation driver:
       SchemaFactory factory2 = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+      factory2.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+      factory2.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
       // create schema by reading it from an XSD file:
       Schema schemaObj = factory2.newSchema(new StreamSource(schema));
       Validator validator = schemaObj.newValidator();
@@ -112,8 +120,9 @@ public class XmlHelper {
     NamedNodeMap atributes = xmlElem.getAttributes();
     for (int i = 0; i < atributes.getLength(); i++) {
       String attName = atributes.item(i).getNodeName();
-      if (attName.startsWith("xmlns") || attName.contains(":"))
+      if (attName.startsWith("xmlns") || attName.contains(":")) {
         continue;
+      }
       result.putValue(attName, atributes.item(i).getNodeValue());
     }
 
@@ -144,9 +153,10 @@ public class XmlHelper {
   }
 
   public static synchronized void writeXml(DataNode dataSet, OutputStream outputStream) throws Exception {
-    TransformerFactory tFactory = TransformerFactory.newInstance();
-    Transformer transformer = tFactory.newTransformer();
-    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+    Transformer transformer = transformerFactory.newTransformer();
     transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
     DOMSource source = new DOMSource(dataSet.toXml());
@@ -159,8 +169,9 @@ public class XmlHelper {
     StringWriter writer = new StringWriter();
     StreamResult result = new StreamResult(writer);
     TransformerFactory tf = TransformerFactory.newInstance();
+    tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
     Transformer transformer = tf.newTransformer();
-    transformer.transform(domSource, result);
     return writer.toString();
   }
 
@@ -172,7 +183,8 @@ public class XmlHelper {
 
     // create a SchemaFactory capable of understanding WXS schemas
     SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-
+    factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+    factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     // load a WXS schema, represented by a Schema instance
     Source schemaFile = new StreamSource(new File(schemaPath));
     Schema schema = factory.newSchema(schemaFile);
@@ -195,12 +207,12 @@ public class XmlHelper {
       XPathStr = xPath;
       Nodes = new ArrayList<String>();
       String[] split = xPath.split("/");
-      for (int i = 2; i < split.length; i++) // i=2 -> skip '/ExperimentTask'
-      {
-        if (split[i].startsWith("@"))
+      for (int i = 2; i < split.length; i++) {
+        if (split[i].startsWith("@")) {
           Nodes.add(split[i].substring(1));
-        else
+        } else {
           Nodes.add(split[i]);
+        }
 
       }
     }
@@ -212,9 +224,9 @@ public class XmlHelper {
   }
 
   public static String getValueFromDocument(Element elem, XPath xPath, int level) {
-    if (level + 1 == xPath.Nodes.size())
+    if (level + 1 == xPath.Nodes.size()) {
       return elem.getAttribute(xPath.Nodes.get(level));
-    else {
+    } else {
       String s = xPath.Nodes.get(level);
       return getValueFromDocument((Element) elem.getElementsByTagName(s).item(0), xPath, level + 1);
     }
