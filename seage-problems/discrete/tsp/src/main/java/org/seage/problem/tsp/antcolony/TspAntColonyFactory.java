@@ -47,26 +47,26 @@ import org.seage.problem.tsp.antcolony.TspGraph;
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
-public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant<TspAntBrain>> {
+public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant> {
   @Override
   public Class<?> getAlgorithmClass() {
     return AntColonyAdapter.class;
   }
 
   @Override
-  public IAlgorithmAdapter<TspPhenotype, Ant<TspAntBrain>> createAlgorithm(ProblemInstance instance,
+  public IAlgorithmAdapter<TspPhenotype, Ant> createAlgorithm(ProblemInstance instance,
       IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
     City[] cities = ((TspProblemInstance) instance).getCities();
     TspGraph graph = new TspGraph(cities);
     TspAntBrain brain = new TspAntBrain(graph);
-    IAlgorithmAdapter<TspPhenotype, Ant<TspAntBrain>> algorithm = 
-        new AntColonyAdapter<TspPhenotype, Ant<TspAntBrain>, TspAntBrain>(
-        brain, graph, phenotypeEvaluator) {
+    IAlgorithmAdapter<TspPhenotype, Ant> algorithm = 
+        new AntColonyAdapter<TspPhenotype, Ant>(
+        graph, phenotypeEvaluator) {
       @Override
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
         _ants = new Ant[source.length];
         for (int i = 0; i < _ants.length; i++) {
-          _ants[i] = new Ant<TspAntBrain>(Arrays.asList(source[i].getSolution()));
+          _ants[i] = new Ant(brain, graph, Arrays.asList(source[i].getSolution()));
         }
       }
 
@@ -80,7 +80,7 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant<
       }
 
       @Override
-      public TspPhenotype solutionToPhenotype(Ant<TspAntBrain> solution) throws Exception {
+      public TspPhenotype solutionToPhenotype(Ant solution) throws Exception {
         Integer[] p = (Integer[]) solution.getNodeIDsAlongPath().stream().toArray(Integer[]::new);
         return new TspPhenotype(p);
       }

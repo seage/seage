@@ -34,23 +34,24 @@ import java.util.List;
  *
  * @author Martin Zaloga
  */
-public class Ant<B extends AntBrain> {
+public class Ant {
 
   protected Graph _graph;
   protected double _distanceTravelled;
   protected List<Edge> _edgePath;
   protected List<Integer> _nodeIDsAlongPath;
 
-  protected B _brain;
+  protected AntBrain _brain;
 
-  public Ant(List<Integer> nodeIDs) {
+  public Ant(AntBrain antBrain, Graph graph, List<Integer> nodeIDs) {
+    _brain = antBrain;
+    _graph = graph;   
     _nodeIDsAlongPath = nodeIDs == null ? new ArrayList<Integer>() : new ArrayList<Integer>(nodeIDs);
     _edgePath = new ArrayList<Edge>();
   }
 
-  void setParameters(Graph graph, B brain, double alpha, double beta, double quantumPheromone) {
-    _graph = graph;
-    _brain = brain;
+  void setParameters(double alpha, double beta, double quantumPheromone) {
+
     _brain.setParameters(alpha, beta, quantumPheromone);
   }
 
@@ -125,7 +126,7 @@ public class Ant<B extends AntBrain> {
     }
   }
 
-  public B getBrain() {
+  public AntBrain getBrain() {
     return _brain;
   }
 

@@ -31,13 +31,13 @@ package org.seage.metaheuristic.antcolony;
  * @author Richard Malek (original)
  */
 public class AntColonyEvent<B extends AntBrain> {
-  private AntColony<B> algorithm;
+  private AntColony algorithm;
 
-  public AntColonyEvent(AntColony<B>  algorithm) {
+  public AntColonyEvent(AntColony  algorithm) {
     this.algorithm = algorithm;
   }
 
-  public final AntColony<B>  getAntColony() {
+  public final AntColony  getAntColony() {
     return algorithm;
   }
 }

@@ -92,13 +92,13 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     TspGraph graph = new TspGraph(cities);
     System.out.println("Loaded ...");
     AntBrain brain = new TspAntBrain(graph);
-    AntColony colony = new AntColony(graph, brain);
+    AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, localEvaporation);
 
     Ant ants[] = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++)
-      ants[i] = new Ant(null);
+      ants[i] = new Ant(brain, graph, null);
     // brain.setParameters(graph.getNodeList().size(), alpha, beta);
 
     long t1 = System.currentTimeMillis();

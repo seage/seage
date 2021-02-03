@@ -40,7 +40,7 @@ import org.seage.metaheuristic.antcolony.Node;
  *
  * @author Richard Malek
  */
-public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant<AntBrain>> {
+public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant> {
 
   public AntColonyAdapterTest() throws Exception {
     super();
@@ -55,7 +55,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant<AntBrain>
 
     }
 
-    this.algAdapter = new TestAntColonyAdapter(new AntBrain(graph), graph, new TestPhenotypeEvaluator());
+    this.algAdapter = new TestAntColonyAdapter(graph, new TestPhenotypeEvaluator());
     this.algParams = new AlgorithmParams();
 
     this.algParams.putValue("iterationCount", 3);

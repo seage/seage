@@ -51,18 +51,18 @@ import org.seage.metaheuristic.antcolony.Graph;
  */
 @AlgorithmParameters({ @Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),
     @Parameter(name = "iterationCount", min = 10, max = 1000000, init = 100),
-    @Parameter(name = "alpha", min = 1, max = 10, init = 1), @Parameter(name = "beta", min = 1, max = 10, init = 3),
+    @Parameter(name = "alpha", min = 1, max = 10, init = 1), 
+    @Parameter(name = "beta", min = 1, max = 10, init = 3),
     @Parameter(name = "defaultPheromone", min = 0.00001, max = 1.0, init = 0.00001),
     @Parameter(name = "qantumOfPheromone", min = 1, max = 1000, init = 10),
     @Parameter(name = "localEvaporation", min = 0.5, max = 0.98, init = 0.95) })
-public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant<?>, B extends AntBrain> 
+public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> 
     extends AlgorithmAdapterImpl<P, S> {
-  protected AntColony<?> _antColony;
+  protected AntColony _antColony;
   // private AntColonyListener _algorithmListener;
   protected Graph _graph;
   private AlgorithmParams _params;
-  protected B _brain;
-  protected Ant<B>[] _ants;
+  protected Ant[] _ants;
 
   private AlgorithmReporter<P> _reporter;
   private long _statNumIterationsDone;
@@ -73,12 +73,11 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant<?>,
   public double _averageSolutionValue;
   private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
-  public AntColonyAdapter(B brain, Graph graph, IPhenotypeEvaluator<P> phenotypeEvaluator) {
+  public AntColonyAdapter(Graph graph, IPhenotypeEvaluator<P> phenotypeEvaluator) {
     _params = null;
-    _brain = brain;
     _graph = graph;
     _phenotypeEvaluator = phenotypeEvaluator;
-    _antColony = new AntColony(graph, brain);
+    _antColony = new AntColony(graph);
     _antColony.addAntColonyListener(new AntColonyListener());
   }
 
@@ -149,7 +148,7 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant<?>,
 
     @Override
     public void newBestSolutionFound(AntColonyEvent<B> e) {
-      AntColony<?> alg = e.getAntColony();
+      AntColony alg = e.getAntColony();
       _averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();
       _statLastImprovingIteration = alg.getCurrentIteration();
       _averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();

@@ -16,7 +16,7 @@ import org.seage.problem.sat.SatPhenotype;
 
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
-public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant<SatAntBrain>> {
+public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant> {
 
   @Override
   public Class<?> getAlgorithmClass() {
@@ -24,13 +24,13 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant<
   }
 
   @Override
-  public IAlgorithmAdapter<SatPhenotype, Ant<SatAntBrain>> createAlgorithm(ProblemInstance instance,
+  public IAlgorithmAdapter<SatPhenotype, Ant> createAlgorithm(ProblemInstance instance,
       IPhenotypeEvaluator<SatPhenotype> phenotypeEvaluator) throws Exception {
     Formula formula = (Formula) instance;
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
     SatAntBrain brain = new SatAntBrain(graph, formula);
 
-    return new AntColonyAdapter<SatPhenotype, Ant<SatAntBrain>, SatAntBrain>(brain, graph, phenotypeEvaluator) {
+    return new AntColonyAdapter<SatPhenotype, Ant>(graph, phenotypeEvaluator) {
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
@@ -39,7 +39,7 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant<
           ArrayList<Integer> nodes = new ArrayList<Integer>();
           for (int j = 1; j <= source[i].getSolution().length; j++)
             nodes.add((Boolean) source[i].getSolution()[j - 1] == true ? j : -j);
-          _ants[i] = new Ant<SatAntBrain>(nodes);
+          _ants[i] = new Ant(brain, graph, nodes);
         }
       }
 
@@ -58,7 +58,7 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant<
       }
 
       @Override
-      public SatPhenotype solutionToPhenotype(Ant<SatAntBrain> solution) throws Exception {
+      public SatPhenotype solutionToPhenotype(Ant solution) throws Exception {
         // TODO Auto-generated method stub
         return null;
       }
