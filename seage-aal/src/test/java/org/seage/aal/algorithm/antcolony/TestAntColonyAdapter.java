@@ -9,7 +9,7 @@ import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
 
-public class TestAntColonyAdapter extends AntColonyAdapter<TestPhenotype, Ant<AntBrain>> {
+public class TestAntColonyAdapter extends AntColonyAdapter<TestPhenotype, Ant<AntBrain>, AntBrain> {
 
   public TestAntColonyAdapter(AntBrain brain, Graph graph, IPhenotypeEvaluator<TestPhenotype> phenotypeEvaluator) {
     super(brain, graph, phenotypeEvaluator);

@@ -55,13 +55,14 @@ import org.seage.metaheuristic.antcolony.Graph;
     @Parameter(name = "defaultPheromone", min = 0.00001, max = 1.0, init = 0.00001),
     @Parameter(name = "qantumOfPheromone", min = 1, max = 1000, init = 10),
     @Parameter(name = "localEvaporation", min = 0.5, max = 0.98, init = 0.95) })
-public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> extends AlgorithmAdapterImpl<P, S> {
-  protected AntColony _antColony;
+public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant<?>, B extends AntBrain> 
+    extends AlgorithmAdapterImpl<P, S> {
+  protected AntColony<?> _antColony;
   // private AntColonyListener _algorithmListener;
   protected Graph _graph;
   private AlgorithmParams _params;
-  protected AntBrain _brain;
-  protected Ant[] _ants;
+  protected B _brain;
+  protected Ant<B>[] _ants;
 
   private AlgorithmReporter<P> _reporter;
   private long _statNumIterationsDone;
@@ -72,7 +73,7 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> ex
   public double _averageSolutionValue;
   private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
-  public AntColonyAdapter(AntBrain brain, Graph graph, IPhenotypeEvaluator<P> phenotypeEvaluator) {
+  public AntColonyAdapter(B brain, Graph graph, IPhenotypeEvaluator<P> phenotypeEvaluator) {
     _params = null;
     _brain = brain;
     _graph = graph;
@@ -133,9 +134,9 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> ex
     return _reporter.getReport();
   }
 
-  private class AntColonyListener implements IAlgorithmListener<AntColonyEvent> {
+  private class AntColonyListener<B extends AntBrain> implements IAlgorithmListener<AntColonyEvent<B>> {
     @Override
-    public void algorithmStarted(AntColonyEvent e) {
+    public void algorithmStarted(AntColonyEvent<B> e) {
       _algorithmStarted = true;
 
     }
@@ -147,21 +148,24 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> ex
     }
 
     @Override
-    public void newBestSolutionFound(AntColonyEvent e) {
-      AntColony alg = e.getAntColony();
+    public void newBestSolutionFound(AntColonyEvent<B> e) {
+      AntColony<?> alg = e.getAntColony();
       _averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();
       _statLastImprovingIteration = alg.getCurrentIteration();
       _averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();
 
-      if (_statNumNewBestSolutions == 0)
+      if (_statNumNewBestSolutions == 0) {
         _initialSolutionValue = _bestSolutionValue;
+      }
 
       _statNumNewBestSolutions++;
 
       try {
-        _reporter.putNewSolution(System.currentTimeMillis(), alg.getCurrentIteration(), null); // TODO: A - Solve this
-                                                                                               // AntColony issue
-        // solutionToPhenotype(createNodeListString(alg.getBestPath())));
+        P solution = solutionToPhenotype((S) alg.getBestAnt());
+        _reporter.putNewSolution(
+            System.currentTimeMillis(), 
+            alg.getCurrentIteration(), 
+            solution);
       } catch (Exception ex) {
         _logger.warn(ex.getMessage(), ex);
       }

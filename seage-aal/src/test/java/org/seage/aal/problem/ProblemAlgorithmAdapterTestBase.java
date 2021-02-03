@@ -1,6 +1,7 @@
 package org.seage.aal.problem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -105,7 +106,7 @@ public abstract class ProblemAlgorithmAdapterTestBase<P extends Phenotype<?>> {
     }
     AlgorithmReport report = aa.getReport();
     assertNotNull(report);
-    assertNotSame(report.getDataNode("Log").getDataNodes("NewSolution").size(), 0);
+    assertNotEquals(report.getDataNode("Log").getDataNodes("NewSolution").size(), 0);
   }
 
   private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {

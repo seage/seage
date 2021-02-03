@@ -30,11 +30,11 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant<
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
     SatAntBrain brain = new SatAntBrain(graph, formula);
 
-    return new AntColonyAdapter<SatPhenotype, Ant<SatAntBrain>>(brain, graph, phenotypeEvaluator) {
+    return new AntColonyAdapter<SatPhenotype, Ant<SatAntBrain>, SatAntBrain>(brain, graph, phenotypeEvaluator) {
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
-        _ants = new Ant<?>[source.length];
+        _ants = new Ant[source.length];
         for (int i = 0; i < _ants.length; i++) {
           ArrayList<Integer> nodes = new ArrayList<Integer>();
           for (int j = 1; j <= source[i].getSolution().length; j++)

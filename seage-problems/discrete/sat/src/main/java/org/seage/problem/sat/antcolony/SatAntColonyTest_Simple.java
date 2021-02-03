@@ -38,7 +38,7 @@ import org.seage.problem.sat.Literal;
  *
  * @author Zagy
  */
-public class SatAntColonyTest_Simple implements IAlgorithmListener<AntColonyEvent> {
+public class SatAntColonyTest_Simple implements IAlgorithmListener<AntColonyEvent<SatAntBrain>> {
   /**
    * @param args the command line arguments
    */
@@ -64,7 +64,7 @@ public class SatAntColonyTest_Simple implements IAlgorithmListener<AntColonyEven
 
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
     SatAntBrain brain = new SatAntBrain(graph, formula);
-    AntColony colony = new AntColony(graph, brain);
+    AntColony<SatAntBrain> colony = new AntColony<>(graph, brain);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
 

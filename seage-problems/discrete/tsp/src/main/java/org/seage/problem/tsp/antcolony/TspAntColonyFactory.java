@@ -58,8 +58,9 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant<
       IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
     City[] cities = ((TspProblemInstance) instance).getCities();
     TspGraph graph = new TspGraph(cities);
-    AntBrain brain = new AntBrain(graph);
-    IAlgorithmAdapter<TspPhenotype, Ant<TspAntBrain>> algorithm = new AntColonyAdapter<TspPhenotype, Ant<TspAntBrain>>(
+    TspAntBrain brain = new TspAntBrain(graph);
+    IAlgorithmAdapter<TspPhenotype, Ant<TspAntBrain>> algorithm = 
+        new AntColonyAdapter<TspPhenotype, Ant<TspAntBrain>, TspAntBrain>(
         brain, graph, phenotypeEvaluator) {
       @Override
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
@@ -72,17 +73,16 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant<
       @Override
       public TspPhenotype[] solutionsToPhenotype() throws Exception {
         TspPhenotype[] result = new TspPhenotype[_ants.length];
-        for (int i = 0; i < _ants.length; i++) {
-          Integer[] p = (Integer[]) _ants[i].getNodeIDsAlongPath().stream().toArray(Integer[]::new);
-          result[i] = new TspPhenotype(p);
+        for (int i = 0; i < _ants.length; i++) {          
+          result[i] = solutionToPhenotype(_ants[i]);
         }
         return result;
       }
 
       @Override
       public TspPhenotype solutionToPhenotype(Ant<TspAntBrain> solution) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        Integer[] p = (Integer[]) solution.getNodeIDsAlongPath().stream().toArray(Integer[]::new);
+        return new TspPhenotype(p);
       }
     };
 

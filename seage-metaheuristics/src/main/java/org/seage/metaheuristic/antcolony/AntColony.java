@@ -40,16 +40,17 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Martin Zaloga
  */
-public class AntColony {
+public class AntColony<B extends AntBrain> {
   private static final Logger _logger = LoggerFactory.getLogger(AntColony.class.getName());
-  private AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent>, AntColonyEvent> _eventProducer;
+  private AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent<B>>, AntColonyEvent<B>> _eventProducer;
   private double _roundBest;
   private double _globalBest;
   private List<Edge> _bestPath;
   private List<List<Edge>> _antReports;
   private Graph _graph;
   private AntBrain _brain;
-  private Ant[] _ants;
+  private Ant<B>[] _ants;
+  private Ant<B> bestAnt;
 
   private int _numIterations;
   private boolean _started, _stopped;
@@ -60,8 +61,8 @@ public class AntColony {
   private double _quantumPheromone;
 
   public AntColony(Graph graph, AntBrain brain) {
-    _eventProducer = new AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent>, AntColonyEvent>(
-        new AntColonyEvent(this));
+    _eventProducer = new AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent<B>>, AntColonyEvent<B>>(
+        new AntColonyEvent<>(this));
     _graph = graph;
     _brain = brain;
     _antReports = new ArrayList<List<Edge>>();
@@ -71,11 +72,11 @@ public class AntColony {
     _stopped = false;
   }
 
-  public void addAntColonyListener(IAlgorithmListener<AntColonyEvent> listener) {
+  public void addAntColonyListener(IAlgorithmListener<AntColonyEvent<B>> listener) {
     _eventProducer.addAlgorithmListener(listener);
   }
 
-  public void removeAntColonyListener(IAlgorithmListener<AntColonyEvent> listener) {
+  public void removeAntColonyListener(IAlgorithmListener<AntColonyEvent<B>> listener) {
     _eventProducer.removeGeneticSearchListener(listener);
   }
 
@@ -117,6 +118,7 @@ public class AntColony {
         if (a.getDistanceTravelled() < _globalBest) {
           _globalBest = a.getDistanceTravelled();
           _bestPath = path;
+          this.bestAnt = a;
         }
       } catch (Exception e) {
         _logger.warn("Unable to do a first exploration", e);
@@ -179,6 +181,10 @@ public class AntColony {
    */
   public List<Edge> getBestPath() {
     return _bestPath;
+  }
+
+  public Ant<B> getBestAnt() {
+    return this.bestAnt;
   }
 
   /**
