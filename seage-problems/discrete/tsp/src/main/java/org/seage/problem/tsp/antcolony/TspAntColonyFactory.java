@@ -47,42 +47,42 @@ import org.seage.problem.tsp.antcolony.TspGraph;
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
-public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant<TspAntBrain>> {
+public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant> {
   @Override
   public Class<?> getAlgorithmClass() {
     return AntColonyAdapter.class;
   }
 
   @Override
-  public IAlgorithmAdapter<TspPhenotype, Ant<TspAntBrain>> createAlgorithm(ProblemInstance instance,
+  public IAlgorithmAdapter<TspPhenotype, Ant> createAlgorithm(ProblemInstance instance,
       IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
     City[] cities = ((TspProblemInstance) instance).getCities();
     TspGraph graph = new TspGraph(cities);
-    AntBrain brain = new AntBrain(graph);
-    IAlgorithmAdapter<TspPhenotype, Ant<TspAntBrain>> algorithm = new AntColonyAdapter<TspPhenotype, Ant<TspAntBrain>>(
-        brain, graph, phenotypeEvaluator) {
+    TspAntBrain brain = new TspAntBrain(graph);
+    IAlgorithmAdapter<TspPhenotype, Ant> algorithm = 
+        new AntColonyAdapter<TspPhenotype, Ant>(
+        graph, phenotypeEvaluator) {
       @Override
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
         _ants = new Ant[source.length];
         for (int i = 0; i < _ants.length; i++) {
-          _ants[i] = new Ant<TspAntBrain>(Arrays.asList(source[i].getSolution()));
+          _ants[i] = new Ant(brain, graph, Arrays.asList(source[i].getSolution()));
         }
       }
 
       @Override
       public TspPhenotype[] solutionsToPhenotype() throws Exception {
         TspPhenotype[] result = new TspPhenotype[_ants.length];
-        for (int i = 0; i < _ants.length; i++) {
-          Integer[] p = (Integer[]) _ants[i].getNodeIDsAlongPath().stream().toArray(Integer[]::new);
-          result[i] = new TspPhenotype(p);
+        for (int i = 0; i < _ants.length; i++) {          
+          result[i] = solutionToPhenotype(_ants[i]);
         }
         return result;
       }
 
       @Override
-      public TspPhenotype solutionToPhenotype(Ant<TspAntBrain> solution) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+      public TspPhenotype solutionToPhenotype(Ant solution) throws Exception {
+        Integer[] p = (Integer[]) solution.getNodeIDsAlongPath().stream().toArray(Integer[]::new);
+        return new TspPhenotype(p);
       }
     };
 

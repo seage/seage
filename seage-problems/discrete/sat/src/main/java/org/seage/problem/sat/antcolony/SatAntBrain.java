@@ -20,6 +20,7 @@
 /**
  * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.problem.sat.antcolony;
 
 import java.util.List;

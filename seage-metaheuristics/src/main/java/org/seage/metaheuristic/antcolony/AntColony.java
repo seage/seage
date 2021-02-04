@@ -48,8 +48,8 @@ public class AntColony {
   private List<Edge> _bestPath;
   private List<List<Edge>> _antReports;
   private Graph _graph;
-  private AntBrain _brain;
   private Ant[] _ants;
+  private Ant bestAnt;
 
   private int _numIterations;
   private boolean _started, _stopped;
@@ -59,11 +59,10 @@ public class AntColony {
   private double _beta;
   private double _quantumPheromone;
 
-  public AntColony(Graph graph, AntBrain brain) {
+  public AntColony(Graph graph) {
     _eventProducer = new AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent>, AntColonyEvent>(
         new AntColonyEvent(this));
     _graph = graph;
-    _brain = brain;
     _antReports = new ArrayList<List<Edge>>();
     _roundBest = Double.MAX_VALUE;
     _globalBest = Double.MAX_VALUE;
@@ -79,7 +78,8 @@ public class AntColony {
     _eventProducer.removeGeneticSearchListener(listener);
   }
 
-  public void setParameters(int numIterations, double alpha, double beta, double quantumPheromone,
+  public void setParameters(
+      int numIterations, double alpha, double beta, double quantumPheromone,
       double defaultPheromone, double evaporCoeff) throws Exception {
     _numIterations = numIterations;
     _alpha = alpha;
@@ -90,9 +90,7 @@ public class AntColony {
   }
 
   /**
-   * Main part of ant-colony algorithm
-   * 
-   * @throws Exception
+   * Main part of ant-colony algorithm.
    */
   public void startExploring(Node startingNode, Ant[] ants) throws Exception {
     _started = _keepRunning = true;
@@ -104,19 +102,22 @@ public class AntColony {
     _eventProducer.fireAlgorithmStarted();
 
     for (Ant a : _ants) {
-      if (!_keepRunning)
+      if (!_keepRunning) {
         break;
+      }
 
-      a.setParameters(_graph, _brain, _alpha, _beta, _quantumPheromone);
+      a.setParameters(_alpha, _beta, _quantumPheromone);
 
-      if (a.getNodeIDsAlongPath().size() == 0)
+      if (a.getNodeIDsAlongPath().size() == 0) {
         continue;
+      }
 
       try {
         List<Edge> path = a.doFirstExploration();
         if (a.getDistanceTravelled() < _globalBest) {
           _globalBest = a.getDistanceTravelled();
           _bestPath = path;
+          this.bestAnt = a;
         }
       } catch (Exception e) {
         _logger.warn("Unable to do a first exploration", e);
@@ -179,6 +180,10 @@ public class AntColony {
    */
   public List<Edge> getBestPath() {
     return _bestPath;
+  }
+
+  public Ant getBestAnt() {
+    return this.bestAnt;
   }
 
   /**

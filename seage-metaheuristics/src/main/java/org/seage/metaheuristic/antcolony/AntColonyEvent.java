@@ -23,19 +23,21 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.metaheuristic.antcolony;
 
 /**
+ * AntColonyEvent implementation.
  * @author Richard Malek (original)
  */
 public class AntColonyEvent {
-  private AntColony _algorithm;
+  private AntColony algorithm;
 
-  public AntColonyEvent(AntColony algorithm) {
-    _algorithm = algorithm;
+  public AntColonyEvent(AntColony  algorithm) {
+    this.algorithm = algorithm;
   }
 
-  public final AntColony getAntColony() {
-    return _algorithm;
+  public final AntColony  getAntColony() {
+    return algorithm;
   }
 }

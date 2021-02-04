@@ -9,10 +9,10 @@ import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
 
-public class TestAntColonyAdapter extends AntColonyAdapter<TestPhenotype, Ant<AntBrain>> {
+public class TestAntColonyAdapter extends AntColonyAdapter<TestPhenotype, Ant> {
 
-  public TestAntColonyAdapter(AntBrain brain, Graph graph, IPhenotypeEvaluator<TestPhenotype> phenotypeEvaluator) {
-    super(brain, graph, phenotypeEvaluator);
+  public TestAntColonyAdapter(Graph graph, IPhenotypeEvaluator<TestPhenotype> phenotypeEvaluator) {
+    super(graph, phenotypeEvaluator);
   }
 
   @Override
@@ -23,7 +23,7 @@ public class TestAntColonyAdapter extends AntColonyAdapter<TestPhenotype, Ant<An
       ArrayList<Integer> nodes = new ArrayList<Integer>();
       nodes.addAll(Arrays.asList(source[i].getSolution()));
 
-      _ants[i] = new Ant<>(nodes);
+      _ants[i] = new Ant(new AntBrain(_graph), _graph, nodes);
     }
   }
 
@@ -37,7 +37,7 @@ public class TestAntColonyAdapter extends AntColonyAdapter<TestPhenotype, Ant<An
   }
 
   @Override
-  public TestPhenotype solutionToPhenotype(Ant<AntBrain> solution) throws Exception {
+  public TestPhenotype solutionToPhenotype(Ant solution) throws Exception {
     Integer[] p = (Integer[]) solution.getNodeIDsAlongPath().stream().toArray(Integer[]::new);
     return new TestPhenotype(p);
   }
