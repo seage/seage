@@ -35,11 +35,9 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.antcolony.Ant;
-import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemInstance;
-import org.seage.problem.tsp.antcolony.TspGraph;
 
 /**
  *
