@@ -30,7 +30,7 @@ package org.seage.metaheuristic.antcolony;
  * AntColonyEvent implementation.
  * @author Richard Malek (original)
  */
-public class AntColonyEvent<B extends AntBrain> {
+public class AntColonyEvent {
   private AntColony algorithm;
 
   public AntColonyEvent(AntColony  algorithm) {

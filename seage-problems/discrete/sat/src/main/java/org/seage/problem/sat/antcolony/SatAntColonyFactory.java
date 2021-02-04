@@ -37,8 +37,9 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
         _ants = new Ant[source.length];
         for (int i = 0; i < _ants.length; i++) {
           ArrayList<Integer> nodes = new ArrayList<Integer>();
-          for (int j = 1; j <= source[i].getSolution().length; j++)
+          for (int j = 1; j <= source[i].getSolution().length; j++) {
             nodes.add((Boolean) source[i].getSolution()[j - 1] == true ? j : -j);
+          }
           _ants[i] = new Ant(brain, graph, nodes);
         }
       }
@@ -47,20 +48,19 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
       public SatPhenotype[] solutionsToPhenotype() throws Exception {
         SatPhenotype[] result = new SatPhenotype[_ants.length];
         for (int i = 0; i < _ants.length; i++) {
-          result[i] = new SatPhenotype(new Boolean[_ants[i].getNodeIDsAlongPath().size()]);
-          for (int j = 0; j < result[i].getSolution().length; j++) {
-            Boolean[] s = result[i].getSolution();
-            Integer value = (Integer) _ants[i].getNodeIDsAlongPath().get(j);
-            s[j] = value > 0;// .toArray(new
-          }
+          result[i] = solutionToPhenotype(_ants[i]);
         }
         return result;
       }
 
       @Override
       public SatPhenotype solutionToPhenotype(Ant solution) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        SatPhenotype result = new SatPhenotype(new Boolean[solution.getNodeIDsAlongPath().size()]);
+        for (int i = 0; i < result.getSolution().length; i++) {
+          Integer value = (Integer) solution.getNodeIDsAlongPath().get(i);
+          result.getSolution()[i] = value > 0;
+        }
+        return result;
       }
 
     };

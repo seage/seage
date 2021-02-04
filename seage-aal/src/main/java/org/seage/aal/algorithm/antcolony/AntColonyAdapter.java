@@ -133,9 +133,9 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
     return _reporter.getReport();
   }
 
-  private class AntColonyListener<B extends AntBrain> implements IAlgorithmListener<AntColonyEvent<B>> {
+  private class AntColonyListener implements IAlgorithmListener<AntColonyEvent> {
     @Override
-    public void algorithmStarted(AntColonyEvent<B> e) {
+    public void algorithmStarted(AntColonyEvent e) {
       _algorithmStarted = true;
 
     }
@@ -147,7 +147,7 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
     }
 
     @Override
-    public void newBestSolutionFound(AntColonyEvent<B> e) {
+    public void newBestSolutionFound(AntColonyEvent e) {
       AntColony alg = e.getAntColony();
       _averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();
       _statLastImprovingIteration = alg.getCurrentIteration();
