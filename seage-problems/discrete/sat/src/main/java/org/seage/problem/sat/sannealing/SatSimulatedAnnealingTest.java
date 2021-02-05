@@ -20,6 +20,7 @@
 /**
  * Contributors: Jan Zmatlik - Initial implementation
  */
+
 package org.seage.problem.sat.sannealing;
 
 import java.io.FileInputStream;

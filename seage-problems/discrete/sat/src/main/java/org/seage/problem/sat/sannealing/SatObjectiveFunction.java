@@ -20,6 +20,7 @@
 /**
  * Contributors: Jan Zmatlik - Initial implementation
  */
+
 package org.seage.problem.sat.sannealing;
 
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
@@ -29,20 +30,20 @@ import org.seage.problem.sat.SatPhenotype;
 import org.seage.problem.sat.SatPhenotypeEvaluator;
 
 /**
- *
+ * SatObjectiveFunction class.
  * @author Richard Malek
  */
 public class SatObjectiveFunction implements IObjectiveFunction {
-  private SatPhenotypeEvaluator _evaluator;
+  private SatPhenotypeEvaluator evaluator;
 
   public SatObjectiveFunction(Formula formula) {
-    _evaluator = new SatPhenotypeEvaluator(formula);
+    evaluator = new SatPhenotypeEvaluator(formula);
   }
 
   @Override
   public double getObjectiveValue(Solution solution) throws Exception {
     SatSolution sol = (SatSolution) solution;
     SatPhenotype phenotype = new SatPhenotype(sol.getLiteralValues());
-    return _evaluator.evaluate(phenotype)[0];
+    return evaluator.evaluate(phenotype)[0];
   }
 }
