@@ -33,7 +33,6 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.problem.ProblemInstance;
-import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemInstance;
@@ -45,23 +44,9 @@ import org.seage.problem.tsp.TspProblemInstance;
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
 public class TspSimulatedAnnealingFactory implements IAlgorithmFactory<TspPhenotype, TspSolution> {
-  // private TspSolution _tspSolution;
-  // private TspProblemProvider _provider;
 
   public TspSimulatedAnnealingFactory() {
   }
-
-  // public TspSimulatedAnnealingFactory(DataNode params, City[] cities) throws
-  // Exception
-  // {
-  // String solutionType = params.getValueStr("initSolutionType");
-  // if( solutionType.toLowerCase().equals("greedy") )
-  // _tspSolution = new TspGreedySolution( cities );
-  // else if( solutionType.toLowerCase().equals("random") )
-  // _tspSolution = new TspRandomSolution( cities );
-  // else if( solutionType.toLowerCase().equals("sorted") )
-  // _tspSolution = new TspSortedSolution( cities );
-  // }
 
   @Override
   public Class<?> getAlgorithmClass() {
@@ -73,8 +58,9 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory<TspPhenot
       IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
     final City[] cities = ((TspProblemInstance) instance).getCities();
 
-    IAlgorithmAdapter<TspPhenotype, TspSolution> algorithm = new SimulatedAnnealingAdapter<TspPhenotype, TspSolution>(
-        new TspObjectiveFunction(cities), new TspMoveManager(), phenotypeEvaluator, false) {
+    IAlgorithmAdapter<TspPhenotype, TspSolution> algorithm = 
+        new SimulatedAnnealingAdapter<TspPhenotype, TspSolution>(
+            new TspObjectiveFunction(cities), new TspMoveManager(), phenotypeEvaluator, false) {
       @Override
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
         this.solutions = new TspSolution[source.length];
@@ -82,8 +68,9 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory<TspPhenot
           TspSolution solution = new TspGreedySolution(cities);
           Integer[] tour = solution.getTour();
 
-          for (int i = 0; i < tour.length; i++)
+          for (int i = 0; i < tour.length; i++) {
             tour[i] = (Integer) source[j].getSolution()[i];
+          }
 
           this.solutions[j] = solution;
         }
@@ -92,18 +79,16 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory<TspPhenot
       @Override
       public TspPhenotype[] solutionsToPhenotype() throws Exception {
         TspPhenotype[] result = new TspPhenotype[this.solutions.length];
-
         for (int i = 0; i < this.solutions.length; i++) {
-          TspSolution solution = (TspSolution) this.solutions[i];
-          result[i] = new TspPhenotype(solution.getTour());
+          result[i] = solutionToPhenotype(this.solutions[i]);
         }
         return result;
       }
 
       @Override
       public TspPhenotype solutionToPhenotype(TspSolution solution) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        TspSolution s = (TspSolution) solution;
+          return new TspPhenotype(s.getTour());
       }
 
     };
