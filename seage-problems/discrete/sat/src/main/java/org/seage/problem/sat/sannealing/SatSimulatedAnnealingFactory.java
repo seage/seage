@@ -21,6 +21,7 @@
  * Contributors: Karel Durkota - Initial implementation Richard Malek - Added
  * algorithm annotations
  */
+
 package org.seage.problem.sat.sannealing;
 
 import org.seage.aal.Annotations;
@@ -33,7 +34,7 @@ import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.SatPhenotype;
 
 /**
- *
+ * SatSimulatedAnnealingFactory class.
  * @author Richard Malek
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
@@ -49,8 +50,9 @@ public class SatSimulatedAnnealingFactory implements IAlgorithmFactory<SatPhenot
   public IAlgorithmAdapter<SatPhenotype, SatSolution> createAlgorithm(ProblemInstance instance,
       IPhenotypeEvaluator<SatPhenotype> phenotypeEvaluator) throws Exception {
     Formula formula = (Formula) instance;
-    IAlgorithmAdapter<SatPhenotype, SatSolution> algorithm = new SimulatedAnnealingAdapter<SatPhenotype, SatSolution>(
-        new SatObjectiveFunction(formula), new SatMoveManager(), phenotypeEvaluator, false) {
+    IAlgorithmAdapter<SatPhenotype, SatSolution> algorithm = 
+        new SimulatedAnnealingAdapter<SatPhenotype, SatSolution>(
+            new SatObjectiveFunction(formula), new SatMoveManager(), phenotypeEvaluator, false) {
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
@@ -65,16 +67,15 @@ public class SatSimulatedAnnealingFactory implements IAlgorithmFactory<SatPhenot
         SatPhenotype[] result = new SatPhenotype[this.solutions.length];
 
         for (int i = 0; i < this.solutions.length; i++) {
-          SatSolution s = (SatSolution) this.solutions[i];
-          result[i] = new SatPhenotype(s.getLiteralValues());
+          result[i] = solutionToPhenotype(this.solutions[i]);
         }
         return result;
       }
 
       @Override
       public SatPhenotype solutionToPhenotype(SatSolution solution) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        SatSolution s = (SatSolution) solution;
+        return new SatPhenotype(s.getLiteralValues());
       }
     };
     return algorithm;
