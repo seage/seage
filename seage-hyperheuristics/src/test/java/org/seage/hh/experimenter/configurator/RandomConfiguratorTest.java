@@ -8,7 +8,7 @@ import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
 
-public class ConfiguratorTest {
+public class RandomConfiguratorTest {
   private ProblemInfo pi;
 
   @BeforeEach
@@ -27,33 +27,22 @@ public class ConfiguratorTest {
 
     DataNode ai = new DataNode("Algorithm");
     ai.putValue("id", "Algorithm01");
+
     DataNode param1 = new DataNode("Parameter");
     param1.putValue("name", "param1");
     param1.putValue("min", "0");
     param1.putValue("max", "100");
     param1.putValue("init", "50");
     ai.putDataNode(param1);
+
     DataNode param2 = new DataNode("Parameter");
     param2.putValue("name", "param2");
     param2.putValue("min", "0");
     param2.putValue("max", "1");
     param2.putValue("init", "0.5");
     ai.putDataNode(param2);
+
     pi.getDataNode("Algorithms").putDataNode(ai);
-  }
-
-  @Test
-  void testDefaultConfigurator() throws Exception {
-    DefaultConfigurator configurator = new DefaultConfigurator(0);
-
-    ProblemConfig[] pc = configurator.prepareConfigs(pi, "Instance01", "Algorithm01", 100);
-    assertEquals(1, pc.length);
-    for(DataNode c : pc) {
-      Double param1 = c.getDataNodeById("Algorithm01").getDataNode("Parameters").getValueDouble("param1");
-      assertEquals(50, param1);
-      Double param2 = c.getDataNodeById("Algorithm01").getDataNode("Parameters").getValueDouble("param2");      
-      assertEquals(0.5, param2);
-    }    
   }
 
   @Test
