@@ -217,6 +217,10 @@ public class ExperimentTask implements Runnable, Serializable {
     return this.algorithmParams.toString();
   }
 
+  public void setConfig(String config) {
+    // Must be here because of the db reading - Not defined for now
+  }
+
   public String getStatistics() {
     try {
       return this.getExperimentTaskReport()
@@ -226,6 +230,10 @@ public class ExperimentTask implements Runnable, Serializable {
     } catch (Exception e) {
       return null;
     }
+  }
+
+  public void setStatistics(String statistics) {
+    // Must be here because of the db reading - Not defined for now
   }
   ////////////////////
 

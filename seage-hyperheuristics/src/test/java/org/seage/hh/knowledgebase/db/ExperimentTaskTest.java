@@ -31,8 +31,9 @@ public class ExperimentTaskTest {
       "config1", 
       new Date(), 
       new Date(), 
-      "hostname1", 
-      1.0
+      1.0,
+      "hostname1",
+      "1"
     );
 
     this.experimentTask1 = new ExperimentTask(

@@ -1,5 +1,6 @@
 package org.seage.hh.experimenter;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class Solution {
@@ -7,9 +8,10 @@ public class Solution {
  
   private UUID experimentTaskID;
   private String hash;
-  private String solution;
+  private String solutionStr;
   private Double objectiveValue;
   private Long iterationNumber;
+  private Date date;
 
   /**
    * Solution class mainly for storing to database.
@@ -24,13 +26,15 @@ public class Solution {
       UUID solutionID,
       UUID experimentTaskID, String hash, 
       String solution, Double objectiveValue,
-      Long iterationNumber) {
+      Long iterationNumber,
+      Date date) {
     this.solutionID = solutionID;
     this.experimentTaskID = experimentTaskID;
     this.hash = hash;
-    this.solution = solution;
+    this.solutionStr = solution;
     this.objectiveValue = objectiveValue;
     this.iterationNumber = iterationNumber;
+    this.date = date;
   }
 
   public UUID getSolutionID() {
@@ -58,11 +62,11 @@ public class Solution {
   }
 
   public String getSolution() {
-    return solution;
+    return solutionStr;
   }
 
   public void setSolution(String solution) {
-    this.solution = solution;
+    this.solutionStr = solution;
   }
 
   public Double getObjectiveValue() {
@@ -79,6 +83,14 @@ public class Solution {
 
   public void setIterationNumber(Long iterationNumber) {
     this.iterationNumber = iterationNumber;
+  }
+
+  public Date getDate() {
+    return date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
   }
   
 }

@@ -133,7 +133,6 @@ public abstract class Experimenter {
         this.instanceIDs,
         this.algorithmIDs,
         getExperimentConfig(),
-        Date.from(Instant.now()),
         Date.from(Instant.now())
     );
 

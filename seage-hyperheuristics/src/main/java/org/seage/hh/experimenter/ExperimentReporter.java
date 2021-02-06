@@ -1,6 +1,8 @@
 package org.seage.hh.experimenter;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
@@ -11,6 +13,8 @@ import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 import org.seage.hh.knowledgebase.db.mapper.SolutionMapper;
 
 public class ExperimentReporter {
+  private static final String FORMAT_VERSION = "1.0.0";
+
   public ExperimentReporter() throws Exception {
     DbManager.init();
   }
@@ -21,7 +25,7 @@ public class ExperimentReporter {
   public void createExperimentReport(
       UUID experimentID, String experimentName, String problemID,
       String[] instanceIDs, String[] algorithmIDs, String config, 
-      Date startDate, Date duration) throws Exception {
+      Date startDate) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       
       String instances = String.join(",", instanceIDs);
@@ -35,14 +39,28 @@ public class ExperimentReporter {
           config,
           startDate,
           null,
-          InetAddress.getLocalHost().getHostName(),
-          null
+          null,
+          getHostInfo(),
+          FORMAT_VERSION
       );
 
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
       mapper.insertExperiment(experiment);
       session.commit();
     }    
+  }
+
+  private String getHostInfo() {
+    DataNode info = new DataNode("HostInfo");
+    try {
+      info.putValue("machineName", InetAddress.getLocalHost().getHostName());
+    } catch (UnknownHostException e) {
+      info.putValue("machineName", "UNKNOWN");
+    }
+    info.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
+    info.putValue("totalRAM", Runtime.getRuntime().totalMemory());
+    info.putValue("availRAM", Runtime.getRuntime().maxMemory());
+    return info.toString();
   }
 
   public void updateEndDate(UUID experimentID, Date endDate) throws Exception {
@@ -102,7 +120,8 @@ public class ExperimentReporter {
           dn.getValueStr("hash"),
           dn.getValueStr("solution"),
           dn.getValueDouble("objVal"),
-          iterNumber
+          iterNumber,
+          Date.from(Instant.now())
       );
       mapper.insertSolution(s);        
     }

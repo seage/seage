@@ -11,9 +11,10 @@ public class Experiment {
   private String algorithmID;
   private Date startDate; 
   private Date endDate;
-  private String config;
-  private String hostname;
+  private String config;  
   private Double score;
+  private String hostInfo;
+  private String formatVersion;
 
   /**
    * Experiment class mainly for storing to database.
@@ -29,7 +30,8 @@ public class Experiment {
       String problemID, String instanceID,
       String algorithmID, String config, 
       Date startDate, Date endDate, 
-      String hostname, Double score) {
+      Double score,
+      String hostInfo, String formatVersion) {
     this.experimentID = experimentID;
     this.experimentType = experimentType;
     this.problemID = problemID;
@@ -37,9 +39,10 @@ public class Experiment {
     this.algorithmID = algorithmID;
     this.config = config;
     this.startDate = startDate;
-    this.endDate = endDate;
-    this.hostname = hostname;
+    this.endDate = endDate;    
     this.score = score;
+    this.hostInfo = hostInfo;
+    this.formatVersion = formatVersion;
   }
 
   public UUID getExperimentID() {
@@ -106,20 +109,28 @@ public class Experiment {
     this.config = config;
   }
 
-  public String getHostname() {
-    return hostname;
-  }
-
-  public void setHostname(String hostname) {
-    this.hostname = hostname;
-  }
-
   public Double getScore() {
     return score;
   }
 
   public void setScore(Double score) {
     this.score = score;
+  }
+
+  public String getHostInfo() {
+    return hostInfo;
+  }
+
+  public void setHostInfo(String hostInfo) {
+    this.hostInfo = hostInfo;
+  }
+
+  public String getFormatVersion() {
+    return formatVersion;
+  }
+
+  public void setFormatVersion(String formatVersion) {
+    this.formatVersion = formatVersion;
   }
 
 

@@ -4,5 +4,6 @@
   "java.dependency.syncWithFolderExplorer": true,
   "java.checkstyle.configuration": "/google_checks.xml",
   "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
-  "java.format.settings.profile": "GoogleStyle",
+  "java.format.enabled": true,
+  "java.format.settings.profile": "GoogleStyle"
 }

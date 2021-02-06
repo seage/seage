@@ -89,8 +89,11 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter {
 
   @Override
   protected String getExperimentConfig() {
-    return String.format("<Config timeoutS=\"%s\" numConfigs=\"%s\" />", 
-        this.timeoutS, this.numConfigs);
+    DataNode config = new DataNode("Config");
+    config.putValue("timeoutS", this.timeoutS);
+    config.putValue("numConfigs", this.numConfigs);
+    
+    return config.toString();
   }
 
   @Override

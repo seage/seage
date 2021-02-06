@@ -2,6 +2,7 @@ package org.seage.hh.knowledgebase.db;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
@@ -33,9 +34,10 @@ public class SolutionTest {
       "algorithmID1", 
       "config1", 
       new Date(), 
-      new Date(), 
+      new Date(),
+      1.0,
       "hostname1", 
-      1.0
+      "1"
     );
     this.experimentTask1 = new ExperimentTask(
       UUID.randomUUID(),
@@ -54,7 +56,8 @@ public class SolutionTest {
       "123456789", 
       "[1, 2, 3, 4, 5, 6, 7, 8, 9]", 
       1000.0,
-      2L
+      2L,
+      Date.from(Instant.now())
     );
   }
 

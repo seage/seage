@@ -10,9 +10,10 @@ CREATE TABLE IF NOT EXISTS seage.experiments (
 	algorithm_id VARCHAR(100) NOT NULL,
 	config TEXT,
 	start_date TIMESTAMP,
-	end_date TIMESTAMP,
-	hostname VARCHAR(100),
-	score DOUBLE PRECISION
+	end_date TIMESTAMP,	
+	score DOUBLE PRECISION,
+	host_info VARCHAR(1000),
+	format_version VARCHAR(10)
 );
 CREATE TABLE IF NOT EXISTS seage.experiment_tasks (
 	experiment_task_id UUID NOT NULL PRIMARY KEY,
@@ -35,7 +36,8 @@ CREATE TABLE IF NOT EXISTS seage.solutions (
 	hash VARCHAR(1000),
 	solution TEXT,
 	objective_value DOUBLE PRECISION,
-	iteration_number BIGINT
+	iteration_number BIGINT,
+	date TIMESTAMP
 );
 
 CREATE OR REPLACE VIEW seage.experiments_overview AS

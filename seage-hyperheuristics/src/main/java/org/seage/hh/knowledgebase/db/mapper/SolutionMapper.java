@@ -2,7 +2,6 @@ package org.seage.hh.knowledgebase.db.mapper;
 
 import java.util.UUID;
 import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
@@ -13,23 +12,23 @@ import org.seage.hh.experimenter.Solution;
 public interface SolutionMapper {
 
   class SolutionSqlProvider implements ProviderMethodResolver {
-    
-    public static String insertSolution(Solution solution) {
-      return new SQL() {{
-          INSERT_INTO("seage.solutions");
-          VALUES("solution_id", "#{solutionID}::uuid");
-          VALUES("experiment_task_id", "#{experimentTaskID}::uuid");
-          VALUES("hash", "#{hash}");
-          VALUES("solution", "#{solution}");
-          VALUES("objective_value", "#{objectiveValue}");
-          VALUES("iteration_number", "#{iterationNumber}");
-        }
-      }.toString();
+    private SolutionSqlProvider() {}
+
+    public static String insertSolution() {
+      return new SQL()
+        .INSERT_INTO("seage.solutions")
+        .VALUES("solution_id", "#{solutionID}::uuid")
+        .VALUES("experiment_task_id", "#{experimentTaskID}::uuid")
+        .VALUES("hash", "#{hash}")
+        .VALUES("solution", "#{solution}")
+        .VALUES("objective_value", "#{objectiveValue}")
+        .VALUES("iteration_number", "#{iterationNumber}")
+        .VALUES("date", "#{date}")
+        .toString();
     }
   }
   
   @InsertProvider(type = SolutionSqlProvider.class, method = "insertSolution")
-  // @Options(useGeneratedKeys = true, keyProperty = "id")
   int insertSolution(Solution solution);
 
   @Select("SELECT * FROM seage.solutions WHERE solution_id = #{solutionID}")
@@ -40,6 +39,7 @@ public interface SolutionMapper {
       @Result(property = "solution", column = "solution"),
       @Result(property = "objectiveValue", column = "objective_value"),
       @Result(property = "iterationNumber", column = "iteration_number"),
+      @Result(property = "date", column = "date"),
   })
   Solution getSolution(UUID solutionID);
 }

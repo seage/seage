@@ -1,7 +1,6 @@
 package org.seage.hh.knowledgebase.db;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Date;
@@ -29,9 +28,10 @@ public class ExperimentTest {
       "algorithmID1", 
       "config1", 
       new Date(), 
-      new Date(), 
-      "hostname1", 
-      1.0
+      new Date(),
+      1.0,
+      "hostname1",
+      "1"
     );
     
     this.experiment2 = new Experiment(
@@ -42,9 +42,10 @@ public class ExperimentTest {
       "algorithmID2", 
       "config2", 
       new Date(), 
-      new Date(), 
-      "hostname2", 
-      2.0
+      new Date(),
+      2.0,
+      "hostname2",
+      "1"
     );
   }
 
@@ -83,7 +84,7 @@ public class ExperimentTest {
       mapper.insertExperiment(this.experiment2);
       session.commit();
       // Experiment got id
-      assertNotEquals(0, this.experiment1.getExperimentID());
+      assertNotNull(this.experiment1.getExperimentID());
       // Exactly two experiments inserted
       int count = mapper.getExperimentCount();      
       assertEquals(2, count);
