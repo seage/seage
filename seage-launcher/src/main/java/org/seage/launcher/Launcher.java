@@ -9,12 +9,13 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 
 import org.seage.aal.problem.ProblemProvider;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmExperimenter.ConfiguratorType;
 import org.seage.launcher.commands.Command;
 import org.seage.launcher.commands.ExperimentMultiRandomCommand;
-import org.seage.launcher.commands.ExperimentSingleCommand;
+import org.seage.launcher.commands.ExperimentSingleDefaultCommand;
 import org.seage.launcher.commands.ExperimentSingleEvolutionCommand;
 import org.seage.launcher.commands.ExperimentSingleFeedbackCommand;
+import org.seage.launcher.commands.ExperimentSingleGridCommand;
+import org.seage.launcher.commands.ExperimentSingleRandomCommand;
 import org.seage.launcher.commands.ListCommand;
 import org.seage.problem.sat.SatProblemProvider;
 import org.seage.problem.tsp.TspProblemProvider;
@@ -35,9 +36,9 @@ public class Launcher {
     try {
       HashMap<String, Command> commands = new LinkedHashMap<>();
       commands.put("list", new ListCommand());
-      commands.put("experiment-single-default", new ExperimentSingleCommand(ConfiguratorType.DEFAULT));
-      commands.put("experiment-single-random", new ExperimentSingleCommand(ConfiguratorType.RANDOM));
-      commands.put("experiment-single-interval", new ExperimentSingleCommand(ConfiguratorType.INTERVAL));
+      commands.put("experiment-single-default", new ExperimentSingleDefaultCommand());
+      commands.put("experiment-single-random", new ExperimentSingleRandomCommand());
+      commands.put("experiment-single-interval", new ExperimentSingleGridCommand());
       commands.put("experiment-single-feedback", new ExperimentSingleFeedbackCommand());
       commands.put("experiment-single-evolution", new ExperimentSingleEvolutionCommand());
       commands.put("experiment-multi-random", new ExperimentMultiRandomCommand());

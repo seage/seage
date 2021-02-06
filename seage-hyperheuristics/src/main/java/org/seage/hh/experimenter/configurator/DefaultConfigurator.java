@@ -33,6 +33,16 @@ import org.seage.data.DataNode;
  * @author Richard Malek
  */
 public class DefaultConfigurator extends Configurator {
+  private double spread;
+
+  /**
+   * DefaultConfigurator constructor.
+   * @param spread The maximal distance from the init value (0, 1>
+   */
+  public DefaultConfigurator(double spread) {
+    this.spread = spread;
+  }
+
   @Override
   public ProblemConfig[] prepareConfigs(
       ProblemInfo problemInfo, String instanceID, String algID, int numConfigs)

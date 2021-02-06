@@ -44,7 +44,7 @@ public class ConfiguratorTest {
 
   @Test
   void testDefaultConfigurator() throws Exception {
-    DefaultConfigurator configurator = new DefaultConfigurator();
+    DefaultConfigurator configurator = new DefaultConfigurator(0);
 
     ProblemConfig[] pc = configurator.prepareConfigs(pi, "Instance01", "Algorithm01", 100);
     assertEquals(1, pc.length);
