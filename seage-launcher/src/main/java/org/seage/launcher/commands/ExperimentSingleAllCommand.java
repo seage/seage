@@ -1,24 +1,25 @@
 package org.seage.launcher.commands;
 
 import java.util.Map;
-import java.util.List;
-import java.util.HashMap;
+// import java.util.List;
+// import java.util.HashMap;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
+
+// import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
 
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.IProblemProvider;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperimenter;
-import org.seage.data.DataNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmExperimenter;
+//import org.seage.data.DataNode;
 
 
 
-@Parameters(commandDescription = "Perform all single random experiment")
-public class ExperimentSingleRandomAllCommand extends Command {
-    private static final Logger _logger = LoggerFactory.getLogger(ListCommand.class.getName());
+@Parameters(commandDescription = "Perform all single experiment")
+public class ExperimentSingleAllCommand extends Command {
+    //private static final Logger _logger = LoggerFactory.getLogger(ListCommand.class.getName());
 
     @Parameter(names = "-n", required = true, description = "Number of random configs per each experiment")
     int numOfConfigs;
@@ -26,6 +27,12 @@ public class ExperimentSingleRandomAllCommand extends Command {
     int algorithmTimeoutS;
     @Parameter(names = "-i", required = false, description = "Instances")
     String instances;
+
+    SingleAlgorithmExperimenter.ConfiguratorType type;
+
+    public ExperimentSingleAllCommand(SingleAlgorithmExperimenter.ConfiguratorType type) {
+        this.type = type;
+    }
 
     @Override
     public void performCommad() throws Exception {
@@ -52,8 +59,16 @@ public class ExperimentSingleRandomAllCommand extends Command {
         // }
 
         for (String problemId : problemProviders.keySet()) {
-            new SingleAlgorithmRandomExperimenter(problemId, new String[] {"-"},
-            new String[] {"-"}, numOfConfigs, algorithmTimeoutS).runExperiment();
+            // new SingleAlgorithmExperimenter(problemId, new String[] {"-"},
+            // new String[] {"-"}, numOfConfigs, algorithmTimeoutS).runExperiment();
+
+            new SingleAlgorithmExperimenter(
+                problemId,
+                new String[] {"-"},
+                new String[] {"-"}, 
+                numOfConfigs, 
+                algorithmTimeoutS,
+                this.type).runExperiment();
         }
   }
 }

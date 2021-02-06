@@ -7,12 +7,13 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmExperimenter.ConfiguratorType;
 import org.seage.launcher.commands.Command;
 import org.seage.launcher.commands.ExperimentMultiRandomCommand;
+import org.seage.launcher.commands.ExperimentSingleCommand;
 import org.seage.launcher.commands.ExperimentSingleEvolutionCommand;
 import org.seage.launcher.commands.ExperimentSingleFeedbackCommand;
-import org.seage.launcher.commands.ExperimentSingleRandomCommand;
-import org.seage.launcher.commands.ExperimentSingleRandomAllCommand;
+import org.seage.launcher.commands.ExperimentSingleAllCommand;
 import org.seage.launcher.commands.ListCommand;
 //import org.seage.launcher.commands.ReportCommand;
 //import org.seage.logging.LogHelper;
@@ -27,7 +28,8 @@ import com.beust.jcommander.ParameterException;
 
 public class Launcher {
   static {
-    ProblemProvider.providers = new Class<?>[] { TspProblemProvider.class, SatProblemProvider.class };
+    ProblemProvider.providerClasses =
+        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class};
   }
   private static final Logger _logger = LoggerFactory.getLogger(Launcher.class.getName());
 
@@ -37,13 +39,16 @@ public class Launcher {
   public static void main(String[] args) {
     try {
       HashMap<String, Command> commands = new LinkedHashMap<>();
-      commands.put("list", new ListCommand());
-      //.put("report", new ReportCommand());
-      commands.put("experiment-single-random", new ExperimentSingleRandomCommand());
-      commands.put("experiment-single-random-all", new ExperimentSingleRandomAllCommand());
-      commands.put("experiment-single-feedback", new ExperimentSingleFeedbackCommand());
-      commands.put("experiment-single-evolution", new ExperimentSingleEvolutionCommand());
-      commands.put("experiment-multi-random", new ExperimentMultiRandomCommand());
+      commands.put("list",                            new ListCommand());
+      commands.put("experiment-single-all-default",   new ExperimentSingleAllCommand(ConfiguratorType.DEFAULT));
+      commands.put("experiment-single-all-random",    new ExperimentSingleAllCommand(ConfiguratorType.RANDOM));
+      commands.put("experiment-single-all-interval",  new ExperimentSingleAllCommand(ConfiguratorType.INTERVAL));
+      commands.put("experiment-single-default",       new ExperimentSingleCommand(ConfiguratorType.DEFAULT));
+      commands.put("experiment-single-random",        new ExperimentSingleCommand(ConfiguratorType.RANDOM));
+      commands.put("experiment-single-interval",      new ExperimentSingleCommand(ConfiguratorType.INTERVAL));
+      commands.put("experiment-single-feedback",      new ExperimentSingleFeedbackCommand());
+      commands.put("experiment-single-evolution",     new ExperimentSingleEvolutionCommand());
+      commands.put("experiment-multi-random",         new ExperimentMultiRandomCommand());
 
       Launcher launcher = new Launcher();
 

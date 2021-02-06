@@ -38,7 +38,6 @@ public interface IAlgorithmAdapter<P extends Phenotype<?>, S> {
   // // |_ name
   // // |_ class
   // // |_ parameters
-  // DataNode getAlgorithmInfo() throws Exception;
 
   // Runs the algorithm.
   void startSearching(final AlgorithmParams params) throws Exception;

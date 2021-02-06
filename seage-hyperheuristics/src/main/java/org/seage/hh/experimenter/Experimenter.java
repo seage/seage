@@ -60,7 +60,7 @@ public abstract class Experimenter {
    * @param algorithmIDs Array of algorithms involved in the experiment
    * @throws Exception Throws exception in case of a trouble.
    */
-  public Experimenter(
+  protected Experimenter(
       String experimentName, String problemID, String[] instanceIDs, String[] algorithmIDs)
       throws Exception {
     this.experimentName = experimentName;
@@ -69,8 +69,8 @@ public abstract class Experimenter {
     this.instanceIDs = instanceIDs;
     this.algorithmIDs = algorithmIDs;
 
-    new File("output/experiment-logs").mkdirs();
-    logger.info("Experimenter created, getting problem info");
+    // new File("output/experiment-logs").mkdirs();
+    logger.info("Experimenter {} created, getting problem info", experimentName);
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
     // this.experimentTasksRunner = new SparkExperimentTasksRunner();
@@ -91,7 +91,7 @@ public abstract class Experimenter {
     // *** Check arguments ***
     // Problem instances
     if (this.instanceIDs[0].equals("-")) {
-      List<String> instIDs = new ArrayList<String>();
+      List<String> instIDs = new ArrayList<>();
       for (DataNode ins : this.problemInfo.getDataNode("Instances").getDataNodes("Instance")) {
         instIDs.add(ins.getValueStr("id"));
       }
@@ -99,7 +99,7 @@ public abstract class Experimenter {
     }
     // Algorithms
     if (this.algorithmIDs[0].equals("-")) {
-      List<String> algIDs = new ArrayList<String>();
+      List<String> algIDs = new ArrayList<>();
       for (DataNode alg : this.problemInfo.getDataNode("Algorithms").getDataNodes("Algorithm")) {
         algIDs.add(alg.getValueStr("id"));
       }
@@ -111,8 +111,8 @@ public abstract class Experimenter {
     long endDate = startDate;
     this.experimentID = UUID.randomUUID();
     logger.info("-------------------------------------");
-    logger.info("Experimenter: " + this.experimentName);
-    logger.info("ExperimentID: " + experimentID);
+    logger.info("Experimenter: {}", this.experimentName);
+    logger.info("ExperimentID: {}", experimentID);
     logger.info("-------------------------------------");
 
     long totalNumOfConfigs = getNumberOfConfigs(this.instanceIDs.length, this.algorithmIDs.length);
@@ -152,9 +152,8 @@ public abstract class Experimenter {
     }
     endDate = System.currentTimeMillis();
     logger.info("-------------------------------------");
-    logger.info("Experiment " + experimentID + " finished ...");
-    logger.info(String.format("Experiment duration: %s (DD:HH:mm:ss)",
-        getDurationBreakdown(endDate - startDate)));
+    logger.info("Experiment {} finished ...", experimentID);
+    logger.info("Experiment duration: {} (DD:HH:mm:ss)", getDurationBreakdown(endDate - startDate));
     
     this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
   }

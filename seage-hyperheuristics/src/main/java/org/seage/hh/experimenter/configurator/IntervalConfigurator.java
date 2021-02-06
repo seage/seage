@@ -39,18 +39,14 @@ import org.seage.data.DataNode;
 public class IntervalConfigurator extends Configurator {
 
   // private String _algID;
-  private int _granularity;
-  private DataNode _paramInfo;
-
-  public IntervalConfigurator(int granularity) {
-    // _algID = algID;
-    _granularity = granularity;
-  }
+  private int granularity;
+  private DataNode paramInfo;
 
   @Override
   public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs)
       throws Exception {
 
+    this.granularity = numConfigs;
     List<ProblemConfig> results = new ArrayList<ProblemConfig>();
     List<List<Double>> values = new ArrayList<List<Double>>();
 
@@ -84,7 +80,7 @@ public class IntervalConfigurator extends Configurator {
       List<List<Double>> returnValues = new ArrayList<List<Double>>();
       ArrayList<Double> parentValues = new ArrayList<Double>();
       ArrayList<String> paramsToAdd = new ArrayList<String>();
-      _paramInfo = new DataNode("ParamInfo");
+      paramInfo = new DataNode("ParamInfo");
 
       for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
           .getDataNodes("Parameter")) {
@@ -93,7 +89,7 @@ public class IntervalConfigurator extends Configurator {
         DataNode p = new DataNode(name);
         p.putValue("min", paramNode.getValue("min"));
         p.putValue("max", paramNode.getValue("max"));
-        _paramInfo.putDataNode(p);
+        paramInfo.putDataNode(p);
       }
 
       expand(parentValues, paramsToAdd, returnValues);
@@ -131,10 +127,10 @@ public class IntervalConfigurator extends Configurator {
 
     // ProblemConfig n = (ProblemConfig)parent.clone();
 
-    for (int i = 0; i < _granularity; i++) {
-      double min = _paramInfo.getDataNode(paramName).getValueDouble("min");
-      double max = _paramInfo.getDataNode(paramName).getValueDouble("max");
-      double val = min + (max - min) / (_granularity - 1) * i;
+    for (int i = 0; i < granularity; i++) {
+      double min = paramInfo.getDataNode(paramName).getValueDouble("min");
+      double max = paramInfo.getDataNode(paramName).getValueDouble("max");
+      double val = min + (max - min) / (granularity - 1) * i;
       // System.out.print(val+" ");
       List<Double> valueCfg = new ArrayList<Double>();
       valueCfg.addAll(parentValues);
