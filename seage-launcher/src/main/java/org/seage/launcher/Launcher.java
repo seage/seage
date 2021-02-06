@@ -40,9 +40,9 @@ public class Launcher {
     try {
       HashMap<String, Command> commands = new LinkedHashMap<>();
       commands.put("list",                            new ListCommand());
-      commands.put("experiment-single-all-default",   new ExperimentSingleAllCommand(ConfiguratorType.DEFAULT));
-      commands.put("experiment-single-all-random",    new ExperimentSingleAllCommand(ConfiguratorType.RANDOM));
-      commands.put("experiment-single-all-interval",  new ExperimentSingleAllCommand(ConfiguratorType.INTERVAL));
+      commands.put("experiment-single-default-all",   new ExperimentSingleAllCommand(ConfiguratorType.DEFAULT));
+      commands.put("experiment-single-random-all",    new ExperimentSingleAllCommand(ConfiguratorType.RANDOM));
+      commands.put("experiment-single-interval-all",  new ExperimentSingleAllCommand(ConfiguratorType.INTERVAL));
       commands.put("experiment-single-default",       new ExperimentSingleCommand(ConfiguratorType.DEFAULT));
       commands.put("experiment-single-random",        new ExperimentSingleCommand(ConfiguratorType.RANDOM));
       commands.put("experiment-single-interval",      new ExperimentSingleCommand(ConfiguratorType.INTERVAL));
