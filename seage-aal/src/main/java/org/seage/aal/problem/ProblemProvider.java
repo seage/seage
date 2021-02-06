@@ -1,33 +1,29 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
- * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
 package org.seage.aal.problem;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
-
+import java.util.Map;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.Phenotype;
@@ -44,18 +40,18 @@ import org.slf4j.LoggerFactory;
  * @author Richard Malek
  */
 public abstract class ProblemProvider<P extends Phenotype<?>> implements IProblemProvider<P> {
-  public static Class<?>[] providers = {};
-  private static Logger _logger = LoggerFactory.getLogger(ProblemProvider.class.getName());
-  private static HashMap<String, IProblemProvider<Phenotype<?>>> _providers;
-  private ProblemInfo _problemInfo;
-  private HashMap<String, IAlgorithmFactory<P, ?>> _algFactories;
+  public static Class<?>[] providerClasses = {};
+  private static Logger logger = LoggerFactory.getLogger(ProblemProvider.class.getName());
+  private static HashMap<String, IProblemProvider<Phenotype<?>>> providers;
+  private ProblemInfo problemInfo;
+  private HashMap<String, IAlgorithmFactory<P, ?>> algFactories;
 
   @Override
   public ProblemInfo getProblemInfo() throws Exception {
-    if (_problemInfo != null)
-      return _problemInfo;
+    if (problemInfo != null)
+      return problemInfo;
 
-    _problemInfo = new ProblemInfo("ProblemInfo");
+    problemInfo = new ProblemInfo("ProblemInfo");
 
     Class<?> problemClass = this.getClass();
     Annotation an = null;
@@ -70,9 +66,9 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
       throw new Exception("Unable to get annotation ProblemName");
     String problemName = ((Annotations.ProblemName) an).value();
 
-    _problemInfo.putValue("id", problemId);
-    _problemInfo.putValue("name", problemName);
-    _problemInfo.putValue("class", getClass().getCanonicalName());
+    problemInfo.putValue("id", problemId);
+    problemInfo.putValue("name", problemName);
+    problemInfo.putValue("class", getClass().getCanonicalName());
 
     // Instances
     DataNode instances = new DataNode("Instances");
@@ -88,11 +84,11 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
       instance.putValue("name", instanceFileName);
       instances.putDataNode(instance);
     }
-    _problemInfo.putDataNode(instances);
+    problemInfo.putDataNode(instances);
 
     // Algorithms
     DataNode algorithms = new DataNode("Algorithms");
-    _algFactories = new HashMap<String, IAlgorithmFactory<P, ?>>();
+    algFactories = new HashMap<>();
 
     for (ClassInfo ci : ClassUtil.searchForClasses(IAlgorithmFactory.class, this.getClass().getPackage().getName())) {
       try {
@@ -116,13 +112,12 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
         algorithm.putValue("name", algName);
         algorithm.putValue("factoryClass", ci.getClassName());
 
-        IAlgorithmFactory factory = (IAlgorithmFactory) algFactoryClass.newInstance();
-        // factory.setProblemProvider((IProblemProvider)ObjectCloner.deepCopy(this));
-        _algFactories.put(algId, factory);
+        IAlgorithmFactory<P, ?> factory = (IAlgorithmFactory<P, ?>)algFactoryClass.getConstructor().newInstance();
+        algFactories.put(algId, factory);
 
         // Algorithm parameters
 
-        Class<?> algAdapterClass = ((IAlgorithmFactory) algFactoryClass.newInstance()).getAlgorithmClass();
+        Class<?> algAdapterClass = factory.getAlgorithmClass();
         an2 = algAdapterClass.getAnnotation(Annotations.AlgorithmParameters.class);
         if (an2 == null)
           throw new Exception("Unable to get annotation AlgorithmParameters");
@@ -139,60 +134,59 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
         // ---
         algorithms.putDataNode(algorithm);
       } catch (Exception ex) {
-        // System.err.println(ci.getClassName()+": "+ex.getMessage());
-        ex.printStackTrace();
+        logger.error(String.format("Getting information on %s failed", ci.getClassName()), ex);
       }
     }
-    _problemInfo.putDataNode(algorithms);
+    problemInfo.putDataNode(algorithms);
 
-    return _problemInfo;
+    return problemInfo;
   }
 
   @Override
   public IAlgorithmFactory<P, ?> getAlgorithmFactory(String algId) throws Exception {
-    if (_algFactories == null)
+    if (algFactories == null)
       throw new Exception("ProblemProvider not initialized, call getProblemInfo() first");
-    if (!_algFactories.containsKey(algId))
+    if (!algFactories.containsKey(algId))
       throw new Exception("Unknown algorithm id: " + algId);
-    return _algFactories.get(algId);
+    return algFactories.get(algId);
   }
 
   @Override
   public HashMap<String, IAlgorithmFactory<P, ?>> getAlgorithmFactories() {
-    return _algFactories;
+    return algFactories;
   }
 
   ///////////////////////////////////////////////////////////////////////////
-  public static synchronized HashMap<String, IProblemProvider<Phenotype<?>>> getProblemProviders() throws Exception {
+  public static synchronized Map<String, IProblemProvider<Phenotype<?>>> getProblemProviders() throws Exception {
     HashMap<String, IProblemProvider<Phenotype<?>>> result = new HashMap<String, IProblemProvider<Phenotype<?>>>();
 
-    for (Class<?> c : providers) {
+    for (Class<?> c : providerClasses) {
       result.put(c.getAnnotation(Annotations.ProblemId.class).value(),
-          (IProblemProvider<Phenotype<?>>) c.newInstance());
+          (IProblemProvider<Phenotype<?>>) c.getConstructor().newInstance());
     }
 
     return result;
   }
 
-  public static synchronized HashMap<String, IProblemProvider<Phenotype<?>>> getProblemProviders0() throws Exception {
-    if (_providers != null)
-      return _providers;
+  public static synchronized Map<String, IProblemProvider<Phenotype<?>>> getProblemProviders0() throws Exception {
+    if (providers != null)
+      return providers;
 
-    _providers = new HashMap<String, IProblemProvider<Phenotype<?>>>();
-    _logger.info("Searching for Providers");
+    providers = new HashMap<>();
+    logger.info("Searching for Providers");
     for (ClassInfo ci : ClassUtil.searchForClasses(IProblemProvider.class, "org.seage.problem")) {
       try {
-        _logger.info(ci.getClassName());
-        IProblemProvider<Phenotype<?>> pp = (IProblemProvider<Phenotype<?>>) Class.forName(ci.getClassName())
-            .newInstance();
+        logger.info(ci.getClassName());
+        IProblemProvider<Phenotype<?>> pp = 
+          (IProblemProvider<Phenotype<?>>) Class.forName(ci.getClassName()).getConstructor().newInstance();
 
-        _providers.put(pp.getProblemInfo().getValueStr("id"), pp);
+        providers.put(pp.getProblemInfo().getValueStr("id"), pp);
       } catch (Exception ex) {
-        _logger.error(ci.getClassName(), ex);
+        logger.error(ci.getClassName(), ex);
       }
     }
-    _logger.info(String.format("Providers count: %d", _providers.keySet().size()));
-    return _providers;
+    logger.info("Providers count: {}", providers.keySet().size());
+    return providers;
   }
 
 }

@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 public class Launcher {
   static {
-    ProblemProvider.providers = new Class<?>[] { TspProblemProvider.class, SatProblemProvider.class };
+    ProblemProvider.providerClasses = new Class<?>[] { TspProblemProvider.class, SatProblemProvider.class };
   }
   private static final Logger _logger = LoggerFactory.getLogger(Launcher.class.getName());
 
