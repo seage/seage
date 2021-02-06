@@ -103,6 +103,6 @@ public class SingleAlgorithmRandomExperimenter extends Experimenter {
 
   @Override
   protected long getNumberOfConfigs(int instancesCount, int algorithmsCount) {
-    return this.numConfigs * NUM_RUNS * instancesCount * algorithmsCount;
+    return (long)this.numConfigs * NUM_RUNS * instancesCount * algorithmsCount;
   }
 }
