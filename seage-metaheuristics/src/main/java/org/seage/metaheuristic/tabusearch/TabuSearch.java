@@ -534,7 +534,7 @@ public class TabuSearch extends TabuSearchBase {
    *                not.
    * @since 1.0
    */
-  protected void setSolving(boolean solving) {
+  protected synchronized void setSolving(boolean solving) {
     this.solving = solving;
   } // end setSolving
 

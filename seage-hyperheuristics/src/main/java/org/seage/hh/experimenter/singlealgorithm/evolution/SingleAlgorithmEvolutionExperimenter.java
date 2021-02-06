@@ -162,7 +162,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
 
   @Override
   protected long getNumberOfConfigs(int instancesCount, int algorithmsCount) {
-    return _numIterations * _numSubjects * instancesCount * algorithmsCount;
+    return (long)_numIterations * _numSubjects * instancesCount * algorithmsCount;
   }
 
   @Override

@@ -1,118 +1,120 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
- * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.metaheuristic.antcolony;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
- *
+ * Node class.
  * @author Martin Zaloga
  */
 public class Node {
 
-  private int _id;
-  private HashMap<Node, Edge> _edges;
-  private HashMap<Integer, Node> _nodes;
+  private int id;
+  private HashMap<Node, Edge> edges;
+  private HashMap<Integer, Node> nodes;
 
+  /** Node. */
   public Node(int id) {
-    _id = id;
-    _edges = new HashMap<Node, Edge>();
-    _nodes = new HashMap<Integer, Node>();
+    this.id = id;
+    edges = new HashMap<>();
+    nodes = new HashMap<>();
   }
 
   /**
-   * My implementation function equals
+   * My implementation function equals.
    * 
    * @param node - Compared node
    * @return - if compared nodes are some
    */
   public boolean equals(Object node) {
-    Node n = (Node) node;
-    if (n != null && _id == n._id) {
-      return true;
-    } else {
-      return false;
+    if (node instanceof Node) {
+      Node n = (Node) node;
+      return n.id == this.id;
     }
+    return false;    
   }
 
   /**
-   * Identification number
+   * Identification number.
    * 
    * @return - Number id
    */
   public int getID() {
-    return _id;
+    return id;
   }
 
   /**
-   * Edge in edge-list adding
+   * Edge in edge-list adding.
    * 
    * @param edge - Edge for add
-   * @throws Exception
+   * @throws Exception ex
    */
   public void addEdge(Edge edge) throws Exception {
     Node node = edge.getNode1();
     Node node2 = edge.getNode2();
 
-    if (node.equals(node2))
+    if (node.equals(node2)) {
       throw new Exception("Edge with both nodes the same.");
-    if (!(node.equals(this) || node2.equals(this)))
+    }
+    if (!(node.equals(this) || node2.equals(this))) {
       throw new Exception("The adding edge is not related to the current node.");
+    }
 
-    if (node.equals(this))
+    if (node.equals(this)) {
       node = node2;
+    }
 
-    if (!_edges.containsValue(edge))
-      _edges.put(node, edge);
+    if (!edges.containsValue(edge)) {
+      edges.put(node, edge);
+    }
 
-    _nodes.put(node.getID(), node);
+    nodes.put(node.getID(), node);
 
   }
 
   /**
-   * List all edges which are joined with actual node
+   * List all edges which are joined with actual node.
    * 
    * @return - List edges
    */
   public Collection<Edge> getEdges() {
-    return _edges.values();
+    return edges.values();
   }
 
-  public HashMap<Node, Edge> getEdgeMap() {
-    return _edges;
+  public Map<Node, Edge> getEdgeMap() {
+    return edges;
   }
 
   @Override
   public int hashCode() {
-    return _id;
+    return this.id;
   }
 
   @Override
   public String toString() {
-    return new Integer(getID()).toString();
+    return String.valueOf(this.id);
   }
 }

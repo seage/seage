@@ -33,16 +33,16 @@ import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 
 /**
- *
+ * SatAntBrain class.
  * @author Zagy
  */
 public class SatAntBrain extends AntBrain {
 
-  private Formula _formula;
+  private Formula formula;
 
   public SatAntBrain(Graph graph, Formula formula) {
     super(graph);
-    _formula = formula;
+    this.formula = formula;
   }
 
   @Override
@@ -50,25 +50,26 @@ public class SatAntBrain extends AntBrain {
     super.markSelected(nextNode);
 
     if (nextNode != null) {
-      Node n2 = _graph.getNodes().get(-nextNode.getID());
-      _availableNodes.remove(n2);
+      Node n2 = graph.getNodes().get(-nextNode.getID());
+      availableNodes.remove(n2);
     }
   }
 
   @Override
   public double getPathCost(List<Edge> path) {
-    Boolean[] solution = new Boolean[_formula.getLiteralCount()];
+    Boolean[] solution = new Boolean[formula.getLiteralCount()];
     List<Node> nodeList = edgeListToNodeList(path);
 
     for (Node n : nodeList) {
-      if (n.getID() == 0)
+      if (n.getID() == 0) {
         continue;
+      }
       if (n.getID() < 0) {
         solution[-n.getID() - 1] = false;
       } else {
         solution[n.getID() - 1] = true;
       }
     }
-    return (FormulaEvaluator.evaluate(_formula, solution) + 0.1);
+    return (FormulaEvaluator.evaluate(formula, solution) + 0.1);
   }
 }
