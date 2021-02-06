@@ -50,7 +50,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
     algParams = new AlgorithmParams();
 
     // _algParams.putValue("annealCoeficient", 0.1);
-    algParams.putValue("numIterations", 10);
+    algParams.putValue("iterationCount", 10);
     algParams.putValue("maxTemperature", 100);
     algParams.putValue("minTemperature", 1);
   }
@@ -65,7 +65,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
   @Test
   public void testAlgorithmWithParamsAtZero() throws Exception {
     AlgorithmParams params = new AlgorithmParams();
-    params.putValue("numIterations", 0);
+    params.putValue("iterationCount", 0);
     params.putValue("maxTemperature", 0);
     params.putValue("minTemperature", 0);
     super.setAlgParameters(params);
@@ -76,7 +76,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
   @Override
   public void testAsyncRunning() throws Exception {
     AlgorithmParams params = new AlgorithmParams();
-    params.putValue("numIterations", 1000000);
+    params.putValue("iterationCount", 1000000);
     params.putValue("maxTemperature", 100000);
     params.putValue("minTemperature", 1);
     super.setAlgParameters(params);

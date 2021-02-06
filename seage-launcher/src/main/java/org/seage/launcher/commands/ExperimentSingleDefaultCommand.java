@@ -18,7 +18,7 @@ public class ExperimentSingleDefaultCommand extends Command {
   @Parameter(names = "-t", required = true, description = "Time to run algorithm")
   int algorithmTimeoutS;
   @Parameter(names = "-s", required = true, description = "Spread around the default parameter value")
-  int spread;
+  double spread;
 
   @Override
   public void performCommad() throws Exception {
