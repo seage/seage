@@ -5,14 +5,14 @@ CREATE SCHEMA IF NOT EXISTS seage;
 CREATE TABLE IF NOT EXISTS seage.experiments (
 	experiment_id UUID NOT NULL PRIMARY KEY,
 	experiment_type VARCHAR(100) NOT NULL,
-	problem_id VARCHAR(100) NOT NULL,
-	instance_id VARCHAR(100) NOT NULL,
-	algorithm_id VARCHAR(100) NOT NULL,
+	problem_id TEXT NOT NULL,
+	instance_id TEXT NOT NULL,
+	algorithm_id TEXT NOT NULL,
 	config TEXT,
 	start_date TIMESTAMP,
 	end_date TIMESTAMP,	
 	score DOUBLE PRECISION,
-	host_info VARCHAR(1000),
+	host_info TEXT,
 	format_version VARCHAR(10)
 );
 CREATE TABLE IF NOT EXISTS seage.experiment_tasks (
