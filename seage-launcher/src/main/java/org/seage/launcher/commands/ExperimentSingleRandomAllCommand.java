@@ -31,29 +31,29 @@ public class ExperimentSingleRandomAllCommand extends Command {
     public void performCommad() throws Exception {
         Map<String, IProblemProvider<Phenotype<?>>> problemProviders = ProblemProvider.getProblemProviders();
 
-        for (String problemId : problemProviders.keySet()) {
+        // for (String problemId : problemProviders.keySet()) {
 
-            try {
+        //     try {
 
-            IProblemProvider<?> pp = problemProviders.get(problemId);
-            DataNode pi = pp.getProblemInfo();
+        //     IProblemProvider<?> pp = problemProviders.get(problemId);
+        //     DataNode pi = pp.getProblemInfo();
             
-            for (DataNode alg : pi.getDataNode("Algorithms").getDataNodes()) {
-                for (DataNode inst : pi.getDataNode("Instances").getDataNodes()) {
-                    new SingleAlgorithmRandomExperimenter(problemId, new String[] {inst.getValueStr("id")},
-                        new String[] {alg.getValueStr("id")}, numOfConfigs, algorithmTimeoutS).runExperiment();
-                    //System.out.println(alg.getValueStr("id") + " - " + inst.getValueStr("id"));
-                }
-            }
-            } catch (Exception ex) {
-                _logger.error(problemId + ": " + ex.getMessage(), ex);
-            }
-            // XmlHelper.writeXml(problems, "problems.xml");
-        }
+        //     for (DataNode alg : pi.getDataNode("Algorithms").getDataNodes()) {
+        //         for (DataNode inst : pi.getDataNode("Instances").getDataNodes()) {
+        //             new SingleAlgorithmRandomExperimenter(problemId, new String[] {inst.getValueStr("id")},
+        //                 new String[] {alg.getValueStr("id")}, numOfConfigs, algorithmTimeoutS).runExperiment();
+        //             //System.out.println(alg.getValueStr("id") + " - " + inst.getValueStr("id"));
+        //         }
+        //     }
+        //     } catch (Exception ex) {
+        //         _logger.error(problemId + ": " + ex.getMessage(), ex);
+        //     }
+        //     // XmlHelper.writeXml(problems, "problems.xml");
+        // }
 
-    // for (String problemId : problemProviders.keySet()) {
-    //     new SingleAlgorithmRandomExperimenter(problemId, instancesProviders.get(instances),
-    //     new String[] {"-"}, numOfConfigs, algorithmTimeoutS).runExperiment();
-    // }
+        for (String problemId : problemProviders.keySet()) {
+            new SingleAlgorithmRandomExperimenter(problemId, new String[] {"-"},
+            new String[] {"-"}, numOfConfigs, algorithmTimeoutS).runExperiment();
+        }
   }
 }
