@@ -27,12 +27,12 @@ public class ExperimentSingleAllCommand extends Command {
     @Override
     public void performCommad() throws Exception {
         Map<String, IProblemProvider<Phenotype<?>>> problemProviders = ProblemProvider.getProblemProviders();
-        String[] problemIDs = {"GeneticAlgorithm", "TabuSearch", "AntColony", "SimulatedAnnealing"};
+        String[] algorithmIDs = {"GeneticAlgorithm", "TabuSearch", "AntColony", "SimulatedAnnealing"};
         for (String problemId : problemProviders.keySet()) {
             new SingleAlgorithmExperimenter(
                 problemId,
                 new String[] {"-"},
-                problemIDs, 
+                algorithmIDs, 
                 numOfConfigs, 
                 algorithmTimeoutS,
                 this.type).runExperiment();
