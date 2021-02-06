@@ -89,9 +89,4 @@ public @interface Annotations {
 
     double init();
   }
-
-  // public static Annotation get(String clsName, Class anotClass)
-  // {
-  //
-  // }
 }

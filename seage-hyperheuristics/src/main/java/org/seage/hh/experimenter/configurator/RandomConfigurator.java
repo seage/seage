@@ -39,10 +39,7 @@ public class RandomConfigurator extends Configurator {
   public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs)
       throws Exception {
 
-    List<ProblemConfig> results = new ArrayList<ProblemConfig>();
-    // List<List<Double>> values = new ArrayList<List<Double>>();
-
-    // System.out.println(instanceInfo.getValue("path"));
+    List<ProblemConfig> results = new ArrayList<>();
 
     for (int i = 0; i < numConfigs; i++) {
       ProblemConfig config = createProblemConfig(problemInfo, instanceID, algorithmID);

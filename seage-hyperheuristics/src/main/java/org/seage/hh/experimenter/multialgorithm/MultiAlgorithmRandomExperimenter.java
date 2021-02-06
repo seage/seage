@@ -11,7 +11,7 @@ public class MultiAlgorithmRandomExperimenter extends Experimenter {
   }
 
   @Override
-  protected void runExperiment(ProblemInstanceInfo instanceInfo) throws Exception {
+  protected void runExperimentTasks(ProblemInstanceInfo instanceInfo) throws Exception {
     // TODO Auto-generated method stub
 
   }

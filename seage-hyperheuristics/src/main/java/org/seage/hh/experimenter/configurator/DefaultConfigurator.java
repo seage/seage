@@ -38,7 +38,6 @@ public class DefaultConfigurator extends Configurator {
       ProblemInfo problemInfo, String instanceID, String algID, int numConfigs)
       throws Exception {
     ProblemConfig result = new ProblemConfig("Config");
-    // result.putDataNode(problemInfo.getDataNode("Algorithms").getDataNodeById(_algID));
     DataNode problem = new DataNode("Problem");
     problem.putValue("id", problemInfo.getValue("id"));
     problem.putDataNode(problemInfo.getDataNode("Instances").getDataNodeById(instanceID));

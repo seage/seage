@@ -46,7 +46,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
   }
 
   @Override
-  protected void runExperiment(ProblemInstanceInfo instanceInfo) throws Exception {
+  protected void runExperimentTasks(ProblemInstanceInfo instanceInfo) throws Exception {
     String problemID = this.problemInfo.getProblemID();
     String instanceID = instanceInfo.getInstanceID();
 
