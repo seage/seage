@@ -1,27 +1,23 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
- * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
 package org.seage.aal.algorithm.tabusearch;
 
@@ -41,6 +37,8 @@ import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.metaheuristic.tabusearch.TabuSearch;
 import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
 import org.seage.metaheuristic.tabusearch.TabuSearchListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * TabuSearchAdapter interface.
@@ -49,7 +47,7 @@ import org.seage.metaheuristic.tabusearch.TabuSearchListener;
     @Parameter(name = "numSolutions", min = 1, max = 1, init = 1),
     @Parameter(name = "tabuListLength", min = 1, max = 1000, init = 30) })
 public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Solution> extends AlgorithmAdapterImpl<P, S> {
-
+  protected static Logger logger = LoggerFactory.getLogger(TabuSearchAdapter.class.getName());
   private TabuSearch _tabuSearch;
   private TabuSearchObserver _observer;
   private int _iterationToGo;
@@ -67,7 +65,7 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
   private AlgorithmReporter<P> _reporter;
   private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
-  public TabuSearchAdapter(MoveManager moveManager, ObjectiveFunction objectiveFunction,
+  protected TabuSearchAdapter(MoveManager moveManager, ObjectiveFunction objectiveFunction,
       IPhenotypeEvaluator<P> phenotypeEvaluator) {
     _observer = new TabuSearchObserver();
     _tabuSearch = new TabuSearch(moveManager, objectiveFunction, false);
@@ -135,10 +133,6 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
   }
 
   private class TabuSearchObserver implements TabuSearchListener {
-    // params
-
-    public TabuSearchObserver() {
-    }
 
     @Override
     public void tabuSearchStarted(TabuSearchEvent e) {
@@ -170,25 +164,29 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
         _reporter.putNewSolution(System.currentTimeMillis(), e.getTabuSearch().getIterationsCompleted(),
             solutionToPhenotype(newBest));
       } catch (Exception ex) {
-        ex.printStackTrace();
+        logger.error("Failed to report new best solution", ex);
       }
 
     }
 
     @Override
     public void newCurrentSolutionFound(TabuSearchEvent e) {
+      // Not used yet
     }
 
     @Override
     public void unimprovingMoveMade(TabuSearchEvent e) {
+      // Not used yet
     }
 
     @Override
     public void improvingMoveMade(TabuSearchEvent e) {
+      // Not used yet
     }
 
     @Override
     public void noChangeInValueMoveMade(TabuSearchEvent e) {
+      // Not used yet
     }
   }
 }
