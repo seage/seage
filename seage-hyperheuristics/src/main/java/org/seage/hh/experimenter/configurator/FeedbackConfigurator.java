@@ -6,7 +6,6 @@ import java.util.List;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
-import org.seage.data.file.FileHelper;
 import org.seage.data.xml.XmlHelper;
 // import org.seage.knowledgebase.rapidminer.RapidMinerManager;
 
