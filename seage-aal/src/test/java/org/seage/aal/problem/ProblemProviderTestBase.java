@@ -1,13 +1,15 @@
 package org.seage.aal.problem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 import java.util.List;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmParams;
@@ -24,7 +26,7 @@ import org.seage.data.ObjectCloner;
 public abstract class ProblemProviderTestBase<P extends Phenotype<?>> {
   // protected IAlgorithmFactory<P, ?> _algorithmFactory;
   protected IProblemProvider<P> _problemProvider;
-  protected ProblemInstanceInfo _problemInstanceInfo;
+  protected List<ProblemInstanceInfo> _problemInstanceInfos;
 
   public ProblemProviderTestBase(IProblemProvider<P> problemProvider) {
     try {
@@ -41,8 +43,9 @@ public abstract class ProblemProviderTestBase<P extends Phenotype<?>> {
     try {
       ProblemInfo pi = _problemProvider.getProblemInfo();
       assertNotNull(pi.getProblemInstanceInfos());
-      _problemInstanceInfo = pi.getProblemInstanceInfos().get(0);
-      assertNotNull(_problemInstanceInfo);
+      _problemInstanceInfos = pi.getProblemInstanceInfos();
+      assertNotNull(_problemInstanceInfos);
+      assertFalse(_problemInstanceInfos.isEmpty(), "Can not get list of instances");
     } catch (Exception e) {
       fail(e);
     }
@@ -57,14 +60,21 @@ public abstract class ProblemProviderTestBase<P extends Phenotype<?>> {
   }
 
   @Test
-  public void testInitProblemInstance() throws Exception {
-    ProblemInstance pin = _problemProvider.initProblemInstance(_problemInstanceInfo);
-    assertNotNull(pin);
+  public void testInitProblemInstances() throws Exception {
+    for(ProblemInstanceInfo pii : _problemInstanceInfos){
+      try {
+        ProblemInstance pin = _problemProvider.initProblemInstance(pii);
+        assertNotNull(pin);
+      } catch(Exception ex) {
+        Assertions.fail("Fail to read " + pii.getInstanceID(), ex);
+      }
+    }
   }
+
 
   @Test
   public void testPhenotypeEvaluator() throws Exception {
-    ProblemInstance pin = _problemProvider.initProblemInstance(_problemInstanceInfo);
+    ProblemInstance pin = _problemProvider.initProblemInstance(_problemInstanceInfos.get(0));
     IPhenotypeEvaluator<P> phenotypeEvaluator = _problemProvider.initPhenotypeEvaluator(pin);
     assertNotNull(phenotypeEvaluator);
     P[] solutions = _problemProvider.generateInitialSolutions(pin, 10, 10);

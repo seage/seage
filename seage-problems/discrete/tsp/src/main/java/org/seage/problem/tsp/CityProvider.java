@@ -47,8 +47,8 @@ public class CityProvider {
 
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
-        if (line.equals("EOF"))
-          break;
+        if (line.isBlank() || line.isEmpty()) continue;
+        if (line.equals("EOF")) break;
         Double[] dataLine = readLine(line);
         result.add(new City(dataLine[0].intValue(), dataLine[1], dataLine[2]));
       }
@@ -59,13 +59,12 @@ public class CityProvider {
     return result.toArray(new City[0]);
   }
 
-  private static Double[] readLine(String line) throws IOException {
-    ArrayList<Double> result = new ArrayList<Double>();
+  private static Double[] readLine(String line) {
+    ArrayList<Double> result = new ArrayList<>();
     Scanner scanner = new Scanner(line);
-    scanner.useDelimiter(" ");
-    // while ( scanner.hasNext() )
+    scanner.useDelimiter("\\s+");
     for (int i = 0; i < 3; i++) {
-      result.add(Double.parseDouble(scanner.next()));
+      result.add(scanner.nextDouble());
     }
     scanner.close();
     return result.toArray(new Double[0]);

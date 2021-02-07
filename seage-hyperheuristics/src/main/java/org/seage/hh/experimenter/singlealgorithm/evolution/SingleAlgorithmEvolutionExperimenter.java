@@ -45,8 +45,24 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
     _feedbackConfigurator = new FeedbackConfigurator();
   }
 
-  @Override
-  protected void runExperimentTasks(ProblemInstanceInfo instanceInfo) throws Exception {
+  protected void experimentMain() throws Exception {
+    // Run experiment tasks for each instance
+    for (int i = 0; i < this.instanceIDs.length; i++) {
+      try {
+        logger.info("-------------------------------------");
+        logger.info(String.format("%-15s %s", "Problem:", this.problemID));
+        logger.info(String.format("%-15s %-16s    (%d/%d)", "Instance:", 
+            this.instanceIDs[i], i + 1, this.instanceIDs.length));
+        ProblemInstanceInfo instanceInfo = this.problemInfo.getProblemInstanceInfo(
+            this.instanceIDs[i]);
+        runExperimentTasksForProblemInstance(instanceInfo);
+      } catch (Exception ex) {
+        logger.warn(ex.getMessage(), ex);
+      }
+    }
+  }
+
+  protected void runExperimentTasksForProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception {
     String problemID = this.problemInfo.getProblemID();
     String instanceID = instanceInfo.getInstanceID();
 
