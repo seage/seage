@@ -110,7 +110,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
         an2 = algFactoryClass.getAnnotation(Annotations.Broken.class);
         if (an2 != null) {
-          logger.warn("!!! Algorithm '{}' is marked Broken", algName);
+          logger.debug("!!! Algorithm '{}' is marked Broken", algName);
           continue;
         }
 

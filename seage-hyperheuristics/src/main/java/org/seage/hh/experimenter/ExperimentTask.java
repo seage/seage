@@ -127,7 +127,7 @@ public class ExperimentTask implements Runnable, Serializable {
 
   @Override
   public void run() {
-    _logger.info("ExperimentTask started ({})", this.configID);
+    _logger.debug("ExperimentTask started ({})", this.configID);
     try {
       try {
         this.experimentTaskReport.putValue("machineName",
@@ -162,10 +162,10 @@ public class ExperimentTask implements Runnable, Serializable {
       long startTime = System.currentTimeMillis();
       algorithm.solutionsFromPhenotype(solutions);
       algorithm.startSearching(this.algorithmParams, true);
-      _logger.info("Algorithm started");
+      _logger.debug("Algorithm started");
       waitForTimeout(algorithm);
       algorithm.stopSearching();
-      _logger.info("Algorithm started");
+      _logger.debug("Algorithm stopped");
       long endTime = System.currentTimeMillis();
 
       solutions = algorithm.solutionsToPhenotype();
@@ -174,7 +174,7 @@ public class ExperimentTask implements Runnable, Serializable {
 
       this.experimentTaskReport.putDataNode(algorithm.getReport());
       this.experimentTaskReport.putValue("durationS", (endTime - startTime) / 1000);
-      _logger.info("Algorithm run duration: {}", this.experimentTaskReport.getValue("durationS"));
+      _logger.debug("Algorithm run duration: {}", this.experimentTaskReport.getValue("durationS"));
       // XmlHelper.writeXml(this.experimentTaskReport, _reportOutputStream,
       // getReportName());
 
@@ -183,7 +183,7 @@ public class ExperimentTask implements Runnable, Serializable {
       _logger.error(this.algorithmParams.toString());
 
     }
-    _logger.info("ExperimentTask finished ({})", this.configID);
+    _logger.debug("ExperimentTask finished ({})", this.configID);
   }
 
   private void waitForTimeout(IAlgorithmAdapter<?, ?> alg) throws Exception {
