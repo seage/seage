@@ -14,11 +14,6 @@ import org.seage.launcher.commands.ExperimentSingleEvolutionCommand;
 import org.seage.launcher.commands.ExperimentSingleFeedbackCommand;
 import org.seage.launcher.commands.ExperimentSingleGridCommand;
 import org.seage.launcher.commands.ExperimentSingleRandomCommand;
-import org.seage.launcher.commands.ExperimentSingleDefaultAllCommand;
-import org.seage.launcher.commands.ExperimentSingleEvolutionAllCommand;
-import org.seage.launcher.commands.ExperimentSingleFeedbackAllCommand;
-import org.seage.launcher.commands.ExperimentSingleGridAllCommand;
-import org.seage.launcher.commands.ExperimentSingleRandomAllCommand;
 import org.seage.launcher.commands.ListCommand;
 //import org.seage.launcher.commands.ReportCommand;
 //import org.seage.logging.LogHelper;
@@ -45,11 +40,6 @@ public class Launcher {
     try {
       HashMap<String, Command> commands = new LinkedHashMap<>();
       commands.put("list", new ListCommand());
-      commands.put("experiment-single-default-all",   new ExperimentSingleDefaultAllCommand());
-      commands.put("experiment-single-random-all",    new ExperimentSingleRandomAllCommand());
-      commands.put("experiment-single-interval-all",  new ExperimentSingleGridAllCommand());
-      commands.put("experiment-single-feedback-all",  new ExperimentSingleFeedbackAllCommand());
-      commands.put("experiment-single-evolution-all",  new ExperimentSingleEvolutionAllCommand());
       commands.put("experiment-single-default", new ExperimentSingleDefaultCommand());
       commands.put("experiment-single-random", new ExperimentSingleRandomCommand());
       commands.put("experiment-single-interval", new ExperimentSingleGridCommand());
