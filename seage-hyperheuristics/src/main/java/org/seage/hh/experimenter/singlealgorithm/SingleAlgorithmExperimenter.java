@@ -30,9 +30,25 @@ public class SingleAlgorithmExperimenter extends Experimenter {
     this.numConfigs = numConfigs;
     this.timeoutS = timeoutS;
   }
+  
+  protected void experimentMain() throws Exception {
+    // Run experiment tasks for each instance
+    for (int i = 0; i < this.instanceIDs.length; i++) {
+      try {
+        logger.info("-------------------------------------");
+        logger.info(String.format("%-15s %s", "Problem:", this.problemID));
+        logger.info(String.format("%-15s %-16s    (%d/%d)", "Instance:", 
+            this.instanceIDs[i], i + 1, this.instanceIDs.length));
+        ProblemInstanceInfo instanceInfo = this.problemInfo.getProblemInstanceInfo(
+            this.instanceIDs[i]);
+        runExperimentTasksForProblemInstance(instanceInfo);
+      } catch (Exception ex) {
+        logger.warn(ex.getMessage(), ex);
+      }
+    }
+  }
 
-  @Override
-  protected void runExperimentTasks(ProblemInstanceInfo instanceInfo) throws Exception {
+  protected void runExperimentTasksForProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception {
     for (int i = 0; i < this.algorithmIDs.length; i++) {
       String algorithmID = this.algorithmIDs[i];
       String instanceID = instanceInfo.getInstanceID();

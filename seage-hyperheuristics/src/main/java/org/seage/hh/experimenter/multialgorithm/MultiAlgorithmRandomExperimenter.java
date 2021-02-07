@@ -9,9 +9,9 @@ public class MultiAlgorithmRandomExperimenter extends Experimenter {
     super(experimentName, "", null, null);
     // TODO Auto-generated constructor stub
   }
-
+  
   @Override
-  protected void runExperimentTasks(ProblemInstanceInfo instanceInfo) throws Exception {
+  protected void experimentMain() throws Exception {
     // TODO Auto-generated method stub
 
   }

@@ -133,20 +133,8 @@ public abstract class Experimenter {
         Date.from(Instant.now())
     );
 
-    // Run experiment tasks for each instance
-    for (int i = 0; i < this.instanceIDs.length; i++) {
-      try {
-        logger.info("-------------------------------------");
-        logger.info(String.format("%-15s %s", "Problem:", this.problemID));
-        logger.info(String.format("%-15s %-16s    (%d/%d)", "Instance:", 
-            this.instanceIDs[i], i + 1, this.instanceIDs.length));
-        ProblemInstanceInfo instanceInfo = this.problemInfo.getProblemInstanceInfo(
-            this.instanceIDs[i]);
-        runExperimentTasks(instanceInfo);
-      } catch (Exception ex) {
-        logger.warn(ex.getMessage(), ex);
-      }
-    }
+    experimentMain();
+
     endDate = System.currentTimeMillis();
     logger.info("-------------------------------------");
     logger.info("Experiment {} finished ...", experimentID);
@@ -155,7 +143,7 @@ public abstract class Experimenter {
     this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
   }
 
-  protected abstract void runExperimentTasks(ProblemInstanceInfo instanceInfo) throws Exception;
+  protected abstract void experimentMain() throws Exception;
 
   protected abstract String getExperimentConfig();
 
