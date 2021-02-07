@@ -25,7 +25,6 @@
  */
 package org.seage.problem.tsp;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -34,10 +33,12 @@ import java.util.Scanner;
  * @author Richard Malek
  */
 public class CityProvider {
-  synchronized public static City[] readCities(InputStream stream) throws Exception {
-    ArrayList<City> result = new ArrayList<City>();
-    Scanner scanner = new Scanner(stream);
-    try {
+  private CityProvider() {}
+
+  public static synchronized City[] readCities(InputStream stream) {
+    ArrayList<City> result = new ArrayList<>();
+    
+    try (Scanner scanner = new Scanner(stream)) {
 
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
@@ -52,9 +53,6 @@ public class CityProvider {
         Double[] dataLine = readLine(line);
         result.add(new City(dataLine[0].intValue(), dataLine[1], dataLine[2]));
       }
-    } finally {
-      // ensure the underlying stream is always closed
-      scanner.close();
     }
     return result.toArray(new City[0]);
   }

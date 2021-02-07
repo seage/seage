@@ -52,9 +52,11 @@ public class SatObjectiveFunction implements IObjectiveFunction {
     if (move == null)
       return evaluate((SatSolution) sol);
     else {
-      SatSolution s = (SatSolution) ObjectCloner.deepCopy(sol);
-      move.apply(s);
-      return evaluate(s);
+      // TODO: Fix this
+      // SatSolution s = (SatSolution) ObjectCloner.deepCopy(sol);
+      // move.apply(s);
+      // return evaluate(s);
+      return 0;
     }
   }
 
