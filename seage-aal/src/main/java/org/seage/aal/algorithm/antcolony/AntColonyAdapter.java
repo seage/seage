@@ -50,7 +50,7 @@ import org.seage.metaheuristic.antcolony.Graph;
  *
  */
 @AlgorithmParameters({ @Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),
-    @Parameter(name = "iterationCount", min = 10, max = 1000000, init = 100),
+    @Parameter(name = "iterationCount", min = 10, max = 1000000, init = 1000000),
     @Parameter(name = "alpha", min = 1, max = 10, init = 1), 
     @Parameter(name = "beta", min = 1, max = 10, init = 3),
     @Parameter(name = "defaultPheromone", min = 0.00001, max = 1.0, init = 0.00001),

@@ -1,12 +1,12 @@
 package org.seage.launcher.commands;
 
-import java.util.List;
-
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
+import java.util.List;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmGridExperimenter;
 
-@Parameters(commandDescription = "Perform multi random experiment")
-public class ExperimentMultiRandomCommand extends Command {
+@Parameters(commandDescription = "Perform single random experiment")
+public class ExperimentSingleGridCommand extends Command {
   @Parameter(names = "-p", required = true, description = "ProblemID")
   String problemID;
   @Parameter(names = "-i", required = true, description = "Problem instances", variableArity = true)
@@ -17,11 +17,17 @@ public class ExperimentMultiRandomCommand extends Command {
   int numOfConfigs;
   @Parameter(names = "-t", required = true, description = "Time to run algorithm")
   int algorithmTimeoutS;
+  @Parameter(names = "-g", required = true, description = "Granularity of the parameter values grid: G x G x ... x G")
+  int granularity;
 
   @Override
   public void performCommad() throws Exception {
-//        new MultiAlgorithmRandomExperimenter("")
-//            .runExperiment(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}));  
+    new SingleAlgorithmGridExperimenter(
+        problemID, 
+        instances.toArray(new String[] {}),
+        algorithms.toArray(new String[] {}), 
+        numOfConfigs, 
+        algorithmTimeoutS,
+        granularity).runExperiment();
   }
-
 }

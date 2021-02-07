@@ -1,29 +1,23 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
- * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
- *     Richard Malek
- *     - Added annotations
+ * Contributors: Jan Zmatlik - Initial implementation Richard Malek - Added annotations
  */
 
 package org.seage.aal.algorithm.sannealing;
@@ -42,17 +36,22 @@ import org.seage.metaheuristic.sannealing.IObjectiveFunction;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
 import org.seage.metaheuristic.sannealing.Solution;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
  * @author Jan Zmatlik
  */
-@AlgorithmParameters({ @Parameter(name = "numIterations", min = 1, max = 999999999, init = 100),
-    @Parameter(name = "maxTemperature", min = 1000, max = 999999999, init = 100),
+@AlgorithmParameters({ @Parameter(name = "iterationCount", min = 1, max = 999999999, init = 999999999),
+    @Parameter(name = "maxTemperature", min = 1000, max = 999999999, init = 100000),
     @Parameter(name = "minTemperature", min = 0, max = 99999, init = 1),
     @Parameter(name = "numSolutions", min = 1, max = 1, init = 1) })
 public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extends Solution>
     extends AlgorithmAdapterImpl<P, S> {
+
+  protected static Logger logger = LoggerFactory.getLogger(SimulatedAnnealingAdapter.class.getName());
+
   protected SimulatedAnnealing<S> _simulatedAnnealing;
   protected S[] solutions;
   private AlgorithmParams _params;
@@ -64,9 +63,9 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
   private double _initObjectiveValue = Double.MAX_VALUE;
   private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
-  public SimulatedAnnealingAdapter(IObjectiveFunction objectiveFunction, IMoveManager moveManager,
+  protected SimulatedAnnealingAdapter(IObjectiveFunction objectiveFunction, IMoveManager moveManager,
       IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing) throws Exception {
-    _simulatedAnnealing = new SimulatedAnnealing(objectiveFunction, moveManager);
+    _simulatedAnnealing = new SimulatedAnnealing<>(objectiveFunction, moveManager);
     _simulatedAnnealing.addSimulatedAnnealingListener(new SimulatedAnnealingListener());
     _phenotypeEvaluator = phenotypeEvaluator;
   }
@@ -114,7 +113,7 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
     _simulatedAnnealing.setMaximalTemperature(_params.getValueInt("maxTemperature"));
     _simulatedAnnealing.setMinimalTemperature(_params.getValueDouble("minTemperature"));
     // _simulatedAnnealing.setAnnealingCoefficient(_params.getValueDouble("annealCoeficient"));
-    _simulatedAnnealing.setMaximalIterationCount(_params.getValueInt("numIterations"));
+    _simulatedAnnealing.setMaximalIterationCount(_params.getValueInt("iterationCount"));
     // _simulatedAnnealing.setMaximalAcceptedSolutionsPerOneStepCount(_params.getValueInt("maxOneStepAcceptedSolutions"));
   }
 
@@ -144,18 +143,18 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
         _numberOfNewSolutions++;
         _lastImprovingIteration = e.getSimulatedAnnealing().getCurrentIteration();
       } catch (Exception ex) {
-        ex.printStackTrace();
+        logger.error("Failed to report new best solution", ex);
       }
     }
 
     @Override
     public void iterationPerformed(SimulatedAnnealingEvent e) {
-
+      // Not used yet
     }
 
     @Override
     public void noChangeInValueIterationMade(SimulatedAnnealingEvent e) {
-
+      // Not used yet
     }
   }
 

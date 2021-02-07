@@ -3,27 +3,17 @@ package org.seage.hh.experimenter.singlealgorithm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.apache.ibatis.annotations.Case;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.Experimenter;
 import org.seage.hh.experimenter.configurator.Configurator;
-import org.seage.hh.experimenter.configurator.DefaultConfigurator;
-import org.seage.hh.experimenter.configurator.IntervalConfigurator;
-import org.seage.hh.experimenter.configurator.RandomConfigurator;
 
 /**
  * Experimenter running producing random configs according to the metadata.
  */
 public class SingleAlgorithmExperimenter extends Experimenter {
-  public enum ConfiguratorType {
-    DEFAULT,
-    RANDOM,
-    INTERVAL
-  }
-
   protected Configurator configurator;
   private int numConfigs;
   private int timeoutS;
@@ -31,56 +21,40 @@ public class SingleAlgorithmExperimenter extends Experimenter {
   private static final int NUM_RUNS = 3;
 
   /**
-   * SingleAlgorithmRandomExperimenter constructor - nothing special.
+   * SingleAlgorithmExperimenter constructor - nothing special.
    */
-  public SingleAlgorithmExperimenter(String problemID, String[] instanceIDs,
-      String[] algorithmIDs, int numConfigs, int timeoutS, 
-      ConfiguratorType configuratorType ) throws Exception {
-    super("SingleAlgorithmDefault", problemID, instanceIDs, algorithmIDs);
+  protected SingleAlgorithmExperimenter(String experimentName, String problemID, String[] instanceIDs,
+      String[] algorithmIDs, int numConfigs, int timeoutS) throws Exception {
+    super(experimentName, problemID, instanceIDs, algorithmIDs);
 
     this.numConfigs = numConfigs;
     this.timeoutS = timeoutS;
-    
-    switch(configuratorType) {
-      case RANDOM:
-        this.configurator = new RandomConfigurator();
-        break;
-      case INTERVAL:
-        this.configurator = new IntervalConfigurator();
-        break;
-      default:
-        this.configurator = new DefaultConfigurator();
-    }    
   }
 
   @Override
-  protected void runExperiment(ProblemInstanceInfo instanceInfo) throws Exception {
+  protected void runExperimentTasks(ProblemInstanceInfo instanceInfo) throws Exception {
     for (int i = 0; i < this.algorithmIDs.length; i++) {
       String algorithmID = this.algorithmIDs[i];
       String instanceID = instanceInfo.getInstanceID();
 
-      logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1,
-          this.algorithmIDs.length));
+      logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", 
+          algorithmID, i + 1, this.algorithmIDs.length));
       logger.info(String.format("%-44s", "   Running... "));
 
-      List<ExperimentTask> taskQueue = new ArrayList<ExperimentTask>();
+      List<ExperimentTask> taskQueue = new ArrayList<>();
+      // Prepare experiment task configs
       ProblemConfig[] configs = configurator.prepareConfigs(this.problemInfo,
           instanceInfo.getInstanceID(), algorithmID, this.numConfigs);
+
+      // Enqueue experiment tasks
       for (ProblemConfig config : configs) {
         for (int runID = 1; runID <= NUM_RUNS; runID++) {
-          // String reportName = problemInfo.getProblemID() + "-" + algorithmID + "-" +
-          // instanceInfo.getInstanceID() + "-" + configID + "-" + runID + ".xml";
-          // taskQueue.add(new ExperimentTask(this.experimentName, this.experimentID,
-          // this.problemID, instanceID, algorithmID,
-          // config.getAlgorithmParams(), runID, this.timeoutS));
           taskQueue.add(new ExperimentTask(UUID.randomUUID(), this.experimentID, 1, 1, this.problemID, instanceID,
               algorithmID, config.getAlgorithmParams(), this.timeoutS));
         }
       }
-      // String reportPath = String.format("output/experiment-logs/%s-%s-%s-%s.zip",
-      // this.experimentID, this.problemID, instanceID, algorithmID);
 
-      // RUN EXPERIMENTS
+      // RUN EXPERIMENT TASKS
       List<DataNode> stats =
           this.experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 

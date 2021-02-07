@@ -22,7 +22,6 @@
 
 package org.seage.hh.experimenter;
 
-import java.io.File;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +36,6 @@ import org.seage.data.DataNode;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
 // import org.seage.hh.experimenter.runner.SparkExperimentTasksRunner;
-import org.seage.hh.experimenter.runner.SparkExperimentTasksRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +67,6 @@ public abstract class Experimenter {
     this.instanceIDs = instanceIDs;
     this.algorithmIDs = algorithmIDs;
 
-    // new File("output/experiment-logs").mkdirs();
     logger.info("Experimenter {} created, getting problem info", experimentName);
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
@@ -145,7 +142,7 @@ public abstract class Experimenter {
             this.instanceIDs[i], i + 1, this.instanceIDs.length));
         ProblemInstanceInfo instanceInfo = this.problemInfo.getProblemInstanceInfo(
             this.instanceIDs[i]);
-        runExperiment(instanceInfo);
+        runExperimentTasks(instanceInfo);
       } catch (Exception ex) {
         logger.warn(ex.getMessage(), ex);
       }
@@ -158,7 +155,7 @@ public abstract class Experimenter {
     this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
   }
 
-  protected abstract void runExperiment(ProblemInstanceInfo instanceInfo) throws Exception;
+  protected abstract void runExperimentTasks(ProblemInstanceInfo instanceInfo) throws Exception;
 
   protected abstract String getExperimentConfig();
 

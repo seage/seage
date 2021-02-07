@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * @author Richard Malek
  */
 public abstract class Configurator {
-  protected static Logger _logger = LoggerFactory.getLogger(Configurator.class.getName());
+  protected static Logger logger = LoggerFactory.getLogger(Configurator.class.getName());
 
   public abstract ProblemConfig[] prepareConfigs(
       ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs) 
@@ -67,7 +67,6 @@ public abstract class Configurator {
     config.putDataNodeRef(algorithm);
     config.putDataNodeRef(problem);
 
-    // ProblemConfig instanceCfg = (ProblemConfig)config.clone();
     config.getDataNode("Problem").getDataNode("Instance").putValue("name", instanceInfo.getValue("name"));
     config.getDataNode("Problem").getDataNode("Instance").putValue("type", instanceInfo.getValue("type"));
     config.getDataNode("Problem").getDataNode("Instance").putValue("path", instanceInfo.getValue("path"));

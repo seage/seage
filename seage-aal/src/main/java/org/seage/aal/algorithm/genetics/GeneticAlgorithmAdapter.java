@@ -48,7 +48,7 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
  */
 @AlgorithmParameters({ @Parameter(name = "crossLengthPct", min = 0, max = 100, init = 10),
     @Parameter(name = "eliteSubjectPct", min = 0, max = 100, init = 10),
-    @Parameter(name = "iterationCount", min = 100, max = 100000, init = 100),
+    @Parameter(name = "iterationCount", min = 100, max = 1000000, init = 1000000),
     @Parameter(name = "mutateLengthPct", min = 0, max = 100, init = 10),
     @Parameter(name = "mutateSubjectPct", min = 0, max = 100, init = 10),
     @Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),

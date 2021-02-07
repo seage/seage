@@ -78,6 +78,15 @@ public @interface Annotations {
     Parameter[] value();
   }
 
+   /**
+   * Associates a flag that the algorithm is broken.
+   */
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.TYPE)
+  public @interface Broken {
+    String value();
+  }
+
   @Retention(RetentionPolicy.RUNTIME)
   @Target(ElementType.TYPE)
   public @interface Parameter {
@@ -89,9 +98,4 @@ public @interface Annotations {
 
     double init();
   }
-
-  // public static Annotation get(String clsName, Class anotClass)
-  // {
-  //
-  // }
 }

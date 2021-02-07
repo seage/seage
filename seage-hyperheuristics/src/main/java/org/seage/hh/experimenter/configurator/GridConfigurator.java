@@ -33,14 +33,18 @@ import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
 
 /**
- *
+ * GridConfigurator class. Similar to scikit's GridSearch.
  * @author Richard Malek
  */
-public class IntervalConfigurator extends Configurator {
+public class GridConfigurator extends Configurator {
 
   // private String _algID;
   private int granularity;
   private DataNode paramInfo;
+
+  public GridConfigurator(int granularity) {
+    this.granularity = granularity;
+  }
 
   @Override
   public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs)

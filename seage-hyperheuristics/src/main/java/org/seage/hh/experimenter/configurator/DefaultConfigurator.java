@@ -17,13 +17,13 @@
  */
 
 /**
- * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
 
 package org.seage.hh.experimenter.configurator;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
@@ -33,12 +33,35 @@ import org.seage.data.DataNode;
  * @author Richard Malek
  */
 public class DefaultConfigurator extends Configurator {
+  private double spread;
+
+  /**
+   * DefaultConfigurator constructor.
+   * @param spread The maximal distance from the init value (0, 1>
+   */
+  public DefaultConfigurator(double spread) {
+    this.spread = spread;
+  }
+
   @Override
   public ProblemConfig[] prepareConfigs(
       ProblemInfo problemInfo, String instanceID, String algID, int numConfigs)
       throws Exception {
-    ProblemConfig result = new ProblemConfig("Config");
-    // result.putDataNode(problemInfo.getDataNode("Algorithms").getDataNodeById(_algID));
+
+    List<ProblemConfig> results = new ArrayList<>();
+
+    results.add(createConfig(problemInfo, instanceID, algID, 0));
+    for (int i = 1; i < numConfigs; i++) {
+      double s = Math.random() * this.spread;
+      results.add(createConfig(problemInfo, instanceID, algID, s));
+    }
+
+    return results.toArray(new ProblemConfig[0]);
+  }
+
+  private ProblemConfig createConfig(ProblemInfo problemInfo, String instanceID, String algID, double spread)
+      throws Exception {
+    ProblemConfig config = new ProblemConfig("Config");
     DataNode problem = new DataNode("Problem");
     problem.putValue("id", problemInfo.getValue("id"));
     problem.putDataNode(problemInfo.getDataNode("Instances").getDataNodeById(instanceID));
@@ -47,15 +70,24 @@ public class DefaultConfigurator extends Configurator {
     algorithm.putValue("id", algID);
 
     DataNode params = new DataNode("Parameters");
-    for (DataNode dn : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
-      params.putValue(dn.getValueStr("name"), dn.getValue("init"));
+    for (DataNode dn : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter")) {
+      
+      double value = dn.getValueDouble("init");
+      if(spread != 0) {
+        double min = dn.getValueDouble("min");
+        double max = dn.getValueDouble("max");
+        double sign = Math.random() > 0.5 ? 1 : -1;
+        double delta = (max - min) * spread * sign;
+        value = Math.max(min, Math.min(max, value + delta));
+      }
+      params.putValue(dn.getValueStr("name"), value);
+    }      
 
     algorithm.putDataNode(params);
 
-    result.putDataNode(problem);
-    result.putDataNode(algorithm);
-
-    return new ProblemConfig[] { result };
+    config.putDataNode(problem);
+    config.putDataNode(algorithm);
+    return config;
   }
 
 }
