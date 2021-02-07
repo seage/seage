@@ -44,6 +44,7 @@ import org.seage.problem.tsp.TspProblemInstance;
  */
 @Annotations.AlgorithmId("ParticleSwarm")
 @Annotations.AlgorithmName("Particle Swarm")
+@Annotations.Broken("Still some troubles")
 public class TspParticleSwarmFactory implements IAlgorithmFactory<TspPhenotype, TspParticle> {
   private int _numParticles;
 

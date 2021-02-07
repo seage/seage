@@ -10,6 +10,7 @@ import org.seage.problem.tsp.TspPhenotype;
 
 @Annotations.AlgorithmId("GRASP")
 @Annotations.AlgorithmName("GRASP")
+@Annotations.Broken("Still some troubles")
 public class TspGraspAlgorithmFactory implements IAlgorithmFactory<TspPhenotype, TspSolution> {
   @Override
   public Class<GraspAlgorithmAdapter> getAlgorithmClass() {

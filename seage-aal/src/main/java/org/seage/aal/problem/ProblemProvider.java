@@ -108,6 +108,12 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
           throw new Exception("Unable to get annotation AlgorithmName");
         String algName = ((Annotations.AlgorithmName) an2).value();
 
+        an2 = algFactoryClass.getAnnotation(Annotations.Broken.class);
+        if (an2 != null) {
+          logger.warn("!!! Algorithm '{}' is marked Broken", algName);
+          continue;
+        }
+
         algorithm.putValue("id", algId);
         algorithm.putValue("name", algName);
         algorithm.putValue("factoryClass", ci.getClassName());

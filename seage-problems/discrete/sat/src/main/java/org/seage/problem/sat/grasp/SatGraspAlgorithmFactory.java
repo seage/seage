@@ -9,6 +9,7 @@ import org.seage.aal.problem.ProblemInstance;
 
 @Annotations.AlgorithmId("GRASP")
 @Annotations.AlgorithmName("GRASP")
+@Annotations.Broken("Still some troubles")
 public class SatGraspAlgorithmFactory implements IAlgorithmFactory {
 
   @Override
