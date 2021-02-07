@@ -96,17 +96,17 @@ public class Visualizer {
       graphics.fillOval((int) (width * (cities[tour[i]].X - minX) / currWidth),
           height - (int) (height * (cities[tour[i]].Y - minY) / currHeight), _pWidth, _pHeight);
 
-      graphics.drawLine((int) (width * (cities[tour[i]].X - minX) / currWidth + _pWidth / 2),
-          height - (int) (height * (cities[tour[i]].Y - minY) / currHeight - _pHeight / 2),
-          (int) (width * (cities[tour[i - 1]].X - minX) / currWidth + _pWidth / 2),
-          height - (int) (height * (cities[tour[i - 1]].Y - minY) / currHeight - _pHeight / 2));
+      graphics.drawLine((int) (width * (cities[tour[i]].X - minX) / currWidth + _pWidth / 2.0),
+          height - (int) (height * (cities[tour[i]].Y - minY) / currHeight - _pHeight / 2.0),
+          (int) (width * (cities[tour[i - 1]].X - minX) / currWidth + _pWidth / 2.0),
+          height - (int) (height * (cities[tour[i - 1]].Y - minY) / currHeight - _pHeight / 2.0));
     }
 
     // draw line between first and end city
-    graphics.drawLine((int) (width * (cities[tour[0]].X - minX) / currWidth + _pWidth / 2),
-        height - (int) (height * (cities[tour[0]].Y - minY) / currHeight - _pHeight / 2),
-        (int) (width * (cities[tour[i - 1]].X - minX) / currWidth + _pWidth / 2),
-        height - (int) (height * (cities[tour[i - 1]].Y - minY) / currHeight - _pHeight / 2));
+    graphics.drawLine((int) (width * (cities[tour[0]].X - minX) / currWidth + _pWidth / 2.0),
+        height - (int) (height * (cities[tour[0]].Y - minY) / currHeight - _pHeight / 2.0),
+        (int) (width * (cities[tour[i - 1]].X - minX) / currWidth + _pWidth / 2.0),
+        height - (int) (height * (cities[tour[i - 1]].Y - minY) / currHeight - _pHeight / 2.0));
 
     try {
       File f = new File(path);
