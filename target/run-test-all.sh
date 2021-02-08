@@ -8,9 +8,6 @@ algorithmIDs="GeneticAlgorithm TabuSearch AntColony SimulatedAnnealing"
 #Use each algorithm on each problem
 for problemID in ${problemsIDs};
 do
-    for algorithmID in ${algorithmIDs};
-    do
-        java -jar -Xms1024m -Dlog4j.configurationFile=log4j2.xml $LAUNCHER $@ -p $problemID -a $algorithmID -i -
-    done
+    java -jar -Xms1024m -Dlog4j.configurationFile=log4j2.xml $LAUNCHER $@ -p $problemID -a $algorithmIDs -i -
 done
 
