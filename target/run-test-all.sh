@@ -1,6 +1,6 @@
 cd `dirname $0`
 LAUNCHER="`ls bin/seage-launcher*.jar`"
- 
+
 #List of used problems and algorithms
 problemsIDs="TSP SAT"
 algorithmIDs="GeneticAlgorithm TabuSearch AntColony SimulatedAnnealing"
