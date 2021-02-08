@@ -36,6 +36,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.commons.lang3.SerializationUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -46,7 +47,7 @@ import org.w3c.dom.ProcessingInstruction;
  * DataNode for storing dynamic data.
  * @author Richard Malek.
  */
-public class DataNode implements Serializable, Cloneable {
+public class DataNode implements Serializable {
   private static final long serialVersionUID = 2193543253630004569L;
 
   private String name;
@@ -330,14 +331,7 @@ public class DataNode implements Serializable, Cloneable {
     }
   }
 
-  @Override
-  public Object clone() {
-    Object result = null;
-    try {
-      result = ObjectCloner.deepCopy(this);
-    } catch (Exception e) {
-    }
-
-    return result;
+  public DataNode clone() {
+    return SerializationUtils.clone(this);
   }
 }

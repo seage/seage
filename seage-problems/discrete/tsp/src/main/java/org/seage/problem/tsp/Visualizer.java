@@ -29,7 +29,6 @@ package org.seage.problem.tsp;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -58,15 +57,16 @@ public class Visualizer {
   }
   // </editor-fold>
 
-  public void createGraph(City[] cities, Integer[] tour, String path, int width, int height)
-      throws NoninvertibleTransformException {
+  public void createGraph(City[] cities, Integer[] tour, String path, int width, int height) {
     BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
     Graphics2D graphics = (Graphics2D) image.getGraphics();
 
     // getting current width ang height
-    double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
-    double maxX = Double.MIN_VALUE, maxY = Double.MIN_VALUE;
+    double minX = Double.MAX_VALUE;
+    double minY = Double.MAX_VALUE;
+    double maxX = Double.MIN_VALUE;
+    double maxY = Double.MIN_VALUE;
     for (int i = 0; i < cities.length; i++) {
       if (cities[tour[i]].X < minX)
         minX = cities[tour[i]].X;
