@@ -1,6 +1,5 @@
 package org.seage.launcher;
 
-//import java.net.URL;
 //import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -15,7 +14,6 @@ import org.seage.launcher.commands.ExperimentSingleFeedbackCommand;
 import org.seage.launcher.commands.ExperimentSingleGridCommand;
 import org.seage.launcher.commands.ExperimentSingleRandomCommand;
 import org.seage.launcher.commands.ListCommand;
-//import org.seage.launcher.commands.ReportCommand;
 //import org.seage.logging.LogHelper;
 import org.seage.problem.sat.SatProblemProvider;
 import org.seage.problem.tsp.TspProblemProvider;
