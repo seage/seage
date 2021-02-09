@@ -52,14 +52,15 @@ public class AlgorithmReporter<P extends Phenotype<?>> {
   }
 
   public void putNewSolution(long time, long iterNumber, P solution) throws Exception {
-    DataNode newSol = new DataNode("NewSolution");
-    newSol.putValue("time", time);
-    newSol.putValue("iterNumber", iterNumber);
-    newSol.putValue("objVal", _evaluator.evaluate(solution)[0]);
-    newSol.putValue("solution", solution.toText());
-    newSol.putValue("hash", solution.computeHash());
+    // TODO: Too much data, figure out what could be computed here
+    // DataNode newSol = new DataNode("NewSolution");
+    // newSol.putValue("time", time);
+    // newSol.putValue("iterNumber", iterNumber);
+    // newSol.putValue("objVal", _evaluator.evaluate(solution)[0]);
+    // newSol.putValue("solution", solution.toText());
+    // newSol.putValue("hash", solution.computeHash());
 
-    _report.getDataNode("Log").putDataNode(newSol);
+    // _report.getDataNode("Log").putDataNode(newSol);
   }
 
   public void putStatistics(long numberOfIterationsDone, long numberOfNewSolutions, long lastImprovingIteration,

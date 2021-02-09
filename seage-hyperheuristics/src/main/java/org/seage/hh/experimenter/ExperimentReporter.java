@@ -107,6 +107,7 @@ public class ExperimentReporter {
       SqlSession session, UUID experimentTaskID, DataNode solutions, String elemName, String type)
       throws Exception {
     SolutionMapper mapper = session.getMapper(SolutionMapper.class);
+    int numSolutionsToWrite = 0;
     for (DataNode dn : solutions.getDataNodes(elemName)) {
       Long iterNumber = 0L;
       if (type.equals("final")) {
@@ -123,7 +124,13 @@ public class ExperimentReporter {
           iterNumber,
           Date.from(Instant.now())
       );
-      mapper.insertSolution(s);        
+      mapper.insertSolution(s);
+      
+      numSolutionsToWrite++;
+      if(numSolutionsToWrite == 10) {
+        session.commit();
+        numSolutionsToWrite = 0;
+      }
     }
     session.commit();
   }

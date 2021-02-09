@@ -20,21 +20,24 @@
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}   %msg%n</pattern>
     </encoder>
   </appender>
-  
-  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">    
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-        <fileNamePattern>logs/seage-%d{yyyyMMdd-HHmmss}.log</fileNamePattern>
+      <fileNamePattern>logs/seage-%d{yyyyMMdd-HHmmss}.log</fileNamePattern>
     </rollingPolicy>
     <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-      <maxFileSize>10GB</maxFileSize>
+      <maxFileSize>1GB</maxFileSize>
     </triggeringPolicy>
-
+    <!-- <filter class="org.slf4j.simpleLogger.log.org.seage.hh.knowledgebase.db.mapper">
+      <level>ERROR</level>
+    </filter> -->
+    <!-- <logger name="org.apache.ibatis" level="ERROR" /> -->
     <encoder>
-        <pattern>${HOSTNAME} %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}   %msg%n</pattern>
+      <pattern>${HOSTNAME} %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}   %msg%n</pattern>
     </encoder>
-</appender>
-  <root level="debug">
+  </appender>
+  <root level="info">
     <appender-ref ref="FILE" />
-    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="STDOUT" />
   </root>
 </configuration>
