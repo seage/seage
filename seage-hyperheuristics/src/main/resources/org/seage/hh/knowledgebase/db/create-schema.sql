@@ -56,3 +56,9 @@ FROM seage.solutions s
 	LEFT JOIN seage.experiments e ON e.experiment_id = et.experiment_id
 GROUP BY e.experiment_id
 ORDER BY e.start_date;
+
+CREATE OR REPLACE VIEW seage.experiments_best_overview AS
+SELECT experiment_id, min(problem_id), algorithm_id, instance_id, min(score) 
+FROM experiment_tasks 
+GROUP BY experiment_id, instance_id, algorithm_id 
+ORDER BY min(start_date), experiment_id, instance_id
