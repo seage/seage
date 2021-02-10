@@ -1,31 +1,27 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
- * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
 package org.seage.problem.tsp.genetics;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,52 +40,51 @@ import org.seage.problem.tsp.TourProvider;
 public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>> {
   public static void main(String[] args) {
     try {
-      String path = "data/tsp/eil51.tsp";// args[0]; // 426
-      // String path = "data/tsp/berlin52.tsp";//args[0]; // 7542
-      // String path = "data/tsp/ch130.tsp";//args[0]; // 6110
-      // String path = "data/tsp/lin318.tsp";//args[0]; // 42029
-      // String path = "data/tsp/pcb442.tsp";//args[0]; // 50778
-      // String path = "data/tsp/u574.tsp";//args[0]; // 36905
+      // String instanceID = "eil51"; // 426
+      // String instanceID = "berlin52"; // 7542
+      // String instanceID = "ch130"; // 6110
+      // String instanceID = "lin318"; // 42029
+      // String instanceID = "pcb442"; // 50778
+      // String instanceID = "u574"; // 36905
+      String instanceID = "hyflex-tsp-9"; // 426
 
-      new TspGeneticAlgorithmTest().run(path);
+      new TspGeneticAlgorithmTest().run(instanceID);
     } catch (Exception ex) {
       ex.printStackTrace();
     }
   }
 
-  public void run(String path) throws Exception {
-    City[] cities = CityProvider.readCities(new FileInputStream(path));
-
-    GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<Subject<Integer>>(new TspGeneticOperator(),
-        new TspEvaluator(cities));
+  public void run(String instanceID) throws Exception {
+    String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instanceID);
+    City[] cities = null;
+    try(InputStream stream = getClass().getResourceAsStream(path)) {    
+      cities = CityProvider.readCities(stream);
+    }
+    int populationCount = 1000;
+    System.out.println("Population: " + populationCount);
+    List<Subject<Integer>> initialSolutions = generateInitialSubjects(cities, populationCount);
+    GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
+        new TspGeneticOperator(), new TspEvaluator(cities));
     gs.addGeneticSearchListener(this);
     gs.setEliteSubjectsPct(5);
     gs.setMutatePopulationPct(5);
     gs.setMutateChromosomeLengthPct(30);
-    gs.setPopulationCount(500);
+    gs.setPopulationCount(populationCount);
     gs.setRandomSubjectsPct(5);
     gs.setCrossLengthPct(30);
-    gs.setIterationToGo(100000);
-    gs.startSearching(generateInitialSubjects(cities, 100));
+    gs.setIterationToGo(100);
+    gs.startSearching(initialSolutions);
   }
 
-  private List<Subject<Integer>> generateInitialSubjects(City[] cities, int count) throws Exception {
-    int numTours = count;
-    int tourLenght = cities.length;
-    // Integer[][] tours = new Integer[numTours][tourLenght];
-    ArrayList<Subject<Integer>> result = new ArrayList<Subject<Integer>>(numTours);
+  private List<Subject<Integer>> generateInitialSubjects(City[] cities, int subjectCount) throws Exception {
+    ArrayList<Subject<Integer>> result = new ArrayList<>(subjectCount);
 
-    for (int k = 0; k < tourLenght; k++)
-      result.add(new Subject<Integer>(TourProvider.createRandomTour(cities.length)));
-    // tours[k] = TourProvider.createRandomTour(cities);
-
-    // for(int k=0;k<tours.length;k++)
-    // {
-    // Subject s = new Subject(new Genome(1, tourLenght));
-    // s.getChromosome().setGeneArray(tours[k]);
-    //
-    // result[k] = s;
-    // }
+    Integer[][] tours = new Integer[subjectCount][];
+    for (int k = 0; k < subjectCount; k++)
+      tours[k] = TourProvider.createRandomTour(cities.length);
+    
+    for (int k = 0; k < subjectCount; k++)
+      result.add(new Subject<>(tours[k]));
     return result;
   }
 
@@ -115,7 +110,7 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
 
   @Override
   public void iterationPerformed(GeneticAlgorithmEvent<Subject<Integer>> e) {
-
+    System.out.println("Iteration performed: " + e.getGeneticSearch().getCurrentIteration());
   }
 
 }
