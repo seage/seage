@@ -101,26 +101,21 @@ public class TourProvider {
   }
 
   public static Integer[] createRandomTour(int length) {
-    Integer[] tour = new Integer[length];
     Random random = new Random();
     List<Integer> listTour = new ArrayList<Integer>();
     for (int i = 0; i < length; i++) {
       listTour.add(i + 1);
     }
-
-    List<Integer> randTour = new ArrayList<Integer>();
-    Integer pom = null;
+    
     for (int i = 0; i < length; i++) {
-      pom = listTour.get(random.nextInt(listTour.size()));
-      randTour.add(pom);
-      listTour.remove(pom);
+      int ix1 = random.nextInt(listTour.size());
+      int ix2 = random.nextInt(listTour.size());
+      Integer tmp = listTour.get(ix2);
+      listTour.set(ix2, listTour.get(ix1));
+      listTour.set(ix1, tmp);
     }
 
-    for (int i = 0; i < length; i++) {
-      tour[i] = randTour.get(i);
-    }
-
-    return tour;
+    return listTour.toArray(new Integer[0]);
   }
 
   public static Integer[] createSortedTour(int length) {

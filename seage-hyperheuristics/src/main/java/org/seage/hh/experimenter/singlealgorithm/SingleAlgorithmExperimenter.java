@@ -57,31 +57,38 @@ public class SingleAlgorithmExperimenter extends Experimenter {
           algorithmID, i + 1, this.algorithmIDs.length));
       logger.info(String.format("%-44s", "   Running... "));
 
-      List<ExperimentTask> taskQueue = new ArrayList<>();
-      // Prepare experiment task configs
-      ProblemConfig[] configs = configurator.prepareConfigs(this.problemInfo,
-          instanceInfo.getInstanceID(), algorithmID, this.numConfigs);
-
-      // Enqueue experiment tasks
-      for (ProblemConfig config : configs) {
-        for (int runID = 1; runID <= NUM_RUNS; runID++) {
-          taskQueue.add(new ExperimentTask(UUID.randomUUID(), this.experimentID, 1, 1, this.problemID, instanceID,
-              algorithmID, config.getAlgorithmParams(), this.timeoutS));
-        }
-      }
-
-      // RUN EXPERIMENT TASKS
-      List<DataNode> stats =
-          this.experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
-
-      // Update score
       double bestObjVal = Double.MAX_VALUE;
-      for (DataNode s : stats) {
-        double objVal = s.getValueDouble("bestObjVal");
-        if (objVal < bestObjVal) {
-          bestObjVal = objVal;
+      // The taskQueue size must be limited since the results are stored in the task's reports
+      // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
+      int batchSize = Runtime.getRuntime().availableProcessors();
+      for (int j = 0; j< this.numConfigs / batchSize; j++ ){
+        // Just batchSize * NUM_RUNS configs processed at the time
+        List<ExperimentTask> taskQueue = new ArrayList<>();
+        // Prepare experiment task configs
+        ProblemConfig[] configs = configurator.prepareConfigs(this.problemInfo,
+            instanceInfo.getInstanceID(), algorithmID, batchSize);
+
+        // Enqueue experiment tasks
+        for (ProblemConfig config : configs) {
+          for (int runID = 1; runID <= NUM_RUNS; runID++) {
+            taskQueue.add(new ExperimentTask(UUID.randomUUID(), this.experimentID, 1, 1, this.problemID, instanceID,
+                algorithmID, config.getAlgorithmParams(), this.timeoutS));
+          }
+        }
+
+        // RUN EXPERIMENT TASKS
+        List<DataNode> stats =
+            this.experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
+
+        // Update score        
+        for (DataNode s : stats) {
+          double objVal = s.getValueDouble("bestObjVal");
+          if (objVal < bestObjVal) {
+            bestObjVal = objVal;
+          }
         }
       }
+      // This is weird - if multiple instances run during the expriment the last best value is written
       this.experimentReporter.updateScore(this.experimentID, bestObjVal);
     }
   }

@@ -34,14 +34,14 @@ public class Subject<GeneType> implements Cloneable {
   private int _hashCode;
 
   public Subject(GeneType[] geneValues) {
-    _chromosome = new Chromosome<GeneType>(geneValues);
+    _chromosome = new Chromosome<>(geneValues);
     computeHash();
   }
 
   protected Subject(Subject<GeneType> subject) {
-    _chromosome = subject.getChromosome().clone();
+    _chromosome = subject.getChromosome().clone(); // TODO: Replace by copy constructor
     _fitness = subject._fitness;
-    computeHash();
+    _hashCode = subject._hashCode;
   }
 
   /*
@@ -62,7 +62,7 @@ public class Subject<GeneType> implements Cloneable {
 
   @Override
   public Subject<GeneType> clone() {
-    return new Subject<GeneType>(this);
+    return new Subject<>(this);
   }
 
   /*

@@ -1,5 +1,6 @@
 package org.seage.hh.experimenter.runner;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -15,6 +16,11 @@ public class LocalExperimentTasksRunner implements IExperimentTasksRunner {
   public List<DataNode> performExperimentTasks(
       List<ExperimentTask> tasks, Function<ExperimentTask, Void> reportFn) {
 
+    // for (ExperimentTask t : tasks) {
+    //   t.run();
+    //   reportFn.apply(t);
+    // }
+    // return new ArrayList<>();
     return tasks.parallelStream().map(t -> {
       try {
         t.run();

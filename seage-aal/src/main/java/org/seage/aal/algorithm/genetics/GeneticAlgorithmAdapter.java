@@ -51,7 +51,7 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
     @Parameter(name = "iterationCount", min = 100, max = 1000000, init = 1000000),
     @Parameter(name = "mutateLengthPct", min = 0, max = 100, init = 10),
     @Parameter(name = "mutateSubjectPct", min = 0, max = 100, init = 10),
-    @Parameter(name = "numSolutions", min = 10, max = 1000, init = 100),
+    @Parameter(name = "numSolutions", min = 10, max = 1000, init = 1000),
     @Parameter(name = "randomSubjectPct", min = 0, max = 100, init = 10) })
 public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends Subject<?>>
     extends AlgorithmAdapterImpl<P, S> {

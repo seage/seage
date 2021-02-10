@@ -59,12 +59,12 @@ public class CityProvider {
 
   private static Double[] readLine(String line) {
     ArrayList<Double> result = new ArrayList<>();
-    Scanner scanner = new Scanner(line);
-    scanner.useDelimiter("\\s+");
-    for (int i = 0; i < 3; i++) {
-      result.add(scanner.nextDouble());
+    try (Scanner scanner = new Scanner(line)){
+      scanner.useDelimiter("\\s+");
+      for (int i = 0; i < 3; i++) {
+        result.add(scanner.nextDouble());
+      }
     }
-    scanner.close();
     return result.toArray(new Double[0]);
   }
 

@@ -97,8 +97,8 @@ public class ExperimentReporter {
       DataNode outputSolutions = report.getDataNode("Solutions").getDataNode("Output");
       insertSolutions(session, experimentTaskID, outputSolutions, "Solution", "final");
 
-      DataNode newSolutions = report.getDataNode("AlgorithmReport").getDataNode("Log");
-      insertSolutions(session, experimentTaskID, newSolutions, "NewSolution", "new");
+      // DataNode newSolutions = report.getDataNode("AlgorithmReport").getDataNode("Log");
+      // insertSolutions(session, experimentTaskID, newSolutions, "NewSolution", "new");
       
     }
   }
@@ -126,13 +126,13 @@ public class ExperimentReporter {
       );
       mapper.insertSolution(s);
       
-      numSolutionsToWrite++;
-      if(numSolutionsToWrite == 10) {
-        session.commit();
-        numSolutionsToWrite = 0;
-      }
+      // numSolutionsToWrite++;
+      // if(numSolutionsToWrite == 10) {
+      //   session.commit();
+      //   numSolutionsToWrite = 0;
+      // }
+      session.commit();
     }
-    session.commit();
   }
   
 }
