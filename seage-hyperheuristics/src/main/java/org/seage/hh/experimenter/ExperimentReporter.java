@@ -73,8 +73,7 @@ public class ExperimentReporter {
   }
 
   public void updateScore(UUID experimentID, double bestObjVal) throws Exception {
-    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
-      
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
       mapper.updateScore(experimentID, bestObjVal);
       session.commit();
@@ -82,56 +81,54 @@ public class ExperimentReporter {
   }
 
   public void reportExperimentTask(ExperimentTask experimentTask) throws Exception {
-    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+     
+    insertExperimentTask(experimentTask);
+
+    UUID experimentTaskID = experimentTask.getExperimentTaskID();
+    DataNode report = experimentTask.getExperimentTaskReport();
+    
+    DataNode inputSolutions = report.getDataNode("Solutions").getDataNode("Input");
+    insertSolutions(experimentTaskID, inputSolutions, "Solution", "init");
+    
+    DataNode outputSolutions = report.getDataNode("Solutions").getDataNode("Output");
+    insertSolutions(experimentTaskID, outputSolutions, "Solution", "final");
+
+    // DataNode newSolutions = report.getDataNode("AlgorithmReport").getDataNode("Log");
+    // insertSolutions(session, experimentTaskID, newSolutions, "NewSolution", "new");
       
+  }
+
+  private void insertExperimentTask(ExperimentTask experimentTask) throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
       mapper.insertExperimentTask(experimentTask);
-      session.commit();      
-      
-      UUID experimentTaskID = experimentTask.getExperimentTaskID();
-      DataNode report = experimentTask.getExperimentTaskReport();
-      
-      DataNode inputSolutions = report.getDataNode("Solutions").getDataNode("Input");
-      insertSolutions(session, experimentTaskID, inputSolutions, "Solution", "init");
-      
-      DataNode outputSolutions = report.getDataNode("Solutions").getDataNode("Output");
-      insertSolutions(session, experimentTaskID, outputSolutions, "Solution", "final");
-
-      // DataNode newSolutions = report.getDataNode("AlgorithmReport").getDataNode("Log");
-      // insertSolutions(session, experimentTaskID, newSolutions, "NewSolution", "new");
-      
+      session.commit();     
     }
   }
 
-  private void insertSolutions(
-      SqlSession session, UUID experimentTaskID, DataNode solutions, String elemName, String type)
+  private void insertSolutions(UUID experimentTaskID, DataNode solutions, String elemName, String type)
       throws Exception {
-    SolutionMapper mapper = session.getMapper(SolutionMapper.class);
-    int numSolutionsToWrite = 0;
-    for (DataNode dn : solutions.getDataNodes(elemName)) {
-      Long iterNumber = 0L;
-      if (type.equals("final")) {
-        iterNumber = -1L;
-      } else if (type.equals("new")) {
-        iterNumber = dn.getValueLong("iterNumber");
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
+      SolutionMapper mapper = session.getMapper(SolutionMapper.class);
+      for (DataNode dn : solutions.getDataNodes(elemName)) {
+        Long iterNumber = 0L;
+        if (type.equals("final")) {
+          iterNumber = -1L;
+        } else if (type.equals("new")) {
+          iterNumber = dn.getValueLong("iterNumber");
+        }
+        Solution s = new Solution(
+            UUID.randomUUID(),
+            experimentTaskID,
+            dn.getValueStr("hash"),
+            dn.getValueStr("solution"),
+            dn.getValueDouble("objVal"),
+            iterNumber,
+            Date.from(Instant.now())
+        );
+        mapper.insertSolution(s);
+        session.commit();
       }
-      Solution s = new Solution(
-          UUID.randomUUID(),
-          experimentTaskID,
-          dn.getValueStr("hash"),
-          dn.getValueStr("solution"),
-          dn.getValueDouble("objVal"),
-          iterNumber,
-          Date.from(Instant.now())
-      );
-      mapper.insertSolution(s);
-      
-      // numSolutionsToWrite++;
-      // if(numSolutionsToWrite == 10) {
-      //   session.commit();
-      //   numSolutionsToWrite = 0;
-      // }
-      session.commit();
     }
   }
   

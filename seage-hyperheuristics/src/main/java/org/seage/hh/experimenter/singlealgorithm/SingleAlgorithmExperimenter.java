@@ -61,7 +61,8 @@ public class SingleAlgorithmExperimenter extends Experimenter {
       // The taskQueue size must be limited since the results are stored in the task's reports
       // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
       int batchSize = Runtime.getRuntime().availableProcessors();
-      for (int j = 0; j< this.numConfigs / batchSize; j++ ){
+      int batchCount = Math.max(1, this.numConfigs / batchSize);
+      for (int j = 0; j< batchCount; j++ ){
         // Just batchSize * NUM_RUNS configs processed at the time
         List<ExperimentTask> taskQueue = new ArrayList<>();
         // Prepare experiment task configs

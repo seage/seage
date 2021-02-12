@@ -63,15 +63,16 @@ public class DbManager {
       environment = "test";
     }
 
-    try (InputStream inputStream = Resources.getResourceAsStream(configResourcePath);
+    try (
+        InputStream inputStream = Resources.getResourceAsStream(configResourcePath);
         Reader reader = Resources.getResourceAsReader(initSqlResourcePath);) {
 
       sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, environment, props);
 
       try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {       
         ScriptRunner runner = new ScriptRunner(session.getConnection());
-        runner.setLogWriter(new PrintWriter(System.out));
-        runner.setErrorLogWriter(new PrintWriter(System.err));
+        // runner.setLogWriter(new PrintWriter(System.out));
+        // runner.setErrorLogWriter(new PrintWriter(System.err));
 
         if (testMode) {          
           runner.runScript(new StringReader("DROP SCHEMA seage CASCADE;"));
