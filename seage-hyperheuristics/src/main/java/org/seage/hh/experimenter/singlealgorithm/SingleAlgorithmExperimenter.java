@@ -72,7 +72,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
         // Enqueue experiment tasks
         for (ProblemConfig config : configs) {
           for (int runID = 1; runID <= NUM_RUNS; runID++) {
-            taskQueue.add(new ExperimentTask(UUID.randomUUID(), this.experimentID, 1, 1, this.problemID, instanceID,
+            taskQueue.add(new ExperimentTask(UUID.randomUUID(), this.experimentID, runID, 1, this.problemID, instanceID,
                 algorithmID, config.getAlgorithmParams(), this.timeoutS));
           }
         }
@@ -81,6 +81,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
         List<DataNode> stats =
             this.experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 
+        logger.info("Batch done");
         // Update score        
         for (DataNode s : stats) {
           double objVal = s.getValueDouble("bestObjVal");
@@ -96,7 +97,9 @@ public class SingleAlgorithmExperimenter extends Experimenter {
 
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
+      logger.info("Writing ExperimentTask: "+ experimentTask.getExperimentTaskID());
       this.experimentReporter.reportExperimentTask(experimentTask);
+      logger.info("Done writing ExperimentTask: " + experimentTask.getExperimentTaskID());
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);

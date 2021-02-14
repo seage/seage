@@ -18,7 +18,7 @@ public interface ExperimentMapper {
   class ExperimentSqlProvider implements ProviderMethodResolver {
     private ExperimentSqlProvider() {}
     
-    public static String insertExperiment() {
+    public static String insertExperimentSql() {
       return new SQL()
         .INSERT_INTO("seage.experiments")
         .VALUES("experiment_type", "#{experimentType}")
@@ -36,7 +36,7 @@ public interface ExperimentMapper {
     }
   }
 
-  @InsertProvider(type = ExperimentSqlProvider.class, method = "insertExperiment")
+  @InsertProvider(type = ExperimentSqlProvider.class, method = "insertExperimentSql")
   // @Options(useGeneratedKeys = true, keyProperty = "id")
   int insertExperiment(Experiment experiment);
 

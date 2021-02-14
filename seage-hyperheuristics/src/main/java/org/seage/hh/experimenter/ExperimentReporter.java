@@ -22,7 +22,7 @@ public class ExperimentReporter {
   /**
    * Puts experiment info into database.
    */
-  public void createExperimentReport(
+  public synchronized void createExperimentReport(
       UUID experimentID, String experimentName, String problemID,
       String[] instanceIDs, String[] algorithmIDs, String config, 
       Date startDate) throws Exception {
@@ -63,7 +63,7 @@ public class ExperimentReporter {
     return info.toString();
   }
 
-  public void updateEndDate(UUID experimentID, Date endDate) throws Exception {
+  public synchronized void updateEndDate(UUID experimentID, Date endDate) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
@@ -72,7 +72,7 @@ public class ExperimentReporter {
     }    
   }
 
-  public void updateScore(UUID experimentID, double bestObjVal) throws Exception {
+  public synchronized void updateScore(UUID experimentID, double bestObjVal) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
       mapper.updateScore(experimentID, bestObjVal);
@@ -80,7 +80,7 @@ public class ExperimentReporter {
     }  
   }
 
-  public void reportExperimentTask(ExperimentTask experimentTask) throws Exception {
+  public synchronized void reportExperimentTask(ExperimentTask experimentTask) throws Exception {
      
     insertExperimentTask(experimentTask);
 
