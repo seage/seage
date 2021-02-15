@@ -80,6 +80,9 @@ public class ExperimentReporter {
     }  
   }
 
+  /*
+   * This is a critical function. When non-sychronized, multiple threads open db sessions that timeouted.
+   */
   public synchronized void reportExperimentTask(ExperimentTask experimentTask) throws Exception {
      
     insertExperimentTask(experimentTask);

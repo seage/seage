@@ -81,7 +81,6 @@ public class SingleAlgorithmExperimenter extends Experimenter {
         List<DataNode> stats =
             this.experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 
-        logger.info("Batch done");
         // Update score        
         for (DataNode s : stats) {
           double objVal = s.getValueDouble("bestObjVal");
@@ -97,9 +96,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
 
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
-      logger.info("Writing ExperimentTask: "+ experimentTask.getExperimentTaskID());
       this.experimentReporter.reportExperimentTask(experimentTask);
-      logger.info("Done writing ExperimentTask: " + experimentTask.getExperimentTaskID());
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
