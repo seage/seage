@@ -4,6 +4,7 @@
 private/
 dist/
 build/
+.gradle/
 
 *.log*
 **/bin/
