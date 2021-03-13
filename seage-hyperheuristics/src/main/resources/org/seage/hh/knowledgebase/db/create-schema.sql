@@ -58,7 +58,12 @@ GROUP BY e.experiment_id
 ORDER BY e.start_date;
 
 CREATE OR REPLACE VIEW seage.experiments_best_overview AS
-	SELECT experiment_id, min(problem_id), algorithm_id, instance_id, min(score) 
-	FROM experiment_tasks 
-GROUP BY experiment_id, instance_id, algorithm_id 
-ORDER BY min(start_date), experiment_id, instance_id;
+SELECT 
+	e.experiment_id AS experiment_id,
+	min(e.problem_id) AS problem_id, 
+	e.algorithm_id AS algorithm_id, 
+	e.instance_id AS instance_id, 
+	min(e.score) AS score 
+FROM seage.experiment_tasks e
+GROUP BY e.experiment_id, e.instance_id, e.algorithm_id 
+ORDER BY min(e.start_date), e.experiment_id, e.instance_id;
