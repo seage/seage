@@ -26,4 +26,8 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClass = 'org.seage.launcher.Launcher'
+
+    // installDist {
+    //     destinationDir = file("$rootDir/build/install")
+    // }
 }
