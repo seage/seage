@@ -1,10 +1,10 @@
-FROM maven:3-openjdk-11
+FROM openjdk:11-jdk-slim
 
 WORKDIR /seage
 
 COPY . .
 
-RUN /bin/sh ./target/build.sh
+RUN ./scripts/build.sh
 
 CMD tail -f /dev/null
 
