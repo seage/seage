@@ -42,7 +42,7 @@ subprojects {
     }
     checkstyle {
         // toolVersion = '8.4.0'
-        configFile = file("$rootDir/.config/checkstyle/checkstyle.xml")
+        configFile = file("$rootDir/.settings/checkstyle.xml")
         configProperties = [
             'checkstyle.cache.file': "${buildDir}/checkstyle.cache",
         ]
