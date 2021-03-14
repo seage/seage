@@ -8,16 +8,13 @@
 plugins {
   id 'org.sonarqube' version '3.1.1'
   id 'checkstyle'
+  id 'com.github.spotbugs' version '4.7.0'
 }
-
-// checkstyle {
-//   toolVersion "8.4.0"
-// }
 
 allprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
-
+    
     repositories {
         jcenter()
     }
@@ -26,6 +23,7 @@ allprojects {
 
 subprojects {
     apply plugin: 'checkstyle'
+    apply plugin: 'com.github.spotbugs'
 
     dependencies {
         // Use JUnit Jupiter API for testing.
@@ -44,7 +42,7 @@ subprojects {
     }
     checkstyle {
         // toolVersion = '8.4.0'
-        configFile = file("$rootDir/config/checkstyle/checkstyle.xml")
+        configFile = file("$rootDir/.config/checkstyle/checkstyle.xml")
         configProperties = [
             'checkstyle.cache.file': "${buildDir}/checkstyle.cache",
         ]
@@ -82,10 +80,33 @@ codeCoverageReport.dependsOn {
     subprojects*.test
 }
 
+// checkstyle {
+//   toolVersion "8.4.0"
+// }
+
 sonarqube {
     properties {
         property "sonar.sourceEncoding", "UTF-8"
         property "sonar.coverage.jacoco.xmlReportPaths", "${rootDir}/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
 
     }
+}
+
+spotbugs {
+  toolVersion = '4.2.2'
+    ignoreFailures = true
+    showStackTraces = false
+    showProgress = true
+    effort = 'default'
+    reportLevel = 'default'
+    visitors = [ 'FindSqlInjection', 'SwitchFallthrough' ]
+    omitVisitors = [ 'FindNonShortCircuit' ]
+    reportsDir = file("$buildDir/spotbugs")
+    // includeFilter = file("include.xml")
+    // excludeFilter = file("exclude.xml")
+    // baselineFile = file("baseline.xml")
+    // onlyAnalyze = [ 'com.foobar.MyClass', 'com.foobar.mypkg.*' ]
+    maxHeapSize = '1g'
+    // extraArgs = [ '-nested:false' ]
+    // jvmArgs = [ '-Duser.language=ja' ]
 }
