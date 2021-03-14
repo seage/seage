@@ -17,11 +17,11 @@ build-seage:
 test-seage:
   stage: test
   script:
-    - docker run --rm $SEAGE_TEST_IMAGE mvn test
+    - docker run --rm $SEAGE_TEST_IMAGE ./gradlew test
 
-report-seage:
-  stage: report
-  only:
-    - master
-  script:
-    - docker run --rm $SEAGE_TEST_IMAGE mvn verify sonar:sonar -Dsonar.projectKey=seage -Dsonar.host.url=https://sonarqube.rickq.net -Dsonar.login=$SONAR_SECRET
+# report-seage:
+#   stage: report
+#   only:
+#     - master
+#   script:
+#     - docker run --rm $SEAGE_TEST_IMAGE mvn verify sonar:sonar -Dsonar.projectKey=seage -Dsonar.host.url=https://sonarqube.rickq.net -Dsonar.login=$SONAR_SECRET
