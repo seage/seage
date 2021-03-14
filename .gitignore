@@ -13,8 +13,6 @@ logs/
 .classpath
 .project
 
-**/*.properties
-*.versionsBackup
-
 seage-*/**/.settings
 seage-*/**/.checkstyle
+seage-*/**/*.properties
