@@ -10,7 +10,7 @@
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
-      "cwd": "${workspaceFolder}/target",
+      "cwd": "${workspaceFolder}",
       "args": "list"
     },
     {
@@ -19,7 +19,7 @@
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
-      "cwd": "${workspaceFolder}/target",
+      "cwd": "${workspaceFolder}",
       "args": [
         "experiment-single-random",
         "-p",
