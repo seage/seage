@@ -26,9 +26,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.seage.metaheuristic.genetics.Subject;
+import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.TourProvider;
+import org.seage.problem.tsp.genetics.TspEvaluator;
 
 public class MetadataGenerator {
     public static void main(String[] args) {
@@ -53,11 +55,19 @@ public class MetadataGenerator {
         try(InputStream stream = getClass().getResourceAsStream(path)) {    
           cities = CityProvider.readCities(stream);
         }
+
+        System.out.println("cities len " + cities.length);
+
         int populationCount = 1000;
         System.out.println("Population: " + populationCount);
         List<Subject<Integer>> initialSolutions = generateInitialSubjects(cities, populationCount);
 
-        System.out.println(initialSolutions);
+
+        TspEvaluator te = new TspEvaluator(cities);
+
+        for (int i = 0; i < populationCount; i++) {
+          System.out.println(te.evaluate(initialSolutions.get(i))[0]);
+        }
       }
 
       private List<Subject<Integer>> generateInitialSubjects(City[] cities, int subjectCount) throws Exception {
