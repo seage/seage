@@ -24,61 +24,77 @@ package org.seage.sandbox;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import org.seage.metaheuristic.genetics.Subject;
-import org.seage.metaheuristic.genetics.SubjectEvaluator;
+// import org.seage.metaheuristic.genetics.Subject;
+// import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.TourProvider;
-import org.seage.problem.tsp.genetics.TspEvaluator;
+import org.seage.problem.tsp.TspPhenotypeEvaluator;
+import org.seage.problem.tsp.TspPhenotype;
 
 public class MetadataGenerator {
     public static void main(String[] args) {
         try {
-          // String instanceID = "eil51"; // 426
-          // String instanceID = "berlin52"; // 7542
-          // String instanceID = "ch130"; // 6110
-          // String instanceID = "lin318"; // 42029
-          // String instanceID = "pcb442"; // 50778
-          // String instanceID = "u574"; // 36905
-          String instanceID = "hyflex-tsp-9"; // 426
+          String[] tspInstancesID = new String[]{
+            "hyflex-tsp-0",
+            "hyflex-tsp-8",
+            "hyflex-tsp-2",
+            "hyflex-tsp-7",
+            "hyflex-tsp-6"
+          };
+          String[] satInstancesID = new String[]{
+            "hyflex-sat-3",
+            "hyflex-sat-5",
+            "hyflex-sat-4",
+            "hyflex-sat-10",
+            "hyflex-sat-11"
+          };
     
-          new MetadataGenerator().run(instanceID);
+          new MetadataGenerator().run(tspInstancesID, satInstancesID);
         } catch (Exception ex) {
           ex.printStackTrace();
         }
       }
     
-      public void run(String instanceID) throws Exception {
-        String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instanceID);
-        City[] cities = null;
-        try(InputStream stream = getClass().getResourceAsStream(path)) {    
-          cities = CityProvider.readCities(stream);
-        }
-
-        System.out.println("cities len " + cities.length);
-
-        int populationCount = 1000;
-        System.out.println("Population: " + populationCount);
-        List<Subject<Integer>> initialSolutions = generateInitialSubjects(cities, populationCount);
-
-
-        TspEvaluator te = new TspEvaluator(cities);
-
-        for (int i = 0; i < populationCount; i++) {
-          System.out.println(te.evaluate(initialSolutions.get(i))[0]);
-        }
+      public void run(String[] tspInstancesID, String[] satInstancesID) throws Exception {
+       tspMetaGenerator(1000, tspInstancesID);
       }
 
-      private List<Subject<Integer>> generateInitialSubjects(City[] cities, int subjectCount) throws Exception {
-        ArrayList<Subject<Integer>> result = new ArrayList<>(subjectCount);
+      public void tspMetaGenerator( int populationCount, String[] instancesID ) throws Exception {
+        //iterate through all instances
+        for (String instanceID: instancesID){
+          String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instanceID);
+          City[] cities = null;
+          try(InputStream stream = getClass().getResourceAsStream(path)) {    
+            cities = CityProvider.readCities(stream);
+          }
+
+          System.out.println("cities len " + cities.length);
+
+          System.out.println("Population: " + populationCount);
+          List<TspPhenotype> initialSolutions = generateRandomSubjects(cities, populationCount);
+
+
+          TspPhenotypeEvaluator tspEval = new TspPhenotypeEvaluator(cities);
+
+          for (int i = 0; i < populationCount; i++) {
+            System.out.println(tspEval.evaluate(initialSolutions.get(i))[0]);
+          }
+        } 
+      }
+
+      private List<TspPhenotype> generateRandomSubjects(City[] cities, int subjectCount) throws Exception {
+        List<TspPhenotype> result = new ArrayList<>(subjectCount);
     
         Integer[][] tours = new Integer[subjectCount][];
-        for (int k = 0; k < subjectCount; k++)
+        for (int k = 0; k < subjectCount; k++){
           tours[k] = TourProvider.createRandomTour(cities.length);
+        }
         
         for (int k = 0; k < subjectCount; k++)
-          result.add(new Subject<>(tours[k]));
+          result.add(new TspPhenotype(tours[k]));
         return result;
       }
 }
