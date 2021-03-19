@@ -17,23 +17,43 @@
  */
 
 /**
- * Contributors: David Omrai - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
 
 package org.seage.sandbox;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Random;
+import org.seage.aal.Annotations;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.problem.ProblemInstance;
+import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+import org.seage.aal.problem.ProblemProvider;
+
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-// import org.seage.metaheuristic.genetics.Subject;
-// import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.TourProvider;
 import org.seage.problem.tsp.TspPhenotypeEvaluator;
+//import scala.annotation.implicitAmbiguous;
 import org.seage.problem.tsp.TspPhenotype;
 
+import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.SatPhenotype;
+import org.seage.problem.sat.SatPhenotypeEvaluator;
+import org.seage.problem.sat.SatProblemProvider;
+import org.seage.problem.sat.FormulaReader;
+
+/**
+ * 
+ * @author David Omrai
+ */
 public class MetadataGenerator {
     public static void main(String[] args) {
         try {
@@ -59,42 +79,71 @@ public class MetadataGenerator {
       }
     
       public void run(String[] tspInstancesID, String[] satInstancesID) throws Exception {
-       tspMetaGenerator(1000, tspInstancesID);
+        System.out.println(tspMetaGenerator(1000, tspInstancesID)[0]);
+        System.out.println(satMetaGenerator(1000, satInstancesID)[0]);
       }
 
-      public void tspMetaGenerator( int populationCount, String[] instancesID ) throws Exception {
+      public static double median(double[] array) {
+        Arrays.sort(array);
+        if (array.length % 2 == 0)
+          return ((double)array[array.length/2] + (double)array[array.length/2 -1]/2);
+        return((double)array[array.length/2]);
+      }
+
+      public double[] tspMetaGenerator( int populationCount, String[] instancesID ) throws Exception {
+        double[] results = new double[instancesID.length];
+      
         //iterate through all instances
-        for (String instanceID: instancesID){
-          String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instanceID);
+        for (int ins = 0; ins < instancesID.length; ins++){
+          String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instancesID[ins]);
           City[] cities = null;
+
           try(InputStream stream = getClass().getResourceAsStream(path)) {    
             cities = CityProvider.readCities(stream);
           }
 
-          System.out.println("cities len " + cities.length);
-
-          System.out.println("Population: " + populationCount);
-          List<TspPhenotype> initialSolutions = generateRandomSubjects(cities, populationCount);
-
+          // System.out.println("cities len " + cities.length);
+          // System.out.println("Population: " + populationCount);
+          
+          double[] randomResults = new double[populationCount];
 
           TspPhenotypeEvaluator tspEval = new TspPhenotypeEvaluator(cities);
 
           for (int i = 0; i < populationCount; i++) {
-            System.out.println(tspEval.evaluate(initialSolutions.get(i))[0]);
+            randomResults[i] = tspEval.evaluate(new TspPhenotype(TourProvider.createRandomTour(cities.length)))[0];
           }
+
+          results[ins] = median(randomResults);
         } 
+        return results;
       }
 
-      private List<TspPhenotype> generateRandomSubjects(City[] cities, int subjectCount) throws Exception {
-        List<TspPhenotype> result = new ArrayList<>(subjectCount);
-    
-        Integer[][] tours = new Integer[subjectCount][];
-        for (int k = 0; k < subjectCount; k++){
-          tours[k] = TourProvider.createRandomTour(cities.length);
-        }
-        
-        for (int k = 0; k < subjectCount; k++)
-          result.add(new TspPhenotype(tours[k]));
-        return result;
+      public double[] satMetaGenerator( int populationCount, String[] instancesID ) throws Exception {
+        double[] results = new double[instancesID.length];
+      
+        //iterate through all instances
+       
+        for (int ins = 0; ins < instancesID.length; ins++){
+          String path = String.format("/org/seage/problem/sat/instances/%s.cnf", instancesID[ins]);
+
+          Formula formula = null;
+          
+          try(InputStream stream = getClass().getResourceAsStream(path)) {    
+            formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
+            FormulaReader.readClauses(stream));
+          }
+
+          double[] randomResults = new double[populationCount];
+
+          SatPhenotypeEvaluator satEval = new SatPhenotypeEvaluator(formula);
+
+          for (int i = 0; i < populationCount; i++) {
+            randomResults[i] = satEval.evaluate(
+              new SatProblemProvider().generateInitialSolutions((ProblemInstance)formula, 1, new Random().nextLong())[0] )[0];
+          }
+
+          results[ins] = median(randomResults);
+        } 
+        return results;
       }
 }
