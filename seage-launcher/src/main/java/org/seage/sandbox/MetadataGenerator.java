@@ -22,38 +22,46 @@
 
 package org.seage.sandbox;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.Random;
-import org.seage.aal.Annotations;
-import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
-import org.seage.aal.problem.ProblemProvider;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.TourProvider;
 import org.seage.problem.tsp.TspPhenotypeEvaluator;
-//import scala.annotation.implicitAmbiguous;
 import org.seage.problem.tsp.TspPhenotype;
 
 import org.seage.problem.sat.Formula;
-import org.seage.problem.sat.SatPhenotype;
 import org.seage.problem.sat.SatPhenotypeEvaluator;
 import org.seage.problem.sat.SatProblemProvider;
 import org.seage.problem.sat.FormulaReader;
+
+
+import java.io.File;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * 
  * @author David Omrai
  */
+
+@SuppressWarnings("unchecked")
 public class MetadataGenerator {
     public static void main(String[] args) {
         try {
@@ -79,8 +87,59 @@ public class MetadataGenerator {
       }
     
       public void run(String[] tspInstancesID, String[] satInstancesID) throws Exception {
-        System.out.println(tspMetaGenerator(1000, tspInstancesID)[0]);
-        System.out.println(satMetaGenerator(1000, satInstancesID)[0]);
+        double[] tspMedianResults = tspMetaGenerator(10000, tspInstancesID);
+        double[] satMedianResults = satMetaGenerator(10000, satInstancesID);
+
+        Hashtable<String, Double> tspResults = new Hashtable<String, Double>();
+        Hashtable<String, Double> satResults = new Hashtable<String, Double>();
+
+        System.out.println("tsp");
+        for (int i = 0; i < tspInstancesID.length; i++){
+          tspResults.put(tspInstancesID[i], tspMedianResults[i]);
+        }
+        System.out.println("sat");
+        for (int i = 0; i < satInstancesID.length; i++) {
+          satResults.put(satInstancesID[i], satMedianResults[i]);
+        }
+
+        createXMLFile(tspResults, satResults);
+      }
+
+      
+      public static void createXMLFile(Hashtable<String, Double>... hashTables) throws Exception {
+        DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
+        Document document = documentBuilder.newDocument();
+ 
+        Element root = document.createElement("MetadatageneratorResults");
+            document.appendChild(root);
+        
+        int htIndex = 0;
+        for (Hashtable<String, Double> ht: hashTables){
+          Element problemDomain = document.createElement("problem");
+          root.appendChild(problemDomain);
+
+          Attr attr = document.createAttribute("id");
+          attr.setValue(Integer.toString(htIndex++));
+          problemDomain.setAttributeNode(attr);
+
+          for (String ins: ht.keySet()){
+            Element instance = document.createElement(ins);
+            problemDomain.appendChild(instance);
+
+            Attr rslt = document.createAttribute("result");
+            rslt.setValue(Double.toString(ht.get(ins)));
+            instance.setAttributeNode(rslt);
+          }
+        }
+
+        // create the xlm document
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource domSource = new DOMSource(document);
+        StreamResult streamResult = new StreamResult(System.out);//new File("Metadata-results.xml"));
+
+        transformer.transform(domSource, streamResult);
       }
 
       public static double median(double[] array) {
