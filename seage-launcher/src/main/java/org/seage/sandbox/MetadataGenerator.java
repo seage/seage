@@ -45,15 +45,20 @@ import org.seage.problem.tsp.TspPhenotypeEvaluator;
 
 
 /**
- * .
+ * This program creates number of random solutions for each given instance of a problem domain.
+ * And for every instance returns median of obtained solutions.
+ * 
  * @author David Omrai
  */
 
 public class MetadataGenerator {
   
   /**
-   * .
-   * @param args .
+   * Main method of MetadataGenerator class.
+   * In this method creates array of instances for each 
+   * problem domain.
+   * The instances are then given to run method.
+   * @param args input parameters.
    */
   public static void main(String[] args) {
     try {
@@ -79,9 +84,12 @@ public class MetadataGenerator {
   }
 
   /**
-   * .
-   * @param tspInstancesID . 
-   * @param satInstancesID .
+   * Run method takes given instances and sends it to appropriate method for 
+   * further computation.
+   * After receiving the results for all problem domains it stores them into a file
+   * in xml format.
+   * @param tspInstancesID instances ids of tsp problem domain. 
+   * @param satInstancesID instances ids of sat problem domain.
    */
   public void run(String[] tspInstancesID, String[] satInstancesID) throws Exception {
     double[] tspMedianResults = tspMetaGenerator(10000, tspInstancesID);
@@ -116,9 +124,9 @@ public class MetadataGenerator {
 
 
   /**
-   * .
-   * @param array .
-   * @return
+   * Method takes array, finds and returns the median.
+   * @param array array of doubles.
+   * @return median of given array
    */
   public static double median(double[] array) {
     if (array.length == 1) {
@@ -133,10 +141,11 @@ public class MetadataGenerator {
   }
 
   /**
-   * .
-   * @param populationCount .
-   * @param instancesID .
-   * @return
+   * Method creates for each instance of tsp problem domain number of random solutions.
+   * Then it calculates the score of each solution and stores the median to output array.
+   * @param populationCount number of random solutions to make.
+   * @param instancesID array with instances ids.
+   * @return array of medians for each instance
    */
   public double[] tspMetaGenerator(int populationCount, String[] instancesID) throws Exception {
     double[] results = new double[instancesID.length];
@@ -149,9 +158,6 @@ public class MetadataGenerator {
       try (InputStream stream = getClass().getResourceAsStream(path)) {    
         cities = CityProvider.readCities(stream);
       }
-
-      // System.out.println("cities len " + cities.length);
-      // System.out.println("Population: " + populationCount);
       
       double[] randomResults = new double[populationCount];
 
@@ -168,17 +174,17 @@ public class MetadataGenerator {
   }
 
   /**
-   * .
-   * @param populationCount .
-   * @param instancesID .
-   * @return
+   * Method creates for each instance of sat problem domain number of random solutions.
+   * Then it calculates the score of each solution and stores the median to output array.
+   * @param populationCount number of random solutions to make.
+   * @param instancesID array with instances ids.
+   * @return array of medians for each instance
    */
   public double[] satMetaGenerator(int populationCount, String[] instancesID)
        throws Exception {
     double[] results = new double[instancesID.length];
   
     //iterate through all instances
-    
     for (int ins = 0; ins < instancesID.length; ins++) {
       String path = String.format("/org/seage/problem/sat/instances/%s.cnf", instancesID[ins]);
 
