@@ -137,7 +137,7 @@ public class MetadataGenerator {
     if (array.length % 2 == 0) {
       return (((double)array[array.length / 2] + (double)array[array.length / 2 - 1]) / 2);
     }
-    return ((double)array[ (array.length / 2) + 1 ]);
+    return ((double)array[ (array.length / 2)]);
   }
 
   /**
