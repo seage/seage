@@ -1,7 +1,11 @@
 package org.seage.launcher.commands;
 
-import java.util.Map;
+import com.beust.jcommander.Parameters;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
@@ -9,7 +13,6 @@ import org.seage.data.DataNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.beust.jcommander.Parameters;
 
 @Parameters(commandDescription = "List implemented problems and algorithms")
 public class ListCommand extends Command {
@@ -34,29 +37,38 @@ public class ListCommand extends Command {
 
         _logger.info("\talgorithms:");
         for (DataNode alg : pi.getDataNode("Algorithms").getDataNodes()) {
-          _logger.info("\t\t" + alg.getValueStr("id")/*
-                                                      * +" ("+alg.getValueStr("id")+")"
-                                                      */);
+          _logger.info("\t\t" + alg.getValueStr("id"));
 
-          // _logger.info("\t\t\tparameters:");
           for (DataNode param : alg.getDataNodes("Parameter")) {
-            _logger.info("\t\t\t" + param.getValueStr("name") + "  (" + param.getValueStr("min") + ", "
-                + param.getValueStr("max") + ", " + param.getValueStr("init") + ")");
+            String msg = String.format("\t\t\t%s (%s, %s, %s)", 
+                param.getValueStr("name"), 
+                param.getValueStr("min"),
+                param.getValueStr("max"),
+                param.getValueStr("init"));
+            _logger.info(msg);
           }
         }
         _logger.info("\tinstances:");
+
+        List<String> instanceIDs = new ArrayList<>();
         for (DataNode inst : pi.getDataNode("Instances").getDataNodes()) {
-          _logger
-              .info("\t\t" + inst.getValueStr("type") + "=" + inst.getValueStr("path")/*
-                                                                                       * +" ("+alg.getValueStr("id")+")"
-                                                                                       */);
+          instanceIDs.add(inst.getValueStr("id"));
         }
 
+        Collections.sort(instanceIDs);
+        String line = "";
+        for (int i = 0;i < instanceIDs.size();i++) {
+          line += String.format("%-18s", instanceIDs.get(i));
+          if ((i + 1) % 5 == 0) {            
+            _logger.info("\t\t" + line);
+            line = "";
+          }
+          
+        }
         _logger.info("");
       } catch (Exception ex) {
         _logger.error(problemId + ": " + ex.getMessage(), ex);
       }
-      // XmlHelper.writeXml(problems, "problems.xml");
     }
   }
 }
