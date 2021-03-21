@@ -126,7 +126,7 @@ public class MetadataGenerator {
         
         inst.putValue(
             "random",
-            dn.getValue("random").toString());
+            (Math.round((double)dn.getValue("random"))));
 
         inst.putValue(
             "size",
