@@ -113,9 +113,8 @@ public abstract class Experimenter {
     logger.info("-------------------------------------");
 
     long totalNumOfConfigs = getNumberOfConfigs(this.instanceIDs.length, this.algorithmIDs.length);
-    long totalRunsPerCpu = totalNumOfConfigs / Runtime.getRuntime().availableProcessors();
-    long totalEstimatedTime = getEstimatedTime(this.instanceIDs.length, this.algorithmIDs.length)
-        / Runtime.getRuntime().availableProcessors();
+    long totalRunsPerCpu = (long)Math.ceil((double)totalNumOfConfigs / Runtime.getRuntime().availableProcessors());
+    long totalEstimatedTime = getEstimatedTime(this.instanceIDs.length, this.algorithmIDs.length);
 
     logger.info(String.format("%-25s: %s", "Total number of configs", totalNumOfConfigs));
     logger.info("Total number of configs per cpu core: " + totalRunsPerCpu);
