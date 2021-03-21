@@ -1,3 +1,3 @@
  cd `dirname $0`/..
 
-JAVA_OPTS="-Xms1024m" ./seage-launcher/build/install/seage-launcher/bin/seage-launcher $@
+JAVA_OPTS="-Xms8g" ./seage-launcher/build/install/seage-launcher/bin/seage-launcher $@

@@ -60,10 +60,12 @@ public class SingleAlgorithmExperimenter extends Experimenter {
       double bestObjVal = Double.MAX_VALUE;
       // The taskQueue size must be limited since the results are stored in the task's reports
       // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
-      int batchSize = Runtime.getRuntime().availableProcessors();
-      int batchCount = Math.max(1, this.numConfigs / batchSize);
-      for (int j = 0; j< batchCount; j++ ){
-        // Just batchSize * NUM_RUNS configs processed at the time
+      int batchSize = Math.min(this.numConfigs, Runtime.getRuntime().availableProcessors());
+      int batchCount = (int)Math.ceil((double)this.numConfigs / batchSize);
+      for (int j = 0; j < batchCount; j++) {
+        if ((j + 1) * batchSize > this.numConfigs) {
+          batchSize = this.numConfigs % batchSize;
+        }
         List<ExperimentTask> taskQueue = new ArrayList<>();
         // Prepare experiment task configs
         ProblemConfig[] configs = configurator.prepareConfigs(this.problemInfo,
@@ -115,7 +117,9 @@ public class SingleAlgorithmExperimenter extends Experimenter {
 
   @Override
   protected long getEstimatedTime(int instancesCount, int algorithmsCount) {
-    return getNumberOfConfigs(instancesCount, algorithmsCount) * this.timeoutS * 1000;
+    return (long)Math.ceil((double)getNumberOfConfigs(instancesCount, algorithmsCount) 
+        / Runtime.getRuntime().availableProcessors())
+        * this.timeoutS * 1000;
   }
 
   @Override
