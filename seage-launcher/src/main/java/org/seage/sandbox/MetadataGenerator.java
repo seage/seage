@@ -22,19 +22,11 @@
 
 package org.seage.sandbox;
 
-import java.util.Map;
-
-import org.seage.aal.algorithm.Phenotype;
-import org.seage.aal.problem.IProblemProvider;
-import org.seage.aal.problem.ProblemProvider;
-import org.seage.data.DataNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 import java.io.File;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.xml.transform.Transformer;
@@ -42,9 +34,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.seage.aal.algorithm.Phenotype;
+import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+import org.seage.aal.problem.ProblemProvider;
 
 import org.seage.data.DataNode;
 
@@ -60,6 +55,8 @@ import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspPhenotypeEvaluator;
 import org.seage.problem.tsp.TspProblemProvider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -74,6 +71,10 @@ public class MetadataGenerator {
     ProblemProvider.providerClasses =
         new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class};
   }
+
+  private static final Logger _logger = LoggerFactory.getLogger(MetadataGenerator.class.getName());
+
+
   /**
    * Main method of MetadataGenerator class.
    * In this method creates array of instances for each 
@@ -82,34 +83,10 @@ public class MetadataGenerator {
    * @param args input parameters.
    */
   public static void main(String[] args) {
-    try {
-      String[] tspInstancesID = new String[]{
-        "hyflex-tsp-0",
-        "hyflex-tsp-8",
-        "hyflex-tsp-2",
-        "hyflex-tsp-7",
-        "hyflex-tsp-6"
-      };
-      String[] satInstancesID = new String[]{
-        "hyflex-sat-3",
-        "hyflex-sat-5",
-        "hyflex-sat-4",
-        "hyflex-sat-10",
-        "hyflex-sat-11"
-      };
-
-      DataNode problems = new DataNode("Problems");
-      Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
-      
-      System.out.println(providers.size());
-      // for(String problemId : providers.keySet()){
-      //   //IProblemProvider<?> pp = providers.get(problemId);
-
-      //   System.out.println("problem");
-      //   System.out.println(problemId);
-      // }
-      
-      //new MetadataGenerator().run(tspInstancesID, satInstancesID);
+    try {     
+      _logger.info("MetadataGenerator is running...");
+      new MetadataGenerator().run();
+      _logger.info("MetadataGenerator finished");
     } catch (Exception ex) {
       ex.printStackTrace();
     }
@@ -120,45 +97,42 @@ public class MetadataGenerator {
    * further computation.
    * After receiving the results for all problem domains it stores them into a file
    * in xml format.
-   * @param tspInstancesID instances ids of tsp problem domain. 
-   * @param satInstancesID instances ids of sat problem domain.
    */
-  public void run(String[] tspInstancesID, String[] satInstancesID) throws Exception {
-    // The following lines of code represents the instances,
-    // names and results of each problem domain
-    // In case of adding a new problem domain just add to followig arrays neeed info
-    String[][] problemsInstances = {
-      tspInstancesID,
-      satInstancesID
-    };
-    double[][] problemsResults = {
-      tspMetaGenerator(1000, tspInstancesID),
-      satMetaGenerator(1000, satInstancesID)
-    };
-    String[] problemsNames = {
-      "tsp",
-      "sat"
-    };
+  public void run() throws Exception {
     
-    // For all problems generates a xml data and store then into a file
-    for (int pri = 0; pri < problemsResults.length; pri++) {
-      DataNode results = new DataNode("results");
-      DataNode problemResults = new DataNode(problemsNames[pri] + "-problem");
+    Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
 
-      for (int i = 0; i < problemsResults[pri].length; i++) {
-        DataNode inst = new DataNode("instance");
-        inst.putValue(problemsInstances[pri][i], Double.toString(problemsResults[pri][i]));
+    for (String problemId : providers.keySet()) {
+      _logger.info("Working on " + problemId + " problem...");
+      
+      IProblemProvider<?> pp = providers.get(problemId);
+      DataNode pi = pp.getProblemInfo();
+      
+      double[] problemResults = problemsMetaGenetatorHandler(
+        problemId, 1000, pi.getDataNode("Instances").getDataNodes());
 
-        problemResults.putDataNode(inst);
+      if (problemId == null) {
+        continue;
       }
-      results.putDataNode(problemResults);
 
+      DataNode results = new DataNode("results");
+      DataNode problem = new DataNode(problemId + "-problem");
+
+      for (int i = 0; i < problemResults.length; i++) {
+        DataNode inst = new DataNode("instance");
+        inst.putValue(
+            pi.getDataNode("Instances").getDataNodes().get(i).getValue("id").toString(),
+            Double.toString(problemResults[i]));
+
+        problem.putDataNode(inst);
+      }
+      results.putDataNode(problem);
 
       DataNode mdGenRes = new DataNode("MetadataGenerator");
       mdGenRes.putDataNode(results);
 
-      saveToFile(mdGenRes, problemsNames[pri]);
-    }    
+      saveToFile(mdGenRes, problemId.toLowerCase());
+    }
   }
 
   /**
@@ -166,6 +140,7 @@ public class MetadataGenerator {
    * @param dn DataNode object with data for outputting.
    */
   public static void saveToFile(DataNode dn, String fileName) throws Exception {
+    _logger.info("Saving the results to the file " + fileName + "...");
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     Transformer transformer = transformerFactory.newTransformer();
     DOMSource domSource = new DOMSource(dn.toXml());
@@ -192,18 +167,41 @@ public class MetadataGenerator {
   }
 
   /**
+   * Method decides what metaGenerator to call deppending on given problem id.
+   * @param populationCount number of random solutions to make.
+   * @param instancesIds array with instances ids.
+   * @return array of medians for each instance
+   * @return 
+   */
+  public double[] problemsMetaGenetatorHandler(
+        String problemId, int populationCount,  List<DataNode> instancesIds) throws Exception {
+    switch (problemId.toLowerCase()) {
+      case "sat": 
+        return satMetaGenerator(populationCount, instancesIds);
+      case "tsp":
+        return tspMetaGenerator(populationCount, instancesIds);
+      default:
+        return null;
+    }
+  }
+
+  /**
    * Method creates for each instance of tsp problem domain number of random solutions.
    * Then it calculates the score of each solution and stores the median to output array.
    * @param populationCount number of random solutions to make.
-   * @param instancesID array with instances ids.
+   * @param instancesIds array with instances ids.
    * @return array of medians for each instance
    */
-  public double[] tspMetaGenerator(int populationCount, String[] instancesID) throws Exception {
-    double[] results = new double[instancesID.length];
+  public double[] tspMetaGenerator(int populationCount,  List<DataNode> instancesIds)
+      throws Exception {
+    double[] results = new double[instancesIds.size()];
   
     //iterate through all instances
-    for (int ins = 0; ins < instancesID.length; ins++) {
-      String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instancesID[ins]);
+    for (int ins = 0; ins < instancesIds.size(); ins++) {
+      _logger.info("Calculating: " + instancesIds.get(ins).getValue("id"));
+
+      String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", 
+          instancesIds.get(ins).getValue("id"));
       City[] cities = null;
 
       try (InputStream stream = getClass().getResourceAsStream(path)) {    
@@ -228,16 +226,19 @@ public class MetadataGenerator {
    * Method creates for each instance of sat problem domain number of random solutions.
    * Then it calculates the score of each solution and stores the median to output array.
    * @param populationCount number of random solutions to make.
-   * @param instancesID array with instances ids.
+   * @param instancesIds array with instances ids.
    * @return array of medians for each instance
    */
-  public double[] satMetaGenerator(int populationCount, String[] instancesID)
+  public double[] satMetaGenerator(int populationCount,  List<DataNode> instancesIds)
        throws Exception {
-    double[] results = new double[instancesID.length];
+    double[] results = new double[instancesIds.size()];
   
     //iterate through all instances
-    for (int ins = 0; ins < instancesID.length; ins++) {
-      String path = String.format("/org/seage/problem/sat/instances/%s.cnf", instancesID[ins]);
+    for (int ins = 0; ins < instancesIds.size(); ins++) {
+      _logger.info("Calculating: " + instancesIds.get(ins).getValue("id"));
+
+      String path = String.format("/org/seage/problem/sat/instances/%s.cnf", 
+          instancesIds.get(ins).getValue("id"));
 
       Formula formula = null;
       
