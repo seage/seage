@@ -85,7 +85,7 @@ public class MetadataGenerator {
   public static void main(String[] args) {
     try {     
       _logger.info("MetadataGenerator is running...");
-      new MetadataGenerator().run();
+      new MetadataGenerator().runSuboptimalMetadataGenerator();
       _logger.info("MetadataGenerator finished");
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -98,7 +98,7 @@ public class MetadataGenerator {
    * After receiving the results for all problem domains it stores them into a file
    * in xml format.
    */
-  public void run() throws Exception {
+  public void runSuboptimalMetadataGenerator() throws Exception {
     
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
 
@@ -108,7 +108,7 @@ public class MetadataGenerator {
       IProblemProvider<?> pp = providers.get(problemId);
       DataNode pi = pp.getProblemInfo();
       
-      double[] problemResults = problemsMetaGenetatorHandler(
+      double[] problemResults = problemsSuboptimalMetaGenetatorHandler(
         problemId, 1000, pi.getDataNode("Instances").getDataNodes());
 
       if (problemId == null) {
@@ -133,6 +133,10 @@ public class MetadataGenerator {
 
       saveToFile(mdGenRes, problemId.toLowerCase());
     }
+  }
+
+  public void runOptimalMetadataGenerator(){
+    //todo
   }
 
   /**
@@ -173,13 +177,13 @@ public class MetadataGenerator {
    * @return array of medians for each instance
    * @return 
    */
-  public double[] problemsMetaGenetatorHandler(
+  public double[] problemsSuboptimalMetaGenetatorHandler(
         String problemId, int populationCount,  List<DataNode> instancesIds) throws Exception {
     switch (problemId.toLowerCase()) {
       case "sat": 
-        return satMetaGenerator(populationCount, instancesIds);
+        return satSuboptimalMetadataGenerator(populationCount, instancesIds);
       case "tsp":
-        return tspMetaGenerator(populationCount, instancesIds);
+        return tspSuboptimalMetadataGenerator(populationCount, instancesIds);
       default:
         return null;
     }
@@ -192,7 +196,7 @@ public class MetadataGenerator {
    * @param instancesIds array with instances ids.
    * @return array of medians for each instance
    */
-  public double[] tspMetaGenerator(int populationCount,  List<DataNode> instancesIds)
+  public double[] tspSuboptimalMetadataGenerator(int populationCount,  List<DataNode> instancesIds)
       throws Exception {
     double[] results = new double[instancesIds.size()];
   
@@ -229,7 +233,7 @@ public class MetadataGenerator {
    * @param instancesIds array with instances ids.
    * @return array of medians for each instance
    */
-  public double[] satMetaGenerator(int populationCount,  List<DataNode> instancesIds)
+  public double[] satSuboptimalMetadataGenerator(int populationCount,  List<DataNode> instancesIds)
        throws Exception {
     double[] results = new double[instancesIds.size()];
   
