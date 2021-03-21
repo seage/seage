@@ -85,7 +85,7 @@ public class MetadataGenerator {
   public static void main(String[] args) {
     try {     
       _logger.info("MetadataGenerator is running...");
-      new MetadataGenerator().runSuboptimalMetadataGenerator();
+      new MetadataGenerator().runRandomMetadataGenerator();
       _logger.info("MetadataGenerator finished");
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -98,7 +98,7 @@ public class MetadataGenerator {
    * After receiving the results for all problem domains it stores them into a file
    * in xml format.
    */
-  public void runSuboptimalMetadataGenerator() throws Exception {
+  public void runRandomMetadataGenerator() throws Exception {
     
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
 
@@ -108,8 +108,8 @@ public class MetadataGenerator {
       IProblemProvider<?> pp = providers.get(problemId);
       DataNode pi = pp.getProblemInfo();
       
-      double[] problemResults = problemsSuboptimalMetaGenetatorHandler(
-        problemId, 1000, pi.getDataNode("Instances").getDataNodes());
+      problemsRandomMetaGenetatorHandler(
+          problemId, 1000, pi.getDataNode("Instances").getDataNodes());
 
       if (problemId == null) {
         continue;
@@ -118,11 +118,19 @@ public class MetadataGenerator {
       DataNode results = new DataNode("results");
       DataNode problem = new DataNode(problemId + "-problem");
 
-      for (int i = 0; i < problemResults.length; i++) {
+      for (DataNode dn: pi.getDataNode("Instances").getDataNodes()) {
         DataNode inst = new DataNode("instance");
         inst.putValue(
-            pi.getDataNode("Instances").getDataNodes().get(i).getValue("id").toString(),
-            Double.toString(problemResults[i]));
+            "name",
+            dn.getValue("id").toString());
+        
+        inst.putValue(
+            "random",
+            dn.getValue("random").toString());
+
+        inst.putValue(
+            "size",
+            dn.getValue("size").toString());
 
         problem.putDataNode(inst);
       }
@@ -144,7 +152,7 @@ public class MetadataGenerator {
    * @param dn DataNode object with data for outputting.
    */
   public static void saveToFile(DataNode dn, String fileName) throws Exception {
-    _logger.info("Saving the results to the file " + fileName + "...");
+    _logger.info("Saving the results to the file " + fileName + ".metadata.xml...");
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     Transformer transformer = transformerFactory.newTransformer();
     DOMSource domSource = new DOMSource(dn.toXml());
@@ -174,18 +182,19 @@ public class MetadataGenerator {
    * Method decides what metaGenerator to call deppending on given problem id.
    * @param populationCount number of random solutions to make.
    * @param instancesIds array with instances ids.
-   * @return array of medians for each instance
    * @return 
    */
-  public double[] problemsSuboptimalMetaGenetatorHandler(
+  public void problemsRandomMetaGenetatorHandler(
         String problemId, int populationCount,  List<DataNode> instancesIds) throws Exception {
     switch (problemId.toLowerCase()) {
       case "sat": 
-        return satSuboptimalMetadataGenerator(populationCount, instancesIds);
+        satRandomMetadataGenerator(populationCount, instancesIds);
+        break;
       case "tsp":
-        return tspSuboptimalMetadataGenerator(populationCount, instancesIds);
+        tspRandomMetadataGenerator(populationCount, instancesIds);
+        break;
       default:
-        return null;
+        break;
     }
   }
 
@@ -194,11 +203,9 @@ public class MetadataGenerator {
    * Then it calculates the score of each solution and stores the median to output array.
    * @param populationCount number of random solutions to make.
    * @param instancesIds array with instances ids.
-   * @return array of medians for each instance
    */
-  public double[] tspSuboptimalMetadataGenerator(int populationCount,  List<DataNode> instancesIds)
+  public void tspRandomMetadataGenerator(int populationCount,  List<DataNode> instancesIds)
       throws Exception {
-    double[] results = new double[instancesIds.size()];
   
     //iterate through all instances
     for (int ins = 0; ins < instancesIds.size(); ins++) {
@@ -211,6 +218,10 @@ public class MetadataGenerator {
       try (InputStream stream = getClass().getResourceAsStream(path)) {    
         cities = CityProvider.readCities(stream);
       }
+
+      if (cities == null) {
+        continue;
+      }
       
       double[] randomResults = new double[populationCount];
 
@@ -221,9 +232,10 @@ public class MetadataGenerator {
         .evaluate(new TspPhenotype(TourProvider.createRandomTour(cities.length)))[0];
       }
 
-      results[ins] = median(randomResults);
+      instancesIds.get(ins).putValue("random", median(randomResults));
+      instancesIds.get(ins).putValue("size", cities.length);
+      
     } 
-    return results;
   }
 
   /**
@@ -231,11 +243,9 @@ public class MetadataGenerator {
    * Then it calculates the score of each solution and stores the median to output array.
    * @param populationCount number of random solutions to make.
    * @param instancesIds array with instances ids.
-   * @return array of medians for each instance
    */
-  public double[] satSuboptimalMetadataGenerator(int populationCount,  List<DataNode> instancesIds)
+  public void satRandomMetadataGenerator(int populationCount,  List<DataNode> instancesIds)
        throws Exception {
-    double[] results = new double[instancesIds.size()];
   
     //iterate through all instances
     for (int ins = 0; ins < instancesIds.size(); ins++) {
@@ -250,7 +260,7 @@ public class MetadataGenerator {
         formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
         FormulaReader.readClauses(stream));
       }
-
+      
       double[] randomResults = new double[populationCount];
 
       SatPhenotypeEvaluator satEval = new SatPhenotypeEvaluator(formula);
@@ -261,8 +271,8 @@ public class MetadataGenerator {
           .generateInitialSolutions((ProblemInstance)formula, 1, new Random().nextLong())[0])[0];
       }
 
-      results[ins] = median(randomResults);
-    } 
-    return results;
+      instancesIds.get(ins).putValue("random", median(randomResults));
+      instancesIds.get(ins).putValue("size", formula.getLiteralCount());
+    }
   }
 }
