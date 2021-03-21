@@ -58,6 +58,7 @@ import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.TourProvider;
 import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspPhenotypeEvaluator;
+import org.seage.problem.tsp.TspProblemProvider;
 
 
 
@@ -69,7 +70,10 @@ import org.seage.problem.tsp.TspPhenotypeEvaluator;
  */
 
 public class MetadataGenerator {
-  
+  static {
+    ProblemProvider.providerClasses =
+        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class};
+  }
   /**
    * Main method of MetadataGenerator class.
    * In this method creates array of instances for each 
