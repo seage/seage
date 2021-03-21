@@ -22,6 +22,16 @@
 
 package org.seage.sandbox;
 
+import java.util.Map;
+
+import org.seage.aal.algorithm.Phenotype;
+import org.seage.aal.problem.IProblemProvider;
+import org.seage.aal.problem.ProblemProvider;
+import org.seage.data.DataNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -84,7 +94,18 @@ public class MetadataGenerator {
         "hyflex-sat-11"
       };
 
-      new MetadataGenerator().run(tspInstancesID, satInstancesID);
+      DataNode problems = new DataNode("Problems");
+      Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
+      
+      System.out.println(providers.size());
+      // for(String problemId : providers.keySet()){
+      //   //IProblemProvider<?> pp = providers.get(problemId);
+
+      //   System.out.println("problem");
+      //   System.out.println(problemId);
+      // }
+      
+      //new MetadataGenerator().run(tspInstancesID, satInstancesID);
     } catch (Exception ex) {
       ex.printStackTrace();
     }
@@ -99,47 +120,52 @@ public class MetadataGenerator {
    * @param satInstancesID instances ids of sat problem domain.
    */
   public void run(String[] tspInstancesID, String[] satInstancesID) throws Exception {
-    double[] tspMedianResults = tspMetaGenerator(10000, tspInstancesID);
-    double[] satMedianResults = satMetaGenerator(10000, satInstancesID);
+    // The following lines of code represents the instances,
+    // names and results of each problem domain
+    // In case of adding a new problem domain just add to followig arrays neeed info
+    String[][] problemsInstances = {
+      tspInstancesID,
+      satInstancesID
+    };
+    double[][] problemsResults = {
+      tspMetaGenerator(1000, tspInstancesID),
+      satMetaGenerator(1000, satInstancesID)
+    };
+    String[] problemsNames = {
+      "tsp",
+      "sat"
+    };
+    
+    // For all problems generates a xml data and store then into a file
+    for (int pri = 0; pri < problemsResults.length; pri++) {
+      DataNode results = new DataNode("results");
+      DataNode problemResults = new DataNode(problemsNames[pri] + "-problem");
 
-    DataNode results = new DataNode("results");
+      for (int i = 0; i < problemsResults[pri].length; i++) {
+        DataNode inst = new DataNode("instance");
+        inst.putValue(problemsInstances[pri][i], Double.toString(problemsResults[pri][i]));
 
-    DataNode tspRes = new DataNode("tsp-problem");
-    for (int i = 0; i < tspInstancesID.length; i++) {
-      DataNode inst = new DataNode("instance");
-      inst.putValue(tspInstancesID[i], Double.toString(tspMedianResults[i]));
-
-      tspRes.putDataNode(inst);
-    }
-    results.putDataNode(tspRes);
-
-    DataNode satRes = new DataNode("sat-problem");
-    for (int i = 0; i < satInstancesID.length; i++) {
-      DataNode inst = new DataNode("instance");
-      inst.putValue(satInstancesID[i], Double.toString(satMedianResults[i]));
-
-      satRes.putDataNode(inst);
-    }
-    results.putDataNode(satRes);
+        problemResults.putDataNode(inst);
+      }
+      results.putDataNode(problemResults);
 
 
-    DataNode mdGenRes = new DataNode("MetadataGenerator");
-    mdGenRes.putDataNode(results);
+      DataNode mdGenRes = new DataNode("MetadataGenerator");
+      mdGenRes.putDataNode(results);
 
-    saveToFile(mdGenRes);
-    // System.out.println(mdGenRes.getDataNodes());
-    // System.out.println(mdGenRes.toString());
+      saveToFile(mdGenRes, problemsNames[pri]);
+    }    
   }
 
   /**
    * Method stores given data into a xml file.
    * @param dn DataNode object with data for outputting.
    */
-  public static void saveToFile(DataNode dn) throws Exception {
+  public static void saveToFile(DataNode dn, String fileName) throws Exception {
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     Transformer transformer = transformerFactory.newTransformer();
     DOMSource domSource = new DOMSource(dn.toXml());
-    StreamResult streamResult = new StreamResult(new File("./metadata-generator-result.xml"));
+    StreamResult streamResult = new StreamResult(new File("./" + fileName + ".metadata.xml"));
 
     transformer.transform(domSource, streamResult);
   }
