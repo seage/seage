@@ -22,9 +22,16 @@
 
 package org.seage.sandbox;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Random;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
@@ -118,10 +125,24 @@ public class MetadataGenerator {
 
     DataNode mdGenRes = new DataNode("MetadataGenerator");
     mdGenRes.putDataNode(results);
-    System.out.println(mdGenRes.getDataNodes());
-    System.out.println(mdGenRes.toString());
+
+    saveToFile(mdGenRes);
+    // System.out.println(mdGenRes.getDataNodes());
+    // System.out.println(mdGenRes.toString());
   }
 
+  /**
+   * Method stores given data into a xml file.
+   * @param dn DataNode object with data for outputting.
+   */
+  public static void saveToFile(DataNode dn) throws Exception {
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    Transformer transformer = transformerFactory.newTransformer();
+    DOMSource domSource = new DOMSource(dn.toXml());
+    StreamResult streamResult = new StreamResult(new File("./metadata-generator-result.xml"));
+
+    transformer.transform(domSource, streamResult);
+  }
 
   /**
    * Method takes array, finds and returns the median.
