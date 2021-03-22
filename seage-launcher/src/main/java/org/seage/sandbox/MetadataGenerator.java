@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -88,7 +89,7 @@ public class MetadataGenerator {
   public static void main(String[] args) {
     try {     
       _logger.info("MetadataGenerator is running...");
-      new MetadataGenerator().runRandomMetadataGenerator();
+      new MetadataGenerator().runMetadataGenerator();
       _logger.info("MetadataGenerator finished");
     } catch (Exception ex) {
       _logger.error("MetadataGenerator failed", ex);
@@ -96,13 +97,13 @@ public class MetadataGenerator {
   }
 
   /**
-   * Run method takes given instances and sends it to appropriate method for 
-   * further computation.
+   * Method finds all instances of defines problem and sends it to appropriate method for 
+   * further solutions computation.
    * After receiving the results for all problem domains it stores them into a file
    * in xml format.
    */
-  public void runRandomMetadataGenerator() throws Exception {
-    
+  public void runMetadataGenerator() throws Exception {
+    _logger.info("Radom metadata generator");
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
 
     for (String problemId : providers.keySet()) {
@@ -119,6 +120,7 @@ public class MetadataGenerator {
       saveToFile(problem, problemId.toLowerCase());
     }
   }
+
 
   /**
    * Method stores given data into a xml file.
@@ -155,10 +157,11 @@ public class MetadataGenerator {
 
   /**
    * Method decides what metaGenerator to call deppending on given problem id.
-   * @param populationCount number of random solutions to make.
-   * @return 
+   * @param populationCount number of solutions to make.
+   * @return DataNode object with random intances metadata
    */
-  private DataNode getInstancesMetadata(ProblemInfo pi, int populationCount) throws Exception {
+  private DataNode getInstancesMetadata(
+      ProblemInfo pi, int populationCount) throws Exception {
     switch (pi.getValueStr("id").toLowerCase()) {
       case "sat": 
         return getSatInstancesMetadata(pi, populationCount);
@@ -173,10 +176,43 @@ public class MetadataGenerator {
     List<String> instanceIDs = new ArrayList<>();
     for (DataNode inst : pi.getDataNode("Instances").getDataNodes()) {
       instanceIDs.add(inst.getValueStr("id"));
+      _logger.info(inst.toString());
     }
 
     Collections.sort(instanceIDs);
     return instanceIDs;
+  }
+
+  private static DataNode readOptimalLine(String line) {    
+    try (Scanner scanner = new Scanner(line)) {
+      scanner.useDelimiter(" : ");
+
+      DataNode result = new DataNode(scanner.next().substring(2).toLowerCase());
+      result.putValue("optimum", scanner.next());
+
+      return result;
+    }
+  }
+
+  private DataNode getOptimumResults(String path) throws Exception {
+    DataNode results = new DataNode("Results");
+
+    // Get optimal value
+    try (Scanner scanner = new Scanner(getClass().getResourceAsStream(path))) {
+      while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        if (line.isBlank() || line.isEmpty()) {
+          continue;
+        }
+        if (line.equals("EOF")) {
+          break;
+        }
+
+        results.putDataNode(readOptimalLine(line));     
+      }
+    }
+
+    return results;
   }
 
   /**
@@ -187,6 +223,9 @@ public class MetadataGenerator {
   private DataNode getTspInstancesMetadata(ProblemInfo pi, int populationCount)
       throws Exception {
     DataNode result = new DataNode("Instances");
+
+    DataNode optimumResults = getOptimumResults("/org/seage/problem/tsp/solutions/__optimal.txt");
+
     //iterate through all instances
     for (String instanceID : getSortedInstanceIDs(pi)) {      
       _logger.info("Processing: " + instanceID);
@@ -210,14 +249,26 @@ public class MetadataGenerator {
         randomResults[i] = tspEval
             .evaluate(new TspPhenotype(TourProvider.createRandomTour(cities.length)))[0];
       }
+      
+      //to fix
+      DataNode optimumResult = null;
+      if (optimumResults.containsNode(instanceID.toLowerCase())) {
+        optimumResult = optimumResults.getDataNode(instanceID.toLowerCase());
+      }
+      
+      
+      DataNode inst = new DataNode("Instance");
+      inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
+      inst.putValue("random", (int)median(randomResults));
 
-      DataNode inst = pi.getDataNode("Instances").getDataNodeById(instanceID);
-      DataNode inst2 = new DataNode("Instance");
-      inst2.putValue("id", inst.getValue("id"));
-      inst2.putValue("random", (int)median(randomResults));
-      inst2.putValue("optimum", "TBD");
-      inst2.putValue("size", cities.length);
-      result.putDataNode(inst2);      
+      if (optimumResult != null) {
+        inst.putValue("optimum", optimumResult.getValue("optimum").toString());;
+      } else {
+        inst.putValue("optimum", "TBA");
+      }
+
+      inst.putValue("size", cities.length);
+      result.putDataNode(inst);      
     } 
     return result;
   }
@@ -253,13 +304,12 @@ public class MetadataGenerator {
           .generateInitialSolutions((ProblemInstance)formula, 1, new Random().nextLong())[0])[0];
       }
 
-      DataNode inst = pi.getDataNode("Instances").getDataNodeById(instanceID);
-      DataNode inst2 = new DataNode("Instance");
-      inst2.putValue("id", inst.getValue("id"));
-      inst2.putValue("random", (int)median(randomResults));
-      inst2.putValue("optimum", 0);
-      inst2.putValue("size", formula.getLiteralCount());
-      result.putDataNode(inst2);      
+      DataNode inst = new DataNode("Instance");
+      inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
+      inst.putValue("random", (int)median(randomResults));
+      inst.putValue("optimum", 0);
+      inst.putValue("size", formula.getLiteralCount());
+      result.putDataNode(inst);      
     }
     return result;
   }
