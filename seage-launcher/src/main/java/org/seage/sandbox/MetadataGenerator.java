@@ -176,7 +176,6 @@ public class MetadataGenerator {
     List<String> instanceIDs = new ArrayList<>();
     for (DataNode inst : pi.getDataNode("Instances").getDataNodes()) {
       instanceIDs.add(inst.getValueStr("id"));
-      _logger.info(inst.toString());
     }
 
     Collections.sort(instanceIDs);
