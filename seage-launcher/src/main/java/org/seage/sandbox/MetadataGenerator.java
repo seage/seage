@@ -24,11 +24,13 @@ package org.seage.sandbox;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -36,6 +38,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
@@ -88,7 +91,7 @@ public class MetadataGenerator {
       new MetadataGenerator().runRandomMetadataGenerator();
       _logger.info("MetadataGenerator finished");
     } catch (Exception ex) {
-      ex.printStackTrace();
+      _logger.error("MetadataGenerator failed", ex);
     }
   }
 
@@ -106,57 +109,29 @@ public class MetadataGenerator {
       _logger.info("Working on " + problemId + " problem...");
       
       IProblemProvider<?> pp = providers.get(problemId);
-      DataNode pi = pp.getProblemInfo();
-      
-      problemsRandomMetaGenetatorHandler(
-          problemId, 1000, pi.getDataNode("Instances").getDataNodes());
+      ProblemInfo pi = pp.getProblemInfo();
+           
+      DataNode problem = new DataNode("Problem");
+      problem.putValue("id", problemId);
 
-      if (problemId == null) {
-        continue;
-      }
+      problem.putDataNode(getInstancesMetadata(pi, 1000));
 
-      DataNode results = new DataNode("results");
-      DataNode problem = new DataNode(problemId + "-problem");
-
-      for (DataNode dn: pi.getDataNode("Instances").getDataNodes()) {
-        DataNode inst = new DataNode("instance");
-        inst.putValue(
-            "name",
-            dn.getValue("id").toString());
-        
-        inst.putValue(
-            "random",
-            (Math.round((double)dn.getValue("random"))));
-
-        inst.putValue(
-            "size",
-            dn.getValue("size").toString());
-
-        problem.putDataNode(inst);
-      }
-      results.putDataNode(problem);
-
-      DataNode mdGenRes = new DataNode("MetadataGenerator");
-      mdGenRes.putDataNode(results);
-
-      saveToFile(mdGenRes, problemId.toLowerCase());
+      saveToFile(problem, problemId.toLowerCase());
     }
-  }
-
-  public void runOptimalMetadataGenerator(){
-    //todo
   }
 
   /**
    * Method stores given data into a xml file.
    * @param dn DataNode object with data for outputting.
    */
-  public static void saveToFile(DataNode dn, String fileName) throws Exception {
-    _logger.info("Saving the results to the file " + fileName + ".metadata.xml...");
+  private static void saveToFile(DataNode dn, String fileName) throws Exception {
+    _logger.info("Saving the results to the file " + fileName + ".metadata.xml");
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     Transformer transformer = transformerFactory.newTransformer();
+    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
     DOMSource domSource = new DOMSource(dn.toXml());
-    StreamResult streamResult = new StreamResult(new File("./" + fileName + ".metadata.xml"));
+    StreamResult streamResult = new StreamResult(
+        new File("./output/" + fileName + ".metadata.xml"));
 
     transformer.transform(domSource, streamResult);
   }
@@ -166,7 +141,7 @@ public class MetadataGenerator {
    * @param array array of doubles.
    * @return median of given array
    */
-  public static double median(double[] array) {
+  private static double median(double[] array) {
     if (array.length == 1) {
       return array[0];
     }
@@ -181,38 +156,42 @@ public class MetadataGenerator {
   /**
    * Method decides what metaGenerator to call deppending on given problem id.
    * @param populationCount number of random solutions to make.
-   * @param instancesIds array with instances ids.
    * @return 
    */
-  public void problemsRandomMetaGenetatorHandler(
-        String problemId, int populationCount,  List<DataNode> instancesIds) throws Exception {
-    switch (problemId.toLowerCase()) {
+  private DataNode getInstancesMetadata(ProblemInfo pi, int populationCount) throws Exception {
+    switch (pi.getValueStr("id").toLowerCase()) {
       case "sat": 
-        satRandomMetadataGenerator(populationCount, instancesIds);
-        break;
+        return getSatInstancesMetadata(pi, populationCount);
       case "tsp":
-        tspRandomMetadataGenerator(populationCount, instancesIds);
-        break;
+        return getTspInstancesMetadata(pi, populationCount);
       default:
-        break;
+        return null;
     }
+  }
+
+  private List<String> getSortedInstanceIDs(ProblemInfo pi) throws Exception {
+    List<String> instanceIDs = new ArrayList<>();
+    for (DataNode inst : pi.getDataNode("Instances").getDataNodes()) {
+      instanceIDs.add(inst.getValueStr("id"));
+    }
+
+    Collections.sort(instanceIDs);
+    return instanceIDs;
   }
 
   /**
    * Method creates for each instance of tsp problem domain number of random solutions.
    * Then it calculates the score of each solution and stores the median to output array.
    * @param populationCount number of random solutions to make.
-   * @param instancesIds array with instances ids.
    */
-  public void tspRandomMetadataGenerator(int populationCount,  List<DataNode> instancesIds)
+  private DataNode getTspInstancesMetadata(ProblemInfo pi, int populationCount)
       throws Exception {
-  
+    DataNode result = new DataNode("Instances");
     //iterate through all instances
-    for (int ins = 0; ins < instancesIds.size(); ins++) {
-      _logger.info("Calculating: " + instancesIds.get(ins).getValue("id"));
+    for (String instanceID : getSortedInstanceIDs(pi)) {      
+      _logger.info("Processing: " + instanceID);
 
-      String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", 
-          instancesIds.get(ins).getValue("id"));
+      String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instanceID);
       City[] cities = null;
 
       try (InputStream stream = getClass().getResourceAsStream(path)) {    
@@ -229,30 +208,33 @@ public class MetadataGenerator {
 
       for (int i = 0; i < populationCount; i++) {
         randomResults[i] = tspEval
-        .evaluate(new TspPhenotype(TourProvider.createRandomTour(cities.length)))[0];
+            .evaluate(new TspPhenotype(TourProvider.createRandomTour(cities.length)))[0];
       }
 
-      instancesIds.get(ins).putValue("random", median(randomResults));
-      instancesIds.get(ins).putValue("size", cities.length);
-      
+      DataNode inst = pi.getDataNode("Instances").getDataNodeById(instanceID);
+      DataNode inst2 = new DataNode("Instance");
+      inst2.putValue("id", inst.getValue("id"));
+      inst2.putValue("random", (int)median(randomResults));
+      inst2.putValue("optimum", "TBD");
+      inst2.putValue("size", cities.length);
+      result.putDataNode(inst2);      
     } 
+    return result;
   }
 
   /**
    * Method creates for each instance of sat problem domain number of random solutions.
    * Then it calculates the score of each solution and stores the median to output array.
    * @param populationCount number of random solutions to make.
-   * @param instancesIds array with instances ids.
    */
-  public void satRandomMetadataGenerator(int populationCount,  List<DataNode> instancesIds)
+  private DataNode getSatInstancesMetadata(ProblemInfo pi, int populationCount)
        throws Exception {
-  
+    DataNode result = new DataNode("Instances");
     //iterate through all instances
-    for (int ins = 0; ins < instancesIds.size(); ins++) {
-      _logger.info("Calculating: " + instancesIds.get(ins).getValue("id"));
+    for (String instanceID : getSortedInstanceIDs(pi)) {  
+      _logger.info("Processing: " + instanceID);
 
-      String path = String.format("/org/seage/problem/sat/instances/%s.cnf", 
-          instancesIds.get(ins).getValue("id"));
+      String path = String.format("/org/seage/problem/sat/instances/%s.cnf", instanceID);
 
       Formula formula = null;
       
@@ -271,8 +253,14 @@ public class MetadataGenerator {
           .generateInitialSolutions((ProblemInstance)formula, 1, new Random().nextLong())[0])[0];
       }
 
-      instancesIds.get(ins).putValue("random", median(randomResults));
-      instancesIds.get(ins).putValue("size", formula.getLiteralCount());
+      DataNode inst = pi.getDataNode("Instances").getDataNodeById(instanceID);
+      DataNode inst2 = new DataNode("Instance");
+      inst2.putValue("id", inst.getValue("id"));
+      inst2.putValue("random", (int)median(randomResults));
+      inst2.putValue("optimum", 0);
+      inst2.putValue("size", formula.getLiteralCount());
+      result.putDataNode(inst2);      
     }
+    return result;
   }
 }
