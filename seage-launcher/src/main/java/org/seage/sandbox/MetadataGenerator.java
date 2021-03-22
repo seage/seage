@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -186,15 +187,16 @@ public class MetadataGenerator {
     try (Scanner scanner = new Scanner(line)) {
       scanner.useDelimiter(" : ");
 
-      DataNode result = new DataNode(scanner.next().substring(2).toLowerCase());
+      DataNode result = new DataNode("Optimal");
+      result.putValue("name", scanner.next().substring(2).toLowerCase());
       result.putValue("optimum", scanner.next());
 
       return result;
     }
   }
 
-  private DataNode getOptimumResults(String path) throws Exception {
-    DataNode results = new DataNode("Results");
+  private HashMap<String,String> getOptimalValues(String path) throws Exception {
+    HashMap<String,String> results = new HashMap<String,String>();
 
     // Get optimal value
     try (Scanner scanner = new Scanner(getClass().getResourceAsStream(path))) {
@@ -207,7 +209,11 @@ public class MetadataGenerator {
           break;
         }
 
-        results.putDataNode(readOptimalLine(line));     
+        DataNode optimalValue = readOptimalLine(line);
+
+        results.put(
+            optimalValue.getValue("name").toString(), 
+            optimalValue.getValue("optimum").toString());
       }
     }
 
@@ -223,7 +229,8 @@ public class MetadataGenerator {
       throws Exception {
     DataNode result = new DataNode("Instances");
 
-    DataNode optimumResults = getOptimumResults("/org/seage/problem/tsp/solutions/__optimal.txt");
+    HashMap<String, String> optimumResults = getOptimalValues(
+        "/org/seage/problem/tsp/solutions/__optimal.txt");
 
     //iterate through all instances
     for (String instanceID : getSortedInstanceIDs(pi)) {      
@@ -247,21 +254,14 @@ public class MetadataGenerator {
       for (int i = 0; i < populationCount; i++) {
         randomResults[i] = tspEval
             .evaluate(new TspPhenotype(TourProvider.createRandomTour(cities.length)))[0];
-      }
-      
-      //to fix
-      DataNode optimumResult = null;
-      if (optimumResults.containsNode(instanceID.toLowerCase())) {
-        optimumResult = optimumResults.getDataNode(instanceID.toLowerCase());
-      }
-      
+      }   
       
       DataNode inst = new DataNode("Instance");
       inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
       inst.putValue("random", (int)median(randomResults));
 
-      if (optimumResult != null) {
-        inst.putValue("optimum", optimumResult.getValue("optimum").toString());;
+      if (optimumResults.containsKey(instanceID.toLowerCase())) {
+        inst.putValue("optimum", optimumResults.get(instanceID.toLowerCase()));;
       } else {
         inst.putValue("optimum", "TBA");
       }
