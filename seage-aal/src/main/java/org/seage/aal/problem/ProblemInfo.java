@@ -54,14 +54,27 @@ public class ProblemInfo extends DataNode {
   public String getProblemID() throws Exception {
     return getValueStr("id");
   }
-
+  
+  /**
+   * Provides instance info.
+   * @param instanceID The id of the problem instance.
+   * @return
+   * @throws Exception
+   */
   public ProblemInstanceInfo getProblemInstanceInfo(String instanceID) throws Exception {
     DataNode dn = getDataNode("Instances").getDataNodeById(instanceID);
-    if (dn == null)
-      throw new Exception("ProblemInfo does not contain any information on instanceID: " + instanceID);
+    if (dn == null) {
+      throw new Exception(
+          "ProblemInfo does not contain any information on instanceID: " + instanceID);
+    }
     return new ProblemInstanceInfo(dn);
   }
 
+  /**
+   * Provides a list of instance infos.
+   * @return
+   * @throws Exception
+   */
   public List<ProblemInstanceInfo> getProblemInstanceInfos() throws Exception {
     List<ProblemInstanceInfo> result = new ArrayList<ProblemInstanceInfo>();
     for (DataNode dn : getDataNode("Instances").getDataNodes())
