@@ -19,9 +19,13 @@
 /**
  * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.aal.problem;
 
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import org.seage.aal.Annotations;
@@ -31,11 +35,12 @@ import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.classutil.ClassInfo;
 import org.seage.classutil.ClassUtil;
 import org.seage.data.DataNode;
+import org.seage.data.xml.XmlHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Implementation of IProblemProvider interface
+ * Implementation of IProblemProvider interface.
  *
  * @author Richard Malek
  */
@@ -48,8 +53,9 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
   @Override
   public ProblemInfo getProblemInfo() throws Exception {
-    if (problemInfo != null)
+    if (problemInfo != null) {
       return problemInfo;
+    }
 
     problemInfo = new ProblemInfo("ProblemInfo");
 
@@ -57,31 +63,51 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
     Annotation an = null;
 
     an = problemClass.getAnnotation(Annotations.ProblemId.class);
-    if (an == null)
+    if (an == null) {
       throw new Exception("Unable to get annotation ProblemId");
+    }
     String problemId = ((Annotations.ProblemId) an).value();
 
     an = problemClass.getAnnotation(Annotations.ProblemName.class);
-    if (an == null)
+    if (an == null) {
       throw new Exception("Unable to get annotation ProblemName");
+    }
     String problemName = ((Annotations.ProblemName) an).value();
 
     problemInfo.putValue("id", problemId);
     problemInfo.putValue("name", problemName);
     problemInfo.putValue("class", getClass().getCanonicalName());
 
+    String problemPackageName = this.getClass().getPackage().getName();
+    // Instances metadata
+    DataNode metadata = null;
+    Path metadataPath = Paths.get("/",
+        problemPackageName.replace('.', '/'),
+        problemId.toLowerCase() + ".metadata.xml");
+    try (InputStream stream = this.getClass().getResourceAsStream(metadataPath.toString())) {
+      metadata = XmlHelper.readXml(stream).getDataNode("Instances");
+    } catch (Exception ex) {
+      logger.warn("No metadata for problem {}", problemId);
+    }
     // Instances
     DataNode instances = new DataNode("Instances");
-    for (String in : ClassUtil.searchForInstances("instances", this.getClass().getPackage().getName())) {
+    for (String in : ClassUtil.searchForInstances("instances", problemPackageName)) {
       DataNode instance = new DataNode("Instance");
       instance.putValue("type", ProblemInstanceOrigin.RESOURCE);
       instance.putValue("path", in);
       String instanceFileName = in.substring(in.lastIndexOf('/') + 1);
       String instanceID = in.substring(in.lastIndexOf('/') + 1);
-      if (instanceID.contains("."))
+      if (instanceID.contains(".")) {
         instanceID = instanceID.substring(0, instanceID.lastIndexOf('.'));
+      }
       instance.putValue("id", instanceID);
       instance.putValue("name", instanceFileName);
+      DataNode dn = metadata.getDataNodeById(instanceID);
+      if (dn != null) {
+        instance.putValue("size", metadata.getDataNodeById(instanceID).getValue("size"));
+        instance.putValue("random", metadata.getDataNodeById(instanceID).getValue("random"));
+        instance.putValue("optimum", metadata.getDataNodeById(instanceID).getValue("optimum"));
+      }
       instances.putDataNode(instance);
     }
     problemInfo.putDataNode(instances);
@@ -90,22 +116,15 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
     DataNode algorithms = new DataNode("Algorithms");
     algFactories = new HashMap<>();
 
-    for (ClassInfo ci : ClassUtil.searchForClasses(IAlgorithmFactory.class, this.getClass().getPackage().getName())) {
+    for (ClassInfo ci : ClassUtil.searchForClasses(IAlgorithmFactory.class, problemPackageName)) {
       try {
         Class<?> algFactoryClass = Class.forName(ci.getClassName());
         Annotation an2 = null;
 
-        // Algorithm adapters
-        DataNode algorithm = new DataNode("Algorithm");
-
-        an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmId.class);
-        if (an2 == null)
-          throw new Exception(String.format("Unable to get annotation AlgorithmId: %s", algFactoryClass));
-        String algId = ((Annotations.AlgorithmId) an2).value();
-
         an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmName.class);
-        if (an2 == null)
+        if (an2 == null) {
           throw new Exception("Unable to get annotation AlgorithmName");
+        }
         String algName = ((Annotations.AlgorithmName) an2).value();
 
         an2 = algFactoryClass.getAnnotation(Annotations.Broken.class);
@@ -114,6 +133,15 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
           continue;
         }
 
+        an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmId.class);        
+        if (an2 == null) {
+          throw new Exception(
+              String.format("Unable to get annotation AlgorithmId: %s", algFactoryClass));
+        }      
+        String algId = ((Annotations.AlgorithmId) an2).value();  
+
+        // Algorithm adapters
+        DataNode algorithm = new DataNode("Algorithm");        
         algorithm.putValue("id", algId);
         algorithm.putValue("name", algName);
         algorithm.putValue("factoryClass", ci.getClassName());
@@ -125,8 +153,9 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
         Class<?> algAdapterClass = factory.getAlgorithmClass();
         an2 = algAdapterClass.getAnnotation(Annotations.AlgorithmParameters.class);
-        if (an2 == null)
+        if (an2 == null) {
           throw new Exception("Unable to get annotation AlgorithmParameters");
+        }
         Annotations.Parameter[] params = ((Annotations.AlgorithmParameters) an2).value();
 
         for (Annotations.Parameter p : params) {
@@ -150,10 +179,12 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
   @Override
   public IAlgorithmFactory<P, ?> getAlgorithmFactory(String algId) throws Exception {
-    if (algFactories == null)
+    if (algFactories == null) {
       throw new Exception("ProblemProvider not initialized, call getProblemInfo() first");
-    if (!algFactories.containsKey(algId))
+    }
+    if (!algFactories.containsKey(algId)) {
       throw new Exception("Unknown algorithm id: " + algId);
+    }
     return algFactories.get(algId);
   }
 
@@ -175,8 +206,9 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
   }
 
   public static synchronized Map<String, IProblemProvider<Phenotype<?>>> getProblemProviders0() throws Exception {
-    if (providers != null)
+    if (providers != null) {
       return providers;
+    }
 
     providers = new HashMap<>();
     logger.info("Searching for Providers");
