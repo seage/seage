@@ -86,6 +86,8 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
         problemId.toLowerCase() + ".metadata.xml");
     try (InputStream stream = this.getClass().getResourceAsStream(metadataPath.toString())) {
       metadata = XmlHelper.readXml(stream).getDataNode("Instances");
+    } catch (Exception ex) {
+      logger.warn("No metadata for problem {}", problemId);
     }
     // Instances
     DataNode instances = new DataNode("Instances");
@@ -100,9 +102,12 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
       }
       instance.putValue("id", instanceID);
       instance.putValue("name", instanceFileName);
-      instance.putValue("size", metadata.getDataNodeById(instanceID).getValue("size"));
-      instance.putValue("random", metadata.getDataNodeById(instanceID).getValue("random"));
-      instance.putValue("optimum", metadata.getDataNodeById(instanceID).getValue("optimum"));
+      DataNode dn = metadata.getDataNodeById(instanceID);
+      if (dn != null) {
+        instance.putValue("size", metadata.getDataNodeById(instanceID).getValue("size"));
+        instance.putValue("random", metadata.getDataNodeById(instanceID).getValue("random"));
+        instance.putValue("optimum", metadata.getDataNodeById(instanceID).getValue("optimum"));
+      }
       instances.putDataNode(instance);
     }
     problemInfo.putDataNode(instances);
@@ -116,14 +121,6 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
         Class<?> algFactoryClass = Class.forName(ci.getClassName());
         Annotation an2 = null;
 
-
-        an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmId.class);        
-        if (an2 == null) {
-          throw new Exception(
-              String.format("Unable to get annotation AlgorithmId: %s", algFactoryClass));
-        }      
-        String algId = ((Annotations.AlgorithmId) an2).value();  
-
         an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmName.class);
         if (an2 == null) {
           throw new Exception("Unable to get annotation AlgorithmName");
@@ -135,6 +132,13 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
           logger.debug("!!! Algorithm '{}' is marked Broken", algName);
           continue;
         }
+
+        an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmId.class);        
+        if (an2 == null) {
+          throw new Exception(
+              String.format("Unable to get annotation AlgorithmId: %s", algFactoryClass));
+        }      
+        String algId = ((Annotations.AlgorithmId) an2).value();  
 
         // Algorithm adapters
         DataNode algorithm = new DataNode("Algorithm");        
