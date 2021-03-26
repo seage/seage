@@ -102,12 +102,14 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
       }
       instance.putValue("id", instanceID);
       instance.putValue("name", instanceFileName);
-      DataNode dn = metadata.getDataNodeById(instanceID);
-      if (dn != null) {
-        instance.putValue("size", metadata.getDataNodeById(instanceID).getValue("size"));
-        instance.putValue("random", metadata.getDataNodeById(instanceID).getValue("random"));
-        instance.putValue("optimum", metadata.getDataNodeById(instanceID).getValue("optimum"));
+      // metadata ?
+      if (metadata != null) {
+        DataNode dn = metadata.getDataNodeById(instanceID);
+        instance.putValue("size",dn.getValue("size"));
+        instance.putValue("random",dn.getValue("random"));
+        instance.putValue("optimum",dn.getValue("optimum"));
       }
+
       instances.putDataNode(instance);
     }
     problemInfo.putDataNode(instances);
