@@ -25,6 +25,7 @@
  *     Richard Malek
  *     - Merge with SEAGE
  */
+
 package org.seage.metaheuristic.tabusearch;
 
 /**
@@ -41,7 +42,7 @@ package org.seage.metaheuristic.tabusearch;
 public class TabuSearch extends TabuSearchBase {
 
   /**
-   * 
+   * .
    */
   private static final long serialVersionUID = 374858976013520618L;
 
@@ -116,9 +117,13 @@ public class TabuSearch extends TabuSearchBase {
   public TabuSearch() {
     super();
 
-  } // end constructor
+  }
 
-  public TabuSearch(MoveManager moveManager, ObjectiveFunction objectiveFunction, boolean maximizing) {
+  /**. */
+  public TabuSearch(
+      MoveManager moveManager, 
+      ObjectiveFunction objectiveFunction, 
+      boolean maximizing) {
     this();
 
     // Set current solution to initial solution
@@ -131,7 +136,7 @@ public class TabuSearch extends TabuSearchBase {
     this.moveManager = moveManager;
     this.maximizing = maximizing;
 
-  } // end constructor
+  }
 
   /**
    * Constructs a <tt>SingleThreadedTabuSearch</tt> with all tabu objects set. The
@@ -155,8 +160,13 @@ public class TabuSearch extends TabuSearchBase {
    *
    * @since 1.0
    */
-  public TabuSearch(Solution initialSolution, MoveManager moveManager, ObjectiveFunction objectiveFunction,
-      TabuList tabuList, AspirationCriteria aspirationCriteria, boolean maximizing) throws Exception {
+  public TabuSearch(
+      Solution initialSolution, 
+      MoveManager moveManager, 
+      ObjectiveFunction objectiveFunction,
+      TabuList tabuList, 
+      AspirationCriteria aspirationCriteria, 
+      boolean maximizing) throws Exception {
     this();
 
     // Set current solution to initial solution
@@ -203,7 +213,8 @@ public class TabuSearch extends TabuSearchBase {
    * @see #fireQueuedEvents
    * @since 1.0
    */
-  protected void performOneIteration() throws Exception, NoMovesGeneratedException, NoCurrentSolutionException {
+  protected void performOneIteration() 
+        throws Exception, NoMovesGeneratedException, NoCurrentSolutionException {
     // Grab local copies of the problem.
     final TabuList tabuList = getTabuList();
     final MoveManager moveManager = getMoveManager();
@@ -215,8 +226,9 @@ public class TabuSearch extends TabuSearchBase {
     final boolean maximizing = isMaximizing();
 
     // Check for null solutions
-    if (currentSolution == null)
+    if (currentSolution == null) {
       throw new NoCurrentSolutionException();
+    }
 
     // Clear event-queuing flags.
     this.fireNewCurrentSolution = false;
@@ -227,16 +239,17 @@ public class TabuSearch extends TabuSearchBase {
 
     // Get list of moves to try
     final Move[] moves = moveManager.getAllMoves(currentSolution);
-    if (moves == null || moves.length == 0)
+    if (moves == null || moves.length == 0) {
       throw new NoMovesGeneratedException();
+    }
 
     // Get best move.
     // Returns an array where the first element is the best move,
     // the second element is the resulting objective function value,
     // and the third element is the tabu status.
     // This way we don't evaluate the move twice.
-    final Object[] bestMoveArr = getBestMove(currentSolution, moves, objectiveFunction, tabuList, aspirationCriteria,
-        maximizing, chooseFirstImproving);
+    final Object[] bestMoveArr = getBestMove(currentSolution, moves, objectiveFunction, tabuList,
+        aspirationCriteria, maximizing, chooseFirstImproving);
     final Move bestMove = (Move) bestMoveArr[0];
     final double[] bestMoveVal = (double[]) bestMoveArr[1];
     // final boolean bestMoveTabu = ((Boolean)bestMoveArr[2]).booleanValue();
@@ -250,18 +263,21 @@ public class TabuSearch extends TabuSearchBase {
     final double[] oldVal = currentSolution.getObjectiveValue();
 
     // Determine if the new value is better or worse (equal is neither)
-    if (isFirstBetterThanSecond(oldVal, bestMoveVal, maximizing))
+    if (isFirstBetterThanSecond(oldVal, bestMoveVal, maximizing)) {
       this.fireUnimprovingMoveMade = true;
-    else if (isFirstBetterThanSecond(bestMoveVal, oldVal, maximizing))
+    } else if (isFirstBetterThanSecond(bestMoveVal, oldVal, maximizing)) {
       this.fireImprovingMoveMade = true;
-    else
+    } else {
       this.fireNoChangeInValueMoveMade = true;
+    }
 
     // If the new value is improving, see if it's a new best solution
     boolean newBestSoln = false;
-    if (this.fireImprovingMoveMade)
-      if (isFirstBetterThanSecond(bestMoveVal, bestSolution.getObjectiveValue(), maximizing))
+    if (this.fireImprovingMoveMade) {
+      if (isFirstBetterThanSecond(bestMoveVal, bestSolution.getObjectiveValue(), maximizing)) {
         newBestSoln = true;
+      }
+    }
 
     // Operate on the solution
     try {
@@ -292,32 +308,33 @@ public class TabuSearch extends TabuSearchBase {
 
   /**
    * Gets the best move--one that should be used for this iteration. By setting
-   * <var>chooseFirstImprovingMove</var> to <tt>true</tt> you tell the tabu search
-   * to return the first move it encounters that is improving and non-tabu rather
-   * than search through all of the moves.
-   *
-   * It's not static so that when the MultiThreadedTabuSearch invokes the
-   * performOneIteration method the proper method is invoked. Java's weird about
-   * overriding static methods...
+   * <var>chooseFirstImprovingMove</var> to <tt>true</tt> you tell the tabu search to return the
+   * first move it encounters that is improving and non-tabu rather than search through all of the
+   * moves.
+   * <p/>
+   * It's not static so that when the MultiThreadedTabuSearch invokes the performOneIteration method
+   * the proper method is invoked. Java's weird about overriding static methods...
    *
    * @since 1.0
    */
-  protected Object[] getBestMove(final Solution soln, final Move[] moves, final ObjectiveFunction objectiveFunction,
-      final TabuList tabuList, final AspirationCriteria aspirationCriteria, final boolean maximizing,
+  protected Object[] getBestMove(final Solution soln, final Move[] moves,
+      final ObjectiveFunction objectiveFunction, final TabuList tabuList,
+      final AspirationCriteria aspirationCriteria, final boolean maximizing,
       final boolean chooseFirstImprovingMove) throws Exception {
-    return TabuSearch.getBestMove(soln, moves, objectiveFunction, tabuList, aspirationCriteria, maximizing,
-        chooseFirstImprovingMove, this);
+    return TabuSearch.getBestMove(soln, moves, objectiveFunction, tabuList, aspirationCriteria,
+        maximizing, chooseFirstImprovingMove, this);
   } // end getBestMove
 
   /**
-   * The static method that actually does the work. It's static so that the
-   * NeighborhoodHelper in the MultiThreadedTabuSearch can use the same code.
+   * The static method that actually does the work. It's static so that the NeighborhoodHelper in
+   * the MultiThreadedTabuSearch can use the same code.
    *
    * @since 1.0
    */
   protected static Object[] getBestMove(final Solution soln, final Move[] moves,
-      final ObjectiveFunction objectiveFunction, final TabuList tabuList, final AspirationCriteria aspirationCriteria,
-      final boolean maximizing, final boolean chooseFirstImprovingMove, final ITabuSearch This) throws Exception {
+      final ObjectiveFunction objectiveFunction, final TabuList tabuList,
+      final AspirationCriteria aspirationCriteria, final boolean maximizing,
+      final boolean chooseFirstImprovingMove, final ITabuSearch self) throws Exception {
     // Set up variables
     Move bestMove = moves[0];
     double[] bestMoveVal = {};
@@ -325,8 +342,9 @@ public class TabuSearch extends TabuSearchBase {
 
     // Set up first move
     bestMoveVal = objectiveFunction.evaluate(soln, bestMove);
-    bestMoveTabu = moves.length == 0 ? false : // Don't bother calling the tabu list if there's only one move.
-        isTabu(soln, bestMove, bestMoveVal, tabuList, aspirationCriteria, This);
+    // Don't bother calling the tabu list if there's only one move.
+    bestMoveTabu = moves.length == 0 ? false :                                              
+        isTabu(soln, bestMove, bestMoveVal, tabuList, aspirationCriteria, self);
 
     // If we only want to choose the first improving move,
     // we'll need to know the current solutin's value.
@@ -336,8 +354,9 @@ public class TabuSearch extends TabuSearchBase {
     double[] currSolnVal = null;
     if (chooseFirstImprovingMove) {
       currSolnVal = soln.getObjectiveValue();
-      if (!bestMoveTabu && isFirstBetterThanSecond(bestMoveVal, currSolnVal, maximizing))
-        return new Object[] { bestMove, bestMoveVal, new Boolean(bestMoveTabu) };
+      if (!bestMoveTabu && isFirstBetterThanSecond(bestMoveVal, currSolnVal, maximizing)) {
+        return new Object[] {bestMove, bestMoveVal, bestMoveTabu};
+      }
     } // end if: choose first improving
 
     // Go through each move
@@ -356,7 +375,7 @@ public class TabuSearch extends TabuSearchBase {
           // New one has a better objective value.
           // Check the tabu status of both.
           // Do not switch over only if the new one is tabu, but the old one isn't.
-          boolean newIsTabu = isTabu(soln, move, newObjVal, tabuList, aspirationCriteria, This);
+          boolean newIsTabu = isTabu(soln, move, newObjVal, tabuList, aspirationCriteria, self);
 
           if (!(!bestMoveTabu && newIsTabu)) {
             bestMove = move;
@@ -364,16 +383,17 @@ public class TabuSearch extends TabuSearchBase {
             bestMoveTabu = newIsTabu;
 
             // If choosing first improving move, consider this one
-            if (chooseFirstImprovingMove)
-              if (!bestMoveTabu && isFirstBetterThanSecond(bestMoveVal, currSolnVal, maximizing))
-                return new Object[] { bestMove, bestMoveVal, new Boolean(bestMoveTabu) };
+            if (chooseFirstImprovingMove) {
+              if (!bestMoveTabu && isFirstBetterThanSecond(bestMoveVal, currSolnVal, maximizing)) {
+                return new Object[] {bestMove, bestMoveVal, bestMoveTabu};
+              }
+            }
 
           } // end if: switch over
-        } // end if: new one has better objective value
-        else { // New one does not have better objective value, but see if it
-               // has a better tabu status.
-               // boolean newIsTabu;
-          if (bestMoveTabu && !isTabu(soln, move, newObjVal, tabuList, aspirationCriteria, This)) {
+        } else { 
+          // New one does not have better objective value, but see if it
+          // has a better tabu status.
+          if (bestMoveTabu && !isTabu(soln, move, newObjVal, tabuList, aspirationCriteria, self)) {
             bestMove = move;
             bestMoveVal = newObjVal;
             bestMoveTabu = false;
@@ -383,17 +403,17 @@ public class TabuSearch extends TabuSearchBase {
 
     } // end for: through each move
 
-    return new Object[] { bestMove, bestMoveVal, new Boolean(bestMoveTabu) };
+    return new Object[] {bestMove, bestMoveVal, bestMoveTabu};
   } // end getBestMove
 
   /**
-   * Determine if the move is tabu and consider whether or not it satisfies the
-   * aspiration criteria.
+   * Determine if the move is tabu and consider whether or not it satisfies the aspiration criteria.
    *
    * @since 1.0
    */
-  protected static boolean isTabu(final Solution soln, final Move move, final double[] val, final TabuList tabuList,
-      final AspirationCriteria aspirationCriteria, final ITabuSearch This) {
+  protected static boolean isTabu(final Solution soln, final Move move, final double[] val,
+      final TabuList tabuList, final AspirationCriteria aspirationCriteria,
+      final ITabuSearch self) {
     boolean tabu = false;
 
     // See if move is tabu
@@ -402,8 +422,9 @@ public class TabuSearch extends TabuSearchBase {
       if (aspirationCriteria != null) {
         // ASPIRATION CRITERIA
         // If this is better than the best, make it NOT tabu
-        if (aspirationCriteria.overrideTabu(soln, move, val, This))
+        if (aspirationCriteria.overrideTabu(soln, move, val, self)) {
           tabu = false;
+        }
       } // end aspiration
     } // end if: move was tabu
 
@@ -411,28 +432,10 @@ public class TabuSearch extends TabuSearchBase {
   } // end isTabu
 
   /**
-   * Deprecated and renamed to {@link #isFirstBetterThanSecond} to be named more
-   * consistently. This method still works. It simply calls the newly-named
-   * version.
-   *
-   * @param first      The first array of <tt>double</tt>s
-   * @param second     The second array of <tt>double</tt>s
-   * @param maximizing Whether or not the tabu search should be maximizing
-   * @return <tt>true</tt> if the first array of numbers is better than the second
-   * @since 1.0
-   * @version 1.0a
-   * @deprecated
-   */
-  @Deprecated
-  public static boolean firstIsBetterThanSecond(final double[] first, final double[] second, final boolean maximizing) {
-    return isFirstBetterThanSecond(first, second, maximizing);
-  } // end firstIsBetterThanSecond
-
-  /**
-   * This single method is called many times to compare solutions. Although all
-   * data is stored as doubles, they are cast to floats before they are compared.
-   * This ensures that the inevitable errors associated with all floating point
-   * numbers do not affect the likely intent of the numbers.
+   * This single method is called many times to compare solutions. Although all data is stored as
+   * doubles, they are cast to floats before they are compared. This ensures that the inevitable
+   * errors associated with all floating point numbers do not affect the likely intent of the
+   * numbers.
    *
    * @param first      The first array of <tt>double</tt>s
    * @param second     The second array of <tt>double</tt>s
@@ -441,20 +444,22 @@ public class TabuSearch extends TabuSearchBase {
    * @since 1.0
    * @version 1.0a
    */
-  public static boolean isFirstBetterThanSecond(final double[] first, final double[] second, final boolean maximizing) {
+  public static boolean isFirstBetterThanSecond(final double[] first, final double[] second,
+      final boolean maximizing) {
     int i = 0; // Put at the beginning for possible speed boost
     final int valLength = first.length;
-    float first_f, second_f;
+    float firstValue;
 
+    float secondValue;
     for (i = 0; i < valLength; i++) {
-      first_f = (float) first[i];
-      second_f = (float) second[i];
+      firstValue = (float) first[i];
+      secondValue = (float) second[i];
 
-      if (first_f > second_f)
+      if (firstValue > secondValue) {
         return maximizing ? true : false;
-
-      else if (first_f < second_f)
+      } else if (firstValue < secondValue) {
         return maximizing ? false : true;
+      }
 
     } // end for: through each value
 
@@ -481,20 +486,19 @@ public class TabuSearch extends TabuSearchBase {
     if (this.fireUnimprovingMoveMade) {
       this.fireUnimprovingMoveMade = false;
       fireUnimprovingMoveMade();
-    } // end if: unimproving move
-    else if (this.fireImprovingMoveMade) {
+    } else if (this.fireImprovingMoveMade) {
       this.fireImprovingMoveMade = false;
       fireImprovingMoveMade();
-    } // end else if: improving move
-    else {
+    } else {
       this.fireNoChangeInValueMoveMade = false;
       fireNoChangeInValueMoveMade();
     } // end else: no change in value
 
     // If changes were made by listeners, we may need to fire the event again.
     if (this.fireNewCurrentSolution || this.fireNewBestSolution || this.fireUnimprovingMoveMade
-        || this.fireImprovingMoveMade || this.fireNoChangeInValueMoveMade)
+        || this.fireImprovingMoveMade || this.fireNoChangeInValueMoveMade) {
       fireQueuedEvents();
+    }
   } // end fireQueuedEvents
 
   /**
@@ -506,8 +510,9 @@ public class TabuSearch extends TabuSearchBase {
   protected void internalSetCurrentSolution(Solution solution) throws Exception {
     this.currentSolution = solution;
     this.fireNewCurrentSolution = true;
-    if (getCurrentSolution() == null)
+    if (getCurrentSolution() == null) {
       internalSetCurrentSolution((Solution) solution.clone());
+    }
 
     if (getCurrentSolution().getObjectiveValue() == null) {
       double[] val = objectiveFunction.evaluate(getCurrentSolution(), null);
@@ -527,11 +532,10 @@ public class TabuSearch extends TabuSearchBase {
   } // end internalSetBestSolution
 
   /**
-   * Sets the status of either solving or not solving. This does not start and
-   * stop the solver--it only sets the reporting flag.
+   * Sets the status of either solving or not solving. This does not start and stop the solver--it
+   * only sets the reporting flag.
    *
-   * @param solving Whether or not the tabu search should be marked as solving or
-   *                not.
+   * @param solving Whether or not the tabu search should be marked as solving or not.
    * @since 1.0
    */
   protected synchronized void setSolving(boolean solving) {
@@ -539,8 +543,8 @@ public class TabuSearch extends TabuSearchBase {
   } // end setSolving
 
   /**
-   * Tells the tabu search internally whether or not to keep solving the next
-   * chance it gets to quit, like at the start of a new iteration.
+   * Tells the tabu search internally whether or not to keep solving the next chance it gets to
+   * quit, like at the start of a new iteration.
    *
    * @param keepSolving Whether or not to keep solving
    * @since 1.0
@@ -550,8 +554,8 @@ public class TabuSearch extends TabuSearchBase {
   } // end setKeepSolving
 
   /**
-   * Returns whether or not the tabu search should keep solving the next chance it
-   * gets to quit, like at the start of a new iteration.
+   * Returns whether or not the tabu search should keep solving the next chance it gets to quit,
+   * like at the start of a new iteration.
    *
    * @return Whether or not to keep solving
    * @since 1.0
@@ -561,8 +565,8 @@ public class TabuSearch extends TabuSearchBase {
   } // end isKeepSolving
 
   /**
-   * Internally set whether or not a new current solution {@link TabuSearchEvent}
-   * should be fired at the end of the iteration.
+   * Internally set whether or not a new current solution {@link TabuSearchEvent} should be fired at
+   * the end of the iteration.
    *
    * @param b Whether or not to fire a new current solution event.
    * @since 1.0
@@ -572,8 +576,8 @@ public class TabuSearch extends TabuSearchBase {
   } // end setFireNewCurrentSolution
 
   /**
-   * Internally set whether or not a new best solution {@link TabuSearchEvent}
-   * should be fired at the end of the iteration.
+   * Internally set whether or not a new best solution {@link TabuSearchEvent} should be fired at
+   * the end of the iteration.
    *
    * @param b Whether or not to fire a new best solution event.
    * @since 1.0
@@ -583,8 +587,8 @@ public class TabuSearch extends TabuSearchBase {
   } // end setFireNewBestSolution
 
   /**
-   * Internally set whether or not an unimproving move made
-   * {@link TabuSearchEvent} should be fired at the end of the iteration.
+   * Internally set whether or not an unimproving move made {@link TabuSearchEvent} should be fired
+   * at the end of the iteration.
    *
    * @param b Whether or not to fire an unimproving move made event.
    * @since 1.0
@@ -594,8 +598,8 @@ public class TabuSearch extends TabuSearchBase {
   } // end setFireUnimprovingMoveMade
 
   /**
-   * Internally set whether or not an improving move made {@link TabuSearchEvent}
-   * should be fired at the end of the iteration.
+   * Internally set whether or not an improving move made {@link TabuSearchEvent} should be fired at
+   * the end of the iteration.
    *
    * @param b Whether or not to fire an improving move made event.
    * @since 1.0-exp7
@@ -605,8 +609,8 @@ public class TabuSearch extends TabuSearchBase {
   } // end setFireImprovingMoveMade
 
   /**
-   * Internally set whether or not a no change in value move made
-   * {@link TabuSearchEvent} should be fired at the end of the iteration.
+   * Internally set whether or not a no change in value move made {@link TabuSearchEvent} should be
+   * fired at the end of the iteration.
    *
    * @param b Whether or not to fire a no change in value move made event.
    * @since 1.0-exp7
@@ -619,8 +623,7 @@ public class TabuSearch extends TabuSearchBase {
    * Returns whether or not the tabu search plans to fire a new current solution
    * {@link TabuSearchEvent} at the end of the iteration.
    *
-   * @return whether or not the tabu search plans to fire a new current solution
-   *         event
+   * @return whether or not the tabu search plans to fire a new current solution event
    * @since 1.0
    */
   protected boolean isFireNewCurrentSolution() {
@@ -631,8 +634,7 @@ public class TabuSearch extends TabuSearchBase {
    * Returns whether or not the tabu search plans to fire a new best solution
    * {@link TabuSearchEvent} at the end of the iteration.
    *
-   * @return whether or not the tabu search plans to fire a new best solution
-   *         event
+   * @return whether or not the tabu search plans to fire a new best solution event
    * @since 1.0
    */
   protected boolean isFireNewBestSolution() {
@@ -643,8 +645,7 @@ public class TabuSearch extends TabuSearchBase {
    * Returns whether or not the tabu search plans to fire an unimproving move made
    * {@link TabuSearchEvent} at the end of the iteration.
    *
-   * @return whether or not the tabu search plans to fire an unimproving move made
-   *         event
+   * @return whether or not the tabu search plans to fire an unimproving move made event
    * @since 1.0
    */
   protected boolean isFireUnimprovingMoveMade() {
@@ -655,8 +656,7 @@ public class TabuSearch extends TabuSearchBase {
    * Returns whether or not the tabu search plans to fire an improving move made
    * {@link TabuSearchEvent} at the end of the iteration.
    *
-   * @return whether or not the tabu search plans to fire an improving move made
-   *         event
+   * @return whether or not the tabu search plans to fire an improving move made event
    * @since 1.0-exp7
    */
   protected boolean isFireImprovingMoveMade() {
@@ -664,11 +664,10 @@ public class TabuSearch extends TabuSearchBase {
   } // end isFireImprovingMoveMade
 
   /**
-   * Returns whether or not the tabu search plans to fire a no change in value
-   * move made {@link TabuSearchEvent} at the end of the iteration.
+   * Returns whether or not the tabu search plans to fire a no change in value move made
+   * {@link TabuSearchEvent} at the end of the iteration.
    *
-   * @return whether or not the tabu search plans to fire a no change in value
-   *         move made event
+   * @return whether or not the tabu search plans to fire a no change in value move made event
    * @since 1.0-exp7
    */
   protected boolean isFireNoChangeInValueMoveMade() {
@@ -715,20 +714,21 @@ public class TabuSearch extends TabuSearchBase {
 
         try {
           performOneIteration();
-        } // end try
-        catch (NoMovesGeneratedException e) {
-          if (err != null)
+        } catch (NoMovesGeneratedException e) {
+          if (err != null) {
             err.println(e);
-        } // end catch
-        catch (NoCurrentSolutionException e) {
-          if (err != null)
+          }
+        } catch (NoCurrentSolutionException e) {
+          if (err != null) {
             err.println(e);
-        } // end catch
+          }
+        }
         incrementIterationsCompleted();
       } // end sync: this
 
-      if ((System.currentTimeMillis() - startTime) / 1000 > timeout)
+      if ((System.currentTimeMillis() - startTime) / 1000 > timeout) {
         keepSolving = false;
+      }
     } // end while: iters left
 
     setSolving(false);
@@ -757,8 +757,8 @@ public class TabuSearch extends TabuSearchBase {
   } // end isSolving
 
   /**
-   * Sets the objective function, effective at the start of the next iteration,
-   * and re-evaluates the current and best solution values.
+   * Sets the objective function, effective at the start of the next iteration, and re-evaluates the
+   * current and best solution values.
    *
    * @param function The new objective function.
    * @see ObjectiveFunction
@@ -768,11 +768,13 @@ public class TabuSearch extends TabuSearchBase {
   public synchronized void setObjectiveFunction(ObjectiveFunction function) throws Exception {
     this.objectiveFunction = function;
 
-    if (this.currentSolution != null)
+    if (this.currentSolution != null) {
       this.currentSolution.setObjectiveValue(function.evaluate(this.currentSolution, null));
+    }
 
-    if (this.bestSolution != null)
+    if (this.bestSolution != null) {
       this.bestSolution.setObjectiveValue(function.evaluate(this.bestSolution, null));
+    }
 
   } // end setObjectiveFunction
 
