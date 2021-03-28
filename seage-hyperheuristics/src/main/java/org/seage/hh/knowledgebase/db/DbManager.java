@@ -2,6 +2,7 @@ package org.seage.hh.knowledgebase.db;
 
 import java.io.InputStream;
 import java.io.StringReader;
+import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.util.Optional;
 import java.util.Properties;
@@ -45,9 +46,9 @@ public class DbManager {
     if (!dbUrl.isEmpty() && !dbUrl.startsWith("jdbc:")) {
       throw new Exception(String.format("Incorrect DB_URL value: %s", dbUrl));
     }
-    String environment = testMode ? "test" : 
-        dbUrl.startsWith("jdbc:postgresql") ? "postgres" : "local";
-    
+    String environment =
+        testMode ? "test" : dbUrl.startsWith("jdbc:postgresql") ? "postgres" : "local";
+
     String username = Optional.ofNullable(System.getenv("DB_USER")).orElse("seage");
     String password = Optional.ofNullable(System.getenv("DB_PASSWORD")).orElse("seage");
     // A local hack
@@ -62,13 +63,14 @@ public class DbManager {
     props.setProperty("password", password);
 
     try (InputStream inputStream = Resources.getResourceAsStream(configResourcePath)) {
-
       sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, environment, props);
-      DatabaseMetaData dbMetadata = sqlSessionFactory.getConfiguration().getEnvironment()
-          .getDataSource().getConnection().getMetaData();
       
-      dbUrl = dbMetadata.getURL();      
-      logger.info("DB_URL: {}", dbUrl);
+      try (Connection conn =
+          sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
+        DatabaseMetaData dbMetadata = conn.getMetaData();
+        dbUrl = dbMetadata.getURL();
+        logger.info("DB_URL: {}", dbUrl);
+      }
 
       if (testMode) {
         // runner.runScript(new StringReader("CREATE TYPE 'JSONB' AS json;"));
