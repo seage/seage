@@ -76,6 +76,7 @@ public class DbManager {
           ScriptRunner runner = new ScriptRunner(session.getConnection());
           // runner.setLogWriter(new PrintWriter(System.out));
           // runner.setErrorLogWriter(new PrintWriter(System.err));
+          runner.runScript(new StringReader("DROP TABLE flyway_schema_history;"));
           runner.runScript(new StringReader("DROP SCHEMA seage CASCADE;"));
         }
       }
