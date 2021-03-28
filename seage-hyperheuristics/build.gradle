@@ -16,7 +16,8 @@ dependencies {
     implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.5.1'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
     implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.1'
-    // implementation group: 'org.apache.spark', name: 'spark-core_2.12', version: '3.1.0'
+    // implementation group: 'org.apache.spark', name: 'spark-core_2.12', version: '3.1.1'
+    implementation group: 'org.flywaydb', name: 'flyway-core', version: '7.7.1'
 
     implementation project(':seage-aal')
     implementation project(':seage-metaheuristics')
