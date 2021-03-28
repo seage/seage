@@ -45,25 +45,31 @@ public class DbManager {
     if (!dbUrl.isEmpty() && !dbUrl.startsWith("jdbc:")) {
       throw new Exception(String.format("Incorrect DB_URL value: %s", dbUrl));
     }
-    String environment = dbUrl.startsWith("jdbc:postgresql") ? "postgres" : "local";
-
-    logger.info("DB_URL: {}", dbUrl);
-
+    String environment = testMode ? "test" : 
+        dbUrl.startsWith("jdbc:postgresql") ? "postgres" : "local";
+    
     String username = Optional.ofNullable(System.getenv("DB_USER")).orElse("seage");
     String password = Optional.ofNullable(System.getenv("DB_PASSWORD")).orElse("seage");
+    // A local hack
+    if (!environment.equals("postgres")) {
+      username = "sa";
+      password = "";
+    }
 
     Properties props = new Properties();
     props.setProperty("url", dbUrl);
     props.setProperty("username", username);
     props.setProperty("password", password);
 
-    if (testMode) {
-      environment = "test";
-    }
-
     try (InputStream inputStream = Resources.getResourceAsStream(configResourcePath)) {
 
       sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, environment, props);
+      DatabaseMetaData dbMetadata = sqlSessionFactory.getConfiguration().getEnvironment()
+          .getDataSource().getConnection().getMetaData();
+      
+      dbUrl = dbMetadata.getURL();      
+      logger.info("DB_URL: {}", dbUrl);
+
       if (testMode) {
         // runner.runScript(new StringReader("CREATE TYPE 'JSONB' AS json;"));
         try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
@@ -72,11 +78,6 @@ public class DbManager {
           // runner.setErrorLogWriter(new PrintWriter(System.err));
           runner.runScript(new StringReader("DROP SCHEMA seage CASCADE;"));
         }
-        DatabaseMetaData dbMetadata = sqlSessionFactory.getConfiguration().getEnvironment()
-            .getDataSource().getConnection().getMetaData();
-        dbUrl = dbMetadata.getURL();
-        username = dbMetadata.getUserName();
-        password = "";
       }
       // Database migration
       Flyway flyway = Flyway.configure().baselineOnMigrate(true)
