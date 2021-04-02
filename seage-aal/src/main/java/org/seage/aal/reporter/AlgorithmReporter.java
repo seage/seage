@@ -23,6 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.aal.reporter;
 
 import org.seage.aal.algorithm.AlgorithmParams;
@@ -31,24 +32,29 @@ import org.seage.aal.algorithm.Phenotype;
 import org.seage.data.DataNode;
 
 /**
- * Reports on runtime information
+ * Reports on runtime information.
  *
  * @author Richard Malek
  */
 public class AlgorithmReporter<P extends Phenotype<?>> {
-  private AlgorithmReport _report;
-  private IPhenotypeEvaluator<P> _evaluator;
+  private AlgorithmReport report;
+  private IPhenotypeEvaluator<P> evaluator;
 
+  /**
+   * AlgorithmReporter constructor.
+   * @param evaluator .
+   * @throws Exception .
+   */
   public AlgorithmReporter(IPhenotypeEvaluator<P> evaluator) throws Exception {
-    _evaluator = evaluator;
-    _report = new AlgorithmReport("AlgorithmReport");
-    _report.putDataNode(new DataNode("Log"));
-    _report.putDataNode(new DataNode("Statistics"));
+    this.evaluator = evaluator;
+    report = new AlgorithmReport("AlgorithmReport");
+    report.putDataNode(new DataNode("Log"));
+    report.putDataNode(new DataNode("Statistics"));
   }
 
   public void putParameters(AlgorithmParams params) throws Exception {
-    _report.putValue("created", System.currentTimeMillis());
-    _report.putDataNode(params);
+    report.putValue("created", System.currentTimeMillis());
+    report.putDataNode(params);
   }
 
   public void putNewSolution(long time, long iterNumber, P solution) throws Exception {
@@ -63,9 +69,11 @@ public class AlgorithmReporter<P extends Phenotype<?>> {
     // _report.getDataNode("Log").putDataNode(newSol);
   }
 
-  public void putStatistics(long numberOfIterationsDone, long numberOfNewSolutions, long lastImprovingIteration,
+  /**. */
+  public void putStatistics(
+      long numberOfIterationsDone, long numberOfNewSolutions, long lastImprovingIteration,
       double initObjVal, double avgObjVal, double bestObjVal) throws Exception {
-    DataNode stats = _report.getDataNode("Statistics");
+    DataNode stats = report.getDataNode("Statistics");
     stats.putValue("numberOfIter", numberOfIterationsDone);
     stats.putValue("numberOfNewSolutions", numberOfNewSolutions);
     stats.putValue("lastIterNumberNewSol", lastImprovingIteration);
@@ -75,6 +83,6 @@ public class AlgorithmReporter<P extends Phenotype<?>> {
   }
 
   public AlgorithmReport getReport() throws Exception {
-    return (AlgorithmReport) _report.clone();
+    return new AlgorithmReport(report);
   }
 }

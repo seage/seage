@@ -313,10 +313,6 @@ public class DataNode {
     }
   }
 
-  public void setXslPath(String xslPath) {
-    this.xslPath = xslPath;
-  }
-
   /**
    * Converts the current DataNode to the xml Document.
    * @return Xml document.
@@ -342,9 +338,9 @@ public class DataNode {
 
     Document result = domImpl.createDocument(null, getName(), null);
 
-    if (this.xslPath.length() > 0) {
+    if (xslPath.length() > 0) {
       ProcessingInstruction pi = result.createProcessingInstruction("xml-stylesheet", "jkl;");
-      pi.setData("type=\"text/xsl\" href=\"" + this.xslPath + "\"");
+      pi.setData("type=\"text/xsl\" href=\"" + xslPath + "\"");
       result.appendChild(pi);
     }
 
