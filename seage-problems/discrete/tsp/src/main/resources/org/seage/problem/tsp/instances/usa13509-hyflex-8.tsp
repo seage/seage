@@ -1,5 +1,5 @@
 NAME : usa13509
-COMMENT : Cities with population at least 500 in 
+COMMENT : Cities with population at least 500 in the continental US.
 TYPE : TSP
 DIMENSION : 13509
 EDGE_WEIGHT_TYPE : EUC_2D
