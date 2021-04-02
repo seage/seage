@@ -47,8 +47,7 @@ import org.w3c.dom.ProcessingInstruction;
  * DataNode for storing dynamic data.
  * @author Richard Malek.
  */
-public class DataNode implements Serializable {
-  private static final long serialVersionUID = 2193543253630004569L;
+public class DataNode {
 
   private String name;
 
@@ -57,8 +56,6 @@ public class DataNode implements Serializable {
   private HashMap<String, DataNode> ids;
 
   private List<DataNodeListener> listeners;
-
-  private String xslPath;
 
   /**
    * DataNode constructor with name of the root element.
@@ -70,18 +67,31 @@ public class DataNode implements Serializable {
     this.ids = new HashMap<String, DataNode>();
 
     this.listeners = new ArrayList<DataNodeListener>();
-    this.xslPath = "";
   }
 
   protected DataNode(DataNode node) {
-    DataNode dn = (DataNode) node.clone();
-    this.name = dn.name;
-    this.dataNodes = dn.dataNodes;
-    this.values = dn.values;
-    this.ids = dn.ids;
+    this(node.name);
+    // plain copy
+    this.values.putAll(node.values);    
+    this.listeners.addAll(node.listeners);
 
-    this.listeners = dn.listeners;
-    this.xslPath = dn.xslPath;
+    // copy child data nodes
+    for (String childKey : node.dataNodes.keySet()) {
+      List<DataNode> children = new ArrayList<>();
+      for (DataNode dn : node.dataNodes.get(childKey)) {
+        DataNode child = new DataNode(dn);
+        children.add(child);
+      }
+      this.dataNodes.put(childKey, children);
+    }
+    // copy ids
+    for (String childKey : this.dataNodes.keySet()) {
+      for (DataNode dn : this.dataNodes.get(childKey)) {
+        if (dn.values.containsKey("id")) {
+          this.ids.put(dn.values.get("id").toString(), dn);
+        }
+      }
+    }
   }
 
   public String getName() {
@@ -97,6 +107,11 @@ public class DataNode implements Serializable {
     putDataNodeRef(dataSet);
   }
 
+  /**
+   * Puts another datanode as is - i.e. the dataSet to be put is not cloned
+   * @param dataSet The reference to the dataSet to be put.
+   * @throws Exception .
+   */
   public void putDataNodeRef(DataNode dataSet) throws Exception {
     dataSet.setListeners(this.listeners);
 
@@ -142,6 +157,12 @@ public class DataNode implements Serializable {
     return this.values.get(name).toString();
   }
 
+  /**
+   * Gets attribute value by name and converts it to integer.
+   * @param name Attribute name.
+   * @return Integer value.
+   * @throws Exception .
+   */
   public int getValueInt(String name) throws Exception {
     checkValueName(name);
     Object o = this.values.get(name);
@@ -155,6 +176,12 @@ public class DataNode implements Serializable {
     }
   }
 
+  /**
+   * Gets attribute value by name and converts it to long.
+   * @param name Attribute name.
+   * @return Long value.
+   * @throws Exception .
+   */
   public long getValueLong(String name) throws Exception {
     checkValueName(name);
     Object o = this.values.get(name);
@@ -168,6 +195,12 @@ public class DataNode implements Serializable {
     }
   }
 
+  /**
+   * Gets attribute value by name and converts it to double.
+   * @param name Attribute name.
+   * @return Double value.
+   * @throws Exception .
+   */
   public double getValueDouble(String name) throws Exception {
     checkValueName(name);
     Object o = this.values.get(name);
@@ -181,6 +214,12 @@ public class DataNode implements Serializable {
     }
   }
 
+  /**
+   * Gets attribute value by name and converts it to boolean.
+   * @param name Attribute name.
+   * @return Boolean value.
+   * @throws Exception .
+   */
   public boolean getValueBool(String name) throws Exception {
     checkValueName(name);
     Object o = this.values.get(name);
@@ -232,6 +271,10 @@ public class DataNode implements Serializable {
     return this.ids.get(id);
   }
 
+  /**
+   * Gets child data nodes.
+   * @return
+   */
   public List<DataNode> getDataNodes() {
     ArrayList<DataNode> result = new ArrayList<DataNode>();
 
@@ -241,6 +284,11 @@ public class DataNode implements Serializable {
     return result;
   }
 
+  /**
+   * Gets child data nodes of the given name.
+   * @param name The name of the child dataset to be taken.
+   * @return
+   */
   public List<DataNode> getDataNodes(String name) {
     List<DataNode> result = this.dataNodes.get(name);
     if (result == null) {
@@ -258,6 +306,7 @@ public class DataNode implements Serializable {
     this.listeners = listeners;
   }
 
+  /**. */
   public void addDataNodeListener(DataNodeListener listener) {
     if (!this.listeners.contains(listener)) {
       this.listeners.add(listener);
@@ -268,7 +317,21 @@ public class DataNode implements Serializable {
     this.xslPath = xslPath;
   }
 
+  /**
+   * Converts the current DataNode to the xml Document.
+   * @return Xml document.
+   * @throws Exception .
+   */
   public Document toXml() throws Exception {
+    return toXml("");
+  }
+
+  /**
+   * Converts the current DataNode to the xml Document.
+   * @return Xml document.
+   * @throws Exception .
+   */
+  public Document toXml(String xslPath) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
@@ -332,6 +395,6 @@ public class DataNode implements Serializable {
   }
 
   public DataNode clone() {
-    return SerializationUtils.clone(this);
+    return new DataNode(this);
   }
 }
