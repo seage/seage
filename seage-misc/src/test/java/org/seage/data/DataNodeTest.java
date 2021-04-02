@@ -56,16 +56,4 @@ public class DataNodeTest {
     assertEquals(2, dn11.getValueInt("a1"));
     assertEquals(3, dn22.getValueInt("a1"));
   }
-
-  @Test
-  void testDataNodeClone() throws Exception {
-    DataNode dn1 = new DataNode("dn1");
-    dn1.putValue("a1", 1);
-
-    DataNode dn2 = dn1.clone();
-    assertEquals(1, dn2.getValueInt("a1"));
-
-    dn1.putValue("a1", 2);
-    assertEquals(1, dn2.getValueInt("a1"));
-  }
 }

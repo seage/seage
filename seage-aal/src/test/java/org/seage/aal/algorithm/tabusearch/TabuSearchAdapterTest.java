@@ -26,21 +26,19 @@
 
 package org.seage.aal.algorithm.tabusearch;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertSame;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.annotation.Testable;
 import org.seage.aal.algorithm.AlgorithmAdapterTestBase;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.aal.problem.TestPhenotypeEvaluator;
 
 /**
- *
+ * TabuSearchAdapterTest.
  * @author Richard Malek
  */
+@Testable
 public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution> {
 
   public TabuSearchAdapterTest() throws Exception {
@@ -49,7 +47,9 @@ public class TabuSearchAdapterTest extends AlgorithmAdapterTestBase<TestSolution
 
   @BeforeEach
   public void initAlgorithm() throws Exception {
-    algAdapter = new TabuSearchAdapter<TestPhenotype, TestSolution>(new TestMoveManager(), new TestObjectiveFunction(),
+    algAdapter = new TabuSearchAdapter<TestPhenotype, TestSolution>(
+        new TestMoveManager(), 
+        new TestObjectiveFunction(),
         new TestPhenotypeEvaluator()) {
 
       @Override

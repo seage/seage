@@ -22,7 +22,6 @@
 
 package org.seage.data;
 
-import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +35,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.commons.lang3.SerializationUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -62,9 +60,9 @@ public class DataNode {
    */
   public DataNode(String name) {
     this.name = name;
-    this.dataNodes = new HashMap<String, List<DataNode>>();
-    this.values = new HashMap<String, Object>();
-    this.ids = new HashMap<String, DataNode>();
+    this.dataNodes = new HashMap<>();
+    this.values = new HashMap<>();
+    this.ids = new HashMap<>();
 
     this.listeners = new ArrayList<DataNodeListener>();
   }
@@ -76,17 +74,17 @@ public class DataNode {
     this.listeners.addAll(node.listeners);
 
     // copy child data nodes
-    for (String childKey : node.dataNodes.keySet()) {
+    for (Entry<String, List<DataNode>> childEntry : node.dataNodes.entrySet()) {
       List<DataNode> children = new ArrayList<>();
-      for (DataNode dn : node.dataNodes.get(childKey)) {
+      for (DataNode dn : childEntry.getValue()) {
         DataNode child = new DataNode(dn);
         children.add(child);
       }
-      this.dataNodes.put(childKey, children);
+      this.dataNodes.put(childEntry.getKey(), children);
     }
     // copy ids
-    for (String childKey : this.dataNodes.keySet()) {
-      for (DataNode dn : this.dataNodes.get(childKey)) {
+    for (List<DataNode> children : node.dataNodes.values()) {
+      for (DataNode dn : children) {
         if (dn.values.containsKey("id")) {
           this.ids.put(dn.values.get("id").toString(), dn);
         }
@@ -102,9 +100,9 @@ public class DataNode {
     this.name = name;
   }
 
-  public void putDataNode(DataNode dataSet0) throws Exception {
-    DataNode dataSet = (DataNode) dataSet0.clone();
-    putDataNodeRef(dataSet);
+  public void putDataNode(DataNode dataSet) throws Exception {
+    DataNode clone = new DataNode(dataSet);
+    putDataNodeRef(clone);
   }
 
   /**
@@ -116,7 +114,7 @@ public class DataNode {
     dataSet.setListeners(this.listeners);
 
     if (!this.dataNodes.containsKey(dataSet.getName())) {
-      this.dataNodes.put(dataSet.getName(), new ArrayList<DataNode>());
+      this.dataNodes.put(dataSet.getName(), new ArrayList<>());
     }
 
     if (dataSet.containsValue("id")) {
@@ -276,7 +274,7 @@ public class DataNode {
    * @return
    */
   public List<DataNode> getDataNodes() {
-    ArrayList<DataNode> result = new ArrayList<DataNode>();
+    ArrayList<DataNode> result = new ArrayList<>();
 
     for (List<DataNode> list : this.dataNodes.values()) {
       result.addAll(list);
@@ -292,7 +290,7 @@ public class DataNode {
   public List<DataNode> getDataNodes(String name) {
     List<DataNode> result = this.dataNodes.get(name);
     if (result == null) {
-      return new ArrayList<DataNode>();
+      return new ArrayList<>();
     } else {
       return result;
     }
@@ -388,9 +386,5 @@ public class DataNode {
       ex.printStackTrace();
       return "";
     }
-  }
-
-  public DataNode clone() {
-    return new DataNode(this);
   }
 }
