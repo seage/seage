@@ -1,5 +1,5 @@
 NAME : d18512
-COMMENT : Bundesrepublik Deutschlan
+COMMENT : Bundesrepublik Deutschland (mit Ex-DDR) (Bachem/Wottawa)
 TYPE : TSP
 DIMENSION : 18512
 EDGE_WEIGHT_TYPE : EUC_2D
