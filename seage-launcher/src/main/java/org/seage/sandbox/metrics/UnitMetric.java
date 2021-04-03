@@ -1,5 +1,7 @@
 package org.seage.sandbox.metrics;
 
+import org.checkerframework.checker.index.qual.UpperBoundUnknown;
+
 public class UnitMetric {
   private static double INTERVAL_MIN = 0.0;
   private static double INTERVAL_MAX = 1.0;
@@ -24,7 +26,7 @@ public class UnitMetric {
       throw new Exception("Bad input values: value can't be better than optimum");
     }
 
-    return INTERVAL_MAX - mapToInterval(lowerBound, Math.max(upperBound, current), current);
+    return INTERVAL_MAX - mapToInterval(lowerBound, upperBound, Math.max(upperBound, current));
   }
 
   /**
