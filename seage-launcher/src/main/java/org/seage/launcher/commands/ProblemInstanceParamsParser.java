@@ -6,6 +6,23 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ProblemInstanceParamsParser {
+  // HyFlex instancesIDs
+  static String[] hyflexSatInstanceIDs = {
+    "pg-525-2276-hyflex-3",
+    "pg-696-3122-hyflex-5", 
+    "pg-525-2336-hyflex-4",
+    "jarv-684-2300-hyflex-10", 
+    "hg4-300-1200-hyflex-11"
+  };
+
+  static String[] hyflexTspInstanceIDs = {
+    "pr299-hyflex-0", 
+    "usa13509-hyflex-8", 
+    "rat575-hyflex-2",
+    "u2152-hyflex-7", 
+    "d1291-hyflex-6"
+  };
+
 
   /**
    * Parses command line instance arguments.
@@ -31,12 +48,26 @@ public class ProblemInstanceParamsParser {
     String problemID = p[0];
     String instanceID = p[1];
 
-    if (param.equals("ALL:hyflex")) {
-      parsed.put("TSP", Arrays.asList(new String[] { "h1", "h2" }));
-      parsed.put("SAT", Arrays.asList(new String[] { "h3", "h4" }));
+    if (instanceID.equals("hyflex")) {
+      switch (problemID) {
+        case "ALL":
+          parsed.put("SAT", Arrays.asList(hyflexSatInstanceIDs));
+          parsed.put("TSP", Arrays.asList(hyflexTspInstanceIDs));
+          break;
+
+        case "TSP":
+          parsed.put("TSP", Arrays.asList(hyflexTspInstanceIDs));
+          break;
+          
+        case "SAT":
+          parsed.put("SAT", Arrays.asList(hyflexSatInstanceIDs));
+          break;
+        
+        default:
+          new Exception("Bad problemID");
+      }
       return;
-    }
-    
+    }   
   
     if (parsed.containsKey(problemID) == false) {
       parsed.put(problemID, new ArrayList<>());
