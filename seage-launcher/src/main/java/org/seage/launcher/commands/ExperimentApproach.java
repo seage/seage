@@ -3,7 +3,10 @@ package org.seage.launcher.commands;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 
+import java.util.HashMap;
 import java.util.List;
+
+import org.seage.hh.experimenter2.ApproachExperimenter;
 
 @Parameters(commandDescription = "Perform Experiment Approach")
 public class ExperimentApproach extends Command {
@@ -16,7 +19,7 @@ public class ExperimentApproach extends Command {
       description = "Problem instances", 
       variableArity = true
   )
-  List<String> instances;
+  List<String> instanceIDs;
 
   @Parameter(
       names = "--algorithmID", 
@@ -24,7 +27,7 @@ public class ExperimentApproach extends Command {
       description = "Algorithms IDs", 
       variableArity = true
   )
-  List<String> algorithms;
+  List<String> algorithmIDs;
   
   @Parameter(
       names = "-n", 
@@ -42,6 +45,11 @@ public class ExperimentApproach extends Command {
 
   @Override
   public void performCommad() throws Exception {
-    
+    HashMap<String, List<String>> problemInstanceParams = 
+        ProblemInstanceParamsParser.parseProblemInstanceParams(instanceIDs.toArray(new String[0]));
+
+    for (String algorithmID: algorithmIDs) {
+      new ApproachExperimenter(algorithmID, problemInstanceParams);
+    }
   }
 }

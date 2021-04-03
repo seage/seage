@@ -1,5 +1,6 @@
 package org.seage.launcher.commands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -28,13 +29,19 @@ public class ProblemInstanceParamsParser {
       String param, HashMap<String, List<String>> parsed) throws Exception {
     String[] p = param.split(":");
     String problemID = p[0];
-    // String instanceID = p[1];
+    String instanceID = p[1];
 
-    if (problemID.equals("ALL:hyflex")) {
+    if (param.equals("ALL:hyflex")) {
       parsed.put("TSP", Arrays.asList(new String[] { "h1", "h2" }));
       parsed.put("SAT", Arrays.asList(new String[] { "h3", "h4" }));
       return;
     }
-    throw new Exception("Unknown instance arguments");
+    
+  
+    if (parsed.containsKey(problemID) == false) {
+      parsed.put(problemID, new ArrayList<>());
+    }
+
+    parsed.get(problemID).add(instanceID); 
   }
 }
