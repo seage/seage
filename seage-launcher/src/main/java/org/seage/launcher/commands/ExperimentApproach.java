@@ -10,9 +10,7 @@ import org.seage.hh.experimenter2.ApproachExperimenter;
 
 @Parameters(commandDescription = "Perform Experiment Approach")
 public class ExperimentApproach extends Command {
-  @Parameter(names = "-p", required = true, description = "ProblemID")
-  String problemID;
-  
+    
   @Parameter(
       names = "--instance", 
       required = true, 
