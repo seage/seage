@@ -21,7 +21,7 @@ public class ExperimentApproachCommand extends Command {
   @Parameter(
       names = {"-a", "--algorithmID"}, 
       required = true, 
-      description = "Algorithms IDs", 
+      description = "Algorithms ID", 
       variableArity = true
   )
   List<String> algorithmIDs;
