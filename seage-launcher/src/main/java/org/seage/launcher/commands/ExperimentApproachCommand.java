@@ -22,7 +22,7 @@ public class ExperimentApproachCommand extends Command {
       names = {"-a", "--algorithmID"}, 
       required = true, 
       description = "Algorithms ID", 
-      variableArity = true
+      variableArity = false
   )
   List<String> algorithmIDs;
   
