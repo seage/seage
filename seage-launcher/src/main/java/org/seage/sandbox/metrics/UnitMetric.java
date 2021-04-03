@@ -1,4 +1,4 @@
-package org.seage.metrics;
+package org.seage.sandbox.metrics;
 
 import java.util.List;
 
@@ -22,12 +22,13 @@ public class UnitMetric {
     if (upperBound < lowerBound) {
       throw new Exception("Bad input values: upperBound < lowerBound");
     }
-    if (current < lowerBound || current > upperBound) {
+    if (current < lowerBound) {
       throw new Exception("Bad input values: current is not from interval");
     }
 
     return scoreIntervalTo
-        - (mapToInterval(lowerBound, upperBound, scoreIntervalFrom, scoreIntervalTo, current));
+        - (mapToInterval(
+          lowerBound, Math.min(upperBound, current), scoreIntervalFrom, scoreIntervalTo, current));
   }
 
   /**
