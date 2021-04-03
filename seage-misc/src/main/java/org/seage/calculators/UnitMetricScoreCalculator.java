@@ -9,8 +9,8 @@ import org.seage.metrics.UnitMetric;
 
 public class UnitMetricScoreCalculator implements ScoreCalculator {
   @Override
-  public List<DataNode> calculateScore(String experimentId) throws Exception {
-    //load data from database
+  public List<DataNode> calculateScore(DataNode results) throws Exception {
+    //todo
     return null;
   }
 }
