@@ -47,6 +47,6 @@ public class ExperimentApproachCommand extends Command {
         ProblemInstanceParamsParser.parseProblemInstanceParams(instanceIDs);
 
     
-    new ApproachExperimenter(algorithmID, problemInstanceParams);
+    new ApproachExperimenter(algorithmID, problemInstanceParams, numOfConfigs, algorithmTimeoutS);
   }
 }
