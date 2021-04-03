@@ -10,7 +10,7 @@ import com.beust.jcommander.ParameterException;
 
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.launcher.commands.Command;
-import org.seage.launcher.commands.ExperimentApproach;
+import org.seage.launcher.commands.ExperimentApproachCommand;
 import org.seage.launcher.commands.ExperimentMultiRandomCommand;
 import org.seage.launcher.commands.ExperimentSingleDefaultCommand;
 import org.seage.launcher.commands.ExperimentSingleEvolutionCommand;
@@ -43,7 +43,7 @@ public class Launcher {
       commands.put("experiment-single-feedback", new ExperimentSingleFeedbackCommand());
       commands.put("experiment-single-evolution", new ExperimentSingleEvolutionCommand());
       commands.put("experiment-multi-random", new ExperimentMultiRandomCommand());
-      commands.put("experiment-approach", new ExperimentApproach());
+      commands.put("experiment-approach", new ExperimentApproachCommand());
 
       Launcher launcher = new Launcher();
 

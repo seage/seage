@@ -9,7 +9,7 @@ import java.util.List;
 import org.seage.hh.experimenter2.ApproachExperimenter;
 
 @Parameters(commandDescription = "Perform Experiment Approach")
-public class ExperimentApproach extends Command {
+public class ExperimentApproachCommand extends Command {
 
   @Parameter(
       names = {"-i", "--instance"}, 
