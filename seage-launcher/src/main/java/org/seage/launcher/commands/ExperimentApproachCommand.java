@@ -25,7 +25,7 @@ public class ExperimentApproachCommand extends Command {
       description = "Algorithm ID", 
       variableArity = false
   )
-  List<String> algorithmIDs;
+  String algorithmID;
   
   @Parameter(
       names = "-n", 
@@ -46,8 +46,7 @@ public class ExperimentApproachCommand extends Command {
     HashMap<String, List<String>> problemInstanceParams = 
         ProblemInstanceParamsParser.parseProblemInstanceParams(instanceIDs);
 
-    for (String algorithmID: algorithmIDs) {
-      new ApproachExperimenter(algorithmID, problemInstanceParams);
-    }
+    
+    new ApproachExperimenter(algorithmID, problemInstanceParams);
   }
 }
