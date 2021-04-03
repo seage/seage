@@ -31,7 +31,7 @@ public class ProblemInstanceParamsParser {
    * @throws Exception .
    */
   public static HashMap<String, List<String>> parseProblemInstanceParams(
-      String[] instanceParams) throws Exception {
+      List<String> instanceParams) throws Exception {
     
     HashMap<String, List<String>> instances = new HashMap<>();
 

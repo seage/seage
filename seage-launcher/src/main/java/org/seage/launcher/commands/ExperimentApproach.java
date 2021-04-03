@@ -44,7 +44,7 @@ public class ExperimentApproach extends Command {
   @Override
   public void performCommad() throws Exception {
     HashMap<String, List<String>> problemInstanceParams = 
-        ProblemInstanceParamsParser.parseProblemInstanceParams(instanceIDs.toArray(new String[0]));
+        ProblemInstanceParamsParser.parseProblemInstanceParams(instanceIDs);
 
     for (String algorithmID: algorithmIDs) {
       new ApproachExperimenter(algorithmID, problemInstanceParams);
