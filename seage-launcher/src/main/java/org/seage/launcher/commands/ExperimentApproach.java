@@ -32,7 +32,7 @@ public class ExperimentApproach extends Command {
   @Parameter(
       names = "-n", 
       required = true, 
-      description = "Number of random configs per each experiment"
+      description = "Number of configs per each experiment"
   )
   int numOfConfigs;
   
