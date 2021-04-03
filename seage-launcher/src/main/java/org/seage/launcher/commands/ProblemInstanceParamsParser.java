@@ -69,7 +69,7 @@ public class ProblemInstanceParamsParser {
       return;
     }   
   
-    if (parsed.containsKey(problemID) == false) {
+    if (!parsed.containsKey(problemID)) {
       parsed.put(problemID, new ArrayList<>());
     }
 
