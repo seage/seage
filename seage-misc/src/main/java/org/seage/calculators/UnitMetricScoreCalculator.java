@@ -5,21 +5,12 @@ import java.util.List;
 import java.util.Map;
 import org.seage.data.DataNode;
 
-public class UnitMetricScoreCalculator implements ScoreCalculator {
-  /**
-   * Map represents weights for each problem domain.
-   */
-  @SuppressWarnings("serial")
-  private final Map<String, Double> problemsWeightsMap = new HashMap<>() {
-    {
-      put("SAT", 1.0);
-      put("TSP", 1.0);
-    }
-  };
+import org.seage.metrics.UnitMetric;
 
+public class UnitMetricScoreCalculator implements ScoreCalculator {
   @Override
-  public List<DataNode> calculateScore(List<DataNode> card) throws Exception {
-    //todo
+  public List<DataNode> calculateScore(String experimentId) throws Exception {
+    //load data from database
     return null;
   }
 }
