@@ -47,7 +47,6 @@ import org.slf4j.LoggerFactory;
 public abstract class ProblemProvider<P extends Phenotype<?>> implements IProblemProvider<P> {
   public static Class<?>[] providerClasses = {};
   private static Logger logger = LoggerFactory.getLogger(ProblemProvider.class.getName());
-  private static HashMap<String, IProblemProvider<Phenotype<?>>> providers;
   private ProblemInfo problemInfo;
   private HashMap<String, IAlgorithmFactory<P, ?>> algFactories;
 
@@ -195,38 +194,23 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
     return algFactories;
   }
 
-  ///////////////////////////////////////////////////////////////////////////
-  public static synchronized Map<String, IProblemProvider<Phenotype<?>>> getProblemProviders() throws Exception {
-    HashMap<String, IProblemProvider<Phenotype<?>>> result = new HashMap<String, IProblemProvider<Phenotype<?>>>();
+  /**
+   * Lists all registered problem providers.
+   * @return Map of problem ids and problem providers.
+   * @throws Exception .
+   */
+  @SuppressWarnings("unchecked")
+  public static synchronized Map<String, IProblemProvider<Phenotype<?>>> 
+      getProblemProviders() throws Exception {
+    HashMap<String, IProblemProvider<Phenotype<?>>> result = 
+        new HashMap<String, IProblemProvider<Phenotype<?>>>();
 
     for (Class<?> c : providerClasses) {
-      result.put(c.getAnnotation(Annotations.ProblemId.class).value(),
+      
+      result.put(c.getAnnotation(Annotations.ProblemId.class).value(),          
           (IProblemProvider<Phenotype<?>>) c.getConstructor().newInstance());
     }
 
     return result;
   }
-
-  public static synchronized Map<String, IProblemProvider<Phenotype<?>>> getProblemProviders0() throws Exception {
-    if (providers != null) {
-      return providers;
-    }
-
-    providers = new HashMap<>();
-    logger.info("Searching for Providers");
-    for (ClassInfo ci : ClassUtil.searchForClasses(IProblemProvider.class, "org.seage.problem")) {
-      try {
-        logger.info(ci.getClassName());
-        IProblemProvider<Phenotype<?>> pp = 
-          (IProblemProvider<Phenotype<?>>) Class.forName(ci.getClassName()).getConstructor().newInstance();
-
-        providers.put(pp.getProblemInfo().getValueStr("id"), pp);
-      } catch (Exception ex) {
-        logger.error(ci.getClassName(), ex);
-      }
-    }
-    logger.info("Providers count: {}", providers.keySet().size());
-    return providers;
-  }
-
 }

@@ -70,7 +70,7 @@
         "-a",
         "GeneticAlgorithm",
         "-i",
-        "TSP:berlin52",
+        "ALL:hyflex",
         "-t",
         "1",
         "-n",

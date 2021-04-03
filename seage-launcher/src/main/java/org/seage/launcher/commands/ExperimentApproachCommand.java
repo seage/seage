@@ -6,7 +6,7 @@ import com.beust.jcommander.Parameters;
 import java.util.HashMap;
 import java.util.List;
 
-import org.seage.hh.experimenter2.ApproachExperimenter;
+import org.seage.hh.experimenter2.AlgorithmExperimenterRunner;
 
 @Parameters(commandDescription = "Perform Experiment Approach")
 public class ExperimentApproachCommand extends Command {
@@ -46,7 +46,9 @@ public class ExperimentApproachCommand extends Command {
     HashMap<String, List<String>> problemInstanceParams = 
         ProblemInstanceParamsParser.parseProblemInstanceParams(instanceIDs);
 
-    
-    new ApproachExperimenter(algorithmID, problemInstanceParams, numOfConfigs, algorithmTimeoutS);
+    AlgorithmExperimenterRunner ae = 
+        new AlgorithmExperimenterRunner(
+            algorithmID, problemInstanceParams, numOfConfigs, algorithmTimeoutS);
+    ae.runExperiment();
   }
 }
