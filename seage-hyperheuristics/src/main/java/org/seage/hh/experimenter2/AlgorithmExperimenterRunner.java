@@ -47,49 +47,33 @@ public class AlgorithmExperimenterRunner {
   public void runExperiment() throws Exception {
     logger.info("Algorithm '{}'", algorithmID);
 
-    AlgorithmExperimenter ae = createAlgorithmExperimenter(algorithmID);
-
     for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
       String problemID = entry.getKey();
       logger.info("  Problem '{}'", problemID);
 
       for (String instanceID : entry.getValue()) {
-
-        // ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(
-        // instanceID);
-
-        // logger.info(" Instance '{}'", instanceInfo.getValue("name"));
         logger.info("    Instance '{}'", instanceID);
-        ae.runExperiment();
-      }
 
-      // for (String instanceID : entry.getValue()) {
-      // logger.info(" - Instance '{}'", instanceID);
-      // new ExperimentTask(
-      // experimentTaskID,
-      // experimentID,
-      // jobID, 1,
-      // problemID, instanceID, algorithmID,
-      // algorithmParams, timeoutS);
-      // }
+        createAlgorithmExperimenter(problemID, instanceID).runExperiment();
+      }
     }
   }
 
-  private AlgorithmExperimenter createAlgorithmExperimenter(String algorithmID) throws Exception {
-    boolean ordinaryAlg = ProblemProvider.getProblemProviders()
-        .values()
-        .stream()
-        .anyMatch(pp -> {
-          try {
-            return pp.getProblemInfo().getDataNode("Algorithms").getDataNodeById(algorithmID) != null;
-          } catch (Exception e) {
-            return false;
-          }
-        });
-
+  private AlgorithmExperimenter createAlgorithmExperimenter(String problemID, String instanceID) throws Exception {
+    boolean ordinaryAlg = ProblemProvider
+        .getProblemProviders()
+        .get(problemID)
+        .getProblemInfo()
+        .getDataNode("Algorithms")
+        .getDataNodeById(algorithmID) != null;
+    
     if (ordinaryAlg) {
-      return new MetaheuristicExperimenter();
+      return new MetaHeuristicExperimenter();
     }
+    if (algorithmID.equals("HyperHeuristic1")) {
+      return new HyperHeuristic1Experimenter();
+    }
+
 
     throw new Exception(String.format("Unknown algorithm id '%s'", algorithmID));
   }
