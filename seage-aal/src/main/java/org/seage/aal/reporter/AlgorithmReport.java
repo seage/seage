@@ -34,38 +34,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * A minor extension of the DataNode.
  * @author Richard Malek
  */
 public class AlgorithmReport extends DataNode {
-  private static Logger _logger = LoggerFactory.getLogger(AlgorithmReport.class.getName());
-  /**
-   * 
-   */
-  private static final long serialVersionUID = -2598529749932239606L;
-  private int _id;
+  private int id;
 
   public AlgorithmReport(String name) {
     super(name);
   }
 
+  public AlgorithmReport(AlgorithmReport report) {
+    super(report);
+    this.id = report.id;
+  }
+
   public int getId() {
-    return _id;
+    return id;
   }
 
   public void setId(int id) {
-    _id = id;
+    this.id = id;
     putValue("id", id);
   }
 
-  public void save(String path) {
-    File f = new File(path);
-    if (!f.getParentFile().exists())
-      f.getParentFile().mkdirs();
-    try {
-      XmlHelper.writeXml(this, path);
-    } catch (Exception e) {
-      _logger.warn(e.getMessage());
-    }
-  }
 }

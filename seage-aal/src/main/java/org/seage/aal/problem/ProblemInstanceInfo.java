@@ -35,7 +35,7 @@ import org.seage.data.DataNode;
 public class ProblemInstanceInfo extends DataNode {
   public enum ProblemInstanceOrigin {
     FILE, RESOURCE
-  };
+  }
 
   private static final long serialVersionUID = 1L;
 

@@ -76,7 +76,7 @@ public class GridConfigurator extends Configurator {
     for (DataNode inst : problemInfo.getDataNode("Instances").getDataNodes()) {
       System.out.println(inst.getValue("path"));
 
-      ProblemConfig instanceCfg = (ProblemConfig) config.clone();
+      ProblemConfig instanceCfg = new ProblemConfig(config);
       instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("name", inst.getValue("name"));
       instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("type", inst.getValue("type"));
       instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("path", inst.getValue("path"));
