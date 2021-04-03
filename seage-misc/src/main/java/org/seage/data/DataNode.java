@@ -176,7 +176,7 @@ public class DataNode {
     } else if (o instanceof String) {
       return Integer.parseInt(o.toString());
     } else {
-      throw new Exception("Not an integer number");
+      throw new ClassCastException("Not an integer number");
     }
   }
 
@@ -195,7 +195,7 @@ public class DataNode {
     } else if (o instanceof String) {
       return Math.round(Double.parseDouble(o.toString()));
     } else {
-      throw new Exception("Not a long number");
+      throw new ClassCastException("Not a long number");
     }
   }
 
@@ -214,7 +214,7 @@ public class DataNode {
     } else if (o instanceof String) {
       return Double.parseDouble(o.toString());
     } else {
-      throw new Exception("Not a double number");
+      throw new ClassCastException("Not a double number");
     }
   }
 
@@ -233,19 +233,19 @@ public class DataNode {
     } else if (o instanceof String) {
       return Boolean.parseBoolean(o.toString());
     } else {
-      throw new Exception("Not a double number");
+      throw new ClassCastException("Not a double number");
     }
   }
 
-  private void checkValueName(String name) throws Exception {
+  private void checkValueName(String name) throws NoSuchFieldException {
     if (!this.values.containsKey(name)) {
-      throw new Exception("DataNode does not contain value of name '" + name + "'");
+      throw new NoSuchFieldException("DataNode does not contain value of name '" + name + "'");
     }
   }
 
-  private void checkNodeName(String name) throws Exception {
+  private void checkNodeName(String name) throws NoSuchFieldException {
     if (!this.dataNodes.containsKey(name)) {
-      throw new Exception("DataNode does not contain node of name '" + name + "'");
+      throw new NoSuchFieldException("DataNode does not contain node of name '" + name + "'");
     }
   }
 

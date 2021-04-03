@@ -72,8 +72,9 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
 
   @Override
   public void startSearching(AlgorithmParams params) throws Exception {
-    if (params == null)
-      throw new Exception("Parameters not set");
+    if (params == null) {
+      throw new IllegalArgumentException("Parameters not set");
+    }
     setParameters(params);
 
     _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);

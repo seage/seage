@@ -72,7 +72,7 @@ public abstract class Configurator {
     config.getDataNode("Problem").getDataNode("Instance").putValue("path", instanceInfo.getValue("path"));
 
     if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null) {
-      throw new Exception("Unknown algorithm id: " + algorithmID);
+      throw new NullPointerException("Unknown algorithm id: " + algorithmID);
     }
 
     return config;

@@ -71,7 +71,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
         String algorithmID = this.algorithmIDs[i];
 
         if (this.problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null)
-          throw new Exception("Unknown algorithm: " + algorithmID);
+          throw new IllegalArgumentException("Unknown algorithm: " + algorithmID);
 
         logger.info(String.format("%-15s %-24s (%d/%d)", "Algorithm: ", algorithmID, i + 1, this.algorithmIDs.length));
 

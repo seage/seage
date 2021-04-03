@@ -93,12 +93,13 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
    * <running> <parameters/> <minutes/> <statistics/> </running>
    * 
    * @param param
-   * @throws java.lang.Exception
+   * @throws java.lang.IllegalArgumentException
    */
   @Override
   public void startSearching(AlgorithmParams params) throws Exception {
-    if (params == null)
-      throw new Exception("Parameters not set");
+    if (params == null) {
+      throw new IllegalArgumentException("Parameters not set");
+    }
     setParameters(params);
 
     _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
@@ -107,7 +108,7 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
     _fireflySearch.startSolving(this.solutions);
     this.solutions = _fireflySearch.getSolutions();
     if (this.solutions == null)
-      throw new Exception("Solutions null");
+      throw new RuntimeException("Solutions null");
   }
 
   @Override

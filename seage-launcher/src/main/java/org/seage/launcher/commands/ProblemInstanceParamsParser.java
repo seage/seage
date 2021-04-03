@@ -64,7 +64,7 @@ public class ProblemInstanceParamsParser {
           break;
         
         default:
-          throw new Exception("Bad problemID");
+          throw new IllegalArgumentException("Bad problemID");
       }
       return;
     }   
