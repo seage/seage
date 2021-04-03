@@ -14,7 +14,8 @@ public class ExperimentApproachCommand extends Command {
   @Parameter(
       names = {"-i", "--instance"}, 
       required = true, 
-      description = "Problem instances"
+      description = "Problem instances",
+      variableArity = false
   )
   List<String> instanceIDs;
 
