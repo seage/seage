@@ -10,9 +10,9 @@ import org.seage.hh.experimenter2.ApproachExperimenter;
 
 @Parameters(commandDescription = "Perform Experiment Approach")
 public class ExperimentApproach extends Command {
-    
+
   @Parameter(
-      names = "--instance", 
+      names = {"-i", "--instance"}, 
       required = true, 
       description = "Problem instances", 
       variableArity = true
@@ -20,7 +20,7 @@ public class ExperimentApproach extends Command {
   List<String> instanceIDs;
 
   @Parameter(
-      names = "--algorithmID", 
+      names = {"-a", "--algorithmID"}, 
       required = true, 
       description = "Algorithms IDs", 
       variableArity = true
