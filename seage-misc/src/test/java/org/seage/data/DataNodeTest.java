@@ -1,7 +1,7 @@
 package org.seage.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 
 public class DataNodeTest {
@@ -79,5 +79,19 @@ public class DataNodeTest {
     dn222.putValue("a1", 3);
     assertEquals(2, dn111.getValueInt("a1"));
     assertEquals(3, dn222.getValueInt("a1"));
+  }
+
+  @Test
+  void testDataNodeToJson() throws Exception {
+    DataNode dn1 = new DataNode("dn1");
+    DataNode dn11 = new DataNode("dn11");
+    DataNode dn111 = new DataNode("dn111");
+    
+    dn111.putValue("a1", 1);
+    dn11.putDataNode(dn111);
+    dn1.putDataNode(dn11);    
+    
+    String res = dn1.toJson();
+    assertNotNull(res);
   }
 }

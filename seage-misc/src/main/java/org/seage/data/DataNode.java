@@ -22,6 +22,10 @@
 
 package org.seage.data;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
+
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,6 +39,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -48,8 +53,9 @@ import org.w3c.dom.ProcessingInstruction;
 public class DataNode {
 
   private String name;
-
+  @Expose
   private HashMap<String, List<DataNode>> dataNodes;
+  @Expose
   private HashMap<String, Object> values;
   private HashMap<String, DataNode> ids;
 
@@ -368,6 +374,14 @@ public class DataNode {
 
   public String hash() throws Exception {
     return HashHelper.hashFromString(toString());
+  }
+
+  public String toJson() {
+    Gson gson = new GsonBuilder()
+        .excludeFieldsWithoutExposeAnnotation()    
+        .setPrettyPrinting()
+        .create();
+    return gson.toJson(this).toString();
   }
 
   @Override
