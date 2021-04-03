@@ -15,14 +15,14 @@ public class ExperimentApproachCommand extends Command {
       names = {"-i", "--instance"}, 
       required = true, 
       description = "Problem instances",
-      variableArity = false
+      variableArity = true
   )
   List<String> instanceIDs;
 
   @Parameter(
       names = {"-a", "--algorithmID"}, 
       required = true, 
-      description = "Algorithms ID", 
+      description = "Algorithm ID", 
       variableArity = false
   )
   List<String> algorithmIDs;
