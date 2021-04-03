@@ -14,7 +14,7 @@ public class UnitMetric {
    * @param current    Input value for metric.
    * @return The metric for given value.
    */
-  public  static double getMetric(double lowerBound, double upperBound, double current)
+  public  static double getMetricValue(double lowerBound, double upperBound, double current)
       throws Exception {
     if (upperBound < 0 || lowerBound < 0 || current < 0) {
       throw new Exception("Bad input values: input parameter < 0");
@@ -23,7 +23,7 @@ public class UnitMetric {
       throw new Exception("Bad input values: upperBound < lowerBound");
     }
     if (current < lowerBound) {
-      throw new Exception("Bad input values: current is not from interval");
+      throw new Exception("Bad input values: value can't be better than optimum");
     }
 
     return scoreIntervalTo
