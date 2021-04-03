@@ -60,6 +60,25 @@
     },
     {
       "type": "java",
+      "name": "Debug Launcher (approach experimenter, h2)",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "experiment-approach",
+        "-a",
+        "GeneticAlgorithm",
+        "-i",
+        "TSP:berlin52",
+        "-t",
+        "1",
+        "-n",
+        "1"
+      ]
+    },
+    {
+      "type": "java",
       "name": "Launch MetadataGenerator",
       "request": "launch",
       "mainClass": "org.seage.sandbox.MetadataGenerator",
