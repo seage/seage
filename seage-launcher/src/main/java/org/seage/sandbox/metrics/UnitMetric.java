@@ -28,7 +28,7 @@ public class UnitMetric {
 
     return scoreIntervalTo
         - (mapToInterval(
-          lowerBound, Math.min(upperBound, current), scoreIntervalFrom, scoreIntervalTo, current));
+          lowerBound, Math.max(upperBound, current), scoreIntervalFrom, scoreIntervalTo, current));
   }
 
   /**
