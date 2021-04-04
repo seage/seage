@@ -26,8 +26,6 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   protected ProblemInfo problemInfo;
   protected ExperimentReporter experimentReporter;
   protected IExperimentTasksRunner experimentTasksRunner;
-
-  private static final int NUM_RUNS = 3;
   
   protected UUID experimentID;
   protected String experimentName;
@@ -131,14 +129,14 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     // The taskQueue size must be limited since the results are stored in the task's reports
     // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
     List<ExperimentTask> taskQueue = new ArrayList<>();
-    
+
     // Prepare experiment task configs
     ProblemConfig[] configs = configurator.prepareConfigs(problemInfo,
         instanceInfo.getInstanceID(), algorithmID, numConfigs);
 
     // Enqueue experiment tasks
     for (ProblemConfig config : configs) {
-      for (int runID = 1; runID <= NUM_RUNS; runID++) {
+      for (int runID = 1; runID <= numConfigs; runID++) {
         taskQueue.add(new ExperimentTask(
             UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
             algorithmID, config.getAlgorithmParams(), timeoutS));
@@ -200,7 +198,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   
 
   protected long getNumberOfConfigs(int instancesCount, int algorithmsCount) {
-    return (long)this.numConfigs * NUM_RUNS * instancesCount * algorithmsCount;
+    return (long)this.numConfigs * (long)this.numConfigs * instancesCount * algorithmsCount;
   }
 
 
