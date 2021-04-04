@@ -52,6 +52,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
     this.experimentReporter = new ExperimentReporter();
+    this.configurator = new DefaultConfigurator(0.15);
   }
 
   /**
