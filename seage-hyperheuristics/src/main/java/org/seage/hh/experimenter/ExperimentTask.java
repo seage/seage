@@ -29,8 +29,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Richard Malek
  */
-public class ExperimentTask implements Runnable, Serializable {
-  private static final long serialVersionUID = -1342525824503090535L;
+public class ExperimentTask {
 
   protected static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
 
@@ -52,13 +51,29 @@ public class ExperimentTask implements Runnable, Serializable {
 
   protected DataNode experimentTaskReport;
 
-  ExperimentTask() {
+  /**
+   * ExperimentTask for running algorithm.
+   * @param taskInfo .
+   * @throws Exception .
+   */
+  public ExperimentTask(ExperimentTaskInfo taskInfo) throws Exception {
+    this(
+        taskInfo.getExperimentTaskID(),
+        taskInfo.getExperimentID(),
+        taskInfo.getJobID(),
+        taskInfo.getStageID(),
+        taskInfo.getProblemID(),
+        taskInfo.getInstanceID(),
+        taskInfo.getAlgorithmID(),
+        taskInfo.getAlgorithmParams(),
+        taskInfo.getTimeoutS()
+    );
   }
 
   /**
    * ExperimentTask for running algorithm.
    */
-  public ExperimentTask(UUID experimentTaskID, 
+  private ExperimentTask(UUID experimentTaskID, 
       UUID experimentID, int jobID, int stageID, String problemID,
       String instanceID, String algorithmID, AlgorithmParams algorithmParams, long timeoutS)
       throws Exception {
@@ -110,12 +125,7 @@ public class ExperimentTask implements Runnable, Serializable {
     solutionsNode.putDataNode(new DataNode("Input"));
     solutionsNode.putDataNode(new DataNode("Output"));
     this.experimentTaskReport.putDataNode(solutionsNode);
-
   }
-
-  // public String getReportName() throws Exception {
-  // return this.configID + "-" + this.runID + ".xml";
-  // }
 
   public String getConfigID() {
     return this.configID;
@@ -125,7 +135,7 @@ public class ExperimentTask implements Runnable, Serializable {
     return this.experimentTaskReport;
   }
 
-  @Override
+  /**. */
   public void run() {
     _logger.debug("ExperimentTask started ({})", this.configID);
     this.startDate = new Date();
@@ -188,8 +198,9 @@ public class ExperimentTask implements Runnable, Serializable {
 
   private void waitForTimeout(IAlgorithmAdapter<?, ?> alg) throws Exception {
     long time = System.currentTimeMillis();
-    while (alg.isRunning() && ((System.currentTimeMillis() - time) < this.timeoutS * 1000))
+    while (alg.isRunning() && ((System.currentTimeMillis() - time) < this.timeoutS * 1000)) {
       Thread.sleep(100);
+    }
   }
 
   private void writeSolutions(IPhenotypeEvaluator<Phenotype<?>> evaluator, DataNode dataNode,
@@ -197,7 +208,7 @@ public class ExperimentTask implements Runnable, Serializable {
     for (Phenotype<?> p : solutions) {
       try {
         DataNode solutionNode = new DataNode("Solution");
-        double objValue = evaluator.evaluate(p)[0];        
+        double objValue = evaluator.evaluate(p)[0];
         solutionNode.putValue("objVal", objValue);
         solutionNode.putValue("solution", p.toText());
         solutionNode.putValue("hash", p.computeHash());

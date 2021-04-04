@@ -7,6 +7,8 @@ import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTask;
+import org.seage.hh.experimenter.ExperimentTaskInfo;
+import org.seage.hh.experimenter.ExperimentTaskReport;
 import org.seage.hh.experimenter.Experimenter;
 import org.seage.hh.experimenter.configurator.Configurator;
 
@@ -66,7 +68,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
         if ((j + 1) * batchSize > this.numConfigs) {
           batchSize = this.numConfigs % batchSize;
         }
-        List<ExperimentTask> taskQueue = new ArrayList<>();
+        List<ExperimentTaskInfo> taskQueue = new ArrayList<>();
         // Prepare experiment task configs
         ProblemConfig[] configs = configurator.prepareConfigs(this.problemInfo,
             instanceInfo.getInstanceID(), algorithmID, batchSize);
@@ -74,7 +76,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
         // Enqueue experiment tasks
         for (ProblemConfig config : configs) {
           for (int runID = 1; runID <= NUM_RUNS; runID++) {
-            taskQueue.add(new ExperimentTask(UUID.randomUUID(), this.experimentID, runID, 1, this.problemID, instanceID,
+            taskQueue.add(new ExperimentTaskInfo(UUID.randomUUID(), this.experimentID, runID, 1, this.problemID, instanceID,
                 algorithmID, config.getAlgorithmParams(), this.timeoutS));
           }
         }
