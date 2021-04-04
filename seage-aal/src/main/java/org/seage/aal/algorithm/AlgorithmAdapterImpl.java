@@ -42,7 +42,7 @@ public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S> implements
   @Override
   public void startSearching(final AlgorithmParams params, boolean async) throws Exception {
     if (_algorithmStarted && !_algorithmStopped)
-      throw new Exception("Algorithm already started, running.");
+      throw new RuntimeException("Algorithm already started, running.");
 
     _algorithmStarted = false;
 
@@ -65,7 +65,7 @@ public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S> implements
           ;// System.out.print("+");
         else {
           stopSearching();
-          throw new Exception("Unable to start the algorithm asynchronously.");
+          throw new RuntimeException("Unable to start the algorithm asynchronously.");
         }
       }
     } else

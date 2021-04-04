@@ -87,7 +87,7 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
   @Override
   public void startSearching(final AlgorithmParams params) throws Exception {
     if (params == null) {
-      throw new Exception("Parameters not set");
+      throw new IllegalArgumentException("Parameters not set");
     }
     setParameters(params);
 
@@ -98,7 +98,7 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
 
     this.solutions = _geneticSearch.getSubjects();
     if (this.solutions == null) {
-      throw new Exception("Solutions null");
+      throw new RuntimeException("Solutions null");
     }
   }
 

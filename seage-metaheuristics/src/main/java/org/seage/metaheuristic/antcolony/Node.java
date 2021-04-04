@@ -77,10 +77,10 @@ public class Node {
     Node node2 = edge.getNode2();
 
     if (node.equals(node2)) {
-      throw new Exception("Edge with both nodes the same.");
+      throw new IllegalArgumentException("Edge with both nodes the same.");
     }
     if (!(node.equals(this) || node2.equals(this))) {
-      throw new Exception("The adding edge is not related to the current node.");
+      throw new IllegalArgumentException("The adding edge is not related to the current node.");
     }
 
     if (node.equals(this)) {

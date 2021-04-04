@@ -63,13 +63,13 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
     an = problemClass.getAnnotation(Annotations.ProblemId.class);
     if (an == null) {
-      throw new Exception("Unable to get annotation ProblemId");
+      throw new NullPointerException("Unable to get annotation ProblemId");
     }
     String problemId = ((Annotations.ProblemId) an).value();
 
     an = problemClass.getAnnotation(Annotations.ProblemName.class);
     if (an == null) {
-      throw new Exception("Unable to get annotation ProblemName");
+      throw new NullPointerException("Unable to get annotation ProblemName");
     }
     String problemName = ((Annotations.ProblemName) an).value();
 
@@ -124,7 +124,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
         an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmName.class);
         if (an2 == null) {
-          throw new Exception("Unable to get annotation AlgorithmName");
+          throw new NullPointerException("Unable to get annotation AlgorithmName");
         }
         String algName = ((Annotations.AlgorithmName) an2).value();
 
@@ -136,7 +136,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
         an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmId.class);        
         if (an2 == null) {
-          throw new Exception(
+          throw new NullPointerException(
               String.format("Unable to get annotation AlgorithmId: %s", algFactoryClass));
         }      
         String algId = ((Annotations.AlgorithmId) an2).value();  
@@ -147,7 +147,8 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
         algorithm.putValue("name", algName);
         algorithm.putValue("factoryClass", ci.getClassName());
 
-        IAlgorithmFactory<P, ?> factory = (IAlgorithmFactory<P, ?>)algFactoryClass.getConstructor().newInstance();
+        IAlgorithmFactory<P, ?> factory = 
+            (IAlgorithmFactory<P, ?>)algFactoryClass.getConstructor().newInstance();
         algFactories.put(algId, factory);
 
         // Algorithm parameters
@@ -155,7 +156,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
         Class<?> algAdapterClass = factory.getAlgorithmClass();
         an2 = algAdapterClass.getAnnotation(Annotations.AlgorithmParameters.class);
         if (an2 == null) {
-          throw new Exception("Unable to get annotation AlgorithmParameters");
+          throw new NullPointerException("Unable to get annotation AlgorithmParameters");
         }
         Annotations.Parameter[] params = ((Annotations.AlgorithmParameters) an2).value();
 
@@ -181,10 +182,11 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
   @Override
   public IAlgorithmFactory<P, ?> getAlgorithmFactory(String algId) throws Exception {
     if (algFactories == null) {
-      throw new Exception("ProblemProvider not initialized, call getProblemInfo() first");
+      throw new NullPointerException(
+          "ProblemProvider not initialized, call getProblemInfo() first");
     }
     if (!algFactories.containsKey(algId)) {
-      throw new Exception("Unknown algorithm id: " + algId);
+      throw new NullPointerException("Unknown algorithm id: " + algId);
     }
     return algFactories.get(algId);
   }

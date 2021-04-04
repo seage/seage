@@ -44,7 +44,7 @@ public class DbManager {
 
     String dbUrl = Optional.ofNullable(System.getenv("DB_URL")).orElse("");
     if (!dbUrl.isEmpty() && !dbUrl.startsWith("jdbc:")) {
-      throw new Exception(String.format("Incorrect DB_URL value: %s", dbUrl));
+      throw new IllegalArgumentException(String.format("Incorrect DB_URL value: %s", dbUrl));
     }
     String environment =
         testMode ? "test" : dbUrl.startsWith("jdbc:postgresql") ? "postgres" : "local";
@@ -95,7 +95,7 @@ public class DbManager {
    */
   public static SqlSessionFactory getSqlSessionFactory() throws Exception {
     if (sqlSessionFactory == null) {
-      throw new Exception("DbManager not initialized");
+      throw new IllegalStateException("DbManager not initialized");
     }
     return sqlSessionFactory;
   }

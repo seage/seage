@@ -82,7 +82,7 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 
   @Override
   protected double[] evaluate(SingleAlgorithmExperimentTaskSubject solution) throws Exception {
-    throw new Exception("Should be unimplemented");
+    throw new UnsupportedOperationException("Should be unimplemented");
   }
 
 }

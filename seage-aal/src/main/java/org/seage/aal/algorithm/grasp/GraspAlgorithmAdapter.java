@@ -14,8 +14,9 @@ public abstract class GraspAlgorithmAdapter extends AlgorithmAdapterImpl {
 
   @Override
   public void startSearching(AlgorithmParams params) throws Exception {
-    if (params == null)
-      throw new Exception("Parameters not set");
+    if (params == null) {
+      throw new IllegalArgumentException("Parameters not set");
+    }
     setParameters(params);
 
   }

@@ -96,8 +96,9 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
 
   @Override
   public void startSearching(AlgorithmParams params) throws Exception {
-    if (params == null)
-      throw new Exception("Parameters not set");
+    if (params == null) {
+      throw new IllegalArgumentException("Parameters not set");
+    }
     setParameters(params);
 
     _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
