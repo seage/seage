@@ -1,11 +1,16 @@
 package org.seage.hh.experimenter2;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
-
+import org.seage.aal.Annotations.ProblemId;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.data.DataNode;
+import org.seage.hh.experimenter.Experiment;
+import org.seage.hh.experimenter.ExperimentReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +18,7 @@ public class AlgorithmExperimenterRunner {
   protected static Logger logger =
       LoggerFactory.getLogger(AlgorithmExperimenterRunner.class.getName());
 
+  protected String experimentName = "Algorithm";
   private UUID experimentID;
   private String algorithmID;
   private HashMap<String, List<String>> problemInstanceIDs;
@@ -47,17 +53,30 @@ public class AlgorithmExperimenterRunner {
       String problemID = entry.getKey();
       logger.info("  Problem '{}'", problemID);
 
+      // Create experiment reporter
+      ExperimentReporter experimentReporter = new ExperimentReporter();
+      experimentReporter.createExperimentReport(
+          this.experimentID,
+          this.experimentName,
+          problemID,
+          this.problemInstanceIDs.get(problemID).toArray(new String[]{}),
+          new String[] {this.algorithmID},
+          getExperimentConfig(),
+          Date.from(Instant.now())
+      );
+
       for (String instanceID : entry.getValue()) {
         logger.info("    Instance '{}'", instanceID);
 
-        createAlgorithmExperimenter(problemID, instanceID).runExperiment();
+        createAlgorithmExperimenter(problemID, instanceID, experimentReporter).runExperiment();
       }
     }
   }
 
 
   private AlgorithmExperimenter createAlgorithmExperimenter(
-      String problemID, String instanceID) throws Exception {
+      String problemID, String instanceID, ExperimentReporter experimentReporter)
+       throws Exception {
     boolean ordinaryAlg = ProblemProvider
         .getProblemProviders()
         .get(problemID)
@@ -67,7 +86,7 @@ public class AlgorithmExperimenterRunner {
     
     if (ordinaryAlg) {
       return new MetaHeuristicExperimenter(
-        experimentID, problemID, instanceID, algorithmID, numConfigs, timeoutS);
+        experimentID, problemID, instanceID, algorithmID, numConfigs, timeoutS, experimentReporter);
     }
 
     if (algorithmID.equals("HyperHeuristic1")) {
@@ -75,5 +94,13 @@ public class AlgorithmExperimenterRunner {
     }
 
     throw new Exception(String.format("Unknown algorithm id '%s'", algorithmID));
+  }
+
+  protected String getExperimentConfig() {
+    DataNode config = new DataNode("Config");
+    config.putValue("timeoutS", this.timeoutS);
+    config.putValue("numConfigs", this.numConfigs);
+    
+    return config.toString();
   }
 }
