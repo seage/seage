@@ -27,11 +27,11 @@
         "-a",
         "GeneticAlgorithm",
         "-i",
-        "mona-lisa100K",
+        "berlin52",
         "-t",
         "1",
         "-n",
-        "100"
+        "1"
       ]
     },
     {
