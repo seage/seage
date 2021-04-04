@@ -16,7 +16,7 @@ public class TspMoveBasedEvaluator {
       if (move == null) {
         double dist = 0;
         for (int i = 0; i < len; i++) {
-          dist += getCityDistance(tour[i], i + 1 >= len ? tour[0] : tour[i + 1]);
+          dist += getCityDistance(tour[i] - 1, i + 1 >= len ? tour[0] - 1 : tour[i + 1] - 1);
         }
 
         return new double[] { dist };
@@ -45,34 +45,34 @@ public class TspMoveBasedEvaluator {
         if (delta == 1) {
           // | |
           // A-B-C-D-E: swap C and D, say (works for symmetric matrix only)
-          dist -= getCityDistance(tour[pos1L], tour[pos1]); // -BC
-          dist -= getCityDistance(tour[pos2], tour[pos2R]); // -DE
-          dist += getCityDistance(tour[pos1L], tour[pos2]); // +BD
-          dist += getCityDistance(tour[pos1], tour[pos2R]); // +CE
+          dist -= getCityDistance(tour[pos1L] - 1, tour[pos1] - 1); // -BC
+          dist -= getCityDistance(tour[pos2] - 1, tour[pos2R] - 1); // -DE
+          dist += getCityDistance(tour[pos1L] - 1, tour[pos2] - 1); // +BD
+          dist += getCityDistance(tour[pos1] - 1, tour[pos2R] - 1); // +CE
           return new double[] { originalLength + dist };
         } // end if: pair swap
         else if (delta == (len - 1)) {
           // | |
           // A-B-C-D-E: swap A and E, say (works for symmetric matrix only)
-          dist -= getCityDistance(tour[pos1], tour[pos1R]); // -AB
-          dist -= getCityDistance(tour[pos2L], tour[pos2]); // -DE
-          dist += getCityDistance(tour[pos1R], tour[pos2]); // +EB
-          dist += getCityDistance(tour[pos1], tour[pos2L]); // +DA
+          dist -= getCityDistance(tour[pos1] - 1, tour[pos1R] - 1); // -AB
+          dist -= getCityDistance(tour[pos2L] - 1, tour[pos2] - 1); // -DE
+          dist += getCityDistance(tour[pos1R] - 1, tour[pos2] - 1); // +EB
+          dist += getCityDistance(tour[pos1] - 1, tour[pos2L] - 1); // +DA
           return new double[] { originalLength + dist };
         }
         // Else the swap is separated by at least one customer
         else {
           // | |
           // A-B-C-D-E-F: swap B and E, say
-          dist -= getCityDistance(tour[pos1L], tour[pos1]); // -AB
-          dist -= getCityDistance(tour[pos1], tour[pos1R]); // -BC
-          dist -= getCityDistance(tour[pos2L], tour[pos2]); // -DE
-          dist -= getCityDistance(tour[pos2], tour[pos2R]); // -EF
+          dist -= getCityDistance(tour[pos1L] - 1, tour[pos1] - 1); // -AB
+          dist -= getCityDistance(tour[pos1] - 1, tour[pos1R] - 1); // -BC
+          dist -= getCityDistance(tour[pos2L] - 1, tour[pos2] - 1); // -DE
+          dist -= getCityDistance(tour[pos2] - 1, tour[pos2R] - 1); // -EF
 
-          dist += getCityDistance(tour[pos1L], tour[pos2]); // +AE
-          dist += getCityDistance(tour[pos2], tour[pos1R]); // +EC
-          dist += getCityDistance(tour[pos2L], tour[pos1]); // +DB
-          dist += getCityDistance(tour[pos1], tour[pos2R]); // +BF
+          dist += getCityDistance(tour[pos1L] - 1, tour[pos2] - 1); // +AE
+          dist += getCityDistance(tour[pos2] - 1, tour[pos1R] - 1); // +EC
+          dist += getCityDistance(tour[pos2L] - 1, tour[pos1] - 1); // +DB
+          dist += getCityDistance(tour[pos1] - 1, tour[pos2R] - 1); // +BF
           return new double[] { originalLength + dist };
         } // end else: not a pair swap
       } // end else: calculate incremental

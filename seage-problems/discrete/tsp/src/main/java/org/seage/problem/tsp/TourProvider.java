@@ -78,7 +78,7 @@ public class TourProvider {
     int[] avail = new int[cities.length];
 
     for (int i = 0; i < avail.length; i++) {
-      tour[i] = 0;
+      tour[i] = 1;
       avail[i] = i;
     }
     tour[0] = (r.nextInt(cities.length)) + 1;
@@ -87,14 +87,12 @@ public class TourProvider {
       if (i%10000 == 0) System.out.println(i);
       int closest = -1;
       double dist = Double.MAX_VALUE;
-      for (int j = 0; j < avail.length; j++) {
-        double dist2 = norm(cities, tour[i - 1], j);
-        if ((dist2 < dist) && (avail[j] >= 0)) {
-          dist = dist2;
+      for (int j = 0; j < avail.length; j++)
+        if ((norm(cities, tour[i - 1] - 1, j) < dist) && (avail[j] >= 0)) {
+          dist = norm(cities, tour[i - 1] - 1, j);
           closest = j;
         } // end if: new nearest neighbor
-      }
-      tour[i] = closest;
+      tour[i] = closest + 1;
       avail[closest] = -1;
     } // end for
 
@@ -105,7 +103,7 @@ public class TourProvider {
     Random random = new Random();
     List<Integer> listTour = new ArrayList<Integer>();
     for (int i = 0; i < length; i++) {
-      listTour.add(i);
+      listTour.add(i + 1);
     }
     
     for (int i = 0; i < length; i++) {
@@ -126,9 +124,8 @@ public class TourProvider {
    */
   public static Integer[] createSortedTour(int length) {
     Integer[] tour = new Integer[length];
-    for (int i = 0; i < tour.length; i++) {
-      tour[i] = i;
-    }
+    for (int i = 0; i < tour.length; i++)
+      tour[i] = i + 1;
 
     return tour;
   }
@@ -141,7 +138,7 @@ public class TourProvider {
 
   public static double getTourLenght(Integer[] tour, City[] cities) throws Exception {
     double lenght = 0, dx, dy;
-    for (int i = 0; i < tour.length - 2; i++) {
+    for (int i = 0; i < tour.length - 1; i++) {
       dx = cities[tour[i]].X - cities[tour[i + 1]].X;
       dy = cities[tour[i]].Y - cities[tour[i + 1]].Y;
       lenght += Math.sqrt(dx * dx + dy * dy);

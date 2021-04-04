@@ -55,8 +55,8 @@ public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<TspPhenotype> 
         k = 0;
       }
 
-      int ix1 = phenotype.getSolution()[i];
-      int ix2 = phenotype.getSolution()[k];
+      int ix1 = phenotype.getSolution()[i] - 1;
+      int ix2 = phenotype.getSolution()[k] - 1;
       double x1 = _cities[ix1].X;
       double y1 = _cities[ix1].Y;
       double x2 = _cities[ix2].X;
