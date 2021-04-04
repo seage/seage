@@ -42,7 +42,7 @@ public class AlgorithmExperimenterRunner {
   /**
    * .
    * 
-   * @throws Exception
+   * @throws Exception .
    */
   public void runExperiment() throws Exception {
     logger.info("Algorithm '{}'", algorithmID);
@@ -59,7 +59,8 @@ public class AlgorithmExperimenterRunner {
     }
   }
 
-  private AlgorithmExperimenter createAlgorithmExperimenter(String problemID, String instanceID) throws Exception {
+  private AlgorithmExperimenter createAlgorithmExperimenter(
+      String problemID, String instanceID) throws Exception {
     boolean ordinaryAlg = ProblemProvider
         .getProblemProviders()
         .get(problemID)
@@ -68,7 +69,8 @@ public class AlgorithmExperimenterRunner {
         .getDataNodeById(algorithmID) != null;
     
     if (ordinaryAlg) {
-      return new MetaHeuristicExperimenter();
+      return new MetaHeuristicExperimenter(
+        experimentID, problemID, instanceID, numConfigs, timeoutS);
     }
     if (algorithmID.equals("HyperHeuristic1")) {
       return new HyperHeuristic1Experimenter();
