@@ -122,42 +122,38 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
 
   protected void runExperimentTasksForProblemInstance(
       ProblemInstanceInfo instanceInfo) throws Exception {
-    
+    // Inform about the beginning
     logger.info(String.format("%-44s", "   Running... "));
 
+    // Initialize the best value 
     double bestObjVal = Double.MAX_VALUE;
+
     // The taskQueue size must be limited since the results are stored in the task's reports
     // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
-    int batchSize = Math.min(numConfigs, Runtime.getRuntime().availableProcessors());
-    int batchCount = (int)Math.ceil((double)numConfigs / batchSize);
-    for (int j = 0; j < batchCount; j++) {
-      if ((j + 1) * batchSize > numConfigs) {
-        batchSize = numConfigs % batchSize;
+    List<ExperimentTask> taskQueue = new ArrayList<>();
+    
+    // Prepare experiment task configs
+    ProblemConfig[] configs = configurator.prepareConfigs(problemInfo,
+        instanceInfo.getInstanceID(), algorithmID, numConfigs);
+
+    // Enqueue experiment tasks
+    for (ProblemConfig config : configs) {
+      for (int runID = 1; runID <= NUM_RUNS; runID++) {
+        taskQueue.add(new ExperimentTask(
+            UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
+            algorithmID, config.getAlgorithmParams(), timeoutS));
       }
-      List<ExperimentTask> taskQueue = new ArrayList<>();
-      // Prepare experiment task configs
-      ProblemConfig[] configs = configurator.prepareConfigs(problemInfo,
-          instanceInfo.getInstanceID(), algorithmID, batchSize);
+    }
 
-      // Enqueue experiment tasks
-      for (ProblemConfig config : configs) {
-        for (int runID = 1; runID <= NUM_RUNS; runID++) {
-          taskQueue.add(new ExperimentTask(
-              UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
-              algorithmID, config.getAlgorithmParams(), timeoutS));
-        }
-      }
+    // RUN EXPERIMENT TASKS
+    List<DataNode> stats =
+        experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 
-      // RUN EXPERIMENT TASKS
-      List<DataNode> stats =
-          experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
-
-      // Update score        
-      for (DataNode s : stats) {
-        double objVal = s.getValueDouble("bestObjVal");
-        if (objVal < bestObjVal) {
-          bestObjVal = objVal;
-        }
+    // Update score        
+    for (DataNode s : stats) {
+      double objVal = s.getValueDouble("bestObjVal");
+      if (objVal < bestObjVal) {
+        bestObjVal = objVal;
       }
     }
     // This is weird - if multiple instances run during the expriment the last best value is written
