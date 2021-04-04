@@ -19,7 +19,6 @@ public class AlgorithmExperimenterRunner {
       LoggerFactory.getLogger(AlgorithmExperimenterRunner.class.getName());
   protected ExperimentReporter experimentReporter;
 
-  protected String experimentName = "Algorithm";
   private UUID experimentID;
   private String algorithmID;
   private HashMap<String, List<String>> problemInstanceIDs;
@@ -53,7 +52,7 @@ public class AlgorithmExperimenterRunner {
     // Create experiment reporter
     this.experimentReporter.createExperimentReport(
         this.experimentID,
-        this.experimentName,
+        this.algorithmID,
         this.problemInstanceIDs.keySet().toArray(new String[0]),
         getProblemInstancesArray(),
         new String[] {this.algorithmID},
@@ -63,7 +62,7 @@ public class AlgorithmExperimenterRunner {
 
     
     logger.info("-------------------------------------");
-    logger.info("Experimenter: {}", this.experimentName);
+    logger.info("Experimenter: {}", this.algorithmID);
     logger.info("ExperimentID: {}", experimentID);
     logger.info("-------------------------------------");
     
