@@ -45,8 +45,16 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     this.timeoutS = timeoutS;
   }
 
+  /**
+   * .
+   */
   public void runExperiment() {
     logger.info("Running MetaheuristicExperimenter");
+    try {
+      experimentMain();
+    } catch (Exception ex) {
+      logger.warn(ex.getMessage(), ex);
+    }
   }
 
   protected void experimentMain() throws Exception {
