@@ -1,6 +1,7 @@
 package org.seage.hh.experimenter2;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +50,7 @@ public class AlgorithmExperimenterRunner {
         this.experimentID,
         this.experimentName,
         this.problemInstanceIDs.keySet().toString(),
-        this.problemInstanceIDs.values()
-          .stream().flatMap(List::stream).collect(Collectors.toList()).toArray(new String[0]),
+        getProblemInstancesArray(),
         new String[] {this.algorithmID},
         getExperimentConfig(),
         Date.from(Instant.now())
@@ -106,5 +106,17 @@ public class AlgorithmExperimenterRunner {
     config.putValue("numRuns", this.numRuns);
     
     return config.toString();
+  }
+
+  protected String[] getProblemInstancesArray() {
+    List<String> results = new ArrayList<>();
+    for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
+      String problemID = entry.getKey();
+      
+      for (String instanceID : entry.getValue()) {
+        results.add(String.format("%s:%s", problemID, instanceID));
+      }
+    }
+    return results.toArray(new String[0]);
   }
 }
