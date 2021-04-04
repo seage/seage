@@ -8,13 +8,14 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class ApproachExperimenterTest {
+  
   @Test
-  void testApproachExperimenterInit() {
+  void testApproachExperimenterInit() throws Exception {
     HashMap<String, List<String>> instances = new HashMap<>();
     instances.put("TSP", Arrays.asList(new String[] { "eil51", "berlin52" }));
     instances.put("SAT", Arrays.asList(new String[] { "u100", "u1000" }));
     
-    ApproachExperimenter ae = new ApproachExperimenter("approachName", instances);
+    AlgorithmExperimenterRunner ae = new AlgorithmExperimenterRunner("approachName", instances, 1, 1);
     assertNotNull(ae);
   }
 }
