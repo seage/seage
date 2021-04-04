@@ -51,11 +51,12 @@ public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<TspPhenotype> 
 
     for (int i = 0; i < numCities; i++) {
       int k = i + 1;
-      if (i == numCities - 1)
+      if (i == numCities - 1) {
         k = 0;
+      }
 
-      int ix1 = phenotype.getSolution()[i] - 1;
-      int ix2 = phenotype.getSolution()[k] - 1;
+      int ix1 = phenotype.getSolution()[i];
+      int ix2 = phenotype.getSolution()[k];
       double x1 = _cities[ix1].X;
       double y1 = _cities[ix1].Y;
       double x2 = _cities[ix2].X;
@@ -67,18 +68,22 @@ public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<TspPhenotype> 
 
   @Override
   public int compare(double[] o1, double[] o2) {
-    if (o1 == null)
+    if (o1 == null) {
       return -1;
-    if (o2 == null)
+    }
+    if (o2 == null) {
       return 1;
+    }
 
     int length = o1.length <= o2.length ? o1.length : o2.length;
 
     for (int i = 0; i < length; i++) {
-      if (o1[i] < o2[i])
+      if (o1[i] < o2[i]) {
         return 1;
-      if (o1[i] > o2[i])
+      }
+      if (o1[i] > o2[i]) {
         return -1;
+      }
     }
     return 0;
   }

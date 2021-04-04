@@ -110,8 +110,9 @@ public class Visualizer {
 
     try {
       File f = new File(path);
-      if (path.contains("/"))
+      if (path.contains("/")) {
         new File(f.getParent()).mkdirs();
+      }
       BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(f));
 
       ImageIO.write(image, "png", out);

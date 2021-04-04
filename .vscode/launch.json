@@ -125,7 +125,9 @@
       "name": "Debug (Launch)-TourProvider<seage-problem-tsp>",
       "request": "launch",
       "mainClass": "org.seage.problem.tsp.TourProvider",
-      "projectName": "seage-problem-tsp"
+      "projectName": "seage-problem-tsp",
+      "args": ["seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/mona-lisa100K.tsp"]
+      // "args": ["seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/berlin52.tsp"]
     },
     {
       "type": "java",

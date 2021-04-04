@@ -76,7 +76,7 @@ public abstract class Experimenter {
   }
 
   public void runFromConfigFile(String configPath) throws Exception {
-    throw new Exception("Not implemented");
+    throw new UnsupportedOperationException("Not implemented");
   }
 
   /**

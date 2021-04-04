@@ -37,35 +37,33 @@ import java.util.Random;
 public class TourProvider {
   public static void main(String[] args) {
     try {
-      if (args.length == 0)
+      if (args.length == 0) {
         throw new Exception("Usage: java org.seage.problem.tsp.TourProvider {data-tsp-path}");
-
-      long t0 = System.currentTimeMillis();
+      }
 
       System.out.println("Instance: " + args[0]);
-
+      
+      long t0 = System.currentTimeMillis();
       City[] cities = CityProvider.readCities(new FileInputStream(args[0]));
-
       System.out.println("Cities: " + cities.length);
-      System.out.println();
-
       System.out.println("Read: " + (System.currentTimeMillis() - t0) + " ms");
-      t0 = System.currentTimeMillis();
 
+      t0 = System.currentTimeMillis();
       Integer[] tour = createGreedyTour(cities, 1);
+      // Integer[] tour = createRandomTour(cities.length);
+      // Integer[] tour = createSortedTour(cities.length);
       System.out.println("Creation: " + (System.currentTimeMillis() - t0) / 1000 + " s");
-      t0 = System.currentTimeMillis();
 
+      t0 = System.currentTimeMillis();
       double tourLenght = getTourLenght(tour, cities);
       System.out.println("Evaluation: " + (System.currentTimeMillis() - t0) + " ms");
-      t0 = System.currentTimeMillis();
+      System.out.println("Tour lenght: " + tourLenght);
 
+      t0 = System.currentTimeMillis();
       Visualizer.instance().createGraph(cities, tour, "tour.png", 1000, 1000);
       System.out.println("Visualization: " + (System.currentTimeMillis() - t0) + " ms");
-
-      System.out.println();
-      System.out.println("Tour lenght: " + tourLenght);
-      System.out.println("Time: " + (System.currentTimeMillis() - t0) / 1000 + " s");
+      
+      // System.out.println("Time: " + (System.currentTimeMillis() - t0) / 1000 + " s");
 
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -80,20 +78,23 @@ public class TourProvider {
     int[] avail = new int[cities.length];
 
     for (int i = 0; i < avail.length; i++) {
-      tour[i] = 1;
+      tour[i] = 0;
       avail[i] = i;
     }
     tour[0] = (r.nextInt(cities.length)) + 1;
     avail[tour[0] - 1] = -1;
     for (int i = 1; i < tour.length; i++) {
+      if (i%10000 == 0) System.out.println(i);
       int closest = -1;
       double dist = Double.MAX_VALUE;
-      for (int j = 0; j < avail.length; j++)
-        if ((norm(cities, tour[i - 1] - 1, j) < dist) && (avail[j] >= 0)) {
-          dist = norm(cities, tour[i - 1] - 1, j);
+      for (int j = 0; j < avail.length; j++) {
+        double dist2 = norm(cities, tour[i - 1], j);
+        if ((dist2 < dist) && (avail[j] >= 0)) {
+          dist = dist2;
           closest = j;
         } // end if: new nearest neighbor
-      tour[i] = closest + 1;
+      }
+      tour[i] = closest;
       avail[closest] = -1;
     } // end for
 
@@ -104,7 +105,7 @@ public class TourProvider {
     Random random = new Random();
     List<Integer> listTour = new ArrayList<Integer>();
     for (int i = 0; i < length; i++) {
-      listTour.add(i + 1);
+      listTour.add(i);
     }
     
     for (int i = 0; i < length; i++) {
@@ -118,10 +119,16 @@ public class TourProvider {
     return listTour.toArray(new Integer[0]);
   }
 
+  /**
+   * Tour created by ascending citie indexes.
+   * @param length .
+   * @return
+   */
   public static Integer[] createSortedTour(int length) {
     Integer[] tour = new Integer[length];
-    for (int i = 0; i < tour.length; i++)
-      tour[i] = i + 1;
+    for (int i = 0; i < tour.length; i++) {
+      tour[i] = i;
+    }
 
     return tour;
   }
@@ -129,12 +136,12 @@ public class TourProvider {
   private static double norm(City[] matr, int a, int b) {
     double xDiff = matr[b].X - matr[a].X;
     double yDiff = matr[b].Y - matr[a].Y;
-    return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+    return xDiff * xDiff + yDiff * yDiff;
   } // end norm
 
   public static double getTourLenght(Integer[] tour, City[] cities) throws Exception {
     double lenght = 0, dx, dy;
-    for (int i = 0; i < tour.length - 1; i++) {
+    for (int i = 0; i < tour.length - 2; i++) {
       dx = cities[tour[i]].X - cities[tour[i + 1]].X;
       dy = cities[tour[i]].Y - cities[tour[i + 1]].Y;
       lenght += Math.sqrt(dx * dx + dy * dy);
