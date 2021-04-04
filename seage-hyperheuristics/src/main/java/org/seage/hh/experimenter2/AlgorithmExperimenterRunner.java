@@ -54,7 +54,7 @@ public class AlgorithmExperimenterRunner {
     this.experimentReporter.createExperimentReport(
         this.experimentID,
         this.experimentName,
-        this.problemInstanceIDs.keySet().toString(),
+        this.problemInstanceIDs.keySet().toArray(new String[0]),
         getProblemInstancesArray(),
         new String[] {this.algorithmID},
         getExperimentConfig(),
