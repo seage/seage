@@ -43,7 +43,13 @@ public class AlgorithmExperimenterRunner {
     this.problemInstanceIDs = problemInstanceIDs;
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
+  }
 
+
+  /**
+   * Method runs experiment.
+   */
+  public void runExperiment() throws Exception {
     // Create experiment reporter
     experimentReporter = new ExperimentReporter();
     this.experimentReporter.createExperimentReport(
@@ -55,13 +61,7 @@ public class AlgorithmExperimenterRunner {
         getExperimentConfig(),
         Date.from(Instant.now())
     ); 
-  }
-
-
-  /**
-   * Method runs experiment.
-   */
-  public void runExperiment() throws Exception {
+    
     logger.info("Algorithm '{}'", algorithmID);
 
     for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
