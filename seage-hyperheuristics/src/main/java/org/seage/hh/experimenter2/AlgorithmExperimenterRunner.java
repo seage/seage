@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import org.seage.aal.problem.ProblemInfo;
-import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
-import org.seage.hh.experimenter.ExperimentTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,12 +19,12 @@ public class AlgorithmExperimenterRunner {
   private int numConfigs;
   private int timeoutS;
 
+
   /**
    * ApproachExperimenter.
    * 
-   * @param algorithmID        .
-   * @param problemInstanceIDs .
-   * @throws Exception .
+   * @param algorithmID Algorithm ID.
+   * @param problemInstanceIDs Map of problem instances.
    */
   public AlgorithmExperimenterRunner(String algorithmID,
       HashMap<String, List<String>> problemInstanceIDs, int numConfigs, int timeoutS)
@@ -39,10 +36,9 @@ public class AlgorithmExperimenterRunner {
     this.timeoutS = timeoutS;
   }
 
+
   /**
-   * .
-   * 
-   * @throws Exception .
+   * Method runs experiment.
    */
   public void runExperiment() throws Exception {
     logger.info("Algorithm '{}'", algorithmID);
@@ -59,6 +55,7 @@ public class AlgorithmExperimenterRunner {
     }
   }
 
+
   private AlgorithmExperimenter createAlgorithmExperimenter(
       String problemID, String instanceID) throws Exception {
     boolean ordinaryAlg = ProblemProvider
@@ -72,10 +69,10 @@ public class AlgorithmExperimenterRunner {
       return new MetaHeuristicExperimenter(
         experimentID, problemID, instanceID, algorithmID, numConfigs, timeoutS);
     }
+
     if (algorithmID.equals("HyperHeuristic1")) {
       return new HyperHeuristic1Experimenter();
     }
-
 
     throw new Exception(String.format("Unknown algorithm id '%s'", algorithmID));
   }
