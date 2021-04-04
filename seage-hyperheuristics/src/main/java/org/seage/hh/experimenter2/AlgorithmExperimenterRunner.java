@@ -55,6 +55,7 @@ public class AlgorithmExperimenterRunner {
 
       // Create experiment reporter
       ExperimentReporter experimentReporter = new ExperimentReporter();
+      this.experimentID = UUID.randomUUID();
       experimentReporter.createExperimentReport(
           this.experimentID,
           this.experimentName,
