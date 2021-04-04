@@ -30,7 +30,7 @@ import java.io.FileInputStream;
 import org.seage.metaheuristic.grasp.HillClimber;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
-import org.seage.problem.tsp.Visualizer;
+import org.seage.problem.tsp.TspVisualizer;
 
 /**
  *
@@ -83,7 +83,7 @@ public class TspHillClimberTest {
     TspSolution bestSol = (TspSolution) _hc.getBestSolution();
     _tour = bestSol.getTour();
 
-    Visualizer.instance().createGraph(_cities, _tour, "tsphcgraph.png", 600, 400);
+    TspVisualizer.createTourImage(_cities, _tour, "tsphcgraph.png", 600, 400);
     System.out.println("length: " + bestSol.getObjectiveValue());
   }
 }

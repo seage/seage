@@ -30,19 +30,19 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 
 /**
- *
+ * TspProblemInstance.
  * @author Richard Malek
  */
 public class TspProblemInstance extends ProblemInstance {
 
-  private City[] _cities;
+  private City[] cities;
 
   public TspProblemInstance(ProblemInstanceInfo instanceInfo, City[] cities) throws Exception {
     super(instanceInfo);
-    _cities = cities;
+    this.cities = cities;
   }
 
   public City[] getCities() {
-    return _cities;
+    return cities;
   }
 }

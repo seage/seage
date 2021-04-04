@@ -23,82 +23,57 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.problem.tsp;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * TourProvider with visualization.
  * @author Richard Malek
  */
 public class TourProvider {
-  public static void main(String[] args) {
-    try {
-      if (args.length == 0) {
-        throw new Exception("Usage: java org.seage.problem.tsp.TourProvider {data-tsp-path}");
-      }
+  protected static Logger logger = LoggerFactory.getLogger(TourProvider.class.getName());
 
-      System.out.println("Instance: " + args[0]);
-      
-      long t0 = System.currentTimeMillis();
-      City[] cities = CityProvider.readCities(new FileInputStream(args[0]));
-      System.out.println("Cities: " + cities.length);
-      System.out.println("Read: " + (System.currentTimeMillis() - t0) + " ms");
-
-      t0 = System.currentTimeMillis();
-      Integer[] tour = createGreedyTour(cities, 1);
-      // Integer[] tour = createRandomTour(cities.length);
-      // Integer[] tour = createSortedTour(cities.length);
-      System.out.println("Creation: " + (System.currentTimeMillis() - t0) / 1000 + " s");
-
-      t0 = System.currentTimeMillis();
-      double tourLenght = getTourLenght(tour, cities);
-      System.out.println("Evaluation: " + (System.currentTimeMillis() - t0) + " ms");
-      System.out.println("Tour lenght: " + tourLenght);
-
-      t0 = System.currentTimeMillis();
-      Visualizer.instance().createGraph(cities, tour, "tour.png", 1000, 1000);
-      System.out.println("Visualization: " + (System.currentTimeMillis() - t0) + " ms");
-      
-      // System.out.println("Time: " + (System.currentTimeMillis() - t0) / 1000 + " s");
-
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
-
+  /**. */
   public static Integer[] createGreedyTour(City[] cities, long randomSeed) throws Exception {
-    Random r = new Random(randomSeed);
+    Random rand = new Random(randomSeed);
     Integer[] tour = new Integer[cities.length];
 
     // Greedy neighbor initialize
-    int[] avail = new int[cities.length];
+    boolean[] avail = new boolean[cities.length];
 
     for (int i = 0; i < avail.length; i++) {
       tour[i] = 1;
-      avail[i] = i;
+      avail[i] = true;
     }
-    tour[0] = (r.nextInt(cities.length)) + 1;
-    avail[tour[0] - 1] = -1;
+    tour[0] = rand.nextInt(cities.length) + 1;
+    avail[tour[0] - 1] = false;
     for (int i = 1; i < tour.length; i++) {
-      if (i%10000 == 0) System.out.println(i);
-      int closest = -1;
-      double dist = Double.MAX_VALUE;
-      for (int j = 0; j < avail.length; j++)
-        if ((norm(cities, tour[i - 1] - 1, j) < dist) && (avail[j] >= 0)) {
-          dist = norm(cities, tour[i - 1] - 1, j);
-          closest = j;
-        } // end if: new nearest neighbor
-      tour[i] = closest + 1;
-      avail[closest] = -1;
-    } // end for
+      // if (i%10000 == 0) logger.info(i);
+      int minDistId = -1;
+      double minDist = Double.MAX_VALUE;
+      for (int j = 0; j < avail.length; j++) {
+        double dist = norm(cities, tour[i - 1] - 1, j);
+        if (dist < minDist && avail[j]) {
+          minDist = dist;
+          minDistId = j + 1;
+        }
+      }
+      tour[i] = minDistId;
+      avail[minDistId - 1] = false;
+    }
 
     return tour;
   }
 
+  /**. */
   public static Integer[] createRandomTour(int length) {
     Random random = new Random();
     List<Integer> listTour = new ArrayList<Integer>();
@@ -124,28 +99,69 @@ public class TourProvider {
    */
   public static Integer[] createSortedTour(int length) {
     Integer[] tour = new Integer[length];
-    for (int i = 0; i < tour.length; i++)
+    for (int i = 0; i < tour.length; i++) {
       tour[i] = i + 1;
+    }
 
     return tour;
   }
 
-  private static double norm(City[] matr, int a, int b) {
-    double xDiff = matr[b].X - matr[a].X;
-    double yDiff = matr[b].Y - matr[a].Y;
-    return xDiff * xDiff + yDiff * yDiff;
-  } // end norm
+  private static double norm(City[] cities, int a, int b) {
+    double deltaX = cities[b].X - cities[a].X;
+    double deltaY = cities[b].Y - cities[a].Y;
+    return deltaX * deltaX + deltaY * deltaY;
+  }
 
+  /**. */
   public static double getTourLenght(Integer[] tour, City[] cities) throws Exception {
-    double lenght = 0, dx, dy;
+    double lenght = 0;
+    double dx = 0;
+    double dy = 0;
     for (int i = 0; i < tour.length - 1; i++) {
-      dx = cities[tour[i]].X - cities[tour[i + 1]].X;
-      dy = cities[tour[i]].Y - cities[tour[i + 1]].Y;
+      dx = cities[tour[i] - 1].X - cities[tour[i + 1] - 1].X;
+      dy = cities[tour[i] - 1].Y - cities[tour[i + 1] - 1].Y;
       lenght += Math.sqrt(dx * dx + dy * dy);
     }
-    dx = cities[tour[0]].X - cities[tour[tour.length - 1]].X;
-    dy = cities[tour[0]].Y - cities[tour[tour.length - 1]].Y;
+    dx = cities[tour[0] - 1].X - cities[tour[tour.length - 1] - 1].X;
+    dy = cities[tour[0] - 1].Y - cities[tour[tour.length - 1] - 1].Y;
     lenght += Math.sqrt(dx * dx + dy * dy);
     return lenght;
+  }
+  
+  ///////////////////////////////////////////////////////////////////////////////////////
+  
+  /**. */
+  public static void main(String[] args) {
+    try {
+      if (args.length == 0) {
+        throw new Exception("Usage: java org.seage.problem.tsp.TourProvider {data-tsp-path}");
+      }
+      File path = new File(args[0]);
+      logger.info("Instance path: " + path.getPath());
+            
+      long t0 = System.currentTimeMillis();
+      City[] cities = CityProvider.readCities(new FileInputStream(args[0]));
+      logger.info("Cities: " + cities.length);
+      logger.info("Read: " + (System.currentTimeMillis() - t0) + " ms");
+
+      t0 = System.currentTimeMillis();
+      Integer[] tour = createGreedyTour(cities, System.currentTimeMillis());
+      // Integer[] tour = createRandomTour(cities.length);
+      // Integer[] tour = createSortedTour(cities.length);
+      logger.info("Creation: " + (System.currentTimeMillis() - t0) / 1000 + " s");
+
+      t0 = System.currentTimeMillis();
+      double tourLenght = getTourLenght(tour, cities);
+      logger.info("Evaluation: " + (System.currentTimeMillis() - t0) + " ms");
+      logger.info("Tour lenght: " + tourLenght);
+
+      t0 = System.currentTimeMillis();
+      String imgPath = "output/" + path.getName() + "_" + System.currentTimeMillis() + ".png";
+      TspVisualizer.createTourImage(cities, tour, imgPath, 1100, 1100);
+      logger.info("Visualization: " + (System.currentTimeMillis() - t0) + " ms");
+      
+    } catch (Exception ex) {
+      logger.error("TspProvider failed", ex);
+    }
   }
 }
