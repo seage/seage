@@ -63,16 +63,17 @@ public class AlgorithmExperimenterRunner {
         Date.from(Instant.now())
     ); 
 
-    //@SuppressWarnings("Checkstyle(VariableDeclarationUsageDistanceCheck)")
-    long startDate = System.currentTimeMillis();
-
+    
     logger.info("-------------------------------------");
     logger.info("Experimenter: {}", this.experimentName);
     logger.info("ExperimentID: {}", experimentID);
     logger.info("-------------------------------------");
-
+    
     // Run experiments
     logger.info("Algorithm '{}'", algorithmID);
+
+    long startDate;
+    startDate = System.currentTimeMillis();
 
     for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
       String problemID = entry.getKey();
