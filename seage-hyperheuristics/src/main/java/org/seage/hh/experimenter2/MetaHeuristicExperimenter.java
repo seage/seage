@@ -6,11 +6,14 @@ import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
+import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
+import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,13 +39,19 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
    */
   protected MetaHeuristicExperimenter(
       UUID experimentID, String problemID, String instanceID, 
-      String algorithmID, int numConfigs, int timeoutS) {
+      String algorithmID, int numConfigs, int timeoutS) 
+      throws Exception {
     this.experimentID = experimentID;
     this.problemID = problemID;
     this.instanceID = instanceID;
     this.algorithmID = algorithmID;
     this.numConfigs = numConfigs;
     this.timeoutS = timeoutS;
+
+    logger.info("Experimenter {} created, getting problem info", experimentID);
+    this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
+    this.experimentTasksRunner = new LocalExperimentTasksRunner();
+    this.experimentReporter = new ExperimentReporter();
   }
 
   /**
