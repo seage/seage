@@ -52,6 +52,11 @@ public class ExperimentTask {
   protected DataNode experimentTaskReport;
 
   /**
+   * Constructor for DB mapper
+   */
+  ExperimentTask() {}
+
+  /**
    * ExperimentTask for running algorithm.
    * @param taskInfo .
    * @throws Exception .

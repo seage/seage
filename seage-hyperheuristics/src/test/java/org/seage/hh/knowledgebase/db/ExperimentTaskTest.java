@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentTask;
+import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 
@@ -36,7 +37,7 @@ public class ExperimentTaskTest {
       "1"
     );
 
-    this.experimentTask1 = new ExperimentTask(
+    this.experimentTask1 = new ExperimentTask(new ExperimentTaskRequest(
       UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"),
       1, 1,
@@ -45,9 +46,9 @@ public class ExperimentTaskTest {
       "algorithmID1", 
       new AlgorithmParams(), 
       1L
-    );
+    ));
     
-    this.experimentTask2 = new ExperimentTask(
+    this.experimentTask2 = new ExperimentTask(new ExperimentTaskRequest(
       UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"), 
       2, 2,
@@ -56,7 +57,7 @@ public class ExperimentTaskTest {
       "algorithmID2", 
       new AlgorithmParams(), 
       2L
-    );
+    ));
   }
 
   @Test

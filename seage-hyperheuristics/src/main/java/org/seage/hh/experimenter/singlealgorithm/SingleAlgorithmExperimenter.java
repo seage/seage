@@ -8,7 +8,6 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
-import org.seage.hh.experimenter.ExperimentTaskReport;
 import org.seage.hh.experimenter.Experimenter;
 import org.seage.hh.experimenter.configurator.Configurator;
 

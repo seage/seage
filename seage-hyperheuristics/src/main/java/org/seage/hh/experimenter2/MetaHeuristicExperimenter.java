@@ -1,5 +1,6 @@
 package org.seage.hh.experimenter2;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -122,16 +123,14 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
 
     // Prepare experiment task configs
-    ProblemConfig[] configs = configurator.prepareConfigs(problemInfo,
-        instanceInfo.getInstanceID(), algorithmID, numRuns);
+    ProblemConfig config = configurator.prepareConfigs(problemInfo,
+        instanceInfo.getInstanceID(), algorithmID, 1)[0];
 
     // Enqueue experiment tasks
-    for (ProblemConfig config : configs) {
-      for (int runID = 1; runID <= numRuns; runID++) {
-        taskQueue.add(new ExperimentTaskRequest(
-            UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
-            algorithmID, config.getAlgorithmParams(), timeoutS));
-      }
+    for (int runID = 1; runID <= numRuns; runID++) {
+      taskQueue.add(new ExperimentTaskRequest(
+          UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
+          algorithmID, config.getAlgorithmParams(), timeoutS));
     }
 
     // RUN EXPERIMENT TASKS

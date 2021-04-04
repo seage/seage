@@ -22,7 +22,7 @@ public class AlgorithmExperimenterRunner {
   private UUID experimentID;
   private String algorithmID;
   private HashMap<String, List<String>> problemInstanceIDs;
-  private int numConfigs;
+  private int numRuns;
   private int timeoutS;
 
 
@@ -33,12 +33,12 @@ public class AlgorithmExperimenterRunner {
    * @param problemInstanceIDs Map of problem instances.
    */
   public AlgorithmExperimenterRunner(String algorithmID,
-      HashMap<String, List<String>> problemInstanceIDs, int numConfigs, int timeoutS)
+      HashMap<String, List<String>> problemInstanceIDs, int numRuns, int timeoutS)
       throws Exception {
     this.experimentID = UUID.randomUUID();
     this.algorithmID = algorithmID;
     this.problemInstanceIDs = problemInstanceIDs;
-    this.numConfigs = numConfigs;
+    this.numRuns = numRuns;
     this.timeoutS = timeoutS;
   }
 
@@ -86,7 +86,7 @@ public class AlgorithmExperimenterRunner {
     
     if (ordinaryAlg) {
       return new MetaHeuristicExperimenter(
-        experimentID, problemID, instanceID, algorithmID, numConfigs, timeoutS, experimentReporter);
+        experimentID, problemID, instanceID, algorithmID, numRuns, timeoutS, experimentReporter);
     }
 
     if (algorithmID.equals("HyperHeuristic1")) {
@@ -99,7 +99,7 @@ public class AlgorithmExperimenterRunner {
   protected String getExperimentConfig() {
     DataNode config = new DataNode("Config");
     config.putValue("timeoutS", this.timeoutS);
-    config.putValue("numConfigs", this.numConfigs);
+    config.putValue("numRuns", this.numRuns);
     
     return config.toString();
   }
