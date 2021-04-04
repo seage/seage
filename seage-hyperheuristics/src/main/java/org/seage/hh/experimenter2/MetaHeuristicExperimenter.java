@@ -67,7 +67,6 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   public void runExperiment() {
     logger.info("Running MetaheuristicExperimenter");
     try {
-
       this.experimentID = UUID.randomUUID();
       logger.info("-------------------------------------");
       logger.info("Experimenter: {}", this.experimentName);
@@ -85,6 +84,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
           getDurationBreakdown(totalEstimatedTime)));
       logger.info("-------------------------------------");
 
+      // Create experiment reporter
       this.experimentReporter.createExperimentReport(
           this.experimentID,
           this.experimentName,
@@ -95,8 +95,16 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
           Date.from(Instant.now())
       );
 
-      experimentMain();
+      // Run experiment
+      logger.info("-------------------------------------");
+      logger.info(String.format("%-15s %s", "Problem:", problemID));
+      logger.info(String.format("Instance: " + instanceID));
 
+      ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
+      runExperimentTasksForProblemInstance(instanceInfo);
+      // end experiment
+
+      // Inform about the duration
       long startDate = System.currentTimeMillis();
       long endDate = startDate;
       endDate = System.currentTimeMillis();
@@ -106,19 +114,6 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
           getDurationBreakdown(endDate - startDate));
       
       this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
-    } catch (Exception ex) {
-      logger.warn(ex.getMessage(), ex);
-    }
-  }
-
-
-  protected void experimentMain() throws Exception {
-    try {
-      logger.info("-------------------------------------");
-      logger.info(String.format("%-15s %s", "Problem:", problemID));
-      logger.info(String.format("Instance: " + instanceID));
-      ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
-      runExperimentTasksForProblemInstance(instanceInfo);
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
     }
