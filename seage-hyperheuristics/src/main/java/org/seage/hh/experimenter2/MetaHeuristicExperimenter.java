@@ -83,7 +83,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
 
     // Prepare experiment task configs
     ProblemConfig config = configurator.prepareConfigs(problemInfo,
-        instanceInfo.getInstanceID(), algorithmID, 1)[0];
+        instanceInfo.getInstanceID(), algorithmID, 2)[1]; // the second with a bit of randomness
 
     // Enqueue experiment tasks
     for (int runID = 1; runID <= numRuns; runID++) {

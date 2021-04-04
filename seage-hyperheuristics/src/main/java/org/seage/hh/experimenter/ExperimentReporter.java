@@ -30,10 +30,12 @@ public class ExperimentReporter {
       
       String instances = String.join(",", instanceIDs);
       String algorithms = String.join(",", algorithmIDs);
+      String problems = String.join(",", problemIDs);
+      
       Experiment experiment = new Experiment(
           experimentID, 
           experimentName,
-          problemIDs.toString(),
+          problems,
           instances,
           algorithms,
           config,
