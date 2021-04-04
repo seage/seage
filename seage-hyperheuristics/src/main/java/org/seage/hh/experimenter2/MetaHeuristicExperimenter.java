@@ -1,8 +1,12 @@
 package org.seage.hh.experimenter2;
 
+import java.time.Instant;
 import java.util.ArrayList;
+// import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
@@ -13,7 +17,7 @@ import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
-import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
+// import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +32,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   private static final int NUM_RUNS = 3;
   
   protected UUID experimentID;
+  protected String experimentName;
   protected String problemID;
   protected String instanceID;
   protected String algorithmID;
@@ -41,6 +46,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
       UUID experimentID, String problemID, String instanceID, 
       String algorithmID, int numConfigs, int timeoutS) 
       throws Exception {
+    this.experimentName = "MetaHeruristicApproach";
     this.experimentID = experimentID;
     this.problemID = problemID;
     this.instanceID = instanceID;
@@ -61,7 +67,45 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   public void runExperiment() {
     logger.info("Running MetaheuristicExperimenter");
     try {
+
+      this.experimentID = UUID.randomUUID();
+      logger.info("-------------------------------------");
+      logger.info("Experimenter: {}", this.experimentName);
+      logger.info("ExperimentID: {}", experimentID);
+      logger.info("-------------------------------------");
+
+      long totalNumOfConfigs = getNumberOfConfigs(1, 1);
+      long totalRunsPerCpu = (long)Math.ceil(
+          (double)totalNumOfConfigs / Runtime.getRuntime().availableProcessors());
+      long totalEstimatedTime = getEstimatedTime(1, 1);
+
+      logger.info(String.format("%-25s: %s", "Total number of configs", totalNumOfConfigs));
+      logger.info("Total number of configs per cpu core: " + totalRunsPerCpu);
+      logger.info(String.format("Total estimated time: %s (DD:HH:mm:ss)", 
+          getDurationBreakdown(totalEstimatedTime)));
+      logger.info("-------------------------------------");
+
+      this.experimentReporter.createExperimentReport(
+          this.experimentID,
+          this.experimentName,
+          this.problemID,
+          new String[] {this.instanceID},
+          new String[] {this.algorithmID},
+          getExperimentConfig(),
+          Date.from(Instant.now())
+      );
+
       experimentMain();
+
+      long startDate = System.currentTimeMillis();
+      long endDate = startDate;
+      endDate = System.currentTimeMillis();
+      logger.info("-------------------------------------");
+      logger.info("Experiment {} finished ...", experimentID);
+      logger.info("Experiment duration: {} (DD:HH:mm:ss)", 
+          getDurationBreakdown(endDate - startDate));
+      
+      this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
     }
@@ -132,5 +176,41 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
           experimentTask.getExperimentTaskID().toString()), e);
     }
     return null;
+  }
+
+
+
+  protected String getExperimentConfig() {
+    DataNode config = new DataNode("Config");
+    config.putValue("timeoutS", this.timeoutS);
+    config.putValue("numConfigs", this.numConfigs);
+    
+    return config.toString();
+  }
+
+  protected static String getDurationBreakdown(long millis) {
+    if (millis < 0) {
+      throw new IllegalArgumentException("Duration must be greater than zero!");
+    }
+
+    long days = TimeUnit.MILLISECONDS.toDays(millis);
+    millis -= TimeUnit.DAYS.toMillis(days);
+    long hours = TimeUnit.MILLISECONDS.toHours(millis);
+    millis -= TimeUnit.HOURS.toMillis(hours);
+    long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+    millis -= TimeUnit.MINUTES.toMillis(minutes);
+    long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+
+    return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds); // (sb.toString());
+  }
+  
+  protected long getNumberOfConfigs(int instancesCount, int algorithmsCount) {
+    return (long)this.numConfigs * NUM_RUNS * instancesCount * algorithmsCount;
+  }
+
+  protected long getEstimatedTime(int instancesCount, int algorithmsCount) {
+    return (long)Math.ceil((double)getNumberOfConfigs(instancesCount, algorithmsCount) 
+        / Runtime.getRuntime().availableProcessors())
+        * this.timeoutS * 1000;
   }
 }
