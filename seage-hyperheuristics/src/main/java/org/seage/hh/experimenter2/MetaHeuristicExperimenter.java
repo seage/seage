@@ -32,7 +32,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   protected String problemID;
   protected String instanceID;
   protected String algorithmID;
-  protected int numConfigs;
+  protected int numRuns;
   protected int timeoutS;
 
 
@@ -41,7 +41,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
    */
   protected MetaHeuristicExperimenter(
       UUID experimentID, String problemID, String instanceID, 
-      String algorithmID, int numConfigs, int timeoutS,
+      String algorithmID, int numRuns, int timeoutS,
       ExperimentReporter experimentReporter) 
       throws Exception {
     this.experimentName = "MetaHeruristicApproach";
@@ -49,7 +49,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     this.problemID = problemID;
     this.instanceID = instanceID;
     this.algorithmID = algorithmID;
-    this.numConfigs = numConfigs;
+    this.numRuns = numRuns;
     this.timeoutS = timeoutS;
     this.experimentReporter = experimentReporter;
 
@@ -123,11 +123,11 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
 
     // Prepare experiment task configs
     ProblemConfig[] configs = configurator.prepareConfigs(problemInfo,
-        instanceInfo.getInstanceID(), algorithmID, numConfigs);
+        instanceInfo.getInstanceID(), algorithmID, numRuns);
 
     // Enqueue experiment tasks
     for (ProblemConfig config : configs) {
-      for (int runID = 1; runID <= numConfigs; runID++) {
+      for (int runID = 1; runID <= numRuns; runID++) {
         taskQueue.add(new ExperimentTask(
             UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
             algorithmID, config.getAlgorithmParams(), timeoutS));
@@ -165,7 +165,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   protected String getExperimentConfig() {
     DataNode config = new DataNode("Config");
     config.putValue("timeoutS", this.timeoutS);
-    config.putValue("numConfigs", this.numConfigs);
+    config.putValue("numRuns", this.numRuns);
     
     return config.toString();
   }
@@ -189,7 +189,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   
 
   protected long getNumberOfConfigs(int instancesCount, int algorithmsCount) {
-    return (long)this.numConfigs * (long)this.numConfigs * instancesCount * algorithmsCount;
+    return (long)this.numRuns * (long)this.numRuns * instancesCount * algorithmsCount;
   }
 
 
