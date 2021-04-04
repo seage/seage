@@ -9,7 +9,7 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
-import org.seage.hh.experimenter.configurator.Configurator;
+import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   protected static Logger logger =
       LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
-  protected Configurator configurator;
+  protected DefaultConfigurator configurator;
   protected ProblemInfo problemInfo;
   protected ExperimentReporter experimentReporter;
   protected IExperimentTasksRunner experimentTasksRunner;
@@ -69,23 +69,23 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     double bestObjVal = Double.MAX_VALUE;
     // The taskQueue size must be limited since the results are stored in the task's reports
     // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
-    int batchSize = Math.min(this.numConfigs, Runtime.getRuntime().availableProcessors());
-    int batchCount = (int)Math.ceil((double)this.numConfigs / batchSize);
+    int batchSize = Math.min(numConfigs, Runtime.getRuntime().availableProcessors());
+    int batchCount = (int)Math.ceil((double)numConfigs / batchSize);
     for (int j = 0; j < batchCount; j++) {
-      if ((j + 1) * batchSize > this.numConfigs) {
-        batchSize = this.numConfigs % batchSize;
+      if ((j + 1) * batchSize > numConfigs) {
+        batchSize = numConfigs % batchSize;
       }
       List<ExperimentTask> taskQueue = new ArrayList<>();
       // Prepare experiment task configs
-      ProblemConfig[] configs = configurator.prepareConfigs(this.problemInfo,
+      ProblemConfig[] configs = configurator.prepareConfigs(problemInfo,
           instanceInfo.getInstanceID(), algorithmID, batchSize);
 
       // Enqueue experiment tasks
       for (ProblemConfig config : configs) {
         for (int runID = 1; runID <= NUM_RUNS; runID++) {
           taskQueue.add(new ExperimentTask(
-              UUID.randomUUID(), this.experimentID, runID, 1, this.problemID, instanceID,
-              algorithmID, config.getAlgorithmParams(), this.timeoutS));
+              UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
+              algorithmID, config.getAlgorithmParams(), timeoutS));
         }
       }
 
@@ -102,12 +102,12 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
       }
     }
     // This is weird - if multiple instances run during the expriment the last best value is written
-    this.experimentReporter.updateScore(this.experimentID, bestObjVal);
+    experimentReporter.updateScore(experimentID, bestObjVal);
   }
 
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
-      this.experimentReporter.reportExperimentTask(experimentTask);
+      experimentReporter.reportExperimentTask(experimentTask);
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
