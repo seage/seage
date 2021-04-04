@@ -26,8 +26,6 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   protected ProblemInfo problemInfo;
   protected ExperimentReporter experimentReporter;
   protected IExperimentTasksRunner experimentTasksRunner;
-
-  private static final int NUM_RUNS = 3;
   
   protected UUID experimentID;
   protected String experimentName;
@@ -67,7 +65,6 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   public void runExperiment() {
     logger.info("Running MetaheuristicExperimenter");
     try {
-
       this.experimentID = UUID.randomUUID();
       logger.info("-------------------------------------");
       logger.info("Experimenter: {}", this.experimentName);
@@ -85,6 +82,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
           getDurationBreakdown(totalEstimatedTime)));
       logger.info("-------------------------------------");
 
+      // Create experiment reporter
       this.experimentReporter.createExperimentReport(
           this.experimentID,
           this.experimentName,
@@ -95,8 +93,16 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
           Date.from(Instant.now())
       );
 
-      experimentMain();
+      // Run experiment
+      logger.info("-------------------------------------");
+      logger.info(String.format("%-15s %s", "Problem:", problemID));
+      logger.info(String.format("Instance: " + instanceID));
 
+      ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
+      runExperimentTasksForProblemInstance(instanceInfo);
+      // end experiment
+
+      // Inform about the duration
       long startDate = System.currentTimeMillis();
       long endDate = startDate;
       endDate = System.currentTimeMillis();
@@ -112,57 +118,40 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   }
 
 
-  protected void experimentMain() throws Exception {
-    try {
-      logger.info("-------------------------------------");
-      logger.info(String.format("%-15s %s", "Problem:", problemID));
-      logger.info(String.format("Instance: " + instanceID));
-      ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
-      runExperimentTasksForProblemInstance(instanceInfo);
-    } catch (Exception ex) {
-      logger.warn(ex.getMessage(), ex);
-    }
-  }
-
-
   protected void runExperimentTasksForProblemInstance(
       ProblemInstanceInfo instanceInfo) throws Exception {
-    
+    // Inform about the beginning
     logger.info(String.format("%-44s", "   Running... "));
 
+    // Initialize the best value 
     double bestObjVal = Double.MAX_VALUE;
+
     // The taskQueue size must be limited since the results are stored in the task's reports
     // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
-    int batchSize = Math.min(numConfigs, Runtime.getRuntime().availableProcessors());
-    int batchCount = (int)Math.ceil((double)numConfigs / batchSize);
-    for (int j = 0; j < batchCount; j++) {
-      if ((j + 1) * batchSize > numConfigs) {
-        batchSize = numConfigs % batchSize;
+    List<ExperimentTask> taskQueue = new ArrayList<>();
+
+    // Prepare experiment task configs
+    ProblemConfig[] configs = configurator.prepareConfigs(problemInfo,
+        instanceInfo.getInstanceID(), algorithmID, numConfigs);
+
+    // Enqueue experiment tasks
+    for (ProblemConfig config : configs) {
+      for (int runID = 1; runID <= numConfigs; runID++) {
+        taskQueue.add(new ExperimentTask(
+            UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
+            algorithmID, config.getAlgorithmParams(), timeoutS));
       }
-      List<ExperimentTask> taskQueue = new ArrayList<>();
-      // Prepare experiment task configs
-      ProblemConfig[] configs = configurator.prepareConfigs(problemInfo,
-          instanceInfo.getInstanceID(), algorithmID, batchSize);
+    }
 
-      // Enqueue experiment tasks
-      for (ProblemConfig config : configs) {
-        for (int runID = 1; runID <= NUM_RUNS; runID++) {
-          taskQueue.add(new ExperimentTask(
-              UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
-              algorithmID, config.getAlgorithmParams(), timeoutS));
-        }
-      }
+    // RUN EXPERIMENT TASKS
+    List<DataNode> stats =
+        experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 
-      // RUN EXPERIMENT TASKS
-      List<DataNode> stats =
-          experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
-
-      // Update score        
-      for (DataNode s : stats) {
-        double objVal = s.getValueDouble("bestObjVal");
-        if (objVal < bestObjVal) {
-          bestObjVal = objVal;
-        }
+    // Update score        
+    for (DataNode s : stats) {
+      double objVal = s.getValueDouble("bestObjVal");
+      if (objVal < bestObjVal) {
+        bestObjVal = objVal;
       }
     }
     // This is weird - if multiple instances run during the expriment the last best value is written
@@ -209,7 +198,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   
 
   protected long getNumberOfConfigs(int instancesCount, int algorithmsCount) {
-    return (long)this.numConfigs * NUM_RUNS * instancesCount * algorithmsCount;
+    return (long)this.numConfigs * (long)this.numConfigs * instancesCount * algorithmsCount;
   }
 
 
