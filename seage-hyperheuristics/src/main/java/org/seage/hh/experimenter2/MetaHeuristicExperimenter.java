@@ -70,7 +70,8 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   }
 
 
-  protected void runExperimentTasksForProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception {
+  protected void runExperimentTasksForProblemInstance(
+      ProblemInstanceInfo instanceInfo) throws Exception {
     
     logger.info(String.format("%-44s", "   Running... "));
 
