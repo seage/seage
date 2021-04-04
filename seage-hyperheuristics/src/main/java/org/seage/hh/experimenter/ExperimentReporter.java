@@ -23,17 +23,19 @@ public class ExperimentReporter {
    * Puts experiment info into database.
    */
   public synchronized void createExperimentReport(
-      UUID experimentID, String experimentName, String problemID,
+      UUID experimentID, String experimentName, String[] problemIDs,
       String[] instanceIDs, String[] algorithmIDs, String config, 
       Date startDate) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       
       String instances = String.join(",", instanceIDs);
       String algorithms = String.join(",", algorithmIDs);
+      String problems = String.join(",", problemIDs);
+      
       Experiment experiment = new Experiment(
           experimentID, 
           experimentName,
-          problemID,
+          problems,
           instances,
           algorithms,
           config,
@@ -63,6 +65,12 @@ public class ExperimentReporter {
     return info.toString();
   }
 
+  /**
+   * .
+   * @param experimentID .
+   * @param endDate .
+   * @throws Exception .
+   */
   public synchronized void updateEndDate(UUID experimentID, Date endDate) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       
@@ -72,6 +80,12 @@ public class ExperimentReporter {
     }    
   }
 
+  /**
+   * .
+   * @param experimentID .
+   * @param bestObjVal .
+   * @throws Exception .
+   */
   public synchronized void updateScore(UUID experimentID, double bestObjVal) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
@@ -80,8 +94,11 @@ public class ExperimentReporter {
     }  
   }
 
-  /*
-   * This is a critical function. When non-sychronized, multiple threads open db sessions that timeouted.
+  /**
+   * This is a critical function. When non-sychronized, 
+   * multiple threads open db sessions that timeouted.
+   * @param experimentTask .
+   * @throws Exception .
    */
   public synchronized void reportExperimentTask(ExperimentTask experimentTask) throws Exception {
      
@@ -109,7 +126,8 @@ public class ExperimentReporter {
     }
   }
 
-  private void insertSolutions(UUID experimentTaskID, DataNode solutions, String elemName, String type)
+  private void insertSolutions(
+      UUID experimentTaskID, DataNode solutions, String elemName, String type)
       throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       SolutionMapper mapper = session.getMapper(SolutionMapper.class);

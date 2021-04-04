@@ -30,7 +30,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.seage.aal.problem.ProblemInfo;
-import org.seage.aal.problem.ProblemInstanceInfo;
+//import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
@@ -105,7 +105,8 @@ public abstract class Experimenter {
     // ***********************
 
     long startDate = System.currentTimeMillis();
-    long endDate = startDate;
+    long endDate;
+    endDate = startDate;
     this.experimentID = UUID.randomUUID();
     logger.info("-------------------------------------");
     logger.info("Experimenter: {}", this.experimentName);
@@ -113,7 +114,8 @@ public abstract class Experimenter {
     logger.info("-------------------------------------");
 
     long totalNumOfConfigs = getNumberOfConfigs(this.instanceIDs.length, this.algorithmIDs.length);
-    long totalRunsPerCpu = (long)Math.ceil((double)totalNumOfConfigs / Runtime.getRuntime().availableProcessors());
+    long totalRunsPerCpu = (long)Math.ceil(
+        (double)totalNumOfConfigs / Runtime.getRuntime().availableProcessors());
     long totalEstimatedTime = getEstimatedTime(this.instanceIDs.length, this.algorithmIDs.length);
 
     logger.info(String.format("%-25s: %s", "Total number of configs", totalNumOfConfigs));
@@ -125,7 +127,7 @@ public abstract class Experimenter {
     this.experimentReporter.createExperimentReport(
         this.experimentID,
         this.experimentName,
-        this.problemID,
+        new String[] {this.problemID},
         this.instanceIDs,
         this.algorithmIDs,
         getExperimentConfig(),
