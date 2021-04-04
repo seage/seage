@@ -2,7 +2,6 @@ package org.seage.hh.experimenter2;
 
 import java.time.Instant;
 import java.util.ArrayList;
-// import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +16,6 @@ import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
-// import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +36,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   protected String algorithmID;
   protected int numConfigs;
   protected int timeoutS;
+
 
   /**
    * MetaHeuristicExperimenter constructor.
@@ -61,8 +60,9 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     this.configurator = new DefaultConfigurator(0.15);
   }
 
+
   /**
-   * .
+   * Method runs experiment.
    */
   public void runExperiment() {
     logger.info("Running MetaheuristicExperimenter");
@@ -110,6 +110,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
       logger.warn(ex.getMessage(), ex);
     }
   }
+
 
   protected void experimentMain() throws Exception {
     try {
@@ -168,6 +169,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     experimentReporter.updateScore(experimentID, bestObjVal);
   }
 
+
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
@@ -188,6 +190,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     return config.toString();
   }
 
+
   protected static String getDurationBreakdown(long millis) {
     if (millis < 0) {
       throw new IllegalArgumentException("Duration must be greater than zero!");
@@ -204,9 +207,11 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds); // (sb.toString());
   }
   
+
   protected long getNumberOfConfigs(int instancesCount, int algorithmsCount) {
     return (long)this.numConfigs * NUM_RUNS * instancesCount * algorithmsCount;
   }
+
 
   protected long getEstimatedTime(int instancesCount, int algorithmsCount) {
     return (long)Math.ceil((double)getNumberOfConfigs(instancesCount, algorithmsCount) 
