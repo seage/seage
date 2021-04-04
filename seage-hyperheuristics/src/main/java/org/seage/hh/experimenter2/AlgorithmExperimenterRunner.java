@@ -70,7 +70,7 @@ public class AlgorithmExperimenterRunner {
     
     if (ordinaryAlg) {
       return new MetaHeuristicExperimenter(
-        experimentID, problemID, instanceID, numConfigs, timeoutS);
+        experimentID, problemID, instanceID, algorithmID, numConfigs, timeoutS);
     }
     if (algorithmID.equals("HyperHeuristic1")) {
       return new HyperHeuristic1Experimenter();
