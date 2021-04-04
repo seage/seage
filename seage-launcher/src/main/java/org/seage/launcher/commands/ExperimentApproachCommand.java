@@ -32,7 +32,7 @@ public class ExperimentApproachCommand extends Command {
       required = true, 
       description = "Number of runs per instance"
   )
-  int instanceRuns;
+  int runsPerInstance;
   
   @Parameter(
       names = "-t", 
@@ -48,7 +48,7 @@ public class ExperimentApproachCommand extends Command {
 
     AlgorithmExperimenterRunner ae = 
         new AlgorithmExperimenterRunner(
-            algorithmID, problemInstanceParams, instanceRuns, algorithmTimeoutS);
+            algorithmID, problemInstanceParams, runsPerInstance, algorithmTimeoutS);
     ae.runExperiment();
   }
 }
