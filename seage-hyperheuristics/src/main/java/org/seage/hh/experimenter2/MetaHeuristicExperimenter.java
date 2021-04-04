@@ -42,7 +42,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
       String algorithmID, int numRuns, int timeoutS,
       ExperimentReporter experimentReporter) 
       throws Exception {
-    this.experimentName = "MetaHeruristicApproach";
+    this.experimentName = "MetaHeuristicApproach";
     this.experimentID = experimentID;
     this.problemID = problemID;
     this.instanceID = instanceID;
