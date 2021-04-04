@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.UUID;
 import org.seage.aal.Annotations.ProblemId;
@@ -61,7 +62,16 @@ public class AlgorithmExperimenterRunner {
         getExperimentConfig(),
         Date.from(Instant.now())
     ); 
-    
+
+    //@SuppressWarnings("Checkstyle(VariableDeclarationUsageDistanceCheck)")
+    long startDate = System.currentTimeMillis();
+
+    logger.info("-------------------------------------");
+    logger.info("Experimenter: {}", this.experimentName);
+    logger.info("ExperimentID: {}", experimentID);
+    logger.info("-------------------------------------");
+
+    // Run experiments
     logger.info("Algorithm '{}'", algorithmID);
 
     for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
@@ -74,6 +84,13 @@ public class AlgorithmExperimenterRunner {
         createAlgorithmExperimenter(problemID, instanceID).runExperiment();
       }
     }
+   
+    long endDate = System.currentTimeMillis();
+    logger.info("-------------------------------------");
+    logger.info("Experiment {} finished ...", experimentID);
+    logger.info("Experiment duration: {} (DD:HH:mm:ss)", getDurationBreakdown(endDate - startDate));
+    
+    this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
   }
 
 
@@ -118,5 +135,21 @@ public class AlgorithmExperimenterRunner {
       }
     }
     return results.toArray(new String[0]);
+  }
+
+  protected static String getDurationBreakdown(long millis) {
+    if (millis < 0) {
+      throw new IllegalArgumentException("Duration must be greater than zero!");
+    }
+
+    long days = TimeUnit.MILLISECONDS.toDays(millis);
+    millis -= TimeUnit.DAYS.toMillis(days);
+    long hours = TimeUnit.MILLISECONDS.toHours(millis);
+    millis -= TimeUnit.HOURS.toMillis(hours);
+    long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+    millis -= TimeUnit.MINUTES.toMillis(minutes);
+    long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+
+    return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds); // (sb.toString());
   }
 }
