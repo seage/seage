@@ -44,6 +44,8 @@ public class AlgorithmExperimenterRunner {
     this.problemInstanceIDs = problemInstanceIDs;
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
+
+    this.experimentReporter = new ExperimentReporter();
   }
 
 
@@ -52,7 +54,6 @@ public class AlgorithmExperimenterRunner {
    */
   public void runExperiment() throws Exception {
     // Create experiment reporter
-    experimentReporter = new ExperimentReporter();
     this.experimentReporter.createExperimentReport(
         this.experimentID,
         this.experimentName,
