@@ -6,7 +6,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTask;
-import org.seage.hh.experimenter.ExperimentTaskInfo;
+import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,13 +15,8 @@ public class LocalExperimentTasksRunner implements IExperimentTasksRunner {
 
   @Override
   public List<DataNode> performExperimentTasks(
-      List<ExperimentTaskInfo> taskInfos, Function<ExperimentTask, Void> reportFn) {
+      List<ExperimentTaskRequest> taskInfos, Function<ExperimentTask, Void> reportFn) {
 
-    // for (ExperimentTask t : tasks) {
-    //   t.run();
-    //   reportFn.apply(t);
-    // }
-    // return new ArrayList<>();
     return taskInfos.parallelStream().map(ti -> {
       try {
         ExperimentTask task = new ExperimentTask(ti);

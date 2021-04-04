@@ -13,6 +13,7 @@ import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
+import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
@@ -128,7 +129,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
 
     // The taskQueue size must be limited since the results are stored in the task's reports
     // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
-    List<ExperimentTask> taskQueue = new ArrayList<>();
+    List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
 
     // Prepare experiment task configs
     ProblemConfig[] configs = configurator.prepareConfigs(problemInfo,
@@ -137,7 +138,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     // Enqueue experiment tasks
     for (ProblemConfig config : configs) {
       for (int runID = 1; runID <= numConfigs; runID++) {
-        taskQueue.add(new ExperimentTask(
+        taskQueue.add(new ExperimentTaskRequest(
             UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
             algorithmID, config.getAlgorithmParams(), timeoutS));
       }

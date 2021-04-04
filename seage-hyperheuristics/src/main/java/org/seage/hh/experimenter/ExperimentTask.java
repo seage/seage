@@ -56,7 +56,7 @@ public class ExperimentTask {
    * @param taskInfo .
    * @throws Exception .
    */
-  public ExperimentTask(ExperimentTaskInfo taskInfo) throws Exception {
+  public ExperimentTask(ExperimentTaskRequest taskInfo) throws Exception {
     this(
         taskInfo.getExperimentTaskID(),
         taskInfo.getExperimentID(),

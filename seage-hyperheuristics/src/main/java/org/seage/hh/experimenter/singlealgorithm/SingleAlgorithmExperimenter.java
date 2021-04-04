@@ -7,7 +7,7 @@ import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTask;
-import org.seage.hh.experimenter.ExperimentTaskInfo;
+import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.ExperimentTaskReport;
 import org.seage.hh.experimenter.Experimenter;
 import org.seage.hh.experimenter.configurator.Configurator;
@@ -62,37 +62,33 @@ public class SingleAlgorithmExperimenter extends Experimenter {
       double bestObjVal = Double.MAX_VALUE;
       // The taskQueue size must be limited since the results are stored in the task's reports
       // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
-      int batchSize = Math.min(this.numConfigs, Runtime.getRuntime().availableProcessors());
-      int batchCount = (int)Math.ceil((double)this.numConfigs / batchSize);
-      for (int j = 0; j < batchCount; j++) {
-        if ((j + 1) * batchSize > this.numConfigs) {
-          batchSize = this.numConfigs % batchSize;
-        }
-        List<ExperimentTaskInfo> taskQueue = new ArrayList<>();
-        // Prepare experiment task configs
-        ProblemConfig[] configs = configurator.prepareConfigs(this.problemInfo,
-            instanceInfo.getInstanceID(), algorithmID, batchSize);
 
-        // Enqueue experiment tasks
-        for (ProblemConfig config : configs) {
-          for (int runID = 1; runID <= NUM_RUNS; runID++) {
-            taskQueue.add(new ExperimentTaskInfo(UUID.randomUUID(), this.experimentID, runID, 1, this.problemID, instanceID,
-                algorithmID, config.getAlgorithmParams(), this.timeoutS));
-          }
-        }
+      List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
+      // Prepare experiment task configs
+      ProblemConfig[] configs = configurator.prepareConfigs(this.problemInfo,
+          instanceInfo.getInstanceID(), algorithmID, numConfigs);
 
-        // RUN EXPERIMENT TASKS
-        List<DataNode> stats =
-            this.experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
-
-        // Update score        
-        for (DataNode s : stats) {
-          double objVal = s.getValueDouble("bestObjVal");
-          if (objVal < bestObjVal) {
-            bestObjVal = objVal;
-          }
+      // Enqueue experiment tasks
+      for (ProblemConfig config : configs) {
+        for (int runID = 1; runID <= NUM_RUNS; runID++) {
+          taskQueue.add(new ExperimentTaskRequest(
+              UUID.randomUUID(), this.experimentID, runID, 1, this.problemID, instanceID,
+              algorithmID, config.getAlgorithmParams(), this.timeoutS));
         }
       }
+
+      // RUN EXPERIMENT TASKS
+      List<DataNode> stats =
+          this.experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
+
+      // Update score        
+      for (DataNode s : stats) {
+        double objVal = s.getValueDouble("bestObjVal");
+        if (objVal < bestObjVal) {
+          bestObjVal = objVal;
+        }
+      }
+    
       // This is weird - if multiple instances run during the expriment the last best value is written
       this.experimentReporter.updateScore(this.experimentID, bestObjVal);
     }

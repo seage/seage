@@ -3,7 +3,7 @@ package org.seage.hh.experimenter;
 import java.util.UUID;
 import org.seage.aal.algorithm.AlgorithmParams;
 
-public class ExperimentTaskInfo {
+public class ExperimentTaskRequest {
   private UUID experimentTaskID;
   private UUID experimentID;
   private int jobID;
@@ -15,7 +15,7 @@ public class ExperimentTaskInfo {
   private AlgorithmParams algorithmParams;
   private long timeoutS;
 
-  public ExperimentTaskInfo(UUID experimentTaskID, UUID experimentID, int jobID, int stageID,
+  public ExperimentTaskRequest(UUID experimentTaskID, UUID experimentID, int jobID, int stageID,
       String problemID, String instanceID, String algorithmID, AlgorithmParams algorithmParams,
       long timeoutS) throws Exception {
     this.experimentTaskID = experimentTaskID;
