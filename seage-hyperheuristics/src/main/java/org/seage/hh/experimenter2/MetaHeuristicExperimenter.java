@@ -24,8 +24,8 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
       LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
   protected DefaultConfigurator configurator;
   protected ProblemInfo problemInfo;
-  protected ExperimentReporter experimentReporter;
   protected IExperimentTasksRunner experimentTasksRunner;
+  protected ExperimentReporter experimentReporter;
   
   protected UUID experimentID;
   protected String experimentName;
@@ -41,7 +41,8 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
    */
   protected MetaHeuristicExperimenter(
       UUID experimentID, String problemID, String instanceID, 
-      String algorithmID, int numConfigs, int timeoutS) 
+      String algorithmID, int numConfigs, int timeoutS,
+      ExperimentReporter experimentReporter) 
       throws Exception {
     this.experimentName = "MetaHeruristicApproach";
     this.experimentID = experimentID;
@@ -50,11 +51,12 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     this.algorithmID = algorithmID;
     this.numConfigs = numConfigs;
     this.timeoutS = timeoutS;
+    this.experimentReporter = experimentReporter;
 
+    // Initialize all
     logger.info("Experimenter {} created, getting problem info", experimentID);
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    this.experimentReporter = new ExperimentReporter();
     this.configurator = new DefaultConfigurator(0.15);
   }
 
@@ -65,7 +67,6 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   public void runExperiment() {
     logger.info("Running MetaheuristicExperimenter");
     try {
-      this.experimentID = UUID.randomUUID();
       logger.info("-------------------------------------");
       logger.info("Experimenter: {}", this.experimentName);
       logger.info("ExperimentID: {}", experimentID);
@@ -82,17 +83,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
           getDurationBreakdown(totalEstimatedTime)));
       logger.info("-------------------------------------");
 
-      // Create experiment reporter
-      this.experimentReporter.createExperimentReport(
-          this.experimentID,
-          this.experimentName,
-          this.problemID,
-          new String[] {this.instanceID},
-          new String[] {this.algorithmID},
-          getExperimentConfig(),
-          Date.from(Instant.now())
-      );
-
+      
       // Run experiment
       logger.info("-------------------------------------");
       logger.info(String.format("%-15s %s", "Problem:", problemID));
@@ -111,7 +102,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
       logger.info("Experiment duration: {} (DD:HH:mm:ss)", 
           getDurationBreakdown(endDate - startDate));
       
-      this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
+      experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
     }
@@ -154,6 +145,7 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
         bestObjVal = objVal;
       }
     }
+    
     // This is weird - if multiple instances run during the expriment the last best value is written
     experimentReporter.updateScore(experimentID, bestObjVal);
   }
@@ -168,7 +160,6 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     }
     return null;
   }
-
 
 
   protected String getExperimentConfig() {
