@@ -43,6 +43,7 @@ public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<TspPhenotype> 
 
   public TspPhenotypeEvaluator(ProblemInfo problemInfo, TspProblemInstance instance) {
     super();
+    _instance = instance;
     _cities = instance.getCities();
     this.scoreCalculator = new ProblemScoreCalculator(problemInfo);
   }
