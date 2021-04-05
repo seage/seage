@@ -24,6 +24,7 @@
  *     - Initial implementation
  *     Karel Durkota
  */
+
 package org.seage.aal.algorithm.fireflies;
 
 import java.util.List;
@@ -45,7 +46,7 @@ import org.seage.metaheuristic.fireflies.Solution;
 import org.seage.metaheuristic.fireflies.SolutionComparator;
 
 /**
- * FireflySearchAdapter class
+ * FireflySearchAdapter base implementation.
  */
 
 @AlgorithmParameters({ @Parameter(name = "iterationCount", min = 500, max = 500, init = 10),
@@ -61,38 +62,32 @@ import org.seage.metaheuristic.fireflies.SolutionComparator;
 public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends Solution>
     extends AlgorithmAdapterImpl<P, S> {
   protected List<S> solutions;
-  protected FireflySearch<S> _fireflySearch;
-  protected ObjectiveFunction _evaluator;
-  protected SolutionComparator _comparator;
-  protected FireflySearchObserver _observer;
-  protected S _bestEverSolution;
-  protected AlgorithmParams _params;
+  protected FireflySearch<S> fireflySearch;
+  protected ObjectiveFunction evaluator;
+  protected SolutionComparator comparator;
+  protected FireflySearchObserver observer;
+  protected S bestEverSolution;
+  protected AlgorithmParams algParams;
 
-  private double _statInitObjVal;
-  private double _statEndObjVal;
-  private int _statNumIter;
-  private int _statNumNewSol;
-  private int _statLastIterNewSol;
+  private double statInitObjVal;
+  private double statEndObjVal;
+  private int statNumIter;
+  private int statNumNewSol;
+  private int statLastIterNewSol;
 
-  // private DataNode _minutes;
 
-  public FireflyAlgorithmAdapter(FireflyOperator operator, ObjectiveFunction evaluator,
+  protected FireflyAlgorithmAdapter(
+      FireflyOperator operator, ObjectiveFunction evaluator,
       IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing) {
     super(phenotypeEvaluator);
-    _evaluator = evaluator;
-    _observer = new FireflySearchObserver();
-    _comparator = new SolutionComparator();
-    _fireflySearch = new FireflySearch<>(operator, evaluator);
-    _fireflySearch.addFireflySearchListener(_observer);
-    phenotypeEvaluator = phenotypeEvaluator;
+    this.evaluator = evaluator;
+    this.observer = new FireflySearchObserver();
+    this.comparator = new SolutionComparator();
+    this.fireflySearch = new FireflySearch<>(operator, evaluator);
+    this.fireflySearch.addFireflySearchListener(observer);
+    this.phenotypeEvaluator = phenotypeEvaluator;
   }
 
-  /**
-   * <running> <parameters/> <minutes/> <statistics/> </running>
-   * 
-   * @param param
-   * @throws java.lang.IllegalArgumentException
-   */
   @Override
   public void startSearching(AlgorithmParams params) throws Exception {
     if (params == null) {
@@ -101,37 +96,44 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
     setParameters(params);
 
     reporter = new AlgorithmReporter<>(phenotypeEvaluator);
-    reporter.putParameters(_params);
+    reporter.putParameters(algParams);
 
-    _fireflySearch.startSolving(this.solutions);
-    this.solutions = _fireflySearch.getSolutions();
-    if (this.solutions == null)
+    fireflySearch.startSolving(this.solutions);
+    this.solutions = fireflySearch.getSolutions();
+    if (this.solutions == null) {
       throw new RuntimeException("Solutions null");
+    }
   }
 
   @Override
   public void stopSearching() throws Exception {
-    _fireflySearch.stopSolving();
+    fireflySearch.stopSolving();
 
-    while (isRunning())
+    while (isRunning()) {
       Thread.sleep(100);
+    }
   }
 
   @Override
   public boolean isRunning() {
-    return _fireflySearch.isRunning();
+    return fireflySearch.isRunning();
   }
 
+  /**
+   * Sets the new algorithm parameters.
+   * @param params .
+   * @throws Exception .
+   */
   public void setParameters(AlgorithmParams params) throws Exception {
-    _params = params;
+    algParams = params;
 
-    _fireflySearch.setIterationsToGo(_params.getValueInt("iterationCount"));
-    _statNumIter = _params.getValueInt("iterationCount");
-    _fireflySearch.setAbsorption(_params.getValueDouble("absorption"));
-    _fireflySearch.setTimeStep(_params.getValueDouble("timeStep"));
-    _fireflySearch
-        .setWithDecreasingRandomness(((_params.getValueDouble("withDecreasingRandomness") > 0) ? true : false));
-    _fireflySearch.setPopulationCount(_params.getValueInt("numSolutions"));
+    fireflySearch.setIterationsToGo(algParams.getValueInt("iterationCount"));
+    statNumIter = algParams.getValueInt("iterationCount");
+    fireflySearch.setAbsorption(algParams.getValueDouble("absorption"));
+    fireflySearch.setTimeStep(algParams.getValueDouble("timeStep"));
+    fireflySearch.setWithDecreasingRandomness(
+        ((algParams.getValueDouble("withDecreasingRandomness") > 0) ? true : false));
+    fireflySearch.setPopulationCount(algParams.getValueInt("numSolutions"));
     // EDD OWN PARAMETERS
   }
 
@@ -139,11 +141,13 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
   public AlgorithmReport getReport() throws Exception {
     int num = this.solutions.size();// > 10 ? 10 : solutions.length;
     double avg = 0;
-    for (int i = 0; i < num; i++)
+    for (int i = 0; i < num; i++) {
       avg += this.solutions.get(i).getObjectiveValue()[0];
+    }
     avg /= num;
 
-    reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);
+    reporter.putStatistics(statNumIter, statNumNewSol, statLastIterNewSol, statInitObjVal, avg,
+        statEndObjVal);
 
     return reporter.getReport();
   }
@@ -151,15 +155,16 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
   private class FireflySearchObserver implements FireflySearchListener<S> {
     @Override
     public void FireflySearchStarted(FireflySearchEvent<S> e) {
-      _statNumNewSol = _statLastIterNewSol = 0;
+      statNumNewSol = statLastIterNewSol = 0;
       algorithmStarted = true;
     }
 
     @Override
     public void FireflySearchStopped(FireflySearchEvent<S> e) {
       Solution best = e.getFireflySearch().getBestSolution();
-      if (best != null)
-        _statEndObjVal = best.getObjectiveValue()[0];
+      if (best != null) {
+        statEndObjVal = best.getObjectiveValue()[0];
+      }
       algorithmStopped = true;
     }
 
@@ -167,14 +172,17 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
     public void newBestSolutionFound(FireflySearchEvent<S> e) {
       try {
         S solution = e.getFireflySearch().getBestSolution();
-        _bestEverSolution = solution;
-        if (_statNumNewSol == 0)
-          _statInitObjVal = solution.getObjectiveValue()[0];
+        bestEverSolution = solution;
+        if (statNumNewSol == 0) {
+          statInitObjVal = solution.getObjectiveValue()[0];
+        }
 
-        reporter.putNewSolution(System.currentTimeMillis(), e.getFireflySearch().getCurrentIteration(),
+        reporter.putNewSolution(
+            System.currentTimeMillis(), 
+            e.getFireflySearch().getCurrentIteration(),
             solutionToPhenotype(solution));
-        _statNumNewSol++;
-        _statLastIterNewSol = e.getFireflySearch().getCurrentIteration();
+        statNumNewSol++;
+        statLastIterNewSol = e.getFireflySearch().getCurrentIteration();
 
       } catch (Exception ex) {
         ex.printStackTrace();

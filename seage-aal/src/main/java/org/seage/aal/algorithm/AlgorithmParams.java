@@ -29,14 +29,12 @@ package org.seage.aal.algorithm;
 import org.seage.data.DataNode;
 
 /**
- * Algorithm parameters
+ * Algorithm parameters.
  * 
  * @author Richard Malek
  * 
  */
 public class AlgorithmParams extends DataNode {
-
-  private static final long serialVersionUID = 1L;
 
   public AlgorithmParams(DataNode dn) {
     super(dn);
