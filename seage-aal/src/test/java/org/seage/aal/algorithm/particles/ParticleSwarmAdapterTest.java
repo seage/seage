@@ -52,26 +52,28 @@ public class ParticleSwarmAdapterTest extends AlgorithmAdapterTestBase<Particle>
 
       @Override
       public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception {
-        _initialParticles = new Particle[source.length];
+        initialParticles = new Particle[source.length];
 
         for (int i = 0; i < source.length; i++) {
-          _initialParticles[i] = new Particle(source[i].getSolution().length);
+          initialParticles[i] = new Particle(source[i].getSolution().length);
           double[] coords = new double[source[i].getSolution().length];
-          for (int j = 0; j < coords.length; j++)
+          for (int j = 0; j < coords.length; j++) {
             coords[j] = source[i].getSolution()[j];
-          _initialParticles[i].setCoords(coords);
+          }
+          initialParticles[i].setCoords(coords);
         }
 
       }
 
       @Override
       public TestPhenotype[] solutionsToPhenotype() throws Exception {
-        TestPhenotype[] result = new TestPhenotype[_initialParticles.length];
+        TestPhenotype[] result = new TestPhenotype[initialParticles.length];
 
-        for (int i = 0; i < _initialParticles.length; i++) {
-          Integer[] coords = new Integer[_initialParticles[i].getCoords().length];
-          for (int j = 0; j < coords.length; j++)
-            coords[j] = (int) _initialParticles[i].getCoords()[j];
+        for (int i = 0; i < initialParticles.length; i++) {
+          Integer[] coords = new Integer[initialParticles[i].getCoords().length];
+          for (int j = 0; j < coords.length; j++) {
+            coords[j] = (int) initialParticles[i].getCoords()[j];
+          }
           result[i] = new TestPhenotype(coords);
         }
         return result;
