@@ -32,6 +32,7 @@ import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.TourProvider;
+import org.seage.problem.tsp.TspPhenotypeEvaluator;
 
 /**
  *
@@ -64,7 +65,7 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     System.out.println("Population: " + populationCount);
     List<Subject<Integer>> initialSolutions = generateInitialSubjects(cities, populationCount);
     GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
-        new TspGeneticOperator(), new TspEvaluator(cities));
+        new TspGeneticOperator(), new TspEvaluator(new TspPhenotypeEvaluator(null, null)));
     gs.addGeneticSearchListener(this);
     gs.setEliteSubjectsPct(5);
     gs.setMutatePopulationPct(5);

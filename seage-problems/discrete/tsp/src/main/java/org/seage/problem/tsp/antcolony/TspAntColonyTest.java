@@ -115,7 +115,8 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     for (Integer t : tour)
       System.out.print(t + " ");
     System.out.println();
-    System.out.println(new TspPhenotypeEvaluator(cities).evaluate(new TspPhenotype(tour))[0]);
+    // TODO: Fix TspPhenotypeEvaluator
+    //System.out.println(new TspPhenotypeEvaluator(cities).evaluate(new TspPhenotype(tour))[0]);
   }
 
   private Integer[] createTour(List<Edge> bestPath) {

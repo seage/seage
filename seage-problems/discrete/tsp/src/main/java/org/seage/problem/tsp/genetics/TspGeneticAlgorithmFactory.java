@@ -59,7 +59,7 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory<TspPhenotyp
       IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
     City[] cities = ((TspProblemInstance) instance).getCities();
     IAlgorithmAdapter<TspPhenotype, Subject<Integer>> algorithm = new GeneticAlgorithmAdapter<TspPhenotype, Subject<Integer>>(
-        new TspGeneticOperator(), new TspEvaluator(cities), phenotypeEvaluator, false) {
+        new TspGeneticOperator(), new TspEvaluator(phenotypeEvaluator), phenotypeEvaluator, false) {
       @Override
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
         this.solutions = new ArrayList<Subject<Integer>>(source.length);
@@ -78,7 +78,11 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory<TspPhenotyp
       }
 
       public TspPhenotype solutionToPhenotype(Subject<Integer> solution) throws Exception {
-        return new TspPhenotype(solution.getChromosome().getGenes());
+        TspPhenotype result = new TspPhenotype(solution.getChromosome().getGenes());
+        double[] objVals = this._phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
       }
     };
 

@@ -26,6 +26,7 @@
 
 package org.seage.problem.tsp.genetics;
 
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.problem.tsp.City;
@@ -37,17 +38,15 @@ import org.seage.problem.tsp.TspPhenotypeEvaluator;
  * @author Richard Malek
  */
 public class TspEvaluator extends SubjectEvaluator<Subject<Integer>> {
-  private City[] _cities;
-  private TspPhenotypeEvaluator _phenotypeEvaluator;
+  private IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator;
 
-  public TspEvaluator(City[] cities) {
-    _cities = cities.clone();
-    _phenotypeEvaluator = new TspPhenotypeEvaluator(_cities);
+  public TspEvaluator(IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) {
+    this.phenotypeEvaluator = phenotypeEvaluator;
   }
 
   @Override
   public double[] evaluate(Subject<Integer> solution) throws Exception {
-    return _phenotypeEvaluator.evaluate(new TspPhenotype(solution.getChromosome().getGenes()));
+    return phenotypeEvaluator.evaluate(new TspPhenotype(solution.getChromosome().getGenes()));
   }
 
   // private double[] evaluate(Integer[] phenotypeSubject) throws Exception

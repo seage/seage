@@ -80,7 +80,11 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
       @Override
       public TspPhenotype solutionToPhenotype(Ant solution) throws Exception {
         Integer[] p = (Integer[]) solution.getNodeIDsAlongPath().stream().toArray(Integer[]::new);
-        return new TspPhenotype(p);
+        TspPhenotype result = new TspPhenotype(p);
+        double[] objVals = this._phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[0]);
+        return result;
       }
     };
 

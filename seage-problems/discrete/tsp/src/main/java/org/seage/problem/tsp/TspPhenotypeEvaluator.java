@@ -28,6 +28,8 @@ package org.seage.problem.tsp;
 
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
+import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemScoreCalculator;
 
 /**
  * TSP phenotype is a sequence of city IDs starting at _1_
@@ -37,10 +39,12 @@ import org.seage.aal.algorithm.Phenotype;
 public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<TspPhenotype> {
   protected TspProblemInstance _instance;
   protected City[] _cities;
+  private ProblemScoreCalculator scoreCalculator;
 
-  public TspPhenotypeEvaluator(City[] cities) {
+  public TspPhenotypeEvaluator(ProblemInfo problemInfo, TspProblemInstance instance) {
     super();
-    _cities = cities;
+    _cities = instance.getCities();
+    this.scoreCalculator = new ProblemScoreCalculator(problemInfo);
   }
 
   @Override
@@ -63,7 +67,11 @@ public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<TspPhenotype> 
       double y2 = _cities[ix2].Y;
       tourLength += Math.round(Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)));
     }
-    return new double[] { tourLength };
+    String instanceID = _instance.getProblemInstanceInfo().getInstanceID();
+    return new double[] { 
+      tourLength,
+      this.scoreCalculator.calculateInstanceScore(instanceID, tourLength)
+    };
   }
 
   @Override

@@ -8,7 +8,7 @@ public class SatPhenotypeEvaluator implements IPhenotypeEvaluator<SatPhenotype> 
   private Formula formula;
   private ProblemScoreCalculator scoreCalculator;
 
-  public SatPhenotypeEvaluator(Formula formula, ProblemInfo problemInfo) {
+  public SatPhenotypeEvaluator(ProblemInfo problemInfo, Formula formula) {
     this.formula = formula;
     this.scoreCalculator = new ProblemScoreCalculator(problemInfo);
   }

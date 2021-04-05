@@ -11,27 +11,29 @@ public class TspOptimalTour {
   public Integer[] OptimalTour;
   public int OptimalLength;
 
-  public static TspPhenotype mirrorTour(TspPhenotype tour) {
+  public static TspPhenotype mirrorTour(TspPhenotype tour) throws Exception {
     Integer[] array = tour.getSolution();
     Integer[] result = new Integer[array.length];
 
-    for (int i = 0; i < result.length; i++)
+    for (int i = 0; i < result.length; i++) {
       result[i] = array[array.length - i - 1];
+    }
 
     return new TspPhenotype(result);
   }
 
-  public static TspPhenotype shiftTour(TspPhenotype tour, int offset) {
+  public static TspPhenotype shiftTour(TspPhenotype tour, int offset) throws Exception {
     Integer[] array = tour.getSolution();
     Integer[] result = new Integer[array.length];
 
-    for (int i = 0; i < result.length; i++)
+    for (int i = 0; i < result.length; i++) {
       result[i] = array[(i + offset) % array.length];
+    }
 
     return new TspPhenotype(result);
   }
 
-  public static TspPhenotype applySwapMove(TspPhenotype tour, int[] move) {
+  public static TspPhenotype applySwapMove(TspPhenotype tour, int[] move) throws Exception {
     Integer[] array = tour.getSolution();
     Integer[] result = array.clone();
 
@@ -43,8 +45,9 @@ public class TspOptimalTour {
   }
 
   public static void printTour(TspPhenotype tour) {
-    for (int i = 0; i < tour.getSolution().length; i++)
+    for (int i = 0; i < tour.getSolution().length; i++) {
       _logger.debug(tour.getSolution()[i] + " ");
+    }
 
     _logger.debug(" ");
 

@@ -98,7 +98,7 @@ public class TspProblemProvider extends ProblemProvider<TspPhenotype> {
 
   @Override
   public IPhenotypeEvaluator<TspPhenotype> initPhenotypeEvaluator(ProblemInstance instance) throws Exception {
-    return new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
+    return new TspPhenotypeEvaluator(this.getProblemInfo(), (TspProblemInstance) instance);
   }
 
 }

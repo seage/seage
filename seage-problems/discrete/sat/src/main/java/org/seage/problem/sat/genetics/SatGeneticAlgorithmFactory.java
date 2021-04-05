@@ -69,7 +69,7 @@ public class SatGeneticAlgorithmFactory
             SatPhenotype[] result = new SatPhenotype[this.solutions.size()];
 
             for (int i = 0; i < this.solutions.size(); i++) {
-              result[i] = new SatPhenotype(this.solutions.get(i).getChromosome().getGenes());
+              result[i] = solutionToPhenotype(this.solutions.get(i));
             }
             return result;
           }
@@ -83,7 +83,7 @@ public class SatGeneticAlgorithmFactory
             SatPhenotype result = new SatPhenotype(array);
             double[] objVals = this._phenotypeEvaluator.evaluate(result);
             result.setObjValue(objVals[0]);
-            result.setObjValue(objVals[1]);
+            result.setScore(objVals[1]);
             return result;
           }
         };

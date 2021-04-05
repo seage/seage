@@ -58,6 +58,7 @@ import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.TourProvider;
 import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspPhenotypeEvaluator;
+import org.seage.problem.tsp.TspProblemInstance;
 import org.seage.problem.tsp.TspProblemProvider;
 
 import org.slf4j.Logger;
@@ -249,7 +250,9 @@ public class MetadataGenerator {
       
       double[] randomResults = new double[populationCount];
 
-      TspPhenotypeEvaluator tspEval = new TspPhenotypeEvaluator(cities);
+      ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
+      TspProblemInstance instance = new TspProblemInstance(pii, cities);
+      TspPhenotypeEvaluator tspEval = new TspPhenotypeEvaluator(pi, instance);
 
       for (int i = 0; i < populationCount; i++) {
         randomResults[i] = tspEval
@@ -295,7 +298,7 @@ public class MetadataGenerator {
       
       double[] randomResults = new double[populationCount];
 
-      SatPhenotypeEvaluator satEval = new SatPhenotypeEvaluator(formula, pi);
+      SatPhenotypeEvaluator satEval = new SatPhenotypeEvaluator(pi, formula);
 
       for (int i = 0; i < populationCount; i++) {
         randomResults[i] = satEval.evaluate(

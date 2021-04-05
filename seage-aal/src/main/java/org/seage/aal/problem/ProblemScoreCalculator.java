@@ -8,9 +8,10 @@ public class ProblemScoreCalculator {
     this.problemInfo = problemInfo;
   }
 
+  /**. */
   public double calculateInstanceScore(String instanceID, double objValue) throws Exception {
     double optimum = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("optimum");
-    double random = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("optimum");
+    double random = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("random");
     return UnitMetric.getMetricValue(optimum, random, objValue);
   }
 

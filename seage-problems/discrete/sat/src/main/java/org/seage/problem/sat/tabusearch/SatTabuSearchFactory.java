@@ -71,12 +71,7 @@ public class SatTabuSearchFactory implements IAlgorithmFactory<SatPhenotype, Sat
         SatPhenotype[] result = new SatPhenotype[this.solutions.length];
 
         for (int i = 0; i < this.solutions.length; i++) {
-          SatSolution s = (SatSolution) this.solutions[i];
-          Boolean[] array = new Boolean[s.getLiteralValues().length];
-          for (int j = 0; j < s.getLiteralValues().length; j++) {
-            array[j] = s.getLiteralValues()[j];
-          }
-          result[i] = new SatPhenotype(array);
+          result[i] = solutionToPhenotype(this.solutions[i]);
         }
         return result;
       }
@@ -87,7 +82,11 @@ public class SatTabuSearchFactory implements IAlgorithmFactory<SatPhenotype, Sat
         for (int j = 0; j < s.getLiteralValues().length; j++) {
           array[j] = s.getLiteralValues()[j];
         }
-        return new SatPhenotype(array);
+        SatPhenotype result = new SatPhenotype(array);
+        double[] objVals = this._phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
       }
     };
 

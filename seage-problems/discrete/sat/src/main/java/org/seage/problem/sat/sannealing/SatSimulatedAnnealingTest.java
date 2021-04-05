@@ -56,7 +56,7 @@ public class SatSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
         FormulaReader.readClauses(new FileInputStream(path)));
 
-    SimulatedAnnealing sa = new SimulatedAnnealing(new SatObjectiveFunction(new SatPhenotypeEvaluator(formula, null)), new SatMoveManager());
+    SimulatedAnnealing sa = new SimulatedAnnealing(new SatObjectiveFunction(new SatPhenotypeEvaluator(null, formula)), new SatMoveManager());
 
     sa.setMaximalTemperature(200000);
     sa.setMinimalTemperature(0.1);

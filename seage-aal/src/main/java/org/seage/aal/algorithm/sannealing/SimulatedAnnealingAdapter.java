@@ -61,7 +61,6 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
   private long _numberOfNewSolutions = 0;
   private long _lastImprovingIteration = 0;
   private double _initObjectiveValue = Double.MAX_VALUE;
-  private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
   protected SimulatedAnnealingAdapter(IObjectiveFunction objectiveFunction, IMoveManager moveManager,
       IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing) throws Exception {

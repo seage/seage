@@ -82,7 +82,11 @@ public class TspTabuSearchFactory implements IAlgorithmFactory<TspPhenotype, Tsp
 
       @Override
       public TspPhenotype solutionToPhenotype(TspSolution solution) throws Exception {
-        return new TspPhenotype(solution.getTour());
+        TspPhenotype result = new TspPhenotype(solution.getTour());
+        double[] objVals = this._phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
       }
     };
 
