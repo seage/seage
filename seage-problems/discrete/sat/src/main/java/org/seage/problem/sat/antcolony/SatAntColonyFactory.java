@@ -34,21 +34,21 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
-        _ants = new Ant[source.length];
-        for (int i = 0; i < _ants.length; i++) {
+        ants = new Ant[source.length];
+        for (int i = 0; i < ants.length; i++) {
           ArrayList<Integer> nodes = new ArrayList<Integer>();
           for (int j = 1; j <= source[i].getSolution().length; j++) {
             nodes.add((Boolean) source[i].getSolution()[j - 1] == true ? j : -j);
           }
-          _ants[i] = new Ant(brain, graph, nodes);
+          ants[i] = new Ant(brain, graph, nodes);
         }
       }
 
       @Override
       public SatPhenotype[] solutionsToPhenotype() throws Exception {
-        SatPhenotype[] result = new SatPhenotype[_ants.length];
-        for (int i = 0; i < _ants.length; i++) {
-          result[i] = solutionToPhenotype(_ants[i]);
+        SatPhenotype[] result = new SatPhenotype[ants.length];
+        for (int i = 0; i < ants.length; i++) {
+          result[i] = solutionToPhenotype(ants[i]);
         }
         return result;
       }
@@ -60,7 +60,7 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
           Integer value = (Integer) solution.getNodeIDsAlongPath().get(i);
           result.getSolution()[i] = value > 0;
         }
-        double[] objVals = this._phenotypeEvaluator.evaluate(result);
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
         result.setObjValue(objVals[0]);
         result.setScore(objVals[1]);
         return result;

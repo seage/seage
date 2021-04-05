@@ -81,7 +81,7 @@ public class SatGeneticAlgorithmFactory
               array[j] = s.getChromosome().getGene(j);
             }
             SatPhenotype result = new SatPhenotype(array);
-            double[] objVals = this._phenotypeEvaluator.evaluate(result);
+            double[] objVals = this.phenotypeEvaluator.evaluate(result);
             result.setObjValue(objVals[0]);
             result.setScore(objVals[1]);
             return result;

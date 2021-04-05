@@ -62,17 +62,17 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
         graph, phenotypeEvaluator) {
       @Override
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
-        _ants = new Ant[source.length];
-        for (int i = 0; i < _ants.length; i++) {
-          _ants[i] = new Ant(brain, graph, Arrays.asList(source[i].getSolution()));
+        ants = new Ant[source.length];
+        for (int i = 0; i < ants.length; i++) {
+          ants[i] = new Ant(brain, graph, Arrays.asList(source[i].getSolution()));
         }
       }
 
       @Override
       public TspPhenotype[] solutionsToPhenotype() throws Exception {
-        TspPhenotype[] result = new TspPhenotype[_ants.length];
-        for (int i = 0; i < _ants.length; i++) {          
-          result[i] = solutionToPhenotype(_ants[i]);
+        TspPhenotype[] result = new TspPhenotype[ants.length];
+        for (int i = 0; i < ants.length; i++) {          
+          result[i] = solutionToPhenotype(ants[i]);
         }
         return result;
       }
@@ -81,7 +81,7 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
       public TspPhenotype solutionToPhenotype(Ant solution) throws Exception {
         Integer[] p = (Integer[]) solution.getNodeIDsAlongPath().stream().toArray(Integer[]::new);
         TspPhenotype result = new TspPhenotype(p);
-        double[] objVals = this._phenotypeEvaluator.evaluate(result);
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
         result.setObjValue(objVals[0]);
         result.setScore(objVals[0]);
         return result;

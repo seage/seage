@@ -84,7 +84,7 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
     _comparator = new SolutionComparator();
     _fireflySearch = new FireflySearch<>(operator, evaluator);
     _fireflySearch.addFireflySearchListener(_observer);
-    _phenotypeEvaluator = phenotypeEvaluator;
+    phenotypeEvaluator = phenotypeEvaluator;
   }
 
   /**
@@ -100,8 +100,8 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
     }
     setParameters(params);
 
-    _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
-    _reporter.putParameters(_params);
+    reporter = new AlgorithmReporter<>(phenotypeEvaluator);
+    reporter.putParameters(_params);
 
     _fireflySearch.startSolving(this.solutions);
     this.solutions = _fireflySearch.getSolutions();
@@ -143,16 +143,16 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
       avg += this.solutions.get(i).getObjectiveValue()[0];
     avg /= num;
 
-    _reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);
+    reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal, avg, _statEndObjVal);
 
-    return _reporter.getReport();
+    return reporter.getReport();
   }
 
   private class FireflySearchObserver implements FireflySearchListener<S> {
     @Override
     public void FireflySearchStarted(FireflySearchEvent<S> e) {
       _statNumNewSol = _statLastIterNewSol = 0;
-      _algorithmStarted = true;
+      algorithmStarted = true;
     }
 
     @Override
@@ -160,7 +160,7 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
       Solution best = e.getFireflySearch().getBestSolution();
       if (best != null)
         _statEndObjVal = best.getObjectiveValue()[0];
-      _algorithmStopped = true;
+      algorithmStopped = true;
     }
 
     @Override
@@ -171,7 +171,7 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
         if (_statNumNewSol == 0)
           _statInitObjVal = solution.getObjectiveValue()[0];
 
-        _reporter.putNewSolution(System.currentTimeMillis(), e.getFireflySearch().getCurrentIteration(),
+        reporter.putNewSolution(System.currentTimeMillis(), e.getFireflySearch().getCurrentIteration(),
             solutionToPhenotype(solution));
         _statNumNewSol++;
         _statLastIterNewSol = e.getFireflySearch().getCurrentIteration();

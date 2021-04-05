@@ -40,34 +40,35 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ * SimulatedAnnealingAdapter base implementation.
  * @author Jan Zmatlik
  */
-@AlgorithmParameters({ @Parameter(name = "iterationCount", min = 1, max = 999999999, init = 999999999),
+@AlgorithmParameters({ 
+    @Parameter(name = "iterationCount", min = 1, max = 999999999, init = 999999999),
     @Parameter(name = "maxTemperature", min = 1000, max = 999999999, init = 100000),
     @Parameter(name = "minTemperature", min = 0, max = 99999, init = 1),
     @Parameter(name = "numSolutions", min = 1, max = 1, init = 1) })
 public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extends Solution>
     extends AlgorithmAdapterImpl<P, S> {
 
-  protected static Logger logger = LoggerFactory.getLogger(SimulatedAnnealingAdapter.class.getName());
+  private static Logger logger = LoggerFactory.getLogger(SimulatedAnnealingAdapter.class.getName());
 
-  protected SimulatedAnnealing<S> _simulatedAnnealing;
+  protected SimulatedAnnealing<S> simulatedAnnealing;
   protected S[] solutions;
-  private AlgorithmParams _params;
+  private AlgorithmParams algParams;
   // private Solution _bestSolution;
-  private AlgorithmReporter<P> _reporter;
-  private long _numberOfIterationsDone = 0;
-  private long _numberOfNewSolutions = 0;
-  private long _lastImprovingIteration = 0;
-  private double _initObjectiveValue = Double.MAX_VALUE;
+  private long numberOfIterationsDone = 0;
+  private long numberOfNewSolutions = 0;
+  private long lastImprovingIteration = 0;
+  private double initObjectiveValue = Double.MAX_VALUE;
 
-  protected SimulatedAnnealingAdapter(IObjectiveFunction objectiveFunction, IMoveManager moveManager,
+  protected SimulatedAnnealingAdapter(
+      IObjectiveFunction objectiveFunction, IMoveManager moveManager,
       IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing) throws Exception {
     super(phenotypeEvaluator);
-    _simulatedAnnealing = new SimulatedAnnealing<>(objectiveFunction, moveManager);
-    _simulatedAnnealing.addSimulatedAnnealingListener(new SimulatedAnnealingListener());
-    _phenotypeEvaluator = phenotypeEvaluator;
+    this.simulatedAnnealing = new SimulatedAnnealing<>(objectiveFunction, moveManager);
+    this.simulatedAnnealing.addSimulatedAnnealingListener(new SimulatedAnnealingListener());
+    this.phenotypeEvaluator = phenotypeEvaluator;
   }
 
   @Override
@@ -77,56 +78,63 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
     }
     setParameters(params);
 
-    _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
-    _reporter.putParameters(_params);
+    this.reporter = new AlgorithmReporter<>(phenotypeEvaluator);
+    this.reporter.putParameters(algParams);
 
-    _numberOfIterationsDone = _numberOfNewSolutions = _lastImprovingIteration = 0;
-    _simulatedAnnealing.startSearching(this.solutions[0]);
+    numberOfIterationsDone = numberOfNewSolutions = lastImprovingIteration = 0;
+    simulatedAnnealing.startSearching(this.solutions[0]);
 
-    this.solutions[0] = _simulatedAnnealing.getBestSolution();
+    this.solutions[0] = simulatedAnnealing.getBestSolution();
   }
 
   @Override
   public void stopSearching() throws Exception {
-    _simulatedAnnealing.stopSearching();
+    simulatedAnnealing.stopSearching();
 
-    while (isRunning())
+    while (isRunning()) {
       Thread.sleep(100);
+    }
   }
 
   @Override
   public boolean isRunning() {
-    return _simulatedAnnealing.isRunning();
+    return simulatedAnnealing.isRunning();
   }
 
   @Override
   public AlgorithmReport getReport() throws Exception {
-    _reporter.putStatistics(_numberOfIterationsDone, _numberOfNewSolutions, _lastImprovingIteration,
-        _initObjectiveValue, _simulatedAnnealing.getBestSolution().getObjectiveValue(),
-        _simulatedAnnealing.getBestSolution().getObjectiveValue());
+    reporter.putStatistics(numberOfIterationsDone, numberOfNewSolutions, lastImprovingIteration,
+        initObjectiveValue, simulatedAnnealing.getBestSolution().getObjectiveValue(),
+        simulatedAnnealing.getBestSolution().getObjectiveValue());
 
-    return _reporter.getReport();
+    return reporter.getReport();
   }
 
+  /**
+   * Sets the new algorithm parameters.
+   * @param params .
+   * @throws Exception .
+   */
   public void setParameters(AlgorithmParams params) throws Exception {
-    _params = params;
+    algParams = params;
 
-    _simulatedAnnealing.setMaximalTemperature(_params.getValueInt("maxTemperature"));
-    _simulatedAnnealing.setMinimalTemperature(_params.getValueDouble("minTemperature"));
+    simulatedAnnealing.setMaximalTemperature(algParams.getValueInt("maxTemperature"));
+    simulatedAnnealing.setMinimalTemperature(algParams.getValueDouble("minTemperature"));
     // _simulatedAnnealing.setAnnealingCoefficient(_params.getValueDouble("annealCoeficient"));
-    _simulatedAnnealing.setMaximalIterationCount(_params.getValueInt("iterationCount"));
-    // _simulatedAnnealing.setMaximalAcceptedSolutionsPerOneStepCount(_params.getValueInt("maxOneStepAcceptedSolutions"));
+    simulatedAnnealing.setMaximalIterationCount(algParams.getValueInt("iterationCount"));
+    // _simulatedAnnealing.setMaximalAcceptedSolutionsPerOneStepCount(
+    //     _params.getValueInt("maxOneStepAcceptedSolutions"));
   }
 
   private class SimulatedAnnealingListener implements IAlgorithmListener<SimulatedAnnealingEvent> {
     @Override
     public void algorithmStarted(SimulatedAnnealingEvent e) {
-      _algorithmStarted = true;
+      algorithmStarted = true;
     }
 
     @Override
     public void algorithmStopped(SimulatedAnnealingEvent e) {
-      _numberOfIterationsDone = e.getSimulatedAnnealing().getCurrentIteration();
+      numberOfIterationsDone = e.getSimulatedAnnealing().getCurrentIteration();
     }
 
     @Override
@@ -135,14 +143,15 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
         // TODO: A - Remove casting
         S s = (S) e.getSimulatedAnnealing().getBestSolution();
 
-        _reporter.putNewSolution(System.currentTimeMillis(), e.getSimulatedAnnealing().getCurrentIteration(),
-            solutionToPhenotype(s));
+        reporter.putNewSolution(System.currentTimeMillis(),
+            e.getSimulatedAnnealing().getCurrentIteration(), solutionToPhenotype(s));
 
-        if (_numberOfNewSolutions == 0)
-          _initObjectiveValue = s.getObjectiveValue();
+        if (numberOfNewSolutions == 0) {
+          initObjectiveValue = s.getObjectiveValue();
+        }
 
-        _numberOfNewSolutions++;
-        _lastImprovingIteration = e.getSimulatedAnnealing().getCurrentIteration();
+        numberOfNewSolutions++;
+        lastImprovingIteration = e.getSimulatedAnnealing().getCurrentIteration();
       } catch (Exception ex) {
         logger.error("Failed to report new best solution", ex);
       }

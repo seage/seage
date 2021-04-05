@@ -43,6 +43,8 @@ import org.seage.metaheuristic.genetics.GeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectComparator;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * GeneticSearchAdapter class.
@@ -57,6 +59,9 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
 public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends Subject<?>>
     extends AlgorithmAdapterImpl<P, S> {
 
+  private static final Logger logger = 
+      LoggerFactory.getLogger(GeneticAlgorithmAdapter.class.getName());
+  
   protected List<S> solutions;
   protected GeneticAlgorithm<S> geneticAlgorithm;
   protected SubjectEvaluator<S> evaluator;
@@ -90,8 +95,8 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
     }
     setParameters(params);
 
-    _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
-    _reporter.putParameters(params);
+    reporter = new AlgorithmReporter<>(phenotypeEvaluator);
+    reporter.putParameters(params);
 
     geneticAlgorithm.startSearching(this.solutions);
 
@@ -141,7 +146,7 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
     }
     avg /= num;
 
-    _reporter.putStatistics(
+    reporter.putStatistics(
         statNrOfIterationsDone, 
         statNumNewSol, 
         statLastImprovingIteration, 
@@ -149,19 +154,19 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
         avg,
         statBestObjVal);
 
-    return _reporter.getReport();
+    return reporter.getReport();
   }
 
   private class GeneticAlgorithmListener implements IAlgorithmListener<GeneticAlgorithmEvent<S>> {
     @Override
     public void algorithmStarted(GeneticAlgorithmEvent<S> e) {
-      _algorithmStarted = true;
+      algorithmStarted = true;
       statNumNewSol = statLastImprovingIteration = 0;
     }
 
     @Override
     public void algorithmStopped(GeneticAlgorithmEvent<S> e) {
-      _algorithmStopped = true;
+      algorithmStopped = true;
       statNrOfIterationsDone = e.getGeneticSearch().getCurrentIteration();
       S s = e.getGeneticSearch().getBestSubject();
       if (s != null) {
@@ -180,7 +185,7 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
         }
 
         bestEverSolution = (S) gs.getBestSubject().clone();
-        _reporter.putNewSolution(
+        reporter.putNewSolution(
             System.currentTimeMillis(), 
             gs.getCurrentIteration(), 
             solutionToPhenotype(subject));
@@ -188,7 +193,7 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
         statLastImprovingIteration = gs.getCurrentIteration();
 
       } catch (Exception ex) {
-        _logger.warn(ex.getMessage(), ex);
+        logger.warn(ex.getMessage(), ex);
       }
     }
 

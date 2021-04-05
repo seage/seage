@@ -23,6 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.aal.algorithm;
 
 import org.seage.aal.reporter.AlgorithmReporter;
@@ -30,29 +31,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * The very common AlgorithmAdapter implementation.
  * @author Richard Malek
- * @param <S>
+ * @param <S> Solution template parameter.
  */
-public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S> implements IAlgorithmAdapter<P, S> {
-  protected static final Logger _logger = LoggerFactory.getLogger(AlgorithmAdapterImpl.class.getName());
+public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S> 
+    implements IAlgorithmAdapter<P, S> {
+  private static final Logger logger = 
+      LoggerFactory.getLogger(AlgorithmAdapterImpl.class.getName());
 
-  protected boolean _algorithmStarted = false;
-  protected boolean _algorithmStopped = false;
+  protected boolean algorithmStarted = false;
+  protected boolean algorithmStopped = false;
 
-  protected AlgorithmReporter<P> _reporter;
-  protected IPhenotypeEvaluator<P> _phenotypeEvaluator;
+  protected AlgorithmReporter<P> reporter;
+  protected IPhenotypeEvaluator<P> phenotypeEvaluator;
 
   public AlgorithmAdapterImpl(IPhenotypeEvaluator<P> phenotypeEvaluator) {
-    this._phenotypeEvaluator = phenotypeEvaluator;
+    this.phenotypeEvaluator = phenotypeEvaluator;
   }
 
   @Override
   public void startSearching(final AlgorithmParams params, boolean async) throws Exception {
-    if (_algorithmStarted && !_algorithmStopped)
+    if (algorithmStarted && !algorithmStopped) {
       throw new RuntimeException("Algorithm already started, running.");
+    }
 
-    _algorithmStarted = false;
+    algorithmStarted = false;
 
     if (async == true) {
       new Thread(new Runnable() {
@@ -61,22 +65,23 @@ public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S> implements
           try {
             startSearching(params);
           } catch (Exception ex) {
-            _logger.error(ex.getMessage(), ex);
+            logger.error(ex.getMessage(), ex);
           }
         }
       }, this.getClass().getName()).start();
 
       int i = 0;
-      while (!_algorithmStarted) {
+      while (!algorithmStarted) {
         Thread.sleep(10);
-        if (i++ < 10)
+        if (i++ < 10) {
           ;// System.out.print("+");
-        else {
+        } else {
           stopSearching();
           throw new RuntimeException("Unable to start the algorithm asynchronously.");
         }
       }
-    } else
+    } else {
       startSearching(params);
+    }
   }
 }

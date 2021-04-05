@@ -79,7 +79,7 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory<TspPhenotyp
 
       public TspPhenotype solutionToPhenotype(Subject<Integer> solution) throws Exception {
         TspPhenotype result = new TspPhenotype(solution.getChromosome().getGenes());
-        double[] objVals = this._phenotypeEvaluator.evaluate(result);
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
         result.setObjValue(objVals[0]);
         result.setScore(objVals[1]);
         return result;

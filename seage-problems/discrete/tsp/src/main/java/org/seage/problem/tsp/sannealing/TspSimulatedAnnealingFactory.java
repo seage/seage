@@ -89,7 +89,7 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory<TspPhenot
       public TspPhenotype solutionToPhenotype(TspSolution solution) throws Exception {
         TspSolution s = (TspSolution) solution;
         TspPhenotype result = new TspPhenotype(s.getTour());
-        double[] objVals = this._phenotypeEvaluator.evaluate(result);
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
         result.setObjValue(objVals[0]);
         result.setScore(objVals[1]);
         return result;

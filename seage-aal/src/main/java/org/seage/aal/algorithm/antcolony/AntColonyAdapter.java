@@ -23,6 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.aal.algorithm.antcolony;
 
 import java.util.List;
@@ -37,14 +38,15 @@ import org.seage.aal.reporter.AlgorithmReport;
 import org.seage.aal.reporter.AlgorithmReporter;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.Ant;
-import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * AntColony adapter class
+ * AntColony adapter base implementation.
  * 
  * @author Richard Malek
  *
@@ -58,40 +60,52 @@ import org.seage.metaheuristic.antcolony.Graph;
     @Parameter(name = "localEvaporation", min = 0.5, max = 0.98, init = 0.95) })
 public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> 
     extends AlgorithmAdapterImpl<P, S> {
-  protected AntColony _antColony;
-  // private AntColonyListener _algorithmListener;
-  protected Graph _graph;
-  private AlgorithmParams _params;
-  protected Ant[] _ants;
 
-  private AlgorithmReporter<P> _reporter;
-  private long _statNumIterationsDone;
-  private long _statNumNewBestSolutions;
-  private long _statLastImprovingIteration;
-  private double _initialSolutionValue;
-  private double _bestSolutionValue;
-  public double _averageSolutionValue;
+  private static final Logger logger = 
+      LoggerFactory.getLogger(AntColonyAdapter.class.getName());
+      
+  protected AntColony antColony;
+  protected Graph graph;
+  private AlgorithmParams algParams;
+  protected Ant[] ants;
 
+  private long statNumIterationsDone;
+  private long statNumNewBestSolutions;
+  private long statLastImprovingIteration;
+  private double initialSolutionValue;
+  private double bestSolutionValue;
+  public double averageSolutionValue;
+
+  /**
+   * AntColonyAdapter base implementation.
+   * @param graph .
+   * @param phenotypeEvaluator .
+   */
   public AntColonyAdapter(Graph graph, IPhenotypeEvaluator<P> phenotypeEvaluator) {
     super(phenotypeEvaluator);
-    _params = null;
-    _graph = graph;
-    _phenotypeEvaluator = phenotypeEvaluator;
-    _antColony = new AntColony(graph);
-    _antColony.addAntColonyListener(new AntColonyListener());
+    this.algParams = null;
+    this.graph = graph;
+    this.phenotypeEvaluator = phenotypeEvaluator;
+    this.antColony = new AntColony(graph);
+    this.antColony.addAntColonyListener(new AntColonyListener());
   }
 
+  /**
+   * Sets the new algorithm parameters.
+   * @param params .
+   * @throws Exception .
+   */
   public void setParameters(AlgorithmParams params) throws Exception {
-    _params = params;
+    this.algParams = params;
 
-    int iterationCount = _params.getValueInt("iterationCount");
-    double alpha = _params.getValueDouble("alpha");
-    double beta = _params.getValueDouble("beta");
-    double defaultPheromone = _params.getValueDouble("defaultPheromone");
-    double quantumOfPheromone = _params.getValueDouble("qantumOfPheromone");
-    double localEvaporation = _params.getValueDouble("localEvaporation");
-    _antColony.setParameters(iterationCount, alpha, beta, quantumOfPheromone, defaultPheromone, localEvaporation);
-
+    int iterationCount = algParams.getValueInt("iterationCount");
+    double alpha = algParams.getValueDouble("alpha");
+    double beta = algParams.getValueDouble("beta");
+    double defaultPheromone = algParams.getValueDouble("defaultPheromone");
+    double quantumOfPheromone = algParams.getValueDouble("qantumOfPheromone");
+    double localEvaporation = algParams.getValueDouble("localEvaporation");
+    antColony.setParameters(
+        iterationCount, alpha, beta, quantumOfPheromone, defaultPheromone, localEvaporation);
   }
 
   @Override
@@ -101,73 +115,72 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
     }
     setParameters(params);
 
-    _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
-    _reporter.putParameters(_params);
+    reporter = new AlgorithmReporter<>(phenotypeEvaluator);
+    reporter.putParameters(algParams);
 
-    _statLastImprovingIteration = 0;
-    _statNumIterationsDone = 0;
-    _statNumNewBestSolutions = 0;
-    _averageSolutionValue = 0;
-    _initialSolutionValue = _bestSolutionValue = Double.MAX_VALUE;
+    statLastImprovingIteration = 0;
+    statNumIterationsDone = 0;
+    statNumNewBestSolutions = 0;
+    averageSolutionValue = 0;
+    initialSolutionValue = bestSolutionValue = Double.MAX_VALUE;
 
-    _antColony.startExploring(_graph.getNodes().values().iterator().next(), _ants);
+    antColony.startExploring(graph.getNodes().values().iterator().next(), ants);
 
   }
 
   @Override
   public void stopSearching() throws Exception {
-    _antColony.stopExploring();
+    antColony.stopExploring();
 
-    while (isRunning())
+    while (isRunning()) {
       Thread.sleep(100);
+    }
   }
 
   @Override
   public boolean isRunning() {
-    return _antColony.isRunning();
+    return antColony.isRunning();
   }
 
   @Override
   public AlgorithmReport getReport() throws Exception {
-    _reporter.putStatistics(_statNumIterationsDone, _statNumNewBestSolutions, _statLastImprovingIteration,
-        _initialSolutionValue, _averageSolutionValue, _bestSolutionValue);
-    return _reporter.getReport();
+    reporter.putStatistics(statNumIterationsDone, statNumNewBestSolutions,
+        statLastImprovingIteration, initialSolutionValue, averageSolutionValue, bestSolutionValue);
+    return reporter.getReport();
   }
 
   private class AntColonyListener implements IAlgorithmListener<AntColonyEvent> {
     @Override
     public void algorithmStarted(AntColonyEvent e) {
-      _algorithmStarted = true;
+      algorithmStarted = true;
 
     }
 
     @Override
     public void algorithmStopped(AntColonyEvent e) {
-      _algorithmStopped = true;
-      _statNumIterationsDone = e.getAntColony().getCurrentIteration();
+      algorithmStopped = true;
+      statNumIterationsDone = e.getAntColony().getCurrentIteration();
     }
 
     @Override
     public void newBestSolutionFound(AntColonyEvent e) {
       AntColony alg = e.getAntColony();
-      _averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();
-      _statLastImprovingIteration = alg.getCurrentIteration();
-      _averageSolutionValue = _bestSolutionValue = alg.getGlobalBest();
+      averageSolutionValue = bestSolutionValue = alg.getGlobalBest();
+      statLastImprovingIteration = alg.getCurrentIteration();
+      averageSolutionValue = bestSolutionValue = alg.getGlobalBest();
 
-      if (_statNumNewBestSolutions == 0) {
-        _initialSolutionValue = _bestSolutionValue;
+      if (statNumNewBestSolutions == 0) {
+        initialSolutionValue = bestSolutionValue;
       }
 
-      _statNumNewBestSolutions++;
+      statNumNewBestSolutions++;
 
       try {
+        // TODO: A - Remove casting
         P solution = solutionToPhenotype((S) alg.getBestAnt());
-        _reporter.putNewSolution(
-            System.currentTimeMillis(), 
-            alg.getCurrentIteration(), 
-            solution);
+        reporter.putNewSolution(System.currentTimeMillis(), alg.getCurrentIteration(), solution);
       } catch (Exception ex) {
-        _logger.warn(ex.getMessage(), ex);
+        logger.warn(ex.getMessage(), ex);
       }
     }
 
@@ -177,16 +190,19 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
 
     @Override
     public void iterationPerformed(AntColonyEvent e) {
-      if (e.getAntColony().getCurrentIteration() == 1)
-        _initialSolutionValue = e.getAntColony().getGlobalBest();
+      if (e.getAntColony().getCurrentIteration() == 1) {
+        initialSolutionValue = e.getAntColony().getGlobalBest();
+      }
     }
 
     private String createNodeListString(List<Edge> bestPath) {
       Integer[] nodeIDs = new Integer[bestPath.size() + 1];
       String result = "";
       nodeIDs[0] = bestPath.get(0).getNode1().getID();
-      if (nodeIDs[0] != bestPath.get(1).getNode1().getID() || nodeIDs[0] != bestPath.get(1).getNode2().getID())
+      if (nodeIDs[0] != bestPath.get(1).getNode1().getID()
+          || nodeIDs[0] != bestPath.get(1).getNode2().getID()) {
         nodeIDs[0] = bestPath.get(0).getNode2().getID();
+      }
       for (int i = 1; i < nodeIDs.length - 1; i++) {
         nodeIDs[i] = bestPath.get(i).getNode1().getID();
         if (i > 0 && nodeIDs[i - 1].equals(nodeIDs[i])) {

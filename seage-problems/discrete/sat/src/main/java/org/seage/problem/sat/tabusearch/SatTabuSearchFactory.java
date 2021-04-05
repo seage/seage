@@ -83,7 +83,7 @@ public class SatTabuSearchFactory implements IAlgorithmFactory<SatPhenotype, Sat
           array[j] = s.getLiteralValues()[j];
         }
         SatPhenotype result = new SatPhenotype(array);
-        double[] objVals = this._phenotypeEvaluator.evaluate(result);
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
         result.setObjValue(objVals[0]);
         result.setScore(objVals[1]);
         return result;
