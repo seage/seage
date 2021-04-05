@@ -52,7 +52,7 @@ public class SatSimulatedAnnealingFactory implements IAlgorithmFactory<SatPhenot
     Formula formula = (Formula) instance;
     IAlgorithmAdapter<SatPhenotype, SatSolution> algorithm = 
         new SimulatedAnnealingAdapter<SatPhenotype, SatSolution>(
-            new SatObjectiveFunction(formula), new SatMoveManager(), phenotypeEvaluator, false) {
+            new SatObjectiveFunction(phenotypeEvaluator), new SatMoveManager(), phenotypeEvaluator, false) {
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {

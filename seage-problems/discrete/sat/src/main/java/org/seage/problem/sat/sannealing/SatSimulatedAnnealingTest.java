@@ -32,6 +32,7 @@ import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaReader;
+import org.seage.problem.sat.SatPhenotypeEvaluator;
 
 /**
  * The purpose of this class is demonstration of SA algorithm use.
@@ -55,7 +56,7 @@ public class SatSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
         FormulaReader.readClauses(new FileInputStream(path)));
 
-    SimulatedAnnealing sa = new SimulatedAnnealing(new SatObjectiveFunction(formula), new SatMoveManager());
+    SimulatedAnnealing sa = new SimulatedAnnealing(new SatObjectiveFunction(new SatPhenotypeEvaluator(formula, null)), new SatMoveManager());
 
     sa.setMaximalTemperature(200000);
     sa.setMinimalTemperature(0.1);

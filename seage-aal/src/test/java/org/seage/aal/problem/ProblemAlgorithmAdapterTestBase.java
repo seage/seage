@@ -72,6 +72,9 @@ public abstract class ProblemAlgorithmAdapterTestBase<P extends Phenotype<?>> {
       assertNotNull(solutions2[i]);
       assertNotNull(solutions2[i].getSolution());
 
+      assertNotNull(solutions[i].getObjValue());
+      assertNotNull(solutions[i].getScore());
+
       byte[] b1 = ObjectCloner.getBytes(solutions[i].getSolution());
       byte[] b2 = ObjectCloner.getBytes(solutions2[i].getSolution());
       assertTrue(Arrays.equals(b1, b2),

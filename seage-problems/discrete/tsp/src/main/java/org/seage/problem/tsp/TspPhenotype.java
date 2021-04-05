@@ -6,7 +6,7 @@ import org.seage.aal.algorithm.Phenotype;
 
 public class TspPhenotype extends Phenotype<Integer[]> {
 
-  public TspPhenotype(Integer[] path) {
+  public TspPhenotype(Integer[] path) throws Exception {
     super(path);
   }
 

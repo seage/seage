@@ -52,7 +52,7 @@ public class SatTabuSearchFactory implements IAlgorithmFactory<SatPhenotype, Sat
     Formula formula = (Formula) instance;
 
     IAlgorithmAdapter<SatPhenotype, SatSolution> algorithm = new TabuSearchAdapter<SatPhenotype, SatSolution>(
-        new SatMoveManager(), new SatObjectiveFunction(new SatPhenotypeEvaluator(formula)), phenotypeEvaluator) {
+        new SatMoveManager(), new SatObjectiveFunction(phenotypeEvaluator), phenotypeEvaluator) {
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {

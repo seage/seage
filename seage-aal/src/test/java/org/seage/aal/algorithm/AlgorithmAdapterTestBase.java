@@ -87,7 +87,7 @@ public class AlgorithmAdapterTestBase<S> {
     assertTrue(stats.getValueInt("lastIterNumberNewSol") > 1 || stats.getValueInt("numberOfNewSolutions") == 1);
   }
 
-  private TestPhenotype[] createTestPhenotypeSolutions() {
+  private TestPhenotype[] createTestPhenotypeSolutions() throws Exception {
     Random rnd = new Random(4);
     TestPhenotype[] solutions = new TestPhenotype[NUM_SOLUTIONS];
 

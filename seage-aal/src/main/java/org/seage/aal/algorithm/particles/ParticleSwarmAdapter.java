@@ -67,12 +67,11 @@ public abstract class ParticleSwarmAdapter<P extends Phenotype<?>, S extends Par
   private double _initObjectiveValue = Double.MAX_VALUE;
   private double _evaluationsOfParticles = 0;
   private double _avgOfBestSolutions = 0;
-  private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
   public ParticleSwarmAdapter(Particle[] initialParticles, IObjectiveFunction objectiveFunction,
       IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing) throws Exception {
+    super(phenotypeEvaluator);
     _initialParticles = initialParticles;
-    _phenotypeEvaluator = phenotypeEvaluator;
     _particleSwarm = new ParticleSwarm(objectiveFunction);
   }
 

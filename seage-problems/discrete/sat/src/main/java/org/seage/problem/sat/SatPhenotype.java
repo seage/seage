@@ -6,7 +6,7 @@ import org.seage.aal.algorithm.Phenotype;
 
 public class SatPhenotype extends Phenotype<Boolean[]> {
 
-  public SatPhenotype(Boolean[] path) {
+  public SatPhenotype(Boolean[] path) throws Exception {
     super(path);
   }
 

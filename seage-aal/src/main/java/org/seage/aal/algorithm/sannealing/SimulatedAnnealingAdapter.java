@@ -65,6 +65,7 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
 
   protected SimulatedAnnealingAdapter(IObjectiveFunction objectiveFunction, IMoveManager moveManager,
       IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing) throws Exception {
+    super(phenotypeEvaluator);
     _simulatedAnnealing = new SimulatedAnnealing<>(objectiveFunction, moveManager);
     _simulatedAnnealing.addSimulatedAnnealingListener(new SimulatedAnnealingListener());
     _phenotypeEvaluator = phenotypeEvaluator;

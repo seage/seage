@@ -70,14 +70,12 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
   private int _statNumNewSol;
   private int _statLastImprovingIteration;
 
-  private AlgorithmReporter<P> _reporter;
-  private IPhenotypeEvaluator<P> _phenotypeEvaluator;
-
   /** GeneticAlgorithmAdapter. */
   protected GeneticAlgorithmAdapter(GeneticOperator<S> operator, SubjectEvaluator<S> evaluator,
       IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing) {
+    super(phenotypeEvaluator);
     _evaluator = evaluator;
-    _phenotypeEvaluator = phenotypeEvaluator;
+    
     _algorithmListener = new GeneticAlgorithmListener();
     _comparator = new SubjectComparator<>();
     _geneticSearch = new GeneticAlgorithm<>(operator, evaluator);

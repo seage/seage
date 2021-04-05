@@ -63,15 +63,14 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
   private int _statNumNewSol;
   private int _statLastIterNewSol;
   private AlgorithmReporter<P> _reporter;
-  private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
   protected TabuSearchAdapter(MoveManager moveManager, ObjectiveFunction objectiveFunction,
       IPhenotypeEvaluator<P> phenotypeEvaluator) {
+    super(phenotypeEvaluator);
     _observer = new TabuSearchObserver();
     _tabuSearch = new TabuSearch(moveManager, objectiveFunction, false);
     _tabuSearch.addTabuSearchListener(_observer);
     _tabuSearch.setAspirationCriteria(new BestEverAspirationCriteria());
-    _phenotypeEvaluator = phenotypeEvaluator;
     _iterationToGo = 0;
     _tabuListLength = 0;
   }

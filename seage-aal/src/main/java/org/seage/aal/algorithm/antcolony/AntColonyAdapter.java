@@ -71,9 +71,9 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
   private double _initialSolutionValue;
   private double _bestSolutionValue;
   public double _averageSolutionValue;
-  private IPhenotypeEvaluator<P> _phenotypeEvaluator;
 
   public AntColonyAdapter(Graph graph, IPhenotypeEvaluator<P> phenotypeEvaluator) {
+    super(phenotypeEvaluator);
     _params = null;
     _graph = graph;
     _phenotypeEvaluator = phenotypeEvaluator;

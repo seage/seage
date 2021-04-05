@@ -25,6 +25,7 @@
  */
 package org.seage.aal.algorithm;
 
+import org.seage.aal.reporter.AlgorithmReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +39,13 @@ public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S> implements
 
   protected boolean _algorithmStarted = false;
   protected boolean _algorithmStopped = false;
+
+  protected AlgorithmReporter<P> _reporter;
+  protected IPhenotypeEvaluator<P> _phenotypeEvaluator;
+
+  public AlgorithmAdapterImpl(IPhenotypeEvaluator<P> phenotypeEvaluator) {
+    this._phenotypeEvaluator = phenotypeEvaluator;
+  }
 
   @Override
   public void startSearching(final AlgorithmParams params, boolean async) throws Exception {

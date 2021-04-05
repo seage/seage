@@ -68,7 +68,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
   @Override
   public IPhenotypeEvaluator<SatPhenotype> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception {
     Formula f = (Formula) problemInstance;
-    return new SatPhenotypeEvaluator(f);
+    return new SatPhenotypeEvaluator(f, this.getProblemInfo());
   }
 
   @Override

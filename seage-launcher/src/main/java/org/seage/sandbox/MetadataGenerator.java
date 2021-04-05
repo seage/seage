@@ -295,7 +295,7 @@ public class MetadataGenerator {
       
       double[] randomResults = new double[populationCount];
 
-      SatPhenotypeEvaluator satEval = new SatPhenotypeEvaluator(formula);
+      SatPhenotypeEvaluator satEval = new SatPhenotypeEvaluator(formula, pi);
 
       for (int i = 0; i < populationCount; i++) {
         randomResults[i] = satEval.evaluate(

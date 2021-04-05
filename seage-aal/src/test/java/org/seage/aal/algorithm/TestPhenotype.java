@@ -2,7 +2,7 @@ package org.seage.aal.algorithm;
 
 public class TestPhenotype extends Phenotype<Integer[]> {
 
-  public TestPhenotype(Integer[] path) {
+  public TestPhenotype(Integer[] path) throws Exception {
     super(path);
   }
 

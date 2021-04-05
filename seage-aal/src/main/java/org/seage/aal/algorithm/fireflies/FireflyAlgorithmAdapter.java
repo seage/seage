@@ -74,13 +74,11 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
   private int _statNumNewSol;
   private int _statLastIterNewSol;
 
-  private AlgorithmReporter<P> _reporter;
-  private IPhenotypeEvaluator<P> _phenotypeEvaluator;
-
   // private DataNode _minutes;
 
   public FireflyAlgorithmAdapter(FireflyOperator operator, ObjectiveFunction evaluator,
       IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing) {
+    super(phenotypeEvaluator);
     _evaluator = evaluator;
     _observer = new FireflySearchObserver();
     _comparator = new SolutionComparator();
