@@ -5,25 +5,48 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import org.seage.aal.algorithm.Phenotype;
+import org.seage.data.DataNode;
 
 public class ProblemScoreCalculatorTest {
   protected ProblemScoreCalculator problemScoreCalculator;
+  
+  @BeforeAll
+  static void init() {
+    ProblemProvider.providerClasses =
+        new Class<?>[] {TestProblemProvider.class};
+  }
 
   @Test
   public void testCalculatingOptimalInstanceScore() throws Exception {
-    Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
-    System.out.println(providers.size());
-    IProblemProvider<?> pp = providers.get("SAT");
-    ProblemInfo problemInfo = pp.getProblemInfo();
+    // Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
+
+    // System.out.println(providers.keySet());
+    // IProblemProvider<?> pp = providers.get("TEST");
+
+    // ProblemInfo problemInfo = pp.getProblemInfo();
+
+    ProblemInfo problemInfo = new ProblemInfo("TEST");
+    DataNode dn = new DataNode("test-instance");
+    dn.putValue("id", "test-instance");
+    dn.putValue("type", "resource");
+    dn.putValue("path", "");
+    dn.putValue("optimum", 2.0);
+    dn.putValue("random", 42.0);
+    DataNode ins = new DataNode("Instances");
+    ins.putDataNode(dn);
+    problemInfo.putDataNode(ins);
 
     problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
 
-    double optimum = problemInfo.getProblemInstanceInfo("uf100-0169").getValueDouble("optimum");
+    double optimum = problemInfo.getProblemInstanceInfo("test-instance").getValueDouble("optimum");
+
+    System.out.println(optimum);
    
-    assertEquals(1.0, problemScoreCalculator.calculateInstanceScore("uf100-169", optimum), 0.001);
+    assertEquals(1.0, problemScoreCalculator.calculateInstanceScore("test-instance", optimum), 0.001);
   }
 
 
