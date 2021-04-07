@@ -1,7 +1,5 @@
 package org.seage.aal.problem;
 
-import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,15 +9,13 @@ import org.seage.data.DataNode;
 
 public class ProblemScoreCalculatorTest {
   protected ProblemScoreCalculator problemScoreCalculator;
+  protected static ProblemInfo singleProblemInfo;
   
   @BeforeAll
-  static void init() {
+  static void init() throws Exception {
     ProblemProvider.providerClasses =
         new Class<?>[] {TestProblemProvider.class};
-  }
 
-  @Test
-  public void testCalculatingOptimalInstanceScore() throws Exception {
     DataNode dn = new DataNode("test-instance");
     dn.putValue("id", "test-instance");
     dn.putValue("type", "resource");
@@ -29,12 +25,16 @@ public class ProblemScoreCalculatorTest {
     DataNode ins = new DataNode("Instances");
     ins.putDataNode(dn);
     
-    ProblemInfo problemInfo = new ProblemInfo("TEST");
-    problemInfo.putDataNode(ins);
+    singleProblemInfo = new ProblemInfo("TEST");
+    singleProblemInfo.putDataNode(ins);
+  }
 
-    problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
+  @Test
+  public void testCalculatingOptimalInstanceScore() throws Exception {
+    problemScoreCalculator = new ProblemScoreCalculator(singleProblemInfo);
 
-    double optimum = problemInfo.getProblemInstanceInfo("test-instance").getValueDouble("optimum");
+    double optimum = singleProblemInfo
+        .getProblemInstanceInfo("test-instance").getValueDouble("optimum");
    
     assertEquals(
         1.0, problemScoreCalculator.calculateInstanceScore("test-instance", optimum), 0.1);
@@ -43,21 +43,11 @@ public class ProblemScoreCalculatorTest {
 
   @Test
   public void testCalculatingRandomInstanceScore() throws Exception {
-    DataNode dn = new DataNode("test-instance");
-    dn.putValue("id", "test-instance");
-    dn.putValue("type", "resource");
-    dn.putValue("path", "");
-    dn.putValue("optimum", 2.0);
-    dn.putValue("random", 42.0);
-    DataNode ins = new DataNode("Instances");
-    ins.putDataNode(dn);
     
-    ProblemInfo problemInfo = new ProblemInfo("TEST");
-    problemInfo.putDataNode(ins);
+    problemScoreCalculator = new ProblemScoreCalculator(singleProblemInfo);
 
-    problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
-
-    double random = problemInfo.getProblemInstanceInfo("test-instance").getValueDouble("random");
+    double random = singleProblemInfo
+        .getProblemInstanceInfo("test-instance").getValueDouble("random");
     
     assertEquals(
         0.0, problemScoreCalculator.calculateInstanceScore("test-instance", random), 0.1);
@@ -65,22 +55,12 @@ public class ProblemScoreCalculatorTest {
 
   @Test
   public void testCalculatingMidsectionInstanceScore() throws Exception {
-    DataNode dn = new DataNode("test-instance");
-    dn.putValue("id", "test-instance");
-    dn.putValue("type", "resource");
-    dn.putValue("path", "");
-    dn.putValue("optimum", 2.0);
-    dn.putValue("random", 42.0);
-    DataNode ins = new DataNode("Instances");
-    ins.putDataNode(dn);
-    
-    ProblemInfo problemInfo = new ProblemInfo("TEST");
-    problemInfo.putDataNode(ins);
+    problemScoreCalculator = new ProblemScoreCalculator(singleProblemInfo);
 
-    problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
-
-    double optimum = problemInfo.getProblemInstanceInfo("test-instance").getValueDouble("optimum");
-    double random = problemInfo.getProblemInstanceInfo("test-instance").getValueDouble("random");
+    double optimum = singleProblemInfo
+        .getProblemInstanceInfo("test-instance").getValueDouble("optimum");
+    double random = singleProblemInfo
+        .getProblemInstanceInfo("test-instance").getValueDouble("random");
     double midsection = (random - optimum) / 2;
 
     assertEquals(
@@ -89,21 +69,9 @@ public class ProblemScoreCalculatorTest {
 
   @Test
   public void testCalculatingBetterThanOptimumInstanceScore() throws Exception {
-    DataNode dn = new DataNode("test-instance");
-    dn.putValue("id", "test-instance");
-    dn.putValue("type", "resource");
-    dn.putValue("path", "");
-    dn.putValue("optimum", 2.0);
-    dn.putValue("random", 42.0);
-    DataNode ins = new DataNode("Instances");
-    ins.putDataNode(dn);
-    
-    ProblemInfo problemInfo = new ProblemInfo("TEST");
-    problemInfo.putDataNode(ins);
+    problemScoreCalculator = new ProblemScoreCalculator(singleProblemInfo);
 
-    problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
-
-    double optimum = problemInfo.getProblemInstanceInfo("test-instance").getValueDouble("optimum");
+    double optimum = singleProblemInfo.getProblemInstanceInfo("test-instance").getValueDouble("optimum");
     
     assertThrows(
         Exception.class, 
@@ -112,21 +80,10 @@ public class ProblemScoreCalculatorTest {
 
   @Test
   public void testCalculatingWorseThanRandomInstanceScore() throws Exception {
-    DataNode dn = new DataNode("test-instance");
-    dn.putValue("id", "test-instance");
-    dn.putValue("type", "resource");
-    dn.putValue("path", "");
-    dn.putValue("optimum", 2.0);
-    dn.putValue("random", 42.0);
-    DataNode ins = new DataNode("Instances");
-    ins.putDataNode(dn);
-    
-    ProblemInfo problemInfo = new ProblemInfo("TEST");
-    problemInfo.putDataNode(ins);
+    problemScoreCalculator = new ProblemScoreCalculator(singleProblemInfo);
 
-    problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
-
-    double random = problemInfo.getProblemInstanceInfo("test-instance").getValueDouble("random");
+    double random = singleProblemInfo
+        .getProblemInstanceInfo("test-instance").getValueDouble("random");
   
     assertEquals(0.0, 
         problemScoreCalculator.calculateInstanceScore("test-instance", random + 1), 0.1);

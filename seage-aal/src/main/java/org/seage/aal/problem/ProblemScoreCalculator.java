@@ -34,11 +34,9 @@ public class ProblemScoreCalculator {
       throw new Exception("Bad input values: input arrays have different lenght");
     }
 
-    int arrayLength = instanceIDs.length;
-
     double numerator = 0.0;
     double denominator = 0.0;
-    for (int i = 0; i < arrayLength; i++) {
+    for (int i = 0; i < instanceIDs.length; i++) {
       // Weight
       double instanceSize = problemInfo
           .getProblemInstanceInfo(instanceIDs[i]).getValueDouble("size");
