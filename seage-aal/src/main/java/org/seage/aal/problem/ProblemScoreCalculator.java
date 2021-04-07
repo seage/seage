@@ -1,5 +1,8 @@
 package org.seage.aal.problem;
 
+import java.util.Arrays;
+import org.seage.aal.problem.metrics.UnitMetric;
+
 public class ProblemScoreCalculator {
 
   private ProblemInfo problemInfo;
@@ -8,7 +11,12 @@ public class ProblemScoreCalculator {
     this.problemInfo = problemInfo;
   }
 
-  /**. */
+  /**
+   * Method calculates the score of given objValue.
+   * @param instanceID Instance name.
+   * @param objValue Instance value.
+   * @return Calculated score.
+   */
   public double calculateInstanceScore(String instanceID, double objValue) throws Exception {
     double optimum = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("optimum");
     double random = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("random");
@@ -16,52 +24,6 @@ public class ProblemScoreCalculator {
   }
 
   public double calculateProblemScore(String[] instanceIDs, double[] instanceScores) {
-    return 0;
+    return Arrays.stream(instanceScores).sum() / instanceScores.length;
   }
-
-  private static class UnitMetric {
-    private static double INTERVAL_MIN = 0.0;
-    private static double INTERVAL_MAX = 1.0;
-
-    /**
-     * Method returns the metric based on given data.
-     * 
-     * @param upperBound The value of random generator.
-     * @param lowerBound The optimal value.
-     * @param current    Input value for metric.
-     * @return The metric for given value.
-     */
-    public static double getMetricValue(double lowerBound, double upperBound, double current)
-        throws Exception {
-      if (upperBound < 0 || lowerBound < 0 || current < 0) {
-        throw new Exception("Bad input values: input parameter < 0");
-      }
-      if (upperBound < lowerBound) {
-        throw new Exception("Bad input values: upperBound < lowerBound");
-      }
-      if (current < lowerBound) {
-        throw new Exception("Bad input values: value can't be better than optimum");
-      }
-
-      return INTERVAL_MAX - mapToInterval(lowerBound, upperBound, Math.min(upperBound, current));
-    }
-
-    /**
-     * Method maps the value of one interval onto a new one.
-     * 
-     * @param lowerBound Lower value of the first interval.
-     * @param upperBound Upper value of the first interval.
-     * @param value      Value to map to a new interval.
-     * @return Return the mapped value of the value.
-     */
-    private static double mapToInterval(double lowerBound, double upperBound, double value)
-        throws Exception {
-      double valueNormalization = (value - lowerBound) / (upperBound - lowerBound);
-      double scaling = valueNormalization * (INTERVAL_MAX - INTERVAL_MIN);
-      double shifting = scaling + INTERVAL_MIN;
-
-      return shifting;
-    }
-  }
-
 }
