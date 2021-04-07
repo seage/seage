@@ -71,7 +71,8 @@ public class ProblemScoreCalculatorTest {
   public void testCalculatingBetterThanOptimumInstanceScore() throws Exception {
     problemScoreCalculator = new ProblemScoreCalculator(singleProblemInfo);
 
-    double optimum = singleProblemInfo.getProblemInstanceInfo("test-instance").getValueDouble("optimum");
+    double optimum = singleProblemInfo
+        .getProblemInstanceInfo("test-instance").getValueDouble("optimum");
     
     assertThrows(
         Exception.class, 
