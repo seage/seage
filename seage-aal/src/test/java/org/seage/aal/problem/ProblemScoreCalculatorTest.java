@@ -5,18 +5,25 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import org.seage.aal.algorithm.Phenotype;
 
 public class ProblemScoreCalculatorTest {
   protected ProblemScoreCalculator problemScoreCalculator;
+  
+  @BeforeAll
+  static void init() {
+    ProblemProvider.providerClasses =
+        new Class<?>[] {TestProblemProvider.class};
+  }
 
   @Test
   public void testCalculatingOptimalInstanceScore() throws Exception {
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
     System.out.println(providers.keySet());
-    IProblemProvider<?> pp = providers.get("SAT");
+    IProblemProvider<?> pp = providers.get("TEST");
     ProblemInfo problemInfo = pp.getProblemInfo();
 
     problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
