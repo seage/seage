@@ -1,58 +1,101 @@
 package org.seage.aal.problem;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import java.util.Arrays;
+import java.util.Map;
 
-import org.seage.aal.problem.ProblemInfo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+
+import org.seage.aal.algorithm.Phenotype;
 
 public class ProblemScoreCalculatorTest {
   protected ProblemScoreCalculator problemScoreCalculator;
 
-  /**
-   * Method crates new instance of ProblemScoreCalculator.
-   * @param problemName Name of a problem.
-   */
-  public void setUp(String problemName) {
-    try {
-      ProblemInfo problemInfo = new ProblemInfo(problemName);
-      problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
-    } catch (Exception ex) {
-      fail(ex);
-    }
+  @Test
+  public void testCalculatingOptimalInstanceScore() throws Exception {
+    Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
+    System.out.println(providers.keySet());
+    IProblemProvider<?> pp = providers.get("SAT");
+    ProblemInfo problemInfo = pp.getProblemInfo();
+
+    problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
+
+    double optimum = problemInfo.getProblemInstanceInfo("uf100-0169").getValueDouble("optimum");
+   
+    assertEquals(1.0, problemScoreCalculator.calculateInstanceScore("uf100-169", optimum), 0.001);
+  }
+
+
+  @Test
+  public void testCalculatingRandomInstanceScore() throws Exception {
+    Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
+    IProblemProvider<?> pp = providers.get("SAT");
+    ProblemInfo problemInfo = pp.getProblemInfo();
+
+    problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
+
+    double random = problemInfo.getProblemInstanceInfo("uf100-0169").getValueDouble("random");
+    
+    assertEquals(0.0, problemScoreCalculator.calculateInstanceScore("uf100-169", random), 0.001);
   }
 
   @Test
-  public void testCalculatingOptimalInstanceScore() {
+  public void testCalculatingMidsectionInstanceScore() throws Exception {
+    Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
+    IProblemProvider<?> pp = providers.get("SAT");
+    ProblemInfo problemInfo = pp.getProblemInfo();
 
+    problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
+
+    double optimum = problemInfo.getProblemInstanceInfo("uf100-0169").getValueDouble("optimum");
+    double random = problemInfo.getProblemInstanceInfo("uf100-0169").getValueDouble("random");
+    double midsection = random - optimum;
+
+    assertEquals(0.5, 
+        problemScoreCalculator.calculateInstanceScore("uf100-169", midsection), 0.001);
   }
 
   @Test
-  public void testCalculatingRandomInstanceScore() {
+  public void testCalculatingBetterThanOptimumInstanceScore() throws Exception {
+    Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
+    IProblemProvider<?> pp = providers.get("SAT");
+    ProblemInfo problemInfo = pp.getProblemInfo();
 
+    problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
+
+    double optimum = problemInfo.getProblemInstanceInfo("uf100-0169").getValueDouble("optimum");
+    
+    assertThrows(
+        Exception.class, 
+        () -> problemScoreCalculator.calculateInstanceScore("uf100-169", optimum - 1));
   }
 
   @Test
-  public void testCalculatingMidsectionInstanceScore() {
+  public void testCalculatingWorseThanRandomInstanceScore() throws Exception {
+    Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
+    IProblemProvider<?> pp = providers.get("SAT");
+    ProblemInfo problemInfo = pp.getProblemInfo();
 
+    problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
+
+    double random = problemInfo.getProblemInstanceInfo("uf100-0169").getValueDouble("random");
+  
+    assertEquals(0.0, random + 1);
   }
 
   @Test
-  public void testCalculatingBetterThanOptimumInstanceScore() {
+  public void testCalculatingProblemScore() throws Exception {
+    Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
+    IProblemProvider<?> pp = providers.get("SAT");
+    ProblemInfo problemInfo = pp.getProblemInfo();
 
-  }
+    problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
+    
+    String[] names = {"1", "2", "3", "4", "5"};
+    double[] values = {0.4, 0.2, 0.1, 0.6, 0.3};
+    double meanValue = Arrays.stream(values).sum() / values.length;
 
-  @Test
-  public void testCalculatingWorseThanRandomInstanceScore() {
-
-  }
-
-  public void testCalculatingProblemScore() {
-
+    assertEquals(meanValue, problemScoreCalculator.calculateProblemScore(names, values), 0.001);
   }
 }

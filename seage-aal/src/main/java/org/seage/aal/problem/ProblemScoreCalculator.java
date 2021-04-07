@@ -23,7 +23,31 @@ public class ProblemScoreCalculator {
     return UnitMetric.getMetricValue(optimum, random, objValue);
   }
 
-  public double calculateProblemScore(String[] instanceIDs, double[] instanceScores) {
-    return Arrays.stream(instanceScores).sum() / instanceScores.length;
+  /**
+   * Method calculates weighted mean of given arrays.
+   * @param instanceIDs Array of instance names.
+   * @param instanceScores Array of instance scores.
+   * @return Weighted mean.
+   */
+  public double calculateProblemScore(String[] instanceIDs, double[] instanceScores)
+      throws Exception {
+    if (instanceIDs.length != instanceScores.length) {
+      throw new Exception("Bad input values: input arrays have different lenght");
+    }
+
+    int arrayLength = instanceIDs.length;
+
+    double numerator = 0.0;
+    double denominator = 0.0;
+    for (int i = 0; i < arrayLength; i++) {
+      // Weight
+      double instanceSize = problemInfo
+          .getProblemInstanceInfo(instanceIDs[i]).getValueDouble("size");
+      
+      numerator += instanceSize * instanceScores[i];
+      denominator += instanceSize;
+    }
+
+    return numerator / denominator;
   }
 }
