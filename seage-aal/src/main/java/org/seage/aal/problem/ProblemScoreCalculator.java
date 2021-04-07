@@ -1,6 +1,5 @@
 package org.seage.aal.problem;
 
-import java.util.Arrays;
 import org.seage.aal.problem.metrics.UnitMetric;
 
 public class ProblemScoreCalculator {

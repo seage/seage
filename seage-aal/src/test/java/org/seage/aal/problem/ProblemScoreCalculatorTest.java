@@ -15,7 +15,7 @@ public class ProblemScoreCalculatorTest {
   @Test
   public void testCalculatingOptimalInstanceScore() throws Exception {
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
-    System.out.println(providers.keySet());
+    System.out.println(providers.size());
     IProblemProvider<?> pp = providers.get("SAT");
     ProblemInfo problemInfo = pp.getProblemInfo();
 
