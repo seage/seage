@@ -2,6 +2,7 @@ package org.seage.aal.problem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.Arrays;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -94,7 +95,7 @@ public class ProblemScoreCalculatorTest {
   public void testCalculatingProblemScore() throws Exception {
     String[] names = {"1", "2", "3", "4", "5"};
     double[] values = {0.4, 0.2, 0.1, 0.6, 0.3};
-    double[] weights = {10.0, 11.0, 12.0, 13.0, 15.0};
+    double[] sizes = {10.0, 11.0, 12.0, 13.0, 15.0};
 
     DataNode ins = new DataNode("Instances");
 
@@ -105,7 +106,7 @@ public class ProblemScoreCalculatorTest {
       dn.putValue("path", "");
       dn.putValue("optimum", 2.0);
       dn.putValue("random", 42.0);
-      dn.putValue("size", weights[i]);
+      dn.putValue("size", sizes[i]);
 
       ins.putDataNode(dn);
     }
@@ -138,8 +139,7 @@ public class ProblemScoreCalculatorTest {
   @Test
   public void testCalculatingBasicMeanOfScores() throws Exception {
     String[] names = {"1", "2", "3", "4", "5"};
-    double[] values = {0.4, 0.2, 0.1, 0.6, 0.3};
-    double[] weights = {1.0, 1.0, 1.0, 1.0, 1.0};
+    double[] sizes = {1.0, 1.0, 1.0, 1.0, 1.0};
 
     DataNode ins = new DataNode("Instances");
 
@@ -150,7 +150,7 @@ public class ProblemScoreCalculatorTest {
       dn.putValue("path", "");
       dn.putValue("optimum", 2.0);
       dn.putValue("random", 42.0);
-      dn.putValue("size", weights[i]);
+      dn.putValue("size", sizes[i]);
 
       ins.putDataNode(dn);
     }
@@ -161,22 +161,9 @@ public class ProblemScoreCalculatorTest {
 
     problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
 
+    double[] values = {0.4, 0.2, 0.1, 0.6, 0.3};
+    double mean = Arrays.stream(values).sum() / names.length;
 
-    int arrayLength = names.length;
-
-    double numerator = 0.0;
-    double denominator = 0.0;
-    for (int i = 0; i < arrayLength; i++) {
-      // Weight
-      double instanceSize = problemInfo
-          .getProblemInstanceInfo(names[i]).getValueDouble("size");
-      
-      numerator += instanceSize * values[i];
-      denominator += instanceSize;
-    }
-
-    double weightedMean = numerator / denominator;
-
-    assertEquals(weightedMean, problemScoreCalculator.calculateProblemScore(names, values), 0.1);
+    assertEquals(mean, problemScoreCalculator.calculateProblemScore(names, values), 0.1);
   }
 }
