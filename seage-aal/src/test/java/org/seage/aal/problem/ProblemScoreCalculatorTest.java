@@ -133,4 +133,49 @@ public class ProblemScoreCalculatorTest {
 
     assertEquals(weightedMean, problemScoreCalculator.calculateProblemScore(names, values), 0.1);
   }
+
+  @Test
+  public void testCalculatingBasicMeanOfScores() throws Exception {
+    String[] names = {"1", "2", "3", "4", "5"};
+    double[] values = {0.4, 0.2, 0.1, 0.6, 0.3};
+    double[] weights = {1.0, 1.0, 1.0, 1.0, 1.0};
+
+    DataNode ins = new DataNode("Instances");
+
+    for (int i = 0; i < names.length; i++) {
+      DataNode dn = new DataNode(names[i]);
+      dn.putValue("id", names[i]);
+      dn.putValue("type", "resource");
+      dn.putValue("path", "");
+      dn.putValue("optimum", 2.0);
+      dn.putValue("random", 42.0);
+      dn.putValue("size", weights[i]);
+
+      ins.putDataNode(dn);
+    }
+    
+    ProblemInfo problemInfo = new ProblemInfo("TEST");
+    problemInfo.putDataNode(ins);
+
+
+    problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
+
+
+    int arrayLength = names.length;
+
+    double numerator = 0.0;
+    double denominator = 0.0;
+    for (int i = 0; i < arrayLength; i++) {
+      // Weight
+      double instanceSize = problemInfo
+          .getProblemInstanceInfo(names[i]).getValueDouble("size");
+      
+      numerator += instanceSize * values[i];
+      denominator += instanceSize;
+    }
+
+    double weightedMean = numerator / denominator;
+
+    assertEquals(weightedMean, problemScoreCalculator.calculateProblemScore(names, values), 0.1);
+  }
 }
