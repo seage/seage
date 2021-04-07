@@ -162,7 +162,7 @@ public class ProblemScoreCalculatorTest {
     problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
 
     double[] values = {0.4, 0.2, 0.1, 0.6, 0.3};
-    double mean = Arrays.stream(values).sum() / names.length;
+    double mean = Arrays.stream(values).sum() / values.length;
 
     assertEquals(mean, problemScoreCalculator.calculateProblemScore(names, values), 0.1);
   }
