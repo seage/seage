@@ -3,9 +3,9 @@ package org.seage.hh.experimenter2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HyperHeuristic1Experimenter implements AlgorithmExperimenter {
+public class HyperHeuristic1Experimenter implements MetaHeuristicExperimenter {
   protected static Logger logger =
-      LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
+      LoggerFactory.getLogger(MetaHeuristicInstanceExperimenter.class.getName());
 
   @Override
   public void runExperiment() {

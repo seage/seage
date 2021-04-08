@@ -15,7 +15,7 @@ public class ApproachExperimenterTest {
     instances.put("TSP", Arrays.asList(new String[] { "eil51", "berlin52" }));
     instances.put("SAT", Arrays.asList(new String[] { "u100", "u1000" }));
     
-    AlgorithmExperimenterRunner ae = new AlgorithmExperimenterRunner("approachName", instances, 1, 1);
+    MetaHeuristicExperimenterRunner ae = new MetaHeuristicExperimenterRunner("approachName", instances, 1, 1);
     assertNotNull(ae);
   }
 }
