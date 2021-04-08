@@ -1,6 +1,6 @@
 package org.seage.hh.experimenter;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.UUID;
@@ -10,7 +10,7 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
-import org.seage.aal.problem.ProblemInfo;
+//import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
@@ -19,9 +19,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Runs experiment task and provides following experiment log:
- * 
+ * <p/>
  * ExperimentTask # version 0.1 |_ ...
- * 
+ * <p/>
  * ExperimentTaskReport # version 0.2 |_ version (0.4) |_ experimentID |_ startTimeMS |_ timeoutS |_
  * durationS |_ machineName |_ nrOfCores |_ totalRAM |_ availRAM |_ Config | |_ configID | |_ runID
  * | |_ Problem | | |_ problemID | | |_ Instance | | |_ name | |_ Algorithm | |_ algorithmID | |_
@@ -158,7 +158,7 @@ public class ExperimentTask {
       // provider and factory
       IProblemProvider<Phenotype<?>> provider =
           ProblemProvider.getProblemProviders().get(this.problemID);
-      ProblemInfo pi = provider.getProblemInfo();
+      //ProblemInfo pi = provider.getProblemInfo();
       IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(this.algorithmID);
 
       // problem instance
@@ -185,7 +185,7 @@ public class ExperimentTask {
       solutions = algorithm.solutionsToPhenotype();
       writeSolutions(evaluator,
           this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
-      
+
       this.endDate = new Date();
       long durationS = (this.endDate.getTime() - this.startDate.getTime()) / 1000;
 
@@ -238,8 +238,8 @@ public class ExperimentTask {
   }
 
   /**
-   * .
-   * @return .
+   * Method returns experiment task report statistics.
+   * @return String with statistics info.
    */
   public String getStatistics() {
     try {
