@@ -7,7 +7,7 @@ import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
-import org.seage.aal.problem.metrics.UnitMetric;
+import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
@@ -97,22 +97,19 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     // Initialize the best value 
     double bestObjVal = Double.MAX_VALUE;
 
-    DataNode bestobjValueNode = null;
     // Update score        
     for (DataNode s : stats) {
       double objVal = s.getValueDouble("bestObjVal");
       if (objVal < bestObjVal) {
         bestObjVal = objVal;
-        bestobjValueNode = s;
       }
     }
 
+    ProblemScoreCalculator problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
     // Calculate the score
-    double bestScore = UnitMetric.getMetricValue(
-        bestobjValueNode.getValueDouble("optimum"),
-        bestobjValueNode.getValueDouble("random"),
-        bestobjValueNode.getValueDouble("bestObjVal")
-    );
+    double bestScore = problemScoreCalculator
+        .calculateInstanceScore(instanceInfo.getInstanceID(), bestObjVal);
+        
 
     // This is weird - if multiple instances run during the expriment the last best value is written
     experimentReporter.updateScore(experimentID, bestScore);
