@@ -7,6 +7,7 @@ import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.metrics.UnitMetric;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
@@ -16,6 +17,7 @@ import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   protected static Logger logger =
@@ -73,9 +75,6 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   protected void runExperimentTasksForProblemInstance(
       ProblemInstanceInfo instanceInfo) throws Exception {
 
-    // Initialize the best value 
-    double bestObjVal = Double.MAX_VALUE;
-
     // The taskQueue size must be limited since the results are stored in the task's reports
     // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
     List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
@@ -95,16 +94,28 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     List<DataNode> stats =
         experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 
+    // Initialize the best value 
+    double bestObjVal = Double.MAX_VALUE;
+
+    DataNode bestobjValueNode = null;
     // Update score        
     for (DataNode s : stats) {
       double objVal = s.getValueDouble("bestObjVal");
       if (objVal < bestObjVal) {
         bestObjVal = objVal;
+        bestobjValueNode = s;
       }
     }
-    
+
+    // Calculate the score
+    double bestScore = UnitMetric.getMetricValue(
+        bestobjValueNode.getValueDouble("optimum"),
+        bestobjValueNode.getValueDouble("random"),
+        bestobjValueNode.getValueDouble("bestObjVal")
+    );
+
     // This is weird - if multiple instances run during the expriment the last best value is written
-    experimentReporter.updateScore(experimentID, bestObjVal);
+    experimentReporter.updateScore(experimentID, bestScore);
   }
 
   private Void reportExperimentTask(ExperimentTask experimentTask) {
