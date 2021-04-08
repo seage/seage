@@ -10,6 +10,7 @@ public class Solution {
   private String hash;
   private String solutionStr;
   private Double objectiveValue;
+  private Double score;
   private Long iterationNumber;
   private Date date;
 
@@ -25,7 +26,7 @@ public class Solution {
   public Solution(
       UUID solutionID,
       UUID experimentTaskID, String hash, 
-      String solution, Double objectiveValue,
+      String solution, Double objectiveValue, Double score,
       Long iterationNumber,
       Date date) {
     this.solutionID = solutionID;
@@ -33,6 +34,7 @@ public class Solution {
     this.hash = hash;
     this.solutionStr = solution;
     this.objectiveValue = objectiveValue;
+    this.score = score;
     this.iterationNumber = iterationNumber;
     this.date = date;
   }
@@ -75,6 +77,14 @@ public class Solution {
 
   public void setObjectiveValue(Double objectiveValue) {
     this.objectiveValue = objectiveValue;
+  }
+
+  public Double getScore() {
+    return score;
+  }
+
+  public void setScore(Double score) {
+    this.score = score;
   }
 
   public Long getIterationNumber() {

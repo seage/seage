@@ -144,6 +144,7 @@ public class ExperimentReporter {
             dn.getValueStr("hash"),
             dn.getValueStr("solution"),
             dn.getValueDouble("objVal"),
+            dn.getValueDouble("score"),
             iterNumber,
             Date.from(Instant.now())
         );
