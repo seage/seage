@@ -140,7 +140,9 @@ public class ExperimentTask {
     return this.experimentTaskReport;
   }
 
-  /**. */
+  /**
+   * Method runs an experiment task.
+   */
   public void run() {
     _logger.debug("ExperimentTask started ({})", this.configID);
     this.startDate = new Date();
