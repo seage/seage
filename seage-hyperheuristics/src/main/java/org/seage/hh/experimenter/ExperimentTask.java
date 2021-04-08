@@ -214,6 +214,7 @@ public class ExperimentTask {
       try {
         DataNode solutionNode = new DataNode("Solution");
         solutionNode.putValue("objVal", p.getObjValue());
+        solutionNode.putValue("score", p.getScore());
         solutionNode.putValue("solution", p.toText());
         solutionNode.putValue("hash", p.computeHash());
         dataNode.putDataNode(solutionNode);
