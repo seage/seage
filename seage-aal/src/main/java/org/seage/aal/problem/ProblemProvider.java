@@ -208,9 +208,10 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
         new HashMap<String, IProblemProvider<Phenotype<?>>>();
 
     for (Class<?> c : providerClasses) {
-      
-      result.put(c.getAnnotation(Annotations.ProblemId.class).value(),          
-          (IProblemProvider<Phenotype<?>>) c.getConstructor().newInstance());
+      IProblemProvider<Phenotype<?>> pp = 
+          (IProblemProvider<Phenotype<?>>) c.getConstructor().newInstance();
+      pp.getProblemInfo();
+      result.put(c.getAnnotation(Annotations.ProblemId.class).value(), pp);       
     }
 
     return result;
