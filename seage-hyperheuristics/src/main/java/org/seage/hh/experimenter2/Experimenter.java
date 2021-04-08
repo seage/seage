@@ -1,5 +1,5 @@
 package org.seage.hh.experimenter2;
 
-public interface MetaHeuristicExperimenter {
+public interface Experimenter {
   void runExperiment();
 }

@@ -14,9 +14,9 @@ import org.seage.hh.experimenter.ExperimentReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MetaHeuristicExperimenterRunner {
+public class ExperimenterRunner {
   protected static Logger logger =
-      LoggerFactory.getLogger(MetaHeuristicExperimenterRunner.class.getName());
+      LoggerFactory.getLogger(ExperimenterRunner.class.getName());
   protected ExperimentReporter experimentReporter;
 
   private UUID experimentID;
@@ -32,7 +32,7 @@ public class MetaHeuristicExperimenterRunner {
    * @param algorithmID Algorithm ID.
    * @param problemInstanceIDs Map of problem instances.
    */
-  public MetaHeuristicExperimenterRunner(String algorithmID,
+  public ExperimenterRunner(String algorithmID,
       HashMap<String, List<String>> problemInstanceIDs, int numRuns, int timeoutS)
       throws Exception {
     this.experimentID = UUID.randomUUID();
@@ -92,7 +92,7 @@ public class MetaHeuristicExperimenterRunner {
   }
 
 
-  private MetaHeuristicExperimenter createAlgorithmExperimenter(
+  private Experimenter createAlgorithmExperimenter(
       String problemID, String instanceID)
        throws Exception {
     boolean ordinaryAlg = ProblemProvider

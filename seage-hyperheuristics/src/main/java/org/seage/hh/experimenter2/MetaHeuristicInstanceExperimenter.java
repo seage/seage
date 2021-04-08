@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class MetaHeuristicInstanceExperimenter implements MetaHeuristicExperimenter {
+public class MetaHeuristicInstanceExperimenter implements Experimenter {
   protected static Logger logger =
       LoggerFactory.getLogger(MetaHeuristicInstanceExperimenter.class.getName());
   protected DefaultConfigurator configurator;
