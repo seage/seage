@@ -52,7 +52,7 @@ public class ExperimentTask {
   protected DataNode experimentTaskReport;
 
   /**
-   * Constructor for DB mapper
+   * Constructor for DB mapper.
    */
   ExperimentTask() {}
 
@@ -213,14 +213,13 @@ public class ExperimentTask {
     for (Phenotype<?> p : solutions) {
       try {
         DataNode solutionNode = new DataNode("Solution");
-        double objValue = evaluator.evaluate(p)[0];
-        solutionNode.putValue("objVal", objValue);
+        solutionNode.putValue("objVal", p.getObjValue());
         solutionNode.putValue("solution", p.toText());
         solutionNode.putValue("hash", p.computeHash());
         dataNode.putDataNode(solutionNode);
 
-        if (this.score > objValue) {
-          this.score = objValue;
+        if (this.score > p.getObjValue()) {
+          this.score = p.getObjValue();
         }
       } catch (Exception ex) {
         _logger.error("Cannot write solution", ex);
@@ -237,6 +236,10 @@ public class ExperimentTask {
     // Must be here because of the db reading - Not defined for now
   }
 
+  /**
+   * .
+   * @return .
+   */
   public String getStatistics() {
     try {
       return this.getExperimentTaskReport()
