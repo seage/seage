@@ -105,9 +105,8 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
       }
     }
 
-    ProblemScoreCalculator problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
     // Calculate the score
-    double bestScore = problemScoreCalculator
+    double bestScore = new ProblemScoreCalculator(problemInfo)
         .calculateInstanceScore(instanceInfo.getInstanceID(), bestObjVal);
         
 
