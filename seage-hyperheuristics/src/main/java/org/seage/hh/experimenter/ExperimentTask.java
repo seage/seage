@@ -1,6 +1,5 @@
 package org.seage.hh.experimenter;
 
-//import java.io.Serializable;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.UUID;
@@ -10,7 +9,6 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
-//import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
@@ -160,7 +158,6 @@ public class ExperimentTask {
       // provider and factory
       IProblemProvider<Phenotype<?>> provider =
           ProblemProvider.getProblemProviders().get(this.problemID);
-      //ProblemInfo pi = provider.getProblemInfo();
       IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(this.algorithmID);
 
       // problem instance
