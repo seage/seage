@@ -57,6 +57,7 @@ public class SolutionTest {
       "123456789", 
       "[1, 2, 3, 4, 5, 6, 7, 8, 9]", 
       1000.0,
+      0.6,
       2L,
       Date.from(Instant.now())
     );
