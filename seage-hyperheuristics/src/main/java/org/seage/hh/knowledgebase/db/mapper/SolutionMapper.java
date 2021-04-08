@@ -22,6 +22,7 @@ public interface SolutionMapper {
         .VALUES("hash", "#{hash}")
         .VALUES("solution", "#{solution}")
         .VALUES("objective_value", "#{objectiveValue}")
+        .VALUES("score", "#{score}")
         .VALUES("iteration_number", "#{iterationNumber}")
         .VALUES("date", "#{date}")
         .toString();
@@ -38,6 +39,7 @@ public interface SolutionMapper {
       @Result(property = "hash", column = "hash"),
       @Result(property = "solution", column = "solution"),
       @Result(property = "objectiveValue", column = "objective_value"),
+      @Result(property = "score", column = "score"),
       @Result(property = "iterationNumber", column = "iteration_number"),
       @Result(property = "date", column = "date"),
   })

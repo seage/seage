@@ -66,10 +66,9 @@ public class ExperimentReporter {
   }
 
   /**
-   * .
-   * @param experimentID .
-   * @param endDate .
-   * @throws Exception .
+   * Method updates the end date.
+   * @param experimentID Experiment id.
+   * @param endDate New end date.
    */
   public synchronized void updateEndDate(UUID experimentID, Date endDate) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
@@ -81,10 +80,9 @@ public class ExperimentReporter {
   }
 
   /**
-   * .
-   * @param experimentID .
-   * @param bestObjVal .
-   * @throws Exception .
+   * Method updates the score.
+   * @param experimentID Experiment id.
+   * @param bestObjVal New score.
    */
   public synchronized void updateScore(UUID experimentID, double bestObjVal) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
@@ -97,8 +95,7 @@ public class ExperimentReporter {
   /**
    * This is a critical function. When non-sychronized, 
    * multiple threads open db sessions that timeouted.
-   * @param experimentTask .
-   * @throws Exception .
+   * @param experimentTask Experiment task.
    */
   public synchronized void reportExperimentTask(ExperimentTask experimentTask) throws Exception {
      
@@ -144,6 +141,7 @@ public class ExperimentReporter {
             dn.getValueStr("hash"),
             dn.getValueStr("solution"),
             dn.getValueDouble("objVal"),
+            dn.getValueDouble("score"),
             iterNumber,
             Date.from(Instant.now())
         );
