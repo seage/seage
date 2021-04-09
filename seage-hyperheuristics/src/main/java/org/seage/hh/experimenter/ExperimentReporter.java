@@ -149,8 +149,7 @@ public class ExperimentReporter {
       throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
-      mapper.updateScore(experimentID, score);
-      mapper.updateScoreCard(experimentID, scoreCardMapToString(scoreCard));
+      mapper.updateScore(experimentID, score, scoreCardMapToString(scoreCard));
       session.commit();
     }
   }

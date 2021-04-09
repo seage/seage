@@ -71,11 +71,11 @@ public interface ExperimentMapper {
   void updateEndDate(@Param("experimentID") UUID experimentID, @Param("endDate") Date endDate);
 
   @SuppressWarnings("LineLengthCheck")
-  @Update("UPDATE seage.experiments SET score = #{score} WHERE experiment_id = #{experimentID}::uuid")
-  void updateScore(@Param("experimentID") UUID experimentID, @Param("score") double score);
-
-  @SuppressWarnings("LineLengthCheck")
   @Update(
-      "UPDATE seage.experiments SET score_card = #{scoreCard} WHERE experiment_id = #{experimentID}::uuid")
-  void updateScoreCard(@Param("experimentID") UUID experimentID, @Param("scoreCard") String scoreCard);
+      "UPDATE seage.experiments SET score_card = #{scoreCard} score = #{score} WHERE experiment_id = #{experimentID}::uuid")
+  void updateScore(
+        @Param("experimentID") UUID experimentID, 
+        @Param("score") double score, @Param("scoreCard") String scoreCard);
+
+
 }
