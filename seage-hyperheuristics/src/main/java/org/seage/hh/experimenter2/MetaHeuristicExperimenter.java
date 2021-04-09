@@ -63,12 +63,6 @@ public class MetaHeuristicExperimenter implements Experimenter {
    */
   public Double runExperiment() throws Exception {
     ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
-    return runExperimentTasksForProblemInstance(instanceInfo);
-  }
-
-
-  protected Double runExperimentTasksForProblemInstance(
-      ProblemInstanceInfo instanceInfo) throws Exception {
 
     // The taskQueue size must be limited since the results are stored in the task's reports
     // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
