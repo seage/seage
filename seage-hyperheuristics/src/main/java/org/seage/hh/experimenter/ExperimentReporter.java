@@ -1,8 +1,8 @@
 package org.seage.hh.experimenter;
 
-// import com.google.gson.Gson;
-// import com.google.gson.GsonBuilder;
-// import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 // import java.lang.reflect.Type;
 
@@ -100,43 +100,12 @@ public class ExperimentReporter {
     }  
   }
 
-  private String scoreCardMapToString(Map<String, Map<String, Double>> scoreCardMap) {
-    String result = "{";
-
-    for (String problemID: scoreCardMap.keySet()) {
-      result += "\"" + problemID + "\":{";
-      for (String instanceID: scoreCardMap.get(problemID).keySet()) {
-        result += "\"" + instanceID + "\":\"" + scoreCardMap.get(problemID).get(instanceID) + "\"";
-      }
-      result += "},";
-    }
-
-    if (result.length() > 0) {
-      result = result.substring(0, result.length() - 1);
-    }
-
-    result += "}";
-    return result;
+  private String scoreCardMapToString(Double score, Map<String, Map<String, Double>> scoreCardMap) {
+    Gson gson = new Gson();
+    String scoreCard = gson.toJson(scoreCardMap);
+    return "{score: " 
+      + score + ", problems:[" + scoreCard.substring(1, scoreCard.length() - 1) + "]}";
   }
-
-  // /**
-  //  * Method updates the score.
-  //  * @param experimentID Experiment id.
-  //  * @param scoreCard Score card.
-  //  */
-  // public synchronized void updateScoreCard(
-  //     UUID experimentID, Map<String, Map<String, Double>> scoreCard) throws Exception {
-  //   try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
-  //     ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
-
-  //     // Gson gson = new GsonBuilder().create();
-  //     // String scoreCardGson = gson.toJson(scoreCard);
-      
-
-  //     mapper.updateScoreCard(experimentID, scoreCardMapToString(scoreCard));
-  //     session.commit();
-  //   }  
-  // }
 
   /**
    * Method updates the score and the score card.
@@ -149,7 +118,7 @@ public class ExperimentReporter {
       throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
-      mapper.updateScore(experimentID, score, scoreCardMapToString(scoreCard));
+      mapper.updateScore(experimentID, score, scoreCardMapToString(score, scoreCard));
       session.commit();
     }
   }
