@@ -101,8 +101,22 @@ public class ExperimentReporter {
   }
 
   private String scoreCardMapToString(Map<String, Map<String, Double>> scoreCardMap) {
-    //todo
-    return null;
+    String result = "{";
+
+    for (String problemID: scoreCardMap.keySet()) {
+      result += problemID + ":{";
+      for (String instanceID: scoreCardMap.get(problemID).keySet()) {
+        result += instanceID + ":" + scoreCardMap.get(problemID).get(instanceID);
+      }
+      result += "},";
+    }
+
+    if (result.length() > 0) {
+      result = result.substring(0, -1);
+    }
+
+    result += "}";
+    return result;
   }
 
   /**
@@ -119,7 +133,7 @@ public class ExperimentReporter {
       // String scoreCardGson = gson.toJson(scoreCard);
       
 
-      mapper.updateScoreCard(experimentID, scoreCard.toString());
+      mapper.updateScoreCard(experimentID, scoreCardMapToString(scoreCard));
       session.commit();
     }  
   }
