@@ -53,7 +53,7 @@ public interface ExperimentMapper {
       @Result(property = "startDate", column = "start_date"),
       @Result(property = "endDate", column = "end_date"),      
       @Result(property = "score", column = "score"),
-      @Result(property = "scoreCard", column = "scoreCard"),
+      @Result(property = "scoreCard", column = "score_card"),
       @Result(property = "hostInfo", column = "host_info"),
       @Result(property = "formatVersion", column = "format_version"),
   })
