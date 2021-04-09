@@ -1,7 +1,5 @@
 package org.seage.hh.experimenter2;
 
-import org.seage.aal.problem.ProblemScoreCalculator;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +11,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.slf4j.Logger;
@@ -79,18 +78,18 @@ public class ExperimenterRunner {
     long startDate;
     startDate = System.currentTimeMillis();
 
+    //Initialize array for problems scores
     List<Double> problemsScores = new ArrayList<>();
 
     for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
       String problemID = entry.getKey();
+      logger.info("  Problem '{}'", problemID);
 
       ProblemScoreCalculator problemScoreCalculator = 
           new ProblemScoreCalculator(new ProblemInfo(problemID));
-
       List<String> instanceIDs = new ArrayList<>();
       List<Double> instanceScores = new ArrayList<>();
 
-      logger.info("  Problem '{}'", problemID);
 
       if (scoreCard.containsKey(problemID) == false) {
         scoreCard.put(problemID, new HashMap<>());
@@ -102,10 +101,7 @@ public class ExperimenterRunner {
         double objValue = createAlgorithmExperimenter(problemID, instanceID).runExperiment();
         double score = problemScoreCalculator.calculateInstanceScore(instanceID, objValue);
 
-        scoreCard.get(problemID).put(
-            instanceID, 
-            objValue
-        );
+        scoreCard.get(problemID).put(instanceID,objValue);
         instanceIDs.add(instanceID);
         instanceScores.add(score);
       }
@@ -117,9 +113,9 @@ public class ExperimenterRunner {
 
     this.experimentReporter.updateScore(
         experimentID, 
-        problemsScores.stream().reduce(0.0, Double::sum) / problemsScores.size(), 
+        ProblemScoreCalculator.calculateExperimentScore(problemsScores), 
         scoreCard
-    );;
+    );
    
     long endDate = System.currentTimeMillis();
     logger.info("-------------------------------------");

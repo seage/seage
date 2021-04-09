@@ -1,7 +1,9 @@
 package org.seage.hh.experimenter.singlealgorithm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInstanceInfo;
@@ -50,7 +52,8 @@ public class SingleAlgorithmExperimenter extends Experimenter {
     }
   }
 
-  protected void runExperimentTasksForProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception {
+  protected void runExperimentTasksForProblemInstance(
+      ProblemInstanceInfo instanceInfo) throws Exception {
     for (int i = 0; i < this.algorithmIDs.length; i++) {
       String algorithmID = this.algorithmIDs[i];
       String instanceID = instanceInfo.getInstanceID();
@@ -89,8 +92,13 @@ public class SingleAlgorithmExperimenter extends Experimenter {
         }
       }
     
-      // This is weird - if multiple instances run during the expriment the last best value is written
-      this.experimentReporter.updateScore(this.experimentID, bestObjVal);
+      Map<String, Map<String, Double>> scoreCard = new HashMap<>();
+      scoreCard.put(problemID, new HashMap<>());
+      scoreCard.get(problemID).put(instanceID, bestObjVal);
+
+      // This is weird - 
+      // if multiple instances run during the expriment the last best value is written
+      this.experimentReporter.updateScore(this.experimentID, bestObjVal, scoreCard);
     }
   }
 
