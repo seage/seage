@@ -1,16 +1,16 @@
 package org.seage.hh.experimenter;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+// import com.google.gson.Gson;
+// import com.google.gson.GsonBuilder;
+// import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
+// import java.lang.reflect.Type;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
+// import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
@@ -100,6 +100,11 @@ public class ExperimentReporter {
     }  
   }
 
+  private String scoreCardMapToString(Map<String, Map<String, Double>> scoreCardMap) {
+    //todo
+    return null;
+  }
+
   /**
    * Method updates the score.
    * @param experimentID Experiment id.
@@ -110,10 +115,11 @@ public class ExperimentReporter {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
 
-      Gson gson = new GsonBuilder().create();
-      String scoreCardGson = gson.toJson(scoreCard);
+      // Gson gson = new GsonBuilder().create();
+      // String scoreCardGson = gson.toJson(scoreCard);
+      
 
-      mapper.updateScoreCard(experimentID, scoreCardGson);
+      mapper.updateScoreCard(experimentID, scoreCard.toString());
       session.commit();
     }  
   }
