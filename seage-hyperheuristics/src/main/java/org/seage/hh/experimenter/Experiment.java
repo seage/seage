@@ -13,6 +13,7 @@ public class Experiment {
   private Date endDate;
   private String config;  
   private Double score;
+  private String scoreCard;
   private String hostInfo;
   private String formatVersion;
 
@@ -115,6 +116,14 @@ public class Experiment {
 
   public void setScore(Double score) {
     this.score = score;
+  }
+
+  public String getScoreCard() {
+    return scoreCard;
+  }
+
+  public void setScoreCard(String scoreCard) {
+    this.scoreCard = scoreCard;
   }
 
   public String getHostInfo() {

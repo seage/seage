@@ -1,5 +1,6 @@
 package org.seage.aal.problem;
 
+import java.util.List;
 import org.seage.aal.problem.metrics.UnitMetric;
 
 public class ProblemScoreCalculator {
@@ -46,5 +47,14 @@ public class ProblemScoreCalculator {
     }
 
     return numerator / denominator;
+  }
+
+  /**
+   * Method calculates mean of given array.
+   * @param problemsScores Array of problem scores.
+   * @return Mean.
+   */
+  public static double calculateExperimentScore(List<Double> problemsScores) {
+    return problemsScores.stream().reduce(0.0, Double::sum) / problemsScores.size();
   }
 }

@@ -5,18 +5,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AlgorithmExperimenterRunner {
+public class ExperimenterRunner {
   protected static Logger logger =
-      LoggerFactory.getLogger(AlgorithmExperimenterRunner.class.getName());
+      LoggerFactory.getLogger(ExperimenterRunner.class.getName());
+  
   protected ExperimentReporter experimentReporter;
 
   private UUID experimentID;
@@ -32,7 +36,7 @@ public class AlgorithmExperimenterRunner {
    * @param algorithmID Algorithm ID.
    * @param problemInstanceIDs Map of problem instances.
    */
-  public AlgorithmExperimenterRunner(String algorithmID,
+  public ExperimenterRunner(String algorithmID,
       HashMap<String, List<String>> problemInstanceIDs, int numRuns, int timeoutS)
       throws Exception {
     this.experimentID = UUID.randomUUID();
@@ -72,16 +76,53 @@ public class AlgorithmExperimenterRunner {
     long startDate;
     startDate = System.currentTimeMillis();
 
+    //Initialize array for problems scores
+    List<Double> problemsScores = new ArrayList<>();
+
+    Map<String, Map<String, Double>> scoreCard = new HashMap<>(); 
+
     for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
       String problemID = entry.getKey();
       logger.info("  Problem '{}'", problemID);
 
+      ProblemInfo problemInfo = ProblemProvider
+          .getProblemProviders()
+          .get(problemID)
+          .getProblemInfo();
+      
+      ProblemScoreCalculator problemScoreCalculator = 
+          new ProblemScoreCalculator(problemInfo);
+      
+      List<String> instanceIDs = new ArrayList<>();
+      List<Double> instanceScores = new ArrayList<>();
+
+
+      if (scoreCard.containsKey(problemID) == false) {
+        scoreCard.put(problemID, new HashMap<>());
+      }
+
       for (String instanceID : entry.getValue()) {
         logger.info("    Instance '{}'", instanceID);
 
-        createAlgorithmExperimenter(problemID, instanceID).runExperiment();
+        double objValue = createAlgorithmExperimenter(problemID, instanceID).runExperiment();
+        double score = problemScoreCalculator.calculateInstanceScore(instanceID, objValue);
+
+        scoreCard.get(problemID).put(instanceID,objValue);
+        instanceIDs.add(instanceID);
+        instanceScores.add(score);
       }
+
+      problemsScores.add(problemScoreCalculator.calculateProblemScore(
+          instanceIDs.toArray(new String[]{}), 
+          instanceScores.stream().mapToDouble(a -> a).toArray()));
     }
+
+    double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
+    this.experimentReporter.updateExperimentScore(
+        experimentID, 
+        experimentScore, 
+        scoreCard
+    );
    
     long endDate = System.currentTimeMillis();
     logger.info("-------------------------------------");
@@ -92,7 +133,7 @@ public class AlgorithmExperimenterRunner {
   }
 
 
-  private AlgorithmExperimenter createAlgorithmExperimenter(
+  private Experimenter createAlgorithmExperimenter(
       String problemID, String instanceID)
        throws Exception {
     boolean ordinaryAlg = ProblemProvider

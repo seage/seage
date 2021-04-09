@@ -7,6 +7,7 @@ import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
@@ -17,7 +18,8 @@ import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
+
+public class MetaHeuristicExperimenter implements Experimenter {
   protected static Logger logger =
       LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
   protected DefaultConfigurator configurator;
@@ -59,22 +61,8 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
   /**
    * Method runs experiment.
    */
-  public void runExperiment() {
-    try {
-      ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
-      runExperimentTasksForProblemInstance(instanceInfo);
-
-    } catch (Exception ex) {
-      logger.warn(ex.getMessage(), ex);
-    }
-  }
-
-
-  protected void runExperimentTasksForProblemInstance(
-      ProblemInstanceInfo instanceInfo) throws Exception {
-
-    // Initialize the best value 
-    double bestObjVal = Double.MAX_VALUE;
+  public Double runExperiment() throws Exception {
+    ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
 
     // The taskQueue size must be limited since the results are stored in the task's reports
     // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
@@ -95,6 +83,9 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
     List<DataNode> stats =
         experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 
+    // Initialize the best value 
+    double bestObjVal = Double.MAX_VALUE;
+
     // Update score        
     for (DataNode s : stats) {
       double objVal = s.getValueDouble("bestObjVal");
@@ -102,9 +93,21 @@ public class MetaHeuristicExperimenter implements AlgorithmExperimenter {
         bestObjVal = objVal;
       }
     }
+
     
+    // Calculate the score
+    double bestScore = new ProblemScoreCalculator(problemInfo)
+        .calculateInstanceScore(instanceInfo.getInstanceID(), bestObjVal);
+    
+    
+    // Map<String, Map<String, Double>> scoreCard = new HashMap<>();
+    // scoreCard.put(problemID, new HashMap<>());
+    // scoreCard.get(problemID).put(instanceID, bestObjVal);
+
     // This is weird - if multiple instances run during the expriment the last best value is written
-    experimentReporter.updateScore(experimentID, bestObjVal);
+    experimentReporter.updateInstanceScore(experimentID, bestScore);
+
+    return bestObjVal;
   }
 
   private Void reportExperimentTask(ExperimentTask experimentTask) {
