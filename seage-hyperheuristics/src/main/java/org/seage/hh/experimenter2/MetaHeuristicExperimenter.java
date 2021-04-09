@@ -61,15 +61,9 @@ public class MetaHeuristicExperimenter implements Experimenter {
   /**
    * Method runs experiment.
    */
-  public Double runExperiment() {
-    try {
-      ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
-      return runExperimentTasksForProblemInstance(instanceInfo);
-
-    } catch (Exception ex) {
-      logger.warn(ex.getMessage(), ex);
-      return null;
-    }
+  public Double runExperiment() throws Exception {
+    ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
+    return runExperimentTasksForProblemInstance(instanceInfo);
   }
 
 

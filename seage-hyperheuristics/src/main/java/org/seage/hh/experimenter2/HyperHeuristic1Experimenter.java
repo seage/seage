@@ -8,7 +8,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
       LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
 
   @Override
-  public Double runExperiment() {
+  public Double runExperiment() throws Exception {
     logger.info("Running HyperHeuristic1Experimenter");
     return null;
   }
