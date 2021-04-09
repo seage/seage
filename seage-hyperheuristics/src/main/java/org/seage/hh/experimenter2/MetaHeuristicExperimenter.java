@@ -1,9 +1,7 @@
 package org.seage.hh.experimenter2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
@@ -21,9 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class MetaHeuristicInstanceExperimenter implements Experimenter {
+public class MetaHeuristicExperimenter implements Experimenter {
   protected static Logger logger =
-      LoggerFactory.getLogger(MetaHeuristicInstanceExperimenter.class.getName());
+      LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
   protected DefaultConfigurator configurator;
   protected ProblemInfo problemInfo;
   protected IExperimentTasksRunner experimentTasksRunner;
@@ -41,7 +39,7 @@ public class MetaHeuristicInstanceExperimenter implements Experimenter {
   /**
    * MetaHeuristicExperimenter constructor.
    */
-  protected MetaHeuristicInstanceExperimenter(
+  protected MetaHeuristicExperimenter(
       UUID experimentID, String problemID, String instanceID, 
       String algorithmID, int numRuns, int timeoutS,
       ExperimentReporter experimentReporter) 

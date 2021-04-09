@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 public class HyperHeuristic1Experimenter implements Experimenter {
   protected static Logger logger =
-      LoggerFactory.getLogger(MetaHeuristicInstanceExperimenter.class.getName());
+      LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
 
   @Override
   public Double runExperiment() {

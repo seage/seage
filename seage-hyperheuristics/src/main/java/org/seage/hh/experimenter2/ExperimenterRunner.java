@@ -137,7 +137,7 @@ public class ExperimenterRunner {
         .getDataNodeById(algorithmID) != null;
     
     if (ordinaryAlg) {
-      return new MetaHeuristicInstanceExperimenter(
+      return new MetaHeuristicExperimenter(
         experimentID, problemID, instanceID, 
         algorithmID, numRuns, timeoutS, this.experimentReporter);
     }
