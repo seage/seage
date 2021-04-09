@@ -30,7 +30,7 @@ public interface ExperimentMapper {
         .VALUES("start_date", "#{startDate}")
         .VALUES("end_date", "#{endDate}")          
         .VALUES("score", "#{score}")
-        .VALUES("scoreCard", "#{scoreCard}")
+        .VALUES("score_card", "#{scoreCard}")
         .VALUES("host_info", "#{hostInfo}")
         .VALUES("format_version", "#{formatVersion}")
         .toString();
