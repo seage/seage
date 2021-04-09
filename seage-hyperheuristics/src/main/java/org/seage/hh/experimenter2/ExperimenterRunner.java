@@ -21,8 +21,6 @@ public class ExperimenterRunner {
   protected static Logger logger =
       LoggerFactory.getLogger(ExperimenterRunner.class.getName());
   
-  Map<String, Map<String, Double>> scoreCard = new HashMap<>(); 
-  
   protected ExperimentReporter experimentReporter;
 
   private UUID experimentID;
@@ -80,6 +78,8 @@ public class ExperimenterRunner {
 
     //Initialize array for problems scores
     List<Double> problemsScores = new ArrayList<>();
+
+    Map<String, Map<String, Double>> scoreCard = new HashMap<>(); 
 
     for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
       String problemID = entry.getKey();
