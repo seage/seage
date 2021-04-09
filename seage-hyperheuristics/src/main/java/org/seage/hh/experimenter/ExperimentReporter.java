@@ -139,6 +139,24 @@ public class ExperimentReporter {
   }
 
   /**
+   * Method updates the score and the score card.
+   * @param experimentID Experiment id.
+   * @param score Score.
+   * @param scoreCard Score card.
+   */
+  public synchronized void updateScoreAndScoreCard(
+      UUID experimentID, double score, String scoreCard) 
+      throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
+      ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
+      mapper.updateScore(experimentID, score);
+      mapper.updateScoreCard(experimentID, scoreCard);
+      session.commit();
+    }  
+    
+  }
+
+  /**
    * This is a critical function. When non-sychronized, 
    * multiple threads open db sessions that timeouted.
    * @param experimentTask Experiment task.
