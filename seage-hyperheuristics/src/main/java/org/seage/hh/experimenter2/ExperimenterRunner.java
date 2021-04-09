@@ -93,7 +93,8 @@ public class ExperimenterRunner {
             createAlgorithmExperimenter(problemID, instanceID).runExperiment()
         );
       }
-      //todo store the card as json
+      
+      this.experimentReporter.updateScoreCard(experimentID, scoreCard);
     }
    
     long endDate = System.currentTimeMillis();

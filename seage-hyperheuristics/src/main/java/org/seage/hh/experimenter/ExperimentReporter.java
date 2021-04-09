@@ -1,9 +1,16 @@
 package org.seage.hh.experimenter;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
 import org.seage.data.DataNode;
@@ -88,6 +95,25 @@ public class ExperimentReporter {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
       mapper.updateScore(experimentID, score);
+      session.commit();
+    }  
+  }
+
+  /**
+   * Method updates the score.
+   * @param experimentID Experiment id.
+   * @param scoreCard Score card.
+   */
+  public synchronized void updateScoreCard(
+      UUID experimentID, Map<String, Map<String, Double>> scoreCard) throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
+      ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
+
+      Gson gson = new Gson();
+      Type gsonType = new TypeToken<HashMap<String, Map<String, Double>>>(){}.getType();
+      String scoreCardGson = gson.toJson(scoreCard, gsonType);
+
+      mapper.updateScoreCard(experimentID, scoreCardGson);
       session.commit();
     }  
   }

@@ -30,6 +30,7 @@ public interface ExperimentMapper {
         .VALUES("start_date", "#{startDate}")
         .VALUES("end_date", "#{endDate}")          
         .VALUES("score", "#{score}")
+        .VALUES("scoreCard", "#{scoreCard}")
         .VALUES("host_info", "#{hostInfo}")
         .VALUES("format_version", "#{formatVersion}")
         .toString();
@@ -52,6 +53,7 @@ public interface ExperimentMapper {
       @Result(property = "startDate", column = "start_date"),
       @Result(property = "endDate", column = "end_date"),      
       @Result(property = "score", column = "score"),
+      @Result(property = "scoreCard", column = "scoreCard"),
       @Result(property = "hostInfo", column = "host_info"),
       @Result(property = "formatVersion", column = "format_version"),
   })
@@ -71,4 +73,10 @@ public interface ExperimentMapper {
   @SuppressWarnings("LineLengthCheck")
   @Update("UPDATE seage.experiments SET score = #{score} WHERE experiment_id = #{experimentID}::uuid")
   void updateScore(@Param("experimentID") UUID experimentID, @Param("score") double score);
+
+  @SuppressWarnings("LineLengthCheck")
+  @Update(
+      "UPDATE seage.experiments SET scoreCard = #{scoreCard}"
+      + " WHERE experiment_id = #{experimentID}::uuid")
+  void updateScoreCard(@Param("experimentID") UUID experimentID, @Param("scoreCard") String scoreCard);
 }
