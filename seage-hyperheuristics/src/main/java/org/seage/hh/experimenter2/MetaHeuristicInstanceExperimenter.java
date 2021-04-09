@@ -114,12 +114,12 @@ public class MetaHeuristicInstanceExperimenter implements Experimenter {
         .calculateInstanceScore(instanceInfo.getInstanceID(), bestObjVal);
     
     
-    Map<String, Map<String, Double>> scoreCard = new HashMap<>();
-    scoreCard.put(problemID, new HashMap<>());
-    scoreCard.get(problemID).put(instanceID, bestObjVal);
+    // Map<String, Map<String, Double>> scoreCard = new HashMap<>();
+    // scoreCard.put(problemID, new HashMap<>());
+    // scoreCard.get(problemID).put(instanceID, bestObjVal);
 
     // This is weird - if multiple instances run during the expriment the last best value is written
-    experimentReporter.updateScore(experimentID, bestScore, scoreCard);
+    experimentReporter.updateInstanceScore(experimentID, bestScore);
 
     return bestScore;
   }

@@ -87,18 +87,18 @@ public class ExperimentReporter {
     }    
   }
 
-  // /**
-  //  * Method updates the score.
-  //  * @param experimentID Experiment id.
-  //  * @param score New score.
-  //  */
-  // public synchronized void updateScore(UUID experimentID, double score) throws Exception {
-  //   try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
-  //     ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
-  //     mapper.updateScore(experimentID, score);
-  //     session.commit();
-  //   }  
-  // }
+  /**
+   * Method updates the score.
+   * @param experimentID Experiment id.
+   * @param score New score.
+   */
+  public synchronized void updateInstanceScore(UUID experimentID, double score) throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
+      ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
+      mapper.updateScore(experimentID, score);
+      session.commit();
+    }  
+  }
 
   private String scoreCardMapToString(Map<String, Map<String, Double>> scoreCardMap) {
     String result = "{";
@@ -144,7 +144,7 @@ public class ExperimentReporter {
    * @param score Score.
    * @param scoreCard Score card.
    */
-  public synchronized void updateScore(
+  public synchronized void updateExperimentScore(
       UUID experimentID, double score, Map<String, Map<String, Double>> scoreCard) 
       throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
@@ -152,8 +152,7 @@ public class ExperimentReporter {
       mapper.updateScore(experimentID, score);
       mapper.updateScoreCard(experimentID, scoreCardMapToString(scoreCard));
       session.commit();
-    }  
-    
+    }
   }
 
   /**

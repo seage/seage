@@ -111,7 +111,7 @@ public class ExperimenterRunner {
           instanceScores.stream().mapToDouble(a -> a).toArray()));
     }
 
-    this.experimentReporter.updateScore(
+    this.experimentReporter.updateExperimentScore(
         experimentID, 
         ProblemScoreCalculator.calculateExperimentScore(problemsScores), 
         scoreCard

@@ -92,13 +92,13 @@ public class SingleAlgorithmExperimenter extends Experimenter {
         }
       }
     
-      Map<String, Map<String, Double>> scoreCard = new HashMap<>();
-      scoreCard.put(problemID, new HashMap<>());
-      scoreCard.get(problemID).put(instanceID, bestObjVal);
+      // Map<String, Map<String, Double>> scoreCard = new HashMap<>();
+      // scoreCard.put(problemID, new HashMap<>());
+      // scoreCard.get(problemID).put(instanceID, bestObjVal);
 
       // This is weird - 
       // if multiple instances run during the expriment the last best value is written
-      this.experimentReporter.updateScore(this.experimentID, bestObjVal, scoreCard);
+      this.experimentReporter.updateInstanceScore(this.experimentID, bestObjVal);
     }
   }
 
