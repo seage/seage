@@ -119,7 +119,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
     // This is weird - if multiple instances run during the expriment the last best value is written
     experimentReporter.updateInstanceScore(experimentID, bestScore);
 
-    return bestScore;
+    return bestObjVal;
   }
 
   private Void reportExperimentTask(ExperimentTask experimentTask) {
