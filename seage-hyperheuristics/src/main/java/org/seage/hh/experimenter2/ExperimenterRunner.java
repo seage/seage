@@ -118,7 +118,7 @@ public class ExperimenterRunner {
     }
 
     double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
-    this.experimentReporter.updateExperimentTaskScore(
+    this.experimentReporter.updateExperimentScore(
         experimentID, 
         experimentScore, 
         scoreCard
