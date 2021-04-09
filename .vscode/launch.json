@@ -75,7 +75,10 @@
         "1",
         "-n",
         "1"
-      ]
+      ],
+      "env": {
+        "DB_URL": "jdbc:postgresql://localhost/seage"
+      }
     },
     {
       "type": "java",

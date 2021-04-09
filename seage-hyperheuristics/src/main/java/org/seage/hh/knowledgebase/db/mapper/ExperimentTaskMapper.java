@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
@@ -59,6 +60,6 @@ public interface ExperimentTaskMapper {
   ExperimentTask getExperimentTask(UUID experimentTaskID);
 
   @SuppressWarnings("LineLengthCheck")
-  @Update("UPDATE seage.experiment_tasks SET score = #{score} WHERE experiment_id = #{experimentID}::uuid")
-  void updateScore(@Param("experimentID") UUID experimentID, @Param("score") double score);
+  @Update("UPDATE seage.experiment_tasks SET score = #{score} WHERE experiment_task_id = #{experimentTaskID}::uuid")
+  void updateScore(@Param("experimentTaskID") UUID experimentTaskID, @Param("score") double score);
 }

@@ -1,9 +1,7 @@
 package org.seage.hh.experimenter.singlealgorithm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInstanceInfo;
@@ -20,6 +18,8 @@ public class SingleAlgorithmExperimenter extends Experimenter {
   protected Configurator configurator;
   private int numConfigs;
   private int timeoutS;
+  private UUID bestExperimentTaskID;
+  private double bestObjVal;
 
   private static final int NUM_RUNS = 3;
 
@@ -33,6 +33,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
 
     this.numConfigs = numConfigs;
     this.timeoutS = timeoutS;
+    this.bestObjVal = Double.MAX_VALUE;
   }
   
   protected void experimentMain() throws Exception {
@@ -62,7 +63,6 @@ public class SingleAlgorithmExperimenter extends Experimenter {
           algorithmID, i + 1, this.algorithmIDs.length));
       logger.info(String.format("%-44s", "   Running... "));
 
-      double bestObjVal = Double.MAX_VALUE;
       // The taskQueue size must be limited since the results are stored in the task's reports
       // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
 
@@ -81,30 +81,25 @@ public class SingleAlgorithmExperimenter extends Experimenter {
       }
 
       // RUN EXPERIMENT TASKS
-      List<DataNode> stats =
-          this.experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
+      this.experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 
-      // Update score        
-      for (DataNode s : stats) {
-        double objVal = s.getValueDouble("bestObjVal");
-        if (objVal < bestObjVal) {
-          bestObjVal = objVal;
-        }
-      }
-    
-      // Map<String, Map<String, Double>> scoreCard = new HashMap<>();
-      // scoreCard.put(problemID, new HashMap<>());
-      // scoreCard.get(problemID).put(instanceID, bestObjVal);
-
-      // This is weird - 
-      // if multiple instances run during the expriment the last best value is written
-      this.experimentReporter.updateInstanceScore(this.experimentID, bestObjVal);
+      this.experimentReporter.updateInstanceScore(bestExperimentTaskID, bestObjVal);
     }
   }
 
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
       this.experimentReporter.reportExperimentTask(experimentTask);
+
+      double objVal = experimentTask
+          .getExperimentTaskReport()
+          .getDataNode("AlgorithmReport")
+          .getDataNode("Statistics")
+          .getValueDouble("bestObjVal");
+      if (objVal < bestObjVal) {
+        bestObjVal = objVal;
+        bestExperimentTaskID = experimentTask.getExperimentTaskID();
+      }
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
