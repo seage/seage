@@ -24,7 +24,8 @@ public class SingleAlgorithmExperimenter extends Experimenter {
   /**
    * SingleAlgorithmExperimenter constructor - nothing special.
    */
-  protected SingleAlgorithmExperimenter(String experimentName, String problemID, String[] instanceIDs,
+  protected SingleAlgorithmExperimenter(
+      String experimentName, String problemID, String[] instanceIDs,
       String[] algorithmIDs, int numConfigs, int timeoutS) throws Exception {
     super(experimentName, problemID, instanceIDs, algorithmIDs);
 

@@ -1,7 +1,9 @@
 package org.seage.hh.experimenter2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
@@ -106,13 +108,18 @@ public class MetaHeuristicInstanceExperimenter implements Experimenter {
       }
     }
 
+    
     // Calculate the score
     double bestScore = new ProblemScoreCalculator(problemInfo)
         .calculateInstanceScore(instanceInfo.getInstanceID(), bestObjVal);
-        
+    
+    
+    Map<String, Map<String, Double>> scoreCard = new HashMap<>();
+    scoreCard.put(problemID, new HashMap<>());
+    scoreCard.get(problemID).put(instanceID, bestObjVal);
 
     // This is weird - if multiple instances run during the expriment the last best value is written
-    experimentReporter.updateScore(experimentID, bestScore);
+    experimentReporter.updateScore(experimentID, bestScore, scoreCard);
 
     return bestScore;
   }
