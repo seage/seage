@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +18,9 @@ import org.slf4j.LoggerFactory;
 public class ExperimenterRunner {
   protected static Logger logger =
       LoggerFactory.getLogger(ExperimenterRunner.class.getName());
+  
+  Map<String, Map<String, Double>> scoreCard = new HashMap<>(); 
+  
   protected ExperimentReporter experimentReporter;
 
   private UUID experimentID;
@@ -76,11 +80,20 @@ public class ExperimenterRunner {
       String problemID = entry.getKey();
       logger.info("  Problem '{}'", problemID);
 
+      if (scoreCard.containsKey(problemID) == false) {
+        scoreCard.put(problemID, new HashMap<>());
+      }
+
       for (String instanceID : entry.getValue()) {
         logger.info("    Instance '{}'", instanceID);
 
-        createAlgorithmExperimenter(problemID, instanceID).runExperiment();
+
+        scoreCard.get(problemID).put(
+            instanceID, 
+            createAlgorithmExperimenter(problemID, instanceID).runExperiment()
+        );
       }
+      //todo store the card as json
     }
    
     long endDate = System.currentTimeMillis();

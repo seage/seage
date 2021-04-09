@@ -61,18 +61,19 @@ public class MetaHeuristicInstanceExperimenter implements Experimenter {
   /**
    * Method runs experiment.
    */
-  public void runExperiment() {
+  public Double runExperiment() {
     try {
       ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
-      runExperimentTasksForProblemInstance(instanceInfo);
+      return runExperimentTasksForProblemInstance(instanceInfo);
 
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
+      return null;
     }
   }
 
 
-  protected void runExperimentTasksForProblemInstance(
+  protected Double runExperimentTasksForProblemInstance(
       ProblemInstanceInfo instanceInfo) throws Exception {
 
     // The taskQueue size must be limited since the results are stored in the task's reports
@@ -112,6 +113,8 @@ public class MetaHeuristicInstanceExperimenter implements Experimenter {
 
     // This is weird - if multiple instances run during the expriment the last best value is written
     experimentReporter.updateScore(experimentID, bestScore);
+
+    return bestScore;
   }
 
   private Void reportExperimentTask(ExperimentTask experimentTask) {
