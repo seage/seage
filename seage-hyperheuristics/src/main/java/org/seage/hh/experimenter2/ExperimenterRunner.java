@@ -107,7 +107,7 @@ public class ExperimenterRunner {
         double objValue = createAlgorithmExperimenter(problemID, instanceID).runExperiment();
         double score = problemScoreCalculator.calculateInstanceScore(instanceID, objValue);
 
-        scoreCard.get(problemID).put(instanceID,objValue);
+        scoreCard.get(problemID).put(instanceID, score);
         instanceIDs.add(instanceID);
         instanceScores.add(score);
       }
