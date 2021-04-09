@@ -72,7 +72,7 @@ public interface ExperimentMapper {
 
   @SuppressWarnings("LineLengthCheck")
   @Update(
-      "UPDATE seage.experiments SET score_card = #{scoreCard} score = #{score} WHERE experiment_id = #{experimentID}::uuid")
+    "UPDATE seage.experiments SET score_card = #{scoreCard}, score = #{score} WHERE experiment_id = #{experimentID}::uuid")
   void updateScore(
         @Param("experimentID") UUID experimentID, 
         @Param("score") double score, @Param("scoreCard") String scoreCard);
