@@ -87,18 +87,18 @@ public class ExperimentReporter {
     }    
   }
 
-  /**
-   * Method updates the score.
-   * @param experimentID Experiment id.
-   * @param score New score.
-   */
-  public synchronized void updateScore(UUID experimentID, double score) throws Exception {
-    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
-      ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
-      mapper.updateScore(experimentID, score);
-      session.commit();
-    }  
-  }
+  // /**
+  //  * Method updates the score.
+  //  * @param experimentID Experiment id.
+  //  * @param score New score.
+  //  */
+  // public synchronized void updateScore(UUID experimentID, double score) throws Exception {
+  //   try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
+  //     ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
+  //     mapper.updateScore(experimentID, score);
+  //     session.commit();
+  //   }  
+  // }
 
   private String scoreCardMapToString(Map<String, Map<String, Double>> scoreCardMap) {
     String result = "{";
@@ -119,24 +119,24 @@ public class ExperimentReporter {
     return result;
   }
 
-  /**
-   * Method updates the score.
-   * @param experimentID Experiment id.
-   * @param scoreCard Score card.
-   */
-  public synchronized void updateScoreCard(
-      UUID experimentID, Map<String, Map<String, Double>> scoreCard) throws Exception {
-    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
-      ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
+  // /**
+  //  * Method updates the score.
+  //  * @param experimentID Experiment id.
+  //  * @param scoreCard Score card.
+  //  */
+  // public synchronized void updateScoreCard(
+  //     UUID experimentID, Map<String, Map<String, Double>> scoreCard) throws Exception {
+  //   try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
+  //     ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
 
-      // Gson gson = new GsonBuilder().create();
-      // String scoreCardGson = gson.toJson(scoreCard);
+  //     // Gson gson = new GsonBuilder().create();
+  //     // String scoreCardGson = gson.toJson(scoreCard);
       
 
-      mapper.updateScoreCard(experimentID, scoreCardMapToString(scoreCard));
-      session.commit();
-    }  
-  }
+  //     mapper.updateScoreCard(experimentID, scoreCardMapToString(scoreCard));
+  //     session.commit();
+  //   }  
+  // }
 
   /**
    * Method updates the score and the score card.
@@ -144,13 +144,13 @@ public class ExperimentReporter {
    * @param score Score.
    * @param scoreCard Score card.
    */
-  public synchronized void updateScoreAndScoreCard(
-      UUID experimentID, double score, String scoreCard) 
+  public synchronized void updateScore(
+      UUID experimentID, double score, Map<String, Map<String, Double>> scoreCard) 
       throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
       mapper.updateScore(experimentID, score);
-      mapper.updateScoreCard(experimentID, scoreCard);
+      mapper.updateScoreCard(experimentID, scoreCardMapToString(scoreCard));
       session.commit();
     }  
     

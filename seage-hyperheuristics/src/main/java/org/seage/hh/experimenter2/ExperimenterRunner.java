@@ -1,5 +1,7 @@
 package org.seage.hh.experimenter2;
 
+import org.seage.aal.problem.ProblemScoreCalculator;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
@@ -78,6 +81,13 @@ public class ExperimenterRunner {
 
     for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
       String problemID = entry.getKey();
+
+      ProblemScoreCalculator problemScoreCalculator = 
+          new ProblemScoreCalculator(new ProblemInfo(problemID));
+
+      List<String> instanceIDs = new ArrayList<>();
+      List<Double> instanceScores = new ArrayList<>();
+
       logger.info("  Problem '{}'", problemID);
 
       if (scoreCard.containsKey(problemID) == false) {
@@ -87,14 +97,23 @@ public class ExperimenterRunner {
       for (String instanceID : entry.getValue()) {
         logger.info("    Instance '{}'", instanceID);
 
+        double objValue = createAlgorithmExperimenter(problemID, instanceID).runExperiment();
+        double score = problemScoreCalculator.calculateInstanceScore(instanceID, objValue);
 
         scoreCard.get(problemID).put(
             instanceID, 
-            createAlgorithmExperimenter(problemID, instanceID).runExperiment()
+            objValue
         );
+        instanceIDs.add(instanceID);
+        instanceScores.add(score);
       }
       
-      this.experimentReporter.updateScoreCard(experimentID, scoreCard);
+      this.experimentReporter.updateScore(
+          experimentID,
+          problemScoreCalculator.calculateProblemScore(
+            instanceIDs.toArray(new String[]{}), 
+            instanceScores.stream().mapToDouble(a -> a).toArray()),
+          scoreCard);
     }
    
     long endDate = System.currentTimeMillis();
