@@ -1,6 +1,7 @@
 package org.seage.hh.experimenter;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -109,9 +110,8 @@ public class ExperimentReporter {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
 
-      Gson gson = new Gson();
-      Type gsonType = new TypeToken<HashMap<String, Map<String, Double>>>(){}.getType();
-      String scoreCardGson = gson.toJson(scoreCard, gsonType);
+      Gson gson = new GsonBuilder().create();
+      String scoreCardGson = gson.toJson(scoreCard);
 
       mapper.updateScoreCard(experimentID, scoreCardGson);
       session.commit();
