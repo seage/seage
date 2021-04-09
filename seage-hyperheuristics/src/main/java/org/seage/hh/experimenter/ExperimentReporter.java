@@ -144,7 +144,7 @@ public class ExperimentReporter {
    * @param score Score.
    * @param scoreCard Score card.
    */
-  public synchronized void updateExperimentScore(
+  public synchronized void updateExperimentTaskScore(
       UUID experimentID, double score, Map<String, Map<String, Double>> scoreCard) 
       throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
