@@ -79,6 +79,8 @@ public class ExperimenterRunner {
     long startDate;
     startDate = System.currentTimeMillis();
 
+    List<Double> problemsScores = new ArrayList<>();
+
     for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
       String problemID = entry.getKey();
 
@@ -107,14 +109,17 @@ public class ExperimenterRunner {
         instanceIDs.add(instanceID);
         instanceScores.add(score);
       }
-      
-      this.experimentReporter.updateScore(
-          experimentID,
-          problemScoreCalculator.calculateProblemScore(
-            instanceIDs.toArray(new String[]{}), 
-            instanceScores.stream().mapToDouble(a -> a).toArray()),
-          scoreCard);
+
+      problemsScores.add(problemScoreCalculator.calculateProblemScore(
+          instanceIDs.toArray(new String[]{}), 
+          instanceScores.stream().mapToDouble(a -> a).toArray()));
     }
+
+    this.experimentReporter.updateScore(
+        experimentID, 
+        problemsScores.stream().reduce(0.0, Double::sum) / problemsScores.size(), 
+        scoreCard
+    );;
    
     long endDate = System.currentTimeMillis();
     logger.info("-------------------------------------");
