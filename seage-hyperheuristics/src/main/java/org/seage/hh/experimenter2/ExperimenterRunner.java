@@ -85,8 +85,14 @@ public class ExperimenterRunner {
       String problemID = entry.getKey();
       logger.info("  Problem '{}'", problemID);
 
+      ProblemInfo problemInfo = ProblemProvider
+          .getProblemProviders()
+          .get(problemID)
+          .getProblemInfo();
+      
       ProblemScoreCalculator problemScoreCalculator = 
-          new ProblemScoreCalculator(new ProblemInfo(problemID));
+          new ProblemScoreCalculator(problemInfo);
+      
       List<String> instanceIDs = new ArrayList<>();
       List<Double> instanceScores = new ArrayList<>();
 
