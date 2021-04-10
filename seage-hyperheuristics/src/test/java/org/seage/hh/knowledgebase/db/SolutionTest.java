@@ -2,6 +2,7 @@ package org.seage.hh.knowledgebase.db;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
@@ -9,6 +10,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.TestProblemProvider;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
@@ -21,16 +24,17 @@ public class SolutionTest {
   private Experiment experiment1;
   private ExperimentTask experimentTask1;
   private Solution solution1;
-  private Solution solution2;
 
   @BeforeEach
   void setUp() throws Exception {
     DbManager.initTest();
+    ProblemProvider.providerClasses = 
+        new Class<?>[] {TestProblemProvider.class};
 
     this.experiment1 = new Experiment(
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"), 
       "experimentType1", 
-      "problemID1", 
+      "TEST", 
       "instanceID1", 
       "algorithmID1", 
       "config1", 
@@ -44,7 +48,7 @@ public class SolutionTest {
       UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"),
       1, 1,
-      "problemID1", 
+      "TEST", 
       "instanceID1", 
       "algorithmID1", 
       new AlgorithmParams(), 
