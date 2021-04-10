@@ -65,6 +65,6 @@ public class ProblemScoreCalculator {
    * @return Delta score.
    */
   public double calculateScoreDelta(double initScore, double bestScore) {
-    return (initScore > bestScore) ? (initScore - bestScore) : (bestScore - initScore);
+    return Math.abs(bestScore - initScore);
   }
 }

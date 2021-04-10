@@ -53,7 +53,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
     this.experimentReporter = experimentReporter;
-    this.initObjVal = 0.0;
+    this.initObjVal = Double.MAX_VALUE;
     this.bestObjVal = Double.MAX_VALUE;
 
     // Initialize all
@@ -87,16 +87,11 @@ public class MetaHeuristicExperimenter implements Experimenter {
     experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
     
     
-    // Calculate the worst score
-    double initScore = new ProblemScoreCalculator(problemInfo)
-        .calculateInstanceScore(instanceInfo.getInstanceID(), initObjVal);
-
-    // Calculate the best score
-    double bestScore = new ProblemScoreCalculator(problemInfo)
-        .calculateInstanceScore(instanceInfo.getInstanceID(), bestObjVal);
-
-    double scoreDelta = new ProblemScoreCalculator(problemInfo)
-        .calculateScoreDelta(bestScore, initScore);
+    ProblemScoreCalculator calculator = new ProblemScoreCalculator(problemInfo);
+    // Calculate the score delta
+    double initScore = calculator.calculateInstanceScore(instanceInfo.getInstanceID(), initObjVal);
+    double bestScore = calculator.calculateInstanceScore(instanceInfo.getInstanceID(), bestObjVal);
+    double scoreDelta = calculator.calculateScoreDelta(bestScore, initScore);
 
     
     // Report the experiment task's score
@@ -104,30 +99,35 @@ public class MetaHeuristicExperimenter implements Experimenter {
 
     return bestObjVal;
   }
-
+  
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
-
-      DataNode experimentTaskReport = experimentTask.getExperimentTaskReport();
-
-      double objVal = experimentTaskReport
-          .getDataNode("AlgorithmReport")
-          .getDataNode("Statistics")
-          .getValueDouble("bestObjVal");
-      
-      if (objVal < bestObjVal) {
-        bestObjVal = objVal;
-        bestExperimentTaskID = experimentTask.getExperimentTaskID();
-        initObjVal = experimentTaskReport
-            .getDataNode("Solutions")
-            .getDataNode("Input").getDataNode("Solution").getValueDouble("objVal");
-      }
+      setInitAndBestObjectiveValue(experimentTask.getExperimentTaskReport());
       
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
     }
     return null;
+  }
+
+  private void setInitAndBestObjectiveValue(DataNode experimentTaskReport) throws Exception {
+
+    DataNode inputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Input");
+    for (DataNode s : inputs.getDataNodes("Solution")) {
+      double objVal = s.getValueDouble("initObjVal");
+      if (objVal < this.initObjVal) {
+        this.initObjVal = objVal;
+      }
+    }
+
+    DataNode outputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Output");
+    for (DataNode s : outputs.getDataNodes("Solution")) {
+      double objVal = s.getValueDouble("bestObjVal");
+      if (objVal < this.bestObjVal) {
+        this.bestObjVal = objVal;
+      }
+    }
   }
 }
