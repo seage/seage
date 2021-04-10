@@ -102,9 +102,18 @@ public class ExperimentReporter {
 
   private String scoreCardMapToString(Double score, Map<String, Map<String, Double>> scoreCardMap) {
     Gson gson = new Gson();
-    String scoreCard = gson.toJson(scoreCardMap);
-    return "{score: " 
-      + score + ", problems:[" + scoreCard.substring(1, scoreCard.length() - 1) + "]}";
+    String result = "{score: " + score + ", problems:[";
+    for(String problemID: scoreCardMap.keySet()) {
+      result += "{";
+      for (String instanceID: scoreCardMap.get(problemID).keySet()) {
+        result += "{name: " 
+          + instanceID + ", score: " + scoreCardMap.get(problemID).get(instanceID);
+      }
+    }
+    return result + "]}";
+    // String scoreCard = gson.toJson(scoreCardMap);
+    // return "{score: " 
+    //   + score + ", problems:[" + scoreCard.substring(1, scoreCard.length() - 1) + "]}";
   }
 
   /**
