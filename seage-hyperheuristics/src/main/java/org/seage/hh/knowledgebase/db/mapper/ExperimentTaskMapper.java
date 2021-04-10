@@ -63,5 +63,7 @@ public interface ExperimentTaskMapper {
   @Update("UPDATE seage.experiment_tasks SET score = #{score}, score_delta = #{scoreDelta} WHERE experiment_task_id = #{experimentTaskID}::uuid")
   void updateScore(
       @Param("experimentTaskID") UUID experimentTaskID, 
-      @Param("score") double score, @Param("scoreDelta") double scoreDelta);
+      @Param("score") double score, 
+      @Param("scoreDelta") double scoreDelta
+  );
  }
