@@ -7,7 +7,6 @@ import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
-import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
@@ -32,9 +31,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
   private String algorithmID;
   private int numRuns;
   private int timeoutS;
-  private double bestObjVal;
-  private UUID bestExperimentTaskID;
-
+  private double bestScore;
 
   /**
    * MetaHeuristicExperimenter constructor.
@@ -51,7 +48,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
     this.experimentReporter = experimentReporter;
-    this.bestObjVal = Double.MAX_VALUE;;
+    this.bestScore = Double.MIN_VALUE;
 
     // Initialize all
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
@@ -82,31 +79,18 @@ public class MetaHeuristicExperimenter implements Experimenter {
 
     // RUN EXPERIMENT TASKS
     experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
-    
-    // Calculate the score
-    double bestScore = new ProblemScoreCalculator(problemInfo)
-        .calculateInstanceScore(instanceInfo.getInstanceID(), bestObjVal);
-    
-    // Report the best experiment task's score
-    experimentReporter.updateInstanceScore(bestExperimentTaskID, bestScore);
 
-    return bestObjVal;
+    return bestScore;
   }
-
+  
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
 
-      double objVal = experimentTask
-          .getExperimentTaskReport()
-          .getDataNode("AlgorithmReport")
-          .getDataNode("Statistics")
-          .getValueDouble("bestObjVal");
-      if (objVal < bestObjVal) {
-        bestObjVal = objVal;
-        bestExperimentTaskID = experimentTask.getExperimentTaskID();
+      double taskScore = experimentTask.getScore();
+      if (taskScore > bestScore){
+        this.bestScore = taskScore;
       }
-      
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);

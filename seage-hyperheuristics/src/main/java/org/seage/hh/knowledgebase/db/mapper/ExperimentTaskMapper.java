@@ -2,11 +2,9 @@ package org.seage.hh.knowledgebase.db.mapper;
 
 import java.util.UUID;
 import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
 import org.seage.hh.experimenter.ExperimentTask;
@@ -30,6 +28,7 @@ public interface ExperimentTaskMapper {
         .VALUES("start_date", "#{startDate}")
         .VALUES("end_date", "#{endDate}")
         .VALUES("score", "#{score}")
+        .VALUES("score_delta", "#{scoreDelta}")
         .VALUES("config", "#{config}")
         .VALUES("statistics", "#{statistics}")
         .toString();
@@ -52,13 +51,11 @@ public interface ExperimentTaskMapper {
       @Result(property = "configID", column = "config_id"),
       @Result(property = "startDate", column = "start_date"),
       @Result(property = "endDate", column = "end_date"),
+      @Result(property = "scoreDelta", column = "score_delta"),
       @Result(property = "score", column = "score"),
       @Result(property = "config", column = "config"),
       @Result(property = "statistics", column = "statistics")
   })
   ExperimentTask getExperimentTask(UUID experimentTaskID);
 
-  @SuppressWarnings("LineLengthCheck")
-  @Update("UPDATE seage.experiment_tasks SET score = #{score} WHERE experiment_task_id = #{experimentTaskID}::uuid")
-  void updateScore(@Param("experimentTaskID") UUID experimentTaskID, @Param("score") double score);
 }

@@ -16,8 +16,8 @@ public class ProblemScoreCalculatorTest {
 
   @BeforeAll
   static void init() throws Exception {
-    ProblemProvider.providerClasses =
-        new Class<?>[] {TestProblemProvider.class};
+    ProblemProvider.registerProblemProviders(
+        new Class<?>[] {TestProblemProvider.class});
 
     DataNode dn = new DataNode("test-instance");
     dn.putValue("id", "test-instance");

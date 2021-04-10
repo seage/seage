@@ -13,7 +13,7 @@ import org.seage.problem.sat.SatProblemProvider;
 public class SatGraphTest {
   @Test
   public void testSatGraph() throws Exception {
-    ProblemProvider.providerClasses = new Class<?>[] { SatProblemProvider.class };
+    ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
 
     IProblemProvider provider = ProblemProvider.getProblemProviders().get("SAT");
     ProblemInstanceInfo pii = provider.getProblemInfo().getProblemInstanceInfo("uf20-01");

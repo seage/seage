@@ -18,7 +18,7 @@ public class TspPhenotypeTest {
 
   @BeforeEach
   public void initEvaluator() throws Exception {
-    ProblemProvider.providerClasses = new Class<?>[] { TspProblemProvider.class };
+    ProblemProvider.registerProblemProviders(new Class<?>[] { TspProblemProvider.class });
     _provider = ProblemProvider.getProblemProviders().get("TSP");
   }
 

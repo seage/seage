@@ -86,20 +86,6 @@ public class ExperimentReporter {
   }
 
   /**
-   * Method updates the score.
-   * @param experimentTaskID ExperimentTask uuid.
-   * @param score New score.
-   */
-  public synchronized void updateInstanceScore(UUID experimentTaskID, double score) 
-      throws Exception {
-    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
-      ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
-      mapper.updateScore(experimentTaskID, score);
-      session.commit();
-    }  
-  }
-
-  /**
    * Method updates the score and the score card.
    * @param experimentID Experiment id.
    * @param scoreCard Score card.

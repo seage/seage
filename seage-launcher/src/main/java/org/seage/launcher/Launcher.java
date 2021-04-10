@@ -25,9 +25,10 @@ import org.slf4j.LoggerFactory;
 
 public class Launcher {
   static {
-    ProblemProvider.providerClasses =
-        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class};
+    ProblemProvider.registerProblemProviders(
+        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class});
   }
+  
   private static final Logger _logger = LoggerFactory.getLogger(Launcher.class.getName());
 
   @Parameter(names = "--help", help = true)

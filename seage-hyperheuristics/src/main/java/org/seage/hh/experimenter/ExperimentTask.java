@@ -9,45 +9,68 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Runs experiment task and provides following experiment log:
- * <p/>
- * ExperimentTask # version 0.1 |_ ...
- * <p/>
- * ExperimentTaskReport # version 0.2 |_ version (0.4) |_ experimentID |_ startTimeMS |_ timeoutS |_
- * durationS |_ machineName |_ nrOfCores |_ totalRAM |_ availRAM |_ Config | |_ configID | |_ runID
- * | |_ Problem | | |_ problemID | | |_ Instance | | |_ name | |_ Algorithm | |_ algorithmID | |_
- * Parameters |_ AlgorithmReport |_ Parameters |_ Statistics |_ Minutes
+ * Runs experiment task and provides following experiment log.
+ * ---
+ * ExperimentTask
+ * ---
+ * ExperimentTaskReport 
+ * |_ experimentID 
+ * |_ startTimeMS 
+ * |_ timeoutS 
+ * |_ durationS 
+ * |_ machineName 
+ * |_ nrOfCores 
+ * |_ totalRAM 
+ * |_ availRAM 
+ * |_ Config 
+ * | |_ configID | |_ runID
+ * | |_ Problem 
+ * | | |_ problemID 
+ * | | |_ Instance 
+ * | | |_ name 
+ * | |_ Algorithm 
+ * | |_ algorithmID 
+ * | |_ Parameters 
+ * |_ AlgorithmReport 
+ * |_ Parameters 
+ * |_ Statistics 
+ * |_ Minutes
  * 
  * @author Richard Malek
  */
 public class ExperimentTask {
 
-  protected static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
+  private static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
 
-  protected UUID experimentTaskID;
-  protected UUID experimentID;
-  protected int jobID;
-  protected int stageID;
-  protected String experimentType;
-  protected String problemID;
-  protected String instanceID;
-  protected String algorithmID;
-  protected String configID;
-  protected Date startDate;
-  protected Date endDate;
-  protected Double score;
+  private UUID experimentTaskID;
+  private UUID experimentID;
+  private int jobID;
+  private int stageID;
+  private String experimentType;
+  private String problemID;
+  private String instanceID;
+  private String algorithmID;
+  private String configID;
+  private Date startDate;
+  private Date endDate;
+  private Double score;
+  private Double scoreDelta;
 
-  protected AlgorithmParams algorithmParams;
-  protected long timeoutS;
+  private AlgorithmParams algorithmParams;
+  private long timeoutS;
 
-  protected DataNode experimentTaskReport;
+  private DataNode experimentTaskReport;
+  private boolean taskFinished;
+ 
 
   /**
    * Constructor for DB mapper.
@@ -91,13 +114,14 @@ public class ExperimentTask {
     this.startDate = new Date();
     this.endDate = this.startDate;
     this.score = Double.MAX_VALUE;
+    this.scoreDelta = 0.0;
 
     this.algorithmParams = algorithmParams;
     this.timeoutS = timeoutS;
 
-    // _reportName = reportName;
-    // _reportOutputStream = reportOutputStream;
+    this.taskFinished = false;
 
+    // TODO: Remove DataNode usage completely
     this.experimentTaskReport = new DataNode("ExperimentTaskReport");
     this.experimentTaskReport.putValue("version", "0.7");
     this.experimentTaskReport.putValue("experimentType", experimentType);
@@ -140,63 +164,67 @@ public class ExperimentTask {
 
   /**
    * Method runs an experiment task.
+   * @throws Exception .
    */
-  public void run() {
+  public void run() throws Exception {
+    if (taskFinished) {
+      throw new IllegalStateException("Experiment task has been already finished");
+    }
+
     _logger.debug("ExperimentTask started ({})", this.configID);
     this.startDate = new Date();
+
     try {
-      try {
-        this.experimentTaskReport.putValue("machineName",
-            java.net.InetAddress.getLocalHost().getHostName());
-      } catch (UnknownHostException e) {
-        _logger.warn(e.getMessage());
-      }
-      this.experimentTaskReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
-      this.experimentTaskReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());
-      this.experimentTaskReport.putValue("availRAM", Runtime.getRuntime().maxMemory());
-
-      // provider and factory
-      IProblemProvider<Phenotype<?>> provider =
-          ProblemProvider.getProblemProviders().get(this.problemID);
-      IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(this.algorithmID);
-
-      // problem instance
-      ProblemInstance instance = provider
-          .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(this.instanceID));
-
-      IPhenotypeEvaluator<Phenotype<?>> evaluator = provider.initPhenotypeEvaluator(instance);
-
-      // algorithm
-      IAlgorithmAdapter<Phenotype<?>, ?> algorithm = factory.createAlgorithm(instance, evaluator);
-
-      Phenotype<?>[] solutions = provider.generateInitialSolutions(instance,
-          this.algorithmParams.getValueInt("numSolutions"), this.experimentID.hashCode());
-      writeSolutions(evaluator,
-          this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
-
-      algorithm.solutionsFromPhenotype(solutions);
-      algorithm.startSearching(this.algorithmParams, true);
-      _logger.debug("Algorithm started");
-      waitForTimeout(algorithm);
-      algorithm.stopSearching();
-      _logger.debug("Algorithm stopped");
-
-      solutions = algorithm.solutionsToPhenotype();
-      writeSolutions(evaluator,
-          this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
-
-      this.endDate = new Date();
-      long durationS = (this.endDate.getTime() - this.startDate.getTime()) / 1000;
-
-      this.experimentTaskReport.putDataNode(algorithm.getReport());
-      this.experimentTaskReport.putValue("durationS", durationS);
-      _logger.debug("Algorithm run duration: {}", durationS);
-
-    } catch (Exception ex) {
-      _logger.error(ex.getMessage(), ex);
-      _logger.error(this.algorithmParams.toString());
-
+      this.experimentTaskReport.putValue("machineName",
+          java.net.InetAddress.getLocalHost().getHostName());
+    } catch (UnknownHostException e) {
+      _logger.warn(e.getMessage());
     }
+    this.experimentTaskReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
+    this.experimentTaskReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());
+    this.experimentTaskReport.putValue("availRAM", Runtime.getRuntime().maxMemory());
+
+    // provider and factory
+    IProblemProvider<Phenotype<?>> provider =
+        ProblemProvider.getProblemProviders().get(this.problemID);
+    IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(this.algorithmID);
+
+    // problem instance
+    ProblemInstance instance = provider
+        .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(this.instanceID));
+
+    IPhenotypeEvaluator<Phenotype<?>> evaluator = provider.initPhenotypeEvaluator(instance);
+
+    // algorithm
+    IAlgorithmAdapter<Phenotype<?>, ?> algorithm = factory.createAlgorithm(instance, evaluator);
+
+    Phenotype<?>[] solutions = provider.generateInitialSolutions(instance,
+        this.algorithmParams.getValueInt("numSolutions"), this.experimentID.hashCode());
+    writeSolutions(evaluator,
+        this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
+
+    algorithm.solutionsFromPhenotype(solutions);
+    algorithm.startSearching(this.algorithmParams, true);
+    _logger.debug("Algorithm started");
+    waitForTimeout(algorithm);
+    algorithm.stopSearching();
+    _logger.debug("Algorithm stopped");
+
+    solutions = algorithm.solutionsToPhenotype();
+    writeSolutions(evaluator,
+        this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
+    
+    calculateExperimentScore();
+    
+    this.endDate = new Date();
+    long durationS = (this.endDate.getTime() - this.startDate.getTime()) / 1000;
+
+    this.experimentTaskReport.putDataNode(algorithm.getReport());
+    this.experimentTaskReport.putValue("durationS", durationS);
+    
+    this.taskFinished = true;
+
+    _logger.debug("Algorithm run duration: {}", durationS);    
     _logger.debug("ExperimentTask finished ({})", this.configID);
   }
 
@@ -217,14 +245,43 @@ public class ExperimentTask {
         solutionNode.putValue("solution", p.toText());
         solutionNode.putValue("hash", p.computeHash());
         dataNode.putDataNode(solutionNode);
-
-        if (this.score > p.getObjValue()) {
-          this.score = p.getObjValue();
-        }
       } catch (Exception ex) {
         _logger.error("Cannot write solution", ex);
       }
     }
+  }
+
+  private void calculateExperimentScore() throws Exception { 
+    ProblemInfo problemInfo = ProblemProvider
+        .getProblemProviders()
+        .get(problemID)
+        .getProblemInfo();
+    ProblemScoreCalculator scoreCalculator = new ProblemScoreCalculator(problemInfo); 
+
+    DataNode inputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Input");
+    DataNode outputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Output");
+
+    double bestObjValue = getBestObjectiveValue(outputs);
+    double taskBestScore = 
+        scoreCalculator.calculateInstanceScore(instanceID, bestObjValue);
+
+    double initObjValue = getBestObjectiveValue(inputs);
+    double taskInitScore = 
+        scoreCalculator.calculateInstanceScore(instanceID, initObjValue);
+
+    this.score = taskBestScore;
+    this.scoreDelta = scoreCalculator.calculateScoreDelta(taskInitScore, taskBestScore);
+  }
+
+  private double getBestObjectiveValue(DataNode solutions) throws Exception {
+    double bestObjVal = Double.MAX_VALUE;
+    for (DataNode s : solutions.getDataNodes("Solution")) {
+      double objVal = s.getValueDouble("objVal");
+      if (objVal < bestObjVal) {
+        bestObjVal = objVal;
+      }
+    }
+    return bestObjVal;
   }
 
   ////////////////////
@@ -346,6 +403,14 @@ public class ExperimentTask {
 
   public void setScore(Double score) {
     this.score = score;
+  }
+
+  public Double getScoreDelta() {
+    return scoreDelta;
+  }
+
+  public void setScoreDelta(Double scoreDelta) {
+    this.scoreDelta = scoreDelta;
   }
 
   public long getTimeoutS() {
