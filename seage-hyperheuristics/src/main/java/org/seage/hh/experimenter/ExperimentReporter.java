@@ -89,13 +89,14 @@ public class ExperimentReporter {
 
   /**
    * Method updates the score.
-   * @param experimentID Experiment id.
+   * @param experimentTaskID ExperimentTask uuid.
    * @param score New score.
    */
-  public synchronized void updateInstanceScore(UUID experimentID, double score) throws Exception {
+  public synchronized void updateInstanceScore(UUID experimentTaskID, double score) 
+      throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
-      mapper.updateScore(experimentID, score);
+      mapper.updateScore(experimentTaskID, score);
       session.commit();
     }  
   }
@@ -174,7 +175,6 @@ public class ExperimentReporter {
 
     // DataNode newSolutions = report.getDataNode("AlgorithmReport").getDataNode("Log");
     // insertSolutions(session, experimentTaskID, newSolutions, "NewSolution", "new");
-      
   }
 
   private void insertExperimentTask(ExperimentTask experimentTask) throws Exception {
