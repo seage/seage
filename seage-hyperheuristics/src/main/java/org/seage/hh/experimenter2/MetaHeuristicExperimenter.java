@@ -32,7 +32,9 @@ public class MetaHeuristicExperimenter implements Experimenter {
   private String algorithmID;
   private int numRuns;
   private int timeoutS;
+  private double worstObjVal;
   private double bestObjVal;
+  private UUID worstExperimentTaskID;
   private UUID bestExperimentTaskID;
 
 
@@ -51,7 +53,8 @@ public class MetaHeuristicExperimenter implements Experimenter {
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
     this.experimentReporter = experimentReporter;
-    this.bestObjVal = Double.MAX_VALUE;;
+    this.worstObjVal = 0.0;
+    this.bestObjVal = Double.MAX_VALUE;
 
     // Initialize all
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
@@ -83,12 +86,20 @@ public class MetaHeuristicExperimenter implements Experimenter {
     // RUN EXPERIMENT TASKS
     experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
     
-    // Calculate the score
+    
+    // Calculate the worst score
+    double worstScore = new ProblemScoreCalculator(problemInfo)
+        .calculateInstanceScore(instanceInfo.getInstanceID(), worstObjVal);
+
+    // Calculate the best score
     double bestScore = new ProblemScoreCalculator(problemInfo)
         .calculateInstanceScore(instanceInfo.getInstanceID(), bestObjVal);
+
+    double scoreDelta = (worstScore > bestScore) ? 0.0 : bestScore - worstScore;
+
     
-    // Report the best experiment task's score
-    experimentReporter.updateInstanceScore(bestExperimentTaskID, bestScore);
+    // Report the experiment task's score
+    experimentReporter.updateInstanceScore(bestExperimentTaskID, bestScore, scoreDelta);
 
     return bestObjVal;
   }
@@ -105,6 +116,11 @@ public class MetaHeuristicExperimenter implements Experimenter {
       if (objVal < bestObjVal) {
         bestObjVal = objVal;
         bestExperimentTaskID = experimentTask.getExperimentTaskID();
+      }
+
+      if (objVal > worstObjVal) {
+        worstObjVal = objVal;
+        worstExperimentTaskID = experimentTask.getExperimentTaskID();
       }
       
     } catch (Exception e) {

@@ -52,6 +52,7 @@ public interface ExperimentTaskMapper {
       @Result(property = "configID", column = "config_id"),
       @Result(property = "startDate", column = "start_date"),
       @Result(property = "endDate", column = "end_date"),
+      @Result(property = "scoreDelta", column = "score_delta"),
       @Result(property = "score", column = "score"),
       @Result(property = "config", column = "config"),
       @Result(property = "statistics", column = "statistics")
@@ -59,6 +60,8 @@ public interface ExperimentTaskMapper {
   ExperimentTask getExperimentTask(UUID experimentTaskID);
 
   @SuppressWarnings("LineLengthCheck")
-  @Update("UPDATE seage.experiment_tasks SET score = #{score} WHERE experiment_task_id = #{experimentTaskID}::uuid")
-  void updateScore(@Param("experimentTaskID") UUID experimentTaskID, @Param("score") double score);
-}
+  @Update("UPDATE seage.experiment_tasks SET score = #{score}, score_delta = #{scoreDelta} WHERE experiment_task_id = #{experimentTaskID}::uuid")
+  void updateScore(
+      @Param("experimentTaskID") UUID experimentTaskID, 
+      @Param("score") double score, @Param("scoreDelta") double scoreDelta);
+ }

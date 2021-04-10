@@ -18,6 +18,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
   protected Configurator configurator;
   private int numConfigs;
   private int timeoutS;
+  private double worstObjVal;
   private UUID bestExperimentTaskID;
   private double bestObjVal;
 
@@ -33,6 +34,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
 
     this.numConfigs = numConfigs;
     this.timeoutS = timeoutS;
+    this.worstObjVal = 0.0;
     this.bestObjVal = Double.MAX_VALUE;
   }
   
@@ -83,7 +85,9 @@ public class SingleAlgorithmExperimenter extends Experimenter {
       // RUN EXPERIMENT TASKS
       this.experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 
-      this.experimentReporter.updateInstanceScore(bestExperimentTaskID, bestObjVal);
+      double scoreDelta = (worstObjVal > bestObjVal) ? 0.0 : bestObjVal - worstObjVal;
+
+      this.experimentReporter.updateInstanceScore(bestExperimentTaskID, bestObjVal, scoreDelta);
     }
   }
 
@@ -99,6 +103,9 @@ public class SingleAlgorithmExperimenter extends Experimenter {
       if (objVal < bestObjVal) {
         bestObjVal = objVal;
         bestExperimentTaskID = experimentTask.getExperimentTaskID();
+      }
+      if (objVal > worstObjVal) {
+        worstObjVal = objVal;
       }
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
