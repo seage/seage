@@ -115,8 +115,11 @@ public class ExperimentReporter {
 
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
 
+      String scoreCardJson = gson.toJson(scoreCard);
+      double totalScore = scoreCard.getTotalScore();
+
       mapper.updateScore(
-          experimentID, scoreCard.getTotalScore(), gson.toJson(scoreCard));
+          experimentID, totalScore, scoreCardJson);
       
       session.commit();
     }

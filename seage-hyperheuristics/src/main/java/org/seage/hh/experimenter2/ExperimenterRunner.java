@@ -106,6 +106,7 @@ public class ExperimenterRunner {
         double score = problemScoreCalculator.calculateInstanceScore(instanceID, objValue);
 
         scoreCard.putInstanceScore(problemID, instanceID, score);
+  
         instanceIDs.add(instanceID);
         instanceScores.add(score);
       }
@@ -113,11 +114,13 @@ public class ExperimenterRunner {
       double problemScore = problemScoreCalculator.calculateProblemScore(
           instanceIDs.toArray(new String[]{}), 
           instanceScores.stream().mapToDouble(a -> a).toArray());
-      
+
       scoreCard.putProblemScore(problemID, problemScore);
+      problemsScores.add(problemScore);
     }
 
-    double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
+    double experimentScore = ProblemScoreCalculator
+        .calculateExperimentScore(problemsScores);
     scoreCard.setTotalScore(experimentScore);
 
     this.experimentReporter.updateExperimentScore(
