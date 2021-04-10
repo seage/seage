@@ -123,10 +123,11 @@ public class ExperimenterRunner {
    
     long endDate = System.currentTimeMillis();
     logger.info("-------------------------------------");
-    logger.info("Experiment {} finished ...", experimentID);
+    logger.info("Experiment {} finished ...", experimentID);    
     logger.info("Experiment duration: {} (DD:HH:mm:ss)", 
         TimeFormat.getTimeDurationBreakdown(endDate - startDate));
-    
+    logger.info("Experiment score: ### {} ###", scoreCard.getTotalScore());
+        
     this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
   }
 

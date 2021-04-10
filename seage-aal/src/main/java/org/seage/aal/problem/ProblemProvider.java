@@ -46,6 +46,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class ProblemProvider<P extends Phenotype<?>> implements IProblemProvider<P> {
   private static Class<?>[] providerClasses = {};
+  private static Map<String, IProblemProvider<Phenotype<?>>> providers = null;
   private static Logger logger = LoggerFactory.getLogger(ProblemProvider.class.getName());
   private ProblemInfo problemInfo;
   private HashMap<String, IAlgorithmFactory<P, ?>> algFactories;
@@ -208,16 +209,20 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
   @SuppressWarnings("unchecked")
   public static synchronized Map<String, IProblemProvider<Phenotype<?>>> 
       getProblemProviders() throws Exception {
-    HashMap<String, IProblemProvider<Phenotype<?>>> result = 
-        new HashMap<String, IProblemProvider<Phenotype<?>>>();
+    
+    if (providers != null) {
+      return providers;
+    }
+    
+    providers = new HashMap<>();
 
     for (Class<?> c : providerClasses) {
       IProblemProvider<Phenotype<?>> pp = 
           (IProblemProvider<Phenotype<?>>) c.getConstructor().newInstance();
       pp.getProblemInfo();
-      result.put(c.getAnnotation(Annotations.ProblemId.class).value(), pp);       
+      providers.put(c.getAnnotation(Annotations.ProblemId.class).value(), pp);       
     }
 
-    return result;
+    return providers;
   }
 }
