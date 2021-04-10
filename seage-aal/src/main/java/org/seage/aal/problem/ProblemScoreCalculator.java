@@ -57,4 +57,14 @@ public class ProblemScoreCalculator {
   public static double calculateExperimentScore(List<Double> problemsScores) {
     return problemsScores.stream().reduce(0.0, Double::sum) / problemsScores.size();
   }
+
+  /**
+   * Method calculates score delta.
+   * @param initScore Array of problem scores.
+   * @param bestScore Array of problem scores.
+   * @return Delta score.
+   */
+  public double calculateScoreDelta(double initScore, double bestScore) {
+    return (initScore > bestScore) ? (initScore - bestScore) : (bestScore - initScore);
+  }
 }

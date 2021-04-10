@@ -8,6 +8,7 @@ import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
+import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
@@ -32,9 +33,8 @@ public class MetaHeuristicExperimenter implements Experimenter {
   private String algorithmID;
   private int numRuns;
   private int timeoutS;
-  private double worstObjVal;
+  private double initObjVal;
   private double bestObjVal;
-  private UUID worstExperimentTaskID;
   private UUID bestExperimentTaskID;
 
 
@@ -53,7 +53,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
     this.experimentReporter = experimentReporter;
-    this.worstObjVal = 0.0;
+    this.initObjVal = 0.0;
     this.bestObjVal = Double.MAX_VALUE;
 
     // Initialize all
@@ -88,14 +88,15 @@ public class MetaHeuristicExperimenter implements Experimenter {
     
     
     // Calculate the worst score
-    double worstScore = new ProblemScoreCalculator(problemInfo)
-        .calculateInstanceScore(instanceInfo.getInstanceID(), worstObjVal);
+    double initScore = new ProblemScoreCalculator(problemInfo)
+        .calculateInstanceScore(instanceInfo.getInstanceID(), initObjVal);
 
     // Calculate the best score
     double bestScore = new ProblemScoreCalculator(problemInfo)
         .calculateInstanceScore(instanceInfo.getInstanceID(), bestObjVal);
 
-    double scoreDelta = (worstScore > bestScore) ? 0.0 : bestScore - worstScore;
+    double scoreDelta = new ProblemScoreCalculator(problemInfo)
+        .calculateScoreDelta(bestScore, initScore);
 
     
     // Report the experiment task's score
@@ -108,19 +109,19 @@ public class MetaHeuristicExperimenter implements Experimenter {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
 
-      double objVal = experimentTask
-          .getExperimentTaskReport()
+      DataNode experimentTaskReport = experimentTask.getExperimentTaskReport();
+
+      double objVal = experimentTaskReport
           .getDataNode("AlgorithmReport")
           .getDataNode("Statistics")
           .getValueDouble("bestObjVal");
+      
       if (objVal < bestObjVal) {
         bestObjVal = objVal;
         bestExperimentTaskID = experimentTask.getExperimentTaskID();
-      }
-
-      if (objVal > worstObjVal) {
-        worstObjVal = objVal;
-        worstExperimentTaskID = experimentTask.getExperimentTaskID();
+        initObjVal = experimentTaskReport
+            .getDataNode("Solutions")
+            .getDataNode("Input").getDataNode("Solution").getValueDouble("objVal");
       }
       
     } catch (Exception e) {

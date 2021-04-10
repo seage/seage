@@ -18,7 +18,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
   protected Configurator configurator;
   private int numConfigs;
   private int timeoutS;
-  private double worstObjVal;
+  private double initObjVal;
   private UUID bestExperimentTaskID;
   private double bestObjVal;
 
@@ -34,7 +34,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
 
     this.numConfigs = numConfigs;
     this.timeoutS = timeoutS;
-    this.worstObjVal = 0.0;
+    this.initObjVal = 0.0;
     this.bestObjVal = Double.MAX_VALUE;
   }
   
@@ -85,7 +85,8 @@ public class SingleAlgorithmExperimenter extends Experimenter {
       // RUN EXPERIMENT TASKS
       this.experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 
-      double scoreDelta = (worstObjVal > bestObjVal) ? 0.0 : bestObjVal - worstObjVal;
+      double scoreDelta = 
+          (initObjVal > bestObjVal) ? initObjVal - bestObjVal : bestObjVal - initObjVal;
 
       this.experimentReporter.updateInstanceScore(bestExperimentTaskID, bestObjVal, scoreDelta);
     }
@@ -95,17 +96,18 @@ public class SingleAlgorithmExperimenter extends Experimenter {
     try {
       this.experimentReporter.reportExperimentTask(experimentTask);
 
-      double objVal = experimentTask
-          .getExperimentTaskReport()
+      DataNode experimentTaskReport = experimentTask.getExperimentTaskReport();
+
+      double objVal = experimentTaskReport
           .getDataNode("AlgorithmReport")
           .getDataNode("Statistics")
           .getValueDouble("bestObjVal");
       if (objVal < bestObjVal) {
         bestObjVal = objVal;
         bestExperimentTaskID = experimentTask.getExperimentTaskID();
-      }
-      if (objVal > worstObjVal) {
-        worstObjVal = objVal;
+        initObjVal = experimentTaskReport
+            .getDataNode("Solutions")
+            .getDataNode("Input").getDataNode("Solution").getValueDouble("objVal");
       }
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
