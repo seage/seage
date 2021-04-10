@@ -22,7 +22,7 @@ public class ExperimentScoreCard {
   /**
    * String: problemId - String: instanceId - Double: instanceId value.
    */
-  Map<String, Map<String, Double>> problemResults;
+  Map<String, Map<String, Double>> scorePerInstance;
 
   /**
    * . String: problemId - Double: problemId score
@@ -39,11 +39,11 @@ public class ExperimentScoreCard {
   public ExperimentScoreCard(String algorithmName, String[] problems) {
     this.algorithmName = algorithmName;
 
-    problemResults = new HashMap<>();
     scorePerProblem = new HashMap<>();
+    scorePerInstance = new HashMap<>();  
 
     for (String problem : problems) {
-      problemResults.put(problem, new HashMap<>());
+      scorePerInstance.put(problem, new HashMap<>());
       scorePerProblem.put(problem, null);
     }
   }
@@ -58,7 +58,7 @@ public class ExperimentScoreCard {
    * @return Returns this.
    */
   public ExperimentScoreCard putInstanceScore(String problemId, String instanceId, Double value) {
-    problemResults.get(problemId).put(instanceId, value);
+    scorePerInstance.get(problemId).put(instanceId, value);
     return this;
   }
 
@@ -81,7 +81,7 @@ public class ExperimentScoreCard {
    * 
    * @param score Algorithm score.
    */
-  public void setScore(Double score) {
+  public void setTotalScore(Double score) {
     totalScore = score;
   }
 
@@ -91,7 +91,7 @@ public class ExperimentScoreCard {
    * 
    * @return Problem problem score.
    */
-  public double getScore() {
+  public double getTotalScore() {
     return totalScore;
   }
 
@@ -114,7 +114,7 @@ public class ExperimentScoreCard {
    * @return Returns the value of given instacne.
    */
   public double getInstanceScore(String problemId, String instanceId) {
-    return problemResults.get(problemId).get(instanceId);
+    return scorePerInstance.get(problemId).get(instanceId);
   }
 
 
@@ -135,7 +135,7 @@ public class ExperimentScoreCard {
    * @return Set of problem names.
    */
   public Set<String> getProblems() {
-    return problemResults.keySet();
+    return scorePerInstance.keySet();
   }
 
 
@@ -146,6 +146,6 @@ public class ExperimentScoreCard {
    * @return
    */
   public Set<String> getInstances(String problemId) {
-    return problemResults.get(problemId).keySet();
+    return scorePerInstance.get(problemId).keySet();
   }
 }
