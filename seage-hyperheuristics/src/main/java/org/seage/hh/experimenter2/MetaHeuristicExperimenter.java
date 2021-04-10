@@ -115,18 +115,21 @@ public class MetaHeuristicExperimenter implements Experimenter {
   private void setInitAndBestObjectiveValue(DataNode experimentTaskReport) throws Exception {
 
     DataNode inputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Input");
-    for (DataNode s : inputs.getDataNodes("Solution")) {
-      double objVal = s.getValueDouble("initObjVal");
-      if (objVal < this.initObjVal) {
-        this.initObjVal = objVal;
-      }
-    }
-
     DataNode outputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Output");
+
+    // For the given experiment task find the best output solution
+    // and in case it is the best so far find the best initial solution for it. 
     for (DataNode s : outputs.getDataNodes("Solution")) {
-      double objVal = s.getValueDouble("bestObjVal");
+      double objVal = s.getValueDouble("objVal");
       if (objVal < this.bestObjVal) {
         this.bestObjVal = objVal;
+        this.initObjVal = Double.MAX_VALUE;
+        for (DataNode s2 : inputs.getDataNodes("Solution")) {
+          double objVal2 = s2.getValueDouble("objVal");
+          if (objVal2 < this.initObjVal) {
+            this.initObjVal = objVal2;
+          }
+        }
       }
     }
   }
