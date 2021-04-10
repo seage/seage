@@ -10,8 +10,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmParams;
-import org.seage.aal.problem.ProblemProvider;
-import org.seage.aal.problem.TestProblemProvider;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
@@ -28,8 +26,6 @@ public class SolutionTest {
   @BeforeEach
   void setUp() throws Exception {
     DbManager.initTest();
-    ProblemProvider.registerProblemProviders(
-        new Class<?>[] {TestProblemProvider.class});
 
     this.experiment1 = new Experiment(
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"), 

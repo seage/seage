@@ -24,7 +24,6 @@ public class ExperimentTaskTest {
 
   @BeforeEach
   void setUp() throws Exception {
-    ProblemProvider.registerProblemProviders(new Class<?>[] { TestProblemProvider.class });
     DbManager.initTest();
 
     this.experiment1 = new Experiment(

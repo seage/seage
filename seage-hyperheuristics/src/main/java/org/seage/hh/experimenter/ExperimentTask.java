@@ -18,14 +18,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Runs experiment task and provides following experiment log:
- * <p/>
- * ExperimentTask # version 0.1 |_ ...
- * <p/>
- * ExperimentTaskReport # version 0.2 |_ version (0.4) |_ experimentID |_ startTimeMS |_ timeoutS |_
- * durationS |_ machineName |_ nrOfCores |_ totalRAM |_ availRAM |_ Config | |_ configID | |_ runID
- * | |_ Problem | | |_ problemID | | |_ Instance | | |_ name | |_ Algorithm | |_ algorithmID | |_
- * Parameters |_ AlgorithmReport |_ Parameters |_ Statistics |_ Minutes
+ * Runs experiment task and provides following experiment log.
+ * ---
+ * ExperimentTask
+ * ---
+ * ExperimentTaskReport 
+ * |_ experimentID 
+ * |_ startTimeMS 
+ * |_ timeoutS 
+ * |_ durationS 
+ * |_ machineName 
+ * |_ nrOfCores 
+ * |_ totalRAM 
+ * |_ availRAM 
+ * |_ Config 
+ * | |_ configID | |_ runID
+ * | |_ Problem 
+ * | | |_ problemID 
+ * | | |_ Instance 
+ * | | |_ name 
+ * | |_ Algorithm 
+ * | |_ algorithmID 
+ * | |_ Parameters 
+ * |_ AlgorithmReport 
+ * |_ Parameters 
+ * |_ Statistics 
+ * |_ Minutes
  * 
  * @author Richard Malek
  */
@@ -51,8 +69,8 @@ public class ExperimentTask {
   private long timeoutS;
 
   private DataNode experimentTaskReport;
-  private ProblemScoreCalculator scoreCalculator;
-  
+  private boolean taskFinished;
+ 
 
   /**
    * Constructor for DB mapper.
@@ -101,11 +119,7 @@ public class ExperimentTask {
     this.algorithmParams = algorithmParams;
     this.timeoutS = timeoutS;
 
-    ProblemInfo problemInfo = ProblemProvider
-        .getProblemProviders()
-        .get(problemID)
-        .getProblemInfo();
-    this.scoreCalculator = new ProblemScoreCalculator(problemInfo); 
+    this.taskFinished = false;
 
     // TODO: Remove DataNode usage completely
     this.experimentTaskReport = new DataNode("ExperimentTaskReport");
@@ -150,65 +164,67 @@ public class ExperimentTask {
 
   /**
    * Method runs an experiment task.
+   * @throws Exception .
    */
-  public void run() {
+  public void run() throws Exception {
+    if (taskFinished) {
+      throw new IllegalStateException("Experiment task has been already finished");
+    }
+
     _logger.debug("ExperimentTask started ({})", this.configID);
     this.startDate = new Date();
+
     try {
-      try {
-        this.experimentTaskReport.putValue("machineName",
-            java.net.InetAddress.getLocalHost().getHostName());
-      } catch (UnknownHostException e) {
-        _logger.warn(e.getMessage());
-      }
-      this.experimentTaskReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
-      this.experimentTaskReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());
-      this.experimentTaskReport.putValue("availRAM", Runtime.getRuntime().maxMemory());
-
-      // provider and factory
-      IProblemProvider<Phenotype<?>> provider =
-          ProblemProvider.getProblemProviders().get(this.problemID);
-      IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(this.algorithmID);
-
-      // problem instance
-      ProblemInstance instance = provider
-          .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(this.instanceID));
-
-      IPhenotypeEvaluator<Phenotype<?>> evaluator = provider.initPhenotypeEvaluator(instance);
-
-      // algorithm
-      IAlgorithmAdapter<Phenotype<?>, ?> algorithm = factory.createAlgorithm(instance, evaluator);
-
-      Phenotype<?>[] solutions = provider.generateInitialSolutions(instance,
-          this.algorithmParams.getValueInt("numSolutions"), this.experimentID.hashCode());
-      writeSolutions(evaluator,
-          this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
-
-      algorithm.solutionsFromPhenotype(solutions);
-      algorithm.startSearching(this.algorithmParams, true);
-      _logger.debug("Algorithm started");
-      waitForTimeout(algorithm);
-      algorithm.stopSearching();
-      _logger.debug("Algorithm stopped");
-
-      solutions = algorithm.solutionsToPhenotype();
-      writeSolutions(evaluator,
-          this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
-      
-      calculateExperimentScore();
-      
-      this.endDate = new Date();
-      long durationS = (this.endDate.getTime() - this.startDate.getTime()) / 1000;
-
-      this.experimentTaskReport.putDataNode(algorithm.getReport());
-      this.experimentTaskReport.putValue("durationS", durationS);
-      _logger.debug("Algorithm run duration: {}", durationS);
-
-    } catch (Exception ex) {
-      _logger.error(ex.getMessage(), ex);
-      _logger.error(this.algorithmParams.toString());
-
+      this.experimentTaskReport.putValue("machineName",
+          java.net.InetAddress.getLocalHost().getHostName());
+    } catch (UnknownHostException e) {
+      _logger.warn(e.getMessage());
     }
+    this.experimentTaskReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
+    this.experimentTaskReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());
+    this.experimentTaskReport.putValue("availRAM", Runtime.getRuntime().maxMemory());
+
+    // provider and factory
+    IProblemProvider<Phenotype<?>> provider =
+        ProblemProvider.getProblemProviders().get(this.problemID);
+    IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(this.algorithmID);
+
+    // problem instance
+    ProblemInstance instance = provider
+        .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(this.instanceID));
+
+    IPhenotypeEvaluator<Phenotype<?>> evaluator = provider.initPhenotypeEvaluator(instance);
+
+    // algorithm
+    IAlgorithmAdapter<Phenotype<?>, ?> algorithm = factory.createAlgorithm(instance, evaluator);
+
+    Phenotype<?>[] solutions = provider.generateInitialSolutions(instance,
+        this.algorithmParams.getValueInt("numSolutions"), this.experimentID.hashCode());
+    writeSolutions(evaluator,
+        this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
+
+    algorithm.solutionsFromPhenotype(solutions);
+    algorithm.startSearching(this.algorithmParams, true);
+    _logger.debug("Algorithm started");
+    waitForTimeout(algorithm);
+    algorithm.stopSearching();
+    _logger.debug("Algorithm stopped");
+
+    solutions = algorithm.solutionsToPhenotype();
+    writeSolutions(evaluator,
+        this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
+    
+    calculateExperimentScore();
+    
+    this.endDate = new Date();
+    long durationS = (this.endDate.getTime() - this.startDate.getTime()) / 1000;
+
+    this.experimentTaskReport.putDataNode(algorithm.getReport());
+    this.experimentTaskReport.putValue("durationS", durationS);
+    
+    this.taskFinished = true;
+
+    _logger.debug("Algorithm run duration: {}", durationS);    
     _logger.debug("ExperimentTask finished ({})", this.configID);
   }
 
@@ -236,7 +252,12 @@ public class ExperimentTask {
   }
 
   private void calculateExperimentScore() throws Exception { 
-      
+    ProblemInfo problemInfo = ProblemProvider
+        .getProblemProviders()
+        .get(problemID)
+        .getProblemInfo();
+    ProblemScoreCalculator scoreCalculator = new ProblemScoreCalculator(problemInfo); 
+
     DataNode inputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Input");
     DataNode outputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Output");
 
