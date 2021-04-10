@@ -60,7 +60,7 @@
     },
     {
       "type": "java",
-      "name": "Debug Launcher (approach experimenter, h2)",
+      "name": "Debug Launcher (approach experimenter, postgres)",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",

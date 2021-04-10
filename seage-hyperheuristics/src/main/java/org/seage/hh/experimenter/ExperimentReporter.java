@@ -1,8 +1,7 @@
 package org.seage.hh.experimenter;
 
-// import com.google.gson.Gson;
-// import com.google.gson.GsonBuilder;
-// import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 // import java.lang.reflect.Type;
 
@@ -10,11 +9,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Instant;
 import java.util.Date;
-// import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
 import org.seage.data.DataNode;
+import org.seage.hh.experimenter2.ExperimentScoreCard;
 import org.seage.hh.knowledgebase.db.DbManager;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
@@ -101,56 +99,25 @@ public class ExperimentReporter {
     }  
   }
 
-  private String scoreCardMapToString(Map<String, Map<String, Double>> scoreCardMap) {
-    String result = "{";
-
-    for (String problemID: scoreCardMap.keySet()) {
-      result += "\"" + problemID + "\":{";
-      for (String instanceID: scoreCardMap.get(problemID).keySet()) {
-        result += "\"" + instanceID + "\":\"" + scoreCardMap.get(problemID).get(instanceID) + "\"";
-      }
-      result += "},";
-    }
-
-    if (result.length() > 0) {
-      result = result.substring(0, result.length() - 1);
-    }
-
-    result += "}";
-    return result;
-  }
-
-  // /**
-  //  * Method updates the score.
-  //  * @param experimentID Experiment id.
-  //  * @param scoreCard Score card.
-  //  */
-  // public synchronized void updateScoreCard(
-  //     UUID experimentID, Map<String, Map<String, Double>> scoreCard) throws Exception {
-  //   try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
-  //     ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
-
-  //     // Gson gson = new GsonBuilder().create();
-  //     // String scoreCardGson = gson.toJson(scoreCard);
-      
-
-  //     mapper.updateScoreCard(experimentID, scoreCardMapToString(scoreCard));
-  //     session.commit();
-  //   }  
-  // }
-
   /**
    * Method updates the score and the score card.
    * @param experimentID Experiment id.
-   * @param score Score.
    * @param scoreCard Score card.
    */
   public synchronized void updateExperimentScore(
-      UUID experimentID, double score, Map<String, Map<String, Double>> scoreCard) 
+      UUID experimentID, ExperimentScoreCard scoreCard) 
       throws Exception {
-    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
-      mapper.updateScore(experimentID, score, scoreCardMapToString(scoreCard));
+
+      String scoreCardJson = gson.toJson(scoreCard);
+      double totalScore = scoreCard.getTotalScore();
+
+      mapper.updateScore(
+          experimentID, totalScore, scoreCardJson);
+      
       session.commit();
     }
   }

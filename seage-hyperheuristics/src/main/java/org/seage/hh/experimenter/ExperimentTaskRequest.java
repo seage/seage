@@ -15,6 +15,18 @@ public class ExperimentTaskRequest {
   private AlgorithmParams algorithmParams;
   private long timeoutS;
 
+  /**
+   * Class constructor.
+   * @param experimentTaskID Task experiment id.
+   * @param experimentID Experiment id.
+   * @param jobID Job id.
+   * @param stageID Stage id.
+   * @param problemID Problem id.
+   * @param instanceID Instance id.
+   * @param algorithmID Algorithm id. 
+   * @param algorithmParams Algorithm params.
+   * @param timeoutS Timeout.
+   */
   public ExperimentTaskRequest(UUID experimentTaskID, UUID experimentID, int jobID, int stageID,
       String problemID, String instanceID, String algorithmID, AlgorithmParams algorithmParams,
       long timeoutS) throws Exception {
