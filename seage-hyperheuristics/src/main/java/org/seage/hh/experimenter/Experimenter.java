@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import org.seage.aal.problem.ProblemInfo;
 //import org.seage.aal.problem.ProblemInstanceInfo;
@@ -35,6 +34,7 @@ import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
+import org.seage.logging.TimeFormat;
 // import org.seage.hh.experimenter.runner.SparkExperimentTasksRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,7 +121,7 @@ public abstract class Experimenter {
     logger.info(String.format("%-25s: %s", "Total number of configs", totalNumOfConfigs));
     logger.info("Total number of configs per cpu core: " + totalRunsPerCpu);
     logger.info(String.format("Total estimated time: %s (DD:HH:mm:ss)", 
-        getDurationBreakdown(totalEstimatedTime)));
+        TimeFormat.getTimeDurationBreakdown(totalEstimatedTime)));
     logger.info("-------------------------------------");
 
     this.experimentReporter.createExperimentReport(
@@ -139,7 +139,8 @@ public abstract class Experimenter {
     endDate = System.currentTimeMillis();
     logger.info("-------------------------------------");
     logger.info("Experiment {} finished ...", experimentID);
-    logger.info("Experiment duration: {} (DD:HH:mm:ss)", getDurationBreakdown(endDate - startDate));
+    logger.info("Experiment duration: {} (DD:HH:mm:ss)", 
+        TimeFormat.getTimeDurationBreakdown(endDate - startDate));
     
     this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
   }
@@ -152,19 +153,4 @@ public abstract class Experimenter {
 
   protected abstract long getNumberOfConfigs(int instancesCount, int algorithmsCount);
 
-  protected static String getDurationBreakdown(long millis) {
-    if (millis < 0) {
-      throw new IllegalArgumentException("Duration must be greater than zero!");
-    }
-
-    long days = TimeUnit.MILLISECONDS.toDays(millis);
-    millis -= TimeUnit.DAYS.toMillis(days);
-    long hours = TimeUnit.MILLISECONDS.toHours(millis);
-    millis -= TimeUnit.HOURS.toMillis(hours);
-    long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-    millis -= TimeUnit.MINUTES.toMillis(minutes);
-    long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
-
-    return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds); // (sb.toString());
-  }
 }

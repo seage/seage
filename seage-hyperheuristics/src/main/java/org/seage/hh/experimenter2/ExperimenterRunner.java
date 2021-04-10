@@ -7,12 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
+import org.seage.logging.TimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -124,7 +124,8 @@ public class ExperimenterRunner {
     long endDate = System.currentTimeMillis();
     logger.info("-------------------------------------");
     logger.info("Experiment {} finished ...", experimentID);
-    logger.info("Experiment duration: {} (DD:HH:mm:ss)", getDurationBreakdown(endDate - startDate));
+    logger.info("Experiment duration: {} (DD:HH:mm:ss)", 
+        TimeFormat.getTimeDurationBreakdown(endDate - startDate));
     
     this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
   }
@@ -172,19 +173,5 @@ public class ExperimenterRunner {
     return results.toArray(new String[0]);
   }
 
-  protected static String getDurationBreakdown(long millis) {
-    if (millis < 0) {
-      throw new IllegalArgumentException("Duration must be greater than zero!");
-    }
 
-    long days = TimeUnit.MILLISECONDS.toDays(millis);
-    millis -= TimeUnit.DAYS.toMillis(days);
-    long hours = TimeUnit.MILLISECONDS.toHours(millis);
-    millis -= TimeUnit.HOURS.toMillis(hours);
-    long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-    millis -= TimeUnit.MINUTES.toMillis(minutes);
-    long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
-
-    return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds); // (sb.toString());
-  }
 }

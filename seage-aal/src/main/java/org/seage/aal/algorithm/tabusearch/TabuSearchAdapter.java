@@ -44,7 +44,8 @@ import org.slf4j.LoggerFactory;
 /**
  * TabuSearchAdapter base implementation.
  */
-@AlgorithmParameters({ @Parameter(name = "iterationCount", min = 1, max = 1000000, init = 1000000),
+@AlgorithmParameters({ 
+    @Parameter(name = "iterationCount", min = 1, max = 100000000000L, init = 100000000000L),
     @Parameter(name = "numSolutions", min = 1, max = 1, init = 1),
     @Parameter(name = "tabuListLength", min = 1, max = 1000, init = 30) })
 public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Solution> 
