@@ -9,8 +9,10 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,25 +31,28 @@ import org.slf4j.LoggerFactory;
  */
 public class ExperimentTask {
 
-  protected static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
+  private static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
 
-  protected UUID experimentTaskID;
-  protected UUID experimentID;
-  protected int jobID;
-  protected int stageID;
-  protected String experimentType;
-  protected String problemID;
-  protected String instanceID;
-  protected String algorithmID;
-  protected String configID;
-  protected Date startDate;
-  protected Date endDate;
-  protected Double score;
+  private UUID experimentTaskID;
+  private UUID experimentID;
+  private int jobID;
+  private int stageID;
+  private String experimentType;
+  private String problemID;
+  private String instanceID;
+  private String algorithmID;
+  private String configID;
+  private Date startDate;
+  private Date endDate;
+  private Double score;
+  private Double scoreDelta;
 
-  protected AlgorithmParams algorithmParams;
-  protected long timeoutS;
+  private AlgorithmParams algorithmParams;
+  private long timeoutS;
 
-  protected DataNode experimentTaskReport;
+  private DataNode experimentTaskReport;
+  private ProblemScoreCalculator scoreCalculator;
+  
 
   /**
    * Constructor for DB mapper.
@@ -91,13 +96,18 @@ public class ExperimentTask {
     this.startDate = new Date();
     this.endDate = this.startDate;
     this.score = Double.MAX_VALUE;
+    this.scoreDelta = 0.0;
 
     this.algorithmParams = algorithmParams;
     this.timeoutS = timeoutS;
 
-    // _reportName = reportName;
-    // _reportOutputStream = reportOutputStream;
+    ProblemInfo problemInfo = ProblemProvider
+        .getProblemProviders()
+        .get(problemID)
+        .getProblemInfo();
+    this.scoreCalculator = new ProblemScoreCalculator(problemInfo); 
 
+    // TODO: Remove DataNode usage completely
     this.experimentTaskReport = new DataNode("ExperimentTaskReport");
     this.experimentTaskReport.putValue("version", "0.7");
     this.experimentTaskReport.putValue("experimentType", experimentType);
@@ -184,7 +194,9 @@ public class ExperimentTask {
       solutions = algorithm.solutionsToPhenotype();
       writeSolutions(evaluator,
           this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
-
+      
+      calculateExperimentScore();
+      
       this.endDate = new Date();
       long durationS = (this.endDate.getTime() - this.startDate.getTime()) / 1000;
 
@@ -217,14 +229,38 @@ public class ExperimentTask {
         solutionNode.putValue("solution", p.toText());
         solutionNode.putValue("hash", p.computeHash());
         dataNode.putDataNode(solutionNode);
-
-        if (this.score > p.getObjValue()) {
-          this.score = p.getObjValue();
-        }
       } catch (Exception ex) {
         _logger.error("Cannot write solution", ex);
       }
     }
+  }
+
+  private void calculateExperimentScore() throws Exception { 
+      
+    DataNode inputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Input");
+    DataNode outputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Output");
+
+    double bestObjValue = getBestObjectiveValue(outputs);
+    double taskBestScore = 
+        scoreCalculator.calculateInstanceScore(instanceID, bestObjValue);
+
+    double initObjValue = getBestObjectiveValue(inputs);
+    double taskInitScore = 
+        scoreCalculator.calculateInstanceScore(instanceID, initObjValue);
+
+    this.score = taskBestScore;
+    this.scoreDelta = scoreCalculator.calculateScoreDelta(taskInitScore, taskBestScore);
+  }
+
+  private double getBestObjectiveValue(DataNode solutions) throws Exception {
+    double bestObjVal = Double.MAX_VALUE;
+    for (DataNode s : solutions.getDataNodes("Solution")) {
+      double objVal = s.getValueDouble("objVal");
+      if (objVal < bestObjVal) {
+        bestObjVal = objVal;
+      }
+    }
+    return bestObjVal;
   }
 
   ////////////////////
@@ -346,6 +382,14 @@ public class ExperimentTask {
 
   public void setScore(Double score) {
     this.score = score;
+  }
+
+  public Double getScoreDelta() {
+    return scoreDelta;
+  }
+
+  public void setScoreDelta(Double scoreDelta) {
+    this.scoreDelta = scoreDelta;
   }
 
   public long getTimeoutS() {

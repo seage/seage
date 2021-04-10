@@ -84,11 +84,6 @@ public class SingleAlgorithmExperimenter extends Experimenter {
 
       // RUN EXPERIMENT TASKS
       this.experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
-
-      double scoreDelta = 
-          (initObjVal > bestObjVal) ? initObjVal - bestObjVal : bestObjVal - initObjVal;
-
-      this.experimentReporter.updateInstanceScore(bestExperimentTaskID, bestObjVal, scoreDelta);
     }
   }
 

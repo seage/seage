@@ -33,10 +33,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
   private String algorithmID;
   private int numRuns;
   private int timeoutS;
-  private double initObjVal;
-  private double bestObjVal;
-  private UUID bestExperimentTaskID;
-
+  private double bestScore;
 
   /**
    * MetaHeuristicExperimenter constructor.
@@ -53,8 +50,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
     this.experimentReporter = experimentReporter;
-    this.initObjVal = Double.MAX_VALUE;
-    this.bestObjVal = Double.MAX_VALUE;
+    this.bestScore = Double.MIN_VALUE;
 
     // Initialize all
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
@@ -85,52 +81,22 @@ public class MetaHeuristicExperimenter implements Experimenter {
 
     // RUN EXPERIMENT TASKS
     experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
-    
-    
-    ProblemScoreCalculator calculator = new ProblemScoreCalculator(problemInfo);
-    // Calculate the score delta
-    double initScore = calculator.calculateInstanceScore(instanceInfo.getInstanceID(), initObjVal);
-    double bestScore = calculator.calculateInstanceScore(instanceInfo.getInstanceID(), bestObjVal);
-    double scoreDelta = calculator.calculateScoreDelta(bestScore, initScore);
 
-    
-    // Report the experiment task's score
-    experimentReporter.updateInstanceScore(bestExperimentTaskID, bestScore, scoreDelta);
-
-    return bestObjVal;
+    return bestScore;
   }
   
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
-      setInitAndBestObjectiveValue(experimentTask.getExperimentTaskReport());
-      
+
+      double taskScore = experimentTask.getScore();
+      if (taskScore > bestScore){
+        this.bestScore = taskScore;
+      }
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
     }
     return null;
-  }
-
-  private void setInitAndBestObjectiveValue(DataNode experimentTaskReport) throws Exception {
-
-    DataNode inputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Input");
-    DataNode outputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Output");
-
-    // For the given experiment task find the best output solution
-    // and in case it is the best so far find the best initial solution for it. 
-    for (DataNode s : outputs.getDataNodes("Solution")) {
-      double objVal = s.getValueDouble("objVal");
-      if (objVal < this.bestObjVal) {
-        this.bestObjVal = objVal;
-        this.initObjVal = Double.MAX_VALUE;
-        for (DataNode s2 : inputs.getDataNodes("Solution")) {
-          double objVal2 = s2.getValueDouble("objVal");
-          if (objVal2 < this.initObjVal) {
-            this.initObjVal = objVal2;
-          }
-        }
-      }
-    }
   }
 }

@@ -90,8 +90,7 @@ public class ExperimenterRunner {
           .get(problemID)
           .getProblemInfo();
       
-      ProblemScoreCalculator problemScoreCalculator = 
-          new ProblemScoreCalculator(problemInfo);
+      ProblemScoreCalculator problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
       
       List<String> instanceIDs = new ArrayList<>();
       List<Double> instanceScores = new ArrayList<>();
@@ -99,8 +98,9 @@ public class ExperimenterRunner {
       for (String instanceID : entry.getValue()) {
         logger.info("    Instance '{}'", instanceID);
 
-        double objValue = createAlgorithmExperimenter(problemID, instanceID).runExperiment();
-        double score = problemScoreCalculator.calculateInstanceScore(instanceID, objValue);
+        // RUN EXPERIMENT
+        double score = createAlgorithmExperimenter(problemID, instanceID).runExperiment();
+        // --- ----------
 
         scoreCard.putInstanceScore(problemID, instanceID, score);
   
@@ -116,14 +116,10 @@ public class ExperimenterRunner {
       problemsScores.add(problemScore);
     }
 
-    double experimentScore = ProblemScoreCalculator
-        .calculateExperimentScore(problemsScores);
+    double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
     scoreCard.setTotalScore(experimentScore);
 
-    this.experimentReporter.updateExperimentScore(
-        experimentID,
-        scoreCard
-    );
+    this.experimentReporter.updateExperimentScore(experimentID, scoreCard);
    
     long endDate = System.currentTimeMillis();
     logger.info("-------------------------------------");
@@ -134,9 +130,8 @@ public class ExperimenterRunner {
   }
 
 
-  private Experimenter createAlgorithmExperimenter(
-      String problemID, String instanceID)
-       throws Exception {
+  private Experimenter createAlgorithmExperimenter(String problemID, String instanceID) 
+      throws Exception {
     boolean ordinaryAlg = ProblemProvider
         .getProblemProviders()
         .get(problemID)
