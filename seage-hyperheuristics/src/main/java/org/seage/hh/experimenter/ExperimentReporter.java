@@ -87,16 +87,16 @@ public class ExperimentReporter {
 
   /**
    * Method updates the score.
-   * @param bestExperimentTaskID ExperimentTask uuid.
-   * @param worstExperimentTaskID ExperimentTask uuid.
-   * @param bestScore New score.
+   * @param experimentTaskID ExperimentTask uuid.
+   * @param score New score.
+   * @param scoreDelta New score.
    */
   public synchronized void updateInstanceScore(
-      UUID bestExperimentTaskID, UUID worstExperimentTaskID, double bestScore, double scoreDelta) 
+      UUID experimentTaskID, double score, double scoreDelta) 
       throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
-      mapper.updateScore(bestExperimentTaskID, bestScore);
+      mapper.updateScore(experimentTaskID, score, scoreDelta);
       session.commit();
     }  
   }
