@@ -76,13 +76,11 @@ public class ExperimenterRunner {
     long startDate;
     startDate = System.currentTimeMillis();
 
-    //Initialize array for problems scores
+    // Initialize array for problems scores
     List<Double> problemsScores = new ArrayList<>();
 
     ExperimentScoreCard scoreCard = new ExperimentScoreCard(
         this.algorithmID, this.problemInstanceIDs.keySet().toArray(new String[]{}));
-
-    //Map<String, Map<String, Double>> scoreCard = new HashMap<>(); 
 
     for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
       String problemID = entry.getKey();
@@ -110,7 +108,7 @@ public class ExperimenterRunner {
         instanceIDs.add(instanceID);
         instanceScores.add(score);
       }
-
+      
       double problemScore = problemScoreCalculator.calculateProblemScore(
           instanceIDs.toArray(new String[]{}), 
           instanceScores.stream().mapToDouble(a -> a).toArray());
