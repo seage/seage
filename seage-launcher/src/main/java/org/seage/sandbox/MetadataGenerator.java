@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -131,6 +132,8 @@ public class MetadataGenerator {
   private static void saveToFile(DataNode dn, String fileName) throws Exception {
     _logger.info("Saving the results to the file " + fileName + ".metadata.xml");
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
+    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, ""); // Compliant
     Transformer transformer = transformerFactory.newTransformer();
     transformer.setOutputProperty(OutputKeys.INDENT, "yes");
     DOMSource domSource = new DOMSource(dn.toXml());
