@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
 import org.seage.data.DataNode;
+import org.seage.hh.experimenter2.ExperimentScoreCard;
 import org.seage.hh.knowledgebase.db.DbManager;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
@@ -101,34 +102,22 @@ public class ExperimentReporter {
     }  
   }
 
-  private String scoreCardMapToString(Double score, Map<String, Map<String, Double>> scoreCardMap) {
-    Gson gson = new Gson();
-    String result = "{score: " + score + ", problems:[";
-    for(String problemID: scoreCardMap.keySet()) {
-      result += "{";
-      for (String instanceID: scoreCardMap.get(problemID).keySet()) {
-        result += "{name: " 
-          + instanceID + ", score: " + scoreCardMap.get(problemID).get(instanceID);
-      }
-    }
-    return result + "]}";
-    // String scoreCard = gson.toJson(scoreCardMap);
-    // return "{score: " 
-    //   + score + ", problems:[" + scoreCard.substring(1, scoreCard.length() - 1) + "]}";
-  }
-
   /**
    * Method updates the score and the score card.
    * @param experimentID Experiment id.
-   * @param score Score.
    * @param scoreCard Score card.
    */
   public synchronized void updateExperimentScore(
-      UUID experimentID, double score, Map<String, Map<String, Double>> scoreCard) 
+      UUID experimentID, ExperimentScoreCard scoreCard) 
       throws Exception {
-    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
-      mapper.updateScore(experimentID, score, scoreCardMapToString(score, scoreCard));
+
+      mapper.updateScore(
+          experimentID, scoreCard.getTotalScore(), gson.toJson(scoreCard));
+      
       session.commit();
     }
   }

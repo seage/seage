@@ -79,7 +79,10 @@ public class ExperimenterRunner {
     //Initialize array for problems scores
     List<Double> problemsScores = new ArrayList<>();
 
-    Map<String, Map<String, Double>> scoreCard = new HashMap<>(); 
+    ExperimentScoreCard scoreCard = new ExperimentScoreCard(
+        this.algorithmID, this.problemInstanceIDs.keySet().toArray(new String[]{}));
+
+    //Map<String, Map<String, Double>> scoreCard = new HashMap<>(); 
 
     for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
       String problemID = entry.getKey();
@@ -96,31 +99,29 @@ public class ExperimenterRunner {
       List<String> instanceIDs = new ArrayList<>();
       List<Double> instanceScores = new ArrayList<>();
 
-
-      if (scoreCard.containsKey(problemID) == false) {
-        scoreCard.put(problemID, new HashMap<>());
-      }
-
       for (String instanceID : entry.getValue()) {
         logger.info("    Instance '{}'", instanceID);
 
         double objValue = createAlgorithmExperimenter(problemID, instanceID).runExperiment();
         double score = problemScoreCalculator.calculateInstanceScore(instanceID, objValue);
 
-        scoreCard.get(problemID).put(instanceID, score);
+        scoreCard.putInstanceScore(problemID, instanceID, score);
         instanceIDs.add(instanceID);
         instanceScores.add(score);
       }
 
-      problemsScores.add(problemScoreCalculator.calculateProblemScore(
+      double problemScore = problemScoreCalculator.calculateProblemScore(
           instanceIDs.toArray(new String[]{}), 
-          instanceScores.stream().mapToDouble(a -> a).toArray()));
+          instanceScores.stream().mapToDouble(a -> a).toArray());
+      
+      scoreCard.putProblemScore(problemID, problemScore);
     }
 
     double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
+    scoreCard.setTotalScore(experimentScore);
+
     this.experimentReporter.updateExperimentScore(
-        experimentID, 
-        experimentScore, 
+        experimentID,
         scoreCard
     );
    
