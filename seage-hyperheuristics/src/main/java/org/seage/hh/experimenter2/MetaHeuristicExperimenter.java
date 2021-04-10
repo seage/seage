@@ -20,20 +20,21 @@ import org.slf4j.LoggerFactory;
 
 
 public class MetaHeuristicExperimenter implements Experimenter {
-  protected static Logger logger =
+  private static Logger logger =
       LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
-  protected DefaultConfigurator configurator;
-  protected ProblemInfo problemInfo;
-  protected IExperimentTasksRunner experimentTasksRunner;
-  protected ExperimentReporter experimentReporter;
+  private DefaultConfigurator configurator;
+  private ProblemInfo problemInfo;
+  private IExperimentTasksRunner experimentTasksRunner;
+  private ExperimentReporter experimentReporter;
   
-  protected UUID experimentID;
-  protected String experimentName;
-  protected String problemID;
-  protected String instanceID;
-  protected String algorithmID;
-  protected int numRuns;
-  protected int timeoutS;
+  private UUID experimentID;
+  private String problemID;
+  private String instanceID;
+  private String algorithmID;
+  private int numRuns;
+  private int timeoutS;
+  private double bestObjVal;
+  private UUID bestExperimentTaskID;
 
 
   /**
@@ -51,6 +52,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
     this.experimentReporter = experimentReporter;
+    this.bestObjVal = Double.MAX_VALUE;;
 
     // Initialize all
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
@@ -80,32 +82,14 @@ public class MetaHeuristicExperimenter implements Experimenter {
     }
 
     // RUN EXPERIMENT TASKS
-    List<DataNode> stats =
-        experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
-
-    // Initialize the best value 
-    double bestObjVal = Double.MAX_VALUE;
-
-    // Update score        
-    for (DataNode s : stats) {
-      double objVal = s.getValueDouble("bestObjVal");
-      if (objVal < bestObjVal) {
-        bestObjVal = objVal;
-      }
-    }
-
+    experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
     
     // Calculate the score
     double bestScore = new ProblemScoreCalculator(problemInfo)
         .calculateInstanceScore(instanceInfo.getInstanceID(), bestObjVal);
     
-    
-    // Map<String, Map<String, Double>> scoreCard = new HashMap<>();
-    // scoreCard.put(problemID, new HashMap<>());
-    // scoreCard.get(problemID).put(instanceID, bestObjVal);
-
-    // This is weird - if multiple instances run during the expriment the last best value is written
-    experimentReporter.updateInstanceScore(experimentID, bestScore);
+    // Report the best experiment task's score
+    experimentReporter.updateInstanceScore(bestExperimentTaskID, bestScore);
 
     return bestObjVal;
   }
@@ -113,6 +97,17 @@ public class MetaHeuristicExperimenter implements Experimenter {
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
+
+      double objVal = experimentTask
+          .getExperimentTaskReport()
+          .getDataNode("AlgorithmReport")
+          .getDataNode("Statistics")
+          .getValueDouble("bestObjVal");
+      if (objVal < bestObjVal) {
+        bestObjVal = objVal;
+        bestExperimentTaskID = experimentTask.getExperimentTaskID();
+      }
+      
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
