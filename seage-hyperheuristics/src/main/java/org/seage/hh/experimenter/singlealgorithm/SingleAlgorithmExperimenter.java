@@ -18,9 +18,6 @@ public class SingleAlgorithmExperimenter extends Experimenter {
   protected Configurator configurator;
   private int numConfigs;
   private int timeoutS;
-  private double initObjVal;
-  private UUID bestExperimentTaskID;
-  private double bestObjVal;
 
   private static final int NUM_RUNS = 3;
 
@@ -34,8 +31,6 @@ public class SingleAlgorithmExperimenter extends Experimenter {
 
     this.numConfigs = numConfigs;
     this.timeoutS = timeoutS;
-    this.initObjVal = 0.0;
-    this.bestObjVal = Double.MAX_VALUE;
   }
   
   protected void experimentMain() throws Exception {
@@ -90,20 +85,6 @@ public class SingleAlgorithmExperimenter extends Experimenter {
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
       this.experimentReporter.reportExperimentTask(experimentTask);
-
-      DataNode experimentTaskReport = experimentTask.getExperimentTaskReport();
-
-      double objVal = experimentTaskReport
-          .getDataNode("AlgorithmReport")
-          .getDataNode("Statistics")
-          .getValueDouble("bestObjVal");
-      if (objVal < bestObjVal) {
-        bestObjVal = objVal;
-        bestExperimentTaskID = experimentTask.getExperimentTaskID();
-        initObjVal = experimentTaskReport
-            .getDataNode("Solutions")
-            .getDataNode("Input").getDataNode("Solution").getValueDouble("objVal");
-      }
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
