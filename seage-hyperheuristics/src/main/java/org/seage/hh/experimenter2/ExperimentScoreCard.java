@@ -27,24 +27,24 @@ public class ExperimentScoreCard {
   /**
    * . String: problemId - Double: problemId score
    */
-  Map<String, Double> scorePerDomain;
+  Map<String, Double> scorePerProblem;
 
 
   /**
    * Constructor, sets all necessary parameters.
    * 
    * @param algorithmName Name of the algorithm.
-   * @param domains       Array of problem domains names.
+   * @param problems       Array of problem names.
    */
-  public ExperimentScoreCard(String algorithmName, String[] domains) {
+  public ExperimentScoreCard(String algorithmName, String[] problems) {
     this.algorithmName = algorithmName;
 
     problemResults = new HashMap<>();
-    scorePerDomain = new HashMap<>();
+    scorePerProblem = new HashMap<>();
 
-    for (String domain : domains) {
-      problemResults.put(domain, new HashMap<>());
-      scorePerDomain.put(domain, null);
+    for (String problem : problems) {
+      problemResults.put(problem, new HashMap<>());
+      scorePerProblem.put(problem, null);
     }
   }
 
@@ -52,8 +52,8 @@ public class ExperimentScoreCard {
   /**
    * Method stores given instanceId value.
    * 
-   * @param problemId  Name of the problem domain.
-   * @param instanceId Name of the problem domain instance.
+   * @param problemId  Name of the problem.
+   * @param instanceId Name of the problem instance.
    * @param value      Value of the instance.
    * @return Returns this.
    */
@@ -66,12 +66,12 @@ public class ExperimentScoreCard {
   /**
    * Method stores given problemId value.
    * 
-   * @param problemId Name of the problem domain.
-   * @param value     Value of the problem domain.
+   * @param problemId Name of the problem.
+   * @param value     Value of the problem.
    * @return Returns this.
    */
-  public ExperimentScoreCard putDomainScore(String problemId, Double value) {
-    scorePerDomain.put(problemId, value);
+  public ExperimentScoreCard putProblemScore(String problemId, Double value) {
+    scorePerProblem.put(problemId, value);
     return this;
   }
 
@@ -87,9 +87,9 @@ public class ExperimentScoreCard {
 
 
   /**
-   * Method returns the problem domain score.
+   * Method returns the problem score.
    * 
-   * @return Problem domain score.
+   * @return Problem problem score.
    */
   public double getScore() {
     return totalScore;
@@ -119,20 +119,20 @@ public class ExperimentScoreCard {
 
 
   /**
-   * Returns the value of given problem domain.
+   * Returns the value of given problem.
    * 
-   * @param problemId Name of a problem domain.
-   * @return Returns the value of a problem domain.
+   * @param problemId Name of a problem.
+   * @return Returns the value of a problem.
    */
   public double getProblemScore(String problemId) {
-    return scorePerDomain.get(problemId);
+    return scorePerProblem.get(problemId);
   }
 
 
   /**
-   * Method returns the set of problem domains names.
+   * Method returns the set of problem names.
    * 
-   * @return Set of problem domains names.
+   * @return Set of problem names.
    */
   public Set<String> getProblems() {
     return problemResults.keySet();
@@ -140,9 +140,9 @@ public class ExperimentScoreCard {
 
 
   /**
-   * Method returns the set of problem domains names.
+   * Method returns the set of problem names.
    * 
-   * @param problemId Set of problem domains names.
+   * @param problemId Set of problem names.
    * @return
    */
   public Set<String> getInstances(String problemId) {
