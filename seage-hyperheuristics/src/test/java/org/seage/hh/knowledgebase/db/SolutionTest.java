@@ -28,8 +28,8 @@ public class SolutionTest {
   @BeforeEach
   void setUp() throws Exception {
     DbManager.initTest();
-    ProblemProvider.providerClasses = 
-        new Class<?>[] {TestProblemProvider.class};
+    ProblemProvider.registerProblemProviders(
+        new Class<?>[] {TestProblemProvider.class});
 
     this.experiment1 = new Experiment(
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"), 

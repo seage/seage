@@ -45,10 +45,14 @@ import org.slf4j.LoggerFactory;
  * @author Richard Malek
  */
 public abstract class ProblemProvider<P extends Phenotype<?>> implements IProblemProvider<P> {
-  public static Class<?>[] providerClasses = {};
+  private static Class<?>[] providerClasses = {};
   private static Logger logger = LoggerFactory.getLogger(ProblemProvider.class.getName());
   private ProblemInfo problemInfo;
   private HashMap<String, IAlgorithmFactory<P, ?>> algFactories;
+
+  public static void registerProblemProviders(Class<?>[] providerClasses) {
+    ProblemProvider.providerClasses = providerClasses;
+  }
 
   @Override
   public ProblemInfo getProblemInfo() throws Exception {
