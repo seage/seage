@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.hh.experimenter.Experiment;
@@ -47,6 +48,11 @@ public class ExperimentTest {
       "hostname2",
       "1"
     );
+  }
+
+  @AfterEach
+  void done() {
+    DbManager.destroy();
   }
 
   @Test

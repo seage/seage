@@ -96,6 +96,10 @@ public class DbManager {
     }
   }
 
+  public static void destroy() {
+    sqlSessionFactory = null;
+  }
+
   /**
    * Gets valied SqlSessionFactory instance or fails.
    */

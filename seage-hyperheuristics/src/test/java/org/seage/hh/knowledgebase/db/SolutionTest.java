@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmParams;
@@ -61,6 +62,11 @@ public class SolutionTest {
       2L,
       Date.from(Instant.now())
     );
+  }
+  
+  @AfterEach
+  void done() {
+    DbManager.destroy();
   }
 
   @Test
