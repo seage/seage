@@ -84,6 +84,7 @@ public class DbManager {
       }
       // Database migration
       Flyway flyway = Flyway.configure()
+          .schemas("seage")
           .defaultSchema("seage")
           .baselineOnMigrate(true)
           .locations("classpath:/org/seage/hh/knowledgebase/db/migration")
