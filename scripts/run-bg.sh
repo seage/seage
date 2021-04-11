@@ -1,4 +1,9 @@
- cd `dirname $0`/..
+cd `dirname $0`/..
 
- ./scripts/run.sh $@ &> /dev/null & disown
- 
+set -e
+
+if [ "x$DB_URL" = "x" ]; then
+  export DB_URL="jdbc:postgresql://localhost/seage"
+fi
+
+./scripts/run.sh $@ &> /dev/null & disown
