@@ -24,6 +24,7 @@
  *     - Initial implementation
  *     - Added problem annotations
  */
+
 package org.seage.problem.tsp;
 
 import java.io.FileInputStream;
@@ -36,13 +37,17 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.aal.problem.ProblemProvider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- *
+ * TspProblemProvider.
  * @author Richard Malek
  */
 @Annotations.ProblemId("TSP")
 @Annotations.ProblemName("Travelling Salesman Problem")
 public class TspProblemProvider extends ProblemProvider<TspPhenotype> {
+  private static Logger logger = LoggerFactory.getLogger(TspProblemProvider.class.getName());
 
   @Override
   public TspProblemInstance initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception {
@@ -52,15 +57,16 @@ public class TspProblemProvider extends ProblemProvider<TspPhenotype> {
     String path = instanceInfo.getValue("path").toString();
 
     InputStream stream0;
-    if (origin == ProblemInstanceOrigin.RESOURCE)
+    if (origin == ProblemInstanceOrigin.RESOURCE) {
       stream0 = getClass().getResourceAsStream(path);
-    else
+    } else {
       stream0 = new FileInputStream(path);
+    }
 
     try (InputStream stream = stream0) {
       cities = CityProvider.readCities(stream);
     } catch (Exception ex) {
-      System.err.println("TspProblemProvider.initProblemInstance - readCities failed, path: " + path);
+      logger.error("TSP ReadCities failed, path: {}", path);
       throw ex;
     }
 
@@ -69,17 +75,21 @@ public class TspProblemProvider extends ProblemProvider<TspPhenotype> {
   }
 
   @Override
-  public TspPhenotype[] generateInitialSolutions(ProblemInstance instance, int numSolutions, long randomSeed)
+  public TspPhenotype[] generateInitialSolutions(
+      ProblemInstance instance, int numSolutions, long randomSeed)
       throws Exception {
     int numTours = numSolutions;
     City[] cities = ((TspProblemInstance) instance).getCities();
     TspPhenotype[] result = new TspPhenotype[numTours];
     IPhenotypeEvaluator<TspPhenotype> evaluator = this.initPhenotypeEvaluator(instance);
 
-    // result[0] = new TspPhenotype(TourProvider.createGreedyTour(cities,
-    // randomSeed));
-    for (int i = 0; i < numTours; i++){
-      result[i] = new TspPhenotype(TourProvider.createRandomTour(cities.length));
+    for (int i = 0; i < numTours; i++) {
+      if (i == 0) {
+        result[i] = new TspPhenotype(TourProvider.createGreedyTour(
+            cities, System.currentTimeMillis()));
+      } else {
+        result[i] = new TspPhenotype(TourProvider.createRandomTour(cities.length));
+      }
       double[] objVals = evaluator.evaluate(result[i]);
       result[i].setObjValue(objVals[0]);
       result[i].setScore(objVals[1]);
@@ -102,7 +112,8 @@ public class TspProblemProvider extends ProblemProvider<TspPhenotype> {
   }
 
   @Override
-  public IPhenotypeEvaluator<TspPhenotype> initPhenotypeEvaluator(ProblemInstance instance) throws Exception {
+  public IPhenotypeEvaluator<TspPhenotype> initPhenotypeEvaluator(ProblemInstance instance) 
+      throws Exception {
     return new TspPhenotypeEvaluator(this.getProblemInfo(), (TspProblemInstance) instance);
   }
 

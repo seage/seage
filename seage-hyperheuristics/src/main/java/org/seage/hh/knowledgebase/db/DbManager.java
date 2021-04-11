@@ -39,6 +39,9 @@ public class DbManager {
   }
 
   private static void init(boolean testMode) throws Exception {
+    if (sqlSessionFactory != null) {
+      return;
+    }
     String commonPrefix = "org/seage/hh/knowledgebase/db/";
     String configResourcePath = commonPrefix + "mybatis-config.xml";
 

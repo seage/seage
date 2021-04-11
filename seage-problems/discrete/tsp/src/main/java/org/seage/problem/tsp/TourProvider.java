@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * @author Richard Malek
  */
 public class TourProvider {
-  protected static Logger logger = LoggerFactory.getLogger(TourProvider.class.getName());
+  private static Logger logger = LoggerFactory.getLogger(TourProvider.class.getName());
 
   /**. */
   public static Integer[] createGreedyTour(City[] cities, long randomSeed) throws Exception {

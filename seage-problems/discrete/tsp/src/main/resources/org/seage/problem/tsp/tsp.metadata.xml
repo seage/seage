@@ -37,7 +37,7 @@
         <Instance id="lin105" optimum="14379" random="122013" size="105"/>
         <Instance id="lin318" optimum="42029" random="579715" size="318"/>
         <Instance id="linhp318" optimum="41345" random="579149" size="318"/>
-        <Instance id="mona-lisa100K" optimum="TBA" random="991034529" size="100000"/>
+        <Instance id="mona-lisa100K" optimum="5757084" random="6868213" size="100000"/>
         <Instance id="nrw1379" optimum="56638" random="1410572" size="1379"/>
         <Instance id="p654" optimum="34643" random="2004612" size="654"/>
         <Instance id="pcb1173-hyflex-5" optimum="56892" random="1386113" size="1173"/>
