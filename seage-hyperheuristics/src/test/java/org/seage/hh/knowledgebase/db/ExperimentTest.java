@@ -20,6 +20,7 @@ public class ExperimentTest {
   @BeforeEach
   void setUp() throws Exception {
     DbManager.initTest();
+    System.err.println("setup");
 
     this.experiment1 = new Experiment(
       UUID.fromString("447ee273-3a5d-493a-a84c-0403690dfe0f"), 
@@ -52,6 +53,7 @@ public class ExperimentTest {
 
   @AfterEach
   void done() {
+    System.err.println("destroy");
     DbManager.destroy();
   }
 

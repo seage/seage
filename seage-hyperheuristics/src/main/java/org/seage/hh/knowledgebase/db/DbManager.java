@@ -2,6 +2,8 @@ package org.seage.hh.knowledgebase.db;
 
 import java.io.InputStream;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.util.Optional;
@@ -59,6 +61,13 @@ public class DbManager {
       username = "sa";
       password = "";
     }
+    if (testMode) {
+    //   dbUrl = String.format(
+    //       "jdbc:h2:file:/tmp/seage.test-%s.h2;DATABASE_TO_UPPER=false", System.currentTimeMillis());
+      Files.deleteIfExists(Path.of("/", "tmp", "seage.test.h2.mv.db"));
+      Files.deleteIfExists(Path.of("/", "tmp", "seage.test.h2.trace.db"));
+    }
+    
 
     Properties props = new Properties();
     props.setProperty("url", dbUrl);
