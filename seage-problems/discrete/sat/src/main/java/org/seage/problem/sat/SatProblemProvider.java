@@ -113,11 +113,9 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     Random rnd = new Random(randomSeed);
     Formula f = (Formula) problemInstance;
     IPhenotypeEvaluator<SatPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
-
-
-    Boolean[] bestSolution = new Boolean[f.getLiteralCount()];
-
+    
     // Create new random solution
+    Boolean[] bestSolution = new Boolean[f.getLiteralCount()];
     for (int j = 0; j < f.getLiteralCount(); j++) {
       bestSolution[j] = rnd.nextBoolean();
     }
