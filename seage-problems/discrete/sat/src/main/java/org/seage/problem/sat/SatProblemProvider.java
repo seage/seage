@@ -115,21 +115,22 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     IPhenotypeEvaluator<SatPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
 
 
-    Boolean[] solution = new Boolean[f.getLiteralCount()];
+    Boolean[] bestSolution = new Boolean[f.getLiteralCount()];
 
     // Create new random solution
     for (int j = 0; j < f.getLiteralCount(); j++) {
-      solution[j] = rnd.nextBoolean();
+      bestSolution[j] = rnd.nextBoolean();
     }
     
+    SatPhenotype bestPhenotype = new SatPhenotype(bestSolution);
+    double bestScore = evaluator.evaluate(bestPhenotype)[1];
+    Boolean betterSolutionFound;
+      
     // Find better solution using greedy algorithm
     while (true) {
-      Boolean[] newSolution = Arrays.copyOf(solution, solution.length);
-
-      SatPhenotype bestPhenotype = new SatPhenotype(solution);
-      double bestScore = evaluator.evaluate(bestPhenotype)[1];
+      betterSolutionFound = false;
       
-      Boolean betterSolutionFound = false;
+      Boolean[] newSolution = Arrays.copyOf(bestSolution, bestSolution.length);
 
       for (int k = 0; k > f.getLiteralCount(); k++) {      
         newSolution[k] = !newSolution[k]; 
@@ -139,11 +140,13 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
 
         if (newScore > bestScore) {
           // Save the changes
-          solution[k] = newSolution[k];
+          bestSolution[k] = newSolution[k];
           // Return the changed literal
           newSolution[k] = !newSolution[k];
           // Save better phenotype
           bestPhenotype = newPhenotype;
+          // Save better score
+          bestScore = newScore;
         }
       }
 
@@ -152,7 +155,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
       }
     }
 
-    return new SatPhenotype(solution);
+    return new SatPhenotype(bestSolution);
 }
 
 
