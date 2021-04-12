@@ -100,6 +100,59 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     return result;
   }
 
+  /**
+   * .
+   * @param problemInstance .
+   * @param randomSeed .
+   * @return .
+   * @throws Exception .
+   */
+  public SatPhenotype generateGreedySolution(
+      ProblemInstance problemInstance, long randomSeed)
+      throws Exception {
+    Random rnd = new Random(randomSeed);
+    Formula f = (Formula) problemInstance;
+    IPhenotypeEvaluator<SatPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
+
+
+    Boolean[] solution = new Boolean[f.getLiteralCount()];
+
+    for (int j = 0; j < f.getLiteralCount(); j++) {
+      solution[j] = rnd.nextBoolean();
+    }
+
+    while (true) {
+      Boolean[] newSolution = Arrays.copyOf(solution, solution.length);
+
+      SatPhenotype bestPhenotype = new SatPhenotype(solution);
+      double bestScore = evaluator.evaluate(bestPhenotype)[1];
+      
+      Boolean betterSolutionFound = false;
+
+      for (int k = 0; k > f.getLiteralCount(); k++) {      
+        newSolution[k] = !newSolution[k]; 
+
+        SatPhenotype newPhenotype = new SatPhenotype(newSolution);
+        double newScore = evaluator.evaluate(newPhenotype)[1];
+
+        if (newScore > bestScore) {
+          // Save the changes
+          solution[k] = newSolution[k];
+          // Return the changed literal
+          newSolution[k] = !newSolution[k];
+          // Save better phenotype
+          bestPhenotype = newPhenotype;
+        }
+      }
+
+      if (!betterSolutionFound) {
+        break;
+      }
+    }
+
+    return new SatPhenotype(solution);
+}
+
 
   /**
    * Method creates solutions using greedy algorithm.
@@ -112,50 +165,11 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
   public SatPhenotype[] generateGreedySolutions(
       ProblemInstance problemInstance, int numSolutions, long randomSeed)
       throws Exception {
-    Random rnd = new Random(randomSeed);
-    Formula f = (Formula) problemInstance;
     IPhenotypeEvaluator<SatPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
     SatPhenotype[] result = new SatPhenotype[numSolutions];
 
     for (int i = 0; i < numSolutions; i++) {
-      Boolean[] solution = new Boolean[f.getLiteralCount()];
-
-      for (int j = 0; j < f.getLiteralCount(); j++) {
-        solution[j] = rnd.nextBoolean();
-      }
-
-      while (true) {
-        Boolean[] bestSolution = Arrays.copyOf(solution, solution.length);
-        Boolean[] newSolution = Arrays.copyOf(bestSolution, bestSolution.length);
-
-        SatPhenotype bestPhenotype = new SatPhenotype(bestSolution);
-        double bestScore = evaluator.evaluate(bestPhenotype)[1];
-        
-        Boolean betterSolutionFound = false;
-
-        for (int k = 0; k > f.getLiteralCount(); k++) {      
-          newSolution[k] = !newSolution[k]; 
-
-          SatPhenotype newPhenotype = new SatPhenotype(newSolution);
-          double newScore = evaluator.evaluate(newPhenotype)[1];
-
-          if (newScore > bestScore) {
-            // Save the changes
-            bestSolution[k] = newSolution[k];
-            // Return the changed literal
-            newSolution[k] = !newSolution[k];
-            // Save better phenotype
-            bestPhenotype = newPhenotype;
-          }
-        }
-
-        if (!betterSolutionFound) {
-          solution = bestSolution;
-          break;
-        }
-      }
-
-      result[i] = new SatPhenotype(solution);
+      result[i] = generateGreedySolution(problemInstance, randomSeed);
       double[] objVals = evaluator.evaluate(result[i]);
       result[i].setObjValue(objVals[0]);
       result[i].setScore(objVals[1]);
