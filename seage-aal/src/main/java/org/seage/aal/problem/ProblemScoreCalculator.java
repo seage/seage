@@ -45,6 +45,10 @@ public class ProblemScoreCalculator {
       // Weight
       double instanceSize = problemInfo
           .getProblemInstanceInfo(instanceIDs[i]).getValueDouble("size");
+
+      if (instanceSize == 0) {
+        throw new Exception("InstanceSize is 0");
+      }
       
       numerator += instanceSize * instanceScores[i];
       denominator += instanceSize;
