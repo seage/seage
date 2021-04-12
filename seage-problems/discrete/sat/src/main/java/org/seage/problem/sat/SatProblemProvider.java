@@ -100,6 +100,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     return result;
   }
 
+
   /**
    * Method creates solutions using greedy algorithm.
    * @param problemInstance Problem isntance.
@@ -116,42 +117,44 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     IPhenotypeEvaluator<SatPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
     SatPhenotype[] result = new SatPhenotype[numSolutions];
 
-    final int greedySearchRepeats = 21;
-
     for (int i = 0; i < numSolutions; i++) {
-      Boolean[] bestSolution = new Boolean[f.getLiteralCount()];
+      Boolean[] solution = new Boolean[f.getLiteralCount()];
 
       for (int j = 0; j < f.getLiteralCount(); j++) {
-        bestSolution[j] = rnd.nextBoolean();
+        solution[j] = rnd.nextBoolean();
       }
 
       while (true) {
+        Boolean[] bestSolution = Arrays.copyOf(solution, solution.length);
+        Boolean[] newSolution = Arrays.copyOf(bestSolution, bestSolution.length);
+
         Boolean betterSolutionFound = false;
         SatPhenotype bestPhenotype = new SatPhenotype(bestSolution);
         double bestScore = evaluator.evaluate(bestPhenotype)[1];
 
-        for (int k = 0; k > greedySearchRepeats; k++) {
-          Boolean[] newSolution = Arrays.copyOf(bestSolution, bestSolution.length);
-          int rndIndex = rnd.nextInt(f.getLiteralCount());
-          newSolution[rndIndex] = !newSolution[rndIndex]; 
+        for (int k = 0; k > f.getLiteralCount(); k++) {      
+          newSolution[k] = !newSolution[k]; 
 
           SatPhenotype newPhenotype = new SatPhenotype(newSolution);
           double newScore = evaluator.evaluate(newPhenotype)[1];
 
           if (newScore > bestScore) {
-            bestSolution = newSolution;
+            // Save the changes
+            bestSolution[k] = newSolution[k];
+            // Return the changed literal
+            newSolution[k] = !newSolution[k];
+            // Save better phenotype
             bestPhenotype = newPhenotype;
-
-            betterSolutionFound = true;
           }
         }
 
         if (!betterSolutionFound) {
+          solution = bestSolution;
           break;
         }
       }
 
-      result[i] = new SatPhenotype(bestSolution);
+      result[i] = new SatPhenotype(solution);
       double[] objVals = evaluator.evaluate(result[i]);
       result[i].setObjValue(objVals[0]);
       result[i].setScore(objVals[1]);
