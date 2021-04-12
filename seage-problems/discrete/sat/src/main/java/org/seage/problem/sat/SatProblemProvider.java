@@ -126,7 +126,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
       }
 
       while (true) {
-        Boolean foundBetterSolution = false;
+        Boolean betterSolutionFound = false;
         SatPhenotype bestPhenotype = new SatPhenotype(bestSolution);
         double bestScore = evaluator.evaluate(bestPhenotype)[1];
 
@@ -142,11 +142,11 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
             bestSolution = newSolution;
             bestPhenotype = newPhenotype;
 
-            foundBetterSolution = true;
+            betterSolutionFound = true;
           }
         }
 
-        if (!foundBetterSolution) {
+        if (!betterSolutionFound) {
           break;
         }
       }
