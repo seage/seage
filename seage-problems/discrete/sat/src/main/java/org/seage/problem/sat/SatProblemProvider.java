@@ -129,22 +129,19 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     // Find better solution using greedy algorithm
     while (true) {
       betterSolutionFound = false;
-      
+
       Boolean[] newSolution = Arrays.copyOf(bestSolution, bestSolution.length);
 
       for (int k = 0; k > f.getLiteralCount(); k++) {      
         newSolution[k] = !newSolution[k]; 
 
-        SatPhenotype newPhenotype = new SatPhenotype(newSolution);
-        double newScore = evaluator.evaluate(newPhenotype)[1];
+        double newScore = evaluator.evaluate(new SatPhenotype(newSolution))[1];
 
         if (newScore > bestScore) {
           // Save the changes
           bestSolution[k] = newSolution[k];
           // Return the changed literal
           newSolution[k] = !newSolution[k];
-          // Save better phenotype
-          bestPhenotype = newPhenotype;
           // Save better score
           bestScore = newScore;
         }
