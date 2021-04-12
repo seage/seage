@@ -50,7 +50,7 @@ public class ProblemScoreCalculator {
       return numerator / denominator;
     }
 
-    throw new Exception("Warning: unpredicted program behaviour."); 
+    throw new Exception("Error: dividing by zero."); 
   }
 
   /**
