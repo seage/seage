@@ -137,13 +137,15 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
 
         if (newScore > bestScore) {
           // Save the changes
-          bestSolution[k] = newSolution[k];
+          for (int l = 0; l <= k; l++) {
+            bestSolution[l] = newSolution[l];
+          }
           // Save better score
           bestScore = newScore;
           // Set flag to true
           betterSolutionFound = true;
         }
-        
+
         // Return the changed literal
         newSolution[k] = !newSolution[k];
       }
