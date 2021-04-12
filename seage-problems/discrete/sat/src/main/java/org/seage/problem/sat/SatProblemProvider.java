@@ -126,10 +126,8 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
         array[j] = rnd.nextBoolean();
       }
       
-      double prevScore = 0.0;
-      double newScore = 0.0;
 
-      do {
+      while (true) {
         Boolean[] newArray = Arrays.copyOf(array, array.length);
 
         for (int k = 0; k < N; k++) {
@@ -140,13 +138,15 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
         SatPhenotype prevPh = new SatPhenotype(array);
         SatPhenotype newPh = new SatPhenotype(newArray);
 
-        prevScore = evaluator.evaluate(prevPh)[0];
-        newScore = evaluator.evaluate(newPh)[0];
+        double prevScore = evaluator.evaluate(prevPh)[0];
+        double newScore = evaluator.evaluate(newPh)[0];
 
-        if (prevScore < newScore) {
-          array = Arrays.copyOf(newArray, newArray.length);
+        if (prevScore > newScore) {
+          break;
         }
-      } while (prevScore < newScore);
+
+        array = Arrays.copyOf(newArray, newArray.length);
+      }
 
 
       result[i] = new SatPhenotype(array);
