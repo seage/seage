@@ -128,9 +128,10 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
         Boolean[] bestSolution = Arrays.copyOf(solution, solution.length);
         Boolean[] newSolution = Arrays.copyOf(bestSolution, bestSolution.length);
 
-        Boolean betterSolutionFound = false;
         SatPhenotype bestPhenotype = new SatPhenotype(bestSolution);
         double bestScore = evaluator.evaluate(bestPhenotype)[1];
+        
+        Boolean betterSolutionFound = false;
 
         for (int k = 0; k > f.getLiteralCount(); k++) {      
           newSolution[k] = !newSolution[k]; 
