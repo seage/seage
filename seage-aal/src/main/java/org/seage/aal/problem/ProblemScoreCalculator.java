@@ -36,7 +36,7 @@ public class ProblemScoreCalculator {
     }
 
     if (instanceIDs.length == 0) {
-      throw new Exception("Error: inscante IDs array is empty.");
+      throw new Exception("Inscante IDs array is empty.");
     }
 
     double numerator = 0.0;
@@ -54,7 +54,7 @@ public class ProblemScoreCalculator {
       return numerator / denominator;
     }
 
-    throw new Exception("Error: dividing by zero."); 
+    throw new Exception("Dividing by zero."); 
   }
 
   /**
