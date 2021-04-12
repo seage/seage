@@ -36,7 +36,7 @@ public class ProblemScoreCalculator {
     }
 
     if (instanceIDs.length == 0) {
-      throw new Exception("Inscante IDs array is empty.");
+      throw new Exception("InstanceIDs size is 0.");
     }
 
     double numerator = 0.0;
