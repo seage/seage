@@ -128,7 +128,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
       while (true) {
         Boolean[] bestTmpArray = Arrays.copyOf(array, array.length);
         SatPhenotype bestTmpPh = new SatPhenotype(bestTmpArray);
-        double bestTmpScore = evaluator.evaluate(bestTmpPh)[0];
+        double bestTmpScore = evaluator.evaluate(bestTmpPh)[1];
 
         for (int k = 0; k < N; k++) {
           Boolean[] tmpArray = Arrays.copyOf(array, array.length);
@@ -136,7 +136,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
           bestTmpArray[rndIndex] = !bestTmpArray[rndIndex]; 
 
           SatPhenotype tmpPh = new SatPhenotype(tmpArray);
-          double tmpScore = evaluator.evaluate(tmpPh)[0];
+          double tmpScore = evaluator.evaluate(tmpPh)[1];
 
           if (tmpScore > bestTmpScore) {
             bestTmpArray = Arrays.copyOf(tmpArray, tmpArray.length);
@@ -145,7 +145,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
         }
 
         SatPhenotype prevPh = new SatPhenotype(array);
-        double prevScore = evaluator.evaluate(prevPh)[0];
+        double prevScore = evaluator.evaluate(prevPh)[1];
 
         if (prevScore > bestTmpScore) {
           break;
