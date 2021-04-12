@@ -35,18 +35,30 @@ public class ProblemScoreCalculator {
       throw new Exception("Bad input values: input arrays have different lenght");
     }
 
+    if (instanceIDs.length == 0) {
+      throw new Exception("InstanceIDs size is 0.");
+    }
+
     double numerator = 0.0;
     double denominator = 0.0;
     for (int i = 0; i < instanceIDs.length; i++) {
       // Weight
       double instanceSize = problemInfo
           .getProblemInstanceInfo(instanceIDs[i]).getValueDouble("size");
+
+      if (instanceSize == 0) {
+        throw new Exception("InstanceSize is 0");
+      }
       
       numerator += instanceSize * instanceScores[i];
       denominator += instanceSize;
     }
 
-    return numerator / denominator;
+    if (denominator != 0) {
+      return numerator / denominator;
+    }
+
+    throw new Exception("Dividing by zero."); 
   }
 
   /**
