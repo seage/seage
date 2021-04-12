@@ -25,6 +25,7 @@ package org.seage.problem.sat;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Random;
 
 import org.seage.aal.Annotations;
@@ -91,6 +92,63 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
       for (int j = 0; j < f.getLiteralCount(); j++) {
         array[j] = rnd.nextBoolean();
       }
+      result[i] = new SatPhenotype(array);
+      double[] objVals = evaluator.evaluate(result[i]);
+      result[i].setObjValue(objVals[0]);
+      result[i].setScore(objVals[1]);
+    }
+    return result;
+  }
+
+  /**
+   * .
+   * @param problemInstance .
+   * @param numSolutions .
+   * @param randomSeed .
+   * @return .
+   */
+  public SatPhenotype[] generateGreedySolutions(
+      ProblemInstance problemInstance, int numSolutions, long randomSeed)
+      throws Exception {
+    Random rnd = new Random(randomSeed);
+    Formula f = (Formula) problemInstance;
+    IPhenotypeEvaluator<SatPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
+    SatPhenotype[] result = new SatPhenotype[numSolutions];
+    int N = f.getLiteralCount() / 2;
+
+    for (int i = 0; i < numSolutions; i++) {
+      Boolean[] array = new Boolean[f.getLiteralCount()];
+
+      Boolean[] avail = new Boolean[numSolutions];
+      Arrays.fill(avail, Boolean.TRUE);
+
+      for (int j = 0; j < f.getLiteralCount(); j++) {
+        array[j] = rnd.nextBoolean();
+      }
+      
+      double prevScore = 0.0;
+      double newScore = 0.0;
+
+      do {
+        Boolean[] newArray = Arrays.copyOf(array, array.length);
+
+        for (int k = 0; k < N; k++) {
+          int rndIndex = rnd.nextInt(f.getLiteralCount());
+          newArray[rndIndex] = !newArray[rndIndex]; 
+        }
+
+        SatPhenotype prevPh = new SatPhenotype(array);
+        SatPhenotype newPh = new SatPhenotype(newArray);
+
+        prevScore = evaluator.evaluate(prevPh)[0];
+        newScore = evaluator.evaluate(newPh)[0];
+
+        if (prevScore < newScore) {
+          array = Arrays.copyOf(newArray, newArray.length);
+        }
+      } while (prevScore < newScore);
+
+
       result[i] = new SatPhenotype(array);
       double[] objVals = evaluator.evaluate(result[i]);
       result[i].setObjValue(objVals[0]);
