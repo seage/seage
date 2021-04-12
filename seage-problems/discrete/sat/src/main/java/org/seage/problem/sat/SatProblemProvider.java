@@ -115,46 +115,43 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     Formula f = (Formula) problemInstance;
     IPhenotypeEvaluator<SatPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
     SatPhenotype[] result = new SatPhenotype[numSolutions];
-    // Random literal changes N times when finding a better solution
-    final int N = f.getLiteralCount() / 2;
+
+    final int greedySearchRepeats = 21;
 
     for (int i = 0; i < numSolutions; i++) {
-      Boolean[] array = new Boolean[f.getLiteralCount()];
+      Boolean[] bestSolution = new Boolean[f.getLiteralCount()];
 
       for (int j = 0; j < f.getLiteralCount(); j++) {
-        array[j] = rnd.nextBoolean();
+        bestSolution[j] = rnd.nextBoolean();
       }
 
       while (true) {
-        Boolean[] bestTmpArray = Arrays.copyOf(array, array.length);
-        SatPhenotype bestTmpPh = new SatPhenotype(bestTmpArray);
-        double bestTmpScore = evaluator.evaluate(bestTmpPh)[1];
+        Boolean foundBetterSolution = false;
+        SatPhenotype bestPhenotype = new SatPhenotype(bestSolution);
+        double bestScore = evaluator.evaluate(bestPhenotype)[1];
 
-        for (int k = 0; k < N; k++) {
-          Boolean[] tmpArray = Arrays.copyOf(array, array.length);
+        for (int k = 0; k > greedySearchRepeats; k++) {
+          Boolean[] newSolution = Arrays.copyOf(bestSolution, bestSolution.length);
           int rndIndex = rnd.nextInt(f.getLiteralCount());
-          bestTmpArray[rndIndex] = !bestTmpArray[rndIndex]; 
+          newSolution[rndIndex] = !newSolution[rndIndex]; 
 
-          SatPhenotype tmpPh = new SatPhenotype(tmpArray);
-          double tmpScore = evaluator.evaluate(tmpPh)[1];
+          SatPhenotype newPhenotype = new SatPhenotype(newSolution);
+          double newScore = evaluator.evaluate(newPhenotype)[1];
 
-          if (tmpScore > bestTmpScore) {
-            bestTmpArray = Arrays.copyOf(tmpArray, tmpArray.length);
-            bestTmpScore = tmpScore;
+          if (newScore > bestScore) {
+            bestSolution = newSolution;
+            bestPhenotype = newPhenotype;
+
+            foundBetterSolution = true;
           }
         }
 
-        SatPhenotype prevPh = new SatPhenotype(array);
-        double prevScore = evaluator.evaluate(prevPh)[1];
-
-        if (prevScore > bestTmpScore) {
+        if (!foundBetterSolution) {
           break;
         }
-
-        array = Arrays.copyOf(bestTmpArray, bestTmpArray.length);
       }
 
-      result[i] = new SatPhenotype(array);
+      result[i] = new SatPhenotype(bestSolution);
       double[] objVals = evaluator.evaluate(result[i]);
       result[i].setObjValue(objVals[0]);
       result[i].setScore(objVals[1]);
