@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.hh.experimenter.Experiment;
@@ -19,6 +20,7 @@ import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 import org.seage.hh.knowledgebase.db.mapper.SolutionMapper;
 
+@Disabled
 public class SolutionTest {
   private Experiment experiment1;
   private ExperimentTask experimentTask1;
