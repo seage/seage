@@ -1,3 +1,4 @@
+package org.seage.problem.sat;
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
  * 
@@ -21,7 +22,6 @@
  * Contributors: Richard Malek - Initial implementation - Added problem
  * annotations
  */
-package org.seage.problem.sat;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -38,7 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
  * @author Richard Malek
  */
 @Annotations.ProblemId("SAT")
