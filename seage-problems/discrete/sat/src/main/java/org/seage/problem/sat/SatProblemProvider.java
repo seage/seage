@@ -120,8 +120,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
       bestSolution[j] = rnd.nextBoolean();
     }
     
-    SatPhenotype bestPhenotype = new SatPhenotype(bestSolution);
-    double bestScore = evaluator.evaluate(bestPhenotype)[1];
+    double bestScore = evaluator.evaluate(new SatPhenotype(bestSolution))[1];
     Boolean betterSolutionFound;
       
     // Find better solution using greedy algorithm
