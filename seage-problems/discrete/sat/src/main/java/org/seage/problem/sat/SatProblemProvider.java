@@ -117,10 +117,12 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
 
     Boolean[] solution = new Boolean[f.getLiteralCount()];
 
+    // Create new random solution
     for (int j = 0; j < f.getLiteralCount(); j++) {
       solution[j] = rnd.nextBoolean();
     }
-
+    
+    // Find better solution using greedy algorithm
     while (true) {
       Boolean[] newSolution = Arrays.copyOf(solution, solution.length);
 
