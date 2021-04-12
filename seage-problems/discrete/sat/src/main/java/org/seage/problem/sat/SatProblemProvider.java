@@ -142,6 +142,8 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
           newSolution[k] = !newSolution[k];
           // Save better score
           bestScore = newScore;
+          // Set flag to true
+          betterSolutionFound = true;
         }
       }
 
