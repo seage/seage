@@ -101,11 +101,12 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
   }
 
   /**
-   * .
-   * @param problemInstance .
-   * @param numSolutions .
-   * @param randomSeed .
-   * @return .
+   * Method creates solutions using greedy algorithm.
+   * @param problemInstance Problem isntance.
+   * @param numSolutions Number of solutions.
+   * @param randomSeed Random seed for random generator.
+   * @return Solutions.
+   * @author David Omrai.
    */
   public SatPhenotype[] generateGreedySolutions(
       ProblemInstance problemInstance, int numSolutions, long randomSeed)
@@ -114,7 +115,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     Formula f = (Formula) problemInstance;
     IPhenotypeEvaluator<SatPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
     SatPhenotype[] result = new SatPhenotype[numSolutions];
-    int N = f.getLiteralCount() / 2;
+    final int N = f.getLiteralCount() / 2;
 
     for (int i = 0; i < numSolutions; i++) {
       Boolean[] array = new Boolean[f.getLiteralCount()];
