@@ -115,18 +115,15 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     Formula f = (Formula) problemInstance;
     IPhenotypeEvaluator<SatPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
     SatPhenotype[] result = new SatPhenotype[numSolutions];
+    // Random literal changes N times when finding a better solution
     final int N = f.getLiteralCount() / 2;
 
     for (int i = 0; i < numSolutions; i++) {
       Boolean[] array = new Boolean[f.getLiteralCount()];
 
-      Boolean[] avail = new Boolean[numSolutions];
-      Arrays.fill(avail, Boolean.TRUE);
-
       for (int j = 0; j < f.getLiteralCount(); j++) {
         array[j] = rnd.nextBoolean();
       }
-      
 
       while (true) {
         Boolean[] bestTmpArray = Arrays.copyOf(array, array.length);
@@ -148,8 +145,6 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
         }
 
         SatPhenotype prevPh = new SatPhenotype(array);
-        
-
         double prevScore = evaluator.evaluate(prevPh)[0];
 
         if (prevScore > bestTmpScore) {
@@ -158,7 +153,6 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
 
         array = Arrays.copyOf(bestTmpArray, bestTmpArray.length);
       }
-
 
       result[i] = new SatPhenotype(array);
       double[] objVals = evaluator.evaluate(result[i]);
