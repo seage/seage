@@ -121,11 +121,10 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     }
     
     double bestScore = evaluator.evaluate(new SatPhenotype(bestSolution))[1];
-    Boolean betterSolutionFound;
       
     // Find better solution using greedy algorithm
     while (true) {
-      betterSolutionFound = false;
+      Boolean betterSolutionFound = false;
 
       Boolean[] newSolution = Arrays.copyOf(bestSolution, bestSolution.length);
 
