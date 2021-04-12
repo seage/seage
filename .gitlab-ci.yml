@@ -17,7 +17,7 @@ build-seage:
 test-seage:
   stage: test
   script:
-    - docker run --rm $SEAGE_TEST_IMAGE ./gradlew test
+    - docker run --rm $SEAGE_TEST_IMAGE ./gradlew clean test
 
 report-seage:
   stage: report
