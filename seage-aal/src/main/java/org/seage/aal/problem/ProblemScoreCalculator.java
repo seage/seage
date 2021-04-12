@@ -46,7 +46,11 @@ public class ProblemScoreCalculator {
       denominator += instanceSize;
     }
 
-    return numerator / denominator;
+    if (denominator != 0) {
+      return numerator / denominator;
+    }
+
+    throw new Exception("Warning: unpredicted program behaviour."); 
   }
 
   /**
