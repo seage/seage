@@ -35,6 +35,10 @@ public class ProblemScoreCalculator {
       throw new Exception("Bad input values: input arrays have different lenght");
     }
 
+    if (instanceIDs.length == 0) {
+      throw new Exception("Error: inscante IDs array is empty.");
+    }
+
     double numerator = 0.0;
     double denominator = 0.0;
     for (int i = 0; i < instanceIDs.length; i++) {
