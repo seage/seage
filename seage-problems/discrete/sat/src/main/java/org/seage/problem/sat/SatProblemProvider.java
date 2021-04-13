@@ -120,7 +120,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
       bestSolution[j] = rnd.nextBoolean();
     }
     
-    double bestScore = evaluator.evaluate(new SatPhenotype(bestSolution))[1];
+    double bestScore = evaluator.evaluate(new SatPhenotype(bestSolution))[0];
       
     // Find better solution using greedy algorithm
     while (true) {
@@ -131,7 +131,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
       for (int k = 0; k > f.getLiteralCount(); k++) {      
         newSolution[k] = !newSolution[k]; 
 
-        double newScore = evaluator.evaluate(new SatPhenotype(newSolution))[1];
+        double newScore = evaluator.evaluate(new SatPhenotype(newSolution))[0];
 
         if (newScore > bestScore) {
           // Save the changes
@@ -171,10 +171,11 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
   public SatPhenotype[] generateGreedySolutions(
       ProblemInstance problemInstance, int numSolutions, long randomSeed)
       throws Exception {
+    Random rnd = new Random(randomSeed);
     SatPhenotype[] result = new SatPhenotype[numSolutions];
-
+    
     for (int i = 0; i < numSolutions; i++) {
-      result[i] = generateGreedySolution(problemInstance, randomSeed);
+      result[i] = generateGreedySolution(problemInstance, rnd.nextLong());
     }
 
     return result;
