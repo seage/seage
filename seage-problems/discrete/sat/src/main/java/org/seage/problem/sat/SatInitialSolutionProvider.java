@@ -32,8 +32,7 @@ public class SatInitialSolutionProvider {
    * @author David Omrai
    */
   public static SatPhenotype generateGreedySolution(
-      Formula formula, 
-      IPhenotypeEvaluator<SatPhenotype> evaluator, long seed)
+      Formula formula, IPhenotypeEvaluator<SatPhenotype> evaluator, long seed)
       throws Exception {
     Random rnd = new Random(seed);
     
@@ -43,7 +42,7 @@ public class SatInitialSolutionProvider {
       bestSolution[j] = rnd.nextBoolean();
     }
     
-    double bestScore = evaluator.evaluate(new SatPhenotype(bestSolution))[0];
+    double bestScore = evaluator.evaluate(new SatPhenotype(bestSolution))[1];
         
     // Find better solution using greedy algorithm
     for (int i = 0; i < formula.getLiteralCount(); i++) {
@@ -53,9 +52,9 @@ public class SatInitialSolutionProvider {
       for (int k = i; k < formula.getLiteralCount(); k++) {      
         newSolution[k] = !newSolution[k]; 
 
-        double newScore = evaluator.evaluate(new SatPhenotype(newSolution))[0];
+        double newScore = evaluator.evaluate(new SatPhenotype(newSolution))[1];
 
-        if (newScore < bestScore) {
+        if (newScore > bestScore) {
           // Save the changes
           bestSolution = Arrays.copyOf(newSolution, newSolution.length);
           // Save better score
@@ -84,14 +83,12 @@ public class SatInitialSolutionProvider {
    * @author David Omrai.
    */
   public static SatPhenotype[] generateGreedySolutions(
-      Formula formula, 
-      IPhenotypeEvaluator<SatPhenotype> evaluator, int numSolutions, long randomSeed)
-      throws Exception {
+      Formula formula, IPhenotypeEvaluator<SatPhenotype> evaluator, 
+      int numSolutions, long randomSeed) throws Exception {
     SatPhenotype[] result = new SatPhenotype[numSolutions];
     
     for (int i = 0; i < numSolutions; i++) {
-      result[i] = 
-        generateGreedySolution(formula, evaluator, System.currentTimeMillis());
+      result[i] = generateGreedySolution(formula, evaluator, System.currentTimeMillis());
     }
 
     return result;
