@@ -9,8 +9,13 @@ import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemProviderTestBase;
 
-public class SatProblemProviderTest {
+public class SatProblemProviderTest extends ProblemProviderTestBase<SatPhenotype> {
+  public SatProblemProviderTest() {
+    super(new SatProblemProvider());
+  }
+
   static SatProblemProvider problemProvider;
 
   @BeforeAll
