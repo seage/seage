@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Scanner;
 import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
@@ -39,6 +38,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInfo;
@@ -51,6 +51,8 @@ import org.seage.data.DataNode;
 
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaReader;
+import org.seage.problem.sat.SatInitialSolutionProvider;
+import org.seage.problem.sat.SatPhenotype;
 import org.seage.problem.sat.SatPhenotypeEvaluator;
 import org.seage.problem.sat.SatProblemProvider;
 
@@ -259,7 +261,8 @@ public class MetadataGenerator {
 
       for (int i = 0; i < populationCount; i++) {
         randomResults[i] = tspEval
-            .evaluate(new TspPhenotype(TourProvider.createRandomTour(cities.length)))[0];
+            .evaluate(new TspPhenotype(
+              TourProvider.createGreedyTour(cities, System.currentTimeMillis())))[0];
       }   
       
       DataNode inst = new DataNode("Instance");
@@ -301,12 +304,17 @@ public class MetadataGenerator {
       
       double[] randomResults = new double[populationCount];
 
+      SatProblemProvider provider = new SatProblemProvider();
+      ProblemInstance problemInstance = provider
+          .initProblemInstance(pi.getProblemInstanceInfo(instanceID));
+      IPhenotypeEvaluator<SatPhenotype> evaluator = provider
+          .initPhenotypeEvaluator(problemInstance);
+
       SatPhenotypeEvaluator satEval = new SatPhenotypeEvaluator(pi, formula);
 
       for (int i = 0; i < populationCount; i++) {
-        randomResults[i] = satEval.evaluate(
-          new SatProblemProvider()
-          .generateInitialSolutions((ProblemInstance)formula, 1, new Random().nextLong())[0])[0];
+        randomResults[i] = satEval.evaluate(SatInitialSolutionProvider
+          .generateGreedySolution(formula, evaluator, System.currentTimeMillis()))[0];
       }
 
       DataNode inst = new DataNode("Instance");
