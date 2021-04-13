@@ -87,12 +87,11 @@ public class SatInitialSolutionProvider {
       Formula formula, 
       IPhenotypeEvaluator<SatPhenotype> evaluator, int numSolutions, long randomSeed)
       throws Exception {
-    Random rnd = new Random(randomSeed);
     SatPhenotype[] result = new SatPhenotype[numSolutions];
     
     for (int i = 0; i < numSolutions; i++) {
       result[i] = 
-        generateGreedySolution(formula, evaluator, rnd.nextLong());
+        generateGreedySolution(formula, evaluator, System.currentTimeMillis());
     }
 
     return result;

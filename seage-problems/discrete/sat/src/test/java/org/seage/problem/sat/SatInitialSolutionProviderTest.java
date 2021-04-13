@@ -11,7 +11,6 @@ import org.seage.aal.problem.ProblemProvider;
 public class SatInitialSolutionProviderTest {
   @Test
   public void generateGreedySolutionTest() throws Exception {
-    Random rnd = new Random();
     ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
     SatProblemProvider provider = new SatProblemProvider();
     // problem instance
@@ -25,13 +24,13 @@ public class SatInitialSolutionProviderTest {
 
             
     SatPhenotype solution = 
-        SatInitialSolutionProvider.generateGreedySolution(formula, evaluator, rnd.nextLong());
+        SatInitialSolutionProvider
+        .generateGreedySolution(formula, evaluator, System.currentTimeMillis());
     assertNotNull(solution);
   }
 
   @Test
   public void generateGreedySolutionsTest() throws Exception {
-    Random rnd = new Random();
     ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
     SatProblemProvider provider = new SatProblemProvider();
     // problem instance
@@ -45,7 +44,7 @@ public class SatInitialSolutionProviderTest {
             
     SatPhenotype[] solutions = 
         SatInitialSolutionProvider
-        .generateGreedySolutions(formula, evaluator, 9, rnd.nextLong());   
+        .generateGreedySolutions(formula, evaluator, 9, System.currentTimeMillis());   
     assertNotNull(solutions);
   }
 }
