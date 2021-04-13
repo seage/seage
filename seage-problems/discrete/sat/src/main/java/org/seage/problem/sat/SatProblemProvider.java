@@ -151,8 +151,13 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
       }
     }
 
-    return new SatPhenotype(bestSolution);
-}
+    SatPhenotype result = new SatPhenotype(bestSolution);
+    double[] objVals = evaluator.evaluate(result);
+    result.setObjValue(objVals[0]);
+    result.setScore(objVals[1]);
+
+    return result;
+  }
 
 
   /**
@@ -166,15 +171,12 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
   public SatPhenotype[] generateGreedySolutions(
       ProblemInstance problemInstance, int numSolutions, long randomSeed)
       throws Exception {
-    IPhenotypeEvaluator<SatPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
     SatPhenotype[] result = new SatPhenotype[numSolutions];
 
     for (int i = 0; i < numSolutions; i++) {
       result[i] = generateGreedySolution(problemInstance, randomSeed);
-      double[] objVals = evaluator.evaluate(result[i]);
-      result[i].setObjValue(objVals[0]);
-      result[i].setScore(objVals[1]);
     }
+
     return result;
   }
 
