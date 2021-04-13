@@ -15,7 +15,7 @@ public class SatInitialSolutionProviderTest {
   public void generateGreedySolutionTest() throws Exception {
     Random rnd = new Random();
     ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
-    IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get("SAT");
+    SatProblemProvider provider = new SatProblemProvider();
     // problem instance
     ProblemInstance problemInstance = provider
         .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf250-01"));
@@ -35,13 +35,13 @@ public class SatInitialSolutionProviderTest {
   public void generateGreedySolutionsTest() throws Exception {
     Random rnd = new Random();
     ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
-    IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get("SAT");
+    SatProblemProvider provider = new SatProblemProvider();
     // problem instance
     ProblemInstance instance = provider
         .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf250-01"));
 
     SatPhenotype[] solutions = 
-        new SatInitialSolutionProvider().generateGreedySolutions(instance, 9, rnd.nextLong());   
+        SatInitialSolutionProvider.generateGreedySolutions(instance, 9, rnd.nextLong());   
     assertNotNull(solutions);
   }
 }
