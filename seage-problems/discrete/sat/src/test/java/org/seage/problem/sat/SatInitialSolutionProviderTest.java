@@ -35,11 +35,17 @@ public class SatInitialSolutionProviderTest {
     ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
     SatProblemProvider provider = new SatProblemProvider();
     // problem instance
-    ProblemInstance instance = provider
+    ProblemInstance problemInstance = provider
         .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf250-01"));
 
+    Formula formula = (Formula) problemInstance;
+    SatProblemProvider satProblemProvider = new SatProblemProvider();
+    IPhenotypeEvaluator<SatPhenotype> evaluator = 
+        satProblemProvider.initPhenotypeEvaluator(problemInstance);
+            
     SatPhenotype[] solutions = 
-        SatInitialSolutionProvider.generateGreedySolutions(instance, 9, rnd.nextLong());   
+        SatInitialSolutionProvider
+        .generateGreedySolutions(formula, evaluator, 9, rnd.nextLong());   
     assertNotNull(solutions);
   }
 }

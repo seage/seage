@@ -21,7 +21,6 @@ package org.seage.problem.sat;
 import java.util.Arrays;
 import java.util.Random;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.problem.ProblemInstance;
 
 public class SatInitialSolutionProvider {
   /**
@@ -78,24 +77,20 @@ public class SatInitialSolutionProvider {
 
   /**
    * Method creates solutions using greedy algorithm.
-   * @param problemInstance Problem isntance.
+   * @param formula SAT formula.
    * @param numSolutions Number of solutions.
    * @param randomSeed Random seed for random generator.
    * @return Solutions.
    * @author David Omrai.
    */
   public static SatPhenotype[] generateGreedySolutions(
-      ProblemInstance problemInstance, int numSolutions, long randomSeed)
+      Formula formula, 
+      IPhenotypeEvaluator<SatPhenotype> evaluator, int numSolutions, long randomSeed)
       throws Exception {
     Random rnd = new Random(randomSeed);
     SatPhenotype[] result = new SatPhenotype[numSolutions];
     
     for (int i = 0; i < numSolutions; i++) {
-      Formula formula = (Formula) problemInstance;
-      SatProblemProvider satProblemProvider = new SatProblemProvider();
-      IPhenotypeEvaluator<SatPhenotype> evaluator = 
-          satProblemProvider.initPhenotypeEvaluator(problemInstance);
-
       result[i] = 
         generateGreedySolution(formula, evaluator, rnd.nextLong());
     }
