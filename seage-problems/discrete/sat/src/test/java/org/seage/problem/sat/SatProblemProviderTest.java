@@ -21,14 +21,27 @@ public class SatProblemProviderTest {
   @Test
   public void generateGreedySolutionTest() throws Exception {
     Random rnd = new Random(10000);
-
     ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
     IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get("SAT");
     // problem instance
     ProblemInstance instance = provider
         .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf20-01"));
 
-        
-    assertNotNull(problemProvider.generateGreedySolution(instance, rnd.nextLong()));
+    SatPhenotype solution = problemProvider.generateGreedySolution(instance, rnd.nextLong());
+    assertNotNull(solution);
+  }
+
+  @Test
+  public void generateGreedySolutionsTest() throws Exception {
+    Random rnd = new Random(10000);
+    ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
+    IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get("SAT");
+    // problem instance
+    ProblemInstance instance = provider
+        .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf20-01"));
+
+    SatPhenotype[] solutions = 
+      problemProvider.generateGreedySolutions(instance, 9, rnd.nextLong());   
+    assertNotNull(solutions);
   }
 }
