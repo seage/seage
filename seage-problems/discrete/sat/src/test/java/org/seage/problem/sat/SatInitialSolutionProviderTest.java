@@ -8,13 +8,8 @@ import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
-import org.seage.aal.problem.ProblemProviderTestBase;
 
-public class SatProblemProviderTest extends ProblemProviderTestBase<SatPhenotype> {
-  public SatProblemProviderTest() {
-    super(new SatProblemProvider());
-  }
-
+public class SatInitialSolutionProviderTest {
   @Test
   public void generateGreedySolutionTest() throws Exception {
     Random rnd = new Random();
@@ -29,17 +24,17 @@ public class SatProblemProviderTest extends ProblemProviderTestBase<SatPhenotype
     assertNotNull(solution);
   }
 
-  // @Test
-  // public void generateGreedySolutionsTest() throws Exception {
-  //   Random rnd = new Random();
-  //   ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
-  //   IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get("SAT");
-  //   // problem instance
-  //   ProblemInstance instance = provider
-  //       .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf250-01"));
+  @Test
+  public void generateGreedySolutionsTest() throws Exception {
+    Random rnd = new Random();
+    ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
+    IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get("SAT");
+    // problem instance
+    ProblemInstance instance = provider
+        .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf250-01"));
 
-  //   SatPhenotype[] solutions = 
-  //       new SatProblemProvider().generateGreedySolutions(instance, 9, rnd.nextLong());   
-  //   assertNotNull(solutions);
-  // }
+    SatPhenotype[] solutions = 
+        new SatProblemProvider().generateGreedySolutions(instance, 9, rnd.nextLong());   
+    assertNotNull(solutions);
+  }
 }
