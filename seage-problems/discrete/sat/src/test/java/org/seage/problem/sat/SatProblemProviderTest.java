@@ -25,7 +25,7 @@ public class SatProblemProviderTest {
     IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get("SAT");
     // problem instance
     ProblemInstance instance = provider
-        .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf20-01"));
+        .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf250-01"));
 
     SatPhenotype solution = problemProvider.generateGreedySolution(instance, rnd.nextLong());
     assertNotNull(solution);
@@ -38,7 +38,7 @@ public class SatProblemProviderTest {
     IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get("SAT");
     // problem instance
     ProblemInstance instance = provider
-        .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf20-01"));
+        .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf250-01"));
 
     SatPhenotype[] solutions = 
       problemProvider.generateGreedySolutions(instance, 9, rnd.nextLong());   
