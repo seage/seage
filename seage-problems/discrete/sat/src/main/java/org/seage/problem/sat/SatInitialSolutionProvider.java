@@ -18,11 +18,6 @@ package org.seage.problem.sat;
  *
  */
 
-/**
- * Contributors: Richard Malek - Initial implementation - Added problem
- * annotations
- */
-
 import java.util.Arrays;
 import java.util.Random;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
