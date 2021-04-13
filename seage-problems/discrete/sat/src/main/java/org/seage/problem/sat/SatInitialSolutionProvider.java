@@ -33,12 +33,11 @@ public class SatInitialSolutionProvider {
     double bestScore = evaluator.evaluate(new SatPhenotype(bestSolution))[0];
         
     // Find better solution using greedy algorithm
-    while (true) {
-      Boolean betterSolutionFound = false;
+    for (int i = 0; i < f.getLiteralCount(); i++) {
 
       Boolean[] newSolution = Arrays.copyOf(bestSolution, bestSolution.length);
 
-      for (int k = 0; k > f.getLiteralCount(); k++) {      
+      for (int k = i; k < f.getLiteralCount(); k++) {      
         newSolution[k] = !newSolution[k]; 
 
         double newScore = evaluator.evaluate(new SatPhenotype(newSolution))[0];
@@ -48,16 +47,9 @@ public class SatInitialSolutionProvider {
           bestSolution = Arrays.copyOf(newSolution, newSolution.length);
           // Save better score
           bestScore = newScore;
-          // Set flag to true
-          betterSolutionFound = true;
         }
-
         // Return the changed literal
         newSolution[k] = !newSolution[k];
-      }
-
-      if (!betterSolutionFound) {
-        break;
       }
     }
 
