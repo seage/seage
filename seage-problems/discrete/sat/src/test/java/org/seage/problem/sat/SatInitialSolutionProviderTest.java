@@ -20,7 +20,7 @@ public class SatInitialSolutionProviderTest {
         .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf250-01"));
 
     SatPhenotype solution = 
-        new SatProblemProvider().generateGreedySolution(instance, rnd.nextLong());
+        new SatInitialSolutionProvider().generateGreedySolution(instance, rnd.nextLong());
     assertNotNull(solution);
   }
 
