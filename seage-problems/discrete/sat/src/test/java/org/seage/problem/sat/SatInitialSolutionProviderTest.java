@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
-import org.seage.aal.algorithm.Phenotype;
-import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
 
