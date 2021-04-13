@@ -20,7 +20,7 @@ public class SatProblemProviderTest {
 
   @Test
   public void generateGreedySolutionTest() throws Exception {
-    Random rnd = new Random(10000);
+    Random rnd = new Random();
     ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
     IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get("SAT");
     // problem instance
@@ -33,7 +33,7 @@ public class SatProblemProviderTest {
 
   @Test
   public void generateGreedySolutionsTest() throws Exception {
-    Random rnd = new Random(10000);
+    Random rnd = new Random();
     ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
     IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get("SAT");
     // problem instance
