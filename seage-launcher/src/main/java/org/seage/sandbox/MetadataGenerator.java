@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
@@ -37,7 +38,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
@@ -262,7 +262,7 @@ public class MetadataGenerator {
       for (int i = 0; i < populationCount; i++) {
         randomResults[i] = tspEval
             .evaluate(new TspPhenotype(
-              TourProvider.createGreedyTour(cities, System.currentTimeMillis())))[0];
+              TourProvider.createGreedyTour(cities, new Random().nextLong())))[0];
       }   
       
       DataNode inst = new DataNode("Instance");
@@ -314,7 +314,7 @@ public class MetadataGenerator {
 
       for (int i = 0; i < populationCount; i++) {
         randomResults[i] = satEval.evaluate(SatInitialSolutionProvider
-          .generateGreedySolution(formula, evaluator, System.currentTimeMillis()))[0];
+          .generateGreedySolution(formula, evaluator, new Random().nextLong()))[0];
       }
 
       DataNode inst = new DataNode("Instance");
