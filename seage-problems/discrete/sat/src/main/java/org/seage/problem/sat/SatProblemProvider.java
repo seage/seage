@@ -25,7 +25,6 @@ package org.seage.problem.sat;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Random;
 
 import org.seage.aal.Annotations;
@@ -100,65 +99,6 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     return result;
   }
 
-  /**
-   * .
-   * @param problemInstance .
-   * @param randomSeed .
-   * @return .
-   * @throws Exception .
-   */
-  public SatPhenotype generateGreedySolution(
-      ProblemInstance problemInstance, long randomSeed)
-      throws Exception {
-    Random rnd = new Random(randomSeed);
-    Formula f = (Formula) problemInstance;
-    IPhenotypeEvaluator<SatPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
-    
-    // Create new random solution
-    Boolean[] bestSolution = new Boolean[f.getLiteralCount()];
-    for (int j = 0; j < f.getLiteralCount(); j++) {
-      bestSolution[j] = rnd.nextBoolean();
-    }
-    
-    double bestScore = evaluator.evaluate(new SatPhenotype(bestSolution))[0];
-      
-    // Find better solution using greedy algorithm
-    while (true) {
-      Boolean betterSolutionFound = false;
-
-      Boolean[] newSolution = Arrays.copyOf(bestSolution, bestSolution.length);
-
-      for (int k = 0; k > f.getLiteralCount(); k++) {      
-        newSolution[k] = !newSolution[k]; 
-
-        double newScore = evaluator.evaluate(new SatPhenotype(newSolution))[0];
-
-        if (newScore < bestScore) {
-          // Save the changes
-          bestSolution = Arrays.copyOf(newSolution, newSolution.length);
-          // Save better score
-          bestScore = newScore;
-          // Set flag to true
-          betterSolutionFound = true;
-        }
-
-        // Return the changed literal
-        newSolution[k] = !newSolution[k];
-      }
-
-      if (!betterSolutionFound) {
-        break;
-      }
-    }
-
-    SatPhenotype result = new SatPhenotype(bestSolution);
-    double[] objVals = evaluator.evaluate(result);
-    result.setObjValue(objVals[0]);
-    result.setScore(objVals[1]);
-
-    return result;
-  }
-
 
   /**
    * Method creates solutions using greedy algorithm.
@@ -171,11 +111,13 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
   public SatPhenotype[] generateGreedySolutions(
       ProblemInstance problemInstance, int numSolutions, long randomSeed)
       throws Exception {
+    SatInitialSolutionProvider satInitialSolutionProvider = new SatInitialSolutionProvider();
     Random rnd = new Random(randomSeed);
     SatPhenotype[] result = new SatPhenotype[numSolutions];
     
     for (int i = 0; i < numSolutions; i++) {
-      result[i] = generateGreedySolution(problemInstance, rnd.nextLong());
+      result[i] = 
+        satInitialSolutionProvider.generateGreedySolution(problemInstance, rnd.nextLong());
     }
 
     return result;
