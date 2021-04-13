@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Scanner;
 import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
@@ -254,19 +253,25 @@ public class MetadataGenerator {
       }
       
       double[] randomResults = new double[populationCount];
+      double[] greedyResults = new double[populationCount];
 
       ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
       TspProblemInstance instance = new TspProblemInstance(pii, cities);
       TspPhenotypeEvaluator tspEval = new TspPhenotypeEvaluator(pi, instance);
 
       for (int i = 0; i < populationCount; i++) {
+        greedyResults[i] = tspEval
+            .evaluate(new TspPhenotype(
+              TourProvider.createGreedyTour(cities, System.currentTimeMillis())))[0];
+
         randomResults[i] = tspEval
             .evaluate(new TspPhenotype(
-              TourProvider.createGreedyTour(cities, new Random().nextLong())))[0];
+              TourProvider.createRandomTour(cities.length)))[0];
       }   
       
       DataNode inst = new DataNode("Instance");
       inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
+      inst.putValue("greedy", (int)median(greedyResults));
       inst.putValue("random", (int)median(randomResults));
 
       if (optimumResults.containsKey(instanceID.toLowerCase())) {
@@ -302,6 +307,7 @@ public class MetadataGenerator {
         FormulaReader.readClauses(stream));
       }
       
+      double[] greedyResults = new double[populationCount];
       double[] randomResults = new double[populationCount];
 
       SatProblemProvider provider = new SatProblemProvider();
@@ -313,12 +319,16 @@ public class MetadataGenerator {
       SatPhenotypeEvaluator satEval = new SatPhenotypeEvaluator(pi, formula);
 
       for (int i = 0; i < populationCount; i++) {
-        randomResults[i] = satEval.evaluate(SatInitialSolutionProvider
-          .generateGreedySolution(formula, evaluator, new Random().nextLong()))[0];
+        greedyResults[i] = satEval.evaluate(SatInitialSolutionProvider
+          .generateGreedySolution(formula, evaluator, System.currentTimeMillis()))[0];
+
+        randomResults[i] = satEval.evaluate(new SatProblemProvider()
+          .generateInitialSolutions(formula, 1, System.currentTimeMillis())[0])[0];
       }
 
       DataNode inst = new DataNode("Instance");
       inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
+      inst.putValue("greedy", (int)median(greedyResults));
       inst.putValue("random", (int)median(randomResults));
       inst.putValue("optimum", 0);
       inst.putValue("size", formula.getLiteralCount());

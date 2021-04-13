@@ -18,9 +18,13 @@ public class ProblemScoreCalculator {
    * @return Calculated score.
    */
   public double calculateInstanceScore(String instanceID, double objValue) throws Exception {
-    double optimum = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("optimum");
-    double random = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("random");
-    return UnitMetric.getMetricValue(optimum, random, objValue);
+    try {
+      double optimum = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("optimum");
+      double random = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("random");
+      return UnitMetric.getMetricValue(optimum, random, objValue);
+    } catch (NumberFormatException ex) {
+      return 0;
+    }
   }
 
   /**
