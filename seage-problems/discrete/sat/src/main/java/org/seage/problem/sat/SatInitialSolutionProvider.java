@@ -42,7 +42,7 @@ public class SatInitialSolutionProvider {
       bestSolution[j] = rnd.nextBoolean();
     }
     
-    double notSatClauses = evaluator.evaluate(new SatPhenotype(bestSolution))[1];
+    double lowestObjVal = evaluator.evaluate(new SatPhenotype(bestSolution))[1];
         
     // Find better solution using greedy algorithm
     for (int i = 0; i < formula.getLiteralCount(); i++) {
@@ -52,13 +52,13 @@ public class SatInitialSolutionProvider {
       for (int k = i; k < formula.getLiteralCount(); k++) {      
         newSolution[k] = !newSolution[k]; 
 
-        double newNotSatClauses = evaluator.evaluate(new SatPhenotype(newSolution))[1];
+        double newObjVal = evaluator.evaluate(new SatPhenotype(newSolution))[1];
 
-        if (newNotSatClauses > notSatClauses) {
+        if (newObjVal < lowestObjVal) {
           // Save the changes
           bestSolution = Arrays.copyOf(newSolution, newSolution.length);
           // Save better result
-          notSatClauses = newNotSatClauses;
+          lowestObjVal = newObjVal;
         }
         // Return the changed literal
         newSolution[k] = !newSolution[k];
