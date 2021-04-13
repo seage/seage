@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInstance;
@@ -16,11 +17,17 @@ public class SatInitialSolutionProviderTest {
     ProblemProvider.registerProblemProviders(new Class<?>[] { SatProblemProvider.class });
     IProblemProvider<Phenotype<?>> provider = ProblemProvider.getProblemProviders().get("SAT");
     // problem instance
-    ProblemInstance instance = provider
+    ProblemInstance problemInstance = provider
         .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("uf250-01"));
 
+    Formula formula = (Formula) problemInstance;
+    SatProblemProvider satProblemProvider = new SatProblemProvider();
+    IPhenotypeEvaluator<SatPhenotype> evaluator = 
+        satProblemProvider.initPhenotypeEvaluator(problemInstance);
+
+            
     SatPhenotype solution = 
-        new SatInitialSolutionProvider().generateGreedySolution(instance, rnd.nextLong());
+        SatInitialSolutionProvider.generateGreedySolution(formula, evaluator, rnd.nextLong());
     assertNotNull(solution);
   }
 

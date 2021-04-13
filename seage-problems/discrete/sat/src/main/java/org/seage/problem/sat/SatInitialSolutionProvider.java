@@ -30,38 +30,33 @@ import org.seage.aal.problem.ProblemInstance;
 
 public class SatInitialSolutionProvider {
   /**
-   * .
-   * @param problemInstance .
-   * @param randomSeed .
-   * @return .
-   * @throws Exception .
+   * Method creates solution using greedy algorithmgit.
+   * @param formula SAT formula.
+   * @param evaluator Evaluator.
+   * @param seed Seed for random generator.
+   * @return Problem solution.
    * @author David Omrai
    */
-  public SatPhenotype generateGreedySolution(
-      ProblemInstance problemInstance, long randomSeed)
+  public static SatPhenotype generateGreedySolution(
+      Formula formula, 
+      IPhenotypeEvaluator<SatPhenotype> evaluator, long seed)
       throws Exception {
-    Random rnd = new Random(randomSeed);
-    Formula f = (Formula) problemInstance;
-    
-    SatProblemProvider satProblemProvider = new SatProblemProvider();
-
-    IPhenotypeEvaluator<SatPhenotype> evaluator = 
-        satProblemProvider.initPhenotypeEvaluator(problemInstance);
+    Random rnd = new Random(seed);
     
     // Create new random solution
-    Boolean[] bestSolution = new Boolean[f.getLiteralCount()];
-    for (int j = 0; j < f.getLiteralCount(); j++) {
+    Boolean[] bestSolution = new Boolean[formula.getLiteralCount()];
+    for (int j = 0; j < formula.getLiteralCount(); j++) {
       bestSolution[j] = rnd.nextBoolean();
     }
     
     double bestScore = evaluator.evaluate(new SatPhenotype(bestSolution))[0];
         
     // Find better solution using greedy algorithm
-    for (int i = 0; i < f.getLiteralCount(); i++) {
+    for (int i = 0; i < formula.getLiteralCount(); i++) {
 
       Boolean[] newSolution = Arrays.copyOf(bestSolution, bestSolution.length);
 
-      for (int k = i; k < f.getLiteralCount(); k++) {      
+      for (int k = i; k < formula.getLiteralCount(); k++) {      
         newSolution[k] = !newSolution[k]; 
 
         double newScore = evaluator.evaluate(new SatPhenotype(newSolution))[0];
@@ -94,15 +89,20 @@ public class SatInitialSolutionProvider {
    * @return Solutions.
    * @author David Omrai.
    */
-  public SatPhenotype[] generateGreedySolutions(
+  public static SatPhenotype[] generateGreedySolutions(
       ProblemInstance problemInstance, int numSolutions, long randomSeed)
       throws Exception {
     Random rnd = new Random(randomSeed);
     SatPhenotype[] result = new SatPhenotype[numSolutions];
     
     for (int i = 0; i < numSolutions; i++) {
+      Formula formula = (Formula) problemInstance;
+      SatProblemProvider satProblemProvider = new SatProblemProvider();
+      IPhenotypeEvaluator<SatPhenotype> evaluator = 
+          satProblemProvider.initPhenotypeEvaluator(problemInstance);
+
       result[i] = 
-        generateGreedySolution(problemInstance, rnd.nextLong());
+        generateGreedySolution(formula, evaluator, rnd.nextLong());
     }
 
     return result;
