@@ -133,7 +133,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
 
         double newScore = evaluator.evaluate(new SatPhenotype(newSolution))[0];
 
-        if (newScore > bestScore) {
+        if (newScore < bestScore) {
           // Save the changes
           bestSolution = Arrays.copyOf(newSolution, newSolution.length);
           // Save better score
