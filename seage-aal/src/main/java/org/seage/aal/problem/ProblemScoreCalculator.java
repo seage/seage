@@ -20,8 +20,8 @@ public class ProblemScoreCalculator {
   public double calculateInstanceScore(String instanceID, double objValue) throws Exception {
     try {
       double optimum = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("optimum");
-      double random = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("random");
-      return UnitMetric.getMetricValue(optimum, random, objValue);
+      double greedy = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("greedy");
+      return UnitMetric.getMetricValue(optimum, greedy, objValue);
     } catch (NumberFormatException ex) {
       return 0;
     }
