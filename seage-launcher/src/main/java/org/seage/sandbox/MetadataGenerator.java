@@ -111,17 +111,21 @@ public class MetadataGenerator {
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
 
     for (String problemId : providers.keySet()) {
-      _logger.info("Working on " + problemId + " problem...");
-      
-      IProblemProvider<?> pp = providers.get(problemId);
-      ProblemInfo pi = pp.getProblemInfo();
-           
-      DataNode problem = new DataNode("Problem");
-      problem.putValue("id", problemId);
+      try {
+        _logger.info("Working on " + problemId + " problem...");
+        
+        IProblemProvider<?> pp = providers.get(problemId);
+        ProblemInfo pi = pp.getProblemInfo();
+            
+        DataNode problem = new DataNode("Problem");
+        problem.putValue("id", problemId);
 
-      problem.putDataNode(getInstancesMetadata(pi, 1000));
+        problem.putDataNode(getInstancesMetadata(pi, 11));
 
-      saveToFile(problem, problemId.toLowerCase());
+        saveToFile(problem, problemId.toLowerCase());
+      } catch (Exception ex) {
+        _logger.warn("Problem '{}' not supported for generating metadata", problemId);
+      }
     }
   }
 
@@ -171,8 +175,8 @@ public class MetadataGenerator {
     switch (pi.getValueStr("id").toLowerCase()) {
       case "sat": 
         return getSatInstancesMetadata(pi, populationCount);
-      case "tsp":
-        return getTspInstancesMetadata(pi, populationCount);
+      // case "tsp":
+      //   return getTspInstancesMetadata(pi, populationCount);
       default:
         return null;
     }
@@ -295,44 +299,39 @@ public class MetadataGenerator {
        throws Exception {
     DataNode result = new DataNode("Instances");
     //iterate through all instances
-    for (String instanceID : getSortedInstanceIDs(pi)) {  
-      _logger.info("Processing: " + instanceID);
+    for (String instanceID : getSortedInstanceIDs(pi)) { 
+      try { 
+        _logger.info("Processing: " + instanceID);
 
-      String path = String.format("/org/seage/problem/sat/instances/%s.cnf", instanceID);
+        SatProblemProvider provider = new SatProblemProvider();
+        // String path = String.format("/org/seage/problem/sat/instances/%s.cnf", instanceID);
 
-      Formula formula = null;
-      
-      try (InputStream stream = getClass().getResourceAsStream(path)) {
-        formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
-        FormulaReader.readClauses(stream));
+        ProblemInstanceInfo ii = pi.getProblemInstanceInfo(instanceID);
+        Formula formula = (Formula)provider.initProblemInstance(ii);
+                
+        double[] greedyResults = new double[populationCount];
+        double[] randomResults = new double[populationCount];
+
+        SatPhenotypeEvaluator satEval = new SatPhenotypeEvaluator(pi, formula);
+
+        for (int i = 0; i < populationCount; i++) {
+          greedyResults[i] = SatInitialSolutionProvider
+            .generateGreedySolution(formula, satEval, System.currentTimeMillis()).getObjValue();
+
+          randomResults[i] = SatInitialSolutionProvider
+            .generateRandomSolution(formula, satEval, System.currentTimeMillis()).getObjValue();
+        }
+
+        DataNode inst = new DataNode("Instance");
+        inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
+        inst.putValue("greedy", (int)median(greedyResults));
+        inst.putValue("random", (int)median(randomResults));
+        inst.putValue("optimum", 0);
+        inst.putValue("size", formula.getLiteralCount());
+        result.putDataNode(inst);      
+      } catch (Exception ex) {
+        _logger.warn("SAT instance error: {}", ex.getMessage());        
       }
-      
-      double[] greedyResults = new double[populationCount];
-      double[] randomResults = new double[populationCount];
-
-      SatProblemProvider provider = new SatProblemProvider();
-      ProblemInstance problemInstance = provider
-          .initProblemInstance(pi.getProblemInstanceInfo(instanceID));
-      IPhenotypeEvaluator<SatPhenotype> evaluator = provider
-          .initPhenotypeEvaluator(problemInstance);
-
-      SatPhenotypeEvaluator satEval = new SatPhenotypeEvaluator(pi, formula);
-
-      for (int i = 0; i < populationCount; i++) {
-        greedyResults[i] = satEval.evaluate(SatInitialSolutionProvider
-          .generateGreedySolution(formula, evaluator, System.currentTimeMillis()))[0];
-
-        randomResults[i] = satEval.evaluate(new SatProblemProvider()
-          .generateInitialSolutions(formula, 1, System.currentTimeMillis())[0])[0];
-      }
-
-      DataNode inst = new DataNode("Instance");
-      inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
-      inst.putValue("greedy", (int)median(greedyResults));
-      inst.putValue("random", (int)median(randomResults));
-      inst.putValue("optimum", 0);
-      inst.putValue("size", formula.getLiteralCount());
-      result.putDataNode(inst);      
     }
     return result;
   }
