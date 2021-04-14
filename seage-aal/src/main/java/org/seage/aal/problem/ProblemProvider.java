@@ -110,7 +110,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
       if (metadata != null) {
         DataNode dn = metadata.getDataNodeById(instanceID);
         instance.putValue("size",dn.getValue("size"));
-        instance.putValue("random",dn.getValue("random"));
+        instance.putValue("greedy",dn.getValue("greedy"));
         instance.putValue("optimum",dn.getValue("optimum"));
       }
 

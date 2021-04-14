@@ -7,7 +7,7 @@ public class UnitMetric {
   /**
    * Method returns the metric based on given data.
    * 
-   * @param upperBound The value of random generator.
+   * @param upperBound The value of greedy algorithm.
    * @param lowerBound The optimal value.
    * @param current    Input value for metric.
    * @return The metric for given value.
