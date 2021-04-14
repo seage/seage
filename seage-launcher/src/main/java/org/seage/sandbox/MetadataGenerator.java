@@ -37,21 +37,16 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemInfo;
-import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.aal.problem.ProblemProvider;
 
 import org.seage.data.DataNode;
 
 import org.seage.problem.sat.Formula;
-import org.seage.problem.sat.FormulaReader;
 import org.seage.problem.sat.SatInitialSolutionProvider;
-import org.seage.problem.sat.SatPhenotype;
 import org.seage.problem.sat.SatPhenotypeEvaluator;
 import org.seage.problem.sat.SatProblemProvider;
 
@@ -107,7 +102,6 @@ public class MetadataGenerator {
    * in xml format.
    */
   public void runMetadataGenerator() throws Exception {
-    _logger.info("Radom metadata generator");
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
 
     for (String problemId : providers.keySet()) {
@@ -120,7 +114,7 @@ public class MetadataGenerator {
         DataNode problem = new DataNode("Problem");
         problem.putValue("id", problemId);
 
-        problem.putDataNode(getInstancesMetadata(pi, 11));
+        problem.putDataNode(getInstancesMetadata(pi, 101));
 
         saveToFile(problem, problemId.toLowerCase());
       } catch (Exception ex) {
@@ -129,6 +123,21 @@ public class MetadataGenerator {
     }
   }
 
+  /**
+   * Method decides what metaGenerator to call deppending on given problem id.
+   * @param numberOfTrials number of solutions to make.
+   * @return DataNode object with random intances metadata
+   */
+  private DataNode getInstancesMetadata(ProblemInfo pi, int numberOfTrials) throws Exception {
+    switch (pi.getValueStr("id").toLowerCase()) {
+      // case "sat": 
+      //   return getSatInstancesMetadata(pi, numberOfTrials);
+      case "tsp":
+        return getTspInstancesMetadata(pi, numberOfTrials);
+      default:
+        return null;
+    }
+  }
 
   /**
    * Method stores given data into a xml file.
@@ -163,23 +172,6 @@ public class MetadataGenerator {
       return (((double)array[array.length / 2] + (double)array[array.length / 2 - 1]) / 2);
     }
     return ((double)array[ (array.length / 2)]);
-  }
-
-  /**
-   * Method decides what metaGenerator to call deppending on given problem id.
-   * @param populationCount number of solutions to make.
-   * @return DataNode object with random intances metadata
-   */
-  private DataNode getInstancesMetadata(
-      ProblemInfo pi, int populationCount) throws Exception {
-    switch (pi.getValueStr("id").toLowerCase()) {
-      case "sat": 
-        return getSatInstancesMetadata(pi, populationCount);
-      // case "tsp":
-      //   return getTspInstancesMetadata(pi, populationCount);
-      default:
-        return null;
-    }
   }
 
   private List<String> getSortedInstanceIDs(ProblemInfo pi) throws Exception {
@@ -232,9 +224,9 @@ public class MetadataGenerator {
   /**
    * Method creates for each instance of tsp problem domain number of random solutions.
    * Then it calculates the score of each solution and stores the median to output array.
-   * @param populationCount number of random solutions to make.
+   * @param numberOfTrials number of random solutions to make.
    */
-  private DataNode getTspInstancesMetadata(ProblemInfo pi, int populationCount)
+  private DataNode getTspInstancesMetadata(ProblemInfo pi, int numberOfTrials)
       throws Exception {
     DataNode result = new DataNode("Instances");
 
@@ -242,63 +234,98 @@ public class MetadataGenerator {
         "/org/seage/problem/tsp/solutions/__optimal.txt");
 
     //iterate through all instances
-    for (String instanceID : getSortedInstanceIDs(pi)) {      
-      _logger.info("Processing: " + instanceID);
+    // getSortedInstanceIDs(pi).parallelStream().forEach((instanceID) -> {
+    for (String instanceID : getSortedInstanceIDs(pi)) { 
+      try {
+        _logger.info("Processing: " + instanceID);
 
-      String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instanceID);
-      City[] cities = null;
+        // String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instanceID);
+        // City[] cities = null;
+  
+        // try (InputStream stream = getClass().getResourceAsStream(path)) {    
+        //   cities = CityProvider.readCities(stream);
+        // }        
+  
+        // if (cities == null) {
+        //   return;
+        // }   
+        
+        TspProblemProvider provider = new TspProblemProvider();
 
-      try (InputStream stream = getClass().getResourceAsStream(path)) {    
-        cities = CityProvider.readCities(stream);
+        ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
+        TspProblemInstance instance = provider.initProblemInstance(pii);
+        TspPhenotypeEvaluator tspEval = new TspPhenotypeEvaluator(pi, instance);
+
+  
+        // for (int i = 0; i < numberOfTrials; i++) {
+        //   greedyResults[i] = tspEval
+        //       .evaluate(new TspPhenotype(
+        //         TourProvider.createGreedyTour(cities, System.currentTimeMillis())))[0];
+  
+        //   randomResults[i] = tspEval
+        //       .evaluate(new TspPhenotype(
+        //         TourProvider.createRandomTour(cities.length)))[0];
+        // }   
+
+        double[] randomResults = new double[numberOfTrials];
+        double[] greedyResults = new double[numberOfTrials];
+        List<Integer> indexes = new ArrayList<>(numberOfTrials);
+
+        for (int i = 0; i < numberOfTrials; i++) {
+          indexes.add(i);
+        }       
+
+        indexes.parallelStream().forEach((i) -> {
+          try {
+            _logger.info("   Processing: {} ", i);
+            greedyResults[i] = tspEval.evaluate(new TspPhenotype(
+                TourProvider.createGreedyTour(instance.getCities(), System.currentTimeMillis())))[0];
+          } catch (Exception ex) {
+            _logger.warn("Processing trial error", ex);
+          }
+        });
+
+        indexes.parallelStream().forEach((i) -> {
+          try {
+            _logger.info("   Processing: {} ", i);
+            randomResults[i] = tspEval.evaluate(new TspPhenotype(
+                TourProvider.createRandomTour(instance.getCities().length)))[0];
+          } catch (Exception ex) {
+            _logger.warn("Processing trial error", ex);
+          }
+        });
+        
+        DataNode inst = new DataNode("Instance");
+        inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
+        inst.putValue("greedy", (int)median(greedyResults));
+        inst.putValue("random", (int)median(randomResults));
+  
+        if (optimumResults.containsKey(instanceID.toLowerCase())) {
+          inst.putValue("optimum", optimumResults.get(instanceID.toLowerCase()));;
+        } else {
+          inst.putValue("optimum", "TBA");
+        }
+  
+        inst.putValue("size", instance.getCities().length);
+        result.putDataNode(inst); 
+      } catch (Exception ex) {
+        _logger.warn("TSP instance error: {}", ex.getMessage());
       }
-
-      if (cities == null) {
-        continue;
-      }
+    }       
       
-      double[] randomResults = new double[populationCount];
-      double[] greedyResults = new double[populationCount];
-
-      ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
-      TspProblemInstance instance = new TspProblemInstance(pii, cities);
-      TspPhenotypeEvaluator tspEval = new TspPhenotypeEvaluator(pi, instance);
-
-      for (int i = 0; i < populationCount; i++) {
-        greedyResults[i] = tspEval
-            .evaluate(new TspPhenotype(
-              TourProvider.createGreedyTour(cities, System.currentTimeMillis())))[0];
-
-        randomResults[i] = tspEval
-            .evaluate(new TspPhenotype(
-              TourProvider.createRandomTour(cities.length)))[0];
-      }   
-      
-      DataNode inst = new DataNode("Instance");
-      inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
-      inst.putValue("greedy", (int)median(greedyResults));
-      inst.putValue("random", (int)median(randomResults));
-
-      if (optimumResults.containsKey(instanceID.toLowerCase())) {
-        inst.putValue("optimum", optimumResults.get(instanceID.toLowerCase()));;
-      } else {
-        inst.putValue("optimum", "TBA");
-      }
-
-      inst.putValue("size", cities.length);
-      result.putDataNode(inst);      
-    } 
     return result;
   }
 
   /**
    * Method creates for each instance of sat problem domain number of random solutions.
    * Then it calculates the score of each solution and stores the median to output array.
-   * @param populationCount number of random solutions to make.
+   * @param numberOfTrials number of random solutions to make.
    */
-  private DataNode getSatInstancesMetadata(ProblemInfo pi, int populationCount)
+  private DataNode getSatInstancesMetadata(ProblemInfo pi, int numberOfTrials)
        throws Exception {
     DataNode result = new DataNode("Instances");
     //iterate through all instances
+    // getSortedInstanceIDs(pi).parallelStream().forEach((instanceID) -> {
     for (String instanceID : getSortedInstanceIDs(pi)) { 
       try { 
         _logger.info("Processing: " + instanceID);
@@ -308,19 +335,43 @@ public class MetadataGenerator {
 
         ProblemInstanceInfo ii = pi.getProblemInstanceInfo(instanceID);
         Formula formula = (Formula)provider.initProblemInstance(ii);
-                
-        double[] greedyResults = new double[populationCount];
-        double[] randomResults = new double[populationCount];
-
         SatPhenotypeEvaluator satEval = new SatPhenotypeEvaluator(pi, formula);
 
-        for (int i = 0; i < populationCount; i++) {
-          greedyResults[i] = SatInitialSolutionProvider
-            .generateGreedySolution(formula, satEval, System.currentTimeMillis()).getObjValue();
+        double[] greedyResults = new double[numberOfTrials];
+        double[] randomResults = new double[numberOfTrials];
+        List<Integer> indexes = new ArrayList<>(numberOfTrials);
 
-          randomResults[i] = SatInitialSolutionProvider
-            .generateRandomSolution(formula, satEval, System.currentTimeMillis()).getObjValue();
-        }
+        for (int i = 0; i < numberOfTrials; i++) {
+          indexes.add(i);
+        }       
+
+        indexes.parallelStream().forEach((i) -> {
+          try {
+            _logger.info("   Processing: {} ", i);
+            greedyResults[i] = SatInitialSolutionProvider
+              .generateGreedySolution(formula, satEval, System.currentTimeMillis()).getObjValue();
+          } catch (Exception ex) {
+            _logger.warn("Processing trial error", ex);
+          }
+        });
+
+        indexes.parallelStream().forEach((i) -> {
+          try {
+            _logger.info("   Processing: {} ", i);
+            randomResults[i] = SatInitialSolutionProvider
+              .generateRandomSolution(formula, satEval, System.currentTimeMillis()).getObjValue();
+          } catch (Exception ex) {
+            _logger.warn("Processing trial error", ex);
+          }
+        });
+
+        // for (int i = 0; i < numberOfTrials; i++) {
+        //   greedyResults[i] = SatInitialSolutionProvider
+        //     .generateGreedySolution(formula, satEval, System.currentTimeMillis()).getObjValue();
+
+        //   randomResults[i] = SatInitialSolutionProvider
+        //     .generateRandomSolution(formula, satEval, System.currentTimeMillis()).getObjValue();
+        // }
 
         DataNode inst = new DataNode("Instance");
         inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
@@ -330,7 +381,7 @@ public class MetadataGenerator {
         inst.putValue("size", formula.getLiteralCount());
         result.putDataNode(inst);      
       } catch (Exception ex) {
-        _logger.warn("SAT instance error: {}", ex.getMessage());        
+        _logger.warn("SAT instance error: {}", ex.getMessage());
       }
     }
     return result;
