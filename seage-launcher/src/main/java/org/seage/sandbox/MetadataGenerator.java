@@ -304,7 +304,6 @@ public class MetadataGenerator {
         logger.info("Processing: " + instanceID);
 
         SatProblemProvider provider = new SatProblemProvider();
-        // String path = String.format("/org/seage/problem/sat/instances/%s.cnf", instanceID);
 
         ProblemInstanceInfo ii = pi.getProblemInstanceInfo(instanceID);
         Formula formula = (Formula)provider.initProblemInstance(ii);
