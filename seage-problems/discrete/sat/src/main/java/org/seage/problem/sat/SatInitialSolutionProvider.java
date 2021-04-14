@@ -23,6 +23,26 @@ import java.util.Random;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 
 public class SatInitialSolutionProvider {
+
+  /**. */
+  public static SatPhenotype generateRandomSolution(
+      Formula formula, IPhenotypeEvaluator<SatPhenotype> evaluator, long seed)
+      throws Exception { 
+    Random rnd = new Random(seed);
+    
+    // Create new random solution
+    Boolean[] randomSolution = new Boolean[formula.getLiteralCount()];
+    for (int j = 0; j < formula.getLiteralCount(); j++) {
+      randomSolution[j] = rnd.nextBoolean();
+    }
+    SatPhenotype result = new SatPhenotype(randomSolution);
+    double[] objVals = evaluator.evaluate(result);
+    result.setObjValue(objVals[0]);
+    result.setScore(objVals[1]);
+
+    return result;
+  }
+
   /**
    * Method creates solution using greedy algorithmgit.
    * @param formula SAT formula.
@@ -42,7 +62,7 @@ public class SatInitialSolutionProvider {
       bestSolution[j] = rnd.nextBoolean();
     }
     
-    double bestScore = evaluator.evaluate(new SatPhenotype(bestSolution))[1];
+    double bestObjVal = evaluator.evaluate(new SatPhenotype(bestSolution))[0];
         
     // Find better solution using greedy algorithm
     for (int i = 0; i < formula.getLiteralCount(); i++) {
@@ -52,13 +72,13 @@ public class SatInitialSolutionProvider {
       for (int k = i; k < formula.getLiteralCount(); k++) {      
         newSolution[k] = !newSolution[k]; 
 
-        double newScore = evaluator.evaluate(new SatPhenotype(newSolution))[1];
+        double newObjVal = evaluator.evaluate(new SatPhenotype(newSolution))[0];
 
-        if (newScore > bestScore) {
+        if (newObjVal < bestObjVal) {
           // Save the changes
           bestSolution = Arrays.copyOf(newSolution, newSolution.length);
-          // Save better score
-          bestScore = newScore;
+          // Save better result
+          bestObjVal = newObjVal;
         }
         // Return the changed literal
         newSolution[k] = !newSolution[k];
