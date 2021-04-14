@@ -251,7 +251,7 @@ public class MetadataGenerator {
 
         indexes.parallelStream().forEach((i) -> {
           try {
-            logger.info("   Processing: {} ", i);
+            logger.info("Greedy for: {}, trial {}", instanceID, i);
             greedyResults[i] = tspEval.evaluate(new TspPhenotype(
                 TourProvider.createGreedyTour(instance.getCities(), System.currentTimeMillis())))[0];
           } catch (Exception ex) {
@@ -261,7 +261,7 @@ public class MetadataGenerator {
 
         indexes.parallelStream().forEach((i) -> {
           try {
-            logger.info("   Processing: {} ", i);
+            logger.info("Random for: {}, trial {}", instanceID, i);
             randomResults[i] = tspEval.evaluate(new TspPhenotype(
                 TourProvider.createRandomTour(instance.getCities().length)))[0];
           } catch (Exception ex) {
@@ -320,7 +320,7 @@ public class MetadataGenerator {
 
         indexes.parallelStream().forEach((i) -> {
           try {
-            logger.info("   Processing: {} ", i);
+            logger.info("Greedy for: {}, trial {}",instanceID, i);
             greedyResults[i] = SatInitialSolutionProvider
               .generateGreedySolution(formula, satEval, System.currentTimeMillis()).getObjValue();
           } catch (Exception ex) {
@@ -330,7 +330,7 @@ public class MetadataGenerator {
 
         indexes.parallelStream().forEach((i) -> {
           try {
-            logger.info("   Processing: {} ", i);
+            logger.info("Random for: {}, trial {}", instanceID, i);
             randomResults[i] = SatInitialSolutionProvider
               .generateRandomSolution(formula, satEval, System.currentTimeMillis()).getObjValue();
           } catch (Exception ex) {
