@@ -24,7 +24,8 @@ public class ProblemScoreCalculatorTest {
     dn.putValue("type", "resource");
     dn.putValue("path", "");
     dn.putValue("optimum", 2.0);
-    dn.putValue("random", 42.0);
+    dn.putValue("random", 84.0);
+    dn.putValue("greedy", 42.0);
     DataNode ins = new DataNode("Instances");
     ins.putDataNode(dn);
     
@@ -46,15 +47,15 @@ public class ProblemScoreCalculatorTest {
 
 
   @Test
-  public void testCalculatingRandomInstanceScore() throws Exception {
+  public void testCalculatingGreedyInstanceScore() throws Exception {
     
     problemScoreCalculator = new ProblemScoreCalculator(singleProblemInfo);
 
-    double random = singleProblemInfo
-        .getProblemInstanceInfo("test-instance").getValueDouble("random");
+    double greedy = singleProblemInfo
+        .getProblemInstanceInfo("test-instance").getValueDouble("greedy");
     
     assertEquals(
-        0.0, problemScoreCalculator.calculateInstanceScore("test-instance", random), 0.1);
+        0.0, problemScoreCalculator.calculateInstanceScore("test-instance", greedy), 0.1);
   }
 
 
@@ -64,9 +65,9 @@ public class ProblemScoreCalculatorTest {
 
     double optimum = singleProblemInfo
         .getProblemInstanceInfo("test-instance").getValueDouble("optimum");
-    double random = singleProblemInfo
-        .getProblemInstanceInfo("test-instance").getValueDouble("random");
-    double midsection = (random - optimum) / 2;
+    double greedy = singleProblemInfo
+        .getProblemInstanceInfo("test-instance").getValueDouble("greedy");
+    double midsection = (greedy - optimum) / 2;
 
     assertEquals(
         0.5, problemScoreCalculator.calculateInstanceScore("test-instance", midsection), 0.1);
@@ -87,14 +88,14 @@ public class ProblemScoreCalculatorTest {
 
 
   @Test
-  public void testCalculatingWorseThanRandomInstanceScore() throws Exception {
+  public void testCalculatingWorseThanGreedyInstanceScore() throws Exception {
     problemScoreCalculator = new ProblemScoreCalculator(singleProblemInfo);
 
-    double random = singleProblemInfo
-        .getProblemInstanceInfo("test-instance").getValueDouble("random");
+    double greedy = singleProblemInfo
+        .getProblemInstanceInfo("test-instance").getValueDouble("greedy");
   
     assertEquals(0.0, 
-        problemScoreCalculator.calculateInstanceScore("test-instance", random + 1), 0.1);
+        problemScoreCalculator.calculateInstanceScore("test-instance", greedy + 1), 0.1);
   }
 
 
@@ -112,7 +113,8 @@ public class ProblemScoreCalculatorTest {
       dn.putValue("type", "resource");
       dn.putValue("path", "");
       dn.putValue("optimum", 2.0);
-      dn.putValue("random", 42.0);
+      dn.putValue("random", 82.0);
+      dn.putValue("greedy", 42.0);
       dn.putValue("size", instanceSizes[i]);
 
       ins.putDataNode(dn);
@@ -156,7 +158,8 @@ public class ProblemScoreCalculatorTest {
       dn.putValue("type", "resource");
       dn.putValue("path", "");
       dn.putValue("optimum", 2.0);
-      dn.putValue("random", 42.0);
+      dn.putValue("random", 82.0);
+      dn.putValue("greedy", 42.0);
       dn.putValue("size", instanceSizes[i]);
 
       ins.putDataNode(dn);
