@@ -253,7 +253,8 @@ public class MetadataGenerator {
           try {
             logger.info("Greedy for: {}, trial {}", instanceID, i);
             greedyResults[i] = tspEval.evaluate(new TspPhenotype(
-                TourProvider.createGreedyTour(instance.getCities(), System.currentTimeMillis())))[0];
+                TourProvider
+                .createGreedyTour(instance.getCities(), System.currentTimeMillis())))[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
