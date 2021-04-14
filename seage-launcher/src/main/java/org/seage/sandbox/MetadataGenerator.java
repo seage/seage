@@ -60,8 +60,8 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * This program creates number of random solutions for each given instance of a problem domain.
- * And for every instance returns median of obtained solutions.
+ * This program creates number of random solutions for each given instance of a problem domain. And
+ * for every instance returns median of obtained solutions.
  * 
  * @author David Omrai
  */
@@ -76,14 +76,13 @@ public class MetadataGenerator {
 
 
   /**
-   * Main method of MetadataGenerator class.
-   * In this method creates array of instances for each 
-   * problem domain.
-   * The instances are then given to run method.
+   * Main method of MetadataGenerator class. In this method creates array of instances for each
+   * problem domain. The instances are then given to run method.
+   * 
    * @param args input parameters.
    */
   public static void main(String[] args) {
-    try {     
+    try {
       logger.info("MetadataGenerator is running...");
       new MetadataGenerator().runMetadataGenerator();
       logger.info("MetadataGenerator finished");
@@ -93,10 +92,9 @@ public class MetadataGenerator {
   }
 
   /**
-   * Method finds all instances of defines problem and sends it to appropriate method for 
-   * further solutions computation.
-   * After receiving the results for all problem domains it stores them into a file
-   * in xml format.
+   * Method finds all instances of defines problem and sends it to appropriate method for further
+   * solutions computation. After receiving the results for all problem domains it stores them into
+   * a file in xml format.
    */
   public void runMetadataGenerator() throws Exception {
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
@@ -104,10 +102,10 @@ public class MetadataGenerator {
     for (String problemId : providers.keySet()) {
       try {
         logger.info("Working on " + problemId + " problem...");
-        
+
         IProblemProvider<?> pp = providers.get(problemId);
         ProblemInfo pi = pp.getProblemInfo();
-            
+
         DataNode problem = new DataNode("Problem");
         problem.putValue("id", problemId);
 
@@ -122,12 +120,13 @@ public class MetadataGenerator {
 
   /**
    * Method decides what metaGenerator to call deppending on given problem id.
+   * 
    * @param numberOfTrials number of solutions to make.
    * @return DataNode object with random intances metadata
    */
   private DataNode getInstancesMetadata(ProblemInfo pi, int numberOfTrials) throws Exception {
     switch (pi.getValueStr("id").toLowerCase()) {
-      case "sat": 
+      case "sat":
         return getSatInstancesMetadata(pi, numberOfTrials);
       case "tsp":
         return getTspInstancesMetadata(pi, numberOfTrials);
@@ -138,6 +137,7 @@ public class MetadataGenerator {
 
   /**
    * Method stores given data into a xml file.
+   * 
    * @param dn DataNode object with data for outputting.
    */
   private static void saveToFile(DataNode dn, String fileName) throws Exception {
@@ -148,14 +148,15 @@ public class MetadataGenerator {
     Transformer transformer = transformerFactory.newTransformer();
     transformer.setOutputProperty(OutputKeys.INDENT, "yes");
     DOMSource domSource = new DOMSource(dn.toXml());
-    StreamResult streamResult = new StreamResult(
-        new File("./output/" + fileName + ".metadata.xml"));
+    StreamResult streamResult =
+        new StreamResult(new File("./output/" + fileName + ".metadata.xml"));
 
     transformer.transform(domSource, streamResult);
   }
 
   /**
    * Method takes array, finds and returns the median.
+   * 
    * @param array array of doubles.
    * @return median of given array
    */
@@ -166,9 +167,9 @@ public class MetadataGenerator {
 
     Arrays.sort(array);
     if (array.length % 2 == 0) {
-      return (((double)array[array.length / 2] + (double)array[array.length / 2 - 1]) / 2);
+      return (((double) array[array.length / 2] + (double) array[array.length / 2 - 1]) / 2);
     }
-    return ((double)array[ (array.length / 2)]);
+    return ((double) array[(array.length / 2)]);
   }
 
   private List<String> getSortedInstanceIDs(ProblemInfo pi) throws Exception {
@@ -181,7 +182,7 @@ public class MetadataGenerator {
     return instanceIDs;
   }
 
-  private static DataNode readOptimalLine(String line) {    
+  private static DataNode readOptimalLine(String line) {
     try (Scanner scanner = new Scanner(line)) {
       scanner.useDelimiter(" : ");
 
@@ -193,8 +194,8 @@ public class MetadataGenerator {
     }
   }
 
-  private HashMap<String,String> getOptimalValues(String path) throws Exception {
-    HashMap<String,String> results = new HashMap<String,String>();
+  private HashMap<String, String> getOptimalValues(String path) throws Exception {
+    HashMap<String, String> results = new HashMap<String, String>();
 
     // Get optimal value
     try (Scanner scanner = new Scanner(getClass().getResourceAsStream(path))) {
@@ -209,8 +210,7 @@ public class MetadataGenerator {
 
         DataNode optimalValue = readOptimalLine(line);
 
-        results.put(
-            optimalValue.getValue("name").toString(), 
+        results.put(optimalValue.getValue("name").toString(),
             optimalValue.getValue("optimum").toString());
       }
     }
@@ -219,22 +219,22 @@ public class MetadataGenerator {
   }
 
   /**
-   * Method creates for each instance of tsp problem domain number of random solutions.
-   * Then it calculates the score of each solution and stores the median to output array.
+   * Method creates for each instance of tsp problem domain number of random solutions. Then it
+   * calculates the score of each solution and stores the median to output array.
+   * 
    * @param numberOfTrials number of random solutions to make.
    */
-  private DataNode getTspInstancesMetadata(ProblemInfo pi, int numberOfTrials)
-      throws Exception {
+  private DataNode getTspInstancesMetadata(ProblemInfo pi, int numberOfTrials) throws Exception {
     DataNode result = new DataNode("Instances");
 
-    HashMap<String, String> optimumResults = getOptimalValues(
-        "/org/seage/problem/tsp/solutions/__optimal.txt");
+    HashMap<String, String> optimumResults =
+        getOptimalValues("/org/seage/problem/tsp/solutions/__optimal.txt");
 
     // iterate through all instances
-    for (String instanceID : getSortedInstanceIDs(pi)) { 
+    for (String instanceID : getSortedInstanceIDs(pi)) {
       try {
         logger.info("Processing: " + instanceID);
-        
+
         TspProblemProvider provider = new TspProblemProvider();
 
         ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
@@ -247,13 +247,12 @@ public class MetadataGenerator {
 
         for (int i = 0; i < numberOfTrials; i++) {
           indexes.add(i);
-        }       
+        }
 
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Greedy for: {}, trial {}", instanceID, i);
-            greedyResults[i] = tspEval.evaluate(new TspPhenotype(
-                TourProvider
+            greedyResults[i] = tspEval.evaluate(new TspPhenotype(TourProvider
                 .createGreedyTour(instance.getCities(), System.currentTimeMillis())))[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
@@ -263,51 +262,51 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
-            randomResults[i] = tspEval.evaluate(new TspPhenotype(
-                TourProvider.createRandomTour(instance.getCities().length)))[0];
+            randomResults[i] = tspEval.evaluate(
+                new TspPhenotype(TourProvider.createRandomTour(instance.getCities().length)))[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
         });
-        
+
         DataNode inst = new DataNode("Instance");
         inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
-        inst.putValue("greedy", (int)median(greedyResults));
-        inst.putValue("random", (int)median(randomResults));
-  
+        inst.putValue("greedy", (int) median(greedyResults));
+        inst.putValue("random", (int) median(randomResults));
+
         if (optimumResults.containsKey(instanceID.toLowerCase())) {
           inst.putValue("optimum", optimumResults.get(instanceID.toLowerCase()));;
         } else {
           inst.putValue("optimum", "TBA");
         }
-  
+
         inst.putValue("size", instance.getCities().length);
-        result.putDataNode(inst); 
+        result.putDataNode(inst);
       } catch (Exception ex) {
         logger.warn("TSP instance error: {}", ex.getMessage());
       }
-    }       
-      
+    }
+
     return result;
   }
 
   /**
-   * Method creates for each instance of sat problem domain number of random solutions.
-   * Then it calculates the score of each solution and stores the median to output array.
+   * Method creates for each instance of sat problem domain number of random solutions. Then it
+   * calculates the score of each solution and stores the median to output array.
+   * 
    * @param numberOfTrials number of random solutions to make.
    */
-  private DataNode getSatInstancesMetadata(ProblemInfo pi, int numberOfTrials)
-       throws Exception {
+  private DataNode getSatInstancesMetadata(ProblemInfo pi, int numberOfTrials) throws Exception {
     DataNode result = new DataNode("Instances");
     // iterate through all instances
-    for (String instanceID : getSortedInstanceIDs(pi)) { 
-      try { 
+    for (String instanceID : getSortedInstanceIDs(pi)) {
+      try {
         logger.info("Processing: " + instanceID);
 
         SatProblemProvider provider = new SatProblemProvider();
 
         ProblemInstanceInfo ii = pi.getProblemInstanceInfo(instanceID);
-        Formula formula = (Formula)provider.initProblemInstance(ii);
+        Formula formula = (Formula) provider.initProblemInstance(ii);
         SatPhenotypeEvaluator satEval = new SatPhenotypeEvaluator(pi, formula);
 
         double[] greedyResults = new double[numberOfTrials];
@@ -316,13 +315,13 @@ public class MetadataGenerator {
 
         for (int i = 0; i < numberOfTrials; i++) {
           indexes.add(i);
-        }       
+        }
 
         indexes.parallelStream().forEach((i) -> {
           try {
-            logger.info("Greedy for: {}, trial {}",instanceID, i);
+            logger.info("Greedy for: {}, trial {}", instanceID, i);
             greedyResults[i] = SatInitialSolutionProvider
-              .generateGreedySolution(formula, satEval, System.currentTimeMillis()).getObjValue();
+                .generateGreedySolution(formula, satEval, System.currentTimeMillis()).getObjValue();
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
@@ -332,7 +331,7 @@ public class MetadataGenerator {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
             randomResults[i] = SatInitialSolutionProvider
-              .generateRandomSolution(formula, satEval, System.currentTimeMillis()).getObjValue();
+                .generateRandomSolution(formula, satEval, System.currentTimeMillis()).getObjValue();
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
@@ -340,11 +339,11 @@ public class MetadataGenerator {
 
         DataNode inst = new DataNode("Instance");
         inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
-        inst.putValue("greedy", (int)median(greedyResults));
-        inst.putValue("random", (int)median(randomResults));
+        inst.putValue("greedy", (int) median(greedyResults));
+        inst.putValue("random", (int) median(randomResults));
         inst.putValue("optimum", 0);
         inst.putValue("size", formula.getLiteralCount());
-        result.putDataNode(inst);      
+        result.putDataNode(inst);
       } catch (Exception ex) {
         logger.warn("SAT instance error: {}", ex.getMessage());
       }
