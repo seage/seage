@@ -23,7 +23,6 @@
 package org.seage.sandbox;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,8 +49,6 @@ import org.seage.problem.sat.SatInitialSolutionProvider;
 import org.seage.problem.sat.SatPhenotypeEvaluator;
 import org.seage.problem.sat.SatProblemProvider;
 
-import org.seage.problem.tsp.City;
-import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.TourProvider;
 import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspPhenotypeEvaluator;
@@ -75,7 +72,7 @@ public class MetadataGenerator {
         new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class});
   }
 
-  private static final Logger _logger = LoggerFactory.getLogger(MetadataGenerator.class.getName());
+  private static final Logger logger = LoggerFactory.getLogger(MetadataGenerator.class.getName());
 
 
   /**
@@ -87,11 +84,11 @@ public class MetadataGenerator {
    */
   public static void main(String[] args) {
     try {     
-      _logger.info("MetadataGenerator is running...");
+      logger.info("MetadataGenerator is running...");
       new MetadataGenerator().runMetadataGenerator();
-      _logger.info("MetadataGenerator finished");
+      logger.info("MetadataGenerator finished");
     } catch (Exception ex) {
-      _logger.error("MetadataGenerator failed", ex);
+      logger.error("MetadataGenerator failed", ex);
     }
   }
 
@@ -106,7 +103,7 @@ public class MetadataGenerator {
 
     for (String problemId : providers.keySet()) {
       try {
-        _logger.info("Working on " + problemId + " problem...");
+        logger.info("Working on " + problemId + " problem...");
         
         IProblemProvider<?> pp = providers.get(problemId);
         ProblemInfo pi = pp.getProblemInfo();
@@ -118,7 +115,7 @@ public class MetadataGenerator {
 
         saveToFile(problem, problemId.toLowerCase());
       } catch (Exception ex) {
-        _logger.warn("Problem '{}' not supported for generating metadata", problemId);
+        logger.warn("Problem '{}' not supported for generating metadata", problemId);
       }
     }
   }
@@ -130,8 +127,8 @@ public class MetadataGenerator {
    */
   private DataNode getInstancesMetadata(ProblemInfo pi, int numberOfTrials) throws Exception {
     switch (pi.getValueStr("id").toLowerCase()) {
-      // case "sat": 
-      //   return getSatInstancesMetadata(pi, numberOfTrials);
+      case "sat": 
+        return getSatInstancesMetadata(pi, numberOfTrials);
       case "tsp":
         return getTspInstancesMetadata(pi, numberOfTrials);
       default:
@@ -144,7 +141,7 @@ public class MetadataGenerator {
    * @param dn DataNode object with data for outputting.
    */
   private static void saveToFile(DataNode dn, String fileName) throws Exception {
-    _logger.info("Saving the results to the file " + fileName + ".metadata.xml");
+    logger.info("Saving the results to the file " + fileName + ".metadata.xml");
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, ""); // Compliant
@@ -233,39 +230,16 @@ public class MetadataGenerator {
     HashMap<String, String> optimumResults = getOptimalValues(
         "/org/seage/problem/tsp/solutions/__optimal.txt");
 
-    //iterate through all instances
-    // getSortedInstanceIDs(pi).parallelStream().forEach((instanceID) -> {
+    // iterate through all instances
     for (String instanceID : getSortedInstanceIDs(pi)) { 
       try {
-        _logger.info("Processing: " + instanceID);
-
-        // String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instanceID);
-        // City[] cities = null;
-  
-        // try (InputStream stream = getClass().getResourceAsStream(path)) {    
-        //   cities = CityProvider.readCities(stream);
-        // }        
-  
-        // if (cities == null) {
-        //   return;
-        // }   
+        logger.info("Processing: " + instanceID);
         
         TspProblemProvider provider = new TspProblemProvider();
 
         ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
         TspProblemInstance instance = provider.initProblemInstance(pii);
         TspPhenotypeEvaluator tspEval = new TspPhenotypeEvaluator(pi, instance);
-
-  
-        // for (int i = 0; i < numberOfTrials; i++) {
-        //   greedyResults[i] = tspEval
-        //       .evaluate(new TspPhenotype(
-        //         TourProvider.createGreedyTour(cities, System.currentTimeMillis())))[0];
-  
-        //   randomResults[i] = tspEval
-        //       .evaluate(new TspPhenotype(
-        //         TourProvider.createRandomTour(cities.length)))[0];
-        // }   
 
         double[] randomResults = new double[numberOfTrials];
         double[] greedyResults = new double[numberOfTrials];
@@ -277,21 +251,21 @@ public class MetadataGenerator {
 
         indexes.parallelStream().forEach((i) -> {
           try {
-            _logger.info("   Processing: {} ", i);
+            logger.info("   Processing: {} ", i);
             greedyResults[i] = tspEval.evaluate(new TspPhenotype(
                 TourProvider.createGreedyTour(instance.getCities(), System.currentTimeMillis())))[0];
           } catch (Exception ex) {
-            _logger.warn("Processing trial error", ex);
+            logger.warn("Processing trial error", ex);
           }
         });
 
         indexes.parallelStream().forEach((i) -> {
           try {
-            _logger.info("   Processing: {} ", i);
+            logger.info("   Processing: {} ", i);
             randomResults[i] = tspEval.evaluate(new TspPhenotype(
                 TourProvider.createRandomTour(instance.getCities().length)))[0];
           } catch (Exception ex) {
-            _logger.warn("Processing trial error", ex);
+            logger.warn("Processing trial error", ex);
           }
         });
         
@@ -309,7 +283,7 @@ public class MetadataGenerator {
         inst.putValue("size", instance.getCities().length);
         result.putDataNode(inst); 
       } catch (Exception ex) {
-        _logger.warn("TSP instance error: {}", ex.getMessage());
+        logger.warn("TSP instance error: {}", ex.getMessage());
       }
     }       
       
@@ -324,11 +298,10 @@ public class MetadataGenerator {
   private DataNode getSatInstancesMetadata(ProblemInfo pi, int numberOfTrials)
        throws Exception {
     DataNode result = new DataNode("Instances");
-    //iterate through all instances
-    // getSortedInstanceIDs(pi).parallelStream().forEach((instanceID) -> {
+    // iterate through all instances
     for (String instanceID : getSortedInstanceIDs(pi)) { 
       try { 
-        _logger.info("Processing: " + instanceID);
+        logger.info("Processing: " + instanceID);
 
         SatProblemProvider provider = new SatProblemProvider();
         // String path = String.format("/org/seage/problem/sat/instances/%s.cnf", instanceID);
@@ -347,31 +320,23 @@ public class MetadataGenerator {
 
         indexes.parallelStream().forEach((i) -> {
           try {
-            _logger.info("   Processing: {} ", i);
+            logger.info("   Processing: {} ", i);
             greedyResults[i] = SatInitialSolutionProvider
               .generateGreedySolution(formula, satEval, System.currentTimeMillis()).getObjValue();
           } catch (Exception ex) {
-            _logger.warn("Processing trial error", ex);
+            logger.warn("Processing trial error", ex);
           }
         });
 
         indexes.parallelStream().forEach((i) -> {
           try {
-            _logger.info("   Processing: {} ", i);
+            logger.info("   Processing: {} ", i);
             randomResults[i] = SatInitialSolutionProvider
               .generateRandomSolution(formula, satEval, System.currentTimeMillis()).getObjValue();
           } catch (Exception ex) {
-            _logger.warn("Processing trial error", ex);
+            logger.warn("Processing trial error", ex);
           }
         });
-
-        // for (int i = 0; i < numberOfTrials; i++) {
-        //   greedyResults[i] = SatInitialSolutionProvider
-        //     .generateGreedySolution(formula, satEval, System.currentTimeMillis()).getObjValue();
-
-        //   randomResults[i] = SatInitialSolutionProvider
-        //     .generateRandomSolution(formula, satEval, System.currentTimeMillis()).getObjValue();
-        // }
 
         DataNode inst = new DataNode("Instance");
         inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
@@ -381,7 +346,7 @@ public class MetadataGenerator {
         inst.putValue("size", formula.getLiteralCount());
         result.putDataNode(inst);      
       } catch (Exception ex) {
-        _logger.warn("SAT instance error: {}", ex.getMessage());
+        logger.warn("SAT instance error: {}", ex.getMessage());
       }
     }
     return result;
