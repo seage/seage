@@ -88,5 +88,14 @@ docker-compose up
 DB_URL="jdbc:postgresql://localhost/seage" ./scripts/run.sh experiment-single-random -p SAT -a TabuSearch -i uf20-01 -t 10 -n 10
 ```
 
+### Run experiments in background
+```
+./scripts/run-bg.sh experiment-approach -a GeneticAlgorithm -i TSP:berlin52 -t 10 -n 10
+```
+or
+```
+./scripts/run-bg.sh experiment-approach -a GeneticAlgorithm -i ALL:hyflex -t 10 -n 10
+```
+
 ### Inspect results
 Navigate to http://localhost:8090
