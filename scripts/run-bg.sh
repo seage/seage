@@ -9,7 +9,8 @@ fi
 # Run SEAGE
 ./scripts/run.sh $@ &> /dev/null & disown
 #
-
+echo "SEAGE starting..."
+sleep 1
 # Print the log file path
 LOG_DIR="`pwd`/logs"
 LOG_FILE="`find $LOG_DIR -type f -name 'seage-*'| sort -r | head -1`"
