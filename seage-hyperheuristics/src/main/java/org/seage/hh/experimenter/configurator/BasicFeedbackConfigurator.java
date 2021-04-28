@@ -84,18 +84,55 @@ public class BasicFeedbackConfigurator extends Configurator {
               }
             });
             put("AntColony", new HashMap<>() {{
-                put("avgObjVal", 376.1);
-                put("bestObjVal", 376.1);
-                put("initObjVal", 384.1);
-                put("lastIterNumberNewSol", 10.0);
-                put("numberOfIter", 10.0);
-                put("numberOfNewSolutions", 4.0);
+                put("alpha", 1.0);
+                put("beta", 2.4636979267198944);
+                put("defaultPheromone", 1.0E-5);
+                put("iterationCount", 1000000.0);
+                put("localEvaporation", 0.9786027772416056);
+                put("numSolutions", 158.99322806081162);
+                put("qantumOfPheromone", 69.52953013409171);
               }
             });
             put("TabuSearch", new HashMap<>() {{
                 put("iterationCount", 8.623870985731076E10);
                 put("numSolutions", 1.0);
                 put("tabuListLength", 167.47528852684022);
+              }
+            });
+          }
+        });
+        put("TSP", new HashMap<>() {{
+            put("GeneticAlgorithm", new HashMap<>() {{
+                put("crossLengthPct", 10.12645264293384);
+                put("eliteSubjectPct", 9.87354735706616);
+                put("iterationCount", 998735.6000233046);
+                put("mutateLengthPct", 10.12645264293384);
+                put("mutateSubjectPct", 9.87354735706616);
+                put("numSolutions", 98.748118834955);
+                put("randomSubjectPct", 9.87354735706616);
+              }
+            });
+            put("SimulatedAnnealing", new HashMap<>() {{
+                put("iterationCount", 9.001462912250427E8);
+                put("maxTemperature", 9.995360802110308E7);
+                put("minTemperature", 0.0);
+                put("numSolutions", 1.0);
+              }
+            });
+            put("AntColony", new HashMap<>() {{
+                put("alpha", 1.508466606577072);
+                put("beta", 2.491533393422928);
+                put("defaultPheromone", 0.05650572465677848);
+                put("iterationCount", 1000000.0);
+                put("localEvaporation", 0.9771182190174438);
+                put("numSolutions", 44.06867327652208);
+                put("qantumOfPheromone", 1.0);
+              }
+            });
+            put("TabuSearch", new HashMap<>() {{
+                put("iterationCount", 9.968307133974689E10);
+                put("numSolutions", 1.0);
+                put("tabuListLength", 33.16611731596033);
               }
             });
           }
