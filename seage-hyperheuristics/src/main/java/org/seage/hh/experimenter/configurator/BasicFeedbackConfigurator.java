@@ -237,9 +237,10 @@ public class BasicFeedbackConfigurator extends Configurator {
     //     double delta = (max - min) * spread * sign;
     //     value = Math.max(min, Math.min(max, value + delta));
     //}
+    //System.out.println("\t\t\t\n\n\n" + problemInfo.getValue("id") + " " + algID + " "+ instanceID);
       params.putValue(dn.getValueStr("name"), 
-          bestDefaultParams.get(problemInfo.getValue("id"))
-            .get(algID).get(instanceID));
+          bestRandomParams.get(problemInfo.getValue("id"))
+            .get(algID).get(dn.getValueStr("name")));
     }      
 
     algorithm.putDataNode(params);
