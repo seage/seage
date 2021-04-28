@@ -24,8 +24,8 @@ package org.seage.hh.experimenter.configurator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
@@ -39,8 +39,7 @@ public class BasicFeedbackConfigurator extends Configurator {
 
   /**
    * DefaultConfigurator constructor.
-   * @param spread The maximal distance from the init value (0, 1>
-   */
+  */
   public BasicFeedbackConfigurator() {
   }
 
@@ -60,7 +59,8 @@ public class BasicFeedbackConfigurator extends Configurator {
     return results.toArray(new ProblemConfig[0]);
   }
 
-  private ProblemConfig createConfig(ProblemInfo problemInfo, String instanceID, String algID, double spread)
+  private ProblemConfig createConfig(
+      ProblemInfo problemInfo, String instanceID, String algID, double spread)
       throws Exception {
 
 
@@ -140,26 +140,29 @@ public class BasicFeedbackConfigurator extends Configurator {
       }
     };
 
-    ProblemConfig config = new ProblemConfig("Config");
     DataNode problem = new DataNode("Problem");
     problem.putValue("id", problemInfo.getValue("id"));
     problem.putDataNode(problemInfo.getDataNode("Instances").getDataNodeById(instanceID));
-
+    
     DataNode algorithm = new DataNode("Algorithm");
     algorithm.putValue("id", algID);
-
+    
     DataNode params = new DataNode("Parameters");
-    for (DataNode dn : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter")) {
+    ProblemConfig config = new ProblemConfig("Config");
+    for (DataNode dn : problemInfo
+        .getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter")) {
       
-      double value = dn.getValueDouble("init");
-      if(spread != 0) {
-        double min = dn.getValueDouble("min");
-        double max = dn.getValueDouble("max");
-        double sign = Math.random() > 0.5 ? 1 : -1;
-        double delta = (max - min) * spread * sign;
-        value = Math.max(min, Math.min(max, value + delta));
-      }
-      params.putValue(dn.getValueStr("name"), value);
+    //   double value = dn.getValueDouble("init");
+    //   if(spread != 0) {
+    //     double min = dn.getValueDouble("min");
+    //     double max = dn.getValueDouble("max");
+    //     double sign = Math.random() > 0.5 ? 1 : -1;
+    //     double delta = (max - min) * spread * sign;
+    //     value = Math.max(min, Math.min(max, value + delta));
+    //}
+      params.putValue(dn.getValueStr("name"), 
+            bestParams.get(problemInfo.getValue("id"))
+            .get(algID).get(instanceID));
     }      
 
     algorithm.putDataNode(params);
