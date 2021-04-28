@@ -64,7 +64,7 @@ public class BasicFeedbackConfigurator extends Configurator {
       throws Exception {
 
 
-    Map<String, Map<String, Map<String, Double>>> bestParams = new HashMap<>() {{
+    Map<String, Map<String, Map<String, Double>>> bestDefaultParams = new HashMap<>() {{
         put("SAT", new HashMap<>() {{
             put("GeneticAlgorithm", new HashMap<>() {{
                 put("crossLengthPct", 10.166310691188228);
@@ -140,6 +140,83 @@ public class BasicFeedbackConfigurator extends Configurator {
       }
     };
 
+
+    
+    Map<String, Map<String, Map<String, Double>>> bestRandomParams = new HashMap<>() {{
+        put("SAT", new HashMap<>() {{
+            put("GeneticAlgorithm", new HashMap<>() {{
+                put("crossLengthPct", 16.92164812580709);
+                put("eliteSubjectPct", 16.92164812580709);
+                put("iterationCount", 930790.440390055);
+                put("mutateLengthPct", 3.0783518741929106);
+                put("mutateSubjectPct", 16.92164812580709);
+                put("numSolutions", 168.52431644549017);
+                put("randomSubjectPct", 3.0783518741929106);
+              }
+            });
+            put("SimulatedAnnealing", new HashMap<>() {{
+                put("iterationCount", 9.525273894507701E8);
+                put("maxTemperature", 1000.0);
+                put("minTemperature", 0.0);
+                put("numSolutions", 1.0);
+              }
+            });
+            put("AntColony", new HashMap<>() {{
+                put("alpha", 1.0);
+                put("beta", 2.859904382201463);
+                put("defaultPheromone", 0.01557602409359541);
+                put("iterationCount", 1000000.0);
+                put("localEvaporation", 0.9425282337174113);
+                put("numSolutions", 115.41051795783903);
+                put("qantumOfPheromone", 1.0);
+              }
+            });
+            put("TabuSearch", new HashMap<>() {{
+                put("iterationCount", 905467.3922561172);
+                put("numSolutions", 1.0);
+                put("tabuListLength", 124.43816957430852);
+              }
+            });
+          }
+        });
+        put("TSP", new HashMap<>() {{
+            put("GeneticAlgorithm", new HashMap<>() {{
+                put("crossLengthPct", 19.036494354929765);
+                put("eliteSubjectPct", 19.03649435492976);
+                put("iterationCount", 1000000.0);
+                put("mutateLengthPct", 0.9635056450702351);
+                put("mutateSubjectPct", 0.9635056450702351);
+                put("numSolutions", 189.46129411380468);
+                put("randomSubjectPct", 0.9635056450702351);
+              }
+            });
+            put("SimulatedAnnealing", new HashMap<>() {{
+                put("iterationCount", 9.99999999E8);
+                put("maxTemperature", 9.74985598511794E7);
+                put("minTemperature", 0.0);
+                put("numSolutions", 1.0);
+              }
+            });
+            put("AntColony", new HashMap<>() {{
+                put("alpha", 1.0);
+                put("beta", 2.3861673412171998);
+                put("defaultPheromone", 0.06821294671735695);
+                put("iterationCount", 931797.0532826431);
+                put("localEvaporation", 0.9172622581982506);
+                put("numSolutions", 167.52159246610802);
+                put("qantumOfPheromone", 78.13542512489084);
+              }
+            });
+            put("TabuSearch", new HashMap<>() {{
+                put("iterationCount", 1000000.0);
+                put("numSolutions", 1.0);
+                put("tabuListLength", 30.0);
+              }
+            });
+          }
+        });
+      }
+    };
     DataNode problem = new DataNode("Problem");
     problem.putValue("id", problemInfo.getValue("id"));
     problem.putDataNode(problemInfo.getDataNode("Instances").getDataNodeById(instanceID));
@@ -161,7 +238,7 @@ public class BasicFeedbackConfigurator extends Configurator {
     //     value = Math.max(min, Math.min(max, value + delta));
     //}
       params.putValue(dn.getValueStr("name"), 
-            bestParams.get(problemInfo.getValue("id"))
+          bestDefaultParams.get(problemInfo.getValue("id"))
             .get(algID).get(instanceID));
     }      
 
