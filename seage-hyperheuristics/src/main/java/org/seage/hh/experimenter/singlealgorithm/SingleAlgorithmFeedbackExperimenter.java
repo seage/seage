@@ -1,13 +1,13 @@
 package org.seage.hh.experimenter.singlealgorithm;
 
-import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
+import org.seage.hh.experimenter.configurator.BasicFeedbackConfigurator;
 
 public class SingleAlgorithmFeedbackExperimenter extends SingleAlgorithmExperimenter {
 
   public SingleAlgorithmFeedbackExperimenter(String problemID, String[] instanceIDs,
       String[] algorithmIDs, int numConfigs, int timeoutS) throws Exception {
     super("SingleAlgorithmFeedback", problemID, instanceIDs, algorithmIDs, numConfigs, timeoutS);
-    this.configurator = new FeedbackConfigurator();
+    this.configurator = new BasicFeedbackConfigurator();
 }
   // public SingleAlgorithmFeedbackExperimenter(String problemID, String[]
   // instanceIDs, String[] algorithmIDs,
