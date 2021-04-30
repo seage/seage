@@ -67,13 +67,13 @@ public class BasicFeedbackConfigurator extends Configurator {
     Map<String, Map<String, Map<String, Double>>> bestDefaultParams = new HashMap<>() {{
         put("SAT", new HashMap<>() {{
             put("GeneticAlgorithm", new HashMap<>() {{
-                put("crossLengthPct", 10.166310691188228);
-                put("eliteSubjectPct", 10.166310691188228);
-                put("iterationCount", 1000000.0);
-                put("mutateLengthPct", 9.833689308811772);
-                put("mutateSubjectPct", 9.833689308811772);
-                put("numSolutions", 98.35352415723654);
-                put("randomSubjectPct", 9.833689308811772);
+                put("crossLengthPct", 16.13570202928119);
+                put("eliteSubjectPct", 16.13570202928119);
+                put("iterationCount", 938649.1154092173);
+                put("mutateLengthPct", 3.864297970718807);
+                put("mutateSubjectPct", 16.13570202928119);
+                put("numSolutions", 160.74345008988382);
+                put("randomSubjectPct", 3.864297970718807);
               }
             });
             put("SimulatedAnnealing", new HashMap<>() {{
@@ -85,12 +85,12 @@ public class BasicFeedbackConfigurator extends Configurator {
             });
             put("AntColony", new HashMap<>() {{
                 put("alpha", 1.0);
-                put("beta", 2.4636979267198944);
+                put("beta", 1.9710137211285783);
                 put("defaultPheromone", 1.0E-5);
                 put("iterationCount", 1000000.0);
-                put("localEvaporation", 0.9786027772416056);
-                put("numSolutions", 158.99322806081162);
-                put("qantumOfPheromone", 69.52953013409171);
+                put("localEvaporation", 0.8951207317935241);
+                put("numSolutions", 213.18849067585637);
+                put("qantumOfPheromone", 1.0);
               }
             });
             put("TabuSearch", new HashMap<>() {{
@@ -103,30 +103,30 @@ public class BasicFeedbackConfigurator extends Configurator {
         });
         put("TSP", new HashMap<>() {{
             put("GeneticAlgorithm", new HashMap<>() {{
-                put("crossLengthPct", 10.12645264293384);
-                put("eliteSubjectPct", 9.87354735706616);
-                put("iterationCount", 998735.6000233046);
-                put("mutateLengthPct", 10.12645264293384);
-                put("mutateSubjectPct", 9.87354735706616);
-                put("numSolutions", 98.748118834955);
-                put("randomSubjectPct", 9.87354735706616);
+                put("crossLengthPct", 0.0);
+                put("eliteSubjectPct", 0.0);
+                put("iterationCount", 870133.6665582203);
+                put("mutateLengthPct", 22.98793213739171);
+                put("mutateSubjectPct", 22.98793213739171);
+                put("numSolutions", 10.0);
+                put("randomSubjectPct", 0.0);
               }
             });
             put("SimulatedAnnealing", new HashMap<>() {{
-                put("iterationCount", 9.001462912250427E8);
-                put("maxTemperature", 9.995360802110308E7);
+                put("iterationCount", 9.99999999E8);
+                put("maxTemperature", 1000.0);
                 put("minTemperature", 0.0);
                 put("numSolutions", 1.0);
               }
             });
             put("AntColony", new HashMap<>() {{
-                put("alpha", 1.508466606577072);
-                put("beta", 2.491533393422928);
-                put("defaultPheromone", 0.05650572465677848);
-                put("iterationCount", 1000000.0);
-                put("localEvaporation", 0.9771182190174438);
-                put("numSolutions", 44.06867327652208);
-                put("qantumOfPheromone", 1.0);
+                put("alpha", 1.0);
+                put("beta", 3.8053196605039528);
+                put("defaultPheromone", 1.0E-5);
+                put("iterationCount", 910520.9325214059);
+                put("localEvaporation", 0.9070496181064558);
+                put("numSolutions", 11.414837344565214);
+                put("qantumOfPheromone", 99.39048231593874);
               }
             });
             put("TabuSearch", new HashMap<>() {{
@@ -239,7 +239,7 @@ public class BasicFeedbackConfigurator extends Configurator {
     //}
     //System.out.println("\t\t\t\n\n\n" + problemInfo.getValue("id") + " " + algID + " "+ instanceID);
       params.putValue(dn.getValueStr("name"), 
-          bestRandomParams.get(problemInfo.getValue("id"))
+          bestDefaultParams.get(problemInfo.getValue("id"))
             .get(algID).get(dn.getValueStr("name")));
     }      
 
