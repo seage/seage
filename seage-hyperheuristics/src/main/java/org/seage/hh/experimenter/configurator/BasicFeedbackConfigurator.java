@@ -161,18 +161,26 @@ public class BasicFeedbackConfigurator extends Configurator {
                 put("qantumOfPheromone", 1.0);
               }
             });
+            // put("TabuSearch", new HashMap<>() {{
+            //     put("iterationCount", 8.206866507152858E10);
+            //     put("numSolutions", 1.0);
+            //     put("tabuListLength", 209.1340359372209);
+            //   }
+            // });
+            
+            // put("TabuSearch", new HashMap<>() {{
+            //     put("iterationCount", 9.2779799435912E10);
+            //     put("numSolutions", 1.0);
+            //     put("tabuListLength", 102.12980363596046);
+            //     }
+            // });
+             
             put("TabuSearch", new HashMap<>() {{
-                put("iterationCount", 9.2779799435912E10);
-                put("numSolutions", 1.0);
-                put("tabuListLength", 102.12980363596046);
-              }
-            });
-            /**put("TabuSearch", new HashMap<>() {{
                 put("iterationCount", 9.968307133974689E10);
                 put("numSolutions", 1.0);
                 put("tabuListLength", 33.16611731596033);
               }
-            }); */
+            }); 
           }
         });
       }
