@@ -11,6 +11,7 @@ import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
+import org.seage.hh.experimenter.configurator.GridConfigurator;
 import org.seage.hh.experimenter.configurator.BasicFeedbackConfigurator;
 import org.seage.hh.experimenter.configurator.RandomConfigurator;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
@@ -24,6 +25,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
       LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
   private DefaultConfigurator dconfigurator;
   private BasicFeedbackConfigurator configurator;
+  private GridConfigurator gconfigurator;
   private RandomConfigurator rconfigurator;
   private ProblemInfo problemInfo;
   private IExperimentTasksRunner experimentTasksRunner;
@@ -58,8 +60,10 @@ public class MetaHeuristicExperimenter implements Experimenter {
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
     this.configurator = new BasicFeedbackConfigurator();//
-    this.dconfigurator = new DefaultConfigurator(0.15);
+    this.dconfigurator = new DefaultConfigurator(0.25);
     this.rconfigurator = new RandomConfigurator();
+    this.gconfigurator = new GridConfigurator(9);
+
   }
 
   /**
@@ -73,7 +77,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
     List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
 
     // Prepare experiment task configs
-    ProblemConfig config = rconfigurator.prepareConfigs(problemInfo,
+    ProblemConfig config = configurator.prepareConfigs(problemInfo,
         instanceInfo.getInstanceID(), algorithmID, 2)[1]; // the second with a bit of randomness
       
 
