@@ -96,15 +96,25 @@ public class BasicFeedbackConfigurator extends Configurator {
               }
             });
             put("AntColony", new HashMap<>() {{
-                put("alpha", 1.0);
-                put("beta", 1.9710137211285783);
-                put("defaultPheromone", 1.0E-5);
-                put("iterationCount", 1000000.0);
-                put("localEvaporation", 0.8951207317935241);
-                put("numSolutions", 213.18849067585637);
-                put("qantumOfPheromone", 1.0);
+                put("alpha", 2.0288340124934);
+                put("beta", 2.8417384547786972);
+                put("defaultPheromone", 0.323493209815758);
+                put("iterationCount", 524911.1662639739);
+                put("localEvaporation", 0.8273663355790442);
+                put("numSolutions", 75.0142078836997);
+                put("qantumOfPheromone", 78.06959520616533);
               }
             });
+            // put("AntColony", new HashMap<>() {{
+            //     put("alpha", 1.0);
+            //     put("beta", 1.9710137211285783);
+            //     put("defaultPheromone", 1.0E-5);
+            //     put("iterationCount", 1000000.0);
+            //     put("localEvaporation", 0.8951207317935241);
+            //     put("numSolutions", 213.18849067585637);
+            //     put("qantumOfPheromone", 1.0);
+            //   }
+            // });
             put("TabuSearch", new HashMap<>() {{
                 put("iterationCount", 8.642229643334344E10);
                 put("numSolutions", 1.0);
@@ -152,15 +162,25 @@ public class BasicFeedbackConfigurator extends Configurator {
               }
             });
             put("AntColony", new HashMap<>() {{
-                put("alpha", 2.132807099114193);
-                put("beta", 1.867192900885807);
-                put("defaultPheromone", 1.0E-5);
-                put("iterationCount", 1000000.0);
-                put("localEvaporation", 0.8895836213805763);
-                put("numSolutions", 10.0);
-                put("qantumOfPheromone", 1.0);
+                put("alpha", 2.0288340124934);
+                put("beta", 2.8417384547786972);
+                put("defaultPheromone", 0.323493209815758);
+                put("iterationCount", 524911.1662639739);
+                put("localEvaporation", 0.8273663355790442);
+                put("numSolutions", 75.0142078836997);
+                put("qantumOfPheromone", 78.06959520616533);
               }
             });
+            // put("AntColony", new HashMap<>() {{
+            //     put("alpha", 2.132807099114193);
+            //     put("beta", 1.867192900885807);
+            //     put("defaultPheromone", 1.0E-5);
+            //     put("iterationCount", 1000000.0);
+            //     put("localEvaporation", 0.8895836213805763);
+            //     put("numSolutions", 10.0);
+            //     put("qantumOfPheromone", 1.0);
+            //   }
+            // });
             // put("TabuSearch", new HashMap<>() {{
             //     put("iterationCount", 8.206866507152858E10);
             //     put("numSolutions", 1.0);
