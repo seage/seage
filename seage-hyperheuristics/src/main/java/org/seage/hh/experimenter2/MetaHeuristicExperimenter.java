@@ -23,10 +23,10 @@ import org.slf4j.LoggerFactory;
 public class MetaHeuristicExperimenter implements Experimenter {
   private static Logger logger =
       LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
-  private DefaultConfigurator dconfigurator;
-  private BasicFeedbackConfigurator configurator;
-  private GridConfigurator gconfigurator;
-  private RandomConfigurator rconfigurator;
+  private DefaultConfigurator defaultConfigurator;
+  private BasicFeedbackConfigurator feedbackConfigurator;
+  private GridConfigurator gridConfigurator;
+  private RandomConfigurator randomConfigurator;
   private ProblemInfo problemInfo;
   private IExperimentTasksRunner experimentTasksRunner;
   private ExperimentReporter experimentReporter;
@@ -59,10 +59,10 @@ public class MetaHeuristicExperimenter implements Experimenter {
     // Initialize all
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    this.configurator = new BasicFeedbackConfigurator();//
-    this.dconfigurator = new DefaultConfigurator(0.25);
-    this.rconfigurator = new RandomConfigurator();
-    this.gconfigurator = new GridConfigurator(9);
+    this.feedbackConfigurator = new BasicFeedbackConfigurator();//
+    this.defaultConfigurator = new DefaultConfigurator(0.26);
+    this.randomConfigurator = new RandomConfigurator();
+    this.gridConfigurator = new GridConfigurator(9);
 
   }
 
@@ -77,7 +77,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
     List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
 
     // Prepare experiment task configs
-    ProblemConfig config = configurator.prepareConfigs(problemInfo,
+    ProblemConfig config = defaultConfigurator.prepareConfigs(problemInfo,
         instanceInfo.getInstanceID(), algorithmID, 2)[1]; // the second with a bit of randomness
       
 
