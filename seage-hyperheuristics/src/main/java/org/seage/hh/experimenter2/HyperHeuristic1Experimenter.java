@@ -1,7 +1,9 @@
 package org.seage.hh.experimenter2;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import java.util.Map;
@@ -96,6 +98,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     this.instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
     this.timeoutS = timeoutS;
     this.taskFinished = false;
+    this.numberOfSolutions = 4;
 
     
     this.algorithmIDs = new HashMap<>() {{
@@ -173,10 +176,11 @@ public class HyperHeuristic1Experimenter implements Experimenter {
       this.algorithmIDs.get(algID).put("algorithm", algorithm);
     }
   
-    DataNode experimentTaskReport;
     DataNode solutionsNode = new DataNode("Solutions");
     solutionsNode.putDataNode(new DataNode("Input"));
     solutionsNode.putDataNode(new DataNode("Output"));
+
+    DataNode experimentTaskReport = new DataNode("experimentTaskReport");
     experimentTaskReport.putDataNode(solutionsNode);
 
     Phenotype<?>[] solutions = provider.generateInitialSolutions(
@@ -186,21 +190,36 @@ public class HyperHeuristic1Experimenter implements Experimenter {
         experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
 
 
+    // repeats
+    List<Phenotype<?>[]> algSolutions = new ArrayList<>();
+    for (int i = 0; i < 16; i++) {
+      List<IAlgorithmAdapter<Phenotype<?>, ?>> algorithms = new ArrayList<>();
 
+      for (String algID: this.algorithmIDs.keySet()) {
+        Object algorithmObject =  this.algorithmIDs.get(algID).get("algorithm");
+        Object algorithmParamsObject = this.algorithmIDs.get(algID).get("algorithmParams");
+        @SuppressWarnings("unchecked")
+        IAlgorithmAdapter<Phenotype<?>, ?>  algorithm =
+            (IAlgorithmAdapter<Phenotype<?>, ?>)algorithmObject;
+        AlgorithmParams algorithmParams = (AlgorithmParams)algorithmParamsObject;
+
+        algorithm.solutionsFromPhenotype(solutions);
+        algorithm.startSearching(algorithmParams, true);
+        _logger.debug("Algorithm started");
+
+        algorithms.add(algorithm);        
+      }
+
+      for (IAlgorithmAdapter<Phenotype<?>, ?> algorithm: algorithms) {
+        waitForTimeout(algorithm);
+        algorithm.stopSearching();
+        solutions = algorithm.solutionsToPhenotype();
+        _logger.debug("Algorithm stopped");
+
+        algSolutions.add(solutions);
+      }
+    }
     
-    // Another part
-    algorithm.solutionsFromPhenotype(solutions);
-    algorithm.startSearching(this.algorithmParams, true);
-    _logger.debug("Algorithm started");
-    waitForTimeout(algorithm);
-    algorithm.stopSearching();
-    _logger.debug("Algorithm stopped");
-
-    solutions = algorithm.solutionsToPhenotype();
-
-
-
-
 
     writeSolutions(evaluator,
         experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
