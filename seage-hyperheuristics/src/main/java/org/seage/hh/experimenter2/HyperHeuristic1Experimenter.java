@@ -12,12 +12,15 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
+import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstance;
+import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
+import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,17 +35,20 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   private String experimentType;
   private String problemID;
   private String instanceID;
-  private String algorithmID;
+  private Map<String, Map<String, Object>> algorithmIDs;
   //private String configID;
   private Date startDate;
   private Date endDate;
   private Double score;
   private Double scoreDelta;
+  private DefaultConfigurator defaultConfigurator;
+  private ProblemInfo problemInfo;
+  private ProblemInstanceInfo instanceInfo;
 
   //private AlgorithmParams algorithmParams;
   private long timeoutS;
 
-  private DataNode experimentTaskReport;
+  //private DataNode experimentTaskReport;
   private boolean taskFinished;
  
 
@@ -84,20 +90,14 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     this.endDate = this.startDate;
     this.score = Double.MAX_VALUE;
     this.scoreDelta = 0.0;
-
-
+    this.defaultConfigurator = new DefaultConfigurator(0.15);
+    this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
+    this.instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
     this.timeoutS = timeoutS;
-
     this.taskFinished = false;
 
-    this.experimentTaskReport = new DataNode("ExperimentTaskReport");
-    this.experimentTaskReport.putValue("version", "0.7");
-    this.experimentTaskReport.putValue("experimentType", experimentType);
-    this.experimentTaskReport.putValue("experimentID", experimentID);
-    this.experimentTaskReport.putValue("timeoutS", timeoutS);
-
     
-    Map<String, Map<String, Object>> algorithmIDs = new HashMap<>() {{
+    this.algorithmIDs = new HashMap<>() {{
         put("AntColony", new HashMap<>());
         put("GeneticAlgorithm", new HashMap<>());
         put("TabuSearch", new HashMap<>());
@@ -106,37 +106,50 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     };
 
     for (String algID: algorithmIDs.keySet()) {
-      // todo
-    }
+      DataNode experimentTaskReport;
+      experimentTaskReport = new DataNode("ExperimentTaskReport");
+      experimentTaskReport.putValue("version", "0.7");
+      experimentTaskReport.putValue("experimentType", experimentType);
+      experimentTaskReport.putValue("experimentID", experimentID);
+      experimentTaskReport.putValue("timeoutS", timeoutS);
 
-    this.algorithmParams = algorithmParams;
+      // parameters
+      ProblemConfig config = defaultConfigurator.prepareConfigs(problemInfo,
+          instanceInfo.getInstanceID(), algID, 2)[1];
+
+      this.algorithmIDs.get(algID).put("algorithmParams", config.getAlgorithmParams());
+
+
+      
+      DataNode problemNode = new DataNode("Problem");
+      problemNode.putValue("problemID", this.problemID);
+
+      DataNode instanceNode = new DataNode("Instance");
+      instanceNode.putValue("name", this.instanceID);
+
+      DataNode algorithmNode = new DataNode("Algorithm");
+      algorithmNode.putValue("algorithmID", algID);
+      algorithmNode.putDataNode(
+          (AlgorithmParams) this.algorithmIDs.get(algID).get("algorithmParams"));
+
+      problemNode.putDataNode(instanceNode);
+      
+      DataNode configNode = new DataNode("Config");
+      configNode.putDataNode(problemNode);
+      configNode.putDataNode(algorithmNode);
+
+      experimentTaskReport.putDataNode(configNode);
+      this.algorithmIDs.get(algID).put("experimentTaskReport", experimentTaskReport);
+
+
+
+      DataNode solutionsNode = new DataNode("Solutions");
+      solutionsNode.putDataNode(new DataNode("Input"));
+      solutionsNode.putDataNode(new DataNode("Output"));
+      this.experimentTaskReport.putDataNode(solutionsNode);
+    }
     //configNode.putValue("configID", this.configID);
     // configNode.putValue("runID", this.runID);
-
-    DataNode problemNode = new DataNode("Problem");
-    problemNode.putValue("problemID", this.problemID);
-
-    DataNode instanceNode = new DataNode("Instance");
-    instanceNode.putValue("name", this.instanceID);
-
-    DataNode algorithmNode = new DataNode("Algorithm");
-    algorithmNode.putValue("algorithmID", this.algorithmID);
-    algorithmNode.putDataNode(this.algorithmParams);
-
-    problemNode.putDataNode(instanceNode);
-    
-    DataNode configNode = new DataNode("Config");
-    configNode.putDataNode(problemNode);
-    configNode.putDataNode(algorithmNode);
-
-    this.experimentTaskReport.putDataNode(configNode);
-
-
-
-    DataNode solutionsNode = new DataNode("Solutions");
-    solutionsNode.putDataNode(new DataNode("Input"));
-    solutionsNode.putDataNode(new DataNode("Output"));
-    this.experimentTaskReport.putDataNode(solutionsNode);
   }
 
  
