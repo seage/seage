@@ -11,6 +11,9 @@ import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
+import org.seage.hh.experimenter.configurator.ExtendedDefaultConfigurator;
+import org.seage.hh.experimenter.configurator.GridConfigurator;
+import org.seage.hh.experimenter.configurator.RandomConfigurator;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
 import org.slf4j.Logger;
@@ -20,7 +23,10 @@ import org.slf4j.LoggerFactory;
 public class MetaHeuristicExperimenter implements Experimenter {
   private static Logger logger =
       LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
-  private DefaultConfigurator configurator;
+  private DefaultConfigurator defaultConfigurator;
+  private ExtendedDefaultConfigurator feedbackConfigurator;
+  private GridConfigurator gridConfigurator;
+  private RandomConfigurator randomConfigurator;
   private ProblemInfo problemInfo;
   private IExperimentTasksRunner experimentTasksRunner;
   private ExperimentReporter experimentReporter;
@@ -53,7 +59,11 @@ public class MetaHeuristicExperimenter implements Experimenter {
     // Initialize all
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    this.configurator = new DefaultConfigurator(0.15);
+    this.feedbackConfigurator = new ExtendedDefaultConfigurator();//
+    this.defaultConfigurator = new DefaultConfigurator(0.26);
+    this.randomConfigurator = new RandomConfigurator();
+    this.gridConfigurator = new GridConfigurator(9);
+
   }
 
   /**
@@ -67,8 +77,9 @@ public class MetaHeuristicExperimenter implements Experimenter {
     List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
 
     // Prepare experiment task configs
-    ProblemConfig config = configurator.prepareConfigs(problemInfo,
+    ProblemConfig config = defaultConfigurator.prepareConfigs(problemInfo,
         instanceInfo.getInstanceID(), algorithmID, 2)[1]; // the second with a bit of randomness
+      
 
     // Enqueue experiment tasks
     for (int runID = 1; runID <= numRuns; runID++) {
@@ -88,7 +99,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
       experimentReporter.reportExperimentTask(experimentTask);
 
       double taskScore = experimentTask.getScore();
-      if (taskScore > bestScore){
+      if (taskScore > bestScore) {
         this.bestScore = taskScore;
       }
     } catch (Exception e) {
