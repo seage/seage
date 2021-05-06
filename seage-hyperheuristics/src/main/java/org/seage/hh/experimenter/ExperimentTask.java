@@ -51,6 +51,7 @@ public class ExperimentTask {
 
   private static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
 
+  private Phenotype<?>[] solutions;
   private UUID experimentTaskID;
   private UUID experimentID;
   private int jobID;
@@ -88,10 +89,11 @@ public class ExperimentTask {
         taskInfo.getExperimentID(),
         taskInfo.getJobID(),
         taskInfo.getStageID(),
+        taskInfo.getAlgorithmParams(),
         taskInfo.getProblemID(),
         taskInfo.getInstanceID(),
         taskInfo.getAlgorithmID(),
-        taskInfo.getAlgorithmParams(),
+        taskInfo.getSolutions(),
         taskInfo.getTimeoutS()
     );
   }
@@ -99,17 +101,27 @@ public class ExperimentTask {
   /**
    * ExperimentTask for running algorithm.
    */
-  private ExperimentTask(UUID experimentTaskID, 
-      UUID experimentID, int jobID, int stageID, String problemID,
-      String instanceID, String algorithmID, AlgorithmParams algorithmParams, long timeoutS)
+  private ExperimentTask(
+      UUID experimentTaskID, 
+      UUID experimentID, 
+      int jobID, 
+      int stageID, 
+      AlgorithmParams algorithmParams,
+      String problemID,
+      String instanceID, 
+      String algorithmID,
+      Phenotype<?>[] solutions,
+      long timeoutS)
       throws Exception {
     this.experimentTaskID = experimentTaskID;
     this.experimentID = experimentID;
     this.jobID = jobID;
     this.stageID = stageID;
+    this.algorithmID = algorithmID;
     this.problemID = problemID;
     this.instanceID = instanceID;
-    this.algorithmID = algorithmID;
+    this.solutions = solutions;
+    
     this.configID = algorithmParams.hash();
     this.startDate = new Date();
     this.endDate = this.startDate;
@@ -198,8 +210,12 @@ public class ExperimentTask {
     // algorithm
     IAlgorithmAdapter<Phenotype<?>, ?> algorithm = factory.createAlgorithm(instance, evaluator);
 
-    Phenotype<?>[] solutions = provider.generateInitialSolutions(instance,
-        this.algorithmParams.getValueInt("numSolutions"), this.experimentID.hashCode());
+    if (solutions == null) {
+      int numSolutions = this.algorithmParams.getValueInt("numSolutions");
+      long randomSeed = this.experimentID.hashCode();
+      solutions = generateInitialSolutions(provider, instance, numSolutions, randomSeed);
+    }
+
     writeSolutions(evaluator,
         this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
 
@@ -233,6 +249,12 @@ public class ExperimentTask {
     while (alg.isRunning() && ((System.currentTimeMillis() - time) < this.timeoutS * 1000)) {
       Thread.sleep(100);
     }
+  }
+
+  private static Phenotype<?>[] generateInitialSolutions(
+      IProblemProvider<Phenotype<?>> provider, ProblemInstance instance,
+      int numSolutions, long randomSeed) throws Exception {
+    return provider.generateInitialSolutions(instance, numSolutions, randomSeed);
   }
 
   private void writeSolutions(IPhenotypeEvaluator<Phenotype<?>> evaluator, DataNode dataNode,

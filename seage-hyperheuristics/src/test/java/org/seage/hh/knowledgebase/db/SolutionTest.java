@@ -50,7 +50,8 @@ public class SolutionTest {
       "TEST", 
       "instanceID1", 
       "algorithmID1", 
-      new AlgorithmParams(), 
+      new AlgorithmParams(),
+      null,
       1L
     ));
     
