@@ -2,6 +2,7 @@ package org.seage.hh.experimenter;
 
 import java.util.UUID;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.Phenotype;
 
 public class ExperimentTaskRequest {
   private UUID experimentTaskID;
@@ -14,6 +15,7 @@ public class ExperimentTaskRequest {
   private String configID;
   private AlgorithmParams algorithmParams;
   private long timeoutS;
+  private Phenotype<?>[] solutions;
 
   /**
    * Class constructor.
@@ -29,7 +31,7 @@ public class ExperimentTaskRequest {
    */
   public ExperimentTaskRequest(UUID experimentTaskID, UUID experimentID, int jobID, int stageID,
       String problemID, String instanceID, String algorithmID, AlgorithmParams algorithmParams,
-      long timeoutS) throws Exception {
+      Phenotype<?>[] solutions, long timeoutS) throws Exception {
     this.experimentTaskID = experimentTaskID;
     this.experimentID = experimentID;
     this.jobID = jobID;
@@ -39,6 +41,7 @@ public class ExperimentTaskRequest {
     this.algorithmID = algorithmID;
     this.configID = algorithmParams.hash();
     this.algorithmParams = algorithmParams;
+    this.solutions = solutions;
     this.timeoutS = timeoutS;
 
   }
@@ -81,6 +84,10 @@ public class ExperimentTaskRequest {
 
   public long getTimeoutS() {
     return timeoutS;
+  }
+
+  public Phenotype<?>[] getSolutions() {
+    return solutions;
   }
 
 }

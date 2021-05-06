@@ -74,7 +74,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
     for (int runID = 1; runID <= numRuns; runID++) {
       taskQueue.add(new ExperimentTaskRequest(
           UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
-          algorithmID, config.getAlgorithmParams(), timeoutS));
+          algorithmID, config.getAlgorithmParams(), null, timeoutS));
     }
 
     // RUN EXPERIMENT TASKS

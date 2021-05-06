@@ -51,10 +51,11 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
             UUID.randomUUID(),
             this.experimentID,
             1, 1,
-            this.problemID, 
+            this.problemID,
             this.instanceID,
-            this.algorithmID, 
-            algorithmParams, 
+            this.algorithmID,
+            algorithmParams,
+            null,
             this.timeoutS
         );
 
