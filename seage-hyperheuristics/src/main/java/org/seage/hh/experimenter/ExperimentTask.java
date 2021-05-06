@@ -266,6 +266,7 @@ public class ExperimentTask {
         solutionNode.putValue("score", p.getScore());
         solutionNode.putValue("solution", p.toText());
         solutionNode.putValue("hash", p.computeHash());
+        solutionNode.putValue("phenotype", p);
         dataNode.putDataNode(solutionNode);
       } catch (Exception ex) {
         _logger.error("Cannot write solution", ex);

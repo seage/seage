@@ -112,9 +112,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
               solutions, timeoutS));
         }
       }
-    }
-   
-    
+    } 
 
     // RUN EXPERIMENT TASKS
     experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
@@ -125,7 +123,23 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
-      this.pool.add(experimentTask.getExperimentTaskReport().getDataNode("Solutions").getv);
+      // Phenotype<?>[] solution = {
+      //  ;
+      // }
+      // this.pool.add(new Phenotype<?>()
+      //   .fromText();
+      
+      Object solution =  experimentTask
+          .getExperimentTaskReport().getDataNode("Solutions").getValue("phenotype");
+      
+      Phenotype<?> phenotype = (Phenotype<?>)solution;
+
+      Phenotype<?>[] solutionEntry = {
+        phenotype
+      };
+
+      this.pool.add(solutionEntry);
+
       double taskScore = experimentTask.getScore();
       if (taskScore > bestScore) {
         this.bestScore = taskScore;
