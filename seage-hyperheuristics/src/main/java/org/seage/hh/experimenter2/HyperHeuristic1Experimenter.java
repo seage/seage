@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import java.util.Map;
-
+import java.util.Random;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
@@ -192,6 +192,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
 
     // repeats
     List<Phenotype<?>[]> algSolutions = new ArrayList<>();
+    algSolutions.add(solutions);
     for (int i = 0; i < 16; i++) {
       List<IAlgorithmAdapter<Phenotype<?>, ?>> algorithms = new ArrayList<>();
 
@@ -203,7 +204,9 @@ public class HyperHeuristic1Experimenter implements Experimenter {
             (IAlgorithmAdapter<Phenotype<?>, ?>)algorithmObject;
         AlgorithmParams algorithmParams = (AlgorithmParams)algorithmParamsObject;
 
-        algorithm.solutionsFromPhenotype(solutions);
+        algorithm.solutionsFromPhenotype(
+            algSolutions.get(new Random().nextInt(algSolutions.size())));
+
         algorithm.startSearching(algorithmParams, true);
         _logger.debug("Algorithm started");
 
@@ -213,10 +216,10 @@ public class HyperHeuristic1Experimenter implements Experimenter {
       for (IAlgorithmAdapter<Phenotype<?>, ?> algorithm: algorithms) {
         waitForTimeout(algorithm);
         algorithm.stopSearching();
-        solutions = algorithm.solutionsToPhenotype();
-        _logger.debug("Algorithm stopped");
 
-        algSolutions.add(solutions);
+        algSolutions.add(algorithm.solutionsToPhenotype());
+        
+        _logger.debug("Algorithm stopped");
       }
     }
     
