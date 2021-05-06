@@ -44,11 +44,12 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   private DefaultConfigurator defaultConfigurator;
   private ProblemInfo problemInfo;
   private ProblemInstanceInfo instanceInfo;
+  private int numberOfSolutions;
 
   //private AlgorithmParams algorithmParams;
   private long timeoutS;
 
-  //private DataNode experimentTaskReport;
+  private DataNode experimentTaskReport;
   private boolean taskFinished;
  
 
@@ -105,14 +106,13 @@ public class HyperHeuristic1Experimenter implements Experimenter {
       }
     };
 
-    for (String algID: algorithmIDs.keySet()) {
-      DataNode experimentTaskReport;
-      experimentTaskReport = new DataNode("ExperimentTaskReport");
-      experimentTaskReport.putValue("version", "0.7");
-      experimentTaskReport.putValue("experimentType", experimentType);
-      experimentTaskReport.putValue("experimentID", experimentID);
-      experimentTaskReport.putValue("timeoutS", timeoutS);
+    this.experimentTaskReport = new DataNode("ExperimentTaskReport");
+    experimentTaskReport.putValue("version", "0.7");
+    experimentTaskReport.putValue("experimentType", experimentType);
+    experimentTaskReport.putValue("experimentID", experimentID);
+    experimentTaskReport.putValue("timeoutS", timeoutS);
 
+    for (String algID: algorithmIDs.keySet()) {
       // parameters
       ProblemConfig config = defaultConfigurator.prepareConfigs(problemInfo,
           instanceInfo.getInstanceID(), algID, 2)[1];
@@ -137,16 +137,15 @@ public class HyperHeuristic1Experimenter implements Experimenter {
       DataNode configNode = new DataNode("Config");
       configNode.putDataNode(problemNode);
       configNode.putDataNode(algorithmNode);
-
-      experimentTaskReport.putDataNode(configNode);
-      this.algorithmIDs.get(algID).put("experimentTaskReport", experimentTaskReport);
-
-
-
+      DataNode experimentAlgorithmReport = new DataNode("experimentAlgorithmReport");
+      experimentAlgorithmReport.putDataNode(configNode);
+      
       DataNode solutionsNode = new DataNode("Solutions");
       solutionsNode.putDataNode(new DataNode("Input"));
       solutionsNode.putDataNode(new DataNode("Output"));
-      this.experimentTaskReport.putDataNode(solutionsNode);
+      experimentAlgorithmReport.putDataNode(solutionsNode);
+
+      this.algorithmIDs.get(algID).put("experimentAlgorithmReport", experimentAlgorithmReport);
     }
     //configNode.putValue("configID", this.configID);
     // configNode.putValue("runID", this.runID);
@@ -160,21 +159,31 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     // provider and factory
     IProblemProvider<Phenotype<?>> provider =
         ProblemProvider.getProblemProviders().get(this.problemID);
-    IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(this.algorithmID);
-
-    // problem instance
     ProblemInstance instance = provider
         .initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo(this.instanceID));
 
+
     IPhenotypeEvaluator<Phenotype<?>> evaluator = provider.initPhenotypeEvaluator(instance);
 
-    // algorithm
-    IAlgorithmAdapter<Phenotype<?>, ?> algorithm = factory.createAlgorithm(instance, evaluator);
+    for (String algID: this.algorithmIDs.keySet()) {
+      IAlgorithmFactory<Phenotype<?>, ?> factory = provider.getAlgorithmFactory(algID);
+      // algorithm
+      IAlgorithmAdapter<Phenotype<?>, ?> algorithm = factory.createAlgorithm(instance, evaluator);
 
-    Phenotype<?>[] solutions = provider.generateInitialSolutions(instance,
-        this.algorithmParams.getValueInt("numSolutions"), this.experimentID.hashCode());
+      this.algorithmIDs.get(algID).put("algorithm", algorithm);
+    }
+  
+    DataNode experimentTaskReport;
+    DataNode solutionsNode = new DataNode("Solutions");
+    solutionsNode.putDataNode(new DataNode("Input"));
+    solutionsNode.putDataNode(new DataNode("Output"));
+    experimentTaskReport.putDataNode(solutionsNode);
+
+    Phenotype<?>[] solutions = provider.generateInitialSolutions(
+      instance, this.numberOfSolutions, this.experimentID.hashCode());
+
     writeSolutions(evaluator,
-        this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
+        experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
 
 
 
@@ -188,16 +197,21 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     _logger.debug("Algorithm stopped");
 
     solutions = algorithm.solutionsToPhenotype();
+
+
+
+
+
     writeSolutions(evaluator,
-        this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
+        experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
     
     calculateExperimentScore();
     
     this.endDate = new Date();
     long durationS = (this.endDate.getTime() - this.startDate.getTime()) / 1000;
 
-    this.experimentTaskReport.putDataNode(algorithm.getReport());
-    this.experimentTaskReport.putValue("durationS", durationS);
+    //experimentTaskReport.putDataNode(algorithm.getReport());
+    experimentTaskReport.putValue("durationS", durationS);
     
     this.taskFinished = true;
 
