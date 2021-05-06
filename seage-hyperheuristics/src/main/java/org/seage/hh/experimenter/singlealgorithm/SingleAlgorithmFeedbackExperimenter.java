@@ -15,7 +15,6 @@ public class SingleAlgorithmFeedbackExperimenter extends SingleAlgorithmExperime
   public SingleAlgorithmFeedbackExperimenter(String problemID, String[] instanceIDs,
       String[] algorithmIDs, int numConfigs, int timeoutS) throws Exception {
     super("SingleAlgorithmFeedback", problemID, instanceIDs, algorithmIDs, numConfigs, timeoutS);
-    System.out.println("Correct place");
     this.configurator = new ExtendedDefaultConfigurator();
 }
   // public SingleAlgorithmFeedbackExperimenter(String problemID, String[]
