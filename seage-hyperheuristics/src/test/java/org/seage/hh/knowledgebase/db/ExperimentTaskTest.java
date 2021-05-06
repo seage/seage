@@ -47,7 +47,8 @@ public class ExperimentTaskTest {
       "TEST", 
       "instanceID1", 
       "algorithmID1", 
-      new AlgorithmParams(), 
+      new AlgorithmParams(),
+      null,
       1L
     ));
     
@@ -58,7 +59,8 @@ public class ExperimentTaskTest {
       "TEST", 
       "instanceID2", 
       "algorithmID2", 
-      new AlgorithmParams(), 
+      new AlgorithmParams(),
+      null,
       2L
     ));
   }

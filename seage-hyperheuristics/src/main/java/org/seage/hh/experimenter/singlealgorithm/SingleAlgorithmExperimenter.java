@@ -73,7 +73,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
         for (int runID = 1; runID <= NUM_RUNS; runID++) {
           taskQueue.add(new ExperimentTaskRequest(
               UUID.randomUUID(), this.experimentID, runID, 1, this.problemID, instanceID,
-              algorithmID, config.getAlgorithmParams(), this.timeoutS));
+              algorithmID, config.getAlgorithmParams(), null, this.timeoutS));
         }
       }
 
