@@ -1,7 +1,10 @@
 package org.seage.hh.experimenter2;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.UUID;
+
+import java.util.Map;
 
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
@@ -9,15 +12,17 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HyperHeuristic1Experimenter implements Experimenter {
-  protected static Logger logger =
+  protected static Logger _logger =
       LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
 
   private UUID experimentTaskID;
@@ -28,13 +33,13 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   private String problemID;
   private String instanceID;
   private String algorithmID;
-  private String configID;
+  //private String configID;
   private Date startDate;
   private Date endDate;
   private Double score;
   private Double scoreDelta;
 
-  private AlgorithmParams algorithmParams;
+  //private AlgorithmParams algorithmParams;
   private long timeoutS;
 
   private DataNode experimentTaskReport;
@@ -60,15 +65,13 @@ public class HyperHeuristic1Experimenter implements Experimenter {
         taskInfo.getStageID(),
         taskInfo.getProblemID(),
         taskInfo.getInstanceID(),
-        taskInfo.getAlgorithmID(),
-        taskInfo.getAlgorithmParams(),
         taskInfo.getTimeoutS()
     );
   }
 
   private HyperHeuristic1Experimenter(UUID experimentTaskID, 
       UUID experimentID, int jobID, int stageID, String problemID,
-      String instanceID, String algorithmID, AlgorithmParams algorithmParams, long timeoutS)
+      String instanceID, long timeoutS)
       throws Exception {
     this.experimentTaskID = experimentTaskID;
     this.experimentID = experimentID;
@@ -76,18 +79,70 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     this.stageID = stageID;
     this.problemID = problemID;
     this.instanceID = instanceID;
-    this.algorithmID = algorithmID;
-    this.configID = algorithmParams.hash();
+    //this.configID = algorithmParams.hash();
     this.startDate = new Date();
     this.endDate = this.startDate;
     this.score = Double.MAX_VALUE;
     this.scoreDelta = 0.0;
+
+
+    this.timeoutS = timeoutS;
+
+    this.taskFinished = false;
+
+    this.experimentTaskReport = new DataNode("ExperimentTaskReport");
+    this.experimentTaskReport.putValue("version", "0.7");
+    this.experimentTaskReport.putValue("experimentType", experimentType);
+    this.experimentTaskReport.putValue("experimentID", experimentID);
+    this.experimentTaskReport.putValue("timeoutS", timeoutS);
+
+    
+    Map<String, Map<String, Object>> algorithmIDs = new HashMap<>() {{
+        put("AntColony", new HashMap<>());
+        put("GeneticAlgorithm", new HashMap<>());
+        put("TabuSearch", new HashMap<>());
+        put("SimulatedAnnealing", new HashMap<>());
+      }
+    };
+
+    for (String algID: algorithmIDs.keySet()) {
+      // todo
+    }
+
+    this.algorithmParams = algorithmParams;
+    //configNode.putValue("configID", this.configID);
+    // configNode.putValue("runID", this.runID);
+
+    DataNode problemNode = new DataNode("Problem");
+    problemNode.putValue("problemID", this.problemID);
+
+    DataNode instanceNode = new DataNode("Instance");
+    instanceNode.putValue("name", this.instanceID);
+
+    DataNode algorithmNode = new DataNode("Algorithm");
+    algorithmNode.putValue("algorithmID", this.algorithmID);
+    algorithmNode.putDataNode(this.algorithmParams);
+
+    problemNode.putDataNode(instanceNode);
+    
+    DataNode configNode = new DataNode("Config");
+    configNode.putDataNode(problemNode);
+    configNode.putDataNode(algorithmNode);
+
+    this.experimentTaskReport.putDataNode(configNode);
+
+
+
+    DataNode solutionsNode = new DataNode("Solutions");
+    solutionsNode.putDataNode(new DataNode("Input"));
+    solutionsNode.putDataNode(new DataNode("Output"));
+    this.experimentTaskReport.putDataNode(solutionsNode);
   }
 
-
+ 
   @Override
   public Double runExperiment() throws Exception {
-    logger.info("Running HyperHeuristic1Experimenter");
+    _logger.info("Running HyperHeuristic1Experimenter");
     // Prepare the initial pool
     // provider and factory
     IProblemProvider<Phenotype<?>> provider =
@@ -110,11 +165,89 @@ public class HyperHeuristic1Experimenter implements Experimenter {
 
 
 
-
+    
     // Another part
+    algorithm.solutionsFromPhenotype(solutions);
+    algorithm.startSearching(this.algorithmParams, true);
+    _logger.debug("Algorithm started");
+    waitForTimeout(algorithm);
+    algorithm.stopSearching();
+    _logger.debug("Algorithm stopped");
 
+    solutions = algorithm.solutionsToPhenotype();
+    writeSolutions(evaluator,
+        this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
+    
+    calculateExperimentScore();
+    
+    this.endDate = new Date();
+    long durationS = (this.endDate.getTime() - this.startDate.getTime()) / 1000;
+
+    this.experimentTaskReport.putDataNode(algorithm.getReport());
+    this.experimentTaskReport.putValue("durationS", durationS);
+    
+    this.taskFinished = true;
+
+    _logger.debug("Algorithm run duration: {}", durationS);    
+    //_logger.debug("ExperimentTask finished ({})", this.configID);
 
     return null;
+  }
+
+  private void waitForTimeout(IAlgorithmAdapter<?, ?> alg) throws Exception {
+    long time = System.currentTimeMillis();
+    while (alg.isRunning() && ((System.currentTimeMillis() - time) < this.timeoutS * 1000)) {
+      Thread.sleep(100);
+    }
+  }
+
+  private void writeSolutions(IPhenotypeEvaluator<Phenotype<?>> evaluator, DataNode dataNode,
+      Phenotype<?>[] solutions) {
+    for (Phenotype<?> p : solutions) {
+      try {
+        DataNode solutionNode = new DataNode("Solution");
+        solutionNode.putValue("objVal", p.getObjValue());
+        solutionNode.putValue("score", p.getScore());
+        solutionNode.putValue("solution", p.toText());
+        solutionNode.putValue("hash", p.computeHash());
+        dataNode.putDataNode(solutionNode);
+      } catch (Exception ex) {
+        _logger.error("Cannot write solution", ex);
+      }
+    }
+  }
+
+  private void calculateExperimentScore() throws Exception { 
+    ProblemInfo problemInfo = ProblemProvider
+        .getProblemProviders()
+        .get(problemID)
+        .getProblemInfo();
+    ProblemScoreCalculator scoreCalculator = new ProblemScoreCalculator(problemInfo); 
+
+    DataNode inputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Input");
+    DataNode outputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Output");
+
+    double bestObjValue = getBestObjectiveValue(outputs);
+    double taskBestScore = 
+        scoreCalculator.calculateInstanceScore(instanceID, bestObjValue);
+
+    double initObjValue = getBestObjectiveValue(inputs);
+    double taskInitScore = 
+        scoreCalculator.calculateInstanceScore(instanceID, initObjValue);
+
+    this.score = taskBestScore;
+    this.scoreDelta = scoreCalculator.calculateScoreDelta(taskInitScore, taskBestScore);
+  }
+
+  private double getBestObjectiveValue(DataNode solutions) throws Exception {
+    double bestObjVal = Double.MAX_VALUE;
+    for (DataNode s : solutions.getDataNodes("Solution")) {
+      double objVal = s.getValueDouble("objVal");
+      if (objVal < bestObjVal) {
+        bestObjVal = objVal;
+      }
+    }
+    return bestObjVal;
   }
 
 }
