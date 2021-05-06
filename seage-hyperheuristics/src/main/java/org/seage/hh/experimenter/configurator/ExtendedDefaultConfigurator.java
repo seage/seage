@@ -34,13 +34,13 @@ import org.seage.data.DataNode;
  * DefaultConfigurator class.
  * @author Richard Malek
  */
-public class BasicFeedbackConfigurator extends Configurator {
+public class ExtendedDefaultConfigurator extends Configurator {
   private double spread;
 
   /**
    * DefaultConfigurator constructor.
   */
-  public BasicFeedbackConfigurator() {
+  public ExtendedDefaultConfigurator() {
   }
 
   @Override

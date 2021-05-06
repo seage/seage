@@ -11,8 +11,8 @@ import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
+import org.seage.hh.experimenter.configurator.ExtendedDefaultConfigurator;
 import org.seage.hh.experimenter.configurator.GridConfigurator;
-import org.seage.hh.experimenter.configurator.BasicFeedbackConfigurator;
 import org.seage.hh.experimenter.configurator.RandomConfigurator;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
@@ -24,7 +24,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
   private static Logger logger =
       LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
   private DefaultConfigurator defaultConfigurator;
-  private BasicFeedbackConfigurator feedbackConfigurator;
+  private ExtendedDefaultConfigurator feedbackConfigurator;
   private GridConfigurator gridConfigurator;
   private RandomConfigurator randomConfigurator;
   private ProblemInfo problemInfo;
@@ -59,7 +59,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
     // Initialize all
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    this.feedbackConfigurator = new BasicFeedbackConfigurator();//
+    this.feedbackConfigurator = new ExtendedDefaultConfigurator();//
     this.defaultConfigurator = new DefaultConfigurator(0.26);
     this.randomConfigurator = new RandomConfigurator();
     this.gridConfigurator = new GridConfigurator(9);
