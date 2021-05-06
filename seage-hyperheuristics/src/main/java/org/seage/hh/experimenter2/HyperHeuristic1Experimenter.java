@@ -21,6 +21,7 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
+import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 import org.slf4j.Logger;
@@ -60,32 +61,34 @@ public class HyperHeuristic1Experimenter implements Experimenter {
    */
   HyperHeuristic1Experimenter() {}
 
-  /**
-   * .
-   * @param taskInfo .
-   * @throws Exception .
-   */
-  public HyperHeuristic1Experimenter(
-      ExperimentTaskRequest taskInfo) throws Exception {
-    this(
-        taskInfo.getExperimentTaskID(),
-        taskInfo.getExperimentID(),
-        taskInfo.getJobID(),
-        taskInfo.getStageID(),
-        taskInfo.getProblemID(),
-        taskInfo.getInstanceID(),
-        taskInfo.getTimeoutS()
-    );
-  }
+  // /**
+  //  * .
+  //  * @param taskInfo .
+  //  * @throws Exception .
+  //  */
+  // public HyperHeuristic1Experimenter(
+  //     ExperimentTaskRequest taskInfo) throws Exception {
+  //   this(
+  //       taskInfo.getExperimentTaskID(),
+  //       taskInfo.getExperimentID(),
+  //       taskInfo.getJobID(),
+  //       taskInfo.getStageID(),
+  //       taskInfo.getProblemID(),
+  //       taskInfo.getInstanceID(),
+  //       taskInfo.getTimeoutS()
+  //   );
+  // }
 
-  private HyperHeuristic1Experimenter(UUID experimentTaskID, 
-      UUID experimentID, int jobID, int stageID, String problemID,
-      String instanceID, long timeoutS)
+
+  protected HyperHeuristic1Experimenter(
+      UUID experimentID, String problemID, String instanceID, 
+      String algorithmID, int numRuns, int timeoutS,
+      ExperimentReporter experimentReporter) 
       throws Exception {
-    this.experimentTaskID = experimentTaskID;
+    //this.experimentTaskID = experimentTaskID;
     this.experimentID = experimentID;
-    this.jobID = jobID;
-    this.stageID = stageID;
+    //this.jobID = jobID;
+    //this.stageID = stageID;
     this.problemID = problemID;
     this.instanceID = instanceID;
     //this.configID = algorithmParams.hash();
@@ -218,7 +221,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
         algorithm.stopSearching();
 
         algSolutions.add(algorithm.solutionsToPhenotype());
-        
+
         _logger.debug("Algorithm stopped");
       }
     }

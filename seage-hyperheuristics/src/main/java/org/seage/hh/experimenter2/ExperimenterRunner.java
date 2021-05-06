@@ -148,7 +148,10 @@ public class ExperimenterRunner {
     }
 
     if (algorithmID.equals("HyperHeuristic1")) {
-      return new HyperHeuristic1Experimenter();
+      return new HyperHeuristic1Experimenter(
+        experimentID, problemID, instanceID, 
+        algorithmID, numRuns, timeoutS, this.experimentReporter
+      );
     }
 
     throw new Exception(String.format("Unknown algorithm id '%s'", algorithmID));
