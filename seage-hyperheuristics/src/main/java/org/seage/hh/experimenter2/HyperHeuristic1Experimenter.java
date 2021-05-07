@@ -120,7 +120,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
           int numSolutions = config
               .getDataNode("Algorithm").getDataNode("Parameters").getValueInt("numSolutions");
           
-          System.out.println(algorithmID + " " + instanceID + " " + numSolutions);
+          //System.out.println(algorithmID + " " + instanceID + " " + numSolutions);
           numSolutions = Math.min(numSolutions, this.solutionPoolSize);
 
           Class problemPhenotypeClass = this.solutionPool.get(0).getClass();
