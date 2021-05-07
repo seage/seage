@@ -98,15 +98,17 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     
     for (int jobID = 1; jobID <= numRuns; jobID++) {
       this.solutionPool = new ArrayList<>();
-      this.solutionPool.addAll(Arrays.asList(
-          generateInitialSolutions(provider, instance, this.solutionPoolSize, randomSeed)
-      ));
-
+      Phenotype<?>[] pool =  
+        generateInitialSolutions(provider, instance, this.solutionPoolSize, randomSeed);
+      this.solutionPool.addAll(Arrays.asList(pool));
+      //System.out.println(pool);
+      //System.out.println(this.solutionPool);
         
       for (int stageID = 1; stageID <= numSteps; stageID++) {
         // prepare solution pool 
         Collections.sort(this.solutionPool, compareByScore.reversed());
         this.solutionPool = this.solutionPool.subList(0, this.solutionPoolSize);
+        
 
         for (String algorithmID: algorithmIDs) {
           // Prepare experiment task configs
@@ -114,20 +116,24 @@ public class HyperHeuristic1Experimenter implements Experimenter {
               instanceInfo
               .getInstanceID(), algorithmID, 2)[1]; // the second with a bit of randomness
     
-          
-          System.out.print("\n\n\n\n\n\n\n\n\n\n\n" + config.getDataNode("Algorithm").getDataNode("Parameters") + "\n\n\n\n\n\n\n\n\n\n\n");
-          int numSolutions = config.getDataNode("Algorithm").getDataNode("Parameters").getValueInt("numSolutions");
+
+          int numSolutions = config
+              .getDataNode("Algorithm").getDataNode("Parameters").getValueInt("numSolutions");
           numSolutions = Math.min(numSolutions, this.solutionPoolSize);
 
-          List<Phenotype<?>> algSolutions = new ArrayList<>();
+          Class clazz = this.solutionPool.get(0).getClass();
+
+          Phenotype<?>[] solutions = (Phenotype<?>[])
+            java.lang.reflect.Array.newInstance(clazz, numSolutions);
+          //List<Phenotype<?>> algSolutions = new ArrayList<>();
           for (int i = 0; i < numSolutions; i++) {
-            Phenotype<?> solution = this.solutionPool
+            solutions[i] = this.solutionPool
                 .get(new Random().nextInt(this.solutionPool.size()));
-            algSolutions.add(solution);
           }
-
-          Phenotype<?>[] solutions = algSolutions.toArray(new Phenotype<?>[0]);
-
+          
+          
+          //System.out.println(algSolutions);
+          
           // Enqueue experiment tasks
           taskQueue.add(new ExperimentTaskRequest(
               UUID.randomUUID(), experimentID, jobID, stageID, problemID, instanceID,
@@ -136,7 +142,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
         }
   
         // RUN EXPERIMENT TASKS
-        experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
+        //experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
       }
     } 
     
