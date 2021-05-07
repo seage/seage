@@ -80,9 +80,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   public Double runExperiment() throws Exception {
     ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
 
-    // The taskQueue size must be limited since the results are stored in the task's reports
-    // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
-    List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
+    
 
     // provider and factory
     IProblemProvider<Phenotype<?>> provider =
@@ -109,7 +107,9 @@ public class HyperHeuristic1Experimenter implements Experimenter {
         Collections.sort(this.solutionPool, compareByScore.reversed());
         this.solutionPool = this.solutionPool.subList(0, this.solutionPoolSize);
         
-
+        // The taskQueue size must be limited since the results are stored in the task's reports
+        // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
+        List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
         for (String algorithmID: algorithmIDs) {
           // Prepare experiment task configs
           ProblemConfig config = configurator.prepareConfigs(problemInfo,
@@ -142,7 +142,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
         }
   
         // RUN EXPERIMENT TASKS
-        //experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
+        experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
       }
     } 
     
