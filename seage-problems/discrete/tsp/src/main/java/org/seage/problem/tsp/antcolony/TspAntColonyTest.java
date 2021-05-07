@@ -25,6 +25,7 @@
  */
 package org.seage.problem.tsp.antcolony;
 
+import java.io.FileInputStream;
 import java.util.List;
 
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -35,6 +36,7 @@ import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.tsp.City;
+import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspPhenotypeEvaluator;
 
@@ -48,7 +50,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   public static void main(String[] args) {
     try {
       // String path = "data/tsp/eil51.tsp";//args[0]; // 426
-      String path = "data/tsp/berlin52.tsp";// args[0]; // 7542
+      String path = "seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/berlin52.tsp";// args[0]; // 7542
       // String path = "data/tsp/ch130.tsp";//args[0]; // 6110
       // String path = "data/tsp/lin318.tsp";//args[0]; // 42029
       // String path = "data/tsp/pcb442.tsp";//args[0]; // 50778
@@ -72,15 +74,15 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   }
 
   public void run(String path) throws Exception {
-    // City[] cities = CityProvider.readCities(new FileInputStream(path));
-    City[] cities = new City[4];
-    cities[0] = new City(1, 0.0, 0.0);
-    cities[1] = new City(2, 0.0, 1.0);
-    cities[2] = new City(3, 1.0, 0.0);
-    cities[3] = new City(4, 1.0, 1.0);
+    City[] cities = CityProvider.readCities(new FileInputStream(path));
+    // City[] cities = new City[4];
+    // cities[0] = new City(1, 0.0, 0.0);
+    // cities[1] = new City(2, 0.0, 1.0);
+    // cities[2] = new City(3, 1.0, 0.0);
+    // cities[3] = new City(4, 1.0, 1.0);
 
-    _edges = cities.length * (cities.length - 1) / 2;
-    int iterations = 10000;
+    // _edges = cities.length * (cities.length - 1) / 2;
+    int iterations = 100;
     // int numAnts = 500;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone =
     // 100;
