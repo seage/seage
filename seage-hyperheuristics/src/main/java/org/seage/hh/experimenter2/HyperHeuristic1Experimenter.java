@@ -46,9 +46,9 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   private int timeoutS;
   private double bestScore;
   private List<Phenotype<?>> solutionPool;
-  private int solutionPoolSize = 400;
+  private int solutionPoolSize = 100;
   private String[] algorithmIDs = {
-    "AntColony", "GeneticAlgorithm", "TabuSearch", "SimulatedAnnealing"};
+    "GeneticAlgorithm", "TabuSearch", "SimulatedAnnealing", "AntColony"};
 
   /**
    * HyperHeuristic1Experimenter constructor.
