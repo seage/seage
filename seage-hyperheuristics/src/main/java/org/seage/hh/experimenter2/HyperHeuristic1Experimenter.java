@@ -15,6 +15,7 @@ import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
@@ -147,12 +148,17 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
       
-      Object solution =  experimentTask
-          .getExperimentTaskReport().getDataNode("Solutions").getValue("phenotype");
-      
-      Phenotype<?> phenotype = (Phenotype<?>)solution;
+      // Object solution =  experimentTask
+      //     .getExperimentTaskReport().getDataNode("Solutions").getValue("phenotype");
 
-      this.solutionPool.add(phenotype);
+      DataNode solutionNodes = experimentTask
+          .getExperimentTaskReport().getDataNode("Solutions").getDataNode("Output");
+
+      for (DataNode solutionNode: solutionNodes.getDataNodes("Solution")) {
+        Phenotype<?> phenotype = (Phenotype<?>)solutionNode.getValue("phenotype");
+        this.solutionPool.add(phenotype);
+      }
+
 
       double taskScore = experimentTask.getScore();
       if (taskScore > bestScore) {
