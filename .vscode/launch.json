@@ -60,7 +60,7 @@
     },
     {
       "type": "java",
-      "name": "Debug Launcher (approach experimenter, postgres)",
+      "name": "Debug Launcher (HH1 experimenter, postgres)",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
@@ -68,11 +68,11 @@
       "args": [
         "experiment-approach",
         "-a",
-        "GeneticAlgorithm",
+        "HyperHeuristic1",
         "-i",
-        "ALL:hyflex",
+        "TSP:hyflex",
         "-t",
-        "1",
+        "10",
         "-n",
         "1"
       ],
