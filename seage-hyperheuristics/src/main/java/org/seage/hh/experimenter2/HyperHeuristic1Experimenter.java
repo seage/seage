@@ -115,7 +115,8 @@ public class HyperHeuristic1Experimenter implements Experimenter {
               .getInstanceID(), algorithmID, 2)[1]; // the second with a bit of randomness
     
           
-          int numSolutions = config.getValueInt("numSolutions");
+          System.out.print("\n\n\n\n\n\n\n\n\n\n\n" + config.getDataNode("Algorithm").getDataNode("Parameters") + "\n\n\n\n\n\n\n\n\n\n\n");
+          int numSolutions = config.getDataNode("Algorithm").getDataNode("Parameters").getValueInt("numSolutions");
           numSolutions = Math.min(numSolutions, this.solutionPoolSize);
 
           List<Phenotype<?>> algSolutions = new ArrayList<>();
@@ -125,7 +126,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
             algSolutions.add(solution);
           }
 
-          Phenotype<?>[] solutions = (Phenotype<?>[])algSolutions.toArray();
+          Phenotype<?>[] solutions = algSolutions.toArray(new Phenotype<?>[0]);
 
           // Enqueue experiment tasks
           taskQueue.add(new ExperimentTaskRequest(
