@@ -46,9 +46,9 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   private int timeoutS;
   private double bestScore;
   private List<Phenotype<?>> solutionPool;
-  private int solutionPoolSize = 100;
+  private int solutionPoolSize = 400;
   private String[] algorithmIDs = {
-    "AntColony", "GeneticAlgorithm", "TabuSearch", "SimulatedAnnealing"};
+    "GeneticAlgorithm", "TabuSearch", "SimulatedAnnealing"};
 
   /**
    * HyperHeuristic1Experimenter constructor.
@@ -119,6 +119,8 @@ public class HyperHeuristic1Experimenter implements Experimenter {
 
           int numSolutions = config
               .getDataNode("Algorithm").getDataNode("Parameters").getValueInt("numSolutions");
+          
+          System.out.println(algorithmID + " " + instanceID + " " + numSolutions);
           numSolutions = Math.min(numSolutions, this.solutionPoolSize);
 
           Class problemPhenotypeClass = this.solutionPool.get(0).getClass();
