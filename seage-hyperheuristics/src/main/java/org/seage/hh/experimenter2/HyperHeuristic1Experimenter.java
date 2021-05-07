@@ -2,7 +2,7 @@ package org.seage.hh.experimenter2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+//import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -19,7 +19,8 @@ import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
-import org.seage.hh.experimenter.configurator.DefaultConfigurator;
+//import org.seage.hh.experimenter.configurator.DefaultConfigurator;
+import org.seage.hh.experimenter.configurator.ExtendedDefaultConfigurator;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ import org.slf4j.LoggerFactory;
 public class HyperHeuristic1Experimenter implements Experimenter {
   private static Logger logger =
       LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
-  private DefaultConfigurator configurator;
+  private ExtendedDefaultConfigurator configurator;
   private ProblemInfo problemInfo;
   private IExperimentTasksRunner experimentTasksRunner;
   private ExperimentReporter experimentReporter;
@@ -41,28 +42,27 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   private String problemID;
   private String instanceID;
   //private String algorithmID;
-  private int numRuns;
-  private int numSteps = 10;
+  private int numSteps;
   private int timeoutS;
   private double bestScore;
   private List<Phenotype<?>> solutionPool;
   private int solutionPoolSize = 400;
   private String[] algorithmIDs = {
-    "GeneticAlgorithm", "TabuSearch", "SimulatedAnnealing"};
+    "AntColony", "GeneticAlgorithm", "TabuSearch", "SimulatedAnnealing"};
 
   /**
    * HyperHeuristic1Experimenter constructor.
    */
   protected HyperHeuristic1Experimenter(
       UUID experimentID, String problemID, String instanceID, 
-      String algorithmID, int numRuns, int timeoutS,
+      String algorithmID, int numSteps, int timeoutS,
       ExperimentReporter experimentReporter) 
       throws Exception {
     this.experimentID = experimentID;
     this.problemID = problemID;
     this.instanceID = instanceID;
     //this.algorithmID = algorithmID;
-    this.numRuns = numRuns;
+    this.numSteps = numSteps;
     this.timeoutS = timeoutS;
     this.experimentReporter = experimentReporter;
     this.bestScore = Double.MIN_VALUE;
@@ -71,7 +71,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     // Initialize all
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    this.configurator = new DefaultConfigurator(0.15);
+    this.configurator = new ExtendedDefaultConfigurator();
   }
 
   /**
@@ -79,8 +79,6 @@ public class HyperHeuristic1Experimenter implements Experimenter {
    */
   public Double runExperiment() throws Exception {
     ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
-
-    
 
     // provider and factory
     IProblemProvider<Phenotype<?>> provider =
@@ -94,60 +92,49 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     Comparator<Phenotype<?>> compareByScore = 
         (Phenotype<?> p1, Phenotype<?> p2) -> p1.getScore().compareTo(p2.getScore());
     
-    for (int jobID = 1; jobID <= numRuns; jobID++) {
-      this.solutionPool = new ArrayList<>();
-      Phenotype<?>[] pool =  
-        generateInitialSolutions(provider, instance, this.solutionPoolSize, randomSeed);
-      this.solutionPool.addAll(Arrays.asList(pool));
-      //System.out.println(pool);
-      //System.out.println(this.solutionPool);
-        
-      for (int stageID = 1; stageID <= numSteps; stageID++) {
-        // prepare solution pool 
-        Collections.sort(this.solutionPool, compareByScore.reversed());
-        this.solutionPool = this.solutionPool.subList(0, this.solutionPoolSize);
-        
-        // The taskQueue size must be limited since the results are stored in the task's reports
-        // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
-        List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
-        for (String algorithmID: algorithmIDs) {
-          // Prepare experiment task configs
-          ProblemConfig config = configurator.prepareConfigs(problemInfo,
-              instanceInfo
-              .getInstanceID(), algorithmID, 2)[1]; // the second with a bit of randomness
-    
-
-          int numSolutions = config
-              .getDataNode("Algorithm").getDataNode("Parameters").getValueInt("numSolutions");
-          
-          //System.out.println(algorithmID + " " + instanceID + " " + numSolutions);
-          numSolutions = Math.min(numSolutions, this.solutionPoolSize);
-
-          Class problemPhenotypeClass = this.solutionPool.get(0).getClass();
-
-          Phenotype<?>[] solutions = (Phenotype<?>[])
-            java.lang.reflect.Array.newInstance(problemPhenotypeClass, numSolutions);
-          //List<Phenotype<?>> algSolutions = new ArrayList<>();
-          for (int i = 0; i < numSolutions; i++) {
-            solutions[i] = this.solutionPool
-                .get(new Random().nextInt(this.solutionPool.size()));
-          }
-          
-          
-          //System.out.println(algSolutions);
-          
-          // Enqueue experiment tasks
-          taskQueue.add(new ExperimentTaskRequest(
-              UUID.randomUUID(), experimentID, jobID, stageID, problemID, instanceID,
-              algorithmID, config.getAlgorithmParams(), 
-              solutions, timeoutS / numSteps));
-        }
+    this.solutionPool = new ArrayList<>();
+    Phenotype<?>[] pool =  
+      generateInitialSolutions(provider, instance, this.solutionPoolSize, randomSeed);
+    this.solutionPool.addAll(Arrays.asList(pool));
+      
+    for (int stageID = 1; stageID <= numSteps; stageID++) {
+      // prepare solution pool 
+      Collections.sort(this.solutionPool, compareByScore.reversed());
+      this.solutionPool = this.solutionPool.subList(0, this.solutionPoolSize);
+      
+      // The taskQueue size must be limited since the results are stored in the task's reports
+      // Queue -> Tasks -> Reports -> Solutions ==> OutOfMemoryError
+      List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
+      for (String algorithmID: algorithmIDs) {
+        // Prepare experiment task configs
+        ProblemConfig config = configurator.prepareConfigs(problemInfo,
+            instanceInfo.getInstanceID(), algorithmID, 2)[1]; // the second with a bit of randomness
   
-        // RUN EXPERIMENT TASKS
-        experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
+        int numSolutions = config
+            .getDataNode("Algorithm").getDataNode("Parameters").getValueInt("numSolutions");
+        
+        numSolutions = Math.min(numSolutions, this.solutionPoolSize);
+
+        Class<?> problemPhenotypeClass = this.solutionPool.get(0).getClass();
+
+        Phenotype<?>[] solutions = (Phenotype<?>[])
+          java.lang.reflect.Array.newInstance(problemPhenotypeClass, numSolutions);
+        //List<Phenotype<?>> algSolutions = new ArrayList<>();
+        for (int i = 0; i < numSolutions; i++) {
+          solutions[i] = this.solutionPool
+              .get(new Random().nextInt(this.solutionPool.size()));
+        }
+                
+        // Enqueue experiment tasks
+        taskQueue.add(new ExperimentTaskRequest(
+            UUID.randomUUID(), experimentID, 1, stageID, problemID, instanceID,
+            algorithmID, config.getAlgorithmParams(), 
+            solutions, timeoutS / numSteps));
       }
-    } 
-    
+
+      // RUN EXPERIMENT TASKS
+      experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
+    }  
 
     return bestScore;
   }
