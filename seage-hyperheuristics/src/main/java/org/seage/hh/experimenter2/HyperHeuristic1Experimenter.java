@@ -116,8 +116,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     
           
           int numSolutions = config.getValueInt("numSolutions");
-          numSolutions = numSolutions > this.solutionPoolSize 
-            ? this.solutionPoolSize : numSolutions;
+          numSolutions = Math.min(numSolutions, this.solutionPoolSize);
 
           List<Phenotype<?>> algSolutions = new ArrayList<>();
           for (int i = 0; i < numSolutions; i++) {
