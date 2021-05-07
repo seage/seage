@@ -121,10 +121,10 @@ public class HyperHeuristic1Experimenter implements Experimenter {
               .getDataNode("Algorithm").getDataNode("Parameters").getValueInt("numSolutions");
           numSolutions = Math.min(numSolutions, this.solutionPoolSize);
 
-          Class clazz = this.solutionPool.get(0).getClass();
+          Class problemPhenotypeClass = this.solutionPool.get(0).getClass();
 
           Phenotype<?>[] solutions = (Phenotype<?>[])
-            java.lang.reflect.Array.newInstance(clazz, numSolutions);
+            java.lang.reflect.Array.newInstance(problemPhenotypeClass, numSolutions);
           //List<Phenotype<?>> algSolutions = new ArrayList<>();
           for (int i = 0; i < numSolutions; i++) {
             solutions[i] = this.solutionPool
