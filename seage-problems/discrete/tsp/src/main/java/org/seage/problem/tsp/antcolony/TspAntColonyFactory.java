@@ -26,8 +26,9 @@
 
 package org.seage.problem.tsp.antcolony;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.List;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
@@ -64,7 +65,9 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
         ants = new Ant[source.length];
         for (int i = 0; i < ants.length; i++) {
-          ants[i] = new Ant(brain, graph, Arrays.asList(source[i].getSolution()));
+          List<Integer> nodeIDs = new ArrayList<>(Arrays.asList(source[i].getSolution()));
+          nodeIDs.add(source[i].getSolution()[0]); // The tour must be closed
+          ants[i] = new Ant(brain, graph, nodeIDs);
         }
       }
 
@@ -79,7 +82,9 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
 
       @Override
       public TspPhenotype solutionToPhenotype(Ant solution) throws Exception {
-        Integer[] p = (Integer[]) solution.getNodeIDsAlongPath().stream().toArray(Integer[]::new);
+        List<Integer> antPath = new ArrayList<>(solution.getNodeIDsAlongPath());
+        antPath.remove(antPath.size() - 1);
+        Integer[] p = (Integer[]) antPath.stream().toArray(Integer[]::new);
         TspPhenotype result = new TspPhenotype(p);
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
         result.setObjValue(objVals[0]);
