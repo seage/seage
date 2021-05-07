@@ -95,7 +95,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
         .add(generateInitialSolutions(provider, instance, numSolutions, randomSeed));
     }
     
-    for (int i = 0; i < numRuns; i++) {
+    for (int i = 0; i < numRuns; i++) { 
       for (String algorithmID: algorithmIDs) {
         // Prepare experiment task configs
         ProblemConfig config = configurator.prepareConfigs(problemInfo,
@@ -105,17 +105,18 @@ public class HyperHeuristic1Experimenter implements Experimenter {
           ? this.pool.remove(new Random().nextInt(this.pool.size())) : null;
         
         // Enqueue experiment tasks
-        for (int runID = 1; runID <= numRuns; runID++) {
-          taskQueue.add(new ExperimentTaskRequest(
-              UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
-              algorithmID, config.getAlgorithmParams(), 
-              solutions, timeoutS));
-        }
+        //for (int runID = 1; runID <= numRuns; runID++) {
+        taskQueue.add(new ExperimentTaskRequest(
+            UUID.randomUUID(), experimentID, 1, 1, problemID, instanceID,
+            algorithmID, config.getAlgorithmParams(), 
+            solutions, timeoutS));
+        //}
       }
-    } 
 
-    // RUN EXPERIMENT TASKS
-    experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
+      // RUN EXPERIMENT TASKS
+      experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
+    } 
+    
 
     return bestScore;
   }
@@ -123,11 +124,6 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
-      // Phenotype<?>[] solution = {
-      //  ;
-      // }
-      // this.pool.add(new Phenotype<?>()
-      //   .fromText();
       
       Object solution =  experimentTask
           .getExperimentTaskReport().getDataNode("Solutions").getValue("phenotype");
