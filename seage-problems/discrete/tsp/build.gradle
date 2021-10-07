@@ -13,8 +13,7 @@ plugins {
 
 dependencies {
     implementation project(':seage-aal')
-    testImplementation project(':seage-aal').sourceSets.test.output
+    testImplementation(testFixtures(project(':seage-aal')))
     implementation project(':seage-metaheuristics')
     implementation project(':seage-misc')
-    testImplementation project(':seage-misc').sourceSets.test.output
 }

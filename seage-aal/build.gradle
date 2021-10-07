@@ -9,6 +9,7 @@
 plugins {
     // Apply the java-library plugin to add support for building a CLI application in Java.
     id 'java-library'
+    id "java-test-fixtures"
 }
 
 dependencies {
