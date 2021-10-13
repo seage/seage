@@ -77,23 +77,27 @@ public class JsspProblemProvider extends ProblemProvider
     }
 
     @Override
-    public Object[][] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
+    public JsspPhenotype[] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
             throws Exception
     {
         Random rnd = new Random(randomSeed);
         JobsDefinition jobsDefinition = (JobsDefinition)problemInstance;
-        Integer[][] result = new Integer[numSolutions][];
+        JsspPhenotype[] result = new JsspPhenotype[numSolutions];
+        //Integer[][] result = new Integer[numSolutions][];
         
         int numJobs = jobsDefinition.getJobsCount();
         int numOpers = jobsDefinition.getJobInfos()[0].getOperationInfos().length;
         
         for(int i=0;i<numSolutions;i++)
         {
-            result[i] = new Integer[numJobs*numOpers];
+            Integer[] tmpArray = new Integer[numJobs*numOpers];
+            //result[i] = new JsspPhenotype(tmpArray);
+            //result[i] = new Integer[numJobs*numOpers];
             int l=0;
             for(int j=0;j<numJobs;j++)
                 for(int k=0;k<numOpers;k++)
-                    result[i][l++] = j+1;
+                    tmpArray[l++] = j+1;
+            result[i] = new JsspPhenotype(tmpArray);
         }
         
         for(int i=0;i<numSolutions;i++)
@@ -102,9 +106,11 @@ public class JsspProblemProvider extends ProblemProvider
             {
                 int ix1=rnd.nextInt(numJobs*numOpers);
                 int ix2=rnd.nextInt(numJobs*numOpers);
-                int a = result[i][ix1];
-                result[i][ix1] = result[i][ix2];
-                result[i][ix2] = a;
+                int a = result[i].getSolution()[ix1];
+                Integer[] tmpArray = result[i].getSolution();
+                tmpArray[ix1] = tmpArray[ix2];
+                tmpArray[ix2] = a;
+                result[i] = new JsspPhenotype(tmpArray);
             }
         }
         
