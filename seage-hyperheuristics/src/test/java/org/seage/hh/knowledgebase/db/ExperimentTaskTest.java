@@ -9,8 +9,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmParams;
-import org.seage.aal.problem.ProblemProvider;
-import org.seage.aal.problem.TestProblemProvider;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
