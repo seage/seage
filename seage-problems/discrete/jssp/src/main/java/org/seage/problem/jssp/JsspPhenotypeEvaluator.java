@@ -1,8 +1,35 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+
+ * This file is part of SEAGE.
+
+ * SEAGE is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * SEAGE is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+/**
+ * Contributors:
+ *     Richard Malek
+ *     - Initial implementation
+ *     David Omrai
+ *     - Adding the JSSP phenotype implementation
+ */
 package org.seage.problem.jssp;
 
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 
-public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator
+public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator<JsspPhenotype>
 {
     private JobsDefinition _jobsDefinition;
     private Schedule _schedule;
@@ -30,16 +57,22 @@ public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator
         _endTimeOnMachine = new int[_numMachines];
     }
     
+    /**
+     * Method evalueates the given phenotype with a number, makespan
+     * @param phenotype solution
+     * @return double[] with one number representing the makespan
+     * @throws Exception
+     */
     @Override
-    public double[] evaluate(Object[] phenotypeSubject) throws Exception
+    public double[] evaluate(JsspPhenotype phenotype) throws Exception
     {
-        return evaluateSchedule((Integer[])phenotypeSubject);
+        return evaluateSchedule(phenotype.getSolution());
     }
     
     @Override
     public int compare(double[] arg0, double[] arg1)
     {
-        return (int)(arg1[0] - arg0[1]);
+        return (int)(arg1[0] - arg0[0]);
     }
     
     public double[] evaluateSchedule(Integer[] jobArray)
