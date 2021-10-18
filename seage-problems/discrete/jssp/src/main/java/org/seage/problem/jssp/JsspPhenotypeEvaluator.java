@@ -24,6 +24,7 @@
  *     - Initial implementation
  *     David Omrai
  *     - Adding the JSSP phenotype implementation
+ *     - Fixing the compare method
  */
 package org.seage.problem.jssp;
 
