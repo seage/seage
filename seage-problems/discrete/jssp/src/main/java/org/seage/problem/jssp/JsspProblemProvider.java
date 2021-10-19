@@ -40,7 +40,7 @@ import org.seage.aal.problem.ProblemProvider;
  */
 @Annotations.ProblemId("JSSP")
 @Annotations.ProblemName("Job Shop Scheduling Problem")
-public class JsspProblemProvider extends ProblemProvider
+public class JsspProblemProvider extends ProblemProvider<JsspPhenotype>
 {
     @Override
     public JobsDefinition initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
@@ -70,7 +70,7 @@ public class JsspProblemProvider extends ProblemProvider
     }
 
     @Override
-    public IPhenotypeEvaluator initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception
+    public IPhenotypeEvaluator<JsspPhenotype> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception
     {
         JobsDefinition jobsDefinition = (JobsDefinition) problemInstance;
         return new JsspPhenotypeEvaluator(jobsDefinition);
