@@ -22,6 +22,7 @@ package org.seage.problem.jssp.tabusearch;
 import org.seage.metaheuristic.tabusearch.Move;
 import org.seage.metaheuristic.tabusearch.ObjectiveFunction;
 import org.seage.metaheuristic.tabusearch.Solution;
+import org.seage.problem.jssp.JsspPhenotype;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 
 /**
@@ -42,7 +43,7 @@ public class JsspObjectiveFunction implements ObjectiveFunction
         if (move != null)
             move.operateOn(soln);
         Integer[] jobArray = ((JsspSolution) soln).getJobArray();
-        double[] values = _evaluator.evaluate(jobArray);
+        double[] values = _evaluator.evaluate(new JsspPhenotype(jobArray));
         if (move != null)
             move.operateOn(soln);
 
