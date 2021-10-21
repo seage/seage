@@ -24,12 +24,16 @@ package org.seage.problem.jssp.genetics;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 import org.seage.metaheuristic.genetics.Subject;
+import org.seage.problem.jssp.JobsDefinition;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
+import org.seage.problem.jssp.JsspProblemProvider;
 
 /**
  *
@@ -47,46 +51,51 @@ public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgor
 
   public void run(String instanceID) throws Exception {
     String path = String.format("/org/seage/problem/jssp/instances/%s.xml", instanceID);
-    City[] cities = null;
+    ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.FILE, path);
+    JobsDefinition jobs = null;
+
     try(InputStream stream = getClass().getResourceAsStream(path)) {    
-      cities = CityProvider.readCities(stream);
+      jobs = new JobsDefinition(jobInfo, stream);
     }
-    int populationCount = 100;
-    System.out.println("Population: " + populationCount);
-    List<Subject<Integer>> initialSolutions = generateInitialSubjects(cities, populationCount);
-    GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
-        new JsspGeneticOperator(), new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(null)));
-    gs.addGeneticSearchListener(this);
-    gs.setEliteSubjectsPct(5);
-    gs.setMutatePopulationPct(5);
-    gs.setMutateChromosomeLengthPct(30);
-    gs.setPopulationCount(populationCount);
-    gs.setRandomSubjectsPct(5);
-    gs.setCrossLengthPct(30);
-    gs.setIterationToGo(100);
-    gs.startSearching(initialSolutions);
+
+    System.out.println(jobs.getJobsCount());
+    // int populationCount = 100;
+    // System.out.println("Population: " + populationCount);
+    // List<Subject<Integer>> initialSolutions = generateInitialSubjects(cities, populationCount);
+    // GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
+    //     new JsspGeneticOperator(), new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(null)));
+    // gs.addGeneticSearchListener(this);
+    // gs.setEliteSubjectsPct(5);
+    // gs.setMutatePopulationPct(5);
+    // gs.setMutateChromosomeLengthPct(30);
+    // gs.setPopulationCount(populationCount);
+    // gs.setRandomSubjectsPct(5);
+    // gs.setCrossLengthPct(30);
+    // gs.setIterationToGo(100);
+    // gs.startSearching(initialSolutions);
   }
 
-  private List<Subject<Integer>> generateInitialSubjects(City[] cities, int subjectCount) throws Exception {
-    ArrayList<Subject<Integer>> result = new ArrayList<>(subjectCount);
+  private List<Subject<Integer>> generateInitialSubjects(JobsDefinition[] jobs, int subjectCount) throws Exception {
+    // ArrayList<Subject<Integer>> result = new ArrayList<>(subjectCount);
 
-    Integer[][] tours = new Integer[subjectCount][];
-    for (int k = 0; k < subjectCount; k++)
-      tours[k] = TourProvider.createRandomTour(cities.length);
+    // Integer[][] tours = new Integer[subjectCount][];
+    // for (int k = 0; k < subjectCount; k++)
+    //   tours[k] = TourProvider.createRandomTour(cities.length);
     
-    for (int k = 0; k < subjectCount; k++)
-      result.add(new Subject<>(tours[k]));
-    return result;
+    // for (int k = 0; k < subjectCount; k++)
+    //   result.add(new Subject<>(tours[k]));
+    // return result;
+    return null;
   }
 
   @Override
   public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e) {
-    System.out.println("Genetic Algorithm for TSP started.");
+    System.out.println("Genetic Algorithm for JSSP started.");
   }
 
   @Override
   public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e) {
-    System.out.println("Genetic Algorithm for TSP stopped.");
+    System.out.println("Genetic Algorithm for JSSP stopped.");
   }
 
   @Override
