@@ -29,10 +29,7 @@ import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 import org.seage.metaheuristic.genetics.Subject;
-import org.seage.problem.jssp.City;
-import org.seage.problem.jssp.CityProvider;
-import org.seage.problem.jssp.TourProvider;
-import org.seage.problem.jssp.TspPhenotypeEvaluator;
+import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 
 /**
  *
@@ -41,14 +38,7 @@ import org.seage.problem.jssp.TspPhenotypeEvaluator;
 public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>> {
   public static void main(String[] args) {
     try {
-      // String instanceID = "eil51"; // 426
-      // String instanceID = "berlin52"; // 7542
-      // String instanceID = "ch130"; // 6110
-      // String instanceID = "lin318"; // 42029
-      // String instanceID = "pcb442"; // 50778
-      // String instanceID = "u574"; // 36905
-      String instanceID = "hyflex-tsp-9"; // 426
-
+      String instanceID = "ft10"; 
       new JsspGeneticAlgorithmTest().run(instanceID);
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -56,16 +46,16 @@ public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgor
   }
 
   public void run(String instanceID) throws Exception {
-    String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instanceID);
+    String path = String.format("/org/seage/problem/jssp/instances/%s.xml", instanceID);
     City[] cities = null;
     try(InputStream stream = getClass().getResourceAsStream(path)) {    
       cities = CityProvider.readCities(stream);
     }
-    int populationCount = 1000;
+    int populationCount = 100;
     System.out.println("Population: " + populationCount);
     List<Subject<Integer>> initialSolutions = generateInitialSubjects(cities, populationCount);
     GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
-        new TspGeneticOperator(), new TspEvaluator(new TspPhenotypeEvaluator(null, null)));
+        new JsspGeneticOperator(), new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(null)));
     gs.addGeneticSearchListener(this);
     gs.setEliteSubjectsPct(5);
     gs.setMutatePopulationPct(5);
