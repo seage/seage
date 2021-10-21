@@ -1,15 +1,15 @@
 package org.seage.problem.jssp.sannealing;
 
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.seage.aal.problem.ProblemProviderTestBase;
 import org.seage.problem.jssp.JsspProblemProvider;
 
-@Ignore
+@Disabled
 public class JsspSimulatedAnnealingFactoryTest extends ProblemProviderTestBase
 {
     public JsspSimulatedAnnealingFactoryTest()
     {
-        super(new JsspProblemProvider(), "SimulatedAnnealing");
+        super(new JsspProblemProvider());
     }
 
 }

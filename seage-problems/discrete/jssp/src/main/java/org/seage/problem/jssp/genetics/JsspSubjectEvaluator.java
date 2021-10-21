@@ -21,6 +21,7 @@ package org.seage.problem.jssp.genetics;
 
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
+import org.seage.problem.jssp.JsspPhenotype;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 
 /**
@@ -38,7 +39,7 @@ public class JsspSubjectEvaluator extends SubjectEvaluator<Subject<Integer>>
     @Override
     public double[] evaluate(Subject<Integer> subject) throws Exception
     {
-        return _phenotypeEvaluator.evaluate(subject.getChromosome().getGenes());
+        return _phenotypeEvaluator.evaluate(new JsspPhenotype(subject.getChromosome().getGenes()));
         
     }
 }

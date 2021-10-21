@@ -33,6 +33,8 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.aal.problem.ProblemProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -40,80 +42,86 @@ import org.seage.aal.problem.ProblemProvider;
  */
 @Annotations.ProblemId("JSSP")
 @Annotations.ProblemName("Job Shop Scheduling Problem")
-public class JsspProblemProvider extends ProblemProvider
+public class JsspProblemProvider extends ProblemProvider<JsspPhenotype>
 {
-    @Override
-    public JobsDefinition initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
+  private static Logger logger = LoggerFactory.getLogger(JsspProblemProvider.class.getName());
+
+  @Override
+  public JobsDefinition initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
+  {
+    ProblemInstanceOrigin origin = instanceInfo.getOrigin();
+    String path = instanceInfo.getPath();
+
+    InputStream stream0;
+    if (origin == ProblemInstanceOrigin.RESOURCE)
+      stream0 = getClass().getResourceAsStream(path);
+    else
+      stream0 = new FileInputStream(path);
+    
+    JobsDefinition jobsDefinition = null;
+    
+    try(InputStream stream=stream0)
     {
-        ProblemInstanceOrigin origin = instanceInfo.getOrigin();
-        String path = instanceInfo.getPath();
-
-        InputStream stream0;
-        if (origin == ProblemInstanceOrigin.RESOURCE)
-            stream0 = getClass().getResourceAsStream(path);
-        else
-            stream0 = new FileInputStream(path);
-        
-        JobsDefinition jobsDefinition = null;
-        
-        try(InputStream stream=stream0)
-        {
-            jobsDefinition = new JobsDefinition(instanceInfo, stream);   
-        }
-        catch (Exception ex)
-        {
-            System.err.println("SatProblemProvider.initProblemInstance - readCities failed, path: " + path);
-            throw ex;
-        }
-
-        return jobsDefinition;
+        jobsDefinition = new JobsDefinition(instanceInfo, stream);   
+    }
+    catch (Exception ex)
+    {
+      logger.error("SatProblemProvider.initProblemInstance - readCities failed, path: {}", path);
+      throw ex;
     }
 
-    @Override
-    public IPhenotypeEvaluator initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception
-    {
-        JobsDefinition jobsDefinition = (JobsDefinition) problemInstance;
-        return new JsspPhenotypeEvaluator(jobsDefinition);
-    }
+    return jobsDefinition;
+  }
 
-    @Override
-    public Object[][] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
-            throws Exception
-    {
-        Random rnd = new Random(randomSeed);
-        JobsDefinition jobsDefinition = (JobsDefinition)problemInstance;
-        Integer[][] result = new Integer[numSolutions][];
-        
-        int numJobs = jobsDefinition.getJobsCount();
-        int numOpers = jobsDefinition.getJobInfos()[0].getOperationInfos().length;
-        
-        for(int i=0;i<numSolutions;i++)
-        {
-            result[i] = new Integer[numJobs*numOpers];
-            int l=0;
-            for(int j=0;j<numJobs;j++)
-                for(int k=0;k<numOpers;k++)
-                    result[i][l++] = j+1;
-        }
-        
-        for(int i=0;i<numSolutions;i++)
-        {
-            for(int j=0;j<numJobs*numOpers*2;j++)
-            {
-                int ix1=rnd.nextInt(numJobs*numOpers);
-                int ix2=rnd.nextInt(numJobs*numOpers);
-                int a = result[i][ix1];
-                result[i][ix1] = result[i][ix2];
-                result[i][ix2] = a;
-            }
-        }
-        
-        return result;
-    }
+  @Override
+  public IPhenotypeEvaluator<JsspPhenotype> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception
+  {
+    JobsDefinition jobsDefinition = (JobsDefinition) problemInstance;
+    return new JsspPhenotypeEvaluator(jobsDefinition);
+  }
 
-    @Override
-    public void visualizeSolution(Object[] solution, ProblemInstanceInfo problemInstanceInfo) throws Exception
+  @Override
+  public JsspPhenotype[] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
+    throws Exception
+  {
+    Random rnd = new Random(randomSeed);
+    JobsDefinition jobsDefinition = (JobsDefinition)problemInstance;
+    JsspPhenotype[] result = new JsspPhenotype[numSolutions];
+    
+    int numJobs = jobsDefinition.getJobsCount();
+    int numOpers = jobsDefinition.getJobInfos()[0].getOperationInfos().length;
+    
+    for(int i=0;i<numSolutions;i++)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+      Integer[] tmpArray = new Integer[numJobs*numOpers];
+      
+      int l=0;
+      for(int j=0;j<numJobs;j++)
+        for(int k=0;k<numOpers;k++)
+          tmpArray[l++] = j+1;
+      result[i] = new JsspPhenotype(tmpArray);
     }
+      
+    for(int i=0;i<numSolutions;i++)
+    {
+      for(int j=0;j<numJobs*numOpers*2;j++)
+      {
+        int ix1=rnd.nextInt(numJobs*numOpers);
+        int ix2=rnd.nextInt(numJobs*numOpers);
+        int a = result[i].getSolution()[ix1];
+        Integer[] tmpArray = result[i].getSolution();
+        tmpArray[ix1] = tmpArray[ix2];
+        tmpArray[ix2] = a;
+        result[i] = new JsspPhenotype(tmpArray);
+      }
+    }
+      
+    return result;
+  }
+
+  @Override
+  public void visualizeSolution(Object[] solution, ProblemInstanceInfo problemInstanceInfo) throws Exception
+  {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

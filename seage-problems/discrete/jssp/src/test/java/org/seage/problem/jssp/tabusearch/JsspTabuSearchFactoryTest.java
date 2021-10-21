@@ -7,7 +7,7 @@ public class JsspTabuSearchFactoryTest extends ProblemProviderTestBase
 {
     public JsspTabuSearchFactoryTest()
     {
-        super(new JsspProblemProvider(), "TabuSearch");
+        super(new JsspProblemProvider());
     }
 
 }

@@ -30,9 +30,11 @@ package org.seage.problem.jssp.sannealing;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.sannealing.Solution;
+import org.seage.problem.jssp.JsspPhenotype;
 
 /**
  *
@@ -40,7 +42,7 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
-public class JsspSimulatedAnnealingFactory implements IAlgorithmFactory
+public class JsspSimulatedAnnealingFactory implements IAlgorithmFactory<JsspPhenotype, JsspSolution>
 {
     //	private TspSolution _tspSolution;
     //    private TspProblemProvider _provider;
@@ -67,52 +69,59 @@ public class JsspSimulatedAnnealingFactory implements IAlgorithmFactory
     }
 
     @Override
-    public IAlgorithmAdapter<JsspSolution> createAlgorithm(ProblemInstance instance) throws Exception
-    {
-    	IAlgorithmAdapter<JsspSolution> algorithm = new SimulatedAnnealingAdapter<>(
-                new JsspObjectiveFunction(),
-                new JsspMoveManager(), false, "")
-        {
-            @Override
-            public void solutionsFromPhenotype(Object[][] source) throws Exception
-            {
-                this.solutions = new Solution[source.length];
-                for (int j = 0; j < source.length; j++)
-                {
-                    JsspSolution solution = new JsspSolution(0)
-                    {
-                    };
-                    Integer[] tour = solution.getTour();
-
-                    for (int i = 0; i < tour.length; i++)
-                        tour[i] = (Integer) source[j][i];
-
-                    this.solutions[j] = solution;
-                }
-            }
-
-            @Override
-            public Object[][] solutionsToPhenotype() throws Exception
-            {
-                Object[][] result = new Object[this.solutions.length][];
-
-                for (int i = 0; i < this.solutions.length; i++)
-                {
-                    JsspSolution solution = (JsspSolution) this.solutions[i];
-                    result[i] = solution.getTour().clone();
-                }
-                return result;
-            }
-
-			@Override
-			public Object[] solutionToPhenotype(JsspSolution solution) throws Exception {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-        };
-
-        return algorithm;
+    public IAlgorithmAdapter<JsspPhenotype, JsspSolution> createAlgorithm(ProblemInstance instance,
+            IPhenotypeEvaluator<JsspPhenotype> phenotypeEvaluator) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
     }
+
+    // @Override
+    // public IAlgorithmAdapter<JsspSolution> createAlgorithm(ProblemInstance instance) throws Exception
+    // {
+    // 	IAlgorithmAdapter<JsspSolution> algorithm = new SimulatedAnnealingAdapter<>(
+    //             new JsspObjectiveFunction(),
+    //             new JsspMoveManager(), false, "")
+    //     {
+    //         @Override
+    //         public void solutionsFromPhenotype(Object[][] source) throws Exception
+    //         {
+    //             this.solutions = new Solution[source.length];
+    //             for (int j = 0; j < source.length; j++)
+    //             {
+    //                 JsspSolution solution = new JsspSolution(0)
+    //                 {
+    //                 };
+    //                 Integer[] tour = solution.getTour();
+
+    //                 for (int i = 0; i < tour.length; i++)
+    //                     tour[i] = (Integer) source[j][i];
+
+    //                 this.solutions[j] = solution;
+    //             }
+    //         }
+
+    //         @Override
+    //         public Object[][] solutionsToPhenotype() throws Exception
+    //         {
+    //             Object[][] result = new Object[this.solutions.length][];
+
+    //             for (int i = 0; i < this.solutions.length; i++)
+    //             {
+    //                 JsspSolution solution = (JsspSolution) this.solutions[i];
+    //                 result[i] = solution.getTour().clone();
+    //             }
+    //             return result;
+    //         }
+
+	// 		@Override
+	// 		public Object[] solutionToPhenotype(JsspSolution solution) throws Exception {
+	// 			// TODO Auto-generated method stub
+	// 			return null;
+	// 		}
+
+    //     };
+
+    //     return algorithm;
+    // }
 
 }

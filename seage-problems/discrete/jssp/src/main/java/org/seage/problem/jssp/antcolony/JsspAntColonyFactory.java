@@ -29,9 +29,12 @@ package org.seage.problem.jssp.antcolony;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.antcolony.Ant;
+import org.seage.problem.jssp.JsspPhenotype;
+import org.seage.problem.jssp.sannealing.JsspSolution;
 
 /**
  *
@@ -39,7 +42,7 @@ import org.seage.metaheuristic.antcolony.Ant;
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
-public class JsspAntColonyFactory implements IAlgorithmFactory
+public class JsspAntColonyFactory implements IAlgorithmFactory<JsspPhenotype, JsspSolution>
 {
     @Override
     public Class<?> getAlgorithmClass()
@@ -47,10 +50,10 @@ public class JsspAntColonyFactory implements IAlgorithmFactory
         return AntColonyAdapter.class;
     }
 
-    @Override
-    public IAlgorithmAdapter<Ant> createAlgorithm(ProblemInstance instance) throws Exception
-    {
-        IAlgorithmAdapter<Ant> algorithm = null;
+    // @Override
+    // public IAlgorithmAdapter<Ant> createAlgorithm(ProblemInstance instance) throws Exception
+    // {
+    //     IAlgorithmAdapter<Ant> algorithm = null;
 //        City[] cities = ((TspProblemInstance) instance).getCities();
 //        JsspGraph graph = new JsspGraph(cities);
 //        AntBrain brain = new AntBrain(graph);
@@ -85,7 +88,14 @@ public class JsspAntColonyFactory implements IAlgorithmFactory
 //            }
 //        };
 
-        return algorithm;
+    //     return algorithm;
+    // }
+
+    @Override
+    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator phenotypeEvaluator)
+            throws Exception {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

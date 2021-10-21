@@ -7,7 +7,7 @@ public class JsspGeneticAlgorithmFactoryTest extends ProblemProviderTestBase
 {
     public JsspGeneticAlgorithmFactoryTest()
     {
-        super(new JsspProblemProvider(), "GeneticAlgorithm");
+        super(new JsspProblemProvider());
     }
 
 }

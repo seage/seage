@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
-
 public class JsspPhenotypeEvaluatorTest
 {
     private JobsDefinition _jobsDefinition;
@@ -17,6 +16,7 @@ public class JsspPhenotypeEvaluatorTest
                 new ProblemInstanceInfo("TestJsspInstance", ProblemInstanceOrigin.RESOURCE, ""), 
                 getClass().getResourceAsStream("/org/seage/problem/jssp/test-instances/test01.xml"));
     }
+
     @Test
     public void testEvaluateSchedule() throws Exception
     {                
@@ -30,7 +30,6 @@ public class JsspPhenotypeEvaluatorTest
         objVal =  evaluator.evaluateSchedule(jobArray, true);
         assertEquals (6, (int)objVal[0]);
         assertNotNull(evaluator.getSchedule());
-        
     }
 
 }
