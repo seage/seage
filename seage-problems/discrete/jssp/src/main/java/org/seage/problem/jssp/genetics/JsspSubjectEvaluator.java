@@ -26,6 +26,7 @@ import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 
 /**
  * Summary description for JSSPGSEvaluator.
+ * @author Richard Malek
  */
 public class JsspSubjectEvaluator extends SubjectEvaluator<Subject<Integer>>
 {
