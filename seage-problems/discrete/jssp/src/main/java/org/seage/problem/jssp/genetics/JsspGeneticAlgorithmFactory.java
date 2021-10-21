@@ -44,7 +44,7 @@ import org.seage.problem.jssp.sannealing.JsspSolution;
  */
 @Annotations.AlgorithmId("GeneticAlgorithm")
 @Annotations.AlgorithmName("Genetic Algorithm")
-public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenotype, JsspSolution>
+public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenotype, Subject<Integer>>
 {
 
     @Override
@@ -53,50 +53,47 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenot
         return GeneticAlgorithmAdapter.class;
     }
 
-    // @Override
-    // public IAlgorithmAdapter<Subject<Integer>> createAlgorithm(ProblemInstance instance) throws Exception
-    // {
-    //     JobsDefinition jobsDefinition = (JobsDefinition) instance;
-    //     IAlgorithmAdapter<Subject<Integer>> algorithm = new GeneticAlgorithmAdapter<>(
-    //             new JsspGeneticOperator(jobsDefinition.getJobInfos()[0].getOperationInfos().length),
-    //             new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(jobsDefinition)), false, "")
-    //     {
-    //         @Override
-    //         public void solutionsFromPhenotype(Object[][] source) throws Exception
-    //         {
-    //             this.solutions = new ArrayList<Subject<Integer>>(source.length);
-    //             for (int i = 0; i < source.length; i++)
-    //                 this.solutions.add(new Subject<Integer>((Integer[]) source[i]));
-    //         }
-
-    //         @Override
-    //         public Object[][] solutionsToPhenotype() throws Exception
-    //         {
-    //             Object[][] result = new Object[this.solutions.size()][];
-
-    //             for (int i = 0; i < this.solutions.size(); i++)
-    //             {
-    //                 int numGenes = this.solutions.get(i).getChromosome().getLength();
-    //                 result[i] = Arrays.copyOf(this.solutions.get(i).getChromosome().getGenes(), numGenes);
-    //             }
-    //             return result;
-    //         }
-
-	// 		@Override
-	// 		public Object[] solutionToPhenotype(Subject<Integer> solution) throws Exception {
-	// 			// TODO Auto-generated method stub
-	// 			return null;
-	// 		}
-    //     };
-
-    //     return algorithm;
-    // }
-
     @Override
-    public IAlgorithmAdapter<JsspPhenotype, JsspSolution> createAlgorithm(ProblemInstance instance,
-            IPhenotypeEvaluator<JsspPhenotype> phenotypeEvaluator) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public IAlgorithmAdapter<JsspPhenotype, Subject<Integer>> createAlgorithm(
+        ProblemInstance instance,
+        IPhenotypeEvaluator<JsspPhenotype> phenotypeEvaluator
+      ) throws Exception
+    {
+        JobsDefinition jobsDefinition = (JobsDefinition) instance;
+        return new GeneticAlgorithmAdapter<JsspPhenotype, Subject<Integer>>(
+                new JsspGeneticOperator(jobsDefinition.getJobInfos()[0].getOperationInfos().length),
+                new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(jobsDefinition)), phenotypeEvaluator, false)
+        {
+            @Override
+            public void solutionsFromPhenotype(JsspPhenotype[] source) throws Exception
+            {
+                this.solutions = new ArrayList<Subject<Integer>>(source.length);
+                for (int i = 0; i < source.length; i++)
+                    this.solutions.add(new Subject<Integer>(source[i].getSolution()));
+            }
 
+            @Override
+            public JsspPhenotype[] solutionsToPhenotype() throws Exception
+            {
+                JsspPhenotype[] result = new JsspPhenotype[this.solutions.size()];
+
+                for (int i = 0; i < this.solutions.size(); i++)
+                {
+                    //int numGenes = this.solutions.get(i).getChromosome().getLength();
+                    result[i] = solutionToPhenotype(this.solutions.get(i));
+                    //result[i] = Arrays.copyOf(this.solutions.get(i).getChromosome().getGenes(), numGenes);
+                }
+                return result;
+            }
+
+			@Override
+			public JsspPhenotype solutionToPhenotype(Subject<Integer> solution) throws Exception {
+        JsspPhenotype result = new JsspPhenotype(solution.getChromosome().getGenes());
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+				return result;
+			}
+        };
+    }
 }
