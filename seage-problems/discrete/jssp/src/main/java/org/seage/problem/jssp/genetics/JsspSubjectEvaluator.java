@@ -19,6 +19,7 @@
  */
 package org.seage.problem.jssp.genetics;
 
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.problem.jssp.JsspPhenotype;
@@ -30,17 +31,36 @@ import org.seage.problem.jssp.JsspPhenotypeEvaluator;
  */
 public class JsspSubjectEvaluator extends SubjectEvaluator<Subject<Integer>>
 {
-    private JsspPhenotypeEvaluator _phenotypeEvaluator;
+  private IPhenotypeEvaluator<JsspPhenotype> _phenotypeEvaluator;
 
-    public JsspSubjectEvaluator(JsspPhenotypeEvaluator phenotypeEvaluator)
-    {
-        _phenotypeEvaluator = phenotypeEvaluator;
-    }
+  public JsspSubjectEvaluator(IPhenotypeEvaluator<JsspPhenotype> phenotypeEvaluator) {
+    _phenotypeEvaluator = phenotypeEvaluator;
+  }
 
-    @Override
-    public double[] evaluate(Subject<Integer> subject) throws Exception
-    {
-        return _phenotypeEvaluator.evaluate(new JsspPhenotype(subject.getChromosome().getGenes()));
-        
+  public JsspSubjectEvaluator(JsspPhenotypeEvaluator phenotypeEvaluator)
+  {
+    _phenotypeEvaluator = phenotypeEvaluator;
+  }
+
+  @Override
+  public double[] evaluate(Subject<Integer> solution) throws Exception {
+    return _phenotypeEvaluator.evaluate(new JsspPhenotype(solution.getChromosome().getGenes()));
+  }
+
+  public int compare(double[] o1, double[] o2) {
+    if (o1 == null)
+      return -1;
+    if (o2 == null)
+      return 1;
+
+    int length = o1.length <= o2.length ? o1.length : o2.length;
+
+    for (int i = 0; i < length; i++) {
+      if (o1[i] < o2[i])
+        return 1;
+      if (o1[i] > o2[i])
+        return -1;
     }
+    return 0;
+   }
 }

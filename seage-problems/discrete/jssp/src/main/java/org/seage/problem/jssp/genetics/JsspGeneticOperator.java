@@ -32,20 +32,13 @@ import org.seage.metaheuristic.genetics.Subject;
  */
 public class JsspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, Integer>
 {
-  private int[] _occurrence;
-  private int[] _occurrence2;
-
-  public JsspGeneticOperator(int numOper)
-  {
-    _occurrence = new int[numOper];
-    _occurrence2 = new int[numOper];
-  }
-
   @Override
   public List<Subject<Integer>> crossOver(Subject<Integer> parent1, Subject<Integer> parent2) throws Exception
   {
     Subject<Integer> offsprings1 = null;
     Subject<Integer> offsprings2 = null;
+    int[] occur = new int[parent1.getChromosome().getLength()];
+    int[] occur2 = new int[parent2.getChromosome().getLength()];
     int chromLength = 0;
     int crossLength = 0;
     try
@@ -59,10 +52,10 @@ public class JsspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, 
       int crossBegin = _random.nextInt(chromLength - crossLength);
       int crossEnd = crossBegin + crossLength;
 
-      for (int i = 0; i < _occurrence.length; i++)
-        _occurrence[i] = 0;
-      for (int i = 0; i < _occurrence2.length; i++)
-        _occurrence2[i] = 0;
+      for (int i = 0; i < occur.length; i++)
+        occur[i] = 0;
+      for (int i = 0; i < occur2.length; i++)
+        occur2[i] = 0;
 
       for (int i = crossBegin; i < crossEnd; i++)
       {
@@ -73,19 +66,19 @@ public class JsspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, 
         if (par1GeneVal == par2GeneVal)
           continue;
 
-        _occurrence[par1GeneVal - 1]++;
-        _occurrence[par2GeneVal - 1]--;
+        occur[par1GeneVal - 1]++;
+        occur[par2GeneVal - 1]--;
 
-        _occurrence2[par2GeneVal - 1]++;
-        _occurrence2[par1GeneVal - 1]--;
+        occur2[par2GeneVal - 1]++;
+        occur2[par1GeneVal - 1]--;
 
         offsprings1.getChromosome().setGene(i, parent2.getChromosome().getGene(i));
         offsprings2.getChromosome().setGene(i, parent1.getChromosome().getGene(i));
       }
 
       // This is used so the array is allocated just once 
-      medicateSubject(crossBegin, _occurrence, offsprings2);
-      medicateSubject(crossBegin, _occurrence2, offsprings1);
+      medicateSubject(crossBegin, occur, offsprings2);
+      medicateSubject(crossBegin, occur2, offsprings1);
 
       int p1 = getSubjectSum(parent1);
       int p2 = getSubjectSum(parent2);
@@ -156,7 +149,7 @@ public class JsspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, 
             else
             {
               // parent 1 has more "m_occurence[i]" jobs with id "i"
-              // the id "indexPlus" with number "m_occurrence[indexMinus] is available"
+              // the id "indexPlus" with number "occure[indexMinus] is available"
               int jj = crossBegin;
               while (occurrence[indexMinus] < 0)
               {

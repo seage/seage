@@ -36,7 +36,7 @@ import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.jssp.JobsDefinition;
 import org.seage.problem.jssp.JsspPhenotype;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
-import org.seage.problem.jssp.sannealing.JsspSolution;
+//import org.seage.problem.jssp.sannealing.JsspSolution;
 
 /**
  *
@@ -59,10 +59,10 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenot
         IPhenotypeEvaluator<JsspPhenotype> phenotypeEvaluator
       ) throws Exception
     {
-        JobsDefinition jobsDefinition = (JobsDefinition) instance;
+        //JobsDefinition jobsDefinition = (JobsDefinition) instance;
         return new GeneticAlgorithmAdapter<JsspPhenotype, Subject<Integer>>(
-                new JsspGeneticOperator(jobsDefinition.getJobInfos()[0].getOperationInfos().length),
-                new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(jobsDefinition)), phenotypeEvaluator, false)
+                new JsspGeneticOperator(),
+                new JsspSubjectEvaluator(phenotypeEvaluator), phenotypeEvaluator, false)
         {
             @Override
             public void solutionsFromPhenotype(JsspPhenotype[] source) throws Exception
@@ -81,17 +81,19 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenot
                 {
                     //int numGenes = this.solutions.get(i).getChromosome().getLength();
                     result[i] = solutionToPhenotype(this.solutions.get(i));
-                    //result[i] = Arrays.copyOf(this.solutions.get(i).getChromosome().getGenes(), numGenes);
+                    //result[i] = new JsspPhenotype(Arrays.copyOf(this.solutions.get(i).getChromosome().getGenes(), numGenes));
                 }
                 return result;
             }
 
 			@Override
 			public JsspPhenotype solutionToPhenotype(Subject<Integer> solution) throws Exception {
-        JsspPhenotype result = new JsspPhenotype(solution.getChromosome().getGenes());
-        double[] objVals = this.phenotypeEvaluator.evaluate(result);
-        result.setObjValue(objVals[0]);
-        result.setScore(objVals[1]);
+                JsspPhenotype result = new JsspPhenotype(solution.getChromosome().getGenes());
+                
+                double[] objVals = this.phenotypeEvaluator.evaluate(result);
+
+                result.setObjValue(objVals[0]);
+                result.setScore(objVals[1]);
 				return result;
 			}
         };
