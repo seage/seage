@@ -33,7 +33,6 @@ import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.jssp.JobsDefinition;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
-import org.seage.problem.jssp.JsspProblemProvider;
 
 /**
  *
@@ -51,7 +50,7 @@ public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgor
 
   public void run(String instanceID) throws Exception {
     String path = String.format("/org/seage/problem/jssp/instances/%s.xml", instanceID);
-    ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.FILE, path);
+    ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
     JobsDefinition jobs = null;
 
     try(InputStream stream = getClass().getResourceAsStream(path)) {    
@@ -59,23 +58,23 @@ public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgor
     }
 
     System.out.println(jobs.getJobsCount());
-    // int populationCount = 100;
-    // System.out.println("Population: " + populationCount);
-    // List<Subject<Integer>> initialSolutions = generateInitialSubjects(cities, populationCount);
-    // GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
-    //     new JsspGeneticOperator(), new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(null)));
-    // gs.addGeneticSearchListener(this);
-    // gs.setEliteSubjectsPct(5);
-    // gs.setMutatePopulationPct(5);
-    // gs.setMutateChromosomeLengthPct(30);
-    // gs.setPopulationCount(populationCount);
-    // gs.setRandomSubjectsPct(5);
-    // gs.setCrossLengthPct(30);
-    // gs.setIterationToGo(100);
-    // gs.startSearching(initialSolutions);
+    int populationCount = 100;
+    System.out.println("Population: " + populationCount);
+    List<Subject<Integer>> initialSolutions = generateInitialSubjects(jobs, populationCount);
+    GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
+        new JsspGeneticOperator(), new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(jobs)));
+    gs.addGeneticSearchListener(this);
+    gs.setEliteSubjectsPct(5);
+    gs.setMutatePopulationPct(5);
+    gs.setMutateChromosomeLengthPct(30);
+    gs.setPopulationCount(populationCount);
+    gs.setRandomSubjectsPct(5);
+    gs.setCrossLengthPct(30);
+    gs.setIterationToGo(100);
+    gs.startSearching(initialSolutions);
   }
 
-  private List<Subject<Integer>> generateInitialSubjects(JobsDefinition[] jobs, int subjectCount) throws Exception {
+  private List<Subject<Integer>> generateInitialSubjects(JobsDefinition jobs, int subjectCount) throws Exception {
     // ArrayList<Subject<Integer>> result = new ArrayList<>(subjectCount);
 
     // Integer[][] tours = new Integer[subjectCount][];
