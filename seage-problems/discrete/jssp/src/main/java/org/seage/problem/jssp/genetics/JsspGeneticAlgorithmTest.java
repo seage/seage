@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
@@ -49,10 +50,28 @@ public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgor
   public static void main(String[] args) {
     try {
       String instanceID = "ft10"; 
-      new JsspGeneticAlgorithmTest().run(instanceID);
+      //new JsspGeneticAlgorithmTest().run(instanceID);
+      new JsspGeneticAlgorithmTest().testAdapter(instanceID);
     } catch (Exception ex) {
       ex.printStackTrace();
     }
+  }
+
+  public void testAdapter(String instanceID) throws Exception {
+    JsspGeneticAlgorithmFactory jsspGAFactory = new JsspGeneticAlgorithmFactory();
+
+    String path = String.format("/org/seage/problem/jssp/instances/%s.xml", instanceID);
+    ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+    JobsDefinition jobs = null;
+
+    try(InputStream stream = getClass().getResourceAsStream(path)) {    
+      jobs = new JobsDefinition(jobInfo, stream);
+    }
+
+    IAlgorithmAdapter<JsspPhenotype, Subject<Integer>> algorithmAdap = 
+    jsspGAFactory.createAlgorithm(jobs, new JsspPhenotypeEvaluator(jobs));
+
+    System.out.println(algorithmAdap);
   }
 
   public void run(String instanceID) throws Exception {
