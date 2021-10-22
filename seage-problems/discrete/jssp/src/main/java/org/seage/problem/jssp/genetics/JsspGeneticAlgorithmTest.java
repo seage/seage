@@ -64,11 +64,12 @@ public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgor
       jobs = new JobsDefinition(jobInfo, stream);
     }
 
+    System.out.println(jobs.getJobsCount());
     int populationCount = 100;
-    //System.out.println("Population: " + populationCount);
+    System.out.println("Population: " + populationCount);
     List<Subject<Integer>> initialSolutions = generateInitialSubjects(jobs, populationCount);
     GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
-        new JsspGeneticOperator(), new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(null)));
+        new JsspGeneticOperator(), new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(jobs)));
     gs.addGeneticSearchListener(this);
     gs.setEliteSubjectsPct(5);
     gs.setMutatePopulationPct(5);
