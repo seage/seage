@@ -120,7 +120,7 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenot
 
     private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
         AlgorithmParams result = new AlgorithmParams();
-        DataNode algParamsNode = problemInfo.getDataNode("Algorithms").getDataNodeById("genetic");
+        DataNode algParamsNode = problemInfo.getDataNode("Algorithms").getDataNodeById("GeneticAlgorithm");
         for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
           result.putValue(param.getValueStr("name"), param.getValue("init"));
         }
