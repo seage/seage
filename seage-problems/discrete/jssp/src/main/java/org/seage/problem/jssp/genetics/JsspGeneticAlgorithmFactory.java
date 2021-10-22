@@ -23,19 +23,28 @@
 
 package org.seage.problem.jssp.genetics;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.Random;
+import org.checkerframework.common.reflection.qual.GetClass;
 import org.seage.aal.Annotations;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.genetics.GeneticAlgorithmAdapter;
 import org.seage.aal.problem.ProblemInstance;
+import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+import org.seage.aal.problem.ProblemInfo;
+import org.seage.data.DataNode;
 import org.seage.metaheuristic.genetics.Subject;
+import org.seage.problem.jssp.JobInfo;
 import org.seage.problem.jssp.JobsDefinition;
 import org.seage.problem.jssp.JsspPhenotype;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
+import org.seage.problem.jssp.JsspProblemProvider;
 //import org.seage.problem.jssp.sannealing.JsspSolution;
 
 /**
@@ -100,12 +109,47 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenot
     }
 
     public static void main(String[] args) {
+        String instanceID = "ft10";
         JsspGeneticAlgorithmFactory factory = new JsspGeneticAlgorithmFactory();
         try {
-            IAlgorithmAdapter<JsspPhenotype, Subject<Integer>> adapter =  factory.createAlgorithm(null, null);
-            adapter.solutionsFromPhenotype(null);
-            adapter.startSearching(null);
-            adapter.solutionsToPhenotype();
+            factory.run(instanceID);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
+        AlgorithmParams result = new AlgorithmParams();
+        DataNode algParamsNode = problemInfo.getDataNode("Algorithms").getDataNodeById("genetic");
+        for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
+          result.putValue(param.getValueStr("name"), param.getValue("init"));
+        }
+        result.putValue("iterationCount", 1);
+        result.putValue("numSolutions", 1);
+        return result;
+    }
+
+    public void run(String instanceID) throws Exception {
+        String path = String.format("/org/seage/problem/jssp/instances/%s.xml", instanceID);
+        ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+
+        JobsDefinition jobs = null;
+        try(InputStream stream = getClass().getResourceAsStream(path)) {    
+            jobs = new JobsDefinition(jobInfo, stream);
+        }
+
+        JsspProblemProvider problemProvider = new JsspProblemProvider();
+        JsspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 100, (new Random()).nextLong());
+
+        AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
+
+        JsspGeneticAlgorithmFactory factory = new JsspGeneticAlgorithmFactory();
+        JsspPhenotypeEvaluator eval = new JsspPhenotypeEvaluator(jobs);
+        try {
+            IAlgorithmAdapter<JsspPhenotype, Subject<Integer>> adapter =  factory.createAlgorithm(jobs, eval);
+            adapter.solutionsFromPhenotype(schedules);
+            adapter.startSearching(params);
+            //adapter.solutionsToPhenotype();
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
