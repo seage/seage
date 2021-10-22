@@ -98,4 +98,18 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenot
 			}
         };
     }
+
+    public static void main(String[] args) {
+        JsspGeneticAlgorithmFactory factory = new JsspGeneticAlgorithmFactory();
+        try {
+            IAlgorithmAdapter<JsspPhenotype, Subject<Integer>> adapter =  factory.createAlgorithm(null, null);
+            adapter.solutionsFromPhenotype(null);
+            adapter.startSearching(null);
+            adapter.solutionsToPhenotype();
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }
