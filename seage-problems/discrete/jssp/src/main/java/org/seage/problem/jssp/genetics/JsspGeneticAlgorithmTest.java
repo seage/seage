@@ -24,6 +24,8 @@ package org.seage.problem.jssp.genetics;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.data.DataNode;
@@ -32,14 +34,18 @@ import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.jssp.JobsDefinition;
+import org.seage.problem.jssp.JsspPhenotype;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 import org.seage.problem.jssp.JsspProblemProvider;
 
 /**
  *
  * @author Richard Malek
+ * Edited by David Omrai
  */
 public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>> {
+  private Random generator = new Random();
+
   public static void main(String[] args) {
     try {
       String instanceID = "ft10"; 
@@ -51,41 +57,40 @@ public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgor
 
   public void run(String instanceID) throws Exception {
     String path = String.format("/org/seage/problem/jssp/instances/%s.xml", instanceID);
-    ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.FILE, path);
+    ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
     JobsDefinition jobs = null;
 
     try(InputStream stream = getClass().getResourceAsStream(path)) {    
       jobs = new JobsDefinition(jobInfo, stream);
     }
 
-    System.out.println(jobs.getJobsCount());
-    // int populationCount = 100;
-    // System.out.println("Population: " + populationCount);
-    // List<Subject<Integer>> initialSolutions = generateInitialSubjects(cities, populationCount);
-    // GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
-    //     new JsspGeneticOperator(), new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(null)));
-    // gs.addGeneticSearchListener(this);
-    // gs.setEliteSubjectsPct(5);
-    // gs.setMutatePopulationPct(5);
-    // gs.setMutateChromosomeLengthPct(30);
-    // gs.setPopulationCount(populationCount);
-    // gs.setRandomSubjectsPct(5);
-    // gs.setCrossLengthPct(30);
-    // gs.setIterationToGo(100);
-    // gs.startSearching(initialSolutions);
+    int populationCount = 100;
+    //System.out.println("Population: " + populationCount);
+    List<Subject<Integer>> initialSolutions = generateInitialSubjects(jobs, populationCount);
+    GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
+        new JsspGeneticOperator(), new JsspSubjectEvaluator(new JsspPhenotypeEvaluator(null)));
+    gs.addGeneticSearchListener(this);
+    gs.setEliteSubjectsPct(5);
+    gs.setMutatePopulationPct(5);
+    gs.setMutateChromosomeLengthPct(30);
+    gs.setPopulationCount(populationCount);
+    gs.setRandomSubjectsPct(5);
+    gs.setCrossLengthPct(30);
+    gs.setIterationToGo(100);
+    gs.startSearching(initialSolutions);
   }
 
-  private List<Subject<Integer>> generateInitialSubjects(JobsDefinition[] jobs, int subjectCount) throws Exception {
-    // ArrayList<Subject<Integer>> result = new ArrayList<>(subjectCount);
+  private List<Subject<Integer>> generateInitialSubjects(JobsDefinition jobs, int subjectCount) throws Exception {
+    ArrayList<Subject<Integer>> result = new ArrayList<>(subjectCount);
 
-    // Integer[][] tours = new Integer[subjectCount][];
-    // for (int k = 0; k < subjectCount; k++)
-    //   tours[k] = TourProvider.createRandomTour(cities.length);
+    JsspProblemProvider problemProvider = new JsspProblemProvider();
     
-    // for (int k = 0; k < subjectCount; k++)
-    //   result.add(new Subject<>(tours[k]));
-    // return result;
-    return null;
+    JsspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, subjectCount, this.generator.nextLong());
+    
+    for (int k = 0; k < subjectCount; k++)
+      result.add(new Subject<>(schedules[k].getSolution()));
+
+    return result;
   }
 
   @Override
