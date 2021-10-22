@@ -50,28 +50,10 @@ public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgor
   public static void main(String[] args) {
     try {
       String instanceID = "ft10"; 
-      //new JsspGeneticAlgorithmTest().run(instanceID);
-      new JsspGeneticAlgorithmTest().testAdapter(instanceID);
+      new JsspGeneticAlgorithmTest().run(instanceID);
     } catch (Exception ex) {
       ex.printStackTrace();
     }
-  }
-
-  public void testAdapter(String instanceID) throws Exception {
-    JsspGeneticAlgorithmFactory jsspGAFactory = new JsspGeneticAlgorithmFactory();
-
-    String path = String.format("/org/seage/problem/jssp/instances/%s.xml", instanceID);
-    ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
-    JobsDefinition jobs = null;
-
-    try(InputStream stream = getClass().getResourceAsStream(path)) {    
-      jobs = new JobsDefinition(jobInfo, stream);
-    }
-
-    IAlgorithmAdapter<JsspPhenotype, Subject<Integer>> algorithmAdap = 
-    jsspGAFactory.createAlgorithm(jobs, new JsspPhenotypeEvaluator(jobs));
-
-    System.out.println(algorithmAdap);
   }
 
   public void run(String instanceID) throws Exception {
