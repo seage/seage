@@ -55,6 +55,11 @@ import org.seage.problem.tsp.TspPhenotypeEvaluator;
 import org.seage.problem.tsp.TspProblemInstance;
 import org.seage.problem.tsp.TspProblemProvider;
 
+import org.seage.problem.jssp.JobsDefinition;
+import org.seage.problem.jssp.JsspPhenotype;
+import org.seage.problem.jssp.JsspPhenotypeEvaluator;
+import org.seage.problem.jssp.JsspProblemProvider;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,7 +106,7 @@ public class MetadataGenerator {
 
     for (String problemId : providers.keySet()) {
       try {
-        logger.info("Working on " + problemId + " problem...");
+        logger.info("Working on {} problem...", problemId);
 
         IProblemProvider<?> pp = providers.get(problemId);
         ProblemInfo pi = pp.getProblemInfo();
@@ -141,7 +146,7 @@ public class MetadataGenerator {
    * @param dn DataNode object with data for outputting.
    */
   private static void saveToFile(DataNode dn, String fileName) throws Exception {
-    logger.info("Saving the results to the file " + fileName + ".metadata.xml");
+    logger.info("Saving the results to the file {}.metadata.xml", fileName);
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, ""); // Compliant
@@ -233,7 +238,7 @@ public class MetadataGenerator {
     // iterate through all instances
     for (String instanceID : getSortedInstanceIDs(pi)) {
       try {
-        logger.info("Processing: " + instanceID);
+        logger.info("Processing: {}", instanceID);
 
         TspProblemProvider provider = new TspProblemProvider();
 
@@ -301,7 +306,7 @@ public class MetadataGenerator {
     // iterate through all instances
     for (String instanceID : getSortedInstanceIDs(pi)) {
       try {
-        logger.info("Processing: " + instanceID);
+        logger.info("Processing: {}", instanceID);
 
         SatProblemProvider provider = new SatProblemProvider();
 
