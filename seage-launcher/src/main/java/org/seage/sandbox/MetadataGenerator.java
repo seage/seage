@@ -29,7 +29,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
+
 import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -401,7 +403,7 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
-            //randomResults[i] = null; // to do
+            randomResults[i] = jsspEval.evaluate(provider.generateInitialSolutions(instance, 1, new Random().nextLong())[0])[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
