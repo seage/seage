@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Problem id="JSSP">
+    <Instances>
+        <Instance greedy="0" id="abz5" optimum="1234" random="0" size="10"/>
+        <Instance greedy="0" id="abz6" optimum="943" random="0" size="10"/>
+        <Instance greedy="0" id="abz7" optimum="656" random="0" size="20"/>
+        <Instance greedy="0" id="abz8" optimum="665" random="0" size="20"/>
+        <Instance greedy="0" id="abz9" optimum="679" random="0" size="20"/>
+        <Instance greedy="0" id="ft06" optimum="55" random="0" size="6"/>
+        <Instance greedy="0" id="ft10" optimum="930" random="0" size="10"/>
+        <Instance greedy="0" id="ft20" optimum="1165" random="0" size="20"/>
+        <Instance greedy="0" id="la01" optimum="666" random="0" size="10"/>
+        <Instance greedy="0" id="la02" optimum="655" random="0" size="10"/>
+        <Instance greedy="0" id="la03" optimum="597" random="0" size="10"/>
+        <Instance greedy="0" id="la04" optimum="590" random="0" size="10"/>
+        <Instance greedy="0" id="la05" optimum="593" random="0" size="10"/>
+        <Instance greedy="0" id="la06" optimum="926" random="0" size="15"/>
+        <Instance greedy="0" id="la07" optimum="890" random="0" size="15"/>
+        <Instance greedy="0" id="la08" optimum="863" random="0" size="15"/>
+        <Instance greedy="0" id="la09" optimum="951" random="0" size="15"/>
+        <Instance greedy="0" id="la10" optimum="958" random="0" size="15"/>
+        <Instance greedy="0" id="la11" optimum="1222" random="0" size="20"/>
+        <Instance greedy="0" id="la12" optimum="1039" random="0" size="20"/>
+        <Instance greedy="0" id="la13" optimum="1150" random="0" size="20"/>
+        <Instance greedy="0" id="la14" optimum="1292" random="0" size="20"/>
+        <Instance greedy="0" id="la15" optimum="1207" random="0" size="20"/>
+        <Instance greedy="0" id="la16" optimum="945" random="0" size="10"/>
+        <Instance greedy="0" id="la17" optimum="784" random="0" size="10"/>
+        <Instance greedy="0" id="la18" optimum="848" random="0" size="10"/>
+        <Instance greedy="0" id="la19" optimum="842" random="0" size="10"/>
+        <Instance greedy="0" id="la20" optimum="902" random="0" size="10"/>
+        <Instance greedy="0" id="la21" optimum="1046" random="0" size="15"/>
+        <Instance greedy="0" id="la22" optimum="927" random="0" size="15"/>
+        <Instance greedy="0" id="la23" optimum="1032" random="0" size="15"/>
+        <Instance greedy="0" id="la24" optimum="935" random="0" size="15"/>
+        <Instance greedy="0" id="la25" optimum="977" random="0" size="15"/>
+        <Instance greedy="0" id="la26" optimum="1218" random="0" size="20"/>
+        <Instance greedy="0" id="la27" optimum="1235" random="0" size="20"/>
+        <Instance greedy="0" id="la28" optimum="1216" random="0" size="20"/>
+        <Instance greedy="0" id="la29" optimum="1152" random="0" size="20"/>
+        <Instance greedy="0" id="la30" optimum="1355" random="0" size="20"/>
+        <Instance greedy="0" id="la31" optimum="1784" random="0" size="30"/>
+        <Instance greedy="0" id="la32" optimum="1850" random="0" size="30"/>
+        <Instance greedy="0" id="la33" optimum="1719" random="0" size="30"/>
+        <Instance greedy="0" id="la34" optimum="1721" random="0" size="30"/>
+        <Instance greedy="0" id="la35" optimum="1888" random="0" size="30"/>
+        <Instance greedy="0" id="la36" optimum="1268" random="0" size="15"/>
+        <Instance greedy="0" id="la37" optimum="1397" random="0" size="15"/>
+        <Instance greedy="0" id="la38" optimum="1196" random="0" size="15"/>
+        <Instance greedy="0" id="la39" optimum="1233" random="0" size="15"/>
+        <Instance greedy="0" id="la40" optimum="1222" random="0" size="15"/>
+        <Instance greedy="0" id="orb01" optimum="1059" random="0" size="10"/>
+        <Instance greedy="0" id="orb02" optimum="888" random="0" size="10"/>
+        <Instance greedy="0" id="orb03" optimum="1005" random="0" size="10"/>
+        <Instance greedy="0" id="orb04" optimum="1005" random="0" size="10"/>
+        <Instance greedy="0" id="orb05" optimum="887" random="0" size="10"/>
+        <Instance greedy="0" id="orb06" optimum="1010" random="0" size="10"/>
+        <Instance greedy="0" id="orb07" optimum="397" random="0" size="10"/>
+        <Instance greedy="0" id="orb08" optimum="899" random="0" size="10"/>
+        <Instance greedy="0" id="orb09" optimum="934" random="0" size="10"/>
+        <Instance greedy="0" id="orb10" optimum="944" random="0" size="10"/>
+        <Instance greedy="0" id="swv01 " optimum="TBA" random="0" size="20"/>
+        <Instance greedy="0" id="swv02" optimum="1475" random="0" size="20"/>
+        <Instance greedy="0" id="swv03 " optimum="TBA" random="0" size="20"/>
+        <Instance greedy="0" id="swv04 " optimum="TBA" random="0" size="20"/>
+        <Instance greedy="0" id="swv05 " optimum="TBA" random="0" size="20"/>
+        <Instance greedy="0" id="swv06" optimum="1678" random="0" size="20"/>
+        <Instance greedy="0" id="swv07" optimum="1600" random="0" size="20"/>
+        <Instance greedy="0" id="swv08" optimum="1763" random="0" size="20"/>
+        <Instance greedy="0" id="swv09" optimum="1661" random="0" size="20"/>
+        <Instance greedy="0" id="swv10" optimum="1767" random="0" size="20"/>
+        <Instance greedy="0" id="swv11" optimum="2991" random="0" size="50"/>
+        <Instance greedy="0" id="swv12" optimum="3003" random="0" size="50"/>
+        <Instance greedy="0" id="swv13" optimum="3104" random="0" size="50"/>
+        <Instance greedy="0" id="swv14" optimum="2968" random="0" size="50"/>
+        <Instance greedy="0" id="swv15" optimum="2904" random="0" size="50"/>
+        <Instance greedy="0" id="swv16" optimum="2924" random="0" size="50"/>
+        <Instance greedy="0" id="swv17" optimum="2794" random="0" size="50"/>
+        <Instance greedy="0" id="swv18" optimum="2852" random="0" size="50"/>
+        <Instance greedy="0" id="swv19" optimum="2843" random="0" size="50"/>
+        <Instance greedy="0" id="swv20" optimum="2823" random="0" size="50"/>
+        <Instance greedy="0" id="test01" optimum="TBA" random="0" size="2"/>
+        <Instance greedy="0" id="yn1" optimum="885" random="0" size="20"/>
+        <Instance greedy="0" id="yn2" optimum="909" random="0" size="20"/>
+        <Instance greedy="0" id="yn3" optimum="892" random="0" size="20"/>
+    </Instances>
+</Problem>
