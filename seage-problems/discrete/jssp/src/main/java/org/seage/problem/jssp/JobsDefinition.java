@@ -59,7 +59,7 @@ public class JobsDefinition extends ProblemInstance
         return _numMachines;
     }
     
-    private void createJobInfos(InputStream jobsDefinitionStream) throws Exception
+    protected void createJobInfos(InputStream jobsDefinitionStream) throws Exception
     {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();        
