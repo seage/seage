@@ -61,7 +61,7 @@ import org.seage.problem.jssp.JobsDefinition;
 import org.seage.problem.jssp.JsspPhenotype;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 import org.seage.problem.jssp.JsspProblemProvider;
-
+import org.seage.problem.jssp.ScheduleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -377,11 +377,16 @@ public class MetadataGenerator {
       try {
         logger.info("Processing: {}", instanceID);
 
+        Random rnd = new Random();
+
         JsspProblemProvider provider = new JsspProblemProvider();
 
         ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
         JobsDefinition instance = provider.initProblemInstance(pii);
         JsspPhenotypeEvaluator jsspEval = new JsspPhenotypeEvaluator(instance);
+
+        int numJobs = instance.getJobsCount();
+        int numOpers = instance.getJobInfos()[0].getOperationInfos().length;
 
         double[] randomResults = new double[numberOfTrials];
         double[] greedyResults = new double[numberOfTrials];
@@ -403,7 +408,7 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
-            randomResults[i] = jsspEval.evaluate(provider.generateInitialSolutions(instance, 1, new Random().nextLong())[0])[0];
+            randomResults[i] = jsspEval.evaluate(ScheduleProvider.createRandomSchedule(numJobs*numOpers, rnd.nextLong()))[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
