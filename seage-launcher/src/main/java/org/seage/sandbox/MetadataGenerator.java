@@ -365,6 +365,66 @@ public class MetadataGenerator {
    * @param numberOfTrials number of random solutions to make.
    */
   private DataNode getJsspInstanceMedata(ProblemInfo pi, int numberOfTrials) throws Exception {
-    return null;
+    DataNode result = new DataNode("Instances");
+
+    HashMap<String, String> optimumResults =
+        getOptimalValues("/org/seage/problem/jssp/solutions/__optimal.txt");
+
+    // iterate through all instances
+    for (String instanceID : getSortedInstanceIDs(pi)) {
+      try {
+        logger.info("Processing: {}", instanceID);
+
+        JsspProblemProvider provider = new JsspProblemProvider();
+
+        ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
+        JobsDefinition instance = provider.initProblemInstance(pii);
+        JsspPhenotypeEvaluator jsspEval = new JsspPhenotypeEvaluator(instance);
+
+        double[] randomResults = new double[numberOfTrials];
+        double[] greedyResults = new double[numberOfTrials];
+        List<Integer> indexes = new ArrayList<>(numberOfTrials);
+
+        for (int i = 0; i < numberOfTrials; i++) {
+          indexes.add(i);
+        }
+
+        indexes.parallelStream().forEach((i) -> {
+          try {
+            logger.info("Greedy for: {}, trial {}", instanceID, i);
+            //greedyResults[i] = null; // to do
+          } catch (Exception ex) {
+            logger.warn("Processing trial error", ex);
+          }
+        });
+
+        indexes.parallelStream().forEach((i) -> {
+          try {
+            logger.info("Random for: {}, trial {}", instanceID, i);
+            //randomResults[i] = null; // to do
+          } catch (Exception ex) {
+            logger.warn("Processing trial error", ex);
+          }
+        });
+
+        DataNode inst = new DataNode("Instance");
+        inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
+        inst.putValue("greedy", (int) median(greedyResults));
+        inst.putValue("random", (int) median(randomResults));
+
+        if (optimumResults.containsKey(instanceID.toLowerCase())) {
+          inst.putValue("optimum", optimumResults.get(instanceID.toLowerCase()));;
+        } else {
+          inst.putValue("optimum", "TBA");
+        }
+
+        inst.putValue("size", instance.getJobInfos().length);
+        result.putDataNode(inst);
+      } catch (Exception ex) {
+        logger.warn("JSSP instance error: {}", ex.getMessage());
+      }
+    }
+
+    return result;
   }
 }
