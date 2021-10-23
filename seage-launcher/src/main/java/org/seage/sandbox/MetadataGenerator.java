@@ -135,6 +135,8 @@ public class MetadataGenerator {
         return getSatInstancesMetadata(pi, numberOfTrials);
       case "tsp":
         return getTspInstancesMetadata(pi, numberOfTrials);
+      case "jssp":
+        return getJsspInstanceMedata(pi, numberOfTrials);
       default:
         return null;
     }
@@ -354,5 +356,15 @@ public class MetadataGenerator {
       }
     }
     return result;
+  }
+
+  /**
+   * Method creates for each instance of jssp problem domain number of random solutions. Then it
+   * calculates the score of each solution and stores the median to output array.
+   * 
+   * @param numberOfTrials number of random solutions to make.
+   */
+  private DataNode getJsspInstanceMedata(ProblemInfo pi, int numberOfTrials) throws Exception {
+    return null;
   }
 }
