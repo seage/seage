@@ -24,7 +24,7 @@ public class ScheduleProvider {
     int _numJobs = jobs.getJobsCount();
     int _numMachines = jobInfos[0].getOperationInfos().length;
 
-    int[] greedySolution = new int[_numJobs*_numMachines];
+    Integer[] greedySolution = new Integer[_numJobs*_numMachines];
 
     int[] _lastActivityInJobIndex = new int[_numJobs];
     int[] _lastActivityOnMachineIndex = new int[_numMachines];
@@ -76,7 +76,7 @@ public class ScheduleProvider {
       greedySolution[i] = nextJobId;
     }
     
-    return null;
+    return new JsspPhenotype(greedySolution);
   }
 
   /**
@@ -85,18 +85,24 @@ public class ScheduleProvider {
    * @params length Length of schedule
    * @params randomSeed Random seed
    */
-  public static JsspPhenotype createRandomSchedule(int length, long randomSeed) throws Exception {
+  public static JsspPhenotype createRandomSchedule(JobsDefinition jobs, long randomSeed) throws Exception {
     Random rnd = new Random(randomSeed);
 
-    Integer[] randSol = new Integer[length];
+    int numJobs = jobs.getJobsCount();
+    int numOpers = jobs.getJobInfos()[0].getOperationInfos().length;
 
-    for (int j = 0; j < length; j++)
-      randSol[j] = j + 1;
+    Integer[] randSol = new Integer[numJobs*numOpers];
+
+
+    int i = 0;
+    for (int jobIndex = 0; jobIndex < numJobs; jobIndex++)
+      for (int operIndex = 0; operIndex < numOpers; operIndex++)
+        randSol[i++] = jobIndex + 1;
 
     // Random permutation
-    for(int j=0;j<length*2;j++) {
-      int ix1=rnd.nextInt(length);
-      int ix2=rnd.nextInt(length);
+    for(int j=0;j<randSol.length*2;j++) {
+      int ix1=rnd.nextInt(randSol.length);
+      int ix2=rnd.nextInt(randSol.length);
       int a = randSol[ix1];
       randSol[ix1] = randSol[ix2];
       randSol[ix2] = a;
