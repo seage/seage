@@ -68,6 +68,7 @@ public class FspProblemProvider extends JsspProblemProvider {
     return jobsDefinition;
   }
 
+  // TODO: Remove after testing
   public static void main(String[] args) {    
     try {
       FspProblemProvider provider = new FspProblemProvider();
