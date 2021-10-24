@@ -424,7 +424,7 @@ public class MetadataGenerator {
           inst.putValue("optimum", "TBA");
         }
 
-        inst.putValue("size", instance.getJobInfos().length);
+        inst.putValue("size", instance.getJobInfos().length * instance.getJobInfos()[0].getOperationInfos().length);
         result.putDataNode(inst);
       } catch (Exception ex) {
         logger.warn("JSSP instance error: {}", ex.getMessage());
