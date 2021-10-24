@@ -21,9 +21,9 @@ public class ScheduleProvider {
    */
   public static JsspPhenotype createGreedySchedule(JobsDefinition jobs) throws Exception {
     int numJobs = jobs.getJobsCount();
-    int numMachines = jobs.getJobInfos()[0].getOperationInfos().length;
+    int numOpers = jobs.getJobInfos()[0].getOperationInfos().length;
 
-    Integer[] greedySolution = new Integer[numJobs*numMachines];
+    Integer[] greedySolution = new Integer[numJobs*numOpers];
 
     int[] numFinJobOpers = new int[numJobs];
     for (int i = 0; i < numJobs; i++)
@@ -38,9 +38,10 @@ public class ScheduleProvider {
 
     for (int i = 0; i < greedySolution.length; i++) {
       tmpMinMakeSpan = 0;
+      nextJobId = 0;
 
       for (int jobId = 1; jobId <= numJobs; jobId++) {
-        if ( numFinJobOpers[jobId-1] >= numMachines )
+        if ( numFinJobOpers[jobId-1] >= numOpers )
           continue;
         
         greedySolution[i] = jobId;
