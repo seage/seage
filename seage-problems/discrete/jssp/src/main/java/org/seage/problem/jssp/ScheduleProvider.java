@@ -37,7 +37,8 @@ public class ScheduleProvider {
     int nextJobId = 0;
 
     for (int i = 0; i < greedySolution.length; i++) {
-      
+      tmpMinMakeSpan = 0;
+
       for (int jobId = 1; jobId <= numJobs; jobId++) {
         if ( numFinJobOpers[jobId-1] >= numMachines )
           continue;
@@ -47,7 +48,7 @@ public class ScheduleProvider {
         tmpMakeSpan = jsspPhenoEval
           .evaluateSchedule(Arrays.copyOfRange(greedySolution, 0, i+1))[0];
         
-        if (tmpMakeSpan == 0 || tmpMakeSpan < tmpMinMakeSpan) {
+        if (tmpMinMakeSpan == 0 || tmpMakeSpan < tmpMinMakeSpan) {
           tmpMinMakeSpan = tmpMakeSpan;
           nextJobId = jobId;
         }
