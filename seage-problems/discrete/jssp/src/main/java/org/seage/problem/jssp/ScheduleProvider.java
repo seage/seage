@@ -77,20 +77,16 @@ public class ScheduleProvider {
     Integer[] randSol = new Integer[numJobs*numOpers];
 
 
-    int numJobsOper = 0;
-    int currJobID = 1;
-    for (int i = 0; i < randSol.length; i++) {
-      if (numJobsOper == numOpers){
-        numJobsOper = 0;
-        currJobID++;
+    int i = 0;
+    for (int jobID = 1; jobID <= numJobs; jobID++ ) {
+      for (int operID = 1; operID <= numOpers; operID++) {
+        randSol[i++] = jobID;
       }
-      
-        randSol[i] = currJobID;
-        numJobsOper++;
     }
+    
 
     // Random permutation
-    for(int j=0;j<randSol.length*2;j++) {
+    for(int j = 0; j < randSol.length * 2; j++) {
       int ix1=rnd.nextInt(randSol.length);
       int ix2=rnd.nextInt(randSol.length);
       int a = randSol[ix1];
