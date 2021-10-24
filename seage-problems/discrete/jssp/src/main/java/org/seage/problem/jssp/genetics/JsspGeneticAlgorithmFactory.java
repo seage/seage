@@ -25,9 +25,7 @@ package org.seage.problem.jssp.genetics;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
-import org.checkerframework.common.reflection.qual.GetClass;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
@@ -40,7 +38,6 @@ import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
 import org.seage.metaheuristic.genetics.Subject;
-import org.seage.problem.jssp.JobInfo;
 import org.seage.problem.jssp.JobsDefinition;
 import org.seage.problem.jssp.JsspPhenotype;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
@@ -102,7 +99,7 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenot
                 double[] objVals = this.phenotypeEvaluator.evaluate(result);
 
                 result.setObjValue(objVals[0]);
-                result.setScore(objVals[1]);
+                //result.setScore(objVals[1]);
 				return result;
 			}
         };
