@@ -19,13 +19,15 @@ public class ScheduleProvider {
    * @param jobs Problem instance definition
    * @param randomSeed Random seed.
    */
-  public static JsspPhenotype createGreedySchedule(JobsDefinition jobs, long randomSeed) throws Exception {
+  public static JsspPhenotype createGreedySchedule(JobsDefinition jobs) throws Exception {
     int numJobs = jobs.getJobsCount();
     int numMachines = jobs.getJobInfos()[0].getOperationInfos().length;
 
     Integer[] greedySolution = new Integer[numJobs*numMachines];
 
     int[] numFinJobOpers = new int[numJobs];
+    for (int i = 0; i < numJobs; i++)
+      numFinJobOpers[i] = 0;
 
     JsspPhenotypeEvaluator jsspPhenoEval = new JsspPhenotypeEvaluator(jobs);
 
@@ -53,6 +55,7 @@ public class ScheduleProvider {
 
       // Strore the next new solution
       greedySolution[i] = nextJobId;
+      numFinJobOpers[nextJobId-1] += 1;
     }
     
     return new JsspPhenotype(greedySolution);
