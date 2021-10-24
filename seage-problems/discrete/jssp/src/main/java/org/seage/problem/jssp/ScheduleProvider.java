@@ -2,6 +2,7 @@ package org.seage.problem.jssp;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,54 +20,32 @@ public class ScheduleProvider {
    * @param randomSeed Random seed.
    */
   public static JsspPhenotype createGreedySchedule(JobsDefinition jobs, long randomSeed) throws Exception {
-    JobInfo[] jobInfos = jobs.getJobInfos();
+    int numJobs = jobs.getJobsCount();
+    int numMachines = jobs.getJobInfos()[0].getOperationInfos().length;
 
-    int _numJobs = jobs.getJobsCount();
-    int _numMachines = jobInfos[0].getOperationInfos().length;
+    Integer[] greedySolution = new Integer[numJobs*numMachines];
 
-    Integer[] greedySolution = new Integer[_numJobs*_numMachines];
+    int[] numFinJobOpers = new int[numJobs];
 
-    int[] _lastActivityInJobIndex = new int[_numJobs];
-    int[] _lastActivityOnMachineIndex = new int[_numMachines];
+    JsspPhenotypeEvaluator jsspPhenoEval = new JsspPhenotypeEvaluator(jobs);
 
-    int[] _endTimeInJob = new int[_numJobs];
-    int[] _endTimeOnMachine = new int[_numMachines];
+    double tmpMakeSpan = 0;
+    double tmpMinMakeSpan = 0;
 
-    int indexCurrentMachine = 0;
-    int indexCurrentJob = 0;
-    int indexCurrentOper = 0;
-
-    int maxMakeSpan = 0;
-    int tmpMakeSpan = 0;
-    int tmpMinMakeSpan = 0;
-
-    JobInfo currentJob;
-    OperationInfo currentOper;
-
-    int nextJobId;
+    int nextJobId = 0;
 
     for (int i = 0; i < greedySolution.length; i++) {
       
-      nextJobId = 0;
-      for (int jobId = 1; jobId <= _numJobs; jobId++) {
-        indexCurrentJob = jobId - 1;
-        indexCurrentOper = _lastActivityInJobIndex[indexCurrentJob];
-
-        currentJob = jobs.getJobInfos()[indexCurrentJob];
-        if ( indexCurrentJob >= currentJob.getOperationInfos().length)
+      for (int jobId = 1; jobId <= numJobs; jobId++) {
+        if ( numFinJobOpers[jobId-1] >= numMachines )
           continue;
-        currentOper = currentJob.getOperationInfos()[indexCurrentOper];
+        
+        greedySolution[i] = jobId;
 
-        indexCurrentMachine = currentOper.MachineID - 1;
-
-        if (_endTimeOnMachine[indexCurrentMachine] > _endTimeInJob[indexCurrentJob]) {
-          tmpMakeSpan = _endTimeOnMachine[indexCurrentJob] + currentOper.Length;
-        }
-        else {
-          tmpMakeSpan = _endTimeInJob[indexCurrentJob] + currentOper.Length;
-        }
-
-        if (tmpMinMakeSpan == 0 || tmpMinMakeSpan > tmpMakeSpan) {
+        tmpMakeSpan = jsspPhenoEval
+          .evaluateSchedule(Arrays.copyOfRange(greedySolution, 0, i+1))[0];
+        
+        if (tmpMakeSpan == 0 || tmpMakeSpan < tmpMinMakeSpan) {
           tmpMinMakeSpan = tmpMakeSpan;
           nextJobId = jobId;
         }
