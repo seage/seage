@@ -68,7 +68,8 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenot
         //JobsDefinition jobsDefinition = (JobsDefinition) instance;
         return new GeneticAlgorithmAdapter<JsspPhenotype, Subject<Integer>>(
                 new JsspGeneticOperator(),
-                new JsspSubjectEvaluator(phenotypeEvaluator), phenotypeEvaluator, false)
+                new JsspSubjectEvaluator((JsspPhenotypeEvaluator)phenotypeEvaluator),
+                phenotypeEvaluator, false)
         {
             @Override
             public void solutionsFromPhenotype(JsspPhenotype[] source) throws Exception
@@ -121,8 +122,8 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenot
         for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
           result.putValue(param.getValueStr("name"), param.getValue("init"));
         }
-        result.putValue("iterationCount", 1);
-        result.putValue("numSolutions", 1);
+        result.putValue("iterationCount", 100);
+        result.putValue("numSolutions", 100);
         return result;
     }
 
@@ -146,7 +147,7 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenot
             IAlgorithmAdapter<JsspPhenotype, Subject<Integer>> adapter =  factory.createAlgorithm(jobs, eval);
             adapter.solutionsFromPhenotype(schedules);
             adapter.startSearching(params);
-            //adapter.solutionsToPhenotype();
+            adapter.solutionsToPhenotype();
 
         } catch (Exception e) {
             // TODO Auto-generated catch block

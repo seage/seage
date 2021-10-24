@@ -31,11 +31,7 @@ import org.seage.problem.jssp.JsspPhenotypeEvaluator;
  */
 public class JsspSubjectEvaluator extends SubjectEvaluator<Subject<Integer>>
 {
-  private IPhenotypeEvaluator<JsspPhenotype> _phenotypeEvaluator;
-
-  public JsspSubjectEvaluator(IPhenotypeEvaluator<JsspPhenotype> phenotypeEvaluator) {
-    _phenotypeEvaluator = phenotypeEvaluator;
-  }
+  private JsspPhenotypeEvaluator _phenotypeEvaluator;
 
   public JsspSubjectEvaluator(JsspPhenotypeEvaluator phenotypeEvaluator)
   {
@@ -44,23 +40,6 @@ public class JsspSubjectEvaluator extends SubjectEvaluator<Subject<Integer>>
 
   @Override
   public double[] evaluate(Subject<Integer> solution) throws Exception {
-    return _phenotypeEvaluator.evaluate(new JsspPhenotype(solution.getChromosome().getGenes()));
+    return _phenotypeEvaluator.evaluateSchedule(solution.getChromosome().getGenes());
   }
-
-  public int compare(double[] o1, double[] o2) {
-    if (o1 == null)
-      return -1;
-    if (o2 == null)
-      return 1;
-
-    int length = o1.length <= o2.length ? o1.length : o2.length;
-
-    for (int i = 0; i < length; i++) {
-      if (o1[i] < o2[i])
-        return 1;
-      if (o1[i] > o2[i])
-        return -1;
-    }
-    return 0;
-   }
 }
