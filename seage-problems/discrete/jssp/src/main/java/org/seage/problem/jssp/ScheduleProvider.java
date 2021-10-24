@@ -2,11 +2,14 @@ package org.seage.problem.jssp;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.seage.aal.algorithm.Phenotype;
+import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,5 +99,25 @@ public class ScheduleProvider {
     }
 
     return new JsspPhenotype(randSol);
+  }
+
+  public static void main(String[] args) throws Exception {
+    JsspProblemProvider problemProvider = new JsspProblemProvider();
+    List<ProblemInstanceInfo> instances = problemProvider.getProblemInfo().getProblemInstanceInfos();
+
+    for(ProblemInstanceInfo jobInfo : instances) {
+      JobsDefinition jobs = null;
+      try(InputStream stream = ScheduleProvider.class.getResourceAsStream(jobInfo.getPath())) {    
+        jobs = new JobsDefinition(jobInfo, stream);
+      }
+      JsspPhenotypeEvaluator evaluator = new JsspPhenotypeEvaluator(jobs);
+
+      JsspPhenotype ph1 = ScheduleProvider.createRandomSchedule(jobs, 1);
+      double[] val1 = evaluator.evaluate(ph1);
+      JsspPhenotype ph2 = ScheduleProvider.createGreedySchedule(jobs);
+      double[] val2 = evaluator.evaluate(ph2);
+      
+      logger.debug(jobInfo.getInstanceID() + " - " + val2[0] + " - " + val1[0]);
+    }
   }
 }
