@@ -58,7 +58,6 @@ import org.seage.problem.tsp.TspProblemInstance;
 import org.seage.problem.tsp.TspProblemProvider;
 
 import org.seage.problem.jssp.JobsDefinition;
-import org.seage.problem.jssp.JsspPhenotype;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 import org.seage.problem.jssp.JsspProblemProvider;
 import org.seage.problem.jssp.ScheduleProvider;
@@ -76,7 +75,7 @@ import org.slf4j.LoggerFactory;
 public class MetadataGenerator {
   static {
     ProblemProvider.registerProblemProviders(
-        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class});
+        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class, JsspProblemProvider.class});
   }
 
   private static final Logger logger = LoggerFactory.getLogger(MetadataGenerator.class.getName());
@@ -107,6 +106,9 @@ public class MetadataGenerator {
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
 
     for (String problemId : providers.keySet()) {
+      if (!problemId.equals("JSSP"))
+        continue;
+      
       try {
         logger.info("Working on {} problem...", problemId);
 
