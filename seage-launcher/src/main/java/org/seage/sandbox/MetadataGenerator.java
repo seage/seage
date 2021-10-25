@@ -57,11 +57,11 @@ import org.seage.problem.tsp.TspPhenotypeEvaluator;
 import org.seage.problem.tsp.TspProblemInstance;
 import org.seage.problem.tsp.TspProblemProvider;
 
-import org.seage.problem.jssp.JobsDefinition;
-import org.seage.problem.jssp.JsspPhenotype;
-import org.seage.problem.jssp.JsspPhenotypeEvaluator;
-import org.seage.problem.jssp.JsspProblemProvider;
-import org.seage.problem.jssp.ScheduleProvider;
+import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp.JspProblemProvider;
+import org.seage.problem.jsp.ScheduleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +76,7 @@ import org.slf4j.LoggerFactory;
 public class MetadataGenerator {
   static {
     ProblemProvider.registerProblemProviders(
-        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class, JsspProblemProvider.class});
+        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class, JspProblemProvider.class});
   }
 
   private static final Logger logger = LoggerFactory.getLogger(MetadataGenerator.class.getName());
@@ -140,8 +140,8 @@ public class MetadataGenerator {
         return getSatInstancesMetadata(pi, numberOfTrials);
       case "tsp":
         return getTspInstancesMetadata(pi, numberOfTrials);
-      case "jssp":
-        return getJsspInstanceMedata(pi, numberOfTrials);
+      case "jsp":
+        return getJspInstanceMedata(pi, numberOfTrials);
       default:
         return null;
     }
@@ -364,16 +364,16 @@ public class MetadataGenerator {
   }
 
   /**
-   * Method creates for each instance of jssp problem domain number of random solutions. Then it
+   * Method creates for each instance of jsp problem domain number of random solutions. Then it
    * calculates the score of each solution and stores the median to output array.
    * 
    * @param numberOfTrials number of random solutions to make.
    */
-  private DataNode getJsspInstanceMedata(ProblemInfo pi, int numberOfTrials) throws Exception {
+  private DataNode getJspInstanceMedata(ProblemInfo pi, int numberOfTrials) throws Exception {
     DataNode result = new DataNode("Instances");
 
     HashMap<String, String> optimumResults =
-        getOptimalValues("/org/seage/problem/jssp/solutions/__optimal.txt");
+        getOptimalValues("/org/seage/problem/jsp/solutions/__optimal.txt");
 
     // iterate through all instances
     for (String instanceID : getSortedInstanceIDs(pi)) {
@@ -382,11 +382,11 @@ public class MetadataGenerator {
 
         Random rnd = new Random();
 
-        JsspProblemProvider provider = new JsspProblemProvider();
+        JspProblemProvider provider = new JspProblemProvider();
 
         ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
         JobsDefinition instance = provider.initProblemInstance(pii);
-        JsspPhenotypeEvaluator jsspEval = new JsspPhenotypeEvaluator(instance);
+        JspPhenotypeEvaluator jspEval = new JspPhenotypeEvaluator(instance);
 
         double[] randomResults = new double[numberOfTrials];
         double[] greedyResults = new double[numberOfTrials];
@@ -399,7 +399,7 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Greedy for: {}, trial {}", instanceID, i);
-            greedyResults[i] = jsspEval.evaluate(ScheduleProvider.createGreedySchedule(instance))[0];
+            greedyResults[i] = jspEval.evaluate(ScheduleProvider.createGreedySchedule(instance))[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
@@ -408,7 +408,7 @@ public class MetadataGenerator {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
 
-            randomResults[i] = jsspEval.evaluate(ScheduleProvider.createRandomSchedule(instance, rnd.nextLong()))[0];
+            randomResults[i] = jspEval.evaluate(ScheduleProvider.createRandomSchedule(instance, rnd.nextLong()))[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
