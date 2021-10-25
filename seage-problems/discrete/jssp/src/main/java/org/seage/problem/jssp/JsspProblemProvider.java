@@ -87,6 +87,7 @@ public class JsspProblemProvider extends ProblemProvider<JsspPhenotype>
     Random rnd = new Random(randomSeed);
     JobsDefinition jobsDefinition = (JobsDefinition)problemInstance;
     JsspPhenotype[] result = new JsspPhenotype[numSolutions];
+    IPhenotypeEvaluator<JsspPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
     
     int numJobs = jobsDefinition.getJobsCount();
     int numOpers = jobsDefinition.getJobInfos()[0].getOperationInfos().length;
@@ -113,6 +114,10 @@ public class JsspProblemProvider extends ProblemProvider<JsspPhenotype>
         tmpArray[ix1] = tmpArray[ix2];
         tmpArray[ix2] = a;
         result[i] = new JsspPhenotype(tmpArray);
+
+        double[] objVals = evaluator.evaluate(result[i]);
+        result[i].setObjValue(objVals[0]);
+        result[i].setScore(objVals[1]);
       }
     }
       

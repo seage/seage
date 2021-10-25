@@ -79,7 +79,7 @@
         <Instance greedy="3430" id="swv18" optimum="2852" random="4374" size="500"/>
         <Instance greedy="3519" id="swv19" optimum="2843" random="4709" size="500"/>
         <Instance greedy="3425" id="swv20" optimum="2823" random="4348" size="500"/>
-        <Instance greedy="6" id="test01" optimum="TBA" random="6" size="6"/>
+        <Instance greedy="6" id="test01" optimum="6" random="1" size="6"/>
         <Instance greedy="1115" id="yn1" optimum="885" random="1848" size="400"/>
         <Instance greedy="1345" id="yn2" optimum="909" random="1872" size="400"/>
         <Instance greedy="1246" id="yn3" optimum="892" random="1875" size="400"/>

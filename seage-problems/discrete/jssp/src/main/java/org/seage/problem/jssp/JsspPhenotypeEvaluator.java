@@ -72,9 +72,8 @@ public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator<JsspPhenotype
   public double[] evaluateSchedule(Integer[] jobArray) throws Exception
   {
     double makeSpan = createSchedule(jobArray, true).getMakeSpan();
-    return new double[] { 
-      makeSpan,
-      this.scoreCalculator.calculateInstanceScore(_instanceID, makeSpan) };
+    double score = this.scoreCalculator.calculateInstanceScore(_instanceID, makeSpan);
+    return new double[] { makeSpan, score };
   }
     
   public Schedule createSchedule(Integer[] jobArray) {

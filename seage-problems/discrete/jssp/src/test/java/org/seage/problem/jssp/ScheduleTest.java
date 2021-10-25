@@ -17,7 +17,7 @@ public class ScheduleTest
     public ScheduleTest() throws Exception
     {
         _jobsDefinition = new JobsDefinition(
-                new ProblemInstanceInfo("TestJsspInstance", ProblemInstanceOrigin.RESOURCE, ""), 
+                new ProblemInstanceInfo("test01", ProblemInstanceOrigin.RESOURCE, ""), 
                 getClass().getResourceAsStream("/org/seage/problem/jssp/test-instances/test01.xml"));
     }
     
