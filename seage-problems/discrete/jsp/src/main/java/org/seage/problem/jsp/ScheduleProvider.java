@@ -1,16 +1,11 @@
-package org.seage.problem.jssp;
+package org.seage.problem.jsp;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

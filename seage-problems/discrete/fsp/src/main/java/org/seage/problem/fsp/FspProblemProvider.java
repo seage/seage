@@ -28,7 +28,7 @@ import java.io.InputStream;
 import org.seage.aal.Annotations;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
-import org.seage.problem.jssp.JsspProblemProvider;
+import org.seage.problem.jsp.JspProblemProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  */
 @Annotations.ProblemId("FSP")
 @Annotations.ProblemName("Flow Shop Scheduling Problem")
-public class FspProblemProvider extends JsspProblemProvider {
+public class FspProblemProvider extends JspProblemProvider {
   private static Logger logger = LoggerFactory.getLogger(FspProblemProvider.class.getName());
 
   @Override

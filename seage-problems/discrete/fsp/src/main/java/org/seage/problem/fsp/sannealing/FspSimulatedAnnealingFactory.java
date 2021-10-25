@@ -26,7 +26,7 @@
 package org.seage.problem.fsp.sannealing;
 
 import org.seage.aal.Annotations;
-import org.seage.problem.jssp.sannealing.JsspSimulatedAnnealingFactory;
+import org.seage.problem.jsp.sannealing.JspSimulatedAnnealingFactory;
 
 /**
  *
@@ -34,5 +34,5 @@ import org.seage.problem.jssp.sannealing.JsspSimulatedAnnealingFactory;
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
-public class FspSimulatedAnnealingFactory extends JsspSimulatedAnnealingFactory {
+public class FspSimulatedAnnealingFactory extends JspSimulatedAnnealingFactory {
 }

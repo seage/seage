@@ -29,6 +29,7 @@
 package org.seage.problem.jsp;
 
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemScoreCalculator;
 
 public class JspPhenotypeEvaluator implements IPhenotypeEvaluator<JspPhenotype>

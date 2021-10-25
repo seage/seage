@@ -26,7 +26,7 @@
 package org.seage.problem.fsp.tabusearch;
 
 import org.seage.aal.Annotations;
-import org.seage.problem.jssp.tabusearch.JsspTabuSearchFactory;
+import org.seage.problem.jsp.tabusearch.JspTabuSearchFactory;
 
 /**
  *
@@ -34,5 +34,5 @@ import org.seage.problem.jssp.tabusearch.JsspTabuSearchFactory;
  */
 @Annotations.AlgorithmId("TabuSearch")
 @Annotations.AlgorithmName("Tabu Search")
-public class FspTabuSearchFactory extends JsspTabuSearchFactory {
+public class FspTabuSearchFactory extends JspTabuSearchFactory {
 }

@@ -402,7 +402,7 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Greedy for: {}, trial {}", instanceID, i);
-            greedyResults[i] = jspEval.evaluate(ScheduleProvider.createGreedySchedule(instance))[0];
+            greedyResults[i] = jspEval.evaluate(ScheduleProvider.createGreedySchedule(jspEval, instance))[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
@@ -461,7 +461,7 @@ public class MetadataGenerator {
 
         ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
         JobsDefinition instance = provider.initProblemInstance(pii);
-        JsspPhenotypeEvaluator jsspEval = new JsspPhenotypeEvaluator(pi, instance);
+        JspPhenotypeEvaluator jsspEval = new JspPhenotypeEvaluator(pi, instance);
 
         double[] randomResults = new double[numberOfTrials];
         double[] greedyResults = new double[numberOfTrials];
@@ -474,7 +474,7 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Greedy for: {}, trial {}", instanceID, i);
-            JsspPhenotype schedule = ScheduleProvider.createGreedySchedule(jsspEval, instance);
+            JspPhenotype schedule = ScheduleProvider.createGreedySchedule(jsspEval, instance);
             greedyResults[i] = jsspEval.evaluate(schedule)[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
@@ -483,7 +483,7 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
-            JsspPhenotype schedule = ScheduleProvider.createRandomSchedule(instance, rnd.nextLong());
+            JspPhenotype schedule = ScheduleProvider.createRandomSchedule(instance, rnd.nextLong());
             randomResults[i] = jsspEval.evaluate(schedule)[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);

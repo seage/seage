@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.problem.jssp.JobInfo;
-import org.seage.problem.jssp.JobsDefinition;
-import org.seage.problem.jssp.OperationInfo;
+import org.seage.problem.jsp.JobInfo;
+import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.OperationInfo;
 
 public class FspJobsDefinition extends JobsDefinition {
 

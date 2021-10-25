@@ -16,5 +16,5 @@ dependencies {
     testImplementation(testFixtures(project(':seage-aal')))
     implementation project(':seage-metaheuristics')
     implementation project(':seage-misc')
-    implementation project(':seage-problem-jssp')
+    implementation project(':seage-problem-jsp')
 }

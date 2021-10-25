@@ -27,12 +27,12 @@
 package org.seage.problem.fsp.antcolony;
 
 import org.seage.aal.Annotations;
-import org.seage.problem.jssp.antcolony.JsspAntColonyFactory;
+import org.seage.problem.jsp.antcolony.JspAntColonyFactory;
 /**
  *
  * @author Richard Malek
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
-public class FspAntColonyFactory extends JsspAntColonyFactory {
+public class FspAntColonyFactory extends JspAntColonyFactory {
 }

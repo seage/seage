@@ -24,7 +24,7 @@
 package org.seage.problem.fsp.genetics;
 
 import org.seage.aal.Annotations;
-import org.seage.problem.jssp.genetics.JsspGeneticAlgorithmFactory;
+import org.seage.problem.jsp.genetics.JspGeneticAlgorithmFactory;
 
 /**
  *
@@ -32,5 +32,5 @@ import org.seage.problem.jssp.genetics.JsspGeneticAlgorithmFactory;
  */
 @Annotations.AlgorithmId("GeneticAlgorithm")
 @Annotations.AlgorithmName("Genetic Algorithm")
-public class FspGeneticAlgorithmFactory extends JsspGeneticAlgorithmFactory{
+public class FspGeneticAlgorithmFactory extends JspGeneticAlgorithmFactory{
 }
