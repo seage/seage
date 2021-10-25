@@ -84,41 +84,19 @@ public class JsspProblemProvider extends ProblemProvider<JsspPhenotype>
   public JsspPhenotype[] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
     throws Exception
   {
-    Random rnd = new Random(randomSeed);
-    JobsDefinition jobsDefinition = (JobsDefinition)problemInstance;
+    JobsDefinition jobs = (JobsDefinition)problemInstance;
     JsspPhenotype[] result = new JsspPhenotype[numSolutions];
     IPhenotypeEvaluator<JsspPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
-    
-    int numJobs = jobsDefinition.getJobsCount();
-    int numOpers = jobsDefinition.getJobInfos()[0].getOperationInfos().length;
-    
-    for(int i=0;i<numSolutions;i++)
-    {
-      Integer[] tmpArray = new Integer[numJobs*numOpers];
-      
-      int l=0;
-      for(int j=0;j<numJobs;j++)
-        for(int k=0;k<numOpers;k++)
-          tmpArray[l++] = j+1;
-      result[i] = new JsspPhenotype(tmpArray);
-    }
       
     for(int i=0;i<numSolutions;i++)
     {
-      for(int j=0;j<numJobs*numOpers*2;j++)
-      {
-        int ix1=rnd.nextInt(numJobs*numOpers);
-        int ix2=rnd.nextInt(numJobs*numOpers);
-        int a = result[i].getSolution()[ix1];
-        Integer[] tmpArray = result[i].getSolution();
-        tmpArray[ix1] = tmpArray[ix2];
-        tmpArray[ix2] = a;
-        result[i] = new JsspPhenotype(tmpArray);
-
-        double[] objVals = evaluator.evaluate(result[i]);
-        result[i].setObjValue(objVals[0]);
-        result[i].setScore(objVals[1]);
-      }
+      // Create random schedule
+      result[i] = ScheduleProvider.createRandomSchedule(jobs, randomSeed);
+      // Evaluate the random schedule
+      double[] objVals = evaluator.evaluate(result[i]);
+      result[i].setObjValue(objVals[0]);
+      result[i].setScore(objVals[1]);
+      
     }
       
     return result;
