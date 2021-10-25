@@ -21,7 +21,7 @@ dependencies {
     implementation project(':seage-misc')
     implementation project(':seage-problem-tsp')
     implementation project(':seage-problem-sat')
-    implementation project(':seage-problem-jssp')
+    implementation project(':seage-problem-jsp')
     implementation project(':seage-problem-fsp')
 }
 

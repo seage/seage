@@ -6,17 +6,17 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Launch JsspGeneticAlgorithmFactory",
+      "name": "Launch JspGeneticAlgorithmFactory",
       "request": "launch",
-      "mainClass": "org.seage.problem.jssp.genetics.JsspGeneticAlgorithmFactory",
-      "projectName": "seage-problem-jssp"
+      "mainClass": "org.seage.problem.jsp.genetics.JspGeneticAlgorithmFactory",
+      "projectName": "seage-problem-jsp"
     },
     {
       "type": "java",
-      "name": "Launch JsspGeneticAlgorithmTest",
+      "name": "Launch JspGeneticAlgorithmTest",
       "request": "launch",
-      "mainClass": "org.seage.problem.jssp.genetics.JsspGeneticAlgorithmTest",
-      "projectName": "seage-problem-jssp"
+      "mainClass": "org.seage.problem.jsp.genetics.JspGeneticAlgorithmTest",
+      "projectName": "seage-problem-jsp"
     },
     {
       "type": "java",

@@ -19,7 +19,7 @@ import org.seage.launcher.commands.ExperimentSingleGridCommand;
 import org.seage.launcher.commands.ExperimentSingleRandomCommand;
 import org.seage.launcher.commands.ListCommand;
 import org.seage.problem.fsp.FspProblemProvider;
-import org.seage.problem.jssp.JsspProblemProvider;
+import org.seage.problem.jsp.JspProblemProvider;
 import org.seage.problem.sat.SatProblemProvider;
 import org.seage.problem.tsp.TspProblemProvider;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class Launcher {
         new Class<?>[] {
             TspProblemProvider.class,
             SatProblemProvider.class,
-            JsspProblemProvider.class,
+            JspProblemProvider.class,
             FspProblemProvider.class
         });
   }
