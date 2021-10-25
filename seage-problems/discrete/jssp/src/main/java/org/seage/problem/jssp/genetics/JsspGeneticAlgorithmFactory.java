@@ -100,7 +100,7 @@ public class JsspGeneticAlgorithmFactory implements IAlgorithmFactory<JsspPhenot
                 double[] objVals = this.phenotypeEvaluator.evaluate(result);
 
                 result.setObjValue(objVals[0]);
-                //result.setScore(objVals[1]);
+                result.setScore(objVals[1]);
 				return result;
 			}
         };
