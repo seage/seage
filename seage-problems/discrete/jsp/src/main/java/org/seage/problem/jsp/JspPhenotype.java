@@ -18,7 +18,7 @@
  */
 
 /**
- * Contributors: Richard Malek - Initial implementation, David Omrai - Adapting to JSSP problem
+ * Contributors: Richard Malek - Initial implementation, David Omrai - Adapting to JSP problem
  */
 package org.seage.problem.jsp;
 

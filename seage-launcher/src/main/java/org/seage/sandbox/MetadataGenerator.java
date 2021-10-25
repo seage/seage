@@ -425,7 +425,7 @@ public class MetadataGenerator {
         inst.putValue("size", instance.getJobInfos().length * instance.getJobInfos()[0].getOperationInfos().length);
         result.putDataNode(inst);
       } catch (Exception ex) {
-        logger.warn("JSSP instance error: {}", ex.getMessage());
+        logger.warn("JSP instance error: {}", ex.getMessage());
       }
     }
 

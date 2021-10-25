@@ -53,7 +53,7 @@ public abstract class Experimenter {
   /**
    * Experimenter performs experiment tasks.
    * @param experimentName Name of the experiment, e.g. SingleAlgoritmhRandom
-   * @param problemID Problem identifier, e.g TSP, SAT or JSSP
+   * @param problemID Problem identifier, e.g TSP, SAT or JSP
    * @param instanceIDs Array of instance identifiers
    * @param algorithmIDs Array of algorithms involved in the experiment
    * @throws Exception Throws exception in case of a trouble.
