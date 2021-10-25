@@ -405,20 +405,11 @@ public class MetadataGenerator {
           }
         });
         indexes.parallelStream().forEach((i) -> {
-          JsspPhenotype[] jsspPh = new JsspPhenotype[1];
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
-            jsspPh[0] = new JsspPhenotype(ScheduleProvider.createRandomSchedule(instance, rnd.nextLong()).getSolution());
 
-            randomResults[i] = jsspEval.evaluate(jsspPh[0])[0];
+            randomResults[i] = jsspEval.evaluate(ScheduleProvider.createRandomSchedule(instance, rnd.nextLong()))[0];
           } catch (Exception ex) {
-            int[] numNums = new int[instance.getJobInfos()[0].getOperationInfos().length + 1];
-            for (int j = 0; j < numNums.length; j++) {
-              numNums[j] = 0;
-            }
-            for (int k = 0; k < jsspPh[0].getSolution().length; k++) {
-              numNums[jsspPh[0].getSolution()[k]] += 1;
-            }
             logger.warn("Processing trial error", ex);
           }
         });
