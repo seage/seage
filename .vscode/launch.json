@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch JsspGeneticAlgorithmFactory",
+      "request": "launch",
+      "mainClass": "org.seage.problem.jssp.genetics.JsspGeneticAlgorithmFactory",
+      "projectName": "seage-problem-jssp"
+    },
+    {
+      "type": "java",
+      "name": "Launch JsspGeneticAlgorithmTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.jssp.genetics.JsspGeneticAlgorithmTest",
+      "projectName": "seage-problem-jssp"
+    },
+    {
+      "type": "java",
       "name": "Debug Launcher (list)",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
@@ -148,8 +162,9 @@
       "request": "launch",
       "mainClass": "org.seage.problem.tsp.TourProvider",
       "projectName": "seage-problem-tsp",
-      "args": ["seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/mona-lisa100K.tsp"]
-      // "args": ["seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/berlin52.tsp"]
+      "args": [
+        "seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/mona-lisa100K.tsp"
+      ]
     },
     {
       "type": "java",

@@ -18,6 +18,8 @@ import org.seage.launcher.commands.ExperimentSingleFeedbackCommand;
 import org.seage.launcher.commands.ExperimentSingleGridCommand;
 import org.seage.launcher.commands.ExperimentSingleRandomCommand;
 import org.seage.launcher.commands.ListCommand;
+// import org.seage.problem.fsp.FspProblemProvider;
+import org.seage.problem.jssp.JsspProblemProvider;
 import org.seage.problem.sat.SatProblemProvider;
 import org.seage.problem.tsp.TspProblemProvider;
 import org.slf4j.Logger;
@@ -26,7 +28,11 @@ import org.slf4j.LoggerFactory;
 public class Launcher {
   static {
     ProblemProvider.registerProblemProviders(
-        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class});
+        new Class<?>[] {
+            TspProblemProvider.class,
+            SatProblemProvider.class,
+            JsspProblemProvider.class
+        });
   }
   
   private static final Logger _logger = LoggerFactory.getLogger(Launcher.class.getName());

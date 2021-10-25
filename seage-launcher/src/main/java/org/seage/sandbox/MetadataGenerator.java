@@ -29,7 +29,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
+
 import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -55,6 +57,11 @@ import org.seage.problem.tsp.TspPhenotypeEvaluator;
 import org.seage.problem.tsp.TspProblemInstance;
 import org.seage.problem.tsp.TspProblemProvider;
 
+import org.seage.problem.jssp.JobsDefinition;
+import org.seage.problem.jssp.JsspPhenotype;
+import org.seage.problem.jssp.JsspPhenotypeEvaluator;
+import org.seage.problem.jssp.JsspProblemProvider;
+import org.seage.problem.jssp.ScheduleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +76,7 @@ import org.slf4j.LoggerFactory;
 public class MetadataGenerator {
   static {
     ProblemProvider.registerProblemProviders(
-        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class});
+        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class, JsspProblemProvider.class});
   }
 
   private static final Logger logger = LoggerFactory.getLogger(MetadataGenerator.class.getName());
@@ -100,8 +107,11 @@ public class MetadataGenerator {
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
 
     for (String problemId : providers.keySet()) {
+      if (!problemId.equals("JSSP"))
+        continue;
+      
       try {
-        logger.info("Working on " + problemId + " problem...");
+        logger.info("Working on {} problem...", problemId);
 
         IProblemProvider<?> pp = providers.get(problemId);
         ProblemInfo pi = pp.getProblemInfo();
@@ -130,6 +140,8 @@ public class MetadataGenerator {
         return getSatInstancesMetadata(pi, numberOfTrials);
       case "tsp":
         return getTspInstancesMetadata(pi, numberOfTrials);
+      case "jssp":
+        return getJsspInstanceMedata(pi, numberOfTrials);
       default:
         return null;
     }
@@ -141,7 +153,7 @@ public class MetadataGenerator {
    * @param dn DataNode object with data for outputting.
    */
   private static void saveToFile(DataNode dn, String fileName) throws Exception {
-    logger.info("Saving the results to the file " + fileName + ".metadata.xml");
+    logger.info("Saving the results to the file {}.metadata.xml", fileName);
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, ""); // Compliant
@@ -233,7 +245,7 @@ public class MetadataGenerator {
     // iterate through all instances
     for (String instanceID : getSortedInstanceIDs(pi)) {
       try {
-        logger.info("Processing: " + instanceID);
+        logger.info("Processing: {}", instanceID);
 
         TspProblemProvider provider = new TspProblemProvider();
 
@@ -301,7 +313,7 @@ public class MetadataGenerator {
     // iterate through all instances
     for (String instanceID : getSortedInstanceIDs(pi)) {
       try {
-        logger.info("Processing: " + instanceID);
+        logger.info("Processing: {}", instanceID);
 
         SatProblemProvider provider = new SatProblemProvider();
 
@@ -348,6 +360,78 @@ public class MetadataGenerator {
         logger.warn("SAT instance error: {}", ex.getMessage());
       }
     }
+    return result;
+  }
+
+  /**
+   * Method creates for each instance of jssp problem domain number of random solutions. Then it
+   * calculates the score of each solution and stores the median to output array.
+   * 
+   * @param numberOfTrials number of random solutions to make.
+   */
+  private DataNode getJsspInstanceMedata(ProblemInfo pi, int numberOfTrials) throws Exception {
+    DataNode result = new DataNode("Instances");
+
+    HashMap<String, String> optimumResults =
+        getOptimalValues("/org/seage/problem/jssp/solutions/__optimal.txt");
+
+    // iterate through all instances
+    for (String instanceID : getSortedInstanceIDs(pi)) {
+      try {
+        logger.info("Processing: {}", instanceID);
+
+        Random rnd = new Random();
+
+        JsspProblemProvider provider = new JsspProblemProvider();
+
+        ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
+        JobsDefinition instance = provider.initProblemInstance(pii);
+        JsspPhenotypeEvaluator jsspEval = new JsspPhenotypeEvaluator(instance);
+
+        double[] randomResults = new double[numberOfTrials];
+        double[] greedyResults = new double[numberOfTrials];
+        List<Integer> indexes = new ArrayList<>(numberOfTrials);
+
+        for (int i = 0; i < numberOfTrials; i++) {
+          indexes.add(i);
+        }
+
+        indexes.parallelStream().forEach((i) -> {
+          try {
+            logger.info("Greedy for: {}, trial {}", instanceID, i);
+            greedyResults[i] = jsspEval.evaluate(ScheduleProvider.createGreedySchedule(instance))[0];
+          } catch (Exception ex) {
+            logger.warn("Processing trial error", ex);
+          }
+        });
+        indexes.parallelStream().forEach((i) -> {
+          try {
+            logger.info("Random for: {}, trial {}", instanceID, i);
+
+            randomResults[i] = jsspEval.evaluate(ScheduleProvider.createRandomSchedule(instance, rnd.nextLong()))[0];
+          } catch (Exception ex) {
+            logger.warn("Processing trial error", ex);
+          }
+        });
+
+        DataNode inst = new DataNode("Instance");
+        inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
+        inst.putValue("greedy", (int) median(greedyResults));
+        inst.putValue("random", (int) median(randomResults));
+
+        if (optimumResults.containsKey(instanceID.toLowerCase())) {
+          inst.putValue("optimum", optimumResults.get(instanceID.toLowerCase()));;
+        } else {
+          inst.putValue("optimum", "TBA");
+        }
+
+        inst.putValue("size", instance.getJobInfos().length * instance.getJobInfos()[0].getOperationInfos().length);
+        result.putDataNode(inst);
+      } catch (Exception ex) {
+        logger.warn("JSSP instance error: {}", ex.getMessage());
+      }
+    }
+
     return result;
   }
 }

@@ -17,7 +17,7 @@ public class ScheduleTest
     public ScheduleTest() throws Exception
     {
         _jobsDefinition = new JobsDefinition(
-                new ProblemInstanceInfo("TestJsspInstance", ProblemInstanceOrigin.RESOURCE, ""), 
+                new ProblemInstanceInfo("test01", ProblemInstanceOrigin.RESOURCE, ""), 
                 getClass().getResourceAsStream("/org/seage/problem/jssp/test-instances/test01.xml"));
     }
     
@@ -26,9 +26,9 @@ public class ScheduleTest
     {
         JsspPhenotypeEvaluator evaluator = new JsspPhenotypeEvaluator(_jobsDefinition);
         Integer[] jobArray = new Integer[] {1,1,1,2,2,2};
-        double[] objVal =  evaluator.evaluateSchedule(jobArray, true);
+        double[] objVal =  evaluator.evaluateSchedule(jobArray);
         assertEquals (12, (int)objVal[0]);
-        Schedule s = evaluator.getSchedule();
+        Schedule s = evaluator.createSchedule(jobArray);
         assertNotNull(s);
         List<Pair<ScheduleCell>> criticalPath = s.findCriticalPath(); 
         assertNotNull(criticalPath);

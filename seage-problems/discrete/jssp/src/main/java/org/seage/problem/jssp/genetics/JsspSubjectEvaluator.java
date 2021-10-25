@@ -19,6 +19,7 @@
  */
 package org.seage.problem.jssp.genetics;
 
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.problem.jssp.JsspPhenotype;
@@ -26,20 +27,19 @@ import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 
 /**
  * Summary description for JSSPGSEvaluator.
+ * @author Richard Malek
  */
 public class JsspSubjectEvaluator extends SubjectEvaluator<Subject<Integer>>
 {
-    private JsspPhenotypeEvaluator _phenotypeEvaluator;
+  private JsspPhenotypeEvaluator _phenotypeEvaluator;
 
-    public JsspSubjectEvaluator(JsspPhenotypeEvaluator phenotypeEvaluator)
-    {
-        _phenotypeEvaluator = phenotypeEvaluator;
-    }
+  public JsspSubjectEvaluator(JsspPhenotypeEvaluator phenotypeEvaluator)
+  {
+    _phenotypeEvaluator = phenotypeEvaluator;
+  }
 
-    @Override
-    public double[] evaluate(Subject<Integer> subject) throws Exception
-    {
-        return _phenotypeEvaluator.evaluate(new JsspPhenotype(subject.getChromosome().getGenes()));
-        
-    }
+  @Override
+  public double[] evaluate(Subject<Integer> solution) throws Exception {
+    return _phenotypeEvaluator.evaluateSchedule(solution.getChromosome().getGenes());
+  }
 }

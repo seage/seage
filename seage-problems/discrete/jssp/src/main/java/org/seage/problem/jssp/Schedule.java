@@ -30,7 +30,7 @@ import org.seage.data.Pair;
  */
 public class Schedule
 {
-    private boolean _isCommited;
+    private int _makeSpan;
     private ScheduleCell[] _lastCellInJob;
     private ScheduleCell[] _lastCellOnMachine;
 
@@ -40,7 +40,7 @@ public class Schedule
     {
         _lastCellInJob = new ScheduleCell[numJobs];
         _lastCellOnMachine = new ScheduleCell[numMachines];
-        _isCommited = false;
+        _makeSpan = 0;
     }
 
     public void addCell(int jobIndex, int machineIndex, ScheduleCell newCell)
@@ -62,12 +62,8 @@ public class Schedule
 
     public List<Pair<ScheduleCell>> findCriticalPath() throws Exception
     {
-        if(!_isCommited)
-            throw new Exception("Schedule is not commited, so not ready, run Schedule.Commit() first.");
         ArrayList<Pair<ScheduleCell>> results = new ArrayList<Pair<ScheduleCell>>();
-
         findCriticalPath(_mostDistantCell, results);
-
         return Collections.unmodifiableList(results);
     }
 
@@ -133,9 +129,12 @@ public class Schedule
         findCriticalPath(prevCellInJob, criticalPairs);
 
     }
-    
-    public void Commit()
-    {
-        _isCommited = true;
+
+    public int getMakeSpan() {
+        return _makeSpan;
+    }
+
+    public void setMakeSpan(int makeSpan) {
+        _makeSpan = makeSpan;
     }
 }
