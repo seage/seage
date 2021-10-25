@@ -398,9 +398,8 @@ public class MetadataGenerator {
 
         indexes.parallelStream().forEach((i) -> {
           try {
-            JsspPhenotypeEvaluator jsspEval1 = new JsspPhenotypeEvaluator(instance);
             logger.info("Greedy for: {}, trial {}", instanceID, i);
-            greedyResults[i] = jsspEval1.evaluate(ScheduleProvider.createGreedySchedule(instance))[0];
+            greedyResults[i] = jsspEval.evaluate(ScheduleProvider.createGreedySchedule(instance))[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
@@ -408,11 +407,10 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           JsspPhenotype[] jsspPh = new JsspPhenotype[1];
           try {
-            JsspPhenotypeEvaluator jsspEval1 = new JsspPhenotypeEvaluator(instance);
             logger.info("Random for: {}, trial {}", instanceID, i);
             jsspPh[0] = new JsspPhenotype(ScheduleProvider.createRandomSchedule(instance, rnd.nextLong()).getSolution());
 
-            randomResults[i] = jsspEval1.evaluate(jsspPh[0])[0];
+            randomResults[i] = jsspEval.evaluate(jsspPh[0])[0];
           } catch (Exception ex) {
             int[] numNums = new int[instance.getJobInfos()[0].getOperationInfos().length + 1];
             for (int j = 0; j < numNums.length; j++) {
