@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 public class JsspPhenotypeEvaluatorTest
@@ -19,8 +20,10 @@ public class JsspPhenotypeEvaluatorTest
 
     @Test
     public void testEvaluateSchedule() throws Exception
-    {                
-        JsspPhenotypeEvaluator evaluator = new JsspPhenotypeEvaluator(_jobsDefinition);
+    {
+        JsspProblemProvider problemProvider = new JsspProblemProvider();
+        ProblemInfo pi = problemProvider.getProblemInfo();
+        JsspPhenotypeEvaluator evaluator = new JsspPhenotypeEvaluator(pi, _jobsDefinition);
         
         Integer[] jobArray = new Integer[] {1,1,1,2,2,2};
         double[] objVal =  evaluator.evaluateSchedule(jobArray);

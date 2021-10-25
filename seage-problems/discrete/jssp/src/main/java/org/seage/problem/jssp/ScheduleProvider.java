@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.seage.aal.algorithm.Phenotype;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ public class ScheduleProvider {
    * @param jobs Problem instance definition
    * @param randomSeed Random seed.
    */
-  public static JsspPhenotype createGreedySchedule(JobsDefinition jobs) throws Exception {
+  public static JsspPhenotype createGreedySchedule(JsspPhenotypeEvaluator jsspPhenoEval, JobsDefinition jobs) throws Exception {
     int numJobs = jobs.getJobsCount();
     int numOpers = jobs.getJobInfos()[0].getOperationInfos().length;
 
@@ -31,8 +32,6 @@ public class ScheduleProvider {
     int[] numFinJobOpers = new int[numJobs];
     for (int i = 0; i < numJobs; i++)
       numFinJobOpers[i] = 0;
-
-    JsspPhenotypeEvaluator jsspPhenoEval = new JsspPhenotypeEvaluator(jobs);
 
     double tmpMakeSpan = 0;
     double tmpMinMakeSpan = 0;
@@ -110,11 +109,12 @@ public class ScheduleProvider {
       try(InputStream stream = ScheduleProvider.class.getResourceAsStream(jobInfo.getPath())) {    
         jobs = new JobsDefinition(jobInfo, stream);
       }
-      JsspPhenotypeEvaluator evaluator = new JsspPhenotypeEvaluator(jobs);
+      ProblemInfo pi = problemProvider.getProblemInfo();
+      JsspPhenotypeEvaluator evaluator = new JsspPhenotypeEvaluator(pi, jobs);
 
       JsspPhenotype ph1 = ScheduleProvider.createRandomSchedule(jobs, 1);
       double[] val1 = evaluator.evaluate(ph1);
-      JsspPhenotype ph2 = ScheduleProvider.createGreedySchedule(jobs);
+      JsspPhenotype ph2 = ScheduleProvider.createGreedySchedule(evaluator, jobs);
       double[] val2 = evaluator.evaluate(ph2);
       
       logger.debug(jobInfo.getInstanceID() + " - " + val2[0] + " - " + val1[0]);

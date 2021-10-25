@@ -29,6 +29,7 @@ import java.util.Random;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
@@ -76,8 +77,9 @@ public class JsspProblemProvider extends ProblemProvider<JsspPhenotype>
   @Override
   public IPhenotypeEvaluator<JsspPhenotype> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception
   {
+    ProblemInfo pi = this.getProblemInfo();
     JobsDefinition jobsDefinition = (JobsDefinition) problemInstance;
-    return new JsspPhenotypeEvaluator(jobsDefinition);
+    return new JsspPhenotypeEvaluator(pi, jobsDefinition);
   }
 
   @Override
