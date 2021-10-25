@@ -47,10 +47,8 @@ public class JsspMoveManager implements MoveManager
     public Move[] getAllMoves(Solution solution) throws Exception
     {
         JsspSolution sol = (JsspSolution) solution;
+        Schedule schedule = _evaluator.createSchedule(sol.getJobArray());
 
-        _evaluator.evaluateSchedule(sol.getJobArray(), true);
-
-        Schedule schedule = _evaluator.getSchedule();
         List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
 
         JsspMove[] moves = new JsspMove[Math.min(criticalPath.size() / 2, _maxMoves)];

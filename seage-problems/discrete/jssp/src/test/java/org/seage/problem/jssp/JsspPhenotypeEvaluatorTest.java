@@ -27,9 +27,10 @@ public class JsspPhenotypeEvaluatorTest
         assertEquals (12, (int)objVal[0]);
         
         jobArray = new Integer[] {1,2,1,2,1,2};
-        objVal =  evaluator.evaluateSchedule(jobArray, true);
+        objVal =  evaluator.evaluateSchedule(jobArray);
         assertEquals (6, (int)objVal[0]);
-        assertNotNull(evaluator.getSchedule());
+        Schedule schedule = evaluator.createSchedule(jobArray);
+        assertNotNull(schedule);
     }
 
 }

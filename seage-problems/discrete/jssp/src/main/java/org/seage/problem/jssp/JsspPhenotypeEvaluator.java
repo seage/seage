@@ -64,12 +64,16 @@ public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator<JsspPhenotype
       
   public double[] evaluateSchedule(Integer[] jobArray)
   {
-    return evaluateSchedule(jobArray, false);
+    return new double[] { createSchedule(jobArray).getMakeSpan() };
   }
-      
-  public double[] evaluateSchedule(Integer[] jobArray, boolean buildSchedule)
+    
+  public Schedule createSchedule(Integer[] jobArray) {
+    return createSchedule(jobArray, true);
+  }
+
+  public Schedule createSchedule(Integer[] jobArray, boolean emptySchedule)
   {
-    Schedule schedule = new Schedule(numJobs, numMachines);;
+    Schedule schedule = new Schedule(_numJobs, _numMachines);;
 
     int[] lastActivityInJobIndex = new int[_numJobs];
     int[] lastActivityOnMachineIndex = new int[_numMachines];
@@ -124,19 +128,16 @@ public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator<JsspPhenotype
         maxMakeSpan = endTimeOnMachine[indexCurrentMachine];
       } 
       
-      if (buildSchedule)
+      if (!emptySchedule)
       {
         schedule.addCell(indexCurrentJob, indexCurrentMachine,
             new ScheduleCell(i, endTimeOnMachine[indexCurrentMachine] - currentOper.Length,
                 currentOper.Length)); 
       }
     }
+
+    schedule.setMakeSpan(maxMakeSpan);
     
-    return new double[] { maxMakeSpan };
-  }
-      
-  public Schedule getSchedule()
-  {
-    return null; // _schedule; // TODO: Fix this
+    return schedule;
   }
 }

@@ -26,9 +26,9 @@ public class ScheduleTest
     {
         JsspPhenotypeEvaluator evaluator = new JsspPhenotypeEvaluator(_jobsDefinition);
         Integer[] jobArray = new Integer[] {1,1,1,2,2,2};
-        double[] objVal =  evaluator.evaluateSchedule(jobArray, true);
+        double[] objVal =  evaluator.evaluateSchedule(jobArray);
         assertEquals (12, (int)objVal[0]);
-        Schedule s = evaluator.getSchedule();
+        Schedule s = evaluator.createSchedule(jobArray);
         assertNotNull(s);
         List<Pair<ScheduleCell>> criticalPath = s.findCriticalPath(); 
         assertNotNull(criticalPath);
