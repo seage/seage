@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Richard Malek
  */
-@Annotations.ProblemId("JSSP")
+@Annotations.ProblemId("JSP")
 @Annotations.ProblemName("Job Shop Scheduling Problem")
 public class JspProblemProvider extends ProblemProvider<JspPhenotype>
 {

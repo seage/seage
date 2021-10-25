@@ -27,7 +27,7 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.problem.jsp.OperationInfo;
 
 /**
- * Summary description for JSSPEvaluator.
+ * Summary description for JSPEvaluator.
  */
 @SuppressWarnings("all")
 public class JspEvaluator_old extends SubjectEvaluator

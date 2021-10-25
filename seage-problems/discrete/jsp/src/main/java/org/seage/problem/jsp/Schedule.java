@@ -26,7 +26,7 @@ import java.util.List;
 import org.seage.data.Pair;
 
 /**
- * JSSP Schedule.
+ * JSP Schedule.
  */
 public class Schedule
 {

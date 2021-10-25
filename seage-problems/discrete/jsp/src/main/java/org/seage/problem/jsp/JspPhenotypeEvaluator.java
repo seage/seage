@@ -23,7 +23,7 @@
  *   Richard Malek
  *   - Initial implementation
  *   David Omrai
- *   - Adding the JSSP phenotype implementation
+ *   - Adding the JSP phenotype implementation
  *   - Fixing the compare method
  */
 package org.seage.problem.jsp;

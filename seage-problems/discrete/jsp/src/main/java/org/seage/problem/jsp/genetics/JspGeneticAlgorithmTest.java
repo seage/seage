@@ -129,12 +129,12 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
 
   @Override
   public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e) {
-    System.out.println("Genetic Algorithm for JSSP started.");
+    System.out.println("Genetic Algorithm for JSP started.");
   }
 
   @Override
   public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e) {
-    System.out.println("Genetic Algorithm for JSSP stopped.");
+    System.out.println("Genetic Algorithm for JSP stopped.");
   }
 
   @Override

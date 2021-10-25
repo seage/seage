@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Problem id="JSSP">
+<Problem id="JSP">
     <Instances>
         <Instance greedy="1416" id="abz5" optimum="1234" random="2130" size="100"/>
         <Instance greedy="1130" id="abz6" optimum="943" random="1603" size="100"/>

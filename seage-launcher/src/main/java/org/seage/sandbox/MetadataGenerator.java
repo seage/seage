@@ -106,10 +106,7 @@ public class MetadataGenerator {
   public void runMetadataGenerator() throws Exception {
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
 
-    for (String problemId : providers.keySet()) {
-      if (!problemId.equals("JSSP"))
-        continue;
-      
+    for (String problemId : providers.keySet()) {     
       try {
         logger.info("Working on {} problem...", problemId);
 

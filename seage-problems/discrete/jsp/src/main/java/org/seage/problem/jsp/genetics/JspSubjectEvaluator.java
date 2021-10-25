@@ -19,14 +19,12 @@
  */
 package org.seage.problem.jsp.genetics;
 
-import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
-import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 
 /**
- * Summary description for JSSPGSEvaluator.
+ * Summary description for JspSubjectEvaluator.
  * @author Richard Malek
  */
 public class JspSubjectEvaluator extends SubjectEvaluator<Subject<Integer>>
