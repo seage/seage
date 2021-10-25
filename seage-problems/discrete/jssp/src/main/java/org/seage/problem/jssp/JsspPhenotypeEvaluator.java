@@ -107,39 +107,50 @@ public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator<JsspPhenotype
       _endTimeOnMachine[i] = 0;
     }
 
-    for (int i = 0; i < jobArray.length; i++)
-    {
-      indexCurrentJob = jobArray[i] - 1;
-
-      indexCurrentOper = _lastActivityInJobIndex[indexCurrentJob]++;
-
-      currentJob = _jobsDefinition.getJobInfos()[indexCurrentJob];
-      currentOper = currentJob.getOperationInfos()[indexCurrentOper];
-
-      indexCurrentMachine = currentOper.MachineID - 1;
-
-      if (_endTimeOnMachine[indexCurrentMachine] > _endTimeInJob[indexCurrentJob])
+    try {
+      for (int i = 0; i < jobArray.length; i++)
       {
-        _endTimeOnMachine[indexCurrentMachine] += currentOper.Length;
-        _endTimeInJob[indexCurrentJob] = _endTimeOnMachine[indexCurrentMachine];
+        indexCurrentJob = jobArray[i] - 1;
+
+        indexCurrentOper = _lastActivityInJobIndex[indexCurrentJob]++;
+
+        currentJob = _jobsDefinition.getJobInfos()[indexCurrentJob];
+        currentOper = currentJob.getOperationInfos()[indexCurrentOper];
+
+        indexCurrentMachine = currentOper.MachineID - 1;
+
+        if (_endTimeOnMachine[indexCurrentMachine] > _endTimeInJob[indexCurrentJob])
+        {
+          _endTimeOnMachine[indexCurrentMachine] += currentOper.Length;
+          _endTimeInJob[indexCurrentJob] = _endTimeOnMachine[indexCurrentMachine];
+        }
+        else
+        {
+          _endTimeInJob[indexCurrentJob] += currentOper.Length;
+          _endTimeOnMachine[indexCurrentMachine] = _endTimeInJob[indexCurrentJob];
+        }
+
+        if (_endTimeOnMachine[indexCurrentMachine] > maxMakeSpan)
+        {
+          maxMakeSpan = _endTimeOnMachine[indexCurrentMachine];
+        } 
+        
+        if (buildSchedule)
+        {
+          _schedule.addCell(indexCurrentJob, indexCurrentMachine,
+              new ScheduleCell(i, _endTimeOnMachine[indexCurrentMachine] - currentOper.Length,
+                  currentOper.Length)); 
+        }
       }
-      else
-      {
-        _endTimeInJob[indexCurrentJob] += currentOper.Length;
-        _endTimeOnMachine[indexCurrentMachine] = _endTimeInJob[indexCurrentJob];
+    } catch (Exception ex) {
+      int[] numNums = new int[_numMachines + 1];
+      for (int j = 0; j < numNums.length; j++) {
+        numNums[j] = 0;
       }
-
-      if (_endTimeOnMachine[indexCurrentMachine] > maxMakeSpan)
-      {
-        maxMakeSpan = _endTimeOnMachine[indexCurrentMachine];
-      } 
-      
-      if (buildSchedule)
-      {
-        _schedule.addCell(indexCurrentJob, indexCurrentMachine,
-            new ScheduleCell(i, _endTimeOnMachine[indexCurrentMachine] - currentOper.Length,
-                currentOper.Length)); 
+      for (int k = 0; k < jobArray.length; k++) {
+        numNums[jobArray[k]] += 1;
       }
+      System.out.println(ex);
     }
     
     if(buildSchedule)
