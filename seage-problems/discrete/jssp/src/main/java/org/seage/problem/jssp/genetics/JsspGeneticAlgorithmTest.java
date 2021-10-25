@@ -25,8 +25,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
-import org.seage.aal.problem.ProblemInstance;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.data.DataNode;
@@ -50,21 +51,22 @@ public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgor
   public static void main(String[] args) {
     try {
       String instanceID = "ft10"; 
-      new JsspGeneticAlgorithmTest().run(instanceID);
+      String path = String.format("/org/seage/problem/jssp/instances/%s.xml", instanceID);
+      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+      JobsDefinition jobs = null;
+  
+      try(InputStream stream = JsspGeneticAlgorithmTest.class.getResourceAsStream(path)) {    
+        jobs = new JobsDefinition(jobInfo, stream);
+      }
+
+      new JsspGeneticAlgorithmTest().runAlgorithm(jobs);
+      new JsspGeneticAlgorithmTest().runAlgorithmAdapter(jobs);
     } catch (Exception ex) {
       ex.printStackTrace();
     }
   }
 
-  public void run(String instanceID) throws Exception {
-    String path = String.format("/org/seage/problem/jssp/instances/%s.xml", instanceID);
-    ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
-    JobsDefinition jobs = null;
-
-    try(InputStream stream = getClass().getResourceAsStream(path)) {    
-      jobs = new JobsDefinition(jobInfo, stream);
-    }
-
+  public void runAlgorithm(JobsDefinition jobs) throws Exception {
     System.out.println(jobs.getJobsCount());
     int populationCount = 100;
     System.out.println("Population: " + populationCount);
@@ -82,6 +84,25 @@ public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgor
     gs.startSearching(initialSolutions);
   }
 
+  public void runAlgorithmAdapter(JobsDefinition jobs) throws Exception {
+    JsspProblemProvider problemProvider = new JsspProblemProvider();
+    JsspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 100, (new Random()).nextLong());
+
+    AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
+
+    JsspGeneticAlgorithmFactory factory = new JsspGeneticAlgorithmFactory();
+    JsspPhenotypeEvaluator eval = new JsspPhenotypeEvaluator(jobs);
+    try {
+        IAlgorithmAdapter<JsspPhenotype, Subject<Integer>> adapter =  factory.createAlgorithm(jobs, eval);
+        adapter.solutionsFromPhenotype(schedules);
+        adapter.startSearching(params);
+        adapter.solutionsToPhenotype();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
   private List<Subject<Integer>> generateInitialSubjects(JobsDefinition jobs, int subjectCount) throws Exception {
     ArrayList<Subject<Integer>> result = new ArrayList<>(subjectCount);
 
@@ -94,6 +115,17 @@ public class JsspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgor
 
     return result;
   }
+
+  private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
+    AlgorithmParams result = new AlgorithmParams();
+    DataNode algParamsNode = problemInfo.getDataNode("Algorithms").getDataNodeById("GeneticAlgorithm");
+    for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
+      result.putValue(param.getValueStr("name"), param.getValue("init"));
+    }
+    result.putValue("iterationCount", 100);
+    result.putValue("numSolutions", 100);
+    return result;
+}
 
   @Override
   public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e) {

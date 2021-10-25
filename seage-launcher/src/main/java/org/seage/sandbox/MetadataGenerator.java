@@ -61,7 +61,7 @@ import org.seage.problem.jssp.JobsDefinition;
 import org.seage.problem.jssp.JsspPhenotype;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 import org.seage.problem.jssp.JsspProblemProvider;
-
+import org.seage.problem.jssp.ScheduleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +76,7 @@ import org.slf4j.LoggerFactory;
 public class MetadataGenerator {
   static {
     ProblemProvider.registerProblemProviders(
-        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class});
+        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class, JsspProblemProvider.class});
   }
 
   private static final Logger logger = LoggerFactory.getLogger(MetadataGenerator.class.getName());
@@ -107,6 +107,9 @@ public class MetadataGenerator {
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
 
     for (String problemId : providers.keySet()) {
+      if (!problemId.equals("JSSP"))
+        continue;
+      
       try {
         logger.info("Working on {} problem...", problemId);
 
@@ -377,6 +380,8 @@ public class MetadataGenerator {
       try {
         logger.info("Processing: {}", instanceID);
 
+        Random rnd = new Random();
+
         JsspProblemProvider provider = new JsspProblemProvider();
 
         ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
@@ -394,16 +399,16 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Greedy for: {}, trial {}", instanceID, i);
-            //greedyResults[i] = null; // to do
+            greedyResults[i] = jsspEval.evaluate(ScheduleProvider.createGreedySchedule(instance))[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
         });
-
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
-            randomResults[i] = jsspEval.evaluate(provider.generateInitialSolutions(instance, 1, new Random().nextLong())[0])[0];
+
+            randomResults[i] = jsspEval.evaluate(ScheduleProvider.createRandomSchedule(instance, rnd.nextLong()))[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
@@ -420,7 +425,7 @@ public class MetadataGenerator {
           inst.putValue("optimum", "TBA");
         }
 
-        inst.putValue("size", instance.getJobInfos().length);
+        inst.putValue("size", instance.getJobInfos().length * instance.getJobInfos()[0].getOperationInfos().length);
         result.putDataNode(inst);
       } catch (Exception ex) {
         logger.warn("JSSP instance error: {}", ex.getMessage());

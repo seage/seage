@@ -34,7 +34,7 @@ import org.seage.data.DataNode;
  * @author Richard Malek
  * 
  */
-public class  AlgorithmParams extends DataNode {
+public class AlgorithmParams extends DataNode {
 
   public AlgorithmParams(DataNode dn) {
     super(dn);
