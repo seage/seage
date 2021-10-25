@@ -58,6 +58,7 @@ import org.seage.problem.tsp.TspProblemInstance;
 import org.seage.problem.tsp.TspProblemProvider;
 
 import org.seage.problem.jssp.JobsDefinition;
+import org.seage.problem.jssp.JsspPhenotype;
 import org.seage.problem.jssp.JsspPhenotypeEvaluator;
 import org.seage.problem.jssp.JsspProblemProvider;
 import org.seage.problem.jssp.ScheduleProvider;
@@ -403,10 +404,10 @@ public class MetadataGenerator {
             logger.warn("Processing trial error", ex);
           }
         });
-
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
+
             randomResults[i] = jsspEval.evaluate(ScheduleProvider.createRandomSchedule(instance, rnd.nextLong()))[0];
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);

@@ -33,10 +33,15 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator<JsspPhenotype>
 {
   private JobsDefinition _jobsDefinition;
-  
+  private int _numJobs;
+  private int _numMachines;
+
   public JsspPhenotypeEvaluator(JobsDefinition jobsDefinition)
   {
     _jobsDefinition = jobsDefinition;
+    
+    _numJobs = _jobsDefinition.getJobsCount();
+    _numMachines = _jobsDefinition.getMachinesCount();
   }
       
   /**
@@ -64,19 +69,13 @@ public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator<JsspPhenotype
       
   public double[] evaluateSchedule(Integer[] jobArray, boolean buildSchedule)
   {
-    Schedule schedule = null;
+    Schedule schedule = new Schedule(numJobs, numMachines);;
 
-    int numJobs = _jobsDefinition.getJobsCount();
-    int numMachines = _jobsDefinition.getMachinesCount();;
+    int[] lastActivityInJobIndex = new int[_numJobs];
+    int[] lastActivityOnMachineIndex = new int[_numMachines];
 
-    int[] lastActivityInJobIndex = new int[numJobs];;
-    int[] lastActivityOnMachineIndex = new int[numMachines];;
-
-    int[] endTimeInJob = new int[numJobs];;
-    int[] endTimeOnMachine = new int[numMachines];;
-
-    if (buildSchedule)
-      schedule = new Schedule(numJobs, numMachines);
+    int[] endTimeInJob = new int[_numJobs];
+    int[] endTimeOnMachine = new int[_numMachines];
     
     JobInfo currentJob;
     OperationInfo currentOper;
@@ -87,12 +86,12 @@ public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator<JsspPhenotype
 
     int maxMakeSpan = 0;
 
-    for (int i = 0; i < numJobs; i++)
+    for (int i = 0; i < _numJobs; i++)
     {
       lastActivityInJobIndex[i] = 0;
       endTimeInJob[i] = 0;
     }
-    for (int i = 0; i < numMachines; i++)
+    for (int i = 0; i < _numMachines; i++)
     {
       lastActivityOnMachineIndex[i] = 0;
       endTimeOnMachine[i] = 0;
@@ -132,9 +131,6 @@ public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator<JsspPhenotype
                 currentOper.Length)); 
       }
     }
-    
-    if(buildSchedule)
-      schedule.Commit();
     
     return new double[] { maxMakeSpan };
   }
