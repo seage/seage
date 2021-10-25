@@ -29,19 +29,26 @@
 package org.seage.problem.jssp;
 
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.problem.ProblemScoreCalculator;
 
 public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator<JsspPhenotype>
 {
+  private String _instanceID;
   private JobsDefinition _jobsDefinition;
   private int _numJobs;
   private int _numMachines;
 
-  public JsspPhenotypeEvaluator(JobsDefinition jobsDefinition)
+  private ProblemScoreCalculator scoreCalculator;
+
+  public JsspPhenotypeEvaluator(JobsDefinition jobsDefinition) throws Exception
   {
+    JsspProblemProvider problemProvider = new JsspProblemProvider();
     _jobsDefinition = jobsDefinition;
+    _instanceID = jobsDefinition.getProblemInstanceInfo().getInstanceID();
     
     _numJobs = _jobsDefinition.getJobsCount();
     _numMachines = _jobsDefinition.getMachinesCount();
+    scoreCalculator = new ProblemScoreCalculator(problemProvider.getProblemInfo());
   }
       
   /**
@@ -62,9 +69,13 @@ public class JsspPhenotypeEvaluator implements IPhenotypeEvaluator<JsspPhenotype
     return (int)(arg1[0] - arg0[0]);
   }
       
-  public double[] evaluateSchedule(Integer[] jobArray)
+  public double[] evaluateSchedule(Integer[] jobArray) throws Exception
   {
-    return new double[] { createSchedule(jobArray).getMakeSpan() };
+    double makeSpan = createSchedule(jobArray).getMakeSpan();
+    return new double[] { 
+      makeSpan,
+      this.scoreCalculator.calculateInstanceScore(_instanceID, makeSpan)
+    };
   }
     
   public Schedule createSchedule(Integer[] jobArray) {
