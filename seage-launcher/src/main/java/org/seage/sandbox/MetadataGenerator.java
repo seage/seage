@@ -79,8 +79,8 @@ public class MetadataGenerator {
         new Class<?>[] {
             // TspProblemProvider.class, 
             // SatProblemProvider.class, 
-            // JspProblemProvider.class,
-            FspProblemProvider.class
+            JspProblemProvider.class,
+            // FspProblemProvider.class
         }
     );
   }
@@ -145,6 +145,8 @@ public class MetadataGenerator {
         return getTspInstancesMetadata(pi, numberOfTrials);
       case "jsp":
         return getJspInstanceMedata(pi, numberOfTrials);
+      case "fsp":
+        return getFspInstanceMedata(pi, numberOfTrials);
       default:
         return null;
     }
@@ -402,7 +404,8 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Greedy for: {}, trial {}", instanceID, i);
-            greedyResults[i] = jspEval.evaluate(ScheduleProvider.createGreedySchedule(jspEval, instance))[0];
+            JspPhenotype schedule = ScheduleProvider.createGreedySchedule(jspEval, instance);
+            greedyResults[i] = schedule.getObjValue();
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
@@ -410,8 +413,8 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
-
-            randomResults[i] = jspEval.evaluate(ScheduleProvider.createRandomSchedule(instance, rnd.nextLong()))[0];
+            JspPhenotype schedule = ScheduleProvider.createRandomSchedule(jspEval, instance, rnd.nextLong());
+            randomResults[i] = schedule.getObjValue();
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
@@ -439,7 +442,7 @@ public class MetadataGenerator {
   }
 
   /**
-   * Method creates for each instance of jssp problem domain number of random solutions. Then it
+   * Method creates for each instance of jsp problem domain number of random solutions. Then it
    * calculates the score of each solution and stores the median to output array.
    * 
    * @param numberOfTrials number of random solutions to make.
@@ -461,7 +464,7 @@ public class MetadataGenerator {
 
         ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
         JobsDefinition instance = provider.initProblemInstance(pii);
-        JspPhenotypeEvaluator jsspEval = new JspPhenotypeEvaluator(pi, instance);
+        JspPhenotypeEvaluator jspEval = new JspPhenotypeEvaluator(pi, instance);
 
         double[] randomResults = new double[numberOfTrials];
         double[] greedyResults = new double[numberOfTrials];
@@ -474,8 +477,8 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Greedy for: {}, trial {}", instanceID, i);
-            JspPhenotype schedule = ScheduleProvider.createGreedySchedule(jsspEval, instance);
-            greedyResults[i] = jsspEval.evaluate(schedule)[0];
+            JspPhenotype schedule = ScheduleProvider.createGreedySchedule(jspEval, instance);
+            greedyResults[i] = schedule.getObjValue();
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
@@ -483,8 +486,8 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
-            JspPhenotype schedule = ScheduleProvider.createRandomSchedule(instance, rnd.nextLong());
-            randomResults[i] = jsspEval.evaluate(schedule)[0];
+            JspPhenotype schedule = ScheduleProvider.createRandomSchedule(jspEval, instance, rnd.nextLong());
+            greedyResults[i] = schedule.getObjValue();
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }

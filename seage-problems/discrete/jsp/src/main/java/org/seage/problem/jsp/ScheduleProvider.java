@@ -44,7 +44,7 @@ public class ScheduleProvider {
         greedySolution[i] = jobId;
 
         tmpMakeSpan = jspPhenoEval
-          .evaluateSchedule(Arrays.copyOfRange(greedySolution, 0, i+1))[0];
+          .createSchedule(Arrays.copyOfRange(greedySolution, 0, i+1), true).getMakeSpan();
         
         if (tmpMinMakeSpan == 0 || tmpMakeSpan < tmpMinMakeSpan) {
           tmpMinMakeSpan = tmpMakeSpan;
@@ -56,8 +56,10 @@ public class ScheduleProvider {
       greedySolution[i] = nextJobId;
       numFinJobOpers[nextJobId-1] += 1;
     }
+    var result = new JspPhenotype(greedySolution);
+    result.setObjValue(tmpMinMakeSpan);
     
-    return new JspPhenotype(greedySolution);
+    return result;
   }
 
   /**
@@ -66,7 +68,7 @@ public class ScheduleProvider {
    * @params length Length of schedule
    * @params randomSeed Random seed
    */
-  public static JspPhenotype createRandomSchedule(JobsDefinition jobs, long randomSeed) throws Exception {
+  public static JspPhenotype createRandomSchedule(JspPhenotypeEvaluator jspPhenoEval, JobsDefinition jobs, long randomSeed) throws Exception {
     Random rnd = new Random(randomSeed);
 
     int numJobs = jobs.getJobsCount();
@@ -92,7 +94,11 @@ public class ScheduleProvider {
       randSol[ix2] = a;
     }
 
-    return new JspPhenotype(randSol);
+    var result = new JspPhenotype(randSol);
+    var makeSpan = jspPhenoEval.createSchedule(randSol, true).getMakeSpan();
+    result.setObjValue((double)makeSpan);
+
+    return result;
   }
 
   public static void main(String[] args) throws Exception {
@@ -107,7 +113,7 @@ public class ScheduleProvider {
       ProblemInfo pi = problemProvider.getProblemInfo();
       JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, jobs);
 
-      JspPhenotype ph1 = ScheduleProvider.createRandomSchedule(jobs, 1);
+      JspPhenotype ph1 = ScheduleProvider.createRandomSchedule(evaluator, jobs, 1);
       double[] val1 = evaluator.evaluate(ph1);
       JspPhenotype ph2 = ScheduleProvider.createGreedySchedule(evaluator, jobs);
       double[] val2 = evaluator.evaluate(ph2);

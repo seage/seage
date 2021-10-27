@@ -93,7 +93,7 @@ public class JspProblemProvider extends ProblemProvider<JspPhenotype>
     for(int i=0;i<numSolutions;i++)
     {
       // Create random schedule
-      result[i] = ScheduleProvider.createRandomSchedule(jobs, randomSeed);
+      result[i] = ScheduleProvider.createRandomSchedule((JspPhenotypeEvaluator) evaluator, jobs, randomSeed);
       // Evaluate the random schedule
       double[] objVals = evaluator.evaluate(result[i]);
       result[i].setObjValue(objVals[0]);
