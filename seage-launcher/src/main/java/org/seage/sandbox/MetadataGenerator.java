@@ -79,8 +79,8 @@ public class MetadataGenerator {
         new Class<?>[] {
             // TspProblemProvider.class, 
             // SatProblemProvider.class, 
-            JspProblemProvider.class,
-            // FspProblemProvider.class
+            // JspProblemProvider.class,
+            FspProblemProvider.class
         }
     );
   }
