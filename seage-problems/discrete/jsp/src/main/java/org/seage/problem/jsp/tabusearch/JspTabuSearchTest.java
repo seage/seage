@@ -97,7 +97,7 @@ public class JspTabuSearchTest implements TabuSearchListener
 
   public void runAlgorithmAdapter(JobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
-    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 100, generator.nextLong());
+    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 1, generator.nextLong());
 
     AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
 
@@ -108,7 +108,8 @@ public class JspTabuSearchTest implements TabuSearchListener
         IAlgorithmAdapter<JspPhenotype, JspSolution> adapter =  factory.createAlgorithm(jobs, eval);
         adapter.solutionsFromPhenotype(schedules);
         adapter.startSearching(params);
-        adapter.solutionsToPhenotype();
+        var solutions = adapter.solutionsToPhenotype();
+        System.out.println(solutions[0].getObjValue());
 
     } catch (Exception e) {
         e.printStackTrace();
@@ -121,8 +122,8 @@ public class JspTabuSearchTest implements TabuSearchListener
     for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
       result.putValue(param.getValueStr("name"), param.getValue("init"));
     }
-    result.putValue("iterationCount", 100);
-    result.putValue("numSolutions", 100);
+    result.putValue("iterationCount", 150000);
+    result.putValue("numSolutions", 1);
     return result;
   }
 

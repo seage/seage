@@ -83,7 +83,7 @@ public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, Jsp
                 for (int i = 0; i < this.solutions.length; i++)
                 {
                     JspSolution s = (JspSolution) this.solutions[i];
-                    result[i] = new JspPhenotype(s.getJobArray());                        
+                    result[i] = solutionToPhenotype(s);              
                 }
                 return result;
             }
