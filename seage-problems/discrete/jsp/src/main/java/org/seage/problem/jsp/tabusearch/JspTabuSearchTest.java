@@ -46,9 +46,9 @@ public class JspTabuSearchTest implements TabuSearchListener
     {
         try
         {
-            String path = "/org/seage/problem/jsp/test-instances/test01.xml";
+            String path = "/org/seage/problem/jsp/instances/abz6.xml";
 
-            new JspTabuSearchTest().run(path);
+            new JspTabuSearchTest().run(path, "abz6");
         }
         catch (Exception ex)
         {
@@ -56,11 +56,11 @@ public class JspTabuSearchTest implements TabuSearchListener
         }
     }
 
-    public void run(String path) throws Exception
+    public void run(String path, String instanceID) throws Exception
     {
         JspProblemProvider problemProvider = new JspProblemProvider();
         ProblemInfo pi = problemProvider.getProblemInfo();
-        JobsDefinition jobsDef = new JobsDefinition(null, getClass().getResourceAsStream(path));
+        JobsDefinition jobsDef = new JobsDefinition(problemProvider.getProblemInfo().getProblemInstanceInfo(instanceID), getClass().getResourceAsStream(path));
         System.out.println("Loading jobs from path: " + path);
         System.out.println("Number of jobs: " + jobsDef.getJobsCount());
 
