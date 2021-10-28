@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.data.Pair;
@@ -24,7 +25,9 @@ public class ScheduleTest
     @Test
     public void testCreateSchedule() throws Exception
     {
-        JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(_jobsDefinition);
+        JspProblemProvider problemProvider = new JspProblemProvider();
+        ProblemInfo pi = problemProvider.getProblemInfo();
+        JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, _jobsDefinition);
         Integer[] jobArray = new Integer[] {1,1,1,2,2,2};
         double[] objVal =  evaluator.evaluateSchedule(jobArray);
         assertEquals (12, (int)objVal[0]);

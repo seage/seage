@@ -18,7 +18,7 @@ import org.seage.launcher.commands.ExperimentSingleFeedbackCommand;
 import org.seage.launcher.commands.ExperimentSingleGridCommand;
 import org.seage.launcher.commands.ExperimentSingleRandomCommand;
 import org.seage.launcher.commands.ListCommand;
-// import org.seage.problem.fsp.FspProblemProvider;
+import org.seage.problem.fsp.FspProblemProvider;
 import org.seage.problem.jsp.JspProblemProvider;
 import org.seage.problem.sat.SatProblemProvider;
 import org.seage.problem.tsp.TspProblemProvider;
@@ -31,7 +31,8 @@ public class Launcher {
         new Class<?>[] {
             TspProblemProvider.class,
             SatProblemProvider.class,
-            JspProblemProvider.class
+            JspProblemProvider.class,
+            FspProblemProvider.class
         });
   }
   

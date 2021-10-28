@@ -34,8 +34,8 @@ import org.w3c.dom.NodeList;
 
 public class JobsDefinition extends ProblemInstance
 {
-    private JobInfo[] _jobInfos;
-    private int _numMachines;
+    protected JobInfo[] _jobInfos;
+    protected int _numMachines;
     
     public JobsDefinition(ProblemInstanceInfo instanceInfo, InputStream jobsDefinitionStream) throws Exception
     {
@@ -59,7 +59,7 @@ public class JobsDefinition extends ProblemInstance
         return _numMachines;
     }
     
-    private void createJobInfos(InputStream jobsDefinitionStream) throws Exception
+    protected void createJobInfos(InputStream jobsDefinitionStream) throws Exception
     {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();        

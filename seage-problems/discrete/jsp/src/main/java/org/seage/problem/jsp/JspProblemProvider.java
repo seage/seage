@@ -29,6 +29,7 @@ import java.util.Random;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
@@ -76,8 +77,9 @@ public class JspProblemProvider extends ProblemProvider<JspPhenotype>
   @Override
   public IPhenotypeEvaluator<JspPhenotype> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception
   {
+    ProblemInfo pi = this.getProblemInfo();
     JobsDefinition jobsDefinition = (JobsDefinition) problemInstance;
-    return new JspPhenotypeEvaluator(jobsDefinition);
+    return new JspPhenotypeEvaluator(pi, jobsDefinition);
   }
 
   @Override
@@ -91,7 +93,7 @@ public class JspProblemProvider extends ProblemProvider<JspPhenotype>
     for(int i=0;i<numSolutions;i++)
     {
       // Create random schedule
-      result[i] = ScheduleProvider.createRandomSchedule(jobs, randomSeed);
+      result[i] = ScheduleProvider.createRandomSchedule((JspPhenotypeEvaluator) evaluator, jobs, randomSeed);
       // Evaluate the random schedule
       double[] objVals = evaluator.evaluate(result[i]);
       result[i].setObjValue(objVals[0]);

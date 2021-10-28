@@ -56,7 +56,7 @@ import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspPhenotypeEvaluator;
 import org.seage.problem.tsp.TspProblemInstance;
 import org.seage.problem.tsp.TspProblemProvider;
-
+import org.seage.problem.fsp.FspProblemProvider;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
@@ -76,7 +76,13 @@ import org.slf4j.LoggerFactory;
 public class MetadataGenerator {
   static {
     ProblemProvider.registerProblemProviders(
-        new Class<?>[] {TspProblemProvider.class, SatProblemProvider.class, JspProblemProvider.class});
+        new Class<?>[] {
+            // TspProblemProvider.class, 
+            // SatProblemProvider.class, 
+            // JspProblemProvider.class,
+            FspProblemProvider.class
+        }
+    );
   }
 
   private static final Logger logger = LoggerFactory.getLogger(MetadataGenerator.class.getName());
@@ -106,7 +112,7 @@ public class MetadataGenerator {
   public void runMetadataGenerator() throws Exception {
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
 
-    for (String problemId : providers.keySet()) {     
+    for (String problemId : providers.keySet()) {    
       try {
         logger.info("Working on {} problem...", problemId);
 
@@ -139,6 +145,8 @@ public class MetadataGenerator {
         return getTspInstancesMetadata(pi, numberOfTrials);
       case "jsp":
         return getJspInstanceMedata(pi, numberOfTrials);
+      case "fsp":
+        return getFspInstanceMedata(pi, numberOfTrials);
       default:
         return null;
     }
@@ -149,16 +157,22 @@ public class MetadataGenerator {
    * 
    * @param dn DataNode object with data for outputting.
    */
-  private static void saveToFile(DataNode dn, String fileName) throws Exception {
-    logger.info("Saving the results to the file {}.metadata.xml", fileName);
+  private static void saveToFile(DataNode dn, String problemName) throws Exception {
+    File directory = new File("./output");
+    if (! directory.exists()){
+        directory.mkdir();
+    }
+    File path = new File("./output/" + problemName + ".metadata.xml");
+
+    logger.info("Saving the results to the file {}", path.getAbsolutePath());
+    
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, ""); // Compliant
     Transformer transformer = transformerFactory.newTransformer();
     transformer.setOutputProperty(OutputKeys.INDENT, "yes");
     DOMSource domSource = new DOMSource(dn.toXml());
-    StreamResult streamResult =
-        new StreamResult(new File("./output/" + fileName + ".metadata.xml"));
+    StreamResult streamResult = new StreamResult(path);
 
     transformer.transform(domSource, streamResult);
   }
@@ -383,7 +397,7 @@ public class MetadataGenerator {
 
         ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
         JobsDefinition instance = provider.initProblemInstance(pii);
-        JspPhenotypeEvaluator jspEval = new JspPhenotypeEvaluator(instance);
+        JspPhenotypeEvaluator jspEval = new JspPhenotypeEvaluator(pi, instance);
 
         double[] randomResults = new double[numberOfTrials];
         double[] greedyResults = new double[numberOfTrials];
@@ -396,7 +410,8 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Greedy for: {}, trial {}", instanceID, i);
-            greedyResults[i] = jspEval.evaluate(ScheduleProvider.createGreedySchedule(instance))[0];
+            JspPhenotype schedule = ScheduleProvider.createGreedySchedule(jspEval, instance);
+            greedyResults[i] = schedule.getObjValue();
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
@@ -404,8 +419,8 @@ public class MetadataGenerator {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
-
-            randomResults[i] = jspEval.evaluate(ScheduleProvider.createRandomSchedule(instance, rnd.nextLong()))[0];
+            JspPhenotype schedule = ScheduleProvider.createRandomSchedule(jspEval, instance, rnd.nextLong());
+            randomResults[i] = schedule.getObjValue();
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
@@ -426,6 +441,79 @@ public class MetadataGenerator {
         result.putDataNode(inst);
       } catch (Exception ex) {
         logger.warn("JSP instance error: {}", ex.getMessage());
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Method creates for each instance of jsp problem domain number of random solutions. Then it
+   * calculates the score of each solution and stores the median to output array.
+   * 
+   * @param numberOfTrials number of random solutions to make.
+   */
+  private DataNode getFspInstanceMedata(ProblemInfo pi, int numberOfTrials) throws Exception {
+    DataNode result = new DataNode("Instances");
+
+    HashMap<String, String> optimumResults =
+        getOptimalValues("/org/seage/problem/fsp/solutions/__optimal.txt");
+
+    // iterate through all instances
+    for (String instanceID : getSortedInstanceIDs(pi)) {
+      try {
+        logger.info("Processing: {}", instanceID);
+
+        Random rnd = new Random();
+
+        FspProblemProvider provider = new FspProblemProvider();
+
+        ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
+        JobsDefinition instance = provider.initProblemInstance(pii);
+        JspPhenotypeEvaluator jspEval = new JspPhenotypeEvaluator(pi, instance);
+
+        double[] randomResults = new double[numberOfTrials];
+        double[] greedyResults = new double[numberOfTrials];
+        List<Integer> indexes = new ArrayList<>(numberOfTrials);
+
+        for (int i = 0; i < numberOfTrials; i++) {
+          indexes.add(i);
+        }
+
+        indexes.parallelStream().forEach((i) -> {
+          try {
+            logger.info("Greedy for: {}, trial {}", instanceID, i);
+            JspPhenotype schedule = ScheduleProvider.createGreedySchedule(jspEval, instance);
+            greedyResults[i] = schedule.getObjValue();
+          } catch (Exception ex) {
+            logger.warn("Processing trial error", ex);
+          }
+        });
+        indexes.parallelStream().forEach((i) -> {
+          try {
+            logger.info("Random for: {}, trial {}", instanceID, i);
+            JspPhenotype schedule = ScheduleProvider.createRandomSchedule(jspEval, instance, rnd.nextLong());
+            randomResults[i] = schedule.getObjValue();
+          } catch (Exception ex) {
+            logger.warn("Processing trial error", ex);
+          }
+        });
+
+        DataNode inst = new DataNode("Instance");
+        inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
+        inst.putValue("greedy", (int) median(greedyResults));
+        inst.putValue("random", (int) median(randomResults));
+
+        if (optimumResults.containsKey(instanceID.toLowerCase())) {
+          inst.putValue("optimum", optimumResults.get(instanceID.toLowerCase()));;
+        } else {
+          inst.putValue("optimum", "TBA");
+        }
+
+        inst.putValue("size", instance.getJobInfos().length * instance.getJobInfos()[0].getOperationInfos().length);
+        result.putDataNode(inst);
+      } catch (Exception ex) {
+        logger.warn("JSSP instance error: {}", ex.getMessage());
       }
     }
 
