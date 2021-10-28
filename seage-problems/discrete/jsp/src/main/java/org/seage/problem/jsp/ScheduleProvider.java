@@ -1,15 +1,11 @@
 package org.seage.problem.jsp;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.seage.aal.algorithm.Phenotype;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +18,7 @@ public class ScheduleProvider {
    * @param jobs Problem instance definition
    * @param randomSeed Random seed.
    */
-  public static JspPhenotype createGreedySchedule(JobsDefinition jobs) throws Exception {
+  public static JspPhenotype createGreedySchedule(JspPhenotypeEvaluator jspPhenoEval, JobsDefinition jobs) throws Exception {
     int numJobs = jobs.getJobsCount();
     int numOpers = jobs.getJobInfos()[0].getOperationInfos().length;
 
@@ -31,8 +27,6 @@ public class ScheduleProvider {
     int[] numFinJobOpers = new int[numJobs];
     for (int i = 0; i < numJobs; i++)
       numFinJobOpers[i] = 0;
-
-    JspPhenotypeEvaluator jspPhenoEval = new JspPhenotypeEvaluator(jobs);
 
     double tmpMakeSpan = 0;
     double tmpMinMakeSpan = 0;
@@ -50,7 +44,7 @@ public class ScheduleProvider {
         greedySolution[i] = jobId;
 
         tmpMakeSpan = jspPhenoEval
-          .evaluateSchedule(Arrays.copyOfRange(greedySolution, 0, i+1))[0];
+          .createSchedule(Arrays.copyOfRange(greedySolution, 0, i+1), true).getMakeSpan();
         
         if (tmpMinMakeSpan == 0 || tmpMakeSpan < tmpMinMakeSpan) {
           tmpMinMakeSpan = tmpMakeSpan;
@@ -62,8 +56,10 @@ public class ScheduleProvider {
       greedySolution[i] = nextJobId;
       numFinJobOpers[nextJobId-1] += 1;
     }
+    var result = new JspPhenotype(greedySolution);
+    result.setObjValue(tmpMinMakeSpan);
     
-    return new JspPhenotype(greedySolution);
+    return result;
   }
 
   /**
@@ -72,7 +68,7 @@ public class ScheduleProvider {
    * @params length Length of schedule
    * @params randomSeed Random seed
    */
-  public static JspPhenotype createRandomSchedule(JobsDefinition jobs, long randomSeed) throws Exception {
+  public static JspPhenotype createRandomSchedule(JspPhenotypeEvaluator jspPhenoEval, JobsDefinition jobs, long randomSeed) throws Exception {
     Random rnd = new Random(randomSeed);
 
     int numJobs = jobs.getJobsCount();
@@ -98,7 +94,11 @@ public class ScheduleProvider {
       randSol[ix2] = a;
     }
 
-    return new JspPhenotype(randSol);
+    var result = new JspPhenotype(randSol);
+    var makeSpan = jspPhenoEval.createSchedule(randSol, true).getMakeSpan();
+    result.setObjValue((double)makeSpan);
+
+    return result;
   }
 
   public static void main(String[] args) throws Exception {
@@ -110,11 +110,12 @@ public class ScheduleProvider {
       try(InputStream stream = ScheduleProvider.class.getResourceAsStream(jobInfo.getPath())) {    
         jobs = new JobsDefinition(jobInfo, stream);
       }
-      JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(jobs);
+      ProblemInfo pi = problemProvider.getProblemInfo();
+      JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, jobs);
 
-      JspPhenotype ph1 = ScheduleProvider.createRandomSchedule(jobs, 1);
+      JspPhenotype ph1 = ScheduleProvider.createRandomSchedule(evaluator, jobs, 1);
       double[] val1 = evaluator.evaluate(ph1);
-      JspPhenotype ph2 = ScheduleProvider.createGreedySchedule(jobs);
+      JspPhenotype ph2 = ScheduleProvider.createGreedySchedule(evaluator, jobs);
       double[] val2 = evaluator.evaluate(ph2);
       
       logger.debug(jobInfo.getInstanceID() + " - " + val2[0] + " - " + val1[0]);

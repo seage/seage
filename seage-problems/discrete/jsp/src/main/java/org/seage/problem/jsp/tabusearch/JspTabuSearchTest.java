@@ -26,7 +26,7 @@
 package org.seage.problem.jsp.tabusearch;
 
 import java.io.FileInputStream;
-
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
 import org.seage.metaheuristic.tabusearch.SimpleTabuList;
 import org.seage.metaheuristic.tabusearch.TabuSearch;
@@ -34,6 +34,7 @@ import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
 import org.seage.metaheuristic.tabusearch.TabuSearchListener;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp.JspProblemProvider;
 
 /**
  *
@@ -57,11 +58,13 @@ public class JspTabuSearchTest implements TabuSearchListener
 
     public void run(String path) throws Exception
     {
-        JobsDefinition jobsDef = new JobsDefinition(null, getClass().getResourceAsStream(path));
+        JspProblemProvider problemProvider = new JspProblemProvider();
+        ProblemInfo pi = problemProvider.getProblemInfo();
+        JobsDefinition jobsDef = new JobsDefinition(null, new FileInputStream(path));
         System.out.println("Loading jobs from path: " + path);
         System.out.println("Number of jobs: " + jobsDef.getJobsCount());
 
-        JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(jobsDef);
+        JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, jobsDef);
         
         TabuSearch ts = new TabuSearch(
                 new JspSolution(jobsDef.getJobsCount(), jobsDef.getJobInfos()[0].getOperationInfos().length),

@@ -32,10 +32,12 @@ import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp.JspProblemProvider;
 
 /**
  *
@@ -58,7 +60,8 @@ public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, Jsp
         IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) 
         throws Exception
     {
-        JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator((JobsDefinition) instance);
+        JspProblemProvider problemProvider = new JspProblemProvider();
+        JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
        
         return new TabuSearchAdapter<JspPhenotype, JspSolution>(new JspMoveManager(evaluator),
                 new JspObjectiveFunction(evaluator), phenotypeEvaluator)

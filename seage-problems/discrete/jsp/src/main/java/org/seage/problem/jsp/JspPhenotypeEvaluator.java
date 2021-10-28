@@ -29,6 +29,7 @@
 package org.seage.problem.jsp;
 
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemScoreCalculator;
 
 public class JspPhenotypeEvaluator implements IPhenotypeEvaluator<JspPhenotype>
@@ -40,15 +41,14 @@ public class JspPhenotypeEvaluator implements IPhenotypeEvaluator<JspPhenotype>
 
   private ProblemScoreCalculator scoreCalculator;
 
-  public JspPhenotypeEvaluator(JobsDefinition jobsDefinition) throws Exception
+  public JspPhenotypeEvaluator(ProblemInfo problemInfo, JobsDefinition jobsDefinition) throws Exception
   {
-    JspProblemProvider problemProvider = new JspProblemProvider();
     _jobsDefinition = jobsDefinition;
     _instanceID = jobsDefinition.getProblemInstanceInfo().getInstanceID();
     
     _numJobs = _jobsDefinition.getJobsCount();
     _numMachines = _jobsDefinition.getMachinesCount();
-    scoreCalculator = new ProblemScoreCalculator(problemProvider.getProblemInfo());
+    scoreCalculator = new ProblemScoreCalculator(problemInfo);
   }
       
   /**

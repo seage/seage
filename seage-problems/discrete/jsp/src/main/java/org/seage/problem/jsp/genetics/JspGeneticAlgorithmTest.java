@@ -67,12 +67,14 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
   }
 
   public void runAlgorithm(JobsDefinition jobs) throws Exception {
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    ProblemInfo pi = problemProvider.getProblemInfo();
     System.out.println(jobs.getJobsCount());
     int populationCount = 100;
     System.out.println("Population: " + populationCount);
     List<Subject<Integer>> initialSolutions = generateInitialSubjects(jobs, populationCount);
     GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
-        new JspGeneticOperator(), new JspSubjectEvaluator(new JspPhenotypeEvaluator(jobs)));
+        new JspGeneticOperator(), new JspSubjectEvaluator(new JspPhenotypeEvaluator(pi, jobs)));
     gs.addGeneticSearchListener(this);
     gs.setEliteSubjectsPct(5);
     gs.setMutatePopulationPct(5);
@@ -90,8 +92,9 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
 
     AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
 
+    ProblemInfo pi = problemProvider.getProblemInfo();
     JspGeneticAlgorithmFactory factory = new JspGeneticAlgorithmFactory();
-    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(jobs);
+    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     try {
         IAlgorithmAdapter<JspPhenotype, Subject<Integer>> adapter =  factory.createAlgorithm(jobs, eval);
         adapter.solutionsFromPhenotype(schedules);
