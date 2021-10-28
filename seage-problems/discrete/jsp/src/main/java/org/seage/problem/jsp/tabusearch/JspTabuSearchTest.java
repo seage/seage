@@ -45,7 +45,7 @@ public class JspTabuSearchTest implements TabuSearchListener
     {
         try
         {
-            String path = "data/jsp/abz6.xml";
+            String path = "/org/seage/problem/jsp/test-instances/test01.xml";
 
             new JspTabuSearchTest().run(path);
         }
@@ -57,7 +57,7 @@ public class JspTabuSearchTest implements TabuSearchListener
 
     public void run(String path) throws Exception
     {
-        JobsDefinition jobsDef = new JobsDefinition(null, new FileInputStream(path));
+        JobsDefinition jobsDef = new JobsDefinition(null, getClass().getResourceAsStream(path));
         System.out.println("Loading jobs from path: " + path);
         System.out.println("Number of jobs: " + jobsDef.getJobsCount());
 
