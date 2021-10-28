@@ -73,7 +73,7 @@ public class FspProblemProvider extends JspProblemProvider {
     try {
       FspProblemProvider provider = new FspProblemProvider();
       provider.initProblemInstance(new ProblemInstanceInfo(
-        "100x20_01", ProblemInstanceOrigin.RESOURCE, "/org/seage/problem/fsp/instances/100x20_01.txt"
+        "100x20_01", ProblemInstanceOrigin.RESOURCE, "/org/seage/problem/fsp/instances/tai100_20_01.txt"
       ));
     } catch (Exception e) {
       // TODO Auto-generated catch block
