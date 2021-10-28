@@ -60,7 +60,7 @@ public class JspTabuSearchTest implements TabuSearchListener
     {
         JspProblemProvider problemProvider = new JspProblemProvider();
         ProblemInfo pi = problemProvider.getProblemInfo();
-        JobsDefinition jobsDef = new JobsDefinition(null, new FileInputStream(path));
+        JobsDefinition jobsDef = new JobsDefinition(null, getClass().getResourceAsStream(path));
         System.out.println("Loading jobs from path: " + path);
         System.out.println("Number of jobs: " + jobsDef.getJobsCount());
 
