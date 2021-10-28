@@ -51,56 +51,60 @@ public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, Jsp
         return TabuSearchAdapter.class;
     }
 
-    @Override
-    public IAlgorithmAdapter<JspPhenotype, JspSolution> createAlgorithm(ProblemInstance instance,
-            IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     // @Override
-    // public IAlgorithmAdapter<JspSolution> createAlgorithm(ProblemInstance instance) throws Exception
-    // {
-    //     JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator((JobsDefinition) instance);
-       
-    //     IAlgorithmAdapter<JspSolution> algorithm = new TabuSearchAdapter<>(new JspMoveManager(evaluator),
-    //             new JspObjectiveFunction(evaluator), "")
-    //     {
-
-    //         @Override
-    //         public void solutionsFromPhenotype(Object[][] source) throws Exception
-    //         {
-    //             this.solutions = new Solution[source.length];
-    //             for (int i = 0; i < source.length; i++)
-    //             {
-    //                 Integer[] sol = new Integer[source[i].length];
-    //                 for (int j = 0; j < sol.length; j++)
-    //                     sol[j] = (Integer) source[i][j];
-
-    //                 this.solutions[i] = new JspSolution(sol);
-    //             }
-    //         }
-
-    //         @Override
-    //         public Object[][] solutionsToPhenotype() throws Exception
-    //         {
-    //             Object[][] result = new Object[this.solutions.length][];
-
-    //             for (int i = 0; i < this.solutions.length; i++)
-    //             {
-    //                 JspSolution s = (JspSolution) this.solutions[i];
-    //                 result[i] = s.getJobArray();                        
-    //             }
-    //             return result;
-    //         }
-
-	// 		@Override
-	// 		public Object[] solutionToPhenotype(JspSolution solution) throws Exception {
-	// 			// TODO Auto-generated method stub
-	// 			return null;
-	// 		}
-    //     };
-
-    //     return algorithm;
+    // public IAlgorithmAdapter<JspPhenotype, JspSolution> createAlgorithm(ProblemInstance instance,
+    //         IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception {
+    //     // TODO Auto-generated method stub
+    //     return null;
     // }
+
+    @Override
+    public IAlgorithmAdapter<JspPhenotype, JspSolution> createAlgorithm(
+        ProblemInstance instance, 
+        IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) 
+        throws Exception
+    {
+        JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator((JobsDefinition) instance);
+       
+        return new TabuSearchAdapter<JspPhenotype, JspSolution>(new JspMoveManager(evaluator),
+                new JspObjectiveFunction(evaluator), "")
+        {
+
+            @Override
+            public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception
+            {
+                // this.solutions = new Solution[source.length];
+                // for (int i = 0; i < source.length; i++)
+                // {
+                //     Integer[] sol = new Integer[source[i].length];
+                //     for (int j = 0; j < sol.length; j++)
+                //         sol[j] = (Integer) source[i][j];
+
+                //     this.solutions[i] = new JspSolution(sol);
+                // }
+                this.solutions = new ArrayList<JspSolution>(source.length);
+                for (int i = 0; i < source.length; i++)
+                    this.solutions.add(new JspSolution(source[i].getSolution()));
+            }
+
+            @Override
+            public Object[][] solutionsToPhenotype() throws Exception
+            {
+                Object[][] result = new Object[this.solutions.length][];
+
+                for (int i = 0; i < this.solutions.length; i++)
+                {
+                    JspSolution s = (JspSolution) this.solutions[i];
+                    result[i] = s.getJobArray();                        
+                }
+                return result;
+            }
+
+			@Override
+			public Object[] solutionToPhenotype(JspSolution solution) throws Exception {
+				// TODO Auto-generated method stub
+				return null;
+			}
+        };
+    }
 }
