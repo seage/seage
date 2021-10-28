@@ -157,16 +157,22 @@ public class MetadataGenerator {
    * 
    * @param dn DataNode object with data for outputting.
    */
-  private static void saveToFile(DataNode dn, String fileName) throws Exception {
-    logger.info("Saving the results to the file {}.metadata.xml", fileName);
+  private static void saveToFile(DataNode dn, String problemName) throws Exception {
+    File directory = new File("./output");
+    if (! directory.exists()){
+        directory.mkdir();
+    }
+    File path = new File("./output/" + problemName + ".metadata.xml");
+
+    logger.info("Saving the results to the file {}", path.getAbsolutePath());
+    
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, ""); // Compliant
     Transformer transformer = transformerFactory.newTransformer();
     transformer.setOutputProperty(OutputKeys.INDENT, "yes");
     DOMSource domSource = new DOMSource(dn.toXml());
-    StreamResult streamResult =
-        new StreamResult(new File("./output/" + fileName + ".metadata.xml"));
+    StreamResult streamResult = new StreamResult(path);
 
     transformer.transform(domSource, streamResult);
   }
