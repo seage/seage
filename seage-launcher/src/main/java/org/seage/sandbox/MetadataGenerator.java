@@ -493,7 +493,7 @@ public class MetadataGenerator {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i);
             JspPhenotype schedule = ScheduleProvider.createRandomSchedule(jspEval, instance, rnd.nextLong());
-            greedyResults[i] = schedule.getObjValue();
+            randomResults[i] = schedule.getObjValue();
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
