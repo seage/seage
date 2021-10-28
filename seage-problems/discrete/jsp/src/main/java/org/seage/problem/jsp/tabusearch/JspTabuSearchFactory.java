@@ -21,7 +21,9 @@
 /**
  * Contributors:
  *     Richard Malek
- *     - Initial implementation
+ *          - Initial implementation
+ *     David Omrai
+ *          - Following implementation
  */
 package org.seage.problem.jsp.tabusearch;
 
@@ -31,7 +33,6 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
 import org.seage.aal.problem.ProblemInstance;
-import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
@@ -51,13 +52,6 @@ public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, Jsp
         return TabuSearchAdapter.class;
     }
 
-    // @Override
-    // public IAlgorithmAdapter<JspPhenotype, JspSolution> createAlgorithm(ProblemInstance instance,
-    //         IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception {
-    //     // TODO Auto-generated method stub
-    //     return null;
-    // }
-
     @Override
     public IAlgorithmAdapter<JspPhenotype, JspSolution> createAlgorithm(
         ProblemInstance instance, 
@@ -67,43 +61,39 @@ public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, Jsp
         JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator((JobsDefinition) instance);
        
         return new TabuSearchAdapter<JspPhenotype, JspSolution>(new JspMoveManager(evaluator),
-                new JspObjectiveFunction(evaluator), "")
+                new JspObjectiveFunction(evaluator), phenotypeEvaluator)
         {
 
             @Override
             public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception
             {
-                // this.solutions = new Solution[source.length];
-                // for (int i = 0; i < source.length; i++)
-                // {
-                //     Integer[] sol = new Integer[source[i].length];
-                //     for (int j = 0; j < sol.length; j++)
-                //         sol[j] = (Integer) source[i][j];
-
-                //     this.solutions[i] = new JspSolution(sol);
-                // }
-                this.solutions = new ArrayList<JspSolution>(source.length);
+                this.solutions = new JspSolution[source.length];
                 for (int i = 0; i < source.length; i++)
-                    this.solutions.add(new JspSolution(source[i].getSolution()));
+                    this.solutions[i] = new JspSolution(source[i].getSolution());
             }
 
             @Override
-            public Object[][] solutionsToPhenotype() throws Exception
+            public JspPhenotype[] solutionsToPhenotype() throws Exception
             {
-                Object[][] result = new Object[this.solutions.length][];
+                JspPhenotype[] result = new JspPhenotype[this.solutions.length];
 
                 for (int i = 0; i < this.solutions.length; i++)
                 {
                     JspSolution s = (JspSolution) this.solutions[i];
-                    result[i] = s.getJobArray();                        
+                    result[i] = new JspPhenotype(s.getJobArray());                        
                 }
                 return result;
             }
 
 			@Override
-			public Object[] solutionToPhenotype(JspSolution solution) throws Exception {
-				// TODO Auto-generated method stub
-				return null;
+			public JspPhenotype solutionToPhenotype(JspSolution solution) throws Exception {
+				JspPhenotype result = new JspPhenotype(solution.getJobArray());
+
+                double[] objVals = this.phenotypeEvaluator.evaluate(result);
+
+                result.setObjValue(objVals[0]);
+                result.setScore(objVals[1]);
+                return result;
 			}
         };
     }
