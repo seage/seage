@@ -25,8 +25,12 @@
  */
 package org.seage.problem.jsp.tabusearch;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Random;
 import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemInstance;
+import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
 import org.seage.metaheuristic.tabusearch.SimpleTabuList;
 import org.seage.metaheuristic.tabusearch.TabuSearch;
@@ -35,6 +39,7 @@ import org.seage.metaheuristic.tabusearch.TabuSearchListener;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
+import org.seage.problem.jsp.genetics.JspGeneticAlgorithmFactory;
 
 /**
  *
@@ -42,13 +47,22 @@ import org.seage.problem.jsp.JspProblemProvider;
  */
 public class JspTabuSearchTest implements TabuSearchListener
 {
+    private Random generator = new Random();
+
     public static void main(String[] args)
     {
         try
         {
-            String path = "/org/seage/problem/jsp/instances/abz6.xml";
+            String instanceID = "ft10";
+            String path = "/org/seage/problem/jsp/instances/ft10.xml";
+            ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+            JobsDefinition jobs = null;
 
-            new JspTabuSearchTest().run(path, "abz6");
+            try(InputStream stream = JspTabuSearchTest.class.getResourceAsStream(path)) {
+                jobs = new JobsDefinition(jobInfo, stream);
+            }
+
+            new JspTabuSearchTest().runAlgorithm(jobs);
         }
         catch (Exception ex)
         {
@@ -56,18 +70,16 @@ public class JspTabuSearchTest implements TabuSearchListener
         }
     }
 
-    public void run(String path, String instanceID) throws Exception
+    public void runAlgorithm(JobsDefinition jobs) throws Exception
     {
         JspProblemProvider problemProvider = new JspProblemProvider();
         ProblemInfo pi = problemProvider.getProblemInfo();
-        JobsDefinition jobsDef = new JobsDefinition(problemProvider.getProblemInfo().getProblemInstanceInfo(instanceID), getClass().getResourceAsStream(path));
-        System.out.println("Loading jobs from path: " + path);
-        System.out.println("Number of jobs: " + jobsDef.getJobsCount());
+        System.out.println("Number of jobs: " + jobs.getJobsCount());
 
-        JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, jobsDef);
+        JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, jobs);
         
         TabuSearch ts = new TabuSearch(
-                new JspSolution(jobsDef.getJobsCount(), jobsDef.getJobInfos()[0].getOperationInfos().length),
+                new JspSolution(jobs.getJobsCount(), jobs.getJobInfos()[0].getOperationInfos().length),
                 new JspMoveManager(evaluator),
                 new JspObjectiveFunction(evaluator),
                 new SimpleTabuList(7),
