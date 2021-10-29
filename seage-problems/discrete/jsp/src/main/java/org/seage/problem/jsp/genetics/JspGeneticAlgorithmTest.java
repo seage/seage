@@ -128,7 +128,7 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     result.putValue("iterationCount", 100);
     result.putValue("numSolutions", 100);
     return result;
-}
+  }
 
   @Override
   public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e) {

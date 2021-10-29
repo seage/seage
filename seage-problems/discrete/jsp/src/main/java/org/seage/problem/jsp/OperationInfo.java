@@ -24,8 +24,8 @@ package org.seage.problem.jsp;
  */
 public class OperationInfo
 {
-    public int JobID;
-    public int OperationID;
-    public int MachineID;
-    public int Length;
+  public int JobID;
+  public int OperationID;
+  public int MachineID;
+  public int Length;
 }

@@ -20,19 +20,27 @@
 
 /**
  * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ *   Richard Malek
+ *   - Initial implementation
  */
 package org.seage.problem.jsp.tabusearch;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Random;
+import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemInstance;
+import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+import org.seage.data.DataNode;
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
 import org.seage.metaheuristic.tabusearch.SimpleTabuList;
 import org.seage.metaheuristic.tabusearch.TabuSearch;
 import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
 import org.seage.metaheuristic.tabusearch.TabuSearchListener;
 import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
 
@@ -42,84 +50,124 @@ import org.seage.problem.jsp.JspProblemProvider;
  */
 public class JspTabuSearchTest implements TabuSearchListener
 {
-    public static void main(String[] args)
+  private Random generator = new Random();
+
+  public static void main(String[] args)
+  {
+    try
     {
-        try
-        {
-            String path = "data/jsp/abz6.xml";
+      String instanceID = "ft10";
+      String path = "/org/seage/problem/jsp/instances/ft10.xml";
+      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+      JobsDefinition jobs = null;
 
-            new JspTabuSearchTest().run(path);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+      try(InputStream stream = JspTabuSearchTest.class.getResourceAsStream(path)) {
+        jobs = new JobsDefinition(jobInfo, stream);
+      }
+
+      //new JspTabuSearchTest().runAlgorithm(jobs);
+      new JspTabuSearchTest().runAlgorithmAdapter(jobs);
     }
-
-    public void run(String path) throws Exception
+    catch (Exception ex)
     {
-        JspProblemProvider problemProvider = new JspProblemProvider();
-        ProblemInfo pi = problemProvider.getProblemInfo();
-        JobsDefinition jobsDef = new JobsDefinition(null, new FileInputStream(path));
-        System.out.println("Loading jobs from path: " + path);
-        System.out.println("Number of jobs: " + jobsDef.getJobsCount());
-
-        JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, jobsDef);
-        
-        TabuSearch ts = new TabuSearch(
-                new JspSolution(jobsDef.getJobsCount(), jobsDef.getJobInfos()[0].getOperationInfos().length),
-                new JspMoveManager(evaluator),
-                new JspObjectiveFunction(evaluator),
-                new SimpleTabuList(7),
-                new BestEverAspirationCriteria(),
-                false);
-
-        ts.addTabuSearchListener(this);
-        ts.setIterationsToGo(1500000);
-        ts.startSolving();
+      ex.printStackTrace();
     }
+  }
 
-    @Override
-    public void newBestSolutionFound(TabuSearchEvent e)
-    {
-        System.out.println(
-                e.getTabuSearch().getBestSolution().toString() + " - " + e.getTabuSearch().getIterationsCompleted());
-    }
+  public void runAlgorithm(JobsDefinition jobs) throws Exception
+  {
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    ProblemInfo pi = problemProvider.getProblemInfo();
+    System.out.println("Number of jobs: " + jobs.getJobsCount());
 
-    @Override
-    public void improvingMoveMade(TabuSearchEvent e)
-    {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
+    JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, jobs);
+    
+    TabuSearch ts = new TabuSearch(
+        new JspSolution(jobs.getJobsCount(), jobs.getJobInfos()[0].getOperationInfos().length),
+        new JspMoveManager(evaluator),
+        new JspObjectiveFunction(evaluator),
+        new SimpleTabuList(7),
+        new BestEverAspirationCriteria(),
+        false);
 
-    @Override
-    public void newCurrentSolutionFound(TabuSearchEvent e)
-    {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
+    ts.addTabuSearchListener(this);
+    ts.setIterationsToGo(1500000);
+    ts.startSolving();
+  }
 
-    @Override
-    public void noChangeInValueMoveMade(TabuSearchEvent e)
-    {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
+  public void runAlgorithmAdapter(JobsDefinition jobs) throws Exception {
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 1, generator.nextLong());
 
-    @Override
-    public void tabuSearchStarted(TabuSearchEvent e)
-    {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
+    AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
 
-    @Override
-    public void tabuSearchStopped(TabuSearchEvent e)
-    {
-        System.out.println("finished");
-    }
+    ProblemInfo pi = problemProvider.getProblemInfo();
+    JspTabuSearchFactory factory = new JspTabuSearchFactory();
+    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
+    try {
+        IAlgorithmAdapter<JspPhenotype, JspSolution> adapter =  factory.createAlgorithm(jobs, eval);
+        adapter.solutionsFromPhenotype(schedules);
+        adapter.startSearching(params);
+        var solutions = adapter.solutionsToPhenotype();
+        System.out.println(solutions[0].getObjValue());
 
-    @Override
-    public void unimprovingMoveMade(TabuSearchEvent e)
-    {
-        //throw new UnsupportedOperationException("Not supported yet.");
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+  }
+
+  private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
+    AlgorithmParams result = new AlgorithmParams();
+    DataNode algParamsNode = problemInfo.getDataNode("Algorithms").getDataNodeById("TabuSearch");
+    for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
+      result.putValue(param.getValueStr("name"), param.getValue("init"));
+    }
+    result.putValue("iterationCount", 150000);
+    result.putValue("numSolutions", 1);
+    return result;
+  }
+
+  @Override
+  public void newBestSolutionFound(TabuSearchEvent e)
+  {
+    System.out.println(
+        e.getTabuSearch().getBestSolution().toString() + " - " + e.getTabuSearch().getIterationsCompleted());
+  }
+
+  @Override
+  public void improvingMoveMade(TabuSearchEvent e)
+  {
+    //throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public void newCurrentSolutionFound(TabuSearchEvent e)
+  {
+    //throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public void noChangeInValueMoveMade(TabuSearchEvent e)
+  {
+    //throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public void tabuSearchStarted(TabuSearchEvent e)
+  {
+    //throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public void tabuSearchStopped(TabuSearchEvent e)
+  {
+    System.out.println("finished");
+  }
+
+  @Override
+  public void unimprovingMoveMade(TabuSearchEvent e)
+  {
+    //throw new UnsupportedOperationException("Not supported yet.");
+  }
 
 }

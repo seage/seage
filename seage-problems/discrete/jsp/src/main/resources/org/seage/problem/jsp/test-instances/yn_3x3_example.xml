@@ -1,0 +1,21 @@
+<!-- 
+  Test instance described in 
+  http://www.kecl.ntt.co.jp/as/members/yamada/galbk.pdf
+-->
+<xml>
+  <job id="1" priority="2">
+    <operation number="10" machineID="1" length="3" />
+    <operation number="20" machineID="2" length="3" />
+    <operation number="30" machineID="3" length="3" />
+  </job>
+  <job id="2" priority="2">
+    <operation number="10" machineID="1" length="2" />
+    <operation number="20" machineID="3" length="3" />
+    <operation number="30" machineID="2" length="4" />
+  </job>
+  <job id="3" priority="2">
+    <operation number="10" machineID="2" length="3" />
+    <operation number="20" machineID="1" length="2" />
+    <operation number="30" machineID="3" length="1" />
+  </job>
+</xml>

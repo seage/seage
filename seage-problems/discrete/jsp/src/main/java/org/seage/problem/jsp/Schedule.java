@@ -30,111 +30,111 @@ import org.seage.data.Pair;
  */
 public class Schedule
 {
-    private int _makeSpan;
-    private ScheduleCell[] _lastCellInJob;
-    private ScheduleCell[] _lastCellOnMachine;
+  private int _makeSpan;
+  private ScheduleCell[] _lastCellInJob;
+  private ScheduleCell[] _lastCellOnMachine;
 
-    private ScheduleCell _mostDistantCell;
+  private ScheduleCell _mostDistantCell;
 
-    public Schedule(int numJobs, int numMachines)
+  public Schedule(int numJobs, int numMachines)
+  {
+    _lastCellInJob = new ScheduleCell[numJobs];
+    _lastCellOnMachine = new ScheduleCell[numMachines];
+    _makeSpan = 0;
+  }
+
+  public void addCell(int jobIndex, int machineIndex, ScheduleCell newCell)
+  {
+    if (_lastCellOnMachine[machineIndex] != null)
+      _lastCellOnMachine[machineIndex].setNextCellOnMachine(newCell);
+
+    newCell.setPreviousCellOnMachine(_lastCellOnMachine[machineIndex]);
+    newCell.setPreviousCellInJob(_lastCellInJob[jobIndex]);
+
+    _lastCellOnMachine[machineIndex] = newCell;
+    _lastCellInJob[jobIndex] = newCell;
+
+    if (_mostDistantCell == null)
+      _mostDistantCell = newCell;
+    else if (newCell.getEndTime() > _mostDistantCell.getEndTime())
+      _mostDistantCell = newCell;
+  }
+
+  public List<Pair<ScheduleCell>> findCriticalPath() throws Exception
+  {
+    ArrayList<Pair<ScheduleCell>> results = new ArrayList<Pair<ScheduleCell>>();
+    findCriticalPath(_mostDistantCell, results);
+    return Collections.unmodifiableList(results);
+  }
+
+  private void findCriticalPath(ScheduleCell cell, ArrayList<Pair<ScheduleCell>> criticalPairs) throws Exception
+  {  
+    if (cell == null)
+      throw new Exception("Critical path: cell is a null pointer");
+
+    boolean breakFound = false;
+
+    ScheduleCell currCell = cell;
+    ScheduleCell prevCellOnMachine = null;
+    ScheduleCell prevCellInJob = null;
+
+    while (!breakFound)
     {
-        _lastCellInJob = new ScheduleCell[numJobs];
-        _lastCellOnMachine = new ScheduleCell[numMachines];
-        _makeSpan = 0;
+      if (currCell == null)
+      {
+        if (prevCellOnMachine == null && prevCellInJob == null)
+          throw new Exception("ALL Null pointer");
+        ;
+        throw new Exception("While: Null pointer");
+      }
+
+      prevCellOnMachine = currCell.getPreviousCellOnMachine();
+      prevCellInJob = currCell.getPreviousCellInJob();
+
+      if (prevCellOnMachine == null && prevCellInJob == null)
+        return;
+
+      if (prevCellInJob == null)
+      {
+        currCell = prevCellOnMachine;
+      }
+      else
+      {
+        if (currCell.getStartTime() == prevCellInJob.getEndTime())
+        {
+          breakFound = true;
+        }
+        else
+          currCell = prevCellOnMachine;
+      }
     }
 
-    public void addCell(int jobIndex, int machineIndex, ScheduleCell newCell)
+    if (prevCellInJob.getPreviousCellOnMachine() != null)
     {
-        if (_lastCellOnMachine[machineIndex] != null)
-            _lastCellOnMachine[machineIndex].setNextCellOnMachine(newCell);
-
-        newCell.setPreviousCellOnMachine(_lastCellOnMachine[machineIndex]);
-        newCell.setPreviousCellInJob(_lastCellInJob[jobIndex]);
-
-        _lastCellOnMachine[machineIndex] = newCell;
-        _lastCellInJob[jobIndex] = newCell;
-
-        if (_mostDistantCell == null)
-            _mostDistantCell = newCell;
-        else if (newCell.getEndTime() > _mostDistantCell.getEndTime())
-            _mostDistantCell = newCell;
+      if (prevCellInJob.getStartTime() == prevCellInJob.getPreviousCellOnMachine().getEndTime())
+      {
+        if (prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob() == null ||
+          !prevCellInJob.getPreviousCellOnMachine()
+            .compareStart2EndTo(prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob()))    
+          criticalPairs.add(new org.seage.data.Pair<ScheduleCell>(prevCellInJob.getPreviousCellOnMachine(), prevCellInJob));        
+      }
     }
 
-    public List<Pair<ScheduleCell>> findCriticalPath() throws Exception
+    if (currCell.getNextCellOnMachine() != null &&
+      currCell.getNextCellOnMachine().getStartTime() == currCell.getEndTime())
     {
-        ArrayList<Pair<ScheduleCell>> results = new ArrayList<Pair<ScheduleCell>>();
-        findCriticalPath(_mostDistantCell, results);
-        return Collections.unmodifiableList(results);
+      criticalPairs.add(new Pair<ScheduleCell>(currCell, currCell.getNextCellOnMachine()));
     }
 
-    private void findCriticalPath(ScheduleCell cell, ArrayList<Pair<ScheduleCell>> criticalPairs) throws Exception
-    {        
-        if (cell == null)
-            throw new Exception("Critical path: cell is a null pointer");
+    findCriticalPath(prevCellInJob, criticalPairs);
 
-        boolean breakFound = false;
+  }
 
-        ScheduleCell currCell = cell;
-        ScheduleCell prevCellOnMachine = null;
-        ScheduleCell prevCellInJob = null;
+  public int getMakeSpan() {
+    return _makeSpan;
+  }
 
-        while (!breakFound)
-        {
-            if (currCell == null)
-            {
-                if (prevCellOnMachine == null && prevCellInJob == null)
-                    throw new Exception("ALL Null pointer");
-                ;
-                throw new Exception("While: Null pointer");
-            }
-
-            prevCellOnMachine = currCell.getPreviousCellOnMachine();
-            prevCellInJob = currCell.getPreviousCellInJob();
-
-            if (prevCellOnMachine == null && prevCellInJob == null)
-                return;
-
-            if (prevCellInJob == null)
-            {
-                currCell = prevCellOnMachine;
-            }
-            else
-            {
-                if (currCell.getStartTime() == prevCellInJob.getEndTime())
-                {
-                    breakFound = true;
-                }
-                else
-                    currCell = prevCellOnMachine;
-            }
-        }
-
-        if (prevCellInJob.getPreviousCellOnMachine() != null)
-        {
-            if (prevCellInJob.getStartTime() == prevCellInJob.getPreviousCellOnMachine().getEndTime())
-            {
-                if (prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob() == null ||
-                    !prevCellInJob.getPreviousCellOnMachine()
-                        .compareStart2EndTo(prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob()))                
-                    criticalPairs.add(new org.seage.data.Pair<ScheduleCell>(prevCellInJob.getPreviousCellOnMachine(), prevCellInJob));                
-            }
-        }
-
-        if (currCell.getNextCellOnMachine() != null &&
-            currCell.getNextCellOnMachine().getStartTime() == currCell.getEndTime())
-        {
-            criticalPairs.add(new Pair<ScheduleCell>(currCell, currCell.getNextCellOnMachine()));
-        }
-
-        findCriticalPath(prevCellInJob, criticalPairs);
-
-    }
-
-    public int getMakeSpan() {
-        return _makeSpan;
-    }
-
-    public void setMakeSpan(int makeSpan) {
-        _makeSpan = makeSpan;
-    }
+  public void setMakeSpan(int makeSpan) {
+    _makeSpan = makeSpan;
+  }
 }
