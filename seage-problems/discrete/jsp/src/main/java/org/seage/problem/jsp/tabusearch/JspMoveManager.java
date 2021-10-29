@@ -34,30 +34,30 @@ import org.seage.problem.jsp.ScheduleCell;
  */
 public class JspMoveManager implements MoveManager
 {
-    private JspPhenotypeEvaluator _evaluator;
-    private int _maxMoves;
+  private JspPhenotypeEvaluator _evaluator;
+  private int _maxMoves;
 
-    public JspMoveManager(JspPhenotypeEvaluator evaluator)
+  public JspMoveManager(JspPhenotypeEvaluator evaluator)
+  {
+    _evaluator = evaluator;
+    _maxMoves = 100;
+  }
+
+  @Override
+  public Move[] getAllMoves(Solution solution) throws Exception
+  {
+    JspSolution sol = (JspSolution) solution;
+    Schedule schedule = _evaluator.createSchedule(sol.getJobArray());
+
+    List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
+
+    JspMove[] moves = new JspMove[Math.min(criticalPath.size() / 2, _maxMoves)];
+    for (int i = 0; i < moves.length; i++)
     {
-        _evaluator = evaluator;
-        _maxMoves = 100;
+      moves[i] = new JspMove(criticalPath.get(i).getFirst().getIndex(), criticalPath.get(i).getSecond().getIndex());
     }
 
-    @Override
-    public Move[] getAllMoves(Solution solution) throws Exception
-    {
-        JspSolution sol = (JspSolution) solution;
-        Schedule schedule = _evaluator.createSchedule(sol.getJobArray());
+    return moves;
 
-        List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
-
-        JspMove[] moves = new JspMove[Math.min(criticalPath.size() / 2, _maxMoves)];
-        for (int i = 0; i < moves.length; i++)
-        {
-            moves[i] = new JspMove(criticalPath.get(i).getFirst().getIndex(), criticalPath.get(i).getSecond().getIndex());
-        }
-
-        return moves;
-
-    }
+  }
 }

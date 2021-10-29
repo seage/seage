@@ -30,23 +30,23 @@ import org.seage.problem.jsp.JspPhenotypeEvaluator;
  */
 public class JspObjectiveFunction implements ObjectiveFunction
 {
-    private JspPhenotypeEvaluator _evaluator;
+  private JspPhenotypeEvaluator _evaluator;
 
-    public JspObjectiveFunction(JspPhenotypeEvaluator evaluator)
-    {
-        _evaluator = evaluator;
-    }
+  public JspObjectiveFunction(JspPhenotypeEvaluator evaluator)
+  {
+    _evaluator = evaluator;
+  }
 
-    @Override
-    public double[] evaluate(Solution soln, Move move) throws Exception
-    {
-        if (move != null)
-            move.operateOn(soln);
-        Integer[] jobArray = ((JspSolution) soln).getJobArray();
-        double[] values = _evaluator.evaluate(new JspPhenotype(jobArray));
-        if (move != null)
-            move.operateOn(soln);
+  @Override
+  public double[] evaluate(Solution soln, Move move) throws Exception
+  {
+    if (move != null)
+      move.operateOn(soln);
+    Integer[] jobArray = ((JspSolution) soln).getJobArray();
+    double[] values = _evaluator.evaluate(new JspPhenotype(jobArray));
+    if (move != null)
+      move.operateOn(soln);
 
-        return values;
-    }
+    return values;
+  }
 }

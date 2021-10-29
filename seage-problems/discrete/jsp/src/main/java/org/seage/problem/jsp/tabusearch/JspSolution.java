@@ -26,40 +26,40 @@ import org.seage.metaheuristic.tabusearch.SolutionAdapter;
  */
 public class JspSolution extends SolutionAdapter
 {
-    private Integer[] _jobArray;
+  private Integer[] _jobArray;
 
-    public JspSolution(Integer[] jobArray)
-    {
-        _jobArray = jobArray.clone();
-    }
+  public JspSolution(Integer[] jobArray)
+  {
+    _jobArray = jobArray.clone();
+  }
 
-    public JspSolution(int numJobs, int numOpers)
-    {
-        _jobArray= new Integer[numJobs*numOpers];
+  public JspSolution(int numJobs, int numOpers)
+  {
+    _jobArray= new Integer[numJobs*numOpers];
 
-        int i=0;
-        for(int j=0;j<numJobs;j++)
-            for(int k=0;k<numOpers;k++)
-                _jobArray[i++] = j+1;
-        
-    }
+    int i=0;
+    for(int j=0;j<numJobs;j++)
+      for(int k=0;k<numOpers;k++)
+        _jobArray[i++] = j+1;
+    
+  }
 
-    public Integer[] getJobArray()
-    {
-        return _jobArray;
-    }
+  public Integer[] getJobArray()
+  {
+    return _jobArray;
+  }
 
-    @Override
-    public String toString()
-    {
-        return getObjectiveValue()[0] + "";
-    }
+  @Override
+  public String toString()
+  {
+    return getObjectiveValue()[0] + "";
+  }
 
-    @Override
-    public Object clone()
-    {
-        JspSolution copy = (JspSolution) super.clone();
-        copy._jobArray = this._jobArray.clone();
-        return copy;
-    } // end clone
+  @Override
+  public Object clone()
+  {
+    JspSolution copy = (JspSolution) super.clone();
+    copy._jobArray = this._jobArray.clone();
+    return copy;
+  } // end clone
 }

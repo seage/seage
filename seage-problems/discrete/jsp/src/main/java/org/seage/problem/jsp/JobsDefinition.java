@@ -34,62 +34,62 @@ import org.w3c.dom.NodeList;
 
 public class JobsDefinition extends ProblemInstance
 {
-    protected JobInfo[] _jobInfos;
-    protected int _numMachines;
+  protected JobInfo[] _jobInfos;
+  protected int _numMachines;
+      
+  public JobsDefinition(ProblemInstanceInfo instanceInfo, InputStream jobsDefinitionStream) throws Exception
+  {
+    super(instanceInfo);
     
-    public JobsDefinition(ProblemInstanceInfo instanceInfo, InputStream jobsDefinitionStream) throws Exception
+    createJobInfos(jobsDefinitionStream);
+  }
+      
+  public int getJobsCount()
+  {
+    return _jobInfos.length;
+  }
+      
+  public JobInfo[] getJobInfos()
+  {
+    return _jobInfos;
+  }
+      
+  public int getMachinesCount()
+  {
+    return _numMachines;
+  }
+      
+  protected void createJobInfos(InputStream jobsDefinitionStream) throws Exception
+  {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilder db = dbf.newDocumentBuilder();    
+    Document xmlDoc = db.parse(jobsDefinitionStream);  
+    NodeList jobNodes = xmlDoc.getDocumentElement().getElementsByTagName("job");
+    
+    HashSet<Integer> machines = new HashSet<Integer>();
+    _jobInfos = new JobInfo[jobNodes.getLength()];
+    
+    for(int i=0;i<jobNodes.getLength();i++)
     {
-        super(instanceInfo);
+      Element jobNode = (Element)jobNodes.item(i);
+      Integer jobID = Integer.parseInt(jobNode.getAttributes().getNamedItem("id").getNodeValue());
+      NodeList operationNodes = jobNode.getElementsByTagName("operation");
+      OperationInfo[] operationInfos = new OperationInfo[operationNodes.getLength()];
+      for(int j=0;j<operationNodes.getLength();j++)
+      {
+        Node operNode = operationNodes.item(j);
+        OperationInfo oper = new OperationInfo();
+        oper.OperationID = Integer.parseInt(operNode.getAttributes().getNamedItem("number").getNodeValue());
+        oper.JobID = jobID;
+        oper.MachineID = Integer.parseInt(operNode.getAttributes().getNamedItem("machineID").getNodeValue());
+        oper.Length = Integer.parseInt(operNode.getAttributes().getNamedItem("length").getNodeValue());
+        operationInfos[j] = oper;
         
-        createJobInfos(jobsDefinitionStream);
+        if(!machines.contains(oper.MachineID))
+          machines.add(oper.MachineID);
+      }
+      _jobInfos[i] = new JobInfo(jobID, operationInfos);
     }
-    
-    public int getJobsCount()
-    {
-        return _jobInfos.length;
-    }
-    
-    public JobInfo[] getJobInfos()
-    {
-        return _jobInfos;
-    }
-    
-    public int getMachinesCount()
-    {
-        return _numMachines;
-    }
-    
-    protected void createJobInfos(InputStream jobsDefinitionStream) throws Exception
-    {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();        
-        Document xmlDoc = db.parse(jobsDefinitionStream);        
-        NodeList jobNodes = xmlDoc.getDocumentElement().getElementsByTagName("job");
-        
-        HashSet<Integer> machines = new HashSet<Integer>();
-        _jobInfos = new JobInfo[jobNodes.getLength()];
-        
-        for(int i=0;i<jobNodes.getLength();i++)
-        {
-            Element jobNode = (Element)jobNodes.item(i);
-            Integer jobID = Integer.parseInt(jobNode.getAttributes().getNamedItem("id").getNodeValue());
-            NodeList operationNodes = jobNode.getElementsByTagName("operation");
-            OperationInfo[] operationInfos = new OperationInfo[operationNodes.getLength()];
-            for(int j=0;j<operationNodes.getLength();j++)
-            {
-                Node operNode = operationNodes.item(j);
-                OperationInfo oper = new OperationInfo();
-                oper.OperationID = Integer.parseInt(operNode.getAttributes().getNamedItem("number").getNodeValue());
-                oper.JobID = jobID;
-                oper.MachineID = Integer.parseInt(operNode.getAttributes().getNamedItem("machineID").getNodeValue());
-                oper.Length = Integer.parseInt(operNode.getAttributes().getNamedItem("length").getNodeValue());
-                operationInfos[j] = oper;
-                
-                if(!machines.contains(oper.MachineID))
-                    machines.add(oper.MachineID);
-            }
-            _jobInfos[i] = new JobInfo(jobID, operationInfos);
-        }
-        _numMachines = machines.size();
-    }
+    _numMachines = machines.size();
+  }
 }
