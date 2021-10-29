@@ -7,7 +7,7 @@ import org.seage.problem.jsp.JspProblemProvider;
 
 @Testable
 public class JspTabuSearchAdapterTest extends ProblemAlgorithmAdapterTestBase<JspPhenotype> {
-    public JspTabuSearchAdapterTest() {
-        super(new JspProblemProvider(), "TabuSearch");
-    }
+  public JspTabuSearchAdapterTest() {
+    super(new JspProblemProvider(), "TabuSearch");
+  }
 }
