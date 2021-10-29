@@ -14,8 +14,8 @@ public class JspPhenotypeEvaluatorTest
     public JspPhenotypeEvaluatorTest() throws Exception
     {
         _jobsDefinition = new JobsDefinition(
-                new ProblemInstanceInfo("test01", ProblemInstanceOrigin.RESOURCE, ""), 
-                getClass().getResourceAsStream("/org/seage/problem/jsp/test-instances/test01.xml"));
+                new ProblemInstanceInfo("yn_3x3_example", ProblemInstanceOrigin.RESOURCE, ""), 
+                getClass().getResourceAsStream("/org/seage/problem/jsp/test-instances/yn_3x3_example.xml"));
     }
 
     @Test
@@ -25,13 +25,13 @@ public class JspPhenotypeEvaluatorTest
         ProblemInfo pi = problemProvider.getProblemInfo();
         JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, _jobsDefinition);
         
-        Integer[] jobArray = new Integer[] {1,1,1,2,2,2};
+        Integer[] jobArray = new Integer[] {1,2,3,3,1,2,2,1,3};
         double[] objVal =  evaluator.evaluateSchedule(jobArray);
         assertEquals (12, (int)objVal[0]);
         
-        jobArray = new Integer[] {1,2,1,2,1,2};
+        jobArray = new Integer[] {1,2,3,1,2,3,1,2,3};
         objVal =  evaluator.evaluateSchedule(jobArray);
-        assertEquals (6, (int)objVal[0]);
+        assertEquals (12, (int)objVal[0]);
         Schedule schedule = evaluator.createSchedule(jobArray);
         assertNotNull(schedule);
     }
