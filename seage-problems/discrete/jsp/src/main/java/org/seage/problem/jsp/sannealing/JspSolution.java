@@ -20,8 +20,8 @@
 
 /**
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ *   Jan Zmatlik
+ *   - Initial implementation
  */
 package org.seage.problem.jsp.sannealing;
 
@@ -35,49 +35,49 @@ import org.seage.metaheuristic.sannealing.Solution;
 public abstract class JspSolution extends Solution
 {
 
-    /**
-     * Represent order of cities
-     */
-    protected Integer[] _tour;
+  /**
+   * Represent order of cities
+   */
+  protected Integer[] _tour;
 
-    /**
-     * Array of cities
-     */
+  /**
+   * Array of cities
+   */
 
-    public JspSolution(int length)
-    {
-        _tour = new Integer[length];
-    }
+  public JspSolution(int length)
+  {
+    _tour = new Integer[length];
+  }
 
-    public Integer[] getTour()
-    {
-        return _tour;
-    }
+  public Integer[] getTour()
+  {
+    return _tour;
+  }
 
-    public void setTour(Integer[] tour)
-    {
-        _tour = tour;
-    }
+  public void setTour(Integer[] tour)
+  {
+    _tour = tour;
+  }
 
-    @Override
-    public String toString()
-    {
-        String res = new String();
-        for (Integer t : _tour)
-            res += t + " ";
-        return res;
-    }
+  @Override
+  public String toString()
+  {
+    String res = new String();
+    for (Integer t : _tour)
+      res += t + " ";
+    return res;
+  }
 
-    @Override
-    public JspSolution clone()
-    {
-        JspSolution tspSolution = null;
+  @Override
+  public JspSolution clone()
+  {
+    JspSolution tspSolution = null;
 
-        tspSolution = (JspSolution) super.clone();
-        tspSolution.setTour(_tour.clone());
-        tspSolution.setObjectiveValue(getObjectiveValue());
+    tspSolution = (JspSolution) super.clone();
+    tspSolution.setTour(_tour.clone());
+    tspSolution.setObjectiveValue(getObjectiveValue());
 
-        return tspSolution;
-    }
+    return tspSolution;
+  }
 
 }

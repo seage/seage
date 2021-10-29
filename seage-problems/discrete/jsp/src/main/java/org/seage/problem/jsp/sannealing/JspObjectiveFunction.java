@@ -20,8 +20,8 @@
 
 /**
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ *   Jan Zmatlik
+ *   - Initial implementation
  */
 package org.seage.problem.jsp.sannealing;
 
@@ -35,20 +35,20 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class JspObjectiveFunction implements IObjectiveFunction
 {
 
-    public JspObjectiveFunction()
-    {
-        
-    }
+  public JspObjectiveFunction()
+  {
+    
+  }
 
-    public double[] evaluate(JspSolution solution, int[] move) throws Exception
-    {
-        return null;//_evaluator.evaluate(solution._tour, move, solution.getObjectiveValue());
-    }
+  public double[] evaluate(JspSolution solution, int[] move) throws Exception
+  {
+    return null;//_evaluator.evaluate(solution._tour, move, solution.getObjectiveValue());
+  }
 
-    @Override
-    public double getObjectiveValue(Solution s) throws Exception
-    {
-        return evaluate((JspSolution) s, null)[0];
-    }
+  @Override
+  public double getObjectiveValue(Solution s) throws Exception
+  {
+    return evaluate((JspSolution) s, null)[0];
+  }
 
 }

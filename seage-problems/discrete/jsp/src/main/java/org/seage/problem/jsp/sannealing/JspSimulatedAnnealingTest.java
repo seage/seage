@@ -20,8 +20,8 @@
 
 /**
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ *   Jan Zmatlik
+ *   - Initial implementation
  */
 package org.seage.problem.jsp.sannealing;
 
@@ -36,84 +36,84 @@ import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
  */
 public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAnnealingEvent>
 {
-    //private static String _dataPath = "D:\\eil51.tsp";
+  //private static String _dataPath = "D:\\eil51.tsp";
 
-    public static void main(String[] args)
+  public static void main(String[] args)
+  {
+    try
     {
-        try
-        {
 
-            String path = "data/tsp/eil51.tsp";//args[0];		// 426
-            //String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
-            //String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
-            //String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
-            //String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
-            //String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
+      String path = "data/tsp/eil51.tsp";//args[0];		// 426
+      //String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
+      //String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
+      //String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
+      //String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
+      //String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
 
-            new JspSimulatedAnnealingTest().run(path);
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
+      new JspSimulatedAnnealingTest().run(path);
     }
-
-    public void run(String path) throws Exception
+    catch (Exception ex)
     {
-//        _cities = CityProvider.readCities(new FileInputStream(path));
-//        System.out.println("Loading cities from path: " + path);
-//        System.out.println("Number of cities: " + _cities.length);
+      System.out.println(ex.getMessage());
+      ex.printStackTrace();
+    }
+  }
+
+  public void run(String path) throws Exception
+  {
+//    _cities = CityProvider.readCities(new FileInputStream(path));
+//    System.out.println("Loading cities from path: " + path);
+//    System.out.println("Number of cities: " + _cities.length);
 //
-//        JspObjectiveFunction objFunction = new JspObjectiveFunction(_cities);
-//        SimulatedAnnealing sa = new SimulatedAnnealing(objFunction, new TspMoveManager2(objFunction));
+//    JspObjectiveFunction objFunction = new JspObjectiveFunction(_cities);
+//    SimulatedAnnealing sa = new SimulatedAnnealing(objFunction, new TspMoveManager2(objFunction));
 //
-//        sa.setMaximalTemperature(1000000.0d);
-//        sa.setMinimalTemperature(0.01d);
-//        //sa.setAnnealingCoefficient( 0.9999999);
-//        sa.setMaximalIterationCount(100000000);
+//    sa.setMaximalTemperature(1000000.0d);
+//    sa.setMinimalTemperature(0.01d);
+//    //sa.setAnnealingCoefficient( 0.9999999);
+//    sa.setMaximalIterationCount(100000000);
 //
-//        sa.addSimulatedAnnealingListener(this);
-//        TspGreedySolution s = new TspGreedySolution(_cities);
-//        //TspRandomSolution s = new TspRandomSolution(_cities.length);
+//    sa.addSimulatedAnnealingListener(this);
+//    TspGreedySolution s = new TspGreedySolution(_cities);
+//    //TspRandomSolution s = new TspRandomSolution(_cities.length);
 //
-//        System.out.println(objFunction.getObjectiveValue(s));
-//        sa.startSearching(s);
+//    System.out.println(objFunction.getObjectiveValue(s));
+//    sa.startSearching(s);
 //
-//        System.out.println(sa.getBestSolution().getObjectiveValue());
-//        System.out.println(sa.getBestSolution());
-    }
+//    System.out.println(sa.getBestSolution().getObjectiveValue());
+//    System.out.println(sa.getBestSolution());
+  }
 
-    @Override
-    public void algorithmStarted(SimulatedAnnealingEvent e)
-    {
-        System.out.println("Started");
-    }
+  @Override
+  public void algorithmStarted(SimulatedAnnealingEvent e)
+  {
+    System.out.println("Started");
+  }
 
-    @Override
-    public void algorithmStopped(SimulatedAnnealingEvent e)
-    {
-        System.out.println("Stopped");
-    }
+  @Override
+  public void algorithmStopped(SimulatedAnnealingEvent e)
+  {
+    System.out.println("Stopped");
+  }
 
-    @Override
-    public void iterationPerformed(SimulatedAnnealingEvent e)
-    {
+  @Override
+  public void iterationPerformed(SimulatedAnnealingEvent e)
+  {
 
-    }
+  }
 
-    @Override
-    public void noChangeInValueIterationMade(SimulatedAnnealingEvent e)
-    {
+  @Override
+  public void noChangeInValueIterationMade(SimulatedAnnealingEvent e)
+  {
 
-    }
+  }
 
-    @Override
-    public void newBestSolutionFound(SimulatedAnnealingEvent e)
-    {
-        ISimulatedAnnealing sa = e.getSimulatedAnnealing();
-        System.out.println(String.format("New best: %f - iter: %d - temp: %f", sa.getBestSolution().getObjectiveValue(),
-                sa.getCurrentIteration(), sa.getCurrentTemperature()));
-    }
+  @Override
+  public void newBestSolutionFound(SimulatedAnnealingEvent e)
+  {
+    ISimulatedAnnealing sa = e.getSimulatedAnnealing();
+    System.out.println(String.format("New best: %f - iter: %d - temp: %f", sa.getBestSolution().getObjectiveValue(),
+        sa.getCurrentIteration(), sa.getCurrentTemperature()));
+  }
 
 }

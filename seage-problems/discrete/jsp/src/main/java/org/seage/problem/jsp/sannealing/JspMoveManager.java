@@ -20,8 +20,8 @@
 
 /**
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ *   Jan Zmatlik
+ *   - Initial implementation
  */
 package org.seage.problem.jsp.sannealing;
 
@@ -36,26 +36,26 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 public class JspMoveManager implements IMoveManager
 {
-    Random rnd = new Random();
+  Random rnd = new Random();
 
-    @Override
-    public Solution getModifiedSolution(Solution solution, double ct)
+  @Override
+  public Solution getModifiedSolution(Solution solution, double ct)
+  {
+    JspSolution tspSolution = ((JspSolution) solution).clone();
+
+    int tspSolutionLength = tspSolution.getTour().length;
+    int a = rnd.nextInt(tspSolutionLength);
+    int b = rnd.nextInt(tspSolutionLength);
+
+    // Swap values if indices are different
+    if (a != b)
     {
-        JspSolution tspSolution = ((JspSolution) solution).clone();
-
-        int tspSolutionLength = tspSolution.getTour().length;
-        int a = rnd.nextInt(tspSolutionLength);
-        int b = rnd.nextInt(tspSolutionLength);
-
-        // Swap values if indices are different
-        if (a != b)
-        {
-            int tmp = tspSolution.getTour()[a];
-            tspSolution.getTour()[a] = tspSolution.getTour()[b];
-            tspSolution.getTour()[b] = tmp;
-        }
-
-        return tspSolution;
+      int tmp = tspSolution.getTour()[a];
+      tspSolution.getTour()[a] = tspSolution.getTour()[b];
+      tspSolution.getTour()[b] = tmp;
     }
+
+    return tspSolution;
+  }
 
 }
