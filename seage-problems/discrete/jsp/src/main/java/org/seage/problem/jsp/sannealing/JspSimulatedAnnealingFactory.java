@@ -20,10 +20,12 @@
 
 /**
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
- *     Richard Malek
- *     - Added algorithm annotations
+ *   Jan Zmatlik
+ *   - Initial implementation
+ *   Richard Malek
+ *   - Added algorithm annotations
+ *   David Omrai
+ *   - Editation and debugging
  */
 package org.seage.problem.jsp.sannealing;
 
@@ -34,7 +36,11 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.sannealing.Solution;
+import org.seage.aal.problem.ProblemInfo;
+import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp.JspProblemProvider;
 
 /**
  *
@@ -44,84 +50,91 @@ import org.seage.problem.jsp.JspPhenotype;
 @Annotations.AlgorithmName("Simulated Annealing")
 public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenotype, JspSolution>
 {
-    //	private TspSolution _tspSolution;
-    //    private TspProblemProvider _provider;
+  //	private TspSolution _tspSolution;
+  //  private TspProblemProvider _provider;
 
-    public JspSimulatedAnnealingFactory()
+  // public JspSimulatedAnnealingFactory()
+  // {
+  // }
+
+  //  public TspSimulatedAnnealingFactory(DataNode params, City[] cities) throws Exception
+  //  {
+  //    String solutionType = params.getValueStr("initSolutionType");
+  //    if( solutionType.toLowerCase().equals("greedy") )
+  //      _tspSolution = new TspGreedySolution( cities );
+  //    else if( solutionType.toLowerCase().equals("random") )
+  //      _tspSolution = new TspRandomSolution( cities );
+  //    else if( solutionType.toLowerCase().equals("sorted") )
+  //      _tspSolution = new TspSortedSolution( cities );
+  //  }
+
+  @Override
+  public Class<?> getAlgorithmClass()
+  {
+    return SimulatedAnnealingAdapter.class;
+  }
+
+  @Override
+  public IAlgorithmAdapter<JspPhenotype, JspSolution> createAlgorithm(ProblemInstance instance,
+    IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception {
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    JspPhenotypeEvaluator evaluator =
+        new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
+  
+  	return new SimulatedAnnealingAdapter<JspPhenotype, JspSolution>(
+        new JspObjectiveFunction(),
+        new JspMoveManager(), phenotypeEvaluator, false)
     {
-    }
+      @Override
+      public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception
+      {
+        this.solutions = new JspSolution[source.length];
+        for (int j = 0; j < source.length; j++)
+        {
+          JspSolution solution = new JspSolution(0)
+          {
+          };
+          Integer[] tour = solution.getTour();
 
-    //    public TspSimulatedAnnealingFactory(DataNode params, City[] cities) throws Exception
-    //    {
-    //        String solutionType = params.getValueStr("initSolutionType");
-    //        if( solutionType.toLowerCase().equals("greedy") )
-    //            _tspSolution = new TspGreedySolution( cities );
-    //        else if( solutionType.toLowerCase().equals("random") )
-    //            _tspSolution = new TspRandomSolution( cities );
-    //        else if( solutionType.toLowerCase().equals("sorted") )
-    //            _tspSolution = new TspSortedSolution( cities );
-    //    }
+          for (int i = 0; i < tour.length; i++)
+            tour[i] = (Integer) source[j].getSolution()[i];
 
-    @Override
-    public Class<?> getAlgorithmClass()
-    {
-        return SimulatedAnnealingAdapter.class;
-    }
+          this.solutions[j] = solution;
+        }
+      }
 
-    @Override
-    public IAlgorithmAdapter<JspPhenotype, JspSolution> createAlgorithm(ProblemInstance instance,
-            IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
-    }
+      @Override
+      public JspPhenotype[] solutionsToPhenotype() throws Exception
+      {
+        // JspPhenotype[] result = new JspPhenotype[this.solutions.length];
 
-    // @Override
-    // public IAlgorithmAdapter<JspSolution> createAlgorithm(ProblemInstance instance) throws Exception
-    // {
-    // 	IAlgorithmAdapter<JspSolution> algorithm = new SimulatedAnnealingAdapter<>(
-    //             new JspObjectiveFunction(),
-    //             new JspMoveManager(), false, "")
-    //     {
-    //         @Override
-    //         public void solutionsFromPhenotype(Object[][] source) throws Exception
-    //         {
-    //             this.solutions = new Solution[source.length];
-    //             for (int j = 0; j < source.length; j++)
-    //             {
-    //                 JspSolution solution = new JspSolution(0)
-    //                 {
-    //                 };
-    //                 Integer[] tour = solution.getTour();
+        // for (int i = 0; i < this.solutions.length; i++)
+        // {
+        //   JspSolution solution = (JspSolution) this.solutions[i];
+        //   result[i] = solution.getTour().clone();
+        // }
+        // return result;
+        JspPhenotype[] result = new JspPhenotype[this.solutions.length];
 
-    //                 for (int i = 0; i < tour.length; i++)
-    //                     tour[i] = (Integer) source[j][i];
+        for (int i = 0; i < this.solutions.length; i++) {
+          JspSolution s = (JspSolution) this.solutions[i];
+          result[i] = solutionToPhenotype(s);
+        }
+        return result;
+      }
 
-    //                 this.solutions[j] = solution;
-    //             }
-    //         }
+			@Override
+			public JspPhenotype solutionToPhenotype(JspSolution solution) throws Exception {
+				JspPhenotype result = new JspPhenotype(solution.getTour());
 
-    //         @Override
-    //         public Object[][] solutionsToPhenotype() throws Exception
-    //         {
-    //             Object[][] result = new Object[this.solutions.length][];
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
 
-    //             for (int i = 0; i < this.solutions.length; i++)
-    //             {
-    //                 JspSolution solution = (JspSolution) this.solutions[i];
-    //                 result[i] = solution.getTour().clone();
-    //             }
-    //             return result;
-    //         }
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
+			}
 
-	// 		@Override
-	// 		public Object[] solutionToPhenotype(JspSolution solution) throws Exception {
-	// 			// TODO Auto-generated method stub
-	// 			return null;
-	// 		}
-
-    //     };
-
-    //     return algorithm;
-    // }
+    };
+  }
 
 }
