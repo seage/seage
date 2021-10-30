@@ -21,7 +21,7 @@ public class UnitMetric {
       throw new Exception("Bad input values: upperBound < lowerBound");
     }
     if (current < lowerBound) {
-      throw new Exception("Bad input values: value can't be better than optimum");
+      throw new Exception("Bad input values: value can't be better than optimum: " + current);
     }
 
     return INTERVAL_MAX - mapToInterval(lowerBound, upperBound, Math.min(upperBound, current));

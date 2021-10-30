@@ -84,7 +84,7 @@ public class JspTabuSearchTest implements TabuSearchListener
     
     TabuSearch ts = new TabuSearch(
         new JspSolution(jobs.getJobsCount(), jobs.getJobInfos()[0].getOperationInfos().length),
-        new JspMoveManager(evaluator),
+        new JspMoveManager(jobs),
         new JspObjectiveFunction(evaluator),
         new SimpleTabuList(7),
         new BestEverAspirationCriteria(),

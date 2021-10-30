@@ -23,6 +23,7 @@ import org.seage.data.Pair;
 import org.seage.metaheuristic.tabusearch.Move;
 import org.seage.metaheuristic.tabusearch.MoveManager;
 import org.seage.metaheuristic.tabusearch.Solution;
+import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.Schedule;
 import org.seage.problem.jsp.ScheduleCell;
@@ -31,18 +32,18 @@ import org.seage.problem.jsp.ScheduleCell;
  * Summary description for JspMoveManager.
  */
 public class JspMoveManager implements MoveManager {
-  private JspPhenotypeEvaluator _evaluator;
   private int _maxMoves;
+  private JobsDefinition _jobsDefinition;
 
-  public JspMoveManager(JspPhenotypeEvaluator evaluator) {
-    _evaluator = evaluator;
+  public JspMoveManager(JobsDefinition jobsDefinition) {
+    _jobsDefinition = jobsDefinition;
     _maxMoves = 100;
   }
 
   @Override
   public Move[] getAllMoves(Solution solution) throws Exception {
     JspSolution sol = (JspSolution) solution;
-    Schedule schedule = _evaluator.createSchedule(sol.getJobArray());
+    Schedule schedule = new Schedule(_jobsDefinition, sol.getJobArray());
 
     List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
 
