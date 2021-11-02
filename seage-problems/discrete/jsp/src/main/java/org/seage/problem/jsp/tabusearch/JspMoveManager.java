@@ -24,7 +24,6 @@ import org.seage.metaheuristic.tabusearch.Move;
 import org.seage.metaheuristic.tabusearch.MoveManager;
 import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.jsp.JobsDefinition;
-import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.Schedule;
 import org.seage.problem.jsp.ScheduleCell;
 
@@ -47,7 +46,7 @@ public class JspMoveManager implements MoveManager {
 
     List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
 
-    JspMove[] moves = new JspMove[Math.min(criticalPath.size() / 2, _maxMoves)];
+    JspMove[] moves = new JspMove[Math.min(criticalPath.size(), _maxMoves)];
     for (int i = 0; i < moves.length; i++) {
       moves[i] = new JspMove(criticalPath.get(i).getFirst().getIndex(),
           criticalPath.get(i).getSecond().getIndex());

@@ -82,7 +82,7 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     gs.setPopulationCount(populationCount);
     gs.setRandomSubjectsPct(5);
     gs.setCrossLengthPct(30);
-    gs.setIterationToGo(100);
+    gs.setIterationToGo(1000);
     gs.startSearching(initialSolutions);
   }
 
@@ -99,7 +99,9 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
         IAlgorithmAdapter<JspPhenotype, Subject<Integer>> adapter =  factory.createAlgorithm(jobs, eval);
         adapter.solutionsFromPhenotype(schedules);
         adapter.startSearching(params);
-        adapter.solutionsToPhenotype();
+        var solutions = adapter.solutionsToPhenotype();
+        System.out.println(solutions[0].getObjValue());
+        System.out.println(solutions[0].getScore());
 
     } catch (Exception e) {
         e.printStackTrace();
@@ -125,7 +127,7 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
       result.putValue(param.getValueStr("name"), param.getValue("init"));
     }
-    result.putValue("iterationCount", 100);
+    result.putValue("iterationCount", 10000);
     result.putValue("numSolutions", 100);
     return result;
   }

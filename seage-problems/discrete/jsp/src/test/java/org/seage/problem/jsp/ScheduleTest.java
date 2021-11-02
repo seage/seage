@@ -45,11 +45,48 @@ public class ScheduleTest {
     Integer[] jobArray = new Integer[] {1, 2, 3, 3, 1, 2, 2, 1, 3};
     double[] objVal = evaluator.evaluateSchedule(jobArray);
     assertEquals(12, (int) objVal[0]);
-    Schedule s = new Schedule(_jobsDefinition, jobArray);
-    assertNotNull(s);
-    List<Pair<ScheduleCell>> criticalPath = s.findCriticalPath();
-    assertNotNull(criticalPath);
-    assertEquals(2, criticalPath.size());
+  }
+
+  @Test
+  public void testCriticalPath() throws Exception {
+    // Initital
+    Integer[] jobArray = new Integer[] {1, 1, 1, 2, 2, 2, 3, 3, 3};
+    Schedule s1 = new Schedule(_jobsDefinition, jobArray);
+    assertNotNull(s1);
+    assertEquals(22, s1.getMakeSpan());
+    List<Pair<ScheduleCell>> criticalPath1 = s1.findCriticalPath();
+    assertNotNull(criticalPath1);
+    assertEquals(2, criticalPath1.size());
+    assertEquals(5, criticalPath1.get(0).getFirst().getIndex());
+    assertEquals(6, criticalPath1.get(0).getSecond().getIndex());
+    assertEquals(2, criticalPath1.get(1).getFirst().getIndex());
+    assertEquals(4, criticalPath1.get(1).getSecond().getIndex());
+
+    // Optimal
+    Integer[] jobArray2 = new Integer[] {1, 2, 3, 3, 1, 2, 2, 1, 3};
+    Schedule s2 = new Schedule(_jobsDefinition, jobArray2);
+    assertNotNull(s2);
+    assertEquals(12, s2.getMakeSpan());
+    List<Pair<ScheduleCell>> criticalPath2 = s2.findCriticalPath();
+    assertNotNull(criticalPath2);
+    assertEquals(2, criticalPath2.size());
+    assertEquals(0, criticalPath2.get(0).getFirst().getIndex());
+    assertEquals(1, criticalPath2.get(0).getSecond().getIndex());
+    assertEquals(5, criticalPath2.get(1).getFirst().getIndex());
+    assertEquals(7, criticalPath2.get(1).getSecond().getIndex());
+
+    // Optimal 2
+    Integer[] jobArray3 = new Integer[] {2, 1, 3, 2, 1, 3, 2, 1, 3};
+    Schedule s3 = new Schedule(_jobsDefinition, jobArray3);
+    assertNotNull(s3);
+    assertEquals(12, s3.getMakeSpan());
+    List<Pair<ScheduleCell>> criticalPath3 = s3.findCriticalPath();
+    assertNotNull(criticalPath3);
+    assertEquals(2, criticalPath3.size());
+    assertEquals(0, criticalPath3.get(0).getFirst().getIndex());
+    assertEquals(1, criticalPath3.get(0).getSecond().getIndex());
+    assertEquals(4, criticalPath3.get(1).getFirst().getIndex());
+    assertEquals(6, criticalPath3.get(1).getSecond().getIndex());
   }
 
 }
