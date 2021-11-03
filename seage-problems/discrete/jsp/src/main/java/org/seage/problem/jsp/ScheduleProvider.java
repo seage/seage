@@ -44,7 +44,7 @@ public class ScheduleProvider {
         greedySolution[i] = jobId;
 
         tmpMakeSpan = jspPhenoEval
-          .createSchedule(Arrays.copyOfRange(greedySolution, 0, i+1), true).getMakeSpan();
+          .evaluateSchedule(Arrays.copyOfRange(greedySolution, 0, i+1))[0];
         
         if (tmpMinMakeSpan == 0 || tmpMakeSpan < tmpMinMakeSpan) {
           tmpMinMakeSpan = tmpMakeSpan;
@@ -95,7 +95,7 @@ public class ScheduleProvider {
     }
 
     var result = new JspPhenotype(randSol);
-    var makeSpan = jspPhenoEval.createSchedule(randSol, true).getMakeSpan();
+    var makeSpan = jspPhenoEval.evaluateSchedule(randSol)[0];
     result.setObjValue((double)makeSpan);
 
     return result;

@@ -6,13 +6,6 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Launch JspGeneticAlgorithmFactory",
-      "request": "launch",
-      "mainClass": "org.seage.problem.jsp.genetics.JspGeneticAlgorithmFactory",
-      "projectName": "seage-problem-jsp"
-    },
-    {
-      "type": "java",
       "name": "Launch JspGeneticAlgorithmTest",
       "request": "launch",
       "mainClass": "org.seage.problem.jsp.genetics.JspGeneticAlgorithmTest",

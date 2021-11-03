@@ -80,7 +80,7 @@ public class ScheduleManager
     {
         Schedule schedule = null;
         if (buildSchedule)
-            schedule = new Schedule(_numJobs, _numMachines);
+            schedule = new Schedule(null);
 
         JobInfo currentJob;
         OperationInfo currentOper;
@@ -139,12 +139,12 @@ public class ScheduleManager
             }
 
             int a = 0;
-            if (buildSchedule)
-                schedule.addCell(indexCurrentJob,
-                        indexCurrentMachine,
-                        new ScheduleCell(i,
-                                _endTimeOnMachine[indexCurrentMachine] - currentOper.Length,
-                                currentOper.Length));
+            // if (buildSchedule)
+            //     schedule.addCell(indexCurrentJob,
+            //             indexCurrentMachine,
+            //             new ScheduleCell(i,
+            //                     _endTimeOnMachine[indexCurrentMachine] - currentOper.Length,
+            //                     currentOper.Length));
 
         }
         //System.out.println();

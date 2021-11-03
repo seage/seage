@@ -56,6 +56,8 @@ public class JspTabuSearchTest implements TabuSearchListener
   {
     try
     {
+      // String instanceID = "yn_3x3_example";
+      // String path = "/org/seage/problem/jsp/test-instances/yn_3x3_example.xml";
       String instanceID = "ft10";
       String path = "/org/seage/problem/jsp/instances/ft10.xml";
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
@@ -65,7 +67,7 @@ public class JspTabuSearchTest implements TabuSearchListener
         jobs = new JobsDefinition(jobInfo, stream);
       }
 
-      //new JspTabuSearchTest().runAlgorithm(jobs);
+      // new JspTabuSearchTest().runAlgorithm(jobs);
       new JspTabuSearchTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
@@ -84,14 +86,14 @@ public class JspTabuSearchTest implements TabuSearchListener
     
     TabuSearch ts = new TabuSearch(
         new JspSolution(jobs.getJobsCount(), jobs.getJobInfos()[0].getOperationInfos().length),
-        new JspMoveManager(evaluator),
+        new JspMoveManager(jobs),
         new JspObjectiveFunction(evaluator),
-        new SimpleTabuList(7),
+        new SimpleTabuList(30),
         new BestEverAspirationCriteria(),
         false);
 
     ts.addTabuSearchListener(this);
-    ts.setIterationsToGo(1500000);
+    ts.setIterationsToGo(10000);
     ts.startSolving();
   }
 
@@ -110,6 +112,7 @@ public class JspTabuSearchTest implements TabuSearchListener
         adapter.startSearching(params);
         var solutions = adapter.solutionsToPhenotype();
         System.out.println(solutions[0].getObjValue());
+        System.out.println(solutions[0].getScore());
 
     } catch (Exception e) {
         e.printStackTrace();
