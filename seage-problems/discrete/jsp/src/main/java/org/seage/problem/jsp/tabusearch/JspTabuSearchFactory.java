@@ -76,7 +76,7 @@ public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, Jsp
 
       @Override
       public JspPhenotype solutionToPhenotype(JspSolution solution) throws Exception {
-        JspPhenotype result = new JspPhenotype(solution.getJobArray());
+        JspPhenotype result = new JspPhenotype(solution.getScheduleArray());
 
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
 

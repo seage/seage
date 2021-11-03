@@ -22,6 +22,7 @@
 
 package org.seage.aal.algorithm.sannealing;
 
+import java.util.ArrayList;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
@@ -54,7 +55,7 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
   private static Logger logger = LoggerFactory.getLogger(SimulatedAnnealingAdapter.class.getName());
 
   protected SimulatedAnnealing<S> simulatedAnnealing;
-  protected S[] solutions;
+  protected ArrayList<S> solutions;
   private AlgorithmParams algParams;
   // private Solution _bestSolution;
   private long numberOfIterationsDone = 0;
@@ -82,9 +83,9 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
     this.reporter.putParameters(algParams);
 
     numberOfIterationsDone = numberOfNewSolutions = lastImprovingIteration = 0;
-    simulatedAnnealing.startSearching(this.solutions[0]);
+    simulatedAnnealing.startSearching(this.solutions.get(0));
 
-    this.solutions[0] = simulatedAnnealing.getBestSolution();
+    this.solutions.set(0, simulatedAnnealing.getBestSolution());
   }
 
   @Override

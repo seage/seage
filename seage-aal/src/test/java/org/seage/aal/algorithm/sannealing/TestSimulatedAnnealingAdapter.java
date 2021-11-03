@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.util.ArrayList;
+
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.metaheuristic.sannealing.IMoveManager;
@@ -20,19 +22,19 @@ public class TestSimulatedAnnealingAdapter extends SimulatedAnnealingAdapter<Tes
 
   @Override
   public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception {
-    this.solutions = new TestSolution[source.length];
+    this.solutions = new ArrayList<TestSolution>(source.length);
 
     for (int i = 0; i < source.length; i++) {
       TestSolution s = new TestSolution(source[i].getSolution());
-      this.solutions[i] = s;
+      this.solutions.set(i,s);
     }
   }
 
   @Override
   public TestPhenotype[] solutionsToPhenotype() throws Exception {
-    TestPhenotype[] result = new TestPhenotype[this.solutions.length];
-    for (int i = 0; i < this.solutions.length; i++) {
-      result[i] = solutionToPhenotype(this.solutions[i]);
+    TestPhenotype[] result = new TestPhenotype[this.solutions.size()];
+    for (int i = 0; i < this.solutions.size(); i++) {
+      result[i] = solutionToPhenotype(this.solutions.get(i));
     }
     return result;
   }

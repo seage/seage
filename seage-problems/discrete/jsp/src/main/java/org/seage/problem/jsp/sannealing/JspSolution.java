@@ -22,6 +22,8 @@
  * Contributors:
  *   Jan Zmatlik
  *   - Initial implementation
+ *   David Omrai
+ *   - Implemented for jsp problem
  */
 package org.seage.problem.jsp.sannealing;
 
@@ -31,17 +33,18 @@ import org.seage.metaheuristic.sannealing.Solution;
 /**
  *
  * @author Jan Zmatlik
+ * Edited by David Omrai
  */
 public abstract class JspSolution extends Solution
 {
 
   /**
-   * Represent order of cities
+   * Represent order of operations
    */
   protected Integer[] _schedule;
 
   /**
-   * Array of cities
+   * Array of operations
    */
 
   public JspSolution(int length)
@@ -54,9 +57,9 @@ public abstract class JspSolution extends Solution
     return _schedule;
   }
 
-  public void setSchedule(Integer[] tour)
+  public void setSchedule(Integer[] schedule)
   {
-    _schedule = tour;
+    _schedule = schedule;
   }
 
   @Override
@@ -71,13 +74,13 @@ public abstract class JspSolution extends Solution
   @Override
   public JspSolution clone()
   {
-    JspSolution tspSolution = null;
+    JspSolution jspSolution = null;
 
-    tspSolution = (JspSolution) super.clone();
-    tspSolution.setSchedule(_schedule.clone());
-    tspSolution.setObjectiveValue(getObjectiveValue());
+    jspSolution = (JspSolution) super.clone();
+    jspSolution.setSchedule(_schedule.clone());
+    jspSolution.setObjectiveValue(getObjectiveValue());
 
-    return tspSolution;
+    return jspSolution;
   }
 
 }

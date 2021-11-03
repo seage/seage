@@ -29,6 +29,7 @@
  */
 package org.seage.problem.jsp.sannealing;
 
+import java.util.ArrayList;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
@@ -41,6 +42,7 @@ import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
+import org.seage.problem.jsp.tabusearch.JspSolution;
 
 /**
  *
@@ -88,19 +90,22 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
       @Override
       public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception
       {
-        this.solutions = new JspSolution[source.length];
-        for (int j = 0; j < source.length; j++)
-        {
-          JspSolution solution = new JspSolution(0)
-          {
-          };
-          Integer[] tour = solution.getSchedule();
+        // this.solutions = new JspSolution[source.length];
+        // for (int j = 0; j < source.length; j++)
+        // {
+        //   JspSolution solution = new JspSolution(0)
+        //   {
+        //   };
+        //   Integer[] schedule = solution.getSchedule();
 
-          for (int i = 0; i < tour.length; i++)
-            tour[i] = (Integer) source[j].getSolution()[i];
+        //   for (int i = 0; i < schedule.length; i++)
+        //     schedule[i] = (Integer) source[j].getSolution()[i];
 
-          this.solutions[j] = solution;
-        }
+        //   this.solutions[j] = solution;
+        // }
+        this.solutions = new ArrayList<JspSolution>(source.length);
+        for (int i = 0; i < source.length; i++)
+          this.solutions.add(new JspSolution(source[i].getSolution()));
       }
 
       @Override
@@ -114,11 +119,10 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
         //   result[i] = solution.getSchedule().clone();
         // }
         // return result;
-        JspPhenotype[] result = new JspPhenotype[this.solutions.length];
+        JspPhenotype[] result = new JspPhenotype[this.solutions.size()];
 
-        for (int i = 0; i < this.solutions.length; i++) {
-          JspSolution s = (JspSolution) this.solutions[i];
-          result[i] = solutionToPhenotype(s);
+        for (int i = 0; i < this.solutions.size(); i++) {
+          result[i] = solutionToPhenotype(this.solutions.get(i));
         }
         return result;
       }
