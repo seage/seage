@@ -35,15 +35,93 @@ public class Schedule
   private ScheduleCell[] _lastCellOnMachine;
 
   private ScheduleCell _mostDistantCell;
+  private JobsDefinition _jobsDefinition;
+  private int _numJobs;
+  private int _numMachines;
+  private int[] _lastActivityInJobIndex;
+  private int[] _lastActivityOnMachineIndex;
+  private int[] _endTimeInJob;
+  private int[] _endTimeOnMachine;
 
-  public Schedule(int numJobs, int numMachines)
+  public Schedule(JobsDefinition jobsDefinition)
   {
-    _lastCellInJob = new ScheduleCell[numJobs];
-    _lastCellOnMachine = new ScheduleCell[numMachines];
+    _jobsDefinition = jobsDefinition;
+    _numJobs = jobsDefinition.getJobsCount();
+    _numMachines = jobsDefinition.getMachinesCount();
+    
     _makeSpan = 0;
   }
 
-  public void addCell(int jobIndex, int machineIndex, ScheduleCell newCell)
+  public Schedule(JobsDefinition jobsDefinition, Integer[] jobArray) {
+    this(jobsDefinition);    
+    createSchedule(jobArray);
+  }
+
+  public void createSchedule(Integer[] jobArray)
+  {
+    // Reset the schedule
+    _lastCellInJob = new ScheduleCell[_numJobs];
+    _lastCellOnMachine = new ScheduleCell[_numMachines];
+    _lastActivityInJobIndex = new int[_numJobs];
+    _lastActivityOnMachineIndex = new int[_numMachines];
+    _endTimeInJob = new int[_numJobs];
+    _endTimeOnMachine = new int[_numMachines];
+    // Reset done
+
+    JobInfo currentJob;
+    OperationInfo currentOper;
+
+    int indexCurrentMachine = 0;
+    int indexCurrentJob = 0;
+    int indexCurrentOper = 0;
+
+    int maxMakeSpan = 0;
+
+    for (int i = 0; i < _numJobs; i++)
+    {
+      _lastActivityInJobIndex[i] = 0;
+      _endTimeInJob[i] = 0;
+    }
+    for (int i = 0; i < _numMachines; i++)
+    {
+      _lastActivityOnMachineIndex[i] = 0;
+      _endTimeOnMachine[i] = 0;
+    }
+
+    for (int i = 0; i < jobArray.length; i++)
+    {
+      indexCurrentJob = jobArray[i] - 1;
+
+      indexCurrentOper = _lastActivityInJobIndex[indexCurrentJob]++;
+
+      currentJob = _jobsDefinition.getJobInfos()[indexCurrentJob];
+      currentOper = currentJob.getOperationInfos()[indexCurrentOper];
+
+      indexCurrentMachine = currentOper.MachineID - 1;
+
+      if (_endTimeOnMachine[indexCurrentMachine] > _endTimeInJob[indexCurrentJob])
+      {
+        _endTimeOnMachine[indexCurrentMachine] += currentOper.Length;
+        _endTimeInJob[indexCurrentJob] = _endTimeOnMachine[indexCurrentMachine];
+      }
+      else
+      {
+        _endTimeInJob[indexCurrentJob] += currentOper.Length;
+        _endTimeOnMachine[indexCurrentMachine] = _endTimeInJob[indexCurrentJob];
+      }
+
+      if (_endTimeOnMachine[indexCurrentMachine] > maxMakeSpan)
+      {
+        maxMakeSpan = _endTimeOnMachine[indexCurrentMachine];
+        _makeSpan = maxMakeSpan;
+      } 
+      addCell(indexCurrentJob, indexCurrentMachine,
+          new ScheduleCell(i, _endTimeOnMachine[indexCurrentMachine] - currentOper.Length,
+              currentOper.Length)); 
+    }
+  }
+
+  private void addCell(int jobIndex, int machineIndex, ScheduleCell newCell)
   {
     if (_lastCellOnMachine[machineIndex] != null)
       _lastCellOnMachine[machineIndex].setNextCellOnMachine(newCell);

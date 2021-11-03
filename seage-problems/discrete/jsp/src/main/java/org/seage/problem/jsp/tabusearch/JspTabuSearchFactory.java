@@ -53,7 +53,7 @@ public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, Jsp
     JspPhenotypeEvaluator evaluator =
         new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
 
-    return new TabuSearchAdapter<JspPhenotype, JspSolution>(new JspMoveManager(evaluator),
+    return new TabuSearchAdapter<JspPhenotype, JspSolution>(new JspMoveManager((JobsDefinition) instance),
         new JspObjectiveFunction(evaluator), phenotypeEvaluator) {
 
       @Override
