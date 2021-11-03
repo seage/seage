@@ -22,6 +22,8 @@
  * Contributors:
  *   Jan Zmatlik
  *   - Initial implementation
+ *   David Omrai
+ *   - Editation and bug fix
  */
 package org.seage.problem.jsp.sannealing;
 
@@ -41,21 +43,21 @@ public class JspMoveManager implements IMoveManager
   @Override
   public Solution getModifiedSolution(Solution solution, double ct)
   {
-    JspSolution tspSolution = ((JspSolution) solution).clone();
+    JspSolution jspSolution = ((JspSolution) solution).clone();
 
-    int tspSolutionLength = tspSolution.getTour().length;
-    int a = rnd.nextInt(tspSolutionLength);
-    int b = rnd.nextInt(tspSolutionLength);
+    int jspSolutionLength = jspSolution.getSchedule().length;
+    int a = rnd.nextInt(jspSolutionLength);
+    int b = rnd.nextInt(jspSolutionLength);
 
     // Swap values if indices are different
     if (a != b)
     {
-      int tmp = tspSolution.getTour()[a];
-      tspSolution.getTour()[a] = tspSolution.getTour()[b];
-      tspSolution.getTour()[b] = tmp;
+      int tmp = jspSolution.getSchedule()[a];
+      jspSolution.getSchedule()[a] = jspSolution.getSchedule()[b];
+      jspSolution.getSchedule()[b] = tmp;
     }
 
-    return tspSolution;
+    return jspSolution;
   }
 
 }

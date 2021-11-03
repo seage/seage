@@ -38,7 +38,7 @@ public abstract class JspSolution extends Solution
   /**
    * Represent order of cities
    */
-  protected Integer[] _tour;
+  protected Integer[] _schedule;
 
   /**
    * Array of cities
@@ -46,24 +46,24 @@ public abstract class JspSolution extends Solution
 
   public JspSolution(int length)
   {
-    _tour = new Integer[length];
+    _schedule = new Integer[length];
   }
 
-  public Integer[] getTour()
+  public Integer[] getSchedule()
   {
-    return _tour;
+    return _schedule;
   }
 
-  public void setTour(Integer[] tour)
+  public void setSchedule(Integer[] tour)
   {
-    _tour = tour;
+    _schedule = tour;
   }
 
   @Override
   public String toString()
   {
     String res = new String();
-    for (Integer t : _tour)
+    for (Integer t : _schedule)
       res += t + " ";
     return res;
   }
@@ -74,7 +74,7 @@ public abstract class JspSolution extends Solution
     JspSolution tspSolution = null;
 
     tspSolution = (JspSolution) super.clone();
-    tspSolution.setTour(_tour.clone());
+    tspSolution.setSchedule(_schedule.clone());
     tspSolution.setObjectiveValue(getObjectiveValue());
 
     return tspSolution;

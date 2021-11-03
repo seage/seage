@@ -22,17 +22,31 @@
  * Contributors:
  *   Jan Zmatlik
  *   - Initial implementation
+ *   David Omrai
+ *   - Implementing the tests
  */
 package org.seage.problem.jsp.sannealing;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealing;
+import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
+import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspProblemProvider;
+import org.seage.problem.jsp.tabusearch.JspTabuSearchTest;
 
 /**
  * The purpose of this class is demonstration of SA algorithm use.
  *
  * @author Jan Zmatlik
+ * Edited by David Omrai
  */
 public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAnnealingEvent>
 {
@@ -42,24 +56,31 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
   {
     try
     {
-
-      String path = "data/tsp/eil51.tsp";//args[0];		// 426
+      //String path = "data/tsp/eil51.tsp";//args[0];		// 426
       //String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
       //String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
       //String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
       //String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
       //String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
+      String instanceID = "ft10";
+      String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
+      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+      JobsDefinition jobs = null;
 
-      new JspSimulatedAnnealingTest().run(path);
+      try(InputStream stream = JspSimulatedAnnealingTest.class.getResourceAsStream(path)) {
+        jobs = new JobsDefinition(jobInfo, stream);
+      }
+
+      new JspSimulatedAnnealingTest().runAlgorithm(jobs);
+      //todo - new JspSimulatedAnnealingTest().run(path);
     }
     catch (Exception ex)
     {
-      System.out.println(ex.getMessage());
       ex.printStackTrace();
     }
   }
 
-  public void run(String path) throws Exception
+  public void runAlgorithm(JobsDefinition jobs) throws Exception
   {
 //    _cities = CityProvider.readCities(new FileInputStream(path));
 //    System.out.println("Loading cities from path: " + path);
@@ -82,6 +103,14 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
 //
 //    System.out.println(sa.getBestSolution().getObjectiveValue());
 //    System.out.println(sa.getBestSolution());
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    ProblemInfo pi = problemProvider.getProblemInfo();
+
+
+    //JspObjectiveFunction objFunction = new JspObjectiveFunction(_cities);
+
+    // Create the algorithm
+    //SimulatedAnnealing<JspSolution> sa = new SimulatedAnnealing(objectiveFunction, moveManager)
   }
 
   @Override

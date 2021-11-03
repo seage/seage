@@ -82,7 +82,7 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
         new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
   
   	return new SimulatedAnnealingAdapter<JspPhenotype, JspSolution>(
-        new JspObjectiveFunction(),
+        new JspObjectiveFunction(evaluator),
         new JspMoveManager(), phenotypeEvaluator, false)
     {
       @Override
@@ -94,7 +94,7 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
           JspSolution solution = new JspSolution(0)
           {
           };
-          Integer[] tour = solution.getTour();
+          Integer[] tour = solution.getSchedule();
 
           for (int i = 0; i < tour.length; i++)
             tour[i] = (Integer) source[j].getSolution()[i];
@@ -111,7 +111,7 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
         // for (int i = 0; i < this.solutions.length; i++)
         // {
         //   JspSolution solution = (JspSolution) this.solutions[i];
-        //   result[i] = solution.getTour().clone();
+        //   result[i] = solution.getSchedule().clone();
         // }
         // return result;
         JspPhenotype[] result = new JspPhenotype[this.solutions.length];
@@ -125,7 +125,7 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
 
 			@Override
 			public JspPhenotype solutionToPhenotype(JspSolution solution) throws Exception {
-				JspPhenotype result = new JspPhenotype(solution.getTour());
+				JspPhenotype result = new JspPhenotype(solution.getSchedule());
 
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
 
