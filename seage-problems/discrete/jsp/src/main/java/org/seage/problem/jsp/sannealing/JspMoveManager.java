@@ -35,6 +35,7 @@ import org.seage.metaheuristic.sannealing.Solution;
 /**
  *
  * @author Jan Zmatlik
+ * Edited by David Omrai
  */
 public class JspMoveManager implements IMoveManager
 {
@@ -49,13 +50,15 @@ public class JspMoveManager implements IMoveManager
     int a = rnd.nextInt(jspSolutionLength);
     int b = rnd.nextInt(jspSolutionLength);
 
-    // Swap values if indices are different
-    if (a != b)
-    {
-      int tmp = jspSolution.getSchedule()[a];
-      jspSolution.getSchedule()[a] = jspSolution.getSchedule()[b];
-      jspSolution.getSchedule()[b] = tmp;
-    }
+    // Change values to be different
+    if (a == b)
+      a = (a + 1) % jspSolutionLength; 
+
+    // Swap values
+    int tmp = jspSolution.getSchedule()[a];
+    jspSolution.getSchedule()[a] = jspSolution.getSchedule()[b];
+    jspSolution.getSchedule()[b] = tmp;
+    
 
     return jspSolution;
   }

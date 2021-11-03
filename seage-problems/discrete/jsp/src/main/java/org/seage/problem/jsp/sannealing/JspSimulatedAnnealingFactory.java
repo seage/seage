@@ -133,7 +133,6 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
         result.setScore(objVals[1]);
         return result;
 			}
-
     };
   }
 
