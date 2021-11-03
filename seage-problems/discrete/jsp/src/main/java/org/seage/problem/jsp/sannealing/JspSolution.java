@@ -35,38 +35,49 @@ import org.seage.metaheuristic.sannealing.Solution;
  * @author Jan Zmatlik
  * Edited by David Omrai
  */
-public abstract class JspSolution extends Solution
+public class JspSolution extends Solution
 {
 
   /**
    * Represent order of operations
    */
-  protected Integer[] _schedule;
+  public Integer[] _jobArray;
 
   /**
    * Array of operations
    */
-
-  public JspSolution(int length)
+  public JspSolution(int numJobs, int numOpers)
   {
-    _schedule = new Integer[length];
+    _jobArray = new Integer[numJobs];
+
+    int i=0;
+    for(int j=0;j<numJobs;j++)
+      for(int k=0;k<numOpers;k++)
+        _jobArray[i++] = j+1;
   }
 
-  public Integer[] getSchedule()
+  /**
+   * 
+   */
+  public JspSolution(Integer[] schedule) {
+    _jobArray = schedule.clone();
+  }
+
+  public Integer[] getJobArray()
   {
-    return _schedule;
+    return _jobArray;
   }
 
   public void setSchedule(Integer[] schedule)
   {
-    _schedule = schedule;
+    _jobArray = schedule.clone();
   }
 
   @Override
   public String toString()
   {
     String res = new String();
-    for (Integer t : _schedule)
+    for (Integer t : _jobArray)
       res += t + " ";
     return res;
   }
@@ -77,7 +88,7 @@ public abstract class JspSolution extends Solution
     JspSolution jspSolution = null;
 
     jspSolution = (JspSolution) super.clone();
-    jspSolution.setSchedule(_schedule.clone());
+    jspSolution.setSchedule(_jobArray.clone());
     jspSolution.setObjectiveValue(getObjectiveValue());
 
     return jspSolution;

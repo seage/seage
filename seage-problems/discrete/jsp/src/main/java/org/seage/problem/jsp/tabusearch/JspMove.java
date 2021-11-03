@@ -35,9 +35,9 @@ public class JspMove implements Move {
   @Override
   public void operateOn(Solution soln) {
     JspSolution solution = (JspSolution) soln;
-    int tmp = solution.getScheduleArray()[_ix1];
-    solution.getScheduleArray()[_ix1] = solution.getScheduleArray()[_ix2];
-    solution.getScheduleArray()[_ix2] = tmp;
+    int tmp = solution.getJobArray()[_ix1];
+    solution.getJobArray()[_ix1] = solution.getJobArray()[_ix2];
+    solution.getJobArray()[_ix2] = tmp;
   }
 
   public int getIndex1() {

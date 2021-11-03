@@ -42,7 +42,7 @@ import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
-import org.seage.problem.jsp.tabusearch.JspSolution;
+import org.seage.problem.jsp.sannealing.JspSolution;
 
 /**
  *
@@ -129,7 +129,7 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
 
 			@Override
 			public JspPhenotype solutionToPhenotype(JspSolution solution) throws Exception {
-				JspPhenotype result = new JspPhenotype(solution.getSchedule());
+				JspPhenotype result = new JspPhenotype(solution.getJobArray());
 
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
 

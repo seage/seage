@@ -46,7 +46,7 @@ public class JspMoveManager implements IMoveManager
   {
     JspSolution jspSolution = ((JspSolution) solution).clone();
 
-    int jspSolutionLength = jspSolution.getSchedule().length;
+    int jspSolutionLength = jspSolution.getJobArray().length;
     int a = rnd.nextInt(jspSolutionLength);
     int b = rnd.nextInt(jspSolutionLength);
 
@@ -55,9 +55,9 @@ public class JspMoveManager implements IMoveManager
       a = (a + 1) % jspSolutionLength; 
 
     // Swap values
-    int tmp = jspSolution.getSchedule()[a];
-    jspSolution.getSchedule()[a] = jspSolution.getSchedule()[b];
-    jspSolution.getSchedule()[b] = tmp;
+    int tmp = jspSolution.getJobArray()[a];
+    jspSolution.getJobArray()[a] = jspSolution.getJobArray()[b];
+    jspSolution.getJobArray()[b] = tmp;
     
 
     return jspSolution;

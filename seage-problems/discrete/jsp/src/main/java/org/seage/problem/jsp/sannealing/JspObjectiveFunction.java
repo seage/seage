@@ -43,7 +43,7 @@ public class JspObjectiveFunction implements IObjectiveFunction
 
   public double[] evaluate(JspSolution solution, int[] move) throws Exception
   {
-    Integer[] jobArray = solution.getSchedule();
+    Integer[] jobArray = solution.getJobArray();
     
     // todo - fix
     return null;
