@@ -109,14 +109,20 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
 
     JspObjectiveFunction objFunction = new JspObjectiveFunction(new JspPhenotypeEvaluator(pi, jobs));
 
+    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
+
     SimulatedAnnealing sa = new SimulatedAnnealing(objFunction, new JspMoveManager(jobs));
 
-    
+    // Set the sa algorithm
+    sa.setMaximalTemperature(1000000);
+    sa.setMinimalTemperature(0.01);
+    sa.setMaximalIterationCount(100000000);
 
-    //JspObjectiveFunction objFunction = new JspObjectiveFunction(_cities);
+    // Create solution
+    JspSimulatedAnnealingSolution s = new JspSimulatedAnnealingGreedySolution(eval, jobs);
 
-    // Create the algorithm
-    //SimulatedAnnealing<JspSolution> sa = new SimulatedAnnealing(objectiveFunction, moveManager)
+    // Start the searching process
+    sa.startSearching(s);
   }
 
   @Override
