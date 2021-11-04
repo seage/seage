@@ -24,6 +24,7 @@
 
 package org.seage.problem.sat.sannealing;
 
+import java.util.ArrayList;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
@@ -56,18 +57,18 @@ public class SatSimulatedAnnealingFactory implements IAlgorithmFactory<SatPhenot
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
-        this.solutions = new SatSolution[source.length];
+        this.solutions = new ArrayList<SatSolution>(source.length);
         for (int i = 0; i < source.length; i++) {
-          this.solutions[i] = new SatSolution(source[i].getSolution());
+          this.solutions.set(i, new SatSolution(source[i].getSolution()));
         }
       }
 
       @Override
       public SatPhenotype[] solutionsToPhenotype() throws Exception {
-        SatPhenotype[] result = new SatPhenotype[this.solutions.length];
+        SatPhenotype[] result = new SatPhenotype[this.solutions.size()];
 
-        for (int i = 0; i < this.solutions.length; i++) {
-          result[i] = solutionToPhenotype(this.solutions[i]);
+        for (int i = 0; i < this.solutions.size(); i++) {
+          result[i] = solutionToPhenotype(this.solutions.get(i));
         }
         return result;
       }
