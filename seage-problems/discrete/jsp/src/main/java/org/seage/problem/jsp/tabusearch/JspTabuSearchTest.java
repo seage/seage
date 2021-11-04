@@ -67,8 +67,8 @@ public class JspTabuSearchTest implements TabuSearchListener
         jobs = new JobsDefinition(jobInfo, stream);
       }
 
-      // new JspTabuSearchTest().runAlgorithm(jobs);
-      new JspTabuSearchTest().runAlgorithmAdapter(jobs);
+      new JspTabuSearchTest().runAlgorithm(jobs);
+      //new JspTabuSearchTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
     {

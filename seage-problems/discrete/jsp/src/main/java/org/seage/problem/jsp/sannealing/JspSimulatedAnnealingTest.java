@@ -31,6 +31,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.seage.data.DataNode;
+import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
@@ -39,6 +42,7 @@ import org.seage.metaheuristic.sannealing.ISimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
 import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
 import org.seage.problem.jsp.tabusearch.JspTabuSearchTest;
@@ -52,6 +56,7 @@ import org.seage.problem.jsp.tabusearch.JspTabuSearchTest;
 public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAnnealingEvent>
 {
   //private static String _dataPath = "D:\\eil51.tsp";
+  private Random generator = new Random();
 
   public static void main(String[] args)
   {
@@ -73,7 +78,7 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
       }
 
       new JspSimulatedAnnealingTest().runAlgorithm(jobs);
-      //todo - new JspSimulatedAnnealingTest().run(path);
+      new JspSimulatedAnnealingTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
     {
@@ -116,13 +121,46 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     // Set the sa algorithm
     sa.setMaximalTemperature(1000000);
     sa.setMinimalTemperature(0.01);
-    sa.setMaximalIterationCount(100000000);
+    sa.setMaximalIterationCount(10000);
 
     // Create solution
     JspSimulatedAnnealingSolution s = new JspSimulatedAnnealingRandomSolution(eval, jobs);
 
     // Start the searching process
     sa.startSearching(s);
+  }
+
+  private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
+    AlgorithmParams result = new AlgorithmParams();
+    DataNode algParamsNode = problemInfo.getDataNode("Algorithms").getDataNodeById("SimulatedAnnealing");
+    for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
+      result.putValue(param.getValueStr("name"), param.getValue("init"));
+    }
+    result.putValue("iterationCount", 150000);
+    result.putValue("numSolutions", 1);
+    return result;
+  }
+
+  public void runAlgorithmAdapter(JobsDefinition jobs) throws Exception {
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 1, generator.nextLong());
+
+    AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
+
+    ProblemInfo pi = problemProvider.getProblemInfo();
+    JspSimulatedAnnealingFactory factory = new JspSimulatedAnnealingFactory();
+    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
+
+    try {
+      IAlgorithmAdapter<JspPhenotype, JspSimulatedAnnealingSolution> adapter = factory.createAlgorithm(jobs, eval);
+      adapter.solutionsFromPhenotype(schedules);
+      adapter.startSearching(params);
+      var solutions = adapter.solutionsToPhenotype();
+      System.out.println(solutions[0].getObjValue());
+      System.out.println(solutions[0].getScore());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
