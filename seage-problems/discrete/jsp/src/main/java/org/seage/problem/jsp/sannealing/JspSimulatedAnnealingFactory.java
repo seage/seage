@@ -52,24 +52,6 @@ import org.seage.problem.jsp.sannealing.JspSimulatedAnnealingSolution;
 @Annotations.AlgorithmName("Simulated Annealing")
 public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenotype, JspSimulatedAnnealingSolution>
 {
-  //	private TspSolution _tspSolution;
-  //  private TspProblemProvider _provider;
-
-  // public JspSimulatedAnnealingFactory()
-  // {
-  // }
-
-  //  public TspSimulatedAnnealingFactory(DataNode params, City[] cities) throws Exception
-  //  {
-  //    String solutionType = params.getValueStr("initSolutionType");
-  //    if( solutionType.toLowerCase().equals("greedy") )
-  //      _tspSolution = new TspGreedySolution( cities );
-  //    else if( solutionType.toLowerCase().equals("random") )
-  //      _tspSolution = new TspRandomSolution( cities );
-  //    else if( solutionType.toLowerCase().equals("sorted") )
-  //      _tspSolution = new TspSortedSolution( cities );
-  //  }
-
   @Override
   public Class<?> getAlgorithmClass()
   {
@@ -90,35 +72,14 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
       @Override
       public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception
       {
-        // this.solutions = new JspSolution[source.length];
-        // for (int j = 0; j < source.length; j++)
-        // {
-        //   JspSolution solution = new JspSolution(0)
-        //   {
-        //   };
-        //   Integer[] schedule = solution.getSchedule();
-
-        //   for (int i = 0; i < schedule.length; i++)
-        //     schedule[i] = (Integer) source[j].getSolution()[i];
-
-        //   this.solutions[j] = solution;
-        // }
         this.solutions = new ArrayList<JspSimulatedAnnealingSolution>(source.length);
-        for (int i = 0; i < source.length; i++)
-          this.solutions.add(new JspSimulatedAnnealingSolution(source[i].getSolution()));
+        for (int i = 0; i < this.solutions.size(); i++)
+          this.solutions.set(i, new JspSimulatedAnnealingSolution(source[i].getSolution()));
       }
 
       @Override
       public JspPhenotype[] solutionsToPhenotype() throws Exception
       {
-        // JspPhenotype[] result = new JspPhenotype[this.solutions.length];
-
-        // for (int i = 0; i < this.solutions.length; i++)
-        // {
-        //   JspSolution solution = (JspSolution) this.solutions[i];
-        //   result[i] = solution.getSchedule().clone();
-        // }
-        // return result;
         JspPhenotype[] result = new JspPhenotype[this.solutions.size()];
 
         for (int i = 0; i < this.solutions.size(); i++) {
