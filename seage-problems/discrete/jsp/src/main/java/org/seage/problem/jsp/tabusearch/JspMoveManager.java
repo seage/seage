@@ -41,7 +41,7 @@ public class JspMoveManager implements MoveManager {
 
   @Override
   public Move[] getAllMoves(Solution solution) throws Exception {
-    JspSolution sol = (JspSolution) solution;
+    JspTabuSearchSolution sol = (JspTabuSearchSolution) solution;
     Schedule schedule = new Schedule(_jobsDefinition, sol.getJobArray());
 
     List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
@@ -53,6 +53,5 @@ public class JspMoveManager implements MoveManager {
     }
 
     return moves;
-
   }
 }

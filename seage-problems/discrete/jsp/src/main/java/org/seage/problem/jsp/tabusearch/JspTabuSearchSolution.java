@@ -17,50 +17,31 @@
  * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+package org.seage.problem.jsp.tabusearch;
+
+import org.seage.metaheuristic.tabusearch.SolutionAdapter;
 
 /**
- * Contributors:
- *   Jan Zmatlik
- *   - Initial implementation
- *   David Omrai
- *   - Implemented for jsp problem
+ * Summary description for JspTabuSearchSolution.
  */
-package org.seage.problem.jsp.sannealing;
-
-
-import org.seage.metaheuristic.sannealing.Solution;
-
-/**
- *
- * @author Jan Zmatlik
- * Edited by David Omrai
- */
-public class JspSolution extends Solution
+public class JspTabuSearchSolution extends SolutionAdapter
 {
+  private Integer[] _jobArray;
 
-  /**
-   * Represent order of operations
-   */
-  public Integer[] _jobArray;
-
-  /**
-   * Array of operations
-   */
-  public JspSolution(int numJobs, int numOpers)
+  public JspTabuSearchSolution(Integer[] jobArray)
   {
-    _jobArray = new Integer[numJobs];
+    _jobArray = jobArray.clone();
+  }
+
+  public JspTabuSearchSolution(int numJobs, int numOpers)
+  {
+    _jobArray= new Integer[numJobs*numOpers];
 
     int i=0;
     for(int j=0;j<numJobs;j++)
       for(int k=0;k<numOpers;k++)
         _jobArray[i++] = j+1;
-  }
-
-  /**
-   * 
-   */
-  public JspSolution(Integer[] schedule) {
-    _jobArray = schedule.clone();
+    
   }
 
   public Integer[] getJobArray()
@@ -68,30 +49,17 @@ public class JspSolution extends Solution
     return _jobArray;
   }
 
-  public void setSchedule(Integer[] schedule)
-  {
-    _jobArray = schedule.clone();
-  }
-
   @Override
   public String toString()
   {
-    String res = new String();
-    for (Integer t : _jobArray)
-      res += t + " ";
-    return res;
+    return getObjectiveValue()[0] + "";
   }
 
   @Override
-  public JspSolution clone()
+  public Object clone()
   {
-    JspSolution jspSolution = null;
-
-    jspSolution = (JspSolution) super.clone();
-    jspSolution.setSchedule(_jobArray.clone());
-    jspSolution.setObjectiveValue(getObjectiveValue());
-
-    return jspSolution;
-  }
-
+    JspTabuSearchSolution copy = (JspTabuSearchSolution) super.clone();
+    copy._jobArray = this._jobArray.clone();
+    return copy;
+  } // end clone
 }

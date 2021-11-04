@@ -39,6 +39,7 @@ import org.seage.metaheuristic.sannealing.ISimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
 import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
 import org.seage.problem.jsp.tabusearch.JspTabuSearchTest;
 
@@ -106,6 +107,11 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
 
+    JspObjectiveFunction objFunction = new JspObjectiveFunction(new JspPhenotypeEvaluator(pi, jobs));
+
+    SimulatedAnnealing sa = new SimulatedAnnealing(objFunction, new JspMoveManager(jobs));
+
+    
 
     //JspObjectiveFunction objFunction = new JspObjectiveFunction(_cities);
 

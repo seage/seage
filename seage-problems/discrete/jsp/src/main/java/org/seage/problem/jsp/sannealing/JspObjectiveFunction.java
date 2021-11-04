@@ -41,7 +41,7 @@ public class JspObjectiveFunction implements IObjectiveFunction
     _evaluator = evaluator;
   }
 
-  public double[] evaluate(JspSolution solution, int[] move) throws Exception
+  public double[] evaluate(JspSimulatedAnnealingSolution solution, int[] move) throws Exception
   {
     Integer[] jobArray = solution.getJobArray();
     
@@ -52,7 +52,7 @@ public class JspObjectiveFunction implements IObjectiveFunction
   @Override
   public double getObjectiveValue(Solution s) throws Exception
   {
-    return evaluate((JspSolution) s, null)[0];
+    return evaluate((JspSimulatedAnnealingSolution) s, null)[0];
   }
 
 }

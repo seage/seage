@@ -42,7 +42,7 @@ import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
-import org.seage.problem.jsp.sannealing.JspSolution;
+import org.seage.problem.jsp.sannealing.JspSimulatedAnnealingSolution;
 
 /**
  *
@@ -50,7 +50,7 @@ import org.seage.problem.jsp.sannealing.JspSolution;
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
-public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenotype, JspSolution>
+public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenotype, JspSimulatedAnnealingSolution>
 {
   //	private TspSolution _tspSolution;
   //  private TspProblemProvider _provider;
@@ -77,15 +77,15 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
   }
 
   @Override
-  public IAlgorithmAdapter<JspPhenotype, JspSolution> createAlgorithm(ProblemInstance instance,
+  public IAlgorithmAdapter<JspPhenotype, JspSimulatedAnnealingSolution> createAlgorithm(ProblemInstance instance,
     IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     JspPhenotypeEvaluator evaluator =
         new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
   
-  	return new SimulatedAnnealingAdapter<JspPhenotype, JspSolution>(
+  	return new SimulatedAnnealingAdapter<JspPhenotype, JspSimulatedAnnealingSolution>(
         new JspObjectiveFunction(evaluator),
-        new JspMoveManager(), phenotypeEvaluator, false)
+        new JspMoveManager((JobsDefinition) instance), phenotypeEvaluator, false)
     {
       @Override
       public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception
@@ -103,9 +103,9 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
 
         //   this.solutions[j] = solution;
         // }
-        this.solutions = new ArrayList<JspSolution>(source.length);
+        this.solutions = new ArrayList<JspSimulatedAnnealingSolution>(source.length);
         for (int i = 0; i < source.length; i++)
-          this.solutions.add(new JspSolution(source[i].getSolution()));
+          this.solutions.add(new JspSimulatedAnnealingSolution(source[i].getSolution()));
       }
 
       @Override
@@ -128,7 +128,7 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
       }
 
 			@Override
-			public JspPhenotype solutionToPhenotype(JspSolution solution) throws Exception {
+			public JspPhenotype solutionToPhenotype(JspSimulatedAnnealingSolution solution) throws Exception {
 				JspPhenotype result = new JspPhenotype(solution.getJobArray());
 
         double[] objVals = this.phenotypeEvaluator.evaluate(result);

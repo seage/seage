@@ -31,6 +31,7 @@ import java.util.Random;
 
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
+import org.seage.problem.jsp.JobsDefinition;
 
 /**
  *
@@ -40,11 +41,18 @@ import org.seage.metaheuristic.sannealing.Solution;
 public class JspMoveManager implements IMoveManager
 {
   Random rnd = new Random();
+  private int _maxMoves;
+  private JobsDefinition _jobsDefinition;
+
+  public JspMoveManager(JobsDefinition jobsDefinition) {
+    _jobsDefinition = jobsDefinition;
+    _maxMoves = 100;
+  }
 
   @Override
   public Solution getModifiedSolution(Solution solution, double ct)
   {
-    JspSolution jspSolution = ((JspSolution) solution).clone();
+    JspSimulatedAnnealingSolution jspSolution = ((JspSimulatedAnnealingSolution) solution).clone();
 
     int jspSolutionLength = jspSolution.getJobArray().length;
     int a = rnd.nextInt(jspSolutionLength);

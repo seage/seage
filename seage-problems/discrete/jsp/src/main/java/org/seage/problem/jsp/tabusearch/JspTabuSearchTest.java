@@ -85,7 +85,7 @@ public class JspTabuSearchTest implements TabuSearchListener
     JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, jobs);
     
     TabuSearch ts = new TabuSearch(
-        new JspSolution(jobs.getJobsCount(), jobs.getJobInfos()[0].getOperationInfos().length),
+        new JspTabuSearchSolution(jobs.getJobsCount(), jobs.getJobInfos()[0].getOperationInfos().length),
         new JspMoveManager(jobs),
         new JspObjectiveFunction(evaluator),
         new SimpleTabuList(30),
@@ -107,7 +107,7 @@ public class JspTabuSearchTest implements TabuSearchListener
     JspTabuSearchFactory factory = new JspTabuSearchFactory();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     try {
-        IAlgorithmAdapter<JspPhenotype, JspSolution> adapter =  factory.createAlgorithm(jobs, eval);
+        IAlgorithmAdapter<JspPhenotype, JspTabuSearchSolution> adapter =  factory.createAlgorithm(jobs, eval);
         adapter.solutionsFromPhenotype(schedules);
         adapter.startSearching(params);
         var solutions = adapter.solutionsToPhenotype();

@@ -34,7 +34,7 @@ public class JspMove implements Move {
 
   @Override
   public void operateOn(Solution soln) {
-    JspSolution solution = (JspSolution) soln;
+    JspTabuSearchSolution solution = (JspTabuSearchSolution) soln;
     int tmp = solution.getJobArray()[_ix1];
     solution.getJobArray()[_ix1] = solution.getJobArray()[_ix2];
     solution.getJobArray()[_ix2] = tmp;
