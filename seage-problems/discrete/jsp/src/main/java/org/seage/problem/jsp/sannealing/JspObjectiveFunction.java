@@ -27,6 +27,7 @@ package org.seage.problem.jsp.sannealing;
 
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
 import org.seage.metaheuristic.sannealing.Solution;
+import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 
 /**
@@ -44,9 +45,9 @@ public class JspObjectiveFunction implements IObjectiveFunction
   public double[] evaluate(JspSimulatedAnnealingSolution solution, int[] move) throws Exception
   {
     Integer[] jobArray = solution.getJobArray();
-    
-    // todo - fix
-    return null;
+    double[] vlaues = _evaluator.evaluate(new JspPhenotype(jobArray));
+
+    return vlaues;    
   }
 
   @Override

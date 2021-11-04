@@ -119,7 +119,7 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     sa.setMaximalIterationCount(100000000);
 
     // Create solution
-    JspSimulatedAnnealingSolution s = new JspSimulatedAnnealingGreedySolution(eval, jobs);
+    JspSimulatedAnnealingSolution s = new JspSimulatedAnnealingRandomSolution(eval, jobs);
 
     // Start the searching process
     sa.startSearching(s);
