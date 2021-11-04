@@ -28,8 +28,6 @@
 package org.seage.problem.jsp.sannealing;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import org.seage.data.DataNode;
 import org.seage.aal.algorithm.AlgorithmParams;
@@ -45,7 +43,6 @@ import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
-import org.seage.problem.jsp.tabusearch.JspTabuSearchTest;
 
 /**
  * The purpose of this class is demonstration of SA algorithm use.
@@ -55,19 +52,12 @@ import org.seage.problem.jsp.tabusearch.JspTabuSearchTest;
  */
 public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAnnealingEvent>
 {
-  //private static String _dataPath = "D:\\eil51.tsp";
   private Random generator = new Random();
 
   public static void main(String[] args)
   {
     try
     {
-      //String path = "data/tsp/eil51.tsp";//args[0];		// 426
-      //String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
-      //String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
-      //String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
-      //String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
-      //String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
       String instanceID = "ft10";
       String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
@@ -88,27 +78,6 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
 
   public void runAlgorithm(JobsDefinition jobs) throws Exception
   {
-//    _cities = CityProvider.readCities(new FileInputStream(path));
-//    System.out.println("Loading cities from path: " + path);
-//    System.out.println("Number of cities: " + _cities.length);
-//
-//    JspObjectiveFunction objFunction = new JspObjectiveFunction(_cities);
-//    SimulatedAnnealing sa = new SimulatedAnnealing(objFunction, new TspMoveManager2(objFunction));
-//
-//    sa.setMaximalTemperature(1000000.0d);
-//    sa.setMinimalTemperature(0.01d);
-//    //sa.setAnnealingCoefficient( 0.9999999);
-//    sa.setMaximalIterationCount(100000000);
-//
-//    sa.addSimulatedAnnealingListener(this);
-//    TspGreedySolution s = new TspGreedySolution(_cities);
-//    //TspRandomSolution s = new TspRandomSolution(_cities.length);
-//
-//    System.out.println(objFunction.getObjectiveValue(s));
-//    sa.startSearching(s);
-//
-//    System.out.println(sa.getBestSolution().getObjectiveValue());
-//    System.out.println(sa.getBestSolution());
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
 
@@ -116,7 +85,7 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
 
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
 
-    SimulatedAnnealing sa = new SimulatedAnnealing(objFunction, new JspMoveManager(jobs));
+    SimulatedAnnealing<JspSimulatedAnnealingSolution> sa = new SimulatedAnnealing<>(objFunction, new JspMoveManager(jobs));
 
     // Set the sa algorithm
     sa.setMaximalTemperature(1000000);
@@ -126,6 +95,9 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     // Create solution
     JspSimulatedAnnealingSolution s = new JspSimulatedAnnealingRandomSolution(eval, jobs);
 
+    // Add event listener
+    sa.addSimulatedAnnealingListener(this);
+    
     // Start the searching process
     sa.startSearching(s);
   }
