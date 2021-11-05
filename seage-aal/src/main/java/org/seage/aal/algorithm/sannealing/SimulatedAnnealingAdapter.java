@@ -55,7 +55,7 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
   private static Logger logger = LoggerFactory.getLogger(SimulatedAnnealingAdapter.class.getName());
 
   protected SimulatedAnnealing<S> simulatedAnnealing;
-  protected ArrayList<S> solutions;
+  protected S[] solutions;
   private AlgorithmParams algParams;
   // private Solution _bestSolution;
   private long numberOfIterationsDone = 0;
@@ -83,9 +83,9 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
     this.reporter.putParameters(algParams);
 
     numberOfIterationsDone = numberOfNewSolutions = lastImprovingIteration = 0;
-    simulatedAnnealing.startSearching(this.solutions.get(0));
+    simulatedAnnealing.startSearching(this.solutions[0]);
 
-    this.solutions.set(0, simulatedAnnealing.getBestSolution());
+    this.solutions[0] =  simulatedAnnealing.getBestSolution();
   }
 
   @Override

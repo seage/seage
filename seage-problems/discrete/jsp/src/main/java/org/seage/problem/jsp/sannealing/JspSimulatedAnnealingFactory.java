@@ -72,18 +72,18 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
       @Override
       public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception
       {
-        this.solutions = new ArrayList<JspSimulatedAnnealingSolution>(source.length);
-        for (int i = 0; i < this.solutions.size(); i++)
-          this.solutions.set(i, new JspSimulatedAnnealingSolution(source[i].getSolution()));
+        this.solutions = new JspSimulatedAnnealingSolution[source.length];
+        for (int i = 0; i < this.solutions.length; i++)
+          this.solutions[i] = new JspSimulatedAnnealingSolution(source[i].getSolution());
       }
 
       @Override
       public JspPhenotype[] solutionsToPhenotype() throws Exception
       {
-        JspPhenotype[] result = new JspPhenotype[this.solutions.size()];
+        JspPhenotype[] result = new JspPhenotype[this.solutions.length];
 
-        for (int i = 0; i < this.solutions.size(); i++) {
-          result[i] = solutionToPhenotype(this.solutions.get(i));
+        for (int i = 0; i < this.solutions.length; i++) {
+          result[i] = solutionToPhenotype(this.solutions[i]);
         }
         return result;
       }
