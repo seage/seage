@@ -29,7 +29,6 @@
  */
 package org.seage.problem.jsp.sannealing;
 
-import java.util.ArrayList;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;

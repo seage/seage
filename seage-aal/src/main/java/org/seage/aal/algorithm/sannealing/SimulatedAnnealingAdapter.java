@@ -22,7 +22,6 @@
 
 package org.seage.aal.algorithm.sannealing;
 
-import java.util.ArrayList;
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;

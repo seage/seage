@@ -24,7 +24,6 @@
 
 package org.seage.problem.sat.sannealing;
 
-import java.util.ArrayList;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
