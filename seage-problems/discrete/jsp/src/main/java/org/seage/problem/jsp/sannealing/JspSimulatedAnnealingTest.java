@@ -85,11 +85,11 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
 
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
 
-    SimulatedAnnealing<JspSimulatedAnnealingSolution> sa = new SimulatedAnnealing<>(objFunction, new JspMoveManager(jobs));
+    SimulatedAnnealing<JspSimulatedAnnealingSolution> sa = new SimulatedAnnealing<>(objFunction, new JspMoveManager(jobs, objFunction));
 
     // Set the sa algorithm
-    sa.setMaximalTemperature(1000000);
-    sa.setMinimalTemperature(0.01);
+    sa.setMaximalTemperature(100000);
+    sa.setMinimalTemperature(0.001);
     sa.setMaximalIterationCount(10000);
 
     // Create solution
@@ -108,7 +108,9 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
       result.putValue(param.getValueStr("name"), param.getValue("init"));
     }
-    result.putValue("iterationCount", 150000);
+    result.putValue("maximalTemperature", 100000);
+    result.putValue("minimalTemperature", 0.001);
+    result.putValue("iterationCount", 15000);
     result.putValue("numSolutions", 1);
     return result;
   }

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
 
- * This file is part of SEAGE.
+ * This file is part of SEAGE. 
 
  * SEAGE is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,8 +44,28 @@ public class JspObjectiveFunction implements IObjectiveFunction
 
   public double[] evaluate(JspSimulatedAnnealingSolution solution, int[] move) throws Exception
   {
+    // For the moving operation
+    int op1 = 0;
+    int op2 = 0;
     Integer[] jobArray = solution.getJobArray();
+
+    if (move != null) {
+      // Store the operations ids
+      op1 = jobArray[move[0]];
+      op2 = jobArray[move[1]];
+
+      // Swap the operations
+      jobArray[move[0]] = op2;
+      jobArray[move[1]] = op1;
+    }
+    
     double[] vlaues = _evaluator.evaluate(new JspPhenotype(jobArray));
+
+    if (move != null) {
+      // Restore the solution
+      jobArray[move[0]] = op1;
+      jobArray[move[1]] = op2;
+    }
 
     return vlaues;    
   }

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
 
- * This file is part of SEAGE.
+ * This file is part of SEAGE. 
 
  * SEAGE is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,10 +63,9 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
     JspProblemProvider problemProvider = new JspProblemProvider();
     JspPhenotypeEvaluator evaluator =
         new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
-  
+    JspObjectiveFunction objFun = new JspObjectiveFunction(evaluator);
   	return new SimulatedAnnealingAdapter<JspPhenotype, JspSimulatedAnnealingSolution>(
-        new JspObjectiveFunction(evaluator),
-        new JspMoveManager((JobsDefinition) instance), phenotypeEvaluator, false)
+      objFun, new JspMoveManager((JobsDefinition) instance, objFun), phenotypeEvaluator, false)
     {
       @Override
       public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception
