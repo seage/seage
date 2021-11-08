@@ -56,14 +56,14 @@ public class JspMoveManager implements IMoveManager
   }
 
   @Override
-  public Solution getModifiedSolution(Solution solution, double ct) throws Exception
+  public Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception
   {
-    //return getModifiedBestSolution(solution, ct);
-    //return getModifiedRandomSolution(solution, ct);
-    return getModifiedCriticalPathSolution(solution, ct);
+    //return getModifiedBestSolution(solution, currentTemperature);
+    //return getModifiedRandomSolution(solution, currentTemperature);
+    return getModifiedCriticalPathSolution(solution, currentTemperature);
   }
 
-  private Solution getModifiedCriticalPathSolution(Solution solution, double ct) throws Exception {
+  private Solution getModifiedCriticalPathSolution(Solution solution, double currentTemperature) throws Exception {
     JspSimulatedAnnealingSolution jspSolution = (JspSimulatedAnnealingSolution) solution.clone();
     Schedule schedule = new Schedule(_jobsDefinition, jspSolution.getJobArray());
     // Find critical path
@@ -94,7 +94,7 @@ public class JspMoveManager implements IMoveManager
     return jspSolution;
   }
 
-  private Solution getModifiedBestSolution(Solution solution, double ct) throws Exception {
+  private Solution getModifiedBestSolution(Solution solution, double currentTemperature) throws Exception {
     JspSimulatedAnnealingSolution jspSolution = ((JspSimulatedAnnealingSolution) solution).clone();
 
     int jspSolutionLength = jspSolution.getJobArray().length;
@@ -128,7 +128,7 @@ public class JspMoveManager implements IMoveManager
     return jspSolution;
   }
 
-  public Solution getModifiedRandomSolution(Solution solution, double ct) throws Exception {
+  public Solution getModifiedRandomSolution(Solution solution, double currentTemperature) throws Exception {
     JspSimulatedAnnealingSolution jspSolution = ((JspSimulatedAnnealingSolution) solution).clone();
 
     int jspSolutionLength = jspSolution.getJobArray().length;
