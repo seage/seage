@@ -52,7 +52,6 @@ public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, Jsp
     JspProblemProvider problemProvider = new JspProblemProvider();
     JspPhenotypeEvaluator evaluator =
         new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
-
     return new TabuSearchAdapter<JspPhenotype, JspTabuSearchSolution>(new JspMoveManager((JobsDefinition) instance),
         new JspObjectiveFunction(evaluator), phenotypeEvaluator) {
 
@@ -66,7 +65,6 @@ public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, Jsp
       @Override
       public JspPhenotype[] solutionsToPhenotype() throws Exception {
         JspPhenotype[] result = new JspPhenotype[this.solutions.length];
-
         for (int i = 0; i < this.solutions.length; i++) {
           JspTabuSearchSolution s = (JspTabuSearchSolution) this.solutions[i];
           result[i] = solutionToPhenotype(s);
@@ -77,9 +75,7 @@ public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, Jsp
       @Override
       public JspPhenotype solutionToPhenotype(JspTabuSearchSolution solution) throws Exception {
         JspPhenotype result = new JspPhenotype(solution.getJobArray());
-
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
-
         result.setObjValue(objVals[0]);
         result.setScore(objVals[1]);
         return result;

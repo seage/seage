@@ -35,14 +35,10 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.problem.ProblemInstance;
-import org.seage.metaheuristic.sannealing.Solution;
-import org.seage.aal.problem.ProblemInfo;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
-import org.seage.problem.jsp.sannealing.JspSimulatedAnnealingSolution;
-
 /**
  *
  * @author Jan Zmatlik
@@ -79,7 +75,6 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
       public JspPhenotype[] solutionsToPhenotype() throws Exception
       {
         JspPhenotype[] result = new JspPhenotype[this.solutions.length];
-
         for (int i = 0; i < this.solutions.length; i++) {
           result[i] = solutionToPhenotype(this.solutions[i]);
         }
@@ -89,9 +84,7 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
 			@Override
 			public JspPhenotype solutionToPhenotype(JspSimulatedAnnealingSolution solution) throws Exception {
 				JspPhenotype result = new JspPhenotype(solution.getJobArray());
-
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
-
         result.setObjValue(objVals[0]);
         result.setScore(objVals[1]);
         return result;
