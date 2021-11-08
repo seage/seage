@@ -54,18 +54,25 @@ public class JspMoveManager implements IMoveManager
   @Override
   public Solution getModifiedSolution(Solution solution, double ct) throws Exception
   {
+    return getModifiedBestSolution(solution, ct);
+    //return getModifiedRandomSolution(solution, ct);
+  }
+
+  private Solution getModifiedBestSolution(Solution solution, double ct) throws Exception {
     JspSimulatedAnnealingSolution jspSolution = ((JspSimulatedAnnealingSolution) solution).clone();
 
     int jspSolutionLength = jspSolution.getJobArray().length;
     int a = rnd.nextInt(jspSolutionLength);
     
     int[] move = new int[2];
-    int[] bestMove = null;
     move[0] = a;
     move[1] = 0;
-    double bestVal = _objFunc.evaluate(jspSolution, move)[0];
+    
+    // Set the value to maximal, if none is better best move is not set
+    double bestVal = Double.MAX_VALUE;
+    int[] bestMove = null;
 
-    for (int i = 1; i < jspSolutionLength; i++) {
+    for (int i = 0; i < jspSolutionLength; i++) {
       if (i == a)
         continue;
       move[1] = i;
@@ -82,6 +89,23 @@ public class JspMoveManager implements IMoveManager
       jspSolution.getJobArray()[bestMove[1]] = tmp;
     }   
 
+    return jspSolution;
+  }
+
+  public Solution getModifiedRandomSolution(Solution solution, double ct) throws Exception {
+    JspSimulatedAnnealingSolution jspSolution = ((JspSimulatedAnnealingSolution) solution).clone();
+
+    int jspSolutionLength = jspSolution.getJobArray().length;
+    int a = rnd.nextInt(jspSolutionLength);
+    int b = rnd.nextInt(jspSolutionLength);
+
+    if (a == b) 
+      b = (b + 1) % jspSolutionLength;
+  
+      int tmp = jspSolution.getJobArray()[a];
+      jspSolution.getJobArray()[a] = jspSolution.getJobArray()[b];
+      jspSolution.getJobArray()[b] = tmp;
+    
     return jspSolution;
   }
 
