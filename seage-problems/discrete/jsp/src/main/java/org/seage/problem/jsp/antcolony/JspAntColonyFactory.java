@@ -41,7 +41,7 @@ import org.seage.problem.jsp.JspPhenotype;
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
-public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, JspGraph>
+public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, JspAntColonySolution>
 {
     @Override
     public Class<?> getAlgorithmClass()
