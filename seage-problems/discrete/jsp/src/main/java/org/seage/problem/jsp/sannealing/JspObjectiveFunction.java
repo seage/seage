@@ -20,13 +20,15 @@
 
 /**
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ *   Jan Zmatlik
+ *   - Initial implementation
  */
 package org.seage.problem.jsp.sannealing;
 
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
 import org.seage.metaheuristic.sannealing.Solution;
+import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
 
 /**
  *
@@ -34,21 +36,45 @@ import org.seage.metaheuristic.sannealing.Solution;
  */
 public class JspObjectiveFunction implements IObjectiveFunction
 {
+  private JspPhenotypeEvaluator evaluator;
+  
+  public JspObjectiveFunction(JspPhenotypeEvaluator evaluator)
+  {
+    this.evaluator = evaluator;
+  }
 
-    public JspObjectiveFunction()
-    {
-        
+  public double[] evaluate(JspSimulatedAnnealingSolution solution, int[] move) throws Exception
+  {
+    // For the moving operation
+    int op1 = 0;
+    int op2 = 0;
+    Integer[] jobArray = solution.getJobArray();
+
+    if (move != null) {
+      // Store the operations ids
+      op1 = jobArray[move[0]];
+      op2 = jobArray[move[1]];
+
+      // Swap the operations
+      jobArray[move[0]] = op2;
+      jobArray[move[1]] = op1;
+    }
+    
+    double[] vlaues = this.evaluator.evaluate(new JspPhenotype(jobArray));
+
+    if (move != null) {
+      // Restore the solution
+      jobArray[move[0]] = op1;
+      jobArray[move[1]] = op2;
     }
 
-    public double[] evaluate(JspSolution solution, int[] move) throws Exception
-    {
-        return null;//_evaluator.evaluate(solution._tour, move, solution.getObjectiveValue());
-    }
+    return vlaues;    
+  }
 
-    @Override
-    public double getObjectiveValue(Solution s) throws Exception
-    {
-        return evaluate((JspSolution) s, null)[0];
-    }
+  @Override
+  public double getObjectiveValue(Solution s) throws Exception
+  {
+    return evaluate((JspSimulatedAnnealingSolution) s, null)[0];
+  }
 
 }

@@ -42,7 +42,7 @@ public class JspObjectiveFunction implements ObjectiveFunction
   {
     if (move != null)
       move.operateOn(soln);
-    Integer[] jobArray = ((JspSolution) soln).getJobArray();
+    Integer[] jobArray = ((JspTabuSearchSolution) soln).getJobArray();
     double[] values = _evaluator.evaluate(new JspPhenotype(jobArray));
     if (move != null)
       move.operateOn(soln);

@@ -64,7 +64,6 @@ public class JspGeneticAlgorithmFactory
       @Override
       public JspPhenotype[] solutionsToPhenotype() throws Exception {
         JspPhenotype[] result = new JspPhenotype[this.solutions.size()];
-
         for (int i = 0; i < this.solutions.size(); i++) {
           result[i] = solutionToPhenotype(this.solutions.get(i));
         }
@@ -74,9 +73,7 @@ public class JspGeneticAlgorithmFactory
       @Override
       public JspPhenotype solutionToPhenotype(Subject<Integer> solution) throws Exception {
         JspPhenotype result = new JspPhenotype(solution.getChromosome().getGenes());
-
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
-
         result.setObjValue(objVals[0]);
         result.setScore(objVals[1]);
         return result;

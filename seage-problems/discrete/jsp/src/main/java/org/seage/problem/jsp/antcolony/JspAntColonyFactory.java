@@ -34,7 +34,6 @@ import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.problem.jsp.JspPhenotype;
-import org.seage.problem.jsp.sannealing.JspSolution;
 
 /**
  *
@@ -42,7 +41,7 @@ import org.seage.problem.jsp.sannealing.JspSolution;
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
-public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, JspSolution>
+public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, JspAntColonySolution>
 {
     @Override
     public Class<?> getAlgorithmClass()
@@ -97,5 +96,4 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, JspS
         // TODO Auto-generated method stub
         return null;
     }
-
 }

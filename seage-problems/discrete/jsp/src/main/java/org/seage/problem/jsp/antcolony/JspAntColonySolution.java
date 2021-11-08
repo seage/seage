@@ -32,12 +32,12 @@ import org.seage.metaheuristic.antcolony.Node;
  *
  * @author Zagy
  */
-public class JspGraph extends Graph
+public class JspAntColonySolution extends Graph
 {
 
 //    private City[] _cities;
 
-    public JspGraph() throws Exception
+    public JspAntColonySolution() throws Exception
     {
         super();
 //        _cities = cities;

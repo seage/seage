@@ -22,18 +22,18 @@ package org.seage.problem.jsp.tabusearch;
 import org.seage.metaheuristic.tabusearch.SolutionAdapter;
 
 /**
- * Summary description for JspSolution.
+ * Summary description for JspTabuSearchSolution.
  */
-public class JspSolution extends SolutionAdapter
+public class JspTabuSearchSolution extends SolutionAdapter
 {
   private Integer[] _jobArray;
 
-  public JspSolution(Integer[] jobArray)
+  public JspTabuSearchSolution(Integer[] jobArray)
   {
     _jobArray = jobArray.clone();
   }
 
-  public JspSolution(int numJobs, int numOpers)
+  public JspTabuSearchSolution(int numJobs, int numOpers)
   {
     _jobArray= new Integer[numJobs*numOpers];
 
@@ -58,7 +58,7 @@ public class JspSolution extends SolutionAdapter
   @Override
   public Object clone()
   {
-    JspSolution copy = (JspSolution) super.clone();
+    JspTabuSearchSolution copy = (JspTabuSearchSolution) super.clone();
     copy._jobArray = this._jobArray.clone();
     return copy;
   } // end clone
