@@ -27,11 +27,15 @@
  */
 package org.seage.problem.jsp.sannealing;
 
+import java.util.List;
 import java.util.Random;
 
+import org.seage.data.Pair;
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.Schedule;
+import org.seage.problem.jsp.ScheduleCell;
 
 /**
  *
@@ -54,8 +58,40 @@ public class JspMoveManager implements IMoveManager
   @Override
   public Solution getModifiedSolution(Solution solution, double ct) throws Exception
   {
-    return getModifiedBestSolution(solution, ct);
+    //return getModifiedBestSolution(solution, ct);
     //return getModifiedRandomSolution(solution, ct);
+    return getModifiedCriticalPathSolution(solution, ct);
+  }
+
+  private Solution getModifiedCriticalPathSolution(Solution solution, double ct) throws Exception {
+    JspSimulatedAnnealingSolution jspSolution = (JspSimulatedAnnealingSolution) solution.clone();
+    Schedule schedule = new Schedule(_jobsDefinition, jspSolution.getJobArray());
+    // Find critical path
+    List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
+
+    int[] bestMove = new int[2];
+    double bestVal = Double.MAX_VALUE;
+
+    int[] move = new int[2];
+
+    // Find the best move
+    for (int i = 0; i < criticalPath.size(); i++) {
+      move[0] = criticalPath.get(i).getFirst().getIndex();
+      move[1] = criticalPath.get(i).getSecond().getIndex();
+      double tmpVal = _objFunc.evaluate(jspSolution, move)[0];
+
+      if (tmpVal < bestVal) {
+        bestVal = tmpVal;
+        bestMove = move.clone();
+      }
+    }
+
+    // Apply the best move
+    int tmp = jspSolution.getJobArray()[bestMove[0]];
+    jspSolution.getJobArray()[bestMove[0]] = jspSolution.getJobArray()[bestMove[1]];
+    jspSolution.getJobArray()[bestMove[1]] = tmp;
+
+    return jspSolution;
   }
 
   private Solution getModifiedBestSolution(Solution solution, double ct) throws Exception {
