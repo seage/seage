@@ -10,8 +10,8 @@ logs/
 *.log*
 **/bin/
 
-.classpath
-.project
+#.classpath
+#.project
 
 seage-*/**/.settings
 seage-*/**/.checkstyle
