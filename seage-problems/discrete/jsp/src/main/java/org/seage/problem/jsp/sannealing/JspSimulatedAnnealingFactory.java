@@ -91,5 +91,4 @@ public class JspSimulatedAnnealingFactory implements IAlgorithmFactory<JspPhenot
 			}
     };
   }
-
 }

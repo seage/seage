@@ -96,5 +96,4 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, JspA
         // TODO Auto-generated method stub
         return null;
     }
-
 }
