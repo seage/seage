@@ -41,43 +41,43 @@ public class JspSimulatedAnnealingSolution extends Solution
   /**
    * Represent order of operations
    */
-  public Integer[] _jobArray;
+  private Integer[] jobArray;
 
   /**
    * Array of operations
    */
   public JspSimulatedAnnealingSolution(int numJobs, int numOpers)
   {
-    _jobArray = new Integer[numJobs];
+    this.jobArray = new Integer[numJobs];
 
     int i=0;
     for(int j=0;j<numJobs;j++)
       for(int k=0;k<numOpers;k++)
-        _jobArray[i++] = j+1;
+        this.jobArray[i++] = j+1;
   }
 
   /**
    * 
    */
   public JspSimulatedAnnealingSolution(Integer[] schedule) {
-    _jobArray = schedule.clone();
+    this.jobArray = schedule.clone();
   }
 
   public Integer[] getJobArray()
   {
-    return _jobArray;
+    return this.jobArray;
   }
 
   public void setSchedule(Integer[] schedule)
   {
-    _jobArray = schedule.clone();
+    this.jobArray = schedule.clone();
   }
 
   @Override
   public String toString()
   {
     String res = new String();
-    for (Integer t : _jobArray)
+    for (Integer t : this.jobArray)
       res += t + " ";
     return res;
   }
@@ -88,7 +88,7 @@ public class JspSimulatedAnnealingSolution extends Solution
     JspSimulatedAnnealingSolution jspSolution = null;
 
     jspSolution = (JspSimulatedAnnealingSolution) super.clone();
-    jspSolution.setSchedule(_jobArray.clone());
+    jspSolution.setSchedule(this.jobArray.clone());
     jspSolution.setObjectiveValue(getObjectiveValue());
 
     return jspSolution;

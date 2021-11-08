@@ -36,10 +36,11 @@ import org.seage.problem.jsp.JspPhenotypeEvaluator;
  */
 public class JspObjectiveFunction implements IObjectiveFunction
 {
-  private JspPhenotypeEvaluator _evaluator;
+  private JspPhenotypeEvaluator evaluator;
+  
   public JspObjectiveFunction(JspPhenotypeEvaluator evaluator)
   {
-    _evaluator = evaluator;
+    this.evaluator = evaluator;
   }
 
   public double[] evaluate(JspSimulatedAnnealingSolution solution, int[] move) throws Exception
@@ -59,7 +60,7 @@ public class JspObjectiveFunction implements IObjectiveFunction
       jobArray[move[1]] = op1;
     }
     
-    double[] vlaues = _evaluator.evaluate(new JspPhenotype(jobArray));
+    double[] vlaues = this.evaluator.evaluate(new JspPhenotype(jobArray));
 
     if (move != null) {
       // Restore the solution

@@ -45,14 +45,14 @@ import org.seage.problem.jsp.ScheduleCell;
 public class JspMoveManager implements IMoveManager
 {
   Random rnd = new Random();
-  private int _maxMoves;
-  private JobsDefinition _jobsDefinition;
-  private JspObjectiveFunction _objFunc;
+  private int maxMoves;
+  private JobsDefinition jobsDefinition;
+  private JspObjectiveFunction objFunc;
 
   public JspMoveManager(JobsDefinition jobsDefinition, JspObjectiveFunction objFunc) {
-    _jobsDefinition = jobsDefinition;
-    _objFunc = objFunc;
-    _maxMoves = 100;
+    this.jobsDefinition = jobsDefinition;
+    this.objFunc = objFunc;
+    this.maxMoves = 100;
   }
 
   @Override
@@ -65,7 +65,7 @@ public class JspMoveManager implements IMoveManager
 
   private Solution getModifiedCriticalPathSolution(Solution solution, double currentTemperature) throws Exception {
     JspSimulatedAnnealingSolution jspSolution = (JspSimulatedAnnealingSolution) solution.clone();
-    Schedule schedule = new Schedule(_jobsDefinition, jspSolution.getJobArray());
+    Schedule schedule = new Schedule(this.jobsDefinition, jspSolution.getJobArray());
     // Find critical path
     List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
 
@@ -78,7 +78,7 @@ public class JspMoveManager implements IMoveManager
     for (int i = 0; i < criticalPath.size(); i++) {
       move[0] = criticalPath.get(i).getFirst().getIndex();
       move[1] = criticalPath.get(i).getSecond().getIndex();
-      double tmpVal = _objFunc.evaluate(jspSolution, move)[0];
+      double tmpVal = this.objFunc.evaluate(jspSolution, move)[0];
 
       if (tmpVal < bestVal) {
         bestVal = tmpVal;
@@ -112,7 +112,7 @@ public class JspMoveManager implements IMoveManager
       if (i == a)
         continue;
       move[1] = i;
-      double val = _objFunc.evaluate(jspSolution, move)[0];
+      double val = this.objFunc.evaluate(jspSolution, move)[0];
       if (val < bestVal) {
         bestVal = val;
         bestMove = move.clone();
