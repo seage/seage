@@ -84,7 +84,7 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
     numberOfIterationsDone = numberOfNewSolutions = lastImprovingIteration = 0;
     simulatedAnnealing.startSearching(this.solutions[0]);
 
-    this.solutions[0] =  simulatedAnnealing.getBestSolution();
+    this.solutions[0] = simulatedAnnealing.getBestSolution();
   }
 
   @Override
