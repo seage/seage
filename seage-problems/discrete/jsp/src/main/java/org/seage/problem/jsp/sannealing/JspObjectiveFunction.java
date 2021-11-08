@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
 
- * This file is part of SEAGE. 
+ * This file is part of SEAGE.
 
  * SEAGE is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
