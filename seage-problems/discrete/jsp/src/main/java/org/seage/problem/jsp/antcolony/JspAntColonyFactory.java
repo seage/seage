@@ -10,7 +10,7 @@
 
  * SEAGE is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
@@ -20,8 +20,8 @@
 
 /**
  * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ *   Richard Malek
+ *   - Initial implementation
  */
 
 package org.seage.problem.jsp.antcolony;
@@ -43,57 +43,55 @@ import org.seage.problem.jsp.JspPhenotype;
 @Annotations.AlgorithmName("AntColony")
 public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, JspAntColonySolution>
 {
-    @Override
-    public Class<?> getAlgorithmClass()
+  @Override
+  public Class<?> getAlgorithmClass()
+  {
+    return AntColonyAdapter.class;
+  }
+
+  @Override
+  public IAlgorithmAdapter<Ant> createAlgorithm(ProblemInstance instance) throws Exception
+  {
+    IAlgorithmAdapter<Ant> algorithm = null;
+    City[] cities = ((TspProblemInstance) instance).getCities();
+    JspGraph graph = new JspGraph(cities);
+    AntBrain brain = new AntBrain(graph);
+    return new AntColonyAdapter(brain, graph)
     {
-        return AntColonyAdapter.class;
-    }
+      @Override
+      public void solutionsFromPhenotype(Object[][] source) throws Exception
+      {
+        _ants = new Ant[source.length];
+        for (int i = 0; i < _ants.length; i++)
+        {
+          ArrayList<Integer> nodes = new ArrayList<Integer>();
+          for (int j = 0; j < source[i].length; j++)
+            nodes.add((Integer) source[i][j]);
+          _ants[i] = new Ant(nodes);
+       }
+      }
 
-    // @Override
-    // public IAlgorithmAdapter<Ant> createAlgorithm(ProblemInstance instance) throws Exception
-    // {
-    //     IAlgorithmAdapter<Ant> algorithm = null;
-//        City[] cities = ((TspProblemInstance) instance).getCities();
-//        JspGraph graph = new JspGraph(cities);
-//        AntBrain brain = new AntBrain(graph);
-//        algorithm = new AntColonyAdapter(brain, graph)
-//        {
-//            @Override
-//            public void solutionsFromPhenotype(Object[][] source) throws Exception
-//            {
-//                _ants = new Ant[source.length];
-//                for (int i = 0; i < _ants.length; i++)
-//                {
-//                    ArrayList<Integer> nodes = new ArrayList<Integer>();
-//                    for (int j = 0; j < source[i].length; j++)
-//                        nodes.add((Integer) source[i][j]);
-//                    _ants[i] = new Ant(nodes);
-//                }
-//            }
-//
-//            @Override
-//            public Object[][] solutionsToPhenotype() throws Exception
-//            {
-//                Object[][] result = new Object[_ants.length][];
-//                for (int i = 0; i < _ants.length; i++)
-//                {
-//                    result[i] = new Integer[_ants[i].getNodeIDsAlongPath().size()];
-//                    for (int j = 0; j < result[i].length; j++)
-//                    {
-//                        result[i][j] = _ants[i].getNodeIDsAlongPath().get(j);
-//                    }
-//                }
-//                return result;
-//            }
-//        };
+      @Override
+      public Object[][] solutionsToPhenotype() throws Exception
+      {
+        Object[][] result = new Object[_ants.length][];
+        for (int i = 0; i < _ants.length; i++)
+        {
+          result[i] = new Integer[_ants[i].getNodeIDsAlongPath().size()];
+          for (int j = 0; j < result[i].length; j++)
+          {
+            result[i][j] = _ants[i].getNodeIDsAlongPath().get(j);
+          }
+        }
+        return result;
+      }
+    };
+  }
 
-    //     return algorithm;
-    // }
-
-    @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator phenotypeEvaluator)
-            throws Exception {
-        // TODO Auto-generated method stub
-        return null;
-    }
+  @Override
+  public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator phenotypeEvaluator)
+      throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }
