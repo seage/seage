@@ -25,8 +25,11 @@
  */
 package org.seage.problem.jsp.antcolony;
 
+import java.util.Arrays;
+
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
 
 /**
  *
@@ -35,12 +38,15 @@ import org.seage.metaheuristic.antcolony.Node;
 public class JspAntColonySolution extends Graph
 {
 
+  JspPhenotypeEvaluator evaluator;
+
   private Integer[] jobArray;
 
-  public JspAntColonySolution(Integer[] jobArary) throws Exception
+  public JspAntColonySolution(Integer[] jobArary, JspPhenotypeEvaluator evaluator) throws Exception
   {
     super();
     this.jobArray = jobArary;
+    this.evaluator = evaluator;
     for (int id = 1; id < jobArary.length; id++) {
       _nodes.put(id, new Node(id));
     }
@@ -67,9 +73,12 @@ public class JspAntColonySolution extends Graph
   @Override
   public double getNodesDistance(Node start, Node end)
   {
-    return 0.0;
-  //  double dX = (this.jobArray[start.getID() - 1].X - this.jobArray[end.getID() - 1].X);
-  //  double dY = (this.jobArray[start.getID() - 1].Y - this.jobArray[end.getID() - 1].Y);
-  //   return Math.round(Math.sqrt(dX * dX + dY * dY));
+    try {
+      double[] res = this.evaluator.evaluateSchedule(Arrays.copyOfRange(this.jobArray, 0, end.getID())); 
+      return res[0];
+    } catch (Exception e) {
+      e.printStackTrace();
+      return 0.0;
+    }
   }
 }
