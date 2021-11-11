@@ -31,15 +31,18 @@ import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 
+import org.seage.problem.jsp.JobsDefinition;
+
 /**
  *
  * @author Zagy
  */
-public class JspAntBrain extends AntBrain
-{
-  public JspAntBrain(Graph graph)
-  {
+public class JspAntBrain extends AntBrain {
+  JobsDefinition jobsDefinition;
+
+  public JspAntBrain(Graph graph, JobsDefinition jobs) {
     super(graph);
+    this.jobsDefinition = jobs;
   }
 
   //	@Override
@@ -53,11 +56,10 @@ public class JspAntBrain extends AntBrain
   //	}
 
   @Override
-  protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode)
-  {
+  protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode) {
     HashSet<Node> result = super.getAvailableNodes(startingNode, currentNode);
-    if (currentNode != startingNode && result.isEmpty())
-    {
+    // If the starting node hasn't been set, set it 
+    if (currentNode != startingNode && result.isEmpty()) {
       result.add(startingNode);
     }
     return result;

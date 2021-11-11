@@ -31,9 +31,13 @@ import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
-import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.antcolony.Ant;
+
+import org.seage.aal.problem.ProblemInstance;
+import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp.JspProblemProvider;
 
 /**
  *
@@ -41,7 +45,7 @@ import org.seage.problem.jsp.JspPhenotype;
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
-public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, JspAntColonySolution>
+public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
 {
   @Override
   public Class<?> getAlgorithmClass()
@@ -50,13 +54,16 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, JspA
   }
 
   @Override
-  public IAlgorithmAdapter<Ant> createAlgorithm(ProblemInstance instance) throws Exception
+  public IAlgorithmAdapter<JspPhenotype, Ant> createAlgorithm(
+    ProblemInstance instance, IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception
   {
-    IAlgorithmAdapter<Ant> algorithm = null;
-    City[] cities = ((TspProblemInstance) instance).getCities();
-    JspGraph graph = new JspGraph(cities);
-    AntBrain brain = new AntBrain(graph);
-    return new AntColonyAdapter(brain, graph)
+    JobsDefinition jobs = (JobsDefinition) instance;
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    JspPhenotypeEvaluator evaluator =
+        new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
+    JspAntColonySolution graph = new JspAntColonySolution(jobs.getJobInfos(), evaluator);
+    JspAntBrain brain = new JspAntBrain(graph, jobs);
+    return new AntColonyAdapter<JspAntColonySolution, Ant>(graph, phenotypeEvaluator)
     {
       @Override
       public void solutionsFromPhenotype(Object[][] source) throws Exception
@@ -88,10 +95,10 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, JspA
     };
   }
 
-  @Override
-  public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator phenotypeEvaluator)
-      throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  // @Override
+  // public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator phenotypeEvaluator)
+  //     throws Exception {
+  //   // TODO Auto-generated method stub
+  //   return null;
+  // }
 }
