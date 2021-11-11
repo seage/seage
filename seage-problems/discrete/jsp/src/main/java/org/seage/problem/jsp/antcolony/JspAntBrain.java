@@ -56,7 +56,7 @@ public class JspAntBrain extends AntBrain
   protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode)
   {
     HashSet<Node> result = super.getAvailableNodes(startingNode, currentNode);
-    if (currentNode != startingNode && result.size() == 0)
+    if (currentNode != startingNode && result.isEmpty())
     {
       result.add(startingNode);
     }
