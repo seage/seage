@@ -98,26 +98,26 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
       }
 
       @Override
-      public Object[][] solutionsToPhenotype() throws Exception
+      public JspPhenotype[] solutionsToPhenotype() throws Exception
       {
-        Object[][] result = new Object[_ants.length][];
-        for (int i = 0; i < _ants.length; i++)
-        {
-          result[i] = new Integer[_ants[i].getNodeIDsAlongPath().size()];
-          for (int j = 0; j < result[i].length; j++)
-          {
-            result[i][j] = _ants[i].getNodeIDsAlongPath().get(j);
-          }
-        }
+        JspPhenotype[] result = new JspPhenotype [ants.length];
+        for (int i = 0; i < ants.length; i++)
+          result[i] = solutionToPhenotype(ants[i]);
         return result;
+      }
+
+      @Override
+      public JspPhenotype  solutionToPhenotype(Ant ant) throws Exception {
+        Integer[] solution = new Integer[ant.getNodeIDsAlongPath().size()];
+          for (int j = 0; j < ant.getNodeIDsAlongPath().size(); j++)
+          {
+            int nodeID = ant.getNodeIDsAlongPath().get(j);
+            int machineID = nodeID % jobs.getJobsCount();
+            int jobID = (nodeID - machineID) / jobs.getMachinesCount();
+            solution[j] = jobID + 1;
+          }
+        return new JspPhenotype(solution);
       }
     };
   }
-
-  // @Override
-  // public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator phenotypeEvaluator)
-  //     throws Exception {
-  //   // TODO Auto-generated method stub
-  //   return null;
-  // }
 }
