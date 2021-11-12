@@ -70,7 +70,7 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
     return new AntColonyAdapter<JspPhenotype, Ant>(graph, phenotypeEvaluator)
     {
       @Override
-      public void solutionsFromPhenotype(Integer[] source) throws Exception
+      public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception
       {
         ants = new Ant[source.length];
         for (int i = 0; i < ants.length; i++)
@@ -82,9 +82,9 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
           }
 
           ArrayList<Integer> nodes = new ArrayList<Integer>();
-          for (int j = 0; j < source.length; j++) {
+          for (int j = 0; j < source[i].getSolution().length; j++) {
             // Id of job and machine, from value 0
-            int jobID = source[i] - 1;
+            int jobID = source[i].getSolution()[j] - 1;
             int machID = jobsOper[jobID];
             // Add correct node id
             // node 0 = (jobID, machID) = (0,0)
@@ -93,7 +93,6 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
 
             jobsOper[jobID]++;
           }
-
           ants[i] = new Ant(brain, graph, nodes);
        }
       }
