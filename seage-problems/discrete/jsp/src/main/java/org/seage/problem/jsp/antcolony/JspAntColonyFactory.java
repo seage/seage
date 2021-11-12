@@ -34,6 +34,7 @@ import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
 import org.seage.metaheuristic.antcolony.Ant;
 
 import java.util.Random;
+import java.util.ArrayList;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
@@ -66,18 +67,34 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
     JspAntColonySolution graph = new JspAntColonySolution(jobs, evaluator);
     JspAntBrain brain = new JspAntBrain(graph, jobs);
 
-    return new AntColonyAdapter<JspAntColonySolution, Ant>(graph, phenotypeEvaluator)
+    return new AntColonyAdapter<JspPhenotype, Ant>(graph, phenotypeEvaluator)
     {
       @Override
       public void solutionsFromPhenotype(Integer[] source) throws Exception
       {
-        _ants = new Ant[source.length];
-        for (int i = 0; i < _ants.length; i++)
+        ants = new Ant[source.length];
+        for (int i = 0; i < ants.length; i++)
         {
+          // Current id of machine with specific job
+          int[] jobsOper = new int[jobs.getJobsCount()];
+          for (int jobID = 0; jobID < jobs.getJobsCount(); jobID++) {
+            jobsOper[jobID] = 0;
+          }
+
           ArrayList<Integer> nodes = new ArrayList<Integer>();
-          for (int j = 0; j < source[i].length; j++)
-            nodes.add((Integer) source[i][j]);
-          _ants[i] = new Ant(nodes);
+          for (int j = 0; j < source.length; j++) {
+            // Id of job and machine, from value 0
+            int jobID = source[i] - 1;
+            int machID = jobsOper[jobID];
+            // Add correct node id
+            // node 0 = (jobID, machID) = (0,0)
+            // node 1 = (0, 1), etc.
+            nodes.add((jobID * jobs.getMachinesCount()) + machID);
+
+            jobsOper[jobID]++;
+          }
+
+          ants[i] = new Ant(brain, graph, nodes);
        }
       }
 
