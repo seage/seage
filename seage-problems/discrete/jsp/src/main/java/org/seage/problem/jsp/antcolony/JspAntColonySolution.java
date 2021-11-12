@@ -80,8 +80,7 @@ public class JspAntColonySolution extends Graph
    * Edge length calculating
    * @param start - Starting node
    * @param end - Terminate node
-   * @param cities - Readed cities
-   * @return - Euclide edge length
+   * @return - time for ant to get from start to end
    */
   @Override
   public double getNodesDistance(Node start, Node end)
