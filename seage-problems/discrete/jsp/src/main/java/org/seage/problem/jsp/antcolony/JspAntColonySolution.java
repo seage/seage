@@ -29,7 +29,10 @@ import java.util.Arrays;
 
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
+import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp.JspProblemProvider;
 
 /**
  *
@@ -37,18 +40,28 @@ import org.seage.problem.jsp.JspPhenotypeEvaluator;
  */
 public class JspAntColonySolution extends Graph
 {
-
   JspPhenotypeEvaluator evaluator;
 
-  private Integer[] jobArray;
+  private JobsDefinition jobs;
 
-  public JspAntColonySolution(Integer[] jobArary, JspPhenotypeEvaluator evaluator) throws Exception
+  private int[][] jobsArray;
+
+  public JspAntColonySolution(JobsDefinition jobArary, JspPhenotypeEvaluator evaluator) throws Exception
   {
     super();
-    this.jobArray = jobArary;
     this.evaluator = evaluator;
-    for (int id = 1; id < jobArary.length; id++) {
-      _nodes.put(id, new Node(id));
+
+    this.jobsArray = new int[jobs.getJobsCount()*jobs.getMachinesCount()][2];
+
+    int id = 1;
+    for (int idJob = 0; idJob < jobs.getJobsCount(); idJob++) {
+      for (int idOper = 0; idOper < jobs.getMachinesCount(); idOper++ ){
+        _nodes.put(id, new Node(id));
+        // Store informations about node
+        this.jobsArray[id - 1][0] = idJob;
+        this.jobsArray[id - 1][1] = idOper;
+        id += 1;
+      }
     }
   }
 
@@ -73,12 +86,10 @@ public class JspAntColonySolution extends Graph
   @Override
   public double getNodesDistance(Node start, Node end)
   {
-    try {
-      double[] res = this.evaluator.evaluateSchedule(Arrays.copyOfRange(this.jobArray, 0, end.getID())); 
-      return res[0];
-    } catch (Exception e) {
-      e.printStackTrace();
-      return 0.0;
-    }
+    // Get info about the start node
+    int jobID = this.jobsArray[start.getID()][0];
+    int operID = this.jobsArray[start.getID()][1];
+    // Get the start node operation length and add one, for the step to another node
+    return jobs.getJobInfos()[jobID].getOperationInfos()[operID].Length + 1.0;
   }
 }

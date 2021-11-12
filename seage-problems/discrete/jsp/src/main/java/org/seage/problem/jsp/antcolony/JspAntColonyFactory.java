@@ -33,6 +33,7 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
 import org.seage.metaheuristic.antcolony.Ant;
 
+import java.util.Random;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
@@ -47,6 +48,7 @@ import org.seage.problem.jsp.JspProblemProvider;
 @Annotations.AlgorithmName("AntColony")
 public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
 {
+  Random rnd = new Random();
   @Override
   public Class<?> getAlgorithmClass()
   {
@@ -61,12 +63,13 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
     JspProblemProvider problemProvider = new JspProblemProvider();
     JspPhenotypeEvaluator evaluator =
         new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
-    JspAntColonySolution graph = new JspAntColonySolution(jobs.getJobInfos(), evaluator);
+    JspAntColonySolution graph = new JspAntColonySolution(jobs, evaluator);
     JspAntBrain brain = new JspAntBrain(graph, jobs);
+
     return new AntColonyAdapter<JspAntColonySolution, Ant>(graph, phenotypeEvaluator)
     {
       @Override
-      public void solutionsFromPhenotype(Object[][] source) throws Exception
+      public void solutionsFromPhenotype(Integer[] source) throws Exception
       {
         _ants = new Ant[source.length];
         for (int i = 0; i < _ants.length; i++)
