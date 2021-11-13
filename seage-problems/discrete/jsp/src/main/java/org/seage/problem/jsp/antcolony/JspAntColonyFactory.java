@@ -22,6 +22,8 @@
  * Contributors:
  *   Richard Malek
  *   - Initial implementation
+ *   David Omrai
+ *   - Jsp implementation
  */
 
 package org.seage.problem.jsp.antcolony;
@@ -44,6 +46,7 @@ import org.seage.problem.jsp.JspProblemProvider;
 /**
  *
  * @author Richard Malek
+ * Edited by David Omrai
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
@@ -111,7 +114,7 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
         Integer[] solution = new Integer[ant.getNodeIDsAlongPath().size()];
           for (int j = 0; j < ant.getNodeIDsAlongPath().size(); j++)
           {
-            int nodeID = ant.getNodeIDsAlongPath().get(j);
+            int nodeID = ant.getNodeIDsAlongPath().get(j) - 1;
             int machineID = nodeID % jobs.getJobsCount();
             int jobID = (nodeID - machineID) / jobs.getMachinesCount();
             solution[j] = jobID + 1;

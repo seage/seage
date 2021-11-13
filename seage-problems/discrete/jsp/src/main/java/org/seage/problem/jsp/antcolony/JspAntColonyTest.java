@@ -22,34 +22,56 @@
  * Contributors:
  *   Richard Malek
  *   - Initial implementation
+ *   David Omrai
+ *   - Jsp implementation
  */
 package org.seage.problem.jsp.antcolony;
 
+import java.io.InputStream;
+import java.util.Random;
+
+import org.seage.data.DataNode;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 
+import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemInstanceInfo;
+import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+
+import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp.JspProblemProvider;
+
 /**
  * 
  * @author Richard Malek
+ * Edited by David Omrai
  */
 public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 {
   private int _edges;
+  private Random generator = new Random();
 
   public static void main(String[] args)
   {
     try
     {
-      String path = "data/tsp/eil51.tsp";//args[0];		// 426 
-      //String path = "data/tsp/berlin52.tsp";//args[0]; 	// 7542
-      //String path = "data/tsp/ch130.tsp";//args[0]; 		// 6110
-      //String path = "data/tsp/lin318.tsp";//args[0]; 		// 42029
-      //String path = "data/tsp/pcb442.tsp";//args[0]; 		// 50778
-      //String path = "data/tsp/u574.tsp";//args[0]; 		// 36905
+      String instanceID = "ft10";
+      String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
+      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+      JobsDefinition jobs = null;
 
-      new JspAntColonyTest().run(path);
+      try(InputStream stream = JspAntColonyTest.class.getResourceAsStream(path)) {
+        jobs = new JobsDefinition(jobInfo, stream);
+      }
+
+      //new JspSimulatedAnnealingTest().runAlgorithm(jobs);
+      //new JspSimulatedAnnealingTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
     {
@@ -69,6 +91,31 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     System.out.println(sum);
     System.out.println(edges);
   }
+
+  private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
+    AlgorithmParams result = new AlgorithmParams();
+    DataNode algParamsNode = problemInfo.getDataNode("Algorithms").getDataNodeById("AntColony");
+    for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
+      result.putValue(param.getValueStr("name"), param.getValue("init"));
+    }
+    result.putValue("quantumPheromone", 43);
+    result.putValue("localEvaporation", 0.95);
+    result.putValue("defaultPheromone", 0.491);
+    result.putValue("alpha", 1.0);
+    result.putValue("beta", 2.3);
+    result.putValue("numAnts", 150);
+    return result;
+  }
+
+  public void runAlgorithmAdapter(JobsDefinition jobs) throws Exception {
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 1, generator.nextLong());
+
+    AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
+
+    ProblemInfo pi = problemProvider.getProblemInfo();
+  }
+
 
   public void run(String path) throws Exception
   {

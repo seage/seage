@@ -22,6 +22,8 @@
  * Contributors:
  *   Richard Malek
  *   - Initial implementation
+ *   David Omrai
+ *   - Jsp implementation
  */
 package org.seage.problem.jsp.antcolony;
 
@@ -37,6 +39,7 @@ import org.seage.problem.jsp.JspProblemProvider;
 /**
  *
  * @author Zagy
+ * Edited by David Omrai
  */
 public class JspAntColonySolution extends Graph
 {
@@ -64,7 +67,7 @@ public class JspAntColonySolution extends Graph
       }
     }
   }
-
+  
   //	@Override
   //	public List<Node> getAvailableNodes(Node startingNode, Node currentNode, HashSet<Node> visited)
   //	{

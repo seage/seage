@@ -22,6 +22,8 @@
  * Contributors:
  *   Richard Malek
  *   - Initial implementation
+ *   David Omrai
+ *   - Jsp implementation
  */
 package org.seage.problem.jsp.antcolony;
 
@@ -36,6 +38,7 @@ import org.seage.problem.jsp.JobsDefinition;
 /**
  *
  * @author Zagy
+ * Edited by David Omrai
  */
 public class JspAntBrain extends AntBrain {
   JobsDefinition jobsDefinition;
