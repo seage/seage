@@ -36,7 +36,6 @@ import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
 import org.seage.metaheuristic.antcolony.Node;
 
-import org.seage.aal.problem.ProblemProviderTestBase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -86,16 +85,17 @@ public class JspAntColonySolutionTest {
 
     JspAntColonySolution graph = new JspAntColonySolution(jobs, eval);
 
-    int jobsCount = jobs.getJobsCount();
-    int opersCount = jobs.getJobInfos()[0].getOperationInfos().length;
+    int opersCount = 0;
+    for (int i = 0; i < jobs.getJobInfos().length; i++)
+      opersCount += jobs.getJobInfos()[0].getOperationInfos().length;
 
     // Test node ids
     assertEquals(0, graph.getNodes().get(0).getID());
-    assertEquals(jobsCount*opersCount + 1, graph.getNodes().size());
+    assertEquals(opersCount + 1, graph.getNodes().size());
 
     // Test the node values
-    Node nd = graph.getNodes().get((2*opersCount + 1) + 1);
-    assertEquals(2, graph.nodeToJobID(nd));
-    assertEquals(1, graph.nodeToOperID(nd));
+    Node nd = graph.getNodes().get(graph.getHashValue(1, 2, opersCount + 1));
+    assertEquals(1, graph.nodeToJobID(nd));
+    assertEquals(2, graph.nodeToOperID(nd));
   }
 }
