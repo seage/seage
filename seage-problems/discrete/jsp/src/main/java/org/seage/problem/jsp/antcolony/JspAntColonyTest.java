@@ -117,7 +117,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
   }
 
 
-  public void run(String path) throws Exception
+  public void runAlgorithm(String path) throws Exception
   {
 //    City[] cities = CityProvider.readCities(new FileInputStream(path));
 //    _edges = cities.length * (cities.length - 1) / 2;
