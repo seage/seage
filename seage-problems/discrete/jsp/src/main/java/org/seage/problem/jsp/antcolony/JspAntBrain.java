@@ -92,16 +92,16 @@ public class JspAntBrain extends AntBrain {
   }
 
   //  @Override
-  //	protected Node selectNextNode(Node firstNode, Node currentNode) 
+  // 	protected Node selectNextNode(Node firstNode, Node currentNode) 
   //  {
-  //		Node n =super.selectNextNode(firstNode, currentNode, visited);
-  //		if(n!=null)
-  //		{
-  //			Node n2 = _graph.getNodes().get(-n.getID());
-  //			visited.add(n2);
-  //		}
-  //		return n;
-  //	}
+  // 		Node n = super.selectNextNode(firstNode, currentNode, visited);
+  // 		if(n!=null)
+  // 		{
+  // 			Node n2 = _graph.getNodes().get(-n.getID());
+  // 			visited.add(n2);
+  // 		}
+  // 		return n;
+  // 	}
 
   //	@Override
   //	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited) {
