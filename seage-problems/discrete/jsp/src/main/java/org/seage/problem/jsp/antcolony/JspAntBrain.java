@@ -79,63 +79,23 @@ public class JspAntBrain extends AntBrain {
   protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode) {
     HashSet<Node> result = new HashSet<>();
     // If the starting node hasn't been set, set it 
-    if (currentNode != startingNode && result.isEmpty()) {
+    if (currentNode != startingNode) {
       result.add(startingNode);
     }
 
     // Adding the valid nodes
     for (int jobID = 0; jobID < this.jobsOperNums.length; jobID++){
-      int nodeID = jobID*this.jobsDefinition.getJobsCount() + this.jobsOperNums[jobID];
+      int nodeID = jobID*this.jobsDefinition.getMachinesCount() + this.jobsOperNums[jobID];
       result.add(this.graph.getNodes().get(nodeID));
     }
 
     return result;
   }
 
-   @Override
-  	protected Node selectNextNode(Node firstNode, Node currentNode) 
-   {
-    HashSet<Node> nextAvailableNodes = getAvailableNodes(firstNode, currentNode);
-    availableNodeList.clear();
-
-    if (nextAvailableNodes == null || nextAvailableNodes.isEmpty()) {
-      return null;
-    }
-
-    double sum = 0;
-    int i = 0;
-    double[] probabilities = new double[nextAvailableNodes.size()];
-    // for each available node calculate probability
-    for (Node n : nextAvailableNodes) {
-      double edgePheromone = 0;
-      double edgePrice = 0;
-
-      Edge e = currentNode.getEdgeMap().get(n);
-      if (e != null) {
-        edgePheromone = e.getLocalPheromone();
-        edgePrice = e.getEdgePrice();
-      } else {
-        edgePheromone = graph.getDefaultPheromone();
-        edgePrice = graph.getNodesDistance(currentNode, n);
-      }
-
-      double p = pow(edgePheromone, alpha) * pow(1 / edgePrice, beta);
-      probabilities[i] = p;
-      availableNodeList.add(n);
-      sum += p;
-      i++;
-    }
-
-    sum = sum != 0 ? sum : 1;    
-    for (i = 0; i < probabilities.length; i++) {
-      probabilities[i] /= sum;
-    }
-
-    Node nextNode = availableNodeList.get(next(probabilities));
-    markSelected(nextNode);
-
-    return nextNode;
-  	}
+  @Override
+  protected void markSelected(Node nextNode) {
+    availableNodes.remove(nextNode);
+  }
 
   //	@Override
   //	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited) {
