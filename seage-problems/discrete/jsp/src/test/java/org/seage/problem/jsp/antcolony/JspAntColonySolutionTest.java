@@ -85,17 +85,20 @@ public class JspAntColonySolutionTest {
 
     JspAntColonySolution graph = new JspAntColonySolution(jobs, eval);
 
-    int opersCount = 0;
-    for (int i = 0; i < jobs.getJobInfos().length; i++)
-      opersCount += jobs.getJobInfos()[0].getOperationInfos().length;
+    int factor = 0;
+    for (int i = 0; i < jobs.getJobInfos().length; i++){
+      int curOper = jobs.getJobInfos()[i].getOperationInfos().length;
+      if (curOper > factor)
+        factor = curOper;
+    }
 
     // Test node ids
     assertEquals(0, graph.getNodes().get(0).getID());
-    assertEquals(opersCount + 1, graph.getNodes().size());
+    assertEquals(factor * jobs.getJobsCount() + 1, graph.getNodes().size());
 
-    // Test the node values
-    Node nd = graph.getNodes().get(graph.getHashValue(1, 2, opersCount + 1));
-    assertEquals(1, graph.nodeToJobID(nd));
-    assertEquals(2, graph.nodeToOperID(nd));
+    // Test the node values (jobid * factor + oper id) + starting node
+    Node nd = graph.getNodes().get((2 * factor + 1) + 1);
+    assertEquals(2, graph.nodeToJobID(nd));
+    assertEquals(1, graph.nodeToOperID(nd));
   }
 }

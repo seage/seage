@@ -57,12 +57,15 @@ public class JspAntColonySolution extends Graph
     this.jobs = jobArary;
 
 
-    int operNum = 0;
+    int jobsNum = jobs.getJobsCount();
+    int factor = 0;
     for (int i = 0; i < jobs.getJobInfos().length; i++) {
-      operNum += jobs.getJobInfos()[i].getOperationInfos().length;
+      int curFactor = jobs.getJobInfos()[i].getOperationInfos().length;
+      if (curFactor > factor) 
+        factor = curFactor;
     }
 
-    this.jobsArray = new int[jobs.getJobsCount() * operNum + 1][2];
+    this.jobsArray = new int[jobsNum * factor + 1][2];
 
     // Add the first starting node
     //  /- 1 - 2 - 3 - ... - n-oper '|
@@ -70,22 +73,17 @@ public class JspAntColonySolution extends Graph
     //0 -  1 - 2 - 3 - ... - n-oper  | n-jobs
     // \-  1 - 2 - 3 - ... - n-oper  |
     //  \- 1 - 2 - 3 - ... - n-oper ,|
-    int id = getHashValue(0, 0, operNum + 1);
+    int id = 0;
     _nodes.put(id, new Node(id));
-    for (int idJob = 1; idJob <= jobs.getJobsCount(); idJob++) {
-      for (int idOper = 1; idOper <= operNum; idOper++ ){
-        id = getHashValue(idJob, idOper, operNum + 1);
+    for (int idJob = 0; idJob < jobsNum; idJob++) {
+      for (int idOper = 0; idOper < factor; idOper++ ){
+        id += 1;
         _nodes.put(id, new Node(id));
         // Store informations about node
         this.jobsArray[id][0] = idJob;
         this.jobsArray[id][1] = idOper;
       }
     }
-  }
-
-  public int getHashValue(int a, int b, int size) {
-    int factor = (int) Math.pow(10, Math.ceil(Math.log10(size)));
-    return a * factor + b;
   }
 
   public int nodeToJobID(Node node) {
