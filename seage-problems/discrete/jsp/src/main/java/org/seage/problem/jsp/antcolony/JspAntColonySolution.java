@@ -70,9 +70,11 @@ public class JspAntColonySolution extends Graph
     //0 -  1 - 2 - 3 - ... - n-oper  | n-jobs
     // \-  1 - 2 - 3 - ... - n-oper  |
     //  \- 1 - 2 - 3 - ... - n-oper ,|
+    int id = getHashValue(0, 0, operNum + 1);
+    _nodes.put(id, new Node(id));
     for (int idJob = 1; idJob <= jobs.getJobsCount(); idJob++) {
       for (int idOper = 1; idOper <= operNum; idOper++ ){
-        int id = getHashValue(idJob, idOper, operNum);
+        id = getHashValue(idJob, idOper, operNum + 1);
         _nodes.put(id, new Node(id));
         // Store informations about node
         this.jobsArray[id][0] = idJob;
