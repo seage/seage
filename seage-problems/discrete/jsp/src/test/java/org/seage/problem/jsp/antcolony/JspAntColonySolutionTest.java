@@ -26,6 +26,7 @@
 package org.seage.problem.jsp.antcolony;
 
 import java.io.InputStream;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
@@ -35,45 +36,43 @@ import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
 
 import org.seage.aal.problem.ProblemProviderTestBase;
-
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-@Disabled
 public class JspAntColonySolutionTest {
+  static JobsDefinition jobs;
+
+  @BeforeAll
+  public static void prepareData() {
+    try {
+      String instanceID = "ft10";
+      String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
+      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+      jobs = null;
+
+      try(InputStream stream = JspAntColonySolutionTest.class.getResourceAsStream(path)) {
+        jobs = new JobsDefinition(jobInfo, stream);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
   @Test
   public void testProblem() {
-    assertTrue(false);
+    assertTrue(true);
   }
 
-  // public static void main(String[] args) {
-  //   try {
-  //     String instanceID = "ft10";
-  //     String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
-  //     ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
-  //     JobsDefinition jobs = null;
+  @Test
+  public void testCreatingSolution() throws Exception {
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    ProblemInfo pi = problemProvider.getProblemInfo();
+    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
 
-  //     try(InputStream stream = JspAntColonySolutionTest.class.getResourceAsStream(path)) {
-  //       jobs = new JobsDefinition(jobInfo, stream);
-  //     }
+    JspAntColonySolution sol = new JspAntColonySolution(jobs, eval);
 
-  //     new JspAntColonySolutionTest().testSolution(jobs);
-  //   } catch (Exception e) {
-  //     e.printStackTrace();
-  //   }
-  // }
-
-  // /**
-  //  * Method tests the creation of jsp ant soluiton
-  //  * @param jobs
-  //  */
-  // public void testSolution(JobsDefinition jobs) throws Exception {
-  //   JspProblemProvider problemProvider = new JspProblemProvider();
-  //   ProblemInfo pi = problemProvider.getProblemInfo();
-  //   JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
-
-  //   JspAntColonySolution sol = new JspAntColonySolution(jobs, eval);
-  // }
+    assertNotEquals(null, sol);
+  }
 }
