@@ -36,6 +36,7 @@ import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
 
 import org.seage.aal.problem.ProblemProviderTestBase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -71,9 +72,9 @@ public class JspAntColonySolutionTest {
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
 
-    JspAntColonySolution sol = new JspAntColonySolution(jobs, eval);
+    JspAntColonySolution graph = new JspAntColonySolution(jobs, eval);
 
-    assertNotEquals(null, sol);
+    assertNotEquals(null, graph);
   }
 
   @Test
@@ -82,8 +83,12 @@ public class JspAntColonySolutionTest {
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
 
-    JspAntColonySolution sol = new JspAntColonySolution(jobs, eval);
+    JspAntColonySolution graph = new JspAntColonySolution(jobs, eval);
 
-    // continue
+    int allOpers = jobs.getJobsCount()*jobs.getJobInfos()[0].getOperationInfos().length;
+
+    // Test node ids
+    assertEquals(0, graph.getNodes().get(0).getID());
+    assertEquals(allOpers + 1, graph.getNodes().size());
   }
 }

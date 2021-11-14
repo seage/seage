@@ -57,7 +57,7 @@ public class JspAntColonySolution extends Graph
 
     int operNum = jobs.getJobInfos()[0].getOperationInfos().length;
 
-    this.jobsArray = new int[jobs.getJobsCount() * operNum][2];
+    this.jobsArray = new int[jobs.getJobsCount() * operNum + 1][2];
 
     // Add the first starting node
     //  /- 1 - 2 - 3 - ... - n-oper '|
@@ -72,11 +72,19 @@ public class JspAntColonySolution extends Graph
       for (int idOper = 0; idOper < operNum; idOper++ ){
         _nodes.put(id, new Node(id));
         // Store informations about node
-        this.jobsArray[id - 1][0] = idJob;
-        this.jobsArray[id - 1][1] = idOper;
+        this.jobsArray[id][0] = idJob;
+        this.jobsArray[id][1] = idOper;
         id += 1;
       }
     }
+  }
+
+  public int nodeToJobID(Node node) {
+    return this.jobsArray[node.getID()][0];
+  }
+
+  public int nodeToOperID(Node node) {
+    return this.jobsArray[node.getID()][1];
   }
   
   //	@Override
@@ -104,7 +112,7 @@ public class JspAntColonySolution extends Graph
       return 0;
 
     // ({prev timespan} - {curr timespan}) + 1
-    
+
     // Get info about the start node
     int jobID = this.jobsArray[start.getID()][0];
     int operID = this.jobsArray[start.getID()][1];
