@@ -34,6 +34,7 @@ import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
+import org.seage.metaheuristic.antcolony.Node;
 
 import org.seage.aal.problem.ProblemProviderTestBase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -85,10 +86,16 @@ public class JspAntColonySolutionTest {
 
     JspAntColonySolution graph = new JspAntColonySolution(jobs, eval);
 
-    int allOpers = jobs.getJobsCount()*jobs.getJobInfos()[0].getOperationInfos().length;
+    int jobsCount = jobs.getJobsCount();
+    int opersCount = jobs.getJobInfos()[0].getOperationInfos().length;
 
     // Test node ids
     assertEquals(0, graph.getNodes().get(0).getID());
-    assertEquals(allOpers + 1, graph.getNodes().size());
+    assertEquals(jobsCount*opersCount + 1, graph.getNodes().size());
+
+    // Test the node values
+    Node nd = graph.getNodes().get((2*opersCount + 1) + 1);
+    assertEquals(2, graph.nodeToJobID(nd));
+    assertEquals(1, graph.nodeToOperID(nd));
   }
 }
