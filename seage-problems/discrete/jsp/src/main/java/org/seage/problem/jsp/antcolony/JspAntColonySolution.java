@@ -53,6 +53,7 @@ public class JspAntColonySolution extends Graph
   {
     super();
     this.evaluator = evaluator;
+    this.jobs = jobArary;
 
     int operNum = jobs.getJobInfos()[0].getOperationInfos().length;
 
