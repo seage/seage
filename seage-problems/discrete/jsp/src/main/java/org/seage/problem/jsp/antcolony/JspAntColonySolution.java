@@ -115,7 +115,7 @@ public class JspAntColonySolution extends Graph
   public double getNodesDistance(Node start, Node end)
   {
     // If the first node is starting node
-    if (start.getID() == 0)
+    if (start.getID() == this.jobsArray.length)
       return 0;
 
     // ({prev timespan} - {curr timespan}) + 1
