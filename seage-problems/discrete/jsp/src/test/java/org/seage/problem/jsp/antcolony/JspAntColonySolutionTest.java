@@ -96,8 +96,8 @@ public class JspAntColonySolutionTest {
     assertEquals(0, graph.getNodes().get(0).getID());
     assertEquals(factor * jobs.getJobsCount() + 1, graph.getNodes().size());
 
-    // Test the node values (jobid * factor + oper id) + starting node
-    Node nd = graph.getNodes().get((2 * factor + 1) + 1);
+    // Test the node values (jobid * factor + oper id)
+    Node nd = graph.getNodes().get((2 * factor + 1));
     assertEquals(2, graph.nodeToJobID(nd));
     assertEquals(1, graph.nodeToOperID(nd));
   }

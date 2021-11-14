@@ -70,20 +70,20 @@ public class JspAntColonySolution extends Graph
     // Add the first starting node
     //  /- 1 - 2 - 3 - ... - n-oper '|
     // /-  1 - 2 - 3 - ... - n-oper  |
-    //0 -  1 - 2 - 3 - ... - n-oper  | n-jobs
+    //s -  1 - 2 - 3 - ... - n-oper  | n-jobs
     // \-  1 - 2 - 3 - ... - n-oper  |
     //  \- 1 - 2 - 3 - ... - n-oper ,|
     int id = 0;
-    _nodes.put(id, new Node(id));
     for (int idJob = 0; idJob < jobsNum; idJob++) {
       for (int idOper = 0; idOper < factor; idOper++ ){
-        id += 1;
         _nodes.put(id, new Node(id));
         // Store informations about node
         this.jobsArray[id][0] = idJob;
         this.jobsArray[id][1] = idOper;
+        id += 1;
       }
     }
+    _nodes.put(id, new Node(id));
   }
 
   public int nodeToJobID(Node node) {
