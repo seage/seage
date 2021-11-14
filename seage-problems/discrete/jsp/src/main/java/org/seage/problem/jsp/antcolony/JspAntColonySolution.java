@@ -123,6 +123,9 @@ public class JspAntColonySolution extends Graph
     // Get info about the start node
     int jobID = this.jobsArray[start.getID()][0];
     int operID = this.jobsArray[start.getID()][1];
+
+    
+
     // Get the start node operation length and add one, for the step to another node
     return jobs.getJobInfos()[jobID].getOperationInfos()[operID].Length + 1.0;
   }
