@@ -42,15 +42,22 @@ import org.seage.problem.jsp.JobsDefinition;
  */
 public class JspAntBrain extends AntBrain {
   JobsDefinition jobsDefinition;
+  int[] jobsOperNums;
 
   public JspAntBrain(Graph graph, JobsDefinition jobs) {
     super(graph);
     this.jobsDefinition = jobs;
+    this.jobsOperNums = new int[jobs.getJobsCount()];
+    for (int i = 0; i < this.jobsOperNums.length; i ++)
+      this.jobsOperNums[i] = 0;
   }
 
   //	@Override
   //	protected Node selectNextNode(Node firstNode, Node currentNode) 
   //	{		 
+  // this part should look if the next one can be reached, if the noce isnt the precesesror of some that was before
+  // thing is how to know what nodes were before, mayber array and there adding all other jobs are connected to all 
+  // different...
   //		Node n = super.selectNextNode(firstNode, currentNode);
   //		if(n==null && firstNode != currentNode)
   //			return firstNode;
@@ -59,12 +66,28 @@ public class JspAntBrain extends AntBrain {
   //	}
 
   @Override
+  public void reset() {
+    availableNodes = null;
+    availableNodeList.clear();
+    // Clear used operations
+    for (int i = 0; i < this.jobsOperNums.length; i ++)
+      this.jobsOperNums[i] = 0;
+  }
+
+  @Override
   protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode) {
-    HashSet<Node> result = super.getAvailableNodes(startingNode, currentNode);
+    HashSet<Node> result = new HashSet<>();
     // If the starting node hasn't been set, set it 
     if (currentNode != startingNode && result.isEmpty()) {
       result.add(startingNode);
     }
+
+    // Adding the valid nodes
+    for (int jobID = 0; jobID < this.jobsOperNums.length; jobID++){
+      int nodeID = jobID*this.jobsDefinition.getJobsCount() + this.jobsOperNums[jobID];
+      result.add(this.graph.getNodes().get(nodeID));
+    }
+
     return result;
   }
 
