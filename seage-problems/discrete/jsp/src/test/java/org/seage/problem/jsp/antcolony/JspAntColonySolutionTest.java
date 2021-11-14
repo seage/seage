@@ -47,8 +47,8 @@ public class JspAntColonySolutionTest {
   @BeforeAll
   public static void prepareData() {
     try {
-      String instanceID = "ft10";
-      String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
+      String instanceID = "yn_3x3_example";
+      String path = String.format("/org/seage/problem/jsp/test-instances/%s.xml", instanceID);
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
       jobs = null;
 
@@ -74,5 +74,16 @@ public class JspAntColonySolutionTest {
     JspAntColonySolution sol = new JspAntColonySolution(jobs, eval);
 
     assertNotEquals(null, sol);
+  }
+
+  @Test
+  public void testGetNodeDistance() throws Exception {
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    ProblemInfo pi = problemProvider.getProblemInfo();
+    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
+
+    JspAntColonySolution sol = new JspAntColonySolution(jobs, eval);
+
+    // continue
   }
 }
