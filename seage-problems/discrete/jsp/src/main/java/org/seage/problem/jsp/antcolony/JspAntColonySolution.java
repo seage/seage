@@ -54,11 +54,13 @@ public class JspAntColonySolution extends Graph
     super();
     this.evaluator = evaluator;
 
-    this.jobsArray = new int[jobs.getJobsCount()*jobs.getMachinesCount()][2];
+    int operNum = jobs.getJobInfos()[0].getOperationInfos().length;
+
+    this.jobsArray = new int[jobs.getJobsCount() * operNum][2];
 
     int id = 1;
     for (int idJob = 0; idJob < jobs.getJobsCount(); idJob++) {
-      for (int idOper = 0; idOper < jobs.getMachinesCount(); idOper++ ){
+      for (int idOper = 0; idOper < operNum; idOper++ ){
         _nodes.put(id, new Node(id));
         // Store informations about node
         this.jobsArray[id - 1][0] = idJob;
