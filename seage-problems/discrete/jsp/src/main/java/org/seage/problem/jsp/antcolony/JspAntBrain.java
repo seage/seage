@@ -31,6 +31,7 @@ import java.util.HashSet;
 
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
+import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Node;
 
 import org.seage.problem.jsp.JobsDefinition;
@@ -91,17 +92,50 @@ public class JspAntBrain extends AntBrain {
     return result;
   }
 
-  //  @Override
-  // 	protected Node selectNextNode(Node firstNode, Node currentNode) 
-  //  {
-  // 		Node n = super.selectNextNode(firstNode, currentNode, visited);
-  // 		if(n!=null)
-  // 		{
-  // 			Node n2 = _graph.getNodes().get(-n.getID());
-  // 			visited.add(n2);
-  // 		}
-  // 		return n;
-  // 	}
+   @Override
+  	protected Node selectNextNode(Node firstNode, Node currentNode) 
+   {
+    HashSet<Node> nextAvailableNodes = getAvailableNodes(firstNode, currentNode);
+    availableNodeList.clear();
+
+    if (nextAvailableNodes == null || nextAvailableNodes.isEmpty()) {
+      return null;
+    }
+
+    double sum = 0;
+    int i = 0;
+    double[] probabilities = new double[nextAvailableNodes.size()];
+    // for each available node calculate probability
+    for (Node n : nextAvailableNodes) {
+      double edgePheromone = 0;
+      double edgePrice = 0;
+
+      Edge e = currentNode.getEdgeMap().get(n);
+      if (e != null) {
+        edgePheromone = e.getLocalPheromone();
+        edgePrice = e.getEdgePrice();
+      } else {
+        edgePheromone = graph.getDefaultPheromone();
+        edgePrice = graph.getNodesDistance(currentNode, n);
+      }
+
+      double p = pow(edgePheromone, alpha) * pow(1 / edgePrice, beta);
+      probabilities[i] = p;
+      availableNodeList.add(n);
+      sum += p;
+      i++;
+    }
+
+    sum = sum != 0 ? sum : 1;    
+    for (i = 0; i < probabilities.length; i++) {
+      probabilities[i] /= sum;
+    }
+
+    Node nextNode = availableNodeList.get(next(probabilities));
+    markSelected(nextNode);
+
+    return nextNode;
+  	}
 
   //	@Override
   //	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited) {
