@@ -28,6 +28,7 @@
 package org.seage.problem.jsp.antcolony;
 
 import java.util.Arrays;
+import java.lang.Math;
 
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
@@ -55,7 +56,11 @@ public class JspAntColonySolution extends Graph
     this.evaluator = evaluator;
     this.jobs = jobArary;
 
-    int operNum = jobs.getJobInfos()[0].getOperationInfos().length;
+
+    int operNum = 0;
+    for (int i = 0; i < jobs.getJobInfos().length; i++) {
+      operNum += jobs.getJobInfos()[i].getOperationInfos().length;
+    }
 
     this.jobsArray = new int[jobs.getJobsCount() * operNum + 1][2];
 
@@ -65,18 +70,20 @@ public class JspAntColonySolution extends Graph
     //0 -  1 - 2 - 3 - ... - n-oper  | n-jobs
     // \-  1 - 2 - 3 - ... - n-oper  |
     //  \- 1 - 2 - 3 - ... - n-oper ,|
-    this._nodes.put(0, new Node(0));
-
-    int id = 1;
-    for (int idJob = 0; idJob < jobs.getJobsCount(); idJob++) {
-      for (int idOper = 0; idOper < operNum; idOper++ ){
+    for (int idJob = 1; idJob <= jobs.getJobsCount(); idJob++) {
+      for (int idOper = 1; idOper <= operNum; idOper++ ){
+        int id = getHashValue(idJob, idOper, operNum);
         _nodes.put(id, new Node(id));
         // Store informations about node
         this.jobsArray[id][0] = idJob;
         this.jobsArray[id][1] = idOper;
-        id += 1;
       }
     }
+  }
+
+  public int getHashValue(int a, int b, int size) {
+    int factor = (int) Math.pow(10, Math.ceil(Math.log10(size)));
+    return a * factor + b;
   }
 
   public int nodeToJobID(Node node) {
