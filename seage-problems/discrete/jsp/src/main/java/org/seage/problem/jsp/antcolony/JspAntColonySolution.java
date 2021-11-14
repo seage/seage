@@ -99,6 +99,12 @@ public class JspAntColonySolution extends Graph
   @Override
   public double getNodesDistance(Node start, Node end)
   {
+    // If the first node is starting node
+    if (start.getID() == 0)
+      return 0;
+
+    // ({prev timespan} - {curr timespan}) + 1
+    
     // Get info about the start node
     int jobID = this.jobsArray[start.getID()][0];
     int operID = this.jobsArray[start.getID()][1];
