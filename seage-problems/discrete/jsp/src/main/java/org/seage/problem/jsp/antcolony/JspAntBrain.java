@@ -118,7 +118,7 @@ public class JspAntBrain extends AntBrain {
       }
     }
 
-    return (int) Math.floor((double)node.getID() / factor);
+    return node.getID() / factor;
   }
 
   protected int nodeToOperID(Node node) {

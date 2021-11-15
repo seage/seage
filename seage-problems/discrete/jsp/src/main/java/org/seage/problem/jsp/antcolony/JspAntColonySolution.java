@@ -27,7 +27,9 @@
  */
 package org.seage.problem.jsp.antcolony;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.lang.Math;
 
 import org.seage.metaheuristic.antcolony.Graph;
@@ -115,8 +117,8 @@ public class JspAntColonySolution extends Graph
   public double getNodesDistance(Node start, Node end)
   {
     // If the first node is starting node
-    if (start.getID() == this.jobsArray.length)
-      return 0;
+    if (start.getID() == this.jobsArray.length - 1)
+      return 1;
 
     // ({prev timespan} - {curr timespan}) + 1
 
@@ -124,9 +126,22 @@ public class JspAntColonySolution extends Graph
     int jobID = this.jobsArray[start.getID()][0];
     int operID = this.jobsArray[start.getID()][1];
 
+
+    ArrayList<Integer> path = new ArrayList<>();
+    getNodesPath(path, start);
     
 
     // Get the start node operation length and add one, for the step to another node
     return jobs.getJobInfos()[jobID].getOperationInfos()[operID].Length + 1.0;
+  }
+
+  // bad logic, cant find correct edge
+  public void getNodesPath(List<Integer> path, Node node) {
+    if (node.getID() == this.jobsArray.length - 1 )
+      return;
+    
+    getNodesPath(path, node.getEdges().iterator().next().getNode1());
+    
+    path.add(nodeToJobID(node) + 1);
   }
 }
