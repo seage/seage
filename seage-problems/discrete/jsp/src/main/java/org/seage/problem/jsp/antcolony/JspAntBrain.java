@@ -91,6 +91,9 @@ public class JspAntBrain extends AntBrain {
 
     // Create new available nodes
     for (int jobID = 0; jobID < this.jobsOperNums.length; jobID++){
+      if (this.jobsOperNums[jobID] >= this.jobsDefinition.getJobInfos()[jobID].getOperationInfos().length)
+        continue;
+        
       int nodeID = jobID * factor + this.jobsOperNums[jobID];
       if (this.graph.getNodes().containsKey(nodeID))
         this.availableNodes.add(this.graph.getNodes().get(nodeID));
