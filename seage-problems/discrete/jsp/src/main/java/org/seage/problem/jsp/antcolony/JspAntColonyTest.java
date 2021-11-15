@@ -64,8 +64,8 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
   {
     try
     {
-      String instanceID = "ft10";
-      String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
+      String instanceID = "yn_3x3_example";
+      String path = String.format("/org/seage/problem/jsp/test-instances/%s.xml", instanceID);
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
       JobsDefinition jobs = null;
 
@@ -73,7 +73,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
         jobs = new JobsDefinition(jobInfo, stream);
       }
 
-      //new JspSimulatedAnnealingTest().runAlgorithm(jobs);
+      new JspAntColonyTest().runAlgorithm(jobs);
       //new JspSimulatedAnnealingTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
@@ -152,7 +152,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     //brain.setParameters(graph.getNodeList().size(), alpha, beta);
 
     long t1 = System.currentTimeMillis();
-    colony.startExploring(graph.getNodes().get(1), ants);
+    colony.startExploring(graph.getNodes().get(opersNum), ants);
     long t2 = System.currentTimeMillis();
     // graph.printPheromone();
     System.out.println("Global best: " + colony.getGlobalBest());

@@ -68,11 +68,11 @@ public class JspAntColonySolution extends Graph
     this.jobsArray = new int[jobsNum * factor + 1][2];
 
     // Add the first starting node
-    //  /- 1 - 2 - 3 - ... - n-oper '|
-    // /-  1 - 2 - 3 - ... - n-oper  |
-    //s -  1 - 2 - 3 - ... - n-oper  | n-jobs
-    // \-  1 - 2 - 3 - ... - n-oper  |
-    //  \- 1 - 2 - 3 - ... - n-oper ,|
+    //   /- 1 - 2 - 3 - ... - job1-oper '|
+    //  /-  1 - 2 - 3 - ... - job2-oper  |
+    // s -  1 - 2 - 3 - ... - job3-oper  | n-jobs
+    //  \-  1 - 2 - 3 - ... - job4-oper  |
+    //   \- 1 - 2 - 3 - ... - job5-oper ,|
     int id = 0;
     for (int idJob = 0; idJob < jobsNum; idJob++) {
       for (int idOper = 0; idOper < factor; idOper++ ){

@@ -77,24 +77,58 @@ public class JspAntBrain extends AntBrain {
 
   @Override
   protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode) {
-    HashSet<Node> result = new HashSet<>();
-    // If the starting node hasn't been set, set it 
-    if (currentNode != startingNode) {
-      result.add(startingNode);
+    // Clean the previous available nodes
+    this.availableNodes = new HashSet<>();
+
+    int factor = 0;
+    int tmpFactor;
+    for (int i = 0; i < this.jobsDefinition.getJobsCount(); i++) {
+      tmpFactor = this.jobsDefinition.getJobInfos()[i].getOperationInfos().length;
+      if (factor < tmpFactor) {
+        factor = tmpFactor;
+      }
     }
 
-    // Adding the valid nodes
+    // Create new available nodes
     for (int jobID = 0; jobID < this.jobsOperNums.length; jobID++){
-      int nodeID = jobID*this.jobsDefinition.getMachinesCount() + this.jobsOperNums[jobID];
-      result.add(this.graph.getNodes().get(nodeID));
+      int nodeID = jobID * factor + this.jobsOperNums[jobID];
+      if (this.graph.getNodes().containsKey(nodeID))
+        this.availableNodes.add(this.graph.getNodes().get(nodeID));
     }
 
-    return result;
+    return this.availableNodes;
   }
 
   @Override
   protected void markSelected(Node nextNode) {
+    this.jobsOperNums[nodeToJobID(nextNode)] += 1;
     availableNodes.remove(nextNode);
+  }
+
+  protected int nodeToJobID(Node node) {
+    int factor = 0;
+    int tmpFactor;
+    for (int i = 0; i < this.jobsDefinition.getJobsCount(); i++) {
+      tmpFactor = this.jobsDefinition.getJobInfos()[i].getOperationInfos().length;
+      if (factor < tmpFactor) {
+        factor = tmpFactor;
+      }
+    }
+
+    return (int) Math.floor((double)node.getID() / factor);
+  }
+
+  protected int nodeToOperID(Node node) {
+    int factor = 0;
+    int tmpFactor;
+    for (int i = 0; i < this.jobsDefinition.getJobsCount(); i++) {
+      tmpFactor = this.jobsDefinition.getJobInfos()[i].getOperationInfos().length;
+      if (factor < tmpFactor) {
+        factor = tmpFactor;
+      }
+    }
+
+    return node.getID() % factor;
   }
 
   //	@Override
