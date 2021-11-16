@@ -28,6 +28,7 @@
 package org.seage.problem.jsp.antcolony;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -113,10 +114,23 @@ public class JspGraph extends Graph
 
     ArrayList<Integer> path = new ArrayList<>();
     getNodesPath(path, start, start);
-    
+
+   
+    Integer[] prevPath = path.toArray(new Integer[0]);
+    path.add(nodeToJobID(end));
+    Integer[] nextPath = path.toArray(new Integer[0]);
+
+    double prevTimespan = 0;
+    double nextTimespan = 0;
+    try {
+      prevTimespan = this.evaluator.evaluateSchedule(prevPath)[0];
+      nextTimespan = this.evaluator.evaluateSchedule(nextPath)[0];
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     // Get the start node operation length and add one, for the step to another node
-    return jobs.getJobInfos()[jobID-1].getOperationInfos()[operID-1].Length + 1.0;
+    return nextTimespan - prevTimespan + 1.0;
   }
 
   public void getNodesPath(List<Integer> path, Node node, Node prevNode) {
