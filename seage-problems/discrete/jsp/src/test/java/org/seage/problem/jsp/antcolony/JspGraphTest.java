@@ -139,6 +139,14 @@ public class JspGraphTest {
     );
 
     // another test
-    
+    Integer[] jobArray4 = new Integer[] {1, 2, 3, 1};
+
+    hm.get(201).addEdge(new Edge(hm.get(301), hm.get(201)));
+    hm.get(301).addEdge(new Edge(hm.get(201), hm.get(301)));
+
+    assertEquals(
+      eval.evaluateSchedule(jobArray4) - eval.evaluateSchedule(jobArray3) + 1,
+      graph.getNodesDistance(hm.get(301), hm.get(102))
+    );
   }
 }
