@@ -72,7 +72,7 @@ public class JspAntColonySolutionTest {
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
 
-    JspAntColonySolution graph = new JspAntColonySolution(jobs, eval);
+    JspGraph graph = new JspGraph(jobs, eval);
 
     assertNotEquals(null, graph);
   }
@@ -83,7 +83,7 @@ public class JspAntColonySolutionTest {
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
 
-    JspAntColonySolution graph = new JspAntColonySolution(jobs, eval);
+    JspGraph graph = new JspGraph(jobs, eval);
 
     int factor = 0;
     for (int i = 0; i < jobs.getJobInfos().length; i++){

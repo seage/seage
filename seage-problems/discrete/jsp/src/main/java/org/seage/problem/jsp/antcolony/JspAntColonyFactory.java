@@ -67,45 +67,36 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
     JspProblemProvider problemProvider = new JspProblemProvider();
     JspPhenotypeEvaluator evaluator =
         new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
-    JspAntColonySolution graph = new JspAntColonySolution(jobs, evaluator);
-
+    JspGraph graph = new JspGraph(jobs, evaluator);
+    JspAntBrain brain = new JspAntBrain(graph, jobs);
 
     return new AntColonyAdapter<JspPhenotype, Ant>(graph, phenotypeEvaluator)
     {
       @Override
       public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception
       {
-        int factor = 0;
-        int tmpFactor;
-        for (int i = 0; i < jobs.getJobsCount(); i++) {
-          tmpFactor = jobs.getJobInfos()[i].getOperationInfos().length;
-          if (factor < tmpFactor) {
-            factor = tmpFactor;
-          }
-        }
-
         ants = new Ant[source.length];
         for (int i = 0; i < ants.length; i++)
         {
           // Current id of operation of specific job
-          int[] jobsOper = new int[jobs.getJobsCount()];
-          for (int jobID = 0; jobID < jobs.getJobsCount(); jobID++) {
+          int[] jobsOper = new int[jobs.getJobsCount() + 1];
+          for (int jobID = 0; jobID < jobsOper.length; jobID++) {
             jobsOper[jobID] = 0;
           }
 
           ArrayList<Integer> nodes = new ArrayList<Integer>();
           for (int j = 0; j < source[i].getSolution().length; j++) {
             // Id of job and machine, from value 0
-            int jobID = source[i].getSolution()[j] - 1;
+            int jobID = source[i].getSolution()[j];
             int operID = jobsOper[jobID];
             // Add correct node id
             // node 0 = (jobID, operID) = (0,0)
             // node 1 = (0, 1), etc.
-            nodes.add((jobID * factor) + operID);
+            nodes.add((jobID * 100) + operID);
 
             jobsOper[jobID]++;
           }
-          ants[i] = new Ant(new JspAntBrain(graph, jobs), graph, nodes);
+          ants[i] = new Ant(brain, graph, nodes);
        }
       }
 
@@ -120,21 +111,12 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
 
       @Override
       public JspPhenotype  solutionToPhenotype(Ant ant) throws Exception {
-        int factor = 0;
-        int tmpFactor;
-        for (int i = 0; i < jobs.getJobsCount(); i++) {
-          tmpFactor = jobs.getJobInfos()[i].getOperationInfos().length;
-          if (factor < tmpFactor) {
-            factor = tmpFactor;
-          }
-        }
         Integer[] solution = new Integer[ant.getNodeIDsAlongPath().size()];
           for (int j = 0; j < ant.getNodeIDsAlongPath().size(); j++)
           {
             int nodeID = ant.getNodeIDsAlongPath().get(j);
-            int machineID = nodeID % factor;
-            int jobID = (nodeID - machineID) / factor;
-            solution[j] = jobID + 1;
+            int jobID = nodeID / 100;
+            solution[j] = jobID;
           }
         return new JspPhenotype(solution);
       }

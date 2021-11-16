@@ -55,7 +55,7 @@ import org.seage.problem.jsp.JspProblemProvider;
  * @author Richard Malek
  * Edited by David Omrai
  */
-public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
+public class JspGraphTest implements IAlgorithmListener<AntColonyEvent>
 {
   private int _edges;
   private Random generator = new Random();
@@ -69,11 +69,11 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
       JobsDefinition jobs = null;
 
-      try(InputStream stream = JspAntColonyTest.class.getResourceAsStream(path)) {
+      try(InputStream stream = JspGraphTest.class.getResourceAsStream(path)) {
         jobs = new JobsDefinition(jobInfo, stream);
       }
 
-      new JspAntColonyTest().runAlgorithm(jobs);
+      new JspGraphTest().runAlgorithm(jobs);
       //new JspSimulatedAnnealingTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
@@ -139,7 +139,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
 
-    JspAntColonySolution graph = new JspAntColonySolution(jobs, eval);
+    JspGraph graph = new JspGraph(jobs, eval);
     System.out.println("Loaded ...");
     JspAntBrain brain = new JspAntBrain(graph, jobs);
     AntColony colony = new AntColony(graph);
@@ -152,7 +152,8 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     //brain.setParameters(graph.getNodeList().size(), alpha, beta);
 
     long t1 = System.currentTimeMillis();
-    colony.startExploring(graph.getNodes().get(opersNum), ants);
+    // Start from the 0 starting node
+    colony.startExploring(graph.getNodes().get(0), ants);
     long t2 = System.currentTimeMillis();
     // graph.printPheromone();
     System.out.println("Global best: " + colony.getGlobalBest());

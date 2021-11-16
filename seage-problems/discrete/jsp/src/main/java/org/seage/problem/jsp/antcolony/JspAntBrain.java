@@ -48,7 +48,7 @@ public class JspAntBrain extends AntBrain {
   public JspAntBrain(Graph graph, JobsDefinition jobs) {
     super(graph);
     this.jobsDefinition = jobs;
-    this.jobsOperNums = new int[jobs.getJobsCount()];
+    this.jobsOperNums = new int[jobs.getJobsCount() + 1];
     for (int i = 0; i < this.jobsOperNums.length; i ++)
       this.jobsOperNums[i] = 0;
   }
@@ -80,21 +80,12 @@ public class JspAntBrain extends AntBrain {
     // Clean the previous available nodes
     this.availableNodes = new HashSet<>();
 
-    int factor = 0;
-    int tmpFactor;
-    for (int i = 0; i < this.jobsDefinition.getJobsCount(); i++) {
-      tmpFactor = this.jobsDefinition.getJobInfos()[i].getOperationInfos().length;
-      if (factor < tmpFactor) {
-        factor = tmpFactor;
-      }
-    }
-
     // Create new available nodes
-    for (int jobID = 0; jobID < this.jobsOperNums.length; jobID++){
-      if (this.jobsOperNums[jobID] >= this.jobsDefinition.getJobInfos()[jobID].getOperationInfos().length)
+    for (int jobID = 1; jobID < this.jobsOperNums.length; jobID++){
+      if (this.jobsOperNums[jobID] >= this.jobsDefinition.getJobInfos()[jobID - 1].getOperationInfos().length)
         continue;
         
-      int nodeID = jobID * factor + this.jobsOperNums[jobID];
+      int nodeID = jobID * 100 + (this.jobsOperNums[jobID] + 1);
       if (this.graph.getNodes().containsKey(nodeID))
         this.availableNodes.add(this.graph.getNodes().get(nodeID));
     }
@@ -109,29 +100,11 @@ public class JspAntBrain extends AntBrain {
   }
 
   protected int nodeToJobID(Node node) {
-    int factor = 0;
-    int tmpFactor;
-    for (int i = 0; i < this.jobsDefinition.getJobsCount(); i++) {
-      tmpFactor = this.jobsDefinition.getJobInfos()[i].getOperationInfos().length;
-      if (factor < tmpFactor) {
-        factor = tmpFactor;
-      }
-    }
-
-    return node.getID() / factor;
+    return JspGraph.nodeToJobID(node);
   }
 
   protected int nodeToOperID(Node node) {
-    int factor = 0;
-    int tmpFactor;
-    for (int i = 0; i < this.jobsDefinition.getJobsCount(); i++) {
-      tmpFactor = this.jobsDefinition.getJobInfos()[i].getOperationInfos().length;
-      if (factor < tmpFactor) {
-        factor = tmpFactor;
-      }
-    }
-
-    return node.getID() % factor;
+    return JspGraph.nodeToOperID(node);
   }
 
   //	@Override

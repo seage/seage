@@ -28,48 +28,31 @@
 package org.seage.problem.jsp.antcolony;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.lang.Math;
 
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.problem.jsp.JobsDefinition;
-import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
-import org.seage.problem.jsp.JspProblemProvider;
 
 /**
  *
  * @author Zagy
  * Edited by David Omrai
  */
-public class JspAntColonySolution extends Graph
+public class JspGraph extends Graph
 {
   JspPhenotypeEvaluator evaluator;
 
   private JobsDefinition jobs;
 
-  private int[][] jobsArray;
-
-  public JspAntColonySolution(JobsDefinition jobArary, JspPhenotypeEvaluator evaluator) throws Exception
+  public JspGraph(JobsDefinition jobArary, JspPhenotypeEvaluator evaluator) throws Exception
   {
     super();
     this.evaluator = evaluator;
     this.jobs = jobArary;
-
-
-    int jobsNum = jobs.getJobsCount();
-    int factor = 0;
-    for (int i = 0; i < jobs.getJobInfos().length; i++) {
-      int curFactor = jobs.getJobInfos()[i].getOperationInfos().length;
-      if (curFactor > factor) 
-        factor = curFactor;
-    }
-
-    this.jobsArray = new int[jobsNum * factor + 1][2];
 
     // Add the first starting node
     //   /- 1 - 2 - 3 - ... - job1-oper '|
@@ -78,24 +61,23 @@ public class JspAntColonySolution extends Graph
     //  \-  1 - 2 - 3 - ... - job4-oper  |
     //   \- 1 - 2 - 3 - ... - job5-oper ,|
     int id = 0;
-    for (int idJob = 0; idJob < jobsNum; idJob++) {
-      for (int idOper = 0; idOper < factor; idOper++ ){
+    // Starting node
+    _nodes.put(id, new Node(id));
+
+    for (int idJob = 1; idJob <= jobs.getJobsCount(); idJob++) {
+      for (int idOper = 1; idOper <= jobs.getJobInfos()[idJob-1].getOperationInfos().length; idOper++ ){
+        id = idJob * 100 + idOper;
         _nodes.put(id, new Node(id));
-        // Store informations about node
-        this.jobsArray[id][0] = idJob;
-        this.jobsArray[id][1] = idOper;
-        id += 1;
       }
     }
-    _nodes.put(id, new Node(id));
   }
 
-  public int nodeToJobID(Node node) {
-    return this.jobsArray[node.getID()][0];
+  public static int nodeToJobID(Node node) {
+    return node.getID() / 100;
   }
 
-  public int nodeToOperID(Node node) {
-    return this.jobsArray[node.getID()][1];
+  public static int nodeToOperID(Node node) {
+    return node.getID() % 100;
   }
   
   //	@Override
@@ -119,14 +101,14 @@ public class JspAntColonySolution extends Graph
   public double getNodesDistance(Node start, Node end)
   {
     // If the first node is starting node
-    if (start.getID() == this.jobsArray.length - 1)
+    if (start.getID() == 0)
       return 1;
 
     // ({prev timespan} - {curr timespan}) + 1
 
     // Get info about the start node
-    int jobID = this.jobsArray[start.getID()][0];
-    int operID = this.jobsArray[start.getID()][1];
+    int jobID = nodeToJobID(start);
+    int operID = nodeToOperID(start);
 
 
     ArrayList<Integer> path = new ArrayList<>();
@@ -134,54 +116,26 @@ public class JspAntColonySolution extends Graph
     
 
     // Get the start node operation length and add one, for the step to another node
-    return jobs.getJobInfos()[jobID].getOperationInfos()[operID].Length + 1.0;
+    return jobs.getJobInfos()[jobID-1].getOperationInfos()[operID-1].Length + 1.0;
   }
 
-  // bad logic, cant find correct edge
   public void getNodesPath(List<Integer> path, Node node, Node prevNode) {
-    if (node.getID() == this.jobsArray.length - 1 )
+    if (node.getID() == 0 )
       return;
 
     Iterator<Edge> iter = node.getEdges().iterator();
     Edge first = iter.next();
-    if (node.getEdges().size() == 1){
 
-      if (first.getNode2().getID() != node.getID())
-        return;
-      else
-        getNodesPath(path, first.getNode1(), node);
+    if (first.getNode2().getID() == node.getID()) {
+      getNodesPath(path, first.getNode1(), node);
     }
     else {
-      // if the second edge is the new one
-      // if (first.getNode1().getID() == prevNode.getID() || 
-      //   first.getNode2().getID() == prevNode.getID()) {
-      //     Edge second = iter.next();
-      //     if (second.getNode1().getID() == node.getID())
-      //       getNodesPath(path, second.getNode2(), node);
-      //     else
-      //       getNodesPath(path, second.getNode1(), node);
-      // }
-      // else {
-      //   if (first.getNode1().getID() == node.getID())
-      //     getNodesPath(path, first.getNode2(), node);
-      //   else
-      //     getNodesPath(path, first.getNode1(), node);
-      // }
-      if (first.getNode2().getID() != node.getID()) {
-        Edge second = iter.next();
-        if (second.getNode2().getID() != node.getID())
-          return;
-        else
-          getNodesPath(path, second.getNode1(), node);
-      }
-      else {
-        if (first.getNode2().getID() != node.getID())
-          return;
-        else
-          getNodesPath(path, first.getNode1(), node);
-      }
+      Edge second = iter.next();
+      if (second.getNode2().getID() != node.getID())
+        return;
+      getNodesPath(path, second.getNode1(), node);
     }
     
-    path.add(nodeToJobID(node) + 1);
+    path.add(nodeToJobID(node));
   }
 }

@@ -7,9 +7,8 @@ import org.seage.problem.jsp.JspProblemProvider;
 @Disabled
 public class JspAntColonyFactoryTest extends ProblemProviderTestBase
 {
-    public JspAntColonyFactoryTest()
-    {
-        super(new JspProblemProvider());
-    }
-
+  public JspAntColonyFactoryTest()
+  {
+    super(new JspProblemProvider());
+  }
 }
