@@ -55,7 +55,7 @@ import org.seage.problem.jsp.JspProblemProvider;
  * @author Richard Malek
  * Edited by David Omrai
  */
-public class JspGraphTest implements IAlgorithmListener<AntColonyEvent>
+public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
 {
   private int _edges;
   private Random generator = new Random();
@@ -69,11 +69,11 @@ public class JspGraphTest implements IAlgorithmListener<AntColonyEvent>
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
       JobsDefinition jobs = null;
 
-      try(InputStream stream = JspGraphTest.class.getResourceAsStream(path)) {
+      try(InputStream stream = JspAlgorithmTest.class.getResourceAsStream(path)) {
         jobs = new JobsDefinition(jobInfo, stream);
       }
 
-      new JspGraphTest().runAlgorithm(jobs);
+      new JspAlgorithmTest().runAlgorithm(jobs);
       //new JspSimulatedAnnealingTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)

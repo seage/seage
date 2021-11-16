@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class JspAntColonySolutionTest {
+public class JspGraphTest {
   static JobsDefinition jobs;
 
   @BeforeAll
@@ -53,7 +53,7 @@ public class JspAntColonySolutionTest {
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
       jobs = null;
 
-      try(InputStream stream = JspAntColonySolutionTest.class.getResourceAsStream(path)) {
+      try(InputStream stream = JspGraphTest.class.getResourceAsStream(path)) {
         jobs = new JobsDefinition(jobInfo, stream);
       }
     } catch (Exception e) {
@@ -85,19 +85,17 @@ public class JspAntColonySolutionTest {
 
     JspGraph graph = new JspGraph(jobs, eval);
 
-    int factor = 0;
+    int operSum = 0;
     for (int i = 0; i < jobs.getJobInfos().length; i++){
-      int curOper = jobs.getJobInfos()[i].getOperationInfos().length;
-      if (curOper > factor)
-        factor = curOper;
+      operSum += jobs.getJobInfos()[i].getOperationInfos().length;
     }
 
     // Test node ids
     assertEquals(0, graph.getNodes().get(0).getID());
-    assertEquals(factor * jobs.getJobsCount() + 1, graph.getNodes().size());
+    assertEquals(operSum + 1, graph.getNodes().size());
 
     // Test the node values (jobid * factor + oper id)
-    Node nd = graph.getNodes().get((2 * factor + 1));
+    Node nd = graph.getNodes().get((2 * 100 + 1));
     assertEquals(2, graph.nodeToJobID(nd));
     assertEquals(1, graph.nodeToOperID(nd));
   }
