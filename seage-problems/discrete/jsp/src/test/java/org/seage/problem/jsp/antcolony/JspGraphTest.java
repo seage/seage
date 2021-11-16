@@ -26,6 +26,7 @@
 package org.seage.problem.jsp.antcolony;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.seage.aal.problem.ProblemInfo;
@@ -34,6 +35,7 @@ import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
+import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Node;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -98,5 +100,45 @@ public class JspGraphTest {
     Node nd = graph.getNodes().get((2 * 100 + 1));
     assertEquals(2, graph.nodeToJobID(nd));
     assertEquals(1, graph.nodeToOperID(nd));
+  }
+
+  @Test
+  public void testGetNodesDistance() throws Exception {
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    ProblemInfo pi = problemProvider.getProblemInfo();
+    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
+
+    JspGraph graph = new JspGraph(jobs, eval);
+    
+    HashMap<Integer, Node> hm = graph.getNodes();
+
+    // Test start to first node
+    assertEquals(1.0, graph.getNodesDistance(hm.get(0), hm.get(101)));
+    
+    // Test the longer path
+    Integer[] jobArray1 = new Integer[] {1};
+    Integer[] jobArray2 = new Integer[] {1, 2};
+
+    hm.get(0).addEdge(new Edge(hm.get(101), hm.get(0)));
+    hm.get(101).addEdge(new Edge(hm.get(0), hm.get(101)));
+
+    assertEquals(
+      eval.evaluateSchedule(jobArray2) - eval.evaluateSchedule(jobArray1) + 1, 
+      graph.getNodesDistance(hm.get(101), hm.get(201))
+    );
+    
+    // test the three opers 
+    Integer[] jobArray3 = new Integer[] {1, 2, 3};
+
+    hm.get(101).addEdge(new Edge(hm.get(201), hm.get(101)));
+    hm.get(201).addEdge(new Edge(hm.get(101), hm.get(201)));
+
+    assertEquals(
+      eval.evaluateSchedule(jobArray3) - eval.evaluateSchedule(jobArray2) + 1,
+      graph.getNodesDistance(hm.get(201), hm.get(301))
+    );
+
+    // another test
+    
   }
 }
