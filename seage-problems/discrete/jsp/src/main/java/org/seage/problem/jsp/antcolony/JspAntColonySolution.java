@@ -29,11 +29,13 @@ package org.seage.problem.jsp.antcolony;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.lang.Math;
 
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
+import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
@@ -128,7 +130,7 @@ public class JspAntColonySolution extends Graph
 
 
     ArrayList<Integer> path = new ArrayList<>();
-    getNodesPath(path, start);
+    getNodesPath(path, start, start);
     
 
     // Get the start node operation length and add one, for the step to another node
@@ -136,11 +138,49 @@ public class JspAntColonySolution extends Graph
   }
 
   // bad logic, cant find correct edge
-  public void getNodesPath(List<Integer> path, Node node) {
+  public void getNodesPath(List<Integer> path, Node node, Node prevNode) {
     if (node.getID() == this.jobsArray.length - 1 )
       return;
-    
-    getNodesPath(path, node.getEdges().iterator().next().getNode1());
+
+    Iterator<Edge> iter = node.getEdges().iterator();
+    Edge first = iter.next();
+    if (node.getEdges().size() == 1){
+
+      if (first.getNode2().getID() != node.getID())
+        return;
+      else
+        getNodesPath(path, first.getNode1(), node);
+    }
+    else {
+      // if the second edge is the new one
+      // if (first.getNode1().getID() == prevNode.getID() || 
+      //   first.getNode2().getID() == prevNode.getID()) {
+      //     Edge second = iter.next();
+      //     if (second.getNode1().getID() == node.getID())
+      //       getNodesPath(path, second.getNode2(), node);
+      //     else
+      //       getNodesPath(path, second.getNode1(), node);
+      // }
+      // else {
+      //   if (first.getNode1().getID() == node.getID())
+      //     getNodesPath(path, first.getNode2(), node);
+      //   else
+      //     getNodesPath(path, first.getNode1(), node);
+      // }
+      if (first.getNode2().getID() != node.getID()) {
+        Edge second = iter.next();
+        if (second.getNode2().getID() != node.getID())
+          return;
+        else
+          getNodesPath(path, second.getNode1(), node);
+      }
+      else {
+        if (first.getNode2().getID() != node.getID())
+          return;
+        else
+          getNodesPath(path, first.getNode1(), node);
+      }
+    }
     
     path.add(nodeToJobID(node) + 1);
   }
