@@ -56,7 +56,10 @@ public class JspPhenotypeEvaluator implements IPhenotypeEvaluator<JspPhenotype>
   @Override
   public double[] evaluate(JspPhenotype phenotype) throws Exception
   {
-    return evaluateSchedule(phenotype.getSolution());
+    Schedule schedule = new Schedule(jobsDefinition, phenotype.getSolution());
+    double makeSpan = schedule.getMakeSpan();
+    double score = this.scoreCalculator.calculateInstanceScore(instanceID, makeSpan);
+    return new double[] { makeSpan, score };
   }
       
   @Override
@@ -65,11 +68,9 @@ public class JspPhenotypeEvaluator implements IPhenotypeEvaluator<JspPhenotype>
     return (int)(arg1[0] - arg0[0]);
   }
 
-  public double[] evaluateSchedule(Integer[] jobArray) throws Exception
+  public double evaluateSchedule(Integer[] jobArray) throws Exception
   {
     Schedule schedule = new Schedule(jobsDefinition, jobArray);
-    double makeSpan = schedule.getMakeSpan();
-    double score = this.scoreCalculator.calculateInstanceScore(instanceID, makeSpan);
-    return new double[] { makeSpan, score };
+    return schedule.getMakeSpan();
   }
 }

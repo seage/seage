@@ -26,12 +26,12 @@ public class JspPhenotypeEvaluatorTest
     JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, _jobsDefinition);
     
     Integer[] jobArray = new Integer[] {1,2,3,3,1,2,2,1,3};
-    double[] objVal =  evaluator.evaluateSchedule(jobArray);
-    assertEquals (12, (int)objVal[0]);
+    double objVal =  evaluator.evaluateSchedule(jobArray);
+    assertEquals (12, (int)objVal);
     
     jobArray = new Integer[] {1,2,3,1,2,3,1,2,3};
     objVal =  evaluator.evaluateSchedule(jobArray);
-    assertEquals (12, (int)objVal[0]);
+    assertEquals (12, (int)objVal);
     Schedule schedule = new Schedule(_jobsDefinition, jobArray);
     assertNotNull(schedule);
   }

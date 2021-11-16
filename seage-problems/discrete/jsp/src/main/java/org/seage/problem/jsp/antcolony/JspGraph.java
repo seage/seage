@@ -123,8 +123,8 @@ public class JspGraph extends Graph
     double prevTimespan = 0;
     double nextTimespan = 0;
     try {
-      prevTimespan = this.evaluator.evaluateSchedule(prevPath)[0];
-      nextTimespan = this.evaluator.evaluateSchedule(nextPath)[0];
+      prevTimespan = this.evaluator.evaluateSchedule(prevPath);
+      nextTimespan = this.evaluator.evaluateSchedule(nextPath);
     } catch (Exception e) {
       e.printStackTrace();
     }
