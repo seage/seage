@@ -65,6 +65,11 @@ public class JspAntBrain extends AntBrain {
   //	}
 
   @Override
+  protected Node selectNextNode(List<Node> nodePath) {
+    return super.selectNextNode(nodePath);
+  }
+
+  @Override
   public void reset() {
     availableNodes = null;
     availableNodeList.clear();
@@ -117,50 +122,50 @@ public class JspAntBrain extends AntBrain {
   //		return result;
   //	}
 
-   @Override
-   protected Node selectNextNode(List<Node> nodePath) {
-    Node currentNode = nodePath.get(nodePath.size()-1);
-    HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
-    availableNodeList.clear();
+  //  @Override
+  //  protected Node selectNextNode(List<Node> nodePath) {
+  //   Node currentNode = nodePath.get(nodePath.size()-1);
+  //   HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
+  //   availableNodeList.clear();
 
-    if (nextAvailableNodes == null || nextAvailableNodes.isEmpty()) {
-      return null;
-    }
+  //   if (nextAvailableNodes == null || nextAvailableNodes.isEmpty()) {
+  //     return null;
+  //   }
 
-    double sum = 0;
-    int i = 0;
-    double[] probabilities = new double[nextAvailableNodes.size()];
-    // for each available node calculate probability
-    for (Node n : nextAvailableNodes) {
-      double edgePheromone = 0;
-      double edgePrice = 0;
+  //   double sum = 0;
+  //   int i = 0;
+  //   double[] probabilities = new double[nextAvailableNodes.size()];
+  //   // for each available node calculate probability
+  //   for (Node n : nextAvailableNodes) {
+  //     double edgePheromone = 0;
+  //     double edgePrice = 0;
 
-      Edge e = currentNode.getEdgeMap().get(n);
-      if (e != null) {
-        edgePheromone = e.getLocalPheromone();
-        edgePrice = e.getEdgePrice();
-      } else {
-        edgePheromone = graph.getDefaultPheromone();
-        edgePrice = graph.getNodeDistance(nodePath, n);
-      }
+  //     Edge e = currentNode.getEdgeMap().get(n);
+  //     if (e != null) {
+  //       edgePheromone = e.getLocalPheromone();
+  //       edgePrice = e.getEdgePrice();
+  //     } else {
+  //       edgePheromone = graph.getDefaultPheromone();
+  //       edgePrice = graph.getNodeDistance(nodePath, n);
+  //     }
 
-      double p = pow(edgePheromone, alpha) * pow(1 / edgePrice, beta);
-      probabilities[i] = p;
-      availableNodeList.add(n);
-      sum += p;
-      i++;
-    }
+  //     double p = pow(edgePheromone, alpha) * pow(1 / edgePrice, beta);
+  //     probabilities[i] = p;
+  //     availableNodeList.add(n);
+  //     sum += p;
+  //     i++;
+  //   }
 
-    sum = sum != 0 ? sum : 1;    
-    for (i = 0; i < probabilities.length; i++) {
-      probabilities[i] /= sum;
-    }
+  //   sum = sum != 0 ? sum : 1;    
+  //   for (i = 0; i < probabilities.length; i++) {
+  //     probabilities[i] /= sum;
+  //   }
 
-    Node nextNode = availableNodeList.get(next(probabilities));
-    markSelected(nextNode);
+  //   Node nextNode = availableNodeList.get(next(probabilities));
+  //   markSelected(nextNode);
 
-    return nextNode;
-  }
+  //   return nextNode;
+  // }
 
   //  protected double pathCost(Vector<Edge> path) {
   //    Boolean[] solution = new Boolean[_formula.getLiteralCount()];

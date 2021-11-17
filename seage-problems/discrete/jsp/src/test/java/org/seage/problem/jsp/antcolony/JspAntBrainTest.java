@@ -14,11 +14,13 @@ import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
+import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Node;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -123,6 +125,6 @@ public class JspAntBrainTest {
 
     List<Node> availableNodes = new ArrayList<>();
     availableNodes.add(graph.getNodes().get(0));
-    assertNotEquals(null, brain.selectNextNode(availableNodes));
+    assertNotNull(brain.selectNextNode(availableNodes));
   }
 }
