@@ -43,82 +43,72 @@ public class JspAntBrainTest {
   }
 
   @Test
-  public void testCreatingAntBrain() throws Exception {
-    JspProblemProvider problemProvider = new JspProblemProvider();
-    ProblemInfo pi = problemProvider.getProblemInfo();
-    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
-    JspGraph graph = new JspGraph(jobs, eval);
-
-    assertNotEquals(null, graph);
-  }
-
-  @Test
-  public void testUsingAntBrain() throws Exception {
+  public void testAvailableNodes() throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     JspGraph graph = new JspGraph(jobs, eval);
     JspAntBrain brain = new JspAntBrain(graph, jobs);
 
-    List<Node> visNodes = new ArrayList<>();
-    HashSet<Node> avalNodes = brain.getAvailableNodes(visNodes);
+    List<Node> visitedNodes = new ArrayList<>();
+    HashSet<Node> availableNodes = brain.getAvailableNodes(visitedNodes);
 
     // Test first aval nodes
-    assertEquals(3, avalNodes.size());
-    assertTrue(avalNodes.contains(graph.getNodes().get(101)));
-    assertTrue(avalNodes.contains(graph.getNodes().get(201)));
-    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+    assertEquals(3, availableNodes.size());
+    assertTrue(availableNodes.contains(graph.getNodes().get(101)));
+    assertTrue(availableNodes.contains(graph.getNodes().get(201)));
+    assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
     // Test with one oper on the path
-    visNodes.add(graph.getNodes().get(101));
-    avalNodes = brain.getAvailableNodes(visNodes);
-    assertEquals(3, avalNodes.size());
-    assertTrue(avalNodes.contains(graph.getNodes().get(102)));
-    assertTrue(avalNodes.contains(graph.getNodes().get(201)));
-    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+    visitedNodes.add(graph.getNodes().get(101));
+    availableNodes = brain.getAvailableNodes(visitedNodes);
+    assertEquals(3, availableNodes.size());
+    assertTrue(availableNodes.contains(graph.getNodes().get(102)));
+    assertTrue(availableNodes.contains(graph.getNodes().get(201)));
+    assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
-    visNodes.add(graph.getNodes().get(102));
-    avalNodes = brain.getAvailableNodes(visNodes);
-    assertEquals(3, avalNodes.size());
-    assertTrue(avalNodes.contains(graph.getNodes().get(103)));
-    assertTrue(avalNodes.contains(graph.getNodes().get(201)));
-    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+    visitedNodes.add(graph.getNodes().get(102));
+    availableNodes = brain.getAvailableNodes(visitedNodes);
+    assertEquals(3, availableNodes.size());
+    assertTrue(availableNodes.contains(graph.getNodes().get(103)));
+    assertTrue(availableNodes.contains(graph.getNodes().get(201)));
+    assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
-    visNodes.add(graph.getNodes().get(103));
-    avalNodes = brain.getAvailableNodes(visNodes);
-    assertEquals(2, avalNodes.size());    
-    assertTrue(avalNodes.contains(graph.getNodes().get(201)));
-    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+    visitedNodes.add(graph.getNodes().get(103));
+    availableNodes = brain.getAvailableNodes(visitedNodes);
+    assertEquals(2, availableNodes.size());    
+    assertTrue(availableNodes.contains(graph.getNodes().get(201)));
+    assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
-    visNodes.add(graph.getNodes().get(201));
-    avalNodes = brain.getAvailableNodes(visNodes);
-    assertEquals(2, avalNodes.size());
-    assertTrue(avalNodes.contains(graph.getNodes().get(202)));
-    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+    visitedNodes.add(graph.getNodes().get(201));
+    availableNodes = brain.getAvailableNodes(visitedNodes);
+    assertEquals(2, availableNodes.size());
+    assertTrue(availableNodes.contains(graph.getNodes().get(202)));
+    assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
-    visNodes.add(graph.getNodes().get(202));
-    avalNodes = brain.getAvailableNodes(visNodes);
-    assertEquals(2, avalNodes.size());
-    assertTrue(avalNodes.contains(graph.getNodes().get(203)));
-    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+    visitedNodes.add(graph.getNodes().get(202));
+    availableNodes = brain.getAvailableNodes(visitedNodes);
+    assertEquals(2, availableNodes.size());
+    assertTrue(availableNodes.contains(graph.getNodes().get(203)));
+    assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
-    visNodes.add(graph.getNodes().get(203));
-    avalNodes = brain.getAvailableNodes(visNodes);
-    assertEquals(1, avalNodes.size());
-    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+    visitedNodes.add(graph.getNodes().get(203));
+    availableNodes = brain.getAvailableNodes(visitedNodes);
+    assertEquals(1, availableNodes.size());
+    assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
-    visNodes.add(graph.getNodes().get(301));
-    avalNodes = brain.getAvailableNodes(visNodes);
-    assertEquals(1, avalNodes.size());
-    assertTrue(avalNodes.contains(graph.getNodes().get(302)));
+    visitedNodes.add(graph.getNodes().get(301));
+    availableNodes = brain.getAvailableNodes(visitedNodes);
+    assertEquals(1, availableNodes.size());
+    assertTrue(availableNodes.contains(graph.getNodes().get(302)));
 
-    visNodes.add(graph.getNodes().get(302));
-    avalNodes = brain.getAvailableNodes(visNodes);
-    assertEquals(1, avalNodes.size());
-    assertTrue(avalNodes.contains(graph.getNodes().get(303)));
+    visitedNodes.add(graph.getNodes().get(302));
+    availableNodes = brain.getAvailableNodes(visitedNodes);
+    assertEquals(1, availableNodes.size());
+    assertTrue(availableNodes.contains(graph.getNodes().get(303)));
 
-    visNodes.add(graph.getNodes().get(303));
-    avalNodes = brain.getAvailableNodes(visNodes);
-    assertEquals(0, avalNodes.size());
+    visitedNodes.add(graph.getNodes().get(303));
+    availableNodes = brain.getAvailableNodes(visitedNodes);
+    assertEquals(0, availableNodes.size());
   }
 }
