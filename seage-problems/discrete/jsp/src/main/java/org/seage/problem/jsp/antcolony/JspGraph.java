@@ -101,6 +101,8 @@ public class JspGraph extends Graph
   @Override
   public double getNodeDistance(List<Node> nodePath, Node node)
   {
+    Node start = nodePath.get(0);
+    Node end = nodePath.get(nodePath.size() - 1);
     // If the first node is starting node
     if (start.getID() == 0)
       return 1;

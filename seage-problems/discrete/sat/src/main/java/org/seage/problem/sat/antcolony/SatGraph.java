@@ -22,6 +22,7 @@
  */
 package org.seage.problem.sat.antcolony;
 
+import java.util.List;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.sat.Formula;
@@ -51,7 +52,7 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
   }
 
   @Override
-  public double getNodesDistance(Node n1, Node n2) {
+  public double getNodeDistance(List<Node> nodePath, Node n2) {
     return _formulaEvaluator.evaluate(_formula, n2.getID());
   }
 }

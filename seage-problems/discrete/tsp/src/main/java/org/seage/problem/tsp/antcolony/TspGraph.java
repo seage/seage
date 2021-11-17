@@ -25,6 +25,7 @@
  */
 package org.seage.problem.tsp.antcolony;
 
+import java.util.List;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.tsp.City;
@@ -68,7 +69,8 @@ public class TspGraph extends Graph {
    * @return - Euclide edge length
    */
   @Override
-  public double getNodesDistance(Node start, Node end) {
+  public double getNodeDistance(List<Node> nodePath, Node end) {
+    Node start = nodePath.get(0);
     double dX = (_cities[start.getID() - 1].X - _cities[end.getID() - 1].X);
     double dY = (_cities[start.getID() - 1].Y - _cities[end.getID() - 1].Y);
     return Math.round(Math.sqrt(dX * dX + dY * dY));

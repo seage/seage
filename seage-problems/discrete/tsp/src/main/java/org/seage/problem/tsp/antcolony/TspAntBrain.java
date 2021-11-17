@@ -41,10 +41,10 @@ public class TspAntBrain extends AntBrain {
   }
 
   @Override
-  protected HashSet<Node> getAvailableNodes(List<Integer> nodeIDsAlongPath) {
-    Node startingNode = graph.getNodes().get(nodeIDsAlongPath.get(0));
-    Node currentNode = graph.getNodes().get(nodeIDsAlongPath.get(nodeIDsAlongPath.size()-1));
-    HashSet<Node> result = super.getAvailableNodes(nodeIDsAlongPath);
+  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
+    Node startingNode = nodePath.get(0);
+    Node currentNode = nodePath.get(nodePath.size()-1);
+    HashSet<Node> result = super.getAvailableNodes(nodePath);
     if (currentNode != startingNode && result.size() == 0) {
       result.add(startingNode);
     }
