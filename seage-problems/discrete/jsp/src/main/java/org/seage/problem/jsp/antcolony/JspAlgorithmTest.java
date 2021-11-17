@@ -75,7 +75,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
       }
 
       new JspAlgorithmTest().runAlgorithm(jobs);
-      //new JspSimulatedAnnealingTest().runAlgorithmAdapter(jobs);
+      new JspAlgorithmTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
     {
@@ -118,6 +118,20 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
 
     ProblemInfo pi = problemProvider.getProblemInfo();
+
+    JspAntColonyFactory factory = new JspAntColonyFactory();
+    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
+    try {
+        IAlgorithmAdapter<JspPhenotype, Ant> adapter =  factory.createAlgorithm(jobs, eval);
+        adapter.solutionsFromPhenotype(schedules);
+        adapter.startSearching(params);
+        var solutions = adapter.solutionsToPhenotype();
+        System.out.println(solutions[0].getObjValue());
+        System.out.println(solutions[0].getScore());
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
   }
 
   public void runAlgorithm(JobsDefinition jobs) throws Exception

@@ -81,7 +81,7 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
           // Current id of operation of specific job
           int[] jobsOper = new int[jobs.getJobsCount() + 1];
           for (int jobID = 0; jobID < jobsOper.length; jobID++) {
-            jobsOper[jobID] = 0;
+            jobsOper[jobID] = 1;
           }
 
           ArrayList<Integer> nodes = new ArrayList<Integer>();
