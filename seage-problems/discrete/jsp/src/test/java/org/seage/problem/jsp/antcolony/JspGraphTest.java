@@ -26,7 +26,9 @@
 package org.seage.problem.jsp.antcolony;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.seage.aal.problem.ProblemInfo;
@@ -112,8 +114,11 @@ public class JspGraphTest {
     
     HashMap<Integer, Node> hm = graph.getNodes();
 
+    List<Node> nodesPath = new ArrayList<>();
+    nodesPath.add(hm.get(0));
+
     // Test start to first node
-    assertEquals(1.0, graph.getNodesDistance(hm.get(0), hm.get(101)));
+    assertEquals(1.0, graph.getNodeDistance(nodesPath, hm.get(101)));
     
     // Test the longer path
     Integer[] jobArray1 = new Integer[] {1};
@@ -122,9 +127,11 @@ public class JspGraphTest {
     hm.get(0).addEdge(new Edge(hm.get(101), hm.get(0)));
     hm.get(101).addEdge(new Edge(hm.get(0), hm.get(101)));
 
+    nodesPath.add(hm.get(101));
+
     assertEquals(
       eval.evaluateSchedule(jobArray2) - eval.evaluateSchedule(jobArray1) + 1, 
-      graph.getNodesDistance(hm.get(101), hm.get(201))
+      graph.getNodeDistance(nodesPath, hm.get(201))
     );
     
     // test the three opers 
@@ -133,9 +140,11 @@ public class JspGraphTest {
     hm.get(101).addEdge(new Edge(hm.get(201), hm.get(101)));
     hm.get(201).addEdge(new Edge(hm.get(101), hm.get(201)));
 
+    nodesPath.add(hm.get(201));
+
     assertEquals(
       eval.evaluateSchedule(jobArray3) - eval.evaluateSchedule(jobArray2) + 1,
-      graph.getNodesDistance(hm.get(201), hm.get(301))
+      graph.getNodeDistance(nodesPath, hm.get(301))
     );
 
     // another test
@@ -144,9 +153,11 @@ public class JspGraphTest {
     hm.get(201).addEdge(new Edge(hm.get(301), hm.get(201)));
     hm.get(301).addEdge(new Edge(hm.get(201), hm.get(301)));
 
+    nodesPath.add(hm.get(301));
+
     assertEquals(
       eval.evaluateSchedule(jobArray4) - eval.evaluateSchedule(jobArray3) + 1,
-      graph.getNodesDistance(hm.get(301), hm.get(102))
+      graph.getNodeDistance(nodesPath, hm.get(102))
     );
   }
 }
