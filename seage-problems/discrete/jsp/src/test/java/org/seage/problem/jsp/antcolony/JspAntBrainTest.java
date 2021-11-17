@@ -77,5 +77,48 @@ public class JspAntBrainTest {
     assertTrue(avalNodes.contains(graph.getNodes().get(201)));
     assertTrue(avalNodes.contains(graph.getNodes().get(301)));
 
+    visNodes.add(graph.getNodes().get(102));
+    avalNodes = brain.getAvailableNodes(visNodes);
+    assertEquals(3, avalNodes.size());
+    assertTrue(avalNodes.contains(graph.getNodes().get(103)));
+    assertTrue(avalNodes.contains(graph.getNodes().get(201)));
+    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+
+    visNodes.add(graph.getNodes().get(103));
+    avalNodes = brain.getAvailableNodes(visNodes);
+    assertEquals(2, avalNodes.size());    
+    assertTrue(avalNodes.contains(graph.getNodes().get(201)));
+    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+
+    visNodes.add(graph.getNodes().get(201));
+    avalNodes = brain.getAvailableNodes(visNodes);
+    assertEquals(2, avalNodes.size());
+    assertTrue(avalNodes.contains(graph.getNodes().get(202)));
+    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+
+    visNodes.add(graph.getNodes().get(202));
+    avalNodes = brain.getAvailableNodes(visNodes);
+    assertEquals(2, avalNodes.size());
+    assertTrue(avalNodes.contains(graph.getNodes().get(203)));
+    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+
+    visNodes.add(graph.getNodes().get(203));
+    avalNodes = brain.getAvailableNodes(visNodes);
+    assertEquals(1, avalNodes.size());
+    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+
+    visNodes.add(graph.getNodes().get(301));
+    avalNodes = brain.getAvailableNodes(visNodes);
+    assertEquals(1, avalNodes.size());
+    assertTrue(avalNodes.contains(graph.getNodes().get(302)));
+
+    visNodes.add(graph.getNodes().get(302));
+    avalNodes = brain.getAvailableNodes(visNodes);
+    assertEquals(1, avalNodes.size());
+    assertTrue(avalNodes.contains(graph.getNodes().get(303)));
+
+    visNodes.add(graph.getNodes().get(303));
+    avalNodes = brain.getAvailableNodes(visNodes);
+    assertEquals(0, avalNodes.size());
   }
 }
