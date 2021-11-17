@@ -101,12 +101,12 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
       result.putValue(param.getValueStr("name"), param.getValue("init"));
     }
-    result.putValue("quantumPheromone", 43);
-    result.putValue("localEvaporation", 0.95);
+    result.putValue("quantumPheromone", 100);
+    result.putValue("localEvaporation", 0.99);
     result.putValue("defaultPheromone", 0.491);
     result.putValue("alpha", 1.0);
     result.putValue("beta", 2.3);
-    result.putValue("numAnts", 150);
+    result.putValue("numAnts", 10);
     return result;
   }
 
@@ -118,7 +118,6 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
 
     ProblemInfo pi = problemProvider.getProblemInfo();
   }
-
 
   public void runAlgorithm(JobsDefinition jobs) throws Exception
   {
@@ -173,18 +172,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
 
       System.out.print(tour[i] + " ");
     }
-    tour[tour.length - 1] = colony.getBestPath().get(tour.length - 2).getNode2().getID();
-
     System.out.println();
-    System.out.println(new JspPhenotypeEvaluator(pi, jobs).evaluate(new JspPhenotype(tour))[0]);
-    //		Arrays.sort(tour);
-    //		for (int i = 1; i < tour.length; i++)
-    //			System.out.print(tour[i] + " ");
-    //		System.out.println(); 
-
-    //int best = (int)colony.getGlobalBest();
-    //String path2 = "vizualization/ants-"+instance+"-"+best+"-"+System.currentTimeMillis()+".png";
-    //Visualizer.instance().createGraph(cities, tour, path2, 1000, 800);
   }
 
   @Override
