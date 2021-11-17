@@ -126,24 +126,4 @@ public class JspGraph extends Graph
     // Get the start node operation length and add one, for the step to another node
     return nextTimespan - prevTimespan + 1.0;
   }
-
-  public void getNodesPath(List<Integer> path, Node node, Node prevNode) {
-    if (node.getID() == 0 )
-      return;
-
-    Iterator<Edge> iter = node.getEdges().iterator();
-    Edge first = iter.next();
-
-    if (first.getNode2().getID() == node.getID()) {
-      getNodesPath(path, first.getNode1(), node);
-    }
-    else {
-      Edge second = iter.next();
-      if (second.getNode2().getID() != node.getID())
-        return;
-      getNodesPath(path, second.getNode1(), node);
-    }
-    
-    path.add(nodeToJobID(node));
-  }
 }
