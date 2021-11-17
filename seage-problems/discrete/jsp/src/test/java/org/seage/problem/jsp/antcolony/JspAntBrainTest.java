@@ -111,4 +111,18 @@ public class JspAntBrainTest {
     availableNodes = brain.getAvailableNodes(visitedNodes);
     assertEquals(0, availableNodes.size());
   }
+
+  @Test
+  public void testSelectNextNode() throws Exception {
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    ProblemInfo pi = problemProvider.getProblemInfo();
+    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
+    JspGraph graph = new JspGraph(jobs, eval);
+    JspAntBrain brain = new JspAntBrain(graph, jobs);
+
+
+    List<Node> availableNodes = new ArrayList<>();
+    availableNodes.add(graph.getNodes().get(0));
+    assertNotEquals(null, brain.selectNextNode(availableNodes));
+  }
 }

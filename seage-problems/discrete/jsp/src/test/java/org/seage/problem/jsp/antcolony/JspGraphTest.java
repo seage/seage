@@ -82,7 +82,7 @@ public class JspGraphTest {
   }
 
   @Test
-  public void testGetNodeDistance() throws Exception {
+  public void testNodesIDs() throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
@@ -105,7 +105,7 @@ public class JspGraphTest {
   }
 
   @Test
-  public void testGetNodesDistance() throws Exception {
+  public void testGetNodeDistance() throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
