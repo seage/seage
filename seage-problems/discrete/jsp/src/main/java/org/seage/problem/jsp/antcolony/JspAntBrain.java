@@ -77,17 +77,19 @@ public class JspAntBrain extends AntBrain {
 
   @Override
   protected HashSet<Node> getAvailableNodes(List<Integer> nodeIDsAlongPath) {
-    // Clean the previous available nodes
-    this.availableNodes = new HashSet<>();
-
-    // Create new available nodes
-    for (int jobID = 1; jobID < this.jobsOperNums.length; jobID++){
-      if (this.jobsOperNums[jobID] >= this.jobsDefinition.getJobInfos()[jobID - 1].getOperationInfos().length)
-        continue;
-        
-      int nodeID = jobID * 100 + (this.jobsOperNums[jobID] + 1);
-      if (this.graph.getNodes().containsKey(nodeID))
-        this.availableNodes.add(this.graph.getNodes().get(nodeID));
+    if (this.availableNodes == null) {
+      // Clean the previous available nodes
+      this.availableNodes = new HashSet<>();
+  
+      // Create new available nodes
+      for (int jobID = 1; jobID < this.jobsOperNums.length; jobID++){
+        if (this.jobsOperNums[jobID] >= this.jobsDefinition.getJobInfos()[jobID - 1].getOperationInfos().length)
+          continue;
+          
+        int nodeID = jobID * 100 + (this.jobsOperNums[jobID] + 1);
+        if (this.graph.getNodes().containsKey(nodeID))
+          this.availableNodes.add(this.graph.getNodes().get(nodeID));
+      }
     }
 
     return this.availableNodes;
