@@ -43,14 +43,10 @@ import org.seage.problem.jsp.JobsDefinition;
  */
 public class JspAntBrain extends AntBrain {
   JobsDefinition jobsDefinition;
-  int[] jobsOperNums;
 
   public JspAntBrain(Graph graph, JobsDefinition jobs) {
     super(graph);
     this.jobsDefinition = jobs;
-    this.jobsOperNums = new int[jobs.getJobsCount() + 1];
-    for (int i = 0; i < this.jobsOperNums.length; i ++)
-      this.jobsOperNums[i] = 0;
   }
 
   //	@Override
@@ -71,24 +67,23 @@ public class JspAntBrain extends AntBrain {
     availableNodes = null;
     availableNodeList.clear();
     // Clear used operations
-    for (int i = 0; i < this.jobsOperNums.length; i ++)
-      this.jobsOperNums[i] = 0;
   }
 
   @Override
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
-    if (this.availableNodes == null) {
-      // Clean the previous available nodes
-      this.availableNodes = new HashSet<>();
-  
-      // Create new available nodes
-      for (int jobID = 1; jobID < this.jobsOperNums.length; jobID++){
-        if (this.jobsOperNums[jobID] >= this.jobsDefinition.getJobInfos()[jobID - 1].getOperationInfos().length)
-          continue;
-          
-        int nodeID = jobID * 100 + (this.jobsOperNums[jobID] + 1);
-        if (this.graph.getNodes().containsKey(nodeID))
-          this.availableNodes.add(this.graph.getNodes().get(nodeID));
+    // Clean the previous available nodes
+    this.availableNodes = new HashSet<>();
+
+    //Create new available nodes
+    for (int jobID = 1; jobID < this.jobsDefinition.getJobsCount(); jobID++) {
+      for (int operID = 1; operID < this.jobsDefinition.getJobInfos()[jobID].getOperationInfos().length; operID++) {
+        int nodeID = jobID * 100 + operID;
+        Node nd = this.graph.getNodes().get(nodeID);
+
+        if (!nodePath.contains(nd)) {
+          this.availableNodes.add(nd);
+          break;
+        }
       }
     }
 
@@ -97,7 +92,6 @@ public class JspAntBrain extends AntBrain {
 
   @Override
   protected void markSelected(Node nextNode) {
-    this.jobsOperNums[nodeToJobID(nextNode)] += 1;
     availableNodes.remove(nextNode);
   }
 
