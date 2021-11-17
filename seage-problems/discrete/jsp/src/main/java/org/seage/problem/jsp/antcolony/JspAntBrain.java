@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
-import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Node;
 
 import org.seage.problem.jsp.JobsDefinition;
@@ -75,8 +74,8 @@ public class JspAntBrain extends AntBrain {
     this.availableNodes = new HashSet<>();
 
     //Create new available nodes
-    for (int jobID = 1; jobID < this.jobsDefinition.getJobsCount(); jobID++) {
-      for (int operID = 1; operID < this.jobsDefinition.getJobInfos()[jobID].getOperationInfos().length; operID++) {
+    for (int jobID = 1; jobID <= this.jobsDefinition.getJobsCount(); jobID++) {
+      for (int operID = 1; operID <= this.jobsDefinition.getJobInfos()[jobID-1].getOperationInfos().length; operID++) {
         int nodeID = jobID * 100 + operID;
         Node nd = this.graph.getNodes().get(nodeID);
 
