@@ -69,8 +69,9 @@ public class AntBrain {
    * @param visited - Visited nodes
    * @return - Selected edge
    */
-  protected Node selectNextNode(Node firstNode, Node currentNode) {
-    HashSet<Node> nextAvailableNodes = getAvailableNodes(firstNode, currentNode);
+  protected Node selectNextNode(List<Integer> nodeIDsAlongPath) {
+    Node currentNode = graph.getNodes().get(nodeIDsAlongPath.get(nodeIDsAlongPath.size()-1));
+    HashSet<Node> nextAvailableNodes = getAvailableNodes(nodeIDsAlongPath);
     availableNodeList.clear();
 
     if (nextAvailableNodes == null || nextAvailableNodes.isEmpty()) {
@@ -112,8 +113,9 @@ public class AntBrain {
     return nextNode;
   }
 
-  protected HashSet<Node> getAvailableNodes(Node firstNode, Node currentNode) {
+  protected HashSet<Node> getAvailableNodes(List<Integer> nodeIDsAlongPath) {
     if (availableNodes == null) {
+      Node firstNode = graph.getNodes().get(nodeIDsAlongPath.get(0));
       availableNodes = new HashSet<>(graph.getNodes().values());
       availableNodes.remove(firstNode);
     }

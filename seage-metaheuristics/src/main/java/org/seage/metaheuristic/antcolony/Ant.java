@@ -94,7 +94,7 @@ public class Ant {
     _nodeIDsAlongPath.add(startingNode.getID());
 
     Node currentNode = startingNode;
-    Node nextNode = _brain.selectNextNode(startingNode, currentNode);
+    Node nextNode = _brain.selectNextNode(_nodeIDsAlongPath);
 
     while (nextNode != null) {
       Edge nextEdge = currentNode.getEdgeMap().get(nextNode);
@@ -110,7 +110,7 @@ public class Ant {
       _nodeIDsAlongPath.add(nextNode.getID());
 
       currentNode = nextNode;
-      nextNode = _brain.selectNextNode(startingNode, currentNode);
+      nextNode = _brain.selectNextNode(_nodeIDsAlongPath);
     }
     _distanceTravelled = _brain.getPathCost(_edgePath);
     leavePheromone();

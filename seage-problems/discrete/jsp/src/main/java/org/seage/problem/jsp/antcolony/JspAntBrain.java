@@ -28,7 +28,7 @@
 package org.seage.problem.jsp.antcolony;
 
 import java.util.HashSet;
-
+import java.util.List;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Edge;
@@ -76,7 +76,7 @@ public class JspAntBrain extends AntBrain {
   }
 
   @Override
-  protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode) {
+  protected HashSet<Node> getAvailableNodes(List<Integer> nodeIDsAlongPath) {
     // Clean the previous available nodes
     this.availableNodes = new HashSet<>();
 
