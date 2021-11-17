@@ -101,22 +101,14 @@ public class JspGraph extends Graph
   @Override
   public double getNodeDistance(List<Node> nodePath, Node node)
   {
-    Node start = nodePath.get(0);
     Node end = nodePath.get(nodePath.size() - 1);
     // If the first node is starting node
-    if (start.getID() == 0)
+    if (end.getID() == 0)
       return 1;
 
-    // ({prev timespan} - {curr timespan}) + 1
-
-    // Get info about the start node
-    int jobID = nodeToJobID(start);
-    int operID = nodeToOperID(start);
-
-
     ArrayList<Integer> path = new ArrayList<>();
-    getNodesPath(path, start, start);
-
+    for (Node n : nodePath) 
+      path.add(n.getID());
    
     Integer[] prevPath = path.toArray(new Integer[0]);
     path.add(nodeToJobID(end));
