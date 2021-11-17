@@ -28,13 +28,10 @@
 package org.seage.problem.jsp.antcolony;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
-import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 

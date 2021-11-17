@@ -46,12 +46,13 @@ public class Ant {
   public Ant(AntBrain antBrain, Graph graph, List<Integer> nodeIDs) {
     _brain = antBrain;
     _graph = graph;   
-    _nodePath = new ArrayList<Node>();
-    _edgePath = new ArrayList<Edge>();
+    _nodePath = new ArrayList<>();
+    _edgePath = new ArrayList<>();
 
-    for (int i = 0; i < nodeIDs.size() ; i++) {
-      _nodePath.add(_graph.getNodes().get(nodeIDs.get(i)));
-    }
+    if (nodeIDs != null)
+      for (int i = 0; i < nodeIDs.size() ; i++)
+        _nodePath.add(_graph.getNodes().get(nodeIDs.get(i)));
+    
   }
 
   void setParameters(double alpha, double beta, double quantumPheromone) {
