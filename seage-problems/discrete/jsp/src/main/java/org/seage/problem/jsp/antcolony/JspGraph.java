@@ -104,11 +104,11 @@ public class JspGraph extends Graph
       return 1;
 
     ArrayList<Integer> path = new ArrayList<>();
-    for (Node n : nodePath) 
-      path.add(n.getID());
+    for (Node n : nodePath.subList(1, nodePath.size())) 
+      path.add(nodeToJobID(n));
    
     Integer[] prevPath = path.toArray(new Integer[0]);
-    path.add(nodeToJobID(end));
+    path.add(nodeToJobID(node));
     Integer[] nextPath = path.toArray(new Integer[0]);
 
     double prevTimespan = 0;
