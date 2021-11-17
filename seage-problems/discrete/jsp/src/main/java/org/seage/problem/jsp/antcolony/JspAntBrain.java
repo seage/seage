@@ -42,9 +42,11 @@ import org.seage.problem.jsp.JobsDefinition;
  */
 public class JspAntBrain extends AntBrain {
   JobsDefinition jobsDefinition;
+  JspGraph jspGraph;
 
-  public JspAntBrain(Graph graph, JobsDefinition jobs) {
+  public JspAntBrain(JspGraph graph, JobsDefinition jobs) {
     super(graph);
+    this.jspGraph = graph;
     this.jobsDefinition = jobs;
   }
 
@@ -76,7 +78,7 @@ public class JspAntBrain extends AntBrain {
     //Create new available nodes
     for (int jobID = 1; jobID <= this.jobsDefinition.getJobsCount(); jobID++) {
       for (int operID = 1; operID <= this.jobsDefinition.getJobInfos()[jobID-1].getOperationInfos().length; operID++) {
-        int nodeID = jobID * 100 + operID;
+        int nodeID = jobID * jspGraph.getFactor() + operID;
         Node nd = this.graph.getNodes().get(nodeID);
 
         if (!nodePath.contains(nd)) {
@@ -95,11 +97,11 @@ public class JspAntBrain extends AntBrain {
   }
 
   protected int nodeToJobID(Node node) {
-    return JspGraph.nodeToJobID(node);
+    return this.jspGraph.nodeToJobID(node);
   }
 
   protected int nodeToOperID(Node node) {
-    return JspGraph.nodeToOperID(node);
+    return this.jspGraph.nodeToOperID(node);
   }
 
   //	@Override

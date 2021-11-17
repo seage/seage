@@ -44,6 +44,8 @@ public class JspGraph extends Graph
 {
   JspPhenotypeEvaluator evaluator;
 
+  private int factor;
+
   private JobsDefinition jobs;
 
   public JspGraph(JobsDefinition jobArary, JspPhenotypeEvaluator evaluator) throws Exception
@@ -51,6 +53,11 @@ public class JspGraph extends Graph
     super();
     this.evaluator = evaluator;
     this.jobs = jobArary;
+    int allOperCount = 0;
+    for (int i = 0; i < this.jobs.getJobsCount(); i++)
+      allOperCount += this.jobs.getJobInfos()[i].getOperationInfos().length;
+
+    this.factor = (int) Math.pow(10, Math.ceil(Math.log10(allOperCount)));
 
     // Add the first starting node
     //   /- 1 - 2 - 3 - ... - job1-oper '|
@@ -64,18 +71,22 @@ public class JspGraph extends Graph
 
     for (int idJob = 1; idJob <= jobs.getJobsCount(); idJob++) {
       for (int idOper = 1; idOper <= jobs.getJobInfos()[idJob-1].getOperationInfos().length; idOper++ ){
-        id = idJob * 100 + idOper;
+        id = idJob * getFactor() + idOper;
         _nodes.put(id, new Node(id));
       }
     }
   }
 
-  public static int nodeToJobID(Node node) {
-    return node.getID() / 100;
+  public int nodeToJobID(Node node) {
+    return node.getID() / getFactor();
   }
 
-  public static int nodeToOperID(Node node) {
-    return node.getID() % 100;
+  public int nodeToOperID(Node node) {
+    return node.getID() % getFactor();
+  }
+
+  public int getFactor() {
+    return this.factor;
   }
   
   //	@Override

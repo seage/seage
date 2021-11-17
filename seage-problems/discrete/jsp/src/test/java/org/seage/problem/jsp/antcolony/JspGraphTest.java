@@ -99,7 +99,7 @@ public class JspGraphTest {
     assertEquals(operSum + 1, graph.getNodes().size());
 
     // Test the node values (jobid * factor + oper id)
-    Node nd = graph.getNodes().get((2 * 100 + 1));
+    Node nd = graph.getNodes().get((2 * graph.getFactor() + 1));
     assertEquals(2, graph.nodeToJobID(nd));
     assertEquals(1, graph.nodeToOperID(nd));
   }
