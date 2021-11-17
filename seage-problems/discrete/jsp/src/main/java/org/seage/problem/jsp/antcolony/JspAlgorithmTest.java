@@ -146,7 +146,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
     // double alpha = 1, beta = 3;
     int numAnts = 100;
-    double defaultPheromone = 0.491, localEvaporation = 0.99, quantumPheromone = 100;
+    double defaultPheromone = 0.01, localEvaporation = 0.96, quantumPheromone = 100;
     double alpha = 1.0, beta = 2.3;
 
     JspProblemProvider problemProvider = new JspProblemProvider();
