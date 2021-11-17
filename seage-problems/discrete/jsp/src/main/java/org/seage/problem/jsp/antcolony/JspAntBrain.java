@@ -76,7 +76,7 @@ public class JspAntBrain extends AntBrain {
   }
 
   @Override
-  protected HashSet<Node> getAvailableNodes(List<Integer> nodeIDsAlongPath) {
+  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
     if (this.availableNodes == null) {
       // Clean the previous available nodes
       this.availableNodes = new HashSet<>();

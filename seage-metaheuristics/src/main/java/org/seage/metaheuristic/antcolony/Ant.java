@@ -39,15 +39,19 @@ public class Ant {
   protected Graph _graph;
   protected double _distanceTravelled;
   protected List<Edge> _edgePath;
-  protected List<Integer> _nodeIDsAlongPath;
+  protected List<Node> _nodePath;
 
   protected AntBrain _brain;
 
   public Ant(AntBrain antBrain, Graph graph, List<Integer> nodeIDs) {
     _brain = antBrain;
     _graph = graph;   
-    _nodeIDsAlongPath = nodeIDs == null ? new ArrayList<Integer>() : new ArrayList<Integer>(nodeIDs);
+    _nodePath = new ArrayList<Node>();
     _edgePath = new ArrayList<Edge>();
+
+    for (int i = 0; i < nodeIDs.size() ; i++) {
+      _nodePath.add(_graph.getNodes().get(nodeIDs.get(i)));
+    }
   }
 
   void setParameters(double alpha, double beta, double quantumPheromone) {
@@ -65,9 +69,9 @@ public class Ant {
     _edgePath = new ArrayList<Edge>();
     _distanceTravelled = 0;
 
-    for (int i = 0; i < _nodeIDsAlongPath.size() - 1; i++) {
-      Node n1 = _graph.getNodes().get(_nodeIDsAlongPath.get(i));
-      Node n2 = _graph.getNodes().get(_nodeIDsAlongPath.get(i + 1));
+    for (int i = 0; i < _nodePath.size() - 1; i++) {
+      Node n1 = _nodePath.get(i);
+      Node n2 = _nodePath.get(i + 1);
       Edge e = n1.getEdgeMap().get(n2);
       if (e == null)
         e = _graph.createEdge(n1, n2);
@@ -86,15 +90,15 @@ public class Ant {
    * @throws Exception
    */
   protected List<Edge> explore(Node startingNode) throws Exception {
-    _nodeIDsAlongPath.clear();
+    _nodePath.clear();
     _edgePath.clear();
     _distanceTravelled = 0;
     _brain.reset();
 
-    _nodeIDsAlongPath.add(startingNode.getID());
+    _nodePath.add(startingNode);
 
     Node currentNode = startingNode;
-    Node nextNode = _brain.selectNextNode(_nodeIDsAlongPath);
+    Node nextNode = _brain.selectNextNode(_nodePath);
 
     while (nextNode != null) {
       Edge nextEdge = currentNode.getEdgeMap().get(nextNode);
@@ -107,10 +111,10 @@ public class Ant {
       }
 
       _edgePath.add(nextEdge);
-      _nodeIDsAlongPath.add(nextNode.getID());
+      _nodePath.add(nextNode);
 
       currentNode = nextNode;
-      nextNode = _brain.selectNextNode(_nodeIDsAlongPath);
+      nextNode = _brain.selectNextNode(_nodePath);
     }
     _distanceTravelled = _brain.getPathCost(_edgePath);
     leavePheromone();
@@ -131,7 +135,7 @@ public class Ant {
   }
 
   public List<Integer> getNodeIDsAlongPath() {
-    return _nodeIDsAlongPath;
+    return _nodePath;
   }
 
   public double getDistanceTravelled() {

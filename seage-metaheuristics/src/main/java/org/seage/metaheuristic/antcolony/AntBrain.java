@@ -69,9 +69,9 @@ public class AntBrain {
    * @param visited - Visited nodes
    * @return - Selected edge
    */
-  protected Node selectNextNode(List<Integer> nodeIDsAlongPath) {
-    Node currentNode = graph.getNodes().get(nodeIDsAlongPath.get(nodeIDsAlongPath.size()-1));
-    HashSet<Node> nextAvailableNodes = getAvailableNodes(nodeIDsAlongPath);
+  protected Node selectNextNode(List<Node> nodePath) {
+    Node currentNode = nodePath.get(nodePath.size()-1);
+    HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
     availableNodeList.clear();
 
     if (nextAvailableNodes == null || nextAvailableNodes.isEmpty()) {
@@ -92,7 +92,7 @@ public class AntBrain {
         edgePrice = e.getEdgePrice();
       } else {
         edgePheromone = graph.getDefaultPheromone();
-        edgePrice = graph.getNodesDistance(currentNode, n);
+        edgePrice = graph.getNodeDistance(nodePath, n);
       }
 
       double p = pow(edgePheromone, alpha) * pow(1 / edgePrice, beta);
@@ -113,9 +113,9 @@ public class AntBrain {
     return nextNode;
   }
 
-  protected HashSet<Node> getAvailableNodes(List<Integer> nodeIDsAlongPath) {
+  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
     if (availableNodes == null) {
-      Node firstNode = graph.getNodes().get(nodeIDsAlongPath.get(0));
+      Node firstNode = nodePath.get(0);
       availableNodes = new HashSet<>(graph.getNodes().values());
       availableNodes.remove(firstNode);
     }

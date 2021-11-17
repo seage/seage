@@ -99,7 +99,7 @@ public class JspGraph extends Graph
    * @return - time for ant to get from start to end
    */
   @Override
-  public double getNodesDistance(Node start, Node end)
+  public double getNodeDistance(List<Node> nodePath, Node node)
   {
     // If the first node is starting node
     if (start.getID() == 0)

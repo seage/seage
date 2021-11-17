@@ -29,6 +29,7 @@ package org.seage.metaheuristic.antcolony;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -46,7 +47,7 @@ public abstract class Graph {
     _edges = new ArrayList<Edge>();
   }
 
-  public abstract double getNodesDistance(Node n1, Node n2);
+  public abstract double getNodesDistance(List<Node> nodePath, Node node);
 
   /**
    * List of nodes of graph
