@@ -21,6 +21,7 @@ import org.seage.metaheuristic.antcolony.Node;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -123,8 +124,30 @@ public class JspAntBrainTest {
     JspAntBrain brain = new JspAntBrain(graph, jobs);
 
 
-    List<Node> availableNodes = new ArrayList<>();
-    availableNodes.add(graph.getNodes().get(0));
-    assertNotNull(brain.selectNextNode(availableNodes));
+    List<Node> nodePath = new ArrayList<>();
+    nodePath.add(graph.getNodes().get(0));
+    assertNotNull(brain.selectNextNode(nodePath));
+
+    nodePath.add(graph.getNodes().get(101));
+    nodePath.add(graph.getNodes().get(102));
+    nodePath.add(graph.getNodes().get(103));
+
+    nodePath.add(graph.getNodes().get(201));
+    nodePath.add(graph.getNodes().get(202));
+    nodePath.add(graph.getNodes().get(203));
+
+    assertEquals(graph.getNodes().get(301), brain.selectNextNode(nodePath));
+
+    nodePath.add(graph.getNodes().get(301));
+
+    assertEquals(graph.getNodes().get(302), brain.selectNextNode(nodePath));
+
+    nodePath.add(graph.getNodes().get(302));
+
+    assertEquals(graph.getNodes().get(303), brain.selectNextNode(nodePath));
+
+    nodePath.add(graph.getNodes().get(303));
+
+    assertNull(brain.selectNextNode(nodePath));
   }
 }
