@@ -57,7 +57,7 @@ public class JspGraph extends Graph
     for (int i = 0; i < this.jobs.getJobsCount(); i++)
       allOperCount += this.jobs.getJobInfos()[i].getOperationInfos().length;
 
-    this.factor = (int) Math.pow(10, Math.ceil(Math.log10(allOperCount)));
+    this.factor = (int) Math.pow(10, Math.ceil(Math.log10(allOperCount))+1);
 
     // Add the first starting node
     //   /- 1 - 2 - 3 - ... - job1-oper '|
