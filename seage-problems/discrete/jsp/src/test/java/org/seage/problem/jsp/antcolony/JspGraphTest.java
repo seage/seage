@@ -118,46 +118,46 @@ public class JspGraphTest {
     nodesPath.add(hm.get(0));
 
     // Test start to first node
-    assertEquals(1.0, graph.getNodeDistance(nodesPath, hm.get(101)));
+    assertEquals(1.0, graph.getNodeDistance(nodesPath, hm.get(11)));
     
     // Test the longer path
     Integer[] jobArray1 = new Integer[] {1};
     Integer[] jobArray2 = new Integer[] {1, 2};
 
-    hm.get(0).addEdge(new Edge(hm.get(101), hm.get(0)));
-    hm.get(101).addEdge(new Edge(hm.get(0), hm.get(101)));
+    hm.get(0).addEdge(new Edge(hm.get(11), hm.get(0)));
+    hm.get(11).addEdge(new Edge(hm.get(0), hm.get(11)));
 
-    nodesPath.add(hm.get(101));
+    nodesPath.add(hm.get(11));
 
     assertEquals(
       eval.evaluateSchedule(jobArray2) - eval.evaluateSchedule(jobArray1) + 1, 
-      graph.getNodeDistance(nodesPath, hm.get(201))
+      graph.getNodeDistance(nodesPath, hm.get(21))
     );
     
     // test the three opers 
     Integer[] jobArray3 = new Integer[] {1, 2, 3};
 
-    hm.get(101).addEdge(new Edge(hm.get(201), hm.get(101)));
-    hm.get(201).addEdge(new Edge(hm.get(101), hm.get(201)));
+    hm.get(11).addEdge(new Edge(hm.get(21), hm.get(11)));
+    hm.get(21).addEdge(new Edge(hm.get(11), hm.get(21)));
 
-    nodesPath.add(hm.get(201));
+    nodesPath.add(hm.get(21));
 
     assertEquals(
       eval.evaluateSchedule(jobArray3) - eval.evaluateSchedule(jobArray2) + 1,
-      graph.getNodeDistance(nodesPath, hm.get(301))
+      graph.getNodeDistance(nodesPath, hm.get(31))
     );
 
     // another test
     Integer[] jobArray4 = new Integer[] {1, 2, 3, 1};
 
-    hm.get(201).addEdge(new Edge(hm.get(301), hm.get(201)));
-    hm.get(301).addEdge(new Edge(hm.get(201), hm.get(301)));
+    hm.get(21).addEdge(new Edge(hm.get(31), hm.get(21)));
+    hm.get(31).addEdge(new Edge(hm.get(21), hm.get(31)));
 
-    nodesPath.add(hm.get(301));
+    nodesPath.add(hm.get(31));
 
     assertEquals(
       eval.evaluateSchedule(jobArray4) - eval.evaluateSchedule(jobArray3) + 1,
-      graph.getNodeDistance(nodesPath, hm.get(102))
+      graph.getNodeDistance(nodesPath, hm.get(12))
     );
   }
 }
