@@ -28,6 +28,7 @@
 package org.seage.problem.jsp.antcolony;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Random;
 
 import org.seage.data.DataNode;
@@ -126,12 +127,12 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
       opersNum += jobs.getJobInfos()[i].getOperationInfos().length;
 
     _edges = opersNum * (opersNum - 1) / 2;
-    int iterations = 10000;
+    int iterations = 1000;
     // int numAnts = 500;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
     // double alpha = 1, beta = 3;
-    int numAnts = 150;
-    double defaultPheromone = 0.491, localEvaporation = 0.95, quantumPheromone = 43;
+    int numAnts = 100;
+    double defaultPheromone = 0.491, localEvaporation = 0.99, quantumPheromone = 100;
     double alpha = 1.0, beta = 2.3;
 
     JspProblemProvider problemProvider = new JspProblemProvider();
@@ -159,20 +160,26 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     System.out.println("Edges: " + colony.getBestPath().size());
     System.out.println("Nodes: " + graph.getNodes().size());
     System.out.println("Time [ms]: " + (t2 - t1));
-    // visualization
-    Integer[] tour = new Integer[colony.getBestPath().size() + 1];
-    tour[0] = colony.getBestPath().get(0).getNode1().getID();
-    for (int i = 1; i < tour.length - 1; i++)
-    {
-      tour[i] = colony.getBestPath().get(i).getNode1().getID();
-      if (i > 0 && tour[i - 1] == tour[i])
-      {
-        tour[i] = colony.getBestPath().get(i).getNode2().getID();
-      }
 
-      System.out.print(tour[i] + " ");
+    // visualization
+    Integer[] jobArray = new Integer[colony.getBestPath().size()];
+    jobArray[0] = colony.getBestPath().get(0).getNode2().getID();
+    int prev = jobArray[0];
+    for (int i = 1; i < jobArray.length; i++)
+    {
+      jobArray[i] = colony.getBestPath().get(i).getNode2().getID();
+      if (prev == jobArray[i])
+      {
+        jobArray[i] = colony.getBestPath().get(i).getNode1().getID();
+      }
+      prev = jobArray[i];      
+    }
+    for (int i = 0; i < jobArray.length; i++) {
+      System.out.print(jobArray[i] + " ");
+      jobArray[i] = jobArray[i] / graph.getFactor();
     }
     System.out.println();
+    System.out.println("Best: " + eval.evaluateSchedule(jobArray));
   }
 
   @Override
