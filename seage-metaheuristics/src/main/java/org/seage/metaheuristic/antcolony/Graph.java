@@ -47,7 +47,7 @@ public abstract class Graph {
     _edges = new ArrayList<Edge>();
   }
 
-  public abstract double getNodesDistance(List<Node> nodePath, Node node);
+  public abstract double getNodeDistance(List<Node> nodePath, Node node);
 
   /**
    * List of nodes of graph
@@ -91,7 +91,7 @@ public abstract class Graph {
   public Edge createEdge(Node n1, Node n2) throws Exception {
     Edge newEdge = new Edge(n1, n2);
     newEdge.addLocalPheromone(_defaultPheromone);
-    newEdge.setEdgePrice(getNodesDistance(n1, n2));
+    newEdge.setEdgePrice(getNodeDistance(n1, n2));
     _edges.add(newEdge);
 
     return newEdge;
