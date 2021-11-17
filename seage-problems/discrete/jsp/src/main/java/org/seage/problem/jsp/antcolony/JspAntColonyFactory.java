@@ -79,23 +79,26 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
         for (int i = 0; i < ants.length; i++)
         {
           // Current id of operation of specific job
-          int[] jobsOper = new int[jobs.getJobsCount() + 1];
+          int[] jobsOper = new int[jobs.getJobsCount()];
           for (int jobID = 0; jobID < jobsOper.length; jobID++) {
-            jobsOper[jobID] = 1;
+            jobsOper[jobID] = 0;
           }
 
           ArrayList<Integer> nodes = new ArrayList<Integer>();
           for (int j = 0; j < source[i].getSolution().length; j++) {
             // Id of job and machine, from value 0
             int jobID = source[i].getSolution()[j];
-            int operID = jobsOper[jobID];
+            int operID = jobsOper[jobID-1] + 1;
             // Add correct node id
             // node 0 = (jobID, operID) = (0,0)
             // node 1 = (0, 1), etc.
             nodes.add((jobID * jspGraph.getFactor()) + operID);
 
-            jobsOper[jobID]++;
+            jobsOper[jobID - 1]++;
           }
+          // it maybe help
+          // nodes.add(nodes.get(0));
+
           ants[i] = new Ant(brain, graph, nodes);
        }
       }
@@ -104,21 +107,26 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
       public JspPhenotype[] solutionsToPhenotype() throws Exception
       {
         JspPhenotype[] result = new JspPhenotype [ants.length];
-        for (int i = 0; i < ants.length; i++)
+        for (int i = 0; i < ants.length; i++) {
           result[i] = solutionToPhenotype(ants[i]);
+        }
         return result;
       }
 
       @Override
       public JspPhenotype  solutionToPhenotype(Ant ant) throws Exception {
         Integer[] solution = new Integer[ant.getNodeIDsAlongPath().size()];
-          for (int j = 0; j < ant.getNodeIDsAlongPath().size(); j++)
-          {
-            int nodeID = ant.getNodeIDsAlongPath().get(j);
-            int jobID = nodeID / jspGraph.getFactor();
-            solution[j] = jobID;
-          }
-        return new JspPhenotype(solution);
+        for (int j = 0; j < ant.getNodeIDsAlongPath().size(); j++)
+        {
+          int nodeID = ant.getNodeIDsAlongPath().get(j);
+          int jobID = nodeID / jspGraph.getFactor();
+          solution[j] = jobID;
+        }
+        JspPhenotype result = new JspPhenotype(solution);
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
       }
     };
   }

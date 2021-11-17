@@ -11,5 +11,4 @@ public class JspAntColonyAdapterTest extends ProblemAlgorithmAdapterTestBase<Jsp
   public JspAntColonyAdapterTest() {
     super(new JspProblemProvider(), "AntColony");
   }
-
 }
