@@ -63,6 +63,19 @@ public class JspAntBrainTest {
     List<Node> visNodes = new ArrayList<>();
     HashSet<Node> avalNodes = brain.getAvailableNodes(visNodes);
 
+    // Test first aval nodes
     assertEquals(3, avalNodes.size());
+    assertTrue(avalNodes.contains(graph.getNodes().get(101)));
+    assertTrue(avalNodes.contains(graph.getNodes().get(201)));
+    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+
+    // Test with one oper on the path
+    visNodes.add(graph.getNodes().get(101));
+    avalNodes = brain.getAvailableNodes(visNodes);
+    assertEquals(3, avalNodes.size());
+    assertTrue(avalNodes.contains(graph.getNodes().get(102)));
+    assertTrue(avalNodes.contains(graph.getNodes().get(201)));
+    assertTrue(avalNodes.contains(graph.getNodes().get(301)));
+
   }
 }
