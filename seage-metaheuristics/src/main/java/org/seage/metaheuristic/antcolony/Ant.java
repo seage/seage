@@ -135,7 +135,10 @@ public class Ant {
   }
 
   public List<Integer> getNodeIDsAlongPath() {
-    return _nodePath;
+    List<Integer> idsPath = new ArrayList<>();
+    for (Node n : _nodePath)
+      idsPath.add(n.getID());
+    return idsPath;
   }
 
   public double getDistanceTravelled() {
