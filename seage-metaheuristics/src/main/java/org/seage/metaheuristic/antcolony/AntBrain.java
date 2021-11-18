@@ -68,7 +68,7 @@ public class AntBrain {
     availableNodeList.clear();
 
     if (nextAvailableNodes == null || nextAvailableNodes.isEmpty()) {
-      return null;
+      return new Edge(null, null);
     }
 
     double sum = 0;
