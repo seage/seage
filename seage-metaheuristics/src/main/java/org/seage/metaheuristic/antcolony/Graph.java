@@ -85,7 +85,7 @@ public abstract class Graph {
     _evaporCoeff = evaporCoeff;
   }
 
-  public void addEdge(Edge newEdge) throws Exception {
+  public void addEdge(Edge newEdge) {
     _edges.add(newEdge);
   }
 }

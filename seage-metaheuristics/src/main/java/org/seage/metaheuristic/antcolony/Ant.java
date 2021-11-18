@@ -96,29 +96,22 @@ public class Ant {
     _nodePath.clear();
     _edgePath.clear();
     _distanceTravelled = 0;
-    
+
     _nodePath.add(startingNode);
 
     Node currentNode = startingNode;
-    Node nextNode = _brain.selectNextStep(_nodePath).getNode2();
+    Edge nextEdge = _brain.selectNextStep(_nodePath);
 
-    while (nextNode != null) {
-      Edge nextEdge = currentNode.getEdgeMap().get(nextNode);
-      if (nextEdge == null) {
-        nextEdge = nextNode.getEdgeMap().get(currentNode);
-        if (nextEdge == null) {
-          nextEdge = _brain.createEdge(currentNode, nextNode);
-          _graph.addEdge(nextEdge);
-        }
-        else
-          nextNode.getEdgeMap().put(currentNode, nextEdge);
+    while (nextEdge != null) {      
+      Node nextNode = nextEdge.getNode1();
+      if(nextNode.getID() == currentNode.getID()) {
+        nextNode = nextEdge.getNode2();
       }
-
       _edgePath.add(nextEdge);
       _nodePath.add(nextNode);
-
       currentNode = nextNode;
-      nextNode = _brain.selectNextStep(_nodePath).getNode2();
+
+      nextEdge = _brain.selectNextStep(_nodePath);
     }
     _distanceTravelled = _brain.getPathCost(_edgePath);
     leavePheromone();
@@ -127,10 +120,14 @@ public class Ant {
 
   /**
    * Pheromone leaving
+   * @throws Exception
    */
   protected void leavePheromone() {
     for (Edge edge : _edgePath) {
       edge.addLocalPheromone(_brain.getQuantumPheromone() / (_distanceTravelled));
+      if(!_graph._edges.contains(edge)) {
+        _graph.addEdge(edge);
+      }
     }
   }
 
