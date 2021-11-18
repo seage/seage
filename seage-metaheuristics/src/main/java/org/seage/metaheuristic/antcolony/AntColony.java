@@ -46,7 +46,6 @@ public class AntColony {
   private double _roundBest;
   private double _globalBest;
   private List<Edge> _bestPath;
-  private List<List<Edge>> _antReports;
   private Graph _graph;
   private Ant[] _ants;
   private Ant bestAnt;
@@ -63,7 +62,6 @@ public class AntColony {
     _eventProducer = new AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent>, AntColonyEvent>(
         new AntColonyEvent(this));
     _graph = graph;
-    _antReports = new ArrayList<List<Edge>>();
     _roundBest = Double.MAX_VALUE;
     _globalBest = Double.MAX_VALUE;
     _started = false;
@@ -101,40 +99,18 @@ public class AntColony {
 
     _eventProducer.fireAlgorithmStarted();
 
-    for (Ant a : _ants) {
-      if (!_keepRunning) {
-        break;
-      }
-
-      a.setParameters(_alpha, _beta, _quantumPheromone);
-
-      if (a.getNodeIDsAlongPath().size() == 0) {
-        continue;
-      }
-
-      try {
-        List<Edge> path = a.doFirstExploration();
-        if (a.getDistanceTravelled() < _globalBest) {
-          _globalBest = a.getDistanceTravelled();
-          _bestPath = path;
-          this.bestAnt = a;
-        }
-      } catch (Exception e) {
-        _logger.warn("Unable to do a first exploration", e);
-      }
-    }
-
-    if (_globalBest < Double.MAX_VALUE)
-      _eventProducer.fireNewBestSolutionFound();
+    prepareGraph();
 
     while (_currentIteration < _numIterations && _keepRunning) {
       _currentIteration++;
-      _antReports.clear();
+      var antReports = new ArrayList<List<Edge>>();
 
       for (int j = 0; j < _ants.length && _keepRunning; j++) {
-        _antReports.add(_ants[j].explore(startingNode));
+        /// EXPLORE
+        var antReport = _ants[j].explore(startingNode);
+        antReports.add(antReport);
       }
-      solveRound();
+      resolveRound(antReports);
       _graph.evaporate();
       _eventProducer.fireIterationPerformed();
     }
@@ -146,14 +122,38 @@ public class AntColony {
     _keepRunning = false;
   }
 
+  private void prepareGraph() {
+    for (Ant a : _ants) {
+      if (!_keepRunning) {
+        break;
+      }
+      try {
+        a.setParameters(_alpha, _beta, _quantumPheromone);
+
+        if (a.getNodeIDsAlongPath().size() == 0) {
+          continue;
+        }      
+        List<Edge> path = a.doFirstExploration();
+        if (a.getDistanceTravelled() < _globalBest) {
+          _globalBest = a.getDistanceTravelled();          
+          _bestPath = path;
+          this.bestAnt = a;
+          _eventProducer.fireNewBestSolutionFound();
+        }
+      } catch (Exception e) {
+        _logger.warn("Unable to do a first exploration", e);
+      }
+    }
+  }
+
   /**
    * Evaluation for each iteration
    */
-  private void solveRound() {
+  private void resolveRound(ArrayList<List<Edge>> antReports) {
     boolean newBest = false;
     double pathLength = 0;
     int counter = 0;
-    for (List<Edge> vector : _antReports) {
+    for (List<Edge> vector : antReports) {
       if (_bestPath == null) {
         _bestPath = vector;
       }
