@@ -54,9 +54,6 @@ public class AntBrain {
     this.quantumPheromone = quantumPheromone;
   }
 
-  public void reset() {
-  }
-
   protected Edge selectNextStep(List<Node> nodePath) throws Exception {
     Node currentNode = nodePath.get(nodePath.size()-1);
     HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);

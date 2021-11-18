@@ -33,12 +33,10 @@ import java.util.List;
 
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
-import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
-import org.seage.problem.jsp._old.JspEvaluator_old;
 
 /**
  *
@@ -57,35 +55,15 @@ public class JspAntBrain extends AntBrain {
     this.evaluator = evaluator;
   }
 
-  //	@Override
-  //	protected Node selectNextNode(Node firstNode, Node currentNode) 
-  //	{		 
-  // this part should look if the next one can be reached, if the noce isnt the precesesror of some that was before
-  // thing is how to know what nodes were before, mayber array and there adding all other jobs are connected to all 
-  // different...
-  //		Node n = super.selectNextNode(firstNode, currentNode);
-  //		if(n==null && firstNode != currentNode)
-  //			return firstNode;
-  //		else
-  //			return n;
-  //	}
-
-  @Override
+   @Override
   protected Edge selectNextStep(List<Node> nodePath) throws Exception {
     return super.selectNextStep(nodePath);
   }
 
   @Override
-  public void reset() {
-    availableNodes = null;
-    availableNodeList.clear();
-    // Clear used operations
-  }
-
-  @Override
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
     // Clean the previous available nodes
-    this.availableNodes = new HashSet<>();
+    var availableNodes = new HashSet<Node>();
 
     //Create new available nodes
     for (int jobID = 1; jobID <= this.jobsDefinition.getJobsCount(); jobID++) {
@@ -94,18 +72,13 @@ public class JspAntBrain extends AntBrain {
         Node nd = this.graph.getNodes().get(nodeID);
 
         if (!nodePath.contains(nd)) {
-          this.availableNodes.add(nd);
+          availableNodes.add(nd);
           break;
         }
       }
     }
 
-    return this.availableNodes;
-  }
-
-  @Override
-  protected void markSelected(Node nextNode) {
-    availableNodes.remove(nextNode);
+    return availableNodes;
   }
 
   protected int nodeToJobID(Node node) {
@@ -119,9 +92,6 @@ public class JspAntBrain extends AntBrain {
 
   /**
    * Edge length calculating
-   * @param start - Starting node
-   * @param end - Terminate node
-   * @return - time for ant to get from start to end
    */
   @Override
   public double getNodeDistance(List<Node> nodePath, Node node)
@@ -151,75 +121,4 @@ public class JspAntBrain extends AntBrain {
     // Get the start node operation length and add one, for the step to another node
     return nextTimespan - prevTimespan + 1.0;
   }
-
-  //	@Override
-  //	protected List<Node> getAvailableNodes(Node currentNode, HashSet<Node> visited) {
-  //		
-  //		int nextID = Math.abs(currentNode.getID())+1;
-  //		if(!_graph.getNodes().containsKey(nextID))
-  //			return null;
-  //		ArrayList<Node> result = new ArrayList<Node>();
-  //		result.add(_graph.getNodes().get(nextID));
-  //		result.add(_graph.getNodes().get(-nextID));
-  //		return result;
-  //	}
-
-  //  @Override
-  //  protected Node selectNextNode(List<Node> nodePath) {
-  //   Node currentNode = nodePath.get(nodePath.size()-1);
-  //   HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
-  //   availableNodeList.clear();
-
-  //   if (nextAvailableNodes == null || nextAvailableNodes.isEmpty()) {
-  //     return null;
-  //   }
-
-  //   double sum = 0;
-  //   int i = 0;
-  //   double[] probabilities = new double[nextAvailableNodes.size()];
-  //   // for each available node calculate probability
-  //   for (Node n : nextAvailableNodes) {
-  //     double edgePheromone = 0;
-  //     double edgePrice = 0;
-
-  //     Edge e = currentNode.getEdgeMap().get(n);
-  //     if (e != null) {
-  //       edgePheromone = e.getLocalPheromone();
-  //       edgePrice = e.getEdgePrice();
-  //     } else {
-  //       edgePheromone = graph.getDefaultPheromone();
-  //       edgePrice = graph.getNodeDistance(nodePath, n);
-  //     }
-
-  //     double p = pow(edgePheromone, alpha) * pow(1 / edgePrice, beta);
-  //     probabilities[i] = p;
-  //     availableNodeList.add(n);
-  //     sum += p;
-  //     i++;
-  //   }
-
-  //   sum = sum != 0 ? sum : 1;    
-  //   for (i = 0; i < probabilities.length; i++) {
-  //     probabilities[i] /= sum;
-  //   }
-
-  //   Node nextNode = availableNodeList.get(next(probabilities));
-  //   markSelected(nextNode);
-
-  //   return nextNode;
-  // }
-
-  //  protected double pathCost(Vector<Edge> path) {
-  //    Boolean[] solution = new Boolean[_formula.getLiteralCount()];
-  //    Node node;
-  //    for (int i = 0; i < _formula.getLiteralCount(); i++) {
-  //      node = (Node) path.get(i).getNode2();
-  //      if (node.getID() < 0) {
-  //        solution[i] = false;
-  //      } else {
-  //        solution[i] = true;
-  //      }
-  //    }
-  //    return (FormulaEvaluator.evaluate(_formula, solution) + 0.1);
-  //  }
 }

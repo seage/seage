@@ -23,6 +23,7 @@
 
 package org.seage.problem.sat.antcolony;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.seage.metaheuristic.antcolony.AntBrain;
@@ -48,16 +49,6 @@ public class SatAntBrain extends AntBrain {
   }
 
   @Override
-  protected void markSelected(Node nextNode) {
-    super.markSelected(nextNode);
-
-    if (nextNode != null) {
-      Node n2 = graph.getNodes().get(-nextNode.getID());
-      availableNodes.remove(n2);
-    }
-  }
-
-  @Override
   public double getPathCost(List<Edge> path) {
     Boolean[] solution = new Boolean[formula.getLiteralCount()];
     List<Node> nodeList = edgeListToNodeList(path);
@@ -73,6 +64,17 @@ public class SatAntBrain extends AntBrain {
       }
     }
     return (FormulaEvaluator.evaluate(formula, solution) + 0.1);
+  }
+
+  @Override
+  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
+    var result = super.getAvailableNodes(nodePath);
+    for (Node n : nodePath) {
+      int id = -n.getID();
+      Node n2 = graph.getNodes().get(id);
+      result.remove(n2);
+    }
+    return result;
   }
 
   @Override

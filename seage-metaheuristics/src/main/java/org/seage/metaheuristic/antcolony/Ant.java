@@ -96,8 +96,7 @@ public class Ant {
     _nodePath.clear();
     _edgePath.clear();
     _distanceTravelled = 0;
-    _brain.reset();
-
+    
     _nodePath.add(startingNode);
 
     Node currentNode = startingNode;
