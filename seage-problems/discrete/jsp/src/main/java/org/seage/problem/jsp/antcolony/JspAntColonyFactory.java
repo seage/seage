@@ -37,6 +37,7 @@ import org.seage.metaheuristic.antcolony.Ant;
 
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.List;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
@@ -116,18 +117,18 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
 
       @Override
       public JspPhenotype  solutionToPhenotype(Ant ant) throws Exception {
-        int nodesPathLength = ant.getNodeIDsAlongPath().size();
-        if (nodesPathLength != 0)
-          nodesPathLength -= 1;
+        List<Integer> nodePath = ant.getNodeIDsAlongPath();
+        // Remove the starting node
+        nodePath.remove(0);
 
-        Integer[] solution = new Integer[nodesPathLength];
-        for (int j = 0; j < nodesPathLength; j++)
+        Integer[] jobArray = new Integer[nodePath.size()];
+        for (int j = 0; j < jobArray.length; j++)
         {
-          int nodeID = ant.getNodeIDsAlongPath().get(j+1);
+          int nodeID = nodePath.get(j);
           int jobID = nodeID / jspGraph.getFactor();
-          solution[j] = jobID;
+          jobArray[j] = jobID;
         }
-        JspPhenotype result = new JspPhenotype(solution);
+        JspPhenotype result = new JspPhenotype(jobArray);
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
         result.setObjValue(objVals[0]);
         result.setScore(objVals[1]);
