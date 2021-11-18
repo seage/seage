@@ -97,16 +97,9 @@ public class AntBrain {
   }
 
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
-    if (availableNodes == null) {
-      Node firstNode = nodePath.get(0);
-      availableNodes = new HashSet<>(graph.getNodes().values());
-      availableNodes.remove(firstNode);
-    }
-    return availableNodes;
-  }
-
-  protected void markSelected(Node nextNode) {
-    availableNodes.remove(nextNode);
+    var result = new HashSet<Node>(graph.getNodes().values());
+    result.removeAll(nodePath);
+    return result;
   }
 
   /**
