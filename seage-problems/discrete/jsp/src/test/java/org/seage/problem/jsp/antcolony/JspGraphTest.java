@@ -127,8 +127,10 @@ public class JspGraphTest {
     Integer[] jobArray1 = new Integer[] {1};
     Integer[] jobArray2 = new Integer[] {1, 2};
 
-    hm.get(0).addEdge(new Edge(hm.get(101), hm.get(0)));
-    hm.get(101).addEdge(new Edge(hm.get(0), hm.get(101)));
+    double nodeDistance = brain.getNodeDistance(nodesPath, hm.get(101));
+
+    hm.get(0).addEdge(new Edge(hm.get(101), hm.get(0), nodeDistance));
+    hm.get(101).addEdge(new Edge(hm.get(0), hm.get(101), nodeDistance));
 
     nodesPath.add(hm.get(101));
 
@@ -140,8 +142,10 @@ public class JspGraphTest {
     // test the three opers 
     Integer[] jobArray3 = new Integer[] {1, 2, 3};
 
-    hm.get(101).addEdge(new Edge(hm.get(201), hm.get(101)));
-    hm.get(201).addEdge(new Edge(hm.get(101), hm.get(201)));
+    nodeDistance = brain.getNodeDistance(nodesPath, hm.get(201));
+
+    hm.get(101).addEdge(new Edge(hm.get(201), hm.get(101), nodeDistance));
+    hm.get(201).addEdge(new Edge(hm.get(101), hm.get(201), nodeDistance));
 
     nodesPath.add(hm.get(201));
 
@@ -153,8 +157,10 @@ public class JspGraphTest {
     // another test
     Integer[] jobArray4 = new Integer[] {1, 2, 3, 1};
 
-    hm.get(201).addEdge(new Edge(hm.get(301), hm.get(201)));
-    hm.get(301).addEdge(new Edge(hm.get(201), hm.get(301)));
+    nodeDistance = brain.getNodeDistance(nodesPath, hm.get(301));
+
+    hm.get(201).addEdge(new Edge(hm.get(301), hm.get(201), nodeDistance));
+    hm.get(301).addEdge(new Edge(hm.get(201), hm.get(301), nodeDistance));
 
     nodesPath.add(hm.get(301));
 
