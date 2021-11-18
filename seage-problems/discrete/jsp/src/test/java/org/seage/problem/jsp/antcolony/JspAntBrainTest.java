@@ -2,6 +2,7 @@ package org.seage.problem.jsp.antcolony;
 
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import org.seage.problem.jsp.JspProblemProvider;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Node;
+import org.seage.metaheuristic.antcolony.Ant;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -149,5 +151,24 @@ public class JspAntBrainTest {
     nodePath.add(graph.getNodes().get(303));
 
     assertNull(brain.selectNextStep(nodePath));
+  }
+
+  @Test
+  public void testAntFirstExplorationWithInitPathNoEdges() throws Exception {
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    ProblemInfo pi = problemProvider.getProblemInfo();
+    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
+    JspGraph graph = new JspGraph(jobs, eval);
+    graph.setDefaultPheromone(1);
+    
+    JspAntBrain brain = new JspAntBrain(graph, jobs, eval);
+
+    graph.getEdges().clear();
+    Ant a = new Ant(brain, graph, Arrays.asList(0, 101, 201));
+    List<Edge> edges = a.doFirstExploration();
+    assertNotNull(edges);
+    assertEquals(2, edges.size());
+    assertEquals(2, graph.getEdges().size());
+    assertTrue(graph.getEdges().containsAll(edges));
   }
 }
