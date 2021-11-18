@@ -37,12 +37,12 @@ public class Edge {
   private double _edgePrice;
   private double _pheromone;
 
-  public Edge(Node start, Node end) throws Exception {
+  public Edge(Node start, Node end, double edgePrice) throws Exception {
     _node1 = start;
     _node2 = end;
     _node1.addEdge(this);
     _node2.addEdge(this);
-    _edgePrice = 0;
+    _edgePrice = edgePrice;
     _pheromone = 0;
   }
 
@@ -88,8 +88,8 @@ public class Edge {
    * 
    * @param length - Edge length
    */
-  public void setEdgePrice(double length) {
-    _edgePrice = length;
+  public void setEdgePrice(double edgePrice) {
+    _edgePrice = edgePrice;
   }
 
   /**

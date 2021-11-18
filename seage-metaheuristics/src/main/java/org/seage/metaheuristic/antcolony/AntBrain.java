@@ -58,10 +58,6 @@ public class AntBrain {
     Node currentNode = nodePath.get(nodePath.size()-1);
     HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
 
-    if (nextAvailableNodes == null || nextAvailableNodes.isEmpty()) {
-      return new Edge(null, null);
-    }
-
     double probSum = 0; 
     int i = 0;
     double[] probabilities = new double[nextAvailableNodes.size()];
@@ -79,7 +75,7 @@ public class AntBrain {
       } else {
         edgePheromone = graph.getDefaultPheromone();
         edgePrice = getNodeDistance(nodePath, n);
-        e = new Edge(currentNode, n);
+        e = new Edge(currentNode, n, edgePrice);
         e.setEdgePrice(edgePrice);
         e.addLocalPheromone(graph.getDefaultPheromone());
       }
