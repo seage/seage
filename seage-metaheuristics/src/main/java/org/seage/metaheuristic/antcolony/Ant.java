@@ -49,10 +49,11 @@ public class Ant {
     _nodePath = new ArrayList<>();
     _edgePath = new ArrayList<>();
 
-    if (nodeIDs != null)
-      for (int i = 0; i < nodeIDs.size() ; i++)
+    if (nodeIDs != null) {
+      for (int i = 0; i < nodeIDs.size() ; i++) {
         _nodePath.add(_graph.getNodes().get(nodeIDs.get(i)));
-    
+      }
+    }    
   }
 
   void setParameters(double alpha, double beta, double quantumPheromone) {
@@ -67,7 +68,7 @@ public class Ant {
    * @throws Exception
    */
   public List<Edge> doFirstExploration() throws Exception {
-    _edgePath = new ArrayList<Edge>();
+    _edgePath = new ArrayList<>();
     _distanceTravelled = 0;
 
     for (int i = 0; i < _nodePath.size() - 1; i++) {
@@ -75,8 +76,8 @@ public class Ant {
       Node n2 = _nodePath.get(i + 1);
       Edge e = n1.getEdgeMap().get(n2);
       if (e == null){
-        e = _brain.createEdge(n1, n2);
-        _graph.addEdge(e);
+        double edgePrice = _brain.getNodeDistance(_nodePath.subList(0, i), n2);
+        e = new Edge(n1, n2, edgePrice);
       }
       _edgePath.add(e);
     }
@@ -122,7 +123,7 @@ public class Ant {
    * Pheromone leaving
    * @throws Exception
    */
-  protected void leavePheromone() {
+  protected void leavePheromone() throws Exception {
     for (Edge edge : _edgePath) {
       edge.addLocalPheromone(_brain.getQuantumPheromone() / (_distanceTravelled));
       if(!_graph._edges.contains(edge)) {

@@ -29,12 +29,13 @@ package org.seage.metaheuristic.antcolony;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
  * @author Martin Zaloga
  */
-public abstract class Graph {
+public class Graph {
 
   protected HashMap<Integer, Node> _nodes;
   protected ArrayList<Edge> _edges;
@@ -44,6 +45,15 @@ public abstract class Graph {
   protected Graph() {
     _nodes = new HashMap<Integer, Node>();
     _edges = new ArrayList<Edge>();
+  }
+
+  protected Graph(List<Integer> nodeIDs) {
+    _nodes = new HashMap<Integer, Node>();
+    _edges = new ArrayList<Edge>();
+
+    for(Integer id : nodeIDs) {
+      _nodes.put(id, new Node(id));
+    }
   }
 
   /**
@@ -85,7 +95,14 @@ public abstract class Graph {
     _evaporCoeff = evaporCoeff;
   }
 
-  public void addEdge(Edge newEdge) {
+  public void addEdge(Edge newEdge) throws Exception {
+    if(!_nodes.containsValue(newEdge.getNode1())) {
+      throw new Exception("Graph does not contain the node with id: " + newEdge.getNode1().getID());
+    }
+    if(!_nodes.containsValue(newEdge.getNode2())) {
+      throw new Exception("Graph does not contain the node with id: " + newEdge.getNode1().getID());
+    }
+
     _edges.add(newEdge);
   }
 }
