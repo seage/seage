@@ -38,7 +38,6 @@ import org.seage.metaheuristic.antcolony.Ant;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
