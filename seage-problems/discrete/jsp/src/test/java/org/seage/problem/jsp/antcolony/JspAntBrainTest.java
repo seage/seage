@@ -51,7 +51,7 @@ public class JspAntBrainTest {
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     JspGraph graph = new JspGraph(jobs, eval);
-    JspAntBrain brain = new JspAntBrain(graph, jobs);
+    JspAntBrain brain = new JspAntBrain(graph, jobs, eval);
 
     List<Node> visitedNodes = new ArrayList<>();
     HashSet<Node> availableNodes = brain.getAvailableNodes(visitedNodes);
@@ -121,7 +121,7 @@ public class JspAntBrainTest {
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     JspGraph graph = new JspGraph(jobs, eval);
-    JspAntBrain brain = new JspAntBrain(graph, jobs);
+    JspAntBrain brain = new JspAntBrain(graph, jobs, eval);
 
 
     List<Node> nodePath = new ArrayList<>();

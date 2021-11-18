@@ -30,14 +30,17 @@ import java.util.List;
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
+import org.seage.problem.tsp.City;
 
 /**
  *
  * @author Zagy
  */
 public class TspAntBrain extends AntBrain {
-  public TspAntBrain(Graph graph) {
+  City[] cities;
+  public TspAntBrain(Graph graph, City[] cities) {
     super(graph);
+    this.cities = cities;
   }
 
   @Override
@@ -49,5 +52,21 @@ public class TspAntBrain extends AntBrain {
       result.add(startingNode);
     }
     return result;
+  }
+
+  /**
+   * Edge length calculating
+   * 
+   * @param start  - Starting node
+   * @param end    - Terminate node
+   * @param cities - Readed cities
+   * @return - Euclide edge length
+   */
+  @Override
+  public double getNodeDistance(List<Node> nodePath, Node end) {
+    Node start = nodePath.get(0);
+    double dX = (this.cities[start.getID() - 1].X - this.cities[end.getID() - 1].X);
+    double dY = (this.cities[start.getID() - 1].Y - this.cities[end.getID() - 1].Y);
+    return Math.round(Math.sqrt(dX * dX + dY * dY));
   }
 }

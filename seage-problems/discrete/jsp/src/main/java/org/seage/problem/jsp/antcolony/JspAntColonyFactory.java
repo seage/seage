@@ -69,7 +69,7 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
     JspPhenotypeEvaluator evaluator =
         new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
     JspGraph jspGraph = new JspGraph(jobs, evaluator);
-    JspAntBrain brain = new JspAntBrain(jspGraph, jobs);
+    JspAntBrain brain = new JspAntBrain(jspGraph, jobs, evaluator);
 
     return new AntColonyAdapter<JspPhenotype, Ant>(jspGraph, phenotypeEvaluator)
     {

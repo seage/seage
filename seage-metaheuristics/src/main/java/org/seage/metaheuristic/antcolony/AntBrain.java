@@ -92,7 +92,7 @@ public class AntBrain {
         edgePrice = e.getEdgePrice();
       } else {
         edgePheromone = graph.getDefaultPheromone();
-        edgePrice = graph.getNodeDistance(nodePath, n);
+        edgePrice = getNodeDistance(nodePath, n);
       }
 
       double p = pow(edgePheromone, alpha) * pow(1 / edgePrice, beta);
@@ -196,5 +196,21 @@ public class AntBrain {
       previous = e;
     }
     return nodeList;
+  }
+
+  public double getNodeDistance(List<Node> nodePath, Node node) {
+     return 0.0;
+  };
+  
+  public Edge createEdge(Node n1, Node n2) throws Exception {
+    Edge newEdge = new Edge(n1, n2);
+    newEdge.addLocalPheromone(this.graph.getDefaultPheromone());
+
+    List<Node> idsPath = new ArrayList<>();
+    idsPath.add(n1);
+
+    newEdge.setEdgePrice(getNodeDistance(idsPath, n2));
+
+    return newEdge;
   }
 }

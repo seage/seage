@@ -112,6 +112,8 @@ public class JspGraphTest {
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
 
     JspGraph graph = new JspGraph(jobs, eval);
+
+    JspAntBrain brain = new JspAntBrain(graph, jobs, eval);
     
     HashMap<Integer, Node> hm = graph.getNodes();
 
@@ -119,7 +121,7 @@ public class JspGraphTest {
     nodesPath.add(hm.get(0));
 
     // Test start to first node
-    assertEquals(1.0, graph.getNodeDistance(nodesPath, hm.get(101)));
+    assertEquals(1.0, brain.getNodeDistance(nodesPath, hm.get(101)));
     
     // Test the longer path
     Integer[] jobArray1 = new Integer[] {1};
@@ -132,7 +134,7 @@ public class JspGraphTest {
 
     assertEquals(
       eval.evaluateSchedule(jobArray2) - eval.evaluateSchedule(jobArray1) + 1, 
-      graph.getNodeDistance(nodesPath, hm.get(201))
+      brain.getNodeDistance(nodesPath, hm.get(201))
     );
     
     // test the three opers 
@@ -145,7 +147,7 @@ public class JspGraphTest {
 
     assertEquals(
       eval.evaluateSchedule(jobArray3) - eval.evaluateSchedule(jobArray2) + 1,
-      graph.getNodeDistance(nodesPath, hm.get(301))
+      brain.getNodeDistance(nodesPath, hm.get(301))
     );
 
     // another test
@@ -158,7 +160,7 @@ public class JspGraphTest {
 
     assertEquals(
       eval.evaluateSchedule(jobArray4) - eval.evaluateSchedule(jobArray3) + 1,
-      graph.getNodeDistance(nodesPath, hm.get(102))
+      brain.getNodeDistance(nodesPath, hm.get(102))
     );
   }
 }

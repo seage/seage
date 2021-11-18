@@ -47,8 +47,6 @@ public abstract class Graph {
     _edges = new ArrayList<Edge>();
   }
 
-  public abstract double getNodeDistance(List<Node> nodePath, Node node);
-
   /**
    * List of nodes of graph
    * 
@@ -88,16 +86,7 @@ public abstract class Graph {
     _evaporCoeff = evaporCoeff;
   }
 
-  public Edge createEdge(Node n1, Node n2) throws Exception {
-    Edge newEdge = new Edge(n1, n2);
-    newEdge.addLocalPheromone(_defaultPheromone);
-
-    List<Node> idsPath = new ArrayList<>();
-    idsPath.add(n1);
-
-    newEdge.setEdgePrice(getNodeDistance(idsPath, n2));
+  public void addEdge(Edge newEdge) throws Exception {
     _edges.add(newEdge);
-
-    return newEdge;
   }
 }

@@ -27,14 +27,18 @@
  */
 package org.seage.problem.jsp.antcolony;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 
 import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp._old.JspEvaluator_old;
 
 /**
  *
@@ -42,13 +46,15 @@ import org.seage.problem.jsp.JobsDefinition;
  * Edited by David Omrai
  */
 public class JspAntBrain extends AntBrain {
+  JspPhenotypeEvaluator evaluator;
   JobsDefinition jobsDefinition;
   JspGraph jspGraph;
 
-  public JspAntBrain(JspGraph graph, JobsDefinition jobs) {
+  public JspAntBrain(JspGraph graph, JobsDefinition jobs, JspPhenotypeEvaluator evaluator) {
     super(graph);
     this.jspGraph = graph;
     this.jobsDefinition = jobs;
+    this.evaluator = evaluator;
   }
 
   //	@Override
@@ -108,6 +114,42 @@ public class JspAntBrain extends AntBrain {
 
   protected int nodeToOperID(Node node) {
     return this.jspGraph.nodeToOperID(node);
+  }
+
+
+  /**
+   * Edge length calculating
+   * @param start - Starting node
+   * @param end - Terminate node
+   * @return - time for ant to get from start to end
+   */
+  @Override
+  public double getNodeDistance(List<Node> nodePath, Node node)
+  {
+    Node end = nodePath.get(nodePath.size() - 1);
+    // If the first node is starting node
+    if (end.getID() == 0)
+      return 1;
+
+    ArrayList<Integer> path = new ArrayList<>();
+    for (Node n : nodePath.subList(1, nodePath.size())) 
+      path.add(nodeToJobID(n));
+   
+    Integer[] prevPath = path.toArray(new Integer[0]);
+    path.add(nodeToJobID(node));
+    Integer[] nextPath = path.toArray(new Integer[0]);
+
+    double prevTimespan = 0;
+    double nextTimespan = 0;
+    try {
+      prevTimespan = this.evaluator.evaluateSchedule(prevPath);
+      nextTimespan = this.evaluator.evaluateSchedule(nextPath);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    // Get the start node operation length and add one, for the step to another node
+    return nextTimespan - prevTimespan + 1.0;
   }
 
   //	@Override

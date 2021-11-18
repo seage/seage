@@ -57,7 +57,7 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
       IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
     City[] cities = ((TspProblemInstance) instance).getCities();
     TspGraph graph = new TspGraph(cities);
-    TspAntBrain brain = new TspAntBrain(graph);
+    TspAntBrain brain = new TspAntBrain(graph, cities);
     IAlgorithmAdapter<TspPhenotype, Ant> algorithm = 
         new AntColonyAdapter<TspPhenotype, Ant>(
         graph, phenotypeEvaluator) {

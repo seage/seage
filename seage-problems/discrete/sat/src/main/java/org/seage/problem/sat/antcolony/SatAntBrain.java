@@ -37,12 +37,14 @@ import org.seage.problem.sat.FormulaEvaluator;
  * @author Zagy
  */
 public class SatAntBrain extends AntBrain {
+  FormulaEvaluator formulaEvaluator;
 
   private Formula formula;
 
-  public SatAntBrain(Graph graph, Formula formula) {
+  public SatAntBrain(Graph graph, Formula formula, FormulaEvaluator formulaEvaluator) {
     super(graph);
     this.formula = formula;
+    this.formulaEvaluator = formulaEvaluator;
   }
 
   @Override
@@ -71,5 +73,10 @@ public class SatAntBrain extends AntBrain {
       }
     }
     return (FormulaEvaluator.evaluate(formula, solution) + 0.1);
+  }
+
+  @Override
+  public double getNodeDistance(List<Node> nodePath, Node n2) {
+    return this.formulaEvaluator.evaluate(this.formula, n2.getID());
   }
 }

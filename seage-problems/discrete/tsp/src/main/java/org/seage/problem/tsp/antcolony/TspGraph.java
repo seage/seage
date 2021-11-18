@@ -60,19 +60,4 @@ public class TspGraph extends Graph {
   // }
   // return result;
   // }
-  /**
-   * Edge length calculating
-   * 
-   * @param start  - Starting node
-   * @param end    - Terminate node
-   * @param cities - Readed cities
-   * @return - Euclide edge length
-   */
-  @Override
-  public double getNodeDistance(List<Node> nodePath, Node end) {
-    Node start = nodePath.get(0);
-    double dX = (_cities[start.getID() - 1].X - _cities[end.getID() - 1].X);
-    double dY = (_cities[start.getID() - 1].Y - _cities[end.getID() - 1].Y);
-    return Math.round(Math.sqrt(dX * dX + dY * dY));
-  }
 }

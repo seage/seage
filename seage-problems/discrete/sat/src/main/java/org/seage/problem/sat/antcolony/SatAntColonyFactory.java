@@ -28,7 +28,8 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
       IPhenotypeEvaluator<SatPhenotype> phenotypeEvaluator) throws Exception {
     Formula formula = (Formula) instance;
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
-    SatAntBrain brain = new SatAntBrain(graph, formula);
+    FormulaEvaluator evaluator = new FormulaEvaluator(formula);
+    SatAntBrain brain = new SatAntBrain(graph, formula, evaluator);
 
     return new AntColonyAdapter<SatPhenotype, Ant>(graph, phenotypeEvaluator) {
 

@@ -74,8 +74,10 @@ public class Ant {
       Node n1 = _nodePath.get(i);
       Node n2 = _nodePath.get(i + 1);
       Edge e = n1.getEdgeMap().get(n2);
-      if (e == null)
-        e = _graph.createEdge(n1, n2);
+      if (e == null){
+        e = _brain.createEdge(n1, n2);
+        _graph.addEdge(e);
+      }
       _edgePath.add(e);
     }
     _distanceTravelled = _brain.getPathCost(_edgePath);
@@ -105,8 +107,10 @@ public class Ant {
       Edge nextEdge = currentNode.getEdgeMap().get(nextNode);
       if (nextEdge == null) {
         nextEdge = nextNode.getEdgeMap().get(currentNode);
-        if (nextEdge == null)
-          nextEdge = _graph.createEdge(currentNode, nextNode);
+        if (nextEdge == null) {
+          nextEdge = _brain.createEdge(currentNode, nextNode);
+          _graph.addEdge(nextEdge);
+        }
         else
           nextNode.getEdgeMap().put(currentNode, nextEdge);
       }

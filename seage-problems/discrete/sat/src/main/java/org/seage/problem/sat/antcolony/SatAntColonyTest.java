@@ -68,7 +68,9 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     int numAnts = 865, iterations = 3337;
 
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
-    SatAntBrain brain = new SatAntBrain(graph, formula);
+
+    FormulaEvaluator evaluator = new FormulaEvaluator(formula);
+    SatAntBrain brain = new SatAntBrain(graph, formula, evaluator);
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);

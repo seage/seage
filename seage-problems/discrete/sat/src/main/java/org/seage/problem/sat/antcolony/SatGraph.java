@@ -50,9 +50,4 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
       _nodes.put(new Integer(-i), new Node(-i));
     }
   }
-
-  @Override
-  public double getNodeDistance(List<Node> nodePath, Node n2) {
-    return _formulaEvaluator.evaluate(_formula, n2.getID());
-  }
 }
