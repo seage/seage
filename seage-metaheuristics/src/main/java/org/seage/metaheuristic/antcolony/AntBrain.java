@@ -178,7 +178,7 @@ public class AntBrain {
 
   public Edge createEdge(List<Node> nodePath, Node n2)  throws Exception{
     if (nodePath.isEmpty())
-      return new Edge(null, null, 0);
+      return null;
     return new Edge(nodePath.get(nodePath.size() - 1), n2, getNodeDistance(nodePath, n2));
   }
 }
