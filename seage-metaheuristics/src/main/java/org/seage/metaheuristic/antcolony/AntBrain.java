@@ -175,4 +175,10 @@ public class AntBrain {
   public double getNodeDistance(List<Node> nodePath, Node node) {
      return 1.0;
   };
+
+  public Edge createEdge(List<Node> nodePath, Node n2)  throws Exception{
+    if (nodePath.isEmpty())
+      return new Edge(null, null, 0);
+    return new Edge(nodePath.get(nodePath.size() - 1), n2, getNodeDistance(nodePath, n2));
+  }
 }

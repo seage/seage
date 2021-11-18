@@ -75,7 +75,7 @@ public class Ant {
       Node n2 = _nodePath.get(i + 1);
       Edge e = n1.getEdgeMap().get(n2);
       if (e == null){
-        e = _brain.createEdge(n1, n2);
+        e = _brain.createEdge(_nodePath.subList(0, i), n2);
         _graph.addEdge(e);
       }
       _edgePath.add(e);
