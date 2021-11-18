@@ -126,7 +126,7 @@ public class JspAntBrainTest {
 
     List<Node> nodePath = new ArrayList<>();
     nodePath.add(graph.getNodes().get(0));
-    assertNotNull(brain.selectNextNode(nodePath));
+    assertNotNull(brain.selectNextStep(nodePath).getNode2());
 
     nodePath.add(graph.getNodes().get(101));
     nodePath.add(graph.getNodes().get(102));
@@ -136,18 +136,18 @@ public class JspAntBrainTest {
     nodePath.add(graph.getNodes().get(202));
     nodePath.add(graph.getNodes().get(203));
 
-    assertEquals(graph.getNodes().get(301), brain.selectNextNode(nodePath));
+    assertEquals(graph.getNodes().get(301), brain.selectNextStep(nodePath).getNode2());
 
     nodePath.add(graph.getNodes().get(301));
 
-    assertEquals(graph.getNodes().get(302), brain.selectNextNode(nodePath));
+    assertEquals(graph.getNodes().get(302), brain.selectNextStep(nodePath).getNode2());
 
     nodePath.add(graph.getNodes().get(302));
 
-    assertEquals(graph.getNodes().get(303), brain.selectNextNode(nodePath));
+    assertEquals(graph.getNodes().get(303), brain.selectNextStep(nodePath).getNode2());
 
     nodePath.add(graph.getNodes().get(303));
 
-    assertNull(brain.selectNextNode(nodePath));
+    assertNull(brain.selectNextStep(nodePath).getNode2());
   }
 }

@@ -62,14 +62,7 @@ public class AntBrain {
     availableNodeList.clear();
   }
 
-  /**
-   * Selection following edge.
-   * 
-   * @param edges   - Available edges
-   * @param visited - Visited nodes
-   * @return - Selected edge
-   */
-  protected Node selectNextNode(List<Node> nodePath) {
+  protected Edge selectNextStep(List<Node> nodePath) throws Exception {
     Node currentNode = nodePath.get(nodePath.size()-1);
     HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
     availableNodeList.clear();
@@ -109,8 +102,8 @@ public class AntBrain {
 
     Node nextNode = availableNodeList.get(next(probabilities));
     markSelected(nextNode);
-
-    return nextNode;
+    
+    return new Edge(currentNode, nextNode);
   }
 
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {

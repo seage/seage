@@ -71,8 +71,8 @@ public class JspAntBrain extends AntBrain {
   //	}
 
   @Override
-  protected Node selectNextNode(List<Node> nodePath) {
-    return super.selectNextNode(nodePath);
+  protected Edge selectNextStep(List<Node> nodePath) throws Exception {
+    return super.selectNextStep(nodePath);
   }
 
   @Override
