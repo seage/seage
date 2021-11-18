@@ -116,7 +116,7 @@ public class JspAntBrainTest {
   }
 
   @Test
-  public void testSelectNextNode() throws Exception {
+  public void testSelectNextStep() throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
@@ -148,6 +148,6 @@ public class JspAntBrainTest {
 
     nodePath.add(graph.getNodes().get(303));
 
-    assertNull(brain.selectNextStep(nodePath).getNode2());
+    assertNull(brain.selectNextStep(nodePath));
   }
 }
