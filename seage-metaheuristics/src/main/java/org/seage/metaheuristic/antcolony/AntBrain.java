@@ -58,6 +58,9 @@ public class AntBrain {
     Node currentNode = nodePath.get(nodePath.size()-1);
     HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
 
+    if (nextAvailableNodes.isEmpty())
+      return null;
+
     double probSum = 0; 
     int i = 0;
     double[] probabilities = new double[nextAvailableNodes.size()];
