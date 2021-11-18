@@ -199,7 +199,7 @@ public class AntBrain {
   }
 
   public double getNodeDistance(List<Node> nodePath, Node node) {
-     return 0.0;
+     return 1.0;
   };
   
   public Edge createEdge(Node n1, Node n2) throws Exception {
