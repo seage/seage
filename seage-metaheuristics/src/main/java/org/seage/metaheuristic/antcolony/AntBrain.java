@@ -42,13 +42,10 @@ public class AntBrain {
   protected double quantumPheromone;
   private Random rand;
   protected Graph graph;
-  protected HashSet<Node> availableNodes;
-  protected ArrayList<Node> availableNodeList;
 
   public AntBrain(Graph graph) {
     this.graph = graph;
     rand = new Random(System.currentTimeMillis());
-    availableNodeList = new ArrayList<>();
   }
 
   void setParameters(double alpha, double beta, double quantumPheromone) {
@@ -58,22 +55,21 @@ public class AntBrain {
   }
 
   public void reset() {
-    availableNodes = null;
-    availableNodeList.clear();
   }
 
   protected Edge selectNextStep(List<Node> nodePath) throws Exception {
     Node currentNode = nodePath.get(nodePath.size()-1);
     HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
-    availableNodeList.clear();
 
     if (nextAvailableNodes == null || nextAvailableNodes.isEmpty()) {
       return new Edge(null, null);
     }
 
-    double sum = 0;
+    double probSum = 0; 
     int i = 0;
     double[] probabilities = new double[nextAvailableNodes.size()];
+    Edge[] candidateEdges = new Edge[nextAvailableNodes.size()];
+    
     // for each available node calculate probability
     for (Node n : nextAvailableNodes) {
       double edgePheromone = 0;
@@ -86,24 +82,18 @@ public class AntBrain {
       } else {
         edgePheromone = graph.getDefaultPheromone();
         edgePrice = getNodeDistance(nodePath, n);
+        e = new Edge(currentNode, n);
+        e.setEdgePrice(edgePrice);
+        e.addLocalPheromone(graph.getDefaultPheromone());
       }
 
       double p = pow(edgePheromone, alpha) * pow(1 / edgePrice, beta);
       probabilities[i] = p;
-      availableNodeList.add(n);
-      sum += p;
-      i++;
+      candidateEdges[i] = e;
+      probSum += p;
     }
-
-    sum = sum != 0 ? sum : 1;    
-    for (i = 0; i < probabilities.length; i++) {
-      probabilities[i] /= sum;
-    }
-
-    Node nextNode = availableNodeList.get(next(probabilities));
-    markSelected(nextNode);
     
-    return new Edge(currentNode, nextNode);
+    return candidateEdges[next(probabilities, probSum)];
   }
 
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
@@ -134,21 +124,26 @@ public class AntBrain {
    * @param probs - probabilities all edges
    * @return - Next edges index
    */
-  protected int next(double[] probs) {
+  protected int next(double[] probabilities, double sum) {
+    sum = sum != 0 ? sum : 1;    
+    for (int i = 0; i < probabilities.length; i++) {
+      probabilities[i] /= sum;
+    }
+
     double randomNumber = rand.nextDouble();
     double numberReach;
     if (randomNumber <= 0.5) {
       numberReach = 0;
-      for (int i = 0; i < probs.length; i++) {
-        numberReach += probs[i];
+      for (int i = 0; i < probabilities.length; i++) {
+        numberReach += probabilities[i];
         if (numberReach > randomNumber) {
           return i;
         }
       }
     } else {
       numberReach = 1;
-      for (int i = probs.length - 1; i >= 0; i--) {
-        numberReach -= probs[i];
+      for (int i = probabilities.length - 1; i >= 0; i--) {
+        numberReach -= probabilities[i];
         if (numberReach <= randomNumber) {
           return i;
         }
