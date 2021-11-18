@@ -75,7 +75,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
       }
 
       new JspAlgorithmTest().runAlgorithm(jobs);
-      new JspAlgorithmTest().runAlgorithmAdapter(jobs);
+      // new JspAlgorithmTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
     {
@@ -141,11 +141,11 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
       opersNum += jobs.getJobInfos()[i].getOperationInfos().length;
 
     _edges = opersNum * (opersNum - 1) / 2;
-    int iterations = 1000;
+    int iterations = 100;
     // int numAnts = 500;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
     // double alpha = 1, beta = 3;
-    int numAnts = 100;
+    int numAnts = 10;
     double defaultPheromone = 0.01, localEvaporation = 0.96, quantumPheromone = 100;
     double alpha = 1.0, beta = 2.3;
 

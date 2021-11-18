@@ -86,6 +86,7 @@ public class AntBrain {
       double p = pow(edgePheromone, alpha) * pow(1 / edgePrice, beta);
       probabilities[i] = p;
       candidateEdges[i] = e;
+      i++;
       probSum += p;
     }
     
