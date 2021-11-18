@@ -58,6 +58,9 @@ public class AntBrain {
     Node currentNode = nodePath.get(nodePath.size()-1);
     HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
 
+    if (nextAvailableNodes.isEmpty())
+      return null;
+
     double probSum = 0; 
     int i = 0;
     double[] probabilities = new double[nextAvailableNodes.size()];
@@ -175,4 +178,10 @@ public class AntBrain {
   public double getNodeDistance(List<Node> nodePath, Node node) {
      return 1.0;
   };
+
+  public Edge createEdge(List<Node> nodePath, Node n2)  throws Exception{
+    if (nodePath.isEmpty())
+      return null;
+    return new Edge(nodePath.get(nodePath.size() - 1), n2, getNodeDistance(nodePath, n2));
+  }
 }
