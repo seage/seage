@@ -112,6 +112,11 @@ public class Graph {
    * @throws Exception
    */
   public void removeEdge(Edge edge) throws Exception {
-    // todo
+    // Remove the edge from edges
+    this._edges.remove(edge);
+    // Remove the edge from nodes
+    Node n1 = edge.getNode1();
+    if (n1 != null)
+      n1.removeEdge(edge);
   }
 }

@@ -96,6 +96,28 @@ public class Node {
   }
 
   /**
+   * Removes the given edge from edges
+   * @param edge
+   */
+  public void removeEdge(Edge edge) {
+    Node node = edge.getNode1();
+    Node node2 = edge.getNode2();
+
+    if (node.equals(node2)) {
+      throw new IllegalArgumentException("Edge with both nodes the same.");
+    }
+    if (!(node.equals(this) || node2.equals(this))) {
+      throw new IllegalArgumentException("Edge is not related to the current node.");
+    }
+
+    if (edges.containsValue(edge)) {
+      this.edges.remove(node2);
+      this.nodes.remove(node2.getID());
+    }
+
+  }
+
+  /**
    * List all edges which are joined with actual node.
    * 
    * @return - List edges
