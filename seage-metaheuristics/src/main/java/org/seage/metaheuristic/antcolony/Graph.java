@@ -105,4 +105,13 @@ public class Graph {
 
     _edges.add(newEdge);
   }
+
+  /**
+   * This method removes the edge from both graph and nodes
+   * @param edge
+   * @throws Exception
+   */
+  public void removeEdge(Edge edge) throws Exception {
+    // todo
+  }
 }
