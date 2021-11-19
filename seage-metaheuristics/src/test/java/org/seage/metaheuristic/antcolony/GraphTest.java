@@ -23,7 +23,10 @@ public class GraphTest {
     
     Edge firstEdge = new Edge(nodes.get(1), nodes.get(2), 1);
     Edge secondEdge = new Edge(nodes.get(2), nodes.get(3), 1);
-    
+
+    assertEquals(1, firstEdge.getNode1().getID());
+    assertEquals(2, firstEdge.getNode2().getID());
+
     assertEquals(0, nodes.get(1).getEdges().size());
     assertEquals(0, nodes.get(2).getEdges().size());
 
