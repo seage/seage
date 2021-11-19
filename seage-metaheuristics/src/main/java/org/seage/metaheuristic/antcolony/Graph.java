@@ -103,6 +103,12 @@ public class Graph {
       throw new Exception("Graph does not contain the node with id: " + newEdge.getNode2().getID());
     }
 
+    Node n1 = newEdge.getNode1();
+    n1.addEdge(newEdge);
+
+    Node n2 = newEdge.getNode2();
+    n2.addEdge(newEdge);    
+
     _edges.add(newEdge);
   }
 
@@ -115,8 +121,11 @@ public class Graph {
     // Remove the edge from edges
     this._edges.remove(edge);
     // Remove the edge from nodes
-    Node n1 = edge.getNode1();
-    if (n1 != null)
-      n1.removeEdge(edge);
+    Node n1 = edge.getNode1();    
+    n1.removeEdge(edge);
+    Node n2 = edge.getNode2();    
+    n2.removeEdge(edge);
   }
+
+  public void prune(long iteration) throws Exception {}
 }

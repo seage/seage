@@ -81,14 +81,6 @@ public class JspAntBrain extends AntBrain {
     return availableNodes;
   }
 
-  protected int nodeToJobID(Node node) {
-    return this.jspGraph.nodeToJobID(node);
-  }
-
-  protected int nodeToOperID(Node node) {
-    return this.jspGraph.nodeToOperID(node);
-  }
-
 
   /**
    * Edge length calculating
@@ -103,10 +95,10 @@ public class JspAntBrain extends AntBrain {
 
     ArrayList<Integer> path = new ArrayList<>();
     for (Node n : nodePath.subList(1, nodePath.size())) 
-      path.add(nodeToJobID(n));
+      path.add(jspGraph.nodeToJobID(n));
    
     Integer[] prevPath = path.toArray(new Integer[0]);
-    path.add(nodeToJobID(node));
+    path.add(jspGraph.nodeToJobID(node));
     Integer[] nextPath = path.toArray(new Integer[0]);
 
     double prevTimespan = 0;

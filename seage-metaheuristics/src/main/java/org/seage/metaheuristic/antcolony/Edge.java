@@ -107,4 +107,8 @@ public class Edge {
   public Node getNode1() {
     return _node1;
   }
+
+  public String toString() {
+    return String.format("%d->%d(%f, %f)", _node1.getID(), _node2.getID(), getEdgePrice(), getLocalPheromone());
+  }
 }

@@ -100,8 +100,8 @@ public class Node {
    * @param edge
    */
   public void removeEdge(Edge edge) {
-    Node node = edge.getNode1();
-    Node node2 = edge.getNode2();
+    Node node = this;
+    Node node2 = this == edge.getNode2() ? edge.getNode1() : edge.getNode2();
 
     if (node.equals(node2)) {
       throw new IllegalArgumentException("Edge with both nodes the same.");

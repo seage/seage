@@ -28,6 +28,7 @@
 package org.seage.problem.jsp.antcolony;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -83,8 +84,8 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
         jobs = new JobsDefinition(jobInfo, stream);
       }
 
-      //new JspAlgorithmTest().runAlgorithm(jobs);
-      new JspAlgorithmTest().runAlgorithmAdapter(jobs);
+      new JspAlgorithmTest().runAlgorithm(jobs);
+      // new JspAlgorithmTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
     {
@@ -112,11 +113,11 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     //   result.putValue(param.getValueStr("name"), param.getValue("init"));
     // }
     result.putValue("numAnts", 100);
-    result.putValue("iterationCount", 2000);
+    result.putValue("iterationCount", 1000);
     result.putValue("quantumOfPheromone", 1.0);
     result.putValue("localEvaporation", 0.95);
     result.putValue("defaultPheromone", 0.2);
-    result.putValue("alpha", 1.1);
+    result.putValue("alpha", 2.1);
     result.putValue("beta", 1.5);
     
     return result;
@@ -124,7 +125,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
 
   public void runAlgorithmAdapter(JobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
-    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 200, generator.nextLong());
+    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 100, generator.nextLong());
 
     AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
 
@@ -148,17 +149,18 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
   public void runAlgorithm(JobsDefinition jobs) throws Exception
   {
     int opersNum = 0;
-    for (int i = 0; i < jobs.getJobsCount(); i++)
+    for (int i = 0; i < jobs.getJobsCount(); i++) {
       opersNum += jobs.getJobInfos()[i].getOperationInfos().length;
-
+    }
     _edges = opersNum * (opersNum - 1) / 2;
-    int iterations = 2000;
+
+    int iterations = 1000;
     // int numAnts = 500;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
     // double alpha = 1, beta = 3;
     int numAnts = 100;
-    double defaultPheromone = 0.2, localEvaporation = 0.95, quantumPheromone = 1.1;
-    double alpha = 1.1, beta = 1.9;
+    double defaultPheromone = 0.2, localEvaporation = 0.85, quantumPheromone = 2.0;
+    double alpha = 1.1, beta = 1.5;
 
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
@@ -205,6 +207,10 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     }
     System.out.println();
     System.out.println("Best: " + eval.evaluateSchedule(jobArray));
+
+    // for(int i=0;i<graph.getEdges().size();i++) {
+    //   System.out.println(graph.getEdges().get(i));
+    // }
   }
 
   @Override
@@ -241,8 +247,31 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
   @Override
   public void iterationPerformed(AntColonyEvent e)
   {
-    //System.out.println("iterationPerformed: " + e.getAntColony().getCurrentIteration());
-    //System.out.println(" - edges: " + e.getAntColony().getGraph().getEdges().size() +" / "+_edges);
+    if(e.getAntColony().getCurrentIteration() % 100 != 0)
+      return;
+    System.out.println("### iterationPerformed: " + e.getAntColony().getCurrentIteration());    
+    System.out.println("   - best : " + e.getAntColony().getGlobalBest());
+    System.out.println("   - path : " + e.getAntColony().getBestPath());
+    System.out.println("   - edges: " + e.getAntColony().getGraph().getEdges().size() +" / "+_edges);
 
+    // var edges = e.getAntColony().getGraph().getEdges();
+    // for(int i=0;i<edges.size();i++) {
+    //   Edge ed = edges.get(i);
+    //   System.out.println(String.format("      - %s (%f, %f)", ed, ed.getEdgePrice(), ed.getLocalPheromone()));
+    // }
   }
+
+    // JspGraph g = (JspGraph)e.getAntColony().getGraph();
+    // Ant a = e.getAntColony().getBestAnt();
+    // ArrayList<Integer> jobArray = new ArrayList<>();
+    // for(Integer id : a.getNodeIDsAlongPath()) {
+    //   if(id == 0) continue;
+    //   jobArray.add(id / g.getFactor());
+    // }
+    // try {
+    //   System.out.println("   - best ant : " + g.evaluator.evaluateSchedule(jobArray.toArray(new Integer[0])));
+    // } catch (Exception e1) {
+    //   // TODO Auto-generated catch block
+    //   e1.printStackTrace();
+    // }
 }

@@ -112,6 +112,7 @@ public class AntColony {
       }
       resolveRound(antReports);
       _graph.evaporate();
+      _graph.prune(_currentIteration);
       _eventProducer.fireIterationPerformed();
     }
     _eventProducer.fireAlgorithmStopped();
@@ -150,6 +151,7 @@ public class AntColony {
    * Evaluation for each iteration
    */
   private void resolveRound(ArrayList<List<Edge>> antReports) {
+    _roundBest = Double.MAX_VALUE;
     boolean newBest = false;
     double pathLength = 0;
     int counter = 0;
@@ -173,7 +175,6 @@ public class AntColony {
     }
     if (newBest)
       _eventProducer.fireNewBestSolutionFound();
-    _roundBest = Double.MAX_VALUE;
   }
 
   /**

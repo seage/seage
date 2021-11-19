@@ -28,8 +28,11 @@
 package org.seage.problem.jsp.antcolony;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-
+import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.jsp.JobsDefinition;
@@ -87,5 +90,28 @@ public class JspGraph extends Graph
 
   public int getFactor() {
     return this.factor;
+  }
+
+  public void prune(long iteration) {
+    if (iteration % 100 != 0)
+      return;
+    _edges.sort((e1, e2) -> {
+      double a = e1.getLocalPheromone() / e1.getEdgePrice();
+      double b = e2.getLocalPheromone() / e2.getEdgePrice();
+      if(a>b) return 1;
+      if(a<b) return -1;
+      return 0;
+    });
+    
+    try{
+      ArrayList<Edge> edgesToRemove = new ArrayList<>(_edges.subList(0, _edges.size() *9 / 10));
+      
+      for(Edge e2 : edgesToRemove) {
+        removeEdge(e2);
+      }
+      int a = 0;
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
   }
 }
