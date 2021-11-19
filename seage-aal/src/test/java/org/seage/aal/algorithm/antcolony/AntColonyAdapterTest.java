@@ -61,7 +61,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant> {
     this.algParams.putValue("alpha", 100);
     this.algParams.putValue("beta", 1);
     this.algParams.putValue("defaultPheromone", 1);
-    this.algParams.putValue("qantumOfPheromone", 1);
+    this.algParams.putValue("quantumOfPheromone", 1);
     this.algParams.putValue("localEvaporation", 1);
   }
 
@@ -80,7 +80,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant> {
     params.putValue("alpha", 0);
     params.putValue("beta", 0);
     params.putValue("defaultPheromone", 0);
-    params.putValue("qantumOfPheromone", 0);
+    params.putValue("quantumOfPheromone", 0);
     params.putValue("localEvaporation", 0);
     super.setAlgParameters(params);
     super.testAlgorithmWithParamsAtZero();
@@ -95,7 +95,7 @@ public class AntColonyAdapterTest extends AlgorithmAdapterTestBase<Ant> {
     params.putValue("alpha", 100);
     params.putValue("beta", 1);
     params.putValue("defaultPheromone", 1);
-    params.putValue("qantumOfPheromone", 1);
+    params.putValue("quantumOfPheromone", 1);
     params.putValue("localEvaporation", 1);
 
     super.setAlgParameters(params);
