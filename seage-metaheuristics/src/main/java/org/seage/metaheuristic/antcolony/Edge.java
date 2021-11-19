@@ -40,8 +40,6 @@ public class Edge {
   public Edge(Node start, Node end, double edgePrice) throws Exception {
     _node1 = start;
     _node2 = end;
-    _node1.addEdge(this);
-    _node2.addEdge(this);
     _edgePrice = edgePrice;
     _pheromone = 0;
   }

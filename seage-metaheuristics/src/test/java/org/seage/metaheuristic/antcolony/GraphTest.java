@@ -20,10 +20,19 @@ public class GraphTest {
   @Test
   public void testEdgeRemoval() throws Exception {
     var nodes = graph.getNodes();
+    
     Edge firstEdge = new Edge(nodes.get(1), nodes.get(2), 1);
     Edge secondEdge = new Edge(nodes.get(2), nodes.get(3), 1);
+    
+    assertEquals(0, nodes.get(1).getEdges().size());
+    assertEquals(0, nodes.get(2).getEdges().size());
+
     graph.addEdge(firstEdge);
     graph.addEdge(secondEdge);
+
+    assertEquals(1, nodes.get(1).getEdges().size());
+    assertEquals(2, nodes.get(2).getEdges().size());
+    assertEquals(1, nodes.get(3).getEdges().size());
 
     assertTrue(graph.getEdges().contains(firstEdge));
     assertTrue(firstEdge.getNode1().getEdges().contains(firstEdge));
