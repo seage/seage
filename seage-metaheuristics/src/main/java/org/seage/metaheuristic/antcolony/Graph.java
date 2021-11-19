@@ -100,7 +100,7 @@ public class Graph {
       throw new Exception("Graph does not contain the node with id: " + newEdge.getNode1().getID());
     }
     if(!_nodes.containsValue(newEdge.getNode2())) {
-      throw new Exception("Graph does not contain the node with id: " + newEdge.getNode1().getID());
+      throw new Exception("Graph does not contain the node with id: " + newEdge.getNode2().getID());
     }
 
     _edges.add(newEdge);

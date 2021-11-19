@@ -1,6 +1,7 @@
 package org.seage.metaheuristic.antcolony;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
@@ -15,5 +16,22 @@ public class GraphTest {
   public void init() throws Exception {    
     graph.setDefaultPheromone(1);
   }
-  
+
+  @Test
+  public void testEdgeRemoval() throws Exception {
+    var nodes = graph.getNodes();
+    Edge firstEdge = new Edge(nodes.get(1), nodes.get(2), 1);
+    Edge secondEdge = new Edge(nodes.get(2), nodes.get(3), 1);
+    graph.addEdge(firstEdge);
+    graph.addEdge(secondEdge);
+
+    assertTrue(graph.getEdges().contains(firstEdge));
+    assertTrue(firstEdge.getNode1().getEdges().contains(firstEdge));
+
+    // Remove the first edge
+    graph.removeEdge(firstEdge);
+
+    assertFalse(graph.getEdges().contains(firstEdge));
+    assertFalse(firstEdge.getNode1().getEdges().contains(firstEdge));
+  }
 }
