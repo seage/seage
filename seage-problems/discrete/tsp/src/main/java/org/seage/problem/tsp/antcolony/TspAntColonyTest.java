@@ -82,12 +82,12 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // cities[3] = new City(4, 1.0, 1.0);
 
     // _edges = cities.length * (cities.length - 1) / 2;
-    int iterations = 100;
+    int iterations = 1000;
     // int numAnts = 500;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone =
     // 100;
     // double alpha = 1, beta = 3;
-    int numAnts = 969;
+    int numAnts = 100;
     double defaultPheromone = 0.917556841901922, localEvaporation = 0.6269178017512955,
         quantumPheromone = 610.6257680691537;
     double alpha = 1.0654234316716138, beta = 1.1515958770402412;

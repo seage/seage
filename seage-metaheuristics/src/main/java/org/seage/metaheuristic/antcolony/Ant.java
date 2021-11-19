@@ -76,7 +76,7 @@ public class Ant {
       Node n2 = _nodePath.get(i + 1);
       Edge e = n1.getEdgeMap().get(n2);
       if (e == null){
-        double edgePrice = _brain.getNodeDistance(_nodePath.subList(0, i), n2);
+        double edgePrice = _brain.getNodeDistance(_nodePath.subList(0, i+1), n2);
         e = new Edge(n1, n2, edgePrice);
       }
       _edgePath.add(e);

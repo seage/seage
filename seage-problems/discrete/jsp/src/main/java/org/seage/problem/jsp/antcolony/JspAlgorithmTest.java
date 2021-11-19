@@ -65,8 +65,14 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
   {
     try
     {
-      String instanceID = "yn_3x3_example";
-      String path = String.format("/org/seage/problem/jsp/test-instances/%s.xml", instanceID);
+      // String instanceID = "ft06";
+      // String instanceID = "ft10";
+      String instanceID = "ft20";
+      // String instanceID = "la01";
+      // String instanceID = "la02";
+      String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
+      // String instanceID = "yn_3x3_example";
+      // String path = String.format("/org/seage/problem/jsp/test-instances/%s.xml", instanceID);
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
       JobsDefinition jobs = null;
 
@@ -75,7 +81,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
       }
 
       new JspAlgorithmTest().runAlgorithm(jobs);
-      // new JspAlgorithmTest().runAlgorithmAdapter(jobs);
+      //new JspAlgorithmTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
     {
@@ -122,7 +128,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     JspAntColonyFactory factory = new JspAntColonyFactory();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     try {
-        IAlgorithmAdapter<JspPhenotype, Ant> adapter =  factory.createAlgorithm(jobs, eval);
+        IAlgorithmAdapter<JspPhenotype, Ant> adapter = factory.createAlgorithm(jobs, eval);
         adapter.solutionsFromPhenotype(schedules);
         adapter.startSearching(params);
         var solutions = adapter.solutionsToPhenotype();
@@ -141,13 +147,13 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
       opersNum += jobs.getJobInfos()[i].getOperationInfos().length;
 
     _edges = opersNum * (opersNum - 1) / 2;
-    int iterations = 100;
+    int iterations = 3000;
     // int numAnts = 500;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
     // double alpha = 1, beta = 3;
-    int numAnts = 10;
-    double defaultPheromone = 0.01, localEvaporation = 0.96, quantumPheromone = 100;
-    double alpha = 1.0, beta = 2.3;
+    int numAnts = 100;
+    double defaultPheromone = 0.9, localEvaporation = 0.98, quantumPheromone = 1.0;
+    double alpha = 1.1, beta = 2.1;
 
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
