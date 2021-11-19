@@ -33,5 +33,8 @@ public class GraphTest {
 
     assertFalse(graph.getEdges().contains(firstEdge));
     assertFalse(firstEdge.getNode1().getEdges().contains(firstEdge));
+
+    assertTrue(graph.getEdges().contains(secondEdge));
+    assertTrue(secondEdge.getNode1().getEdges().contains(secondEdge));
   }
 }
