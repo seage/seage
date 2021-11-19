@@ -157,7 +157,8 @@ public class AntColony {
       if (_bestPath == null) {
         _bestPath = vector;
       }
-      pathLength = _ants[counter++]._distanceTravelled;
+
+      pathLength = _ants[counter]._distanceTravelled;
 
       if (pathLength < _roundBest)
         _roundBest = pathLength;
@@ -166,7 +167,9 @@ public class AntColony {
         _globalBest = _roundBest;
         _bestPath = new ArrayList<Edge>(vector);
         newBest = true;
+        bestAnt = _ants[counter];
       }
+      counter++;
     }
     if (newBest)
       _eventProducer.fireNewBestSolutionFound();

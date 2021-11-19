@@ -65,8 +65,17 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
   {
     try
     {
-      String instanceID = "yn_3x3_example";
-      String path = String.format("/org/seage/problem/jsp/test-instances/%s.xml", instanceID);
+      // String instanceID = "ft06";
+      String instanceID = "ft10";
+      // String instanceID = "ft20";
+      // String instanceID = "la01";
+      // String instanceID = "la02";
+      // String instanceID = "la04";
+      // String instanceID = "la35";
+      // String instanceID = "swv20";
+      String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
+      // String instanceID = "yn_3x3_example";
+      // String path = String.format("/org/seage/problem/jsp/test-instances/%s.xml", instanceID);
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
       JobsDefinition jobs = null;
 
@@ -74,7 +83,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
         jobs = new JobsDefinition(jobInfo, stream);
       }
 
-      new JspAlgorithmTest().runAlgorithm(jobs);
+      //new JspAlgorithmTest().runAlgorithm(jobs);
       new JspAlgorithmTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
@@ -99,21 +108,23 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
   private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
     AlgorithmParams result = new AlgorithmParams();
     DataNode algParamsNode = problemInfo.getDataNode("Algorithms").getDataNodeById("AntColony");
-    for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
-      result.putValue(param.getValueStr("name"), param.getValue("init"));
-    }
-    result.putValue("quantumPheromone", 100);
-    result.putValue("localEvaporation", 0.99);
-    result.putValue("defaultPheromone", 0.491);
-    result.putValue("alpha", 1.0);
-    result.putValue("beta", 2.3);
-    result.putValue("numAnts", 10);
+    // for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
+    //   result.putValue(param.getValueStr("name"), param.getValue("init"));
+    // }
+    result.putValue("numAnts", 100);
+    result.putValue("iterationCount", 2000);
+    result.putValue("quantumOfPheromone", 1.0);
+    result.putValue("localEvaporation", 0.95);
+    result.putValue("defaultPheromone", 0.2);
+    result.putValue("alpha", 1.1);
+    result.putValue("beta", 1.5);
+    
     return result;
   }
 
   public void runAlgorithmAdapter(JobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
-    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 1, generator.nextLong());
+    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 200, generator.nextLong());
 
     AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
 
@@ -122,12 +133,12 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     JspAntColonyFactory factory = new JspAntColonyFactory();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     try {
-        IAlgorithmAdapter<JspPhenotype, Ant> adapter =  factory.createAlgorithm(jobs, eval);
+        IAlgorithmAdapter<JspPhenotype, Ant> adapter = factory.createAlgorithm(jobs, eval);
         adapter.solutionsFromPhenotype(schedules);
         adapter.startSearching(params);
-        var solutions = adapter.solutionsToPhenotype();
-        System.out.println(solutions[0].getObjValue());
-        System.out.println(solutions[0].getScore());
+        var solutions = adapter.solutionsToPhenotype();        
+        System.out.println(adapter.getReport().toString());
+        // System.out.println(solutions[0].getScore());
 
     } catch (Exception e) {
         e.printStackTrace();
@@ -141,13 +152,13 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
       opersNum += jobs.getJobInfos()[i].getOperationInfos().length;
 
     _edges = opersNum * (opersNum - 1) / 2;
-    int iterations = 100;
+    int iterations = 2000;
     // int numAnts = 500;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
     // double alpha = 1, beta = 3;
-    int numAnts = 10;
-    double defaultPheromone = 0.01, localEvaporation = 0.96, quantumPheromone = 100;
-    double alpha = 1.0, beta = 2.3;
+    int numAnts = 100;
+    double defaultPheromone = 0.2, localEvaporation = 0.95, quantumPheromone = 1.1;
+    double alpha = 1.1, beta = 1.9;
 
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();

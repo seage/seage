@@ -121,4 +121,19 @@ public class JspAntBrain extends AntBrain {
     // Get the start node operation length and add one, for the step to another node
     return nextTimespan - prevTimespan + 1.0;
   }
+
+
+  @Override
+  public double getPathCost(List<Edge> path) {
+    var nodes = edgeListToNodeList(path);
+    Integer[] jobArray = new Integer[nodes.size()-1];
+    for(int i=1;i<nodes.size();i++)
+      jobArray[i-1] = nodes.get(i).getID() / jspGraph.getFactor();
+
+    try {
+      return evaluator.evaluateSchedule(jobArray);
+    } catch (Exception e) {
+      return 1.0;
+    }
+  }
 }

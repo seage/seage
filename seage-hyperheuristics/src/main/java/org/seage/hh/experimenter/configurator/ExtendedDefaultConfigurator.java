@@ -102,7 +102,7 @@ public class ExtendedDefaultConfigurator extends Configurator {
                 put("iterationCount", 524911.1662639739);
                 put("localEvaporation", 0.8273663355790442);
                 put("numSolutions", 75.0142078836997);
-                put("qantumOfPheromone", 78.06959520616533);
+                put("quantumOfPheromone", 78.06959520616533);
               }
             });
             // put("AntColony", new HashMap<>() {{
@@ -112,7 +112,7 @@ public class ExtendedDefaultConfigurator extends Configurator {
             //     put("iterationCount", 1000000.0);
             //     put("localEvaporation", 0.8951207317935241);
             //     put("numSolutions", 213.18849067585637);
-            //     put("qantumOfPheromone", 1.0);
+            //     put("quantumOfPheromone", 1.0);
             //   }
             // });
             put("TabuSearch", new HashMap<>() {{
@@ -168,7 +168,7 @@ public class ExtendedDefaultConfigurator extends Configurator {
                 put("iterationCount", 524911.1662639739);
                 put("localEvaporation", 0.8273663355790442);
                 put("numSolutions", 75.0142078836997);
-                put("qantumOfPheromone", 78.06959520616533);
+                put("quantumOfPheromone", 78.06959520616533);
               }
             });
             // put("AntColony", new HashMap<>() {{
@@ -178,7 +178,7 @@ public class ExtendedDefaultConfigurator extends Configurator {
             //     put("iterationCount", 1000000.0);
             //     put("localEvaporation", 0.8895836213805763);
             //     put("numSolutions", 10.0);
-            //     put("qantumOfPheromone", 1.0);
+            //     put("quantumOfPheromone", 1.0);
             //   }
             // });
             // put("TabuSearch", new HashMap<>() {{
@@ -234,7 +234,7 @@ public class ExtendedDefaultConfigurator extends Configurator {
                 put("iterationCount", 1000000.0);
                 put("localEvaporation", 0.9425282337174113);
                 put("numSolutions", 115.41051795783903);
-                put("qantumOfPheromone", 1.0);
+                put("quantumOfPheromone", 1.0);
               }
             });
             put("TabuSearch", new HashMap<>() {{
@@ -270,7 +270,7 @@ public class ExtendedDefaultConfigurator extends Configurator {
                 put("iterationCount", 931797.0532826431);
                 put("localEvaporation", 0.9172622581982506);
                 put("numSolutions", 167.52159246610802);
-                put("qantumOfPheromone", 78.13542512489084);
+                put("quantumOfPheromone", 78.13542512489084);
               }
             });
             put("TabuSearch", new HashMap<>() {{
