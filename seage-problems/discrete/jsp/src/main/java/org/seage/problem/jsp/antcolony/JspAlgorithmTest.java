@@ -81,7 +81,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
       }
 
       new JspAlgorithmTest().runAlgorithm(jobs);
-      //new JspAlgorithmTest().runAlgorithmAdapter(jobs);
+      new JspAlgorithmTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
     {
