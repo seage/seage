@@ -61,7 +61,6 @@ public class AntBrain {
     if (nextAvailableNodes.isEmpty())
       return null;
 
-    double probSum = 0; 
     int i = 0;
     double[] probabilities = new double[nextAvailableNodes.size()];
     Edge[] candidateEdges = new Edge[nextAvailableNodes.size()];
@@ -87,10 +86,9 @@ public class AntBrain {
       probabilities[i] = p;
       candidateEdges[i] = e;
       i++;
-      probSum += p;
     }
     
-    return candidateEdges[next(probabilities, probSum)];
+    return candidateEdges[next(probabilities, rand.nextDouble())];
   }
 
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
@@ -110,33 +108,21 @@ public class AntBrain {
 
   /**
    * Next edges index calculation.
-   * 
-   * @param probs - probabilities all edges
    * @return - Next edges index
    */
-  protected int next(double[] probabilities, double sum) {
-    sum = sum != 0 ? sum : 1;    
-    for (int i = 0; i < probabilities.length; i++) {
-      probabilities[i] /= sum;
+  protected static int next(double[] probabilities, double randomNumber) {
+    double[] probs = new double[probabilities.length];
+    double sum = 0;
+    for (int i = 0; i < probs.length; i++) {
+      sum += probabilities[i]; 
+      probs[i] = sum;
     }
-
-    double randomNumber = rand.nextDouble();
-    double numberReach;
-    if (randomNumber <= 0.5) {
-      numberReach = 0;
-      for (int i = 0; i < probabilities.length; i++) {
-        numberReach += probabilities[i];
-        if (numberReach > randomNumber) {
-          return i;
-        }
-      }
-    } else {
-      numberReach = 1;
-      for (int i = probabilities.length - 1; i >= 0; i--) {
-        numberReach -= probabilities[i];
-        if (numberReach <= randomNumber) {
-          return i;
-        }
+    for (int i = 0; i < probs.length; i++) {
+      probs[i] /= sum;
+    }
+    for (int i = 0; i < probs.length; i++) {
+      if (randomNumber <= probs[i]) {
+        return i;
       }
     }
     return 0;
