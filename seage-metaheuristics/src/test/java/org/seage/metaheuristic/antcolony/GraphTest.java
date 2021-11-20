@@ -2,8 +2,10 @@ package org.seage.metaheuristic.antcolony;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,6 +43,27 @@ public class GraphTest {
     // The graph has new edges
     assertTrue(graph.getEdges().contains(firstEdge));
     assertTrue(graph.getEdges().contains(secondEdge));
+  }
+
+  @Test
+  public void testEdgeListToNodeList() {
+    graph = new Graph(Arrays.asList(1, 2, 3, 4, 5));
+    var nodes = graph.getNodes();
+    var edges = Arrays.asList(
+      new Edge(nodes.get(1), nodes.get(2), 1),
+      new Edge(nodes.get(3), nodes.get(2), 1),
+      new Edge(nodes.get(4), nodes.get(3), 1),
+      new Edge(nodes.get(4), nodes.get(5), 1)
+    );
+    var nodes2 = Graph.edgeListToNodeList(edges)
+        .stream()
+        .map((Node n)->n.getID())
+        .collect(Collectors.toList());
+    assertNotNull(nodes2);
+    assertEquals(Arrays.asList(1, 2, 3, 4, 5), nodes2);
+    
+    var nodes3 = Graph.edgeListToNodeIds(edges);
+    assertEquals(Arrays.asList(1, 2, 3, 4, 5), nodes3);
   }
 
   @Test

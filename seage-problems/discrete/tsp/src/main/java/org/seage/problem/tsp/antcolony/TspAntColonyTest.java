@@ -37,8 +37,6 @@ import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
-import org.seage.problem.tsp.TspPhenotype;
-import org.seage.problem.tsp.TspPhenotypeEvaluator;
 
 /**
  * 
@@ -83,7 +81,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
     _edges = cities.length * (cities.length - 1) / 2;
     
-    int iterations = 2000;
+    int iterations = 10000;
     // int numAnts = 500;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone =
     // 100;
@@ -92,8 +90,8 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // double defaultPheromone = 0.917556841901922, localEvaporation = 0.6269178017512955,
     //     quantumPheromone = 610.6257680691537;
     // double alpha = 1.0654234316716138, beta = 1.1515958770402412;
-    double defaultPheromone = 0.9, localEvaporation = 0.92, quantumPheromone = 10;
-    double alpha = 1, beta = 3;
+    double defaultPheromone = 10.9, localEvaporation = 0.9, quantumPheromone = 100;
+    double alpha = 1.1, beta = 2.1;
     TspGraph graph = new TspGraph(cities);
     System.out.println("Loaded ...");
     AntBrain brain = new TspAntBrain(graph, cities);
@@ -116,28 +114,12 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     System.out.println("Nodes: " + graph.getNodes().size());
     System.out.println("Time [ms]: " + (t2 - t1));
 
-    Integer[] tour = createTour(colony.getBestPath());
+    List<Integer> tour = Graph.edgeListToNodeIds(colony.getBestPath());
     for (Integer t : tour)
       System.out.print(t + " ");
     System.out.println();
     // TODO: Fix TspPhenotypeEvaluator
-    //System.out.println(new TspPhenotypeEvaluator(cities).evaluate(new TspPhenotype(tour))[0]);
-  }
-
-  private Integer[] createTour(List<Edge> bestPath) {
-    Integer[] tour = new Integer[bestPath.size() + 1];
-
-    tour[0] = bestPath.get(0).getNode1().getID();
-    if (tour[0] != bestPath.get(1).getNode1().getID() || tour[0] != bestPath.get(1).getNode2().getID())
-      tour[0] = bestPath.get(0).getNode2().getID();
-    for (int i = 1; i < tour.length - 1; i++) {
-      tour[i] = bestPath.get(i).getNode1().getID();
-      if (i > 0 && tour[i - 1].equals(tour[i])) {
-        tour[i] = bestPath.get(i).getNode2().getID();
-      }
-    }
-    tour[tour.length - 1] = tour[0];
-    return tour;
+    // System.out.println(new TspPhenotypeEvaluator(pro).evaluate(new TspPhenotype(tour))[0]);
   }
 
   @Override

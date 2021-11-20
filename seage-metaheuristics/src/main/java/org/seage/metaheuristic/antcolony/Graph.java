@@ -30,6 +30,7 @@ package org.seage.metaheuristic.antcolony;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -128,4 +129,32 @@ public class Graph {
   }
 
   public void prune(long iteration) throws Exception {}
+
+  public static List<Node> edgeListToNodeList(List<Edge> edges) {
+    ArrayList<Node> nodeList = new ArrayList<Node>();
+
+    Edge previous = null;
+    for (Edge e : edges) {
+      if (previous != null) {
+        if (e.getNode1().getID() == previous.getNode1().getID() 
+            || e.getNode1().getID() == previous.getNode2().getID()) {
+          nodeList.add(e.getNode2());
+        } else {
+          nodeList.add(e.getNode1());
+        }
+      } else {
+        nodeList.add(e.getNode1());
+        nodeList.add(e.getNode2());
+      }
+      previous = e;
+    }
+    return nodeList;
+  }
+
+  public static List<Integer> edgeListToNodeIds(List<Edge> edges) {
+    return Graph.edgeListToNodeList(edges)
+        .stream()
+        .map((Node n)->n.getID())
+        .collect(Collectors.toList());
+  }
 }

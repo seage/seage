@@ -137,7 +137,7 @@ public class AntColony {
         List<Edge> path = a.doFirstExploration();
         if (a.getDistanceTravelled() < _globalBest) {
           _globalBest = a.getDistanceTravelled();          
-          _bestPath = path;
+          _bestPath = new ArrayList<>(path);
           this.bestAnt = a;
           _eventProducer.fireNewBestSolutionFound();
         }
@@ -155,9 +155,9 @@ public class AntColony {
     boolean newBest = false;
     double pathLength = 0;
     int counter = 0;
-    for (List<Edge> vector : antReports) {
+    for (List<Edge> path : antReports) {
       if (_bestPath == null) {
-        _bestPath = vector;
+        _bestPath = new ArrayList<>(path);;
       }
 
       pathLength = _ants[counter]._distanceTravelled;
@@ -167,7 +167,7 @@ public class AntColony {
 
       if (_roundBest < _globalBest) {
         _globalBest = _roundBest;
-        _bestPath = new ArrayList<Edge>(vector);
+        _bestPath = new ArrayList<Edge>(path);
         newBest = true;
         bestAnt = _ants[counter];
       }

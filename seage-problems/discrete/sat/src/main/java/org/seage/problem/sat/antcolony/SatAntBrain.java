@@ -51,7 +51,7 @@ public class SatAntBrain extends AntBrain {
   @Override
   public double getPathCost(List<Edge> path) {
     Boolean[] solution = new Boolean[formula.getLiteralCount()];
-    List<Node> nodeList = edgeListToNodeList(path);
+    List<Node> nodeList = Graph.edgeListToNodeList(path);
 
     for (Node n : nodeList) {
       if (n.getID() == 0) {

@@ -64,7 +64,7 @@ public class TspAntBrain extends AntBrain {
    */
   @Override
   public double getNodeDistance(List<Node> nodePath, Node end) {
-    Node start = nodePath.get(0);
+    Node start = nodePath.get(nodePath.size()-1);
     double dX = (this.cities[start.getID() - 1].X - this.cities[end.getID() - 1].X);
     double dY = (this.cities[start.getID() - 1].Y - this.cities[end.getID() - 1].Y);
     return Math.round(Math.sqrt(dX * dX + dY * dY));

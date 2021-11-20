@@ -37,7 +37,7 @@ public class Edge {
   private double _edgePrice;
   private double _pheromone;
 
-  public Edge(Node start, Node end, double edgePrice) throws Exception {
+  public Edge(Node start, Node end, double edgePrice) {
     _node1 = start;
     _node2 = end;
     _edgePrice = edgePrice;

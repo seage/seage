@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Edge;
+import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 
 import org.seage.problem.jsp.JobsDefinition;
@@ -117,7 +118,7 @@ public class JspAntBrain extends AntBrain {
 
   @Override
   public double getPathCost(List<Edge> path) {
-    var nodes = edgeListToNodeList(path);
+    var nodes = Graph.edgeListToNodeList(path);
     Integer[] jobArray = new Integer[nodes.size()-1];
     for(int i=1;i<nodes.size();i++)
       jobArray[i-1] = nodes.get(i).getID() / jspGraph.getFactor();

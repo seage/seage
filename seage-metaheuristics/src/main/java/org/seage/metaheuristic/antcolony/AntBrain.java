@@ -145,27 +145,6 @@ public class AntBrain {
     return result;
   }
 
-  protected List<Node> edgeListToNodeList(List<Edge> edges) {
-    ArrayList<Node> nodeList = new ArrayList<Node>();
-
-    Edge previous = null;
-    for (Edge e : edges) {
-      if (previous != null) {
-        if (e.getNode1().getID() == previous.getNode1().getID() 
-            || e.getNode1().getID() == previous.getNode2().getID()) {
-          nodeList.add(e.getNode2());
-        } else {
-          nodeList.add(e.getNode1());
-        }
-      } else {
-        nodeList.add(e.getNode1());
-        nodeList.add(e.getNode2());
-      }
-      previous = e;
-    }
-    return nodeList;
-  }
-
   public double getNodeDistance(List<Node> nodePath, Node node) {
      return 1.0;
   };
