@@ -47,13 +47,15 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   public static void main(String[] args) {
     try {
-      // String path = "data/tsp/eil51.tsp";//args[0]; // 426
-      String path = "seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/berlin52.tsp";// args[0]; // 7542
-      // String path = "data/tsp/ch130.tsp";//args[0]; // 6110
-      // String path = "data/tsp/lin318.tsp";//args[0]; // 42029
-      // String path = "data/tsp/pcb442.tsp";//args[0]; // 50778
-      // String path = "data/tsp/u574.tsp";//args[0]; // 36905
+      // String instanceID = "berlin52"; // 7542
+      // String instanceID = "eil51"; // 426
+      // String instanceID = "ch130"; // 6110
+      // String instanceID = "lin318"; // 42029
+      // String instanceID = "pcb442"; // 50778
+      // String instanceID = "u574"; // 36905
+      String instanceID = "rat575-hyflex-2"; // 6773 (8255)
 
+      String path = String.format("seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/%s.tsp", instanceID);// args[0];
       new TspAntColonyTest().run(path);
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -73,25 +75,33 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   public void run(String path) throws Exception {
     City[] cities = CityProvider.readCities(new FileInputStream(path));
-    // City[] cities = new City[4];
-    // cities[0] = new City(1, 0.0, 0.0);
-    // cities[1] = new City(2, 0.0, 1.0);
-    // cities[2] = new City(3, 1.0, 0.0);
-    // cities[3] = new City(4, 1.0, 1.0);
-
     _edges = cities.length * (cities.length - 1) / 2;
     
-    int iterations = 10000;
+    int iterations = 2000;
+    
     // int numAnts = 500;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone =
     // 100;
     // double alpha = 1, beta = 3;
-    int numAnts = 100;
+    
+    // int numAnts = 200;
     // double defaultPheromone = 0.917556841901922, localEvaporation = 0.6269178017512955,
     //     quantumPheromone = 610.6257680691537;
     // double alpha = 1.0654234316716138, beta = 1.1515958770402412;
-    double defaultPheromone = 10.9, localEvaporation = 0.9, quantumPheromone = 100;
-    double alpha = 1.1, beta = 2.1;
+    
+    // David
+    int numAnts = 733;
+    double defaultPheromone = 0.8689519218148817; 
+    double localEvaporation = 0.748594131091018;
+    double quantumPheromone = 288.9555351673542;
+    double alpha = 1.0162687039555678, beta = 6.35356118801852;
+    
+    // Richard
+    // int numAnts = 200;
+    // double defaultPheromone = 10.9, localEvaporation = 0.9, quantumPheromone = 100;
+    // double alpha = 1.1, beta = 2.1;
+
+    // ----
     TspGraph graph = new TspGraph(cities);
     System.out.println("Loaded ...");
     AntBrain brain = new TspAntBrain(graph, cities);
