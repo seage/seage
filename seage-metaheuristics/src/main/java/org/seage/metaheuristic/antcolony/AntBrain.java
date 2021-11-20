@@ -44,8 +44,12 @@ public class AntBrain {
   protected Graph graph;
 
   public AntBrain(Graph graph) {
+    this(graph, System.currentTimeMillis());
+  }
+
+  public AntBrain(Graph graph, long randSeed) {
     this.graph = graph;
-    rand = new Random(System.currentTimeMillis());
+    rand = new Random(randSeed);
   }
 
   void setParameters(double alpha, double beta, double quantumPheromone) {

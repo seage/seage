@@ -117,8 +117,8 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     result.putValue("quantumOfPheromone", 1.0);
     result.putValue("localEvaporation", 0.95);
     result.putValue("defaultPheromone", 0.2);
-    result.putValue("alpha", 2.1);
-    result.putValue("beta", 1.5);
+    result.putValue("alpha", 1.1);
+    result.putValue("beta", 1.9);
     
     return result;
   }
@@ -154,13 +154,13 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     }
     _edges = opersNum * (opersNum - 1) / 2;
 
-    int iterations = 1000;
-    // int numAnts = 500;
-    // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
-    // double alpha = 1, beta = 3;
-    int numAnts = 100;
-    double defaultPheromone = 0.2, localEvaporation = 0.85, quantumPheromone = 2.0;
-    double alpha = 1.1, beta = 1.5;
+    int iterations = 2000;
+    int numAnts = 500;
+    double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
+    double alpha = 1, beta = 3;
+    // int numAnts = 100;
+    // double defaultPheromone = 0.001, localEvaporation = 0.95, quantumPheromone = 10.0;
+    // double alpha = 1.5, beta = 1.9;
 
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
@@ -251,7 +251,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
       return;
     System.out.println("### iterationPerformed: " + e.getAntColony().getCurrentIteration());    
     System.out.println("   - best : " + e.getAntColony().getGlobalBest());
-    System.out.println("   - path : " + e.getAntColony().getBestPath());
+    // System.out.println("   - path : " + e.getAntColony().getBestPath());
     System.out.println("   - edges: " + e.getAntColony().getGraph().getEdges().size() +" / "+_edges);
 
     // var edges = e.getAntColony().getGraph().getEdges();

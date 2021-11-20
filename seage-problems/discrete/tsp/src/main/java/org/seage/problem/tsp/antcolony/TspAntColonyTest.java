@@ -81,16 +81,19 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // cities[2] = new City(3, 1.0, 0.0);
     // cities[3] = new City(4, 1.0, 1.0);
 
-    // _edges = cities.length * (cities.length - 1) / 2;
-    int iterations = 1000;
+    _edges = cities.length * (cities.length - 1) / 2;
+    
+    int iterations = 2000;
     // int numAnts = 500;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone =
     // 100;
     // double alpha = 1, beta = 3;
     int numAnts = 100;
-    double defaultPheromone = 0.917556841901922, localEvaporation = 0.6269178017512955,
-        quantumPheromone = 610.6257680691537;
-    double alpha = 1.0654234316716138, beta = 1.1515958770402412;
+    // double defaultPheromone = 0.917556841901922, localEvaporation = 0.6269178017512955,
+    //     quantumPheromone = 610.6257680691537;
+    // double alpha = 1.0654234316716138, beta = 1.1515958770402412;
+    double defaultPheromone = 0.9, localEvaporation = 0.92, quantumPheromone = 10;
+    double alpha = 1, beta = 3;
     TspGraph graph = new TspGraph(cities);
     System.out.println("Loaded ...");
     AntBrain brain = new TspAntBrain(graph, cities);

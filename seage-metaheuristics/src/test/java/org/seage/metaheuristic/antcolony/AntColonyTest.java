@@ -30,8 +30,8 @@ public class AntColonyTest {
 
   class TestBrain extends AntBrain {
 
-    public TestBrain(Graph graph) {
-      super(graph);
+    public TestBrain(Graph graph, long randSeed) {
+      super(graph, randSeed);
     }
 
     @Override
@@ -64,37 +64,65 @@ public class AntColonyTest {
       this.y = y;
     }  
   }
-
+  //              ^
+  //              |
+  //  [-1, 1] X4  -   X1 [1, 1]
+  //              |
+  //       <--|---|---|--->
+  //              |   
+  //  [-1,-1] X3  -   X2 [1,-1]
+  //              |
+  //              v
   private Graph createGraph() {
     Graph graph = new Graph();
-    graph.getNodes().put(1, new TestNode(1,  1.0,  0.0));
-    graph.getNodes().put(2, new TestNode(2,  0.0, -1.0));
-    graph.getNodes().put(3, new TestNode(3, -1.0,  0.0));
-    graph.getNodes().put(4, new TestNode(4,  0.0,  1.0));
+    graph.getNodes().put(1, new TestNode(1,  1.0,  1.0));
+    graph.getNodes().put(2, new TestNode(2,  1.0, -1.0));
+    graph.getNodes().put(3, new TestNode(3, -1.0, -1.0));
+    graph.getNodes().put(4, new TestNode(4, -1.0,  1.0));
     return graph;
   }
 
   @Test
   public void testAuxClasses() {
     Graph graph = createGraph();
-    AntBrain brain = new TestBrain(graph);
+    AntBrain brain = new TestBrain(graph, 1);
 
     var nodes = graph.getNodes();
     double d = 0.0;
     d = brain.getNodeDistance(Arrays.asList(nodes.get(1)), nodes.get(2));
-    assertEquals(1.41, d, 0.005);
+    assertEquals(2, d);
     d = brain.getNodeDistance(Arrays.asList(nodes.get(1)), nodes.get(3));
-    assertEquals(2.0, d, 0.005);
+    assertEquals(2.83, d, 0.005);
   }
 
   @Test
-  public void testProblem() throws Exception {
+  public void testAntColonyWithOneAnt() throws Exception {
     Graph graph = createGraph();
     AntColony colony = new AntColony(graph);
-    AntBrain brain = new TestBrain(graph);
+    AntBrain brain = new TestBrain(graph, 11);
     Ant ant = new Ant(brain, graph, null);
-    colony.setParameters(1, 1, 1, 1, 1, 1);
+    colony.setParameters(1, 1, 1, 1, 1, 0.8);
     colony.startExploring(graph.getNodes().get(1), new Ant[] {ant});
-    assertTrue(true);
+
+    assertEquals(ant, colony.getBestAnt());
+    assertEquals(8, colony.getGlobalBest());
+    assertEquals(4, colony.getBestPath().size());
+    assertEquals(4, graph.getEdges().size());
+  }
+
+  @Test
+  public void testAntColonyWithTwoAnts() throws Exception {
+    Graph graph = createGraph();
+    AntColony colony = new AntColony(graph);
+    AntBrain brain = new TestBrain(graph, 6);
+    Ant ant = new Ant(brain, graph, null);
+    Ant ant2 = new Ant(brain, graph, null);
+    colony.setParameters(1, 1, 1, 1, 1, 0.8);
+    colony.startExploring(graph.getNodes().get(1), new Ant[] {ant, ant2});
+
+    assertEquals(ant, colony.getBestAnt());
+    assertEquals(8, colony.getGlobalBest());
+    assertEquals(4, colony.getBestPath().size());
+    assertEquals(6, graph.getEdges().size());
   }
 }

@@ -104,7 +104,7 @@ public class JspGraph extends Graph
     });
     
     try{
-      ArrayList<Edge> edgesToRemove = new ArrayList<>(_edges.subList(0, _edges.size() *9 / 10));
+      ArrayList<Edge> edgesToRemove = new ArrayList<>(_edges.subList(0, _edges.size() * 1 / 10));
       
       for(Edge e2 : edgesToRemove) {
         removeEdge(e2);

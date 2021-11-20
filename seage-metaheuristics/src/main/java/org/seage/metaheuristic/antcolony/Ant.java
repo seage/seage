@@ -125,7 +125,7 @@ public class Ant {
    */
   protected void leavePheromone() throws Exception {
     for (Edge edge : _edgePath) {
-      edge.addLocalPheromone(_brain.getQuantumPheromone() / (_distanceTravelled));
+      edge.addLocalPheromone(_brain.getQuantumPheromone() * (edge.getEdgePrice() / _distanceTravelled));
       if(!_graph._edges.contains(edge)) {
         _graph.addEdge(edge);
       }
