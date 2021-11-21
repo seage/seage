@@ -145,7 +145,7 @@ public class JspAnt extends Ant {
 
 
   @Override
-  public double getPathCost(List<Edge> path) {
+  public double getPathCost(List<Edge> path) throws Exception {
     JspGraph jspGraph = (JspGraph)_graph;
     var nodes = Graph.edgeListToNodeList(path);
     Integer[] jobArray = new Integer[nodes.size()-1];

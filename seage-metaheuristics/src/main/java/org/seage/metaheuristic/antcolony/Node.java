@@ -73,25 +73,22 @@ public class Node {
    * @throws Exception ex
    */
   public void addEdge(Edge edge) throws Exception {
-    Node node = edge.getNodes()[0];
-    Node node2 = edge.getNode2(node);
+    Node node2 = edge.getNode2(this); // Node to link
+    Node node1 = edge.getNode2(node2);
 
-    if (node.equals(node2)) {
+    if (node1.equals(node2)) {
       throw new IllegalArgumentException("Edge with both nodes the same.");
     }
-    if (!(node.equals(this) || node2.equals(this))) {
+    if (!(node1.equals(this) || node2.equals(this))) {
       throw new IllegalArgumentException("The adding edge is not related to the current node.");
     }
 
-    if (node.equals(this)) {
-      node = node2;
-    }
 
     if (!edges.containsValue(edge)) {
-      edges.put(node, edge);
+      edges.put(node2, edge);
     }
 
-    nodes.put(node.getID(), node);
+    nodes.put(node2.getID(), node2);
 
   }
 
@@ -100,21 +97,16 @@ public class Node {
    * @param edge
    */
   public void removeEdge(Edge edge) throws Exception {
-    Node node = this;
-    Node node2 = this == edge.getNode2(node) ? edge.getNodes()[0] : edge.getNode2(node);
+    Node node1 = this;
+    Node node2 = edge.getNode2(node1);
 
-    if (node.equals(node2)) {
+    if (node1.equals(node2)) {
       throw new IllegalArgumentException("Edge with both nodes the same.");
     }
-    if (!(node.equals(this) || node2.equals(this))) {
-      throw new IllegalArgumentException("Edge is not related to the current node.");
-    }
-
     if (edges.containsValue(edge)) {
       this.edges.remove(node2);
       this.nodes.remove(node2.getID());
     }
-
   }
 
   /**

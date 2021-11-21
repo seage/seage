@@ -48,7 +48,7 @@ public class SatAnt extends Ant {
   }
 
   @Override
-  public double getPathCost(List<Edge> path) {
+  public double getPathCost(List<Edge> path) throws Exception {
     Boolean[] solution = new Boolean[formula.getLiteralCount()];
     List<Node> nodeList = Graph.edgeListToNodeList(path);
 

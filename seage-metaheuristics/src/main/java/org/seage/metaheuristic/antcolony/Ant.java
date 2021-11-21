@@ -227,7 +227,7 @@ public class Ant {
     return quantumPheromone;
   }
 
-  public double getPathCost(List<Edge> path) {
+  public double getPathCost(List<Edge> path) throws Exception {
     double result = 0;
     for (Edge e : path) {
       result += e.getEdgePrice();

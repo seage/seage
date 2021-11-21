@@ -130,28 +130,24 @@ public class Graph {
 
   public void prune(long iteration) throws Exception {}
 
-  public static List<Node> edgeListToNodeList(List<Edge> edges) {
+  public static List<Node> edgeListToNodeList(List<Edge> edges) throws Exception {
     ArrayList<Node> nodeList = new ArrayList<Node>();
 
-    Edge previous = null;
+    // Edge previous = null;
+    Node previous = null;
     for (Edge e : edges) {
-      if (previous != null) {
-        if (e.getNodes()[0].getID() == previous.getNodes()[0].getID() 
-            || e.getNodes()[0].getID() == previous.getNodes()[1].getID()) {
-          nodeList.add(e.getNodes()[1]);
-        } else {
-          nodeList.add(e.getNodes()[0]);
-        }
-      } else {
-        nodeList.add(e.getNodes()[0]);
-        nodeList.add(e.getNodes()[1]);
+      if (previous == null) {        
+        previous = e.getNodes()[0];
+        nodeList.add(previous);
       }
-      previous = e;
+      Node next = e.getNode2(previous);
+      nodeList.add(next);
+      previous = next;
     }
     return nodeList;
   }
 
-  public static List<Integer> edgeListToNodeIds(List<Edge> edges) {
+  public static List<Integer> edgeListToNodeIds(List<Edge> edges) throws Exception {
     return Graph.edgeListToNodeList(edges)
         .stream()
         .map((Node n)->n.getID())

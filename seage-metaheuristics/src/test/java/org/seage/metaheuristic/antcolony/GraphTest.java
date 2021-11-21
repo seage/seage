@@ -26,6 +26,9 @@ public class GraphTest {
 
     // The first edge refers node1 and node2
     assertEquals(2, firstEdge.getNode2(nodes.get(1)).getID());
+    assertEquals(1, firstEdge.getNode2(nodes.get(2)).getID());
+    assertEquals(3, secondEdge.getNode2(nodes.get(2)).getID());
+    assertEquals(2, secondEdge.getNode2(nodes.get(3)).getID());
     // The node1 and node2 are not wired with the edge
     assertEquals(0, nodes.get(1).getEdges().size());
     assertEquals(0, nodes.get(2).getEdges().size());
@@ -45,7 +48,7 @@ public class GraphTest {
   }
 
   @Test
-  public void testEdgeListToNodeList() {
+  public void testEdgeListToNodeList() throws Exception {
     graph = new Graph(Arrays.asList(1, 2, 3, 4, 5));
     var nodes = graph.getNodes();
     var edges = Arrays.asList(
