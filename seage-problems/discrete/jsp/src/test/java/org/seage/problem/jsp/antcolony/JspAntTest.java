@@ -239,4 +239,27 @@ public class JspAntTest {
     assertEquals(2, graph.getEdges().size());
     assertTrue(graph.getEdges().containsAll(edges));
   }
+
+  @Test
+  public void testSetNextStep() throws Exception {
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    ProblemInfo pi = problemProvider.getProblemInfo();
+    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
+    JspGraph graph = new JspGraph(jobs, eval);
+    graph.setDefaultPheromone(1);    
+
+    graph.getEdges().clear();
+    JspAnt a = new JspAnt(graph, null, jobs, eval);
+
+    // Test the increase of lastJobOperations
+    
+    // first version of edge, 0 -> 101
+    a.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(101), 1), graph.getNodes().get(0));
+    assertEquals(1, a.lastJobOperations[0]);
+
+    // second version of edge, 102 <- 101
+    a.setNextStep(new Edge(graph.getNodes().get(102), graph.getNodes().get(101), 1), graph.getNodes().get(101));
+    assertEquals(2, a.lastJobOperations[0]);
+
+  }
 }

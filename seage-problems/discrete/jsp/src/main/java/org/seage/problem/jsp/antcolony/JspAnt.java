@@ -48,7 +48,7 @@ public class JspAnt extends Ant {
   JobsDefinition jobsDefinition;
 
   // For faster performing of the getAvailableNodes() method
-  private int[] lastJobOperations;
+  protected int[] lastJobOperations;
 
   public JspAnt(JspGraph graph, List<Integer> nodeIDs, JobsDefinition jobs, JspPhenotypeEvaluator evaluator) {
     super(graph, nodeIDs);
