@@ -47,6 +47,8 @@ public class JspAnt extends Ant {
   JspPhenotypeEvaluator evaluator;
   JobsDefinition jobsDefinition;
 
+  private int[] lastJobOperations;
+
   public JspAnt(JspGraph graph, List<Integer> nodeIDs, JobsDefinition jobs, JspPhenotypeEvaluator evaluator) {
     super(graph, nodeIDs);
     this.jobsDefinition = jobs;
@@ -55,7 +57,13 @@ public class JspAnt extends Ant {
 
    @Override
   protected Edge selectNextStep(List<Node> nodePath) throws Exception {
-    return super.selectNextStep(nodePath);
+    Edge nextEdge = super.selectNextStep(nodePath);
+
+    // Increase the operation
+    JspGraph jspGraph = (JspGraph)_graph;
+    lastJobOperations[jspGraph.nodeToJobID(nextEdge.getNode2())]++;
+
+    return nextEdge;
   }
 
   @Override
@@ -64,22 +72,27 @@ public class JspAnt extends Ant {
     var availableNodes = new HashSet<Node>();
 
     JspGraph jspGraph = (JspGraph)_graph;
-    //Create new available nodes
-    for (int jobID = 1; jobID <= this.jobsDefinition.getJobsCount(); jobID++) {
-      for (int operID = 1; operID <= this.jobsDefinition.getJobInfos()[jobID-1].getOperationInfos().length; operID++) {
-        int nodeID = jobID * jspGraph.getFactor() + operID;
-        Node nd = this._graph.getNodes().get(nodeID);
+    // Crate new updated available nodes
+    for (int jobIndex = 0; jobIndex <= lastJobOperations.length; jobIndex++) {
+      int jobID = jobIndex + 1;
+      int operID = lastJobOperations[jobIndex];
 
-        if (!nodePath.contains(nd)) {
-          availableNodes.add(nd);
-          break;
-        }
-      }
+      int nodeID = jobID * jspGraph.getFactor() + operID;
+      availableNodes.add(this._graph.getNodes().get(nodeID)); 
     }
 
     return availableNodes;
   }
 
+  @Override
+  protected List<Edge> explore(Node startingNode) throws Exception {
+    // Clean the array for new exploration
+    lastJobOperations = new int[this.jobsDefinition.getJobsCount()];
+    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++)
+      lastJobOperations[jobIndex] = 0;
+
+    return super.explore(startingNode);
+  }
 
   /**
    * Edge length calculating
