@@ -63,8 +63,7 @@ public class JspAnt extends Ant {
   protected void setNextStep(Edge step) {
     // Increase the operation
     JspGraph jspGraph = (JspGraph)_graph;
-    if (step.getNode2().getID() != 0)
-      lastJobOperations[jspGraph.nodeToJobID(step.getNode2())-1]++;
+    lastJobOperations[jspGraph.nodeToJobID(step.getNode2())-1]++;
   }
 
    @Override
