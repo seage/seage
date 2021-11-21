@@ -102,7 +102,6 @@ public class JspAnt extends Ant {
   @Override
   protected List<Edge> explore(Node startingNode) throws Exception {
     // Clean the array for new exploration
-    lastJobOperations = new int[this.jobsDefinition.getJobsCount()];
     for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++)
       lastJobOperations[jobIndex] = 0;
 
