@@ -97,17 +97,17 @@ public class Graph {
   }
 
   public void addEdge(Edge newEdge) throws Exception {
-    if(!_nodes.containsValue(newEdge.getNode1())) {
-      throw new Exception("Graph does not contain the node with id: " + newEdge.getNode1().getID());
+    if(!_nodes.containsValue(newEdge.getNodes()[0])) {
+      throw new Exception("Graph does not contain the node with id: " + newEdge.getNodes()[0].getID());
     }
-    if(!_nodes.containsValue(newEdge.getNode2())) {
-      throw new Exception("Graph does not contain the node with id: " + newEdge.getNode2().getID());
+    if(!_nodes.containsValue(newEdge.getNodes()[1])) {
+      throw new Exception("Graph does not contain the node with id: " + newEdge.getNodes()[1].getID());
     }
 
-    Node n1 = newEdge.getNode1();
+    Node n1 = newEdge.getNodes()[0];
     n1.addEdge(newEdge);
 
-    Node n2 = newEdge.getNode2();
+    Node n2 = newEdge.getNodes()[1];
     n2.addEdge(newEdge);    
 
     _edges.add(newEdge);
@@ -122,9 +122,9 @@ public class Graph {
     // Remove the edge from edges
     this._edges.remove(edge);
     // Remove the edge from nodes
-    Node n1 = edge.getNode1();    
+    Node n1 = edge.getNodes()[0];    
     n1.removeEdge(edge);
-    Node n2 = edge.getNode2();    
+    Node n2 = edge.getNodes()[1];    
     n2.removeEdge(edge);
   }
 
@@ -136,15 +136,15 @@ public class Graph {
     Edge previous = null;
     for (Edge e : edges) {
       if (previous != null) {
-        if (e.getNode1().getID() == previous.getNode1().getID() 
-            || e.getNode1().getID() == previous.getNode2().getID()) {
-          nodeList.add(e.getNode2());
+        if (e.getNodes()[0].getID() == previous.getNodes()[0].getID() 
+            || e.getNodes()[0].getID() == previous.getNodes()[1].getID()) {
+          nodeList.add(e.getNodes()[1]);
         } else {
-          nodeList.add(e.getNode1());
+          nodeList.add(e.getNodes()[0]);
         }
       } else {
-        nodeList.add(e.getNode1());
-        nodeList.add(e.getNode2());
+        nodeList.add(e.getNodes()[0]);
+        nodeList.add(e.getNodes()[1]);
       }
       previous = e;
     }

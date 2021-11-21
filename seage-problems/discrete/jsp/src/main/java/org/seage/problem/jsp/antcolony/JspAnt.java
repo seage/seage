@@ -60,12 +60,12 @@ public class JspAnt extends Ant {
       lastJobOperations[jobIndex] = 0;
   }
 
-  protected void setNextStep(Edge step, Node lastNode) {
+  protected void setNextStep(Edge step, Node lastNode) throws Exception {
     // Increase the operation
     JspGraph jspGraph = (JspGraph)_graph;
-    Node nextNode = step.getNode2();
+    Node nextNode = step.getNode2(lastNode);
     if(lastNode == nextNode)
-      nextNode = step.getNode1();
+      nextNode = lastNode;
     lastJobOperations[jspGraph.nodeToJobID(nextNode)-1]++;
   }
 

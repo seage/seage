@@ -198,15 +198,15 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
     private String createNodeListString(List<Edge> bestPath) {
       Integer[] nodeIDs = new Integer[bestPath.size() + 1];
       String result = "";
-      nodeIDs[0] = bestPath.get(0).getNode1().getID();
-      if (nodeIDs[0] != bestPath.get(1).getNode1().getID()
-          || nodeIDs[0] != bestPath.get(1).getNode2().getID()) {
-        nodeIDs[0] = bestPath.get(0).getNode2().getID();
+      nodeIDs[0] = bestPath.get(0).getNodes()[0].getID();
+      if (nodeIDs[0] != bestPath.get(1).getNodes()[0].getID()
+          || nodeIDs[0] != bestPath.get(1).getNodes()[1].getID()) {
+        nodeIDs[0] = bestPath.get(0).getNodes()[1].getID();
       }
       for (int i = 1; i < nodeIDs.length - 1; i++) {
-        nodeIDs[i] = bestPath.get(i).getNode1().getID();
+        nodeIDs[i] = bestPath.get(i).getNodes()[0].getID();
         if (i > 0 && nodeIDs[i - 1].equals(nodeIDs[i])) {
-          nodeIDs[i] = bestPath.get(i).getNode2().getID();
+          nodeIDs[i] = bestPath.get(i).getNodes()[1].getID();
         }
         result += nodeIDs[i] + " ";
       }

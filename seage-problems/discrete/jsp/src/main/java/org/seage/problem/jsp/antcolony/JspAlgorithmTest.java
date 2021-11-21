@@ -40,6 +40,7 @@ import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
+import org.seage.metaheuristic.antcolony.Node;
 
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
@@ -85,7 +86,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
       }
 
       new JspAlgorithmTest().runAlgorithm(jobs);
-      // new JspAlgorithmTest().runAlgorithmAdapter(jobs);
+      new JspAlgorithmTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
     {
@@ -191,15 +192,11 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
 
     // visualization
     Integer[] jobArray = new Integer[colony.getBestPath().size()];
-    jobArray[0] = colony.getBestPath().get(0).getNode2().getID();
+    jobArray[0] = colony.getBestPath().get(0).getNode2(graph.getNodes().get(0)).getID();
     int prev = jobArray[0];
     for (int i = 1; i < jobArray.length; i++)
     {
-      jobArray[i] = colony.getBestPath().get(i).getNode2().getID();
-      if (prev == jobArray[i])
-      {
-        jobArray[i] = colony.getBestPath().get(i).getNode1().getID();
-      }
+      jobArray[i] = colony.getBestPath().get(i).getNode2(graph.getNodes().get(jobArray[i-1])).getID();
       prev = jobArray[i];      
     }
     for (int i = 0; i < jobArray.length; i++) {

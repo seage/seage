@@ -25,8 +25,7 @@ public class GraphTest {
     Edge secondEdge = new Edge(nodes.get(2), nodes.get(3), 1);
 
     // The first edge refers node1 and node2
-    assertEquals(1, firstEdge.getNode1().getID());
-    assertEquals(2, firstEdge.getNode2().getID());
+    assertEquals(2, firstEdge.getNode2(nodes.get(1)).getID());
     // The node1 and node2 are not wired with the edge
     assertEquals(0, nodes.get(1).getEdges().size());
     assertEquals(0, nodes.get(2).getEdges().size());
@@ -38,7 +37,7 @@ public class GraphTest {
     assertEquals(1, nodes.get(1).getEdges().size());    
     assertEquals(2, nodes.get(2).getEdges().size());
     assertEquals(1, nodes.get(3).getEdges().size());
-    assertTrue(firstEdge.getNode1().getEdges().contains(firstEdge));
+    assertTrue(nodes.get(1).getEdges().contains(firstEdge));
 
     // The graph has new edges
     assertTrue(graph.getEdges().contains(firstEdge));
@@ -90,12 +89,12 @@ public class GraphTest {
     assertFalse(nodes.get(3).getEdges().contains(firstEdge));
 
     // The first edge still refers nodes but they are not aware of the edge
-    assertFalse(firstEdge.getNode1().getEdges().contains(firstEdge));
-    assertFalse(firstEdge.getNode2().getEdges().contains(firstEdge));
+    assertFalse(nodes.get(1).getEdges().contains(firstEdge));
+    assertFalse(firstEdge.getNode2(nodes.get(1)).getEdges().contains(firstEdge));
 
     // The second edge is not affected by the removal
     assertTrue(graph.getEdges().contains(secondEdge));
-    assertTrue(secondEdge.getNode1().getEdges().contains(secondEdge));
-    assertTrue(secondEdge.getNode2().getEdges().contains(secondEdge));
+    assertTrue(nodes.get(2).getEdges().contains(secondEdge));
+    assertTrue(secondEdge.getNode2(nodes.get(2)).getEdges().contains(secondEdge));
   }
 }

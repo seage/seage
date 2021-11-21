@@ -78,7 +78,7 @@ public class SatAntColonyTest_Simple implements IAlgorithmListener<AntColonyEven
 
     Boolean[] s = new Boolean[colony.getBestPath().size()];
     for (int i = 0; i < s.length; i++) {
-      s[i] = colony.getBestPath().get(i).getNode1().getID() > 0;
+      s[i] = colony.getBestPath().get(i).getNodes()[0].getID() > 0;
       int s2 = 0;
       if (s[i])
         s2 = 1;

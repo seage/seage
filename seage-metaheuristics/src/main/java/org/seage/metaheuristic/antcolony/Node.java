@@ -73,8 +73,8 @@ public class Node {
    * @throws Exception ex
    */
   public void addEdge(Edge edge) throws Exception {
-    Node node = edge.getNode1();
-    Node node2 = edge.getNode2();
+    Node node = edge.getNodes()[0];
+    Node node2 = edge.getNode2(node);
 
     if (node.equals(node2)) {
       throw new IllegalArgumentException("Edge with both nodes the same.");
@@ -99,9 +99,9 @@ public class Node {
    * Removes the given edge from edges
    * @param edge
    */
-  public void removeEdge(Edge edge) {
+  public void removeEdge(Edge edge) throws Exception {
     Node node = this;
-    Node node2 = this == edge.getNode2() ? edge.getNode1() : edge.getNode2();
+    Node node2 = this == edge.getNode2(node) ? edge.getNodes()[0] : edge.getNode2(node);
 
     if (node.equals(node2)) {
       throw new IllegalArgumentException("Edge with both nodes the same.");

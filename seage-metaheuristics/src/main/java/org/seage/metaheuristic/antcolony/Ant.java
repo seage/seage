@@ -117,10 +117,8 @@ public class Ant {
     Edge nextEdge = selectNextStep(_nodePath);
 
     while (nextEdge != null) {      
-      Node nextNode = nextEdge.getNode1();
-      if(nextNode.getID() == currentNode.getID()) {
-        nextNode = nextEdge.getNode2();
-      }
+      Node nextNode = nextEdge.getNode2(currentNode);
+   
       _edgePath.add(nextEdge);
       _nodePath.add(nextNode);
       currentNode = nextNode;
