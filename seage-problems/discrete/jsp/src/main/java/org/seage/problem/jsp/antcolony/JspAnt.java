@@ -53,12 +53,18 @@ public class JspAnt extends Ant {
     super(graph, nodeIDs);
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;
+
+    lastJobOperations = new int[this.jobsDefinition.getJobsCount()];
+    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++)
+      lastJobOperations[jobIndex] = 0;
   }
 
    @Override
   protected Edge selectNextStep(List<Node> nodePath) throws Exception {
     Edge nextEdge = super.selectNextStep(nodePath);
 
+    if (nextEdge == null)
+      return nextEdge;
     // Increase the operation
     JspGraph jspGraph = (JspGraph)_graph;
     lastJobOperations[jspGraph.nodeToJobID(nextEdge.getNode2())]++;
@@ -73,9 +79,9 @@ public class JspAnt extends Ant {
 
     JspGraph jspGraph = (JspGraph)_graph;
     // Crate new updated available nodes
-    for (int jobIndex = 0; jobIndex <= lastJobOperations.length; jobIndex++) {
+    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
       int jobID = jobIndex + 1;
-      int operID = lastJobOperations[jobIndex];
+      int operID = lastJobOperations[jobIndex] + 1;
 
       int nodeID = jobID * jspGraph.getFactor() + operID;
       availableNodes.add(this._graph.getNodes().get(nodeID)); 
