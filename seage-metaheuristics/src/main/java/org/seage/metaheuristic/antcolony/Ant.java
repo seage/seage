@@ -58,7 +58,6 @@ public class Ant {
     _graph = graph;   
     _nodePath = new ArrayList<>();
     _edgePath = new ArrayList<>();
-    availableNodes = new HashSet<>();
     rand = new Random(randSeed);
 
     if (nodeIDs != null) {
@@ -109,8 +108,8 @@ public class Ant {
   protected List<Edge> explore(Node startingNode) throws Exception {
     _nodePath.clear();
     _edgePath.clear();
-    availableNodes = null;
     _distanceTravelled = 0;
+    availableNodes = null;
 
     _nodePath.add(startingNode);
 
@@ -198,7 +197,6 @@ public class Ant {
     if(availableNodes == null) {
       availableNodes = new HashSet<Node>(_graph.getNodes().values());
     }
-
     Node lastNode = nodePath.get(nodePath.size()-1);
     availableNodes.remove(lastNode);   
     
