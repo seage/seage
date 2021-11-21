@@ -46,7 +46,7 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   public static void main(String[] args) throws Exception {
     try {
       // String path = "data/sat/uf20-01.cnf";
-      String path = "data/sat/uf100-01.cnf";
+      String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf100-01.cnf";
 
       long start = System.currentTimeMillis();
       new SatAntColonyTest().run(path);

@@ -46,13 +46,13 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   public static void main(String[] args) {
     try {
-      // String instanceID = "berlin52"; // 7542
+      String instanceID = "berlin52"; // 7542
       // String instanceID = "eil51"; // 426
       // String instanceID = "ch130"; // 6110
       // String instanceID = "lin318"; // 42029
       // String instanceID = "pcb442"; // 50778
       // String instanceID = "u574"; // 36905
-      String instanceID = "rat575-hyflex-2"; // 6773 (8255)
+      // String instanceID = "rat575-hyflex-2"; // 6773 (8255)
 
       String path = String.format("seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/%s.tsp", instanceID);// args[0];
       new TspAntColonyTest().run(path);
@@ -89,16 +89,16 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // double alpha = 1.0654234316716138, beta = 1.1515958770402412;
     
     // David
-    int numAnts = 733;
-    double defaultPheromone = 0.8689519218148817; 
-    double localEvaporation = 0.748594131091018;
-    double quantumPheromone = 288.9555351673542;
-    double alpha = 1.0162687039555678, beta = 6.35356118801852;
+    // int numAnts = 733;
+    // double defaultPheromone = 0.8689519218148817; 
+    // double localEvaporation = 0.748594131091018;
+    // double quantumPheromone = 288.9555351673542;
+    // double alpha = 1.0162687039555678, beta = 6.35356118801852;
     
     // Richard
-    // int numAnts = 200;
-    // double defaultPheromone = 10.9, localEvaporation = 0.9, quantumPheromone = 100;
-    // double alpha = 1.1, beta = 2.1;
+    int numAnts = 200;
+    double defaultPheromone = 10.9, localEvaporation = 0.9, quantumPheromone = 100;
+    double alpha = 1.1, beta = 2.1;
 
     // ----
     TspGraph graph = new TspGraph(cities);
