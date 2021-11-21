@@ -170,14 +170,13 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
 
     JspGraph graph = new JspGraph(jobs, eval);
     System.out.println("Loaded ...");
-    JspAntBrain brain = new JspAntBrain(graph, jobs, eval);
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, localEvaporation);
 
     Ant ants[] = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++)
-      ants[i] = new Ant(brain, graph, null);
+      ants[i] = new JspAnt(graph, null, jobs, eval);
     //brain.setParameters(graph.getNodeList().size(), alpha, beta);
 
     long t1 = System.currentTimeMillis();

@@ -27,11 +27,9 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
   public IAlgorithmAdapter<SatPhenotype, Ant> createAlgorithm(ProblemInstance instance,
       IPhenotypeEvaluator<SatPhenotype> phenotypeEvaluator) throws Exception {
     Formula formula = (Formula) instance;
-    Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
+    SatGraph satGraph = new SatGraph(formula, new FormulaEvaluator(formula));
     FormulaEvaluator evaluator = new FormulaEvaluator(formula);
-    SatAntBrain brain = new SatAntBrain(graph, formula, evaluator);
-
-    return new AntColonyAdapter<SatPhenotype, Ant>(graph, phenotypeEvaluator) {
+    return new AntColonyAdapter<SatPhenotype, Ant>(satGraph, phenotypeEvaluator) {
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
@@ -41,7 +39,7 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
           for (int j = 1; j <= source[i].getSolution().length; j++) {
             nodes.add((Boolean) source[i].getSolution()[j - 1] == true ? j : -j);
           }
-          ants[i] = new Ant(brain, graph, nodes);
+          ants[i] = new SatAnt(satGraph, nodes, formula, evaluator);
         }
       }
 

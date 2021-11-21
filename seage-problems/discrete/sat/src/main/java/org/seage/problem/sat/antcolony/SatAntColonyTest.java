@@ -70,14 +70,13 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
 
     FormulaEvaluator evaluator = new FormulaEvaluator(formula);
-    SatAntBrain brain = new SatAntBrain(graph, formula, evaluator);
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
 
     Ant ants[] = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++)
-      ants[i] = new Ant(brain, graph, null);
+      ants[i] = new SatAnt(graph, null, formula, evaluator);
 
     colony.startExploring(graph.getNodes().get(0), ants);
 

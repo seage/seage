@@ -30,7 +30,6 @@ import java.util.List;
 
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.Ant;
-import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Edge;
@@ -104,14 +103,13 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // ----
     TspGraph graph = new TspGraph(cities);
     System.out.println("Loaded ...");
-    AntBrain brain = new TspAntBrain(graph, cities);
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, localEvaporation);
 
     Ant ants[] = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++)
-      ants[i] = new Ant(brain, graph, null);
+      ants[i] = new TspAnt(graph, null, cities);
     // brain.setParameters(graph.getNodeList().size(), alpha, beta);
 
     long t1 = System.currentTimeMillis();

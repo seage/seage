@@ -25,8 +25,7 @@ package org.seage.problem.sat.antcolony;
 
 import java.util.HashSet;
 import java.util.List;
-
-import org.seage.metaheuristic.antcolony.AntBrain;
+import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
@@ -37,13 +36,13 @@ import org.seage.problem.sat.FormulaEvaluator;
  * SatAntBrain class.
  * @author Zagy
  */
-public class SatAntBrain extends AntBrain {
+public class SatAnt extends Ant {
   FormulaEvaluator formulaEvaluator;
 
   private Formula formula;
 
-  public SatAntBrain(Graph graph, Formula formula, FormulaEvaluator formulaEvaluator) {
-    super(graph);
+  public SatAnt(Graph graph, List<Integer> nodeIDs, Formula formula, FormulaEvaluator formulaEvaluator) {
+    super(graph, nodeIDs);
     this.formula = formula;
     this.formulaEvaluator = formulaEvaluator;
   }
@@ -71,7 +70,7 @@ public class SatAntBrain extends AntBrain {
     var result = super.getAvailableNodes(nodePath);
     for (Node n : nodePath) {
       int id = -n.getID();
-      Node n2 = graph.getNodes().get(id);
+      Node n2 = _graph.getNodes().get(id);
       result.remove(n2);
     }
     return result;

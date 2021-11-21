@@ -26,11 +26,10 @@ public class TspAntColonyTest2 {
     City[] cities = instance.getCities();
     TspGraph graph = new TspGraph(cities);
     AntColony colony = new AntColony(graph);
-    TspAntBrain brain = new TspAntBrain(graph, cities);
     TspOptimalTourBerlin52 optimum = new TspOptimalTourBerlin52();
     ArrayList<Integer> optimalTour = new ArrayList<>(Arrays.asList(optimum.OptimalTour));
     optimalTour.add(1);
-    Ant ant = new Ant(brain, graph, optimalTour);
+    Ant ant = new TspAnt(graph, optimalTour, cities);
     colony.setParameters(1, 1, 1, 1, 1, 0.8);
     colony.startExploring(graph.getNodes().get(1), new Ant[] {ant});
 

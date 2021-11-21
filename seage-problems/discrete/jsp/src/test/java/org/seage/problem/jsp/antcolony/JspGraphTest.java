@@ -113,7 +113,7 @@ public class JspGraphTest {
 
     JspGraph graph = new JspGraph(jobs, eval);
 
-    JspAntBrain brain = new JspAntBrain(graph, jobs, eval);
+    JspAnt ant = new JspAnt(graph, null, jobs, eval);
     
     HashMap<Integer, Node> hm = graph.getNodes();
 
@@ -121,13 +121,13 @@ public class JspGraphTest {
     nodesPath.add(hm.get(0));
 
     // Test start to first node
-    assertEquals(1.0, brain.getNodeDistance(nodesPath, hm.get(101)));
+    assertEquals(1.0, ant.getNodeDistance(nodesPath, hm.get(101)));
     
     // Test the longer path
     Integer[] jobArray1 = new Integer[] {1};
     Integer[] jobArray2 = new Integer[] {1, 2};
 
-    double nodeDistance = brain.getNodeDistance(nodesPath, hm.get(101));
+    double nodeDistance = ant.getNodeDistance(nodesPath, hm.get(101));
 
     hm.get(0).addEdge(new Edge(hm.get(101), hm.get(0), nodeDistance));
     hm.get(101).addEdge(new Edge(hm.get(0), hm.get(101), nodeDistance));
@@ -136,13 +136,13 @@ public class JspGraphTest {
 
     assertEquals(
       eval.evaluateSchedule(jobArray2) - eval.evaluateSchedule(jobArray1) + 1, 
-      brain.getNodeDistance(nodesPath, hm.get(201))
+      ant.getNodeDistance(nodesPath, hm.get(201))
     );
     
     // test the three opers 
     Integer[] jobArray3 = new Integer[] {1, 2, 3};
 
-    nodeDistance = brain.getNodeDistance(nodesPath, hm.get(201));
+    nodeDistance = ant.getNodeDistance(nodesPath, hm.get(201));
 
     hm.get(101).addEdge(new Edge(hm.get(201), hm.get(101), nodeDistance));
     hm.get(201).addEdge(new Edge(hm.get(101), hm.get(201), nodeDistance));
@@ -151,13 +151,13 @@ public class JspGraphTest {
 
     assertEquals(
       eval.evaluateSchedule(jobArray3) - eval.evaluateSchedule(jobArray2) + 1,
-      brain.getNodeDistance(nodesPath, hm.get(301))
+      ant.getNodeDistance(nodesPath, hm.get(301))
     );
 
     // another test
     Integer[] jobArray4 = new Integer[] {1, 2, 3, 1};
 
-    nodeDistance = brain.getNodeDistance(nodesPath, hm.get(301));
+    nodeDistance = ant.getNodeDistance(nodesPath, hm.get(301));
 
     hm.get(201).addEdge(new Edge(hm.get(301), hm.get(201), nodeDistance));
     hm.get(301).addEdge(new Edge(hm.get(201), hm.get(301), nodeDistance));
@@ -166,7 +166,7 @@ public class JspGraphTest {
 
     assertEquals(
       eval.evaluateSchedule(jobArray4) - eval.evaluateSchedule(jobArray3) + 1,
-      brain.getNodeDistance(nodesPath, hm.get(102))
+      ant.getNodeDistance(nodesPath, hm.get(102))
     );
   }
 }

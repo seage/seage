@@ -69,8 +69,6 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
     JspPhenotypeEvaluator evaluator =
         new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
     JspGraph jspGraph = new JspGraph(jobs, evaluator);
-    JspAntBrain brain = new JspAntBrain(jspGraph, jobs, evaluator);
-
     return new AntColonyAdapter<JspPhenotype, Ant>(jspGraph, phenotypeEvaluator)
     {
       @Override
@@ -97,7 +95,7 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
             jobsOper[jobID]++;
           }
 
-          ants[i] = new Ant(brain, graph, nodes);
+          ants[i] = new JspAnt(jspGraph, nodes, jobs, evaluator);
        }
       }
 

@@ -57,7 +57,6 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
       IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
     City[] cities = ((TspProblemInstance) instance).getCities();
     TspGraph graph = new TspGraph(cities);
-    TspAntBrain brain = new TspAntBrain(graph, cities);
     IAlgorithmAdapter<TspPhenotype, Ant> algorithm = 
         new AntColonyAdapter<TspPhenotype, Ant>(
         graph, phenotypeEvaluator) {
@@ -67,7 +66,7 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
         for (int i = 0; i < ants.length; i++) {
           List<Integer> nodeIDs = new ArrayList<>(Arrays.asList(source[i].getSolution()));
           nodeIDs.add(source[i].getSolution()[0]); // The tour must be closed
-          ants[i] = new Ant(brain, graph, nodeIDs);
+          ants[i] = new TspAnt(graph, nodeIDs, cities);
         }
       }
 

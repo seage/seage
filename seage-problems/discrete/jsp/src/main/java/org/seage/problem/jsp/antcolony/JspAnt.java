@@ -30,8 +30,7 @@ package org.seage.problem.jsp.antcolony;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-
-import org.seage.metaheuristic.antcolony.AntBrain;
+import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
@@ -44,14 +43,12 @@ import org.seage.problem.jsp.JspPhenotypeEvaluator;
  * @author Zagy
  * Edited by David Omrai
  */
-public class JspAntBrain extends AntBrain {
+public class JspAnt extends Ant {
   JspPhenotypeEvaluator evaluator;
   JobsDefinition jobsDefinition;
-  JspGraph jspGraph;
 
-  public JspAntBrain(JspGraph graph, JobsDefinition jobs, JspPhenotypeEvaluator evaluator) {
-    super(graph);
-    this.jspGraph = graph;
+  public JspAnt(JspGraph graph, List<Integer> nodeIDs, JobsDefinition jobs, JspPhenotypeEvaluator evaluator) {
+    super(graph, nodeIDs);
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;
   }
@@ -66,11 +63,12 @@ public class JspAntBrain extends AntBrain {
     // Clean the previous available nodes
     var availableNodes = new HashSet<Node>();
 
+    JspGraph jspGraph = (JspGraph)_graph;
     //Create new available nodes
     for (int jobID = 1; jobID <= this.jobsDefinition.getJobsCount(); jobID++) {
       for (int operID = 1; operID <= this.jobsDefinition.getJobInfos()[jobID-1].getOperationInfos().length; operID++) {
         int nodeID = jobID * jspGraph.getFactor() + operID;
-        Node nd = this.graph.getNodes().get(nodeID);
+        Node nd = this._graph.getNodes().get(nodeID);
 
         if (!nodePath.contains(nd)) {
           availableNodes.add(nd);
@@ -87,8 +85,8 @@ public class JspAntBrain extends AntBrain {
    * Edge length calculating
    */
   @Override
-  public double getNodeDistance(List<Node> nodePath, Node node)
-  {
+  public double getNodeDistance(List<Node> nodePath, Node node) {
+    JspGraph jspGraph = (JspGraph)_graph;
     Node end = nodePath.get(nodePath.size() - 1);
     // If the first node is starting node
     if (end.getID() == 0)
@@ -118,6 +116,7 @@ public class JspAntBrain extends AntBrain {
 
   @Override
   public double getPathCost(List<Edge> path) {
+    JspGraph jspGraph = (JspGraph)_graph;
     var nodes = Graph.edgeListToNodeList(path);
     Integer[] jobArray = new Integer[nodes.size()-1];
     for(int i=1;i<nodes.size();i++)
