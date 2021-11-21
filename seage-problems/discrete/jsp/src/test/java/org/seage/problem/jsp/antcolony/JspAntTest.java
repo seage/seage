@@ -61,7 +61,10 @@ public class JspAntTest {
     assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(101), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(0), graph.getNodes().get(101), 1), 
+      graph.getNodes().get(0)
+    );
     // Test with one oper on the path
     visitedNodes.add(graph.getNodes().get(101));
     availableNodes = ant.getAvailableNodes(visitedNodes);
@@ -71,7 +74,10 @@ public class JspAntTest {
     assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(101), graph.getNodes().get(102), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(101), graph.getNodes().get(102), 1), 
+      graph.getNodes().get(101)
+    );
     visitedNodes.add(graph.getNodes().get(102));
     availableNodes = ant.getAvailableNodes(visitedNodes);
     assertEquals(3, availableNodes.size());
@@ -80,7 +86,10 @@ public class JspAntTest {
     assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(102), graph.getNodes().get(103), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(102), graph.getNodes().get(103), 1), 
+      graph.getNodes().get(102)
+    );
     visitedNodes.add(graph.getNodes().get(103));
     availableNodes = ant.getAvailableNodes(visitedNodes);
     assertEquals(2, availableNodes.size());    
@@ -88,7 +97,10 @@ public class JspAntTest {
     assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(103), graph.getNodes().get(201), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(103), graph.getNodes().get(201), 1), 
+      graph.getNodes().get(103)
+    );
     visitedNodes.add(graph.getNodes().get(201));
     availableNodes = ant.getAvailableNodes(visitedNodes);
     assertEquals(2, availableNodes.size());
@@ -96,7 +108,10 @@ public class JspAntTest {
     assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(201), graph.getNodes().get(202), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(201), graph.getNodes().get(202), 1), 
+      graph.getNodes().get(201)
+    );
     visitedNodes.add(graph.getNodes().get(202));
     availableNodes = ant.getAvailableNodes(visitedNodes);
     assertEquals(2, availableNodes.size());
@@ -104,28 +119,40 @@ public class JspAntTest {
     assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(202), graph.getNodes().get(203), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(202), graph.getNodes().get(203), 1), 
+      graph.getNodes().get(202)
+    );
     visitedNodes.add(graph.getNodes().get(203));
     availableNodes = ant.getAvailableNodes(visitedNodes);
     assertEquals(1, availableNodes.size());
     assertTrue(availableNodes.contains(graph.getNodes().get(301)));
 
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(203), graph.getNodes().get(301), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(203), graph.getNodes().get(301), 1), 
+      graph.getNodes().get(203)
+    );
     visitedNodes.add(graph.getNodes().get(301));
     availableNodes = ant.getAvailableNodes(visitedNodes);
     assertEquals(1, availableNodes.size());
     assertTrue(availableNodes.contains(graph.getNodes().get(302)));
 
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(301), graph.getNodes().get(302), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(301), graph.getNodes().get(302), 1), 
+      graph.getNodes().get(301)
+    );
     visitedNodes.add(graph.getNodes().get(302));
     availableNodes = ant.getAvailableNodes(visitedNodes);
     assertEquals(1, availableNodes.size());
     assertTrue(availableNodes.contains(graph.getNodes().get(303)));
 
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(302), graph.getNodes().get(303), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(302), graph.getNodes().get(303), 1), 
+      graph.getNodes().get(302)
+    );
     visitedNodes.add(graph.getNodes().get(303));
     availableNodes = ant.getAvailableNodes(visitedNodes);
     assertEquals(0, availableNodes.size());
@@ -144,23 +171,41 @@ public class JspAntTest {
     nodePath.add(graph.getNodes().get(0));
 
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(101), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(0), graph.getNodes().get(101), 1), 
+      graph.getNodes().get(0)
+    );
     nodePath.add(graph.getNodes().get(101));
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(102), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(101), graph.getNodes().get(102), 1), 
+      graph.getNodes().get(101)
+    );
     nodePath.add(graph.getNodes().get(102));
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(103), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(102), graph.getNodes().get(103), 1), 
+      graph.getNodes().get(102)
+    );
     nodePath.add(graph.getNodes().get(103));
 
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(201), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(103), graph.getNodes().get(201), 1), 
+      graph.getNodes().get(103)
+    );
     nodePath.add(graph.getNodes().get(201));
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(202), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(201), graph.getNodes().get(202), 1), 
+      graph.getNodes().get(201)
+    );
     nodePath.add(graph.getNodes().get(202));
     // Set next step
-    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(203), 1));
+    ant.setNextStep(
+      new Edge(graph.getNodes().get(202), graph.getNodes().get(203), 1), 
+      graph.getNodes().get(202)
+    );
     nodePath.add(graph.getNodes().get(203));
 
     assertEquals(graph.getNodes().get(301), ant.selectNextStep(nodePath).getNode2());
