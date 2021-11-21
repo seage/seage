@@ -144,12 +144,24 @@ public class JspAntTest {
     nodePath.add(graph.getNodes().get(0));
     assertNotNull(ant.selectNextStep(nodePath).getNode2());
 
+    // Set next step
+    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(101), 1));
     nodePath.add(graph.getNodes().get(101));
+    // Set next step
+    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(102), 1));
     nodePath.add(graph.getNodes().get(102));
+    // Set next step
+    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(103), 1));
     nodePath.add(graph.getNodes().get(103));
 
+    // Set next step
+    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(201), 1));
     nodePath.add(graph.getNodes().get(201));
+    // Set next step
+    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(202), 1));
     nodePath.add(graph.getNodes().get(202));
+    // Set next step
+    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(203), 1));
     nodePath.add(graph.getNodes().get(203));
 
     assertEquals(graph.getNodes().get(301), ant.selectNextStep(nodePath).getNode2());

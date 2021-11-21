@@ -69,7 +69,8 @@ public class JspAnt extends Ant {
    @Override
   protected Edge selectNextStep(List<Node> nodePath) throws Exception {
     Edge nextEdge = super.selectNextStep(nodePath);
-    setNextStep(nextEdge);   
+    if (nextEdge != null)
+      setNextStep(nextEdge);   
     return nextEdge;
   }
 
