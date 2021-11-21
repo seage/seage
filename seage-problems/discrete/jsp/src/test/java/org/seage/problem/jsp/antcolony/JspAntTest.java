@@ -141,8 +141,8 @@ public class JspAntTest {
 
 
     List<Node> nodePath = new ArrayList<>();
+    ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(0), 1));
     nodePath.add(graph.getNodes().get(0));
-    assertNotNull(ant.selectNextStep(nodePath).getNode2());
 
     // Set next step
     ant.setNextStep(new Edge(graph.getNodes().get(0), graph.getNodes().get(101), 1));
