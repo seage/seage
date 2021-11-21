@@ -48,7 +48,7 @@ public class Ant {
   protected double beta;
   protected double quantumPheromone;
 
-  private HashSet<Node> availableNodes;
+  protected HashSet<Node> availableNodes;
   private Random rand;
 
   public Ant( Graph graph, List<Integer> nodeIDs) {
@@ -58,6 +58,7 @@ public class Ant {
     _graph = graph;   
     _nodePath = new ArrayList<>();
     _edgePath = new ArrayList<>();
+    availableNodes = new HashSet<>();
     rand = new Random(randSeed);
 
     if (nodeIDs != null) {

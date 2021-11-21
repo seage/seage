@@ -47,6 +47,7 @@ public class JspAnt extends Ant {
   JspPhenotypeEvaluator evaluator;
   JobsDefinition jobsDefinition;
 
+  // For faster performing of the getAvailableNodes() method
   private int[] lastJobOperations;
 
   public JspAnt(JspGraph graph, List<Integer> nodeIDs, JobsDefinition jobs, JspPhenotypeEvaluator evaluator) {
@@ -68,19 +69,14 @@ public class JspAnt extends Ant {
    @Override
   protected Edge selectNextStep(List<Node> nodePath) throws Exception {
     Edge nextEdge = super.selectNextStep(nodePath);
-
-    if (nextEdge == null)
-      return nextEdge;
-
-    setNextStep(nextEdge);
-    
+    setNextStep(nextEdge);   
     return nextEdge;
   }
 
   @Override
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
     // Clean the previous available nodes
-    var availableNodes = new HashSet<Node>();
+    availableNodes.clear();
 
     JspGraph jspGraph = (JspGraph)_graph;
     // Crate new updated available nodes
