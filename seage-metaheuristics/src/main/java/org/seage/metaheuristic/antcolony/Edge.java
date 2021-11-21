@@ -37,9 +37,9 @@ public class Edge {
   private double _edgePrice;
   private double _pheromone;
 
-  public Edge(Node start, Node end, double edgePrice) {
-    _node1 = start;
-    _node2 = end;
+  public Edge(Node node1, Node node2, double edgePrice) {
+    _node1 = node1;
+    _node2 = node2;
     _edgePrice = edgePrice;
     _pheromone = 0;
   }
@@ -91,21 +91,26 @@ public class Edge {
   }
 
   /**
-   * Firs of nodes
+   * Get the second of nodes
    * 
-   * @return - First node
+   * @throws Exception
    */
-  public Node getNode2() {
-    return _node2;
+  public Node getNode2(Node node1) throws Exception {
+    if(node1 != _node1 && node1 != _node2)
+      throw new Exception("Node is not related to the edge, id: " + node1.getID());
+    Node result = _node2;
+    if(result == node1)
+      result = _node1;
+    return result;
   }
 
   /**
-   * Second of nodes
+   * Get edge nodes
    * 
-   * @return - Second node
+   * @return - Both nodes
    */
-  public Node getNode1() {
-    return _node1;
+  public Node[] getNodes() {
+    return new Node[] {_node1, _node2};
   }
 
   public String toString() {
