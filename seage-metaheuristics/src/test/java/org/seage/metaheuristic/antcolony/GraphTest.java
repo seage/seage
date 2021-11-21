@@ -53,7 +53,7 @@ public class GraphTest {
     var nodes = graph.getNodes();
     var edges = Arrays.asList(
       new Edge(nodes.get(1), nodes.get(2), 1),
-      new Edge(nodes.get(3), nodes.get(2), 1),
+      new Edge(nodes.get(2), nodes.get(3), 1),
       new Edge(nodes.get(4), nodes.get(3), 1),
       new Edge(nodes.get(4), nodes.get(5), 1)
     );
@@ -66,6 +66,20 @@ public class GraphTest {
     
     var nodes3 = Graph.edgeListToNodeIds(edges);
     assertEquals(Arrays.asList(1, 2, 3, 4, 5), nodes3);
+  }
+
+  @Test
+  public void edgeListToNodeIds() throws Exception {
+    graph = new Graph(Arrays.asList(1, 2, 3, 4, 5));
+    var nodes = graph.getNodes();
+    var edges = Arrays.asList(
+      new Edge(nodes.get(1), nodes.get(2), 1),
+      new Edge(nodes.get(3), nodes.get(1), 1),
+      new Edge(nodes.get(4), nodes.get(3), 1)
+    );
+    
+    var nodes3 = Graph.edgeListToNodeIds(edges);
+    assertEquals(Arrays.asList(2, 1, 3, 4), nodes3);
   }
 
   @Test

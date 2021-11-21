@@ -46,8 +46,8 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   public static void main(String[] args) {
     try {
-      String instanceID = "berlin52"; // 7542
-      // String instanceID = "eil51"; // 426
+      // String instanceID = "berlin52"; // 7542
+      String instanceID = "eil51"; // 426
       // String instanceID = "ch130"; // 6110
       // String instanceID = "lin318"; // 42029
       // String instanceID = "pcb442"; // 50778
@@ -76,7 +76,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     City[] cities = CityProvider.readCities(new FileInputStream(path));
     _edges = cities.length * (cities.length - 1) / 2;
     
-    int iterations = 2000;
+    int iterations = 10000;
     
     // int numAnts = 500;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone =

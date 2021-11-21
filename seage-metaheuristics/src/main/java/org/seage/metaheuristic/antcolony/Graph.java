@@ -135,12 +135,24 @@ public class Graph {
 
     // Edge previous = null;
     Node previous = null;
-    for (Edge e : edges) {
-      if (previous == null) {        
-        previous = e.getNodes()[0];
+    for (int i=0;i<edges.size();i++) {
+      Edge edge = edges.get(i);      
+      if (previous == null) {  
+        Edge nextEdge = edges.get(i+1);
+        
+        if(edge.getNodes()[0] == nextEdge.getNodes()[0])
+          previous = edge.getNodes()[1];
+        if(edge.getNodes()[0] == nextEdge.getNodes()[1])
+          previous = edge.getNodes()[1];
+
+        if(edge.getNodes()[1] == nextEdge.getNodes()[0])
+          previous = edge.getNodes()[0];        
+        if(edge.getNodes()[1] == nextEdge.getNodes()[1])
+          previous = edge.getNodes()[0];
+        
         nodeList.add(previous);
       }
-      Node next = e.getNode2(previous);
+      Node next = edge.getNode2(previous);
       nodeList.add(next);
       previous = next;
     }
