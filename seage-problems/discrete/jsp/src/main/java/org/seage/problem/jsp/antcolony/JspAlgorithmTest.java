@@ -67,7 +67,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
   {
     try
     {
-      // String instanceID = "ft06";
+      String instanceID = "ft06";
       // String instanceID = "ft10";
       // String instanceID = "ft20";
       // String instanceID = "la01";
@@ -75,9 +75,9 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
       // String instanceID = "la04";
       // String instanceID = "la35";
       // String instanceID = "swv20";
-      // String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
-      String instanceID = "yn_3x3_example";
-      String path = String.format("/org/seage/problem/jsp/test-instances/%s.xml", instanceID);
+      String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
+      // String instanceID = "yn_3x3_example";
+      // String path = String.format("/org/seage/problem/jsp/test-instances/%s.xml", instanceID);
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
       JobsDefinition jobs = null;
 
@@ -155,7 +155,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     }
     _edges = opersNum * (opersNum - 1) / 2;
 
-    int iterations = 200;
+    int iterations = 2000;
 
     // int numAnts = 1;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
