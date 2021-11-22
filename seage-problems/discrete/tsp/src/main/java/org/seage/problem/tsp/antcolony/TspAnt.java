@@ -26,26 +26,47 @@
 package org.seage.problem.tsp.antcolony;
 
 import java.util.HashSet;
-
-import org.seage.metaheuristic.antcolony.AntBrain;
+import java.util.List;
+import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
+import org.seage.problem.tsp.City;
 
 /**
  *
  * @author Zagy
  */
-public class TspAntBrain extends AntBrain {
-  public TspAntBrain(Graph graph) {
-    super(graph);
+public class TspAnt extends Ant {
+  City[] cities;
+  public TspAnt(Graph graph, List<Integer> nodeIDs, City[] cities) {
+    super(graph, nodeIDs);
+    this.cities = cities;
   }
 
   @Override
-  protected HashSet<Node> getAvailableNodes(Node startingNode, Node currentNode) {
-    HashSet<Node> result = super.getAvailableNodes(startingNode, currentNode);
+  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
+    HashSet<Node> result = super.getAvailableNodes(nodePath);
+    Node startingNode = nodePath.get(0);
+    Node currentNode = nodePath.get(nodePath.size()-1);
     if (currentNode != startingNode && result.size() == 0) {
       result.add(startingNode);
     }
     return result;
+  }
+
+  /**
+   * Edge length calculating
+   * 
+   * @param start  - Starting node
+   * @param end    - Terminate node
+   * @param cities - Readed cities
+   * @return - Euclide edge length
+   */
+  @Override
+  public double getNodeDistance(List<Node> nodePath, Node end) {
+    Node start = nodePath.get(nodePath.size()-1);
+    double dX = (this.cities[start.getID() - 1].X - this.cities[end.getID() - 1].X);
+    double dY = (this.cities[start.getID() - 1].Y - this.cities[end.getID() - 1].Y);
+    return Math.round(Math.sqrt(dX * dX + dY * dY));
   }
 }

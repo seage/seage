@@ -46,7 +46,7 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   public static void main(String[] args) throws Exception {
     try {
       // String path = "data/sat/uf20-01.cnf";
-      String path = "data/sat/uf100-01.cnf";
+      String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf100-01.cnf";
 
       long start = System.currentTimeMillis();
       new SatAntColonyTest().run(path);
@@ -68,14 +68,15 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     int numAnts = 865, iterations = 3337;
 
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
-    SatAntBrain brain = new SatAntBrain(graph, formula);
+
+    FormulaEvaluator evaluator = new FormulaEvaluator(formula);
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
 
     Ant ants[] = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++)
-      ants[i] = new Ant(brain, graph, null);
+      ants[i] = new SatAnt(graph, null, formula, evaluator);
 
     colony.startExploring(graph.getNodes().get(0), ants);
 

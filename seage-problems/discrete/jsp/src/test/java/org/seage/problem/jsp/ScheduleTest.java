@@ -43,8 +43,8 @@ public class ScheduleTest {
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, _jobsDefinition);
     Integer[] jobArray = new Integer[] {1, 2, 3, 3, 1, 2, 2, 1, 3};
-    double[] objVal = evaluator.evaluateSchedule(jobArray);
-    assertEquals(12, (int) objVal[0]);
+    double objVal = evaluator.evaluateSchedule(jobArray);
+    assertEquals(12, (int) objVal);
   }
 
   @Test

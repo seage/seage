@@ -10,7 +10,7 @@
 
  * SEAGE is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
@@ -20,8 +20,10 @@
 
 /**
  * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ *   Richard Malek
+ *   - Initial implementation
+ *   David Omrai
+ *   - Jsp implementation
  */
 
 package org.seage.problem.jsp.antcolony;
@@ -31,69 +33,101 @@ import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
-import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.antcolony.Ant;
+
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
+import org.seage.aal.problem.ProblemInstance;
+import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp.JspProblemProvider;
 
 /**
  *
  * @author Richard Malek
+ * Edited by David Omrai
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
-public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, JspAntColonySolution>
+public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
 {
-    @Override
-    public Class<?> getAlgorithmClass()
+  Random rnd = new Random();
+  @Override
+  public Class<?> getAlgorithmClass()
+  {
+    return AntColonyAdapter.class;
+  }
+
+  @Override
+  public IAlgorithmAdapter<JspPhenotype, Ant> createAlgorithm(
+    ProblemInstance instance, IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception
+  {
+    JobsDefinition jobs = (JobsDefinition) instance;
+    JspProblemProvider problemProvider = new JspProblemProvider();
+    JspPhenotypeEvaluator evaluator =
+        new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
+    JspGraph jspGraph = new JspGraph(jobs, evaluator);
+    return new AntColonyAdapter<JspPhenotype, Ant>(jspGraph, phenotypeEvaluator)
     {
-        return AntColonyAdapter.class;
-    }
+      @Override
+      public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception
+      {
+        ants = new Ant[source.length];
+        for (int i = 0; i < ants.length; i++)
+        {
+          // Current id of operation of specific job
+          int[] jobsOper = new int[jobs.getJobsCount() + 1];
+          for (int jobID = 0; jobID < jobsOper.length; jobID++) {
+            jobsOper[jobID] = 1;
+          }
 
-    // @Override
-    // public IAlgorithmAdapter<Ant> createAlgorithm(ProblemInstance instance) throws Exception
-    // {
-    //     IAlgorithmAdapter<Ant> algorithm = null;
-//        City[] cities = ((TspProblemInstance) instance).getCities();
-//        JspGraph graph = new JspGraph(cities);
-//        AntBrain brain = new AntBrain(graph);
-//        algorithm = new AntColonyAdapter(brain, graph)
-//        {
-//            @Override
-//            public void solutionsFromPhenotype(Object[][] source) throws Exception
-//            {
-//                _ants = new Ant[source.length];
-//                for (int i = 0; i < _ants.length; i++)
-//                {
-//                    ArrayList<Integer> nodes = new ArrayList<Integer>();
-//                    for (int j = 0; j < source[i].length; j++)
-//                        nodes.add((Integer) source[i][j]);
-//                    _ants[i] = new Ant(nodes);
-//                }
-//            }
-//
-//            @Override
-//            public Object[][] solutionsToPhenotype() throws Exception
-//            {
-//                Object[][] result = new Object[_ants.length][];
-//                for (int i = 0; i < _ants.length; i++)
-//                {
-//                    result[i] = new Integer[_ants[i].getNodeIDsAlongPath().size()];
-//                    for (int j = 0; j < result[i].length; j++)
-//                    {
-//                        result[i][j] = _ants[i].getNodeIDsAlongPath().get(j);
-//                    }
-//                }
-//                return result;
-//            }
-//        };
+          ArrayList<Integer> nodes = new ArrayList<Integer>();
+          nodes.add(0);
+          for (int j = 0; j < source[i].getSolution().length; j++) {
+            // Id of job and machine, from value 0
+            int jobID = source[i].getSolution()[j];
+            int operID = jobsOper[jobID];
+            // Add next node
+            nodes.add((jobID * jspGraph.getFactor()) + operID);
+            // Increase the iperations
+            jobsOper[jobID]++;
+          }
 
-    //     return algorithm;
-    // }
+          ants[i] = new JspAnt(jspGraph, nodes, jobs, evaluator);
+       }
+      }
 
-    @Override
-    public IAlgorithmAdapter createAlgorithm(ProblemInstance instance, IPhenotypeEvaluator phenotypeEvaluator)
-            throws Exception {
-        // TODO Auto-generated method stub
-        return null;
-    }
+      @Override
+      public JspPhenotype[] solutionsToPhenotype() throws Exception
+      {
+        JspPhenotype[] result = new JspPhenotype [ants.length];
+        for (int i = 0; i < ants.length; i++) {
+          result[i] = solutionToPhenotype(ants[i]);
+        }
+        return result;
+      }
+
+      @Override
+      public JspPhenotype  solutionToPhenotype(Ant ant) throws Exception {
+        List<Integer> nodePath = ant.getNodeIDsAlongPath();
+        // Remove the starting node
+        nodePath.remove(0);
+
+        Integer[] jobArray = new Integer[nodePath.size()];
+        for (int j = 0; j < jobArray.length; j++)
+        {
+          int nodeID = nodePath.get(j);
+          int jobID = nodeID / jspGraph.getFactor();
+          jobArray[j] = jobID;
+        }
+        JspPhenotype result = new JspPhenotype(jobArray);
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
+      }
+    };
+  }
 }

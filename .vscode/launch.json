@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch JspAlgorithmTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.jsp.antcolony.JspAlgorithmTest",
+      "projectName": "seage-problem-jsp"
+    },
+    {
+      "type": "java",
       "name": "Launch JspGeneticAlgorithmTest",
       "request": "launch",
       "mainClass": "org.seage.problem.jsp.genetics.JspGeneticAlgorithmTest",

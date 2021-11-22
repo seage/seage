@@ -63,14 +63,14 @@ public class SatAntColonyTest_Simple implements IAlgorithmListener<AntColonyEven
     int numAnts = 10, iterations = 10;
 
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
-    SatAntBrain brain = new SatAntBrain(graph, formula);
+    FormulaEvaluator evaluator = new FormulaEvaluator(formula);
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
 
     Ant ants[] = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++)
-      ants[i] = new Ant(brain, graph, null);
+      ants[i] = new SatAnt(graph, null, formula, evaluator);
 
     colony.startExploring(graph.getNodes().get(0), ants);
 
@@ -78,7 +78,7 @@ public class SatAntColonyTest_Simple implements IAlgorithmListener<AntColonyEven
 
     Boolean[] s = new Boolean[colony.getBestPath().size()];
     for (int i = 0; i < s.length; i++) {
-      s[i] = colony.getBestPath().get(i).getNode1().getID() > 0;
+      s[i] = colony.getBestPath().get(i).getNodes()[0].getID() > 0;
       int s2 = 0;
       if (s[i])
         s2 = 1;

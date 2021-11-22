@@ -56,7 +56,7 @@ import org.slf4j.LoggerFactory;
     @Parameter(name = "alpha", min = 1, max = 10, init = 1), 
     @Parameter(name = "beta", min = 1, max = 10, init = 3),
     @Parameter(name = "defaultPheromone", min = 0.00001, max = 1.0, init = 0.00001),
-    @Parameter(name = "qantumOfPheromone", min = 1, max = 1000, init = 10),
+    @Parameter(name = "quantumOfPheromone", min = 1, max = 1000, init = 10),
     @Parameter(name = "localEvaporation", min = 0.5, max = 0.98, init = 0.95) })
 public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> 
     extends AlgorithmAdapterImpl<P, S> {
@@ -102,7 +102,7 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
     double alpha = algParams.getValueDouble("alpha");
     double beta = algParams.getValueDouble("beta");
     double defaultPheromone = algParams.getValueDouble("defaultPheromone");
-    double quantumOfPheromone = algParams.getValueDouble("qantumOfPheromone");
+    double quantumOfPheromone = algParams.getValueDouble("quantumOfPheromone");
     double localEvaporation = algParams.getValueDouble("localEvaporation");
     antColony.setParameters(
         iterationCount, alpha, beta, quantumOfPheromone, defaultPheromone, localEvaporation);
@@ -194,27 +194,6 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
         initialSolutionValue = e.getAntColony().getGlobalBest();
       }
     }
-
-    private String createNodeListString(List<Edge> bestPath) {
-      Integer[] nodeIDs = new Integer[bestPath.size() + 1];
-      String result = "";
-      nodeIDs[0] = bestPath.get(0).getNode1().getID();
-      if (nodeIDs[0] != bestPath.get(1).getNode1().getID()
-          || nodeIDs[0] != bestPath.get(1).getNode2().getID()) {
-        nodeIDs[0] = bestPath.get(0).getNode2().getID();
-      }
-      for (int i = 1; i < nodeIDs.length - 1; i++) {
-        nodeIDs[i] = bestPath.get(i).getNode1().getID();
-        if (i > 0 && nodeIDs[i - 1].equals(nodeIDs[i])) {
-          nodeIDs[i] = bestPath.get(i).getNode2().getID();
-        }
-        result += nodeIDs[i] + " ";
-      }
-      nodeIDs[nodeIDs.length - 1] = nodeIDs[0];
-
-      return result;
-    }
-
   }
 
 }

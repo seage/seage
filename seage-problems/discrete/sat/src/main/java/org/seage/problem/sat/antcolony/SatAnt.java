@@ -23,9 +23,9 @@
 
 package org.seage.problem.sat.antcolony;
 
+import java.util.HashSet;
 import java.util.List;
-
-import org.seage.metaheuristic.antcolony.AntBrain;
+import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
@@ -36,29 +36,21 @@ import org.seage.problem.sat.FormulaEvaluator;
  * SatAntBrain class.
  * @author Zagy
  */
-public class SatAntBrain extends AntBrain {
+public class SatAnt extends Ant {
+  FormulaEvaluator formulaEvaluator;
 
   private Formula formula;
 
-  public SatAntBrain(Graph graph, Formula formula) {
-    super(graph);
+  public SatAnt(Graph graph, List<Integer> nodeIDs, Formula formula, FormulaEvaluator formulaEvaluator) {
+    super(graph, nodeIDs);
     this.formula = formula;
+    this.formulaEvaluator = formulaEvaluator;
   }
 
   @Override
-  protected void markSelected(Node nextNode) {
-    super.markSelected(nextNode);
-
-    if (nextNode != null) {
-      Node n2 = graph.getNodes().get(-nextNode.getID());
-      availableNodes.remove(n2);
-    }
-  }
-
-  @Override
-  public double getPathCost(List<Edge> path) {
+  public double getPathCost(List<Edge> path) throws Exception {
     Boolean[] solution = new Boolean[formula.getLiteralCount()];
-    List<Node> nodeList = edgeListToNodeList(path);
+    List<Node> nodeList = Graph.edgeListToNodeList(path);
 
     for (Node n : nodeList) {
       if (n.getID() == 0) {
@@ -71,5 +63,21 @@ public class SatAntBrain extends AntBrain {
       }
     }
     return (FormulaEvaluator.evaluate(formula, solution) + 0.1);
+  }
+
+  @Override
+  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
+    var result = super.getAvailableNodes(nodePath);
+    for (Node n : nodePath) {
+      int id = -n.getID();
+      Node n2 = _graph.getNodes().get(id);
+      result.remove(n2);
+    }
+    return result;
+  }
+
+  @Override
+  public double getNodeDistance(List<Node> nodePath, Node n2) {
+    return this.formulaEvaluator.evaluate(this.formula, n2.getID());
   }
 }
