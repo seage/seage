@@ -1,5 +1,6 @@
 package org.seage.aal.problem;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,6 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import javax.xml.XMLConstants;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.data.DataNode;
@@ -22,6 +29,10 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
   protected abstract double generateGreedyResult(ProblemInstance instance, IPhenotypeEvaluator<P> evaluator) throws Exception;
   protected abstract Map<String, Double> getOptimalValues() throws Exception;
 
+  public ProblemMetadataGenerator(ProblemProvider<P> problemProvider) {
+    this.problemProvider = problemProvider;
+  }
+
   public void runMetadataGenerator(int numberOfTrials) throws Exception {
     ProblemInfo pi = problemProvider.getProblemInfo();
     String problemID = pi.getProblemID();
@@ -33,8 +44,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
 
     problem.putDataNode(createInstancesMetadata(numberOfTrials));
 
-    // saveToFile(problem, problemID.toLowerCase());
-
+    saveToFile(problem, problemID.toLowerCase());
   }
 
   private DataNode createInstancesMetadata(int numberOfTrials) throws Exception {
@@ -60,7 +70,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
 
         indexes.parallelStream().forEach((i) -> {
           try {
-            logger.info("Greedy for: {}, trial {}", instanceID, i);
+            logger.info("Greedy for: {}, trial {}", instanceID, i+1);
             greedyResults[i] = generateGreedyResult(instance, evaluator);
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
@@ -69,7 +79,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
 
         indexes.parallelStream().forEach((i) -> {
           try {
-            logger.info("Random for: {}, trial {}", instanceID, i);
+            logger.info("Random for: {}, trial {}", instanceID, i+1);
             randomResults[i] = generateRandomResult(instance, evaluator);
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
@@ -122,7 +132,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
   }
 
   private DataNode readOptimalValueLine(String line) {
-    try (Scanner scanner = new Scanner(line)) {
+    try (Scanner scanner = new Scanner(line)) {      
       scanner.useDelimiter(" : ");
 
       DataNode result = new DataNode("Optimal");
@@ -130,6 +140,9 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
       result.putValue("optimum", scanner.next());
 
       return result;
+    } catch(Exception ex) {
+      logger.error("Error reading line: " + line);
+      throw ex;
     }
   }
 
@@ -159,5 +172,30 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
 
     Collections.sort(instanceIDs);
     return instanceIDs;
-  } 
+  }
+
+  /**
+   * Method stores given data into a xml file.
+   * 
+   * @param dn DataNode object with data for outputting.
+   */
+  private static void saveToFile(DataNode dn, String problemName) throws Exception {
+    File directory = new File("./output");
+    if (! directory.exists()){
+        directory.mkdir();
+    }
+    File path = new File("./output/" + problemName + ".metadata.xml");
+
+    logger.info("Saving the results to the file {}", path.getAbsolutePath());
+    
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
+    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, ""); // Compliant
+    Transformer transformer = transformerFactory.newTransformer();
+    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    DOMSource domSource = new DOMSource(dn.toXml());
+    StreamResult streamResult = new StreamResult(path);
+
+    transformer.transform(domSource, streamResult);
+  }
 }

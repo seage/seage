@@ -21,7 +21,7 @@ public class ExperimentSingleGridCommand extends Command {
   int granularity;
 
   @Override
-  public void performCommad() throws Exception {
+  public void performCommand() throws Exception {
     new SingleAlgorithmGridExperimenter(
         problemID, 
         instances.toArray(new String[] {}),

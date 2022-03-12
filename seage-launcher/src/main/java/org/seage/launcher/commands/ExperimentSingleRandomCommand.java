@@ -19,7 +19,7 @@ public class ExperimentSingleRandomCommand extends Command {
   int algorithmTimeoutS;
 
   @Override
-  public void performCommad() throws Exception {
+  public void performCommand() throws Exception {
     new SingleAlgorithmRandomExperimenter(
         problemID, 
         instances.toArray(new String[] {}),

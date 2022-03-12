@@ -26,11 +26,10 @@ package org.seage.problem.fsp;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import org.seage.aal.Annotations;
-import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+import org.seage.aal.problem.ProblemMetadataGenerator;
 import org.seage.problem.jsp.JobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
@@ -74,6 +73,14 @@ public class FspProblemProvider extends JspProblemProvider {
 
     return jobsDefinition;
   }
+
+
+  
+  @Override
+  public ProblemMetadataGenerator<JspPhenotype> initProblemMetadataGenerator() {
+    return new FspProblemsMetadataGenerator(this);
+  }
+
 
   // TODO: Remove after testing
   public static void main(String[] args) {    

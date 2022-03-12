@@ -21,7 +21,7 @@ public class ExperimentSingleEvolutionCommand extends Command {
   int algorithmTimeoutS;
 
   @Override
-  public void performCommad() throws Exception {
+  public void performCommand() throws Exception {
 //        new SingleAlgorithmEvolutionExperimenter(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}), numOfSubjects, numOfIterations, algorithmTimeoutS )
 //        .runExperiment();       
   }

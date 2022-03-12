@@ -18,6 +18,7 @@ import org.seage.launcher.commands.ExperimentSingleFeedbackCommand;
 import org.seage.launcher.commands.ExperimentSingleGridCommand;
 import org.seage.launcher.commands.ExperimentSingleRandomCommand;
 import org.seage.launcher.commands.ListCommand;
+import org.seage.launcher.commands.MetadataGeneratorCommand;
 import org.seage.problem.fsp.FspProblemProvider;
 import org.seage.problem.jsp.JspProblemProvider;
 import org.seage.problem.sat.SatProblemProvider;
@@ -52,6 +53,7 @@ public class Launcher {
       commands.put("experiment-single-evolution", new ExperimentSingleEvolutionCommand());
       commands.put("experiment-multi-random", new ExperimentMultiRandomCommand());
       commands.put("experiment-approach", new ExperimentApproachCommand());
+      commands.put("metadata", new MetadataGeneratorCommand());
 
       Launcher launcher = new Launcher();
 
@@ -77,7 +79,7 @@ public class Launcher {
   private void run(Command cmd) throws Exception {
     _logger.info("SEAGE running ...");
     // LogHelper.configure(Launcher.class.getClassLoader().getResourceAsStream("logback.xml"));
-    cmd.performCommad();
+    cmd.performCommand();
     _logger.info("SEAGE finished ...");
   }
 }

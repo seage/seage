@@ -36,6 +36,15 @@
     },
     {
       "type": "java",
+      "name": "Debug Launcher (metadata)",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": ["metadata", "-p", "TSP", "-n", "1"]
+    },
+    {
+      "type": "java",
       "name": "Debug Launcher (experimenter, h2)",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",

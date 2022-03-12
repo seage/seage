@@ -12,7 +12,7 @@ public class SatProblemMetadataGenerator
     extends ProblemMetadataGenerator<SatPhenotype> {
 
   public SatProblemMetadataGenerator(SatProblemProvider problemProvider) {
-    this.problemProvider = problemProvider;
+    super(problemProvider);
   }
 
   @Override

@@ -5,28 +5,30 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemMetadataGenerator;
 
-public class JspProblemsMetadataGenerator extends ProblemMetadataGenerator<JspPhenotype>{
+public class JspProblemsMetadataGenerator extends ProblemMetadataGenerator<JspPhenotype> {
 
-  public JspProblemsMetadataGenerator(JspProblemProvider jspProblemProvider) {}
+  public JspProblemsMetadataGenerator(JspProblemProvider jspProblemProvider) {
+    super(jspProblemProvider);
+  }
 
   @Override
   protected double generateRandomResult(ProblemInstance instance,
       IPhenotypeEvaluator<JspPhenotype> evaluator) throws Exception {
-    // TODO Auto-generated method stub
-    return 0;
+    return ScheduleProvider.createRandomSchedule((JspPhenotypeEvaluator) evaluator,
+        (JobsDefinition) instance, System.currentTimeMillis()).getObjValue();
   }
 
   @Override
   protected double generateGreedyResult(ProblemInstance instance,
       IPhenotypeEvaluator<JspPhenotype> evaluator) throws Exception {
-    // TODO Auto-generated method stub
-    return 0;
+    return ScheduleProvider
+        .createGreedySchedule((JspPhenotypeEvaluator) evaluator, (JobsDefinition) instance)
+        .getObjValue();
   }
 
   @Override
-  protected Map<String, Double> getOptimalValues() {
-    // TODO Auto-generated method stub
-    return null;
+  protected Map<String, Double> getOptimalValues() throws Exception {
+    return getOptimalValues("/org/seage/problem/jsp/solutions/__optimal.txt");
   }
 
 }
