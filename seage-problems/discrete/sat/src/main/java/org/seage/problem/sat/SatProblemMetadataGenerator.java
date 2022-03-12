@@ -20,7 +20,7 @@ public class SatProblemMetadataGenerator
     HashMap<String, Double> result = new HashMap<String, Double>();
     List<ProblemInstanceInfo> instances = problemProvider.getProblemInfo().getProblemInstanceInfos();
     for(ProblemInstanceInfo pii : instances) {
-      result.put(pii.getInstanceID(), 0.0);
+      result.put(pii.getInstanceID(), 0d);
     }
     return result;
   }
