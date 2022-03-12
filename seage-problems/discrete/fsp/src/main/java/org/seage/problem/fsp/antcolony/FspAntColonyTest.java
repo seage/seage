@@ -25,7 +25,7 @@
  *   David Omrai
  *   - Jsp implementation
  */
-package org.seage.problem.jsp.antcolony;
+package org.seage.problem.fsp.antcolony;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -40,25 +40,25 @@ import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
-import org.seage.metaheuristic.antcolony.Node;
 
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
-
-import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.fsp.FspJobsDefinition;
+import org.seage.problem.fsp.FspProblemProvider;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
-import org.seage.problem.jsp.JspProblemProvider;
+import org.seage.problem.jsp.antcolony.JspAnt;
+import org.seage.problem.jsp.antcolony.JspGraph;
 
 /**
  * 
  * @author Richard Malek
  * Edited by David Omrai
  */
-public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
+public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
 {
   private int _edges;
   private Random generator = new Random();
@@ -67,26 +67,20 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
   {
     try
     {
-      String instanceID = "ft06";
-      // String instanceID = "ft10";
-      // String instanceID = "ft20";
-      // String instanceID = "la01";
-      // String instanceID = "la02";
-      // String instanceID = "la04";
-      // String instanceID = "la35";
-      // String instanceID = "swv20";
-      String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
-      // String instanceID = "yn_3x3_example";
-      // String path = String.format("/org/seage/problem/jsp/test-instances/%s.xml", instanceID);
-      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
-      JobsDefinition jobs = null;
+      String instanceID = "tai100_20_01";
+      // String instanceID = "tai100_20_02";
 
-      try(InputStream stream = JspAlgorithmTest.class.getResourceAsStream(path)) {
-        jobs = new JobsDefinition(jobInfo, stream);
+      String path = String.format("/org/seage/problem/fsp/instances/%s.txt", instanceID);
+
+      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+      FspJobsDefinition jobs = null;
+
+      try(InputStream stream = FspAntColonyTest.class.getResourceAsStream(path)) {
+        jobs = new FspJobsDefinition(jobInfo, stream);
       }
 
-      new JspAlgorithmTest().runAlgorithm(jobs);
-      new JspAlgorithmTest().runAlgorithmAdapter(jobs);
+      new FspAntColonyTest().runAlgorithm(jobs);
+      new FspAntColonyTest().runAlgorithmAdapter(jobs);
     }
     catch (Exception ex)
     {
@@ -124,15 +118,15 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     return result;
   }
 
-  public void runAlgorithmAdapter(JobsDefinition jobs) throws Exception {
-    JspProblemProvider problemProvider = new JspProblemProvider();
+  public void runAlgorithmAdapter(FspJobsDefinition jobs) throws Exception {
+    FspProblemProvider problemProvider = new FspProblemProvider();
     JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 100, generator.nextLong());
 
     AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
 
     ProblemInfo pi = problemProvider.getProblemInfo();
 
-    JspAntColonyFactory factory = new JspAntColonyFactory();
+    FspAntColonyFactory factory = new FspAntColonyFactory();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     try {
         IAlgorithmAdapter<JspPhenotype, Ant> adapter = factory.createAlgorithm(jobs, eval);
@@ -147,7 +141,7 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     }
   }
 
-  public void runAlgorithm(JobsDefinition jobs) throws Exception
+  public void runAlgorithm(FspJobsDefinition jobs) throws Exception
   {
     int opersNum = 0;
     for (int i = 0; i < jobs.getJobsCount(); i++) {
@@ -155,17 +149,17 @@ public class JspAlgorithmTest implements IAlgorithmListener<AntColonyEvent>
     }
     _edges = opersNum * (opersNum - 1) / 2;
 
-    int iterations = 2000;
+    int iterations = 100;
 
     // int numAnts = 1;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
     // double alpha = 1, beta = 3;
 
-    int numAnts = 100;
+    int numAnts = 10;
     double defaultPheromone = 1, localEvaporation = 0.9, quantumPheromone = 10.0;
     double alpha = 1.1, beta = 1.6;
 
-    JspProblemProvider problemProvider = new JspProblemProvider();
+    FspProblemProvider problemProvider = new FspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
 
