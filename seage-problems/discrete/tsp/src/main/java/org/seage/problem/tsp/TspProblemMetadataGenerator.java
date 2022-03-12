@@ -17,14 +17,14 @@ public class TspProblemMetadataGenerator extends ProblemMetadataGenerator<TspPhe
   }
 
   @Override
-  protected double generateRandomResult(ProblemInstance instance,
+  protected double generateRandomSolutionValue(ProblemInstance instance,
       IPhenotypeEvaluator<TspPhenotype> evaluator) throws Exception {
     return evaluator.evaluate(new TspPhenotype(TourProvider.createGreedyTour(
         ((TspProblemInstance) instance).getCities(), System.currentTimeMillis())))[0];
   }
 
   @Override
-  protected double generateGreedyResult(ProblemInstance instance,
+  protected double generateGreedySolutionValue(ProblemInstance instance,
       IPhenotypeEvaluator<TspPhenotype> evaluator) throws Exception {
     return evaluator.evaluate(new TspPhenotype(
         TourProvider.createRandomTour(((TspProblemInstance) instance).getCities().length)))[0];

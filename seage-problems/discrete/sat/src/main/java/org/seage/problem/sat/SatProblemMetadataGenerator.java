@@ -26,7 +26,7 @@ public class SatProblemMetadataGenerator
   }
 
   @Override
-  protected double generateRandomResult(ProblemInstance instance,
+  protected double generateRandomSolutionValue(ProblemInstance instance,
       IPhenotypeEvaluator<SatPhenotype> evaluator) throws Exception {
     return SatInitialSolutionProvider
         .generateRandomSolution((Formula) instance, evaluator, System.currentTimeMillis())
@@ -34,7 +34,7 @@ public class SatProblemMetadataGenerator
   }
 
   @Override
-  protected double generateGreedyResult(ProblemInstance instance,
+  protected double generateGreedySolutionValue(ProblemInstance instance,
       IPhenotypeEvaluator<SatPhenotype> evaluator) throws Exception {
     return SatInitialSolutionProvider
         .generateGreedySolution((Formula) instance, evaluator, System.currentTimeMillis())

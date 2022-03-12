@@ -25,8 +25,8 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
 
   protected ProblemProvider<P> problemProvider;
 
-  protected abstract double generateRandomResult(ProblemInstance instance, IPhenotypeEvaluator<P> evaluator) throws Exception;
-  protected abstract double generateGreedyResult(ProblemInstance instance, IPhenotypeEvaluator<P> evaluator) throws Exception;
+  protected abstract double generateRandomSolutionValue(ProblemInstance instance, IPhenotypeEvaluator<P> evaluator) throws Exception;
+  protected abstract double generateGreedySolutionValue(ProblemInstance instance, IPhenotypeEvaluator<P> evaluator) throws Exception;
   protected abstract Map<String, Double> getOptimalValues() throws Exception;
 
   public ProblemMetadataGenerator(ProblemProvider<P> problemProvider) {
@@ -71,7 +71,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Greedy for: {}, trial {}", instanceID, i+1);
-            greedyResults[i] = generateGreedyResult(instance, evaluator);
+            greedyResults[i] = generateGreedySolutionValue(instance, evaluator);
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }
@@ -80,7 +80,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
         indexes.parallelStream().forEach((i) -> {
           try {
             logger.info("Random for: {}, trial {}", instanceID, i+1);
-            randomResults[i] = generateRandomResult(instance, evaluator);
+            randomResults[i] = generateRandomSolutionValue(instance, evaluator);
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
           }

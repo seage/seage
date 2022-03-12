@@ -12,14 +12,14 @@ public class JspProblemsMetadataGenerator extends ProblemMetadataGenerator<JspPh
   }
 
   @Override
-  protected double generateRandomResult(ProblemInstance instance,
+  protected double generateRandomSolutionValue(ProblemInstance instance,
       IPhenotypeEvaluator<JspPhenotype> evaluator) throws Exception {
     return ScheduleProvider.createRandomSchedule((JspPhenotypeEvaluator) evaluator,
         (JobsDefinition) instance, System.currentTimeMillis()).getObjValue();
   }
 
   @Override
-  protected double generateGreedyResult(ProblemInstance instance,
+  protected double generateGreedySolutionValue(ProblemInstance instance,
       IPhenotypeEvaluator<JspPhenotype> evaluator) throws Exception {
     return ScheduleProvider
         .createGreedySchedule((JspPhenotypeEvaluator) evaluator, (JobsDefinition) instance)
