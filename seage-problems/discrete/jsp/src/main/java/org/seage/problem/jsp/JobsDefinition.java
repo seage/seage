@@ -58,6 +58,11 @@ public class JobsDefinition extends ProblemInstance
   {
     return _numMachines;
   }
+
+  @Override
+  public int getSize() {
+    return getJobsCount() * getMachinesCount();
+  }
       
   protected void createJobInfos(InputStream jobsDefinitionStream) throws Exception
   {

@@ -19,7 +19,7 @@ public class ListCommand extends Command {
   private static final Logger _logger = LoggerFactory.getLogger(ListCommand.class.getName());
 
   @Override
-  public void performCommad() throws Exception {
+  public void performCommand() throws Exception {
     _logger.info("List of implemented problems and algorithms:");
     _logger.info("--------------------------------------------");
 

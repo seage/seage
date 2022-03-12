@@ -42,7 +42,7 @@ public class ExperimentApproachCommand extends Command {
   int algorithmTimeoutS;
 
   @Override
-  public void performCommad() throws Exception {
+  public void performCommand() throws Exception {
     HashMap<String, List<String>> problemInstanceParams = 
         ProblemInstanceParamsParser.parseProblemInstanceParams(instanceIDs);
 

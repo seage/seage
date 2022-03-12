@@ -76,4 +76,11 @@ public abstract class ProblemProviderTestBase<P extends Phenotype<?>> {
       assertNotNull(value);
     }
   }
+
+  @Test
+  public void testProblemMetadataGenerator() throws Exception {
+    ProblemMetadataGenerator<P> metadataGenerator = problemProvider.initProblemMetadataGenerator();
+    assertNotNull(metadataGenerator);
+    // metadataGenerator.runMetadataGenerator(1);
+  }
 }

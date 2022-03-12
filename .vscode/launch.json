@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch FspProblemProvider",
+      "request": "launch",
+      "mainClass": "org.seage.problem.fsp.FspProblemProvider",
+      "projectName": "seage-problem-fsp"
+    },
+    {
+      "type": "java",
       "name": "Launch FspAntColonyTest",
       "request": "launch",
       "mainClass": "org.seage.problem.fsp.antcolony.FspAntColonyTest",
@@ -40,6 +47,15 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "args": "list"
+    },
+    {
+      "type": "java",
+      "name": "Debug Launcher (metadata)",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": ["metadata", "-p", "TSP", "-n", "1"]
     },
     {
       "type": "java",

@@ -71,6 +71,11 @@ public class Formula extends ProblemInstance {
     return _literals;
   }
 
+  @Override
+  public int getSize() {
+    return getLiteralCount();
+  }
+
   // OK
   @Override
   public String toString() {

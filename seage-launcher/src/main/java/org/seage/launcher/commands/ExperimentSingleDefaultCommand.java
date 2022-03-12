@@ -21,7 +21,7 @@ public class ExperimentSingleDefaultCommand extends Command {
   double spread;
 
   @Override
-  public void performCommad() throws Exception {
+  public void performCommand() throws Exception {
     new SingleAlgorithmDefaultExperimenter(
         problemID, 
         instances.toArray(new String[] {}),

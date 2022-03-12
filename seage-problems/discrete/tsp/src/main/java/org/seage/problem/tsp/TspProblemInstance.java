@@ -45,4 +45,9 @@ public class TspProblemInstance extends ProblemInstance {
   public City[] getCities() {
     return cities;
   }
+
+  @Override
+  public int getSize() {
+    return getCities().length;
+  }  
 }

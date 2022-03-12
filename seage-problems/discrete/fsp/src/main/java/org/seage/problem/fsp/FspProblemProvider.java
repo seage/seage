@@ -26,9 +26,15 @@ package org.seage.problem.fsp;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import org.seage.aal.Annotations;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+import org.seage.aal.problem.ProblemMetadataGenerator;
+import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
+import org.seage.problem.jsp.ScheduleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,13 +74,30 @@ public class FspProblemProvider extends JspProblemProvider {
     return jobsDefinition;
   }
 
+
+  
+  @Override
+  public ProblemMetadataGenerator<JspPhenotype> initProblemMetadataGenerator() {
+    return new FspProblemsMetadataGenerator(this);
+  }
+
+
   // TODO: Remove after testing
   public static void main(String[] args) {    
     try {
+      // String iid = "rm3_3_01";
+      // String iid = "tai20_05_01";
+      String iid = "tai500_20_01";
       FspProblemProvider provider = new FspProblemProvider();
-      provider.initProblemInstance(new ProblemInstanceInfo(
-        "100x20_01", ProblemInstanceOrigin.RESOURCE, "/org/seage/problem/fsp/instances/tai100_20_01.txt"
-      ));
+      ProblemInfo pi = provider.getProblemInfo();
+      ProblemInstanceInfo pii = pi.getProblemInstanceInfo(iid);
+      JobsDefinition instance = provider.initProblemInstance(pii);
+      JspPhenotypeEvaluator jspEval = new JspPhenotypeEvaluator(pi, instance);
+      JspPhenotype schedule1 = ScheduleProvider.createGreedySchedule(jspEval, instance);
+      JspPhenotype schedule2 = ScheduleProvider.createRandomSchedule(jspEval, instance, 1);
+
+      System.out.println("greedy: " + schedule1.getObjValue());
+      System.out.println("random: " + schedule2.getObjValue());
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

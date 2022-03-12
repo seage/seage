@@ -8,35 +8,32 @@ import org.seage.aal.algorithm.TestPhenotype;
 @Annotations.ProblemName("Test Problem")
 public class TestProblemProvider extends ProblemProvider<TestPhenotype> {
 
-  public TestProblemProvider() {
-
-  }
+  public TestProblemProvider() {}
 
   @Override
   public ProblemInstance initProblemInstance(ProblemInstanceInfo problemInstanceInfo)
       throws Exception {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public IPhenotypeEvaluator<TestPhenotype> initPhenotypeEvaluator(ProblemInstance problemInstance)
       throws Exception {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public TestPhenotype[] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions,
       long randomSeed) throws Exception {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public void visualizeSolution(Object[] solution, ProblemInstanceInfo problemInstanceInfo)
-      throws Exception {
-    // TODO Auto-generated method stub
+      throws Exception {}
 
+  @Override
+  public ProblemMetadataGenerator<TestPhenotype> initProblemMetadataGenerator() {
+    return null;
   }
 }

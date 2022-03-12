@@ -32,6 +32,7 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+import org.seage.aal.problem.ProblemMetadataGenerator;
 import org.seage.aal.problem.ProblemProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,5 +104,10 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
   public void visualizeSolution(
       Object[] solution, ProblemInstanceInfo problemInstanceInfo) throws Exception {
     throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public ProblemMetadataGenerator<SatPhenotype> initProblemMetadataGenerator() {
+    return new SatProblemMetadataGenerator(this);
   }
 }
