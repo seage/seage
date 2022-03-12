@@ -13,6 +13,20 @@
     },
     {
       "type": "java",
+      "name": "Launch FspAntColonyTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.fsp.antcolony.FspAntColonyTest",
+      "projectName": "seage-problem-fsp"
+    },
+    {
+      "type": "java",
+      "name": "Launch JspAntColonyTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.jsp.antcolony.JspAntColonyTest",
+      "projectName": "seage-problem-jsp"
+    },
+    {
+      "type": "java",
       "name": "Launch JspAlgorithmTest",
       "request": "launch",
       "mainClass": "org.seage.problem.jsp.antcolony.JspAlgorithmTest",
