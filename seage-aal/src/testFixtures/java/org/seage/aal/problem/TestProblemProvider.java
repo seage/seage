@@ -8,8 +8,7 @@ import org.seage.aal.algorithm.TestPhenotype;
 @Annotations.ProblemName("Test Problem")
 public class TestProblemProvider extends ProblemProvider<TestPhenotype> {
 
-  public TestProblemProvider() {
-  }
+  public TestProblemProvider() {}
 
   @Override
   public ProblemInstance initProblemInstance(ProblemInstanceInfo problemInstanceInfo)
@@ -31,8 +30,7 @@ public class TestProblemProvider extends ProblemProvider<TestPhenotype> {
 
   @Override
   public void visualizeSolution(Object[] solution, ProblemInstanceInfo problemInstanceInfo)
-      throws Exception {
-  }
+      throws Exception {}
 
   @Override
   public ProblemMetadataGenerator<TestPhenotype> initProblemMetadataGenerator() {
