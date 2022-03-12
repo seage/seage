@@ -39,4 +39,10 @@ public class TestProblemProvider extends ProblemProvider<TestPhenotype> {
     // TODO Auto-generated method stub
 
   }
+
+  @Override
+  public ProblemMetadataGenerator<TestPhenotype> initProblemMetadataGenerator() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }

@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Problem id="FSP">
     <Instances>
-        <Instance greedy="28762" id="tai100_20_01" optimum="5851" random="28898" size="2000"/>
-        <Instance greedy="28739" id="tai100_20_02" optimum="6099" random="28871" size="2000"/>
-        <Instance greedy="28894" id="tai100_20_03" optimum="6099" random="28810" size="2000"/>
-        <Instance greedy="28701" id="tai100_20_04" optimum="6072" random="28593" size="2000"/>
-        <Instance greedy="29060" id="tai100_20_05" optimum="6009" random="28936" size="2000"/>
-        <Instance greedy="29197" id="tai100_20_06" optimum="6144" random="29392" size="2000"/>
-        <Instance greedy="28992" id="tai100_20_07" optimum="5991" random="28778" size="2000"/>
-        <Instance greedy="29695" id="tai100_20_08" optimum="6084" random="29710" size="2000"/>
-        <Instance greedy="29356" id="tai100_20_09" optimum="5979" random="29234" size="2000"/>
-        <Instance greedy="29059" id="tai100_20_10" optimum="6298" random="29073" size="2000"/>
-        <Instance greedy="38086" id="tai200_10_01" optimum="10816" random="38121" size="2000"/>
-        <Instance greedy="37851" id="tai200_10_02" optimum="10422" random="37885" size="2000"/>
-        <Instance greedy="38735" id="tai200_10_03" optimum="10886" random="38728" size="2000"/>
-        <Instance greedy="38132" id="tai200_10_04" optimum="10794" random="37855" size="2000"/>
-        <Instance greedy="37780" id="tai200_10_05" optimum="10437" random="37997" size="2000"/>
-        <Instance greedy="36955" id="tai200_10_06" optimum="10255" random="37243" size="2000"/>
-        <Instance greedy="38757" id="tai200_10_07" optimum="10761" random="38495" size="2000"/>
-        <Instance greedy="38464" id="tai200_10_08" optimum="10663" random="38460" size="2000"/>
-        <Instance greedy="37434" id="tai200_10_09" optimum="10348" random="37469" size="2000"/>
-        <Instance greedy="38150" id="tai200_10_10" optimum="10616" random="38326" size="2000"/>
-        <Instance greedy="55743" id="tai200_20_01" optimum="10979" random="55469" size="4000"/>
-        <Instance greedy="136047" id="tai500_20_01" optimum="25922" random="136476" size="10000"/>
-        <Instance greedy="138842" id="tai500_20_02" optimum="26353" random="138791" size="10000"/>
-        <Instance greedy="136571" id="tai500_20_03" optimum="26320" random="136760" size="10000"/>
-        <Instance greedy="137261" id="tai500_20_04" optimum="26424" random="137148" size="10000"/>
-        <Instance greedy="136913" id="tai500_20_05" optimum="26181" random="137105" size="10000"/>
-        <Instance greedy="138478" id="tai500_20_06" optimum="26401" random="138570" size="10000"/>
-        <Instance greedy="137003" id="tai500_20_07" optimum="26300" random="136101" size="10000"/>
-        <Instance greedy="138237" id="tai500_20_08" optimum="26429" random="138519" size="10000"/>
-        <Instance greedy="136235" id="tai500_20_09" optimum="25891" random="136268" size="10000"/>
-        <Instance greedy="136817" id="tai500_20_10" optimum="26315" random="137103" size="10000"/>
+        <Instance greedy="7987" id="tai100_20_01" optimum="5851" random="28852" size="2000"/>
+        <Instance greedy="8061" id="tai100_20_02" optimum="6099" random="28513" size="2000"/>
+        <Instance greedy="7906" id="tai100_20_03" optimum="6099" random="28804" size="2000"/>
+        <Instance greedy="7842" id="tai100_20_04" optimum="6072" random="28344" size="2000"/>
+        <Instance greedy="8042" id="tai100_20_05" optimum="6009" random="29053" size="2000"/>
+        <Instance greedy="8161" id="tai100_20_06" optimum="6144" random="28950" size="2000"/>
+        <Instance greedy="8349" id="tai100_20_07" optimum="5991" random="28634" size="2000"/>
+        <Instance greedy="8117" id="tai100_20_08" optimum="6084" random="30015" size="2000"/>
+        <Instance greedy="8235" id="tai100_20_09" optimum="5979" random="29281" size="2000"/>
+        <Instance greedy="8256" id="tai100_20_10" optimum="6298" random="29278" size="2000"/>
+        <Instance greedy="13204" id="tai200_10_01" optimum="10816" random="37994" size="2000"/>
+        <Instance greedy="13308" id="tai200_10_02" optimum="10422" random="37774" size="2000"/>
+        <Instance greedy="13154" id="tai200_10_03" optimum="10886" random="38821" size="2000"/>
+        <Instance greedy="12863" id="tai200_10_04" optimum="10794" random="37751" size="2000"/>
+        <Instance greedy="13111" id="tai200_10_05" optimum="10437" random="37712" size="2000"/>
+        <Instance greedy="13080" id="tai200_10_06" optimum="10255" random="36937" size="2000"/>
+        <Instance greedy="13615" id="tai200_10_07" optimum="10761" random="38424" size="2000"/>
+        <Instance greedy="13378" id="tai200_10_08" optimum="10663" random="38126" size="2000"/>
+        <Instance greedy="13144" id="tai200_10_09" optimum="10348" random="37417" size="2000"/>
+        <Instance greedy="13484" id="tai200_10_10" optimum="10616" random="38096" size="2000"/>
+        <Instance greedy="14107" id="tai200_20_01" optimum="10979" random="55651" size="4000"/>
+        <Instance greedy="32995" id="tai500_20_01" optimum="25922" random="136183" size="10000"/>
+        <Instance greedy="33714" id="tai500_20_02" optimum="26353" random="139027" size="10000"/>
+        <Instance greedy="33270" id="tai500_20_03" optimum="26320" random="136794" size="10000"/>
+        <Instance greedy="33769" id="tai500_20_04" optimum="26424" random="137664" size="10000"/>
+        <Instance greedy="33559" id="tai500_20_05" optimum="26181" random="138055" size="10000"/>
+        <Instance greedy="33594" id="tai500_20_06" optimum="26401" random="137417" size="10000"/>
+        <Instance greedy="33177" id="tai500_20_07" optimum="26300" random="136124" size="10000"/>
+        <Instance greedy="34023" id="tai500_20_08" optimum="26429" random="138527" size="10000"/>
+        <Instance greedy="33309" id="tai500_20_09" optimum="25891" random="135938" size="10000"/>
+        <Instance greedy="33272" id="tai500_20_10" optimum="26315" random="136300" size="10000"/>
     </Instances>
 </Problem>

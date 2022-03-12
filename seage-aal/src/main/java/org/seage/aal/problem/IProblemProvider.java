@@ -51,6 +51,9 @@ public interface IProblemProvider<P extends Phenotype<?>> {
   // Initializes (reads) a problem instance.
   ProblemInstance initProblemInstance(ProblemInstanceInfo problemInstanceInfo) throws Exception;
 
+  // Initializes a problem metadata generator
+  ProblemMetadataGenerator<P> initProblemMetadataGenerator();
+
   // Initializes an evaluator of solutions in phenotype representation
   // (i.e. in general representation of a problem solution).
   IPhenotypeEvaluator<P> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception;

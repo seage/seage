@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch FspProblemProvider",
+      "request": "launch",
+      "mainClass": "org.seage.problem.fsp.FspProblemProvider",
+      "projectName": "seage-problem-fsp"
+    },
+    {
+      "type": "java",
       "name": "Launch JspAlgorithmTest",
       "request": "launch",
       "mainClass": "org.seage.problem.jsp.antcolony.JspAlgorithmTest",

@@ -12,4 +12,6 @@ public abstract class ProblemInstance {
     return _problemInstanceInfo;
   }
 
+  public abstract int getSize();
+
 }

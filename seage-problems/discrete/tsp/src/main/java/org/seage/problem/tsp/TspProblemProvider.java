@@ -35,6 +35,7 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+import org.seage.aal.problem.ProblemMetadataGenerator;
 import org.seage.aal.problem.ProblemProvider;
 
 import org.slf4j.Logger;
@@ -115,6 +116,11 @@ public class TspProblemProvider extends ProblemProvider<TspPhenotype> {
   public IPhenotypeEvaluator<TspPhenotype> initPhenotypeEvaluator(ProblemInstance instance) 
       throws Exception {
     return new TspPhenotypeEvaluator(this.getProblemInfo(), (TspProblemInstance) instance);
+  }
+
+  @Override
+  public ProblemMetadataGenerator<TspPhenotype> initProblemMetadataGenerator() {
+    return new TspProblemMetadataGenerator(this);
   }
 
 }
