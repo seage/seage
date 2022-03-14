@@ -38,7 +38,7 @@ public class FacilityLocationProvider
 {
     synchronized public static Double[][][] readFacilityLocations(InputStream stream) throws Exception
     {
-        Double[][] res1, res2, res3;
+        Double[][] res1, res2;
         Scanner scanner = new Scanner(stream);
         final int n;
         try
@@ -51,9 +51,8 @@ public class FacilityLocationProvider
 
             res1 = new Double[n][n];
             res2 = new Double[n][n];
-            res3 = new Double[n][n];
 
-            // read first matrix
+            // read first matrix - Flow
             for (int i = 0; i < n; i++)
             {
                 line = scanner.nextLine();
@@ -68,7 +67,7 @@ public class FacilityLocationProvider
                 res1[i] = dataLine;
             }
 
-            /* read second matrix (optional)
+            /* read second matrix - Distance
              * if no matrix given, unit matrix is created
              */
             for (int i = 0; i < n; i++)
@@ -92,44 +91,15 @@ public class FacilityLocationProvider
                     }
                 }
             }
-
-            /* read third matrix (optional)
-             * if no matrix given, zero matrix is created
-             */
-            if (scanner.hasNext())
-                scanner.nextLine();
-
-            for (int i = 0; i < n; i++)
-            {
-                if (scanner.hasNext())
-                {
-                    line = scanner.nextLine();
-                    if (line.trim().isEmpty())
-                    {
-                        i--;
-                        continue;
-                    }
-                    Double[] dataLine = readLine(line);
-                    res3[i] = dataLine;
-                }
-                else
-                {
-                    for (int j = 0; j < n; j++)
-                    {
-                        res3[i][j] = 0.0;
-                    }
-                }
-            }
         }
         finally
         {
             //ensure the underlying stream is always closed
             scanner.close();
         }
-        Double[][][] res = new Double[3][n][n];
+        Double[][][] res = new Double[2][n][n];
         res[0] = res1;
         res[1] = res2;
-        res[2] = res3;
 
         return res;
     }

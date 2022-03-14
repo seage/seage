@@ -51,7 +51,7 @@ public class QapObjectiveFunction implements IObjectiveFunction
 
         try
         {
-            price = (int) AssignmentProvider.getTotalPrice(assign, _facilityLocation);
+            price = (int) AssignmentProvider.getAssignmentPrice(assign, _facilityLocation);
         }
         catch (Exception ex)
         {
