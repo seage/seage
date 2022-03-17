@@ -6,9 +6,9 @@ import org.seage.problem.qap.QapPhenotype;
 import org.seage.problem.qap.QapProblemProvider;
 
 @Disabled("Adapter class not fully implemented yet")
-public class QapParticleSwarmFactoryTest extends ProblemAlgorithmAdapterTestBase<QapPhenotype>
+public class QapParticleSwarmAdapterTest extends ProblemAlgorithmAdapterTestBase<QapPhenotype>
 {
-    public QapParticleSwarmFactoryTest()
+    public QapParticleSwarmAdapterTest()
     {
         super(new QapProblemProvider(), "ParticleSwarm");
     }

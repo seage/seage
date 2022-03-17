@@ -75,12 +75,6 @@ public class QapPhenotypeEvaluator implements IPhenotypeEvaluator<QapPhenotype>
                 price += facilityLocation[0][i][j] * facilityLocation[1][s[i]][s[j]];
             }
         }
-        double addition = 0;
-        for (int i = 0; i < facilityLocation[0][0].length; i++)
-        {
-            addition += facilityLocation[2][i][s[i]];
-        }
-
-        return new double[] { price + addition };
+        return new double[] { price };
     }
 }

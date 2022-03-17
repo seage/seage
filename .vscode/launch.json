@@ -65,7 +65,7 @@
       "args": [
         "metadata",
         "-p",
-        "TSP",
+        "QAP",
         "-n",
         "1"
       ]

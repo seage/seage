@@ -6,10 +6,10 @@ import org.seage.problem.qap.QapPhenotype;
 import org.seage.problem.qap.QapProblemProvider;
 
 @Disabled("Adapter class not fully implemented yet")
-public class QapSimulatedAnnealingFactoryTest extends ProblemAlgorithmAdapterTestBase<QapPhenotype>
+public class QapSimulatedAnnealingAdapterTest extends ProblemAlgorithmAdapterTestBase<QapPhenotype>
 {
 
-    public QapSimulatedAnnealingFactoryTest()
+    public QapSimulatedAnnealingAdapterTest()
     {
         super(new QapProblemProvider(), "SimulatedAnnealing");
     }

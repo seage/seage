@@ -4,9 +4,9 @@ import org.seage.aal.problem.ProblemAlgorithmAdapterTestBase;
 import org.seage.problem.qap.QapPhenotype;
 import org.seage.problem.qap.QapProblemProvider;
 
-public class QapTabuSearchFactoryTest extends ProblemAlgorithmAdapterTestBase<QapPhenotype>
+public class QapTabuSearchAdapterTest extends ProblemAlgorithmAdapterTestBase<QapPhenotype>
 {
-    public QapTabuSearchFactoryTest()
+    public QapTabuSearchAdapterTest()
     {
         super(new QapProblemProvider(), "TabuSearch");
     }
