@@ -33,36 +33,14 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
  * @author Karel Durkota
  * student
  */
-public class QapPhenotypeEvaluator implements IPhenotypeEvaluator
+public class QapPhenotypeEvaluator implements IPhenotypeEvaluator<QapPhenotype>
 {
-    private QapProblemInstance _instance;
+    private QapProblemInstance instance;
 
     public QapPhenotypeEvaluator(QapProblemInstance instance)
     {
         super();
-        _instance = instance;
-    }
-
-    @Override
-    public double[] evaluate(Object[] phenotypeSubject) throws Exception
-    {
-        Integer[] s = (Integer[]) phenotypeSubject;
-        Double[][][] facilityLocation = _instance.getFacilityLocation();
-        double price = 0;
-        for (int i = 0; i < facilityLocation[0][0].length; i++)
-        {
-            for (int j = 0; j < facilityLocation[0][0].length; j++)
-            {
-                price += facilityLocation[0][i][j] * facilityLocation[1][s[i]][s[j]];
-            }
-        }
-        double addition = 0;
-        for (int i = 0; i < facilityLocation[0][0].length; i++)
-        {
-            addition += facilityLocation[2][i][s[i]];
-        }
-
-        return new double[] { price + addition };
+        this.instance = instance;
     }
 
     @Override
@@ -83,5 +61,26 @@ public class QapPhenotypeEvaluator implements IPhenotypeEvaluator
                 return -1;
         }
         return 0;
+    }
+
+    @Override
+    public double[] evaluate(QapPhenotype phenotypeSubject) throws Exception {
+        Integer[] s = phenotypeSubject.getSolution();
+        Double[][][] facilityLocation = instance.getFacilityLocation();
+        double price = 0;
+        for (int i = 0; i < facilityLocation[0][0].length; i++)
+        {
+            for (int j = 0; j < facilityLocation[0][0].length; j++)
+            {
+                price += facilityLocation[0][i][j] * facilityLocation[1][s[i]][s[j]];
+            }
+        }
+        double addition = 0;
+        for (int i = 0; i < facilityLocation[0][0].length; i++)
+        {
+            addition += facilityLocation[2][i][s[i]];
+        }
+
+        return new double[] { price + addition };
     }
 }

@@ -32,7 +32,6 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.data.DataNode;
-import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemInstance;

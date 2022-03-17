@@ -30,9 +30,11 @@ package org.seage.problem.qap.sannealing;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.sannealing.Solution;
+import org.seage.problem.qap.QapPhenotype;
 import org.seage.problem.qap.QapProblemInstance;
 
 /**
@@ -41,7 +43,7 @@ import org.seage.problem.qap.QapProblemInstance;
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
-public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
+public class QapSimulatedAnnealingFactory implements IAlgorithmFactory<QapPhenotype, QapSolution>
 {
 
     //    public QapSimulatedAnnealingFactory(DataNode params, Double[][][] facilityLocation) throws Exception
@@ -61,55 +63,62 @@ public class QapSimulatedAnnealingFactory implements IAlgorithmFactory
         return SimulatedAnnealingAdapter.class;
     }
 
+    // @Override
+    // public IAlgorithmAdapter<QapSolution> createAlgorithm(ProblemInstance instance) throws Exception
+    // {
+    //     final Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
+
+    //     IAlgorithmAdapter<QapSolution> algorithm = new SimulatedAnnealingAdapter<>(
+    //             new QapObjectiveFunction(),
+    //             new QapMoveManager(), false, "")
+    //     {
+    //         @Override
+    //         public void solutionsFromPhenotype(Object[][] source) throws Exception
+    //         {
+    //             this.solutions = new Solution[source.length];
+    //             for (int j = 0; j < source.length; j++)
+    //             {
+    //                 QapSolution solution = new QapGreedySolution(facilityLocation);
+    //                 Integer[] assign = solution.getAssign();
+
+    //                 for (int i = 0; i < assign.length; i++)
+    //                     assign[i] = (Integer) source[0][i];
+
+    //                 this.solutions[j] = solution;
+    //             }
+    //         }
+
+    //         @Override
+    //         public Object[][] solutionsToPhenotype() throws Exception
+    //         {
+    //             Integer[] assign = ((QapSolution) _simulatedAnnealing.getBestSolution()).getAssign();
+    //             Object[][] source = new Object[1][assign.length];
+
+    //             for (int j = 0; j < source.length; j++)
+    //             {
+    //                 source[j] = new Integer[assign.length];
+    //                 for (int i = 0; i < assign.length; i++)
+    //                     source[j][i] = assign[i];
+    //             }
+    //             return source;
+    //         }
+
+	// 		@Override
+	// 		public Object[] solutionToPhenotype(QapSolution solution) throws Exception {
+	// 			// TODO Auto-generated method stub
+	// 			return null;
+	// 		}
+
+    //     };
+
+    //     return algorithm;
+    // }
+
     @Override
-    public IAlgorithmAdapter<QapSolution> createAlgorithm(ProblemInstance instance) throws Exception
-    {
-        final Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
-
-        IAlgorithmAdapter<QapSolution> algorithm = new SimulatedAnnealingAdapter<>(
-                new QapObjectiveFunction(),
-                new QapMoveManager(), false, "")
-        {
-            @Override
-            public void solutionsFromPhenotype(Object[][] source) throws Exception
-            {
-                this.solutions = new Solution[source.length];
-                for (int j = 0; j < source.length; j++)
-                {
-                    QapSolution solution = new QapGreedySolution(facilityLocation);
-                    Integer[] assign = solution.getAssign();
-
-                    for (int i = 0; i < assign.length; i++)
-                        assign[i] = (Integer) source[0][i];
-
-                    this.solutions[j] = solution;
-                }
-            }
-
-            @Override
-            public Object[][] solutionsToPhenotype() throws Exception
-            {
-                Integer[] assign = ((QapSolution) _simulatedAnnealing.getBestSolution()).getAssign();
-                Object[][] source = new Object[1][assign.length];
-
-                for (int j = 0; j < source.length; j++)
-                {
-                    source[j] = new Integer[assign.length];
-                    for (int i = 0; i < assign.length; i++)
-                        source[j][i] = assign[i];
-                }
-                return source;
-            }
-
-			@Override
-			public Object[] solutionToPhenotype(QapSolution solution) throws Exception {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-        };
-
-        return algorithm;
+    public IAlgorithmAdapter<QapPhenotype, QapSolution> createAlgorithm(ProblemInstance instance,
+            IPhenotypeEvaluator<QapPhenotype> phenotypeEvaluator) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
