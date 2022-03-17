@@ -39,7 +39,8 @@ public class AssignmentProvider {
         try {
             // String instanceName = "tai12a";
             // String instanceName = "tai25b";
-            String instanceName = "tai150b";
+            String instanceName = "sko100a";
+            // String instanceName = "tai150b";
             // String instanceName = "tho150";
             // String instanceName = "tai256c";
             // String instancePath =

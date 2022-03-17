@@ -55,7 +55,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
 
     DecimalFormat df = new DecimalFormat("#");
     df.setMaximumFractionDigits(8);
-    
+
     // iterate through all instances
     for (String instanceID : getSortedInstanceIDs(pi)) {
       try {
@@ -104,7 +104,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
         inst.putValue("size", instance.getSize());
         result.putDataNode(inst);
       } catch (Exception ex) {
-        logger.warn("TSP instance error: {}", ex.getMessage());
+        logger.warn("Instance error, {}: {}", instanceID, ex.getMessage());
       }
     }
 
