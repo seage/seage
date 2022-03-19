@@ -1,27 +1,23 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
- * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
 package org.seage.problem.qap;
 
@@ -32,130 +28,72 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *  @author Karel Durkota
+ * @author Karel Durkota
  */
-public class FacilityLocationProvider
-{
-    synchronized public static Double[][][] readFacilityLocations(InputStream stream) throws Exception
-    {
-        Double[][] res1, res2, res3;
-        Scanner scanner = new Scanner(stream);
-        final int n;
-        try
-        {
+public class FacilityLocationProvider {
+  synchronized public static Double[][][] readFacilityLocations(InputStream stream)
+      throws Exception {
+    Double[] allData;
+    Double[][] res1, res2;
+    Scanner scanner = new Scanner(stream);
+    final int n; // instance size
+    try {
+      // Read the instance size - N
+      String line = scanner.nextLine();
+      // size of matrix
+      n = Integer.valueOf(line.trim());
 
-            String line = scanner.nextLine();
-            //size of matrix
-            n = Integer.valueOf(line.trim());
-            //System.out.println("N = "+n);
+      res1 = new Double[n][n];
+      res2 = new Double[n][n];
 
-            res1 = new Double[n][n];
-            res2 = new Double[n][n];
-            res3 = new Double[n][n];
+      allData = new Double[2 * n * n];
+      int valuesRead = 0;
 
-            // read first matrix
-            for (int i = 0; i < n; i++)
-            {
-                line = scanner.nextLine();
-                if (line.trim().isEmpty())
-                {
-                    line = scanner.nextLine();
-                }
-                if (line.equals("EOF"))
-                    break;
-                //System.out.println(line);
-                Double[] dataLine = readLine(line);
-                res1[i] = dataLine;
-            }
-
-            /* read second matrix (optional)
-             * if no matrix given, unit matrix is created
-             */
-            for (int i = 0; i < n; i++)
-            {
-                if (scanner.hasNext())
-                {
-                    line = scanner.nextLine();
-                    if (line.trim().isEmpty())
-                    {
-                        line = scanner.nextLine();
-                    }
-                    //System.out.println(line);
-                    Double[] dataLine = readLine(line);
-                    res2[i] = dataLine;
-                }
-                else
-                {
-                    for (int j = 0; j < n; j++)
-                    {
-                        res2[i][j] = 1.0;
-                    }
-                }
-            }
-
-            /* read third matrix (optional)
-             * if no matrix given, zero matrix is created
-             */
-            if (scanner.hasNext())
-                scanner.nextLine();
-
-            for (int i = 0; i < n; i++)
-            {
-                if (scanner.hasNext())
-                {
-                    line = scanner.nextLine();
-                    if (line.trim().isEmpty())
-                    {
-                        i--;
-                        continue;
-                    }
-                    Double[] dataLine = readLine(line);
-                    res3[i] = dataLine;
-                }
-                else
-                {
-                    for (int j = 0; j < n; j++)
-                    {
-                        res3[i][j] = 0.0;
-                    }
-                }
-            }
+      // Read all data into one array: allData
+      while (scanner.hasNext()) {
+        line = scanner.nextLine();
+        if (line.trim().isEmpty()) {          
+          continue;
         }
-        finally
-        {
-            //ensure the underlying stream is always closed
-            scanner.close();
+        Double[] dataLine = readLine(line);
+        for(int i = 0; i < dataLine.length;i++) {
+          allData[i+valuesRead] = dataLine[i];         
         }
-        Double[][][] res = new Double[3][n][n];
-        res[0] = res1;
-        res[1] = res2;
-        res[2] = res3;
+        valuesRead += dataLine.length;
+      }
+      // Split the one array (allData) into res1 (NxN, flows) and res2 (NxN, prices)
+      for(int i=0;i<valuesRead;i++) {
+        int type = i / (n*n);
+        Double[][] m = type==0?res1:res2;
+        int ix = (i-(type * n * n)) / n;
+        int iy = i % n;
+        m[ix][iy] = allData[i];
+      }
 
-        return res;
+    } finally {
+      // ensure the underlying stream is always closed
+      scanner.close();
     }
+    Double[][][] res = new Double[2][n][n];
+    res[0] = res1;
+    res[1] = res2;
 
-    private static Double[] readLine(String line) throws IOException
-    {
-        ArrayList<Double> result = new ArrayList<Double>();
-        Scanner scanner = new Scanner(line);
-        scanner.useDelimiter(" ");
-        while (scanner.hasNext())
-        {
-            try
-            {
-                result.add(Double.parseDouble(scanner.next()));
-            }
-            catch (NumberFormatException e)
-            {
+    return res;
+  }
 
-            }
-        }
-        scanner.close();
-        return result.toArray(new Double[0]);
+  private static Double[] readLine(String line) throws IOException {
+    ArrayList<Double> result = new ArrayList<Double>();
+    Scanner scanner = new Scanner(line.trim());
+    scanner.useDelimiter("\\s+");
+    while (scanner.hasNext()) {
+      String value = scanner.next();
+      result.add(Double.parseDouble(value));
     }
+    scanner.close();
+    return result.toArray(new Double[0]);
+  }
 
-    public static Double[][][] readFacilityLocations(String path) throws Exception
-    {
-        return FacilityLocationProvider.readFacilityLocations(new FileInputStream(path));
-    }
+  public static Double[][][] readFacilityLocations(String path) throws Exception {
+    return FacilityLocationProvider.readFacilityLocations(new FileInputStream(path));
+  }
 }

@@ -35,17 +35,22 @@ import org.seage.aal.problem.ProblemInstanceInfo;
  */
 public class QapProblemInstance extends ProblemInstance
 {
-    private Double[][][] _facilityLocation;
+    private Double[][][] facilityLocation;
 
     public QapProblemInstance(ProblemInstanceInfo instanceInfo, Double[][][] facilityLocation) throws Exception
     {
         super(instanceInfo);
-        _facilityLocation = facilityLocation;
+        this.facilityLocation = facilityLocation;
     }
 
     public Double[][][] getFacilityLocation()
     {
-        return _facilityLocation;
+        return facilityLocation;
+    }
+
+    @Override
+    public int getSize() {
+        return facilityLocation[0][0].length;
     }
 
 }

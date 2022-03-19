@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch AssignmentProvider",
+      "request": "launch",
+      "mainClass": "org.seage.problem.qap.AssignmentProvider",
+      "projectName": "seage-problem-qap"
+    },
+    {
+      "type": "java",
       "name": "Launch FspProblemProvider",
       "request": "launch",
       "mainClass": "org.seage.problem.fsp.FspProblemProvider",
@@ -55,7 +62,13 @@
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
-      "args": ["metadata", "-p", "TSP", "-n", "1"]
+      "args": [
+        "metadata",
+        "-p",
+        "QAP",
+        "-n",
+        "1"
+      ]
     },
     {
       "type": "java",
@@ -133,110 +146,13 @@
     },
     {
       "type": "java",
-      "name": "Launch HelloSparkApp",
+      "name": "Launch AssignmentProvider",
       "request": "launch",
-      "mainClass": "org.seage.hh.spark.HelloSparkApp",
-      "projectName": "seage-hyperheuristics"
+      "mainClass": "org.seage.problem.qap.AssignmentProvider",
+      "projectName": "seage-problem-qap",
+      "cwd": "${workspaceFolder}",
+      "args": ["seage-problems/discrete/qap/src/main/resources/org/seage/problem/qap/instances/tai12a.dat"]
     },
-    {
-      "type": "java",
-      "name": "Launch HsqldbTest",
-      "request": "launch",
-      "mainClass": "org.seage.hh.knowledgebase.HsqldbTest",
-      "projectName": "seage-hyperheuristics"
-    },
-    {
-      "type": "java",
-      "name": "Launch App",
-      "request": "launch",
-      "mainClass": "org.seage.hh.spark.App",
-      "projectName": "seage-hyperheuristics"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch) - Current File",
-      "request": "launch",
-      "mainClass": "${file}"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-HsqldbTest<seage-knowledgebase>",
-      "request": "launch",
-      "mainClass": "org.seage.knowledgebase.HsqldbTest",
-      "projectName": "seage-knowledgebase"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-ClasspathTest<seage-launcher>",
-      "request": "launch",
-      "mainClass": "org.seage.sandbox.ClasspathTest",
-      "projectName": "seage-launcher"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-H2Test<seage-launcher>",
-      "request": "launch",
-      "mainClass": "org.seage.sandbox.H2Test",
-      "projectName": "seage-launcher"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-ProcessorInfo<seage-launcher>",
-      "request": "launch",
-      "mainClass": "org.seage.sandbox.ProcessorInfo",
-      "projectName": "seage-launcher"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TourProvider<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.TourProvider",
-      "projectName": "seage-problem-tsp",
-      "args": [
-        "seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/mona-lisa100K.tsp"
-      ]
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TspAntColonyTest<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.antcolony.TspAntColonyTest",
-      "projectName": "seage-problem-tsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TspGeneticAlgorithmTest<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.genetics.TspGeneticAlgorithmTest",
-      "projectName": "seage-problem-tsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TspHillClimberTest<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.grasp.TspHillClimberTest",
-      "projectName": "seage-problem-tsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TspParticleSwarmTest<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.particles.TspParticleSwarmTest",
-      "projectName": "seage-problem-tsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TspSimulatedAnnealingTest<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.sannealing.TspSimulatedAnnealingTest",
-      "projectName": "seage-problem-tsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TspTabuSearchTest<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.tabusearch.TspTabuSearchTest",
-      "projectName": "seage-problem-tsp"
-    }
+
   ]
 }

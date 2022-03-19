@@ -1,6 +1,7 @@
 package org.seage.aal.problem;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,6 +53,9 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
     ProblemInfo pi = this.problemProvider.getProblemInfo();
     Map<String, Double> optimumResults = getOptimalValues();
 
+    DecimalFormat df = new DecimalFormat("#");
+    df.setMaximumFractionDigits(8);
+
     // iterate through all instances
     for (String instanceID : getSortedInstanceIDs(pi)) {
       try {
@@ -92,7 +96,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
         inst.putValue("random", (int) median(randomResults));
 
         if (optimumResults.containsKey(instanceID.toLowerCase())) {
-          inst.putValue("optimum", optimumResults.get(instanceID.toLowerCase()));;
+          inst.putValue("optimum", df.format(optimumResults.get(instanceID.toLowerCase())));
         } else {
           inst.putValue("optimum", "TBA");
         }
@@ -100,7 +104,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
         inst.putValue("size", instance.getSize());
         result.putDataNode(inst);
       } catch (Exception ex) {
-        logger.warn("TSP instance error: {}", ex.getMessage());
+        logger.warn("Instance error, {}: {}", instanceID, ex.getMessage());
       }
     }
 

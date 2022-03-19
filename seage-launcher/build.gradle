@@ -23,6 +23,7 @@ dependencies {
     implementation project(':seage-problem-sat')
     implementation project(':seage-problem-jsp')
     implementation project(':seage-problem-fsp')
+    implementation project(':seage-problem-qap')
 }
 
 application {

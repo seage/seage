@@ -23,6 +23,7 @@ import org.seage.problem.fsp.FspProblemProvider;
 import org.seage.problem.jsp.JspProblemProvider;
 import org.seage.problem.sat.SatProblemProvider;
 import org.seage.problem.tsp.TspProblemProvider;
+import org.seage.problem.qap.QapProblemProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,8 @@ public class Launcher {
             TspProblemProvider.class,
             SatProblemProvider.class,
             JspProblemProvider.class,
-            FspProblemProvider.class
+            FspProblemProvider.class,
+            QapProblemProvider.class
         });
   }
   
