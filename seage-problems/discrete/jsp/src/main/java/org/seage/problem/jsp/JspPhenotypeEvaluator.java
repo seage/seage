@@ -35,11 +35,11 @@ import org.seage.aal.problem.ProblemScoreCalculator;
 public class JspPhenotypeEvaluator implements IPhenotypeEvaluator<JspPhenotype>
 {
   private String instanceID;
-  private JobsDefinition jobsDefinition;
+  private JspJobsDefinition jobsDefinition;
 
   private ProblemScoreCalculator scoreCalculator;
 
-  public JspPhenotypeEvaluator(ProblemInfo problemInfo, JobsDefinition jobsDefinition) throws Exception
+  public JspPhenotypeEvaluator(ProblemInfo problemInfo, JspJobsDefinition jobsDefinition) throws Exception
   {
     this.jobsDefinition = jobsDefinition;
     this.instanceID = jobsDefinition.getProblemInstanceInfo().getInstanceID();

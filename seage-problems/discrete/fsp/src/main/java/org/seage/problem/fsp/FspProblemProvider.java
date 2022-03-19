@@ -30,11 +30,11 @@ import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.aal.problem.ProblemMetadataGenerator;
-import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
-import org.seage.problem.jsp.ScheduleProvider;
+import org.seage.problem.jsp.JspScheduleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,10 +91,10 @@ public class FspProblemProvider extends JspProblemProvider {
       FspProblemProvider provider = new FspProblemProvider();
       ProblemInfo pi = provider.getProblemInfo();
       ProblemInstanceInfo pii = pi.getProblemInstanceInfo(iid);
-      JobsDefinition instance = provider.initProblemInstance(pii);
+      JspJobsDefinition instance = provider.initProblemInstance(pii);
       JspPhenotypeEvaluator jspEval = new JspPhenotypeEvaluator(pi, instance);
-      JspPhenotype schedule1 = ScheduleProvider.createGreedySchedule(jspEval, instance);
-      JspPhenotype schedule2 = ScheduleProvider.createRandomSchedule(jspEval, instance, 1);
+      JspPhenotype schedule1 = JspScheduleProvider.createGreedySchedule(jspEval, instance);
+      JspPhenotype schedule2 = JspScheduleProvider.createRandomSchedule(jspEval, instance, 1);
 
       System.out.println("greedy: " + schedule1.getObjValue());
       System.out.println("random: " + schedule2.getObjValue());

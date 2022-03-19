@@ -23,8 +23,8 @@ import org.seage.data.ds.DataCell;
 import org.seage.data.ds.DataRow;
 import org.seage.data.ds.DataStore;
 import org.seage.data.ds.DataTable;
-import org.seage.problem.jsp.JobInfo;
-import org.seage.problem.jsp.OperationInfo;
+import org.seage.problem.jsp.ScheduleJobInfo;
+import org.seage.problem.jsp.ScheduleOperationInfo;
 import org.seage.problem.jsp.Schedule;
 import org.seage.problem.jsp.ScheduleCell;
 
@@ -68,7 +68,7 @@ public class ScheduleManager
         {
             for (int j = 0; j < _jobsTable.get(i).size(); j++)
             {
-                val = ((OperationInfo) _jobsTable.get(i).get(j).getCellProperty()).MachineID;
+                val = ((ScheduleOperationInfo) _jobsTable.get(i).get(j).getCellProperty()).MachineID;
                 if (val > numMachines)
                     numMachines = val;
             }
@@ -82,8 +82,8 @@ public class ScheduleManager
         if (buildSchedule)
             schedule = new Schedule(null);
 
-        JobInfo currentJob;
-        OperationInfo currentOper;
+        ScheduleJobInfo currentJob;
+        ScheduleOperationInfo currentOper;
 
         DataRow currentRow;
         DataCell currentCell;
@@ -114,8 +114,8 @@ public class ScheduleManager
             currentRow = _jobsTable.get(indexCurrentJob);
             currentCell = currentRow.get(indexCurrentOper);
 
-            currentJob = (JobInfo) currentRow.getRowProperty();
-            currentOper = (OperationInfo) currentCell.getCellProperty();
+            currentJob = (ScheduleJobInfo) currentRow.getRowProperty();
+            currentOper = (ScheduleOperationInfo) currentCell.getCellProperty();
 
             //indexCurrentMachine = _lastActivityOnMachineIndex[currentOper.MachineID - 1]++;
             indexCurrentMachine = currentOper.MachineID - 1;

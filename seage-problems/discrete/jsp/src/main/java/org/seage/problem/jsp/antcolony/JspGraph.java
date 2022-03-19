@@ -35,7 +35,7 @@ import java.util.List;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
-import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 
 /**
@@ -49,9 +49,9 @@ public class JspGraph extends Graph
 
   private int factor;
 
-  private JobsDefinition jobs;
+  private JspJobsDefinition jobs;
 
-  public JspGraph(JobsDefinition jobArary, JspPhenotypeEvaluator evaluator) throws Exception
+  public JspGraph(JspJobsDefinition jobArary, JspPhenotypeEvaluator evaluator) throws Exception
   {
     super();
     this.evaluator = evaluator;

@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.problem.jsp.JobInfo;
-import org.seage.problem.jsp.JobsDefinition;
-import org.seage.problem.jsp.OperationInfo;
+import org.seage.problem.jsp.ScheduleJobInfo;
+import org.seage.problem.jsp.JspJobsDefinition;
+import org.seage.problem.jsp.ScheduleOperationInfo;
 
-public class FspJobsDefinition extends JobsDefinition {
+public class FspJobsDefinition extends JspJobsDefinition {
 
   public FspJobsDefinition(ProblemInstanceInfo instanceInfo, InputStream jobsDefinitionStream)
       throws Exception {
@@ -22,20 +22,20 @@ public class FspJobsDefinition extends JobsDefinition {
     List<List<Integer>> jobs = transposeData(data);
 
     _numMachines = jobs.get(0).size();
-    _jobInfos = new JobInfo[jobs.size()];
+    _jobInfos = new ScheduleJobInfo[jobs.size()];
 
     for(int i=0;i<jobs.size();i++) {
       int jobID = i+1;
-      OperationInfo[] operationInfos = new OperationInfo[_numMachines];
+      ScheduleOperationInfo[] operationInfos = new ScheduleOperationInfo[_numMachines];
       for(int j=0;j<_numMachines;j++) {
-        OperationInfo oper = new OperationInfo();
+        ScheduleOperationInfo oper = new ScheduleOperationInfo();
         oper.OperationID = j+1;
         oper.JobID = jobID;
         oper.MachineID = j+1;
         oper.Length = jobs.get(i).get(j);
         operationInfos[j] = oper;
       }
-      _jobInfos[i] = new JobInfo(jobID, operationInfos);
+      _jobInfos[i] = new ScheduleJobInfo(jobID, operationInfos);
     }
   }
 
@@ -64,6 +64,11 @@ public class FspJobsDefinition extends JobsDefinition {
       }
     }
     return result;
+  }
+
+  @Override
+  public int getSize() {
+    return getJobsCount();
   }
 
   private List<List<Integer>> transposeData(List<List<Integer>> data) {

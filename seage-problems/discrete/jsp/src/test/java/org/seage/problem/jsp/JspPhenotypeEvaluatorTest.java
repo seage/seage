@@ -9,11 +9,11 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 public class JspPhenotypeEvaluatorTest
 {
-  private JobsDefinition _jobsDefinition;
+  private JspJobsDefinition _jobsDefinition;
       
   public JspPhenotypeEvaluatorTest() throws Exception
   {
-    _jobsDefinition = new JobsDefinition(
+    _jobsDefinition = new JspJobsDefinition(
         new ProblemInstanceInfo("yn_3x3_example", ProblemInstanceOrigin.RESOURCE, ""), 
         getClass().getResourceAsStream("/org/seage/problem/jsp/test-instances/yn_3x3_example.xml"));
   }

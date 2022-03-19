@@ -35,7 +35,7 @@ import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 import org.seage.metaheuristic.genetics.Subject;
-import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
@@ -53,10 +53,10 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
       String instanceID = "ft10"; 
       String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
-      JobsDefinition jobs = null;
+      JspJobsDefinition jobs = null;
   
       try(InputStream stream = JspGeneticAlgorithmTest.class.getResourceAsStream(path)) {    
-        jobs = new JobsDefinition(jobInfo, stream);
+        jobs = new JspJobsDefinition(jobInfo, stream);
       }
 
       new JspGeneticAlgorithmTest().runAlgorithm(jobs);
@@ -66,7 +66,7 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     }
   }
 
-  public void runAlgorithm(JobsDefinition jobs) throws Exception {
+  public void runAlgorithm(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
     System.out.println(jobs.getJobsCount());
@@ -86,7 +86,7 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     gs.startSearching(initialSolutions);
   }
 
-  public void runAlgorithmAdapter(JobsDefinition jobs) throws Exception {
+  public void runAlgorithmAdapter(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 100, (new Random()).nextLong());
 
@@ -108,7 +108,7 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     }
 }
 
-  private List<Subject<Integer>> generateInitialSubjects(JobsDefinition jobs, int subjectCount) throws Exception {
+  private List<Subject<Integer>> generateInitialSubjects(JspJobsDefinition jobs, int subjectCount) throws Exception {
     ArrayList<Subject<Integer>> result = new ArrayList<>(subjectCount);
 
     JspProblemProvider problemProvider = new JspProblemProvider();

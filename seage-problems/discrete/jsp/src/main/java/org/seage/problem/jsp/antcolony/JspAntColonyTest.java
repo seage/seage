@@ -48,7 +48,7 @@ import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 
-import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
@@ -79,10 +79,10 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
       // String instanceID = "yn_3x3_example";
       // String path = String.format("/org/seage/problem/jsp/test-instances/%s.xml", instanceID);
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
-      JobsDefinition jobs = null;
+      JspJobsDefinition jobs = null;
 
       try(InputStream stream = JspAntColonyTest.class.getResourceAsStream(path)) {
-        jobs = new JobsDefinition(jobInfo, stream);
+        jobs = new JspJobsDefinition(jobInfo, stream);
       }
 
       new JspAntColonyTest().runAlgorithm(jobs);
@@ -124,7 +124,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     return result;
   }
 
-  public void runAlgorithmAdapter(JobsDefinition jobs) throws Exception {
+  public void runAlgorithmAdapter(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 100, generator.nextLong());
 
@@ -147,7 +147,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     }
   }
 
-  public void runAlgorithm(JobsDefinition jobs) throws Exception
+  public void runAlgorithm(JspJobsDefinition jobs) throws Exception
   {
     int opersNum = 0;
     for (int i = 0; i < jobs.getJobsCount(); i++) {

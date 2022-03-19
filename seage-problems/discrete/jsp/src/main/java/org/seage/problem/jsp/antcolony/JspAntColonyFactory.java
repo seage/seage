@@ -39,7 +39,7 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 import org.seage.aal.problem.ProblemInstance;
-import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
@@ -64,10 +64,10 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
   public IAlgorithmAdapter<JspPhenotype, Ant> createAlgorithm(
     ProblemInstance instance, IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception
   {
-    JobsDefinition jobs = (JobsDefinition) instance;
+    JspJobsDefinition jobs = (JspJobsDefinition) instance;
     JspProblemProvider problemProvider = new JspProblemProvider();
     JspPhenotypeEvaluator evaluator =
-        new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JobsDefinition) instance);
+        new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JspJobsDefinition) instance);
     JspGraph jspGraph = new JspGraph(jobs, evaluator);
     return new AntColonyAdapter<JspPhenotype, Ant>(jspGraph, phenotypeEvaluator)
     {

@@ -23,7 +23,7 @@ import org.seage.data.Pair;
 import org.seage.metaheuristic.tabusearch.Move;
 import org.seage.metaheuristic.tabusearch.MoveManager;
 import org.seage.metaheuristic.tabusearch.Solution;
-import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.Schedule;
 import org.seage.problem.jsp.ScheduleCell;
 
@@ -32,9 +32,9 @@ import org.seage.problem.jsp.ScheduleCell;
  */
 public class JspMoveManager implements MoveManager {
   private int _maxMoves;
-  private JobsDefinition _jobsDefinition;
+  private JspJobsDefinition _jobsDefinition;
 
-  public JspMoveManager(JobsDefinition jobsDefinition) {
+  public JspMoveManager(JspJobsDefinition jobsDefinition) {
     _jobsDefinition = jobsDefinition;
     _maxMoves = 100;
   }

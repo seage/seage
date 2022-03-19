@@ -33,7 +33,7 @@ import java.util.Random;
 import org.seage.data.Pair;
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
-import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.Schedule;
 import org.seage.problem.jsp.ScheduleCell;
 
@@ -46,10 +46,10 @@ public class JspMoveManager implements IMoveManager
 {
   Random rnd = new Random();
   private int maxMoves;
-  private JobsDefinition jobsDefinition;
+  private JspJobsDefinition jobsDefinition;
   private JspObjectiveFunction objFunc;
 
-  public JspMoveManager(JobsDefinition jobsDefinition, JspObjectiveFunction objFunc) {
+  public JspMoveManager(JspJobsDefinition jobsDefinition, JspObjectiveFunction objFunc) {
     this.jobsDefinition = jobsDefinition;
     this.objFunc = objFunc;
     this.maxMoves = 100;

@@ -49,7 +49,7 @@ public class JspProblemProvider extends ProblemProvider<JspPhenotype>
   private static Logger logger = LoggerFactory.getLogger(JspProblemProvider.class.getName());
 
   @Override
-  public JobsDefinition initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
+  public JspJobsDefinition initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
   {
     ProblemInstanceOrigin origin = instanceInfo.getOrigin();
     String path = instanceInfo.getPath();
@@ -60,11 +60,11 @@ public class JspProblemProvider extends ProblemProvider<JspPhenotype>
     else
       stream0 = new FileInputStream(path);
     
-    JobsDefinition jobsDefinition = null;
+    JspJobsDefinition jobsDefinition = null;
     
     try(InputStream stream=stream0)
     {
-        jobsDefinition = new JobsDefinition(instanceInfo, stream);   
+        jobsDefinition = new JspJobsDefinition(instanceInfo, stream);   
     }
     catch (Exception ex)
     {
@@ -79,7 +79,7 @@ public class JspProblemProvider extends ProblemProvider<JspPhenotype>
   public IPhenotypeEvaluator<JspPhenotype> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception
   {
     ProblemInfo pi = this.getProblemInfo();
-    JobsDefinition jobsDefinition = (JobsDefinition) problemInstance;
+    JspJobsDefinition jobsDefinition = (JspJobsDefinition) problemInstance;
     return new JspPhenotypeEvaluator(pi, jobsDefinition);
   }
 
@@ -87,14 +87,14 @@ public class JspProblemProvider extends ProblemProvider<JspPhenotype>
   public JspPhenotype[] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
     throws Exception
   {
-    JobsDefinition jobs = (JobsDefinition)problemInstance;
+    JspJobsDefinition jobs = (JspJobsDefinition)problemInstance;
     JspPhenotype[] result = new JspPhenotype[numSolutions];
     IPhenotypeEvaluator<JspPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
       
     for(int i=0;i<numSolutions;i++)
     {
       // Create random schedule
-      result[i] = ScheduleProvider.createRandomSchedule((JspPhenotypeEvaluator) evaluator, jobs, randomSeed);
+      result[i] = JspScheduleProvider.createRandomSchedule((JspPhenotypeEvaluator) evaluator, jobs, randomSeed);
       // Evaluate the random schedule
       double[] objVals = evaluator.evaluate(result[i]);
       result[i].setObjValue(objVals[0]);

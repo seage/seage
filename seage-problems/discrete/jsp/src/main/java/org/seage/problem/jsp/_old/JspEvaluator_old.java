@@ -24,7 +24,7 @@ import org.seage.data.ds.DataTable;
 import org.seage.metaheuristic.genetics.Chromosome;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
-import org.seage.problem.jsp.OperationInfo;
+import org.seage.problem.jsp.ScheduleOperationInfo;
 
 /**
  * Summary description for JSPEvaluator.
@@ -78,7 +78,7 @@ public class JspEvaluator_old extends SubjectEvaluator
         int geneIndex = 0;
         int jobValue = 0;
 
-        OperationInfo ai;
+        ScheduleOperationInfo ai;
         Chromosome ch;
         //2015		Genome genome = subject.getGenome();
         // vezmu tabulku jobu		
@@ -274,7 +274,7 @@ public class JspEvaluator_old extends SubjectEvaluator
 
     private void medicateSubject(Subject subject)
     {
-        OperationInfo firstActivityToDo;
+        ScheduleOperationInfo firstActivityToDo;
         DataTable dataTable = DataStore.getInstance().getDataTable("jobs");
         //2015		Genome genome = subject.getGenome();
 
