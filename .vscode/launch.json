@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch FspScheduleProvider",
+      "request": "launch",
+      "mainClass": "org.seage.problem.fsp.FspScheduleProvider",
+      "projectName": "seage-problem-fsp"
+    },
+    {
+      "type": "java",
       "name": "Launch ScheduleProvider",
       "request": "launch",
       "mainClass": "org.seage.problem.fsp.ScheduleProvider",

@@ -121,11 +121,11 @@ public class FspScheduleProvider {
         JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, jobs);
 
         JspPhenotype ph1 = FspScheduleProvider.createRandomSchedule(evaluator, jobs, 1);
-        double[] val1 = evaluator.evaluate(ph1);
+        double val1 = evaluator.evaluateSchedule(ph1.getSolution());
         JspPhenotype ph2 = FspScheduleProvider.createGreedySchedule(evaluator, jobs);
-        double[] val2 = evaluator.evaluate(ph2);
+        double val2 = evaluator.evaluateSchedule(ph2.getSolution());
 
-        logger.debug(jobInfo.getInstanceID() + " - " + val2[0] + " - " + val1[0]);
+        logger.debug(jobInfo.getInstanceID() + " - " + val2 + " - " + val1);
       } catch (Exception ex) {
         logger.error(String.format("Error instance %s", jobInfo.getInstanceID()), ex);
       }
