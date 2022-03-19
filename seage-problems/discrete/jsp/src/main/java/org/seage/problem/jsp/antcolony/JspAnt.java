@@ -35,7 +35,7 @@ import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 
-import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 
 /**
@@ -45,12 +45,12 @@ import org.seage.problem.jsp.JspPhenotypeEvaluator;
  */
 public class JspAnt extends Ant {
   JspPhenotypeEvaluator evaluator;
-  JobsDefinition jobsDefinition;
+  JspJobsDefinition jobsDefinition;
 
   // For faster performing of the getAvailableNodes() method
   protected int[] lastJobOperations;
 
-  public JspAnt(JspGraph graph, List<Integer> nodeIDs, JobsDefinition jobs, JspPhenotypeEvaluator evaluator) {
+  public JspAnt(JspGraph graph, List<Integer> nodeIDs, JspJobsDefinition jobs, JspPhenotypeEvaluator evaluator) {
     super(graph, nodeIDs);
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;

@@ -6,6 +6,27 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch FspScheduleProvider",
+      "request": "launch",
+      "mainClass": "org.seage.problem.fsp.FspScheduleProvider",
+      "projectName": "seage-problem-fsp"
+    },
+    {
+      "type": "java",
+      "name": "Launch ScheduleProvider",
+      "request": "launch",
+      "mainClass": "org.seage.problem.fsp.ScheduleProvider",
+      "projectName": "seage-problem-fsp"
+    },
+    {
+      "type": "java",
+      "name": "Launch ScheduleProvider",
+      "request": "launch",
+      "mainClass": "org.seage.problem.jsp.ScheduleProvider",
+      "projectName": "seage-problem-jsp"
+    },
+    {
+      "type": "java",
       "name": "Launch AssignmentProvider",
       "request": "launch",
       "mainClass": "org.seage.problem.qap.AssignmentProvider",
@@ -141,8 +162,15 @@
       "type": "java",
       "name": "Launch MetadataGenerator",
       "request": "launch",
-      "mainClass": "org.seage.sandbox.MetadataGenerator",
-      "projectName": "seage-launcher"
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "args": [
+        "metadata",
+        "-p",
+        "FSP",
+        "-n",
+        "100"
+      ]
     },
     {
       "type": "java",
@@ -151,8 +179,9 @@
       "mainClass": "org.seage.problem.qap.AssignmentProvider",
       "projectName": "seage-problem-qap",
       "cwd": "${workspaceFolder}",
-      "args": ["seage-problems/discrete/qap/src/main/resources/org/seage/problem/qap/instances/tai12a.dat"]
-    },
-
+      "args": [
+        "seage-problems/discrete/qap/src/main/resources/org/seage/problem/qap/instances/tai12a.dat"
+      ]
+    }
   ]
 }

@@ -22,7 +22,7 @@ package org.seage.problem.jsp;
 /**
  * Summary description for ActivityInfo.
  */
-public class OperationInfo
+public class ScheduleOperationInfo
 {
   public int JobID;
   public int OperationID;

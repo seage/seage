@@ -12,10 +12,10 @@ import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.data.Pair;
 
 public class ScheduleTest {
-  private JobsDefinition _jobsDefinition;
+  private JspJobsDefinition _jobsDefinition;
 
   public ScheduleTest() throws Exception {
-    _jobsDefinition = new JobsDefinition(
+    _jobsDefinition = new JspJobsDefinition(
         new ProblemInstanceInfo("yn_3x3_example", ProblemInstanceOrigin.RESOURCE, ""),
         getClass().getResourceAsStream("/org/seage/problem/jsp/test-instances/yn_3x3_example.xml"));
   }

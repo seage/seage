@@ -35,7 +35,7 @@ public class Schedule
   private ScheduleCell[] _lastCellOnMachine;
 
   private ScheduleCell _mostDistantCell;
-  private JobsDefinition _jobsDefinition;
+  private JspJobsDefinition _jobsDefinition;
   private int _numJobs;
   private int _numMachines;
   private int[] _lastActivityInJobIndex;
@@ -43,7 +43,7 @@ public class Schedule
   private int[] _endTimeInJob;
   private int[] _endTimeOnMachine;
 
-  public Schedule(JobsDefinition jobsDefinition)
+  public Schedule(JspJobsDefinition jobsDefinition)
   {
     _jobsDefinition = jobsDefinition;
     _numJobs = jobsDefinition.getJobsCount();
@@ -52,7 +52,7 @@ public class Schedule
     _makeSpan = 0;
   }
 
-  public Schedule(JobsDefinition jobsDefinition, Integer[] jobArray) {
+  public Schedule(JspJobsDefinition jobsDefinition, Integer[] jobArray) {
     this(jobsDefinition);    
     createSchedule(jobArray);
   }
@@ -68,8 +68,8 @@ public class Schedule
     _endTimeOnMachine = new int[_numMachines];
     // Reset done
 
-    JobInfo currentJob;
-    OperationInfo currentOper;
+    ScheduleJobInfo currentJob;
+    ScheduleOperationInfo currentOper;
 
     int indexCurrentMachine = 0;
     int indexCurrentJob = 0;
@@ -86,6 +86,14 @@ public class Schedule
     {
       _lastActivityOnMachineIndex[i] = 0;
       _endTimeOnMachine[i] = 0;
+    }
+    // Dealing with the Permutation FSP?
+    if(jobArray.length == _numJobs) {
+      Integer[] newJobArray = new Integer[_numJobs*_numMachines];
+      for(int i=0;i<newJobArray.length;i++) {
+        newJobArray[i] = jobArray[i%jobArray.length];
+      }
+      jobArray = newJobArray;
     }
 
     for (int i = 0; i < jobArray.length; i++)

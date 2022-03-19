@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
-import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
 import org.seage.metaheuristic.antcolony.Edge;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class JspAntTest {
-  static JobsDefinition jobs;
+  static JspJobsDefinition jobs;
 
   @BeforeAll
   public static void prepareData() {
@@ -36,7 +36,7 @@ public class JspAntTest {
       jobs = null;
 
       try(InputStream stream = JspGraphTest.class.getResourceAsStream(path)) {
-        jobs = new JobsDefinition(jobInfo, stream);
+        jobs = new JspJobsDefinition(jobInfo, stream);
       }
     } catch (Exception e) {
       e.printStackTrace();

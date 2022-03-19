@@ -39,7 +39,7 @@ import org.seage.metaheuristic.tabusearch.SimpleTabuList;
 import org.seage.metaheuristic.tabusearch.TabuSearch;
 import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
 import org.seage.metaheuristic.tabusearch.TabuSearchListener;
-import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
@@ -61,10 +61,10 @@ public class JspTabuSearchTest implements TabuSearchListener
       String instanceID = "ft10";
       String path = "/org/seage/problem/jsp/instances/ft10.xml";
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
-      JobsDefinition jobs = null;
+      JspJobsDefinition jobs = null;
 
       try(InputStream stream = JspTabuSearchTest.class.getResourceAsStream(path)) {
-        jobs = new JobsDefinition(jobInfo, stream);
+        jobs = new JspJobsDefinition(jobInfo, stream);
       }
 
       new JspTabuSearchTest().runAlgorithm(jobs);
@@ -76,7 +76,7 @@ public class JspTabuSearchTest implements TabuSearchListener
     }
   }
 
-  public void runAlgorithm(JobsDefinition jobs) throws Exception
+  public void runAlgorithm(JspJobsDefinition jobs) throws Exception
   {
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
@@ -97,7 +97,7 @@ public class JspTabuSearchTest implements TabuSearchListener
     ts.startSolving();
   }
 
-  public void runAlgorithmAdapter(JobsDefinition jobs) throws Exception {
+  public void runAlgorithmAdapter(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 1, generator.nextLong());
 

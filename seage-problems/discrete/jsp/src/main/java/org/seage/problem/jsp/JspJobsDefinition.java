@@ -32,12 +32,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class JobsDefinition extends ProblemInstance
+public class JspJobsDefinition extends ProblemInstance
 {
-  protected JobInfo[] _jobInfos;
+  protected ScheduleJobInfo[] _jobInfos;
   protected int _numMachines;
       
-  public JobsDefinition(ProblemInstanceInfo instanceInfo, InputStream jobsDefinitionStream) throws Exception
+  public JspJobsDefinition(ProblemInstanceInfo instanceInfo, InputStream jobsDefinitionStream) throws Exception
   {
     super(instanceInfo);
     
@@ -49,7 +49,7 @@ public class JobsDefinition extends ProblemInstance
     return _jobInfos.length;
   }
       
-  public JobInfo[] getJobInfos()
+  public ScheduleJobInfo[] getJobInfos()
   {
     return _jobInfos;
   }
@@ -72,18 +72,18 @@ public class JobsDefinition extends ProblemInstance
     NodeList jobNodes = xmlDoc.getDocumentElement().getElementsByTagName("job");
     
     HashSet<Integer> machines = new HashSet<Integer>();
-    _jobInfos = new JobInfo[jobNodes.getLength()];
+    _jobInfos = new ScheduleJobInfo[jobNodes.getLength()];
     
     for(int i=0;i<jobNodes.getLength();i++)
     {
       Element jobNode = (Element)jobNodes.item(i);
       Integer jobID = Integer.parseInt(jobNode.getAttributes().getNamedItem("id").getNodeValue());
       NodeList operationNodes = jobNode.getElementsByTagName("operation");
-      OperationInfo[] operationInfos = new OperationInfo[operationNodes.getLength()];
+      ScheduleOperationInfo[] operationInfos = new ScheduleOperationInfo[operationNodes.getLength()];
       for(int j=0;j<operationNodes.getLength();j++)
       {
         Node operNode = operationNodes.item(j);
-        OperationInfo oper = new OperationInfo();
+        ScheduleOperationInfo oper = new ScheduleOperationInfo();
         oper.OperationID = Integer.parseInt(operNode.getAttributes().getNamedItem("number").getNodeValue());
         oper.JobID = jobID;
         oper.MachineID = Integer.parseInt(operNode.getAttributes().getNamedItem("machineID").getNodeValue());
@@ -93,7 +93,7 @@ public class JobsDefinition extends ProblemInstance
         if(!machines.contains(oper.MachineID))
           machines.add(oper.MachineID);
       }
-      _jobInfos[i] = new JobInfo(jobID, operationInfos);
+      _jobInfos[i] = new ScheduleJobInfo(jobID, operationInfos);
     }
     _numMachines = machines.size();
   }

@@ -39,7 +39,7 @@ import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
-import org.seage.problem.jsp.JobsDefinition;
+import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
@@ -61,10 +61,10 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
       String instanceID = "ft10";
       String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
       ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
-      JobsDefinition jobs = null;
+      JspJobsDefinition jobs = null;
 
       try(InputStream stream = JspSimulatedAnnealingTest.class.getResourceAsStream(path)) {
-        jobs = new JobsDefinition(jobInfo, stream);
+        jobs = new JspJobsDefinition(jobInfo, stream);
       }
 
       new JspSimulatedAnnealingTest().runAlgorithm(jobs);
@@ -76,7 +76,7 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     }
   }
 
-  public void runAlgorithm(JobsDefinition jobs) throws Exception
+  public void runAlgorithm(JspJobsDefinition jobs) throws Exception
   {
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
@@ -115,7 +115,7 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     return result;
   }
 
-  public void runAlgorithmAdapter(JobsDefinition jobs) throws Exception {
+  public void runAlgorithmAdapter(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 1, generator.nextLong());
 

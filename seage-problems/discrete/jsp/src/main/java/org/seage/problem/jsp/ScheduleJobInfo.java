@@ -22,13 +22,13 @@ package org.seage.problem.jsp;
 /**
  * Summary description for Class1.
  */
-public class JobInfo
+public class ScheduleJobInfo
 {
   private int _id;
   private int _priority;
-  private OperationInfo[] _operations;
+  private ScheduleOperationInfo[] _operations;
       
-  public JobInfo(int id, OperationInfo[] operations/*, int priority*/)
+  public ScheduleJobInfo(int id, ScheduleOperationInfo[] operations/*, int priority*/)
   {
     _id = id;
     //_priority = priority;
@@ -45,7 +45,7 @@ public class JobInfo
     return _priority;
   }
       
-  public OperationInfo[] getOperationInfos()
+  public ScheduleOperationInfo[] getOperationInfos()
   {
     return _operations;
   }
