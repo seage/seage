@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.beust.jcommander.Parameters;
+import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
@@ -30,11 +31,16 @@ public class InfoCommand extends Command {
       try {
         IProblemProvider<?> pp = providers.get(problemId);
         DataNode pi = pp.getProblemInfo();
+        
         for (DataNode alg : pi.getDataNode("Algorithms").getDataNodes()) {
-          List<String> algList = algMap.get(alg.getValueStr("id"));
+          String algorithmID = alg.getValueStr("id");
+          Class<?> c = pp.getAlgorithmFactory(algorithmID).getClass();
+          if(c.getAnnotation(Annotations.NotReady.class) != null)
+            continue;
+          List<String> algList = algMap.get(algorithmID);
           if(algList == null) {
             algList = new ArrayList<>();
-            algMap.put(alg.getValueStr("id"), algList);
+            algMap.put(algorithmID, algList);
           }
           algList.add(problemId);
         }

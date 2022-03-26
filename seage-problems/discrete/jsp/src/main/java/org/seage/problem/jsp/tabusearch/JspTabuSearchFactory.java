@@ -38,7 +38,7 @@ import org.seage.problem.jsp.JspProblemProvider;
  */
 @Annotations.AlgorithmId("TabuSearch")
 @Annotations.AlgorithmName("Tabu Search")
-@Annotations.Broken("Not fixed yet")
+@Annotations.NotReady
 public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, JspTabuSearchSolution> {
 
   @Override

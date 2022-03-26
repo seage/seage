@@ -131,9 +131,6 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
       try {
         Class<?> algFactoryClass = Class.forName(ci.getClassName());
 
-        if(algFactoryClass.getAnnotation(Annotations.Broken.class) != null)
-          continue;
-
         Annotation an2 = null;
         an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmName.class);
         if (an2 == null) {

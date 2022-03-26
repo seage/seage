@@ -37,7 +37,7 @@ import org.seage.problem.qap.QapProblemInstance;
  */
 @Annotations.AlgorithmId("TabuSearch")
 @Annotations.AlgorithmName("Tabu Search")
-@Annotations.Broken("Not fixed yet")
+@Annotations.NotReady
 public class QapTabuSearchFactory implements IAlgorithmFactory<QapPhenotype, QapSolution> {
   @Override
   public Class<?> getAlgorithmClass() {

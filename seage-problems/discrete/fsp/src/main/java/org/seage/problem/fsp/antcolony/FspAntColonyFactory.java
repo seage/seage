@@ -34,6 +34,6 @@ import org.seage.problem.jsp.antcolony.JspAntColonyFactory;
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
-@Annotations.Broken("Not fixed yet")
+@Annotations.NotReady
 public class FspAntColonyFactory extends JspAntColonyFactory {
 }
