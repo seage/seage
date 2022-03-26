@@ -4,24 +4,41 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProblemInstanceParamsParser {
   // HyFlex instancesIDs
-  static String[] hyflexSatInstanceIDs = {
-    "pg-525-2276-hyflex-3",
-    "pg-696-3122-hyflex-5", 
-    "pg-525-2336-hyflex-4",
-    "jarv-684-2300-hyflex-10", 
-    "hg4-300-1200-hyflex-11"
-  };
-
-  static String[] hyflexTspInstanceIDs = {
-    "pr299-hyflex-0", 
-    "usa13509-hyflex-8", 
-    "rat575-hyflex-2",
-    "u2152-hyflex-7", 
-    "d1291-hyflex-6"
-  };
+  public static final Map<String, List<String>> hyflexInstances = new HashMap<>() {
+    {
+      put("SAT", new ArrayList<>(Arrays.asList(
+        "pg-525-2276-hyflex-3",
+        "pg-696-3122-hyflex-5", 
+        "pg-525-2336-hyflex-4",
+        "jarv-684-2300-hyflex-10", 
+        "hg4-300-1200-hyflex-11"
+      )));
+      put("TSP", new ArrayList<>(Arrays.asList(
+        "pr299-hyflex-0", 
+        "usa13509-hyflex-8", 
+        "rat575-hyflex-2",
+        "u2152-hyflex-7", 
+        "d1291-hyflex-6"
+      )));
+      put("FSP", new ArrayList<>(Arrays.asList(
+        "tai100_20_02",
+        "tai500_20_02",
+        "tai100_20_04",
+        "tai200_20_01",
+        "tai500_20_03"
+      )));
+      put("QAP", new ArrayList<>(Arrays.asList(
+        "sko100a",
+        "tai100a",
+        "tai256c",
+        "tho150",
+        "wil100"
+      )));
+    }};
 
 
   /**
@@ -43,7 +60,7 @@ public class ProblemInstanceParamsParser {
   }
 
   private static void parseParam(
-      String param, HashMap<String, List<String>> parsed) throws Exception {
+      String param, Map<String, List<String>> parsed) throws Exception {
     String[] p = param.split(":");
     String problemID = p[0];
     String instanceID = p[1];
@@ -51,16 +68,23 @@ public class ProblemInstanceParamsParser {
     if (instanceID.equals("hyflex")) {
       switch (problemID) {
         case "ALL":
-          parsed.put("SAT", Arrays.asList(hyflexSatInstanceIDs));
-          parsed.put("TSP", Arrays.asList(hyflexTspInstanceIDs));
+          parsed = hyflexInstances;
+          break;
+
+        case "SAT":
+          parsed.put("SAT", hyflexInstances.get("TSP"));
           break;
 
         case "TSP":
-          parsed.put("TSP", Arrays.asList(hyflexTspInstanceIDs));
+          parsed.put("TSP", hyflexInstances.get("TSP"));
           break;
           
-        case "SAT":
-          parsed.put("SAT", Arrays.asList(hyflexSatInstanceIDs));
+        case "FSP":
+          parsed.put("FSP", hyflexInstances.get("FSP"));
+          break;
+        
+        case "QAP":
+          parsed.put("QAP", hyflexInstances.get("QAP"));
           break;
         
         default:

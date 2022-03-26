@@ -17,7 +17,8 @@ import org.seage.launcher.commands.ExperimentSingleEvolutionCommand;
 import org.seage.launcher.commands.ExperimentSingleFeedbackCommand;
 import org.seage.launcher.commands.ExperimentSingleGridCommand;
 import org.seage.launcher.commands.ExperimentSingleRandomCommand;
-import org.seage.launcher.commands.ListCommand;
+import org.seage.launcher.commands.InfoCommand;
+import org.seage.launcher.commands.DetailsCommand;
 import org.seage.launcher.commands.MetadataGeneratorCommand;
 import org.seage.problem.fsp.FspProblemProvider;
 import org.seage.problem.jsp.JspProblemProvider;
@@ -47,7 +48,8 @@ public class Launcher {
   public static void main(String[] args) {
     try {
       HashMap<String, Command> commands = new LinkedHashMap<>();
-      commands.put("list", new ListCommand());
+      commands.put("info", new InfoCommand());
+      commands.put("details", new DetailsCommand());
       commands.put("experiment-single-default", new ExperimentSingleDefaultCommand());
       commands.put("experiment-single-random", new ExperimentSingleRandomCommand());
       commands.put("experiment-single-interval", new ExperimentSingleGridCommand());
@@ -112,12 +114,13 @@ public class Launcher {
     } catch (ParameterException ex) {
       commandName = args[0];
       JCommander command = jc.getCommands().get(commandName);
-      if (command != null && args[1].equals("--help")) {            
+      if (command != null && args.length > 1 && args[1].equals("--help")) {            
         command.usage();
-        return null;
+        return null;      
       }
       _logger.error(ex.getMessage());
-      _logger.error("Try to use --help");  
+      _logger.error("Try to use --help"); 
+      return null; 
     }
     return commandName;
   }

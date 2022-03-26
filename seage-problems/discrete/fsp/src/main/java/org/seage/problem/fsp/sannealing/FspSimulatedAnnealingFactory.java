@@ -34,5 +34,6 @@ import org.seage.problem.jsp.sannealing.JspSimulatedAnnealingFactory;
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
+@Annotations.NotReady
 public class FspSimulatedAnnealingFactory extends JspSimulatedAnnealingFactory {
 }

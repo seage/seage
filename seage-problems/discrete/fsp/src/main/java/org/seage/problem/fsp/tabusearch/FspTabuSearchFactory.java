@@ -34,5 +34,6 @@ import org.seage.problem.jsp.tabusearch.JspTabuSearchFactory;
  */
 @Annotations.AlgorithmId("TabuSearch")
 @Annotations.AlgorithmName("Tabu Search")
+@Annotations.NotReady
 public class FspTabuSearchFactory extends JspTabuSearchFactory {
 }

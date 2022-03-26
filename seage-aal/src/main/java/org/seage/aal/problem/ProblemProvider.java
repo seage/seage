@@ -130,8 +130,8 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
     for (ClassInfo ci : ClassUtil.searchForClasses(IAlgorithmFactory.class, problemPackageName)) {
       try {
         Class<?> algFactoryClass = Class.forName(ci.getClassName());
-        Annotation an2 = null;
 
+        Annotation an2 = null;
         an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmName.class);
         if (an2 == null) {
           throw new NullPointerException("Unable to get annotation AlgorithmName");
