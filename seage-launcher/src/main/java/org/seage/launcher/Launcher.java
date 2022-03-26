@@ -63,25 +63,62 @@ public class Launcher {
       for (Entry<String, Command> e : commands.entrySet())
         jc.addCommand(e.getKey(), e.getValue());
 
-      jc.parse(args);
-
-      if (args.length == 0 || launcher.help) {
-        jc.usage();
+      if(args.length == 0) {
+        printDefaultHelp(commands);
         return;
       }
-      launcher.run(commands.get(jc.getParsedCommand()));
-    } catch (ParameterException ex) {
-      _logger.error(ex.getMessage());
-      _logger.error("Try to use --help");
+      String commandName = getParsedCommand(args, jc, launcher);
+      if(commandName == null) {
+        if (launcher.help) {
+          jc.usage();
+        }
+        return;
+      }      
+      launcher.run(commands.get(commandName));
     } catch (Exception ex) {
       _logger.error(ex.getMessage(), ex);
     }
   }
+
+  
 
   private void run(Command cmd) throws Exception {
     _logger.info("SEAGE running ...");
     // LogHelper.configure(Launcher.class.getClassLoader().getResourceAsStream("logback.xml"));
     cmd.performCommand();
     _logger.info("SEAGE finished ...");
+  }
+
+  private static void printDefaultHelp(HashMap<String, Command> commands) {
+    System.out.println("Usage: <main class> [command]");
+    System.out.println();
+    System.out.println("  Commands:");
+    for (Entry<String, Command> e : commands.entrySet()) {
+      System.out.println(String.format("    %-30s - %s", 
+          e.getKey(), 
+          e.getValue().getClass().getAnnotationsByType(com.beust.jcommander.Parameters.class)[0].commandDescription()
+      ));
+    }
+    System.out.println();
+    System.out.println("Use --help with each command");
+    System.out.println();
+  }
+
+  private static String getParsedCommand(String[] args, JCommander jc, Launcher launcher) {
+    String commandName = null;
+    try {
+      jc.parse(args);
+      commandName = jc.getParsedCommand();
+    } catch (ParameterException ex) {
+      commandName = args[0];
+      JCommander command = jc.getCommands().get(commandName);
+      if (command != null && args[1].equals("--help")) {            
+        command.usage();
+        return null;
+      }
+      _logger.error(ex.getMessage());
+      _logger.error("Try to use --help");  
+    }
+    return commandName;
   }
 }
