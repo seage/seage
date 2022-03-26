@@ -74,7 +74,7 @@
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
-      "args": "list"
+      "args": ["details", "-p", "SAT"]
     },
     {
       "type": "java",
@@ -106,6 +106,27 @@
         "GeneticAlgorithm",
         "-i",
         "berlin52",
+        "-t",
+        "1",
+        "-n",
+        "1"
+      ]
+    },
+    {
+      "type": "java",
+      "name": "Debug Launcher (approach, h2)",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "experiment-approach",
+        "-p",
+        "SAT",
+        "-a",
+        "GeneticAlgorithm",
+        "-i",
+        "hyflex",
         "-t",
         "1",
         "-n",
