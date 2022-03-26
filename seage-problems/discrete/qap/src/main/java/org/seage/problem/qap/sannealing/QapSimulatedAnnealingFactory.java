@@ -43,6 +43,7 @@ import org.seage.problem.qap.QapProblemInstance;
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
+@Annotations.Broken("Not fixed yet")
 public class QapSimulatedAnnealingFactory implements IAlgorithmFactory<QapPhenotype, QapSolution>
 {
 

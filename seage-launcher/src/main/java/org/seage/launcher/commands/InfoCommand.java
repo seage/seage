@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-@Parameters(commandDescription = "Table of implemented problems and algorithms")
+@Parameters(commandDescription = "Show table of implemented problems and algorithms")
 public class InfoCommand extends Command {
   private static final Logger _logger = LoggerFactory.getLogger(InfoCommand.class.getName());
 

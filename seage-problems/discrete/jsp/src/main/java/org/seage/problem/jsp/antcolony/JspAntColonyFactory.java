@@ -29,6 +29,7 @@
 package org.seage.problem.jsp.antcolony;
 
 import org.seage.aal.Annotations;
+import org.seage.aal.Annotations.Broken;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
@@ -51,6 +52,7 @@ import org.seage.problem.jsp.JspProblemProvider;
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
+@Annotations.Broken("Not fixed yet")
 public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
 {
   Random rnd = new Random();

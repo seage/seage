@@ -39,6 +39,7 @@ import org.seage.problem.jsp.JspProblemProvider;
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
+@Annotations.Broken("Not fixed yet")
 public class JspSimulatedAnnealingFactory
     implements IAlgorithmFactory<JspPhenotype, JspSimulatedAnnealingSolution> {
   @Override
