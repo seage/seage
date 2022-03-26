@@ -16,7 +16,12 @@ Then run the launcher which will provide you some help:
 
 To see what is implemented run:
 ```
-./scripts/run.sh list
+./scripts/run.sh info
+```
+
+To see what is implemented in more details for a specified problem run:
+```
+./scripts/run.sh details -p SAT
 ```
 
 ## Run experiments
