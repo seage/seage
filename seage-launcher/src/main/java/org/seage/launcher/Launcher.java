@@ -90,12 +90,11 @@ public class Launcher {
   }
 
   private static void printDefaultHelp(HashMap<String, Command> commands) {
-    System.out.println("SEAGE");
+    System.out.println("Usage: <main class> [command]");
     System.out.println();
-    System.out.println("Following commands available");
-    System.out.println("----------------------------");
+    System.out.println("  Commands:");
     for (Entry<String, Command> e : commands.entrySet()) {
-      System.out.println(String.format("  %-30s - %s", 
+      System.out.println(String.format("    %-30s - %s", 
           e.getKey(), 
           e.getValue().getClass().getAnnotationsByType(com.beust.jcommander.Parameters.class)[0].commandDescription()
       ));
