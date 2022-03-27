@@ -72,7 +72,7 @@ public class ProblemInstanceParamsParser {
           break;
 
         case "SAT":
-          parsed.put("SAT", hyflexInstances.get("TSP"));
+          parsed.put("SAT", hyflexInstances.get("SAT"));
           break;
 
         case "TSP":
