@@ -1,13 +1,13 @@
 package org.seage.problem.fsp.tabusearch;
 
-import org.seage.aal.problem.ProblemProviderTestBase;
+import org.seage.aal.problem.ProblemAlgorithmAdapterTestBase;
 import org.seage.problem.fsp.FspProblemProvider;
+import org.seage.problem.jsp.JspPhenotype;
 
-public class FspTabuSearchFactoryTest extends ProblemProviderTestBase
-{
+public class FspTabuSearchFactoryTest extends ProblemAlgorithmAdapterTestBase<JspPhenotype> {
     public FspTabuSearchFactoryTest()
     {
-        super(new FspProblemProvider());
+        super(new FspProblemProvider(), "TabuSearch");
     }
 
 }

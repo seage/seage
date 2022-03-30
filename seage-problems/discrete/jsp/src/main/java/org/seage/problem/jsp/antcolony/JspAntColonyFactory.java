@@ -56,6 +56,7 @@ import org.seage.problem.jsp.JspProblemProvider;
 public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
 {
   Random rnd = new Random();
+
   @Override
   public Class<?> getAlgorithmClass()
   {
@@ -67,10 +68,7 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
     ProblemInstance instance, IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception
   {
     JspJobsDefinition jobs = (JspJobsDefinition) instance;
-    JspProblemProvider problemProvider = new JspProblemProvider();
-    JspPhenotypeEvaluator evaluator =
-        new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JspJobsDefinition) instance);
-    JspGraph jspGraph = new JspGraph(jobs, evaluator);
+    JspGraph jspGraph = new JspGraph(jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
     return new AntColonyAdapter<JspPhenotype, Ant>(jspGraph, phenotypeEvaluator)
     {
       @Override
@@ -97,7 +95,7 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
             jobsOper[jobID]++;
           }
 
-          ants[i] = new JspAnt(jspGraph, nodes, jobs, evaluator);
+          ants[i] = new JspAnt(jspGraph, nodes, jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
        }
       }
 
