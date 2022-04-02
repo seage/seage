@@ -47,13 +47,12 @@ public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, Jsp
   }
 
   @Override
-  public IAlgorithmAdapter<JspPhenotype, JspTabuSearchSolution> createAlgorithm(ProblemInstance instance,
+  public IAlgorithmAdapter<JspPhenotype, JspTabuSearchSolution> createAlgorithm(
+      ProblemInstance instance,
       IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception {
-    JspProblemProvider problemProvider = new JspProblemProvider();
-    JspPhenotypeEvaluator evaluator =
-        new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JspJobsDefinition) instance);
+    // createAlgorithm implementation
     return new TabuSearchAdapter<JspPhenotype, JspTabuSearchSolution>(new JspMoveManager((JspJobsDefinition) instance),
-        new JspObjectiveFunction(evaluator), phenotypeEvaluator) {
+        new JspObjectiveFunction((JspPhenotypeEvaluator)phenotypeEvaluator), phenotypeEvaluator) {
 
       @Override
       public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception {

@@ -67,12 +67,10 @@
       "cwd": "${workspaceFolder}",
       "args": [
         "experiment-approach",
-        "-p",
-        "SAT",
         "-a",
         "GeneticAlgorithm",
         "-i",
-        "hyflex",
+        "SAT:hyflex",
         "-t",
         "1",
         "-n",
