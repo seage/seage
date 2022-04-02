@@ -20,10 +20,15 @@ dependencies {
     implementation project(':seage-metaheuristics')
     implementation project(':seage-misc')
     implementation project(':seage-problem-tsp')
-    implementation project(':seage-problem-sat')
+    implementation project(':seage-problem-sat')    
     implementation project(':seage-problem-jsp')
     implementation project(':seage-problem-fsp')
     implementation project(':seage-problem-qap')
+
+    // testImplementation project(':seage-problem-sat').sourceSets.test.output
+    testImplementation(testFixtures(project(':seage-problem-sat')))
+    
+    // testRuntimeOnly project(':seage-problem-sat')
 }
 
 application {
