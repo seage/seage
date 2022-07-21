@@ -254,10 +254,9 @@ public class HeatmapGenerator {
         Iterator<String> keys = problemsJson.keys();
         result.problemsResults = new HashMap<>();
 
-        while (keys.hasNext()) {
+        for (String key : problemsJson.keySet()) {
           // Create new structure
           AlgorithmProblemResult newRes = new AlgorithmProblemResult();
-          String key = keys.next();
 
           // Set the problem result parameters
           newRes.name = key;
