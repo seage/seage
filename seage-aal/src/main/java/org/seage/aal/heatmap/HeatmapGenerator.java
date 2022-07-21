@@ -28,6 +28,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 // ---------------------------------------------------
 
 import net.mahdilamb.colormap.SequentialColormap;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -213,6 +216,20 @@ public class HeatmapGenerator {
         }
         storeProblemsNames();
       }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  protected void loadJson(InputStream jsonInputStream, Map<String, String> algAuthors) {
+    // Initialize the results
+    results = new ArrayList<>();
+    try {
+      // Read the xml file - https://kodejava.org/how-do-i-read-json-file-using-json-java-org-json-library/
+      JSONTokener tokener = new JSONTokener(jsonInputStream);
+      JSONObject object = new JSONObject(tokener);
+
+
     } catch (Exception e) {
       e.printStackTrace();
     }
