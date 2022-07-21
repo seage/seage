@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -229,7 +230,47 @@ public class HeatmapGenerator {
       JSONTokener tokener = new JSONTokener(jsonInputStream);
       JSONObject object = new JSONObject(tokener);
 
+      // Iterate through results
+      JSONArray resultsJson = object.getJSONArray("results");
+      for (int i = 0; i < resultsJson.length(); i++) {
+        // Get json result data
+        JSONObject resultJson = resultsJson.getJSONObject(i);
+        AlgorithmResult result = new AlgorithmResult();
+        // Store the result informations
+        result.name = resultJson.getString("name");
+        result.score = Double.parseDouble(String.format("%.5f",
+            Double.parseDouble(resultJson.getString("totalScore"))));
+        result.author =
+            algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
+        result.color = getColor(result.score);
+        result.redColor = result.color.getRed();
+        result.greenColor = result.color.getGreen();
+        result.blueColor = result.color.getBlue();
 
+        // Get the problem results
+        JSONObject problemsJson = resultJson.getJSONObject("scorePerProblem");
+        Iterator<String> keys = problemsJson.keys();
+
+        while (keys.hasNext()) {
+          // Create new structure
+          AlgorithmProblemResult newRes = new AlgorithmProblemResult();
+
+          String key = keys.next();
+          // Set the problem result parameters
+          newRes.name = key;
+          newRes.score = Double.parseDouble(String.format("%.5f",
+              Double.parseDouble(problemsJson.getString(key))));
+          newRes.color = getColor(newRes.score);
+          newRes.redColor = newRes.color.getRed();
+          newRes.greenColor = newRes.color.getGreen();
+          newRes.blueColor = newRes.color.getBlue();
+         
+          // Add new problem results to algorithm
+          result.problemsResults.put(newRes.name, newRes);
+        }
+        results.add(result);
+      }
+      storeProblemsNames();
     } catch (Exception e) {
       e.printStackTrace();
     }
