@@ -1,8 +1,8 @@
 {
     "results": [
         {
-            "algorithmName": "algorithm1",
-            "totalScore": 0.5,
+            "algorithmName": "Algorithm1",
+            "totalScore": 0.3,
             "scorePerInstance": {
                 "TSP": {
                     "instance1": 0.5,
@@ -42,8 +42,8 @@
 
         },
         {
-            "algorithmName": "algorithm2",
-            "totalScore": 0.5,
+            "algorithmName": "Algorithm2",
+            "totalScore": 0.9,
             "scorePerInstance": {
                 "TSP": {
                     "instance1": 0.5,
@@ -83,8 +83,8 @@
 
         },
         {
-            "algorithmName": "algorithm3",
-            "totalScore": 0.5,
+            "algorithmName": "Algorithm3",
+            "totalScore": 0.6,
             "scorePerInstance": {
                 "TSP": {
                     "instance1": 0.5,

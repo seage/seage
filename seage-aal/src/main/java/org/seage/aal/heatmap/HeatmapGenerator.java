@@ -237,9 +237,9 @@ public class HeatmapGenerator {
         JSONObject resultJson = resultsJson.getJSONObject(i);
         AlgorithmResult result = new AlgorithmResult();
         // Store the result informations
-        result.name = resultJson.getString("name");
+        result.name = resultJson.getString("algorithmName");
         result.score = Double.parseDouble(String.format("%.5f",
-            Double.parseDouble(resultJson.getString("totalScore"))));
+           resultJson.getDouble("totalScore")));
         result.author =
             algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
         result.color = getColor(result.score);
@@ -250,7 +250,8 @@ public class HeatmapGenerator {
         // Get the problem results
         JSONObject problemsJson = resultJson.getJSONObject("scorePerProblem");
         Iterator<String> keys = problemsJson.keys();
-
+        result.problemsResults = new HashMap<>();
+        
         while (keys.hasNext()) {
           // Create new structure
           AlgorithmProblemResult newRes = new AlgorithmProblemResult();
@@ -259,7 +260,7 @@ public class HeatmapGenerator {
           // Set the problem result parameters
           newRes.name = key;
           newRes.score = Double.parseDouble(String.format("%.5f",
-              Double.parseDouble(problemsJson.getString(key))));
+              problemsJson.getDouble(key)));
           newRes.color = getColor(newRes.score);
           newRes.redColor = newRes.color.getRed();
           newRes.greenColor = newRes.color.getGreen();
