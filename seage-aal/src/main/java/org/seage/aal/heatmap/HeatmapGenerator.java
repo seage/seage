@@ -53,7 +53,7 @@ public class HeatmapGenerator {
   private SequentialColormap[] gradMaps =
       {new SequentialColormap(gradColors[0]), new SequentialColormap(gradColors[1]),
           new SequentialColormap(gradColors[2]), new SequentialColormap(gradColors[3])};
-  // Gradient color bolders
+  // Gradient color borders
   double[] gradBorders = {0.5, 0.75, 0.98, 1.0};
   // Sorted list of hhs results
   List<AlgorithmResult> results;
@@ -171,7 +171,7 @@ public class HeatmapGenerator {
           Element algorithmElement = (Element) algorithmNode;
           AlgorithmResult result = new AlgorithmResult();
 
-          // add each result into a new class and put it all into array or map
+          // Add each result into a new class and put it all into array or map
           result.name = algorithmElement.getAttribute("name");
           result.score = Double.parseDouble(String.format("%.5f",
               Double.parseDouble(algorithmElement.getAttribute("score"))));
@@ -196,7 +196,7 @@ public class HeatmapGenerator {
               // Create new structure
               AlgorithmProblemResult newRes = new AlgorithmProblemResult();
 
-              // set the problem result parameters
+              // Set the problem result parameters
               newRes.name = problemElement.getAttribute("name");
               newRes.score = Double.parseDouble(String.format("%.5f",
                   Double.parseDouble(problemElement.getAttribute("avg"))));
@@ -205,7 +205,7 @@ public class HeatmapGenerator {
               newRes.greenColor = newRes.color.getGreen();
               newRes.blueColor = newRes.color.getBlue();
              
-              // add new problem results to algorithm
+              // Add new problem results to algorithm
               result.problemsResults.put(newRes.name, newRes);
             }
           }
@@ -288,7 +288,7 @@ public class HeatmapGenerator {
     // Render the template
     Jinjava jinjava = new Jinjava();
     String renderedTemplate = jinjava.render(svgFile, context);
-    // output the file
+    // Output the file
     String resultsSvgFilePath = String.format(resultsSvgFile, id);
 
     try (FileWriter fileWriter = new FileWriter(resultsSvgFilePath);) {
