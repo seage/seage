@@ -225,8 +225,9 @@ public class HeatmapGenerator {
   protected void loadJson(InputStream jsonInputStream, Map<String, String> algAuthors) {
     // Initialize the results
     results = new ArrayList<>();
+
     try {
-      // Read the xml file - https://kodejava.org/how-do-i-read-json-file-using-json-java-org-json-library/
+      // Read the xml file
       JSONTokener tokener = new JSONTokener(jsonInputStream);
       JSONObject object = new JSONObject(tokener);
 
@@ -236,6 +237,7 @@ public class HeatmapGenerator {
         // Get json result data
         JSONObject resultJson = resultsJson.getJSONObject(i);
         AlgorithmResult result = new AlgorithmResult();
+
         // Store the result informations
         result.name = resultJson.getString("algorithmName");
         result.score = Double.parseDouble(String.format("%.5f",
@@ -251,12 +253,12 @@ public class HeatmapGenerator {
         JSONObject problemsJson = resultJson.getJSONObject("scorePerProblem");
         Iterator<String> keys = problemsJson.keys();
         result.problemsResults = new HashMap<>();
-        
+
         while (keys.hasNext()) {
           // Create new structure
           AlgorithmProblemResult newRes = new AlgorithmProblemResult();
-
           String key = keys.next();
+
           // Set the problem result parameters
           newRes.name = key;
           newRes.score = Double.parseDouble(String.format("%.5f",
