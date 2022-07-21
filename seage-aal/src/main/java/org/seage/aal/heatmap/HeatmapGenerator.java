@@ -282,7 +282,7 @@ public class HeatmapGenerator {
     context.put("experimentId", id);
     context.put("datetime", formatter.format(date));
 
-    // Load the jinja vsg template
+    // Load the jinja svg template
     InputStream inputStream = HeatmapGenerator.class.getResourceAsStream(templatePath);
     String svgFile = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
     // Render the template
