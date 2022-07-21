@@ -1,5 +1,5 @@
 /**
- * Program generates a heatmap, visualizating given data from hyflex experiment
+ * Program generates a heatmap, visualizating given data from experiment
  * 
  * @author David Omrai
  */
@@ -37,7 +37,7 @@ public class HeatmapGenerator {
   // Path where the results are stored
   String resultsPath = "./results"; // to change
   // Path where the metadata are stored
-  String templatePath = "/hyflex/hyflex-chesc-2011/heatmap.svg.template";
+  String templatePath = "/heatmap.svg.template";
   // Path where the file with results is stored
   String resultsSvgFile = "./results/%s/heatmap.svg"; // to change
   // Path where the file with results is stored

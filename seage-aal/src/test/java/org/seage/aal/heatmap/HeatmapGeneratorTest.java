@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 public class HeatmapGeneratorTest {
   // Path where the xml with results
-  String xmlPath = "src/test/resources/hyflex/hyflex-chesc-2011/test-unit-metric-scores.xml";
+  //String xmlPath = "src/test/resources/test-unit-metric-scores.xml";
   //Map<String, String> authorsNames = new HashMap<>();
 
   @Test
