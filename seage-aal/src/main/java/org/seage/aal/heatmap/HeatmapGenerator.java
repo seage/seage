@@ -19,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +38,7 @@ import org.w3c.dom.NodeList;
 
 public class HeatmapGenerator {
   // Path where the metadata are stored
-  String templatePath = "/heatmap.svg.template";
+  String svgTemplatePath = "/heatmap.svg.template";
 
   // Gradient colors
   private Color[][] gradColors = {{new Color(140, 0, 0), new Color(255, 0, 0)}, // dark red - red
@@ -326,7 +325,7 @@ public class HeatmapGenerator {
     context.put("datetime", formatter.format(date));
 
     // Load the jinja svg template
-    try (InputStream svgTemplateStream = HeatmapGenerator.class.getResourceAsStream(templatePath)) {
+    try (InputStream svgTemplateStream = HeatmapGenerator.class.getResourceAsStream(svgTemplatePath)) {
       String svgTemplate = new String(svgTemplateStream.readAllBytes(), StandardCharsets.UTF_8);
       // Render the template
       Jinjava jinjava = new Jinjava();
