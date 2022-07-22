@@ -38,14 +38,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class HeatmapGenerator {
-  // Path where the results are stored
-  String resultsPath = "./results"; // to change
   // Path where the metadata are stored
   String templatePath = "/heatmap.svg.template";
-  // Path where the file with results is stored
-  String resultsSvgFile = "./results/%s/heatmap.svg"; // to change
-  // Path where the file with results is stored
-  String resultsXmlFile = "./results/%s/unit-metric-scores.xml"; // to change
 
   // Gradient colors
   private Color[][] gradColors = {{new Color(140, 0, 0), new Color(255, 0, 0)}, // dark red - red
@@ -59,14 +53,6 @@ public class HeatmapGenerator {
           new SequentialColormap(gradColors[2]), new SequentialColormap(gradColors[3])};
   // Gradient color borders
   double[] gradBorders = {0.5, 0.75, 0.98, 1.0};
-  // Sorted list of hhs results
-  // List<AlgorithmResult> results;
-  // List of problems
-  //List<String> problems;
-  // Algorithms overall results
-  //List<List<String>> algsOverRes;
-  // Algorithms problems results
-  //List<List<List<String>>> algsProbsRes;
 
   /**
    * Class represents a structure where are data about problem results stored.
@@ -148,9 +134,8 @@ public class HeatmapGenerator {
    * 
    * @param xmlPath path to the xml file
    */
-  protected void loadXmlFile(String xmlPath, Map<String, String> algAuthors) {
-    // Initialize the results
-    results = new ArrayList<>();
+  protected void loadXmlFile(
+      String xmlPath, List<AlgorithmResult> results, Map<String, String> algAuthors) {
     try {
       // Read the xml file
       File xmlFile = new File(xmlPath);
@@ -216,7 +201,6 @@ public class HeatmapGenerator {
           }
           results.add(result);
         }
-        storeProblemsNames();
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -322,12 +306,12 @@ public class HeatmapGenerator {
   }
 
   /**
-   * Method generates a svg file with given data.
+   * Method generates a svg string with given data.
    * 
    * @param id id of the experiment
    * @throws IOException exception if the page couldn't be created
    */
-  protected void createSvgFile(
+  protected String getSvgString(
       String experimentId, List<AlgorithmResult> results, List<String> problems
   ) throws IOException {
     // Get the transformed data
@@ -351,33 +335,24 @@ public class HeatmapGenerator {
     String svgFile = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
     // Render the template
     Jinjava jinjava = new Jinjava();
-    String renderedTemplate = jinjava.render(svgFile, context);
     // Output the file
-    String resultsSvgFilePath = String.format(resultsSvgFile, id);
-
-    try (FileWriter fileWriter = new FileWriter(resultsSvgFilePath);) {
-      fileWriter.write(renderedTemplate);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    return jinjava.render(svgFile, context);
   }
 
   /**
-   * Method builds the results page First it loads the data from experiment and then it stores.
-   * them into a svg file
+   * Method generates a svg file with given data.
    * 
-   * @param experimentId id of experiment
+   * @param id id of the experiment
+   * @throws IOException exception if the page couldn't be created
    */
-  protected void buildResultsPage(String experimentId, Map<String, String> algAuthors) {
-    String xmlResultsPath = String.format(resultsXmlFile, experimentId);
-    loadXmlFile(xmlResultsPath, algAuthors);
-    // Sort the results by their overall score
-    //sortResults();
-
-    try {
-      createPage(experimentId);
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
+  protected void createSvgFile(
+      String experimentId, List<AlgorithmResult> results, List<String> problems,
+      String svgFileDest
+  ) throws IOException {
+    try (FileWriter fileWriter = new FileWriter(svgFileDest);) {
+      fileWriter.write(getSvgString(experimentId, results, problems));
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
@@ -387,7 +362,8 @@ public class HeatmapGenerator {
    * @param algAuthors map of algorithm authors
    */
   public String createHeatmap(
-      InputStream jsonInputStream, String experimentId, Map<String, String> algAuthors) {
+      InputStream jsonInputStream, String experimentId, Map<String, String> algAuthors
+  ) throws IOException {
     // Load the results
     List<AlgorithmResult> results = loadJson(jsonInputStream, algAuthors);
     // Get the problems
@@ -395,7 +371,7 @@ public class HeatmapGenerator {
     // Sort the results
     sortResults(results);
     // Return the SVG string
-    return ;
+    return getSvgString(experimentId, results, problems);
   }
 }
 
