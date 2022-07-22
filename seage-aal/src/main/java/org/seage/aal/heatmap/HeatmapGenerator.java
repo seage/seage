@@ -326,8 +326,8 @@ public class HeatmapGenerator {
     context.put("datetime", formatter.format(date));
 
     // Load the jinja svg template
-    try (InputStream inputStream = HeatmapGenerator.class.getResourceAsStream(templatePath)) {
-      String svgTemplate = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+    try (InputStream svgTemplateStream = HeatmapGenerator.class.getResourceAsStream(templatePath)) {
+      String svgTemplate = new String(svgTemplateStream.readAllBytes(), StandardCharsets.UTF_8);
       // Render the template
       Jinjava jinjava = new Jinjava();
       // Output the file
