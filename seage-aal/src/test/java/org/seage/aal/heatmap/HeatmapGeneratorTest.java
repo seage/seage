@@ -24,8 +24,6 @@ public class HeatmapGeneratorTest {
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
       // Load the results
       hmg.loadJson(jsonInputStream, authorsNames);
-    } catch (Exception e) {
-      e.printStackTrace();
     }
 
     // Test if the results aren't null
@@ -44,15 +42,13 @@ public class HeatmapGeneratorTest {
   }
 
   @Test 
-  void testJsonSortResults() {
+  void testJsonSortResults() throws Exception {
     HeatmapGenerator hmg = new HeatmapGenerator();
 
     // Turn the json file into a input stream
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
       // Load the results
       hmg.loadJson(jsonInputStream, authorsNames);
-    } catch (Exception e) {
-      e.printStackTrace();
     }
 
     // Sort the results
@@ -72,8 +68,6 @@ public class HeatmapGeneratorTest {
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
       // Load the results
       hmg.loadJson(jsonInputStream, authorsNames);
-    } catch (Exception e) {
-      e.printStackTrace();
     }
 
     // Sort the results
