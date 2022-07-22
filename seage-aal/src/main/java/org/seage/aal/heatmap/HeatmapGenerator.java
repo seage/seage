@@ -351,8 +351,6 @@ public class HeatmapGenerator {
   ) throws IOException {
     try (FileWriter fileWriter = new FileWriter(svgFileDest);) {
       fileWriter.write(createSvgString(experimentId, results, problems));
-    } catch (IOException e) {
-      e.printStackTrace();
     }
   }
 
