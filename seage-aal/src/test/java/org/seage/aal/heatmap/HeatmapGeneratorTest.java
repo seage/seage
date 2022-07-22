@@ -3,6 +3,7 @@ package org.seage.aal.heatmap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,6 +111,13 @@ public class HeatmapGeneratorTest {
 
       // Test the result
       assertNotNull(heatmapSvg);
+
+      // Store the svg file
+      String tmpDir = System.getProperty("java.io.tmpdir");
+
+      try (FileWriter fileWriter = new FileWriter(tmpDir + "/heatmap.svg");) {
+        fileWriter.write(heatmapSvg);
+      }
     }
   }
 }
