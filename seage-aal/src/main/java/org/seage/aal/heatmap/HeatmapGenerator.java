@@ -135,75 +135,73 @@ public class HeatmapGenerator {
    * @param xmlPath path to the xml file
    */
   protected void loadXmlFile(
-      String xmlPath, List<AlgorithmResult> results, Map<String, String> algAuthors) {
-    try {
-      // Read the xml file
-      File xmlFile = new File(xmlPath);
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-      DocumentBuilder builder = factory.newDocumentBuilder();
-      Document doc = builder.parse(xmlFile);
+      String xmlPath, List<AlgorithmResult> results, Map<String, String> algAuthors
+  ) throws Exception {
+    
+    // Read the xml file
+    File xmlFile = new File(xmlPath);
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(xmlFile);
 
-      // Normalize the xml structure
-      doc.getDocumentElement().normalize();
+    // Normalize the xml structure
+    doc.getDocumentElement().normalize();
 
-      // Element
-      Element root = doc.getDocumentElement();
-      // Get the algorithms elements
-      NodeList algorithmsXml = root.getElementsByTagName("algorithm");
+    // Element
+    Element root = doc.getDocumentElement();
+    // Get the algorithms elements
+    NodeList algorithmsXml = root.getElementsByTagName("algorithm");
 
-      // For all algorithms results
-      for (int i = 0; i < algorithmsXml.getLength(); i++) {
-        // Get the algorithm results
-        Node algorithmNode = algorithmsXml.item(i);
+    // For all algorithms results
+    for (int i = 0; i < algorithmsXml.getLength(); i++) {
+      // Get the algorithm results
+      Node algorithmNode = algorithmsXml.item(i);
 
-        // Get the algorithm details
-        if (algorithmNode.getNodeType() == Node.ELEMENT_NODE) {
-          Element algorithmElement = (Element) algorithmNode;
-          AlgorithmResult result = new AlgorithmResult();
+      // Get the algorithm details
+      if (algorithmNode.getNodeType() == Node.ELEMENT_NODE) {
+        Element algorithmElement = (Element) algorithmNode;
+        AlgorithmResult result = new AlgorithmResult();
 
-          // Add each result into a new class and put it all into array or map
-          result.name = algorithmElement.getAttribute("name");
-          result.score = Double.parseDouble(String.format("%.5f",
-              Double.parseDouble(algorithmElement.getAttribute("score"))));
-          result.author =
-              algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
-          result.color = getColor(result.score);
-          result.redColor = result.color.getRed();
-          result.greenColor = result.color.getGreen();
-          result.blueColor = result.color.getBlue();
+        // Add each result into a new class and put it all into array or map
+        result.name = algorithmElement.getAttribute("name");
+        result.score = Double.parseDouble(String.format("%.5f",
+            Double.parseDouble(algorithmElement.getAttribute("score"))));
+        result.author =
+            algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
+        result.color = getColor(result.score);
+        result.redColor = result.color.getRed();
+        result.greenColor = result.color.getGreen();
+        result.blueColor = result.color.getBlue();
 
-          // Extract the algorithm results of each problem domain
-          NodeList problemsXml = algorithmElement.getElementsByTagName("problem");
+        // Extract the algorithm results of each problem domain
+        NodeList problemsXml = algorithmElement.getElementsByTagName("problem");
 
-          result.problemsResults = new HashMap<>();
+        result.problemsResults = new HashMap<>();
 
-          for (int problemId = 0; problemId < problemsXml.getLength(); problemId++) {
-            Node problemNode = problemsXml.item(problemId);
+        for (int problemId = 0; problemId < problemsXml.getLength(); problemId++) {
+          Node problemNode = problemsXml.item(problemId);
 
-            if (problemNode.getNodeType() == Node.ELEMENT_NODE) {
-              Element problemElement = (Element) problemNode;
+          if (problemNode.getNodeType() == Node.ELEMENT_NODE) {
+            Element problemElement = (Element) problemNode;
 
-              // Create new structure
-              AlgorithmProblemResult newRes = new AlgorithmProblemResult();
+            // Create new structure
+            AlgorithmProblemResult newRes = new AlgorithmProblemResult();
 
-              // Set the problem result parameters
-              newRes.name = problemElement.getAttribute("name");
-              newRes.score = Double.parseDouble(String.format("%.5f",
-                  Double.parseDouble(problemElement.getAttribute("avg"))));
-              newRes.color = getColor(newRes.score);
-              newRes.redColor = newRes.color.getRed();
-              newRes.greenColor = newRes.color.getGreen();
-              newRes.blueColor = newRes.color.getBlue();
-             
-              // Add new problem results to algorithm
-              result.problemsResults.put(newRes.name, newRes);
-            }
+            // Set the problem result parameters
+            newRes.name = problemElement.getAttribute("name");
+            newRes.score = Double.parseDouble(String.format("%.5f",
+                Double.parseDouble(problemElement.getAttribute("avg"))));
+            newRes.color = getColor(newRes.score);
+            newRes.redColor = newRes.color.getRed();
+            newRes.greenColor = newRes.color.getGreen();
+            newRes.blueColor = newRes.color.getBlue();
+            
+            // Add new problem results to algorithm
+            result.problemsResults.put(newRes.name, newRes);
           }
-          results.add(result);
         }
+        results.add(result);
       }
-    } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 
@@ -212,54 +210,51 @@ public class HeatmapGenerator {
     // Initialize the results
     List<AlgorithmResult> results = new ArrayList<>();
 
-    try {
-      // Read the xml file
-      JSONTokener tokener = new JSONTokener(jsonInputStream);
-      JSONObject object = new JSONObject(tokener);
+    // Read the xml file
+    JSONTokener tokener = new JSONTokener(jsonInputStream);
+    JSONObject object = new JSONObject(tokener);
 
-      // Iterate through results
-      JSONArray resultsJson = object.getJSONArray("results");
-      for (int i = 0; i < resultsJson.length(); i++) {
-        // Get json result data
-        JSONObject resultJson = resultsJson.getJSONObject(i);
-        AlgorithmResult result = new AlgorithmResult();
+    // Iterate through results
+    JSONArray resultsJson = object.getJSONArray("results");
+    for (int i = 0; i < resultsJson.length(); i++) {
+      // Get json result data
+      JSONObject resultJson = resultsJson.getJSONObject(i);
+      AlgorithmResult result = new AlgorithmResult();
 
-        // Store the result informations
-        result.name = resultJson.getString("algorithmName");
-        result.score = Double.parseDouble(String.format("%.5f",
-           resultJson.getDouble("totalScore")));
-        result.author =
-            algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
-        result.color = getColor(result.score);
-        result.redColor = result.color.getRed();
-        result.greenColor = result.color.getGreen();
-        result.blueColor = result.color.getBlue();
+      // Store the result informations
+      result.name = resultJson.getString("algorithmName");
+      result.score = Double.parseDouble(String.format("%.5f",
+          resultJson.getDouble("totalScore")));
+      result.author =
+          algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
+      result.color = getColor(result.score);
+      result.redColor = result.color.getRed();
+      result.greenColor = result.color.getGreen();
+      result.blueColor = result.color.getBlue();
 
-        // Get the problem results
-        JSONObject problemsJson = resultJson.getJSONObject("scorePerProblem");
-        result.problemsResults = new HashMap<>();
+      // Get the problem results
+      JSONObject problemsJson = resultJson.getJSONObject("scorePerProblem");
+      result.problemsResults = new HashMap<>();
 
-        for (String key : problemsJson.keySet()) {
-          // Create new structure
-          AlgorithmProblemResult newRes = new AlgorithmProblemResult();
+      for (String key : problemsJson.keySet()) {
+        // Create new structure
+        AlgorithmProblemResult newRes = new AlgorithmProblemResult();
 
-          // Set the problem result parameters
-          newRes.name = key;
-          newRes.score = Double.parseDouble(String.format("%.5f",
-              problemsJson.getDouble(key)));
-          newRes.color = getColor(newRes.score);
-          newRes.redColor = newRes.color.getRed();
-          newRes.greenColor = newRes.color.getGreen();
-          newRes.blueColor = newRes.color.getBlue();
-         
-          // Add new problem results to algorithm
-          result.problemsResults.put(newRes.name, newRes);
-        }
-        results.add(result);
+        // Set the problem result parameters
+        newRes.name = key;
+        newRes.score = Double.parseDouble(String.format("%.5f",
+            problemsJson.getDouble(key)));
+        newRes.color = getColor(newRes.score);
+        newRes.redColor = newRes.color.getRed();
+        newRes.greenColor = newRes.color.getGreen();
+        newRes.blueColor = newRes.color.getBlue();
+        
+        // Add new problem results to algorithm
+        result.problemsResults.put(newRes.name, newRes);
       }
-    } catch (Exception e) {
-      e.printStackTrace();
+      results.add(result);
     }
+    
     return results;
   }
 
