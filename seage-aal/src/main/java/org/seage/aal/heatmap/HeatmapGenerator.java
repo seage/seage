@@ -325,7 +325,10 @@ public class HeatmapGenerator {
     context.put("datetime", formatter.format(date));
 
     // Load the jinja svg template
-    try (InputStream svgTemplateStream = HeatmapGenerator.class.getResourceAsStream(svgTemplatePath)) {
+    try (
+        InputStream svgTemplateStream = HeatmapGenerator
+            .class.getResourceAsStream(svgTemplatePath)
+    ) {
       String svgTemplate = new String(svgTemplateStream.readAllBytes(), StandardCharsets.UTF_8);
       // Render the template
       Jinjava jinjava = new Jinjava();
@@ -354,17 +357,19 @@ public class HeatmapGenerator {
    * @param experimentId id of the competition experiment
    * @param algAuthors map of algorithm authors
    */
-  public String createHeatmap(
+  public static String createHeatmap(
       InputStream jsonInputStream, String experimentId, Map<String, String> algAuthors
   ) throws IOException {
+    // Create class instance
+    HeatmapGenerator hmg = new HeatmapGenerator();
     // Load the results
-    List<AlgorithmResult> results = loadJson(jsonInputStream, algAuthors);
+    List<AlgorithmResult> results = hmg.loadJson(jsonInputStream, algAuthors);
     // Get the problems
-    List<String> problems = getProblemsNames(results);
+    List<String> problems = hmg.getProblemsNames(results);
     // Sort the results
-    sortResults(results);
+    hmg.sortResults(results);
     // Return the SVG string
-    return createSvgString(experimentId, results, problems);
+    return hmg.createSvgString(experimentId, results, problems);
   }
 }
 

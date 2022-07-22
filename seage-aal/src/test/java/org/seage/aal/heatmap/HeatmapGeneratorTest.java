@@ -104,11 +104,9 @@ public class HeatmapGeneratorTest {
 
   @Test
   void testCreateHeatmap() throws Exception {
-    HeatmapGenerator hmg = new HeatmapGenerator();
-
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
       // Get svg heatmap
-      String heatmapSvg = hmg.createHeatmap(jsonInputStream, "test", authorsNames);
+      String heatmapSvg = HeatmapGenerator.createHeatmap(jsonInputStream, "test", authorsNames);
 
       // Test the result
       assertNotNull(heatmapSvg);
