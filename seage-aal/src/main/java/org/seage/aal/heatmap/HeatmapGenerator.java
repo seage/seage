@@ -28,20 +28,17 @@ import javax.xml.parsers.DocumentBuilderFactory;
 // ---------------------------------------------------
 
 import net.mahdilamb.colormap.SequentialColormap;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class HeatmapGenerator {
-  // Path where the results are stored
-  String resultsPath = "./results"; // to change
   // Path where the metadata are stored
-  String templatePath = "/heatmap.svg.template";
-  // Path where the file with results is stored
-  String resultsSvgFile = "./results/%s/heatmap.svg"; // to change
-  // Path where the file with results is stored
-  String resultsXmlFile = "./results/%s/unit-metric-scores.xml"; // to change
+  String svgTemplatePath = "/heatmap.svg.template";
 
   // Gradient colors
   private Color[][] gradColors = {{new Color(140, 0, 0), new Color(255, 0, 0)}, // dark red - red
@@ -55,14 +52,6 @@ public class HeatmapGenerator {
           new SequentialColormap(gradColors[2]), new SequentialColormap(gradColors[3])};
   // Gradient color borders
   double[] gradBorders = {0.5, 0.75, 0.98, 1.0};
-  // Sorted list of hhs results
-  List<AlgorithmResult> results;
-  // List of problems
-  List<String> problems;
-  // Algorithms overall results
-  List<List<String>> algsOverRes;
-  // Algorithms problems results
-  List<List<List<String>>> algsProbsRes;
 
   /**
    * Class represents a structure where are data about problem results stored.
@@ -94,6 +83,8 @@ public class HeatmapGenerator {
     HashMap<String, AlgorithmProblemResult> problemsResults;
   }
 
+  protected HeatmapGenerator() {}
+
   /**
    * Method turns the given position into a specific color based on the location on the gradient.
    * 
@@ -122,18 +113,19 @@ public class HeatmapGenerator {
   /**
    * Method reads the problems that appears in the results and stores them into a problem array.
    */
-  protected void storeProblemsNames() {
+  protected List<String> getProblemsNames(List<AlgorithmResult> results) {
     // Extract the problems names
-    problems = results.isEmpty() ? new ArrayList<>()
+    List<String> problems = results.isEmpty() ? new ArrayList<>()
         : new ArrayList<>(results.get(0).problemsResults.keySet());
     // Sort the problem names
     Collections.sort(problems);
+    return problems;
   }
 
   /**
    * Method sorts the results list using the hhs overall scores.
    */
-  protected void sortResults() {
+  protected void sortResults(List<AlgorithmResult> results) {
     // Sort the results by their overall score
     Collections.sort(results, (var lar, var rar) -> Double.compare(rar.score, lar.score));
   }
@@ -143,90 +135,138 @@ public class HeatmapGenerator {
    * 
    * @param xmlPath path to the xml file
    */
-  protected void loadXmlFile(String xmlPath, Map<String, String> algAuthors) {
-    // Initialize the results
-    results = new ArrayList<>();
-    try {
-      // Read the xml file
-      File xmlFile = new File(xmlPath);
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-      DocumentBuilder builder = factory.newDocumentBuilder();
-      Document doc = builder.parse(xmlFile);
+  protected void loadXmlFile(
+      String xmlPath, List<AlgorithmResult> results, Map<String, String> algAuthors
+  ) throws Exception {
+    
+    // Read the xml file
+    File xmlFile = new File(xmlPath);
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(xmlFile);
 
-      // Normalize the xml structure
-      doc.getDocumentElement().normalize();
+    // Normalize the xml structure
+    doc.getDocumentElement().normalize();
 
-      // Element
-      Element root = doc.getDocumentElement();
-      // Get the algorithms elements
-      NodeList algorithmsXml = root.getElementsByTagName("algorithm");
+    // Element
+    Element root = doc.getDocumentElement();
+    // Get the algorithms elements
+    NodeList algorithmsXml = root.getElementsByTagName("algorithm");
 
-      // For all algorithms results
-      for (int i = 0; i < algorithmsXml.getLength(); i++) {
-        // Get the algorithm results
-        Node algorithmNode = algorithmsXml.item(i);
+    // For all algorithms results
+    for (int i = 0; i < algorithmsXml.getLength(); i++) {
+      // Get the algorithm results
+      Node algorithmNode = algorithmsXml.item(i);
 
-        // Get the algorithm details
-        if (algorithmNode.getNodeType() == Node.ELEMENT_NODE) {
-          Element algorithmElement = (Element) algorithmNode;
-          AlgorithmResult result = new AlgorithmResult();
+      // Get the algorithm details
+      if (algorithmNode.getNodeType() == Node.ELEMENT_NODE) {
+        Element algorithmElement = (Element) algorithmNode;
+        AlgorithmResult result = new AlgorithmResult();
 
-          // Add each result into a new class and put it all into array or map
-          result.name = algorithmElement.getAttribute("name");
-          result.score = Double.parseDouble(String.format("%.5f",
-              Double.parseDouble(algorithmElement.getAttribute("score"))));
-          result.author =
-              algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
-          result.color = getColor(result.score);
-          result.redColor = result.color.getRed();
-          result.greenColor = result.color.getGreen();
-          result.blueColor = result.color.getBlue();
+        // Add each result into a new class and put it all into array or map
+        result.name = algorithmElement.getAttribute("name");
+        result.score = Double.parseDouble(String.format("%.5f",
+            Double.parseDouble(algorithmElement.getAttribute("score"))));
+        result.author =
+            algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
+        result.color = getColor(result.score);
+        result.redColor = result.color.getRed();
+        result.greenColor = result.color.getGreen();
+        result.blueColor = result.color.getBlue();
 
-          // Extract the algorithm results of each problem domain
-          NodeList problemsXml = algorithmElement.getElementsByTagName("problem");
+        // Extract the algorithm results of each problem domain
+        NodeList problemsXml = algorithmElement.getElementsByTagName("problem");
 
-          result.problemsResults = new HashMap<>();
+        result.problemsResults = new HashMap<>();
 
-          for (int problemId = 0; problemId < problemsXml.getLength(); problemId++) {
-            Node problemNode = problemsXml.item(problemId);
+        for (int problemId = 0; problemId < problemsXml.getLength(); problemId++) {
+          Node problemNode = problemsXml.item(problemId);
 
-            if (problemNode.getNodeType() == Node.ELEMENT_NODE) {
-              Element problemElement = (Element) problemNode;
+          if (problemNode.getNodeType() == Node.ELEMENT_NODE) {
+            Element problemElement = (Element) problemNode;
 
-              // Create new structure
-              AlgorithmProblemResult newRes = new AlgorithmProblemResult();
+            // Create new structure
+            AlgorithmProblemResult newRes = new AlgorithmProblemResult();
 
-              // Set the problem result parameters
-              newRes.name = problemElement.getAttribute("name");
-              newRes.score = Double.parseDouble(String.format("%.5f",
-                  Double.parseDouble(problemElement.getAttribute("avg"))));
-              newRes.color = getColor(newRes.score);
-              newRes.redColor = newRes.color.getRed();
-              newRes.greenColor = newRes.color.getGreen();
-              newRes.blueColor = newRes.color.getBlue();
-             
-              // Add new problem results to algorithm
-              result.problemsResults.put(newRes.name, newRes);
-            }
+            // Set the problem result parameters
+            newRes.name = problemElement.getAttribute("name");
+            newRes.score = Double.parseDouble(String.format("%.5f",
+                Double.parseDouble(problemElement.getAttribute("avg"))));
+            newRes.color = getColor(newRes.score);
+            newRes.redColor = newRes.color.getRed();
+            newRes.greenColor = newRes.color.getGreen();
+            newRes.blueColor = newRes.color.getBlue();
+            
+            // Add new problem results to algorithm
+            result.problemsResults.put(newRes.name, newRes);
           }
-          results.add(result);
         }
-        storeProblemsNames();
+        results.add(result);
       }
-    } catch (Exception e) {
-      e.printStackTrace();
     }
+  }
+
+  protected List<AlgorithmResult> loadJson(
+      InputStream jsonInputStream, Map<String, String> algAuthors) {
+    // Initialize the results
+    List<AlgorithmResult> results = new ArrayList<>();
+
+    // Read the xml file
+    JSONTokener tokener = new JSONTokener(jsonInputStream);
+    JSONObject object = new JSONObject(tokener);
+
+    // Iterate through results
+    JSONArray resultsJson = object.getJSONArray("results");
+    for (int i = 0; i < resultsJson.length(); i++) {
+      // Get json result data
+      JSONObject resultJson = resultsJson.getJSONObject(i);
+      AlgorithmResult result = new AlgorithmResult();
+
+      // Store the result informations
+      result.name = resultJson.getString("algorithmName");
+      result.score = Double.parseDouble(String.format("%.5f",
+          resultJson.getDouble("totalScore")));
+      result.author =
+          algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
+      result.color = getColor(result.score);
+      result.redColor = result.color.getRed();
+      result.greenColor = result.color.getGreen();
+      result.blueColor = result.color.getBlue();
+
+      // Get the problem results
+      JSONObject problemsJson = resultJson.getJSONObject("scorePerProblem");
+      result.problemsResults = new HashMap<>();
+
+      for (String key : problemsJson.keySet()) {
+        // Create new structure
+        AlgorithmProblemResult newRes = new AlgorithmProblemResult();
+
+        // Set the problem result parameters
+        newRes.name = key;
+        newRes.score = Double.parseDouble(String.format("%.5f",
+            problemsJson.getDouble(key)));
+        newRes.color = getColor(newRes.score);
+        newRes.redColor = newRes.color.getRed();
+        newRes.greenColor = newRes.color.getGreen();
+        newRes.blueColor = newRes.color.getBlue();
+        
+        // Add new problem results to algorithm
+        result.problemsResults.put(newRes.name, newRes);
+      }
+      results.add(result);
+    }
+    
+    return results;
   }
 
   /**
    * Method turns the structures in given lists into a arrays, that can be read by jinja.
    * 
    */
-  protected void resultsToList() {
-    // Inicialize the arrays
-    algsOverRes = new ArrayList<>();
-    algsProbsRes = new ArrayList<>();
-
+  protected void resultsToList(
+      List<AlgorithmResult> results, List<String> problems,
+      List<List<String>> algsOverRes, List<List<List<String>>> algsProbsRes
+  ) {
     for (int i = 0; i < results.size(); i++) {
       // Initialize list for algorithm results
       List<String> algOverRes = new ArrayList<>();
@@ -262,14 +302,18 @@ public class HeatmapGenerator {
   }
 
   /**
-   * Method generates a svg file with given data.
+   * Method generates a svg string with given data.
    * 
    * @param id id of the experiment
    * @throws IOException exception if the page couldn't be created
    */
-  protected void createPage(String id) throws IOException {
+  protected String createSvgString(
+      String experimentId, List<AlgorithmResult> results, List<String> problems
+  ) throws IOException {
     // Get the transformed data
-    resultsToList();
+    List<List<String>> algsOverRes = new ArrayList<>();
+    List<List<List<String>>> algsProbsRes = new ArrayList<>();
+    resultsToList(results, problems, algsOverRes, algsProbsRes);
     // Get the current time
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date(System.currentTimeMillis());
@@ -279,41 +323,34 @@ public class HeatmapGenerator {
     context.put("overallResults", algsOverRes);
     context.put("problemsResults", algsProbsRes);
     context.put("problems", problems);
-    context.put("experimentId", id);
+    context.put("experimentId", experimentId);
     context.put("datetime", formatter.format(date));
 
     // Load the jinja svg template
-    InputStream inputStream = HeatmapGenerator.class.getResourceAsStream(templatePath);
-    String svgFile = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-    // Render the template
-    Jinjava jinjava = new Jinjava();
-    String renderedTemplate = jinjava.render(svgFile, context);
-    // Output the file
-    String resultsSvgFilePath = String.format(resultsSvgFile, id);
-
-    try (FileWriter fileWriter = new FileWriter(resultsSvgFilePath);) {
-      fileWriter.write(renderedTemplate);
-    } catch (IOException e) {
-      e.printStackTrace();
+    try (
+        InputStream svgTemplateStream = HeatmapGenerator
+            .class.getResourceAsStream(svgTemplatePath)
+    ) {
+      String svgTemplate = new String(svgTemplateStream.readAllBytes(), StandardCharsets.UTF_8);
+      // Render the template
+      Jinjava jinjava = new Jinjava();
+      // Output the file
+      return jinjava.render(svgTemplate, context);
     }
   }
 
   /**
-   * Method builds the results page First it loads the data from experiment and then it stores.
-   * them into a svg file
+   * Method generates a svg file with given data.
    * 
-   * @param experimentId id of experiment
+   * @param id id of the experiment
+   * @throws IOException exception if the page couldn't be created
    */
-  protected void buildResultsPage(String experimentId, Map<String, String> algAuthors) {
-    String xmlResultsPath = String.format(resultsXmlFile, experimentId);
-    loadXmlFile(xmlResultsPath, algAuthors);
-    // Sort the results by their overall score
-    sortResults();
-
-    try {
-      createPage(experimentId);
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
+  protected void createSvgFile(
+      String experimentId, List<AlgorithmResult> results, List<String> problems,
+      String svgFileDest
+  ) throws IOException {
+    try (FileWriter fileWriter = new FileWriter(svgFileDest);) {
+      fileWriter.write(createSvgString(experimentId, results, problems));
     }
   }
 
@@ -322,9 +359,19 @@ public class HeatmapGenerator {
    * @param experimentId id of the competition experiment
    * @param algAuthors map of algorithm authors
    */
-  public void createHeatmap(
-      String experimentId, Map<String, String> algAuthors) {
-    buildResultsPage(experimentId, algAuthors);
+  public static String createHeatmap(
+      InputStream jsonInputStream, String experimentId, Map<String, String> algAuthors
+  ) throws IOException {
+    // Create class instance
+    HeatmapGenerator hmg = new HeatmapGenerator();
+    // Load the results
+    List<AlgorithmResult> results = hmg.loadJson(jsonInputStream, algAuthors);
+    // Get the problems
+    List<String> problems = hmg.getProblemsNames(results);
+    // Sort the results
+    hmg.sortResults(results);
+    // Return the SVG string
+    return hmg.createSvgString(experimentId, results, problems);
   }
 }
 
