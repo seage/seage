@@ -311,7 +311,7 @@ public class HeatmapGenerator {
    * @param id id of the experiment
    * @throws IOException exception if the page couldn't be created
    */
-  protected String getSvgString(
+  protected String createSvgString(
       String experimentId, List<AlgorithmResult> results, List<String> problems
   ) throws IOException {
     // Get the transformed data
@@ -350,7 +350,7 @@ public class HeatmapGenerator {
       String svgFileDest
   ) throws IOException {
     try (FileWriter fileWriter = new FileWriter(svgFileDest);) {
-      fileWriter.write(getSvgString(experimentId, results, problems));
+      fileWriter.write(createSvgString(experimentId, results, problems));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -371,7 +371,7 @@ public class HeatmapGenerator {
     // Sort the results
     sortResults(results);
     // Return the SVG string
-    return getSvgString(experimentId, results, problems);
+    return createSvgString(experimentId, results, problems);
   }
 }
 
