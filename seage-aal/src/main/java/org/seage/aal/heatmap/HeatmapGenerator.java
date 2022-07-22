@@ -83,6 +83,8 @@ public class HeatmapGenerator {
     HashMap<String, AlgorithmProblemResult> problemsResults;
   }
 
+  protected HeatmapGenerator() {}
+
   /**
    * Method turns the given position into a specific color based on the location on the gradient.
    * 
