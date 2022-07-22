@@ -1,6 +1,7 @@
 package org.seage.aal.heatmap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.InputStream;
@@ -100,5 +101,18 @@ public class HeatmapGeneratorTest {
     assertEquals(problems.get(1), algsProbsRes.get(0).get(1).get(0));
     assertEquals(problems.get(2), algsProbsRes.get(0).get(2).get(0));
     assertEquals(problems.get(3), algsProbsRes.get(0).get(3).get(0));
+  }
+
+  @Test
+  void testCreateHeatmap() throws Exception {
+    HeatmapGenerator hmg = new HeatmapGenerator();
+
+    try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
+      // Get svg heatmap
+      String heatmapSvg = hmg.createHeatmap(jsonInputStream, "test", authorsNames);
+
+      // Test the result
+      assertNotNull(heatmapSvg);
+    }
   }
 }
