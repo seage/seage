@@ -60,13 +60,13 @@ public class HeatmapGenerator {
   // Gradient color borders
   double[] gradBorders = {0.5, 0.75, 0.98, 1.0};
   // Sorted list of hhs results
-  List<AlgorithmResult> results;
+  // List<AlgorithmResult> results;
   // List of problems
-  List<String> problems;
+  //List<String> problems;
   // Algorithms overall results
-  List<List<String>> algsOverRes;
+  //List<List<String>> algsOverRes;
   // Algorithms problems results
-  List<List<List<String>>> algsProbsRes;
+  //List<List<List<String>>> algsProbsRes;
 
   /**
    * Class represents a structure where are data about problem results stored.
@@ -126,18 +126,19 @@ public class HeatmapGenerator {
   /**
    * Method reads the problems that appears in the results and stores them into a problem array.
    */
-  protected void storeProblemsNames() {
+  protected List<String> getProblemsNames(List<AlgorithmResult> results) {
     // Extract the problems names
-    problems = results.isEmpty() ? new ArrayList<>()
+    List<String> problems = results.isEmpty() ? new ArrayList<>()
         : new ArrayList<>(results.get(0).problemsResults.keySet());
     // Sort the problem names
     Collections.sort(problems);
+    return problems;
   }
 
   /**
    * Method sorts the results list using the hhs overall scores.
    */
-  protected void sortResults() {
+  protected void sortResults(List<AlgorithmResult> results) {
     // Sort the results by their overall score
     Collections.sort(results, (var lar, var rar) -> Double.compare(rar.score, lar.score));
   }
@@ -222,9 +223,10 @@ public class HeatmapGenerator {
     }
   }
 
-  protected void loadJson(InputStream jsonInputStream, Map<String, String> algAuthors) {
+  protected List<AlgorithmResult> loadJson(
+      InputStream jsonInputStream, Map<String, String> algAuthors) {
     // Initialize the results
-    results = new ArrayList<>();
+    List<AlgorithmResult> results = new ArrayList<>();
 
     try {
       // Read the xml file
@@ -251,7 +253,6 @@ public class HeatmapGenerator {
 
         // Get the problem results
         JSONObject problemsJson = resultJson.getJSONObject("scorePerProblem");
-        Iterator<String> keys = problemsJson.keys();
         result.problemsResults = new HashMap<>();
 
         for (String key : problemsJson.keySet()) {
@@ -272,21 +273,20 @@ public class HeatmapGenerator {
         }
         results.add(result);
       }
-      storeProblemsNames();
     } catch (Exception e) {
       e.printStackTrace();
     }
+    return results;
   }
 
   /**
    * Method turns the structures in given lists into a arrays, that can be read by jinja.
    * 
    */
-  protected void resultsToList() {
-    // Inicialize the arrays
-    algsOverRes = new ArrayList<>();
-    algsProbsRes = new ArrayList<>();
-
+  protected void resultsToList(
+      List<AlgorithmResult> results, List<String> problems,
+      List<List<String>> algsOverRes, List<List<List<String>>> algsProbsRes
+  ) {
     for (int i = 0; i < results.size(); i++) {
       // Initialize list for algorithm results
       List<String> algOverRes = new ArrayList<>();
@@ -327,9 +327,13 @@ public class HeatmapGenerator {
    * @param id id of the experiment
    * @throws IOException exception if the page couldn't be created
    */
-  protected void createPage(String id) throws IOException {
+  protected void createSvgFile(
+      String experimentId, List<AlgorithmResult> results, List<String> problems
+  ) throws IOException {
     // Get the transformed data
-    resultsToList();
+    List<List<String>> algsOverRes = new ArrayList<>();
+    List<List<List<String>>> algsProbsRes = new ArrayList<>();
+    resultsToList(results, problems, algsOverRes, algsProbsRes);
     // Get the current time
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date(System.currentTimeMillis());
@@ -339,7 +343,7 @@ public class HeatmapGenerator {
     context.put("overallResults", algsOverRes);
     context.put("problemsResults", algsProbsRes);
     context.put("problems", problems);
-    context.put("experimentId", id);
+    context.put("experimentId", experimentId);
     context.put("datetime", formatter.format(date));
 
     // Load the jinja svg template
@@ -368,7 +372,7 @@ public class HeatmapGenerator {
     String xmlResultsPath = String.format(resultsXmlFile, experimentId);
     loadXmlFile(xmlResultsPath, algAuthors);
     // Sort the results by their overall score
-    sortResults();
+    //sortResults();
 
     try {
       createPage(experimentId);
@@ -382,9 +386,16 @@ public class HeatmapGenerator {
    * @param experimentId id of the competition experiment
    * @param algAuthors map of algorithm authors
    */
-  public void createHeatmap(
-      String experimentId, Map<String, String> algAuthors) {
-    buildResultsPage(experimentId, algAuthors);
+  public String createHeatmap(
+      InputStream jsonInputStream, String experimentId, Map<String, String> algAuthors) {
+    // Load the results
+    List<AlgorithmResult> results = loadJson(jsonInputStream, algAuthors);
+    // Get the problems
+    List<String> problems = getProblemsNames(results);
+    // Sort the results
+    sortResults(results);
+    // Return the SVG string
+    return ;
   }
 }
 
