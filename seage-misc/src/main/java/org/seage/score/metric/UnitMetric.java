@@ -1,8 +1,13 @@
-package org.seage.aal.problem.metrics;
+package org.seage.score.metric;
 
 public class UnitMetric {
   private static double INTERVAL_MIN = 0.0;
   private static double INTERVAL_MAX = 1.0;
+
+  /**
+   * Private constructor to hide default one.
+   */
+  private UnitMetric() {}
 
   /**
    * Method returns the metric based on given data.

@@ -1,7 +1,9 @@
 package org.seage.aal.problem;
 
+import java.util.ArrayList;
 import java.util.List;
-import org.seage.aal.problem.metrics.UnitMetric;
+
+import org.seage.score.ScoreCalculator;
 
 public class ProblemScoreCalculator {
 
@@ -21,7 +23,7 @@ public class ProblemScoreCalculator {
     try {
       double optimum = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("optimum");
       double greedy = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("greedy");
-      return UnitMetric.getMetricValue(optimum, greedy, objValue);
+      return ScoreCalculator.calculateInstanceScore(optimum, greedy, objValue);
     } catch (NumberFormatException ex) {
       return 0;
     }
@@ -43,26 +45,19 @@ public class ProblemScoreCalculator {
       throw new Exception("InstanceIDs size is 0.");
     }
 
-    double numerator = 0.0;
-    double denominator = 0.0;
+    List<Double> instanceSizes = new ArrayList<>();
+
     for (int i = 0; i < instanceIDs.length; i++) {
       // Weight
       double instanceSize = problemInfo
           .getProblemInstanceInfo(instanceIDs[i]).getValueDouble("size");
-
+      instanceSizes.add(instanceSize);
       if (instanceSize == 0) {
         throw new Exception("InstanceSize is 0");
       }
-      
-      numerator += instanceSize * instanceScores[i];
-      denominator += instanceSize;
     }
 
-    if (denominator != 0) {
-      return numerator / denominator;
-    }
-
-    throw new Exception("Dividing by zero."); 
+    return ScoreCalculator.calculateProblemScore(instanceSizes, instanceScores);
   }
 
   /**
@@ -71,7 +66,7 @@ public class ProblemScoreCalculator {
    * @return Mean.
    */
   public static double calculateExperimentScore(List<Double> problemsScores) {
-    return problemsScores.stream().reduce(0.0, Double::sum) / problemsScores.size();
+    return ScoreCalculator.calculateExperimentScore(problemsScores);
   }
 
   /**
@@ -81,6 +76,6 @@ public class ProblemScoreCalculator {
    * @return Delta score.
    */
   public double calculateScoreDelta(double initScore, double bestScore) {
-    return Math.abs(bestScore - initScore);
+    return ScoreCalculator.calculateScoreDelta(initScore, bestScore);
   }
 }
