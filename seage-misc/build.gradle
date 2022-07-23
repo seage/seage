@@ -1,5 +1,6 @@
 plugins {
   id 'java-library'
+  id 'maven-publish'
 }
 
 dependencies {
@@ -12,4 +13,13 @@ dependencies {
   implementation 'net.mahdilamb:colormap:0.9.61'
   // Json library
   implementation group: 'org.json', name: 'json', version: '20220320'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'org.seage'
+            from(components.java)
+        }
+    }
 }
