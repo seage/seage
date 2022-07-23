@@ -4,7 +4,7 @@
  * @author David Omrai
  */
 
-package org.seage.aal.heatmap;
+package org.seage.score.heatmap;
 
 import com.hubspot.jinjava.Jinjava;
 
