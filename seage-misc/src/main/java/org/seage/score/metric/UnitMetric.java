@@ -1,4 +1,10 @@
+/**
+ * Class represents the Unit metric
+ * 
+ * @author David Omrai
+ */
 package org.seage.score.metric;
+
 
 public class UnitMetric {
   private static double INTERVAL_MIN = 0.0;

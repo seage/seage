@@ -1,3 +1,10 @@
+/**
+ * Class represents the unit metric calculator
+ * for each part of the experiment
+ * 
+ * @author David Omrai
+ */
+
 package org.seage.score;
 
 import java.util.List;
@@ -52,5 +59,15 @@ public class ScoreCalculator {
   public static double calculateExperimentScore(
       List<Double> problemsScores) {
     return problemsScores.stream().reduce(0.0, Double::sum) / problemsScores.size();
+  }
+
+  /**
+   * Method calculates score delta.
+   * @param initScore Array of problem scores.
+   * @param bestScore Array of problem scores.
+   * @return Delta score.
+   */
+  public static double calculateScoreDelta(double initScore, double bestScore) {
+    return Math.abs(bestScore - initScore);
   }
 }
