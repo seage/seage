@@ -55,18 +55,18 @@ subprojects {
     signing {
         sign configurations.archives
     }
-    // task javadocJar(type: Jar) {
-    //     classifier = 'javadoc'
-    //     from javadoc
-    // }
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from javadoc
+    }
 
     task sourcesJar(type: Jar) {
         classifier = 'sources'
         from sourceSets.main.allSource
     }
     artifacts {
-        // archives javadocJar, sourcesJar
-        archives sourcesJar
+        archives javadocJar, sourcesJar
+        // archives sourcesJar
     }
 
     tasks.withType(Javadoc) {
