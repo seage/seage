@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -35,7 +35,6 @@ package org.seage.metaheuristic.tabusearch;
  * been completed.
  *
  * @author Robert Harder
- * @copyright 2000 Robert Harder
  * @version 1.0c
  * @since 1.0
  */
@@ -110,7 +109,7 @@ public class TabuSearch extends TabuSearchBase {
   /* ******** C O N S T R U C T O R S ******** */
 
   /**
-   * Constructs a <tt>SingleThreadedTabuSearch</tt> with no tabu objects set.
+   * Constructs a <code>SingleThreadedTabuSearch</code> with no tabu objects set.
    *
    * @since 1.0
    */
@@ -139,15 +138,15 @@ public class TabuSearch extends TabuSearchBase {
   }
 
   /**
-   * Constructs a <tt>SingleThreadedTabuSearch</tt> with all tabu objects set. The
+   * Constructs a <code>SingleThreadedTabuSearch</code> with all tabu objects set. The
    * initial solution is evaluated with the objective function, becomes the
-   * <tt>currentSolution</tt> and a copy becomes the <tt>bestSolution</tt>.
+   * <code>currentSolution</code> and a copy becomes the <code>bestSolution</code>.
    *
-   * @param initialSolution    The initial <tt>currentSolution</tt>
+   * @param initialSolution    The initial <code>currentSolution</code>
    * @param moveManager        The move manager
    * @param objectiveFunction  The objective function
    * @param tabuList           The tabu list
-   * @param aspirationCriteria The aspiration criteria or <tt>null</tt> if none is
+   * @param aspirationCriteria The aspiration criteria or <code>null</code> if none is
    *                           to be used
    * @param maximizing         Whether or not the tabu search should be maximizing
    *                           the objective function
@@ -308,12 +307,9 @@ public class TabuSearch extends TabuSearchBase {
 
   /**
    * Gets the best move--one that should be used for this iteration. By setting
-   * <var>chooseFirstImprovingMove</var> to <tt>true</tt> you tell the tabu search to return the
+   * <var>chooseFirstImprovingMove</var> to <code>true</code> you tell the tabu search to return the
    * first move it encounters that is improving and non-tabu rather than search through all of the
    * moves.
-   * <p/>
-   * It's not static so that when the MultiThreadedTabuSearch invokes the performOneIteration method
-   * the proper method is invoked. Java's weird about overriding static methods...
    *
    * @since 1.0
    */
@@ -326,8 +322,7 @@ public class TabuSearch extends TabuSearchBase {
   } // end getBestMove
 
   /**
-   * The static method that actually does the work. It's static so that the NeighborhoodHelper in
-   * the MultiThreadedTabuSearch can use the same code.
+   * The static method that actually does the work.
    *
    * @since 1.0
    */
@@ -437,10 +432,10 @@ public class TabuSearch extends TabuSearchBase {
    * errors associated with all floating point numbers do not affect the likely intent of the
    * numbers.
    *
-   * @param first      The first array of <tt>double</tt>s
-   * @param second     The second array of <tt>double</tt>s
+   * @param first      The first array of <code>double</code>s
+   * @param second     The second array of <code>double</code>s
    * @param maximizing Whether or not the tabu search should be maximizing
-   * @return <tt>true</tt> if the first array of numbers is better than the second
+   * @return <code>true</code> if the first array of numbers is better than the second
    * @since 1.0
    * @version 1.0a
    */
@@ -678,7 +673,7 @@ public class TabuSearch extends TabuSearchBase {
 
   /**
    * Starts the tabu search solving in the current thread, blocking until the
-   * <tt>iterationsToGo</tt> property is zero.
+   * <code>iterationsToGo</code> property is zero.
    *
    * @since 1.0c
    */
@@ -804,7 +799,7 @@ public class TabuSearch extends TabuSearchBase {
 
   /**
    * Sets the aspiration criteria, effective at the start of the next iteration. A
-   * <tt>null</tt> value means there is no aspiration criteria.
+   * <code>null</code> value means there is no aspiration criteria.
    *
    * @param aspirationCriteria The new aspiration criteria
    * @see AspirationCriteria
@@ -843,7 +838,7 @@ public class TabuSearch extends TabuSearchBase {
 
   /**
    * Sets the number of iterations that the tabu search has left to go. If the
-   * tabu search was previously idle, that is <tt>iterationsToGo</tt> was less
+   * tabu search was previously idle, that is <code>iterationsToGo</code> was less
    * than or equal to zero, the tabu search will not automatically begin again. In
    * this case the tabu search will not begin again until {@link #startSolving} is
    * called.
@@ -861,8 +856,8 @@ public class TabuSearch extends TabuSearchBase {
 
   /**
    * Sets whether the tabu search should be maximizing or minimizing the objective
-   * function. A value of <tt>true</tt> means <em>maximize</em>. A value of
-   * <tt>false</tt> means <em>minimize</em>.
+   * function. A value of <code>true</code> means <em>maximize</em>. A value of
+   * <code>false</code> means <em>minimize</em>.
    *
    * @param maximizing Whether or not the tabu search should be maximizing the
    *                   objective function.
@@ -874,12 +869,12 @@ public class TabuSearch extends TabuSearchBase {
   } // end setMaximizing
 
   /**
-   * Setting this to <tt>true</tt> will cause the search to go faster by not
+   * Setting this to <code>true</code> will cause the search to go faster by not
    * necessarily evaluating all of the moves in a neighborhood for each iteration.
    * Instead of evaluating all of the moves and selecting the best one for
    * execution, setting this will cause the tabu search engine to select the first
    * move that it encounters that causes an improvement to the current solution.
-   * The default value is <tt>false</tt>.
+   * The default value is <code>false</code>.
    *
    * @param choose Whether or not the first improving move will be chosen
    * @since 1.0.1
@@ -930,7 +925,7 @@ public class TabuSearch extends TabuSearchBase {
   } // end getTabuList
 
   /**
-   * Returns the aspiration criteria. A <tt>null</tt> value means there is no
+   * Returns the aspiration criteria. A <code>null</code> value means there is no
    * aspiration criteria.
    *
    * @return The aspiration criteria
@@ -992,8 +987,8 @@ public class TabuSearch extends TabuSearchBase {
 
   /**
    * Returns whether or not the tabu search engine will choose the first improving
-   * move it encounters at each iteration (<tt>true</tt>) or the best move
-   * (<tt>false</tt>).
+   * move it encounters at each iteration (<code>true</code>) or the best move
+   * (<code>false</code>).
    *
    * @since 1.0.1
    */

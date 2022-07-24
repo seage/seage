@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -35,7 +35,7 @@ package org.seage.metaheuristic.tabusearch;
  * {@link ComplexMove} rather than just {@link Move}</strong>.
  * </p>
  * <p>
- * A double <tt>int</tt> array (<tt>int[][]</tt>) is used to store the
+ * A double <code>int</code> array (<code>int[][]</code>) is used to store the
  * attributes values, and a double <code>for</code> loop checks for a move's
  * presence when {@link #isTabu isTabu(...)} is called.
  * </p>
@@ -126,10 +126,10 @@ public class ComplexTabuList implements TabuList {
    * its <code>attributes()</code> method.
    *
    * @param move     A move
-   * @param solution The solution before the move operation - ignored.
+   * @param fromSolution The solution before the move operation - ignored.
    * @return whether or not the tabu list permits the move.
-   * @throw IllegalArgumentException if move is not of type {@link ComplexMove}
-   * @throw IllegalArgumentException if move's <tt>attributes()</tt> method
+   * @throws IllegalArgumentException if move is not of type {@link ComplexMove}
+   * @throws IllegalArgumentException if move's <code>attributes()</code> method
    *        returns the wrong number of elements in the array.
    * @see Move
    * @see ComplexMove
@@ -164,17 +164,17 @@ public class ComplexTabuList implements TabuList {
   /**
    * This method accepts a {@link ComplexMove} and {@link Solution} as arguments
    * and updates the tabu list as necessary.
-   * <P>
+   * <p>
    * Although the tabu list may not use both of the passed arguments, both must be
    * included in the definition.
-   *
+   * </p>
    * Records a {@link ComplexMove} on the tabu list by calling the move's
    * <code>attributes()</code> method.
    *
    * @param move     The {@link ComplexMove} to register
-   * @param solution The {@link Solution} before the move operation - ignored.
-   * @throw IllegalArgumentException if move is not of type {@link ComplexMove}
-   * @throw IllegalArgumentException if move's <tt>attributes()</tt> method
+   * @param fromSolution The {@link Solution} before the move operation - ignored.
+   * @throws IllegalArgumentException if move is not of type {@link ComplexMove}
+   * @throws IllegalArgumentException if move's <code>attributes()</code> method
    *        returns the wrong number of elements in the array.
    * @see Move
    * @see ComplexMove

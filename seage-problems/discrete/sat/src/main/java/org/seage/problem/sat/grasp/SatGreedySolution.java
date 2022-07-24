@@ -13,7 +13,7 @@
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with
- * SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -41,7 +41,7 @@ public class SatGreedySolution extends SatSolution {
   /**
    * Constructor the solution with using the greedy algorithm for initial solution
    * 
-   * @param cities - List of cities with their coordinates
+   * @param formula - List of clauses representing the formula
    */
   public SatGreedySolution(Formula formula) throws Exception {
     super();

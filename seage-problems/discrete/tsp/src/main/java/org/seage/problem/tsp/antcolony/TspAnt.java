@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -55,12 +55,11 @@ public class TspAnt extends Ant {
   }
 
   /**
-   * Edge length calculating
+   * Edge length calculating.
    * 
-   * @param start  - Starting node
-   * @param end    - Terminate node
-   * @param cities - Readed cities
-   * @return - Euclide edge length
+   * @param nodePath  Path for the ant
+   * @param end   Terminate node
+   * @return Euclidean edge length
    */
   @Override
   public double getNodeDistance(List<Node> nodePath, Node end) {

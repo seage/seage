@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -23,6 +23,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
+
 package org.seage.metaheuristic.sannealing;
 
 /**
@@ -32,9 +33,10 @@ package org.seage.metaheuristic.sannealing;
 public interface IMoveManager {
 
   /**
-   * Returns modified clone of solution in parameter
+   * Returns modified clone of solution in parameter.
    * 
-   * @param Solution solution
+   * @param solution Solution to be modified.
+   * @param currentTemperature Temperature to start with.
    * @throws Exception
    */
   Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception;

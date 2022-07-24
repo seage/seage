@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -31,8 +31,7 @@ package org.seage.metaheuristic.fireflies;
 /**
  * This abstract class implements {@link FireflySearch} and defines the
  * event-handling methods including the add/remove methods and package-level
- * fireXxx methods. It is the base class for the
- * {@link MultiThreadedFireflySearch} and {@link SingleThreadedFireflySearch}.
+ * fireXxx methods.
  *
  *
  * @author Robert Harder
@@ -103,7 +102,7 @@ public abstract class FireflySearchBase<S extends Solution> implements IFireflyS
   /* ******** A D D M E T H O D S ******** */
 
   /**
-   * Registers <tt>listener</tt> to receive firefly events when a new best
+   * Registers <code>listener</code> to receive firefly events when a new best
    * solution is found.
    * 
    * @param listener The {@link FireflySearchListener} to register.
@@ -124,7 +123,7 @@ public abstract class FireflySearchBase<S extends Solution> implements IFireflyS
   /* ******** R E M O V E M E T H O D S ******** */
 
   /**
-   * Removes <tt>listener</tt> from list of objects to notify when a new best
+   * Removes <code>listener</code> from list of objects to notify when a new best
    * solution is found.
    * 
    * @param listener {@link FireflySearchListener} to remove from notification
@@ -160,7 +159,7 @@ public abstract class FireflySearchBase<S extends Solution> implements IFireflyS
   /**
    * This quick method is called when a new best solution is found. The
    * {@link FireflySearchEvent} sent to the listeners is a "lightweight" event,
-   * specifying only the source object, <tt>this</tt>.
+   * specifying only the source object, <code>this</code>.
    *
    * @see FireflySearchEvent
    * @since 1.0
@@ -174,7 +173,7 @@ public abstract class FireflySearchBase<S extends Solution> implements IFireflyS
   /**
    * This quick method is called when a new current solution is found. The
    * {@link FireflySearchEvent} sent to the listeners is a "lightweight" event,
-   * specifying only the source object, <tt>this</tt>.
+   * specifying only the source object, <code>this</code>.
    *
    * @see FireflySearchEvent
    * @since 1.0
@@ -188,7 +187,7 @@ public abstract class FireflySearchBase<S extends Solution> implements IFireflyS
   /**
    * This quick method is called when an unimproving move is made. The
    * {@link FireflySearchEvent} sent to the listeners is a "lightweight" event,
-   * specifying only the source object, <tt>this</tt>.
+   * specifying only the source object, <code>this</code>.
    *
    * @see FireflySearchEvent
    * @since 1.0
@@ -202,7 +201,7 @@ public abstract class FireflySearchBase<S extends Solution> implements IFireflyS
   /**
    * This quick method is called when an improving move is made. The
    * {@link FireflySearchEvent} sent to the listeners is a "lightweight" event,
-   * specifying only the source object, <tt>this</tt>.
+   * specifying only the source object, <code>this</code>.
    *
    * @see FireflySearchEvent
    * @since 1.0-exp7
@@ -216,7 +215,7 @@ public abstract class FireflySearchBase<S extends Solution> implements IFireflyS
   /**
    * This quick method is called when a no change in value move is made. The
    * {@link FireflySearchEvent} sent to the listeners is a "lightweight" event,
-   * specifying only the source object, <tt>this</tt>.
+   * specifying only the source object, <code>this</code>.
    *
    * @see FireflySearchEvent
    * @since 1.0-exp7
@@ -230,7 +229,7 @@ public abstract class FireflySearchBase<S extends Solution> implements IFireflyS
   /**
    * This quick method is called when the fireflySearch finishes. The
    * {@link FireflySearchEvent} sent to the listeners is a "lightweight" event,
-   * specifying only the source object, <tt>this</tt>.
+   * specifying only the source object, <code>this</code>.
    *
    * @see FireflySearchEvent
    * @since 1.0
@@ -246,7 +245,7 @@ public abstract class FireflySearchBase<S extends Solution> implements IFireflyS
   /**
    * This quick method is called when the fireflySearch starts. The
    * {@link FireflySearchEvent} sent to the listeners is a "lightweight" event,
-   * specifying only the source object, <tt>this</tt>.
+   * specifying only the source object, <code>this</code>.
    *
    * @see FireflySearchEvent
    * @since 1.0

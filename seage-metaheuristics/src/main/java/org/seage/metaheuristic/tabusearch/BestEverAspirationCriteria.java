@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -27,6 +27,7 @@
  *     Richard Malek
  *     - Merge with SEAGE
  */
+
 package org.seage.metaheuristic.tabusearch;
 
 /**
@@ -45,9 +46,7 @@ package org.seage.metaheuristic.tabusearch;
  * @author Robert Harder
  */
 public class BestEverAspirationCriteria implements AspirationCriteria {
-  /**
-   * 
-   */
+
   private static final long serialVersionUID = 8050033847751573251L;
 
   /**
@@ -57,10 +56,10 @@ public class BestEverAspirationCriteria implements AspirationCriteria {
    * Thanks to Victor Wiley from the University of Texas at Austin for writing the
    * first draft of this class.
    *
-   * @param soln       The solution to be modified
-   * @param move       The proposed move
-   * @param value      The resulting objective function value
-   * @param tabuSearch The {@link TabuSearch} controlling the transaction
+   * @param solution          The solution to be modified
+   * @param proposedMove      The proposed move
+   * @param proposedValue     The resulting objective function value
+   * @param tabuSearch        The {@link TabuSearch} controlling the transaction
    * @see AspirationCriteria
    * @see Solution
    * @see Move
@@ -70,12 +69,13 @@ public class BestEverAspirationCriteria implements AspirationCriteria {
    * @author Robert Harder
    */
   @Override
-  public boolean overrideTabu(final Solution solution, final Move proposedMove, final double[] proposedValue,
-      final ITabuSearch tabuSearch) {
+  public boolean overrideTabu(
+      final Solution solution, final Move proposedMove, 
+      final double[] proposedValue, final ITabuSearch tabuSearch) {
     return
-    // comparator.compare(solution, tabuSearch.getBestSolution()) == 1 ? true :
-    // false;
-    TabuSearch.isFirstBetterThanSecond(proposedValue, tabuSearch.getBestSolution().getObjectiveValue(),
+
+    TabuSearch.isFirstBetterThanSecond(
+        proposedValue, tabuSearch.getBestSolution().getObjectiveValue(),
         tabuSearch.isMaximizing()) ? true : false;
   } // end overrideTabu
 

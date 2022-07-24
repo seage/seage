@@ -24,7 +24,7 @@
                     <xsl:for-each select="batch">
                         <xsl:sort select="@date"/>
                         <table border="1" style="border-collapse: collapse;" width="1000" onclick="document.getElementById('{@id}').style.display='block'">
-                            <tr><td>date</td><td><xsl:value-of select="@date"/></td><td colspan="3"><tt><xsl:value-of select="@id"/></tt></td></tr>
+                            <tr><td>date</td><td><xsl:value-of select="@date"/></td><td colspan="3"><code><xsl:value-of select="@id"/></code></td></tr>
                             <tr><td>instance</td><td>size</td><td>min</td><td>avg</td><td>max</td></tr>
                             <xsl:for-each select="run">
                                 <xsl:sort select="@size" data-type="number"/>
