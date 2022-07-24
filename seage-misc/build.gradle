@@ -1,8 +1,25 @@
 plugins {
   id 'java-library'
+  // id 'maven-publish'
 }
 
 dependencies {
   implementation 'com.google.guava:guava:30.1-jre'
   implementation 'com.google.code.gson:gson:2.8.6'
+
+  // This dependency is used by heatmap
+  implementation group: 'com.hubspot.jinjava', name: 'jinjava', version: '2.6.0'
+  // Color map
+  implementation 'net.mahdilamb:colormap:0.9.61'
+  // Json library
+  implementation group: 'org.json', name: 'json', version: '20220320'
 }
+
+// publishing {
+//     publications {
+//         maven(MavenPublication) {
+//             groupId 'org.seage'
+//             from(components.java)
+//         }
+//     }
+// }

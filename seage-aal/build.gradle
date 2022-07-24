@@ -2,8 +2,6 @@ plugins {
     // Apply the java-library plugin to add support for building a CLI application in Java.
     id 'java-library'
     id "java-test-fixtures"
-    id "signing"
-    id "maven-publish"
 }
 
 dependencies {
@@ -24,55 +22,3 @@ dependencies {
     implementation project(':seage-misc')
     testFixturesImplementation project(':seage-misc')
 }
-
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives javadocJar, sourcesJar
-}
-
-signing {
-    sign configurations.archives
-}
-
-publishing {
-    // publications {
-    //     maven(MavenPublication) {
-    //         groupId = 'org.seage'
-    //         artifactId = 'aal'
-    //         version = "1.0-SNAPSHOT"
-    //         from components.java
-
-    //         pom {
-    //             name = 'SEAGE AAL'
-    //             description = 'SEAGE AAL (Algorithm Abstraction Layer)'
-    //         }
-    //     }
-    // }
-    publications {
-        maven(MavenPublication) {
-            groupId 'org.seage'
-            from(components.java)
-        }
-    }
-    repositories {
-        maven {
-            credentials {
-                username = "$usr"
-                password = "$pwd"
-            }
-
-            url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-            // url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-        }
-    }
-}
-

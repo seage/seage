@@ -9,15 +9,17 @@ plugins {
   id 'org.sonarqube' version '3.3'
   id 'checkstyle'
   id 'com.github.spotbugs' version '4.7.0'
+  id 'maven-publish'
 }
 
 allprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
+    apply plugin: 'signing'
 
     sourceCompatibility = 17
     targetCompatibility = 17
-    
+
     repositories {
         jcenter()
     }
@@ -50,6 +52,26 @@ subprojects {
         ignoreFailures = true
         showViolations = true
     }
+    signing {
+        sign configurations.archives
+    }
+    // task javadocJar(type: Jar) {
+    //     classifier = 'javadoc'
+    //     from javadoc
+    // }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+    artifacts {
+        // archives javadocJar, sourcesJar
+        archives sourcesJar
+    }
+
+    tasks.withType(Javadoc) {
+        //options.addStringOption('Xdoclint:none', '-quiet')
+    }
 }
 
 task testReport(type: TestReport) {
@@ -63,8 +85,7 @@ task codeCoverageReport(type: JacocoReport) {
     // Gather execution data from all subprojects
     // (change this if you e.g. want to calculate unit test/integration test coverage separately)
     executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-
-    // Add all relevant sourcesets from the subprojects 
+    // Add all relevant sourcesets from the subprojects
     subprojects.each {
        sourceSets it.sourceSets.main
     }
@@ -87,7 +108,7 @@ codeCoverageReport.dependsOn {
 
 sonarqube {
     properties {
-        property "sonar.sourceEncoding", "UTF-8"
+        property 'sonar.sourceEncoding', 'UTF-8'
         property "sonar.coverage.jacoco.xmlReportPaths", "${rootDir}/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
 
     }
@@ -108,6 +129,39 @@ spotbugs {
     // baselineFile = file("baseline.xml")
     // onlyAnalyze = [ 'com.foobar.MyClass', 'com.foobar.mypkg.*' ]
     maxHeapSize = '1g'
-    // extraArgs = [ '-nested:false' ]
-    // jvmArgs = [ '-Duser.language=ja' ]
+// extraArgs = [ '-nested:false' ]
+// jvmArgs = [ '-Duser.language=ja' ]
+}
+
+publishing {
+    // publications {
+    //     maven(MavenPublication) {
+    //         groupId = 'org.seage'
+    //         artifactId = 'aal'
+    //         version = "1.0-SNAPSHOT"
+    //         from components.java
+
+    //         pom {
+    //             name = 'SEAGE AAL'
+    //             description = 'SEAGE AAL (Algorithm Abstraction Layer)'
+    //         }
+    //     }
+    // }
+    publications {
+        maven(MavenPublication) {
+            groupId 'org.seage'
+            from(components.java)
+        }
+    }
+    repositories {
+        maven {
+            // credentials {
+            //     username = "$usr"
+            //     password = "$pwd"
+            // }
+
+            url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+        // url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+        }
+    }
 }
