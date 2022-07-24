@@ -64,12 +64,11 @@ subprojects {
         repositories {
             maven {
                 credentials {
-                    username = "$usr"
-                    password = "$pwd"
+                    username = project.findProperty('username') ?: ''
+                    password = project.findProperty('password') ?: ''
                 }
 
                 url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-                // url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
             }
         }
     }
