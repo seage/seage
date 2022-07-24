@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -23,6 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.metaheuristic.grasp;
 
 /**
@@ -32,31 +33,28 @@ package org.seage.metaheuristic.grasp;
 public interface IHillClimber {
 
   /**
-   * Defining the shape of the methods for setting the number of iterations
+   * Defining the shape of the methods for setting the number of iterations.
    * 
    * @param count - Number of iterations
    */
   void setIterationCount(int count);
 
   /**
-   * Defining the shape of the methods for starting the algorithm
+   * Defining the shape of the methods for starting the algorithm.
    * 
    * @param solution - Initial solution
-   * @param calsic   - Determine the version of the algorithm
    */
   void startSearching(Solution solution) throws Exception;
 
   /**
-   * Method for running the restarted search
+   * Method for running the restarted search.
    * 
-   * @param classic     - Parameter that determines whether the solution can
-   *                    deteriorate
    * @param numRestarts - Number of restarts algorithm
    */
   void startRestartedSearching(int numRestarts) throws Exception;
 
   /**
-   * Defining the shape functions for getting the best solution
+   * Defining the shape functions for getting the best solution.
    * 
    * @return - The best solution
    */

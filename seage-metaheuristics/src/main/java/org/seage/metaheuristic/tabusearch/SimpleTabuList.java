@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -115,7 +115,7 @@ public class SimpleTabuList implements TabuList {
    * appropriately for your problem</strong>.
    *
    * @param move     A move
-   * @param solution The solution before the move operation - ignored.
+   * @param fromSolution The solution before the move operation - ignored.
    * @return whether or not the tabu list permits the move.
    * @see Move
    * @see Solution
@@ -136,17 +136,17 @@ public class SimpleTabuList implements TabuList {
   /**
    * This method accepts a {@link Move} and {@link Solution} as arguments and
    * updates the tabu list as necessary.
-   * <P>
+   * <p>
    * Although the tabu list may not use both of the passed arguments, both must be
    * included in the definition.
-   *
+   * </p>
    * Records a {@link Move} on the tabu list by calling the move's
    * <code>hashCode()</code> method. <strong>It's imperative that you override the
    * <code>hashCode()</code> method with one that identifies the move
    * appropriately for your problem</strong>.
    *
    * @param move     The {@link Move} to register
-   * @param solution The {@link Solution} before the move operation - ignored.
+   * @param fromSolution The {@link Solution} before the move operation - ignored.
    * @see Move
    * @see Solution
    * @since 1.0-exp3

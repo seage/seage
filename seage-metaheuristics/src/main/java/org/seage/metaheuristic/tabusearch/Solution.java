@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -62,7 +62,7 @@ public interface Solution extends Cloneable {
 
   /**
    * Generally used by the {@link TabuSearch} to set the value of the objective
-   * function and set <tt>objectiveValid</tt> to <tt>true</tt>.
+   * function and set <code>objectiveValid</code> to <code>true</code>.
    * 
    * @param objValue The objective function value
    * @since 1.0
@@ -72,7 +72,7 @@ public interface Solution extends Cloneable {
   /**
    * An essential Java method that returns of copy of the object. This should do
    * whatever is necessary to ensure that the returned {@link Solution} is
-   * identical to <tt>this</tt.
+   * identical to <code>this</code>.
    * Be careful of only copying references to arrays and other objects
    * when a full copy is what may be needed.
    * <P>
@@ -83,7 +83,7 @@ public interface Solution extends Cloneable {
    * http://developer.java.sun.com/developer/JDCTechTips/2001/tt0306.html</a>.
    * </P>
    * 
-   * &#64;return A copy of <tt>this</tt>.
+   * &#64;return A copy of <code>this</code>.
    * 
    * @see java.lang.Cloneable
    * @since 1.0

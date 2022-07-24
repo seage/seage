@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * The <tt>FireFly</tt> is the main source of control for the programmer. The
+ * The <code>FireFly</code> is the main source of control for the programmer. The
  * extended and instantiated firefly objects are passed to the firefly search,
  * and the firefly search fires off relevant events to interested listeners.
  * These events make it easy to extend the firefly search to include popular
@@ -42,7 +42,7 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
   /* ******** C O N T R O L M E T H O D S ******** */
 
   /**
-   * Starts the firefly search if <tt>iterationsToGo</tt> is greater than zero.
+   * Starts the firefly search if <code>iterationsToGo</code> is greater than zero.
    *
    * @see #setIterationsToGo
    * @see #getIterationsToGo
@@ -52,10 +52,10 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
 
   /**
    * Stops the firefly search after the current iteration finishes but leaves
-   * <tt>iterationsToGo</tt> untouched.
+   * <code>iterationsToGo</code> untouched.
    *
    * <p>
-   * Implementations of <tt>FireflySearch</tt> should block on this method until
+   * Implementations of <code>FireflySearch</code> should block on this method until
    * the iteration is done.
    * </p>
    *
@@ -66,7 +66,7 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
   public abstract void stopSolving();
 
   /**
-   * Returns <tt>true</tt> if the firefly search is currently solving.
+   * Returns <code>true</code> if the firefly search is currently solving.
    *
    * @return Whether or not the firefly search is currently solving.
    * @since 1.0
@@ -79,7 +79,7 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
    * Register a {@link FireflySearchListener} with the firefly search.
    *
    * <p>
-   * <em>Implementations of <tt>FireflySearch</tt> should synchronize this
+   * <em>Implementations of <code>FireflySearch</code> should synchronize this
    * method.</em>
    * </p>
    *
@@ -93,7 +93,7 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
    * Unregister a {@link FireflySearchListener} with the firefly search.
    *
    * <p>
-   * <em>Implementations of <tt>FireflySearch</tt> should synchronize this
+   * <em>Implementations of <code>FireflySearch</code> should synchronize this
    * method.</em>
    * </p>
    *
@@ -110,7 +110,7 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
    * re-evaluates the best and current solutions.
    *
    * <p>
-   * <em>Implementations of <tt>FireflySearch</tt> should synchronize this
+   * <em>Implementations of <code>FireflySearch</code> should synchronize this
    * method.</em>
    * </p>
    *
@@ -125,7 +125,7 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
    * evaluates the solution with the current objective function.
    *
    * <p>
-   * <em>Implementations of <tt>FireflySearch</tt> should synchronize this
+   * <em>Implementations of <code>FireflySearch</code> should synchronize this
    * method.</em>
    * </p>
    *
@@ -138,12 +138,12 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
   /**
    * Sets the iterations remaining to be solved. The number of iterations to go is
    * decremented at the beginning of each iteration. If a listener, which is
-   * notified at the end of an iteration, increases <tt>iterationsToGo</tt> from
+   * notified at the end of an iteration, increases <code>iterationsToGo</code> from
    * zero to a positive number, the firefly search will continue solving as if it
    * never was about to stop.
    *
    * <p>
-   * <em>Implementations of <tt>FireflySearch</tt> should synchronize this
+   * <em>Implementations of <code>FireflySearch</code> should synchronize this
    * method.</em>
    * </p>
    *
@@ -154,16 +154,16 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
 
   /**
    * Sets whether or not the firefly search should be maximizing the objective
-   * function. A value of <tt>true</tt> means <em>maximize</em> while a value of
-   * <tt>false</tt> means <em>minimize</em>.
+   * function. A value of <code>true</code> means <em>maximize</em> while a value of
+   * <code>false</code> means <em>minimize</em>.
    *
    * <p>
-   * <em>Implementations of <tt>FireflySearch</tt> should synchronize this
+   * <em>Implementations of <code>FireflySearch</code> should synchronize this
    * method.</em>
    * </p>
    *
-   * @param maximizing <tt>true</tt> if the firefly search should be maximizing,
-   *                   <tt>false</tt> otherwise.
+   * @param maximizing <code>true</code> if the firefly search should be maximizing,
+   *                   <code>false</code> otherwise.
    * @since 1.0
    */
   public abstract void setMaximizing(boolean maximizing);
@@ -174,7 +174,7 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
    * Returns the objective function.
    *
    * <p>
-   * <em>Implementations of <tt>FireflySearch</tt> should synchronize this
+   * <em>Implementations of <code>FireflySearch</code> should synchronize this
    * method.</em>
    * </p>
    *
@@ -188,7 +188,7 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
    * Returns the best solution found so far.
    *
    * <p>
-   * <em>Implementations of <tt>FireflySearch</tt> should synchronize this
+   * <em>Implementations of <code>FireflySearch</code> should synchronize this
    * method.</em>
    * </p>
    *
@@ -202,7 +202,7 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
    * Returns the number of iterations left to go.
    *
    * <p>
-   * <em>Implementations of <tt>FireflySearch</tt> should synchronize this
+   * <em>Implementations of <code>FireflySearch</code> should synchronize this
    * method.</em>
    * </p>
    *
@@ -220,7 +220,7 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
    * instantiation of this {@link FireflySearch}.
    *
    * <p>
-   * <em>Implementations of <tt>FireflySearch</tt> should synchronize this
+   * <em>Implementations of <code>FireflySearch</code> should synchronize this
    * method.</em>
    * </p>
    *
@@ -231,11 +231,11 @@ public interface IFireflySearch<S extends Solution> extends java.io.Serializable
 
   /**
    * Returns whether or not the firefly search should be maximizing the objective
-   * function. A value of <tt>true</tt> means <em>maximize</em> while a value of
-   * <tt>false</tt> means <em>minimize</em>.
+   * function. A value of <code>true</code> means <em>maximize</em> while a value of
+   * <code>false</code> means <em>minimize</em>.
    *
    * <p>
-   * <em>Implementations of <tt>FireflySearch</tt> should synchronize this
+   * <em>Implementations of <code>FireflySearch</code> should synchronize this
    * method.</em>
    * </p>
    *

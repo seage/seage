@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -26,6 +26,7 @@
  *     - Merge with SEAGE
  *     Karel Durkota
  */
+
 package org.seage.metaheuristic.fireflies;
 
 import java.text.DecimalFormat;
@@ -40,21 +41,20 @@ import java.util.Locale;
  * method</em> and clone whatever custom properties you have in your solution
  * definition.
  * </p>
- * <P>
+ * <p>
  * For an excellent discussion of cloning techniques, see the Java Developer
  * Connection Tech Tip <a href=
  * "http://developer.java.sun.com/developer/JDCTechTips/2001/tt0306.html">
  * http://developer.java.sun.com/developer/JDCTechTips/2001/tt0306.html</a>.
- * </P>
+ * </p>
  * 
  * <p>
  * Here is an example of how to clone your solution. Notice that it properly
  * calls the <code>super.clone()</code> method so that the
  * {@link SolutionAdapter}'s {@link SolutionAdapter#clone clone()} method is
- * also called. Then an <tt>int</tt> array is cloned and a
+ * also called. Then an <code>int</code> array is cloned and a
  * {@link java.util.HashMap} is cloned.
  * 
- * <pre>
  * <code>
  *     ...
  *     public Object clone()
@@ -65,7 +65,6 @@ import java.util.Locale;
  *     }   // end clone
  *     ...
  * </code>
- * </pre>
  * </p>
  *
  * @author Robert Harder
@@ -95,7 +94,7 @@ public abstract class SolutionAdapter implements Solution {
 
   /**
    * Generally used by the {@link FireflySearch} to set the value of the objective
-   * function and set <tt>objectiveValid</tt> to <tt>true</tt>.
+   * function and set <code>objectiveValid</code> to <code>true</code>.
    * 
    * @param objValue The objective function value
    * @since 1.0
@@ -108,9 +107,9 @@ public abstract class SolutionAdapter implements Solution {
 
   /**
    * An essential Java method that returns of copy of the object. Specifically the
-   * <tt>double</tt> array that holds the objective value is properly cloned.
+   * <code>double</code> array that holds the objective value is properly cloned.
    * 
-   * @return A copy of <tt>this</tt>.
+   * @return A copy of <code>this</code>.
    * @see java.lang.Cloneable
    * @since 1.0
    */

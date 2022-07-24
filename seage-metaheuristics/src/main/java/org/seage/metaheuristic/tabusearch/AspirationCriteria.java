@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -25,12 +25,13 @@
  *     Richard Malek
  *     - Merge with SEAGE
  */
+
 package org.seage.metaheuristic.tabusearch;
 
 /**
  * The optional aspiration criteria allows you to override a move's tabu status
  * if it offers something good such as resulting in a new best solution. A
- * <tt>null</tt> value implies no aspiration criteria.
+ * <code>null</code> value implies no aspiration criteria.
  *
  * @author Robert Harder
  * @version 1.0
@@ -45,16 +46,16 @@ public interface AspirationCriteria extends java.io.Serializable {
    * resulting objective function value are passed along with the
    * {@link TabuSearch} itself in case there's some other data you want.
    *
-   * @param soln       The solution to be modified
-   * @param move       The proposed move
-   * @param value      The resulting objective function value
+   * @param baseSolution       The solution to be modified
+   * @param proposedMove       The proposed move
+   * @param proposedValue      The resulting objective function value
    * @param tabuSearch The {@link TabuSearch} controlling the transaction
    * @see Solution
    * @see Move
    * @see TabuSearch
    * @since 1.0
    */
-  public abstract boolean overrideTabu(Solution baseSolution, Move proposedMove, double[] proposedValue,
-      ITabuSearch tabuSearch);
+  public abstract boolean overrideTabu(
+      Solution baseSolution, Move proposedMove, double[] proposedValue, ITabuSearch tabuSearch);
 
 } // end class AspirationCritera
