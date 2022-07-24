@@ -25,6 +25,7 @@
  *     Martin Zaloga
  *     - Reimplementation
  */
+
 package org.seage.metaheuristic.antcolony;
 
 /**
@@ -45,7 +46,7 @@ public class Edge {
   }
 
   /**
-   * Pheromone on edge finding
+   * Pheromone on edge finding.
    * 
    * @return - Value of pheromone
    */
@@ -54,7 +55,7 @@ public class Edge {
   }
 
   /**
-   * Local pheromone addition
+   * Local pheromone addition.
    * 
    * @param pheromone
    */
@@ -63,7 +64,7 @@ public class Edge {
   }
 
   /**
-   * Pheromone evaporation
+   * Pheromone evaporation.
    */
   public void evaporateFromEdge(double evapoCoef) {
     _pheromone = _pheromone * evapoCoef;
@@ -73,7 +74,7 @@ public class Edge {
   }
 
   /**
-   * Edge length finding
+   * Edge length finding.
    * 
    * @return - Edge length
    */
@@ -82,16 +83,16 @@ public class Edge {
   }
 
   /**
-   * Edge length setting
+   * Edge length setting.
    * 
-   * @param length - Edge length
+   * @param edgePrice - Edge length
    */
   public void setEdgePrice(double edgePrice) {
     _edgePrice = edgePrice;
   }
 
   /**
-   * Get the second of nodes
+   * Get the second of nodes.
    * 
    * @throws Exception
    */
@@ -105,7 +106,7 @@ public class Edge {
   }
 
   /**
-   * Get edge nodes
+   * Get edge nodes.
    * 
    * @return - Both nodes
    */

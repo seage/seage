@@ -63,13 +63,11 @@ public class TspHillClimberTest {
   }
 
   /**
-   * Function for the run the program
+   * Function for the run the program.
    * 
-   * @param path      - Path where is fyle of data the cities
-   * @param clasic    - Switching between the classical and improved algorithm
-   *                  Hill-Climber
+   * @param path      - Path of data the cities
    * @param switcher  - Switching between the Geedy and Random initial solution
-   * @param restarts  - Numer of repeat optimalizations algorithm
+   * @param restarts  - Number of repeat optimalizations algorithm
    * @param iteration - Number of iteration algorthm
    */
   public void run(String path, String switcher, int restarts, int iteration) throws Exception {

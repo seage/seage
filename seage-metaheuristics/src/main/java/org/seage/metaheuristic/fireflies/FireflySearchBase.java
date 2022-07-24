@@ -31,8 +31,7 @@ package org.seage.metaheuristic.fireflies;
 /**
  * This abstract class implements {@link FireflySearch} and defines the
  * event-handling methods including the add/remove methods and package-level
- * fireXxx methods. It is the base class for the
- * {@link MultiThreadedFireflySearch} and {@link SingleThreadedFireflySearch}.
+ * fireXxx methods.
  *
  *
  * @author Robert Harder

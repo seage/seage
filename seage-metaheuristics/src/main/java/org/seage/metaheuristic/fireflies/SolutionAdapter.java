@@ -26,6 +26,7 @@
  *     - Merge with SEAGE
  *     Karel Durkota
  */
+
 package org.seage.metaheuristic.fireflies;
 
 import java.text.DecimalFormat;
@@ -40,12 +41,12 @@ import java.util.Locale;
  * method</em> and clone whatever custom properties you have in your solution
  * definition.
  * </p>
- * <P>
+ * <p>
  * For an excellent discussion of cloning techniques, see the Java Developer
  * Connection Tech Tip <a href=
  * "http://developer.java.sun.com/developer/JDCTechTips/2001/tt0306.html">
  * http://developer.java.sun.com/developer/JDCTechTips/2001/tt0306.html</a>.
- * </P>
+ * </p>
  * 
  * <p>
  * Here is an example of how to clone your solution. Notice that it properly
@@ -54,7 +55,6 @@ import java.util.Locale;
  * also called. Then an <code>int</code> array is cloned and a
  * {@link java.util.HashMap} is cloned.
  * 
- * <pre>
  * <code>
  *     ...
  *     public Object clone()
@@ -65,7 +65,6 @@ import java.util.Locale;
  *     }   // end clone
  *     ...
  * </code>
- * </pre>
  * </p>
  *
  * @author Robert Harder

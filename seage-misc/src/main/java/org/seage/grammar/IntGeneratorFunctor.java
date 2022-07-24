@@ -39,7 +39,7 @@ public class IntGeneratorFunctor implements Functor {
   }
 
   /**
-   * @brief retrieve value
+   * retrieve value
    */
   @Override
   public Object call() {

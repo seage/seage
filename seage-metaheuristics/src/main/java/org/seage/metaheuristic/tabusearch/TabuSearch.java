@@ -35,7 +35,6 @@ package org.seage.metaheuristic.tabusearch;
  * been completed.
  *
  * @author Robert Harder
- * @copyright 2000 Robert Harder
  * @version 1.0c
  * @since 1.0
  */
@@ -311,9 +310,6 @@ public class TabuSearch extends TabuSearchBase {
    * <var>chooseFirstImprovingMove</var> to <code>true</code> you tell the tabu search to return the
    * first move it encounters that is improving and non-tabu rather than search through all of the
    * moves.
-   * <p/>
-   * It's not static so that when the MultiThreadedTabuSearch invokes the performOneIteration method
-   * the proper method is invoked. Java's weird about overriding static methods...
    *
    * @since 1.0
    */
@@ -326,8 +322,7 @@ public class TabuSearch extends TabuSearchBase {
   } // end getBestMove
 
   /**
-   * The static method that actually does the work. It's static so that the NeighborhoodHelper in
-   * the MultiThreadedTabuSearch can use the same code.
+   * The static method that actually does the work.
    *
    * @since 1.0
    */

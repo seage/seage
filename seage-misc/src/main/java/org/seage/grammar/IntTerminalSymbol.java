@@ -56,7 +56,7 @@ public class IntTerminalSymbol extends TerminalSymbol {
     high = other.high;
   }
 
-  /** @brief sets range of allowed values of this terminal */
+  /** sets range of allowed values of this terminal */
   public void setDomain(int low, int high) {
     this.low = low;
     this.high = high;
@@ -66,7 +66,7 @@ public class IntTerminalSymbol extends TerminalSymbol {
     return pick();
   }
 
-  /** @brief picks integer constant */
+  /** picks integer constant */
   @Override
   public Integer pick() {
     Integer result = (Integer) generator.call();
@@ -83,7 +83,7 @@ public class IntTerminalSymbol extends TerminalSymbol {
     return (Integer) _value;
   }
 
-  /** @brief copy ourself, and return new instance */
+  /** copy ourself, and return new instance */
   @Override
   public Symbol copy() {
     return new IntTerminalSymbol(this);

@@ -63,7 +63,7 @@ public class TernaryGrammarRule extends GrammarRule {
   }
 
   /**
-   * @brief semantical actions for given rule
+   * semantical actions for given rule
    * @param symbolTable table of symbols
    * @param treePos     position in parse tree (reference to left non terminal)
    */
@@ -85,7 +85,7 @@ public class TernaryGrammarRule extends GrammarRule {
   }
 
   /**
-   * @brief optimize derivate tree (eg. create result of arithmetical operations
+   * optimize derivate tree (eg. create result of arithmetical operations
    *        on contants)
    */
   @Override

@@ -55,12 +55,11 @@ public class TspAnt extends Ant {
   }
 
   /**
-   * Edge length calculating
+   * Edge length calculating.
    * 
-   * @param start  - Starting node
-   * @param end    - Terminate node
-   * @param cities - Readed cities
-   * @return - Euclide edge length
+   * @param nodePath  Path for the ant
+   * @param end   Terminate node
+   * @return Euclidean edge length
    */
   @Override
   public double getNodeDistance(List<Node> nodePath, Node end) {

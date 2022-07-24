@@ -48,7 +48,7 @@ public class Grammar {
     this.maxRecursions = new HashMap<GrammarRule, Integer>();
   }
 
-  /** @brief add rule to set */
+  /** add rule to set */
   public void addRule(GrammarRule rule, int maxRecursionDepth) {
     NonterminalSymbol left = rule.getLeft();
     Vector<Symbol> right = rule.getRight();
@@ -75,7 +75,7 @@ public class Grammar {
   }
 
   /**
-   * @brief retrieve grammar rule accoring to left side
+   * retrieve grammar rule accoring to left side
    * 
    * @param left        desired left side
    * @param pos         number of the rule identifying it in set of rules with
@@ -97,7 +97,7 @@ public class Grammar {
   }
 
   /**
-   * @brief calculate set "terminating nonterminals"
+   * calculate set "terminating nonterminals"
    * 
    */
   public void calculateTerminateRules() throws Exception {

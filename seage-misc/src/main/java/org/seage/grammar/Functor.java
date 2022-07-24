@@ -34,7 +34,7 @@ import java.util.Vector;
  */
 public interface Functor {
 
-  /** @brief retrieve value */
+  /** retrieve value */
   abstract public Object call();
 
   abstract public void setVector(Vector<Integer> source);

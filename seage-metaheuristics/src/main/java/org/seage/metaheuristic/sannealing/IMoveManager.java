@@ -23,6 +23,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
+
 package org.seage.metaheuristic.sannealing;
 
 /**
@@ -32,9 +33,10 @@ package org.seage.metaheuristic.sannealing;
 public interface IMoveManager {
 
   /**
-   * Returns modified clone of solution in parameter
+   * Returns modified clone of solution in parameter.
    * 
-   * @param Solution solution
+   * @param solution Solution to be modified.
+   * @param currentTemperature Temperature to start with.
    * @throws Exception
    */
   Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception;

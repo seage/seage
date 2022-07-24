@@ -25,6 +25,7 @@
  *     Richard Malek
  *     - Merge with SEAGE
  */
+
 package org.seage.metaheuristic.tabusearch;
 
 /**
@@ -45,16 +46,16 @@ public interface AspirationCriteria extends java.io.Serializable {
    * resulting objective function value are passed along with the
    * {@link TabuSearch} itself in case there's some other data you want.
    *
-   * @param soln       The solution to be modified
-   * @param move       The proposed move
-   * @param value      The resulting objective function value
+   * @param baseSolution       The solution to be modified
+   * @param proposedMove       The proposed move
+   * @param proposedValue      The resulting objective function value
    * @param tabuSearch The {@link TabuSearch} controlling the transaction
    * @see Solution
    * @see Move
    * @see TabuSearch
    * @since 1.0
    */
-  public abstract boolean overrideTabu(Solution baseSolution, Move proposedMove, double[] proposedValue,
-      ITabuSearch tabuSearch);
+  public abstract boolean overrideTabu(
+      Solution baseSolution, Move proposedMove, double[] proposedValue, ITabuSearch tabuSearch);
 
 } // end class AspirationCritera

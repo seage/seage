@@ -126,7 +126,7 @@ public class ComplexTabuList implements TabuList {
    * its <code>attributes()</code> method.
    *
    * @param move     A move
-   * @param solution The solution before the move operation - ignored.
+   * @param fromSolution The solution before the move operation - ignored.
    * @return whether or not the tabu list permits the move.
    * @throws IllegalArgumentException if move is not of type {@link ComplexMove}
    * @throws IllegalArgumentException if move's <code>attributes()</code> method
@@ -164,15 +164,15 @@ public class ComplexTabuList implements TabuList {
   /**
    * This method accepts a {@link ComplexMove} and {@link Solution} as arguments
    * and updates the tabu list as necessary.
-   * <P>
+   * <p>
    * Although the tabu list may not use both of the passed arguments, both must be
    * included in the definition.
-   *
+   * </p>
    * Records a {@link ComplexMove} on the tabu list by calling the move's
    * <code>attributes()</code> method.
    *
    * @param move     The {@link ComplexMove} to register
-   * @param solution The {@link Solution} before the move operation - ignored.
+   * @param fromSolution The {@link Solution} before the move operation - ignored.
    * @throws IllegalArgumentException if move is not of type {@link ComplexMove}
    * @throws IllegalArgumentException if move's <code>attributes()</code> method
    *        returns the wrong number of elements in the array.

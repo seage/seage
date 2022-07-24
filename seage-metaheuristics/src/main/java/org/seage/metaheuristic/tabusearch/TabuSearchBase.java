@@ -25,13 +25,14 @@
  *     Richard Malek
  *     - Merge with SEAGE
  */
+
 package org.seage.metaheuristic.tabusearch;
 
 /**
  * This abstract class implements {@link TabuSearch} and defines the
  * event-handling methods including the add/remove methods and package-level
- * fireXxx methods. It is the base class for the {@link MultiThreadedTabuSearch}
- * and {@link SingleThreadedTabuSearch}.
+ * fireXxx methods.
+ * and {@link TabuSearch}.
  *
  *
  * @author Robert Harder
@@ -40,9 +41,7 @@ package org.seage.metaheuristic.tabusearch;
  */
 
 public abstract class TabuSearchBase implements ITabuSearch {
-  /**
-   * 
-   */
+
   private static final long serialVersionUID = 6816926175569036255L;
 
   /**

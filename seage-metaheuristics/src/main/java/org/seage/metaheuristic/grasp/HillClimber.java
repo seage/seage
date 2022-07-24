@@ -23,6 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.metaheuristic.grasp;
 
 /**
@@ -44,7 +45,7 @@ public class HillClimber implements IHillClimber {
   private ISolutionGenerator _solutionGenerator;
 
   /**
-   * Constructor the object Hill-Climber which content the optimization methods
+   * Constructor the object Hill-Climber which content the optimization methods.
    * 
    * @param objectiveFunction - Contains methods for selecting steps
    * @param moveManager       - Contains methods for generating steps
@@ -60,11 +61,9 @@ public class HillClimber implements IHillClimber {
   }
 
   /**
-   * Algorithm of Hill-Climber optimalization
+   * Algorithm of Hill-Climber optimalization.
    * 
    * @param solution - Object with an initial solution, which is made better
-   * @param classic  - Parameter that switchs between the classical and improved
-   *                 Hill-Climber algorithm
    */
   @Override
   public void startSearching(Solution solution) throws Exception {
@@ -108,9 +107,8 @@ public class HillClimber implements IHillClimber {
   }
 
   /**
-   * Restarted algorithm of Hill-Climber optimalization
+   * Restarted algorithm of Hill-Climber optimalization.
    * 
-   * @param classic     - Determines whether the solution can deteriorate
    * @param numRestarts - Number of restarts algorithm
    */
   @Override
@@ -135,7 +133,7 @@ public class HillClimber implements IHillClimber {
   }
 
   /**
-   * Method for setting number of iteration
+   * Method for setting number of iteration.
    * 
    * @param count - Number of iteration algorithm
    */
@@ -145,7 +143,7 @@ public class HillClimber implements IHillClimber {
   }
 
   /**
-   * Function which return the best solution
+   * Function which return the best solution.
    * 
    * @return - The best solution
    */

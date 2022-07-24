@@ -75,8 +75,7 @@ public class NonterminalSymbol implements Symbol {
   }
 
   /**
-   * @brief expand nontermial by given rule, on given stack
-   * @param generator functor that will generate constant values
+   * expand nontermial by given rule, on given stack
    */
   public void expand(Stack<NonterminalSymbol> stack, GrammarRule rule) {
     /// save reference to rule
@@ -108,7 +107,7 @@ public class NonterminalSymbol implements Symbol {
     return name;
   }
 
-  /** @brief get string representation of this subtree */
+  /** get string representation of this subtree */
   public String getStringTree() {
     String ret = new String();
     for (Symbol s : children) {
@@ -136,7 +135,7 @@ public class NonterminalSymbol implements Symbol {
     return ret;
   }
 
-  /** @brief copy ourself, and return new instance */
+  /** copy ourself, and return new instance */
   @Override
   public Symbol copy() {
     return new NonterminalSymbol(this);

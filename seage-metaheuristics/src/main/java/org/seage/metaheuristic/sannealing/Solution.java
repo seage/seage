@@ -32,12 +32,12 @@ package org.seage.metaheuristic.sannealing;
 public class Solution implements Cloneable, Comparable<Solution> {
 
   /**
-   * The value is value of Solution
+   * The value is value of Solution.
    */
   private double _value;
 
   /**
-   * Returns the value of Solution
+   * Returns the value of Solution.
    * 
    * @return double value
    */
@@ -46,9 +46,8 @@ public class Solution implements Cloneable, Comparable<Solution> {
   }
 
   /**
-   * Sets the value of Solution
-   * 
-   * @param double objValue
+   * Sets the value of Solution.
+   * @param objValue
    */
   public void setObjectiveValue(double objValue) {
     _value = objValue;

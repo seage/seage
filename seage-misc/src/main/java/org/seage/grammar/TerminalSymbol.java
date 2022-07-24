@@ -76,7 +76,7 @@ public class TerminalSymbol implements Symbol {
     }
   }
 
-  /** @brief copy ourself, and return new instance */
+  /** copy ourself, and return new instance */
   @Override
   public Symbol copy() {
     TerminalSymbol t = new TerminalSymbol(this.names, this.generator);

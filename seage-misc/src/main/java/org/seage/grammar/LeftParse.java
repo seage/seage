@@ -44,7 +44,7 @@ public class LeftParse {
     _constantVector = new Vector<Integer>();
   }
 
-  /** @brief generate random left parse */
+  /** generate random left parse */
   public void randomGenerate() {
     _ruleNums.clear();
     _constantVector.clear();
@@ -72,7 +72,7 @@ public class LeftParse {
     // _ruleNums.add( 211);
   }
 
-  /** @brief genetic operator */
+  /** genetic operator */
   public LeftParse cross(LeftParse other) {
     LeftParse result = new LeftParse();
     result._ruleNums = getCross(this._ruleNums, other._ruleNums);
@@ -80,7 +80,7 @@ public class LeftParse {
     return result;
   }
 
-  /** @brief mutates this left parse */
+  /** mutates this left parse */
   public void mutate() {
     /// mutate rules
     int where = (int) (Math.random() * (_ruleNums.size() - 1));
@@ -103,7 +103,7 @@ public class LeftParse {
     return ret;
   }
 
-  /** @brief create left parse tree according to ruleNums */
+  /** create left parse tree according to ruleNums */
   public NonterminalSymbol createParseTree(Grammar gr) throws Exception {
     // first initialize constant generators of terminal symbols
     for (TerminalSymbol ts : gr.getTerminals()) {
@@ -191,7 +191,7 @@ public class LeftParse {
     return startSymbol;
   }
 
-  /** @brief cross two vectorsof Integers */
+  /** cross two vectorsof Integers */
   protected Vector<Integer> getCross(final Vector<Integer> one, final Vector<Integer> other) {
     Vector<Integer> first = null, second = null;
     if (Math.random() > 0.5) {

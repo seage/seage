@@ -84,7 +84,7 @@ public class FireflySearch<S extends Solution> extends FireflySearchBase<S> {
    * CONSTRUCTOR
    * 
    * @param operator
-   * @param evaluator
+   * @param objectiveFunction
    */
   public FireflySearch(FireflyOperator operator, ObjectiveFunction objectiveFunction) {
     _operator = operator;

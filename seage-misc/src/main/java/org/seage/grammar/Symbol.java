@@ -41,19 +41,19 @@ public interface Symbol extends Serializable {
   };
 
   /**
-   * @brief evaluate derivate tree
+   * evaluate derivate tree
    * @param symbolTable table of symbols and their values
-   * @retval result of the operation(s)
+   * @return result of the operation(s)
    */
   abstract public Object eval(DataNode symbolTable);
 
-  /** @brief optimize derivate tree, return new derivate (sub)tree */
+  /** optimize derivate tree, return new derivate (sub)tree */
   abstract public Symbol optimize();
 
-  /** @brief gets type of this symbol (termina, nonterminal) */
+  /** gets type of this symbol (termina, nonterminal) */
   abstract public Type getType();
 
-  /** @brief copy ourself, and return new instance */
+  /** copy ourself, and return new instance */
   abstract public Symbol copy();
 
 }

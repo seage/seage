@@ -42,12 +42,13 @@ public interface TabuList extends java.io.Serializable {
   /**
    * This method accepts a {@link Move} and {@link Solution} as arguments and
    * updates the tabu list as necessary.
-   * <P>
+   * <p>
    * Although the tabu list may not use both of the passed arguments, both must be
    * included in the definition.
+   * </p>
    * 
    * @param move     The {@link Move} to register
-   * @param solution The {@link Solution} before the move operation
+   * @param fromSolution The {@link Solution} before the move operation
    * @see Move
    * @see Solution
    * @since 1.0
@@ -61,7 +62,7 @@ public interface TabuList extends java.io.Serializable {
    * function even though it makes some hashing tabu lists a bit more difficult.
    * 
    * @param move     A move
-   * @param solution The solution before the move operation.
+   * @param fromSolution The solution before the move operation.
    * @return whether or not the tabu list permits the move.
    * @see Move
    * @see Solution

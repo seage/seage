@@ -41,7 +41,7 @@ public class SatGreedySolution extends SatSolution {
   /**
    * Constructor the solution with using the greedy algorithm for initial solution
    * 
-   * @param cities - List of cities with their coordinates
+   * @param formula - List of clauses representing the formula
    */
   public SatGreedySolution(Formula formula) throws Exception {
     super();
