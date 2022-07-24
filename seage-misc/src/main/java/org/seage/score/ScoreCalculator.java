@@ -38,15 +38,15 @@ public class ScoreCalculator {
    */
   public static double calculateProblemScore(
       List<Double> instanceSizes, double[] instanceScores) throws ArithmeticException {
-    double numerator = 0.0;
-    double denominator = 0.0;
+    double weightedScoresSum = 0.0;
+    double insSizesSum = 0.0;
 
     for (int i = 0; i < instanceSizes.size(); i++) {
-      numerator += instanceSizes.get(i) * instanceScores[i];
-      denominator += instanceSizes.get(i);
+      weightedScoresSum += instanceSizes.get(i) * instanceScores[i];
+      insSizesSum += instanceSizes.get(i);
     }
-    if (denominator != 0) {
-      return numerator / denominator;
+    if (insSizesSum != 0) {
+      return weightedScoresSum / insSizesSum;
     }
     throw new ArithmeticException("Division by zero.");
   }
