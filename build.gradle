@@ -28,14 +28,15 @@ allprojects {
 subprojects {
     apply plugin: 'checkstyle'
     apply plugin: 'com.github.spotbugs'
+    apply plugin: 'maven-publish'
 
     dependencies {
         // Use JUnit Jupiter API for testing.
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'       
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
         testImplementation 'org.junit.platform:junit-platform-suite-api:1.8.2'
         testRuntimeOnly 'org.junit.platform:junit-platform-suite-engine:1.8.2'
-        
+
         implementation 'ch.qos.logback:logback-classic:1.3.0-alpha10'
     }
     test {
@@ -52,8 +53,29 @@ subprojects {
         ignoreFailures = true
         showViolations = true
     }
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId 'org.seage'
+                // version '1.0.0rc1'
+                from(components.java)
+            }
+        }
+        repositories {
+            maven {
+                credentials {
+                    username = "$usr"
+                    password = "$pwd"
+                }
+
+                url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                // url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            }
+        }
+    }
     signing {
-        sign configurations.archives
+        // sign configurations.archives
+        sign publishing.publications.maven
     }
     task javadocJar(type: Jar) {
         classifier = 'javadoc'
@@ -66,11 +88,6 @@ subprojects {
     }
     artifacts {
         archives javadocJar, sourcesJar
-        // archives sourcesJar
-    }
-
-    tasks.withType(Javadoc) {
-        //options.addStringOption('Xdoclint:none', '-quiet')
     }
 }
 
@@ -108,8 +125,9 @@ codeCoverageReport.dependsOn {
 
 sonarqube {
     properties {
-        property "sonar.sourceEncoding", "UTF-8"
-        property "sonar.coverage.jacoco.xmlReportPaths", "${rootDir}/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
+        property 'sonar.sourceEncoding', "UTF-8"
+        property 'sonar.coverage.jacoco.xmlReportPaths', 
+            "${rootDir}/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
 
     }
 }
@@ -133,35 +151,3 @@ spotbugs {
 // jvmArgs = [ '-Duser.language=ja' ]
 }
 
-publishing {
-    // publications {
-    //     maven(MavenPublication) {
-    //         groupId = 'org.seage'
-    //         artifactId = 'aal'
-    //         version = "1.0-SNAPSHOT"
-    //         from components.java
-
-    //         pom {
-    //             name = 'SEAGE AAL'
-    //             description = 'SEAGE AAL (Algorithm Abstraction Layer)'
-    //         }
-    //     }
-    // }
-    publications {
-        maven(MavenPublication) {
-            groupId 'org.seage'
-            from(components.java)
-        }
-    }
-    repositories {
-        maven {
-            // credentials {
-            //     username = "$usr"
-            //     password = "$pwd"
-            // }
-
-            url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-        // url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-        }
-    }
-}
