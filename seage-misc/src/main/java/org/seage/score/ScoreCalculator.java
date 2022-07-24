@@ -37,7 +37,7 @@ public class ScoreCalculator {
    * @return Weighted mean.
    */
   public static double calculateProblemScore(
-      List<Double> instanceSizes, double[] instanceScores) throws Exception {
+      List<Double> instanceSizes, double[] instanceScores) throws ArithmeticException {
     double numerator = 0.0;
     double denominator = 0.0;
 
@@ -48,7 +48,7 @@ public class ScoreCalculator {
     if (denominator != 0) {
       return numerator / denominator;
     }
-    throw new Exception("Dividing by zero.");
+    throw new ArithmeticException("Division by zero.");
   }
 
   /**
