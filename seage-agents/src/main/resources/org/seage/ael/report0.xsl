@@ -33,7 +33,7 @@
                                         <td align="right"><xsl:value-of select="format-number(stats/@minFitness, '#.00')"/></td>
                                         <td align="right"><xsl:value-of select="format-number(stats/@avgFitness, '#.00')"/></td>
                                         <td align="right"><xsl:value-of select="format-number(stats/@maxFitness, '#.00')"/></td>
-                                        <td><tt><xsl:value-of select="current-grouping-key()"/></tt></td>
+                                        <td><code><xsl:value-of select="current-grouping-key()"/></code></td>
                                     </tr>
                             </xsl:for-each>                            
                         </table>

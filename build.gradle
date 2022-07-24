@@ -50,6 +50,9 @@ subprojects {
         ignoreFailures = true
         showViolations = true
     }
+    tasks.withType(Javadoc) {
+        //options.addStringOption('Xdoclint:none', '-quiet')
+    }
 }
 
 task testReport(type: TestReport) {

@@ -304,7 +304,7 @@ public class HeatmapGenerator {
   /**
    * Method generates a svg string with given data.
    * 
-   * @param id id of the experiment
+   * @param experimentId id of the experiment
    * @throws IOException exception if the page couldn't be created
    */
   protected String createSvgString(
@@ -342,7 +342,7 @@ public class HeatmapGenerator {
   /**
    * Method generates a svg file with given data.
    * 
-   * @param id id of the experiment
+   * @param experimentId id of the experiment
    * @throws IOException exception if the page couldn't be created
    */
   protected void createSvgFile(

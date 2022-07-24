@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -30,7 +30,7 @@ package org.seage.metaheuristic.tabusearch;
 /**
  * The optional aspiration criteria allows you to override a move's tabu status
  * if it offers something good such as resulting in a new best solution. A
- * <tt>null</tt> value implies no aspiration criteria.
+ * <code>null</code> value implies no aspiration criteria.
  *
  * @author Robert Harder
  * @version 1.0

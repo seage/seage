@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -50,7 +50,7 @@ import java.util.Locale;
  * Here is an example of how to clone your solution. Notice that it properly
  * calls the <code>super.clone()</code> method so that the
  * {@link SolutionAdapter}'s {@link SolutionAdapter#clone clone()} method is
- * also called. Then an <tt>int</tt> array is cloned and a
+ * also called. Then an <code>int</code> array is cloned and a
  * {@link java.util.HashMap} is cloned.
  * 
  * <pre>
@@ -91,7 +91,7 @@ public class SolutionAdapter implements Solution {
 
   /**
    * Generally used by the {@link TabuSearch} to set the value of the objective
-   * function and set <tt>objectiveValid</tt> to <tt>true</tt>.
+   * function and set <code>objectiveValid</code> to <code>true</code>.
    * 
    * @param objValue The objective function value
    * @since 1.0
@@ -104,9 +104,9 @@ public class SolutionAdapter implements Solution {
 
   /**
    * An essential Java method that returns of copy of the object. Specifically the
-   * <tt>double</tt> array that holds the objective value is properly cloned.
+   * <code>double</code> array that holds the objective value is properly cloned.
    * 
-   * @return A copy of <tt>this</tt>.
+   * @return A copy of <code>this</code>.
    * @see java.lang.Cloneable
    * @since 1.0
    */
