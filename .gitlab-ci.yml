@@ -2,6 +2,7 @@ image: docker:stable
 
 stages:
   - build
+  - check
   - test
   - report
 
@@ -13,6 +14,11 @@ build-seage:
   stage: build
   script:
     - docker build -t $SEAGE_TEST_IMAGE -f Dockerfile .
+
+check-seage:
+  stage: check
+  script:
+    - docker run --rm $SEAGE_TEST_IMAGE ./gradlew clean javadoc
 
 test-seage:
   stage: test
