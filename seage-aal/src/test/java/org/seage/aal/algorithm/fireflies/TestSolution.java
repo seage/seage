@@ -14,4 +14,9 @@ public class TestSolution extends SolutionAdapter {
     return false;
   }
 
+  @Override
+  public int hashCode() {
+    return 0;
+  }
+
 }

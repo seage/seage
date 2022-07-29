@@ -79,6 +79,9 @@ public abstract class SolutionAdapter implements Solution {
   @Override
   public abstract boolean equals(Object s);
 
+  @Override
+  public abstract int hashCode();
+
   /**
    * If the value has been set for this solution, then the value will be returned.
    * Be careful if this returns null since this may indicate that the

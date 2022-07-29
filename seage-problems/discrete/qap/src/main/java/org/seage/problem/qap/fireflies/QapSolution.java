@@ -76,6 +76,9 @@ public class QapSolution extends SolutionAdapter {
 
   @Override
   public boolean equals(Object in) {
+    if (in == null) {
+      return false;
+    }
     QapSolution q = (QapSolution) in;
     for (int i = 0; i < assign.length; i++) {
       if (!assign[i].equals(q.getAssign()[i])) {
@@ -83,6 +86,11 @@ public class QapSolution extends SolutionAdapter {
       }
     }
     return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return 0; // TODO
   }
 
 } // end class MySolution

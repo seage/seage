@@ -89,6 +89,9 @@ public class Subject<GeneType> implements Cloneable {
 
   @Override
   public boolean equals(Object subject0) {
+    if (subject0 == null) {
+      return false;
+    }
     return subject0.hashCode() == hashCode;
   }
 
