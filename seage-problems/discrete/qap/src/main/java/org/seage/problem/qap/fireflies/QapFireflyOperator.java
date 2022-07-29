@@ -109,13 +109,13 @@ public class QapFireflyOperator extends FireflyOperator
     {
         //beta step
         QapSolution qaps0 = (QapSolution) s0, qaps1 = (QapSolution) s1;
-        qaps0._assign = betaStep(qaps0._assign, qaps1._assign, _absorption);
+        qaps0.assign = betaStep(qaps0.assign, qaps1.assign, _absorption);
         double randomness = 0;
         if (_withDecreasingRandomness)
             randomness = _finalRandomness + (_initialRandomness - _finalRandomness) * Math.exp(-iter * _timeStep);
         else
             randomness = _initialRandomness;
-        qaps0._assign = alphaStep(qaps0._assign, randomness);
+        qaps0.assign = alphaStep(qaps0.assign, randomness);
         //alpha step
     }
 
@@ -137,7 +137,7 @@ public class QapFireflyOperator extends FireflyOperator
     public void randomSolution(Solution solution)
     {
         QapSolution q = (QapSolution) solution;
-        q._assign = AssignmentProvider.createRandomAssignment(_facilityLocations);
+        q.assign = AssignmentProvider.createRandomAssignment(_facilityLocations);
     }
 
     /**

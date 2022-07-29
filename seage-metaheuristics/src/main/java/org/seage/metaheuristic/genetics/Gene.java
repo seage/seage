@@ -23,51 +23,54 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.metaheuristic.genetics;
 
 import java.io.Serializable;
 
 /**
+ * Gene implementation.
  * @author Richard Malek (original)
  */
 public class Gene implements Serializable {
-  /**
-   * 
-   */
   private static final long serialVersionUID = -2263063124222499089L;
-  protected Object _value;
+  protected Object value;
 
   private Gene() {
   }
 
   public Gene(Object value) {
-    // if(value[0] == 0) throw new Exception("Invalid gene value");
-    _value = value;
+    this.value = value;
   }
 
   @Override
   public String toString() {
-    Integer i = Integer.parseInt(_value.toString());
-    return i.toString();// value.toString();
+    Integer i = Integer.parseInt(value.toString());
+    return i.toString();
   }
 
   public Object getValue() {
-    return _value;
+    return value;
   }
 
   public void setValue(Object value) {
-    _value = value;
+    this.value = value;
   }
 
   @Override
   public int hashCode() {
-    return _value.hashCode();
+    return value.hashCode();
+  }  
+
+  @Override
+  public boolean equals(Object value0) {
+    return value.equals(value0);
   }
 
   @Override
   public Object clone() {
     Gene gene = new Gene();
-    gene._value = _value;
+    gene.value = value;
     return gene;
   }
 }

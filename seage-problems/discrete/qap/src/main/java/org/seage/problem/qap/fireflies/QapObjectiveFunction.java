@@ -61,7 +61,7 @@ public class QapObjectiveFunction implements ObjectiveFunction
         incrementCounter();
         try
         {
-            Integer[] assign = ((QapSolution) solution)._assign;
+            Integer[] assign = ((QapSolution) solution).assign;
             int len = assign.length;
 
             // If move is null, calculate distance from scratch

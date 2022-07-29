@@ -23,6 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.aal.problem;
 
 import java.util.Map;
@@ -32,7 +33,7 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 
 /**
- * Problem provider interface
+ * Problem provider interface.
  * 
  * @author Richard Malek
  * 

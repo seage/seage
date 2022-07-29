@@ -37,7 +37,7 @@ public class QapSortedSolution extends QapSolution
     public QapSortedSolution(Double[][][] facilityLocation)
     {
         super(facilityLocation);
-        _assign = AssignmentProvider.createSortedAssignment(facilityLocation);
+        assign = AssignmentProvider.createSortedAssignment(facilityLocation);
     }
 
 }

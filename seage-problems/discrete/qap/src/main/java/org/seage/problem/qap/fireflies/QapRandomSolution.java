@@ -37,7 +37,7 @@ public class QapRandomSolution extends QapSolution
     public QapRandomSolution(Double[][][] facilityLocation)
     {
         super(facilityLocation);
-        _assign = AssignmentProvider.createRandomAssignment(facilityLocation);
+        assign = AssignmentProvider.createRandomAssignment(facilityLocation);
     }
 
 }

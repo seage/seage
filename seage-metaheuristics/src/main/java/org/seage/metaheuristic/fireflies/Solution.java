@@ -51,26 +51,6 @@ public interface Solution extends Cloneable {
    */
   public abstract void setObjectiveValue(double[] objValue);
 
-  /**
-   * An essential Java method that returns of copy of the object. This should do
-   * whatever is necessary to ensure that the returned {@link Solution} is
-   * identical to <code>this</code>.
-   * Be careful of only copying references to arrays and other objects
-   * when a full copy is what may be needed.
-   * <P>
-   * For an excellent discussion of cloning techniques, see the
-   * Java Developer Connection Tech Tip
-   * <a href=
-  "http://developer.java.sun.com/developer/JDCTechTips/2001/tt0306.html">
-   * http://developer.java.sun.com/developer/JDCTechTips/2001/tt0306.html</a>.
-   * </P>
-   *
-   * &#64;return A copy of <code>this</code>.
-   * 
-   * @see java.lang.Cloneable
-   * @since 1.0
-   */
-  public abstract Object clone();
-
-  public abstract boolean equals(Solution s);
+  Object clone() throws CloneNotSupportedException;
+  
 }
