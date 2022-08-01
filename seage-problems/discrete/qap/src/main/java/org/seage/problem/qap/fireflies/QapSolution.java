@@ -76,7 +76,7 @@ public class QapSolution extends SolutionAdapter {
 
   @Override
   public boolean equals(Object in) {
-    if (in == null) {
+    if (!(in instanceof QapSolution)) {
       return false;
     }
     QapSolution q = (QapSolution) in;
