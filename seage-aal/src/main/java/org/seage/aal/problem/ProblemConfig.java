@@ -30,7 +30,7 @@ import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.data.DataNode;
 
 /**
- * A configuration structure with information how to solve a given problem
+ * A configuration structure with information how to solve a given problem.
  * 
  * @author Richard Malek
  * 
@@ -38,6 +38,8 @@ import org.seage.data.DataNode;
  *         ... |_ Parameter
  */
 public class ProblemConfig extends DataNode {
+  private static final String PROBLEM_STRING = "Problem";
+  private static final String INSTANCE_STRING = "Instance";
 
   public ProblemConfig(String name) {
     super(name);
@@ -52,15 +54,15 @@ public class ProblemConfig extends DataNode {
   }
 
   public String getProblemID() throws Exception {
-    return this.getDataNode("Problem").getValueStr("id");
+    return this.getDataNode(PROBLEM_STRING).getValueStr("id");
   }
 
   public ProblemInstanceInfo getProblemInstanceInfo() throws Exception {
-    return new ProblemInstanceInfo(this.getDataNode("Problem").getDataNode("Instance"));
+    return new ProblemInstanceInfo(this.getDataNode(PROBLEM_STRING).getDataNode(INSTANCE_STRING));
   }
 
   public String getProblemInstanceName() throws Exception {
-    return this.getDataNode("Problem").getDataNode("Instance").getValueStr("name");
+    return this.getDataNode(PROBLEM_STRING).getDataNode(INSTANCE_STRING).getValueStr("name");
   }
 
   public String getAlgorithmID() throws Exception {
@@ -68,15 +70,16 @@ public class ProblemConfig extends DataNode {
   }
 
   public AlgorithmParams getAlgorithmParams() throws Exception {
-    AlgorithmParams result = new AlgorithmParams(this.getDataNode("Algorithm").getDataNode("Parameters"));
-    // result.putValue("problemID", this.getDataNode("Problem").getValue("id"));
-    // result.putValue("instance",
-    // this.getDataNode("Problem").getDataNode("Instance").getValue("name"));
+    AlgorithmParams result =
+        new AlgorithmParams(this.getDataNode("Algorithm").getDataNode("Parameters"));
+    // result.putValue("problemID", this.getDataNode(PROBLEM_STRING).getValue("id"));
+    // result.putValue(INSTANCE_STRING,
+    // this.getDataNode(PROBLEM_STRING).getDataNode(INSTANCE_STRING).getValue("name"));
     return result;
   }
 
   public String getProblemInstanceID() throws Exception {
-    return this.getDataNode("Problem").getDataNode("Instance").getValueStr("id");
+    return this.getDataNode(PROBLEM_STRING).getDataNode(INSTANCE_STRING).getValueStr("id");
   }
 
 }

@@ -44,9 +44,11 @@ public interface IProblemProvider<P extends Phenotype<?>> {
   ProblemInfo getProblemInfo() throws Exception;
 
   // Returns the algorithm factory by id
+  @SuppressWarnings("java:S1452")
   IAlgorithmFactory<P, ?> getAlgorithmFactory(String algorithmID) throws Exception;
 
   // Returns all algorithm factories
+  @SuppressWarnings("java:S1452")
   Map<String, IAlgorithmFactory<P, ?>> getAlgorithmFactories();
 
   // Initializes (reads) a problem instance.

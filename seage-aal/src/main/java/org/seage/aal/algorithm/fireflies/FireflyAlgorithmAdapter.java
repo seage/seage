@@ -191,29 +191,27 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
 
     @SuppressWarnings("unused")
     public void noChangeInValueIterationMade(FireflySearchEvent<S> e) {
-
+      // Nothing to do here
     }
 
-    // HAD TO IMPLEMENT BECAUSE OF INTERFACE, MAY CAUSE ALGORITHM NOT TO
-    // WORK CORRECTLY
     @Override
     public void newCurrentSolutionFound(FireflySearchEvent<S> e) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      // Nothing to do here
     }
 
     @Override
     public void unimprovingMoveMade(FireflySearchEvent<S> e) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      // Nothing to do here
     }
 
     @Override
     public void improvingMoveMade(FireflySearchEvent<S> e) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      // Nothing to do here
     }
 
     @Override
     public void noChangeInValueMoveMade(FireflySearchEvent<S> e) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      // Nothing to do here
     }
   }
 }

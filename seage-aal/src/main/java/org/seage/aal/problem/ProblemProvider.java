@@ -55,6 +55,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
     ProblemProvider.providerClasses = providerClasses;
   }
 
+  @SuppressWarnings("java:S3776")
   @Override
   public ProblemInfo getProblemInfo() throws Exception {
     if (problemInfo != null) {
@@ -109,7 +110,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
       // metadata ?
       if (metadata != null) {
         DataNode dn = metadata.getDataNodeById(instanceID);
-        if(dn == null) {
+        if (dn == null) {
           logger.warn("No metadata for instance '{}'", instanceID);
         } else {
           instance.putValue("size",dn.getValue("size"));
@@ -211,7 +212,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
    * @return Map of problem ids and problem providers.
    * @throws Exception .
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "java:S1452"})
   public static synchronized Map<String, IProblemProvider<Phenotype<?>>> 
       getProblemProviders() throws Exception {
     
