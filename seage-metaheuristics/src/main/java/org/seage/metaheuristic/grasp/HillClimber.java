@@ -27,22 +27,22 @@
 package org.seage.metaheuristic.grasp;
 
 /**
- *
+ * HillClimber metaheuristic.
  * @author Martin Zaloga
  */
 public class HillClimber implements IHillClimber {
 
   /**
-   * _numIter - Number of iteration after start Hill-Climber _currentSolution -
-   * Actual best solution _moveManager - Interface that defines the methods for
-   * generating steps _objectiveFunction - Interface that defines the methods for
-   * selecting steps _solutionGenerator - Object for generating solutions
+   * numIter - Number of iteration after start Hill-Climber _currentSolution.
+   * Actual best solution moveManager - Interface that defines the methods for
+   * generating steps objectiveFunction - Interface that defines the methods for
+   * selecting steps solutionGenerator - Object for generating solutions
    */
-  private int _numIter;
-  private Solution _currentSolution;
-  private IMoveManager _moveManager;
-  private IObjectiveFunction _objectiveFunction;
-  private ISolutionGenerator _solutionGenerator;
+  private int numIter;
+  private Solution currentSolution;
+  private IMoveManager moveManager;
+  private IObjectiveFunction objectiveFunction;
+  private ISolutionGenerator solutionGenerator;
 
   /**
    * Constructor the object Hill-Climber which content the optimization methods.
@@ -54,10 +54,10 @@ public class HillClimber implements IHillClimber {
    */
   public HillClimber(IObjectiveFunction objectiveFunction, IMoveManager moveManager,
       ISolutionGenerator solutionGenerator, int numIter) {
-    _moveManager = moveManager;
-    _objectiveFunction = objectiveFunction;
-    _solutionGenerator = solutionGenerator;
-    _numIter = numIter;
+    this.moveManager = moveManager;
+    this.objectiveFunction = objectiveFunction;
+    this.solutionGenerator = solutionGenerator;
+    this.numIter = numIter;
   }
 
   /**
@@ -67,12 +67,12 @@ public class HillClimber implements IHillClimber {
    */
   @Override
   public void startSearching(Solution solution) throws Exception {
-    _currentSolution = solution;
+    currentSolution = solution;
     int iter = 0;
     double bestVal = 0;
 
-    while (iter < _numIter) {
-      IMove[] moves = _moveManager.getAllMoves(_currentSolution);
+    while (iter < numIter) {
+      IMove[] moves = moveManager.getAllMoves(currentSolution);
 
       bestVal = solution.getObjectiveValue();
 
@@ -82,7 +82,7 @@ public class HillClimber implements IHillClimber {
 
       /* Browsing generated steps */
       for (IMove m : moves) {
-        val = _objectiveFunction.evaluateMove(_currentSolution, m);
+        val = objectiveFunction.evaluateMove(currentSolution, m);
 
         /* Selection of better solutions */
         if (val < bestVal) {
@@ -97,11 +97,11 @@ public class HillClimber implements IHillClimber {
 
       /* Selection of the best actual solution */
       if (best != null) {
-        _currentSolution = best.apply(_currentSolution);
-        _currentSolution.setObjectiveValue(bestVal);
+        currentSolution = best.apply(currentSolution);
+        currentSolution.setObjectiveValue(bestVal);
       }
 
-      _objectiveFunction.reset();
+      objectiveFunction.reset();
       iter++;
     }
   }
@@ -119,7 +119,7 @@ public class HillClimber implements IHillClimber {
 
     while (countRest <= numRestarts) {
 
-      startSearching(_solutionGenerator.generateSolution());
+      startSearching(solutionGenerator.generateSolution());
       countRest++;
 
       /* Choosing the best solution */
@@ -128,8 +128,10 @@ public class HillClimber implements IHillClimber {
         bestSolution = getBestSolution();
       }
     }
-    _currentSolution = bestSolution;
-    _currentSolution.setObjectiveValue(bestDist);
+    if (bestSolution != null) {
+      currentSolution = bestSolution;
+      currentSolution.setObjectiveValue(bestDist);
+    }
   }
 
   /**
@@ -139,7 +141,7 @@ public class HillClimber implements IHillClimber {
    */
   @Override
   public void setIterationCount(int count) {
-    _numIter = count;
+    numIter = count;
   }
 
   /**
@@ -149,6 +151,6 @@ public class HillClimber implements IHillClimber {
    */
   @Override
   public Solution getBestSolution() {
-    return _currentSolution;
+    return currentSolution;
   }
 }

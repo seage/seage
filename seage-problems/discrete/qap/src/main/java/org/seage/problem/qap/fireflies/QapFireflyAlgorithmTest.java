@@ -108,7 +108,7 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener<QapSolutio
         fs.setPopulationCount(populationSize);
         fs.setMaximizing(_maximizing);
         fs.setIterationsToGo(iterationsToGo);
-        System.out.println("Length of solution" + (new QapRandomSolution(facilityLocations)._assign.length));
+        System.out.println("Length of solution" + (new QapRandomSolution(facilityLocations).assign.length));
         fs.startSolving(generateInitialSolutions(facilityLocations, populationSize));
     }
 

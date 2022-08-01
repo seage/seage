@@ -46,7 +46,7 @@ public class QapSwapMove implements Move
     @Override
     public void operateOn(Solution soln)
     {
-        Integer[] assign = ((QapSolution) soln)._assign;
+        Integer[] assign = ((QapSolution) soln).assign;
         int pos1 = -1;
         int pos2 = -1;
 

@@ -77,7 +77,10 @@ public abstract class SolutionAdapter implements Solution {
   private double[] objectiveValue;
 
   @Override
-  public abstract boolean equals(Solution s);
+  public abstract boolean equals(Object s);
+
+  @Override
+  public abstract int hashCode();
 
   /**
    * If the value has been set for this solution, then the value will be returned.
@@ -114,7 +117,7 @@ public abstract class SolutionAdapter implements Solution {
    * @since 1.0
    */
   @Override
-  public Object clone() {
+  public Object clone() throws CloneNotSupportedException {
     try {
       Solution sol = (Solution) super.clone(); // Java's default cloning
 
@@ -133,9 +136,7 @@ public abstract class SolutionAdapter implements Solution {
       } // end if: not null
 
       return sol;
-    } // end try
-    catch (java.lang.CloneNotSupportedException e) // Catch exception from java.lang.Object
-    {
+    } catch (java.lang.CloneNotSupportedException e) {
       throw new InternalError(e.toString()); // Throw a runtime error
     } // end catch
   } // end clone
@@ -145,8 +146,9 @@ public abstract class SolutionAdapter implements Solution {
     String result = "";
 
     double[] obj = getObjectiveValue();
-    if (obj == null)
+    if (obj == null) {
       return "null";
+    }
     NumberFormat formatter = new DecimalFormat("0.000", new DecimalFormatSymbols(Locale.US));
     for (int i = 0; i < obj.length; i++) {
       result += formatter.format(obj[i]) + "\t";

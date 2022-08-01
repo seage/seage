@@ -49,7 +49,4 @@ public abstract class Phenotype<T> {
   public void setScore(Double score) {
     this.score = score;
   }
-
-  // public abstract boolean isSame(Phenotype<T> p);
-
 }

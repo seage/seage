@@ -1,6 +1,5 @@
 package org.seage.aal.algorithm.fireflies;
 
-import org.seage.metaheuristic.fireflies.Solution;
 import org.seage.metaheuristic.fireflies.SolutionAdapter;
 
 public class TestSolution extends SolutionAdapter {
@@ -11,8 +10,13 @@ public class TestSolution extends SolutionAdapter {
   }
 
   @Override
-  public boolean equals(Solution s) {
+  public boolean equals(Object s) {
     return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return 0;
   }
 
 }

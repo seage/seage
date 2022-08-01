@@ -42,7 +42,7 @@ public class QapGreedyStartSolution extends QapSolution
     public QapGreedyStartSolution(Double[][][] customers) throws Exception
     {
         super(customers);
-        _assign = AssignmentProvider.createGreedyAssignment(customers);
+        assign = AssignmentProvider.createGreedyAssignment(customers);
 
     } // end constructor
 
