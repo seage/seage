@@ -186,6 +186,7 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
 
     @Override
     public void noChangeInValueIterationMade(AntColonyEvent e) {
+      // Nothing to do here
     }
 
     @Override
