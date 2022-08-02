@@ -32,11 +32,13 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
 
   protected abstract double generateRandomSolutionValue(
       ProblemInstance instance, IPhenotypeEvaluator<P> evaluator) throws Exception;
+
   protected abstract double generateGreedySolutionValue(
       ProblemInstance instance, IPhenotypeEvaluator<P> evaluator) throws Exception;
+
   protected abstract Map<String, Double> getOptimalValues() throws Exception;
 
-  public ProblemMetadataGenerator(ProblemProvider<P> problemProvider) {
+  protected ProblemMetadataGenerator(ProblemProvider<P> problemProvider) {
     this.problemProvider = problemProvider;
   }
 
@@ -57,39 +59,39 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
   private DataNode createInstancesMetadata(int numberOfTrials) throws Exception {
     DataNode result = new DataNode(INSTANCES_STRING);
     ProblemInfo pi = this.problemProvider.getProblemInfo();
+    List<ProblemInstanceInfo> instances =
+        problemProvider.getProblemInfo().getProblemInstanceInfos();
     Map<String, Double> optimumResults = getOptimalValues();
 
     DecimalFormat df = new DecimalFormat("#");
     df.setMaximumFractionDigits(8);
 
+    Collections.sort(instances, (i1, i2) -> (i1.getInstanceID().compareTo(i2.getInstanceID())));
+
     // iterate through all instances
-    for (String instanceID : getSortedInstanceIDs(pi)) {
+    for (ProblemInstanceInfo pii : instances) {
+      String instanceID = pii.getInstanceID();
       try {
         logger.info("Processing: {}", instanceID);
 
-        ProblemInstanceInfo pii = pi.getProblemInstanceInfo(instanceID);
         ProblemInstance instance = this.problemProvider.initProblemInstance(pii);
         IPhenotypeEvaluator<P> evaluator = this.problemProvider.initPhenotypeEvaluator(instance);
         double[] randomResults = new double[numberOfTrials];
-        double[] greedyResults = new double[numberOfTrials];
+        double greedyResult = Double.MAX_VALUE;
         List<Integer> indexes = new ArrayList<>(numberOfTrials);
 
         for (int i = 0; i < numberOfTrials; i++) {
           indexes.add(i);
         }
 
-        indexes.parallelStream().forEach((i) -> {
-          try {
-            logger.info("Greedy for: {}, trial {}", instanceID, i + 1);
-            greedyResults[i] = generateGreedySolutionValue(instance, evaluator);
-          } catch (Exception ex) {
-            logger.warn("Processing trial error", ex);
-          }
-        });
+        // Get greedy solution value
+        logger.info("Greedy solutions for: {}", instanceID);
+        greedyResult = generateGreedySolutionValue(instance, evaluator);
 
+        // Get random solution values
+        logger.info("Random solutions for: {}", instanceID);
         indexes.parallelStream().forEach((i) -> {
-          try {
-            logger.info("Random for: {}, trial {}", instanceID, i + 1);
+          try {            
             randomResults[i] = generateRandomSolutionValue(instance, evaluator);
           } catch (Exception ex) {
             logger.warn("Processing trial error", ex);
@@ -99,7 +101,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
         DataNode inst = new DataNode("Instance");
         inst.putValue("id", pi.getDataNode(INSTANCES_STRING)
             .getDataNodeById(instanceID).getValue("id"));
-        inst.putValue("greedy", (int) median(greedyResults));
+        inst.putValue("greedy", (int) greedyResult);
         inst.putValue("random", (int) median(randomResults));
 
         if (optimumResults.containsKey(instanceID.toLowerCase())) {
@@ -173,16 +175,6 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
       return (((double) array[array.length / 2] + (double) array[array.length / 2 - 1]) / 2);
     }
     return ((double) array[(array.length / 2)]);
-  }
-
-  private List<String> getSortedInstanceIDs(ProblemInfo pi) throws Exception {
-    List<String> instanceIDs = new ArrayList<>();
-    for (DataNode inst : pi.getDataNode(INSTANCES_STRING).getDataNodes()) {
-      instanceIDs.add(inst.getValueStr("id"));
-    }
-
-    Collections.sort(instanceIDs);
-    return instanceIDs;
   }
 
   /**

@@ -1,6 +1,8 @@
 package org.seage.problem.fsp;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Random;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemMetadataGenerator;
