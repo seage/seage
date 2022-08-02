@@ -1,15 +1,14 @@
 package org.seage.problem.fsp.sannealing;
 
-import org.junit.jupiter.api.Disabled;
-import org.seage.aal.problem.ProblemProviderTestBase;
+import org.junit.platform.commons.annotation.Testable;
+import org.seage.aal.problem.ProblemAlgorithmAdapterTestBase;
 import org.seage.problem.fsp.FspProblemProvider;
+import org.seage.problem.jsp.JspPhenotype;
 
-@Disabled
-public class FspSimulatedAnnealingFactoryTest extends ProblemProviderTestBase
-{
+@Testable
+public class FspSimulatedAnnealingFactoryTest extends ProblemAlgorithmAdapterTestBase<JspPhenotype> {
     public FspSimulatedAnnealingFactoryTest()
     {
-        super(new FspProblemProvider());
+        super(new FspProblemProvider(), "SimulatedAnnealing");
     }
-
 }

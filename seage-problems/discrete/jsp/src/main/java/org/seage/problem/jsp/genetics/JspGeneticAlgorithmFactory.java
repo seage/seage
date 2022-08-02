@@ -41,7 +41,7 @@ import org.seage.problem.jsp.JspPhenotypeEvaluator;
 @Annotations.AlgorithmName("Genetic Algorithm")
 public class JspGeneticAlgorithmFactory
     implements IAlgorithmFactory<JspPhenotype, Subject<Integer>> {
-
+  
   @Override
   public Class<?> getAlgorithmClass() {
     return GeneticAlgorithmAdapter.class;

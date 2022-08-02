@@ -6,75 +6,21 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Launch FspScheduleProvider",
-      "request": "launch",
-      "mainClass": "org.seage.problem.fsp.FspScheduleProvider",
-      "projectName": "seage-problem-fsp"
-    },
-    {
-      "type": "java",
-      "name": "Launch ScheduleProvider",
-      "request": "launch",
-      "mainClass": "org.seage.problem.fsp.ScheduleProvider",
-      "projectName": "seage-problem-fsp"
-    },
-    {
-      "type": "java",
-      "name": "Launch ScheduleProvider",
-      "request": "launch",
-      "mainClass": "org.seage.problem.jsp.ScheduleProvider",
-      "projectName": "seage-problem-jsp"
-    },
-    {
-      "type": "java",
-      "name": "Launch AssignmentProvider",
-      "request": "launch",
-      "mainClass": "org.seage.problem.qap.AssignmentProvider",
-      "projectName": "seage-problem-qap"
-    },
-    {
-      "type": "java",
-      "name": "Launch FspProblemProvider",
-      "request": "launch",
-      "mainClass": "org.seage.problem.fsp.FspProblemProvider",
-      "projectName": "seage-problem-fsp"
-    },
-    {
-      "type": "java",
-      "name": "Launch FspAntColonyTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.fsp.antcolony.FspAntColonyTest",
-      "projectName": "seage-problem-fsp"
-    },
-    {
-      "type": "java",
-      "name": "Launch JspAntColonyTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.jsp.antcolony.JspAntColonyTest",
-      "projectName": "seage-problem-jsp"
-    },
-    {
-      "type": "java",
-      "name": "Launch JspAlgorithmTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.jsp.antcolony.JspAlgorithmTest",
-      "projectName": "seage-problem-jsp"
-    },
-    {
-      "type": "java",
-      "name": "Launch JspGeneticAlgorithmTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.jsp.genetics.JspGeneticAlgorithmTest",
-      "projectName": "seage-problem-jsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug Launcher (list)",
+      "name": "Debug Launcher (info)",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
-      "args": "list"
+      "args": "info"
+    },
+    {
+      "type": "java",
+      "name": "Debug Launcher (details)",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": ["details", "-p", "SAT"]
     },
     {
       "type": "java",
@@ -106,6 +52,25 @@
         "GeneticAlgorithm",
         "-i",
         "berlin52",
+        "-t",
+        "1",
+        "-n",
+        "1"
+      ]
+    },
+    {
+      "type": "java",
+      "name": "Debug Launcher (approach, h2)",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "experiment-approach",
+        "-a",
+        "GeneticAlgorithm",
+        "-i",
+        "SAT:hyflex",
         "-t",
         "1",
         "-n",
@@ -157,31 +122,6 @@
       "env": {
         "DB_URL": "jdbc:postgresql://localhost/seage"
       }
-    },
-    {
-      "type": "java",
-      "name": "Launch MetadataGenerator",
-      "request": "launch",
-      "mainClass": "org.seage.launcher.Launcher",
-      "projectName": "seage-launcher",
-      "args": [
-        "metadata",
-        "-p",
-        "FSP",
-        "-n",
-        "100"
-      ]
-    },
-    {
-      "type": "java",
-      "name": "Launch AssignmentProvider",
-      "request": "launch",
-      "mainClass": "org.seage.problem.qap.AssignmentProvider",
-      "projectName": "seage-problem-qap",
-      "cwd": "${workspaceFolder}",
-      "args": [
-        "seage-problems/discrete/qap/src/main/resources/org/seage/problem/qap/instances/tai12a.dat"
-      ]
     }
   ]
 }

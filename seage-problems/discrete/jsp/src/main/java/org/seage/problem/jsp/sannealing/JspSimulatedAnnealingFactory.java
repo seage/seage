@@ -41,6 +41,7 @@ import org.seage.problem.jsp.JspProblemProvider;
 @Annotations.AlgorithmName("Simulated Annealing")
 public class JspSimulatedAnnealingFactory
     implements IAlgorithmFactory<JspPhenotype, JspSimulatedAnnealingSolution> {
+  
   @Override
   public Class<?> getAlgorithmClass() {
     return SimulatedAnnealingAdapter.class;
@@ -48,12 +49,10 @@ public class JspSimulatedAnnealingFactory
 
   @Override
   public IAlgorithmAdapter<JspPhenotype, JspSimulatedAnnealingSolution> createAlgorithm(
-      ProblemInstance instance, IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator)
-      throws Exception {
-    JspProblemProvider problemProvider = new JspProblemProvider();
-    JspPhenotypeEvaluator evaluator =
-        new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JspJobsDefinition) instance);
-    JspObjectiveFunction objFun = new JspObjectiveFunction(evaluator);
+      ProblemInstance instance, 
+      IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception {
+    // createAlgorithm implementation
+    JspObjectiveFunction objFun = new JspObjectiveFunction((JspPhenotypeEvaluator)phenotypeEvaluator);
     return new SimulatedAnnealingAdapter<JspPhenotype, JspSimulatedAnnealingSolution>(objFun,
         new JspMoveManager((JspJobsDefinition) instance, objFun), phenotypeEvaluator, false) {
       @Override

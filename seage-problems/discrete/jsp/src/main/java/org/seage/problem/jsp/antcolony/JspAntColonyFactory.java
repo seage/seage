@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -29,6 +29,7 @@
 package org.seage.problem.jsp.antcolony;
 
 import org.seage.aal.Annotations;
+import org.seage.aal.Annotations.Broken;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
@@ -51,9 +52,11 @@ import org.seage.problem.jsp.JspProblemProvider;
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
+@Annotations.NotReady
 public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
 {
   Random rnd = new Random();
+
   @Override
   public Class<?> getAlgorithmClass()
   {
@@ -65,10 +68,7 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
     ProblemInstance instance, IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception
   {
     JspJobsDefinition jobs = (JspJobsDefinition) instance;
-    JspProblemProvider problemProvider = new JspProblemProvider();
-    JspPhenotypeEvaluator evaluator =
-        new JspPhenotypeEvaluator(problemProvider.getProblemInfo(), (JspJobsDefinition) instance);
-    JspGraph jspGraph = new JspGraph(jobs, evaluator);
+    JspGraph jspGraph = new JspGraph(jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
     return new AntColonyAdapter<JspPhenotype, Ant>(jspGraph, phenotypeEvaluator)
     {
       @Override
@@ -95,7 +95,7 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
             jobsOper[jobID]++;
           }
 
-          ants[i] = new JspAnt(jspGraph, nodes, jobs, evaluator);
+          ants[i] = new JspAnt(jspGraph, nodes, jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
        }
       }
 

@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -191,29 +191,27 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
 
     @SuppressWarnings("unused")
     public void noChangeInValueIterationMade(FireflySearchEvent<S> e) {
-
+      // Nothing to do here
     }
 
-    // HAD TO IMPLEMENT BECAUSE OF INTERFACE, MAY CAUSE ALGORITHM NOT TO
-    // WORK CORRECTLY
     @Override
     public void newCurrentSolutionFound(FireflySearchEvent<S> e) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      // Nothing to do here
     }
 
     @Override
     public void unimprovingMoveMade(FireflySearchEvent<S> e) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      // Nothing to do here
     }
 
     @Override
     public void improvingMoveMade(FireflySearchEvent<S> e) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      // Nothing to do here
     }
 
     @Override
     public void noChangeInValueMoveMade(FireflySearchEvent<S> e) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      // Nothing to do here
     }
   }
 }

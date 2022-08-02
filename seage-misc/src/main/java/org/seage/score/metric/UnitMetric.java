@@ -1,8 +1,20 @@
-package org.seage.aal.problem.metrics;
+/**
+ * Class represents the Unit metric
+ * 
+ * @author David Omrai
+ */
+
+package org.seage.score.metric;
+
 
 public class UnitMetric {
-  private static double INTERVAL_MIN = 0.0;
-  private static double INTERVAL_MAX = 1.0;
+  private static final double INTERVAL_MIN = 0.0;
+  private static final double INTERVAL_MAX = 1.0;
+
+  /**
+   * Private constructor to hide default one.
+   */
+  private UnitMetric() {}
 
   /**
    * Method returns the metric based on given data.
@@ -36,11 +48,10 @@ public class UnitMetric {
    * @return Return the mapped value of the value.
    */
   private static double mapToInterval(double lowerBound, double upperBound, double value)
-      throws Exception {
+      throws ArithmeticException {
     double valueNormalization = (value - lowerBound) / (upperBound - lowerBound);
     double scaling = valueNormalization * (INTERVAL_MAX - INTERVAL_MIN);
-    double shifting = scaling + INTERVAL_MIN;
-
-    return shifting;
+    // Shifting
+    return scaling + INTERVAL_MIN;
   }
 }

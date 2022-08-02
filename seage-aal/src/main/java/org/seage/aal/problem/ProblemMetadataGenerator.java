@@ -22,15 +22,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
-  private static final Logger logger = LoggerFactory.getLogger(ProblemMetadataGenerator.class.getName());
+  private static final Logger logger = 
+      LoggerFactory.getLogger(ProblemMetadataGenerator.class.getName());
+
+  private static final String INSTANCES_STRING = "Instances";
+  private static final String OPTIMUM_STRING = "optimum";
 
   protected ProblemProvider<P> problemProvider;
 
-  protected abstract double generateRandomSolutionValue(ProblemInstance instance, IPhenotypeEvaluator<P> evaluator) throws Exception;
-  protected abstract double generateGreedySolutionValue(ProblemInstance instance, IPhenotypeEvaluator<P> evaluator) throws Exception;
+  protected abstract double generateRandomSolutionValue(
+      ProblemInstance instance, IPhenotypeEvaluator<P> evaluator) throws Exception;
+
+  protected abstract double generateGreedySolutionValue(
+      ProblemInstance instance, IPhenotypeEvaluator<P> evaluator) throws Exception;
+
   protected abstract Map<String, Double> getOptimalValues() throws Exception;
 
-  public ProblemMetadataGenerator(ProblemProvider<P> problemProvider) {
+  protected ProblemMetadataGenerator(ProblemProvider<P> problemProvider) {
     this.problemProvider = problemProvider;
   }
 
@@ -49,14 +57,14 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
   }
 
   private DataNode createInstancesMetadata(int numberOfTrials) throws Exception {
-    DataNode result = new DataNode("Instances");
+    DataNode result = new DataNode(INSTANCES_STRING);
     ProblemInfo pi = this.problemProvider.getProblemInfo();
     List<ProblemInstanceInfo> instances =
         problemProvider.getProblemInfo().getProblemInstanceInfos();
     Map<String, Double> optimumResults = getOptimalValues();
 
     DecimalFormat df = new DecimalFormat("#");
-    df.setMaximumFractionDigits(8);    
+    df.setMaximumFractionDigits(8);
 
     Collections.sort(instances, (i1, i2) -> (i1.getInstanceID().compareTo(i2.getInstanceID())));
 
@@ -91,14 +99,15 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
         });
 
         DataNode inst = new DataNode("Instance");
-        inst.putValue("id", pi.getDataNode("Instances").getDataNodeById(instanceID).getValue("id"));
+        inst.putValue("id", pi.getDataNode(INSTANCES_STRING)
+            .getDataNodeById(instanceID).getValue("id"));
         inst.putValue("greedy", (int) greedyResult);
         inst.putValue("random", (int) median(randomResults));
 
         if (optimumResults.containsKey(instanceID.toLowerCase())) {
-          inst.putValue("optimum", df.format(optimumResults.get(instanceID.toLowerCase())));
+          inst.putValue(OPTIMUM_STRING, df.format(optimumResults.get(instanceID.toLowerCase())));
         } else {
-          inst.putValue("optimum", "TBA");
+          inst.putValue(OPTIMUM_STRING, "TBA");
         }
 
         inst.putValue("size", instance.getSize());
@@ -128,7 +137,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
         DataNode optimalValue = readOptimalValueLine(line);
 
         results.put(optimalValue.getValue("name").toString(),
-            Double.parseDouble(optimalValue.getValue("optimum").toString()));
+            Double.parseDouble(optimalValue.getValue(OPTIMUM_STRING).toString()));
       }
     }
 
@@ -141,11 +150,11 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
 
       DataNode result = new DataNode("Optimal");
       result.putValue("name", scanner.next().substring(2).toLowerCase());
-      result.putValue("optimum", scanner.next());
+      result.putValue(OPTIMUM_STRING, scanner.next());
 
       return result;
-    } catch(Exception ex) {
-      logger.error("Error reading line: " + line);
+    } catch (Exception ex) {
+      logger.error("Error reading line: {}", line);
       throw ex;
     }
   }
@@ -175,8 +184,8 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
    */
   private static void saveToFile(DataNode dn, String problemName) throws Exception {
     File directory = new File("./output");
-    if (! directory.exists()){
-        directory.mkdir();
+    if (! directory.exists()) {
+      directory.mkdir();
     }
     File path = new File("./output/" + problemName + ".metadata.xml");
 

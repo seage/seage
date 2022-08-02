@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -23,6 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 
 package org.seage.metaheuristic.fireflies;
 
@@ -43,19 +44,9 @@ public abstract class FireflyOperator {
    * 
    * @param s0   - solution to be attracted closer to s1
    * @param s1   - solution of attraction
-   * @param para - parameters of Firefly algorithm
    * @param iter - search iteration
    */
-  abstract public void attract(Solution s0, Solution s1, int iter);
-
-  /**
-   * Returns decreased step of randomness. Function is used only in a case, if
-   * para.withDecreasingRandomness == true
-   * 
-   * @param r    - initial randomness
-   * @param time
-   * @return decreased randomness
-   */
+  public abstract void attract(Solution s0, Solution s1, int iter);
 
   public abstract Solution randomSolution();
 

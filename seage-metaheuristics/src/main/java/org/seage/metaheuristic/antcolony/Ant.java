@@ -1,20 +1,18 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, @see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -25,6 +23,7 @@
  *     Martin Zaloga
  *     - Reimplementation
  */
+
 package org.seage.metaheuristic.antcolony;
 
 import java.util.ArrayList;
@@ -51,10 +50,11 @@ public class Ant {
   protected HashSet<Node> availableNodes;
   private Random rand;
 
-  public Ant( Graph graph, List<Integer> nodeIDs) {
-     this(graph, nodeIDs, System.currentTimeMillis());
+  public Ant(Graph graph, List<Integer> nodeIDs) {
+    this(graph, nodeIDs, System.currentTimeMillis());
   }
-  public Ant( Graph graph, List<Integer> nodeIDs, long randSeed) {
+
+  public Ant(Graph graph, List<Integer> nodeIDs, long randSeed) {
     _graph = graph;   
     _nodePath = new ArrayList<>();
     _edgePath = new ArrayList<>();
@@ -74,7 +74,7 @@ public class Ant {
   }
 
   /**
-   * Do a first exploration if nodeIDs collection is set
+   * Do a first exploration if nodeIDs collection is set.
    * 
    * @return A path traveled
    * @throws Exception
@@ -137,7 +137,7 @@ public class Ant {
   protected void leavePheromone() throws Exception {
     for (Edge edge : _edgePath) {
       edge.addLocalPheromone(quantumPheromone * (edge.getEdgePrice() / _distanceTravelled));
-      if(!_graph._edges.contains(edge)) {
+      if (!_graph._edges.contains(edge)) {
         _graph.addEdge(edge);
       }
     }
@@ -145,8 +145,9 @@ public class Ant {
 
   public List<Integer> getNodeIDsAlongPath() {
     List<Integer> idsPath = new ArrayList<>();
-    for (Node n : _nodePath)
+    for (Node n : _nodePath) {
       idsPath.add(n.getID());
+    }
     return idsPath;
   }
 
@@ -158,8 +159,9 @@ public class Ant {
     Node currentNode = nodePath.get(nodePath.size()-1);
     HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
 
-    if (nextAvailableNodes.isEmpty())
+    if (nextAvailableNodes.isEmpty()) {
       return null;
+    }
 
     int i = 0;
     double[] probabilities = new double[nextAvailableNodes.size()];
@@ -192,7 +194,7 @@ public class Ant {
   }
 
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
-    if(availableNodes == null) {
+    if (availableNodes == null) {
       availableNodes = new HashSet<Node>(_graph.getNodes().values());
     }
     Node lastNode = nodePath.get(nodePath.size()-1);
@@ -201,16 +203,20 @@ public class Ant {
     return availableNodes;
   }
 
-   /**
+  /**
    * Next edges index calculation.
    * @return - Next edges index
+   * @throws Exception
    */
-  protected static int next(double[] probabilities, double randomNumber) {
+  protected static int next(double[] probabilities, double randomNumber) throws Exception {
     double[] probs = new double[probabilities.length];
     double sum = 0;
     for (int i = 0; i < probs.length; i++) {
       sum += probabilities[i]; 
       probs[i] = sum;
+    }
+    if (sum == 0) {
+      throw new Exception("Unexpected value of sum: 0");
     }
     for (int i = 0; i < probs.length; i++) {
       probs[i] /= sum;
@@ -237,7 +243,7 @@ public class Ant {
   }
 
   public double getNodeDistance(List<Node> nodePath, Node node) {
-     return 1.0;
-  };
+    return 1.0;
+  }
 
 }

@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -186,6 +186,7 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
 
     @Override
     public void noChangeInValueIterationMade(AntColonyEvent e) {
+      // Nothing to do here
     }
 
     @Override

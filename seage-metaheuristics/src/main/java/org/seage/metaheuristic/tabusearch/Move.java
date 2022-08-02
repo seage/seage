@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -41,7 +41,7 @@ package org.seage.metaheuristic.tabusearch;
 public interface Move {
 
   /**
-   * The required method <tt>operateOn</tt> accepts a solution to modify and does
+   * The required method <code>operateOn</code> accepts a solution to modify and does
    * so. Note that a new solution is not returned. The original solution is
    * modified.
    * 

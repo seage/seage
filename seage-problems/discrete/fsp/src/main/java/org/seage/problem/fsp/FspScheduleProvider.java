@@ -18,10 +18,10 @@ public class FspScheduleProvider {
   private static Logger logger = LoggerFactory.getLogger(FspScheduleProvider.class.getName());
 
   /**
-   * Method creates solution with the use of greedy algorithm
+   * Method creates solution with the use of greedy algorithm.
    * 
    * @param jobs Problem instance definition
-   * @param randomSeed Random seed.
+   * @param jspPhenoEval Phenotype evaluator
    */
   public static JspPhenotype createGreedySchedule0(JspPhenotypeEvaluator jspPhenoEval,
       JspJobsDefinition jobs) throws Exception {
@@ -144,10 +144,11 @@ public class FspScheduleProvider {
   }
 
   /**
-   * Method creates random schedule
+   * Method creates random schedule.
    * 
-   * @params length Length of schedule
-   * @params randomSeed Random seed
+   * @param jspPhenoEval Phenotype evaluator
+   * @param jobs Jobs to schedule
+   * @param randomSeed Random seed
    */
   public static JspPhenotype createRandomSchedule(JspPhenotypeEvaluator jspPhenoEval,
       JspJobsDefinition jobs, long randomSeed) throws Exception {

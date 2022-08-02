@@ -55,6 +55,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
     ProblemProvider.providerClasses = providerClasses;
   }
 
+  @SuppressWarnings("java:S3776")
   @Override
   public ProblemInfo getProblemInfo() throws Exception {
     if (problemInfo != null) {
@@ -109,7 +110,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
       // metadata ?
       if (metadata != null) {
         DataNode dn = metadata.getDataNodeById(instanceID);
-        if(dn == null) {
+        if (dn == null) {
           logger.warn("No metadata for instance '{}'", instanceID);
         } else {
           instance.putValue("size",dn.getValue("size"));
@@ -130,8 +131,8 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
     for (ClassInfo ci : ClassUtil.searchForClasses(IAlgorithmFactory.class, problemPackageName)) {
       try {
         Class<?> algFactoryClass = Class.forName(ci.getClassName());
-        Annotation an2 = null;
 
+        Annotation an2 = null;
         an2 = algFactoryClass.getAnnotation(Annotations.AlgorithmName.class);
         if (an2 == null) {
           throw new NullPointerException("Unable to get annotation AlgorithmName");
@@ -211,7 +212,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
    * @return Map of problem ids and problem providers.
    * @throws Exception .
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "java:S1452"})
   public static synchronized Map<String, IProblemProvider<Phenotype<?>>> 
       getProblemProviders() throws Exception {
     

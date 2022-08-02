@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -56,7 +56,7 @@ public class IntTerminalSymbol extends TerminalSymbol {
     high = other.high;
   }
 
-  /** @brief sets range of allowed values of this terminal */
+  /** sets range of allowed values of this terminal */
   public void setDomain(int low, int high) {
     this.low = low;
     this.high = high;
@@ -66,7 +66,7 @@ public class IntTerminalSymbol extends TerminalSymbol {
     return pick();
   }
 
-  /** @brief picks integer constant */
+  /** picks integer constant */
   @Override
   public Integer pick() {
     Integer result = (Integer) generator.call();
@@ -83,7 +83,7 @@ public class IntTerminalSymbol extends TerminalSymbol {
     return (Integer) _value;
   }
 
-  /** @brief copy ourself, and return new instance */
+  /** copy ourself, and return new instance */
   @Override
   public Symbol copy() {
     return new IntTerminalSymbol(this);

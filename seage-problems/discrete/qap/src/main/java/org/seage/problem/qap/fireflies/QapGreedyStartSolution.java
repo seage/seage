@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -42,7 +42,7 @@ public class QapGreedyStartSolution extends QapSolution
     public QapGreedyStartSolution(Double[][][] customers) throws Exception
     {
         super(customers);
-        _assign = AssignmentProvider.createGreedyAssignment(customers);
+        assign = AssignmentProvider.createGreedyAssignment(customers);
 
     } // end constructor
 
