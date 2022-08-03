@@ -52,8 +52,9 @@ public class TaskRunner3 implements ITaskRunner {
       }
     }
     synchronized (counter) {
-      while (counter.CoresCurrentlyUsed > 0)
+      while (counter.CoresCurrentlyUsed > 0) {
         counter.wait();
+      }
     }
 
     _logger.trace("finished");
@@ -62,15 +63,17 @@ public class TaskRunner3 implements ITaskRunner {
 
   public static void run(Runnable[] tasks, int cores) throws Exception {
     List<Task> taskList = new ArrayList<Task>();
-    for (int i = 0; i < tasks.length; i++)
+    for (int i = 0; i < tasks.length; i++) {
       taskList.add(new SimpleTask("", tasks[i]));
+    }
     run(taskList, cores);
   }
 
   public static void run(Task[] tasks, int cores) throws Exception {
     List<Task> taskList = new ArrayList<Task>();
-    for (int i = 0; i < tasks.length; i++)
+    for (int i = 0; i < tasks.length; i++) {
       taskList.add(tasks[i]);
+    }
     run(taskList, cores);
   }
 
@@ -98,7 +101,7 @@ public class TaskRunner3 implements ITaskRunner {
       synchronized (_counter) {
         _logger.trace("notifying " + _task.getName() + " after " + (t2 - t1) + "ms");
         _counter.releaseCores(1);
-        _counter.notify();
+        _counter.notifyAll();
       }
     }
   }

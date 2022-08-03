@@ -73,8 +73,9 @@ public class StatementGrammarRule extends GrammarRule {
     // if (left != null && right != null) {
     // symbolTable.putValue(left, right);
     // }
+    // TODO: Fix following
     Object o = null;// children.get(4).eval(symbolTable);
-    return o == null ? right : o;
+    return null; // o == null ? right : o;
   }
 
   /**

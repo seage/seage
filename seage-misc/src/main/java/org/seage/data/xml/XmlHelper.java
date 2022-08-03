@@ -69,7 +69,6 @@ public class XmlHelper {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-    factory.setXIncludeAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
 
     Document doc = builder.parse(is);
@@ -146,13 +145,14 @@ public class XmlHelper {
     writeXml(dataSet, new FileOutputStream(f));
   }
 
-  public static synchronized void writeXml(DataNode dataSet, ZipOutputStream outputStream, String entryName)
-      throws Exception {
+  public static synchronized void writeXml(
+      DataNode dataSet, ZipOutputStream outputStream, String entryName) throws Exception {
     outputStream.putNextEntry(new ZipEntry(entryName));
     writeXml(dataSet, outputStream);
   }
 
-  public static synchronized void writeXml(DataNode dataSet, OutputStream outputStream) throws Exception {
+  public static synchronized void writeXml(
+      DataNode dataSet, OutputStream outputStream) throws Exception {
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
