@@ -5,7 +5,7 @@ import com.beust.jcommander.Parameters;
 
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import org.seage.hh.experimenter2.ExperimenterRunner;
 
 @Parameters(commandDescription = "Perform Experiment Approach")
@@ -43,7 +43,7 @@ public class ExperimentApproachCommand extends Command {
 
   @Override
   public void performCommand() throws Exception {
-    HashMap<String, List<String>> problemInstanceParams = 
+    Map<String, List<String>> problemInstanceParams = 
         ProblemInstanceParamsParser.parseProblemInstanceParams(instanceIDs);
 
     ExperimenterRunner ae = 
