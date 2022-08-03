@@ -3,8 +3,8 @@ package org.seage.hh.experimenter2;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import org.seage.aal.problem.ProblemInfo;
@@ -24,7 +24,7 @@ public class ExperimenterRunner {
 
   private UUID experimentID;
   private String algorithmID;
-  private HashMap<String, List<String>> problemInstanceIDs;
+  private Map<String, List<String>> problemInstanceIDs;
   private int numRuns;
   private int timeoutS;
 
@@ -36,7 +36,7 @@ public class ExperimenterRunner {
    * @param problemInstanceIDs Map of problem instances.
    */
   public ExperimenterRunner(String algorithmID,
-      HashMap<String, List<String>> problemInstanceIDs, int numRuns, int timeoutS)
+      Map<String, List<String>> problemInstanceIDs, int numRuns, int timeoutS)
       throws Exception {
     this.experimentID = UUID.randomUUID();
     this.algorithmID = algorithmID;
