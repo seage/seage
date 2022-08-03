@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -142,6 +142,9 @@ public class HeatmapGenerator {
     // Read the xml file
     File xmlFile = new File(xmlPath);
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+    factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.parse(xmlFile);
 
