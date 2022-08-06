@@ -2,7 +2,6 @@ package org.seage.hh.experimenter2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-//import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -19,7 +18,6 @@ import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
-//import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 import org.seage.hh.experimenter.configurator.ExtendedDefaultConfigurator;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
@@ -41,7 +39,6 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   private UUID experimentID;
   private String problemID;
   private String instanceID;
-  //private String algorithmID;
   private int numSteps;
   private int timeoutS;
   private double bestScore;
@@ -49,6 +46,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   private int solutionPoolSize = 100;
   private String[] algorithmIDs = {
     "GeneticAlgorithm", "TabuSearch", "SimulatedAnnealing", "AntColony"};
+  private Random random = new Random(); // NOSONAR
 
   /**
    * HyperHeuristic1Experimenter constructor.
@@ -61,7 +59,6 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     this.experimentID = experimentID;
     this.problemID = problemID;
     this.instanceID = instanceID;
-    //this.algorithmID = algorithmID;
     this.numSteps = numSteps;
     this.timeoutS = timeoutS;
     this.experimentReporter = experimentReporter;
@@ -119,10 +116,9 @@ public class HyperHeuristic1Experimenter implements Experimenter {
 
         Phenotype<?>[] solutions = (Phenotype<?>[])
           java.lang.reflect.Array.newInstance(problemPhenotypeClass, numSolutions);
-        //List<Phenotype<?>> algSolutions = new ArrayList<>();
         for (int i = 0; i < numSolutions; i++) {
           solutions[i] = this.solutionPool
-              .get(new Random().nextInt(this.solutionPool.size()));
+              .get(random.nextInt(this.solutionPool.size()));
         }
                 
         // Enqueue experiment tasks
@@ -142,9 +138,6 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
-      
-      // Object solution =  experimentTask
-      //     .getExperimentTaskReport().getDataNode("Solutions").getValue("phenotype");
 
       DataNode solutionNodes = experimentTask
           .getExperimentTaskReport().getDataNode("Solutions").getDataNode("Output");
