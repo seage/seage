@@ -49,6 +49,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   private int solutionPoolSize = 100;
   private String[] algorithmIDs = {
     "GeneticAlgorithm", "TabuSearch", "SimulatedAnnealing", "AntColony"};
+  private Random random = new Random();
 
   /**
    * HyperHeuristic1Experimenter constructor.
@@ -122,7 +123,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
         //List<Phenotype<?>> algSolutions = new ArrayList<>();
         for (int i = 0; i < numSolutions; i++) {
           solutions[i] = this.solutionPool
-              .get(new Random().nextInt(this.solutionPool.size()));
+              .get(random.nextInt(this.solutionPool.size()));
         }
                 
         // Enqueue experiment tasks
