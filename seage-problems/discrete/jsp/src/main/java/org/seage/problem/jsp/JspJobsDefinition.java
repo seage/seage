@@ -44,25 +44,21 @@ public class JspJobsDefinition extends ProblemInstance
    * @throws Exception .
    */
   public JspJobsDefinition(
-      ProblemInstanceInfo instanceInfo, InputStream jobsDefinitionStream) throws Exception
-  {
+      ProblemInstanceInfo instanceInfo, InputStream jobsDefinitionStream) throws Exception {
     super(instanceInfo);
     
     createJobInfos(jobsDefinitionStream);
   }
       
-  public int getJobsCount()
-  {
+  public int getJobsCount() {
     return _jobInfos.length;
   }
       
-  public ScheduleJobInfo[] getJobInfos()
-  {
+  public ScheduleJobInfo[] getJobInfos() {
     return _jobInfos;
   }
       
-  public int getMachinesCount()
-  {
+  public int getMachinesCount() {
     return _numMachines;
   }
 
@@ -71,8 +67,7 @@ public class JspJobsDefinition extends ProblemInstance
     return getJobsCount() * getMachinesCount();
   }
       
-  protected void createJobInfos(InputStream jobsDefinitionStream) throws Exception
-  {
+  protected void createJobInfos(InputStream jobsDefinitionStream) throws Exception {
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     // Disabling external entities declarations
     dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
