@@ -15,6 +15,7 @@
  * <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.seage.problem.jsp.tabusearch;
 
 import org.seage.metaheuristic.tabusearch.Move;
@@ -51,5 +52,10 @@ public class JspMove implements Move {
   @Override
   public int hashCode() {
     return (_ix1 << 10) + _ix2 << 5;
+  }
+
+  @Override
+  public boolean equals(Object jspMove) {
+    return jspMove != null && this.hashCode() == jspMove.hashCode();
   }
 }
