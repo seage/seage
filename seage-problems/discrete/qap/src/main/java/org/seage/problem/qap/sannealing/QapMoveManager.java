@@ -20,9 +20,10 @@
 
 /**
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ *   Jan Zmatlik
+ *   - Initial implementation
  */
+
 package org.seage.problem.qap.sannealing;
 
 import java.util.Random;
@@ -31,38 +32,38 @@ import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
 
 /**
- *
+ * .
  * @author Karel Durkota
  */
-public class QapMoveManager implements IMoveManager
-{
+public class QapMoveManager implements IMoveManager {
+  private Random rnd = new Random(); // SONARQUBE FIX
 
-    public Solution getModifiedSolution(Solution solution)
-    {
-        QapSolution qapSolution = ((QapSolution) solution).clone();
+  /**
+   * .
+   * @param solution .
+   * @return
+   */
+  public Solution getModifiedSolution(Solution solution) {
+    QapSolution qapSolution = ((QapSolution) solution).clone();
+    
+    int qapSolutionLength = qapSolution.getAssign().length;
+    int a = rnd.nextInt(qapSolutionLength);
+    int b = rnd.nextInt(qapSolutionLength);
 
-        Random rnd = new Random();
-        int qapSolutionLength = qapSolution.getAssign().length;
-        int a = rnd.nextInt(qapSolutionLength);
-        int b = rnd.nextInt(qapSolutionLength);
-
-        // Swap values if indices are different
-        if (a != b)
-        {
-
-            qapSolution.getAssign()[a] = qapSolution.getAssign()[a] + qapSolution.getAssign()[b];
-            qapSolution.getAssign()[b] = qapSolution.getAssign()[a] - qapSolution.getAssign()[b];
-            qapSolution.getAssign()[a] = qapSolution.getAssign()[a] - qapSolution.getAssign()[b];
-        }
-
-        return qapSolution;
+    // Swap values if indices are different
+    if (a != b) {
+      qapSolution.getAssign()[a] = qapSolution.getAssign()[a] + qapSolution.getAssign()[b];
+      qapSolution.getAssign()[b] = qapSolution.getAssign()[a] - qapSolution.getAssign()[b];
+      qapSolution.getAssign()[a] = qapSolution.getAssign()[a] - qapSolution.getAssign()[b];
     }
 
-    @Override
-    public Solution getModifiedSolution(Solution solution,
-            double currentTemperature) throws Exception
-    {
-        return null;
-    }
+    return qapSolution;
+  }
+
+  @Override
+  public Solution getModifiedSolution(Solution solution,
+      double currentTemperature) throws Exception {
+    return null;
+  }
 
 }
