@@ -17,11 +17,12 @@
  * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
+
 package org.seage.problem.jsp;
 
 import java.io.InputStream;
 import java.util.HashSet;
-
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -67,6 +68,10 @@ public class JspJobsDefinition extends ProblemInstance
   protected void createJobInfos(InputStream jobsDefinitionStream) throws Exception
   {
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    // Disabling external entities declarations
+    dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+    dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+    
     DocumentBuilder db = dbf.newDocumentBuilder();    
     Document xmlDoc = db.parse(jobsDefinitionStream);  
     NodeList jobNodes = xmlDoc.getDocumentElement().getElementsByTagName("job");
