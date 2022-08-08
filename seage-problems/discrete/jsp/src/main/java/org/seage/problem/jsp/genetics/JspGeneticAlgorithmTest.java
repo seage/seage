@@ -19,6 +19,7 @@
 /**
  * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.problem.jsp.genetics;
 
 import java.io.InputStream;
@@ -41,21 +42,27 @@ import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
 
 /**
- *
+ *.
  * @author Richard Malek
- * Edited by David Omrai
+ * @author Edited by David Omrai
  */
-public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>> {
+public class JspGeneticAlgorithmTest 
+    implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>> {
   private Random generator = new Random();
 
+  /**
+   * .
+   * @param args Input arguments.
+   */
   public static void main(String[] args) {
     try {
       String instanceID = "ft10"; 
       String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
-      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(
+          instanceID, ProblemInstanceOrigin.RESOURCE, path);
       JspJobsDefinition jobs = null;
   
-      try(InputStream stream = JspGeneticAlgorithmTest.class.getResourceAsStream(path)) {    
+      try (InputStream stream = JspGeneticAlgorithmTest.class.getResourceAsStream(path)) {
         jobs = new JspJobsDefinition(jobInfo, stream);
       }
 
@@ -66,6 +73,11 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     }
   }
 
+  /**
+   * .
+   * @param jobs .
+   * @throws Exception .
+   */
   public void runAlgorithm(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
@@ -86,9 +98,15 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     gs.startSearching(initialSolutions);
   }
 
+  /**
+   * .
+   * @param jobs .
+   * @throws Exception .
+   */
   public void runAlgorithmAdapter(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
-    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 100, (new Random()).nextLong());
+    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(
+        jobs, 100, generator.nextLong());
 
     AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
 
@@ -96,34 +114,39 @@ public class JspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     JspGeneticAlgorithmFactory factory = new JspGeneticAlgorithmFactory();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     try {
-        IAlgorithmAdapter<JspPhenotype, Subject<Integer>> adapter =  factory.createAlgorithm(jobs, eval);
-        adapter.solutionsFromPhenotype(schedules);
-        adapter.startSearching(params);
-        var solutions = adapter.solutionsToPhenotype();
-        System.out.println(solutions[0].getObjValue());
-        System.out.println(solutions[0].getScore());
+      IAlgorithmAdapter<JspPhenotype, Subject<Integer>> adapter =  factory.createAlgorithm(
+          jobs, eval);
+      adapter.solutionsFromPhenotype(schedules);
+      adapter.startSearching(params);
+      var solutions = adapter.solutionsToPhenotype();
+      System.out.println(solutions[0].getObjValue());
+      System.out.println(solutions[0].getScore());
 
     } catch (Exception e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
 }
 
-  private List<Subject<Integer>> generateInitialSubjects(JspJobsDefinition jobs, int subjectCount) throws Exception {
+  private List<Subject<Integer>> generateInitialSubjects(
+      JspJobsDefinition jobs, int subjectCount) throws Exception {
     ArrayList<Subject<Integer>> result = new ArrayList<>(subjectCount);
 
     JspProblemProvider problemProvider = new JspProblemProvider();
     
-    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, subjectCount, this.generator.nextLong());
+    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(
+      jobs, subjectCount, this.generator.nextLong());
     
-    for (int k = 0; k < subjectCount; k++)
+    for (int k = 0; k < subjectCount; k++) {
       result.add(new Subject<>(schedules[k].getSolution()));
+    }
 
     return result;
   }
 
   private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
     AlgorithmParams result = new AlgorithmParams();
-    DataNode algParamsNode = problemInfo.getDataNode("Algorithms").getDataNodeById("GeneticAlgorithm");
+    DataNode algParamsNode = problemInfo.getDataNode(
+        "Algorithms").getDataNodeById("GeneticAlgorithm");
     for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
       result.putValue(param.getValueStr("name"), param.getValue("init"));
     }
