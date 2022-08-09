@@ -11,6 +11,11 @@ public class SatMove implements Move {
   private int[] _values; // nastavi elem[_index+0] na 0/1
   private int _hash;
 
+  /**
+   * .
+   * @param indexes .
+   * @param values .
+   */
   public SatMove(int[] indexes, int[] values) {
     _indexes = indexes;
     _values = values;
@@ -45,4 +50,10 @@ public class SatMove implements Move {
   public int hashCode() {
     return _hash;
   }
+
+  @Override
+  public boolean equals(Object satMove) {
+    return satMove != null && this.hashCode() == satMove.hashCode();
+  }
 }
+
