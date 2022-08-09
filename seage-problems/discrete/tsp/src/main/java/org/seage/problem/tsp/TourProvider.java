@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TourProvider {
   private static Logger logger = LoggerFactory.getLogger(TourProvider.class.getName());
+  private static Random random = new Random(); // sonar fix
 
   /**. */
   public static Integer[] createGreedyTour(City[] cities, long randomSeed) throws Exception {
@@ -75,7 +76,6 @@ public class TourProvider {
 
   /**. */
   public static Integer[] createRandomTour(int length) {
-    Random random = new Random();
     List<Integer> listTour = new ArrayList<Integer>();
     for (int i = 0; i < length; i++) {
       listTour.add(i + 1);
