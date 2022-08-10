@@ -61,15 +61,15 @@ public class InfoCommand extends Command {
     }
     problemLineDashes = problemLine.replaceAll("[A-Z]| ", "-");
 
-    logger.info("------------------- {}", problemLineDashes);
-    logger.info("Algorithm / Problem {}", problemLine);
-    logger.info("------------------- {}", problemLineDashes);
+    logger.info("-------------------   {}", problemLineDashes);
+    logger.info("Algorithm / Problem   {}", problemLine);
+    logger.info("-------------------   {}", problemLineDashes);
     
     List<String> algList = new ArrayList<>(algMap.keySet());
     Collections.sort(algList);
     for (String alg : algList) {
       List<String> algProblems = algMap.get(alg);
-      String line = String.format("%-20s", alg); 
+      String line = String.format("%-22s", alg); 
       
       for (String problemId : problemList) {
         if (algProblems.contains(problemId)) {
@@ -80,6 +80,6 @@ public class InfoCommand extends Command {
       }
       logger.info(line);      
     }
-    logger.info("------------------- {}", problemLineDashes);
+    logger.info("-------------------   {}", problemLineDashes);
   }
 }
