@@ -23,13 +23,14 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.problem.tsp.tabusearch;
 
 import org.seage.metaheuristic.tabusearch.Move;
 import org.seage.metaheuristic.tabusearch.Solution;
 
 /**
- *
+ * .
  * @author Richard Malek
  */
 public class TspMove implements Move {
@@ -52,7 +53,9 @@ public class TspMove implements Move {
     tour[ix2] = tmpIx;
   } // end operateOn
 
-  /** Identify a move for SimpleTabuList */
+  /**
+   * Identify a move for SimpleTabuList.
+   */
   @Override
   public int hashCode() {
     // return _hashCode;
@@ -62,6 +65,11 @@ public class TspMove implements Move {
   @Override
   public String toString() {
     return "{" + ix1 + ", " + ix2 + "}";
+  }
+
+  @Override
+  public boolean equals(Object tspMove) {
+    return tspMove != null && this.hashCode() == tspMove.hashCode();
   }
 
 } // end class MySwapMove

@@ -20,53 +20,59 @@
 
 /**
  * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ *   Richard Malek
+ *   - Initial implementation
  */
+
 package org.seage.problem.qap.fireflies;
 
 import org.seage.metaheuristic.fireflies.Move;
 import org.seage.metaheuristic.fireflies.Solution;
 
 /**
- *
+ * .
  * @author Karel Durkota
  */
-public class QapSwapMove implements Move
-{
-    public int customer;
-    public int movement;
+public class QapSwapMove implements Move {
+  public int customer;
+  public int movement;
 
-    public QapSwapMove(int customer, int movement)
-    {
-        this.customer = customer;
-        this.movement = movement;
-    } // end constructor
+  public QapSwapMove(int customer, int movement) {
+    this.customer = customer;
+    this.movement = movement;
+  } // end constructor
 
-    @Override
-    public void operateOn(Solution soln)
-    {
-        Integer[] assign = ((QapSolution) soln).assign;
-        int pos1 = -1;
-        int pos2 = -1;
+  @Override
+  public void operateOn(Solution soln) {
+    Integer[] assign = ((QapSolution) soln).assign;
+    int pos1 = -1;
+    int pos2 = -1;
 
-        // Find positions
-        for (int i = 0; i < assign.length && pos1 < 0; i++)
-            if (assign[i] == customer)
-                pos1 = i;
-        pos2 = pos1 + movement;
+    // Find positions
+    for (int i = 0; i < assign.length && pos1 < 0; i++) {
+      if (assign[i] == customer) {
+        pos1 = i;
+      }
+    }
+    pos2 = pos1 + movement;
 
-        // Swap
-        int cust2 = assign[pos2];
-        assign[pos1] = cust2;
-        assign[pos2] = customer;
-    } // end operateOn
+    // Swap
+    int cust2 = assign[pos2];
+    assign[pos1] = cust2;
+    assign[pos2] = customer;
+  } // end operateOn
 
-    /** Identify a move for SimpleTabuList */
-    @Override
-    public int hashCode()
-    {
-        return customer;
-    } // end hashCode
+  /** 
+   * Identify a move for SimpleTabuList.
+  */
+  @Override
+  public int hashCode() {
+    return customer;
+  } // end hashCode
+
+  @Override
+  public boolean equals(Object qapSwapMove) {
+    return qapSwapMove != null && this.hashCode() == qapSwapMove.hashCode();
+  }
 
 } // end class MySwapMove

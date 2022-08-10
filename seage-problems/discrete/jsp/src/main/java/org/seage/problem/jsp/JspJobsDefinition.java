@@ -17,11 +17,11 @@
  * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
+
 package org.seage.problem.jsp;
 
 import java.io.InputStream;
 import java.util.HashSet;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -36,26 +36,29 @@ public class JspJobsDefinition extends ProblemInstance
 {
   protected ScheduleJobInfo[] _jobInfos;
   protected int _numMachines;
-      
-  public JspJobsDefinition(ProblemInstanceInfo instanceInfo, InputStream jobsDefinitionStream) throws Exception
-  {
+  
+  /**
+   * .
+   * @param instanceInfo .
+   * @param jobsDefinitionStream .
+   * @throws Exception .
+   */
+  public JspJobsDefinition(
+      ProblemInstanceInfo instanceInfo, InputStream jobsDefinitionStream) throws Exception {
     super(instanceInfo);
     
     createJobInfos(jobsDefinitionStream);
   }
       
-  public int getJobsCount()
-  {
+  public int getJobsCount() {
     return _jobInfos.length;
   }
       
-  public ScheduleJobInfo[] getJobInfos()
-  {
+  public ScheduleJobInfo[] getJobInfos() {
     return _jobInfos;
   }
       
-  public int getMachinesCount()
-  {
+  public int getMachinesCount() {
     return _numMachines;
   }
 
@@ -64,9 +67,12 @@ public class JspJobsDefinition extends ProblemInstance
     return getJobsCount() * getMachinesCount();
   }
       
-  protected void createJobInfos(InputStream jobsDefinitionStream) throws Exception
-  {
+  protected void createJobInfos(InputStream jobsDefinitionStream) throws Exception {
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    // Disabling external entities declarations
+    dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+    dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+    
     DocumentBuilder db = dbf.newDocumentBuilder();    
     Document xmlDoc = db.parse(jobsDefinitionStream);  
     NodeList jobNodes = xmlDoc.getDocumentElement().getElementsByTagName("job");
@@ -74,24 +80,27 @@ public class JspJobsDefinition extends ProblemInstance
     HashSet<Integer> machines = new HashSet<Integer>();
     _jobInfos = new ScheduleJobInfo[jobNodes.getLength()];
     
-    for(int i=0;i<jobNodes.getLength();i++)
-    {
+    for (int i = 0; i < jobNodes.getLength(); i++) {
       Element jobNode = (Element)jobNodes.item(i);
       Integer jobID = Integer.parseInt(jobNode.getAttributes().getNamedItem("id").getNodeValue());
       NodeList operationNodes = jobNode.getElementsByTagName("operation");
-      ScheduleOperationInfo[] operationInfos = new ScheduleOperationInfo[operationNodes.getLength()];
-      for(int j=0;j<operationNodes.getLength();j++)
-      {
+      ScheduleOperationInfo[] operationInfos = new ScheduleOperationInfo[
+        operationNodes.getLength()];
+      for (int j = 0; j < operationNodes.getLength(); j++) {
         Node operNode = operationNodes.item(j);
         ScheduleOperationInfo oper = new ScheduleOperationInfo();
-        oper.OperationID = Integer.parseInt(operNode.getAttributes().getNamedItem("number").getNodeValue());
+        oper.OperationID = Integer.parseInt(
+          operNode.getAttributes().getNamedItem("number").getNodeValue());
         oper.JobID = jobID;
-        oper.MachineID = Integer.parseInt(operNode.getAttributes().getNamedItem("machineID").getNodeValue());
-        oper.Length = Integer.parseInt(operNode.getAttributes().getNamedItem("length").getNodeValue());
+        oper.MachineID = Integer.parseInt(
+          operNode.getAttributes().getNamedItem("machineID").getNodeValue());
+        oper.Length = Integer.parseInt(
+          operNode.getAttributes().getNamedItem("length").getNodeValue());
         operationInfos[j] = oper;
         
-        if(!machines.contains(oper.MachineID))
+        if (!machines.contains(oper.MachineID)) {
           machines.add(oper.MachineID);
+        }
       }
       _jobInfos[i] = new ScheduleJobInfo(jobID, operationInfos);
     }

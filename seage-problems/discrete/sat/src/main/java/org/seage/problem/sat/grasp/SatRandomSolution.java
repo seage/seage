@@ -20,6 +20,7 @@
 /**
  * Contributors: Martin Zaloga - Initial implementation
  */
+
 package org.seage.problem.sat.grasp;
 
 import java.util.Random;
@@ -28,14 +29,18 @@ import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 
 /**
- *
+ * .
  * @author Martin Zaloga
  */
 public class SatRandomSolution extends SatSolution {
   private static final long serialVersionUID = -3426994807179668189L;
-
+  private Random rnd = new Random(); // solar fix
   private int _countLiterals;
 
+  /**
+   * .
+   * @param formula .
+   */
   public SatRandomSolution(Formula formula) {
     super();
     _countLiterals = formula.getLiteralCount();
@@ -43,7 +48,6 @@ public class SatRandomSolution extends SatSolution {
   }
 
   private void initRandSol(Formula formula) {
-    Random rnd = new Random();
     _litValues = new Boolean[_countLiterals];
     for (int i = 0; i < _countLiterals; i++) {
       _litValues[i] = rnd.nextBoolean();
