@@ -23,29 +23,30 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.classutil;
 
 import java.net.URL;
 
 /**
- *
+ * .
  * @author Richard Malek
  */
 public class ClassInfo {
-  private String _className;
-  private URL[] _classPaths;
+  private String className;
+  private URL[] classPaths;
 
   public ClassInfo(String className, URL[] classPaths) {
-    _className = className;
-    _classPaths = classPaths;
+    this.className = className;
+    this.classPaths = classPaths;
   }
 
   public String getClassName() {
-    return _className;
+    return className;
   }
 
   public URL[] getClassPaths() {
-    return _classPaths;
+    return classPaths;
   }
 
 }

@@ -20,7 +20,6 @@
  * Contributors: Richard Malek - Initial implementation
  */
 
-
 package org.seage.classutil;
 
 import com.google.common.collect.ImmutableSet;
@@ -31,7 +30,7 @@ import java.util.List;
 
 
 /**
- *
+ * .
  * @author Richard Malek
  */
 public class ClassUtil {
@@ -49,7 +48,7 @@ public class ClassUtil {
       }
 
       Class<?> c = Class.forName(className);
-      if (searchForParent(classObj, c)) {
+      if (classObj.isAssignableFrom(c)) {
         result.add(new ClassInfo(c.getCanonicalName(), null));
       }
     }
@@ -83,30 +82,4 @@ public class ClassUtil {
     }
     return result.toArray(new String[0]);
   }
-
-  private static boolean searchForParent(Class<?> parent, Class<?> current) {
-    ArrayList<Class<?>> cls = new ArrayList<Class<?>>();
-
-    for (Class<?> c : current.getInterfaces()) {
-      cls.add(c);
-    }
-
-    if (current.getSuperclass() != null) {
-      cls.add(current.getSuperclass());
-    }
-
-    if (cls.isEmpty()) {
-      return false;
-    } else {
-      for (Class<?> c : cls) {
-        if (c.isAssignableFrom(parent)) {
-          return true;
-        } else {
-          return searchForParent(parent, c);
-        }
-      }
-    }
-    return false;
-  }
-
 }
