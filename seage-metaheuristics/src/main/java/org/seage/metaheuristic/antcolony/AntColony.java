@@ -65,20 +65,20 @@ public class AntColony {
    * @param graph .
    */
   public AntColony(Graph graph) {
-    this.eventProducer = new AlgorithmEventProducer<>(new AntColonyEvent(this));
+    eventProducer = new AlgorithmEventProducer<>(new AntColonyEvent(this));
     this.graph = graph;
-    this.roundBest = Double.MAX_VALUE;
-    this.globalBest = Double.MAX_VALUE;
-    this.started = false;
-    this.stopped = false;
+    roundBest = Double.MAX_VALUE;
+    globalBest = Double.MAX_VALUE;
+    started = false;
+    stopped = false;
   }
 
   public void addAntColonyListener(IAlgorithmListener<AntColonyEvent> listener) {
-    this.eventProducer.addAlgorithmListener(listener);
+    eventProducer.addAlgorithmListener(listener);
   }
 
   public void removeAntColonyListener(IAlgorithmListener<AntColonyEvent> listener) {
-    this.eventProducer.removeGeneticSearchListener(listener);
+    eventProducer.removeGeneticSearchListener(listener);
   }
 
   /**
@@ -98,63 +98,63 @@ public class AntColony {
     this.alpha = alpha;
     this.beta = beta;
     this.quantumPheromone = quantumPheromone;
-    this.graph.setEvaporCoeff(evaporCoeff);
-    this.graph.setDefaultPheromone(defaultPheromone);
+    graph.setEvaporCoeff(evaporCoeff);
+    graph.setDefaultPheromone(defaultPheromone);
   }
 
   /**
    * Main part of ant-colony algorithm.
    */
   public void startExploring(Node startingNode, Ant[] ants) throws Exception {
-    this.started = this.keepRunning = true;
-    this.stopped = false;
-    this.currentIteration = 0;
-    this.globalBest = Double.MAX_VALUE;
+    started = keepRunning = true;
+    stopped = false;
+    currentIteration = 0;
+    globalBest = Double.MAX_VALUE;
     this.ants = ants;
 
-    this.eventProducer.fireAlgorithmStarted();
+    eventProducer.fireAlgorithmStarted();
 
     prepareGraph();
 
-    while (this.currentIteration < this.numIterations && this.keepRunning) {
-      this.currentIteration++;
+    while (currentIteration < numIterations && keepRunning) {
+      currentIteration++;
       var antReports = new ArrayList<List<Edge>>();
 
-      for (int j = 0; j < this.ants.length && this.keepRunning; j++) {
+      for (int j = 0; j < this.ants.length && keepRunning; j++) {
         /// EXPLORE
         var antReport = this.ants[j].explore(startingNode);
         antReports.add(antReport);
       }
       resolveRound(antReports);
-      this.graph.evaporate();
-      this.graph.prune(this.currentIteration);
-      this.eventProducer.fireIterationPerformed();
+      graph.evaporate();
+      graph.prune(currentIteration);
+      eventProducer.fireIterationPerformed();
     }
-    this.eventProducer.fireAlgorithmStopped();
-    this.stopped = true;
+    eventProducer.fireAlgorithmStopped();
+    stopped = true;
   }
 
   public void stopExploring() {
-    this.keepRunning = false;
+    keepRunning = false;
   }
 
   private void prepareGraph() {
-    for (Ant a : this.ants) {
-      if (!this.keepRunning) {
+    for (Ant a : ants) {
+      if (!keepRunning) {
         break;
       }
       try {
-        a.setParameters(this.alpha, this.beta, this.quantumPheromone);
+        a.setParameters(alpha, beta, quantumPheromone);
 
         if (a.getNodeIDsAlongPath().isEmpty()) {
           continue;
         }      
         List<Edge> path = a.doFirstExploration();
-        if (a.getDistanceTravelled() < this.globalBest) {
-          this.globalBest = a.getDistanceTravelled();          
-          this.bestPath = new ArrayList<>(path);
-          this.bestAnt = a;
-          this.eventProducer.fireNewBestSolutionFound();
+        if (a.getDistanceTravelled() < globalBest) {
+          globalBest = a.getDistanceTravelled();          
+          bestPath = new ArrayList<>(path);
+          bestAnt = a;
+          eventProducer.fireNewBestSolutionFound();
         }
       } catch (Exception e) {
         logger.warn("Unable to do a first exploration", e);
@@ -166,31 +166,31 @@ public class AntColony {
    * Evaluation for each iteration.
    */
   private void resolveRound(ArrayList<List<Edge>> antReports) {
-    this.roundBest = Double.MAX_VALUE;
+    roundBest = Double.MAX_VALUE;
     boolean newBest = false;
     double pathLength = 0;
     int counter = 0;
     for (List<Edge> path : antReports) {
-      if (this.bestPath == null) {
-        this.bestPath = new ArrayList<>(path);;
+      if (bestPath == null) {
+        bestPath = new ArrayList<>(path);;
       }
 
-      pathLength = this.ants[counter]._distanceTravelled;
+      pathLength = ants[counter]._distanceTravelled;
 
-      if (pathLength < this.roundBest) {
-        this.roundBest = pathLength;
+      if (pathLength < roundBest) {
+        roundBest = pathLength;
       }
 
-      if (this.roundBest < this.globalBest) {
-        this.globalBest = this.roundBest;
-        this.bestPath = new ArrayList<Edge>(path);
+      if (roundBest < globalBest) {
+        globalBest = roundBest;
+        bestPath = new ArrayList<Edge>(path);
         newBest = true;
-        bestAnt = this.ants[counter];
+        bestAnt = ants[counter];
       }
       counter++;
     }
     if (newBest) {
-      this.eventProducer.fireNewBestSolutionFound();
+      eventProducer.fireNewBestSolutionFound();
     }
   }
 
@@ -200,11 +200,11 @@ public class AntColony {
    * @return The best path
    */
   public List<Edge> getBestPath() {
-    return this.bestPath;
+    return bestPath;
   }
 
   public Ant getBestAnt() {
-    return this.bestAnt;
+    return bestAnt;
   }
 
   /**
@@ -213,18 +213,18 @@ public class AntColony {
    * @return - Value of the best solution
    */
   public double getGlobalBest() {
-    return this.globalBest;
+    return globalBest;
   }
 
   public long getCurrentIteration() {
-    return this.currentIteration;
+    return currentIteration;
   }
 
   public boolean isRunning() {
-    return this.started && !this.stopped;
+    return started && !stopped;
   }
 
   public Graph getGraph() {
-    return this.graph;
+    return graph;
   }
 }
