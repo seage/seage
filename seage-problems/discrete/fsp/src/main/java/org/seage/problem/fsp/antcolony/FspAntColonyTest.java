@@ -25,27 +25,27 @@
  *   David Omrai
  *   - Jsp implementation
  */
+
 package org.seage.problem.fsp.antcolony;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-
-import org.seage.data.DataNode;
-import org.seage.metaheuristic.IAlgorithmListener;
-
-import org.seage.metaheuristic.antcolony.Ant;
-import org.seage.metaheuristic.antcolony.AntColony;
-import org.seage.metaheuristic.antcolony.AntColonyEvent;
-import org.seage.metaheuristic.antcolony.Edge;
-import org.seage.metaheuristic.antcolony.Graph;
 
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+
+import org.seage.data.DataNode;
+
+import org.seage.metaheuristic.IAlgorithmListener;
+import org.seage.metaheuristic.antcolony.Ant;
+import org.seage.metaheuristic.antcolony.AntColony;
+import org.seage.metaheuristic.antcolony.AntColonyEvent;
+import org.seage.metaheuristic.antcolony.Edge;
+import org.seage.metaheuristic.antcolony.Graph;
+
 import org.seage.problem.fsp.FspJobsDefinition;
 import org.seage.problem.fsp.FspProblemProvider;
 import org.seage.problem.jsp.JspPhenotype;
@@ -54,46 +54,48 @@ import org.seage.problem.jsp.antcolony.JspAnt;
 import org.seage.problem.jsp.antcolony.JspGraph;
 
 /**
- * 
+ * .
  * @author Richard Malek
- * Edited by David Omrai
+ * @author Edited by David Omrai
  */
-public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
-{
+public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   private int _edges;
   private Random generator = new Random();
 
-  public static void main(String[] args)
-  {
-    try
-    {
+  /**
+   * .
+   * @param args .
+   */
+  public static void main(String[] args) {
+    try {
       String instanceID = "tai100_20_01";
       // String instanceID = "tai100_20_02";
 
       String path = String.format("/org/seage/problem/fsp/instances/%s.txt", instanceID);
 
-      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(
+          instanceID, ProblemInstanceOrigin.RESOURCE, path);
       FspJobsDefinition jobs = null;
 
-      try(InputStream stream = FspAntColonyTest.class.getResourceAsStream(path)) {
+      try (InputStream stream = FspAntColonyTest.class.getResourceAsStream(path)) {
         jobs = new FspJobsDefinition(jobInfo, stream);
       }
 
       new FspAntColonyTest().runAlgorithm(jobs);
       new FspAntColonyTest().runAlgorithmAdapter(jobs);
-    }
-    catch (Exception ex)
-    {
+    } catch (Exception ex) {
       ex.printStackTrace();
     }
   }
 
-  public void testing(Graph graph)
-  {
+  /**
+   * .
+   * @param graph .
+   */
+  public void testing(Graph graph) {
     double sum = 0;
     double edges = 0;
-    for (Edge edge : graph.getEdges())
-    {
+    for (Edge edge : graph.getEdges()) {
       sum += edge.getEdgePrice();
       edges++;
     }
@@ -129,18 +131,23 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     FspAntColonyFactory factory = new FspAntColonyFactory();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     try {
-        IAlgorithmAdapter<JspPhenotype, Ant> adapter = factory.createAlgorithm(jobs, eval);
-        adapter.solutionsFromPhenotype(schedules);
-        adapter.startSearching(params);
-        var solutions = adapter.solutionsToPhenotype();        
-        System.out.println(adapter.getReport().toString());
-        // System.out.println(solutions[0].getScore());
+      IAlgorithmAdapter<JspPhenotype, Ant> adapter = factory.createAlgorithm(jobs, eval);
+      adapter.solutionsFromPhenotype(schedules);
+      adapter.startSearching(params);
+      var solutions = adapter.solutionsToPhenotype();        
+      System.out.println(adapter.getReport().toString());
+      // System.out.println(solutions[0].getScore());
 
     } catch (Exception e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
   }
 
+  /**
+   * .
+   * @param jobs .
+   * @throws Exception .
+   */
   public void runAlgorithm(FspJobsDefinition jobs) throws Exception
   {
     int opersNum = 0;
@@ -156,9 +163,12 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     // double alpha = 1, beta = 3;
 
     int numAnts = 10;
-    double defaultPheromone = 1, localEvaporation = 0.9, quantumPheromone = 10.0;
-    double alpha = 1.1, beta = 1.6;
+    double defaultPheromone = 1;
+    double localEvaporation = 0.9;
+    double quantumPheromone = 10.0;
+    double alpha = 1.1;
 
+    double beta = 1.6;
     FspProblemProvider problemProvider = new FspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
@@ -167,15 +177,17 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     System.out.println("Loaded ...");
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
-    colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, localEvaporation);
+    colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone,
+        localEvaporation);
 
-    Ant ants[] = new Ant[numAnts];
-    for (int i = 0; i < numAnts; i++)
+    Ant[] ants = new Ant[numAnts];
+    for (int i = 0; i < numAnts; i++) {
       ants[i] = new JspAnt(graph, null, jobs, eval);
-    //brain.setParameters(graph.getNodeList().size(), alpha, beta);
+      // brain.setParameters(graph.getNodeList().size(), alpha, beta);
+    }
 
-    long t1 = System.currentTimeMillis();
     // Start from the 0 starting node
+    long t1 = System.currentTimeMillis();
     colony.startExploring(graph.getNodes().get(0), ants);
     long t2 = System.currentTimeMillis();
     // graph.printPheromone();
@@ -188,10 +200,10 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     Integer[] jobArray = new Integer[colony.getBestPath().size()];
     jobArray[0] = colony.getBestPath().get(0).getNode2(graph.getNodes().get(0)).getID();
     int prev = jobArray[0];
-    for (int i = 1; i < jobArray.length; i++)
-    {
-      jobArray[i] = colony.getBestPath().get(i).getNode2(graph.getNodes().get(jobArray[i-1])).getID();
-      prev = jobArray[i];      
+    for (int i = 1; i < jobArray.length; i++) {
+      jobArray[i] =
+          colony.getBestPath().get(i).getNode2(graph.getNodes().get(jobArray[i - 1])).getID();
+      prev = jobArray[i];
     }
     for (int i = 0; i < jobArray.length; i++) {
       System.out.print(jobArray[i] + " ");
@@ -201,46 +213,39 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     System.out.println("Best: " + eval.evaluateSchedule(jobArray));
 
     // for(int i=0;i<graph.getEdges().size();i++) {
-    //   System.out.println(graph.getEdges().get(i));
+    // System.out.println(graph.getEdges().get(i));
     // }
   }
 
   @Override
-  public void algorithmStarted(AntColonyEvent e)
-  {
+  public void algorithmStarted(AntColonyEvent e) {
     System.out.println("algorithmStarted");
 
   }
 
   @Override
-  public void algorithmStopped(AntColonyEvent e)
-  {
+  public void algorithmStopped(AntColonyEvent e) {
     System.out.println("algorithmStopped");
 
   }
 
   @Override
-  public void newBestSolutionFound(AntColonyEvent e)
-  {
-    System.out.println(String.format("%f - %d - %d/%d",
-        e.getAntColony().getGlobalBest(),
-        e.getAntColony().getCurrentIteration(),
-        e.getAntColony().getGraph().getEdges().size(),
+  public void newBestSolutionFound(AntColonyEvent e) {
+    System.out.println(String.format("%f - %d - %d/%d", e.getAntColony().getGlobalBest(),
+        e.getAntColony().getCurrentIteration(), e.getAntColony().getGraph().getEdges().size(),
         _edges));
 
   }
 
   @Override
-  public void noChangeInValueIterationMade(AntColonyEvent e)
-  {
-
+  public void noChangeInValueIterationMade(AntColonyEvent e) {
   }
 
   @Override
-  public void iterationPerformed(AntColonyEvent e)
-  {
-    if(e.getAntColony().getCurrentIteration() % 100 != 0)
+  public void iterationPerformed(AntColonyEvent e) {
+    if (e.getAntColony().getCurrentIteration() % 100 != 0) {
       return;
+    }
     System.out.println("### iterationPerformed: " + e.getAntColony().getCurrentIteration());    
     System.out.println("   - best : " + e.getAntColony().getGlobalBest());
     // System.out.println("   - path : " + e.getAntColony().getBestPath());
