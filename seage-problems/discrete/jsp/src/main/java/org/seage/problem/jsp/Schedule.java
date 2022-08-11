@@ -17,6 +17,7 @@
  * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
+
 package org.seage.problem.jsp;
 
 import java.util.ArrayList;
@@ -28,8 +29,7 @@ import org.seage.data.Pair;
 /**
  * JSP Schedule.
  */
-public class Schedule
-{
+public class Schedule {
   private int _makeSpan;
   private ScheduleCell[] _lastCellInJob;
   private ScheduleCell[] _lastCellOnMachine;
@@ -43,8 +43,11 @@ public class Schedule
   private int[] _endTimeInJob;
   private int[] _endTimeOnMachine;
 
-  public Schedule(JspJobsDefinition jobsDefinition)
-  {
+  /**
+   * .
+   * @param jobsDefinition .
+   */
+  public Schedule(JspJobsDefinition jobsDefinition) {
     _jobsDefinition = jobsDefinition;
     _numJobs = jobsDefinition.getJobsCount();
     _numMachines = jobsDefinition.getMachinesCount();
@@ -57,8 +60,11 @@ public class Schedule
     createSchedule(jobArray);
   }
 
-  public void createSchedule(Integer[] jobArray)
-  {
+  /**
+   * .
+   * @param jobArray .
+   */
+  public void createSchedule(Integer[] jobArray) {
     // Reset the schedule
     _lastCellInJob = new ScheduleCell[_numJobs];
     _lastCellOnMachine = new ScheduleCell[_numMachines];
@@ -77,27 +83,24 @@ public class Schedule
 
     int maxMakeSpan = 0;
 
-    for (int i = 0; i < _numJobs; i++)
-    {
+    for (int i = 0; i < _numJobs; i++) {
       _lastActivityInJobIndex[i] = 0;
       _endTimeInJob[i] = 0;
     }
-    for (int i = 0; i < _numMachines; i++)
-    {
+    for (int i = 0; i < _numMachines; i++) {
       _lastActivityOnMachineIndex[i] = 0;
       _endTimeOnMachine[i] = 0;
     }
     // Dealing with the Permutation FSP?
-    if(jobArray.length == _numJobs) {
-      Integer[] newJobArray = new Integer[_numJobs*_numMachines];
-      for(int i=0;i<newJobArray.length;i++) {
-        newJobArray[i] = jobArray[i%jobArray.length];
+    if (jobArray.length == _numJobs) {
+      Integer[] newJobArray = new Integer[_numJobs * _numMachines];
+      for (int i = 0; i < newJobArray.length; i++) {
+        newJobArray[i] = jobArray[i % jobArray.length];
       }
       jobArray = newJobArray;
     }
 
-    for (int i = 0; i < jobArray.length; i++)
-    {
+    for (int i = 0; i < jobArray.length; i++) {
       indexCurrentJob = jobArray[i] - 1;
 
       indexCurrentOper = _lastActivityInJobIndex[indexCurrentJob]++;
@@ -107,19 +110,15 @@ public class Schedule
 
       indexCurrentMachine = currentOper.MachineID - 1;
 
-      if (_endTimeOnMachine[indexCurrentMachine] > _endTimeInJob[indexCurrentJob])
-      {
+      if (_endTimeOnMachine[indexCurrentMachine] > _endTimeInJob[indexCurrentJob]) {
         _endTimeOnMachine[indexCurrentMachine] += currentOper.Length;
         _endTimeInJob[indexCurrentJob] = _endTimeOnMachine[indexCurrentMachine];
-      }
-      else
-      {
+      } else {
         _endTimeInJob[indexCurrentJob] += currentOper.Length;
         _endTimeOnMachine[indexCurrentMachine] = _endTimeInJob[indexCurrentJob];
       }
 
-      if (_endTimeOnMachine[indexCurrentMachine] > maxMakeSpan)
-      {
+      if (_endTimeOnMachine[indexCurrentMachine] > maxMakeSpan) {
         maxMakeSpan = _endTimeOnMachine[indexCurrentMachine];
         _makeSpan = maxMakeSpan;
       } 
@@ -129,10 +128,10 @@ public class Schedule
     }
   }
 
-  private void addCell(int jobIndex, int machineIndex, ScheduleCell newCell)
-  {
-    if (_lastCellOnMachine[machineIndex] != null)
+  private void addCell(int jobIndex, int machineIndex, ScheduleCell newCell) {
+    if (_lastCellOnMachine[machineIndex] != null) {
       _lastCellOnMachine[machineIndex].setNextCellOnMachine(newCell);
+    }
 
     newCell.setPreviousCellOnMachine(_lastCellOnMachine[machineIndex]);
     newCell.setPreviousCellInJob(_lastCellInJob[jobIndex]);
@@ -140,23 +139,34 @@ public class Schedule
     _lastCellOnMachine[machineIndex] = newCell;
     _lastCellInJob[jobIndex] = newCell;
 
-    if (_mostDistantCell == null)
+    if (_mostDistantCell == null 
+        || newCell.getEndTime() > _mostDistantCell.getEndTime()) {
       _mostDistantCell = newCell;
-    else if (newCell.getEndTime() > _mostDistantCell.getEndTime())
-      _mostDistantCell = newCell;
+    }
   }
 
-  public List<Pair<ScheduleCell>> findCriticalPath() throws Exception
-  {
+  /**
+   * .
+   * @return .
+   * @throws Exception .
+   */
+  public List<Pair<ScheduleCell>> findCriticalPath() throws Exception {
     ArrayList<Pair<ScheduleCell>> results = new ArrayList<Pair<ScheduleCell>>();
     findCriticalPath(_mostDistantCell, results);
     return Collections.unmodifiableList(results);
   }
 
-  private void findCriticalPath(ScheduleCell cell, ArrayList<Pair<ScheduleCell>> criticalPairs) throws Exception
-  {  
-    if (cell == null)
+  /**
+   * .
+   * @param cell .
+   * @param criticalPairs .
+   * @throws Exception .
+   */
+  private void findCriticalPath(
+      ScheduleCell cell, ArrayList<Pair<ScheduleCell>> criticalPairs) throws Exception {  
+    if (cell == null) {
       throw new Exception("Critical path: cell is a null pointer");
+    }
 
     boolean breakFound = false;
 
@@ -164,51 +174,46 @@ public class Schedule
     ScheduleCell prevCellOnMachine = null;
     ScheduleCell prevCellInJob = null;
 
-    while (!breakFound)
-    {
-      if (currCell == null)
-      {
-        if (prevCellOnMachine == null && prevCellInJob == null)
+    while (!breakFound) {
+      if (currCell == null) {
+        if (prevCellOnMachine == null && prevCellInJob == null) {
           throw new Exception("ALL Null pointer");
-        ;
+        }
         throw new Exception("While: Null pointer");
       }
 
       prevCellOnMachine = currCell.getPreviousCellOnMachine();
       prevCellInJob = currCell.getPreviousCellInJob();
 
-      if (prevCellOnMachine == null && prevCellInJob == null)
+      if (prevCellOnMachine == null && prevCellInJob == null) {
         return;
+      }
 
-      if (prevCellInJob == null)
-      {
+      if (prevCellInJob == null) {
         currCell = prevCellOnMachine;
       }
-      else
-      {
-        if (currCell.getStartTime() == prevCellInJob.getEndTime())
-        {
+      else {
+        if (currCell.getStartTime() == prevCellInJob.getEndTime()) {
           breakFound = true;
-        }
-        else
+        } else {
           currCell = prevCellOnMachine;
+        }
       }
     }
 
-    if (prevCellInJob.getPreviousCellOnMachine() != null)
-    {
-      if (prevCellInJob.getStartTime() == prevCellInJob.getPreviousCellOnMachine().getEndTime())
-      {
-        if (prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob() == null ||
-          !prevCellInJob.getPreviousCellOnMachine()
-            .compareStart2EndTo(prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob()))    
-          criticalPairs.add(new org.seage.data.Pair<ScheduleCell>(prevCellInJob.getPreviousCellOnMachine(), prevCellInJob));        
+    if (prevCellInJob.getPreviousCellOnMachine() != null) {
+      if (prevCellInJob.getStartTime() == prevCellInJob.getPreviousCellOnMachine().getEndTime()
+          && (prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob() == null 
+          || !prevCellInJob.getPreviousCellOnMachine().compareStart2EndTo(
+          prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob()))) { 
+        criticalPairs.add(
+            new org.seage.data.Pair<ScheduleCell>(prevCellInJob.getPreviousCellOnMachine(),
+            prevCellInJob));
       }
     }
 
     if (currCell.getNextCellOnMachine() != null &&
-      currCell.getNextCellOnMachine().getStartTime() == currCell.getEndTime())
-    {
+        currCell.getNextCellOnMachine().getStartTime() == currCell.getEndTime()) {
       criticalPairs.add(new Pair<ScheduleCell>(currCell, currCell.getNextCellOnMachine()));
     }
 
