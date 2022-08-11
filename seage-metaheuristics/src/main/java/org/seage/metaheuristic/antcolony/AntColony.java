@@ -42,40 +42,43 @@ import org.slf4j.LoggerFactory;
  * @author Martin Zaloga
  */
 public class AntColony {
-  private static final Logger _logger = LoggerFactory.getLogger(AntColony.class.getName());
-  private AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent>, AntColonyEvent> _eventProducer;
-  private double _roundBest;
-  private double _globalBest;
-  private List<Edge> _bestPath;
-  private Graph _graph;
-  private Ant[] _ants;
+  private static final Logger logger = LoggerFactory.getLogger(AntColony.class.getName());
+  private AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent>, AntColonyEvent> eventProducer;
+  private double roundBest;
+  private double globalBest;
+  private List<Edge> bestPath;
+  private Graph graph;
+  private Ant[] ants;
   private Ant bestAnt;
 
-  private int _numIterations;
-  private boolean _started;
-  private boolean _stopped;
-  private boolean _keepRunning;
-  private long _currentIteration;
-  private double _alpha;
-  private double _beta;
-  private double _quantumPheromone;
+  private int numIterations;
+  private boolean started;
+  private boolean stopped;
+  private boolean keepRunning;
+  private long currentIteration;
+  private double alpha;
+  private double beta;
+  private double quantumPheromone;
 
+  /**
+   * .
+   * @param graph .
+   */
   public AntColony(Graph graph) {
-    _eventProducer = new AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent>, AntColonyEvent>(
-        new AntColonyEvent(this));
-    _graph = graph;
-    _roundBest = Double.MAX_VALUE;
-    _globalBest = Double.MAX_VALUE;
-    _started = false;
-    _stopped = false;
+    this.eventProducer = new AlgorithmEventProducer<>(new AntColonyEvent(this));
+    this.graph = graph;
+    this.roundBest = Double.MAX_VALUE;
+    this.globalBest = Double.MAX_VALUE;
+    this.started = false;
+    this.stopped = false;
   }
 
   public void addAntColonyListener(IAlgorithmListener<AntColonyEvent> listener) {
-    _eventProducer.addAlgorithmListener(listener);
+    this.eventProducer.addAlgorithmListener(listener);
   }
 
   public void removeAntColonyListener(IAlgorithmListener<AntColonyEvent> listener) {
-    _eventProducer.removeGeneticSearchListener(listener);
+    this.eventProducer.removeGeneticSearchListener(listener);
   }
 
   /**
@@ -91,70 +94,70 @@ public class AntColony {
   public void setParameters(
       int numIterations, double alpha, double beta, double quantumPheromone,
       double defaultPheromone, double evaporCoeff) throws Exception {
-    _numIterations = numIterations;
-    _alpha = alpha;
-    _beta = beta;
-    _quantumPheromone = quantumPheromone;
-    _graph.setEvaporCoeff(evaporCoeff);
-    _graph.setDefaultPheromone(defaultPheromone);
+    this.numIterations = numIterations;
+    this.alpha = alpha;
+    this.beta = beta;
+    this.quantumPheromone = quantumPheromone;
+    this.graph.setEvaporCoeff(evaporCoeff);
+    this.graph.setDefaultPheromone(defaultPheromone);
   }
 
   /**
    * Main part of ant-colony algorithm.
    */
   public void startExploring(Node startingNode, Ant[] ants) throws Exception {
-    _started = _keepRunning = true;
-    _stopped = false;
-    _currentIteration = 0;
-    _globalBest = Double.MAX_VALUE;
-    _ants = ants;
+    this.started = this.keepRunning = true;
+    this.stopped = false;
+    this.currentIteration = 0;
+    this.globalBest = Double.MAX_VALUE;
+    this.ants = ants;
 
-    _eventProducer.fireAlgorithmStarted();
+    this.eventProducer.fireAlgorithmStarted();
 
     prepareGraph();
 
-    while (_currentIteration < _numIterations && _keepRunning) {
-      _currentIteration++;
+    while (this.currentIteration < this.numIterations && this.keepRunning) {
+      this.currentIteration++;
       var antReports = new ArrayList<List<Edge>>();
 
-      for (int j = 0; j < _ants.length && _keepRunning; j++) {
+      for (int j = 0; j < this.ants.length && this.keepRunning; j++) {
         /// EXPLORE
-        var antReport = _ants[j].explore(startingNode);
+        var antReport = this.ants[j].explore(startingNode);
         antReports.add(antReport);
       }
       resolveRound(antReports);
-      _graph.evaporate();
-      _graph.prune(_currentIteration);
-      _eventProducer.fireIterationPerformed();
+      this.graph.evaporate();
+      this.graph.prune(this.currentIteration);
+      this.eventProducer.fireIterationPerformed();
     }
-    _eventProducer.fireAlgorithmStopped();
-    _stopped = true;
+    this.eventProducer.fireAlgorithmStopped();
+    this.stopped = true;
   }
 
   public void stopExploring() {
-    _keepRunning = false;
+    this.keepRunning = false;
   }
 
   private void prepareGraph() {
-    for (Ant a : _ants) {
-      if (!_keepRunning) {
+    for (Ant a : this.ants) {
+      if (!this.keepRunning) {
         break;
       }
       try {
-        a.setParameters(_alpha, _beta, _quantumPheromone);
+        a.setParameters(this.alpha, this.beta, this.quantumPheromone);
 
         if (a.getNodeIDsAlongPath().isEmpty()) {
           continue;
         }      
         List<Edge> path = a.doFirstExploration();
-        if (a.getDistanceTravelled() < _globalBest) {
-          _globalBest = a.getDistanceTravelled();          
-          _bestPath = new ArrayList<>(path);
+        if (a.getDistanceTravelled() < this.globalBest) {
+          this.globalBest = a.getDistanceTravelled();          
+          this.bestPath = new ArrayList<>(path);
           this.bestAnt = a;
-          _eventProducer.fireNewBestSolutionFound();
+          this.eventProducer.fireNewBestSolutionFound();
         }
       } catch (Exception e) {
-        _logger.warn("Unable to do a first exploration", e);
+        logger.warn("Unable to do a first exploration", e);
       }
     }
   }
@@ -163,31 +166,31 @@ public class AntColony {
    * Evaluation for each iteration.
    */
   private void resolveRound(ArrayList<List<Edge>> antReports) {
-    _roundBest = Double.MAX_VALUE;
+    this.roundBest = Double.MAX_VALUE;
     boolean newBest = false;
     double pathLength = 0;
     int counter = 0;
     for (List<Edge> path : antReports) {
-      if (_bestPath == null) {
-        _bestPath = new ArrayList<>(path);;
+      if (this.bestPath == null) {
+        this.bestPath = new ArrayList<>(path);;
       }
 
-      pathLength = _ants[counter]._distanceTravelled;
+      pathLength = this.ants[counter]._distanceTravelled;
 
-      if (pathLength < _roundBest) {
-        _roundBest = pathLength;
+      if (pathLength < this.roundBest) {
+        this.roundBest = pathLength;
       }
 
-      if (_roundBest < _globalBest) {
-        _globalBest = _roundBest;
-        _bestPath = new ArrayList<Edge>(path);
+      if (this.roundBest < this.globalBest) {
+        this.globalBest = this.roundBest;
+        this.bestPath = new ArrayList<Edge>(path);
         newBest = true;
-        bestAnt = _ants[counter];
+        bestAnt = this.ants[counter];
       }
       counter++;
     }
     if (newBest) {
-      _eventProducer.fireNewBestSolutionFound();
+      this.eventProducer.fireNewBestSolutionFound();
     }
   }
 
@@ -197,7 +200,7 @@ public class AntColony {
    * @return The best path
    */
   public List<Edge> getBestPath() {
-    return _bestPath;
+    return this.bestPath;
   }
 
   public Ant getBestAnt() {
@@ -210,18 +213,18 @@ public class AntColony {
    * @return - Value of the best solution
    */
   public double getGlobalBest() {
-    return _globalBest;
+    return this.globalBest;
   }
 
   public long getCurrentIteration() {
-    return _currentIteration;
+    return this.currentIteration;
   }
 
   public boolean isRunning() {
-    return _started && !_stopped;
+    return this.started && !this.stopped;
   }
 
   public Graph getGraph() {
-    return _graph;
+    return this.graph;
   }
 }
