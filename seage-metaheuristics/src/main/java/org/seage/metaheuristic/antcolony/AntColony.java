@@ -26,6 +26,7 @@
  *     Martin Zaloga
  *     - Reimplementation
  */
+
 package org.seage.metaheuristic.antcolony;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ * .
  * @author Martin Zaloga
  */
 public class AntColony {
@@ -51,7 +52,8 @@ public class AntColony {
   private Ant bestAnt;
 
   private int _numIterations;
-  private boolean _started, _stopped;
+  private boolean _started;
+  private boolean _stopped;
   private boolean _keepRunning;
   private long _currentIteration;
   private double _alpha;
@@ -76,6 +78,16 @@ public class AntColony {
     _eventProducer.removeGeneticSearchListener(listener);
   }
 
+  /**
+   * .
+   * @param numIterations .
+   * @param alpha .
+   * @param beta .
+   * @param quantumPheromone .
+   * @param defaultPheromone .
+   * @param evaporCoeff .
+   * @throws Exception Throws exception if the values cannot be set.
+   */
   public void setParameters(
       int numIterations, double alpha, double beta, double quantumPheromone,
       double defaultPheromone, double evaporCoeff) throws Exception {
@@ -131,7 +143,7 @@ public class AntColony {
       try {
         a.setParameters(_alpha, _beta, _quantumPheromone);
 
-        if (a.getNodeIDsAlongPath().size() == 0) {
+        if (a.getNodeIDsAlongPath().isEmpty()) {
           continue;
         }      
         List<Edge> path = a.doFirstExploration();
@@ -148,7 +160,7 @@ public class AntColony {
   }
 
   /**
-   * Evaluation for each iteration
+   * Evaluation for each iteration.
    */
   private void resolveRound(ArrayList<List<Edge>> antReports) {
     _roundBest = Double.MAX_VALUE;
@@ -162,8 +174,9 @@ public class AntColony {
 
       pathLength = _ants[counter]._distanceTravelled;
 
-      if (pathLength < _roundBest)
+      if (pathLength < _roundBest) {
         _roundBest = pathLength;
+      }
 
       if (_roundBest < _globalBest) {
         _globalBest = _roundBest;
@@ -173,12 +186,13 @@ public class AntColony {
       }
       counter++;
     }
-    if (newBest)
+    if (newBest) {
       _eventProducer.fireNewBestSolutionFound();
+    }
   }
 
   /**
-   * The best solution
+   * The best solution.
    * 
    * @return The best path
    */
@@ -191,7 +205,7 @@ public class AntColony {
   }
 
   /**
-   * Value finding of the best solution
+   * Value finding of the best solution.
    * 
    * @return - Value of the best solution
    */

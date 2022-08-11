@@ -81,7 +81,7 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
    * @param graph .
    * @param phenotypeEvaluator .
    */
-  public AntColonyAdapter(Graph graph, IPhenotypeEvaluator<P> phenotypeEvaluator) {
+  protected AntColonyAdapter(Graph graph, IPhenotypeEvaluator<P> phenotypeEvaluator) {
     super(phenotypeEvaluator);
     this.algParams = null;
     this.graph = graph;
