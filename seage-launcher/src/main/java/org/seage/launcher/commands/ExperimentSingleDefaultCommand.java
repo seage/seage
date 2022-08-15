@@ -9,15 +9,22 @@ import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmDefaultExperimen
 public class ExperimentSingleDefaultCommand extends Command {
   @Parameter(names = "-p", required = true, description = "ProblemID")
   String problemID;
-  @Parameter(names = "-i", required = true, description = "Problem instances", variableArity = true)
+  @Parameter(
+      names = "-i",
+      required = true,
+      description = "Problem instances [PROBLEM_DOMAIN:instance]",
+      variableArity = true
+  )
   List<String> instances;
   @Parameter(names = "-a", required = true, description = "Algorithms", variableArity = true)
   List<String> algorithms;
-  @Parameter(names = "-n", required = true, description = "Number of random configs per each experiment")
+  @Parameter(
+      names = "-n", required = true, description = "Number of random configs per each experiment")
   int numOfConfigs;
   @Parameter(names = "-t", required = true, description = "Time to run algorithm")
   int algorithmTimeoutS;
-  @Parameter(names = "-s", required = true, description = "Spread around the default parameter value")
+  @Parameter(
+      names = "-s", required = true, description = "Spread around the default parameter value")
   double spread;
 
   @Override

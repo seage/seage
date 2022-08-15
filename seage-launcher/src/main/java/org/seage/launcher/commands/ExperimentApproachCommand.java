@@ -3,7 +3,6 @@ package org.seage.launcher.commands;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.seage.hh.experimenter2.ExperimenterRunner;
@@ -14,7 +13,7 @@ public class ExperimentApproachCommand extends Command {
   @Parameter(
       names = {"-i", "--instance"}, 
       required = true, 
-      description = "Problem instances",
+      description = "Problem instances [PROBLEM_DOMAIN:instance]",
       variableArity = true
   )
   List<String> instanceIDs;

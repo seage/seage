@@ -1,17 +1,21 @@
 package org.seage.launcher.commands;
 
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
+
 import java.util.List;
 
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperimenter;
-
-import com.beust.jcommander.Parameter;
-import com.beust.jcommander.Parameters;
 
 @Parameters(commandDescription = "Perform single feedback experiment")
 public class ExperimentSingleFeedbackCommand extends Command {
   @Parameter(names = "-p", required = true, description = "ProblemID")
   String problemID;
-  @Parameter(names = "-i", required = true, description = "Problem instances", variableArity = true)
+  @Parameter(
+      names = "-i", required = true,
+      description = "Problem instances  [PROBLEM_DOMAIN:instance]", 
+      variableArity = true
+  )
   List<String> instances;
   @Parameter(names = "-a", required = true, description = "Algorithms", variableArity = true)
   List<String> algorithms;
