@@ -26,21 +26,27 @@
  *   - Adding the JSP phenotype implementation
  *   - Fixing the compare method
  */
+
 package org.seage.problem.jsp;
 
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemScoreCalculator;
 
-public class JspPhenotypeEvaluator implements IPhenotypeEvaluator<JspPhenotype>
-{
+public class JspPhenotypeEvaluator implements IPhenotypeEvaluator<JspPhenotype> {
   private String instanceID;
   private JspJobsDefinition jobsDefinition;
 
   private ProblemScoreCalculator scoreCalculator;
 
-  public JspPhenotypeEvaluator(ProblemInfo problemInfo, JspJobsDefinition jobsDefinition) throws Exception
-  {
+  /**
+   * .
+   * @param problemInfo .
+   * @param jobsDefinition .
+   * @throws Exception .
+   */
+  public JspPhenotypeEvaluator(
+      ProblemInfo problemInfo, JspJobsDefinition jobsDefinition) throws Exception {
     this.jobsDefinition = jobsDefinition;
     this.instanceID = jobsDefinition.getProblemInstanceInfo().getInstanceID();
 
@@ -48,14 +54,13 @@ public class JspPhenotypeEvaluator implements IPhenotypeEvaluator<JspPhenotype>
   }
       
   /**
-   * Method evalueates the given phenotype with a number, makespan
+   * Method evalueates the given phenotype with a number, makespan.
    * @param phenotype solution
    * @return double[] with one number representing the makespan
-   * @throws Exception
+   * @throws Exception .
    */
   @Override
-  public double[] evaluate(JspPhenotype phenotype) throws Exception
-  {
+  public double[] evaluate(JspPhenotype phenotype) throws Exception {
     Schedule schedule = new Schedule(jobsDefinition, phenotype.getSolution());
     double makeSpan = schedule.getMakeSpan();
     double score = this.scoreCalculator.calculateInstanceScore(instanceID, makeSpan);
@@ -63,13 +68,11 @@ public class JspPhenotypeEvaluator implements IPhenotypeEvaluator<JspPhenotype>
   }
       
   @Override
-  public int compare(double[] arg0, double[] arg1)
-  {
+  public int compare(double[] arg0, double[] arg1) {
     return (int)(arg1[0] - arg0[0]);
   }
 
-  public double evaluateSchedule(Integer[] jobArray) throws Exception
-  {
+  public double evaluateSchedule(Integer[] jobArray) throws Exception {
     Schedule schedule = new Schedule(jobsDefinition, jobArray);
     return schedule.getMakeSpan();
   }

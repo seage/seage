@@ -21,11 +21,11 @@
  * Contributors: Richard Malek - Initial implementation - Added problem
  * annotations
  */
+
 package org.seage.problem.jsp;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Random;
 
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
@@ -39,35 +39,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
  * @author Richard Malek
  */
 @Annotations.ProblemId("JSP")
 @Annotations.ProblemName("Job Shop Scheduling Problem")
-public class JspProblemProvider extends ProblemProvider<JspPhenotype>
-{
+public class JspProblemProvider extends ProblemProvider<JspPhenotype> {
   private static Logger logger = LoggerFactory.getLogger(JspProblemProvider.class.getName());
 
   @Override
-  public JspJobsDefinition initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
-  {
+  public JspJobsDefinition initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception {
     ProblemInstanceOrigin origin = instanceInfo.getOrigin();
     String path = instanceInfo.getPath();
 
     InputStream stream0;
-    if (origin == ProblemInstanceOrigin.RESOURCE)
+    if (origin == ProblemInstanceOrigin.RESOURCE) {
       stream0 = getClass().getResourceAsStream(path);
-    else
+    } else {
       stream0 = new FileInputStream(path);
+    }
     
     JspJobsDefinition jobsDefinition = null;
     
-    try(InputStream stream=stream0)
-    {
-        jobsDefinition = new JspJobsDefinition(instanceInfo, stream);   
-    }
-    catch (Exception ex)
-    {
+    try (InputStream stream = stream0) {
+      jobsDefinition = new JspJobsDefinition(instanceInfo, stream);   
+    } catch (Exception ex) {
       logger.error("SatProblemProvider.initProblemInstance - readCities failed, path: {}", path);
       throw ex;
     }
@@ -76,25 +72,25 @@ public class JspProblemProvider extends ProblemProvider<JspPhenotype>
   }
 
   @Override
-  public IPhenotypeEvaluator<JspPhenotype> initPhenotypeEvaluator(ProblemInstance problemInstance) throws Exception
-  {
+  public IPhenotypeEvaluator<JspPhenotype> initPhenotypeEvaluator(
+      ProblemInstance problemInstance) throws Exception {
     ProblemInfo pi = this.getProblemInfo();
     JspJobsDefinition jobsDefinition = (JspJobsDefinition) problemInstance;
     return new JspPhenotypeEvaluator(pi, jobsDefinition);
   }
 
   @Override
-  public JspPhenotype[] generateInitialSolutions(ProblemInstance problemInstance, int numSolutions, long randomSeed)
-    throws Exception
-  {
+  public JspPhenotype[] generateInitialSolutions(
+      ProblemInstance problemInstance, int numSolutions, long randomSeed)
+      throws Exception {
     JspJobsDefinition jobs = (JspJobsDefinition)problemInstance;
     JspPhenotype[] result = new JspPhenotype[numSolutions];
     IPhenotypeEvaluator<JspPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
       
-    for(int i=0;i<numSolutions;i++)
-    {
+    for (int i = 0; i < numSolutions; i++) {
       // Create random schedule
-      result[i] = JspScheduleProvider.createRandomSchedule((JspPhenotypeEvaluator) evaluator, jobs, randomSeed);
+      result[i] = JspScheduleProvider.createRandomSchedule((
+        JspPhenotypeEvaluator) evaluator, jobs, randomSeed);
       // Evaluate the random schedule
       double[] objVals = evaluator.evaluate(result[i]);
       result[i].setObjValue(objVals[0]);
@@ -106,8 +102,8 @@ public class JspProblemProvider extends ProblemProvider<JspPhenotype>
   }
 
   @Override
-  public void visualizeSolution(Object[] solution, ProblemInstanceInfo problemInstanceInfo) throws Exception
-  {
+  public void visualizeSolution(
+      Object[] solution, ProblemInstanceInfo problemInstanceInfo) throws Exception {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

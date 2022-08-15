@@ -93,25 +93,10 @@ public class Schedule {
       _endTimeOnMachine[i] = 0;
     }
 
-    // Dealing with the Permutation FSP?
-    // if (jobArray.length == _numJobs) {
-    //   Integer[] newJobArray = new Integer[_numJobs * _numMachines];
-    //   for (int i = 0; i < newJobArray.length; i++) {
-    //     newJobArray[i] = jobArray[i % jobArray.length];
-    //     //System.out.println(newJobArray[i]);
-    //   }
-    //   //System.out.println("-");
-    //   jobArray = newJobArray;
-    // }
-
     for (int i = 0; i < jobArray.length; i++) {
       indexCurrentJob = jobArray[i] - 1;
-      System.out.println(Arrays.toString(jobArray));
-      // if (_lastActivityInJobIndex[indexCurrentJob])
+
       indexCurrentOper = _lastActivityInJobIndex[indexCurrentJob]++;
-      // possibly more than enough operations
-      if (indexCurrentOper == 20)
-        indexCurrentOper = 20;
       
       currentJob = _jobsDefinition.getJobInfos()[indexCurrentJob];
       currentOper = currentJob.getOperationInfos()[indexCurrentOper];

@@ -25,6 +25,7 @@
  *   David Omrai
  *   - Jsp implementation
  */
+
 package org.seage.problem.jsp.antcolony;
 
 import java.util.ArrayList;
@@ -39,9 +40,9 @@ import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 
 /**
- *
+ * .
  * @author Zagy
- * Edited by David Omrai
+ * @author Edited by David Omrai
  */
 public class JspAnt extends Ant {
   JspPhenotypeEvaluator evaluator;
@@ -50,37 +51,50 @@ public class JspAnt extends Ant {
   // For faster performing of the getAvailableNodes() method
   protected int[] lastJobOperations;
 
-  public JspAnt(JspGraph graph, List<Integer> nodeIDs, JspJobsDefinition jobs, JspPhenotypeEvaluator evaluator) {
+  /**
+   * .
+   */
+  public JspAnt(
+      JspGraph graph, List<Integer> nodeIDs,
+      JspJobsDefinition jobs,
+      JspPhenotypeEvaluator evaluator
+  ) {
     super(graph, nodeIDs);
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;
 
     lastJobOperations = new int[this.jobsDefinition.getJobsCount()];
-    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++)
+    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
       lastJobOperations[jobIndex] = 0;
+    }
   }
 
   protected void setNextStep(Edge step, Node lastNode) throws Exception {
     // Increase the operation
     JspGraph jspGraph = (JspGraph)_graph;
     Node nextNode = step.getNode2(lastNode);
-    if(lastNode == nextNode)
+    if (lastNode == nextNode) {
       nextNode = lastNode;
-    lastJobOperations[jspGraph.nodeToJobID(nextNode)-1]++;
+    }
+    lastJobOperations[jspGraph.nodeToJobID(nextNode) - 1]++;
   }
 
-   @Override
+  /**
+   * .
+   */
+  @Override
   protected Edge selectNextStep(List<Node> nodePath) throws Exception {
     Edge nextEdge = super.selectNextStep(nodePath);
-    if (nextEdge != null)
-      setNextStep(nextEdge, nodePath.get(nodePath.size()-1));   
+    if (nextEdge != null) {
+      setNextStep(nextEdge, nodePath.get(nodePath.size() - 1));
+    }
     return nextEdge;
   }
 
   @Override
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
     // Clean the previous available nodes
-    if(availableNodes == null) {
+    if (availableNodes == null) {
       availableNodes = new HashSet<Node>();
     } else {
       availableNodes.clear();
@@ -92,8 +106,9 @@ public class JspAnt extends Ant {
       int jobID = jobIndex + 1;
       int operID = lastJobOperations[jobIndex] + 1;
 
-      if (operID > jobsDefinition.getJobInfos()[jobIndex].getOperationInfos().length)
+      if (operID > jobsDefinition.getJobInfos()[jobIndex].getOperationInfos().length) {
         continue;
+      }
 
       int nodeID = jobID * jspGraph.getFactor() + operID;
       availableNodes.add(this._graph.getNodes().get(nodeID)); 
@@ -105,26 +120,29 @@ public class JspAnt extends Ant {
   @Override
   protected List<Edge> explore(Node startingNode) throws Exception {
     // Clean the array for new exploration
-    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++)
+    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
       lastJobOperations[jobIndex] = 0;
+    }
 
     return super.explore(startingNode);
   }
 
   /**
-   * Edge length calculating
+   * Edge length calculating.
    */
   @Override
   public double getNodeDistance(List<Node> nodePath, Node node) {
     JspGraph jspGraph = (JspGraph)_graph;
     Node end = nodePath.get(nodePath.size() - 1);
     // If the first node is starting node
-    if (end.getID() == 0)
+    if (end.getID() == 0) {
       return 1;
+    }
 
     ArrayList<Integer> path = new ArrayList<>();
-    for (Node n : nodePath.subList(1, nodePath.size())) 
+    for (Node n : nodePath.subList(1, nodePath.size())) {
       path.add(jspGraph.nodeToJobID(n));
+    }
    
     Integer[] prevPath = path.toArray(new Integer[0]);
     path.add(jspGraph.nodeToJobID(node));
@@ -148,9 +166,10 @@ public class JspAnt extends Ant {
   public double getPathCost(List<Edge> path) throws Exception {
     JspGraph jspGraph = (JspGraph)_graph;
     var nodes = Graph.edgeListToNodeList(path);
-    Integer[] jobArray = new Integer[nodes.size()-1];
-    for(int i=1;i<nodes.size();i++)
-      jobArray[i-1] = nodes.get(i).getID() / jspGraph.getFactor();
+    Integer[] jobArray = new Integer[nodes.size() - 1];
+    for (int i = 1; i < nodes.size(); i++) {
+      jobArray[i - 1] = nodes.get(i).getID() / jspGraph.getFactor();
+    }
 
     try {
       return evaluator.evaluateSchedule(jobArray);
