@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch JspAntColonyTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.jsp.antcolony.JspAntColonyTest",
+      "projectName": "seage-problem-jsp"
+    },
+    {
+      "type": "java",
       "name": "Debug Launcher (info)",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
@@ -20,7 +27,11 @@
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
-      "args": ["details", "-p", "SAT"]
+      "args": [
+        "details",
+        "-p",
+        "SAT"
+      ]
     },
     {
       "type": "java",
@@ -68,13 +79,13 @@
       "args": [
         "experiment-approach",
         "-a",
-        "GeneticAlgorithm",
+        "AntColony",
         "-i",
-        "SAT:hyflex",
+        "JSP:ft10",
         "-t",
-        "1",
+        "60",
         "-n",
-        "1"
+        "3"
       ]
     },
     {
