@@ -23,22 +23,26 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
+
 package org.seage.problem.tsp.particles;
 
 import org.seage.metaheuristic.particles.IObjectiveFunction;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TourProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
  * @author Jan Zmatlik
  */
 public class TspObjectiveFunction implements IObjectiveFunction {
-  private City[] _cities;
+  private static final Logger log = LoggerFactory.getLogger(TspObjectiveFunction.class.getName());
+  private City[] cities;
 
   public TspObjectiveFunction(City[] cities) {
-    _cities = cities;
+    this.cities = cities;
   }
 
   @Override
@@ -48,9 +52,9 @@ public class TspObjectiveFunction implements IObjectiveFunction {
     Integer[] tour = currentParticle.getTour();
 
     try {
-      distance = (int) TourProvider.getTourLenght(tour, _cities);
+      distance = (int) TourProvider.getTourLenght(tour, cities);
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error("{}", ex.getMessage(), ex);
     }
 
     particle.setEvaluation(distance);
