@@ -42,7 +42,7 @@ public class Main
         }
         catch(Exception ex)
         {
-            log.error(ex);
+            log.error("{}", ex.getMessage(), ex);
         }
     }
 

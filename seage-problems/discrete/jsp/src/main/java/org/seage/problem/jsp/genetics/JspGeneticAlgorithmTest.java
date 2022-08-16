@@ -40,28 +40,34 @@ import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *.
+ * .
+ * 
  * @author Richard Malek
  * @author Edited by David Omrai
  */
-public class JspGeneticAlgorithmTest 
+public class JspGeneticAlgorithmTest
     implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>> {
+  private static final Logger log =
+      LoggerFactory.getLogger(JspGeneticAlgorithmTest.class.getName());
   private Random generator = new Random();
 
   /**
    * .
+   * 
    * @param args Input arguments.
    */
   public static void main(String[] args) {
     try {
-      String instanceID = "ft10"; 
+      String instanceID = "ft10";
       String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
-      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(
-          instanceID, ProblemInstanceOrigin.RESOURCE, path);
+      ProblemInstanceInfo jobInfo =
+          new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
       JspJobsDefinition jobs = null;
-  
+
       try (InputStream stream = JspGeneticAlgorithmTest.class.getResourceAsStream(path)) {
         jobs = new JspJobsDefinition(jobInfo, stream);
       }
@@ -69,24 +75,25 @@ public class JspGeneticAlgorithmTest
       new JspGeneticAlgorithmTest().runAlgorithm(jobs);
       new JspGeneticAlgorithmTest().runAlgorithmAdapter(jobs);
     } catch (Exception ex) {
-      log.error(ex);
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 
   /**
    * .
+   * 
    * @param jobs .
    * @throws Exception .
    */
   public void runAlgorithm(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
-    System.out.println(jobs.getJobsCount());
+    log.info("{}", jobs.getJobsCount());
     int populationCount = 100;
-    System.out.println("Population: " + populationCount);
+    log.info("Population: {}", populationCount);
     List<Subject<Integer>> initialSolutions = generateInitialSubjects(jobs, populationCount);
-    GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
-        new JspGeneticOperator(), new JspSubjectEvaluator(new JspPhenotypeEvaluator(pi, jobs)));
+    GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(new JspGeneticOperator(),
+        new JspSubjectEvaluator(new JspPhenotypeEvaluator(pi, jobs)));
     gs.addGeneticSearchListener(this);
     gs.setEliteSubjectsPct(5);
     gs.setMutatePopulationPct(5);
@@ -100,13 +107,14 @@ public class JspGeneticAlgorithmTest
 
   /**
    * .
+   * 
    * @param jobs .
    * @throws Exception .
    */
   public void runAlgorithmAdapter(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
-    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(
-        jobs, 100, generator.nextLong());
+    JspPhenotype[] schedules =
+        problemProvider.generateInitialSolutions(jobs, 100, generator.nextLong());
 
     AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
 
@@ -114,28 +122,28 @@ public class JspGeneticAlgorithmTest
     JspGeneticAlgorithmFactory factory = new JspGeneticAlgorithmFactory();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     try {
-      IAlgorithmAdapter<JspPhenotype, Subject<Integer>> adapter =  factory.createAlgorithm(
-          jobs, eval);
+      IAlgorithmAdapter<JspPhenotype, Subject<Integer>> adapter =
+          factory.createAlgorithm(jobs, eval);
       adapter.solutionsFromPhenotype(schedules);
       adapter.startSearching(params);
       var solutions = adapter.solutionsToPhenotype();
-      System.out.println(solutions[0].getObjValue());
-      System.out.println(solutions[0].getScore());
+      log.info("{}", solutions[0].getObjValue());
+      log.info("{}", solutions[0].getScore());
 
-    } catch (Exception e) {
-      log.error(ex);
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage(), ex);
     }
-}
+  }
 
-  private List<Subject<Integer>> generateInitialSubjects(
-      JspJobsDefinition jobs, int subjectCount) throws Exception {
+  private List<Subject<Integer>> generateInitialSubjects(JspJobsDefinition jobs, int subjectCount)
+      throws Exception {
     ArrayList<Subject<Integer>> result = new ArrayList<>(subjectCount);
 
     JspProblemProvider problemProvider = new JspProblemProvider();
-    
-    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(
-      jobs, subjectCount, this.generator.nextLong());
-    
+
+    JspPhenotype[] schedules =
+        problemProvider.generateInitialSolutions(jobs, subjectCount, this.generator.nextLong());
+
     for (int k = 0; k < subjectCount; k++) {
       result.add(new Subject<>(schedules[k].getSolution()));
     }
@@ -145,8 +153,8 @@ public class JspGeneticAlgorithmTest
 
   private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
     AlgorithmParams result = new AlgorithmParams();
-    DataNode algParamsNode = problemInfo.getDataNode(
-        "Algorithms").getDataNodeById("GeneticAlgorithm");
+    DataNode algParamsNode =
+        problemInfo.getDataNode("Algorithms").getDataNodeById("GeneticAlgorithm");
     for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
       result.putValue(param.getValueStr("name"), param.getValue("init"));
     }
@@ -157,27 +165,27 @@ public class JspGeneticAlgorithmTest
 
   @Override
   public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e) {
-    System.out.println("Genetic Algorithm for JSP started.");
+    log.info("Genetic Algorithm for JSP started.");
   }
 
   @Override
   public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e) {
-    System.out.println("Genetic Algorithm for JSP stopped.");
+    log.info("Genetic Algorithm for JSP stopped.");
   }
 
   @Override
   public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e) {
-    System.out.println("New best: " + e.getGeneticSearch().getBestSubject().getFitness()[0]);
+    log.info("New best: {}", e.getGeneticSearch().getBestSubject().getFitness()[0]);
   }
 
   @Override
   public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Integer>> e) {
-
+    // Nothing to do
   }
 
   @Override
   public void iterationPerformed(GeneticAlgorithmEvent<Subject<Integer>> e) {
-    System.out.println("Iteration performed: " + e.getGeneticSearch().getCurrentIteration());
+    log.info("Iteration performed: {}", e.getGeneticSearch().getCurrentIteration());
   }
 
 }

@@ -96,11 +96,11 @@ public class FspProblemProvider extends JspProblemProvider {
       JspPhenotype schedule1 = JspScheduleProvider.createGreedySchedule(jspEval, instance);
       JspPhenotype schedule2 = JspScheduleProvider.createRandomSchedule(jspEval, instance, 1);
 
-      System.out.println("greedy: " + schedule1.getObjValue());
-      System.out.println("random: " + schedule2.getObjValue());
-    } catch (Exception e) {
+      logger.info("greedy: {}", schedule1.getObjValue());
+      logger.info("random: {}", schedule2.getObjValue());
+    } catch (Exception ex) {
       // TODO Auto-generated catch block
-      log.error(ex);
+      logger.error("{}", ex.getMessage(), ex);
     }
   }
 }

@@ -23,31 +23,32 @@
  *   David Omrai
  *   - Test implementation
  */
+
 package org.seage.problem.jsp.antcolony;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
+import org.seage.metaheuristic.antcolony.Edge;
+import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
-import org.seage.metaheuristic.antcolony.Edge;
-import org.seage.metaheuristic.antcolony.Node;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JspGraphTest {
+  private static final Logger log = LoggerFactory.getLogger(JspGraphTest.class.getName());
   static JspJobsDefinition jobs;
 
   @BeforeAll
@@ -55,14 +56,15 @@ public class JspGraphTest {
     try {
       String instanceID = "yn_3x3_example";
       String path = String.format("/org/seage/problem/jsp/test-instances/%s.xml", instanceID);
-      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+      ProblemInstanceInfo jobInfo = 
+          new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
       jobs = null;
 
-      try(InputStream stream = JspGraphTest.class.getResourceAsStream(path)) {
+      try (InputStream stream = JspGraphTest.class.getResourceAsStream(path)) {
         jobs = new JspJobsDefinition(jobInfo, stream);
       }
-    } catch (Exception e) {
-      log.error(ex);
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 

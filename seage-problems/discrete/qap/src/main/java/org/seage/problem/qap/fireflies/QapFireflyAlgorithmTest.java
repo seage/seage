@@ -66,7 +66,7 @@ public class QapFireflyAlgorithmTest implements FireflySearchListener<QapSolutio
         }
         catch (Exception ex)
         {
-            log.error(ex);
+            log.error("{}", ex.getMessage(), ex);
         }
     }
 

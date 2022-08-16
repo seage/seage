@@ -1,20 +1,18 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, @see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -25,6 +23,7 @@
  *   David Omrai
  *   - Jsp implementation
  */
+
 package org.seage.problem.jsp.antcolony;
 
 import java.util.ArrayList;
@@ -34,16 +33,19 @@ import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
-
 import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
  * @author Zagy
- * Edited by David Omrai
+ * @author David Omrai
  */
 public class JspAnt extends Ant {
+  private static final Logger log = LoggerFactory.getLogger(JspAnt.class.getName());
+
   JspPhenotypeEvaluator evaluator;
   JspJobsDefinition jobsDefinition;
 
@@ -56,47 +58,51 @@ public class JspAnt extends Ant {
     this.evaluator = evaluator;
 
     lastJobOperations = new int[this.jobsDefinition.getJobsCount()];
-    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++)
+    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
       lastJobOperations[jobIndex] = 0;
+    }
   }
 
   protected void setNextStep(Edge step, Node lastNode) throws Exception {
     // Increase the operation
-    JspGraph jspGraph = (JspGraph)_graph;
+    JspGraph jspGraph = (JspGraph) _graph;
     Node nextNode = step.getNode2(lastNode);
-    if(lastNode == nextNode)
+    if (lastNode == nextNode) {
       nextNode = lastNode;
-    lastJobOperations[jspGraph.nodeToJobID(nextNode)-1]++;
+    }
+    lastJobOperations[jspGraph.nodeToJobID(nextNode) - 1]++;
   }
 
-   @Override
+  @Override
   protected Edge selectNextStep(List<Node> nodePath) throws Exception {
     Edge nextEdge = super.selectNextStep(nodePath);
-    if (nextEdge != null)
-      setNextStep(nextEdge, nodePath.get(nodePath.size()-1));   
+    if (nextEdge != null) {
+      setNextStep(nextEdge, nodePath.get(nodePath.size() - 1));
+    }
     return nextEdge;
   }
 
   @Override
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
     // Clean the previous available nodes
-    if(availableNodes == null) {
+    if (availableNodes == null) {
       availableNodes = new HashSet<Node>();
     } else {
       availableNodes.clear();
-    }    
+    }
 
-    JspGraph jspGraph = (JspGraph)_graph;
+    JspGraph jspGraph = (JspGraph) _graph;
     // Crate new updated available nodes
     for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
       int jobID = jobIndex + 1;
       int operID = lastJobOperations[jobIndex] + 1;
 
-      if (operID > jobsDefinition.getJobInfos()[jobIndex].getOperationInfos().length)
+      if (operID > jobsDefinition.getJobInfos()[jobIndex].getOperationInfos().length) {
         continue;
+      }
 
       int nodeID = jobID * jspGraph.getFactor() + operID;
-      availableNodes.add(this._graph.getNodes().get(nodeID)); 
+      availableNodes.add(this._graph.getNodes().get(nodeID));
     }
 
     return availableNodes;
@@ -105,27 +111,30 @@ public class JspAnt extends Ant {
   @Override
   protected List<Edge> explore(Node startingNode) throws Exception {
     // Clean the array for new exploration
-    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++)
+    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
       lastJobOperations[jobIndex] = 0;
+    }
 
     return super.explore(startingNode);
   }
 
   /**
-   * Edge length calculating
+   * Edge length calculating.
    */
   @Override
   public double getNodeDistance(List<Node> nodePath, Node node) {
-    JspGraph jspGraph = (JspGraph)_graph;
+    JspGraph jspGraph = (JspGraph) _graph;
     Node end = nodePath.get(nodePath.size() - 1);
     // If the first node is starting node
-    if (end.getID() == 0)
+    if (end.getID() == 0) {
       return 1;
+    }
 
     ArrayList<Integer> path = new ArrayList<>();
-    for (Node n : nodePath.subList(1, nodePath.size())) 
+    for (Node n : nodePath.subList(1, nodePath.size())) {
       path.add(jspGraph.nodeToJobID(n));
-   
+    }
+
     Integer[] prevPath = path.toArray(new Integer[0]);
     path.add(jspGraph.nodeToJobID(node));
     Integer[] nextPath = path.toArray(new Integer[0]);
@@ -135,8 +144,8 @@ public class JspAnt extends Ant {
     try {
       prevTimespan = this.evaluator.evaluateSchedule(prevPath);
       nextTimespan = this.evaluator.evaluateSchedule(nextPath);
-    } catch (Exception e) {
-      log.error(ex);
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage(), ex);
     }
 
     // Get the start node operation length and add one, for the step to another node
@@ -146,11 +155,12 @@ public class JspAnt extends Ant {
 
   @Override
   public double getPathCost(List<Edge> path) throws Exception {
-    JspGraph jspGraph = (JspGraph)_graph;
+    JspGraph jspGraph = (JspGraph) _graph;
     var nodes = Graph.edgeListToNodeList(path);
-    Integer[] jobArray = new Integer[nodes.size()-1];
-    for(int i=1;i<nodes.size();i++)
-      jobArray[i-1] = nodes.get(i).getID() / jspGraph.getFactor();
+    Integer[] jobArray = new Integer[nodes.size() - 1];
+    for (int i = 1; i < nodes.size(); i++) {
+      jobArray[i - 1] = nodes.get(i).getID() / jspGraph.getFactor();
+    }
 
     try {
       return evaluator.evaluateSchedule(jobArray);

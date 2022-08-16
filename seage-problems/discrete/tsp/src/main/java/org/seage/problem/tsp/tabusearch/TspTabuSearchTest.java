@@ -26,7 +26,6 @@
 package org.seage.problem.tsp.tabusearch;
 
 import java.io.FileInputStream;
-
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
 import org.seage.metaheuristic.tabusearch.SimpleTabuList;
 import org.seage.metaheuristic.tabusearch.TabuSearch;
@@ -34,16 +33,20 @@ import org.seage.metaheuristic.tabusearch.TabuSearchEvent;
 import org.seage.metaheuristic.tabusearch.TabuSearchListener;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
  * @author Richard Malek
  */
 public class TspTabuSearchTest implements TabuSearchListener {
+  private static final Logger log = LoggerFactory.getLogger(TspTabuSearchTest.class.getName());
+
   public static void main(String[] args) {
     try {
       // String path = "data/tsp/eil51.tsp";//args[0]; // 426
-      // String path = "data/tsp/eil101.tsp";//args[0]; //
+      // String path = "data/tsp/eil101.tsp";//args[0]; // ?
       // String path = "data/tsp/berlin52.tsp";//args[0]; // 7542
       // String path = "data/tsp/ch130.tsp";//args[0]; // 6110
       // String path = "data/tsp/lin318.tsp";//args[0]; // 42029
@@ -52,19 +55,21 @@ public class TspTabuSearchTest implements TabuSearchListener {
 
       new TspTabuSearchTest().run(path);
     } catch (Exception ex) {
-      log.error(ex);
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 
   public void run(String path) throws Exception {
     City[] cities = CityProvider.readCities(new FileInputStream(path));
-    System.out.println("Loading cities from path: " + path);
-    System.out.println("Number of cities: " + cities.length);
+    log.info("Loading cities from path: {}", path);
+    log.info("Number of cities: {}", cities.length);
 
     TabuSearch ts = new TabuSearch(
-        // new Tspr
         // new TspRandomSolution(cities),
-        new TspGreedySolution(cities), new TspMoveManager(), new TspObjectiveFunction(cities), new SimpleTabuList(50),
+        new TspGreedySolution(cities), 
+        new TspMoveManager(), 
+        new TspObjectiveFunction(cities), 
+        new SimpleTabuList(50),
         new BestEverAspirationCriteria(), false);
 
     ts.addTabuSearchListener(this);
@@ -74,38 +79,39 @@ public class TspTabuSearchTest implements TabuSearchListener {
 
   @Override
   public void newBestSolutionFound(TabuSearchEvent e) {
-    System.out
-        .println(e.getTabuSearch().getBestSolution().toString() + " - " + e.getTabuSearch().getIterationsCompleted());
+    log.info("{} - {}", 
+        e.getTabuSearch().getBestSolution(), 
+        e.getTabuSearch().getIterationsCompleted());
   }
 
   @Override
   public void improvingMoveMade(TabuSearchEvent e) {
-    // throw new UnsupportedOperationException("Not supported yet.");
+    // Nothing here
   }
 
   @Override
   public void newCurrentSolutionFound(TabuSearchEvent e) {
-    // throw new UnsupportedOperationException("Not supported yet.");
+    // Nothing here
   }
 
   @Override
   public void noChangeInValueMoveMade(TabuSearchEvent e) {
-    // throw new UnsupportedOperationException("Not supported yet.");
+    // Nothing here
   }
 
   @Override
   public void tabuSearchStarted(TabuSearchEvent e) {
-    // throw new UnsupportedOperationException("Not supported yet.");
+    // Nothing here
   }
 
   @Override
   public void tabuSearchStopped(TabuSearchEvent e) {
-    System.out.println("finished");
+    log.info("finished");
   }
 
   @Override
   public void unimprovingMoveMade(TabuSearchEvent e) {
-    // throw new UnsupportedOperationException("Not supported yet.");
+    // Nothing here
   }
 
 }

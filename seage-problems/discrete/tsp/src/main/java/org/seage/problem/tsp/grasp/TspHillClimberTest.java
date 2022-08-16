@@ -23,33 +23,36 @@
  *     Martin Zaloga
  *     - Initial implementation
  */
+
 package org.seage.problem.tsp.grasp;
 
 import java.io.FileInputStream;
-
 import org.seage.metaheuristic.grasp.HillClimber;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.TspVisualizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
  * @author Martin Zaloga
  * @deprecated Replaced by TspProblemSolver
  */
 @Deprecated
 public class TspHillClimberTest {
+  private static final Logger log = LoggerFactory.getLogger(TspHillClimberTest.class.getName());
 
   /**
    * _cities - List of a loaded cities _tour - Index list of cities that make up
    * the path _hc - Object containing hill climber algorithm
    */
-  private City[] _cities;
-  private Integer[] _tour;
-  private HillClimber _hc;
+  private City[] cities;
+  private Integer[] tour;
+  private HillClimber hc;
 
   /**
-   * The main trigger method
+   * The main trigger method.
    * 
    * @param args - the argument is the path to the data
    */
@@ -57,8 +60,8 @@ public class TspHillClimberTest {
     try {
       new TspHillClimberTest().run(args[0], "greedy", 100000, 10000);
     } catch (Exception ex) {
-      System.out.println(ex.getMessage());
-      log.error(ex);
+      log.info(ex.getMessage());
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 
@@ -71,17 +74,17 @@ public class TspHillClimberTest {
    * @param iteration - Number of iteration algorthm
    */
   public void run(String path, String switcher, int restarts, int iteration) throws Exception {
-    _cities = CityProvider.readCities(new FileInputStream(path));
-    System.out.println("Loading cities from path: " + path);
-    System.out.println("Number of cities: " + _cities.length);
+    cities = CityProvider.readCities(new FileInputStream(path));
+    log.info("Loading cities from path: {}", path);
+    log.info("Number of cities: {}", cities.length);
 
-    _hc = new HillClimber(new TspObjectiveFunction(_cities), new TspMoveManager(),
-        new TspSolutionGenerator(switcher, _cities), iteration);
-    _hc.startRestartedSearching(restarts);
-    TspSolution bestSol = (TspSolution) _hc.getBestSolution();
-    _tour = bestSol.getTour();
+    hc = new HillClimber(new TspObjectiveFunction(cities), new TspMoveManager(),
+        new TspSolutionGenerator(switcher, cities), iteration);
+    hc.startRestartedSearching(restarts);
+    TspSolution bestSol = (TspSolution) hc.getBestSolution();
+    tour = bestSol.getTour();
 
-    TspVisualizer.createTourImage(_cities, _tour, "tsphcgraph.png", 600, 400);
-    System.out.println("length: " + bestSol.getObjectiveValue());
+    TspVisualizer.createTourImage(cities, tour, "tsphcgraph.png", 600, 400);
+    log.info("length: {}", bestSol.getObjectiveValue());
   }
 }
