@@ -23,11 +23,108 @@
  *   Richard Malek
  *   - Initial implementation
  *   David Omrai
- *   - Fsp implementation
+ *   - Jsp implementation
  */
 
 package org.seage.problem.fsp.antcolony;
 
-public class FspAnt {
-  
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+import org.seage.metaheuristic.antcolony.Ant;
+import org.seage.metaheuristic.antcolony.Edge;
+import org.seage.metaheuristic.antcolony.Graph;
+import org.seage.metaheuristic.antcolony.Node;
+
+import org.seage.problem.jsp.JspJobsDefinition;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp.antcolony.JspAnt;
+import org.seage.problem.jsp.antcolony.JspGraph;
+
+/**
+ * .
+ * @author David Omrai
+ */
+public class FspAnt extends JspAnt {
+  // Jobs ID permutation on the first machine
+  protected int[] jobsOrder;
+  protected int jobsOrderId;
+
+  /**
+   * .
+   */
+  public FspAnt(
+      JspGraph graph, List<Integer> nodeIDs,
+      JspJobsDefinition jobs,
+      JspPhenotypeEvaluator evaluator
+  ) {
+    super(graph, nodeIDs, jobs, evaluator);
+
+    jobsOrder = new int[this.jobsDefinition.getJobsCount()];
+    for (int jobId = 0; jobId < jobsOrder.length; jobId++) {
+      jobsOrder[jobId] = 0;
+    }
+    jobsOrderId = 0;
+  }
+
+  @Override
+  protected void setNextStep(Edge step, Node lastNode) throws Exception {
+    JspGraph jspGraph = (JspGraph)_graph;
+    Node nextNode = step.getNode2(lastNode);
+    if (lastNode == nextNode) {
+      nextNode = lastNode;
+    }
+    lastJobOperations[jspGraph.nodeToJobID(nextNode) - 1]++;
+
+    // Store job id if on the first machine
+    if (jspGraph.nodeToOperID(nextNode) == 1) {
+      jobsOrder[jobsOrderId++] = jspGraph.nodeToJobID(nextNode);
+    }
+  }
+
+
+  /**
+   * .
+   * @param jobID .
+   * @param operID .
+   * @return
+   */
+  private boolean isOperationAvailable(int jobID, int operID) {
+    // todo
+    return false;
+  }
+
+  @Override
+  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
+    // Clean the previous available nodes
+    if (availableNodes == null) {
+      availableNodes = new HashSet<Node>();
+    } else {
+      availableNodes.clear();
+    }    
+
+    JspGraph jspGraph = (JspGraph)_graph;
+    // Crate new updated available nodes
+    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
+      int jobID = jobIndex + 1;
+      int operID = lastJobOperations[jobIndex] + 1;
+
+      if (operID > jobsDefinition.getJobInfos()[jobIndex].getOperationInfos().length) {
+        continue;
+      }
+
+      // the magic goes here
+      if (!isOperationAvailable(jobID, operID)) {
+        continue;
+      }
+      // end of magic
+
+      int nodeID = jobID * jspGraph.getFactor() + operID;
+      availableNodes.add(this._graph.getNodes().get(nodeID)); 
+    }
+
+    return availableNodes;
+  }
+
 }
