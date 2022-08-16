@@ -21,6 +21,7 @@
  * Contributors: Richard Malek - Initial implementation - Added problem
  * annotations
  */
+
 package org.seage.problem.fsp;
 
 import java.io.FileInputStream;
@@ -39,7 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
  * @author Richard Malek
  */
 @Annotations.ProblemId("FSP")
@@ -54,23 +55,22 @@ public class FspProblemProvider extends JspProblemProvider {
     String path = instanceInfo.getPath();
 
     InputStream stream0;
-    if (origin == ProblemInstanceOrigin.RESOURCE)
+    if (origin == ProblemInstanceOrigin.RESOURCE) {
       stream0 = getClass().getResourceAsStream(path);
-    else
+    } else {
       stream0 = new FileInputStream(path);
+    }
     
     FspJobsDefinition jobsDefinition = null;
     
-    try(InputStream stream=stream0)
-    {
-        jobsDefinition = new FspJobsDefinition(instanceInfo, stream);   
-    }
-    catch (Exception ex)
-    {
-      logger.error("FspProblemProvider.initProblemInstance - creating FspJobsDefinition failed, path: {}", path);
+    try (InputStream stream = stream0) {
+      jobsDefinition = new FspJobsDefinition(instanceInfo, stream);
+    } catch (Exception ex) {
+      logger.error(
+          "FspProblemProvider.initProblemInstance - creating FspJobsDefinition failed, path: {}",
+          path);
       throw ex;
     }
-
     return jobsDefinition;
   }
 
@@ -81,9 +81,12 @@ public class FspProblemProvider extends JspProblemProvider {
     return new FspProblemsMetadataGenerator(this);
   }
 
-
   // TODO: Remove after testing
-  public static void main(String[] args) {    
+  /**
+   * .
+   * @param args .
+   */
+  public static void main(String[] args) {
     try {
       // String iid = "rm3_3_01";
       // String iid = "tai20_05_01";

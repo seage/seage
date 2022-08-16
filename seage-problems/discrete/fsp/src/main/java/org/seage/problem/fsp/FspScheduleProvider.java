@@ -31,8 +31,9 @@ public class FspScheduleProvider {
     Integer[] greedySolution = new Integer[numJobs];
 
     int[] numFinJobOpers = new int[numJobs];
-    for (int i = 0; i < numJobs; i++)
+    for (int i = 0; i < numJobs; i++) {
       numFinJobOpers[i] = 0;
+    }
 
     double tmpMakeSpan = 0;
     double tmpMinMakeSpan = 0;
@@ -45,8 +46,9 @@ public class FspScheduleProvider {
 
         for (int j = 0; j <= numJobs; j++) {
           int jobIx = (k + j) % numJobs;
-          if (numFinJobOpers[jobIx] >= 1)
+          if (numFinJobOpers[jobIx] >= 1) {
             continue;
+          }
 
           greedySolution[i] = jobIx + 1;
 
@@ -69,6 +71,9 @@ public class FspScheduleProvider {
     return result;
   }
 
+  /**
+   * .
+   */
   public static JspPhenotype createGreedySchedule(JspPhenotypeEvaluator jspPhenoEval,
       JspJobsDefinition jobs) throws Exception {
     int length = jobs.getJobsCount();
@@ -76,8 +81,9 @@ public class FspScheduleProvider {
       public double evaluate(Integer[] solution) throws Exception {
         ArrayList<Integer> s = new ArrayList<>();
         for (int i = 0; i < solution.length; i++) {
-          if (solution[i] == -1)
+          if (solution[i] == -1) {
             break;
+          }
           s.add(solution[i] + 1);
         }
         return jspPhenoEval.evaluateSchedule(s.toArray(new Integer[0]));
