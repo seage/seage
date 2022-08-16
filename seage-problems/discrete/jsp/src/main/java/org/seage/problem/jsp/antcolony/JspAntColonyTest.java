@@ -17,7 +17,11 @@
  */
 
 /**
- * Contributors: Richard Malek - Initial implementation David Omrai - Jsp implementation
+ * Contributors:
+ *   Richard Malek
+ *   - Initial implementation
+ *   David Omrai
+ *   - Jsp implementation
  */
 
 package org.seage.problem.jsp.antcolony;
@@ -45,7 +49,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * .
- * @author Richard Malek 
+ * @author Richard Malek
  * @author David Omrai
  */
 public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
