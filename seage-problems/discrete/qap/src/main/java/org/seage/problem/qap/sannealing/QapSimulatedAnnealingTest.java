@@ -51,7 +51,7 @@ public class QapSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         catch (Exception ex)
         {
             System.out.println(ex.getMessage());
-            ex.printStackTrace();
+            log.error(ex);
         }
     }
 

@@ -50,7 +50,7 @@ public class TspObjectiveFunction implements IObjectiveFunction {
     try {
       distance = (int) TourProvider.getTourLenght(tour, _cities);
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error(ex);
     }
 
     particle.setEvaluation(distance);

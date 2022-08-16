@@ -52,7 +52,7 @@ public class QapParticleSwarmTest implements IParticleSwarmListener
         catch (Exception ex)
         {
             System.out.println(ex.getMessage());
-            ex.printStackTrace();
+            log.error(ex);
         }
     }
 

@@ -69,7 +69,7 @@ public class JspGeneticAlgorithmTest
       new JspGeneticAlgorithmTest().runAlgorithm(jobs);
       new JspGeneticAlgorithmTest().runAlgorithmAdapter(jobs);
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 
@@ -123,7 +123,7 @@ public class JspGeneticAlgorithmTest
       System.out.println(solutions[0].getScore());
 
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(ex);
     }
 }
 

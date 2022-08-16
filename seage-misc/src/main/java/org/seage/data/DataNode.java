@@ -397,7 +397,7 @@ public class DataNode {
       transformer.transform(domSource, result);
       return writer.toString();
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error(ex);
       return "";
     }
   }

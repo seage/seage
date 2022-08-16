@@ -48,7 +48,7 @@ public class SatSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
       new SatSimulatedAnnealingTest().run(path);
     } catch (Exception ex) {
       System.out.println(ex.getMessage());
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 

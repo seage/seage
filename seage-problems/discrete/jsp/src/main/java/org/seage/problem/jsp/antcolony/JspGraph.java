@@ -111,7 +111,7 @@ public class JspGraph extends Graph
       }
       int a = 0;
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 }

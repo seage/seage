@@ -55,7 +55,7 @@ public class QapObjectiveFunction implements IObjectiveFunction
         }
         catch (Exception ex)
         {
-            ex.printStackTrace();
+            log.error(ex);
         }
 
         particle.setEvaluation(price);

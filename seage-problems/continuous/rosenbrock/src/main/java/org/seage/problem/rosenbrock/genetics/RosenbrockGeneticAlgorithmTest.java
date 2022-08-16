@@ -96,7 +96,7 @@ public class RosenbrockGeneticAlgorithmTest
 		catch (Exception e)
 		{
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(ex);
 		}
 	}
 }

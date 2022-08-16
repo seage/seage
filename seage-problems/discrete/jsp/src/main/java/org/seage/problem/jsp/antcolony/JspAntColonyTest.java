@@ -82,7 +82,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
       new JspAntColonyTest().runAlgorithm(jobs);
       // new JspAntColonyTest().runAlgorithmAdapter(jobs);
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 
@@ -134,7 +134,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
       // log.info(solutions[0].getScore());
 
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(ex);
     }
   }
 
@@ -263,6 +263,6 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   // Integer[0])));
   // } catch (Exception e1) {
   // // TODO Auto-generated catch block
-  // e1.printStackTrace();
+  // log.error(ex);
   // }
 }

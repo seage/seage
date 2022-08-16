@@ -100,7 +100,7 @@ public class AssignmentProvider {
         } catch (
 
         Exception ex) {
-            ex.printStackTrace();
+            log.error(ex);
         }
     }
 

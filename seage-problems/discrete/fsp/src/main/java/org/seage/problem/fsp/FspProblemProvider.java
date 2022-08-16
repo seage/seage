@@ -100,7 +100,7 @@ public class FspProblemProvider extends JspProblemProvider {
       System.out.println("random: " + schedule2.getObjValue());
     } catch (Exception e) {
       // TODO Auto-generated catch block
-      e.printStackTrace();
+      log.error(ex);
     }
   }
 }

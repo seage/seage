@@ -57,7 +57,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
       String path = String.format("seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/%s.tsp", instanceID);// args[0];
       new TspAntColonyTest().run(path);
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 

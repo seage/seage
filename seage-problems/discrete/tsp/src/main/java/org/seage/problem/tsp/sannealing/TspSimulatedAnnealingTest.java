@@ -56,7 +56,7 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
       new TspSimulatedAnnealingTest().run(path);
     } catch (Exception ex) {
       System.out.println(ex.getMessage());
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 

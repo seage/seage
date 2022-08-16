@@ -39,7 +39,7 @@ public class JspAntTest {
         jobs = new JspJobsDefinition(jobInfo, stream);
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(ex);
     }
   }
 

@@ -43,7 +43,7 @@ class TestTask extends Task2 {
     try {
       Thread.sleep(this.length);
     } catch (InterruptedException e) {
-      e.printStackTrace();
+      log.error(ex);
     }
 
   }

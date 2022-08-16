@@ -51,7 +51,7 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
 
       new TspGeneticAlgorithmTest().run(instanceID);
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 

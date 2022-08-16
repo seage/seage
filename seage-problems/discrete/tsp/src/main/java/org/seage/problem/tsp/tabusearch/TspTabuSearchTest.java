@@ -52,7 +52,7 @@ public class TspTabuSearchTest implements TabuSearchListener {
 
       new TspTabuSearchTest().run(path);
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 

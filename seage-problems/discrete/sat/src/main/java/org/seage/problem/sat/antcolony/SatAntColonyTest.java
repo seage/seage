@@ -54,7 +54,7 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
       System.out.println((end - start) + " ms");
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 

@@ -46,7 +46,7 @@ public class SatAntColonyTest_Simple implements IAlgorithmListener<AntColonyEven
     try {
       new SatAntColonyTest_Simple().run();
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 

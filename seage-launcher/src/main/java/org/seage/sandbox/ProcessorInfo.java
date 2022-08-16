@@ -123,7 +123,7 @@ public class ProcessorInfo {
       pi.displayAvailableProcessors();
       pi.foo();
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 }

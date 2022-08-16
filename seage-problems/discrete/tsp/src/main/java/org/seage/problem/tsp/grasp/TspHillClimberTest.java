@@ -58,7 +58,7 @@ public class TspHillClimberTest {
       new TspHillClimberTest().run(args[0], "greedy", 100000, 10000);
     } catch (Exception ex) {
       System.out.println(ex.getMessage());
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 

@@ -72,7 +72,7 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     }
     catch (Exception ex)
     {
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 
@@ -133,7 +133,7 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
       System.out.println(solutions[0].getObjValue());
       System.out.println(solutions[0].getScore());
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(ex);
     }
   }
 

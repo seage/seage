@@ -51,7 +51,7 @@ public class QapTabuSearchTest implements TabuSearchListener
         }
         catch (Exception ex)
         {
-            ex.printStackTrace();
+            log.error(ex);
         }
     }
 

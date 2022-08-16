@@ -210,7 +210,7 @@ public abstract class EvolutionReasoner extends Reasoner
             }
             catch(Exception ex)
             {
-                ex.printStackTrace();
+                log.error(ex);
             }
         }
 

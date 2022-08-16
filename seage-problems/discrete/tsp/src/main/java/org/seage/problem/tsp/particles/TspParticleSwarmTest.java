@@ -51,7 +51,7 @@ public class TspParticleSwarmTest implements IParticleSwarmListener {
       new TspParticleSwarmTest().run(_dataPath);
     } catch (Exception ex) {
       System.out.println(ex.getMessage());
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 

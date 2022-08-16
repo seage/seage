@@ -84,7 +84,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     }
     catch (Exception ex)
     {
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 
@@ -137,7 +137,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
         // System.out.println(solutions[0].getScore());
 
     } catch (Exception e) {
-        e.printStackTrace();
+        log.error(ex);
     }
   }
 
@@ -264,6 +264,6 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent>
     //   System.out.println("   - best ant : " + g.evaluator.evaluateSchedule(jobArray.toArray(new Integer[0])));
     // } catch (Exception e1) {
     //   // TODO Auto-generated catch block
-    //   e1.printStackTrace();
+    //   log.error(ex);
     // }
 }

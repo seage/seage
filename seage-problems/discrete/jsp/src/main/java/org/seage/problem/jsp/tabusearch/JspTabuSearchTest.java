@@ -72,7 +72,7 @@ public class JspTabuSearchTest implements TabuSearchListener
     }
     catch (Exception ex)
     {
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 
@@ -115,7 +115,7 @@ public class JspTabuSearchTest implements TabuSearchListener
         System.out.println(solutions[0].getScore());
 
     } catch (Exception e) {
-        e.printStackTrace();
+        log.error(ex);
     }
   }
 

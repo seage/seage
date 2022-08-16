@@ -59,7 +59,7 @@ public class NonterminalSymbol implements Symbol {
       return rule.eval(symbolTable, this);
     } catch (Exception e) {
       System.err.println("GOT ERROR: " + e);
-      e.printStackTrace();
+      log.error(ex);
       return null;
     }
   }

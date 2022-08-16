@@ -118,7 +118,7 @@ public class Visualizer
             out.close();
         } catch (Exception e) {
             System.out.println("Chyba");
-            e.printStackTrace();
+            log.error(ex);
         }*/
     }
 

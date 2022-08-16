@@ -131,7 +131,7 @@ public class AdviserAgent extends AelAgent
             }
             catch(Exception ex)
             {
-                ex.printStackTrace();
+                log.error(ex);
             }
         }
     

@@ -47,7 +47,7 @@ package org.seage.hh.experimenter.runner.spark;
 //         //   }
 //         // } catch (Exception e) {
 //         //   // TODO Auto-generated catch block
-//         //   e.printStackTrace();
+//         //   log.error(ex);
 //         // }
 //       }
 //     }

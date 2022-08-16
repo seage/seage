@@ -136,7 +136,7 @@ public class JspAnt extends Ant {
       prevTimespan = this.evaluator.evaluateSchedule(prevPath);
       nextTimespan = this.evaluator.evaluateSchedule(nextPath);
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(ex);
     }
 
     // Get the start node operation length and add one, for the step to another node

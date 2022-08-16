@@ -91,7 +91,7 @@ public class __ProblemProviderTester {
       }
     } catch (Exception ex) {
       // System.err.println(problemId+": "+ex.getLocalizedMessage());
-      ex.printStackTrace();
+      log.error(ex);
     }
   }
 
@@ -123,7 +123,7 @@ public class __ProblemProviderTester {
     } catch (Exception ex) {
       System.out.printf("%" + (52 - algorithmID.length()) + "s", "FAIL\n");
       // System.out.println("\t"+"FAIL");
-      ex.printStackTrace();
+      log.error(ex);
       // System.err.println(problemId+"/"+alg.getValueStr("id")+": "+ex.toString());
     }
   }

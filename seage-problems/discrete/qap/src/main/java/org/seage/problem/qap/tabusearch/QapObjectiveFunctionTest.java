@@ -52,7 +52,7 @@ public class QapObjectiveFunctionTest implements TabuSearchListener
         }
         catch (Exception ex)
         {
-            ex.printStackTrace();
+            log.error(ex);
         }
     }
 
