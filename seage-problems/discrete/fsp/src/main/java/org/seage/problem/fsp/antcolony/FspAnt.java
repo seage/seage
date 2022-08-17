@@ -68,27 +68,33 @@ public class FspAnt extends Ant {
     this.evaluator = evaluator;
   }
 
-  // @Override
-  // protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
-  //   HashSet<Node> availableNodes = super.getAvailableNodes(nodePath);
-  //   // Node startingNode = nodePath.get(0);
-  //   // Node currentNode = nodePath.get(nodePath.size() - 1);
-  //   System.out.println("start of this one");
-  //   for (Node n : nodePath) {
-  //     System.out.println(n.getID());
-  //   }
+  @Override
+  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
+    //HashSet<Node> availableNodes = super.getAvailableNodes(nodePath);
+    // Node startingNode = nodePath.get(0);
+    // Node currentNode = nodePath.get(nodePath.size() - 1);
+    // System.out.println("start of this one");
+    // for (Node n : nodePath) {
+    //   System.out.println(n.getID());
+    // }
 
-  //   System.out.println("-------------");
+    // System.out.println("-------------");
 
-  //   for (Node n : availableNodes) {
-  //     System.out.println(n.getID());
-  //   }
-  //   // if (currentNode != startingNode && availableNodes.size() == 0) {
-  //   //   availableNodes.add(startingNode);
-  //   // }    
+    // for (Node n : availableNodes) {
+    //   System.out.println(n.getID());
+    // }
+    // // if (currentNode != startingNode && availableNodes.size() == 0) {
+    // //   availableNodes.add(startingNode);
+    // // }
 
-  //   return availableNodes;
-  // }
+    HashSet<Node> availableNodes = new HashSet<>(_graph.getNodes().values());
+
+    for (Node n : nodePath) {
+      availableNodes.remove(n);
+    }
+
+    return availableNodes;
+  }
 
   /**
    * Edge length calculating.
