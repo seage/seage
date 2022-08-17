@@ -28,7 +28,20 @@
 
 package org.seage.problem.fsp.antcolony;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.seage.aal.Annotations;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
+import org.seage.aal.problem.ProblemInstance;
+
+import org.seage.metaheuristic.antcolony.Ant;
+
+import org.seage.problem.jsp.JspJobsDefinition;
+import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.antcolony.JspAntColonyFactory;
 /**
  * .
@@ -41,4 +54,66 @@ import org.seage.problem.jsp.antcolony.JspAntColonyFactory;
 @Annotations.NotReady
 public class FspAntColonyFactory extends JspAntColonyFactory {
   
+  @Override
+  public IAlgorithmAdapter<JspPhenotype, Ant> createAlgorithm(
+      ProblemInstance instance, IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator
+  ) throws Exception {
+    JspJobsDefinition jobs = (JspJobsDefinition) instance;
+    FspGraph fspGraph = new FspGraph(jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
+    return new AntColonyAdapter<JspPhenotype, Ant>(fspGraph, phenotypeEvaluator) {
+      @Override
+      public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception {
+        ants = new Ant[source.length];
+        for (int i = 0; i < ants.length; i++) {
+          // Current id of operation of specific job
+          int[] jobsOper = new int[jobs.getJobsCount() + 1];
+          for (int jobID = 0; jobID < jobsOper.length; jobID++) {
+            jobsOper[jobID] = 1;
+          }
+
+          ArrayList<Integer> nodes = new ArrayList<Integer>();
+          nodes.add(0);
+          for (int j = 0; j < source[i].getSolution().length; j++) {
+            // Id of job and machine, from value 0
+            int jobID = source[i].getSolution()[j];
+            int operID = jobsOper[jobID];
+            // Add next node
+            nodes.add((jobID * fspGraph.getFactor()) + operID);
+            // Increase the iperations
+            jobsOper[jobID]++;
+          }
+
+          ants[i] = new FspAnt(fspGraph, nodes, jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
+        }
+      }
+
+      @Override
+      public JspPhenotype[] solutionsToPhenotype() throws Exception {
+        JspPhenotype[] result = new JspPhenotype [ants.length];
+        for (int i = 0; i < ants.length; i++) {
+          result[i] = solutionToPhenotype(ants[i]);
+        }
+        return result;
+      }
+
+      @Override
+      public JspPhenotype  solutionToPhenotype(Ant ant) throws Exception {
+        List<Integer> nodePath = ant.getNodeIDsAlongPath();
+        // Remove the starting node
+        nodePath.remove(0);
+
+        Integer[] jobArray = new Integer[nodePath.size()];
+        for (int j = 0; j < jobArray.length; j++) {
+          int nodeID = nodePath.get(j);
+          int jobID = nodeID / fspGraph.getFactor();
+          jobArray[j] = jobID;
+        }
+        JspPhenotype result = new JspPhenotype(jobArray);
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
+      }
+    };
+  }
 }

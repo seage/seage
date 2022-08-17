@@ -1,20 +1,18 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, @see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -31,68 +29,69 @@ package org.seage.problem.fsp.antcolony;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
-
 import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
-import org.seage.problem.jsp.antcolony.JspAnt;
-import org.seage.problem.jsp.antcolony.JspGraph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * .
+ * @author Zagy
  * @author David Omrai
  */
-public class FspAnt extends JspAnt {
-  // Jobs ID permutation on the first machine
-  protected int[] jobsOrder;
-  protected int jobsOrderId;
+public class FspAnt extends Ant {
+  private static final Logger log = LoggerFactory.getLogger(FspAnt.class.getName());
+
+  protected JspPhenotypeEvaluator evaluator;
+  protected JspJobsDefinition jobsDefinition;
+
+  // For faster performing of the getAvailableNodes() method
+  protected int[] lastJobOperations;
 
   /**
    * .
+   * @param graph .
+   * @param nodeIDs .
+   * @param jobs .
+   * @param evaluator .
    */
   public FspAnt(
-      JspGraph graph, List<Integer> nodeIDs,
-      JspJobsDefinition jobs,
+      FspGraph graph, 
+      List<Integer> nodeIDs,
+      JspJobsDefinition jobs, 
       JspPhenotypeEvaluator evaluator
   ) {
-    super(graph, nodeIDs, jobs, evaluator);
+    super(graph, nodeIDs);
+    this.jobsDefinition = jobs;
+    this.evaluator = evaluator;
 
-    jobsOrder = new int[this.jobsDefinition.getJobsCount()];
-    for (int jobId = 0; jobId < jobsOrder.length; jobId++) {
-      jobsOrder[jobId] = 0;
+    lastJobOperations = new int[this.jobsDefinition.getJobsCount()];
+    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
+      lastJobOperations[jobIndex] = 0;
     }
-    jobsOrderId = 0;
   }
 
-  @Override
   protected void setNextStep(Edge step, Node lastNode) throws Exception {
-    JspGraph jspGraph = (JspGraph)_graph;
+    // Increase the operation
+    FspGraph fspGraph = (FspGraph) _graph;
     Node nextNode = step.getNode2(lastNode);
     if (lastNode == nextNode) {
       nextNode = lastNode;
     }
-    lastJobOperations[jspGraph.nodeToJobID(nextNode) - 1]++;
-
-    // Store job id if on the first machine
-    if (jspGraph.nodeToOperID(nextNode) == 1) {
-      jobsOrder[jobsOrderId++] = jspGraph.nodeToJobID(nextNode);
-    }
+    lastJobOperations[fspGraph.nodeToJobID(nextNode) - 1]++;
   }
 
-
-  /**
-   * .
-   * @param jobID .
-   * @param operID .
-   * @return
-   */
-  private boolean isOperationAvailable(int jobID, int operID) {
-    // todo
-    return false;
+  @Override
+  protected Edge selectNextStep(List<Node> nodePath) throws Exception {
+    Edge nextEdge = super.selectNextStep(nodePath);
+    if (nextEdge != null) {
+      setNextStep(nextEdge, nodePath.get(nodePath.size() - 1));
+    }
+    return nextEdge;
   }
 
   @Override
@@ -102,9 +101,9 @@ public class FspAnt extends JspAnt {
       availableNodes = new HashSet<Node>();
     } else {
       availableNodes.clear();
-    }    
+    }
 
-    JspGraph jspGraph = (JspGraph)_graph;
+    FspGraph fspGraph = (FspGraph) _graph;
     // Crate new updated available nodes
     for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
       int jobID = jobIndex + 1;
@@ -114,17 +113,71 @@ public class FspAnt extends JspAnt {
         continue;
       }
 
-      // the magic goes here
-      if (!isOperationAvailable(jobID, operID)) {
-        continue;
-      }
-      // end of magic
-
-      int nodeID = jobID * jspGraph.getFactor() + operID;
-      availableNodes.add(this._graph.getNodes().get(nodeID)); 
+      int nodeID = jobID * fspGraph.getFactor() + operID;
+      availableNodes.add(this._graph.getNodes().get(nodeID));
     }
 
     return availableNodes;
   }
 
+  @Override
+  protected List<Edge> explore(Node startingNode) throws Exception {
+    // Clean the array for new exploration
+    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
+      lastJobOperations[jobIndex] = 0;
+    }
+
+    return super.explore(startingNode);
+  }
+
+  /**
+   * Edge length calculating.
+   */
+  @Override
+  public double getNodeDistance(List<Node> nodePath, Node node) {
+    FspGraph fspGraph = (FspGraph) _graph;
+    Node end = nodePath.get(nodePath.size() - 1);
+    // If the first node is starting node
+    if (end.getID() == 0) {
+      return 1;
+    }
+
+    ArrayList<Integer> path = new ArrayList<>();
+    for (Node n : nodePath.subList(1, nodePath.size())) {
+      path.add(fspGraph.nodeToJobID(n));
+    }
+
+    Integer[] prevPath = path.toArray(new Integer[0]);
+    path.add(fspGraph.nodeToJobID(node));
+    Integer[] nextPath = path.toArray(new Integer[0]);
+
+    double prevTimespan = 0;
+    double nextTimespan = 0;
+    try {
+      prevTimespan = this.evaluator.evaluateSchedule(prevPath);
+      nextTimespan = this.evaluator.evaluateSchedule(nextPath);
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage(), ex);
+    }
+
+    // Get the start node operation length and add one, for the step to another node
+    return nextTimespan - prevTimespan + 1.0;
+  }
+
+
+  @Override
+  public double getPathCost(List<Edge> path) throws Exception {
+    FspGraph fspGraph = (FspGraph) _graph;
+    var nodes = Graph.edgeListToNodeList(path);
+    Integer[] jobArray = new Integer[nodes.size() - 1];
+    for (int i = 1; i < nodes.size(); i++) {
+      jobArray[i - 1] = nodes.get(i).getID() / fspGraph.getFactor();
+    }
+
+    try {
+      return evaluator.evaluateSchedule(jobArray);
+    } catch (Exception e) {
+      return 1.0;
+    }
+  }
 }
