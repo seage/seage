@@ -58,6 +58,10 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   private int edges;
   private Random generator = new Random();
 
+  /**
+   * .
+   * @param args .
+   */
   public static void main(String[] args) {
     try {
       // String instanceID = "ft06";
@@ -86,6 +90,10 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     }
   }
 
+  /**
+   * .
+   * @param graph .
+   */
   public void testing(Graph graph) {
     double sum = 0;
     double edges = 0;
@@ -114,6 +122,11 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     return result;
   }
 
+  /**
+   * .
+   * @param jobs .
+   * @throws Exception .
+   */
   public void runAlgorithmAdapter(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     JspPhenotype[] schedules =
@@ -138,6 +151,11 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     }
   }
 
+  /**
+   * .
+   * @param jobs .
+   * @throws Exception .
+   */
   public void runAlgorithm(JspJobsDefinition jobs) throws Exception {
     int opersNum = 0;
     for (int i = 0; i < jobs.getJobsCount(); i++) {
@@ -151,7 +169,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
     // double alpha = 1, beta = 3;
 
-    int numAnts = 100;
+    
     double defaultPheromone = 1;
     double localEvaporation = 0.995;
     double quantumPheromone = 100.0;
@@ -169,6 +187,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone,
         localEvaporation);
 
+    int numAnts = 100;
     Ant[] ants = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {
       ants[i] = new JspAnt(graph, null, jobs, eval);

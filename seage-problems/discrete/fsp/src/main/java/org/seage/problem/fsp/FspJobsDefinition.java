@@ -27,6 +27,7 @@
 
 package org.seage.problem.fsp;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class FspJobsDefinition extends JspJobsDefinition {
     }
   }
 
-  private List<List<Integer>> readInputData(InputStream inputDataStream) throws Exception {
+  private List<List<Integer>> readInputData(InputStream inputDataStream) throws IOException {
     List<List<Integer>> result = new ArrayList<>();
     try (Scanner sc = new Scanner(inputDataStream)) {
       int lineNumber = 0;
@@ -85,7 +86,7 @@ public class FspJobsDefinition extends JspJobsDefinition {
           numbersPerLine = lineInts.size();
         }
         if (numbersPerLine != lineInts.size()) {
-          throw new Exception(
+          throw new IOException(
               String.format(
                 "Invalid input data. Incorrect line length: %d, line: %d",
                 lineInts.size(), lineNumber));

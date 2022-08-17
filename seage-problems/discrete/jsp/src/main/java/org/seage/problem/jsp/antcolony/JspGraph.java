@@ -46,6 +46,12 @@ public class JspGraph extends Graph {
 
   private JspJobsDefinition jobs;
 
+  /**
+   * .
+   * @param jobArary .
+   * @param evaluator .
+   * @throws Exception .
+   */
   public JspGraph(JspJobsDefinition jobArary, JspPhenotypeEvaluator evaluator) throws Exception {
     super();
     this.evaluator = evaluator;
@@ -88,6 +94,10 @@ public class JspGraph extends Graph {
     return this.factor;
   }
 
+  /**
+   * .
+   */
+  @Override
   public void prune(long iteration) {
     if (iteration % 100 != 0) {
       return;
@@ -110,7 +120,6 @@ public class JspGraph extends Graph {
       for (Edge e2 : edgesToRemove) {
         removeEdge(e2);
       }
-      int a = 0;
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
     }

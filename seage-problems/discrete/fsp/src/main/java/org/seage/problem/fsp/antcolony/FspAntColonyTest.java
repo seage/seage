@@ -58,6 +58,10 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   private int _edges;
   private Random generator = new Random();
 
+  /**
+   * .
+   * @param args .
+   */
   public static void main(String[] args) {
     try {
       String instanceID = "tai100_20_01";
@@ -80,6 +84,10 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     }
   }
 
+  /**
+   * .
+   * @param graph .
+   */
   public void testing(Graph graph) {
     double sum = 0;
     double edges = 0;
@@ -108,6 +116,11 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     return result;
   }
 
+  /**
+   * .
+   * @param jobs .
+   * @throws Exception .
+   */ 
   public void runAlgorithmAdapter(FspJobsDefinition jobs) throws Exception {
     FspProblemProvider problemProvider = new FspProblemProvider();
     JspPhenotype[] schedules =
@@ -132,6 +145,11 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     }
   }
 
+  /**
+   * .
+   * @param jobs .
+   * @throws Exception .
+   */
   public void runAlgorithm(FspJobsDefinition jobs) throws Exception {
     int opersNum = 0;
     for (int i = 0; i < jobs.getJobsCount(); i++) {
@@ -145,9 +163,12 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
     // double alpha = 1, beta = 3;
 
-    int numAnts = 10;
-    double defaultPheromone = 1, localEvaporation = 0.9, quantumPheromone = 10.0;
-    double alpha = 1.1, beta = 1.6;
+    
+    double defaultPheromone = 1;
+    double localEvaporation = 0.9;
+    double quantumPheromone = 10.0;
+    double alpha = 1.1;
+    double beta = 1.6;
 
     FspProblemProvider problemProvider = new FspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
@@ -160,9 +181,11 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone,
         localEvaporation);
 
+    int numAnts = 10;
     Ant ants[] = new Ant[numAnts];
-    for (int i = 0; i < numAnts; i++)
+    for (int i = 0; i < numAnts; i++) {
       ants[i] = new JspAnt(graph, null, jobs, eval);
+    }
     // brain.setParameters(graph.getNodeList().size(), alpha, beta);
 
     long t1 = System.currentTimeMillis();
@@ -223,8 +246,9 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   @Override
   public void iterationPerformed(AntColonyEvent e) {
-    if (e.getAntColony().getCurrentIteration() % 100 != 0)
+    if (e.getAntColony().getCurrentIteration() % 100 != 0) {
       return;
+    }
     System.out.println("### iterationPerformed: " + e.getAntColony().getCurrentIteration());
     System.out.println("   - best : " + e.getAntColony().getGlobalBest());
     // System.out.println(" - path : " + e.getAntColony().getBestPath());
