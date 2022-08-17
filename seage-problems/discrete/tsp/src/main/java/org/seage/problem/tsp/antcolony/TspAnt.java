@@ -23,6 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.problem.tsp.antcolony;
 
 import java.util.HashSet;
@@ -33,11 +34,12 @@ import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.tsp.City;
 
 /**
- *
+ * .
  * @author Zagy
  */
 public class TspAnt extends Ant {
   City[] cities;
+  
   public TspAnt(Graph graph, List<Integer> nodeIDs, City[] cities) {
     super(graph, nodeIDs);
     this.cities = cities;

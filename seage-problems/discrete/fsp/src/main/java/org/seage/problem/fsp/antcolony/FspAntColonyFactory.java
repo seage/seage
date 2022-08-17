@@ -61,26 +61,17 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
     JspJobsDefinition jobs = (JspJobsDefinition) instance;
     FspGraph fspGraph = new FspGraph(jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
     return new AntColonyAdapter<JspPhenotype, Ant>(fspGraph, phenotypeEvaluator) {
+      
       @Override
       public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception {
         ants = new Ant[source.length];
         for (int i = 0; i < ants.length; i++) {
-          // Current id of operation of specific job
-          int[] jobsOper = new int[jobs.getJobsCount() + 1];
-          for (int jobID = 0; jobID < jobsOper.length; jobID++) {
-            jobsOper[jobID] = 1;
-          }
-
-          ArrayList<Integer> nodes = new ArrayList<Integer>();
+          
+          ArrayList<Integer> nodes = new ArrayList<>();
           nodes.add(0);
-          for (int j = 0; j < source[i].getSolution().length; j++) {
-            // Id of job and machine, from value 0
-            int jobID = source[i].getSolution()[j];
-            int operID = jobsOper[jobID];
+          for (int j = 0; j < jobs.getJobsCount(); j++) {
             // Add next node
-            nodes.add((jobID * fspGraph.getFactor()) + operID);
-            // Increase the iperations
-            jobsOper[jobID]++;
+            nodes.add(source[i].getSolution()[j]);
           }
 
           ants[i] = new FspAnt(fspGraph, nodes, jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
@@ -102,12 +93,15 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
         // Remove the starting node
         nodePath.remove(0);
 
-        Integer[] jobArray = new Integer[nodePath.size()];
-        for (int j = 0; j < jobArray.length; j++) {
-          int nodeID = nodePath.get(j);
-          int jobID = nodeID / fspGraph.getFactor();
-          jobArray[j] = jobID;
+        ArrayList<Integer> path = new ArrayList<>();
+        for (int m = 0; m < jobs.getMachinesCount(); m++) {
+          for (int n : nodePath) {
+            path.add(n);
+          }
         }
+
+        Integer[] jobArray = path.toArray(new Integer[0]);
+
         JspPhenotype result = new JspPhenotype(jobArray);
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
         result.setObjValue(objVals[0]);

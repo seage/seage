@@ -95,6 +95,7 @@ public class FspAnt extends Ant {
     ArrayList<Integer> pathOld = new ArrayList<>();
     ArrayList<Integer> pathNew = new ArrayList<>();
     for (int m = 0; m < jobsDefinition.getMachinesCount(); m++) {
+      // Sublist to jump over the first 0 staring node
       for (Node n : nodePath.subList(1, nodePath.size())) {
         pathOld.add(n.getID());
         pathNew.add(n.getID());

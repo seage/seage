@@ -47,7 +47,7 @@ public class TspGraph extends Graph {
     super();
     _cities = cities;
     for (int id = 1; id <= cities.length; id++) {
-      _nodes.put(new Integer(id), new Node(id));
+      _nodes.put(id, new Node(id));
     }
   }
 

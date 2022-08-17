@@ -210,7 +210,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     }
     for (int i = 0; i < jobArray.length; i++) {
       System.out.print(jobArray[i] + " ");
-      jobArray[i] = jobArray[i] / graph.getFactor();
+      jobArray[i] = jobArray[i];
     }
     System.out.println();
     System.out.println("Best: " + eval.evaluateSchedule(jobArray));

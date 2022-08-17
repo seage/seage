@@ -42,8 +42,6 @@ public class FspGraph extends Graph {
 
   JspPhenotypeEvaluator evaluator;
 
-  private int factor;
-
   private JspJobsDefinition jobs;
 
   /**
@@ -56,72 +54,12 @@ public class FspGraph extends Graph {
     super();
     this.evaluator = evaluator;
     this.jobs = jobArray;
-    int allOperCount = 0;
-    for (int i = 0; i < this.jobs.getJobsCount(); i++) {
-      allOperCount += this.jobs.getJobInfos()[i].getOperationInfos().length;
-    }
 
-    this.factor = (int) Math.pow(10, Math.ceil(Math.log10(allOperCount)) + 1);
-
-    // Add the first starting node
-    //   /- 1 - 2 - 3 - ... - job1-oper '|
-    //  / - 1 - 2 - 3 - ... - job2-oper |
-    // s  - 1 - 2 - 3 - ... - job3-oper | n-jobs
-    //  \ - 1 - 2 - 3 - ... - job4-oper |
-    //   \- 1 - 2 - 3 - ... - job5-oper ,|
-    int id = 0;
     // Starting node
-    _nodes.put(id, new Node(id));
+    _nodes.put(0, new Node(0));
 
-    for (int idJob = 1; idJob <= jobs.getJobsCount(); idJob++) {
-      for (int idOper =
-          1; idOper <= jobs.getJobInfos()[idJob - 1].getOperationInfos().length; idOper++) {
-        id = idJob * getFactor() + idOper;
-        _nodes.put(id, new Node(id));
-      }
-    }
-  }
-
-  public int nodeToJobID(Node node) {
-    return node.getID() / getFactor();
-  }
-
-  public int nodeToOperID(Node node) {
-    return node.getID() % getFactor();
-  }
-
-  public int getFactor() {
-    return this.factor;
-  }
-
-  /**
-   * .
-   */
-  @Override
-  public void prune(long iteration) {
-    if (iteration % 100 != 0) {
-      return;
-    }
-    _edges.sort((e1, e2) -> {
-      double a = e1.getLocalPheromone() / e1.getEdgePrice();
-      double b = e2.getLocalPheromone() / e2.getEdgePrice();
-      if (a > b) {
-        return 1;
-      }
-      if (a < b) {
-        return -1;
-      }
-      return 0;
-    });
-
-    try {
-      ArrayList<Edge> edgesToRemove = new ArrayList<>(_edges.subList(0, _edges.size() * 1 / 10));
-
-      for (Edge e2 : edgesToRemove) {
-        removeEdge(e2);
-      }
-    } catch (Exception ex) {
-      log.error("{}", ex.getMessage(), ex);
+    for (int jobId = 1; jobId <= jobs.getJobsCount(); jobId++) {
+      _nodes.put(jobId, new Node(jobId));
     }
   }
 }
