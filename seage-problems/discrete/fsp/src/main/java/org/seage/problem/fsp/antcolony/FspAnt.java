@@ -49,9 +49,6 @@ public class FspAnt extends Ant {
   protected JspPhenotypeEvaluator evaluator;
   protected JspJobsDefinition jobsDefinition;
 
-  // For faster performing of the getAvailableNodes() method
-  protected int[] lastJobOperations;
-
   /**
    * .
    * @param graph .
@@ -68,66 +65,19 @@ public class FspAnt extends Ant {
     super(graph, nodeIDs);
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;
-
-    lastJobOperations = new int[this.jobsDefinition.getJobsCount()];
-    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
-      lastJobOperations[jobIndex] = 0;
-    }
-  }
-
-  protected void setNextStep(Edge step, Node lastNode) throws Exception {
-    // Increase the operation
-    FspGraph fspGraph = (FspGraph) _graph;
-    Node nextNode = step.getNode2(lastNode);
-    if (lastNode == nextNode) {
-      nextNode = lastNode;
-    }
-    lastJobOperations[fspGraph.nodeToJobID(nextNode) - 1]++;
-  }
-
-  @Override
-  protected Edge selectNextStep(List<Node> nodePath) throws Exception {
-    Edge nextEdge = super.selectNextStep(nodePath);
-    if (nextEdge != null) {
-      setNextStep(nextEdge, nodePath.get(nodePath.size() - 1));
-    }
-    return nextEdge;
   }
 
   @Override
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
-    // Clean the previous available nodes
-    if (availableNodes == null) {
-      availableNodes = new HashSet<Node>();
-    } else {
-      availableNodes.clear();
-    }
+    HashSet<Node> availableNodes = super.getAvailableNodes(nodePath);
+    Node startingNode = nodePath.get(0);
+    Node currentNode = nodePath.get(nodePath.size() - 1);
 
-    FspGraph fspGraph = (FspGraph) _graph;
-    // Crate new updated available nodes
-    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
-      int jobID = jobIndex + 1;
-      int operID = lastJobOperations[jobIndex] + 1;
-
-      if (operID > jobsDefinition.getJobInfos()[jobIndex].getOperationInfos().length) {
-        continue;
-      }
-
-      int nodeID = jobID * fspGraph.getFactor() + operID;
-      availableNodes.add(this._graph.getNodes().get(nodeID));
-    }
+    if (currentNode != startingNode && availableNodes.size() == 0) {
+      availableNodes.add(startingNode);
+    }    
 
     return availableNodes;
-  }
-
-  @Override
-  protected List<Edge> explore(Node startingNode) throws Exception {
-    // Clean the array for new exploration
-    for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
-      lastJobOperations[jobIndex] = 0;
-    }
-
-    return super.explore(startingNode);
   }
 
   /**
@@ -135,21 +85,25 @@ public class FspAnt extends Ant {
    */
   @Override
   public double getNodeDistance(List<Node> nodePath, Node node) {
-    FspGraph fspGraph = (FspGraph) _graph;
     Node end = nodePath.get(nodePath.size() - 1);
     // If the first node is starting node
     if (end.getID() == 0) {
       return 1;
     }
 
-    ArrayList<Integer> path = new ArrayList<>();
-    for (Node n : nodePath.subList(1, nodePath.size())) {
-      path.add(fspGraph.nodeToJobID(n));
+    // Copy the path to all machines
+    ArrayList<Integer> pathOld = new ArrayList<>();
+    ArrayList<Integer> pathNew = new ArrayList<>();
+    for (int m = 0; m < jobsDefinition.getMachinesCount(); m++) {
+      for (Node n : nodePath.subList(1, nodePath.size())) {
+        pathOld.add(n.getID());
+        pathNew.add(n.getID());
+      }
+      pathOld.add(node.getID());
     }
 
-    Integer[] prevPath = path.toArray(new Integer[0]);
-    path.add(fspGraph.nodeToJobID(node));
-    Integer[] nextPath = path.toArray(new Integer[0]);
+    Integer[] prevPath = pathOld.toArray(new Integer[0]);
+    Integer[] nextPath = pathNew.toArray(new Integer[0]);
 
     double prevTimespan = 0;
     double nextTimespan = 0;
@@ -162,22 +116,5 @@ public class FspAnt extends Ant {
 
     // Get the start node operation length and add one, for the step to another node
     return nextTimespan - prevTimespan + 1.0;
-  }
-
-
-  @Override
-  public double getPathCost(List<Edge> path) throws Exception {
-    FspGraph fspGraph = (FspGraph) _graph;
-    var nodes = Graph.edgeListToNodeList(path);
-    Integer[] jobArray = new Integer[nodes.size() - 1];
-    for (int i = 1; i < nodes.size(); i++) {
-      jobArray[i - 1] = nodes.get(i).getID() / fspGraph.getFactor();
-    }
-
-    try {
-      return evaluator.evaluateSchedule(jobArray);
-    } catch (Exception e) {
-      return 1.0;
-    }
   }
 }
