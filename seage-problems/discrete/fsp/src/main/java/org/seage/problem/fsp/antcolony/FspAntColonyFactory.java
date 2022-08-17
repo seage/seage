@@ -30,7 +30,8 @@ package org.seage.problem.fsp.antcolony;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Set;
+import java.util.HashSet;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
@@ -69,9 +70,17 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
           
           ArrayList<Integer> nodes = new ArrayList<>();
           nodes.add(0);
-          for (int j = 0; j < jobs.getJobsCount(); j++) {
-            // Add next node
-            nodes.add(source[i].getSolution()[j]);
+
+          Set<Integer> moves = new HashSet<>();
+          for (int j = 0; j < source[i].getSolution().length; j++) {
+            moves.add(source[i].getSolution()[j]);
+          }
+          System.out.println("'----'");
+
+
+          for (int m : moves) {
+            nodes.add(m);
+            System.out.println(m);
           }
 
           ants[i] = new FspAnt(fspGraph, nodes, jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
