@@ -168,7 +168,9 @@ public class Ant {
     Edge[] candidateEdges = new Edge[nextAvailableNodes.size()];
     
     // for each available node calculate probability
+    System.out.println("start --- available nodes");
     for (Node n : nextAvailableNodes) {
+      System.out.println(n.getID());
       double edgePheromone = 0;
       double edgePrice = 0;
 
@@ -189,6 +191,7 @@ public class Ant {
       candidateEdges[i] = e;
       i++;
     }
+    System.out.println("end --- available nodes");
     
     return candidateEdges[next(probabilities, rand.nextDouble())];
   }

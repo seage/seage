@@ -95,13 +95,19 @@ public class Schedule {
 
     for (int i = 0; i < jobArray.length; i++) {
       indexCurrentJob = jobArray[i] - 1;
-
+      System.out.println(Arrays.toString(jobArray));
       indexCurrentOper = _lastActivityInJobIndex[indexCurrentJob]++;
       
       currentJob = _jobsDefinition.getJobInfos()[indexCurrentJob];
       currentOper = currentJob.getOperationInfos()[indexCurrentOper];
 
       indexCurrentMachine = currentOper.MachineID - 1;
+
+      System.out.println(
+          "length: " + currentOper.Length +
+          ", job: " 
+          + (currentJob.getID()) 
+          + ", oper: " + (currentOper.OperationID) + ", machine: " + (indexCurrentMachine));
 
       if (_endTimeOnMachine[indexCurrentMachine] > _endTimeInJob[indexCurrentJob]) {
         _endTimeOnMachine[indexCurrentMachine] += currentOper.Length;

@@ -45,8 +45,8 @@ import org.seage.problem.jsp.JspPhenotypeEvaluator;
  * @author Edited by David Omrai
  */
 public class JspAnt extends Ant {
-  JspPhenotypeEvaluator evaluator;
-  JspJobsDefinition jobsDefinition;
+  protected JspPhenotypeEvaluator evaluator;
+  protected JspJobsDefinition jobsDefinition;
 
   // For faster performing of the getAvailableNodes() method
   protected int[] lastJobOperations;
@@ -85,7 +85,8 @@ public class JspAnt extends Ant {
   @Override
   protected Edge selectNextStep(List<Node> nodePath) throws Exception {
     Edge nextEdge = super.selectNextStep(nodePath);
-    if (nextEdge != null) {
+    //System.out.println(nextEdge.getNodes()[0].getID());
+     if (nextEdge != null) {
       setNextStep(nextEdge, nodePath.get(nodePath.size() - 1));
     }
     return nextEdge;
@@ -105,11 +106,13 @@ public class JspAnt extends Ant {
     for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
       int jobID = jobIndex + 1;
       int operID = lastJobOperations[jobIndex] + 1;
+      
+      System.out.println(jobID * jspGraph.getFactor() + operID);
 
       if (operID > jobsDefinition.getJobInfos()[jobIndex].getOperationInfos().length) {
         continue;
       }
-
+      
       int nodeID = jobID * jspGraph.getFactor() + operID;
       availableNodes.add(this._graph.getNodes().get(nodeID)); 
     }
