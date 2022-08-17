@@ -174,7 +174,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
 
-    JspGraph graph = new JspGraph(jobs, eval);
+    FspGraph graph = new FspGraph(jobs, eval);
     System.out.println("Loaded ...");
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
@@ -184,7 +184,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     int numAnts = 10;
     Ant ants[] = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {
-      ants[i] = new JspAnt(graph, null, jobs, eval);
+      ants[i] = new FspAnt(graph, null, jobs, eval);
     }
     // brain.setParameters(graph.getNodeList().size(), alpha, beta);
 
