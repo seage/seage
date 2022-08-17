@@ -48,14 +48,14 @@ public class JspGraph extends Graph {
 
   /**
    * .
-   * @param jobArary .
+   * @param jobArray .
    * @param evaluator .
    * @throws Exception .
    */
-  public JspGraph(JspJobsDefinition jobArary, JspPhenotypeEvaluator evaluator) throws Exception {
+  public JspGraph(JspJobsDefinition jobArray, JspPhenotypeEvaluator evaluator) throws Exception {
     super();
     this.evaluator = evaluator;
-    this.jobs = jobArary;
+    this.jobs = jobArray;
     int allOperCount = 0;
     for (int i = 0; i < this.jobs.getJobsCount(); i++) {
       allOperCount += this.jobs.getJobInfos()[i].getOperationInfos().length;
