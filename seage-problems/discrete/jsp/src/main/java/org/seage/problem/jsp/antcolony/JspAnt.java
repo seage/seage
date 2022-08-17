@@ -46,8 +46,8 @@ import org.slf4j.LoggerFactory;
 public class JspAnt extends Ant {
   private static final Logger log = LoggerFactory.getLogger(JspAnt.class.getName());
 
-  JspPhenotypeEvaluator evaluator;
-  JspJobsDefinition jobsDefinition;
+  protected JspPhenotypeEvaluator evaluator;
+  protected JspJobsDefinition jobsDefinition;
 
   // For faster performing of the getAvailableNodes() method
   protected int[] lastJobOperations;
