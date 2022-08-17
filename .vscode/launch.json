@@ -79,13 +79,13 @@
       "args": [
         "experiment-approach",
         "-a",
-        "GeneticAlgorithm",
+        "AntColony",
         "-i",
-        "SAT:hyflex",
+        "JSP:ft10",
         "-t",
-        "1",
+        "60",
         "-n",
-        "1"
+        "3"
       ]
     },
     {

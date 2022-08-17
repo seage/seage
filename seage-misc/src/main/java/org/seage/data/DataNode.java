@@ -22,10 +22,6 @@
 
 package org.seage.data;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
-
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,18 +35,23 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.ProcessingInstruction;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 
 /**
  * DataNode for storing dynamic data.
  * @author Richard Malek.
  */
 public class DataNode {
+  private static final Logger log = LoggerFactory.getLogger(DataNode.class.getName());
 
   private String name;
   @Expose
@@ -397,7 +398,7 @@ public class DataNode {
       transformer.transform(domSource, result);
       return writer.toString();
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error("{}", ex.getMessage(), ex);
       return "";
     }
   }

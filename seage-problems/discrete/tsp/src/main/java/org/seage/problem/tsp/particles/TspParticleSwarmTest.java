@@ -1,38 +1,36 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, @see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
 /**
- * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ * Contributors: Jan Zmatlik - Initial implementation
  */
+
 package org.seage.problem.tsp.particles;
 
 import java.io.FileInputStream;
-
 import org.seage.metaheuristic.particles.IParticleSwarmListener;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.metaheuristic.particles.ParticleSwarm;
 import org.seage.metaheuristic.particles.ParticleSwarmEvent;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The purpose of this class is demonstration of PSO algorithm use.
@@ -40,27 +38,29 @@ import org.seage.problem.tsp.CityProvider;
  * @author Jan Zmatlik
  */
 public class TspParticleSwarmTest implements IParticleSwarmListener {
-  private City[] _cities;
+  private static final Logger log = LoggerFactory.getLogger(TspParticleSwarmTest.class.getName());
+
+  private City[] cities;
   // private static String _dataPath = "data/eil51.tsp";
-  private static String _dataPath = "data/berlin52.tsp";
+  private static String dataPath = "data/berlin52.tsp";
 
   public static void main(String[] args) {
     try {
-      if (args.length != 0)
-        _dataPath = args[0];
-      new TspParticleSwarmTest().run(_dataPath);
+      if (args.length != 0) {
+        dataPath = args[0];
+      }
+      new TspParticleSwarmTest().run(dataPath);
     } catch (Exception ex) {
-      System.out.println(ex.getMessage());
-      ex.printStackTrace();
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 
   public void run(String path) throws Exception {
-    _cities = CityProvider.readCities(new FileInputStream(path));
-    System.out.println("Loading cities from path: " + path);
-    System.out.println("Number of cities: " + _cities.length);
+    cities = CityProvider.readCities(new FileInputStream(path));
+    log.info("Loading cities from path: {}", path);
+    log.info("Number of cities: {}", cities.length);
 
-    ParticleSwarm pso = new ParticleSwarm(new TspObjectiveFunction(_cities));
+    ParticleSwarm pso = new ParticleSwarm(new TspObjectiveFunction(cities));
 
     pso.setMaximalIterationCount(10000);
     // pso.setMaximalVelocity(10);
@@ -79,8 +79,9 @@ public class TspParticleSwarmTest implements IParticleSwarmListener {
     pso.addParticleSwarmOptimizationListener(this);
 
     Particle[] particles = new Particle[10000];
-    for (int i = 0; i < particles.length; i++)
-      particles[i] = new TspRandomParticle(_cities.length);
+    for (int i = 0; i < particles.length; i++) {
+      particles[i] = new TspRandomParticle(cities.length);
+    }
     pso.startSearching(particles);
   }
 
@@ -89,21 +90,22 @@ public class TspParticleSwarmTest implements IParticleSwarmListener {
 
     String s = String.format("Best (%d): %f", e.getParticleSwarm().getCurrentIteration(),
         e.getParticleSwarm().getBestParticle().getEvaluation());
-    System.out.println(s);
+    log.info(s);
   }
 
   @Override
   public void newIterationStarted(ParticleSwarmEvent e) {
+    // Nothing here
   }
 
   @Override
   public void particleSwarmStarted(ParticleSwarmEvent e) {
-    System.out.println("Started");
+    log.info("Started");
   }
 
   @Override
   public void particleSwarmStopped(ParticleSwarmEvent e) {
-    System.out.println("Stopped");
+    log.info("Stopped");
   }
 
 }

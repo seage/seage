@@ -1,28 +1,25 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, @see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
 /**
- * Contributors:
- *   Richard Malek
- *   - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.problem.jsp.tabusearch;
 
 import java.io.InputStream;
@@ -30,7 +27,6 @@ import java.util.Random;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.problem.ProblemInfo;
-import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.data.DataNode;
@@ -43,54 +39,51 @@ import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspProblemProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
+ * 
  * @author Richard Malek
  */
-public class JspTabuSearchTest implements TabuSearchListener
-{
+public class JspTabuSearchTest implements TabuSearchListener {
+  private static final Logger log = LoggerFactory.getLogger(JspTabuSearchTest.class.getName());
   private Random generator = new Random();
 
-  public static void main(String[] args)
-  {
-    try
-    {
+  public static void main(String[] args) {
+    try {
       // String instanceID = "yn_3x3_example";
       // String path = "/org/seage/problem/jsp/test-instances/yn_3x3_example.xml";
       String instanceID = "ft10";
       String path = "/org/seage/problem/jsp/instances/ft10.xml";
-      ProblemInstanceInfo jobInfo = new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+      ProblemInstanceInfo jobInfo =
+          new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
       JspJobsDefinition jobs = null;
 
-      try(InputStream stream = JspTabuSearchTest.class.getResourceAsStream(path)) {
+      try (InputStream stream = JspTabuSearchTest.class.getResourceAsStream(path)) {
         jobs = new JspJobsDefinition(jobInfo, stream);
       }
 
       new JspTabuSearchTest().runAlgorithm(jobs);
-      //new JspTabuSearchTest().runAlgorithmAdapter(jobs);
-    }
-    catch (Exception ex)
-    {
-      ex.printStackTrace();
+      // new JspTabuSearchTest().runAlgorithmAdapter(jobs);
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 
-  public void runAlgorithm(JspJobsDefinition jobs) throws Exception
-  {
+  public void runAlgorithm(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
-    System.out.println("Number of jobs: " + jobs.getJobsCount());
+    log.info("Number of jobs: {}", jobs.getJobsCount());
 
     JspPhenotypeEvaluator evaluator = new JspPhenotypeEvaluator(pi, jobs);
-    
+
     TabuSearch ts = new TabuSearch(
-        new JspTabuSearchSolution(jobs.getJobsCount(), jobs.getJobInfos()[0].getOperationInfos().length),
-        new JspMoveManager(jobs),
-        new JspObjectiveFunction(evaluator),
-        new SimpleTabuList(30),
-        new BestEverAspirationCriteria(),
-        false);
+        new JspTabuSearchSolution(jobs.getJobsCount(),
+            jobs.getJobInfos()[0].getOperationInfos().length),
+        new JspMoveManager(jobs), new JspObjectiveFunction(evaluator), new SimpleTabuList(30),
+        new BestEverAspirationCriteria(), false);
 
     ts.addTabuSearchListener(this);
     ts.setIterationsToGo(10000);
@@ -99,7 +92,8 @@ public class JspTabuSearchTest implements TabuSearchListener
 
   public void runAlgorithmAdapter(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
-    JspPhenotype[] schedules = problemProvider.generateInitialSolutions(jobs, 1, generator.nextLong());
+    JspPhenotype[] schedules =
+        problemProvider.generateInitialSolutions(jobs, 1, generator.nextLong());
 
     AlgorithmParams params = createAlgorithmParams(problemProvider.getProblemInfo());
 
@@ -107,15 +101,16 @@ public class JspTabuSearchTest implements TabuSearchListener
     JspTabuSearchFactory factory = new JspTabuSearchFactory();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     try {
-        IAlgorithmAdapter<JspPhenotype, JspTabuSearchSolution> adapter =  factory.createAlgorithm(jobs, eval);
-        adapter.solutionsFromPhenotype(schedules);
-        adapter.startSearching(params);
-        var solutions = adapter.solutionsToPhenotype();
-        System.out.println(solutions[0].getObjValue());
-        System.out.println(solutions[0].getScore());
+      IAlgorithmAdapter<JspPhenotype, JspTabuSearchSolution> adapter =
+          factory.createAlgorithm(jobs, eval);
+      adapter.solutionsFromPhenotype(schedules);
+      adapter.startSearching(params);
+      var solutions = adapter.solutionsToPhenotype();
+      log.info("{}", solutions[0].getObjValue());
+      log.info("{}", solutions[0].getScore());
 
-    } catch (Exception e) {
-        e.printStackTrace();
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 
@@ -131,46 +126,39 @@ public class JspTabuSearchTest implements TabuSearchListener
   }
 
   @Override
-  public void newBestSolutionFound(TabuSearchEvent e)
-  {
-    System.out.println(
-        e.getTabuSearch().getBestSolution().toString() + " - " + e.getTabuSearch().getIterationsCompleted());
+  public void newBestSolutionFound(TabuSearchEvent e) {
+    log.info("{} - {}", e.getTabuSearch().getBestSolution(),
+        e.getTabuSearch().getIterationsCompleted());
   }
 
   @Override
-  public void improvingMoveMade(TabuSearchEvent e)
-  {
-    //throw new UnsupportedOperationException("Not supported yet.");
+  public void improvingMoveMade(TabuSearchEvent e) {
+    // Nothing here
   }
 
   @Override
-  public void newCurrentSolutionFound(TabuSearchEvent e)
-  {
-    //throw new UnsupportedOperationException("Not supported yet.");
+  public void newCurrentSolutionFound(TabuSearchEvent e) {
+    // Nothing here
   }
 
   @Override
-  public void noChangeInValueMoveMade(TabuSearchEvent e)
-  {
-    //throw new UnsupportedOperationException("Not supported yet.");
+  public void noChangeInValueMoveMade(TabuSearchEvent e) {
+    // Nothing here
   }
 
   @Override
-  public void tabuSearchStarted(TabuSearchEvent e)
-  {
-    //throw new UnsupportedOperationException("Not supported yet.");
+  public void tabuSearchStarted(TabuSearchEvent e) {
+    // Nothing here
   }
 
   @Override
-  public void tabuSearchStopped(TabuSearchEvent e)
-  {
-    System.out.println("finished");
+  public void tabuSearchStopped(TabuSearchEvent e) {
+    log.info("finished");
   }
 
   @Override
-  public void unimprovingMoveMade(TabuSearchEvent e)
-  {
-    //throw new UnsupportedOperationException("Not supported yet.");
+  public void unimprovingMoveMade(TabuSearchEvent e) {
+    // Nothing here
   }
 
 }

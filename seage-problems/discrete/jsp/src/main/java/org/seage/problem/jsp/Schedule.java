@@ -21,7 +21,6 @@
 package org.seage.problem.jsp;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,29 +30,29 @@ import org.seage.data.Pair;
  * JSP Schedule.
  */
 public class Schedule {
-  private int _makeSpan;
-  private ScheduleCell[] _lastCellInJob;
-  private ScheduleCell[] _lastCellOnMachine;
+  private int makeSpan;
+  private ScheduleCell[] lastCellInJob;
+  private ScheduleCell[] lastCellOnMachine;
 
-  private ScheduleCell _mostDistantCell;
-  private JspJobsDefinition _jobsDefinition;
-  private int _numJobs;
-  private int _numMachines;
-  private int[] _lastActivityInJobIndex;
-  private int[] _lastActivityOnMachineIndex;
-  private int[] _endTimeInJob;
-  private int[] _endTimeOnMachine;
+  private ScheduleCell mostDistantCell;
+  private JspJobsDefinition jobsDefinition;
+  private int numJobs;
+  private int numMachines;
+  private int[] lastActivityInJobIndex;
+  private int[] lastActivityOnMachineIndex;
+  private int[] endTimeInJob;
+  private int[] endTimeOnMachine;
 
   /**
    * .
    * @param jobsDefinition .
    */
   public Schedule(JspJobsDefinition jobsDefinition) {
-    _jobsDefinition = jobsDefinition;
-    _numJobs = jobsDefinition.getJobsCount();
-    _numMachines = jobsDefinition.getMachinesCount();
+    this.jobsDefinition = jobsDefinition;
+    numJobs = jobsDefinition.getJobsCount();
+    numMachines = jobsDefinition.getMachinesCount();
     
-    _makeSpan = 0;
+    makeSpan = 0;
   }
 
   public Schedule(JspJobsDefinition jobsDefinition, Integer[] jobArray) {
@@ -67,12 +66,12 @@ public class Schedule {
    */
   public void createSchedule(Integer[] jobArray) {
     // Reset the schedule
-    _lastCellInJob = new ScheduleCell[_numJobs];
-    _lastCellOnMachine = new ScheduleCell[_numMachines];
-    _lastActivityInJobIndex = new int[_numJobs];
-    _lastActivityOnMachineIndex = new int[_numMachines];
-    _endTimeInJob = new int[_numJobs];
-    _endTimeOnMachine = new int[_numMachines];
+    lastCellInJob = new ScheduleCell[numJobs];
+    lastCellOnMachine = new ScheduleCell[numMachines];
+    lastActivityInJobIndex = new int[numJobs];
+    lastActivityOnMachineIndex = new int[numMachines];
+    endTimeInJob = new int[numJobs];
+    endTimeOnMachine = new int[numMachines];
     // Reset done
 
     ScheduleJobInfo currentJob;
@@ -84,63 +83,57 @@ public class Schedule {
 
     int maxMakeSpan = 0;
 
-    for (int i = 0; i < _numJobs; i++) {
-      _lastActivityInJobIndex[i] = 0;
-      _endTimeInJob[i] = 0;
+    for (int i = 0; i < numJobs; i++) {
+      lastActivityInJobIndex[i] = 0;
+      endTimeInJob[i] = 0;
     }
-    for (int i = 0; i < _numMachines; i++) {
-      _lastActivityOnMachineIndex[i] = 0;
-      _endTimeOnMachine[i] = 0;
+    for (int i = 0; i < numMachines; i++) {
+      lastActivityOnMachineIndex[i] = 0;
+      endTimeOnMachine[i] = 0;
     }
 
     for (int i = 0; i < jobArray.length; i++) {
       indexCurrentJob = jobArray[i] - 1;
-      System.out.println(Arrays.toString(jobArray));
-      indexCurrentOper = _lastActivityInJobIndex[indexCurrentJob]++;
+
+      indexCurrentOper = lastActivityInJobIndex[indexCurrentJob]++;
       
-      currentJob = _jobsDefinition.getJobInfos()[indexCurrentJob];
+      currentJob = jobsDefinition.getJobInfos()[indexCurrentJob];
       currentOper = currentJob.getOperationInfos()[indexCurrentOper];
 
       indexCurrentMachine = currentOper.MachineID - 1;
 
-      System.out.println(
-          "length: " + currentOper.Length +
-          ", job: " 
-          + (currentJob.getID()) 
-          + ", oper: " + (currentOper.OperationID) + ", machine: " + (indexCurrentMachine));
-
-      if (_endTimeOnMachine[indexCurrentMachine] > _endTimeInJob[indexCurrentJob]) {
-        _endTimeOnMachine[indexCurrentMachine] += currentOper.Length;
-        _endTimeInJob[indexCurrentJob] = _endTimeOnMachine[indexCurrentMachine];
+      if (endTimeOnMachine[indexCurrentMachine] > endTimeInJob[indexCurrentJob]) {
+        endTimeOnMachine[indexCurrentMachine] += currentOper.Length;
+        endTimeInJob[indexCurrentJob] = endTimeOnMachine[indexCurrentMachine];
       } else {
-        _endTimeInJob[indexCurrentJob] += currentOper.Length;
-        _endTimeOnMachine[indexCurrentMachine] = _endTimeInJob[indexCurrentJob];
+        endTimeInJob[indexCurrentJob] += currentOper.Length;
+        endTimeOnMachine[indexCurrentMachine] = endTimeInJob[indexCurrentJob];
       }
 
-      if (_endTimeOnMachine[indexCurrentMachine] > maxMakeSpan) {
-        maxMakeSpan = _endTimeOnMachine[indexCurrentMachine];
-        _makeSpan = maxMakeSpan;
+      if (endTimeOnMachine[indexCurrentMachine] > maxMakeSpan) {
+        maxMakeSpan = endTimeOnMachine[indexCurrentMachine];
+        makeSpan = maxMakeSpan;
       } 
       addCell(indexCurrentJob, indexCurrentMachine,
-          new ScheduleCell(i, _endTimeOnMachine[indexCurrentMachine] - currentOper.Length,
+          new ScheduleCell(i, endTimeOnMachine[indexCurrentMachine] - currentOper.Length,
               currentOper.Length)); 
     }
   }
 
   private void addCell(int jobIndex, int machineIndex, ScheduleCell newCell) {
-    if (_lastCellOnMachine[machineIndex] != null) {
-      _lastCellOnMachine[machineIndex].setNextCellOnMachine(newCell);
+    if (lastCellOnMachine[machineIndex] != null) {
+      lastCellOnMachine[machineIndex].setNextCellOnMachine(newCell);
     }
 
-    newCell.setPreviousCellOnMachine(_lastCellOnMachine[machineIndex]);
-    newCell.setPreviousCellInJob(_lastCellInJob[jobIndex]);
+    newCell.setPreviousCellOnMachine(lastCellOnMachine[machineIndex]);
+    newCell.setPreviousCellInJob(lastCellInJob[jobIndex]);
 
-    _lastCellOnMachine[machineIndex] = newCell;
-    _lastCellInJob[jobIndex] = newCell;
+    lastCellOnMachine[machineIndex] = newCell;
+    lastCellInJob[jobIndex] = newCell;
 
-    if (_mostDistantCell == null 
-        || newCell.getEndTime() > _mostDistantCell.getEndTime()) {
-      _mostDistantCell = newCell;
+    if (mostDistantCell == null 
+        || newCell.getEndTime() > mostDistantCell.getEndTime()) {
+      mostDistantCell = newCell;
     }
   }
 
@@ -151,11 +144,11 @@ public class Schedule {
    */
   public List<Pair<ScheduleCell>> findCriticalPath() throws Exception {
     ArrayList<Pair<ScheduleCell>> results = new ArrayList<Pair<ScheduleCell>>();
-    findCriticalPath(_mostDistantCell, results);
+    findCriticalPath(mostDistantCell, results);
     return Collections.unmodifiableList(results);
   }
 
-  /**
+  /** 
    * .
    * @param cell .
    * @param criticalPairs .
@@ -190,8 +183,7 @@ public class Schedule {
 
       if (prevCellInJob == null) {
         currCell = prevCellOnMachine;
-      }
-      else {
+      } else {
         if (currCell.getStartTime() == prevCellInJob.getEndTime()) {
           breakFound = true;
         } else {
@@ -200,19 +192,21 @@ public class Schedule {
       }
     }
 
-    if (prevCellInJob.getPreviousCellOnMachine() != null) {
-      if (prevCellInJob.getStartTime() == prevCellInJob.getPreviousCellOnMachine().getEndTime()
-          && (prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob() == null 
-          || !prevCellInJob.getPreviousCellOnMachine().compareStart2EndTo(
-          prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob()))) { 
-        criticalPairs.add(
-            new org.seage.data.Pair<ScheduleCell>(prevCellInJob.getPreviousCellOnMachine(),
-            prevCellInJob));
-      }
+    
+    if (prevCellInJob.getPreviousCellOnMachine() != null 
+        && prevCellInJob.getStartTime() == prevCellInJob.getPreviousCellOnMachine().getEndTime()
+        && (prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob() == null 
+        || !prevCellInJob.getPreviousCellOnMachine().compareStart2EndTo(
+        prevCellInJob.getPreviousCellOnMachine().getPreviousCellInJob()))) { 
+      criticalPairs.add(
+          new org.seage.data.Pair<ScheduleCell>(prevCellInJob.getPreviousCellOnMachine(),
+          prevCellInJob));
     }
+    
 
-    if (currCell.getNextCellOnMachine() != null &&
-        currCell.getNextCellOnMachine().getStartTime() == currCell.getEndTime()) {
+    if (currCell.getNextCellOnMachine() != null 
+        && currCell.getNextCellOnMachine().getStartTime() == currCell.getEndTime()
+    ) {
       criticalPairs.add(new Pair<ScheduleCell>(currCell, currCell.getNextCellOnMachine()));
     }
 
@@ -221,10 +215,11 @@ public class Schedule {
   }
 
   public int getMakeSpan() {
-    return _makeSpan;
+    return makeSpan;
   }
 
   public void setMakeSpan(int makeSpan) {
-    _makeSpan = makeSpan;
+    this.makeSpan = makeSpan;
   }
 }
+ 

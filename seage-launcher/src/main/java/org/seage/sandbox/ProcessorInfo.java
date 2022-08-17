@@ -26,19 +26,19 @@
 
 package org.seage.sandbox;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ProcessorInfo {
+  private static final Logger log = LoggerFactory.getLogger(ProcessorInfo.class.getName());
 
   /**
-   * Displays the number of processors available in the Java Virtual Machine
+   * Displays the number of processors available in the Java Virtual Machine.
    */
   public void displayAvailableProcessors() {
-
     Runtime runtime = Runtime.getRuntime();
-
     int nrOfProcessors = runtime.availableProcessors();
-
-    System.out.println("Number of processors available to the Java Virtual Machine: " + nrOfProcessors);
-
+    log.info("Number of processors available to the Java Virtual Machine: {}", nrOfProcessors);
   }
 
   private class Experiment {
@@ -63,13 +63,13 @@ public class ProcessorInfo {
     @Override
     public void run() {
 
-      // System.out.println("Running "+getName()+" for " + _exp.getTime() +" ms");
-      System.out.println("Running a task for " + _exp.getTime() + " ms");
+      // log.info("Running "+getName()+" for " + _exp.getTime() +" ms");
+      log.info("Running a task for {} ms", _exp.getTime());
       long t1 = System.currentTimeMillis();
       while (System.currentTimeMillis() - t1 < _exp.getTime()) {
       }
-      System.out.println("Stopping a task");
-      // System.out.println(getName()+" done");
+      log.info("Stopping a task");
+      // log.info(getName()+" done");
     }
 
   }
@@ -90,14 +90,16 @@ public class ProcessorInfo {
             isRunning = true;
           }
         } else {
-          if (!threads[i].isAlive())
+          if (!threads[i].isAlive()) {
             threads[i] = null;
-          else
+          } else {
             isRunning = true;
+          }
         }
       }
-      if (!isRunning)
+      if (!isRunning) {
         break;
+      }
 
       Thread.sleep(500);
     }
@@ -106,14 +108,15 @@ public class ProcessorInfo {
   public void foo() throws Exception {
 
     Runnable[] w = new Worker[10];
-    for (int i = 0; i < w.length; i++)
+    for (int i = 0; i < w.length; i++) {
       w[i] = new Worker(new Experiment());
+    }
 
     runRunnableTasks(w);
   }
 
   /**
-   * Starts the program
+   * Starts the program.
    *
    * @param args the command line arguments
    */
@@ -123,7 +126,7 @@ public class ProcessorInfo {
       pi.displayAvailableProcessors();
       pi.foo();
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 }

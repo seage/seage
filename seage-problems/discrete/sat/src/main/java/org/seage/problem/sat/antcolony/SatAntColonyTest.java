@@ -3,27 +3,26 @@
  * 
  * This file is part of SEAGE.
  * 
- * SEAGE is free software: you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  * 
- * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, @see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
 /**
  * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.problem.sat.antcolony;
 
 import java.io.FileInputStream;
-
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -34,39 +33,45 @@ import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 import org.seage.problem.sat.FormulaReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
+ * 
  * @author Zagy
  */
 public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
-  /**
-   * @param args the command line arguments
-   */
+  private static final Logger log = LoggerFactory.getLogger(SatAntColonyTest.class.getName());
+
   public static void main(String[] args) throws Exception {
     try {
       // String path = "data/sat/uf20-01.cnf";
-      String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf100-01.cnf";
+      String path =
+          "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf100-01.cnf";
 
       long start = System.currentTimeMillis();
       new SatAntColonyTest().run(path);
       long end = System.currentTimeMillis();
 
-      System.out.println((end - start) + " ms");
+      log.info("{} ms", (end - start));
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 
   public void run(String path) throws Exception {
-    // args[0];
     Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
         FormulaReader.readClauses(new FileInputStream(path)));
 
-    double quantumPheromone = 462, evaporation = 0.76, defaultPheromone = 0.33;
-    double alpha = 1.15, beta = 1.18;
-    int numAnts = 865, iterations = 3337;
+    double quantumPheromone = 462;
+    double evaporation = 0.76;
+    double defaultPheromone = 0.33;
+    double alpha = 1.15;
+    double beta = 1.18;
+    int numAnts = 865;
 
+    int iterations = 3337;
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
 
     FormulaEvaluator evaluator = new FormulaEvaluator(formula);
@@ -74,42 +79,44 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
 
-    Ant ants[] = new Ant[numAnts];
-    for (int i = 0; i < numAnts; i++)
+    Ant[] ants = new Ant[numAnts];
+    for (int i = 0; i < numAnts; i++) {
       ants[i] = new SatAnt(graph, null, formula, evaluator);
+    }
 
     colony.startExploring(graph.getNodes().get(0), ants);
 
-    System.out.println("Global best: " + colony.getGlobalBest());
-
+    log.info("Global best: {}", colony.getGlobalBest());
   }
 
   @Override
   public void algorithmStarted(AntColonyEvent e) {
-
+    // Nothing here
   }
 
   @Override
   public void algorithmStopped(AntColonyEvent e) {
-
+    // Nothing here
   }
 
   @Override
   public void newBestSolutionFound(AntColonyEvent e) {
-    System.out.println(String.format("%d - %f - %d/%d", e.getAntColony().getCurrentIteration(),
-        e.getAntColony().getGlobalBest(), e.getAntColony().getGraph().getEdges().size(),
-        e.getAntColony().getGraph().getNodes().size() * e.getAntColony().getGraph().getNodes().size() / 2));
+    log.info("{} - {} - {}/{}", 
+        e.getAntColony().getCurrentIteration(),
+        e.getAntColony().getGlobalBest(), 
+        e.getAntColony().getGraph().getEdges().size(),
+        e.getAntColony().getGraph().getNodes().size()
+            * e.getAntColony().getGraph().getNodes().size() / 2);
 
   }
 
   @Override
   public void iterationPerformed(AntColonyEvent e) {
-    // System.out.println(e.getAntColony().getCurrentIteration());
-
+    // log.info(e.getAntColony().getCurrentIteration());
   }
 
   @Override
   public void noChangeInValueIterationMade(AntColonyEvent e) {
-
+    // Nothing here
   }
 }

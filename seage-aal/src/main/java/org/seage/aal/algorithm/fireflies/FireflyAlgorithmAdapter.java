@@ -28,7 +28,6 @@
 package org.seage.aal.algorithm.fireflies;
 
 import java.util.List;
-
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
@@ -44,6 +43,8 @@ import org.seage.metaheuristic.fireflies.FireflySearchListener;
 import org.seage.metaheuristic.fireflies.ObjectiveFunction;
 import org.seage.metaheuristic.fireflies.Solution;
 import org.seage.metaheuristic.fireflies.SolutionComparator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * FireflySearchAdapter base implementation.
@@ -61,6 +62,8 @@ import org.seage.metaheuristic.fireflies.SolutionComparator;
 })
 public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends Solution>
     extends AlgorithmAdapterImpl<P, S> {
+  private static final Logger log = 
+      LoggerFactory.getLogger(FireflyAlgorithmAdapter.class.getName());
   protected List<S> solutions;
   protected FireflySearch<S> fireflySearch;
   protected ObjectiveFunction evaluator;
@@ -185,7 +188,7 @@ public abstract class FireflyAlgorithmAdapter<P extends Phenotype<?>, S extends 
         statLastIterNewSol = e.getFireflySearch().getCurrentIteration();
 
       } catch (Exception ex) {
-        ex.printStackTrace();
+        log.error("{}", ex.getMessage(), ex);
       }
     }
 

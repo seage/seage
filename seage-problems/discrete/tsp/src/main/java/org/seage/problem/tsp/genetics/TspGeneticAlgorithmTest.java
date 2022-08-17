@@ -19,12 +19,12 @@
 /**
  * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.problem.tsp.genetics;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
@@ -33,12 +33,18 @@ import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
 import org.seage.problem.tsp.TourProvider;
 import org.seage.problem.tsp.TspPhenotypeEvaluator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
  * @author Richard Malek
  */
-public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>> {
+public class TspGeneticAlgorithmTest
+    implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Integer>>> {
+  private static final Logger log = 
+      LoggerFactory.getLogger(TspGeneticAlgorithmTest.class.getName());
+
   public static void main(String[] args) {
     try {
       // String instanceID = "eil51"; // 426
@@ -51,21 +57,21 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
 
       new TspGeneticAlgorithmTest().run(instanceID);
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 
   public void run(String instanceID) throws Exception {
     String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instanceID);
     City[] cities = null;
-    try(InputStream stream = getClass().getResourceAsStream(path)) {    
+    try (InputStream stream = getClass().getResourceAsStream(path)) {
       cities = CityProvider.readCities(stream);
     }
     int populationCount = 1000;
-    System.out.println("Population: " + populationCount);
+    log.info("Population: {}", populationCount);
     List<Subject<Integer>> initialSolutions = generateInitialSubjects(cities, populationCount);
-    GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(
-        new TspGeneticOperator(), new TspEvaluator(new TspPhenotypeEvaluator(null, null)));
+    GeneticAlgorithm<Subject<Integer>> gs = new GeneticAlgorithm<>(new TspGeneticOperator(),
+        new TspEvaluator(new TspPhenotypeEvaluator(null, null)));
     gs.addGeneticSearchListener(this);
     gs.setEliteSubjectsPct(5);
     gs.setMutatePopulationPct(5);
@@ -77,41 +83,43 @@ public class TspGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgori
     gs.startSearching(initialSolutions);
   }
 
-  private List<Subject<Integer>> generateInitialSubjects(City[] cities, int subjectCount) throws Exception {
+  private List<Subject<Integer>> generateInitialSubjects(City[] cities, int subjectCount) {
     ArrayList<Subject<Integer>> result = new ArrayList<>(subjectCount);
 
     Integer[][] tours = new Integer[subjectCount][];
-    for (int k = 0; k < subjectCount; k++)
+    for (int k = 0; k < subjectCount; k++) {
       tours[k] = TourProvider.createRandomTour(cities.length);
-    
-    for (int k = 0; k < subjectCount; k++)
+    }
+
+    for (int k = 0; k < subjectCount; k++) {
       result.add(new Subject<>(tours[k]));
+    }
     return result;
   }
 
   @Override
   public void algorithmStarted(GeneticAlgorithmEvent<Subject<Integer>> e) {
-    System.out.println("Genetic Algorithm for TSP started.");
+    log.info("Genetic Algorithm for TSP started.");
   }
 
   @Override
   public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e) {
-    System.out.println("Genetic Algorithm for TSP stopped.");
+    log.info("Genetic Algorithm for TSP stopped.");
   }
 
   @Override
   public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e) {
-    System.out.println("New best: " + e.getGeneticSearch().getBestSubject().getFitness()[0]);
+    log.info("New best: {}", + e.getGeneticSearch().getBestSubject().getFitness()[0]);
   }
 
   @Override
   public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Integer>> e) {
-
+    // Nothing here
   }
 
   @Override
   public void iterationPerformed(GeneticAlgorithmEvent<Subject<Integer>> e) {
-    System.out.println("Iteration performed: " + e.getGeneticSearch().getCurrentIteration());
+    log.info("Iteration performed: {}", e.getGeneticSearch().getCurrentIteration());
   }
 
 }
