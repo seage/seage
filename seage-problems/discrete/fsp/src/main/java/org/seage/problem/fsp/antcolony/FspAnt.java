@@ -90,32 +90,20 @@ public class FspAnt extends Ant {
       return 1;
     }
 
-    // System.out.println("begin-----------------\n-> " + (end.getID()));
-
     // Copy the path to all machines
-    ArrayList<Integer> pathOld = new ArrayList<>();
-    ArrayList<Integer> pathNew = new ArrayList<>();
-    for (int m = 0; m < jobsDefinition.getMachinesCount(); m++) {
-      // Sublist to jump over the first 0 staring node
-      for (Node n : nodePath.subList(1, nodePath.size())) {
-        pathOld.add(n.getID());
-        pathNew.add(n.getID());
-
-        //System.out.println("old - " + n.getID());
+    ArrayList<Integer> path = new ArrayList<>();
+    for (Node n : nodePath.subList(1, nodePath.size())) {
+      for (int m = 0; m < jobsDefinition.getMachinesCount(); m++) {
+        path.add(n.getID());        
       }
-      if (node.getID() != 0) {
-        pathNew.add(node.getID());
-      }
-      //System.out.println("new -> " + node.getID());
-      //System.out.println("----pop----");
     }
-    // if (node.getID() == 0) {
-    //   pathOld.add(node.getID());
-    // }
 
-
-    Integer[] prevPath = pathOld.toArray(new Integer[0]);
-    Integer[] nextPath = pathNew.toArray(new Integer[0]);
+    Integer[] prevPath = path.toArray(new Integer[0]);
+    // Add the new node to each machine
+    for (int m = 0; m < jobsDefinition.getMachinesCount(); m++) {
+      path.add(node.getID());          
+    }
+    Integer[] nextPath = path.toArray(new Integer[0]);
 
     System.out.println("---");
     System.out.println(Arrays.toString(prevPath));
