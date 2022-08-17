@@ -27,6 +27,7 @@
 package org.seage.problem.fsp.antcolony;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import org.seage.metaheuristic.antcolony.Ant;
@@ -91,6 +92,8 @@ public class FspAnt extends Ant {
       return 1;
     }
 
+    System.out.println("begin-----------------\n-> " + (end.getID()));
+
     // Copy the path to all machines
     ArrayList<Integer> pathOld = new ArrayList<>();
     ArrayList<Integer> pathNew = new ArrayList<>();
@@ -99,12 +102,26 @@ public class FspAnt extends Ant {
       for (Node n : nodePath.subList(1, nodePath.size())) {
         pathOld.add(n.getID());
         pathNew.add(n.getID());
+
+        //System.out.println("old - " + n.getID());
       }
-      pathOld.add(node.getID());
+      if (node.getID() != 0) {
+        pathOld.add(node.getID());
+      }
+      //System.out.println("new -> " + node.getID());
+      //System.out.println("----pop----");
     }
+    // if (node.getID() == 0) {
+    //   pathOld.add(node.getID());
+    // }
+
 
     Integer[] prevPath = pathOld.toArray(new Integer[0]);
     Integer[] nextPath = pathNew.toArray(new Integer[0]);
+
+    System.out.println("---");
+    System.out.println(Arrays.toString(prevPath));
+    System.out.println(Arrays.toString(nextPath));
 
     double prevTimespan = 0;
     double nextTimespan = 0;

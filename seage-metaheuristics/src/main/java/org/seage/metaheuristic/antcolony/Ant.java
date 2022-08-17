@@ -168,10 +168,9 @@ public class Ant {
     Edge[] candidateEdges = new Edge[nextAvailableNodes.size()];
     
     // for each available node calculate probability
-    System.out.println("start --- available nodes");
     for (Node n : nextAvailableNodes) {
-      System.out.println(n.getID());
       double edgePheromone = 0;
+      System.out.println("next aval node" + n.getID());
       double edgePrice = 0;
 
       Edge e = currentNode.getEdgeMap().get(n);
@@ -180,6 +179,7 @@ public class Ant {
         edgePrice = e.getEdgePrice();
       } else {
         edgePheromone = _graph.getDefaultPheromone();
+
         edgePrice = getNodeDistance(nodePath, n);
         e = new Edge(currentNode, n, edgePrice);
         e.setEdgePrice(edgePrice);
@@ -191,7 +191,6 @@ public class Ant {
       candidateEdges[i] = e;
       i++;
     }
-    System.out.println("end --- available nodes");
     
     return candidateEdges[next(probabilities, rand.nextDouble())];
   }
