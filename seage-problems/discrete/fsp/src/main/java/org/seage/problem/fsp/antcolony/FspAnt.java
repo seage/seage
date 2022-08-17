@@ -70,23 +70,6 @@ public class FspAnt extends Ant {
 
   @Override
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
-    //HashSet<Node> availableNodes = super.getAvailableNodes(nodePath);
-    // Node startingNode = nodePath.get(0);
-    // Node currentNode = nodePath.get(nodePath.size() - 1);
-    // System.out.println("start of this one");
-    // for (Node n : nodePath) {
-    //   System.out.println(n.getID());
-    // }
-
-    // System.out.println("-------------");
-
-    // for (Node n : availableNodes) {
-    //   System.out.println(n.getID());
-    // }
-    // // if (currentNode != startingNode && availableNodes.size() == 0) {
-    // //   availableNodes.add(startingNode);
-    // // }
-
     HashSet<Node> availableNodes = new HashSet<>(_graph.getNodes().values());
 
     for (Node n : nodePath) {
@@ -121,7 +104,7 @@ public class FspAnt extends Ant {
         //System.out.println("old - " + n.getID());
       }
       if (node.getID() != 0) {
-        pathOld.add(node.getID());
+        pathNew.add(node.getID());
       }
       //System.out.println("new -> " + node.getID());
       //System.out.println("----pop----");
