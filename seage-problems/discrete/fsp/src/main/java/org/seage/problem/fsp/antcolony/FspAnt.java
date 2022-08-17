@@ -68,18 +68,27 @@ public class FspAnt extends Ant {
     this.evaluator = evaluator;
   }
 
-  @Override
-  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
-    HashSet<Node> availableNodes = super.getAvailableNodes(nodePath);
-    Node startingNode = nodePath.get(0);
-    Node currentNode = nodePath.get(nodePath.size() - 1);
+  // @Override
+  // protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
+  //   HashSet<Node> availableNodes = super.getAvailableNodes(nodePath);
+  //   // Node startingNode = nodePath.get(0);
+  //   // Node currentNode = nodePath.get(nodePath.size() - 1);
+  //   System.out.println("start of this one");
+  //   for (Node n : nodePath) {
+  //     System.out.println(n.getID());
+  //   }
 
-    if (currentNode != startingNode && availableNodes.size() == 0) {
-      availableNodes.add(startingNode);
-    }    
+  //   System.out.println("-------------");
 
-    return availableNodes;
-  }
+  //   for (Node n : availableNodes) {
+  //     System.out.println(n.getID());
+  //   }
+  //   // if (currentNode != startingNode && availableNodes.size() == 0) {
+  //   //   availableNodes.add(startingNode);
+  //   // }    
+
+  //   return availableNodes;
+  // }
 
   /**
    * Edge length calculating.
@@ -92,7 +101,7 @@ public class FspAnt extends Ant {
       return 1;
     }
 
-    System.out.println("begin-----------------\n-> " + (end.getID()));
+    // System.out.println("begin-----------------\n-> " + (end.getID()));
 
     // Copy the path to all machines
     ArrayList<Integer> pathOld = new ArrayList<>();

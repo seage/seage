@@ -156,7 +156,7 @@ public class Ant {
   }
 
   protected Edge selectNextStep(List<Node> nodePath) throws Exception {
-    Node currentNode = nodePath.get(nodePath.size()-1);
+    Node currentNode = nodePath.get(nodePath.size() - 1);
     HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
 
     if (nextAvailableNodes.isEmpty()) {
@@ -170,7 +170,7 @@ public class Ant {
     // for each available node calculate probability
     for (Node n : nextAvailableNodes) {
       double edgePheromone = 0;
-      System.out.println("next aval node" + n.getID());
+      //System.out.println("next aval node" + n.getID());
       double edgePrice = 0;
 
       Edge e = currentNode.getEdgeMap().get(n);

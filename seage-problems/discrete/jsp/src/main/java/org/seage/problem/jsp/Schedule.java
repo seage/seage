@@ -84,7 +84,7 @@ public class Schedule {
 
     int maxMakeSpan = 0;
 
-    System.out.println(Arrays.toString(jobArray));
+    //System.out.println(Arrays.toString(jobArray));
 
     int a  = 0;
 
