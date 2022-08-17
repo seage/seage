@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
@@ -71,7 +72,7 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
           ArrayList<Integer> nodes = new ArrayList<>();
           nodes.add(0);
 
-          Set<Integer> moves = new HashSet<>();
+          LinkedHashSet<Integer> moves = new LinkedHashSet<>();
           for (int j = 0; j < source[i].getSolution().length; j++) {
             moves.add(source[i].getSolution()[j]);
           }
