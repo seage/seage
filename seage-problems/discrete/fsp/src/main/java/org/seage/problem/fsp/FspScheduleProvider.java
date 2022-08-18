@@ -136,7 +136,11 @@ public class FspScheduleProvider {
           }
           if (next == -1) {
             int ix = rnd.nextInt(avail.length);
-            while (!avail[++ix % avail.length]);
+            while (true) {
+              if (avail[++ix % avail.length]) {
+                break;
+              }
+            }
             next = ix % avail.length;
           }
           solution[i] = next;
@@ -194,6 +198,9 @@ public class FspScheduleProvider {
     return result;
   }
 
+  /**
+   * .
+   */
   public static void main(String[] args) throws Exception {
     FspProblemProvider problemProvider = new FspProblemProvider();
     List<ProblemInstanceInfo> instances =
@@ -216,7 +223,7 @@ public class FspScheduleProvider {
         JspPhenotype ph2 = FspScheduleProvider.createGreedySchedule(evaluator, jobs);
         double val2 = ph2.getObjValue();
 
-        logger.debug(jobInfo.getInstanceID() + " - " + val2 + " - " /* + val1 */);
+        logger.debug("{} - {} - ", jobInfo.getInstanceID(), val2);
       } catch (Exception ex) {
         logger.error(String.format("Error instance %s", jobInfo.getInstanceID()), ex);
       }

@@ -17,36 +17,37 @@
  * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
+
 package org.seage.problem.jsp;
 
 /**
  * Summary description for Class1.
  */
-public class ScheduleJobInfo
-{
+public class ScheduleJobInfo {
   private int _id;
   private int _priority;
   private ScheduleOperationInfo[] _operations;
       
-  public ScheduleJobInfo(int id, ScheduleOperationInfo[] operations/*, int priority*/)
-  {
+  /**
+   * .
+   * @param id .
+   * @param operations .
+   */
+  public ScheduleJobInfo(int id, ScheduleOperationInfo[] operations/*, int priority*/) {
     _id = id;
     //_priority = priority;
     _operations = operations;
   }
 
-  public int getID()
-  {
+  public int getID() {
     return _id;
   }
 
-  public int getPriority()
-  {
+  public int getPriority() {
     return _priority;
   }
       
-  public ScheduleOperationInfo[] getOperationInfos()
-  {
+  public ScheduleOperationInfo[] getOperationInfos() {
     return _operations;
   }
 
