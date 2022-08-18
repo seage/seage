@@ -318,7 +318,6 @@ public class AlgorithmAgent extends AelAgent {
   @Override
   public void handleNewRegister(
       String containerName, DirectoryRecord[] records, String matchingFilter) {
-    //System.out.println(getName() + "> Ladies and gentleman, we've got him");
     for (DirectoryRecord dr : records) {
       for (String service : dr.getServices()) {
         if (service.equals("Problem") && _problemAgentAddress == null) {
@@ -333,7 +332,6 @@ public class AlgorithmAgent extends AelAgent {
           _adviserAddresses.add(dr.address);
           logFine("Adviser agent new registration - " + _adviserAddresses.toString());
         }
-        //System.out.println("\t"+records[i].address);
       }   
     }
   }

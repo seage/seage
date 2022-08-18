@@ -170,7 +170,6 @@ public class Ant {
     // for each available node calculate probability
     for (Node n : nextAvailableNodes) {
       double edgePheromone = 0;
-      //System.out.println("next aval node" + n.getID());
       double edgePrice = 0;
 
       Edge e = currentNode.getEdgeMap().get(n);

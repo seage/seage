@@ -123,8 +123,8 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
       adapter.solutionsFromPhenotype(schedules);
       adapter.startSearching(params);
       var solutions = adapter.solutionsToPhenotype();
-      System.out.println(adapter.getReport().toString());
-      //System.out.println(solutions[0].getScore());
+      log.info("{}", adapter.getReport().toString());
+      //log.info(solutions[0].getScore());
 
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
@@ -161,7 +161,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
 
     FspGraph graph = new FspGraph(jobs, eval);
-    System.out.println("Loaded ...");
+    log.info("Loaded ...");
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone,
@@ -179,10 +179,10 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     colony.startExploring(graph.getNodes().get(0), ants);
     long t2 = System.currentTimeMillis();
     // graph.printPheromone();
-    System.out.println("Global best: " + colony.getGlobalBest());
-    System.out.println("Edges: " + colony.getBestPath().size());
-    System.out.println("Nodes: " + graph.getNodes().size());
-    System.out.println("Time [ms]: " + (t2 - t1));
+    log.info("Global best: {}", colony.getGlobalBest());
+    log.info("Edges: {}", colony.getBestPath().size());
+    log.info("Nodes: {}", graph.getNodes().size());
+    log.info("Time [ms]: {}", (t2 - t1));
 
     // visualization
     Integer[] jobArray = new Integer[colony.getBestPath().size()];
@@ -193,35 +193,37 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
           colony.getBestPath().get(i).getNode2(graph.getNodes().get(jobArray[i - 1])).getID();
       prev = jobArray[i];
     }
+    String line = "";
     for (int i = 0; i < jobArray.length; i++) {
-      System.out.print(jobArray[i] + " ");
-      jobArray[i] = jobArray[i];
+      line += jobArray[i] + " ";
     }
-    System.out.println();
-    System.out.println("Best: " + eval.evaluateSchedule(jobArray));
+    log.info(line);
+    log.info("");
+    log.info("Best: {}", eval.evaluateSchedule(jobArray));
 
     // for(int i=0;i<graph.getEdges().size();i++) {
-    // System.out.println(graph.getEdges().get(i));
+    // log.info(graph.getEdges().get(i));
     // }
   }
 
   @Override
   public void algorithmStarted(AntColonyEvent e) {
-    System.out.println("algorithmStarted");
+    log.info("algorithmStarted");
 
   }
 
   @Override
   public void algorithmStopped(AntColonyEvent e) {
-    System.out.println("algorithmStopped");
+    log.info("algorithmStopped");
 
   }
 
   @Override
   public void newBestSolutionFound(AntColonyEvent e) {
-    System.out.println(String.format("%f - %d - %d/%d", e.getAntColony().getGlobalBest(),
+    log.info("{} - {} - {}/{}",
+        e.getAntColony().getGlobalBest(),
         e.getAntColony().getCurrentIteration(), e.getAntColony().getGraph().getEdges().size(),
-        _edges));
+        _edges);
 
   }
 
@@ -235,9 +237,9 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     if (e.getAntColony().getCurrentIteration() % 100 != 0) {
       return;
     }
-    System.out.println("### iterationPerformed: " + e.getAntColony().getCurrentIteration());
-    System.out.println("   - best : " + e.getAntColony().getGlobalBest());
-    // System.out.println(" - path : " + e.getAntColony().getBestPath());
+    log.info("### iterationPerformed: {}", e.getAntColony().getCurrentIteration());
+    log.info("   - best : {}", e.getAntColony().getGlobalBest());
+    // log.info(" - path : " + e.getAntColony().getBestPath());
     System.out
         .println("   - edges: " + e.getAntColony().getGraph().getEdges().size() + " / " + _edges);
   }
