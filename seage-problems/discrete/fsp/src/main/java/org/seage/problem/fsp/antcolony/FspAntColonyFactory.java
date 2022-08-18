@@ -94,8 +94,8 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
         nodePath.remove(0);
 
         ArrayList<Integer> path = new ArrayList<>();
-        for (int n : nodePath) {
-          for (int m = 0; m < jobs.getJobInfos()[0].getOperationInfos().length; m++) {          
+        for (int m = 0; m < jobs.getMachinesCount(); m++) {
+          for (int n : nodePath) {
             path.add(n);
           }
         }

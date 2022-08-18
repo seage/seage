@@ -66,29 +66,10 @@ public class FspAnt extends Ant {
     super(graph, nodeIDs);
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;
-    _nodePath.add(0, _graph.getNodes().get(0));
-
   }
 
   @Override
   protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
-    //HashSet<Node> availableNodes = super.getAvailableNodes(nodePath);
-    // Node startingNode = nodePath.get(0);
-    // Node currentNode = nodePath.get(nodePath.size() - 1);
-    // System.out.println("start of this one");
-    // for (Node n : nodePath) {
-    //   System.out.println(n.getID());
-    // }
-
-    // System.out.println("-------------");
-
-    // for (Node n : availableNodes) {
-    //   System.out.println(n.getID());
-    // }
-    // // if (currentNode != startingNode && availableNodes.size() == 0) {
-    // //   availableNodes.add(startingNode);
-    // // }
-
     HashSet<Node> availableNodes = new HashSet<>(_graph.getNodes().values());
 
     for (Node n : nodePath) {
@@ -109,31 +90,24 @@ public class FspAnt extends Ant {
       return 1;
     }
 
-    // System.out.println("begin-----------------\n-> " + (end.getID()));
-
     // Copy the path to all machines
-    ArrayList<Integer> pathOld = new ArrayList<>();
-    ArrayList<Integer> pathNew = new ArrayList<>();
-    
-      // Sublist to jump over the first 0 staring node
+    ArrayList<Integer> path = new ArrayList<>();
     for (Node n : nodePath.subList(1, nodePath.size())) {
       for (int m = 0; m < jobsDefinition.getMachinesCount(); m++) {
-        pathOld.add(n.getID());
-        pathNew.add(n.getID());          
+        path.add(n.getID());        
       }
     }
+
+    Integer[] prevPath = path.toArray(new Integer[0]);
+    // Add the new node to each machine
     for (int m = 0; m < jobsDefinition.getMachinesCount(); m++) {
-      pathNew.add(node.getID());          
+      path.add(node.getID());          
     }
+    Integer[] nextPath = path.toArray(new Integer[0]);
 
-
-
-    Integer[] prevPath = pathOld.toArray(new Integer[0]);
-    Integer[] nextPath = pathNew.toArray(new Integer[0]);
-
-    // System.out.println("---");
-    // System.out.println(Arrays.toString(prevPath));
-    // System.out.println(Arrays.toString(nextPath));
+    System.out.println("---");
+    System.out.println(Arrays.toString(prevPath));
+    System.out.println(Arrays.toString(nextPath));
 
     double prevTimespan = 0;
     double nextTimespan = 0;
