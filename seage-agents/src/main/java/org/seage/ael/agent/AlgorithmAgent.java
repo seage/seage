@@ -51,7 +51,7 @@ import org.seage.aal.data.AlgorithmParams;
 public class AlgorithmAgent extends AelAgent
 {    
     protected IAlgorithmAdapter _algorithm;
-    protected Object[][] this.solutions;
+    protected Object[][] solutions;
     protected DataNode _algorithmParams;
     protected Policy _policy;
     
@@ -471,7 +471,7 @@ public class AlgorithmAgent extends AelAgent
     private class StoreSolutionCNPInitiatorTask extends CNPInitiatorTask
     {
         AlgorithmAgent _agent;
-        Object[][] this.solutions;
+        Object[][] solutions;
         int _currentTask;
         public StoreSolutionCNPInitiatorTask(AlgorithmAgent agent, Collection<Address> participants, Object[][] solutions, int currentTask)
         {
