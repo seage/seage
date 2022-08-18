@@ -68,7 +68,7 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
         for (int i = 0; i < ants.length; i++) {
           
           ArrayList<Integer> nodes = new ArrayList<>();
-          nodes.add(0);
+          //nodes.add(0);
           for (int j = 0; j < source[i].getSolution().length; j++) {
             // Add next node
             nodes.add(source[i].getSolution()[j]);

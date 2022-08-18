@@ -78,7 +78,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
         jobs = new FspJobsDefinition(jobInfo, stream);
       }
 
-      // new FspAntColonyTest().runAlgorithm(jobs);
+      new FspAntColonyTest().runAlgorithm(jobs);
       new FspAntColonyTest().runAlgorithmAdapter(jobs);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
