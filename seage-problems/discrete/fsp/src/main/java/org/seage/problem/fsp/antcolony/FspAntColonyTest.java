@@ -25,6 +25,7 @@
 package org.seage.problem.fsp.antcolony;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Random;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
@@ -36,14 +37,11 @@ import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
-import org.seage.metaheuristic.antcolony.Edge;
-import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.fsp.FspJobsDefinition;
+import org.seage.problem.fsp.FspPhenotypeEvaluator;
 import org.seage.problem.fsp.FspProblemProvider;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
-import org.seage.problem.jsp.antcolony.JspAnt;
-import org.seage.problem.jsp.antcolony.JspGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +53,7 @@ import org.slf4j.LoggerFactory;
 public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   private static final Logger log = LoggerFactory.getLogger(FspAntColonyTest.class.getName());
 
-  private int _edges;
+  private int edges;
   private Random generator = new Random();
 
   /**
@@ -64,7 +62,8 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
    */
   public static void main(String[] args) {
     try {
-      String instanceID = "tai100_20_01";
+      String instanceID = "tai20_05_01";
+      // String instanceID = "tai100_20_01";
       // String instanceID = "tai100_20_02";
       // String instanceID = "rma03_03_01";
 
@@ -78,8 +77,8 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
         jobs = new FspJobsDefinition(jobInfo, stream);
       }
 
-      new FspAntColonyTest().runAlgorithm(jobs);
-      // new FspAntColonyTest().runAlgorithmAdapter(jobs);
+      // new FspAntColonyTest().runAlgorithm(jobs);
+      new FspAntColonyTest().runAlgorithmAdapter(jobs);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
     }
@@ -117,14 +116,15 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     ProblemInfo pi = problemProvider.getProblemInfo();
 
     FspAntColonyFactory factory = new FspAntColonyFactory();
-    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
+    FspPhenotypeEvaluator eval = new FspPhenotypeEvaluator(pi, jobs);
     try {
       IAlgorithmAdapter<JspPhenotype, Ant> adapter = factory.createAlgorithm(jobs, eval);
       adapter.solutionsFromPhenotype(schedules);
       adapter.startSearching(params);
       var solutions = adapter.solutionsToPhenotype();
-      log.info("{}", adapter.getReport().toString());
-      //log.info(solutions[0].getScore());
+      Arrays.sort(solutions, (s1, s2) -> (int)(s1.getObjValue() - s2.getObjValue()));
+      //log.info("{}", adapter.getReport().toString());
+      log.info("{}", solutions[0].getScore());
 
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
@@ -141,7 +141,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     for (int i = 0; i < jobs.getJobsCount(); i++) {
       opersNum += jobs.getJobInfos()[i].getOperationInfos().length;
     }
-    _edges = opersNum * (opersNum - 1) / 2;
+    edges = opersNum * (opersNum - 1) / 2;
 
     int iterations = 10;
 
@@ -149,16 +149,17 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
     // double alpha = 1, beta = 3;
 
-    
-    double defaultPheromone = 1;
-    double localEvaporation = 0.9;
-    double quantumPheromone = 10.0;
+    int numAnts = 500;
+    double defaultPheromone = 10;
+    double localEvaporation = 0.95;
+    double quantumPheromone = numAnts;
     double alpha = 1.1;
-    double beta = 1.6;
+    double beta = 4.6;
 
     FspProblemProvider problemProvider = new FspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
-    JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
+
+    FspPhenotypeEvaluator eval = new FspPhenotypeEvaluator(pi, jobs);
 
     FspGraph graph = new FspGraph(jobs, eval);
     log.info("Loaded ...");
@@ -167,8 +168,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone,
         localEvaporation);
 
-    int numAnts = 10;
-    Ant ants[] = new Ant[numAnts];
+    Ant[] ants = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {
       ants[i] = new FspAnt(graph, null, jobs, eval);
     }
@@ -187,11 +187,9 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // visualization
     Integer[] jobArray = new Integer[colony.getBestPath().size()];
     jobArray[0] = colony.getBestPath().get(0).getNode2(graph.getNodes().get(0)).getID();
-    int prev = jobArray[0];
     for (int i = 1; i < jobArray.length; i++) {
       jobArray[i] =
           colony.getBestPath().get(i).getNode2(graph.getNodes().get(jobArray[i - 1])).getID();
-      prev = jobArray[i];
     }
     String line = "";
     for (int i = 0; i < jobArray.length; i++) {
@@ -199,11 +197,10 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     }
     log.info(line);
     log.info("");
-    log.info("Best: {}", eval.evaluateSchedule(jobArray));
-
-    // for(int i=0;i<graph.getEdges().size();i++) {
-    // log.info(graph.getEdges().get(i));
-    // }
+    
+    double[] objVals = eval.evaluate(new JspPhenotype(jobArray));
+    log.info("Best objVal: {}", objVals[0]);
+    log.info("Best score: {}", objVals[1]);
   }
 
   @Override
@@ -223,7 +220,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     log.info("{} - {} - {}/{}",
         e.getAntColony().getGlobalBest(),
         e.getAntColony().getCurrentIteration(), e.getAntColony().getGraph().getEdges().size(),
-        _edges);
+        edges);
 
   }
 
@@ -241,6 +238,6 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     log.info("   - best : {}", e.getAntColony().getGlobalBest());
     // log.info(" - path : " + e.getAntColony().getBestPath());
     System.out
-        .println("   - edges: " + e.getAntColony().getGraph().getEdges().size() + " / " + _edges);
+        .println("   - edges: " + e.getAntColony().getGraph().getEdges().size() + " / " + edges);
   }
 }
