@@ -124,7 +124,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
       adapter.startSearching(params);
       var solutions = adapter.solutionsToPhenotype();
       System.out.println(adapter.getReport().toString());
-      // System.out.println(solutions[0].getScore());
+      //System.out.println(solutions[0].getScore());
 
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
