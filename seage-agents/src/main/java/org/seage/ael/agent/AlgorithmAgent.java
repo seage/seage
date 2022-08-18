@@ -143,10 +143,10 @@ public class AlgorithmAgent extends AelAgent {
   public void done() throws Exception {
     setState(stDONE);
 
-    if (_reportLog != null){
-      XmlHelper.writeXml(_reportLog, _strOutDir+getName()+".xml");
+    if (_reportLog != null) {
+      XmlHelper.writeXml(_reportLog, _strOutDir + getName() + ".xml");
     }
-    if (_algorithm != null){
+    if (_algorithm != null) {
       _algorithm.stopSearching();
     }    
   }
@@ -157,7 +157,7 @@ public class AlgorithmAgent extends AelAgent {
     _breakTask = breakTask;
     _breakTask.sendAgree();
     
-    if (_algorithm != null){
+    if (_algorithm != null) {
       _algorithm.stopSearching();
     }
 
@@ -171,16 +171,19 @@ public class AlgorithmAgent extends AelAgent {
 
   @Override
   protected void processCurrentState() throws Exception {  
-    switch(getStateEx()) {
+    switch (getStateEx()) {
       case stINITAGENT:
-        if (currentStateInfo(StateInfo.Success)){
-          setState(stADVISERNEGOTIATION);}
+        if (currentStateInfo(StateInfo.Success)) {
+          setState(stADVISERNEGOTIATION);
+        }
         return;
       case stADVISERNEGOTIATION:
-        if (currentStateInfo(StateInfo.Ready)){
-          setStateInfo(stADVISERNEGOTIATION, StateInfo.InProgress);}
-        if (_adviserAddresses != null && _adviserAddresses.size() != 0){
-          setState(stASKINGADVISER);}
+        if (currentStateInfo(StateInfo.Ready)) {
+          setStateInfo(stADVISERNEGOTIATION, StateInfo.InProgress);
+        }
+        if (_adviserAddresses != null && _adviserAddresses.size() != 0) {
+          setState(stASKINGADVISER);
+        }
         return;
       case stASKINGADVISER:
         if (currentStateInfo(StateInfo.Ready)) {
@@ -188,10 +191,12 @@ public class AlgorithmAgent extends AelAgent {
           setStateInfo(stASKINGADVISER, StateInfo.InProgress);
           new AdviserQueryRefInitiatorTask(this, _adviserAddresses.get(0), _report);
         }
-        if (currentStateInfo(StateInfo.Success)){
-          setState(stLOADSOLUTION);}
-        if (currentStateInfo(StateInfo.Failure)){
-          setState(stASKINGADVISER);}
+        if (currentStateInfo(StateInfo.Success)) {
+          setState(stLOADSOLUTION);
+        }
+        if (currentStateInfo(StateInfo.Failure)) {
+          setState(stASKINGADVISER);
+        }
         return;
       case stLOADSOLUTION:
         if (
@@ -206,10 +211,12 @@ public class AlgorithmAgent extends AelAgent {
         }
         
 
-        if (currentStateInfo(StateInfo.Success)){
-          setState(stSEARCHING);}
-        if (currentStateInfo(StateInfo.Failure)){
-          setState(stLOADSOLUTION);}
+        if (currentStateInfo(StateInfo.Success)) {
+          setState(stSEARCHING);
+        }
+        if (currentStateInfo(StateInfo.Failure)) {
+          setState(stLOADSOLUTION);
+        }
         return;
       case stSEARCHING:
         if (currentStateInfo(StateInfo.Ready)) {
@@ -228,8 +235,9 @@ public class AlgorithmAgent extends AelAgent {
               _report.setId(_policy.getID());
               _reportLog.putDataNode(_report);
               this.solutions = _algorithm.solutionsToPhenotype();
-              if (this.solutions == null){
-                throw new Exception("this.solutions is null");}
+              if (this.solutions == null) {
+                throw new Exception("this.solutions is null");
+              }
 
               sendBestSolutionToProblemAgent(this.solutions[0]);
               //assert (this.solutions != null);
@@ -239,8 +247,9 @@ public class AlgorithmAgent extends AelAgent {
           } catch (Exception ex) {
             logWarning(stNames[getStateEx()] + "\n" + exception2String(ex));
           } finally {
-            if (getStateEx() == stSEARCHING){
-              setState(stSTORESOLUTION);}
+            if (getStateEx() == stSEARCHING) {
+              setState(stSTORESOLUTION);
+            }
           }     
         }
         return;
@@ -285,14 +294,16 @@ public class AlgorithmAgent extends AelAgent {
           this.solutions = null;
           setState(stASKINGADVISER);
         }
-        if (currentStateInfo(StateInfo.Failure)){
-          setState(stSTORESOLUTION);}
+        if (currentStateInfo(StateInfo.Failure)) {
+          setState(stSTORESOLUTION);
+        }
         return;
       case stDONE:
         if (currentStateInfo(StateInfo.Ready)) {     
           setStateInfo(stDONE, StateInfo.InProgress);
         } else {
-          Thread.currentThread().sleep(5000);}
+          Thread.currentThread().sleep(5000);
+        }
         return;
     }
   }
@@ -332,14 +343,17 @@ public class AlgorithmAgent extends AelAgent {
       String containerName, DirectoryRecord[] records, String matchingFilter
   ) {
     for (DirectoryRecord dr : records) {
-      if (dr.address ==  _problemAgentAddress){
-        _problemAgentAddress = null;}
+      if (dr.address ==  _problemAgentAddress) {
+        _problemAgentAddress = null;
+      }
 
-      if (_solutionPoolAddresses.contains(dr.address)){
-        _solutionPoolAddresses.remove(dr.address);}
+      if (_solutionPoolAddresses.contains(dr.address)) {
+        _solutionPoolAddresses.remove(dr.address);
+      }
       
-      if (_adviserAddresses.contains(dr.address)){
-        _adviserAddresses.remove(dr.address);}
+      if (_adviserAddresses.contains(dr.address)) {
+        _adviserAddresses.remove(dr.address);
+      }
     }
   } 
 
@@ -350,41 +364,34 @@ public class AlgorithmAgent extends AelAgent {
     sendMessage(m);
   }
 
-  private class AdviserQueryRefInitiatorTask extends QueryRefInitiatorTask
-  {
+  private class AdviserQueryRefInitiatorTask extends QueryRefInitiatorTask {
 
-    public AdviserQueryRefInitiatorTask(AlgorithmAgent owner, Address participant, DataNode report)
-    {
+    public AdviserQueryRefInitiatorTask(
+        AlgorithmAgent owner, Address participant, DataNode report) {
       super(owner, participant, report, true);
     }
 
     @Override
-    protected void informResult(Object result)
-    {
-      try
-      {
+    protected void informResult(Object result) {
+      try {
         _policy = (Policy)result;
         logFinest(XmlHelper.getStringFromDocument(_algorithmParams.toXml()));
         setStateInfo(stASKINGADVISER, StateInfo.Success);
-      }
-      catch(Exception ex)
-      {
+      } catch (Exception ex) {
         setStateInfo(stASKINGADVISER, StateInfo.Failure);
         logWarning(ex.toString());
       }
     }
     
     @Override
-    protected void queryRefused()
-    {
+    protected void queryRefused() {
       logWarning("queryRefused");
       setStateInfo(stASKINGADVISER, StateInfo.Failure);
     }
 
     @Override
     protected void timeout() {
-      if (getStateEx() == stASKINGADVISER)
-      {
+      if (getStateEx() == stASKINGADVISER) {
         logWarning("timeout");
         setStateInfo(stASKINGADVISER, StateInfo.Failure);
       }
@@ -407,10 +414,12 @@ public class AlgorithmAgent extends AelAgent {
       List<Address> replies = new ArrayList<Address>();
       try {
         for (Address a : participants) {
-          if (receivedOffers.get(a).getPerformative().equals("REFUSE")){
-            continue;}
-          if ((Integer)receivedOffers.get(a).getContent() >= _amount){
-            replies.add(a);}
+          if (receivedOffers.get(a).getPerformative().equals("REFUSE")) {
+            continue;
+          }
+          if ((Integer)receivedOffers.get(a).getContent() >= _amount) {
+            replies.add(a);
+          }
           logFine(
               "LoadSolutionCNPInitiatorTask recieved offer for " 
               + (Integer)receivedOffers.get(a).getContent() + " solutions");
@@ -421,15 +430,14 @@ public class AlgorithmAgent extends AelAgent {
           //cancelTask();
         }
       }
-      catch(Exception ex) {
+      catch (Exception ex) {
         logSevere(ex.toString());
       }
       return replies;
     }
     
     @Override
-    protected boolean evaluateAcceptReply(Message m)
-    {
+    protected boolean evaluateAcceptReply(Message m) {
       this.solutions = (Object[][])m.getContent();
       setStateInfo(stLOADSOLUTION, StateInfo.Success);
 
@@ -438,8 +446,7 @@ public class AlgorithmAgent extends AelAgent {
     }
 
     @Override
-    protected void evaluateAcceptTimeout()
-    {
+    protected void evaluateAcceptTimeout() {
       setStateInfo(stLOADSOLUTION, StateInfo.Failure);
       logWarning("evaluateAcceptTimeout ");
     }
@@ -455,9 +462,13 @@ public class AlgorithmAgent extends AelAgent {
     AlgorithmAgent _agent;
     Object[][] solutions;
     int _currentTask;
-    public StoreSolutionCNPInitiatorTask(AlgorithmAgent agent, Collection<Address> participants, Object[][] solutions, int currentTask)
-    {
-      super(agent, participants, "<put amount='"+solutions.length+"'/>", 2000, "", true);
+    public StoreSolutionCNPInitiatorTask(
+          AlgorithmAgent agent, 
+          Collection<Address> participants, 
+          Object[][] solutions, 
+          int currentTask
+    ) {
+      super(agent, participants, "<put amount='" + solutions.length + "'/>", 2000, "", true);
       _agent = agent;
       this.solutions = solutions;
       _currentTask = currentTask;
@@ -465,11 +476,9 @@ public class AlgorithmAgent extends AelAgent {
     }
 
     @Override
-    protected List<Address> evaluateReplies()
-    {
+    protected List<Address> evaluateReplies() {
       List<Address> replies = new ArrayList<Address>();
-      for(Address a : participants)
-      {
+      for (Address a : participants) {
         replies.add(a);
       }
       logFine("Reply to " + replies.size() + " participants");
@@ -478,11 +487,9 @@ public class AlgorithmAgent extends AelAgent {
 
     // TODO: A - check CFP for storing
     @Override
-    protected void sendAnswersToParticipants(Map<Address, Object> arg0)
-    {
+    protected void sendAnswersToParticipants(Map<Address, Object> arg0) {
       Map<Address, Object> acceptedParticipants = new HashMap<Address, Object>();
-      for(Address a : arg0.keySet())
-      {
+      for (Address a : arg0.keySet()) {
         //arg0.remove(a);
         //logFinest(this.solutions.toString());
         acceptedParticipants.put(a, this.solutions);
@@ -492,16 +499,14 @@ public class AlgorithmAgent extends AelAgent {
     }
 
     @Override
-    protected boolean evaluateAcceptReply(Message m)
-    {
+    protected boolean evaluateAcceptReply(Message m) {
 
       setStateInfo(_currentTask, StateInfo.Success);
       return false;
     }
 
     @Override
-    protected void evaluateAcceptTimeout()
-    {
+    protected void evaluateAcceptTimeout() {
       setStateInfo(_currentTask, StateInfo.Failure);
       logWarning("evaluateAcceptTimeout ");
     }
