@@ -64,9 +64,9 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
    */
   public static void main(String[] args) {
     try {
-      // String instanceID = "tai100_20_01";
+      String instanceID = "tai100_20_01";
       // String instanceID = "tai100_20_02";
-      String instanceID = "rma03_03_01";
+      // String instanceID = "rma03_03_01";
 
       String path = String.format("/org/seage/problem/fsp/instances/%s.txt", instanceID);
 

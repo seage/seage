@@ -98,6 +98,14 @@ public class FspProblemProvider extends JspProblemProvider {
     return result;
   }
 
+  @Override
+  public IPhenotypeEvaluator<JspPhenotype> initPhenotypeEvaluator(
+      ProblemInstance problemInstance) throws Exception {
+    ProblemInfo pi = this.getProblemInfo();
+    FspJobsDefinition jobsDefinition = (FspJobsDefinition) problemInstance;
+    return new FspPhenotypeEvaluator(pi, jobsDefinition);
+  }
+
   // TODO: Remove after testing
   /**
    * .

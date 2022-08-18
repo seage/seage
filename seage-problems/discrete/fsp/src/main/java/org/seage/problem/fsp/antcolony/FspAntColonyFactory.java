@@ -92,14 +92,7 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
         // Remove the starting node
         nodePath.remove(0);
 
-        ArrayList<Integer> path = new ArrayList<>();
-        for (int m = 0; m < jobs.getMachinesCount(); m++) {
-          for (int n : nodePath) {
-            path.add(n);
-          }
-        }
-
-        Integer[] jobArray = path.toArray(new Integer[0]);
+        Integer[] jobArray = nodePath.toArray(new Integer[0]);
 
         JspPhenotype result = new JspPhenotype(jobArray);
         double[] objVals = this.phenotypeEvaluator.evaluate(result);

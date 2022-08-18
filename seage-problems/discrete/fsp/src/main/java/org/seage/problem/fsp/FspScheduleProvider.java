@@ -168,7 +168,6 @@ public class FspScheduleProvider {
     int numOpers = jobs.getJobInfos()[0].getOperationInfos().length;
 
     Integer[] randSolPart = new Integer[numJobs];
-    Integer[] randSol = new Integer[numJobs * numOpers];
 
     for (int jobID = 1; jobID <= numJobs; jobID++) {
       randSolPart[jobID - 1] = jobID;
@@ -183,15 +182,9 @@ public class FspScheduleProvider {
       randSolPart[ix2] = a;
     }
 
-    for (int i = 0; i < numJobs; i++) {
-      for (int j = 0; j < numOpers; j++) {
-        randSol[i * numOpers + j] = randSolPart[i];
-      }
-    }
 
-    var pheno = new JspPhenotype(randSol);
     var result = new JspPhenotype(randSolPart);
-    double[] objVals = jspPhenoEval.evaluate(pheno);
+    double[] objVals = jspPhenoEval.evaluate(result);
     result.setObjValue(objVals[0]);
     result.setScore(objVals[1]); 
 
