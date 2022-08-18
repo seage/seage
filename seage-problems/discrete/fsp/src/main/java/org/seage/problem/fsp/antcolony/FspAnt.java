@@ -27,12 +27,9 @@
 package org.seage.problem.fsp.antcolony;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import org.seage.metaheuristic.antcolony.Ant;
-import org.seage.metaheuristic.antcolony.Edge;
-import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;

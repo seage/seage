@@ -85,7 +85,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     }
   }
 
-   private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
+  private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
     AlgorithmParams result = new AlgorithmParams();
     DataNode algParamsNode = problemInfo.getDataNode("Algorithms").getDataNodeById("AntColony");
     // for (DataNode param : algParamsNode.getDataNodes("Parameter")) {

@@ -68,11 +68,9 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
         for (int i = 0; i < ants.length; i++) {
           
           ArrayList<Integer> nodes = new ArrayList<>();
-          //nodes.add(0);
           for (int j = 0; j < source[i].getSolution().length; j++) {
             // Add next node
             nodes.add(source[i].getSolution()[j]);
-            //System.out.println(source[i].getSolution()[j]);
           }
 
           ants[i] = new FspAnt(fspGraph, nodes, jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);

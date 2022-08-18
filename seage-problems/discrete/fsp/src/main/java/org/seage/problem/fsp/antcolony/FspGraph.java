@@ -22,14 +22,10 @@
 
 package org.seage.problem.fsp.antcolony;
 
-import java.util.ArrayList;
-import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * .
@@ -38,8 +34,6 @@ import org.slf4j.LoggerFactory;
  * @author David Omrai
  */
 public class FspGraph extends Graph {
-  private static final Logger log = LoggerFactory.getLogger(FspGraph.class.getName());
-
   JspPhenotypeEvaluator evaluator;
 
   private JspJobsDefinition jobs;
