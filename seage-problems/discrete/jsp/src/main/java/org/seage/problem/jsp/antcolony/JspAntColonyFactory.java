@@ -28,55 +28,50 @@
 
 package org.seage.problem.jsp.antcolony;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.seage.aal.Annotations;
-import org.seage.aal.Annotations.Broken;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
+import org.seage.aal.problem.ProblemInstance;
+
 import org.seage.metaheuristic.antcolony.Ant;
 
-import java.util.Random;
-import java.util.ArrayList;
-import java.util.List;
-import org.seage.aal.problem.ProblemInstance;
 import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
-import org.seage.problem.jsp.JspProblemProvider;
 
 /**
- *
+ * .
  * @author Richard Malek
- * Edited by David Omrai
+ * @author Edited by David Omrai
  */
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
 @Annotations.NotReady
-public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
-{
+public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant> {
   Random rnd = new Random();
 
   @Override
-  public Class<?> getAlgorithmClass()
-  {
+  public Class<?> getAlgorithmClass() {
     return AntColonyAdapter.class;
   }
 
   @Override
   public IAlgorithmAdapter<JspPhenotype, Ant> createAlgorithm(
-    ProblemInstance instance, IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception
-  {
+      ProblemInstance instance, IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator
+  ) throws Exception {
     JspJobsDefinition jobs = (JspJobsDefinition) instance;
     JspGraph jspGraph = new JspGraph(jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
-    return new AntColonyAdapter<JspPhenotype, Ant>(jspGraph, phenotypeEvaluator)
-    {
+    return new AntColonyAdapter<JspPhenotype, Ant>(jspGraph, phenotypeEvaluator) {
       @Override
-      public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception
-      {
+      public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception {
         ants = new Ant[source.length];
-        for (int i = 0; i < ants.length; i++)
-        {
+        for (int i = 0; i < ants.length; i++) {
           // Current id of operation of specific job
           int[] jobsOper = new int[jobs.getJobsCount() + 1];
           for (int jobID = 0; jobID < jobsOper.length; jobID++) {
@@ -96,12 +91,11 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
           }
 
           ants[i] = new JspAnt(jspGraph, nodes, jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
-       }
+        }
       }
 
       @Override
-      public JspPhenotype[] solutionsToPhenotype() throws Exception
-      {
+      public JspPhenotype[] solutionsToPhenotype() throws Exception {
         JspPhenotype[] result = new JspPhenotype [ants.length];
         for (int i = 0; i < ants.length; i++) {
           result[i] = solutionToPhenotype(ants[i]);
@@ -116,8 +110,7 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
         nodePath.remove(0);
 
         Integer[] jobArray = new Integer[nodePath.size()];
-        for (int j = 0; j < jobArray.length; j++)
-        {
+        for (int j = 0; j < jobArray.length; j++) {
           int nodeID = nodePath.get(j);
           int jobID = nodeID / jspGraph.getFactor();
           jobArray[j] = jobID;

@@ -20,6 +20,7 @@
 /**
  * Contributors: Richard Malek - Initial implementation, David Omrai - Adapting to JSP problem
  */
+
 package org.seage.problem.jsp;
 
 import java.util.Arrays;
@@ -29,7 +30,7 @@ import org.seage.aal.algorithm.Phenotype;
 public class JspPhenotype extends Phenotype<Integer[]> {
 
   /**
-   * Class constructor sets the solution
+   * Class constructor sets the solution.
    * Solution is the integer array where each number represents
    * the job operation for one working machine
    * @param schedule Integer[] solution

@@ -156,7 +156,7 @@ public class Ant {
   }
 
   protected Edge selectNextStep(List<Node> nodePath) throws Exception {
-    Node currentNode = nodePath.get(nodePath.size()-1);
+    Node currentNode = nodePath.get(nodePath.size() - 1);
     HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
 
     if (nextAvailableNodes.isEmpty()) {
@@ -178,6 +178,7 @@ public class Ant {
         edgePrice = e.getEdgePrice();
       } else {
         edgePheromone = _graph.getDefaultPheromone();
+
         edgePrice = getNodeDistance(nodePath, n);
         e = new Edge(currentNode, n, edgePrice);
         e.setEdgePrice(edgePrice);

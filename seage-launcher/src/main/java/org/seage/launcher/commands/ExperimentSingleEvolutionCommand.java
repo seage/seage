@@ -9,11 +9,17 @@ import com.beust.jcommander.Parameters;
 public class ExperimentSingleEvolutionCommand extends Command {
   @Parameter(names = "-p", required = true, description = "ProblemID")
   String problemID;
-  @Parameter(names = "-i", required = true, description = "Problem instances", variableArity = true)
+  @Parameter(
+      names = "-i",
+      required = true,
+      description = "Problem instances [PROBLEM_DOMAIN:instance]",
+      variableArity = true
+  )
   List<String> instances;
   @Parameter(names = "-a", required = true, description = "Algorithms", variableArity = true)
   List<String> algorithms;
-  @Parameter(names = "-n", required = true, description = "Number of random configs per each experiment")
+  @Parameter(
+      names = "-n", required = true, description = "Number of random configs per each experiment")
   int numOfSubjects;
   @Parameter(names = "-g", required = true, description = "Number of iterations")
   int numOfIterations;

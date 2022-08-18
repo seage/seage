@@ -22,18 +22,84 @@
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
+ *     David Omrai
+ *     - Fsp implementation
  */
 
 package org.seage.problem.fsp.antcolony;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.seage.aal.Annotations;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
+import org.seage.aal.problem.ProblemInstance;
+
+import org.seage.metaheuristic.antcolony.Ant;
+
+import org.seage.problem.jsp.JspJobsDefinition;
+import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
 import org.seage.problem.jsp.antcolony.JspAntColonyFactory;
 /**
- *
+ * .
  * @author Richard Malek
+ * @author Edited by David Omrai
  */
+
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
 @Annotations.NotReady
 public class FspAntColonyFactory extends JspAntColonyFactory {
+  
+  @Override
+  public IAlgorithmAdapter<JspPhenotype, Ant> createAlgorithm(
+      ProblemInstance instance, IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator
+  ) throws Exception {
+    JspJobsDefinition jobs = (JspJobsDefinition) instance;
+    FspGraph fspGraph = new FspGraph(jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
+    return new AntColonyAdapter<JspPhenotype, Ant>(fspGraph, phenotypeEvaluator) {
+      
+      @Override
+      public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception {
+        ants = new Ant[source.length];
+        for (int i = 0; i < ants.length; i++) {
+          
+          ArrayList<Integer> nodes = new ArrayList<>();
+          for (int j = 0; j < source[i].getSolution().length; j++) {
+            // Add next node
+            nodes.add(source[i].getSolution()[j]);
+          }
+
+          ants[i] = new FspAnt(fspGraph, nodes, jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
+        }
+      }
+
+      @Override
+      public JspPhenotype[] solutionsToPhenotype() throws Exception {
+        JspPhenotype[] result = new JspPhenotype [ants.length];
+        for (int i = 0; i < ants.length; i++) {
+          result[i] = solutionToPhenotype(ants[i]);
+        }
+        return result;
+      }
+
+      @Override
+      public JspPhenotype  solutionToPhenotype(Ant ant) throws Exception {
+        List<Integer> nodePath = ant.getNodeIDsAlongPath();
+        // Remove the starting node
+        nodePath.remove(0);
+
+        Integer[] jobArray = nodePath.toArray(new Integer[0]);
+
+        JspPhenotype result = new JspPhenotype(jobArray);
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
+      }
+    };
+  }
 }

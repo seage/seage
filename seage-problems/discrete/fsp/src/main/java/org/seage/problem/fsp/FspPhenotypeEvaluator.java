@@ -27,30 +27,24 @@
  *   - Fixing the compare method
  */
 
-package org.seage.problem.jsp;
+package org.seage.problem.fsp;
 
-import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInfo;
-import org.seage.aal.problem.ProblemScoreCalculator;
+import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp.Schedule;
 
-public class JspPhenotypeEvaluator implements IPhenotypeEvaluator<JspPhenotype> {
-  protected String instanceID;
-  protected JspJobsDefinition jobsDefinition;
-
-  protected ProblemScoreCalculator scoreCalculator;
-
+public class FspPhenotypeEvaluator extends JspPhenotypeEvaluator {
+ 
   /**
    * .
    * @param problemInfo .
    * @param jobsDefinition .
    * @throws Exception .
    */
-  public JspPhenotypeEvaluator(
-      ProblemInfo problemInfo, JspJobsDefinition jobsDefinition) throws Exception {
-    this.jobsDefinition = jobsDefinition;
-    this.instanceID = jobsDefinition.getProblemInstanceInfo().getInstanceID();
-
-    this.scoreCalculator = new ProblemScoreCalculator(problemInfo);
+  public FspPhenotypeEvaluator(
+      ProblemInfo problemInfo, FspJobsDefinition jobsDefinition) throws Exception {
+    super(problemInfo, jobsDefinition);
   }
       
   /**
@@ -61,19 +55,17 @@ public class JspPhenotypeEvaluator implements IPhenotypeEvaluator<JspPhenotype> 
    */
   @Override
   public double[] evaluate(JspPhenotype phenotype) throws Exception {
-    Schedule schedule = new Schedule(jobsDefinition, phenotype.getSolution());
+    int jobsCount = jobsDefinition.getJobsCount();
+    int machinesCount = jobsDefinition.getMachinesCount();
+    Integer[] jobsArray = new Integer[jobsCount * machinesCount];
+
+    for (int i = 0; i < jobsArray.length; i++) {
+      jobsArray[i] = phenotype.getSolution()[i % jobsCount];
+    }
+
+    Schedule schedule = new Schedule(jobsDefinition, jobsArray);
     double makeSpan = schedule.getMakeSpan();
     double score = this.scoreCalculator.calculateInstanceScore(instanceID, makeSpan);
     return new double[] { makeSpan, score };
-  }
-      
-  @Override
-  public int compare(double[] arg0, double[] arg1) {
-    return (int)(arg1[0] - arg0[0]);
-  }
-
-  public double evaluateSchedule(Integer[] jobArray) throws Exception {
-    Schedule schedule = new Schedule(jobsDefinition, jobArray);
-    return schedule.getMakeSpan();
   }
 }

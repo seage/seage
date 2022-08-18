@@ -13,20 +13,22 @@ public class JspScheduleProvider {
   private static Logger logger = LoggerFactory.getLogger(JspScheduleProvider.class.getName());
   
   /**
-   * Method creates soluton with the use of greedy algorithm
+   * Method creates soluton with the use of greedy algorithm.
    * 
    * @param jobs Problem instance definition
    * @param jspPhenoEval Phenotype evaluator
    */
-  public static JspPhenotype createGreedySchedule(JspPhenotypeEvaluator jspPhenoEval, JspJobsDefinition jobs) throws Exception {
+  public static JspPhenotype createGreedySchedule(
+      JspPhenotypeEvaluator jspPhenoEval, JspJobsDefinition jobs) throws Exception {
     int numJobs = jobs.getJobsCount();
     int numOpers = jobs.getJobInfos()[0].getOperationInfos().length;
 
-    Integer[] greedySolution = new Integer[numJobs*numOpers];
+    Integer[] greedySolution = new Integer[numJobs * numOpers];
 
     int[] numFinJobOpers = new int[numJobs];
-    for (int i = 0; i < numJobs; i++)
+    for (int i = 0; i < numJobs; i++) {
       numFinJobOpers[i] = 0;
+    }
 
     double tmpMakeSpan = 0;
     double tmpMinMakeSpan = 0;
@@ -40,23 +42,24 @@ public class JspScheduleProvider {
 
       for (int j = 0; j <= numJobs; j++) {
         int jobIx = (firstJob + j) % numJobs;
-        if ( numFinJobOpers[jobIx] >= numOpers )
+        if (numFinJobOpers[jobIx] >= numOpers) {
           continue;
+        }
         
-        greedySolution[i] = jobIx+1;
+        greedySolution[i] = jobIx + 1;
 
         tmpMakeSpan = jspPhenoEval
-          .evaluateSchedule(Arrays.copyOfRange(greedySolution, 0, i+1));
+          .evaluateSchedule(Arrays.copyOfRange(greedySolution, 0, i + 1));
         
         if (tmpMinMakeSpan == 0 || tmpMakeSpan < tmpMinMakeSpan) {
           tmpMinMakeSpan = tmpMakeSpan;
-          nextJobId = jobIx+1;
+          nextJobId = jobIx + 1;
         }
       }
 
       // Store the next new solution
       greedySolution[i] = nextJobId;
-      numFinJobOpers[nextJobId-1] += 1;
+      numFinJobOpers[nextJobId - 1] += 1;
     }
     var result = new JspPhenotype(greedySolution);
     result.setObjValue(tmpMinMakeSpan);
@@ -65,32 +68,35 @@ public class JspScheduleProvider {
   }
 
   /**
-   * Method creates random schedule
+   * Method creates random schedule.
    * 
    * @param jspPhenoEval Phenotype evaluator
    * @param jobs Jobs to schedule
    * @param randomSeed Random seed
    */
-  public static JspPhenotype createRandomSchedule(JspPhenotypeEvaluator jspPhenoEval, JspJobsDefinition jobs, long randomSeed) throws Exception {
+  public static JspPhenotype createRandomSchedule(
+      JspPhenotypeEvaluator jspPhenoEval, 
+      JspJobsDefinition jobs, long randomSeed
+  ) throws Exception {
     Random rnd = new Random(randomSeed);
 
     int numJobs = jobs.getJobsCount();
     int numOpers = jobs.getJobInfos()[0].getOperationInfos().length;
 
-    Integer[] randSol = new Integer[numJobs*numOpers];
+    Integer[] randSol = new Integer[numJobs * numOpers];
 
 
     int i = 0;
-    for (int jobID = 1; jobID <= numJobs; jobID++ ) {
+    for (int jobID = 1; jobID <= numJobs; jobID++) {
       for (int operID = 1; operID <= numOpers; operID++) {
         randSol[i++] = jobID;
       }
     }    
 
     // Random permutation
-    for(int j = 0; j < randSol.length * 2; j++) {
-      int ix1=rnd.nextInt(randSol.length);
-      int ix2=rnd.nextInt(randSol.length);
+    for (int j = 0; j < randSol.length * 2; j++) {
+      int ix1 = rnd.nextInt(randSol.length);
+      int ix2 = rnd.nextInt(randSol.length);
       int a = randSol[ix1];
       randSol[ix1] = randSol[ix2];
       randSol[ix2] = a;
@@ -103,13 +109,21 @@ public class JspScheduleProvider {
     return result;
   }
 
+  /**
+   * .
+   * @param args .
+   * @throws Exception .
+   */
   public static void main(String[] args) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
-    List<ProblemInstanceInfo> instances = problemProvider.getProblemInfo().getProblemInstanceInfos();
+    List<ProblemInstanceInfo> instances = problemProvider
+        .getProblemInfo().getProblemInstanceInfos();
 
-    for(ProblemInstanceInfo jobInfo : instances) {
+    for (ProblemInstanceInfo jobInfo : instances) {
       JspJobsDefinition jobs = null;
-      try(InputStream stream = JspScheduleProvider.class.getResourceAsStream(jobInfo.getPath())) {    
+      try (InputStream stream = JspScheduleProvider.class.getResourceAsStream(
+          jobInfo.getPath())
+      ) {    
         jobs = new JspJobsDefinition(jobInfo, stream);
       }
       ProblemInfo pi = problemProvider.getProblemInfo();
@@ -120,7 +134,7 @@ public class JspScheduleProvider {
       JspPhenotype ph2 = JspScheduleProvider.createGreedySchedule(evaluator, jobs);
       double[] val2 = evaluator.evaluate(ph2);
       
-      logger.debug(jobInfo.getInstanceID() + " - " + val2[0] + " - " + val1[0]);
+      logger.debug("{} - {} - {}", jobInfo.getInstanceID(), val2[0], val1[0]);
     }
   }
 }

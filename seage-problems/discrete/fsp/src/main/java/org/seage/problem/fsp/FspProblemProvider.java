@@ -21,12 +21,15 @@
  * Contributors: Richard Malek - Initial implementation - Added problem
  * annotations
  */
+
 package org.seage.problem.fsp;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
 import org.seage.aal.Annotations;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.aal.problem.ProblemMetadataGenerator;
@@ -39,7 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
  * @author Richard Malek
  */
 @Annotations.ProblemId("FSP")
@@ -54,36 +57,61 @@ public class FspProblemProvider extends JspProblemProvider {
     String path = instanceInfo.getPath();
 
     InputStream stream0;
-    if (origin == ProblemInstanceOrigin.RESOURCE)
+    if (origin == ProblemInstanceOrigin.RESOURCE) {
       stream0 = getClass().getResourceAsStream(path);
-    else
+    } else {
       stream0 = new FileInputStream(path);
+    }
     
     FspJobsDefinition jobsDefinition = null;
     
-    try(InputStream stream=stream0)
-    {
-        jobsDefinition = new FspJobsDefinition(instanceInfo, stream);   
-    }
-    catch (Exception ex)
-    {
-      logger.error("FspProblemProvider.initProblemInstance - creating FspJobsDefinition failed, path: {}", path);
+    try (InputStream stream = stream0) {
+      jobsDefinition = new FspJobsDefinition(instanceInfo, stream);
+    } catch (Exception ex) {
+      logger.error(
+          "FspProblemProvider.initProblemInstance - creating FspJobsDefinition failed, path: {}",
+          path);
       throw ex;
     }
-
     return jobsDefinition;
   }
-
-
   
   @Override
   public ProblemMetadataGenerator<JspPhenotype> initProblemMetadataGenerator() {
     return new FspProblemsMetadataGenerator(this);
   }
 
+  @Override
+  public JspPhenotype[] generateInitialSolutions(
+      ProblemInstance problemInstance, int numSolutions, long randomSeed)
+      throws Exception {
+    JspJobsDefinition jobs = (JspJobsDefinition)problemInstance;
+    JspPhenotype[] result = new JspPhenotype[numSolutions];
+    IPhenotypeEvaluator<JspPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
+      
+    for (int i = 0; i < numSolutions; i++) {
+      // Create random schedule
+      result[i] = FspScheduleProvider.createRandomSchedule((
+        JspPhenotypeEvaluator) evaluator, jobs);    
+    }
+      
+    return result;
+  }
+
+  @Override
+  public IPhenotypeEvaluator<JspPhenotype> initPhenotypeEvaluator(
+      ProblemInstance problemInstance) throws Exception {
+    ProblemInfo pi = this.getProblemInfo();
+    FspJobsDefinition jobsDefinition = (FspJobsDefinition) problemInstance;
+    return new FspPhenotypeEvaluator(pi, jobsDefinition);
+  }
 
   // TODO: Remove after testing
-  public static void main(String[] args) {    
+  /**
+   * .
+   * @param args .
+   */
+  public static void main(String[] args) {
     try {
       // String iid = "rm3_3_01";
       // String iid = "tai20_05_01";

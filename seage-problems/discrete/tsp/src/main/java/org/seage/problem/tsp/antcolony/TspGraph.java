@@ -23,26 +23,31 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.problem.tsp.antcolony;
 
-import java.util.List;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.tsp.City;
 
 /**
- *
+ * .
  * @author Zagy
  */
 public class TspGraph extends Graph {
 
   private City[] _cities;
 
+  /**
+   * .
+   * @param cities .
+   * @throws Exception .
+   */
   public TspGraph(City[] cities) throws Exception {
     super();
     _cities = cities;
     for (int id = 1; id <= cities.length; id++) {
-      _nodes.put(new Integer(id), new Node(id));
+      _nodes.put(id, new Node(id));
     }
   }
 

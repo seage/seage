@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 public class FspScheduleProvider {
   private static Logger logger = LoggerFactory.getLogger(FspScheduleProvider.class.getName());
 
+  static Random rnd = new Random();
+
   /**
    * Method creates solution with the use of greedy algorithm.
    * 
@@ -31,8 +33,9 @@ public class FspScheduleProvider {
     Integer[] greedySolution = new Integer[numJobs];
 
     int[] numFinJobOpers = new int[numJobs];
-    for (int i = 0; i < numJobs; i++)
+    for (int i = 0; i < numJobs; i++) {
       numFinJobOpers[i] = 0;
+    }
 
     double tmpMakeSpan = 0;
     double tmpMinMakeSpan = 0;
@@ -45,8 +48,9 @@ public class FspScheduleProvider {
 
         for (int j = 0; j <= numJobs; j++) {
           int jobIx = (k + j) % numJobs;
-          if (numFinJobOpers[jobIx] >= 1)
+          if (numFinJobOpers[jobIx] >= 1) {
             continue;
+          }
 
           greedySolution[i] = jobIx + 1;
 
@@ -69,6 +73,9 @@ public class FspScheduleProvider {
     return result;
   }
 
+  /**
+   * .
+   */
   public static JspPhenotype createGreedySchedule(JspPhenotypeEvaluator jspPhenoEval,
       JspJobsDefinition jobs) throws Exception {
     int length = jobs.getJobsCount();
@@ -76,8 +83,9 @@ public class FspScheduleProvider {
       public double evaluate(Integer[] solution) throws Exception {
         ArrayList<Integer> s = new ArrayList<>();
         for (int i = 0; i < solution.length; i++) {
-          if (solution[i] == -1)
+          if (solution[i] == -1) {
             break;
+          }
           s.add(solution[i] + 1);
         }
         return jspPhenoEval.evaluateSchedule(s.toArray(new Integer[0]));
@@ -128,7 +136,11 @@ public class FspScheduleProvider {
           }
           if (next == -1) {
             int ix = rnd.nextInt(avail.length);
-            while (!avail[++ix % avail.length]);
+            while (true) {
+              if (avail[++ix % avail.length]) {
+                break;
+              }
+            }
             next = ix % avail.length;
           }
           solution[i] = next;
@@ -148,41 +160,40 @@ public class FspScheduleProvider {
    * 
    * @param jspPhenoEval Phenotype evaluator
    * @param jobs Jobs to schedule
-   * @param randomSeed Random seed
    */
   public static JspPhenotype createRandomSchedule(JspPhenotypeEvaluator jspPhenoEval,
-      JspJobsDefinition jobs, long randomSeed) throws Exception {
-    Random rnd = new Random(randomSeed);
+      JspJobsDefinition jobs) throws Exception {
 
     int numJobs = jobs.getJobsCount();
-    // int numOpers = jobs.getJobInfos()[0].getOperationInfos().length;
+    int numOpers = jobs.getJobInfos()[0].getOperationInfos().length;
 
-    Integer[] randSol = new Integer[numJobs];
+    Integer[] randSolPart = new Integer[numJobs];
 
-
-    int i = 0;
     for (int jobID = 1; jobID <= numJobs; jobID++) {
-      // for (int operID = 1; operID <= numOpers; operID++) {
-      randSol[i++] = jobID;
-      // }
+      randSolPart[jobID - 1] = jobID;
     }
 
     // Random permutation
-    for (int j = 0; j < randSol.length * 2; j++) {
-      int ix1 = rnd.nextInt(randSol.length);
-      int ix2 = rnd.nextInt(randSol.length);
-      int a = randSol[ix1];
-      randSol[ix1] = randSol[ix2];
-      randSol[ix2] = a;
+    for (int j = 0; j < randSolPart.length * 2; j++) {
+      int ix1 = rnd.nextInt(randSolPart.length);
+      int ix2 = rnd.nextInt(randSolPart.length);
+      int a = randSolPart[ix1];
+      randSolPart[ix1] = randSolPart[ix2];
+      randSolPart[ix2] = a;
     }
 
-    var result = new JspPhenotype(randSol);
-    var makeSpan = jspPhenoEval.evaluateSchedule(randSol);
-    result.setObjValue((double) makeSpan);
+
+    var result = new JspPhenotype(randSolPart);
+    double[] objVals = jspPhenoEval.evaluate(result);
+    result.setObjValue(objVals[0]);
+    result.setScore(objVals[1]); 
 
     return result;
   }
 
+  /**
+   * .
+   */
   public static void main(String[] args) throws Exception {
     FspProblemProvider problemProvider = new FspProblemProvider();
     List<ProblemInstanceInfo> instances =
@@ -205,7 +216,7 @@ public class FspScheduleProvider {
         JspPhenotype ph2 = FspScheduleProvider.createGreedySchedule(evaluator, jobs);
         double val2 = ph2.getObjValue();
 
-        logger.debug(jobInfo.getInstanceID() + " - " + val2 + " - " /* + val1 */);
+        logger.debug("{} - {} - ", jobInfo.getInstanceID(), val2);
       } catch (Exception ex) {
         logger.error(String.format("Error instance %s", jobInfo.getInstanceID()), ex);
       }

@@ -1,8 +1,6 @@
 package org.seage.problem.fsp;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Random;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemMetadataGenerator;
@@ -20,7 +18,7 @@ public class FspProblemsMetadataGenerator extends ProblemMetadataGenerator<JspPh
   protected double generateRandomSolutionValue(ProblemInstance instance,
       IPhenotypeEvaluator<JspPhenotype> evaluator) throws Exception {
     return FspScheduleProvider.createRandomSchedule((JspPhenotypeEvaluator) evaluator,
-        (JspJobsDefinition) instance, System.currentTimeMillis()).getObjValue();
+        (JspJobsDefinition) instance).getObjValue();
   }
 
   @Override
