@@ -68,8 +68,8 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
         for (int i = 0; i < ants.length; i++) {
           
           ArrayList<Integer> nodes = new ArrayList<>();
-          nodes.add(0);
-          for (int j = 0; j < jobs.getJobsCount(); j++) {
+          // nodes.add(0);
+          for (int j = 0; j < source[i].getSolution().length; j++) {
             // Add next node
             nodes.add(source[i].getSolution()[j]);
           }
@@ -94,8 +94,8 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
         nodePath.remove(0);
 
         ArrayList<Integer> path = new ArrayList<>();
-        for (int m = 0; m < jobs.getMachinesCount(); m++) {
-          for (int n : nodePath) {
+        for (int n : nodePath) {
+          for (int m = 0; m < jobs.getJobInfos()[0].getOperationInfos().length; m++) {          
             path.add(n);
           }
         }

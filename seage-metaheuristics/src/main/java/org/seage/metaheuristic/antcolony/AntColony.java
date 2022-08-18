@@ -172,7 +172,7 @@ public class AntColony {
     int counter = 0;
     for (List<Edge> path : antReports) {
       if (bestPath == null) {
-        bestPath = new ArrayList<>(path);;
+        bestPath = new ArrayList<>(path);
       }
 
       pathLength = ants[counter]._distanceTravelled;

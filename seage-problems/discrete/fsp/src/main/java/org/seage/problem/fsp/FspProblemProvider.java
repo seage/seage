@@ -27,7 +27,9 @@ package org.seage.problem.fsp;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import org.seage.aal.Annotations;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.aal.problem.ProblemMetadataGenerator;
@@ -73,12 +75,27 @@ public class FspProblemProvider extends JspProblemProvider {
     }
     return jobsDefinition;
   }
-
-
   
   @Override
   public ProblemMetadataGenerator<JspPhenotype> initProblemMetadataGenerator() {
     return new FspProblemsMetadataGenerator(this);
+  }
+
+  @Override
+  public JspPhenotype[] generateInitialSolutions(
+      ProblemInstance problemInstance, int numSolutions, long randomSeed)
+      throws Exception {
+    JspJobsDefinition jobs = (JspJobsDefinition)problemInstance;
+    JspPhenotype[] result = new JspPhenotype[numSolutions];
+    IPhenotypeEvaluator<JspPhenotype> evaluator = this.initPhenotypeEvaluator(problemInstance);
+      
+    for (int i = 0; i < numSolutions; i++) {
+      // Create random schedule
+      result[i] = FspScheduleProvider.createRandomSchedule((
+        JspPhenotypeEvaluator) evaluator, jobs);    
+    }
+      
+    return result;
   }
 
   // TODO: Remove after testing

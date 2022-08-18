@@ -20,7 +20,7 @@ public class FspProblemsMetadataGenerator extends ProblemMetadataGenerator<JspPh
   protected double generateRandomSolutionValue(ProblemInstance instance,
       IPhenotypeEvaluator<JspPhenotype> evaluator) throws Exception {
     return FspScheduleProvider.createRandomSchedule((JspPhenotypeEvaluator) evaluator,
-        (JspJobsDefinition) instance, System.currentTimeMillis()).getObjValue();
+        (JspJobsDefinition) instance).getObjValue();
   }
 
   @Override

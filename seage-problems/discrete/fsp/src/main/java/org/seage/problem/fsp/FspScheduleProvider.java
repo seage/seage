@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 public class FspScheduleProvider {
   private static Logger logger = LoggerFactory.getLogger(FspScheduleProvider.class.getName());
 
+  static Random rnd = new Random();
+
   /**
    * Method creates solution with the use of greedy algorithm.
    * 
@@ -154,37 +156,40 @@ public class FspScheduleProvider {
    * 
    * @param jspPhenoEval Phenotype evaluator
    * @param jobs Jobs to schedule
-   * @param randomSeed Random seed
    */
   public static JspPhenotype createRandomSchedule(JspPhenotypeEvaluator jspPhenoEval,
-      JspJobsDefinition jobs, long randomSeed) throws Exception {
-    Random rnd = new Random(randomSeed);
+      JspJobsDefinition jobs) throws Exception {
 
     int numJobs = jobs.getJobsCount();
-    // int numOpers = jobs.getJobInfos()[0].getOperationInfos().length;
+    int numOpers = jobs.getJobInfos()[0].getOperationInfos().length;
 
-    Integer[] randSol = new Integer[numJobs];
+    Integer[] randSolPart = new Integer[numJobs];
+    Integer[] randSol = new Integer[numJobs * numOpers];
 
-
-    int i = 0;
     for (int jobID = 1; jobID <= numJobs; jobID++) {
-      // for (int operID = 1; operID <= numOpers; operID++) {
-      randSol[i++] = jobID;
-      // }
+      randSolPart[jobID - 1] = jobID;
     }
 
     // Random permutation
-    for (int j = 0; j < randSol.length * 2; j++) {
-      int ix1 = rnd.nextInt(randSol.length);
-      int ix2 = rnd.nextInt(randSol.length);
-      int a = randSol[ix1];
-      randSol[ix1] = randSol[ix2];
-      randSol[ix2] = a;
+    for (int j = 0; j < randSolPart.length * 2; j++) {
+      int ix1 = rnd.nextInt(randSolPart.length);
+      int ix2 = rnd.nextInt(randSolPart.length);
+      int a = randSolPart[ix1];
+      randSolPart[ix1] = randSolPart[ix2];
+      randSolPart[ix2] = a;
     }
 
-    var result = new JspPhenotype(randSol);
-    var makeSpan = jspPhenoEval.evaluateSchedule(randSol);
-    result.setObjValue((double) makeSpan);
+    for (int i = 0; i < numJobs; i++) {
+      for (int j = 0; j < numOpers; j++) {
+        randSol[i * numOpers + j] = randSolPart[i];
+      }
+    }
+
+    var pheno = new JspPhenotype(randSol);
+    var result = new JspPhenotype(randSolPart);
+    double[] objVals = jspPhenoEval.evaluate(pheno);
+    result.setObjValue(objVals[0]);
+    result.setScore(objVals[1]); 
 
     return result;
   }

@@ -64,9 +64,9 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
    */
   public static void main(String[] args) {
     try {
-      // String instanceID = "tai100_20_01";
+      String instanceID = "tai100_20_01";
       // String instanceID = "tai100_20_02";
-      String instanceID = "rma03_03_01";
+      // String instanceID = "rma03_03_01";
 
       String path = String.format("/org/seage/problem/fsp/instances/%s.txt", instanceID);
 
@@ -78,36 +78,21 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
         jobs = new FspJobsDefinition(jobInfo, stream);
       }
 
-      new FspAntColonyTest().runAlgorithm(jobs);
+      // new FspAntColonyTest().runAlgorithm(jobs);
       new FspAntColonyTest().runAlgorithmAdapter(jobs);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
     }
   }
 
-  /**
-   * .
-   * @param graph .
-   */
-  public void testing(Graph graph) {
-    double sum = 0;
-    double edges = 0;
-    for (Edge edge : graph.getEdges()) {
-      sum += edge.getEdgePrice();
-      edges++;
-    }
-    System.out.println(sum);
-    System.out.println(edges);
-  }
-
-  private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
+   private AlgorithmParams createAlgorithmParams(ProblemInfo problemInfo) throws Exception {
     AlgorithmParams result = new AlgorithmParams();
     DataNode algParamsNode = problemInfo.getDataNode("Algorithms").getDataNodeById("AntColony");
     // for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
     // result.putValue(param.getValueStr("name"), param.getValue("init"));
     // }
     result.putValue("numAnts", 100);
-    result.putValue("iterationCount", 1000);
+    result.putValue("iterationCount", 100);
     result.putValue("quantumOfPheromone", 1.0);
     result.putValue("localEvaporation", 0.95);
     result.putValue("defaultPheromone", 0.2);

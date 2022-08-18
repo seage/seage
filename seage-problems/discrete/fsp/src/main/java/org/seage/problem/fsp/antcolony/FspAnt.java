@@ -66,6 +66,8 @@ public class FspAnt extends Ant {
     super(graph, nodeIDs);
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;
+    _nodePath.add(0, _graph.getNodes().get(0));
+
   }
 
   @Override
@@ -112,31 +114,26 @@ public class FspAnt extends Ant {
     // Copy the path to all machines
     ArrayList<Integer> pathOld = new ArrayList<>();
     ArrayList<Integer> pathNew = new ArrayList<>();
-    for (int m = 0; m < jobsDefinition.getMachinesCount(); m++) {
+    
       // Sublist to jump over the first 0 staring node
-      for (Node n : nodePath.subList(1, nodePath.size())) {
+    for (Node n : nodePath.subList(1, nodePath.size())) {
+      for (int m = 0; m < jobsDefinition.getMachinesCount(); m++) {
         pathOld.add(n.getID());
-        pathNew.add(n.getID());
-
-        //System.out.println("old - " + n.getID());
+        pathNew.add(n.getID());          
       }
-      if (node.getID() != 0) {
-        pathOld.add(node.getID());
-      }
-      //System.out.println("new -> " + node.getID());
-      //System.out.println("----pop----");
     }
-    // if (node.getID() == 0) {
-    //   pathOld.add(node.getID());
-    // }
+    for (int m = 0; m < jobsDefinition.getMachinesCount(); m++) {
+      pathNew.add(node.getID());          
+    }
+
 
 
     Integer[] prevPath = pathOld.toArray(new Integer[0]);
     Integer[] nextPath = pathNew.toArray(new Integer[0]);
 
-    System.out.println("---");
-    System.out.println(Arrays.toString(prevPath));
-    System.out.println(Arrays.toString(nextPath));
+    // System.out.println("---");
+    // System.out.println(Arrays.toString(prevPath));
+    // System.out.println(Arrays.toString(nextPath));
 
     double prevTimespan = 0;
     double nextTimespan = 0;
