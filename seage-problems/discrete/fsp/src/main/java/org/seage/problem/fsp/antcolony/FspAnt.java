@@ -110,10 +110,6 @@ public class FspAnt extends Ant {
     }
     Integer[] nextPath = path.toArray(new Integer[0]);
 
-    // System.out.println("---");
-    // System.out.println(Arrays.toString(prevPath));
-    // System.out.println(Arrays.toString(nextPath));
-
     double prevTimespan = 0;
     double nextTimespan = 0;
     try {
