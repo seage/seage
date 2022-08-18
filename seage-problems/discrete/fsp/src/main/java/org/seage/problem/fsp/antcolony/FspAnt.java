@@ -67,7 +67,7 @@ public class FspAnt extends Ant {
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;
     
-    if (nodeIDs.size() > 0) {
+    if (nodeIDs != null && nodeIDs.size() > 0) {
       _nodePath.add(0, _graph.getNodes().get(0));
     }
 
