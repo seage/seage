@@ -66,6 +66,8 @@ public class FspAnt extends Ant {
     super(graph, nodeIDs);
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;
+    _nodePath.add(0, _graph.getNodes().get(0));
+
   }
 
   @Override
@@ -105,9 +107,9 @@ public class FspAnt extends Ant {
     }
     Integer[] nextPath = path.toArray(new Integer[0]);
 
-    System.out.println("---");
-    System.out.println(Arrays.toString(prevPath));
-    System.out.println(Arrays.toString(nextPath));
+    // System.out.println("---");
+    // System.out.println(Arrays.toString(prevPath));
+    // System.out.println(Arrays.toString(nextPath));
 
     double prevTimespan = 0;
     double nextTimespan = 0;
