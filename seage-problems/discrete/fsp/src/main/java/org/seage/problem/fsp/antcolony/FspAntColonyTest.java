@@ -64,9 +64,9 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
    */
   public static void main(String[] args) {
     try {
-      String instanceID = "tai100_20_01";
+      // String instanceID = "tai100_20_01";
       // String instanceID = "tai100_20_02";
-      // String instanceID = "rma03_03_01";
+      String instanceID = "rma03_03_01";
 
       String path = String.format("/org/seage/problem/fsp/instances/%s.txt", instanceID);
 
@@ -79,7 +79,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
       }
 
       new FspAntColonyTest().runAlgorithm(jobs);
-      new FspAntColonyTest().runAlgorithmAdapter(jobs);
+      // new FspAntColonyTest().runAlgorithmAdapter(jobs);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
     }
@@ -92,7 +92,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // result.putValue(param.getValueStr("name"), param.getValue("init"));
     // }
     result.putValue("numAnts", 100);
-    result.putValue("iterationCount", 100);
+    result.putValue("iterationCount", 10);
     result.putValue("quantumOfPheromone", 1.0);
     result.putValue("localEvaporation", 0.95);
     result.putValue("defaultPheromone", 0.2);
@@ -143,7 +143,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     }
     _edges = opersNum * (opersNum - 1) / 2;
 
-    int iterations = 100;
+    int iterations = 10;
 
     // int numAnts = 1;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
