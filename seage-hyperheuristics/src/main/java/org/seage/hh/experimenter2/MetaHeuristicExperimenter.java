@@ -99,6 +99,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
       experimentReporter.reportExperimentTask(experimentTask);
 
       double taskScore = experimentTask.getScore();
+      logger.info("taskScore: {} and bestScore: {}", taskScore, bestScore);
       if (taskScore > bestScore) {
         this.bestScore = taskScore;
       }

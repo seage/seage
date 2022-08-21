@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import org.seage.aal.Annotations.ProblemId;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
@@ -84,6 +85,8 @@ public class ExperimenterRunner {
     for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
       String problemID = entry.getKey();
       logger.info("  Problem '{}'", problemID);
+
+      System.out.println(ProblemProvider.getProblemProviders().values());
 
       ProblemInfo problemInfo = ProblemProvider
           .getProblemProviders()
