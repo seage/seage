@@ -88,12 +88,17 @@
         "-a",
         "AntColony",
         "-i",
-        "JSP:ft10",
+        // "JSP:ft10",
+        "TSP:berlin52",
         "-t",
         "60",
         "-n",
-        "3"
-      ]
+        "1"
+      ],
+      "env": {
+        "LOG_LEVEL": "debug",
+        // "DB_URL": "jdbc:postgresql://localhost/seage"
+      }
     },
     {
       "type": "java",
