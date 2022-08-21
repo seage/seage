@@ -29,8 +29,8 @@ public class ProblemScoreCalculator {
       double optimum = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("optimum");
       double greedy = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("greedy");
 
-      logger.info("optimum: {} greedy: {} objval: {}", optimum, greedy, objValue);
-      logger.info("result: {}", ScoreCalculator.calculateInstanceScore(optimum, greedy, objValue));
+      //logger.info("optimum: {} greedy: {} objval: {}", optimum, greedy, objValue);
+      //logger.info("result: {}", ScoreCalculator.calculateInstanceScore(optimum, greedy, objValue));
       return ScoreCalculator.calculateInstanceScore(optimum, greedy, objValue);
     } catch (NumberFormatException ex) {
       return 0;

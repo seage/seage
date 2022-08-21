@@ -17,10 +17,13 @@ public class LocalExperimentTasksRunner implements IExperimentTasksRunner {
   public void performExperimentTasks(
       List<ExperimentTaskRequest> taskInfos, Function<ExperimentTask, Void> reportFn) {
 
+    logger.info("taskinfos: {}", taskInfos.size());
     taskInfos.parallelStream().forEach(ti -> {
       try {
         ExperimentTask task = new ExperimentTask(ti);
         task.run();
+        logger.info("\n\nstatistic: {}\n\n", task.getStatistics());
+        logger.info("get score: {}", task.getScore());
         reportFn.apply(task);
       } catch (Exception e) {
         logger.error("Experiment task execution failed!", e);

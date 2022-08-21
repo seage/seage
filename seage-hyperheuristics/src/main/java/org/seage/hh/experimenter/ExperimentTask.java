@@ -268,8 +268,6 @@ public class ExperimentTask {
         solutionNode.putValue("solution", p.toText());
         solutionNode.putValue("hash", p.computeHash());
         dataNode.putDataNode(solutionNode);
-        // _logger.info(
-        //     "solution info \n objVal: {} \n score: {} \n \n", p.getObjValue(), p.getScore());   
       } catch (Exception ex) {
         _logger.error("Cannot write solution", ex);
       }
@@ -287,6 +285,7 @@ public class ExperimentTask {
     DataNode outputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Output");
 
     double bestObjValue = getBestObjectiveValue(outputs);
+    _logger.info("\nBest objective balue: {}\n", bestObjValue);
     double taskBestScore = 
         scoreCalculator.calculateInstanceScore(instanceID, bestObjValue);
 
@@ -300,10 +299,13 @@ public class ExperimentTask {
 
   private double getBestObjectiveValue(DataNode solutions) throws Exception {
     double bestObjVal = Double.MAX_VALUE;
+    _logger.info("num of sol: {}", solutions.getDataNodes("Solution").size());
     for (DataNode s : solutions.getDataNodes("Solution")) {
       double objVal = s.getValueDouble("objVal");
+
       if (objVal < bestObjVal) {
         bestObjVal = objVal;
+        _logger.info("new best objval: {}", bestObjVal);
       }
     }
     return bestObjVal;
