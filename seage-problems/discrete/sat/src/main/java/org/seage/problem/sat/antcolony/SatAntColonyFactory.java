@@ -13,10 +13,13 @@ import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 import org.seage.problem.sat.SatPhenotype;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
 public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant> {
+  private static Logger logger = LoggerFactory.getLogger(SatAntColonyFactory.class.getName());
 
   @Override
   public Class<?> getAlgorithmClass() {
@@ -60,6 +63,7 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
           result.getSolution()[i] = value > 0;
         }
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        logger.debug("evaluation goes here {}", objVals);
         result.setObjValue(objVals[0]);
         result.setScore(objVals[1]);
         return result;

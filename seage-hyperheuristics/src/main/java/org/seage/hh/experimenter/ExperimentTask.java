@@ -268,8 +268,8 @@ public class ExperimentTask {
         solutionNode.putValue("solution", p.toText());
         solutionNode.putValue("hash", p.computeHash());
         dataNode.putDataNode(solutionNode);
-        _logger.info(
-            "solution info \n objVal: {} \n score: {} \n \n", p.getObjValue(), p.getScore());   
+        // _logger.info(
+        //     "solution info \n objVal: {} \n score: {} \n \n", p.getObjValue(), p.getScore());   
       } catch (Exception ex) {
         _logger.error("Cannot write solution", ex);
       }
