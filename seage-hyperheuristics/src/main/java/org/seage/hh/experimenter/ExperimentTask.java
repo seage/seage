@@ -295,7 +295,7 @@ public class ExperimentTask {
         scoreCalculator.calculateInstanceScore(instanceID, initObjValue);
     _logger.info("\nBest init objective balue: {}\n", initObjValue);
 
-    this.score = taskBestScore;
+    this.score = taskBestScore < taskInitScore ? taskInitScore : taskBestScore;
     this.scoreDelta = scoreCalculator.calculateScoreDelta(taskInitScore, taskBestScore);
   }
 
