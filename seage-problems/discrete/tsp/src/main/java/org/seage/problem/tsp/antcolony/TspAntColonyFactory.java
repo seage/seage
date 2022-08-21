@@ -87,7 +87,7 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
         TspPhenotype result = new TspPhenotype(p);
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
         result.setObjValue(objVals[0]);
-        result.setScore(objVals[0]);
+        result.setScore(objVals[1]);
         return result;
       }
     };

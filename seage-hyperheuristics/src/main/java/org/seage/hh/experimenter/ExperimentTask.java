@@ -262,6 +262,7 @@ public class ExperimentTask {
       Phenotype<?>[] solutions) {
     for (Phenotype<?> p : solutions) {
       try {
+        _logger.info("solution obj: {} score: {}", p.getObjValue(), p.getScore());
         DataNode solutionNode = new DataNode("Solution");
         solutionNode.putValue("objVal", p.getObjValue());
         solutionNode.putValue("score", p.getScore());
@@ -292,6 +293,7 @@ public class ExperimentTask {
     double initObjValue = getBestObjectiveValue(inputs);
     double taskInitScore = 
         scoreCalculator.calculateInstanceScore(instanceID, initObjValue);
+    _logger.info("\nBest init objective balue: {}\n", initObjValue);
 
     this.score = taskBestScore;
     this.scoreDelta = scoreCalculator.calculateScoreDelta(taskInitScore, taskBestScore);
