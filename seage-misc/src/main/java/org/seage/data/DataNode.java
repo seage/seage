@@ -351,7 +351,12 @@ public class DataNode {
 
     for (Entry<String, Object> e : this.values.entrySet()) {
       Attr a = result.createAttribute(e.getKey());
-      a.setValue(e.getValue().toString());
+      var value = e.getValue();
+      if (value != null) {
+        a.setValue(e.getValue().toString());
+      } else { 
+        a.setValue(""); 
+      }
       result.getDocumentElement().getAttributes().setNamedItem(a);
     }
 
