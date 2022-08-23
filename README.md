@@ -90,7 +90,7 @@ docker-compose up
 
 ### Run experiments
 ```
-DB_URL="jdbc:postgresql://localhost/seage" ./scripts/run.sh experiment-single-random -p SAT -a TabuSearch -i uf20-01 -t 10 -n 10
+DB_URL="jdbc:postgresql://localhost:25432/seage" ./scripts/run.sh experiment-single-random -p SAT -a TabuSearch -i uf20-01 -t 10 -n 10
 ```
 
 ### Run experiments in background
