@@ -32,7 +32,7 @@ services:
       - PGADMIN_DEFAULT_EMAIL=seage@seage.org
       - PGADMIN_DEFAULT_PASSWORD=seage
     ports:
-      - 8090:80
+      - 28080:80
     depends_on:
       - database
     restart: always
