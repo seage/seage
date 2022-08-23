@@ -63,7 +63,7 @@ DB_URL="jdbc:postgresql://<server>/seage" \
 There are three containers:
 - seage
 - postgresql
-- pgadmin (http://localhost:8090)
+- pgadmin (http://localhost:28080)
 
 You can run them all using `docker-compose`
 ```
@@ -75,7 +75,7 @@ Once all the containers are running you can run a new experiment as follows:
 docker exec seage_seage_1 ./scripts/run.sh experiment-single-random -p SAT -a TabuSearch -i uf20-01 -t 10 -n 10
 ```
 
-The results can be inspected using `pgAdmin` at the address http://localhost:8090
+The results can be inspected using `pgAdmin` at the address http://localhost:28080
 - username: `seage@seage.org`
 - password: `seage`
 - database password: `seage`
@@ -90,7 +90,7 @@ docker-compose up
 
 ### Run experiments
 ```
-DB_URL="jdbc:postgresql://localhost/seage" ./scripts/run.sh experiment-single-random -p SAT -a TabuSearch -i uf20-01 -t 10 -n 10
+DB_URL="jdbc:postgresql://localhost:25432/seage" ./scripts/run.sh experiment-single-random -p SAT -a TabuSearch -i uf20-01 -t 10 -n 10
 ```
 
 ### Run experiments in background
@@ -103,4 +103,4 @@ or
 ```
 
 ### Inspect results
-Navigate to http://localhost:8090
+Navigate to http://localhost:28080
