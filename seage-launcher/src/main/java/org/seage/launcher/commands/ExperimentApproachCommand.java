@@ -5,7 +5,7 @@ import com.beust.jcommander.Parameters;
 
 import java.util.List;
 import java.util.Map;
-import org.seage.hh.experimenter2.ExperimenterRunner;
+import org.seage.hh.experimenter.Experimenter;
 
 @Parameters(commandDescription = "Perform Experiment Approach")
 public class ExperimentApproachCommand extends Command {
@@ -45,8 +45,8 @@ public class ExperimentApproachCommand extends Command {
     Map<String, List<String>> problemInstanceParams = 
         ProblemInstanceParamsParser.parseProblemInstanceParams(instanceIDs);
 
-    ExperimenterRunner ae = 
-        new ExperimenterRunner(
+    Experimenter ae = 
+        new Experimenter(
             algorithmID, problemInstanceParams, runsPerInstance, algorithmTimeoutS);
     ae.runExperiment();
   }

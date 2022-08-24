@@ -12,8 +12,10 @@ import java.util.Date;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
 import org.seage.data.DataNode;
-import org.seage.hh.experimenter2.ExperimentScoreCard;
 import org.seage.hh.knowledgebase.db.DbManager;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
+import org.seage.hh.knowledgebase.db.dbo.SolutionRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 import org.seage.hh.knowledgebase.db.mapper.SolutionMapper;
@@ -38,7 +40,7 @@ public class ExperimentReporter {
       String algorithms = String.join(",", algorithmIDs);
       String problems = String.join(",", problemIDs);
       
-      Experiment experiment = new Experiment(
+      ExperimentRecord experiment = new ExperimentRecord(
           experimentID, 
           experimentName,
           problems,
@@ -113,7 +115,7 @@ public class ExperimentReporter {
    * multiple threads open db sessions that timeouted.
    * @param experimentTask Experiment task.
    */
-  public synchronized void reportExperimentTask(ExperimentTask experimentTask) throws Exception {
+  public synchronized void reportExperimentTask(ExperimentTaskRecord experimentTask) throws Exception {
      
     insertExperimentTask(experimentTask);
 
@@ -130,7 +132,7 @@ public class ExperimentReporter {
     // insertSolutions(session, experimentTaskID, newSolutions, "NewSolution", "new");
   }
 
-  private void insertExperimentTask(ExperimentTask experimentTask) throws Exception {
+  private void insertExperimentTask(ExperimentTaskRecord experimentTask) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
       mapper.insertExperimentTask(experimentTask);
@@ -150,7 +152,7 @@ public class ExperimentReporter {
         } else if (type.equals("new")) {
           iterNumber = dn.getValueLong("iterNumber");
         }
-        Solution s = new Solution(
+        SolutionRecord s = new SolutionRecord(
             UUID.randomUUID(),
             experimentTaskID,
             dn.getValueStr("hash"),

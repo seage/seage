@@ -1,4 +1,4 @@
-package org.seage.hh.experimenter2;
+package org.seage.hh.experimenter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,12 +15,10 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
-import org.seage.hh.experimenter.ExperimentReporter;
-import org.seage.hh.experimenter.ExperimentTask;
-import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.ExtendedDefaultConfigurator;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,9 +26,9 @@ import org.slf4j.LoggerFactory;
  * .
  * @author David Omrai
  */
-public class HyperHeuristic1Experimenter implements Experimenter {
+public class HyperHeuristic1Experiment implements Experiment {
   private static Logger logger =
-      LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
+      LoggerFactory.getLogger(MetaHeuristicExperiment.class.getName());
   private ExtendedDefaultConfigurator configurator;
   private ProblemInfo problemInfo;
   private IExperimentTasksRunner experimentTasksRunner;
@@ -51,7 +49,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
   /**
    * HyperHeuristic1Experimenter constructor.
    */
-  protected HyperHeuristic1Experimenter(
+  protected HyperHeuristic1Experiment(
       UUID experimentID, String problemID, String instanceID, 
       String algorithmID, int numSteps, int timeoutS,
       ExperimentReporter experimentReporter) 
@@ -135,7 +133,7 @@ public class HyperHeuristic1Experimenter implements Experimenter {
     return bestScore;
   }
   
-  private Void reportExperimentTask(ExperimentTask experimentTask) {
+  private Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
 

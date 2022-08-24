@@ -1,4 +1,4 @@
-package org.seage.hh.experimenter2;
+package org.seage.hh.experimenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,22 +7,20 @@ import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
-import org.seage.hh.experimenter.ExperimentReporter;
-import org.seage.hh.experimenter.ExperimentTask;
-import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 import org.seage.hh.experimenter.configurator.ExtendedDefaultConfigurator;
 import org.seage.hh.experimenter.configurator.GridConfigurator;
 import org.seage.hh.experimenter.configurator.RandomConfigurator;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class MetaHeuristicExperimenter implements Experimenter {
+public class MetaHeuristicExperiment implements Experiment {
   private static Logger logger =
-      LoggerFactory.getLogger(MetaHeuristicExperimenter.class.getName());
+      LoggerFactory.getLogger(MetaHeuristicExperiment.class.getName());
   private DefaultConfigurator defaultConfigurator;
   private ExtendedDefaultConfigurator feedbackConfigurator;
   private GridConfigurator gridConfigurator;
@@ -42,7 +40,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
   /**
    * MetaHeuristicExperimenter constructor.
    */
-  protected MetaHeuristicExperimenter(
+  protected MetaHeuristicExperiment(
       UUID experimentID, String problemID, String instanceID, 
       String algorithmID, int numRuns, int timeoutS,
       ExperimentReporter experimentReporter) 
@@ -94,7 +92,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
     return bestScore;
   }
   
-  private Void reportExperimentTask(ExperimentTask experimentTask) {
+  private Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();

@@ -2,7 +2,7 @@
  * @author David Omrai
  */
 
-package org.seage.hh.experimenter2;
+package org.seage.hh.experimenter;
 
 import java.util.HashMap;
 import java.util.Map;

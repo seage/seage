@@ -1,4 +1,4 @@
-package org.seage.hh.experimenter;
+package org.seage.hh.knowledgebase.db.dbo;
 
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -14,6 +14,7 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
+import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,9 +48,9 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Richard Malek
  */
-public class ExperimentTask {
+public class ExperimentTaskRecord {
 
-  private static Logger _logger = LoggerFactory.getLogger(ExperimentTask.class.getName());
+  private static Logger _logger = LoggerFactory.getLogger(ExperimentTaskRecord.class.getName());
 
   private Phenotype<?>[] solutions;
   private UUID experimentTaskID;
@@ -76,14 +77,14 @@ public class ExperimentTask {
   /**
    * Constructor for DB mapper.
    */
-  ExperimentTask() {}
+  ExperimentTaskRecord() {}
 
   /**
    * ExperimentTask for running algorithm.
    * @param taskInfo .
    * @throws Exception .
    */
-  public ExperimentTask(ExperimentTaskRequest taskInfo) throws Exception {
+  public ExperimentTaskRecord(ExperimentTaskRequest taskInfo) throws Exception {
     this(
         taskInfo.getExperimentTaskID(),
         taskInfo.getExperimentID(),
@@ -101,7 +102,7 @@ public class ExperimentTask {
   /**
    * ExperimentTask for running algorithm.
    */
-  private ExperimentTask(
+  private ExperimentTaskRecord(
       UUID experimentTaskID, 
       UUID experimentID, 
       int jobID, 

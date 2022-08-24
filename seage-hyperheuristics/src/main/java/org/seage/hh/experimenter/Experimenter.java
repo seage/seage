@@ -1,156 +1,186 @@
-/*******************************************************************************
- * Copyright (c) 2009 Richard Malek and SEAGE contributors
- * 
- * This file is part of SEAGE.
- * 
- * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
- * General Public License as published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with SEAGE. If not, see
- * <http://www.gnu.org/licenses/>.
- *
- */
-
-/**
- * Contributors: Richard Malek - Interface definition
- */
-
 package org.seage.hh.experimenter;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
-
 import org.seage.aal.problem.ProblemInfo;
-//import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
-import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
-import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
 import org.seage.logging.TimeFormat;
-// import org.seage.hh.experimenter.runner.SparkExperimentTasksRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class Experimenter {
-  protected static Logger logger = LoggerFactory.getLogger(Experimenter.class.getName());
-  protected String experimentName;
-  protected UUID experimentID;
-  protected String problemID;
-  protected String[] instanceIDs;
-  protected String[] algorithmIDs;
-  protected ProblemInfo problemInfo;
-  protected IExperimentTasksRunner experimentTasksRunner;
+/*
+ * ExperimentApproachCommand --(calls)--> ExperimenterRunner
+ *   ExperimenterRunner --(runs)--> Experimenter 
+ *     Experimenter: MetaHeuristicExperimenter | HyperHeuristic1Experimenter
+ */
+public class Experimenter {
+  protected static Logger logger =
+      LoggerFactory.getLogger(Experimenter.class.getName());
+  
   protected ExperimentReporter experimentReporter;
 
-  /**
-   * Experimenter performs experiment tasks.
-   * @param experimentName Name of the experiment, e.g. SingleAlgoritmhRandom
-   * @param problemID Problem identifier, e.g TSP, SAT or JSP
-   * @param instanceIDs Array of instance identifiers
-   * @param algorithmIDs Array of algorithms involved in the experiment
-   * @throws Exception Throws exception in case of a trouble.
-   */
-  protected Experimenter(
-      String experimentName, String problemID, String[] instanceIDs, String[] algorithmIDs)
-      throws Exception {
-    this.experimentName = experimentName;
-    this.experimentID = null;
-    this.problemID = problemID;
-    this.instanceIDs = instanceIDs;
-    this.algorithmIDs = algorithmIDs;
+  private UUID experimentID;
+  private String algorithmID;
+  private Map<String, List<String>> instanceIDsPerProblems;
+  private int numRuns;
+  private int timeoutS;
 
-    logger.info("Experimenter {} created, getting problem info", experimentName);
-    this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
-    this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    // this.experimentTasksRunner = new SparkExperimentTasksRunner();
+
+  /**
+   * ApproachExperimenter.
+   * 
+   * @param algorithmID Algorithm ID.
+   * @param instanceIDsPerProblems Map of problem instances.
+   */
+  public Experimenter(String algorithmID,
+      Map<String, List<String>> instanceIDsPerProblems, int numRuns, int timeoutS)
+      throws Exception {
+    this.experimentID = UUID.randomUUID();
+    this.algorithmID = algorithmID;
+    this.instanceIDsPerProblems = instanceIDsPerProblems;
+    this.numRuns = numRuns;
+    this.timeoutS = timeoutS;
 
     this.experimentReporter = new ExperimentReporter();
   }
 
-  public void runFromConfigFile(String configPath) throws Exception {
-    throw new UnsupportedOperationException("Not implemented");
-  }
-
   /**
-   * The entry point of the experiment.
-   * @throws Exception Throws exception in case of a trouble.
+   * Method runs experiment for possibly many problems with many problem instances.
    */
   public void runExperiment() throws Exception {
-
-    // *** Check arguments ***
-    // Problem instances
-    if (this.instanceIDs[0].equals("-")) {
-      List<String> instIDs = new ArrayList<>();
-      for (DataNode ins : this.problemInfo.getDataNode("Instances").getDataNodes("Instance")) {
-        instIDs.add(ins.getValueStr("id"));
-      }
-      this.instanceIDs = instIDs.toArray(new String[] {});
-    }
-    // Algorithms
-    if (this.algorithmIDs[0].equals("-")) {
-      List<String> algIDs = new ArrayList<>();
-      for (DataNode alg : this.problemInfo.getDataNode("Algorithms").getDataNodes("Algorithm")) {
-        algIDs.add(alg.getValueStr("id"));
-      }
-      this.algorithmIDs = algIDs.toArray(new String[] {});
-    }
-    // ***********************
-
-    long startDate = System.currentTimeMillis();
-    long endDate;
-    endDate = startDate;
-    this.experimentID = UUID.randomUUID();
-    logger.info("-------------------------------------");
-    logger.info("Experimenter: {}", this.experimentName);
-    logger.info("ExperimentID: {}", experimentID);
-    logger.info("-------------------------------------");
-
-    long totalNumOfConfigs = getNumberOfConfigs(this.instanceIDs.length, this.algorithmIDs.length);
-    long totalRunsPerCpu = (long)Math.ceil(
-        (double)totalNumOfConfigs / Runtime.getRuntime().availableProcessors());
-    long totalEstimatedTime = getEstimatedTime(this.instanceIDs.length, this.algorithmIDs.length);
-
-    logger.info(String.format("%-25s: %s", "Total number of configs", totalNumOfConfigs));
-    logger.info("Total number of configs per cpu core: " + totalRunsPerCpu);
-    logger.info(String.format("Total estimated time: %s (DD:HH:mm:ss)", 
-        TimeFormat.getTimeDurationBreakdown(totalEstimatedTime)));
-    logger.info("-------------------------------------");
-
+    // Create experiment reporter
     this.experimentReporter.createExperimentReport(
         this.experimentID,
-        this.experimentName,
-        new String[] {this.problemID},
-        this.instanceIDs,
-        this.algorithmIDs,
+        this.algorithmID,
+        this.instanceIDsPerProblems.keySet().toArray(new String[0]),
+        getProblemInstancesArray(),
+        new String[] {this.algorithmID},
         getExperimentConfig(),
         Date.from(Instant.now())
-    );
-
-    experimentMain();
-
-    endDate = System.currentTimeMillis();
+    ); 
+    
     logger.info("-------------------------------------");
-    logger.info("Experiment {} finished ...", experimentID);
+    logger.info("Experimenter: {}", this.algorithmID);
+    logger.info("ExperimentID: {}", experimentID);
+    logger.info("-------------------------------------");
+    
+    // Run experiments
+    logger.info("Algorithm '{}'", algorithmID);
+
+    long startDate;
+    startDate = System.currentTimeMillis();
+
+    // Initialize array for problems scores
+    List<Double> problemsScores = new ArrayList<>();
+
+    ExperimentScoreCard scoreCard = new ExperimentScoreCard(
+        this.algorithmID, this.instanceIDsPerProblems.keySet().toArray(new String[]{}));
+
+    for (Entry<String, List<String>> entry : instanceIDsPerProblems.entrySet()) {
+      String problemID = entry.getKey();
+      logger.info("  Problem '{}'", problemID);
+
+      logger.debug("{}", ProblemProvider.getProblemProviders().values());
+
+      ProblemInfo problemInfo = ProblemProvider
+          .getProblemProviders()
+          .get(problemID)
+          .getProblemInfo();
+      
+      ProblemScoreCalculator problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
+      
+      List<String> instanceIDs = new ArrayList<>();
+      List<Double> instanceScores = new ArrayList<>();
+
+      for (String instanceID : entry.getValue()) {
+        logger.info("    Instance '{}'", instanceID);
+
+        // RUN EXPERIMENT
+        Experiment experimenter = createExperimenter(problemID, instanceID);
+        double score = experimenter.runExperiment();
+        // --- ----------
+
+        scoreCard.putInstanceScore(problemID, instanceID, score);
+  
+        instanceIDs.add(instanceID);
+        instanceScores.add(score);
+      }
+      
+      double problemScore = problemScoreCalculator.calculateProblemScore(
+          instanceIDs.toArray(new String[]{}), 
+          instanceScores.stream().mapToDouble(a -> a).toArray());
+
+      scoreCard.putProblemScore(problemID, problemScore);
+      problemsScores.add(problemScore);
+    }
+
+    double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
+    scoreCard.setTotalScore(experimentScore);
+
+    this.experimentReporter.updateExperimentScore(experimentID, scoreCard);
+   
+    long endDate = System.currentTimeMillis();
+    logger.info("-------------------------------------");
+    logger.info("Experiment {} finished ...", experimentID);    
     logger.info("Experiment duration: {} (DD:HH:mm:ss)", 
         TimeFormat.getTimeDurationBreakdown(endDate - startDate));
-    
+    logger.info("Experiment score: ### {} ###", scoreCard.getTotalScore());
+        
     this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
   }
 
-  protected abstract void experimentMain() throws Exception;
 
-  protected abstract String getExperimentConfig();
+  private Experiment createExperimenter(String problemID, String instanceID) 
+      throws Exception {
+    boolean ordinaryAlg = ProblemProvider
+        .getProblemProviders()
+        .get(problemID)
+        .getProblemInfo()
+        .getDataNode("Algorithms")
+        .getDataNodeById(algorithmID) != null;
+    
+    if (ordinaryAlg) {
+      return new MetaHeuristicExperiment(
+        experimentID, problemID, instanceID, 
+        algorithmID, numRuns, timeoutS, this.experimentReporter);
+    }
 
-  protected abstract long getEstimatedTime(int instancesCount, int algorithmsCount);
+    if (algorithmID.equals("HyperHeuristic1")) {
+      return new HyperHeuristic1Experiment(
+        experimentID, problemID, instanceID, 
+        algorithmID, numRuns, timeoutS, this.experimentReporter
+      );
+    }
 
-  protected abstract long getNumberOfConfigs(int instancesCount, int algorithmsCount);
+    throw new Exception(String.format("Unknown algorithm id '%s'", algorithmID));
+  }
+
+  protected String getExperimentConfig() {
+    DataNode config = new DataNode("Config");
+    config.putValue("timeoutS", this.timeoutS);
+    config.putValue("numRuns", this.numRuns);
+    
+    return config.toString();
+  }
+
+  protected String[] getProblemInstancesArray() {
+    List<String> results = new ArrayList<>();
+    for (Entry<String, List<String>> entry : instanceIDsPerProblems.entrySet()) {
+      String problemID = entry.getKey();
+      
+      for (String instanceID : entry.getValue()) {
+        results.add(String.format("%s:%s", problemID, instanceID));
+      }
+    }
+    return results.toArray(new String[0]);
+  }
+
 
 }
