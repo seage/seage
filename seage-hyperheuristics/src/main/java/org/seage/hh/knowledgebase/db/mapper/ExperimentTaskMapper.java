@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
-import org.seage.hh.experimenter.ExperimentTask;
+import org.seage.hh.experimenter.dbo.ExperimentTaskRecord;
 
 public interface ExperimentTaskMapper {
 
@@ -36,7 +36,7 @@ public interface ExperimentTaskMapper {
   }
   
   @InsertProvider(type = ExperimentTaskSqlProvider.class, method = "insertExperimentTask")
-  int insertExperimentTask(ExperimentTask experimentTask);
+  int insertExperimentTask(ExperimentTaskRecord experimentTask);
 
   @Select("SELECT * FROM seage.experiment_tasks WHERE experiment_task_id = #{experimentTaskID}")
   @Results(id = "experimentResult", value = {
@@ -56,6 +56,6 @@ public interface ExperimentTaskMapper {
       @Result(property = "config", column = "config"),
       @Result(property = "statistics", column = "statistics")
   })
-  ExperimentTask getExperimentTask(UUID experimentTaskID);
+  ExperimentTaskRecord getExperimentTask(UUID experimentTaskID);
 
 }

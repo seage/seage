@@ -9,22 +9,22 @@ import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmParams;
-import org.seage.hh.experimenter.Experiment;
-import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
+import org.seage.hh.experimenter.dbo.ExperimentRecord;
+import org.seage.hh.experimenter.dbo.ExperimentTaskRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 
 public class ExperimentTaskTest {
-  private Experiment experiment1;
-  private ExperimentTask experimentTask1;
-  private ExperimentTask experimentTask2;
+  private ExperimentRecord experiment1;
+  private ExperimentTaskRecord experimentTask1;
+  private ExperimentTaskRecord experimentTask2;
 
   @BeforeEach
   void setUp() throws Exception {
     DbManager.initTest();
 
-    this.experiment1 = new Experiment(
+    this.experiment1 = new ExperimentRecord(
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"), 
       "experimentType1", 
       "TEST", 
@@ -38,7 +38,7 @@ public class ExperimentTaskTest {
       "1"
     );
 
-    this.experimentTask1 = new ExperimentTask(new ExperimentTaskRequest(
+    this.experimentTask1 = new ExperimentTaskRecord(new ExperimentTaskRequest(
       UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"),
       1, 1,
@@ -50,7 +50,7 @@ public class ExperimentTaskTest {
       1L
     ));
     
-    this.experimentTask2 = new ExperimentTask(new ExperimentTaskRequest(
+    this.experimentTask2 = new ExperimentTaskRecord(new ExperimentTaskRequest(
       UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"), 
       2, 2,
@@ -74,7 +74,7 @@ public class ExperimentTaskTest {
 
       mapper.insertExperimentTask(this.experimentTask1);
       session.commit();
-      ExperimentTask experimentTask = 
+      ExperimentTaskRecord experimentTask = 
           mapper.getExperimentTask(this.experimentTask1.getExperimentTaskID());      
       assertNotNull(experimentTask);
       assertEquals(

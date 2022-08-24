@@ -1,9 +1,9 @@
-package org.seage.hh.experimenter;
+package org.seage.hh.experimenter.dbo;
 
 import java.util.Date;
 import java.util.UUID;
 
-public class Solution {
+public class SolutionRecord {
   private UUID solutionID;
  
   private UUID experimentTaskID;
@@ -18,12 +18,12 @@ public class Solution {
    * Solution class mainly for storing to database.
    * This must be here because of mybatis
    */
-  Solution() {}
+  SolutionRecord() {}
 
   /**
    * Solution class mainly for storing to database.
    */
-  public Solution(
+  public SolutionRecord(
       UUID solutionID,
       UUID experimentTaskID, String hash, 
       String solution, Double objectiveValue, Double score,

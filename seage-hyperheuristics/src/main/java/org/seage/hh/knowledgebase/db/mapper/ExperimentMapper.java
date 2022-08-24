@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
-import org.seage.hh.experimenter.Experiment;
+import org.seage.hh.experimenter.dbo.ExperimentRecord;
 
 public interface ExperimentMapper {
   class ExperimentSqlProvider implements ProviderMethodResolver {
@@ -39,7 +39,7 @@ public interface ExperimentMapper {
 
   @InsertProvider(type = ExperimentSqlProvider.class, method = "insertExperimentSql")
   // @Options(useGeneratedKeys = true, keyProperty = "id")
-  int insertExperiment(Experiment experiment);
+  int insertExperiment(ExperimentRecord experiment);
 
 
   @Select("SELECT * FROM seage.experiments WHERE experiment_id = #{experimentId}")
@@ -57,11 +57,11 @@ public interface ExperimentMapper {
       @Result(property = "hostInfo", column = "host_info"),
       @Result(property = "formatVersion", column = "format_version"),
   })
-  Experiment getExperiment(UUID experimentId);
+  ExperimentRecord getExperiment(UUID experimentId);
 
   @Select("SELECT * FROM seage.experiments")
   @ResultMap("experimentResult")
-  List<Experiment> getExperiments();
+  List<ExperimentRecord> getExperiments();
 
   @Select("SELECT count(*) FROM seage.experiments")
   int getExperimentCount();

@@ -6,15 +6,15 @@ import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
-import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
-import org.seage.hh.experimenter.Experimenter;
+import org.seage.hh.experimenter.OldExperimenter;
 import org.seage.hh.experimenter.configurator.Configurator;
+import org.seage.hh.experimenter.dbo.ExperimentTaskRecord;
 
 /**
  * Experimenter running producing random configs according to the metadata.
  */
-public class SingleAlgorithmExperimenter extends Experimenter {
+public class SingleAlgorithmExperimenter extends OldExperimenter {
   protected Configurator configurator;
   private int numConfigs;
   private int timeoutS;
@@ -82,7 +82,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
     }
   }
 
-  private Void reportExperimentTask(ExperimentTask experimentTask) {
+  private Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
       this.experimentReporter.reportExperimentTask(experimentTask);
     } catch (Exception e) {

@@ -1,9 +1,9 @@
 package org.seage.hh.experimenter.multialgorithm;
 
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.hh.experimenter.Experimenter;
+import org.seage.hh.experimenter.OldExperimenter;
 
-public class MultiAlgorithmRandomExperimenter extends Experimenter {
+public class MultiAlgorithmRandomExperimenter extends OldExperimenter {
 
   public MultiAlgorithmRandomExperimenter(String experimentName) throws Exception {
     super(experimentName, "", null, null);

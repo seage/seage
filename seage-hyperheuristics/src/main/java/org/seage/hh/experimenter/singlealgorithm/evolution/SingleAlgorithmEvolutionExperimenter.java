@@ -7,7 +7,7 @@ import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.data.DataNode;
-import org.seage.hh.experimenter.Experimenter;
+import org.seage.hh.experimenter.OldExperimenter;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator;
@@ -15,7 +15,7 @@ import org.seage.metaheuristic.genetics.ContinuousGeneticOperator.Limit;
 import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 
-public class SingleAlgorithmEvolutionExperimenter extends Experimenter
+public class SingleAlgorithmEvolutionExperimenter extends OldExperimenter
     implements IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject>> {
   private FeedbackConfigurator _feedbackConfigurator;
   private int _numSubjects;

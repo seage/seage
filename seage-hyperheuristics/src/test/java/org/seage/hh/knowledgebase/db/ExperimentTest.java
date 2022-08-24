@@ -10,19 +10,19 @@ import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.seage.hh.experimenter.Experiment;
+import org.seage.hh.experimenter.dbo.ExperimentRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 
 public class ExperimentTest {
-  private Experiment experiment1;
-  private Experiment experiment2;
+  private ExperimentRecord experiment1;
+  private ExperimentRecord experiment2;
 
   @BeforeEach
   void setUp() throws Exception {
     DbManager.initTest();
     System.err.println("setup");
 
-    this.experiment1 = new Experiment(
+    this.experiment1 = new ExperimentRecord(
       UUID.fromString("447ee273-3a5d-493a-a84c-0403690dfe0f"), 
       "experimentType1", 
       "problemID1", 
@@ -36,7 +36,7 @@ public class ExperimentTest {
       "1"
     );
     
-    this.experiment2 = new Experiment(
+    this.experiment2 = new ExperimentRecord(
       UUID.fromString("3d03b29f-39d7-4993-b76d-607282be52d8"),
       "experimentType2", 
       "problemID2", 
@@ -76,7 +76,7 @@ public class ExperimentTest {
 
       mapper.insertExperiment(this.experiment1);
       session.commit();
-      Experiment experiment = mapper.getExperiment(this.experiment1.getExperimentID());      
+      ExperimentRecord experiment = mapper.getExperiment(this.experiment1.getExperimentID());      
       assertNotNull(experiment);
       assertEquals(this.experiment1.getExperimentID(), experiment.getExperimentID());
     }
@@ -97,7 +97,7 @@ public class ExperimentTest {
       int count = mapper.getExperimentCount();      
       assertEquals(2, count);
       // Expected experiments inserted
-      List<Experiment> experiments = mapper.getExperiments();
+      List<ExperimentRecord> experiments = mapper.getExperiments();
       assertEquals(2, experiments.size());
       assertEquals(this.experiment1.getExperimentID(), experiments.get(0).getExperimentID());
       assertEquals(this.experiment1.getExperimentType(), experiments.get(0).getExperimentType());

@@ -2,8 +2,8 @@ package org.seage.hh.experimenter.runner;
 
 import java.util.List;
 import java.util.function.Function;
-import org.seage.hh.experimenter.ExperimentTask;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
+import org.seage.hh.experimenter.dbo.ExperimentTaskRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,11 +13,11 @@ public class LocalExperimentTasksRunner implements IExperimentTasksRunner {
 
   @Override
   public void performExperimentTasks(
-      List<ExperimentTaskRequest> taskInfos, Function<ExperimentTask, Void> reportFn) {
+      List<ExperimentTaskRequest> taskInfos, Function<ExperimentTaskRecord, Void> reportFn) {
 
     taskInfos.parallelStream().forEach(ti -> {
       try {
-        ExperimentTask task = new ExperimentTask(ti);
+        ExperimentTaskRecord task = new ExperimentTaskRecord(ti);
         task.run();
         reportFn.apply(task);
       } catch (Exception e) {
