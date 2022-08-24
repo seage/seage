@@ -293,9 +293,8 @@ public class ExperimentTask {
         scoreCalculator.calculateInstanceScore(instanceID, initObjValue);
 
     this.score = taskBestScore;
-    // Solution has to get better, otherwise the delta is the score
-    this.scoreDelta = Math.min(
-      this.score, scoreCalculator.calculateScoreDelta(taskInitScore, taskBestScore));
+    // Delta score represents how better or worse the new score is (compared to initial one)
+    this.scoreDelta = scoreCalculator.calculateScoreDelta(taskInitScore, taskBestScore);
   }
 
   private double getBestObjectiveValue(DataNode solutions) throws Exception {

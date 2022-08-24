@@ -68,6 +68,6 @@ public class ScoreCalculator {
    * @return Delta score.
    */
   public static double calculateScoreDelta(double initScore, double bestScore) {
-    return Math.abs(bestScore - initScore);
+    return bestScore - initScore;
   }
 }
