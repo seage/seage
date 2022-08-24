@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
-import org.seage.aal.Annotations.ProblemId;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
@@ -17,6 +16,11 @@ import org.seage.logging.TimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/*
+ * ExperimentApproachCommand --(calls)--> ExperimenterRunner
+ *   ExperimenterRunner --(runs)--> Experimenter 
+ *     Experimenter: MetaHeuristicExperimenter | HyperHeuristic1Experimenter
+ */
 public class ExperimenterRunner {
   protected static Logger logger =
       LoggerFactory.getLogger(ExperimenterRunner.class.getName());
@@ -25,7 +29,7 @@ public class ExperimenterRunner {
 
   private UUID experimentID;
   private String algorithmID;
-  private Map<String, List<String>> problemInstanceIDs;
+  private Map<String, List<String>> instanceIDsPerProblems;
   private int numRuns;
   private int timeoutS;
 
@@ -34,36 +38,34 @@ public class ExperimenterRunner {
    * ApproachExperimenter.
    * 
    * @param algorithmID Algorithm ID.
-   * @param problemInstanceIDs Map of problem instances.
+   * @param instanceIDsPerProblems Map of problem instances.
    */
   public ExperimenterRunner(String algorithmID,
-      Map<String, List<String>> problemInstanceIDs, int numRuns, int timeoutS)
+      Map<String, List<String>> instanceIDsPerProblems, int numRuns, int timeoutS)
       throws Exception {
     this.experimentID = UUID.randomUUID();
     this.algorithmID = algorithmID;
-    this.problemInstanceIDs = problemInstanceIDs;
+    this.instanceIDsPerProblems = instanceIDsPerProblems;
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
 
     this.experimentReporter = new ExperimentReporter();
   }
 
-
   /**
-   * Method runs experiment.
+   * Method runs experiment for possibly many problems with many problem instances.
    */
   public void runExperiment() throws Exception {
     // Create experiment reporter
     this.experimentReporter.createExperimentReport(
         this.experimentID,
         this.algorithmID,
-        this.problemInstanceIDs.keySet().toArray(new String[0]),
+        this.instanceIDsPerProblems.keySet().toArray(new String[0]),
         getProblemInstancesArray(),
         new String[] {this.algorithmID},
         getExperimentConfig(),
         Date.from(Instant.now())
     ); 
-
     
     logger.info("-------------------------------------");
     logger.info("Experimenter: {}", this.algorithmID);
@@ -80,13 +82,13 @@ public class ExperimenterRunner {
     List<Double> problemsScores = new ArrayList<>();
 
     ExperimentScoreCard scoreCard = new ExperimentScoreCard(
-        this.algorithmID, this.problemInstanceIDs.keySet().toArray(new String[]{}));
+        this.algorithmID, this.instanceIDsPerProblems.keySet().toArray(new String[]{}));
 
-    for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
+    for (Entry<String, List<String>> entry : instanceIDsPerProblems.entrySet()) {
       String problemID = entry.getKey();
       logger.info("  Problem '{}'", problemID);
 
-      System.out.println(ProblemProvider.getProblemProviders().values());
+      logger.debug("{}", ProblemProvider.getProblemProviders().values());
 
       ProblemInfo problemInfo = ProblemProvider
           .getProblemProviders()
@@ -102,7 +104,8 @@ public class ExperimenterRunner {
         logger.info("    Instance '{}'", instanceID);
 
         // RUN EXPERIMENT
-        double score = createAlgorithmExperimenter(problemID, instanceID).runExperiment();
+        Experimenter experimenter = createExperimenter(problemID, instanceID);
+        double score = experimenter.runExperiment();
         // --- ----------
 
         scoreCard.putInstanceScore(problemID, instanceID, score);
@@ -135,7 +138,7 @@ public class ExperimenterRunner {
   }
 
 
-  private Experimenter createAlgorithmExperimenter(String problemID, String instanceID) 
+  private Experimenter createExperimenter(String problemID, String instanceID) 
       throws Exception {
     boolean ordinaryAlg = ProblemProvider
         .getProblemProviders()
@@ -170,7 +173,7 @@ public class ExperimenterRunner {
 
   protected String[] getProblemInstancesArray() {
     List<String> results = new ArrayList<>();
-    for (Entry<String, List<String>> entry : problemInstanceIDs.entrySet()) {
+    for (Entry<String, List<String>> entry : instanceIDsPerProblems.entrySet()) {
       String problemID = entry.getKey();
       
       for (String instanceID : entry.getValue()) {
