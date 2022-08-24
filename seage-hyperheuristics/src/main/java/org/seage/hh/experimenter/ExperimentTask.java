@@ -285,16 +285,16 @@ public class ExperimentTask {
     DataNode outputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Output");
 
     double bestObjValue = getBestObjectiveValue(outputs);
-    double taskBestScore = 
+    double taskLatestScore = 
         scoreCalculator.calculateInstanceScore(instanceID, bestObjValue);
 
     double initObjValue = getBestObjectiveValue(inputs);
     double taskInitScore = 
         scoreCalculator.calculateInstanceScore(instanceID, initObjValue);
 
-    this.score = taskBestScore;
+    this.score = taskLatestScore;
     // Delta score represents how better or worse the new score is (compared to initial one)
-    this.scoreDelta = scoreCalculator.calculateScoreDelta(taskInitScore, taskBestScore);
+    this.scoreDelta = scoreCalculator.calculateScoreDelta(taskInitScore, taskLatestScore);
   }
 
   private double getBestObjectiveValue(DataNode solutions) throws Exception {
