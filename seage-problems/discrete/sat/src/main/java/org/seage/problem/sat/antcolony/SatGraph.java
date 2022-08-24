@@ -20,22 +20,28 @@
 /**
  * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.problem.sat.antcolony;
 
-import java.util.List;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 
 /**
- *
+ * .
  * @author Zagy
  */
 public class SatGraph extends Graph implements java.lang.Cloneable {
   private Formula _formula;
   FormulaEvaluator _formulaEvaluator;
 
+  /**
+   * .
+   * @param formula .
+   * @param formulaEvaluator .
+   * @throws Exception .
+   */
   public SatGraph(Formula formula, FormulaEvaluator formulaEvaluator) throws Exception {
     super();
     _formula = formula;
@@ -43,11 +49,11 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
     // /~ 1 ~ 2 ~ 3 ~ ... n
     // 0
     // \~ -1 ~ -2 ~ -3 ~ ... -n
-    _nodes.put(new Integer(0), new Node(0));
+    _nodes.put(0, new Node(0));
 
     for (int i = 1; i <= formula.getLiteralCount(); i++) {
-      _nodes.put(new Integer(i), new Node(i));
-      _nodes.put(new Integer(-i), new Node(-i));
+      _nodes.put(i, new Node(i));
+      _nodes.put(-i, new Node(-i));
     }
   }
 }

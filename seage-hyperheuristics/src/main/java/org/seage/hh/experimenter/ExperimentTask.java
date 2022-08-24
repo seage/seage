@@ -262,7 +262,6 @@ public class ExperimentTask {
       Phenotype<?>[] solutions) {
     for (Phenotype<?> p : solutions) {
       try {
-        _logger.info("solution obj: {} score: {}", p.getObjValue(), p.getScore());
         DataNode solutionNode = new DataNode("Solution");
         solutionNode.putValue("objVal", p.getObjValue());
         solutionNode.putValue("score", p.getScore());
@@ -286,28 +285,26 @@ public class ExperimentTask {
     DataNode outputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Output");
 
     double bestObjValue = getBestObjectiveValue(outputs);
-    _logger.info("\nBest objective balue: {}\n", bestObjValue);
     double taskBestScore = 
         scoreCalculator.calculateInstanceScore(instanceID, bestObjValue);
 
     double initObjValue = getBestObjectiveValue(inputs);
     double taskInitScore = 
         scoreCalculator.calculateInstanceScore(instanceID, initObjValue);
-    _logger.info("\nBest init objective balue: {}\n", initObjValue);
 
-    this.score = taskBestScore < taskInitScore ? taskInitScore : taskBestScore;
-    this.scoreDelta = scoreCalculator.calculateScoreDelta(taskInitScore, taskBestScore);
+    this.score = taskBestScore;
+    // Solution has to get better, otherwise the delta is the score
+    this.scoreDelta = Math.min(
+      this.score, scoreCalculator.calculateScoreDelta(taskInitScore, taskBestScore));
   }
 
   private double getBestObjectiveValue(DataNode solutions) throws Exception {
     double bestObjVal = Double.MAX_VALUE;
-    _logger.info("num of sol: {}", solutions.getDataNodes("Solution").size());
     for (DataNode s : solutions.getDataNodes("Solution")) {
       double objVal = s.getValueDouble("objVal");
 
       if (objVal < bestObjVal) {
         bestObjVal = objVal;
-        _logger.info("new best objval: {}", bestObjVal);
       }
     }
     return bestObjVal;

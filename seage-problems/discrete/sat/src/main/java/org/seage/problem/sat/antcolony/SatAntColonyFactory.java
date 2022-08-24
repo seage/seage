@@ -8,11 +8,14 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
 import org.seage.aal.problem.ProblemInstance;
+
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.Graph;
+
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 import org.seage.problem.sat.SatPhenotype;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,11 +39,13 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
+        logger.debug("Solution from phenotype");
         ants = new Ant[source.length];
         for (int i = 0; i < ants.length; i++) {
-          ArrayList<Integer> nodes = new ArrayList<Integer>();
+          ArrayList<Integer> nodes = new ArrayList<>();
           for (int j = 1; j <= source[i].getSolution().length; j++) {
-            nodes.add((Boolean) source[i].getSolution()[j - 1] == true ? j : -j);
+
+            nodes.add((boolean) source[i].getSolution()[j - 1] == true ? j : -j);
           }
           ants[i] = new SatAnt(satGraph, nodes, formula, evaluator);
         }
@@ -63,7 +68,6 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
           result.getSolution()[i] = value > 0;
         }
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
-        logger.debug("evaluation goes here {}", objVals);
         result.setObjValue(objVals[0]);
         result.setScore(objVals[1]);
         return result;

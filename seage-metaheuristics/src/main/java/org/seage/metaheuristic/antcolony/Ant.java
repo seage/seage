@@ -93,8 +93,8 @@ public class Ant {
       Node n1 = _nodePath.get(i);
       Node n2 = _nodePath.get(i + 1);
       Edge e = n1.getEdgeMap().get(n2);
-      if (e == null){
-        double edgePrice = getNodeDistance(_nodePath.subList(0, i+1), n2);
+      if (e == null) {
+        double edgePrice = getNodeDistance(_nodePath.subList(0, i + 1), n2);
         e = new Edge(n1, n2, edgePrice);
       }
       _edgePath.add(e);
@@ -208,7 +208,7 @@ public class Ant {
     if (availableNodes == null) {
       availableNodes = new HashSet<Node>(_graph.getNodes().values());
     }
-    Node lastNode = nodePath.get(nodePath.size()-1);
+    Node lastNode = nodePath.get(nodePath.size() - 1);
     availableNodes.remove(lastNode);   
     
     return availableNodes;

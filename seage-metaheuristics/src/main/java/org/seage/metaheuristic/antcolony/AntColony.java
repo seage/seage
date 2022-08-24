@@ -106,6 +106,7 @@ public class AntColony {
    * Main part of ant-colony algorithm.
    */
   public void startExploring(Node startingNode, Ant[] ants) throws Exception {
+    //System.out.print("start exploring");
     started = keepRunning = true;
     stopped = false;
     currentIteration = 0;
@@ -145,13 +146,13 @@ public class AntColony {
       }
       try {
         a.setParameters(alpha, beta, quantumPheromone);
-
+        
         if (a.getNodeIDsAlongPath().isEmpty()) {
           continue;
         }      
         List<Edge> path = a.doFirstExploration();
         if (a.getDistanceTravelled() < globalBest) {
-          globalBest = a.getDistanceTravelled();          
+          globalBest = a.getDistanceTravelled();      
           bestPath = new ArrayList<>(path);
           bestAnt = a;
           eventProducer.fireNewBestSolutionFound();
