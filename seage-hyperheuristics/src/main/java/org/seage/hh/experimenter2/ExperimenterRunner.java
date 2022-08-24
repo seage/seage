@@ -54,7 +54,6 @@ public class ExperimenterRunner {
 
   /**
    * Method runs experiment for possibly many problems with many problem instances.
-   * @see ProblemInstanceParamsParser
    */
   public void runExperiment() throws Exception {
     // Create experiment reporter
