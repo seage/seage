@@ -16,9 +16,9 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.configurator.ExtendedDefaultConfigurator;
-import org.seage.hh.experimenter.dbo.ExperimentTaskRecord;
 import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -10,7 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.seage.hh.experimenter.dbo.ExperimentRecord;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 
 public class ExperimentTest {

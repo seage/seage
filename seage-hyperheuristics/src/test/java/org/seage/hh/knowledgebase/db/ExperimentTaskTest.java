@@ -10,8 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
-import org.seage.hh.experimenter.dbo.ExperimentRecord;
-import org.seage.hh.experimenter.dbo.ExperimentTaskRecord;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 

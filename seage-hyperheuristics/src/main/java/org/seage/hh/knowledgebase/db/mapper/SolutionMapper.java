@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
-import org.seage.hh.experimenter.dbo.SolutionRecord;
+import org.seage.hh.knowledgebase.db.dbo.SolutionRecord;
 
 public interface SolutionMapper {
 

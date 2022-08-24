@@ -8,7 +8,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
-import org.seage.hh.experimenter.dbo.ExperimentTaskRecord;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.thread.TaskRunner3;
 

@@ -9,7 +9,7 @@ import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.OldExperimenter;
 import org.seage.hh.experimenter.configurator.Configurator;
-import org.seage.hh.experimenter.dbo.ExperimentTaskRecord;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 
 /**
  * Experimenter running producing random configs according to the metadata.

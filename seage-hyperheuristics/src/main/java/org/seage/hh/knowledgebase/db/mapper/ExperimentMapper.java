@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
-import org.seage.hh.experimenter.dbo.ExperimentRecord;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 
 public interface ExperimentMapper {
   class ExperimentSqlProvider implements ProviderMethodResolver {

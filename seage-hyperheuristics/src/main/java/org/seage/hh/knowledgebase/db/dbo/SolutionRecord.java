@@ -1,4 +1,4 @@
-package org.seage.hh.experimenter.dbo;
+package org.seage.hh.knowledgebase.db.dbo;
 
 import java.util.Date;
 import java.util.UUID;
