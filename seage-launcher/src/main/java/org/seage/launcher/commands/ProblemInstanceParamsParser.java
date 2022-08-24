@@ -61,10 +61,6 @@ public class ProblemInstanceParamsParser {
 
     if (instanceID.equals("hyflex")) {
       switch (problemID) {
-        case "ALL":
-          parsed = hyflexInstances;
-          break;
-
         case "SAT":
           parsed.put("SAT", hyflexInstances.get("SAT"));
           break;
@@ -78,6 +74,13 @@ public class ProblemInstanceParamsParser {
           break;
         
         case "QAP":
+          parsed.put("QAP", hyflexInstances.get("QAP"));
+          break;
+
+        case "ALL":
+          parsed.put("SAT", hyflexInstances.get("SAT"));
+          parsed.put("TSP", hyflexInstances.get("TSP"));
+          parsed.put("FSP", hyflexInstances.get("FSP"));
           parsed.put("QAP", hyflexInstances.get("QAP"));
           break;
         
