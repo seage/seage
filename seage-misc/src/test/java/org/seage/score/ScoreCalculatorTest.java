@@ -121,6 +121,17 @@ public class ScoreCalculatorTest {
 
   @Test
   public void testCalculateScoreDelta() throws Exception {
-    assertEquals(6.0, ScoreCalculator.calculateScoreDelta(12.0, 6.0), 0.1);
+    assertEquals(6.0, ScoreCalculator.calculateScoreDelta(6.0, 12.0), 0.1);
+  }
+
+  /**
+   * This test checks if the given initial score, 
+   * which should be smaller than the last score results
+   * in a negative delta score. (indication of worse score)
+   * @throws Exception .
+   */
+  @Test
+  public void testCalculateScoreDeltaNegative() throws Exception {
+    assertEquals(-6.0, ScoreCalculator.calculateScoreDelta(12.0, 6.0), 0.1);
   }
 }
