@@ -5,7 +5,12 @@ import java.util.List;
 
 import org.seage.score.ScoreCalculator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 public class ProblemScoreCalculator {
+  private static Logger logger = LoggerFactory.getLogger(ProblemScoreCalculator.class.getName());
 
   private ProblemInfo problemInfo;
 
@@ -20,9 +25,11 @@ public class ProblemScoreCalculator {
    * @return Calculated score.
    */
   public double calculateInstanceScore(String instanceID, double objValue) throws Exception {
+    logger.debug("Calculate instance {} score for {}", instanceID, objValue);
     try {
       double optimum = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("optimum");
       double greedy = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("greedy");
+
       return ScoreCalculator.calculateInstanceScore(optimum, greedy, objValue);
     } catch (NumberFormatException ex) {
       return 0;

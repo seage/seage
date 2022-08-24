@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- *
+ * .
  * @author Martin Zaloga
  * @author Richard Malek (reworked 2021)
  */
@@ -54,6 +54,12 @@ public class Ant {
     this(graph, nodeIDs, System.currentTimeMillis());
   }
 
+  /**
+   * .
+   * @param graph .
+   * @param nodeIDs . 
+   * @param randSeed .
+   */
   public Ant(Graph graph, List<Integer> nodeIDs, long randSeed) {
     _graph = graph;   
     _nodePath = new ArrayList<>();
@@ -61,7 +67,7 @@ public class Ant {
     rand = new Random(randSeed);
 
     if (nodeIDs != null) {
-      for (int i = 0; i < nodeIDs.size() ; i++) {
+      for (int i = 0; i < nodeIDs.size(); i++) {
         _nodePath.add(_graph.getNodes().get(nodeIDs.get(i)));
       }
     }   
@@ -77,7 +83,7 @@ public class Ant {
    * Do a first exploration if nodeIDs collection is set.
    * 
    * @return A path traveled
-   * @throws Exception
+   * @throws Exception .
    */
   public List<Edge> doFirstExploration() throws Exception {
     _edgePath = new ArrayList<>();
@@ -87,8 +93,8 @@ public class Ant {
       Node n1 = _nodePath.get(i);
       Node n2 = _nodePath.get(i + 1);
       Edge e = n1.getEdgeMap().get(n2);
-      if (e == null){
-        double edgePrice = getNodeDistance(_nodePath.subList(0, i+1), n2);
+      if (e == null) {
+        double edgePrice = getNodeDistance(_nodePath.subList(0, i + 1), n2);
         e = new Edge(n1, n2, edgePrice);
       }
       _edgePath.add(e);
@@ -100,10 +106,10 @@ public class Ant {
   }
 
   /**
-   * Ant exploring the graph
+   * Ant exploring the graph.
    * 
    * @return Ant's path
-   * @throws Exception
+   * @throws Exception .
    */
   protected List<Edge> explore(Node startingNode) throws Exception {
     _nodePath.clear();
@@ -131,8 +137,8 @@ public class Ant {
   }
 
   /**
-   * Pheromone leaving
-   * @throws Exception
+   * Pheromone leaving.
+   * @throws Exception .
    */
   protected void leavePheromone() throws Exception {
     for (Edge edge : _edgePath) {
@@ -143,6 +149,10 @@ public class Ant {
     }
   }
 
+  /**
+   * .
+   * @return
+   */
   public List<Integer> getNodeIDsAlongPath() {
     List<Integer> idsPath = new ArrayList<>();
     for (Node n : _nodePath) {
@@ -198,7 +208,7 @@ public class Ant {
     if (availableNodes == null) {
       availableNodes = new HashSet<Node>(_graph.getNodes().values());
     }
-    Node lastNode = nodePath.get(nodePath.size()-1);
+    Node lastNode = nodePath.get(nodePath.size() - 1);
     availableNodes.remove(lastNode);   
     
     return availableNodes;
@@ -207,7 +217,7 @@ public class Ant {
   /**
    * Next edges index calculation.
    * @return - Next edges index
-   * @throws Exception
+   * @throws Exception .
    */
   protected static int next(double[] probabilities, double randomNumber) throws Exception {
     double[] probs = new double[probabilities.length];
@@ -234,6 +244,12 @@ public class Ant {
     return quantumPheromone;
   }
 
+  /**
+   * Method for getting the path cost.
+   * @param path .
+   * @return .
+   * @throws Exception Exception when getting the edge price.
+   */
   public double getPathCost(List<Edge> path) throws Exception {
     double result = 0;
     for (Edge e : path) {

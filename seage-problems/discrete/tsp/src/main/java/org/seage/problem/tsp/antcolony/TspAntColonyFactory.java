@@ -41,7 +41,7 @@ import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemInstance;
 
 /**
- *
+ * .
  * @author Richard Malek
  */
 @Annotations.AlgorithmId("AntColony")
@@ -57,9 +57,7 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
       IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
     City[] cities = ((TspProblemInstance) instance).getCities();
     TspGraph graph = new TspGraph(cities);
-    IAlgorithmAdapter<TspPhenotype, Ant> algorithm = 
-        new AntColonyAdapter<TspPhenotype, Ant>(
-        graph, phenotypeEvaluator) {
+    return new AntColonyAdapter<TspPhenotype, Ant>(graph, phenotypeEvaluator) {
       @Override
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
         ants = new Ant[source.length];
@@ -87,12 +85,9 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
         TspPhenotype result = new TspPhenotype(p);
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
         result.setObjValue(objVals[0]);
-        result.setScore(objVals[0]);
+        result.setScore(objVals[1]);
         return result;
       }
     };
-
-    return algorithm;
   }
-
 }

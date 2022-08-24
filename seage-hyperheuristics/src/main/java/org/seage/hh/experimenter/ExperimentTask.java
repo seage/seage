@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * | | |_ Instance 
  * | | |_ name 
  * | |_ Algorithm 
- * | |_ algorithmID 
+ * | | |_ algorithmID 
  * | |_ Parameters 
  * |_ AlgorithmReport 
  * |_ Parameters 
@@ -227,6 +227,7 @@ public class ExperimentTask {
     _logger.debug("Algorithm stopped");
 
     solutions = algorithm.solutionsToPhenotype();
+
     writeSolutions(evaluator,
         this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
     
@@ -284,21 +285,23 @@ public class ExperimentTask {
     DataNode outputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Output");
 
     double bestObjValue = getBestObjectiveValue(outputs);
-    double taskBestScore = 
+    double taskLatestScore = 
         scoreCalculator.calculateInstanceScore(instanceID, bestObjValue);
 
     double initObjValue = getBestObjectiveValue(inputs);
     double taskInitScore = 
         scoreCalculator.calculateInstanceScore(instanceID, initObjValue);
 
-    this.score = taskBestScore;
-    this.scoreDelta = scoreCalculator.calculateScoreDelta(taskInitScore, taskBestScore);
+    this.score = taskLatestScore;
+    // Delta score represents how better or worse the new score is (compared to initial one)
+    this.scoreDelta = scoreCalculator.calculateScoreDelta(taskInitScore, taskLatestScore);
   }
 
   private double getBestObjectiveValue(DataNode solutions) throws Exception {
     double bestObjVal = Double.MAX_VALUE;
     for (DataNode s : solutions.getDataNodes("Solution")) {
       double objVal = s.getValueDouble("objVal");
+
       if (objVal < bestObjVal) {
         bestObjVal = objVal;
       }

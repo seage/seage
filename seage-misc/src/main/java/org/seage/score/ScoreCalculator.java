@@ -64,10 +64,10 @@ public class ScoreCalculator {
   /**
    * Method calculates score delta.
    * @param initScore Array of problem scores.
-   * @param bestScore Array of problem scores.
+   * @param lastScore Array of problem scores.
    * @return Delta score.
    */
-  public static double calculateScoreDelta(double initScore, double bestScore) {
-    return Math.abs(bestScore - initScore);
+  public static double calculateScoreDelta(double initScore, double lastScore) {
+    return lastScore - initScore;
   }
 }

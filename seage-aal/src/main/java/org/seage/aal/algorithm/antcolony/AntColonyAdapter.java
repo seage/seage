@@ -26,8 +26,6 @@
 
 package org.seage.aal.algorithm.antcolony;
 
-import java.util.List;
-
 import org.seage.aal.Annotations.AlgorithmParameters;
 import org.seage.aal.Annotations.Parameter;
 import org.seage.aal.algorithm.AlgorithmAdapterImpl;
@@ -40,7 +38,6 @@ import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
-import org.seage.metaheuristic.antcolony.Edge;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -123,7 +120,7 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
     statNumNewBestSolutions = 0;
     averageSolutionValue = 0;
     initialSolutionValue = bestSolutionValue = Double.MAX_VALUE;
-
+    // Why does the iterator make sense here?
     antColony.startExploring(graph.getNodes().values().iterator().next(), ants);
 
   }

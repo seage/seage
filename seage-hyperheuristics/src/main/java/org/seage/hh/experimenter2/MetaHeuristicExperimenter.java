@@ -54,7 +54,7 @@ public class MetaHeuristicExperimenter implements Experimenter {
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
     this.experimentReporter = experimentReporter;
-    this.bestScore = Double.MIN_VALUE;
+    this.bestScore = 0.0;
 
     // Initialize all
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
@@ -97,7 +97,6 @@ public class MetaHeuristicExperimenter implements Experimenter {
   private Void reportExperimentTask(ExperimentTask experimentTask) {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
-
       double taskScore = experimentTask.getScore();
       if (taskScore > bestScore) {
         this.bestScore = taskScore;

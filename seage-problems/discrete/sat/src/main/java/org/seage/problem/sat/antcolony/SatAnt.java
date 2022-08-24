@@ -41,7 +41,15 @@ public class SatAnt extends Ant {
 
   private Formula formula;
 
-  public SatAnt(Graph graph, List<Integer> nodeIDs, Formula formula, FormulaEvaluator formulaEvaluator) {
+  /**
+   * .
+   * @param graph .
+   * @param nodeIDs .
+   * @param formula .
+   * @param formulaEvaluator .
+   */
+  public SatAnt(
+      Graph graph, List<Integer> nodeIDs, Formula formula, FormulaEvaluator formulaEvaluator) {
     super(graph, nodeIDs);
     this.formula = formula;
     this.formulaEvaluator = formulaEvaluator;
@@ -54,7 +62,7 @@ public class SatAnt extends Ant {
 
     for (Node n : nodeList) {
       if (n.getID() == 0) {
-        continue;
+        continue; 
       }
       if (n.getID() < 0) {
         solution[-n.getID() - 1] = false;
