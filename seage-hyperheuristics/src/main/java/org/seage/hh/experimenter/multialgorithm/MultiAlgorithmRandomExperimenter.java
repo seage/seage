@@ -1,31 +1,15 @@
 package org.seage.hh.experimenter.multialgorithm;
 
-import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.hh.experimenter.OldExperimenter;
+import java.util.HashMap;
 
-public class MultiAlgorithmRandomExperimenter extends OldExperimenter {
+import org.seage.hh.experimenter.Experimenter;
 
-  public MultiAlgorithmRandomExperimenter(String experimentName) throws Exception {
-    super(experimentName, "", null, null);
+
+public class MultiAlgorithmRandomExperimenter extends Experimenter {
+
+  public MultiAlgorithmRandomExperimenter(String algorithmID) throws Exception {
+    super(algorithmID, new HashMap<>(), 0, 0);
     // TODO Auto-generated constructor stub
-  }
-  
-  @Override
-  protected void experimentMain() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  protected long getEstimatedTime(int instancesCount, int algorithmsCount) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
-  @Override
-  protected long getNumberOfConfigs(int instancesCount, int algorithmsCount) {
-    // TODO Auto-generated method stub
-    return 0;
   }
 
   @Override
@@ -33,5 +17,4 @@ public class MultiAlgorithmRandomExperimenter extends OldExperimenter {
     // TODO Auto-generated method stub
     return null;
   }
-
 }

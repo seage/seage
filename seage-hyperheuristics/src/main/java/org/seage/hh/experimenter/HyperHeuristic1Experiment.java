@@ -72,7 +72,7 @@ public class HyperHeuristic1Experiment implements Experiment {
   /**
    * Method runs experiment.
    */
-  public Double runExperiment() throws Exception {
+  public Double run() throws Exception {
     ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
 
     // provider and factory

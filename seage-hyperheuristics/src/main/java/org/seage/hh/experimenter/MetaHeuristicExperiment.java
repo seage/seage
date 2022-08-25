@@ -67,7 +67,7 @@ public class MetaHeuristicExperiment implements Experiment {
   /**
    * Method runs experiment.
    */
-  public Double runExperiment() throws Exception {
+  public Double run() throws Exception {
     ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
 
     // The taskQueue size must be limited since the results are stored in the task's reports

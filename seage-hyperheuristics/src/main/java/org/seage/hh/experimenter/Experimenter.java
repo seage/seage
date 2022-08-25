@@ -26,11 +26,11 @@ public class Experimenter {
   
   protected ExperimentReporter experimentReporter;
 
-  private UUID experimentID;
-  private String algorithmID;
-  private Map<String, List<String>> instanceIDsPerProblems;
-  private int numRuns;
-  private int timeoutS;
+  protected UUID experimentID;
+  protected String algorithmID;
+  protected Map<String, List<String>> instanceIDsPerProblems;
+  protected int numRuns;
+  protected int timeoutS;
 
 
   /**
@@ -103,8 +103,8 @@ public class Experimenter {
         logger.info("    Instance '{}'", instanceID);
 
         // RUN EXPERIMENT
-        Experiment experimenter = createExperimenter(problemID, instanceID);
-        double score = experimenter.runExperiment();
+        Experiment experiment = createExperimenter(problemID, instanceID);
+        double score = experiment.run();
         // --- ----------
 
         scoreCard.putInstanceScore(problemID, instanceID, score);
