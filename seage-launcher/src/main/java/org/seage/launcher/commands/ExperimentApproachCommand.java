@@ -47,7 +47,7 @@ public class ExperimentApproachCommand extends Command {
 
     Experimenter ae = 
         new Experimenter(
-            algorithmID, problemInstanceParams, runsPerInstance, algorithmTimeoutS);
+            "Default", algorithmID, problemInstanceParams, runsPerInstance, algorithmTimeoutS);
     ae.runExperiment();
   }
 }

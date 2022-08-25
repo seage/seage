@@ -33,13 +33,14 @@ public class SingleAlgorithmExperimenter extends Experimenter {
    * SingleAlgorithmExperimenter constructor - nothing special.
    */
   protected SingleAlgorithmExperimenter(
+      String experimentName,
       List<String> algorithmIDs,
       Map<String, List<String>> instanceIDsPerProblems,
       int numConfigs, 
       int numRuns,
       int timeoutS
   ) throws Exception {
-    super("", instanceIDsPerProblems, numRuns, timeoutS);
+    super(experimentName, "", instanceIDsPerProblems, numRuns, timeoutS);
     this.algorithmIDs = algorithmIDs;
     this.numConfigs = numConfigs;
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
