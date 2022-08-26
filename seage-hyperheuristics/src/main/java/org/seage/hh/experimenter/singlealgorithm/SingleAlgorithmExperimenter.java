@@ -1,6 +1,8 @@
 package org.seage.hh.experimenter.singlealgorithm;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import java.util.List;
 import java.util.Map.Entry;
@@ -40,7 +42,7 @@ public class SingleAlgorithmExperimenter extends Experimenter {
       int numRuns,
       int timeoutS
   ) throws Exception {
-    super(experimentName, "", instanceIDsPerProblems, numRuns, timeoutS);
+    super(experimentName, experimentName, instanceIDsPerProblems, numRuns, timeoutS);
     this.algorithmIDs = algorithmIDs;
     this.numConfigs = numConfigs;
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
