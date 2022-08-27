@@ -1,7 +1,8 @@
 package org.seage.launcher.commands;
 
 import java.util.List;
-
+import java.util.Map;
+import org.seage.hh.experimenter.Experimenter;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 
@@ -29,6 +30,15 @@ public class ExperimentSingleEvolutionCommand extends Command {
   @Override
   public void performCommand() throws Exception {
 //        new SingleAlgorithmEvolutionExperimenter(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}), numOfSubjects, numOfIterations, algorithmTimeoutS )
-//        .runExperiment();       
+//        .runExperiment();
+    Map<String, List<String>> problemInstanceParams = 
+        ProblemInstanceParamsParser.parseProblemInstanceParams(instances);
+
+    for (String algorithmID : algorithms) {
+      new Experimenter(
+        algorithmID, problemInstanceParams, numOfSubjects, 
+        algorithmTimeoutS).setNumOfIterations(numOfIterations)
+        .runExperiment("SingleAlgorithmEvolution");
+    }
   }
 }

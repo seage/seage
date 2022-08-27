@@ -17,6 +17,7 @@ import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmDefaultExperimen
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperimenter;
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmGridExperimenter;
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperimenter;
+import org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;
 import org.seage.logging.TimeFormat;
 
 import org.slf4j.Logger;
@@ -41,6 +42,7 @@ public class Experimenter {
 
   protected double spread;
   protected int granularity;
+  protected int numOfIterations;
 
 
 
@@ -72,6 +74,7 @@ public class Experimenter {
     return this;
   }
 
+
   /**
    * Method sets the granularity variable.
    * @param newGranularity New granularity value.
@@ -79,6 +82,11 @@ public class Experimenter {
    */
   public Experimenter setGranularity(int newGranularity) {
     this.granularity = newGranularity;
+    return this;
+  }
+
+  public Experimenter setNumOfIterations(int newNumOfIterations) {
+    this.numOfIterations = newNumOfIterations;
     return this;
   }
 
@@ -201,6 +209,12 @@ public class Experimenter {
         experimentID, problemID, instanceID, 
         algorithmID, numRuns, timeoutS, 
         experimentReporter);
+    }
+    if (experimentName.equals("SingleAlgorithmEvolution")) {
+      return new SingleAlgorithmEvolutionExperimenter(
+        experimentID, problemID, algorithmID, 
+        instanceID, numRuns, numOfIterations, 
+        timeoutS, experimentReporter);
     }
 
 
