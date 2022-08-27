@@ -30,8 +30,8 @@ public class SingleAlgorithmGridExperimenter extends SingleAlgorithmExperimenter
     super(
         experimentID,
         problemID,
-        instanceID,
         algorithmID,
+        instanceID,
         numRuns,
         timeoutS,
         experimentReporter

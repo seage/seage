@@ -29,8 +29,8 @@ public class SingleAlgorithmRandomExperimenter extends SingleAlgorithmExperiment
     super(
         experimentID,
         problemID,
-        instanceID,
         algorithmID,
+        instanceID,
         numRuns,
         timeoutS,
         experimentReporter

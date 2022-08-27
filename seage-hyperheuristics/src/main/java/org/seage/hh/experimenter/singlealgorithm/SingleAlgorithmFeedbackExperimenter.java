@@ -28,8 +28,8 @@ public class SingleAlgorithmFeedbackExperimenter extends SingleAlgorithmExperime
     super(
         experimentID,
         problemID,
-        instanceID,
         algorithmID,
+        instanceID,
         numRuns,
         timeoutS,
         experimentReporter

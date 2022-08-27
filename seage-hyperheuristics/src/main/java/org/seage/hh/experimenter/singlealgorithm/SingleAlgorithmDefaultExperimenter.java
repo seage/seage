@@ -30,8 +30,8 @@ public class SingleAlgorithmDefaultExperimenter extends SingleAlgorithmExperimen
     super(
         experimentID,
         problemID,
-        instanceID,
         algorithmID,
+        instanceID,
         numRuns,
         timeoutS,
         experimentReporter
