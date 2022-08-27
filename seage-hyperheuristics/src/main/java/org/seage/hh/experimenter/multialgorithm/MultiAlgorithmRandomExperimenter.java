@@ -8,7 +8,7 @@ import org.seage.hh.experimenter.Experimenter;
 public class MultiAlgorithmRandomExperimenter extends Experimenter {
 
   public MultiAlgorithmRandomExperimenter(String algorithmID) throws Exception {
-    super("MultiAlgorithmRandom", algorithmID, new HashMap<>(), 0, 0);
+    super(algorithmID, new HashMap<>(), 0, 0);
     // TODO Auto-generated constructor stub
   }
 
