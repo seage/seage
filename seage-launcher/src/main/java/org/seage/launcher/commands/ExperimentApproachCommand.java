@@ -45,9 +45,7 @@ public class ExperimentApproachCommand extends Command {
     Map<String, List<String>> problemInstanceParams = 
         ProblemInstanceParamsParser.parseProblemInstanceParams(instanceIDs);
 
-    Experimenter ae = 
-        new Experimenter(
-            "Default", algorithmID, problemInstanceParams, runsPerInstance, algorithmTimeoutS);
-    ae.runExperiment();
+    new Experimenter(
+        algorithmID, problemInstanceParams, runsPerInstance, algorithmTimeoutS).runExperiment();
   }
 }

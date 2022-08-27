@@ -34,7 +34,6 @@ public class Experimenter {
   protected ExperimentReporter experimentReporter;
 
   protected UUID experimentID;
-  protected String experimentName;
   protected String algorithmID;
   protected Map<String, List<String>> instanceIDsPerProblems;
   protected int numRuns;
@@ -51,11 +50,10 @@ public class Experimenter {
    * @param algorithmID Algorithm ID.
    * @param instanceIDsPerProblems Map of problem instances.
    */
-  public Experimenter(String experimentName, String algorithmID,
+  public Experimenter(String algorithmID,
       Map<String, List<String>> instanceIDsPerProblems, int numRuns, int timeoutS)
       throws Exception {
     this.experimentID = UUID.randomUUID();
-    this.experimentName = experimentName;
     this.algorithmID = algorithmID;
     this.instanceIDsPerProblems = instanceIDsPerProblems;
     this.numRuns = numRuns;
@@ -88,7 +86,7 @@ public class Experimenter {
    * Default method without defined experiment.
    */
   public void runExperiment() throws Exception {
-    runExperiment("");
+    runExperiment("Experimenter");
   }
 
 
@@ -99,7 +97,7 @@ public class Experimenter {
     // Create experiment reporter
     this.experimentReporter.createExperimentReport(
         this.experimentID,
-        this.experimentName,
+        experimentName,
         this.instanceIDsPerProblems.keySet().toArray(new String[0]),
         getProblemInstancesArray(),
         new String[] {this.algorithmID},
