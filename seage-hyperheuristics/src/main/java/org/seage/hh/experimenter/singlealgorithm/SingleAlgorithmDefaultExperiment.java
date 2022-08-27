@@ -37,8 +37,8 @@ public class SingleAlgorithmDefaultExperiment extends SingleAlgorithmExperiment 
         experimentReporter
     );
 
-    this.experimentName = "SingleAlgorithmDefault";
-    this.configurator = new DefaultConfigurator(spread);
+    experimentName = "SingleAlgorithmDefault";
+    configurator = new DefaultConfigurator(spread);
   }
   
 }

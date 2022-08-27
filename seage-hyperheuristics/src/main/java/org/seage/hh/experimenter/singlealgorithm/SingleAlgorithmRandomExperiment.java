@@ -36,8 +36,8 @@ public class SingleAlgorithmRandomExperiment extends SingleAlgorithmExperiment {
         experimentReporter
     );
     
-    this.experimentName = "SingleAlgorithmRandom";
-    this.configurator = new RandomConfigurator();
+    experimentName = "SingleAlgorithmRandom";
+    configurator = new RandomConfigurator();
   }
   
 }

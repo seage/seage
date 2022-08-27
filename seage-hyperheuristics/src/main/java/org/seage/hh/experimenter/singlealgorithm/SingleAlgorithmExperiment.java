@@ -56,13 +56,13 @@ public class SingleAlgorithmExperiment implements Experiment {
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    this.experimentName = "SingleAlgorithm";
     this.experimentReporter = experimentReporter;
-    this.bestScore = 0.0;
+    experimentName = "SingleAlgorithm";
+    bestScore = 0.0;
 
     // Initialize
-    this.problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-    this.configurator = new DefaultConfigurator(0.26);
+    problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
+    configurator = new DefaultConfigurator(0.26);
   }
   
   @Override
@@ -95,7 +95,7 @@ public class SingleAlgorithmExperiment implements Experiment {
       experimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
       if (taskScore > bestScore) {
-        this.bestScore = taskScore;
+        bestScore = taskScore;
       }
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 

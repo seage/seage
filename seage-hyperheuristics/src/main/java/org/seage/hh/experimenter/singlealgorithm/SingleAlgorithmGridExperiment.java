@@ -37,8 +37,8 @@ public class SingleAlgorithmGridExperiment extends SingleAlgorithmExperiment {
         experimentReporter
     );
     
-    this.experimentName = "SingleAlgorithmGrid";
-    this.configurator = new GridConfigurator(granularity);
+    experimentName = "SingleAlgorithmGrid";
+    configurator = new GridConfigurator(granularity);
   }
   
 }

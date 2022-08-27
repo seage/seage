@@ -35,8 +35,8 @@ public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment
         experimentReporter
     );
 
-    this.experimentName = "SingleAlgorithmFeedback";
-    this.configurator = new ExtendedDefaultConfigurator();
+    experimentName = "SingleAlgorithmFeedback";
+    configurator = new ExtendedDefaultConfigurator();
   }
   // public SingleAlgorithmFeedbackExperiment(String problemID, String[]
   // instanceIDs, String[] algorithmIDs,
