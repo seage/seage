@@ -19,7 +19,7 @@ public class ExperimenterRunnerTest {
     instances.put("TSP", Arrays.asList(new String[] { "eil51", "berlin52" }));
     instances.put("SAT", Arrays.asList(new String[] { "u100", "u1000" }));
     
-    Experimenter ae = new Experimenter("experimentName", "algorithmID", instances, 1, 1);
+    Experimenter ae = new Experimenter("algorithmID", instances, 1, 1);
     assertNotNull(ae);
   }
 }

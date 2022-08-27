@@ -51,7 +51,6 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
    * @throws Exception .
    */
   public SingleAlgorithmEvolutionExperimenter(
-      String experimentName,
       String problemID, 
       String[] instanceIDs,
       String[] algorithmIDs, 
@@ -60,8 +59,7 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
       int algorithmTimeoutS
   ) throws Exception {
     super(
-        experimentName, 
-        "", 
+        "GeneticAlgorithm", 
         Map.ofEntries(
           Map.entry(problemID, Arrays.asList(instanceIDs))
         ), 
