@@ -162,11 +162,14 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
     }
   }
 
-  private List<SingleAlgorithmExperimentTaskSubject> initializeSubjects(ProblemInfo problemInfo, String instanceID,
+  private List<SingleAlgorithmExperimentTaskSubject> initializeSubjects(
+      ProblemInfo problemInfo, String instanceID,
       String algorithmID, int count) throws Exception {
-    List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<SingleAlgorithmExperimentTaskSubject>();
+    List<SingleAlgorithmExperimentTaskSubject> result = 
+        new ArrayList<SingleAlgorithmExperimentTaskSubject>();
 
-    ProblemConfig[] pc = _feedbackConfigurator.prepareConfigs(problemInfo, instanceID, algorithmID, count);
+    ProblemConfig[] pc = _feedbackConfigurator
+      .prepareConfigs(problemInfo, instanceID, algorithmID, count);
 
     List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
         .getDataNodes("Parameter");
@@ -176,7 +179,8 @@ public class SingleAlgorithmEvolutionExperimenter extends Experimenter
       Double[] values = new Double[params.size()];
       for (int j = 0; j < params.size(); j++) {
         names[j] = params.get(j).getValueStr("name");
-        values[j] = pc[i].getDataNode("Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
+        values[j] = pc[i].getDataNode(
+          "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
       }
       result.add(new SingleAlgorithmExperimentTaskSubject(names, values));
     }

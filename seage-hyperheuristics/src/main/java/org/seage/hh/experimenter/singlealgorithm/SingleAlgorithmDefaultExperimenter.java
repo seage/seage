@@ -1,8 +1,7 @@
 package org.seage.hh.experimenter.singlealgorithm;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.UUID;
+import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 
 public class SingleAlgorithmDefaultExperimenter extends SingleAlgorithmExperimenter {
@@ -10,27 +9,35 @@ public class SingleAlgorithmDefaultExperimenter extends SingleAlgorithmExperimen
   /**
    * .
    * @param problemID .
-   * @param instanceIDs .
-   * @param algorithmIDs .
-   * @param numConfigs .
+   * @param instanceID .
+   * @param algorithmID .
+   * @param numRuns .
    * @param timeoutS .
    * @param spread .
    * @throws Exception .
    */
-  public SingleAlgorithmDefaultExperimenter(String problemID, String[] instanceIDs,
-      String[] algorithmIDs, int numConfigs, int timeoutS, double spread)
+  public SingleAlgorithmDefaultExperimenter(
+      UUID experimentID,
+      String problemID, 
+      String instanceID,
+      String algorithmID, 
+      int numRuns,
+      int timeoutS,
+      ExperimentReporter experimentReporter,
+      double spread
+  )
       throws Exception {
     super(
-        "SingleAlgorithmDefault",
-        Arrays.asList(algorithmIDs), 
-        Map.ofEntries(
-          Map.entry(problemID, Arrays.asList(instanceIDs))), 
-        numConfigs, 
-        1, 
-        timeoutS
+        experimentID,
+        problemID,
+        instanceID,
+        algorithmID,
+        numRuns,
+        timeoutS,
+        experimentReporter
     );
 
-    
+    this.experimentName = "SingleAlgorithmDefault";
     this.configurator = new DefaultConfigurator(spread);
   }
   
