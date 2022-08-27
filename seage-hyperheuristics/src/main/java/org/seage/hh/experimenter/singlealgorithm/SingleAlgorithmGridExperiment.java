@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.configurator.GridConfigurator;
 
-public class SingleAlgorithmGridExperimenter extends SingleAlgorithmExperimenter {
+public class SingleAlgorithmGridExperiment extends SingleAlgorithmExperiment {
 
   /**
    * .
@@ -17,7 +17,7 @@ public class SingleAlgorithmGridExperimenter extends SingleAlgorithmExperimenter
    * @param granularity .
    * @throws Exception .
    */
-  public SingleAlgorithmGridExperimenter(
+  public SingleAlgorithmGridExperiment(
       UUID experimentID,
       String problemID, 
       String instanceID,

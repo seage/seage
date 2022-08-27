@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Experimenter running producing random configs according to the metadata.
  */
-public class SingleAlgorithmExperimenter implements Experiment {
+public class SingleAlgorithmExperiment implements Experiment {
   private static Logger logger =
-      LoggerFactory.getLogger(SingleAlgorithmExperimenter.class.getName());
+      LoggerFactory.getLogger(SingleAlgorithmExperiment.class.getName());
   protected Configurator configurator;
 
   protected IExperimentTasksRunner experimentTasksRunner;
@@ -42,9 +42,9 @@ public class SingleAlgorithmExperimenter implements Experiment {
   private double bestScore;
 
   /**
-   * SingleAlgorithmExperimenter constructor - nothing special.
+   * SingleAlgorithmExperiment constructor - nothing special.
    */
-  protected SingleAlgorithmExperimenter(
+  protected SingleAlgorithmExperiment(
       UUID experimentID, String problemID, String algorithmID,
       String instanceID, int numRuns, int timeoutS,
       ExperimentReporter experimentReporter

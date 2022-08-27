@@ -5,7 +5,7 @@ import com.beust.jcommander.Parameters;
 import java.util.List;
 import java.util.Map;
 import org.seage.hh.experimenter.Experimenter;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperimenter;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperiment;
 
 @Parameters(commandDescription = "Perform single random experiment")
 public class ExperimentSingleRandomCommand extends Command {

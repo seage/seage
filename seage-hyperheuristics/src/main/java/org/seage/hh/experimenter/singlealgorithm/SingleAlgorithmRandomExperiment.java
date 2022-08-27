@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.configurator.RandomConfigurator;
 
-public class SingleAlgorithmRandomExperimenter extends SingleAlgorithmExperimenter {
+public class SingleAlgorithmRandomExperiment extends SingleAlgorithmExperiment {
 
   /**
    * .
@@ -16,7 +16,7 @@ public class SingleAlgorithmRandomExperimenter extends SingleAlgorithmExperiment
    * @param timeoutS .
    * @throws Exception .
    */
-  public SingleAlgorithmRandomExperimenter(
+  public SingleAlgorithmRandomExperiment(
       UUID experimentID,
       String problemID, 
       String instanceID,

@@ -4,7 +4,7 @@ import java.util.UUID;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 
-public class SingleAlgorithmDefaultExperimenter extends SingleAlgorithmExperimenter {
+public class SingleAlgorithmDefaultExperiment extends SingleAlgorithmExperiment {
 
   /**
    * .
@@ -16,7 +16,7 @@ public class SingleAlgorithmDefaultExperimenter extends SingleAlgorithmExperimen
    * @param spread .
    * @throws Exception .
    */
-  public SingleAlgorithmDefaultExperimenter(
+  public SingleAlgorithmDefaultExperiment(
       UUID experimentID,
       String problemID, 
       String instanceID,

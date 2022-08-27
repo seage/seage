@@ -13,11 +13,11 @@ import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmDefaultExperimenter;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperimenter;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmGridExperimenter;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperimenter;
-import org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimenter;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmDefaultExperiment;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperiment;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmGridExperiment;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperiment;
+import org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperiment;
 import org.seage.logging.TimeFormat;
 
 import org.slf4j.Logger;
@@ -187,31 +187,31 @@ public class Experimenter {
       throws Exception {
 
     if (experimentName.equals("SingleAlgorithmDefault")) {
-      return new SingleAlgorithmDefaultExperimenter(
+      return new SingleAlgorithmDefaultExperiment(
         experimentID, problemID, instanceID, 
         algorithmID, numRuns, timeoutS, 
         experimentReporter, spread);
     }
     if (experimentName.equals("SingleAlgorithmRandom")) {
-      return new SingleAlgorithmRandomExperimenter(
+      return new SingleAlgorithmRandomExperiment(
         experimentID, problemID, instanceID,
         algorithmID, numRuns, timeoutS, 
         experimentReporter);
     }
     if (experimentName.equals("SingleAlgorithmGrid")) {
-      return new SingleAlgorithmGridExperimenter(
+      return new SingleAlgorithmGridExperiment(
         experimentID, problemID, instanceID, 
         algorithmID, numRuns, timeoutS, 
         experimentReporter, granularity);
     }
     if (experimentName.equals("SingleAlgorithmFeedback")) {
-      return new SingleAlgorithmFeedbackExperimenter(
+      return new SingleAlgorithmFeedbackExperiment(
         experimentID, problemID, instanceID, 
         algorithmID, numRuns, timeoutS, 
         experimentReporter);
     }
     if (experimentName.equals("SingleAlgorithmEvolution")) {
-      return new SingleAlgorithmEvolutionExperimenter(
+      return new SingleAlgorithmEvolutionExperiment(
         experimentID, problemID, algorithmID, 
         instanceID, numRuns, numOfIterations, 
         timeoutS, experimentReporter);

@@ -26,11 +26,11 @@ import org.slf4j.LoggerFactory;
 import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 
-public class SingleAlgorithmEvolutionExperimenter
+public class SingleAlgorithmEvolutionExperiment
     implements IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject>>, 
     Experiment {
   private static Logger logger =
-      LoggerFactory.getLogger(SingleAlgorithmEvolutionExperimenter.class.getName());
+      LoggerFactory.getLogger(SingleAlgorithmEvolutionExperiment.class.getName());
   private FeedbackConfigurator feedbackConfigurator;
   private int numSubjects;
   private int numIterations;
@@ -51,7 +51,7 @@ public class SingleAlgorithmEvolutionExperimenter
   protected int timeoutS;
   private double bestScore;
 
-//    public SingleAlgorithmEvolutionExperimenter(int numSubjects, int numIterations, int algorithmTimeoutS)
+//    public SingleAlgorithmEvolutionExperiment(int numSubjects, int numIterations, int algorithmTimeoutS)
 //            throws Exception
 //    {
 //        super("SingleAlgorithmEvolution");
@@ -64,7 +64,7 @@ public class SingleAlgorithmEvolutionExperimenter
 //        ;
 //    }
 
-  public SingleAlgorithmEvolutionExperimenter(
+  public SingleAlgorithmEvolutionExperiment(
       UUID experimentID,
       String problemID,
       String algorithmID,

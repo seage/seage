@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.configurator.ExtendedDefaultConfigurator;
 
-public class SingleAlgorithmFeedbackExperimenter extends SingleAlgorithmExperimenter {
+public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment {
 
   /**
    * .
@@ -16,7 +16,7 @@ public class SingleAlgorithmFeedbackExperimenter extends SingleAlgorithmExperime
    * @param timeoutS .
    * @throws Exception .
    */
-  public SingleAlgorithmFeedbackExperimenter(
+  public SingleAlgorithmFeedbackExperiment(
       UUID experimentID,
       String problemID, 
       String instanceID,
@@ -38,7 +38,7 @@ public class SingleAlgorithmFeedbackExperimenter extends SingleAlgorithmExperime
     this.experimentName = "SingleAlgorithmFeedback";
     this.configurator = new ExtendedDefaultConfigurator();
   }
-  // public SingleAlgorithmFeedbackExperimenter(String problemID, String[]
+  // public SingleAlgorithmFeedbackExperiment(String problemID, String[]
   // instanceIDs, String[] algorithmIDs,
   // int numConfigs, int timeoutS) throws Exception {
   // super(problemID, instanceIDs, algorithmIDs, numConfigs, timeoutS);
