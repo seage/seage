@@ -128,7 +128,7 @@ public class Experimenter {
     List<Double> problemsScores = new ArrayList<>();
 
     ExperimentScoreCard scoreCard = new ExperimentScoreCard(
-        algorithmID, nstanceIDsPerProblems.keySet().toArray(new String[]{}));
+        algorithmID, instanceIDsPerProblems.keySet().toArray(new String[]{}));
 
     for (Entry<String, List<String>> entry : instanceIDsPerProblems.entrySet()) {
       String problemID = entry.getKey();
