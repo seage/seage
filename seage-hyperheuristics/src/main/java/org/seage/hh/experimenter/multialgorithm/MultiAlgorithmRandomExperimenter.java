@@ -1,20 +1,56 @@
 package org.seage.hh.experimenter.multialgorithm;
 
-import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+import org.seage.aal.problem.ProblemInfo;
+import org.seage.hh.experimenter.Experiment;
+import org.seage.hh.experimenter.ExperimentReporter;
+import org.seage.hh.experimenter.configurator.Configurator;
+import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
 
-import org.seage.hh.experimenter.Experimenter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
-public class MultiAlgorithmRandomExperimenter extends Experimenter {
+public class MultiAlgorithmRandomExperimenter implements Experiment {
+  private static Logger logger =
+      LoggerFactory.getLogger(MultiAlgorithmRandomExperimenter.class.getName());
+  protected Configurator configurator;
 
-  public MultiAlgorithmRandomExperimenter(String algorithmID) throws Exception {
-    super(algorithmID, new HashMap<>(), 0, 0);
-    // TODO Auto-generated constructor stub
+  protected IExperimentTasksRunner experimentTasksRunner;
+  protected ExperimentReporter experimentReporter;
+  protected ProblemInfo problemInfo;
+  
+  protected String experimentName;
+  protected UUID experimentID;
+  protected String problemID;
+  protected String instanceID;
+  protected List<String> algorithmIDs;
+  protected int numRuns;
+  protected int timeoutS;
+  private double bestScore;
+
+  protected MultiAlgorithmRandomExperimenter(
+      UUID experimentID, String problemID, List<String> algorithmIDs,
+      String instanceID, int numRuns, int timeoutS,
+      ExperimentReporter experimentReporter
+  ) {
+    this.experimentID = experimentID;
+    this.problemID = problemID;
+    this.algorithmIDs = algorithmIDs;
+    this.instanceID = instanceID;
+    this.numRuns = numRuns;
+    this.timeoutS = timeoutS;
+    this.experimentName = "SingleAlgorithm";
+    this.experimentReporter = experimentReporter;
+    this.bestScore = 0.0;
   }
 
+  /**
+   * Default method.
+   */
   @Override
-  protected String getExperimentConfig() {
-    // TODO Auto-generated method stub
-    return null;
+  public Double run() throws Exception {
+    return bestScore;
   }
 }
