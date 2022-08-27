@@ -2,16 +2,23 @@ package org.seage.hh.experimenter;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.function.Function;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmDefaultExperimenter;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperimenter;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmGridExperimenter;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperimenter;
 import org.seage.logging.TimeFormat;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +39,10 @@ public class Experimenter {
   protected Map<String, List<String>> instanceIDsPerProblems;
   protected int numRuns;
   protected int timeoutS;
+
+  protected double spread;
+  protected int granularity;
+
 
 
   /**
@@ -54,9 +65,37 @@ public class Experimenter {
   }
 
   /**
-   * Method runs experiment for possibly many problems with many problem instances.
+   * Method sets the spread variable.
+   * @param newSpread New spread value.
+   * @return
+   */
+  public Experimenter setSpread(double newSpread) {
+    this.spread = newSpread;
+    return this;
+  }
+
+  /**
+   * Method sets the granularity variable.
+   * @param newGranularity New granularity value.
+   * @return
+   */
+  public Experimenter setGranularity(int newGranularity) {
+    this.granularity = newGranularity;
+    return this;
+  }
+
+  /**
+   * Default method without defined experiment.
    */
   public void runExperiment() throws Exception {
+    runExperiment("");
+  }
+
+
+  /**
+   * Method runs experiment for possibly many problems with many problem instances.
+   */
+  public void runExperiment(String experimentName) throws Exception {
     // Create experiment reporter
     this.experimentReporter.createExperimentReport(
         this.experimentID,
@@ -105,7 +144,7 @@ public class Experimenter {
         logger.info("    Instance '{}'", instanceID);
 
         // RUN EXPERIMENT
-        Experiment experiment = createExperimenter(problemID, instanceID);
+        Experiment experiment = createExperimenter(experimentName, problemID, instanceID);
         double score = experiment.run();
         // --- ----------
 
@@ -138,9 +177,35 @@ public class Experimenter {
     this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
   }
 
-
-  private Experiment createExperimenter(String problemID, String instanceID) 
+  private Experiment createExperimenter(String experimentName, String problemID, String instanceID) 
       throws Exception {
+
+    if (experimentName.equals("SingleAlgorithmDefault")) {
+      return new SingleAlgorithmDefaultExperimenter(
+        experimentID, problemID, instanceID, 
+        algorithmID, numRuns, timeoutS, 
+        experimentReporter, spread);
+    }
+    if (experimentName.equals("SingleAlgorithmRandom")) {
+      return new SingleAlgorithmRandomExperimenter(
+        experimentID, problemID, instanceID,
+        algorithmID, numRuns, timeoutS, 
+        experimentReporter);
+    }
+    if (experimentName.equals("SingleAlgorithmGrid")) {
+      return new SingleAlgorithmGridExperimenter(
+        experimentID, problemID, instanceID, 
+        algorithmID, numRuns, timeoutS, 
+        experimentReporter, granularity);
+    }
+    if (experimentName.equals("SingleAlgorithmFeedback")) {
+      return new SingleAlgorithmFeedbackExperimenter(
+        experimentID, problemID, instanceID, 
+        algorithmID, numRuns, timeoutS, 
+        experimentReporter);
+    }
+
+
     boolean ordinaryAlg = ProblemProvider
         .getProblemProviders()
         .get(problemID)
