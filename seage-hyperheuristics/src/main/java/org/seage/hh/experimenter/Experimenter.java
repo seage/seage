@@ -70,7 +70,7 @@ public class Experimenter {
    * @return
    */
   public Experimenter setSpread(double newSpread) {
-    this.spread = newSpread;
+    spread = newSpread;
     return this;
   }
 
@@ -81,12 +81,12 @@ public class Experimenter {
    * @return
    */
   public Experimenter setGranularity(int newGranularity) {
-    this.granularity = newGranularity;
+    granularity = newGranularity;
     return this;
   }
 
   public Experimenter setNumOfIterations(int newNumOfIterations) {
-    this.numOfIterations = newNumOfIterations;
+    numOfIterations = newNumOfIterations;
     return this;
   }
 
@@ -103,18 +103,18 @@ public class Experimenter {
    */
   public void runExperiment(String experimentName) throws Exception {
     // Create experiment reporter
-    this.experimentReporter.createExperimentReport(
-        this.experimentID,
+    experimentReporter.createExperimentReport(
+        experimentID,
         experimentName,
-        this.instanceIDsPerProblems.keySet().toArray(new String[0]),
+        instanceIDsPerProblems.keySet().toArray(new String[0]),
         getProblemInstancesArray(),
-        new String[] {this.algorithmID},
+        new String[] {algorithmID},
         getExperimentConfig(),
         Date.from(Instant.now())
     ); 
     
     logger.info("-------------------------------------");
-    logger.info("Experimenter: {}", this.algorithmID);
+    logger.info("Experimenter: {}", algorithmID);
     logger.info("ExperimentID: {}", experimentID);
     logger.info("-------------------------------------");
     
@@ -128,7 +128,7 @@ public class Experimenter {
     List<Double> problemsScores = new ArrayList<>();
 
     ExperimentScoreCard scoreCard = new ExperimentScoreCard(
-        this.algorithmID, this.instanceIDsPerProblems.keySet().toArray(new String[]{}));
+        algorithmID, nstanceIDsPerProblems.keySet().toArray(new String[]{}));
 
     for (Entry<String, List<String>> entry : instanceIDsPerProblems.entrySet()) {
       String problemID = entry.getKey();
@@ -171,7 +171,7 @@ public class Experimenter {
     double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
     scoreCard.setTotalScore(experimentScore);
 
-    this.experimentReporter.updateExperimentScore(experimentID, scoreCard);
+    experimentReporter.updateExperimentScore(experimentID, scoreCard);
    
     long endDate = System.currentTimeMillis();
     logger.info("-------------------------------------");
@@ -180,7 +180,7 @@ public class Experimenter {
         TimeFormat.getTimeDurationBreakdown(endDate - startDate));
     logger.info("Experiment score: ### {} ###", scoreCard.getTotalScore());
         
-    this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
+    experimentReporter.updateEndDate(experimentID, new Date(endDate));
   }
 
   private Experiment createExperimenter(String experimentName, String problemID, String instanceID) 
@@ -228,13 +228,13 @@ public class Experimenter {
     if (ordinaryAlg) {
       return new MetaHeuristicExperiment(
         experimentID, problemID, instanceID, 
-        algorithmID, numRuns, timeoutS, this.experimentReporter);
+        algorithmID, numRuns, timeoutS, experimentReporter);
     }
 
     if (algorithmID.equals("HyperHeuristic1")) {
       return new HyperHeuristic1Experiment(
         experimentID, problemID, instanceID, 
-        algorithmID, numRuns, timeoutS, this.experimentReporter
+        algorithmID, numRuns, timeoutS, experimentReporter
       );
     }
 
@@ -243,8 +243,8 @@ public class Experimenter {
 
   protected String getExperimentConfig() {
     DataNode config = new DataNode("Config");
-    config.putValue("timeoutS", this.timeoutS);
-    config.putValue("numRuns", this.numRuns);
+    config.putValue("timeoutS", timeoutS);
+    config.putValue("numRuns", numRuns);
     
     return config.toString();
   }
