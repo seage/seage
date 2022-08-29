@@ -3,7 +3,6 @@ package org.seage.hh.experimenter.singlealgorithm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
@@ -13,10 +12,9 @@ import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
-import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
-import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
-
+import org.seage.hh.runner.IExperimentTasksRunner;
+import org.seage.hh.runner.LocalExperimentTasksRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

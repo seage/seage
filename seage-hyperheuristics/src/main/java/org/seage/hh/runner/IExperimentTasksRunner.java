@@ -1,4 +1,4 @@
-package org.seage.hh.experimenter.runner;
+package org.seage.hh.runner;
 
 import java.util.List;
 import java.util.function.Function;

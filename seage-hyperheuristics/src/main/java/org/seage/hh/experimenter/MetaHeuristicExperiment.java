@@ -11,9 +11,9 @@ import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 import org.seage.hh.experimenter.configurator.ExtendedDefaultConfigurator;
 import org.seage.hh.experimenter.configurator.GridConfigurator;
 import org.seage.hh.experimenter.configurator.RandomConfigurator;
-import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
-import org.seage.hh.experimenter.runner.LocalExperimentTasksRunner;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
+import org.seage.hh.runner.IExperimentTasksRunner;
+import org.seage.hh.runner.LocalExperimentTasksRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

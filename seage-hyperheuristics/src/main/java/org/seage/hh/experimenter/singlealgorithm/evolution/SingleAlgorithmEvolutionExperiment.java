@@ -1,12 +1,8 @@
 package org.seage.hh.experimenter.singlealgorithm.evolution;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.Map.Entry;
-import org.seage.aal.Annotations.ProblemId;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
@@ -14,17 +10,16 @@ import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentReporter;
-import org.seage.hh.experimenter.Experimenter;
 import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
-import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
+import org.seage.hh.runner.IExperimentTasksRunner;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator.Limit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SingleAlgorithmEvolutionExperiment
     implements IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject>>, 

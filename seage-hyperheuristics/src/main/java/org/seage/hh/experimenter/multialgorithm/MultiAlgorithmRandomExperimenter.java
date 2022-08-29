@@ -6,7 +6,7 @@ import org.seage.aal.problem.ProblemInfo;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.configurator.Configurator;
-import org.seage.hh.experimenter.runner.IExperimentTasksRunner;
+import org.seage.hh.runner.IExperimentTasksRunner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
