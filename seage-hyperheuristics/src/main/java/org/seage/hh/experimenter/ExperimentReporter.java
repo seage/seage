@@ -115,7 +115,8 @@ public class ExperimentReporter {
    * multiple threads open db sessions that timeouted.
    * @param experimentTask Experiment task.
    */
-  public synchronized void reportExperimentTask(ExperimentTaskRecord experimentTask) throws Exception {
+  public synchronized void reportExperimentTask(
+      ExperimentTaskRecord experimentTask) throws Exception {
      
     insertExperimentTask(experimentTask);
 

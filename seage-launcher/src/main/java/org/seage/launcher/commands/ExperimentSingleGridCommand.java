@@ -3,7 +3,9 @@ package org.seage.launcher.commands;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import java.util.List;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmGridExperimenter;
+import java.util.Map;
+import org.seage.hh.experimenter.Experimenter;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmGridExperiment;
 
 @Parameters(commandDescription = "Perform single random experiment")
 public class ExperimentSingleGridCommand extends Command {
@@ -32,12 +34,12 @@ public class ExperimentSingleGridCommand extends Command {
 
   @Override
   public void performCommand() throws Exception {
-    new SingleAlgorithmGridExperimenter(
-        problemID, 
-        instances.toArray(new String[] {}),
-        algorithms.toArray(new String[] {}), 
-        numOfConfigs, 
-        algorithmTimeoutS,
-        granularity).runExperiment();
+    Map<String, List<String>> problemInstanceParams = 
+        ProblemInstanceParamsParser.parseProblemInstanceParams(instances);
+    for (String algorithmID : algorithms) {
+      new Experimenter(
+        algorithmID, problemInstanceParams, numOfConfigs, 
+        algorithmTimeoutS).setGranularity(granularity).runExperiment("SingleAlgorithmGrid");
+    }
   }
 }

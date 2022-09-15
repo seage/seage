@@ -4,8 +4,9 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 
 import java.util.List;
-
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperimenter;
+import java.util.Map;
+import org.seage.hh.experimenter.Experimenter;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperiment;
 
 @Parameters(commandDescription = "Perform single feedback experiment")
 public class ExperimentSingleFeedbackCommand extends Command {
@@ -26,7 +27,12 @@ public class ExperimentSingleFeedbackCommand extends Command {
 
   @Override
   public void performCommand() throws Exception {
-    new SingleAlgorithmFeedbackExperimenter(problemID, instances.toArray(new String[] {}),
-        algorithms.toArray(new String[] {}), numOfConfigs, algorithmTimeoutS).runExperiment();
+    Map<String, List<String>> problemInstanceParams = 
+        ProblemInstanceParamsParser.parseProblemInstanceParams(instances);
+    for (String algorithmID : algorithms) {
+      new Experimenter(
+        algorithmID, problemInstanceParams, numOfConfigs, 
+        algorithmTimeoutS).runExperiment("SingleAlgorithmFeedback");
+    }
   }
 }

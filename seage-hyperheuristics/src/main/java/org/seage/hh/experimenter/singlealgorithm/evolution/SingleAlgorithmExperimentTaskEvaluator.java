@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.zip.ZipOutputStream;
-
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
-import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.thread.TaskRunner3;
 

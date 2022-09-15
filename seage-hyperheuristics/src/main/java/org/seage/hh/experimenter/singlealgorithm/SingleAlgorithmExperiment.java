@@ -1,4 +1,4 @@
-package org.seage.hh.experimenter;
+package org.seage.hh.experimenter.singlealgorithm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,66 +7,63 @@ import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.hh.experimenter.Experiment;
+import org.seage.hh.experimenter.ExperimentReporter;
+import org.seage.hh.experimenter.ExperimentTaskRequest;
+import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
-import org.seage.hh.experimenter.configurator.ExtendedDefaultConfigurator;
-import org.seage.hh.experimenter.configurator.GridConfigurator;
-import org.seage.hh.experimenter.configurator.RandomConfigurator;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.runner.IExperimentTasksRunner;
 import org.seage.hh.runner.LocalExperimentTasksRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-public class MetaHeuristicExperiment implements Experiment {
+/**
+ * Experimenter running producing random configs according to the metadata.
+ */
+public class SingleAlgorithmExperiment implements Experiment {
   private static Logger logger =
-      LoggerFactory.getLogger(MetaHeuristicExperiment.class.getName());
-  private DefaultConfigurator defaultConfigurator;
-  private ExtendedDefaultConfigurator feedbackConfigurator;
-  private GridConfigurator gridConfigurator;
-  private RandomConfigurator randomConfigurator;
-  private ProblemInfo problemInfo;
-  private IExperimentTasksRunner experimentTasksRunner;
-  private ExperimentReporter experimentReporter;
+      LoggerFactory.getLogger(SingleAlgorithmExperiment.class.getName());
+  protected Configurator configurator;
+
+  protected IExperimentTasksRunner experimentTasksRunner;
+  protected ExperimentReporter experimentReporter;
+  protected ProblemInfo problemInfo;
   
-  private UUID experimentID;
-  private String problemID;
-  private String instanceID;
-  private String algorithmID;
-  private int numRuns;
-  private int timeoutS;
+  protected String experimentName;
+  protected UUID experimentID;
+  protected String problemID;
+  protected String instanceID;
+  protected String algorithmID;
+  protected int numRuns;
+  protected int timeoutS;
   private double bestScore;
 
   /**
-   * MetaHeuristicExperimenter constructor.
+   * SingleAlgorithmExperiment constructor - nothing special.
    */
-  protected MetaHeuristicExperiment(
-      UUID experimentID, String problemID, String instanceID, 
-      String algorithmID, int numRuns, int timeoutS,
-      ExperimentReporter experimentReporter) 
-      throws Exception {
+  protected SingleAlgorithmExperiment(
+      UUID experimentID, String problemID, String algorithmID,
+      String instanceID, int numRuns, int timeoutS,
+      ExperimentReporter experimentReporter
+  ) throws Exception {
     this.experimentID = experimentID;
     this.problemID = problemID;
-    this.instanceID = instanceID;
     this.algorithmID = algorithmID;
+    this.instanceID = instanceID;
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
-    this.experimentReporter = experimentReporter;
-    this.bestScore = 0.0;
-
-    // Initialize all
-    this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    this.feedbackConfigurator = new ExtendedDefaultConfigurator();//
-    this.defaultConfigurator = new DefaultConfigurator(0.26);
-    this.randomConfigurator = new RandomConfigurator();
-    this.gridConfigurator = new GridConfigurator(9);
+    this.experimentReporter = experimentReporter;
+    experimentName = "SingleAlgorithm";
+    bestScore = 0.0;
 
+    // Initialize
+    problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
+    configurator = new DefaultConfigurator(0.26);
   }
-
-  /**
-   * Method runs experiment.
-   */
+  
+  @Override
   public Double run() throws Exception {
     ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
 
@@ -75,29 +72,28 @@ public class MetaHeuristicExperiment implements Experiment {
     List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
 
     // Prepare experiment task configs
-    ProblemConfig config = defaultConfigurator.prepareConfigs(problemInfo,
+    ProblemConfig config = configurator.prepareConfigs(problemInfo,
         instanceInfo.getInstanceID(), algorithmID, 2)[1]; // the second with a bit of randomness
       
-
     // Enqueue experiment tasks
     for (int runID = 1; runID <= numRuns; runID++) {
       taskQueue.add(new ExperimentTaskRequest(
           UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
           algorithmID, config.getAlgorithmParams(), null, timeoutS));
     }
-
+    
     // RUN EXPERIMENT TASKS
     experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 
     return bestScore;
   }
-  
+
   private Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
       experimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
       if (taskScore > bestScore) {
-        this.bestScore = taskScore;
+        bestScore = taskScore;
       }
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 

@@ -3,7 +3,9 @@ package org.seage.launcher.commands;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import java.util.List;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperimenter;
+import java.util.Map;
+import org.seage.hh.experimenter.Experimenter;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperiment;
 
 @Parameters(commandDescription = "Perform single random experiment")
 public class ExperimentSingleRandomCommand extends Command {
@@ -26,11 +28,12 @@ public class ExperimentSingleRandomCommand extends Command {
 
   @Override
   public void performCommand() throws Exception {
-    new SingleAlgorithmRandomExperimenter(
-        problemID, 
-        instances.toArray(new String[] {}),
-        algorithms.toArray(new String[] {}), 
-        numOfConfigs, 
-        algorithmTimeoutS).runExperiment();
+    Map<String, List<String>> problemInstanceParams = 
+        ProblemInstanceParamsParser.parseProblemInstanceParams(instances);
+    for (String algorithmID : algorithms) {
+      new Experimenter(
+        algorithmID, problemInstanceParams, numOfConfigs, 
+        algorithmTimeoutS).runExperiment("SingleAlgorithmRandom");
+    }
   }
 }
