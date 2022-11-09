@@ -8,8 +8,6 @@ import org.seage.hh.experimenter.Experimenter;
 
 @Parameters(commandDescription = "Perform single random experiment")
 public class ExperimentSingleDefaultCommand extends Command {
-  @Parameter(names = "-p", required = true, description = "ProblemID")
-  String problemID;
   @Parameter(
       names = "-i",
       required = true,

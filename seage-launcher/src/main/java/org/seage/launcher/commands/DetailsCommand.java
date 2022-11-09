@@ -1,11 +1,11 @@
 package org.seage.launcher.commands;
 
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import com.beust.jcommander.Parameter;
-import com.beust.jcommander.Parameters;
 import org.seage.aal.algorithm.Phenotype;
 import org.seage.aal.problem.IProblemProvider;
 import org.seage.aal.problem.ProblemProvider;
@@ -31,8 +31,9 @@ public class DetailsCommand extends Command {
 
     try {
       IProblemProvider<?> pp = providers.get(problemID);
-      if(pp == null)
+      if (pp == null) {
         throw new Exception("Unknown problem id: " + problemID);
+      }
       DataNode pi = pp.getProblemInfo();
       problems.putDataNode(pi);
 
