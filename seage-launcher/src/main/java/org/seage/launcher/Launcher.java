@@ -1,12 +1,12 @@
 package org.seage.launcher;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.launcher.commands.Command;
 import org.seage.launcher.commands.DetailsCommand;
@@ -52,14 +52,18 @@ public class Launcher {
     commands.put("metadata", new MetadataGeneratorCommand());
   }
 
+  /**
+   * .
+   */
   public static void main(String[] args) {
     try {
       Launcher launcher = new Launcher();
 
       JCommander jc = new JCommander(launcher);
       // jc.addCommand("", launcher); // Hm?
-      for (Entry<String, Command> e : commands.entrySet())
+      for (Entry<String, Command> e : commands.entrySet()) {
         jc.addCommand(e.getKey(), e.getValue());
+      }
 
       Command command = processArgs(args, jc, launcher);
 

@@ -8,8 +8,6 @@ import java.util.List;
 
 @Parameters(commandDescription = "Perform multi random experiment")
 public class ExperimentMultiRandomCommand extends Command {
-  @Parameter(names = "-p", required = true, description = "ProblemID")
-  String problemID;
   @Parameter(
       names = "-i", 
       required = true, 
@@ -27,8 +25,8 @@ public class ExperimentMultiRandomCommand extends Command {
 
   @Override
   public void performCommand() throws Exception {
-//        new MultiAlgorithmRandomExperimenter("")
-//            .runExperiment(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}));  
+  // new MultiAlgorithmRandomExperimenter("")
+  // .runExperiment(problemID, instances.toArray(new String[]{}), 
+  // algorithms.toArray(new String[]{}));  
   }
-
 }

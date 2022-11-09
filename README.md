@@ -28,12 +28,12 @@ To see what is implemented in more details for a specified problem run:
 
 Traveling Salesman Problem (TSP) solved by the Genetic Algorithm:
 ```
-./scripts/run.sh experiment-single-random -p TSP -a GeneticAlgorithm -i berlin52 -t 10 -n 10
+./scripts/run.sh experiment-approach -a GeneticAlgorithm -i TSP:berlin52 -t 10 -n 10
 ```
 
 Satisfiability Problem (SAT) solved by the Tabu Search
 ```
-./scripts/run.sh experiment-single-random -p SAT -a TabuSearch -i uf20-01 -t 10 -n 10
+./scripts/run.sh experiment-approach -a TabuSearch -i SAT:uf20-01 -t 10 -n 10
 ```
 ## Inspect results
 
@@ -103,4 +103,4 @@ or
 ```
 
 ### Inspect results
-Navigate to http://localhost:28080
+For docker navigate to http://localhost:28080

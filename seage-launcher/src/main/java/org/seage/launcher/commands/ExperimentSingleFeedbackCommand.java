@@ -10,8 +10,6 @@ import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperime
 
 @Parameters(commandDescription = "Perform single feedback experiment")
 public class ExperimentSingleFeedbackCommand extends Command {
-  @Parameter(names = "-p", required = true, description = "ProblemID")
-  String problemID;
   @Parameter(
       names = "-i", required = true,
       description = "Problem instances  [PROBLEM_DOMAIN:instance]", 
