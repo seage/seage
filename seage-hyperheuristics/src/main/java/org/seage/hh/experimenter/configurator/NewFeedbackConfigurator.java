@@ -61,7 +61,7 @@ public class NewFeedbackConfigurator extends Configurator {
     String problemId, String algorithmId, int limit) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
-      return mapper.getBestExperimentTaks(problemId, algorithmId, limit);
+      return null; //mapper.getBestExperimentTaks(problemId, algorithmId, limit);
     }
   }
 
@@ -99,6 +99,8 @@ public class NewFeedbackConfigurator extends Configurator {
       params.putValue(dn.getValueStr("name"), null);
       // instead of null add a value that makes sense
       // try to find how the value is set by other configurators
+      List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
+        dn.getValueStr("name"), algID, 1);
 
       // params.putValue(dn.getValueStr("name"), 
       //     bestDefaultParams.get(problemInfo.getValue("id"))

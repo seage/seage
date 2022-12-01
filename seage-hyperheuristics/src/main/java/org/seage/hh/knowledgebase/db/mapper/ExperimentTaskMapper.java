@@ -63,14 +63,14 @@ public interface ExperimentTaskMapper {
   ExperimentTaskRecord getExperimentTask(UUID experimentTaskID);
 
   @Select("SELECT * FROM seage.experiment_tasks")
-  @ResultMap("experimentTasksResult")
+  @ResultMap("experimentResult")
   List<ExperimentTaskRecord> getExperimentTasks();
 
-  @Select("SELECT * FROM seage.experiment_tasks" +
-  "where seage.experiment_tasks.problem_id=#{problemId}" +
-  "AND seage.experiment_tasks.algorithm_id=#{algorithmId}" +
-  "order by seage.experiment_tasks.score desc" +
-  "limit #{limit}")
-  @ResultMap("bestExperimentsTaskResults")
+  @Select("SELECT * FROM seage.experiment_tasks " +
+  "WHERE seage.experiment_tasks.problem_id=#{problemId} " +
+  "AND seage.experiment_tasks.algorithm_id=#{algorithmId} " +
+  "ORDER BY seage.experiment_tasks.score DESC " +
+  "LIMIT #{limit}")
+  @ResultMap("experimentResult")
   List<ExperimentTaskRecord> getBestExperimentTaks(@Param("problemId") String problemId, @Param("algorithmId") String algorithmId, @Param("limit") int limit);
 }

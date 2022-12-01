@@ -81,4 +81,15 @@ public class ExperimentTaskTest {
           this.experimentTask1.getExperimentTaskID(), experimentTask.getExperimentTaskID());
     }
   }
+
+  @Test
+  void myNewTest() throws Exception {
+    DbManager.initTest();
+
+    try(SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
+      assertNotNull(mapper);
+      mapper.getExperimentTasks();
+    }
+  }
 }
