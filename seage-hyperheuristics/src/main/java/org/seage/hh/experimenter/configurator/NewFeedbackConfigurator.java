@@ -27,9 +27,13 @@ package org.seage.hh.experimenter.configurator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.apache.ibatis.session.SqlSession;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
+import org.seage.hh.knowledgebase.db.DbManager;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
+import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 
 /**
  * New Feedback configurator
@@ -44,6 +48,21 @@ public class NewFeedbackConfigurator extends Configurator {
    */
   public NewFeedbackConfigurator() {
     // Default empty constructor.
+  }
+
+  /**
+   * 
+   * @param problemId
+   * @param algorithmId
+   * @param limit
+   * @return
+   */
+  public List<ExperimentTaskRecord> getBestExperimentTasks(
+    String problemId, String algorithmId, int limit) throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
+      return mapper.getBestExperimentTaks(problemId, algorithmId, limit);
+    }
   }
 
   @Override
