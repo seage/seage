@@ -3,6 +3,7 @@ package org.seage.hh.knowledgebase.db;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.List;
 import java.util.Date;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
@@ -89,7 +90,8 @@ public class ExperimentTaskTest {
     try(SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
       assertNotNull(mapper);
-      mapper.getExperimentTasks();
+      List<ExperimentTaskRecord> oo = mapper.getExperimentTasks();
+      System.out.println(oo.toString());
     }
   }
 }
