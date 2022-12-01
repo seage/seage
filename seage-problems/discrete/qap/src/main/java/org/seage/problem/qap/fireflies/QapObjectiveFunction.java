@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -61,7 +61,7 @@ public class QapObjectiveFunction implements ObjectiveFunction
         incrementCounter();
         try
         {
-            Integer[] assign = ((QapSolution) solution)._assign;
+            Integer[] assign = ((QapSolution) solution).assign;
             int len = assign.length;
 
             // If move is null, calculate distance from scratch

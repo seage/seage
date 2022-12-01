@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -23,28 +23,29 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.metaheuristic.grasp;
 
 /**
- *
+ * HillClimber metaheuristic.
  * @author Martin Zaloga
  */
 public class HillClimber implements IHillClimber {
 
   /**
-   * _numIter - Number of iteration after start Hill-Climber _currentSolution -
-   * Actual best solution _moveManager - Interface that defines the methods for
-   * generating steps _objectiveFunction - Interface that defines the methods for
-   * selecting steps _solutionGenerator - Object for generating solutions
+   * numIter - Number of iteration after start Hill-Climber _currentSolution.
+   * Actual best solution moveManager - Interface that defines the methods for
+   * generating steps objectiveFunction - Interface that defines the methods for
+   * selecting steps solutionGenerator - Object for generating solutions
    */
-  private int _numIter;
-  private Solution _currentSolution;
-  private IMoveManager _moveManager;
-  private IObjectiveFunction _objectiveFunction;
-  private ISolutionGenerator _solutionGenerator;
+  private int numIter;
+  private Solution currentSolution;
+  private IMoveManager moveManager;
+  private IObjectiveFunction objectiveFunction;
+  private ISolutionGenerator solutionGenerator;
 
   /**
-   * Constructor the object Hill-Climber which content the optimization methods
+   * Constructor the object Hill-Climber which content the optimization methods.
    * 
    * @param objectiveFunction - Contains methods for selecting steps
    * @param moveManager       - Contains methods for generating steps
@@ -53,27 +54,25 @@ public class HillClimber implements IHillClimber {
    */
   public HillClimber(IObjectiveFunction objectiveFunction, IMoveManager moveManager,
       ISolutionGenerator solutionGenerator, int numIter) {
-    _moveManager = moveManager;
-    _objectiveFunction = objectiveFunction;
-    _solutionGenerator = solutionGenerator;
-    _numIter = numIter;
+    this.moveManager = moveManager;
+    this.objectiveFunction = objectiveFunction;
+    this.solutionGenerator = solutionGenerator;
+    this.numIter = numIter;
   }
 
   /**
-   * Algorithm of Hill-Climber optimalization
+   * Algorithm of Hill-Climber optimalization.
    * 
    * @param solution - Object with an initial solution, which is made better
-   * @param classic  - Parameter that switchs between the classical and improved
-   *                 Hill-Climber algorithm
    */
   @Override
   public void startSearching(Solution solution) throws Exception {
-    _currentSolution = solution;
+    currentSolution = solution;
     int iter = 0;
     double bestVal = 0;
 
-    while (iter < _numIter) {
-      IMove[] moves = _moveManager.getAllMoves(_currentSolution);
+    while (iter < numIter) {
+      IMove[] moves = moveManager.getAllMoves(currentSolution);
 
       bestVal = solution.getObjectiveValue();
 
@@ -83,7 +82,7 @@ public class HillClimber implements IHillClimber {
 
       /* Browsing generated steps */
       for (IMove m : moves) {
-        val = _objectiveFunction.evaluateMove(_currentSolution, m);
+        val = objectiveFunction.evaluateMove(currentSolution, m);
 
         /* Selection of better solutions */
         if (val < bestVal) {
@@ -98,19 +97,18 @@ public class HillClimber implements IHillClimber {
 
       /* Selection of the best actual solution */
       if (best != null) {
-        _currentSolution = best.apply(_currentSolution);
-        _currentSolution.setObjectiveValue(bestVal);
+        currentSolution = best.apply(currentSolution);
+        currentSolution.setObjectiveValue(bestVal);
       }
 
-      _objectiveFunction.reset();
+      objectiveFunction.reset();
       iter++;
     }
   }
 
   /**
-   * Restarted algorithm of Hill-Climber optimalization
+   * Restarted algorithm of Hill-Climber optimalization.
    * 
-   * @param classic     - Determines whether the solution can deteriorate
    * @param numRestarts - Number of restarts algorithm
    */
   @Override
@@ -121,7 +119,7 @@ public class HillClimber implements IHillClimber {
 
     while (countRest <= numRestarts) {
 
-      startSearching(_solutionGenerator.generateSolution());
+      startSearching(solutionGenerator.generateSolution());
       countRest++;
 
       /* Choosing the best solution */
@@ -130,27 +128,29 @@ public class HillClimber implements IHillClimber {
         bestSolution = getBestSolution();
       }
     }
-    _currentSolution = bestSolution;
-    _currentSolution.setObjectiveValue(bestDist);
+    if (bestSolution != null) {
+      currentSolution = bestSolution;
+      currentSolution.setObjectiveValue(bestDist);
+    }
   }
 
   /**
-   * Method for setting number of iteration
+   * Method for setting number of iteration.
    * 
    * @param count - Number of iteration algorithm
    */
   @Override
   public void setIterationCount(int count) {
-    _numIter = count;
+    numIter = count;
   }
 
   /**
-   * Function which return the best solution
+   * Function which return the best solution.
    * 
    * @return - The best solution
    */
   @Override
   public Solution getBestSolution() {
-    return _currentSolution;
+    return currentSolution;
   }
 }

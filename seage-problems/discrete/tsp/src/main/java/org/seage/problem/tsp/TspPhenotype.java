@@ -2,19 +2,17 @@ package org.seage.problem.tsp;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.seage.aal.algorithm.Phenotype;
 
 public class TspPhenotype extends Phenotype<Integer[]> {
 
-  public TspPhenotype(Integer[] path) {
+  public TspPhenotype(Integer[] path) throws Exception {
     super(path);
   }
 
   @Override
   public String toText() {
-    String res = Stream.of(solution).map(i -> i.toString()).collect(Collectors.joining(", "));
-    return String.format("[%s]", res);
+    return Arrays.toString(solution);
   }
 
   @Override

@@ -13,7 +13,7 @@
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with
- * SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 package org.seage.problem.sat;
@@ -69,6 +69,11 @@ public class Formula extends ProblemInstance {
 
   public ArrayList<ArrayList<Literal>> getLiterals() {
     return _literals;
+  }
+
+  @Override
+  public int getSize() {
+    return getLiteralCount();
   }
 
   // OK

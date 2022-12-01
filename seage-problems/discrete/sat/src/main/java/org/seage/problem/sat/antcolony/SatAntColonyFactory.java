@@ -8,15 +8,21 @@ import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
 import org.seage.aal.problem.ProblemInstance;
+
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.Graph;
+
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 import org.seage.problem.sat.SatPhenotype;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
 public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant> {
+  private static Logger logger = LoggerFactory.getLogger(SatAntColonyFactory.class.getName());
 
   @Override
   public Class<?> getAlgorithmClass() {
@@ -27,39 +33,43 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
   public IAlgorithmAdapter<SatPhenotype, Ant> createAlgorithm(ProblemInstance instance,
       IPhenotypeEvaluator<SatPhenotype> phenotypeEvaluator) throws Exception {
     Formula formula = (Formula) instance;
-    Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
-    SatAntBrain brain = new SatAntBrain(graph, formula);
-
-    return new AntColonyAdapter<SatPhenotype, Ant>(graph, phenotypeEvaluator) {
+    SatGraph satGraph = new SatGraph(formula, new FormulaEvaluator(formula));
+    FormulaEvaluator evaluator = new FormulaEvaluator(formula);
+    return new AntColonyAdapter<SatPhenotype, Ant>(satGraph, phenotypeEvaluator) {
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
-        _ants = new Ant[source.length];
-        for (int i = 0; i < _ants.length; i++) {
-          ArrayList<Integer> nodes = new ArrayList<Integer>();
+        logger.debug("Solution from phenotype");
+        ants = new Ant[source.length];
+        for (int i = 0; i < ants.length; i++) {
+          ArrayList<Integer> nodes = new ArrayList<>();
           for (int j = 1; j <= source[i].getSolution().length; j++) {
-            nodes.add((Boolean) source[i].getSolution()[j - 1] == true ? j : -j);
+
+            nodes.add((boolean) source[i].getSolution()[j - 1] == true ? j : -j);
           }
-          _ants[i] = new Ant(brain, graph, nodes);
+          ants[i] = new SatAnt(satGraph, nodes, formula, evaluator);
         }
       }
 
       @Override
       public SatPhenotype[] solutionsToPhenotype() throws Exception {
-        SatPhenotype[] result = new SatPhenotype[_ants.length];
-        for (int i = 0; i < _ants.length; i++) {
-          result[i] = solutionToPhenotype(_ants[i]);
+        SatPhenotype[] result = new SatPhenotype[ants.length];
+        for (int i = 0; i < ants.length; i++) {
+          result[i] = solutionToPhenotype(ants[i]);
         }
         return result;
       }
 
       @Override
-      public SatPhenotype solutionToPhenotype(Ant solution) throws Exception {
+      public SatPhenotype solutionToPhenotype(Ant solution) throws Exception {        
         SatPhenotype result = new SatPhenotype(new Boolean[solution.getNodeIDsAlongPath().size()]);
         for (int i = 0; i < result.getSolution().length; i++) {
           Integer value = (Integer) solution.getNodeIDsAlongPath().get(i);
           result.getSolution()[i] = value > 0;
         }
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
         return result;
       }
 

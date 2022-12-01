@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -23,16 +23,18 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
+
 package org.seage.problem.tsp.sannealing;
 
 import java.io.FileInputStream;
-
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The purpose of this class is demonstration of SA algorithm use.
@@ -40,7 +42,9 @@ import org.seage.problem.tsp.CityProvider;
  * @author Jan Zmatlik
  */
 public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAnnealingEvent> {
-  private City[] _cities;
+  private static final Logger log = 
+      LoggerFactory.getLogger(TspSimulatedAnnealingTest.class.getName());
+  private City[] cities;
   // private static String _dataPath = "D:\\eil51.tsp";
 
   public static void main(String[] args) {
@@ -55,17 +59,16 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
 
       new TspSimulatedAnnealingTest().run(path);
     } catch (Exception ex) {
-      System.out.println(ex.getMessage());
-      ex.printStackTrace();
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 
   public void run(String path) throws Exception {
-    _cities = CityProvider.readCities(new FileInputStream(path));
-    System.out.println("Loading cities from path: " + path);
-    System.out.println("Number of cities: " + _cities.length);
+    cities = CityProvider.readCities(new FileInputStream(path));
+    log.info("Loading cities from path: {}", path);
+    log.info("Number of cities: {}", cities.length);
 
-    TspObjectiveFunction objFunction = new TspObjectiveFunction(_cities);
+    TspObjectiveFunction objFunction = new TspObjectiveFunction(cities);
     SimulatedAnnealing sa = new SimulatedAnnealing(objFunction, new TspMoveManager2(objFunction));
 
     sa.setMaximalTemperature(1000000.0d);
@@ -74,41 +77,42 @@ public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     sa.setMaximalIterationCount(100000000);
 
     sa.addSimulatedAnnealingListener(this);
-    TspGreedySolution s = new TspGreedySolution(_cities);
+    TspGreedySolution s = new TspGreedySolution(cities);
     // TspRandomSolution s = new TspRandomSolution(_cities.length);
 
-    System.out.println(objFunction.getObjectiveValue(s));
+    log.info("{}", objFunction.getObjectiveValue(s));
     sa.startSearching(s);
 
-    System.out.println(sa.getBestSolution().getObjectiveValue());
-    System.out.println(sa.getBestSolution());
+    log.info("{}", sa.getBestSolution().getObjectiveValue());
+    log.info("{}", sa.getBestSolution());
   }
 
   @Override
   public void algorithmStarted(SimulatedAnnealingEvent e) {
-    System.out.println("Started");
+    log.info("Started");
   }
 
   @Override
   public void algorithmStopped(SimulatedAnnealingEvent e) {
-    System.out.println("Stopped");
+    log.info("Stopped");
   }
 
   @Override
   public void iterationPerformed(SimulatedAnnealingEvent e) {
-
+    // Nothing here
   }
 
   @Override
   public void noChangeInValueIterationMade(SimulatedAnnealingEvent e) {
-
+    // Nothing here
   }
 
   @Override
   public void newBestSolutionFound(SimulatedAnnealingEvent e) {
-    ISimulatedAnnealing sa = e.getSimulatedAnnealing();
-    System.out.println(String.format("New best: %f - iter: %d - temp: %f", sa.getBestSolution().getObjectiveValue(),
-        sa.getCurrentIteration(), sa.getCurrentTemperature()));
+    ISimulatedAnnealing<?> sa = e.getSimulatedAnnealing();
+    log.info("New best: {} - iter: {} - temp: {}", 
+        sa.getBestSolution().getObjectiveValue(),
+        sa.getCurrentIteration(), sa.getCurrentTemperature());
   }
 
 }

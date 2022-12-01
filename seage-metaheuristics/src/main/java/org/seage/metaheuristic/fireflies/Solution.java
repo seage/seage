@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -44,33 +44,13 @@ public interface Solution extends Cloneable {
 
   /**
    * Generally used by the {@link FireflySearch} to set the value of the objective
-   * function and set <tt>objectiveValid</tt> to <tt>true</tt>.
+   * function and set <code>objectiveValid</code> to <code>true</code>.
    *
    * @param objValue The objective function value
    * @since 1.0
    */
   public abstract void setObjectiveValue(double[] objValue);
 
-  /**
-   * An essential Java method that returns of copy of the object. This should do
-   * whatever is necessary to ensure that the returned {@link Solution} is
-   * identical to <tt>this</tt.
-   * Be careful of only copying references to arrays and other objects
-   * when a full copy is what may be needed.
-   * <P>
-   * For an excellent discussion of cloning techniques, see the
-   * Java Developer Connection Tech Tip
-   * <a href=
-  "http://developer.java.sun.com/developer/JDCTechTips/2001/tt0306.html">
-   * http://developer.java.sun.com/developer/JDCTechTips/2001/tt0306.html</a>.
-   * </P>
-   *
-   * &#64;return A copy of <tt>this</tt>.
-   * 
-   * @see java.lang.Cloneable
-   * @since 1.0
-   */
-  public abstract Object clone();
-
-  public abstract boolean equals(Solution s);
+  Object clone() throws CloneNotSupportedException;
+  
 }

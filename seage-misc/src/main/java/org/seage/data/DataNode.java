@@ -22,7 +22,6 @@
 
 package org.seage.data;
 
-import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,52 +35,68 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.commons.lang3.SerializationUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.ProcessingInstruction;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 
 /**
  * DataNode for storing dynamic data.
  * @author Richard Malek.
  */
-public class DataNode implements Serializable {
-  private static final long serialVersionUID = 2193543253630004569L;
+public class DataNode {
+  private static final Logger log = LoggerFactory.getLogger(DataNode.class.getName());
 
   private String name;
-
+  @Expose
   private HashMap<String, List<DataNode>> dataNodes;
+  @Expose
   private HashMap<String, Object> values;
   private HashMap<String, DataNode> ids;
 
   private List<DataNodeListener> listeners;
-
-  private String xslPath;
 
   /**
    * DataNode constructor with name of the root element.
    */
   public DataNode(String name) {
     this.name = name;
-    this.dataNodes = new HashMap<String, List<DataNode>>();
-    this.values = new HashMap<String, Object>();
-    this.ids = new HashMap<String, DataNode>();
+    this.dataNodes = new HashMap<>();
+    this.values = new HashMap<>();
+    this.ids = new HashMap<>();
 
     this.listeners = new ArrayList<DataNodeListener>();
-    this.xslPath = "";
   }
 
   protected DataNode(DataNode node) {
-    DataNode dn = (DataNode) node.clone();
-    this.name = dn.name;
-    this.dataNodes = dn.dataNodes;
-    this.values = dn.values;
-    this.ids = dn.ids;
+    this(node.name);
+    // plain copy
+    this.values.putAll(node.values);    
+    this.listeners.addAll(node.listeners);
 
-    this.listeners = dn.listeners;
-    this.xslPath = dn.xslPath;
+    // copy child data nodes
+    for (Entry<String, List<DataNode>> childEntry : node.dataNodes.entrySet()) {
+      List<DataNode> children = new ArrayList<>();
+      for (DataNode dn : childEntry.getValue()) {
+        DataNode child = new DataNode(dn);
+        children.add(child);
+      }
+      this.dataNodes.put(childEntry.getKey(), children);
+    }
+    // copy ids
+    for (List<DataNode> children : node.dataNodes.values()) {
+      for (DataNode dn : children) {
+        if (dn.values.containsKey("id")) {
+          this.ids.put(dn.values.get("id").toString(), dn);
+        }
+      }
+    }
   }
 
   public String getName() {
@@ -92,16 +107,21 @@ public class DataNode implements Serializable {
     this.name = name;
   }
 
-  public void putDataNode(DataNode dataSet0) throws Exception {
-    DataNode dataSet = (DataNode) dataSet0.clone();
-    putDataNodeRef(dataSet);
+  public void putDataNode(DataNode dataSet) throws Exception {
+    DataNode clone = new DataNode(dataSet);
+    putDataNodeRef(clone);
   }
 
+  /**
+   * Puts another datanode as is - i.e. the dataSet to be put is not cloned
+   * @param dataSet The reference to the dataSet to be put.
+   * @throws Exception .
+   */
   public void putDataNodeRef(DataNode dataSet) throws Exception {
     dataSet.setListeners(this.listeners);
 
     if (!this.dataNodes.containsKey(dataSet.getName())) {
-      this.dataNodes.put(dataSet.getName(), new ArrayList<DataNode>());
+      this.dataNodes.put(dataSet.getName(), new ArrayList<>());
     }
 
     if (dataSet.containsValue("id")) {
@@ -142,6 +162,12 @@ public class DataNode implements Serializable {
     return this.values.get(name).toString();
   }
 
+  /**
+   * Gets attribute value by name and converts it to integer.
+   * @param name Attribute name.
+   * @return Integer value.
+   * @throws Exception .
+   */
   public int getValueInt(String name) throws Exception {
     checkValueName(name);
     Object o = this.values.get(name);
@@ -151,10 +177,16 @@ public class DataNode implements Serializable {
     } else if (o instanceof String) {
       return Integer.parseInt(o.toString());
     } else {
-      throw new Exception("Not an integer number");
+      throw new ClassCastException("Not an integer number");
     }
   }
 
+  /**
+   * Gets attribute value by name and converts it to long.
+   * @param name Attribute name.
+   * @return Long value.
+   * @throws Exception .
+   */
   public long getValueLong(String name) throws Exception {
     checkValueName(name);
     Object o = this.values.get(name);
@@ -164,10 +196,16 @@ public class DataNode implements Serializable {
     } else if (o instanceof String) {
       return Math.round(Double.parseDouble(o.toString()));
     } else {
-      throw new Exception("Not a long number");
+      throw new ClassCastException("Not a long number");
     }
   }
 
+  /**
+   * Gets attribute value by name and converts it to double.
+   * @param name Attribute name.
+   * @return Double value.
+   * @throws Exception .
+   */
   public double getValueDouble(String name) throws Exception {
     checkValueName(name);
     Object o = this.values.get(name);
@@ -177,10 +215,16 @@ public class DataNode implements Serializable {
     } else if (o instanceof String) {
       return Double.parseDouble(o.toString());
     } else {
-      throw new Exception("Not a double number");
+      throw new ClassCastException("Not a double number");
     }
   }
 
+  /**
+   * Gets attribute value by name and converts it to boolean.
+   * @param name Attribute name.
+   * @return Boolean value.
+   * @throws Exception .
+   */
   public boolean getValueBool(String name) throws Exception {
     checkValueName(name);
     Object o = this.values.get(name);
@@ -190,19 +234,19 @@ public class DataNode implements Serializable {
     } else if (o instanceof String) {
       return Boolean.parseBoolean(o.toString());
     } else {
-      throw new Exception("Not a double number");
+      throw new ClassCastException("Not a double number");
     }
   }
 
-  private void checkValueName(String name) throws Exception {
+  private void checkValueName(String name) throws NoSuchFieldException {
     if (!this.values.containsKey(name)) {
-      throw new Exception("DataNode does not contain value of name '" + name + "'");
+      throw new NoSuchFieldException("DataNode does not contain value of name '" + name + "'");
     }
   }
 
-  private void checkNodeName(String name) throws Exception {
+  private void checkNodeName(String name) throws NoSuchFieldException {
     if (!this.dataNodes.containsKey(name)) {
-      throw new Exception("DataNode does not contain node of name '" + name + "'");
+      throw new NoSuchFieldException("DataNode does not contain node of name '" + name + "'");
     }
   }
 
@@ -232,8 +276,12 @@ public class DataNode implements Serializable {
     return this.ids.get(id);
   }
 
+  /**
+   * Gets child data nodes.
+   * @return
+   */
   public List<DataNode> getDataNodes() {
-    ArrayList<DataNode> result = new ArrayList<DataNode>();
+    ArrayList<DataNode> result = new ArrayList<>();
 
     for (List<DataNode> list : this.dataNodes.values()) {
       result.addAll(list);
@@ -241,10 +289,15 @@ public class DataNode implements Serializable {
     return result;
   }
 
+  /**
+   * Gets child data nodes of the given name.
+   * @param name The name of the child dataset to be taken.
+   * @return
+   */
   public List<DataNode> getDataNodes(String name) {
     List<DataNode> result = this.dataNodes.get(name);
     if (result == null) {
-      return new ArrayList<DataNode>();
+      return new ArrayList<>();
     } else {
       return result;
     }
@@ -258,17 +311,28 @@ public class DataNode implements Serializable {
     this.listeners = listeners;
   }
 
+  /**. */
   public void addDataNodeListener(DataNodeListener listener) {
     if (!this.listeners.contains(listener)) {
       this.listeners.add(listener);
     }
   }
 
-  public void setXslPath(String xslPath) {
-    this.xslPath = xslPath;
+  /**
+   * Converts the current DataNode to the xml Document.
+   * @return Xml document.
+   * @throws Exception .
+   */
+  public Document toXml() throws Exception {
+    return toXml("");
   }
 
-  public Document toXml() throws Exception {
+  /**
+   * Converts the current DataNode to the xml Document.
+   * @return Xml document.
+   * @throws Exception .
+   */
+  public Document toXml(String xslPath) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
@@ -279,15 +343,20 @@ public class DataNode implements Serializable {
 
     Document result = domImpl.createDocument(null, getName(), null);
 
-    if (this.xslPath.length() > 0) {
+    if (xslPath.length() > 0) {
       ProcessingInstruction pi = result.createProcessingInstruction("xml-stylesheet", "jkl;");
-      pi.setData("type=\"text/xsl\" href=\"" + this.xslPath + "\"");
+      pi.setData("type=\"text/xsl\" href=\"" + xslPath + "\"");
       result.appendChild(pi);
     }
 
     for (Entry<String, Object> e : this.values.entrySet()) {
       Attr a = result.createAttribute(e.getKey());
-      a.setValue(e.getValue().toString());
+      var value = e.getValue();
+      if (value != null) {
+        a.setValue(e.getValue().toString());
+      } else { 
+        a.setValue(""); 
+      }
       result.getDocumentElement().getAttributes().setNamedItem(a);
     }
 
@@ -313,6 +382,14 @@ public class DataNode implements Serializable {
     return HashHelper.hashFromString(toString());
   }
 
+  public String toJson() {
+    Gson gson = new GsonBuilder()
+        .excludeFieldsWithoutExposeAnnotation()    
+        .setPrettyPrinting()
+        .create();
+    return gson.toJson(this).toString();
+  }
+
   @Override
   public String toString() {
     try {
@@ -326,12 +403,8 @@ public class DataNode implements Serializable {
       transformer.transform(domSource, result);
       return writer.toString();
     } catch (Exception ex) {
-      ex.printStackTrace();
+      log.error("{}", ex.getMessage(), ex);
       return "";
     }
-  }
-
-  public DataNode clone() {
-    return SerializationUtils.clone(this);
   }
 }

@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -23,33 +23,36 @@
  *     Martin Zaloga
  *     - Initial implementation
  */
+
 package org.seage.problem.tsp.grasp;
 
 import java.io.FileInputStream;
-
 import org.seage.metaheuristic.grasp.HillClimber;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
-import org.seage.problem.tsp.Visualizer;
+import org.seage.problem.tsp.TspVisualizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
  * @author Martin Zaloga
  * @deprecated Replaced by TspProblemSolver
  */
 @Deprecated
 public class TspHillClimberTest {
+  private static final Logger log = LoggerFactory.getLogger(TspHillClimberTest.class.getName());
 
   /**
    * _cities - List of a loaded cities _tour - Index list of cities that make up
    * the path _hc - Object containing hill climber algorithm
    */
-  private City[] _cities;
-  private Integer[] _tour;
-  private HillClimber _hc;
+  private City[] cities;
+  private Integer[] tour;
+  private HillClimber hc;
 
   /**
-   * The main trigger method
+   * The main trigger method.
    * 
    * @param args - the argument is the path to the data
    */
@@ -57,33 +60,31 @@ public class TspHillClimberTest {
     try {
       new TspHillClimberTest().run(args[0], "greedy", 100000, 10000);
     } catch (Exception ex) {
-      System.out.println(ex.getMessage());
-      ex.printStackTrace();
+      log.info(ex.getMessage());
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 
   /**
-   * Function for the run the program
+   * Function for the run the program.
    * 
-   * @param path      - Path where is fyle of data the cities
-   * @param clasic    - Switching between the classical and improved algorithm
-   *                  Hill-Climber
+   * @param path      - Path of data the cities
    * @param switcher  - Switching between the Geedy and Random initial solution
-   * @param restarts  - Numer of repeat optimalizations algorithm
+   * @param restarts  - Number of repeat optimalizations algorithm
    * @param iteration - Number of iteration algorthm
    */
   public void run(String path, String switcher, int restarts, int iteration) throws Exception {
-    _cities = CityProvider.readCities(new FileInputStream(path));
-    System.out.println("Loading cities from path: " + path);
-    System.out.println("Number of cities: " + _cities.length);
+    cities = CityProvider.readCities(new FileInputStream(path));
+    log.info("Loading cities from path: {}", path);
+    log.info("Number of cities: {}", cities.length);
 
-    _hc = new HillClimber(new TspObjectiveFunction(_cities), new TspMoveManager(),
-        new TspSolutionGenerator(switcher, _cities), iteration);
-    _hc.startRestartedSearching(restarts);
-    TspSolution bestSol = (TspSolution) _hc.getBestSolution();
-    _tour = bestSol.getTour();
+    hc = new HillClimber(new TspObjectiveFunction(cities), new TspMoveManager(),
+        new TspSolutionGenerator(switcher, cities), iteration);
+    hc.startRestartedSearching(restarts);
+    TspSolution bestSol = (TspSolution) hc.getBestSolution();
+    tour = bestSol.getTour();
 
-    Visualizer.instance().createGraph(_cities, _tour, "tsphcgraph.png", 600, 400);
-    System.out.println("length: " + bestSol.getObjectiveValue());
+    TspVisualizer.createTourImage(cities, tour, "tsphcgraph.png", 600, 400);
+    log.info("length: {}", bestSol.getObjectiveValue());
   }
 }

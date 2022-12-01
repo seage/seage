@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
-import org.seage.hh.experimenter.ExperimentTask;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 
 public interface ExperimentTaskMapper {
 
@@ -28,6 +28,7 @@ public interface ExperimentTaskMapper {
         .VALUES("start_date", "#{startDate}")
         .VALUES("end_date", "#{endDate}")
         .VALUES("score", "#{score}")
+        .VALUES("score_delta", "#{scoreDelta}")
         .VALUES("config", "#{config}")
         .VALUES("statistics", "#{statistics}")
         .toString();
@@ -35,7 +36,7 @@ public interface ExperimentTaskMapper {
   }
   
   @InsertProvider(type = ExperimentTaskSqlProvider.class, method = "insertExperimentTask")
-  int insertExperimentTask(ExperimentTask experimentTask);
+  int insertExperimentTask(ExperimentTaskRecord experimentTask);
 
   @Select("SELECT * FROM seage.experiment_tasks WHERE experiment_task_id = #{experimentTaskID}")
   @Results(id = "experimentResult", value = {
@@ -50,9 +51,11 @@ public interface ExperimentTaskMapper {
       @Result(property = "configID", column = "config_id"),
       @Result(property = "startDate", column = "start_date"),
       @Result(property = "endDate", column = "end_date"),
+      @Result(property = "scoreDelta", column = "score_delta"),
       @Result(property = "score", column = "score"),
       @Result(property = "config", column = "config"),
       @Result(property = "statistics", column = "statistics")
   })
-  ExperimentTask getExperimentTask(UUID experimentTaskID);
+  ExperimentTaskRecord getExperimentTask(UUID experimentTaskID);
+
 }

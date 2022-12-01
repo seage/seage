@@ -13,13 +13,14 @@
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with
- * SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
 /**
  * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.problem.sat.antcolony;
 
 import org.seage.metaheuristic.antcolony.Graph;
@@ -28,13 +29,19 @@ import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 
 /**
- *
+ * .
  * @author Zagy
  */
 public class SatGraph extends Graph implements java.lang.Cloneable {
   private Formula _formula;
   FormulaEvaluator _formulaEvaluator;
 
+  /**
+   * .
+   * @param formula .
+   * @param formulaEvaluator .
+   * @throws Exception .
+   */
   public SatGraph(Formula formula, FormulaEvaluator formulaEvaluator) throws Exception {
     super();
     _formula = formula;
@@ -42,16 +49,11 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
     // /~ 1 ~ 2 ~ 3 ~ ... n
     // 0
     // \~ -1 ~ -2 ~ -3 ~ ... -n
-    _nodes.put(new Integer(0), new Node(0));
+    _nodes.put(0, new Node(0));
 
     for (int i = 1; i <= formula.getLiteralCount(); i++) {
-      _nodes.put(new Integer(i), new Node(i));
-      _nodes.put(new Integer(-i), new Node(-i));
+      _nodes.put(i, new Node(i));
+      _nodes.put(-i, new Node(-i));
     }
-  }
-
-  @Override
-  public double getNodesDistance(Node n1, Node n2) {
-    return _formulaEvaluator.evaluate(_formula, n2.getID());
   }
 }

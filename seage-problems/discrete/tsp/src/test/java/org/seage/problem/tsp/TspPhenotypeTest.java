@@ -18,7 +18,7 @@ public class TspPhenotypeTest {
 
   @BeforeEach
   public void initEvaluator() throws Exception {
-    ProblemProvider.providerClasses = new Class<?>[] { TspProblemProvider.class };
+    ProblemProvider.registerProblemProviders(new Class<?>[] { TspProblemProvider.class });
     _provider = ProblemProvider.getProblemProviders().get("TSP");
   }
 
@@ -27,7 +27,8 @@ public class TspPhenotypeTest {
     TspOptimalTour tour = new TspOptimalTourBerlin52();
     ProblemInstance instance = _provider
         .initProblemInstance(_provider.getProblemInfo().getProblemInstanceInfo(tour.Name));
-    TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
+    TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(
+        _provider.getProblemInfo(), (TspProblemInstance) instance);
 
     TspPhenotype p1 = new TspPhenotype(tour.OptimalTour);
     String t1 = p1.toText();
@@ -56,7 +57,8 @@ public class TspPhenotypeTest {
   private void testEvaluateTour(TspOptimalTour tour) throws Exception {
     ProblemInstance instance = _provider
         .initProblemInstance(_provider.getProblemInfo().getProblemInstanceInfo(tour.Name));
-    TspPhenotypeEvaluator evaluator = new TspPhenotypeEvaluator(((TspProblemInstance) instance).getCities());
+    TspPhenotypeEvaluator evaluator = 
+        new TspPhenotypeEvaluator(_provider.getProblemInfo(), (TspProblemInstance) instance);
 
     TspPhenotype s = new TspPhenotype(tour.OptimalTour);
     // TspOptimalTour.printTour(s);

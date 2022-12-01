@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -32,7 +32,6 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.tabusearch.TabuSearchAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.data.DataNode;
-import org.seage.metaheuristic.tabusearch.Solution;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemInstance;
@@ -82,7 +81,11 @@ public class TspTabuSearchFactory implements IAlgorithmFactory<TspPhenotype, Tsp
 
       @Override
       public TspPhenotype solutionToPhenotype(TspSolution solution) throws Exception {
-        return new TspPhenotype(solution.getTour());
+        TspPhenotype result = new TspPhenotype(solution.getTour());
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
       }
     };
 

@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -30,9 +30,11 @@ package org.seage.problem.qap.particles;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.particles.ParticleSwarmAdapter;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.particles.Particle;
+import org.seage.problem.qap.QapPhenotype;
 import org.seage.problem.qap.QapProblemInstance;
 
 /**
@@ -41,7 +43,7 @@ import org.seage.problem.qap.QapProblemInstance;
  */
 @Annotations.AlgorithmId("ParticleSwarm")
 @Annotations.AlgorithmName("Particle Swarm")
-public class QapParticleSwarmFactory implements IAlgorithmFactory
+public class QapParticleSwarmFactory implements IAlgorithmFactory<QapPhenotype, QapParticle>
 {
     //private Double[][][] _facilityLocation;
 
@@ -55,63 +57,63 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
         return ParticleSwarmAdapter.class;
     }
 
-    @Override
-    public IAlgorithmAdapter<QapParticle> createAlgorithm(ProblemInstance instance) throws Exception
-    {
-        final Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
+    // @Override
+    // public IAlgorithmAdapter<QapParticle> createAlgorithm(ProblemInstance instance) throws Exception
+    // {
+    //     final Double[][][] facilityLocation = ((QapProblemInstance) instance).getFacilityLocation();
 
-        _objectiveFunction = new QapObjectiveFunction(facilityLocation);
+    //     _objectiveFunction = new QapObjectiveFunction(facilityLocation);
 
-        IAlgorithmAdapter<QapParticle> algorithm = new ParticleSwarmAdapter<> (
-                generateInitialSolutions(facilityLocation.length),
-                _objectiveFunction,
-                false, "")
-        {
-            @Override
-            public void solutionsFromPhenotype(Object[][] source) throws Exception
-            {
-                _numParticles = source.length;
-                _initialParticles = generateInitialSolutions(facilityLocation.length);
-                for (int i = 0; i < source.length; i++)
-                {
-                    Integer[] tour = ((QapParticle) _initialParticles[i]).getAssign();
-                    for (int j = 0; j < source[i].length; j++)
-                    {
-                        tour[j] = (Integer) source[i][j];
-                    }
-                }
-            }
+    //     IAlgorithmAdapter<QapParticle> algorithm = new ParticleSwarmAdapter<> (
+    //             generateInitialSolutions(facilityLocation.length),
+    //             _objectiveFunction,
+    //             false, "")
+    //     {
+    //         @Override
+    //         public void solutionsFromPhenotype(Object[][] source) throws Exception
+    //         {
+    //             _numParticles = source.length;
+    //             _initialParticles = generateInitialSolutions(facilityLocation.length);
+    //             for (int i = 0; i < source.length; i++)
+    //             {
+    //                 Integer[] tour = ((QapParticle) _initialParticles[i]).getAssign();
+    //                 for (int j = 0; j < source[i].length; j++)
+    //                 {
+    //                     tour[j] = (Integer) source[i][j];
+    //                 }
+    //             }
+    //         }
 
-            @Override
-            public Object[][] solutionsToPhenotype() throws Exception
-            {
-                int numOfParticles = _particleSwarm.getParticles().length;
-                Object[][] source = new Object[numOfParticles][facilityLocation.length];
+    //         @Override
+    //         public Object[][] solutionsToPhenotype() throws Exception
+    //         {
+    //             int numOfParticles = _particleSwarm.getParticles().length;
+    //             Object[][] source = new Object[numOfParticles][facilityLocation.length];
 
-                for (int i = 0; i < source.length; i++)
-                {
-                    source[i] = new Integer[facilityLocation.length];
-                    Integer[] tour = ((QapParticle) _particleSwarm.getParticles()[i]).getAssign();
-                    for (int j = 0; j < source[i].length; j++)
-                    {
-                        source[i][j] = tour[j];
-                    }
-                }
+    //             for (int i = 0; i < source.length; i++)
+    //             {
+    //                 source[i] = new Integer[facilityLocation.length];
+    //                 Integer[] tour = ((QapParticle) _particleSwarm.getParticles()[i]).getAssign();
+    //                 for (int j = 0; j < source[i].length; j++)
+    //                 {
+    //                     source[i][j] = tour[j];
+    //                 }
+    //             }
 
-                // TODO: A - need to sort source by fitness function of each tour
+    //             // TODO: A - need to sort source by fitness function of each tour
 
-                return source;
-            }
+    //             return source;
+    //         }
 
-			@Override
-			public Object[] solutionToPhenotype(QapParticle solution) throws Exception {
-				// TODO Auto-generated method stub
-				return null;
-			}
-        };
+	// 		@Override
+	// 		public Object[] solutionToPhenotype(QapParticle solution) throws Exception {
+	// 			// TODO Auto-generated method stub
+	// 			return null;
+	// 		}
+    //     };
 
-        return algorithm;
-    }
+    //     return algorithm;
+    // }
 
     private Particle[] generateInitialSolutions(int length) throws Exception
     {
@@ -147,5 +149,12 @@ public class QapParticleSwarmFactory implements IAlgorithmFactory
             particles[i] = new QapRandomParticle(length);
 
         return particles;
+    }
+
+    @Override
+    public IAlgorithmAdapter<QapPhenotype, QapParticle> createAlgorithm(ProblemInstance instance,
+            IPhenotypeEvaluator<QapPhenotype> phenotypeEvaluator) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

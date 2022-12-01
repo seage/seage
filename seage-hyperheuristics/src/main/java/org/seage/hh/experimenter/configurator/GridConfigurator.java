@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -76,7 +76,7 @@ public class GridConfigurator extends Configurator {
     for (DataNode inst : problemInfo.getDataNode("Instances").getDataNodes()) {
       System.out.println(inst.getValue("path"));
 
-      ProblemConfig instanceCfg = (ProblemConfig) config.clone();
+      ProblemConfig instanceCfg = new ProblemConfig(config);
       instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("name", inst.getValue("name"));
       instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("type", inst.getValue("type"));
       instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("path", inst.getValue("path"));

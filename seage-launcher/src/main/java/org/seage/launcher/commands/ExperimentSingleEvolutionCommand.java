@@ -1,19 +1,24 @@
 package org.seage.launcher.commands;
 
-import java.util.List;
-
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
+import java.util.List;
+import java.util.Map;
+import org.seage.hh.experimenter.Experimenter;
 
 @Parameters(commandDescription = "Perform single evolution experiment")
 public class ExperimentSingleEvolutionCommand extends Command {
-  @Parameter(names = "-p", required = true, description = "ProblemID")
-  String problemID;
-  @Parameter(names = "-i", required = true, description = "Problem instances", variableArity = true)
+  @Parameter(
+      names = "-i",
+      required = true,
+      description = "Problem instances [PROBLEM_DOMAIN:instance]",
+      variableArity = true
+  )
   List<String> instances;
   @Parameter(names = "-a", required = true, description = "Algorithms", variableArity = true)
   List<String> algorithms;
-  @Parameter(names = "-n", required = true, description = "Number of random configs per each experiment")
+  @Parameter(
+      names = "-n", required = true, description = "Number of random configs per each experiment")
   int numOfSubjects;
   @Parameter(names = "-g", required = true, description = "Number of iterations")
   int numOfIterations;
@@ -21,8 +26,19 @@ public class ExperimentSingleEvolutionCommand extends Command {
   int algorithmTimeoutS;
 
   @Override
-  public void performCommad() throws Exception {
-//        new SingleAlgorithmEvolutionExperimenter(problemID, instances.toArray(new String[]{}), algorithms.toArray(new String[]{}), numOfSubjects, numOfIterations, algorithmTimeoutS )
-//        .runExperiment();       
+  public void performCommand() throws Exception {
+    // new SingleAlgorithmEvolutionExperiment(
+    // problemID, instances.toArray(new String[]{}), 
+    // algorithms.toArray(new String[]{}), numOfSubjects, numOfIterations, algorithmTimeoutS )
+    // .runExperiment();
+    Map<String, List<String>> problemInstanceParams = 
+        ProblemInstanceParamsParser.parseProblemInstanceParams(instances);
+
+    for (String algorithmID : algorithms) {
+      new Experimenter(
+        algorithmID, problemInstanceParams, numOfSubjects, 
+        algorithmTimeoutS).setNumOfIterations(numOfIterations)
+        .runExperiment("SingleAlgorithmEvolution");
+    }
   }
 }

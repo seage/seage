@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -23,6 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.aal.algorithm.genetics;
 
 import java.util.List;
@@ -42,9 +43,11 @@ import org.seage.metaheuristic.genetics.GeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectComparator;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * GeneticSearchAdapter class
+ * GeneticSearchAdapter class.
  */
 @AlgorithmParameters({ @Parameter(name = "crossLengthPct", min = 0, max = 100, init = 10),
     @Parameter(name = "eliteSubjectPct", min = 0, max = 100, init = 10),
@@ -56,76 +59,82 @@ import org.seage.metaheuristic.genetics.SubjectEvaluator;
 public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends Subject<?>>
     extends AlgorithmAdapterImpl<P, S> {
 
+  private static final Logger logger = 
+      LoggerFactory.getLogger(GeneticAlgorithmAdapter.class.getName());
+  
   protected List<S> solutions;
-  protected GeneticAlgorithm<S> _geneticSearch;
-  protected SubjectEvaluator<S> _evaluator;
-  protected SubjectComparator<S> _comparator;
-  private GeneticAlgorithmListener _algorithmListener;
-  protected S _bestEverSolution;
-  protected AlgorithmParams _params;
+  protected GeneticAlgorithm<S> geneticAlgorithm;
+  protected SubjectEvaluator<S> evaluator;
+  protected SubjectComparator<S> comparator;
+  private GeneticAlgorithmListener algorithmListener;
+  protected S bestEverSolution;
+  protected AlgorithmParams params;
 
-  private double _statInitObjVal;
-  private double _statBestObjVal;
-  private int _statNrOfIterationsDone;
-  private int _statNumNewSol;
-  private int _statLastImprovingIteration;
-
-  private AlgorithmReporter<P> _reporter;
-  private IPhenotypeEvaluator<P> _phenotypeEvaluator;
+  private double statInitObjVal;
+  private double statBestObjVal;
+  private int statNrOfIterationsDone;
+  private int statNumNewSol;
+  private int statLastImprovingIteration;
 
   /** GeneticAlgorithmAdapter. */
   protected GeneticAlgorithmAdapter(GeneticOperator<S> operator, SubjectEvaluator<S> evaluator,
       IPhenotypeEvaluator<P> phenotypeEvaluator, boolean maximizing) {
-    _evaluator = evaluator;
-    _phenotypeEvaluator = phenotypeEvaluator;
-    _algorithmListener = new GeneticAlgorithmListener();
-    _comparator = new SubjectComparator<>();
-    _geneticSearch = new GeneticAlgorithm<>(operator, evaluator);
-    _geneticSearch.addGeneticSearchListener(_algorithmListener);
+    super(phenotypeEvaluator);
+    this.evaluator = evaluator;
+    
+    this.algorithmListener = new GeneticAlgorithmListener();
+    this.comparator = new SubjectComparator<>();
+    this.geneticAlgorithm = new GeneticAlgorithm<>(operator, evaluator);
+    this.geneticAlgorithm.addGeneticSearchListener(algorithmListener);
   }
 
   @Override
   public void startSearching(final AlgorithmParams params) throws Exception {
     if (params == null) {
-      throw new Exception("Parameters not set");
+      throw new IllegalArgumentException("Parameters not set");
     }
     setParameters(params);
 
-    _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
-    _reporter.putParameters(_params);
+    reporter = new AlgorithmReporter<>(phenotypeEvaluator);
+    reporter.putParameters(params);
 
-    _geneticSearch.startSearching(this.solutions);
+    geneticAlgorithm.startSearching(this.solutions);
 
-    this.solutions = _geneticSearch.getSubjects();
+    this.solutions = geneticAlgorithm.getSubjects();
     if (this.solutions == null) {
-      throw new Exception("Solutions null");
+      throw new RuntimeException("Solutions null");
     }
   }
 
   @Override
   public boolean isRunning() {
-    return _geneticSearch.isRunning();
+    return geneticAlgorithm.isRunning();
   }
 
   @Override
   public void stopSearching() throws Exception {
-    _geneticSearch.stopSolving();
+    geneticAlgorithm.stopSolving();
 
     while (isRunning()) {
       Thread.sleep(100);
     }
   }
 
-  public void setParameters(AlgorithmParams params) throws Exception {
-    _params = params;
+  /**
+   * Sets algorithm parameters.
+   */
+  public void setParameters(AlgorithmParams newParams) throws Exception {
+    this.params = newParams;
 
-    _geneticSearch.getOperator().setCrossLengthCoef(_params.getValueDouble("crossLengthPct") / 100);
-    _geneticSearch.getOperator().setMutateLengthCoef(_params.getValueDouble("mutateLengthPct") / 100);
-    _geneticSearch.setEliteSubjectsPct(_params.getValueDouble("eliteSubjectPct"));
-    _geneticSearch.setIterationToGo(_params.getValueInt("iterationCount"));
-    _geneticSearch.setMutatePopulationPct(_params.getValueDouble("mutateSubjectPct"));
-    _geneticSearch.setPopulationCount(_params.getValueInt("numSolutions"));
-    _geneticSearch.setRandomSubjectsPct(_params.getValueDouble("randomSubjectPct"));
+    geneticAlgorithm.getOperator().setCrossLengthCoef(
+        params.getValueDouble("crossLengthPct") / 100);
+    geneticAlgorithm.getOperator().setMutateLengthCoef(
+        params.getValueDouble("mutateLengthPct") / 100);
+    geneticAlgorithm.setEliteSubjectsPct(params.getValueDouble("eliteSubjectPct"));
+    geneticAlgorithm.setIterationToGo(params.getValueInt("iterationCount"));
+    geneticAlgorithm.setMutatePopulationPct(params.getValueDouble("mutateSubjectPct"));
+    geneticAlgorithm.setPopulationCount(params.getValueInt("numSolutions"));
+    geneticAlgorithm.setRandomSubjectsPct(params.getValueDouble("randomSubjectPct"));
   }
 
   @Override
@@ -137,26 +146,31 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
     }
     avg /= num;
 
-    _reporter.putStatistics(_statNrOfIterationsDone, _statNumNewSol, _statLastImprovingIteration, _statInitObjVal, avg,
-        _statBestObjVal);
+    reporter.putStatistics(
+        statNrOfIterationsDone, 
+        statNumNewSol, 
+        statLastImprovingIteration, 
+        statInitObjVal, 
+        avg,
+        statBestObjVal);
 
-    return _reporter.getReport();
+    return reporter.getReport();
   }
 
   private class GeneticAlgorithmListener implements IAlgorithmListener<GeneticAlgorithmEvent<S>> {
     @Override
     public void algorithmStarted(GeneticAlgorithmEvent<S> e) {
-      _algorithmStarted = true;
-      _statNumNewSol = _statLastImprovingIteration = 0;
+      algorithmStarted = true;
+      statNumNewSol = statLastImprovingIteration = 0;
     }
 
     @Override
     public void algorithmStopped(GeneticAlgorithmEvent<S> e) {
-      _algorithmStopped = true;
-      _statNrOfIterationsDone = e.getGeneticSearch().getCurrentIteration();
+      algorithmStopped = true;
+      statNrOfIterationsDone = e.getGeneticSearch().getCurrentIteration();
       S s = e.getGeneticSearch().getBestSubject();
       if (s != null) {
-        _statBestObjVal = s.getObjectiveValue()[0];
+        statBestObjVal = s.getObjectiveValue()[0];
       }
     }
 
@@ -166,17 +180,20 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
       try {
         GeneticAlgorithm<S> gs = e.getGeneticSearch();
         S subject = gs.getBestSubject();
-        if (_statNumNewSol == 0) {
-          _statInitObjVal = subject.getObjectiveValue()[0];
+        if (statNumNewSol == 0) {
+          statInitObjVal = subject.getObjectiveValue()[0];
         }
 
-        _bestEverSolution = (S) gs.getBestSubject().clone();
-        _reporter.putNewSolution(System.currentTimeMillis(), gs.getCurrentIteration(), solutionToPhenotype(subject));
-        _statNumNewSol++;
-        _statLastImprovingIteration = gs.getCurrentIteration();
+        bestEverSolution = (S) gs.getBestSubject().clone();
+        reporter.putNewSolution(
+            System.currentTimeMillis(), 
+            gs.getCurrentIteration(), 
+            solutionToPhenotype(subject));
+        statNumNewSol++;
+        statLastImprovingIteration = gs.getCurrentIteration();
 
       } catch (Exception ex) {
-        _logger.warn(ex.getMessage(), ex);
+        logger.warn(ex.getMessage(), ex);
       }
     }
 

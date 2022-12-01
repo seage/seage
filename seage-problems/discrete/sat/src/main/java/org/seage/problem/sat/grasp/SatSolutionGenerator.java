@@ -13,7 +13,7 @@
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with
- * SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -40,10 +40,10 @@ public class SatSolutionGenerator implements ISolutionGenerator {
   private String _switcher;
 
   /**
-   * The constructor of object TSPSolutionGenerator
+   * The constructor of object TSPSolutionGenerator.
    * 
-   * @param switcher - Loaded cities
-   * @param cities   - Parameter setting random or greedy initial solution
+   * @param switcher Loaded cities
+   * @param formula  List of clauses representing the formula
    */
   public SatSolutionGenerator(String switcher, Formula formula) {
     _formula = formula;
@@ -51,7 +51,7 @@ public class SatSolutionGenerator implements ISolutionGenerator {
   }
 
   /**
-   * Function to generate the initial solution
+   * Function to generate the initial solution.
    * 
    * @return
    */

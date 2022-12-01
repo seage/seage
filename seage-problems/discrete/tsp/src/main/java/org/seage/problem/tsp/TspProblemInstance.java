@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -30,19 +30,24 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
 
 /**
- *
+ * TspProblemInstance.
  * @author Richard Malek
  */
 public class TspProblemInstance extends ProblemInstance {
 
-  private City[] _cities;
+  private City[] cities;
 
   public TspProblemInstance(ProblemInstanceInfo instanceInfo, City[] cities) throws Exception {
     super(instanceInfo);
-    _cities = cities;
+    this.cities = cities;
   }
 
   public City[] getCities() {
-    return _cities;
+    return cities;
   }
+
+  @Override
+  public int getSize() {
+    return getCities().length;
+  }  
 }

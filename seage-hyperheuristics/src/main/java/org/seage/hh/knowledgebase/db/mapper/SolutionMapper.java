@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
-import org.seage.hh.experimenter.Solution;
+import org.seage.hh.knowledgebase.db.dbo.SolutionRecord;
 
 public interface SolutionMapper {
 
@@ -22,6 +22,7 @@ public interface SolutionMapper {
         .VALUES("hash", "#{hash}")
         .VALUES("solution", "#{solution}")
         .VALUES("objective_value", "#{objectiveValue}")
+        .VALUES("score", "#{score}")
         .VALUES("iteration_number", "#{iterationNumber}")
         .VALUES("date", "#{date}")
         .toString();
@@ -29,7 +30,7 @@ public interface SolutionMapper {
   }
   
   @InsertProvider(type = SolutionSqlProvider.class, method = "insertSolution")
-  int insertSolution(Solution solution);
+  int insertSolution(SolutionRecord solution);
 
   @Select("SELECT * FROM seage.solutions WHERE solution_id = #{solutionID}")
   @Results(id = "solutionResult", value = {
@@ -38,8 +39,9 @@ public interface SolutionMapper {
       @Result(property = "hash", column = "hash"),
       @Result(property = "solution", column = "solution"),
       @Result(property = "objectiveValue", column = "objective_value"),
+      @Result(property = "score", column = "score"),
       @Result(property = "iterationNumber", column = "iteration_number"),
       @Result(property = "date", column = "date"),
   })
-  Solution getSolution(UUID solutionID);
+  SolutionRecord getSolution(UUID solutionID);
 }

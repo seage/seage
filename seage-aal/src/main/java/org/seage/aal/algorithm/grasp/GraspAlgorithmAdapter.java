@@ -8,14 +8,18 @@ import org.seage.aal.reporter.AlgorithmReport;
 
 @AlgorithmParameters({ @Parameter(name = "numberOfRestarts", min = 0, max = 100, init = 10) })
 public abstract class GraspAlgorithmAdapter extends AlgorithmAdapterImpl {
+  public GraspAlgorithmAdapter() {
+    super(null);
+  }
 
   public void setParameters(AlgorithmParams params) throws Exception {
   }
 
   @Override
   public void startSearching(AlgorithmParams params) throws Exception {
-    if (params == null)
-      throw new Exception("Parameters not set");
+    if (params == null) {
+      throw new IllegalArgumentException("Parameters not set");
+    }
     setParameters(params);
 
   }

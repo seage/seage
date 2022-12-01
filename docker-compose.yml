@@ -10,14 +10,14 @@ services:
     volumes:
       - volume_database:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 25432:5432
 
   seage:
     build: .
     environment:
       - DB_USER=seage
       - DB_PASSWORD=seage
-      - DB_URL=jdbc:postgresql://database/seage
+      - DB_URL=jdbc:postgresql://database:5432/seage
     depends_on:
       - database
     restart: always
@@ -32,7 +32,7 @@ services:
       - PGADMIN_DEFAULT_EMAIL=seage@seage.org
       - PGADMIN_DEFAULT_PASSWORD=seage
     ports:
-      - 8090:80
+      - 28080:80
     depends_on:
       - database
     restart: always

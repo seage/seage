@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -23,6 +23,7 @@
  *     Martin Zaloga
  *     - Initial implementation
  */
+
 package org.seage.problem.tsp.grasp;
 
 import java.util.Random;
@@ -36,9 +37,10 @@ import org.seage.metaheuristic.grasp.Solution;
  * @author Martin Zaloga
  */
 public class TspMoveManager implements IMoveManager {
-
+  private Random rnd = new Random(); // sonar fix
+  
   /**
-   * Function which generates the next steps algorithm
+   * Function which generates the next steps algorithm.
    * 
    * @param solution - Current solutions for which are generated further steps
    * @return - The next steps algorithm
@@ -47,7 +49,6 @@ public class TspMoveManager implements IMoveManager {
   public IMove[] getAllMoves(Solution solution) {
     TspSolution sol = (TspSolution) solution;
     TspMove[] moves = new TspMove[sol.getTour().length];
-    Random rnd = new Random();
 
     /* random selection of sequence the steps */
     for (int i = 0; i < sol.getTour().length; i++) {

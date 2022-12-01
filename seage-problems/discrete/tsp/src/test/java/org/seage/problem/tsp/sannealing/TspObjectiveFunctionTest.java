@@ -20,7 +20,7 @@ public class TspObjectiveFunctionTest {
 
   @BeforeEach
   public void setUp() throws Exception {
-    ProblemProvider.providerClasses = new Class<?>[] { TspProblemProvider.class };
+    ProblemProvider.registerProblemProviders(new Class<?>[] { TspProblemProvider.class });
     _optimalTour = new TspOptimalTourBerlin52();
     // _optimalTour = new TspOptimalTourPcb442();
 

@@ -1,5 +1,6 @@
 package org.seage.problem.sat.genetics;
 
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.metaheuristic.genetics.Chromosome;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
@@ -10,9 +11,9 @@ import org.seage.problem.sat.SatPhenotypeEvaluator;
  * Summary description for SatObjectiveFunction.
  */
 public class SatEvaluator extends SubjectEvaluator<Subject<Boolean>> {
-  private SatPhenotypeEvaluator _evaluator;
+  private IPhenotypeEvaluator<SatPhenotype> _evaluator;
 
-  public SatEvaluator(SatPhenotypeEvaluator evaluator) {
+  public SatEvaluator(IPhenotypeEvaluator<SatPhenotype> evaluator) {
     _evaluator = evaluator;
   }
 

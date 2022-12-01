@@ -13,7 +13,7 @@
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with
- * SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -52,7 +52,7 @@ public class SatTabuSearchFactory implements IAlgorithmFactory<SatPhenotype, Sat
     Formula formula = (Formula) instance;
 
     IAlgorithmAdapter<SatPhenotype, SatSolution> algorithm = new TabuSearchAdapter<SatPhenotype, SatSolution>(
-        new SatMoveManager(), new SatObjectiveFunction(new SatPhenotypeEvaluator(formula)), phenotypeEvaluator) {
+        new SatMoveManager(), new SatObjectiveFunction(phenotypeEvaluator), phenotypeEvaluator) {
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
@@ -71,12 +71,7 @@ public class SatTabuSearchFactory implements IAlgorithmFactory<SatPhenotype, Sat
         SatPhenotype[] result = new SatPhenotype[this.solutions.length];
 
         for (int i = 0; i < this.solutions.length; i++) {
-          SatSolution s = (SatSolution) this.solutions[i];
-          Boolean[] array = new Boolean[s.getLiteralValues().length];
-          for (int j = 0; j < s.getLiteralValues().length; j++) {
-            array[j] = s.getLiteralValues()[j];
-          }
-          result[i] = new SatPhenotype(array);
+          result[i] = solutionToPhenotype(this.solutions[i]);
         }
         return result;
       }
@@ -87,7 +82,11 @@ public class SatTabuSearchFactory implements IAlgorithmFactory<SatPhenotype, Sat
         for (int j = 0; j < s.getLiteralValues().length; j++) {
           array[j] = s.getLiteralValues()[j];
         }
-        return new SatPhenotype(array);
+        SatPhenotype result = new SatPhenotype(array);
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
       }
     };
 

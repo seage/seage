@@ -1,12 +1,21 @@
 package org.seage.problem.sat;
 
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemScoreCalculator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SatPhenotypeEvaluator implements IPhenotypeEvaluator<SatPhenotype> {
-  private Formula _formula;
+  private static Logger logger = LoggerFactory.getLogger(SatPhenotypeEvaluator.class.getName());
+  
+  private Formula formula;
+  private ProblemScoreCalculator scoreCalculator;
 
-  public SatPhenotypeEvaluator(Formula formula) {
-    _formula = formula;
+  public SatPhenotypeEvaluator(ProblemInfo problemInfo, Formula formula) {
+    this.formula = formula;
+    this.scoreCalculator = new ProblemScoreCalculator(problemInfo);
   }
 
   @Override
@@ -16,7 +25,13 @@ public class SatPhenotypeEvaluator implements IPhenotypeEvaluator<SatPhenotype> 
 
   @Override
   public double[] evaluate(SatPhenotype phenotypeSubject) throws Exception {
-    return new double[] { FormulaEvaluator.evaluate(_formula, phenotypeSubject.getSolution()) };
+    String instanceID = formula.getProblemInstanceInfo().getInstanceID();
+    double objValue = FormulaEvaluator.evaluate(formula, phenotypeSubject.getSolution());
+    //logger.debug("instanceid: {} objval: {}", instanceID, objValue);
+    return new double[] { 
+        objValue,
+        this.scoreCalculator.calculateInstanceScore(instanceID, objValue)
+    };
   }
 
 }

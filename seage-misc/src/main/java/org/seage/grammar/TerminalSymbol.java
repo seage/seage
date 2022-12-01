@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -76,7 +76,7 @@ public class TerminalSymbol implements Symbol {
     }
   }
 
-  /** @brief copy ourself, and return new instance */
+  /** copy ourself, and return new instance */
   @Override
   public Symbol copy() {
     TerminalSymbol t = new TerminalSymbol(this.names, this.generator);

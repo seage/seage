@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -23,40 +23,38 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.metaheuristic.genetics;
 
 /**
+ * Genetic algorithm's subject implementation.
  * @author Richard Malek (original)
  */
 public class Subject<GeneType> implements Cloneable {
-  private Chromosome<GeneType> _chromosome;
-  private double[] _fitness;
-  private int _hashCode;
+  private Chromosome<GeneType> chromosome;
+  private double[] fitness;
+  private int hashCode;
 
   public Subject(GeneType[] geneValues) {
-    _chromosome = new Chromosome<>(geneValues);
+    chromosome = new Chromosome<>(geneValues);
     computeHash();
   }
 
   protected Subject(Subject<GeneType> subject) {
-    _chromosome = subject.getChromosome().clone(); // TODO: Replace by copy constructor
-    _fitness = subject._fitness;
-    _hashCode = subject._hashCode;
+    chromosome = subject.getChromosome().clone(); // TODO: Replace by copy constructor
+    fitness = subject.fitness;
+    hashCode = subject.hashCode;
   }
 
   /*
    * Interface Solution
    */
-
   public double[] getObjectiveValue() {
-    /*
-     * int[] result = {_fitness}; return result;
-     */
-    return _fitness;
+    return fitness;
   }
 
   public void setObjectiveValue(double[] objValue) {
-    _fitness = objValue;
+    fitness = objValue;
     computeHash();
   }
 
@@ -69,36 +67,44 @@ public class Subject<GeneType> implements Cloneable {
    * Subject's method
    */
   public Chromosome<GeneType> getChromosome() {
-    return _chromosome;
+    return chromosome;
   }
 
   public double[] getFitness() {
-    return _fitness;
+    return getObjectiveValue();
   }
 
   public void computeHash() {
-    // Chromosome chrom = getGenome().getChromosome(0);
     int hash = 0x1000;
-    for (int i = 0; i < _chromosome.getLength(); i++) {
-      hash = ((hash << 5) ^ (hash >> 27)) ^ (_chromosome.getGene(i).hashCode() + 2) << 1;
+    for (int i = 0; i < chromosome.getLength(); i++) {
+      hash = ((hash << 5) ^ (hash >> 27)) ^ (chromosome.getGene(i).hashCode() + 2) << 1;
     }
-    _hashCode = hash;
+    hashCode = hash;
   }
 
   @Override
   public int hashCode() {
-    return _hashCode;
+    return hashCode;
+  }
+
+  @Override
+  public boolean equals(Object subject0) {
+    if (subject0 == null) {
+      return false;
+    }
+    return subject0.hashCode() == hashCode;
   }
 
   @Override
   public String toString() {
     String result = "";
 
-    if (_fitness == null)
-      return "#" + _hashCode;
+    if (fitness == null) {
+      return "#" + hashCode;
+    }
 
-    for (int i = 0; i < _chromosome.getLength(); i++) {
-      result += (_chromosome.getGene(i)) + " ";
+    for (int i = 0; i < chromosome.getLength(); i++) {
+      result += (chromosome.getGene(i)) + " ";
     }
 
     return result;

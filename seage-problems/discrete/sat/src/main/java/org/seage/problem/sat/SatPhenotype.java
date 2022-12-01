@@ -1,22 +1,18 @@
 package org.seage.problem.sat;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.seage.aal.algorithm.Phenotype;
 
 public class SatPhenotype extends Phenotype<Boolean[]> {
 
-  public SatPhenotype(Boolean[] path) {
+  public SatPhenotype(Boolean[] path) throws Exception {
     super(path);
   }
 
   @Override
   public String toText() {
-    String res = Stream.of(solution).map(i -> i ? "1" : "0").collect(Collectors.joining(", "));
-    return String.format("[%s]", res);
+    return Arrays.toString(solution);
   }
 
   @Override

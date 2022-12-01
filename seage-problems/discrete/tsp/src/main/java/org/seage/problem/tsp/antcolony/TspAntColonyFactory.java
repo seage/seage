@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -26,8 +26,9 @@
 
 package org.seage.problem.tsp.antcolony;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.List;
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IAlgorithmFactory;
@@ -40,7 +41,7 @@ import org.seage.problem.tsp.TspPhenotype;
 import org.seage.problem.tsp.TspProblemInstance;
 
 /**
- *
+ * .
  * @author Richard Malek
  */
 @Annotations.AlgorithmId("AntColony")
@@ -56,35 +57,37 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
       IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
     City[] cities = ((TspProblemInstance) instance).getCities();
     TspGraph graph = new TspGraph(cities);
-    TspAntBrain brain = new TspAntBrain(graph);
-    IAlgorithmAdapter<TspPhenotype, Ant> algorithm = 
-        new AntColonyAdapter<TspPhenotype, Ant>(
-        graph, phenotypeEvaluator) {
+    return new AntColonyAdapter<TspPhenotype, Ant>(graph, phenotypeEvaluator) {
       @Override
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
-        _ants = new Ant[source.length];
-        for (int i = 0; i < _ants.length; i++) {
-          _ants[i] = new Ant(brain, graph, Arrays.asList(source[i].getSolution()));
+        ants = new Ant[source.length];
+        for (int i = 0; i < ants.length; i++) {
+          List<Integer> nodeIDs = new ArrayList<>(Arrays.asList(source[i].getSolution()));
+          nodeIDs.add(source[i].getSolution()[0]); // The tour must be closed
+          ants[i] = new TspAnt(graph, nodeIDs, cities);
         }
       }
 
       @Override
       public TspPhenotype[] solutionsToPhenotype() throws Exception {
-        TspPhenotype[] result = new TspPhenotype[_ants.length];
-        for (int i = 0; i < _ants.length; i++) {          
-          result[i] = solutionToPhenotype(_ants[i]);
+        TspPhenotype[] result = new TspPhenotype[ants.length];
+        for (int i = 0; i < ants.length; i++) {          
+          result[i] = solutionToPhenotype(ants[i]);
         }
         return result;
       }
 
       @Override
       public TspPhenotype solutionToPhenotype(Ant solution) throws Exception {
-        Integer[] p = (Integer[]) solution.getNodeIDsAlongPath().stream().toArray(Integer[]::new);
-        return new TspPhenotype(p);
+        List<Integer> antPath = new ArrayList<>(solution.getNodeIDsAlongPath());
+        antPath.remove(antPath.size() - 1);
+        Integer[] p = (Integer[]) antPath.stream().toArray(Integer[]::new);
+        TspPhenotype result = new TspPhenotype(p);
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
       }
     };
-
-    return algorithm;
   }
-
 }

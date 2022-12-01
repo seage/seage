@@ -1,5 +1,6 @@
 package org.seage.problem.sat.tabusearch;
 
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.metaheuristic.tabusearch.Move;
 import org.seage.metaheuristic.tabusearch.ObjectiveFunction;
 import org.seage.metaheuristic.tabusearch.Solution;
@@ -10,9 +11,9 @@ import org.seage.problem.sat.SatPhenotypeEvaluator;
  * Summary description for KnapObjectiveFunction.
  */
 public class SatObjectiveFunction implements ObjectiveFunction {
-  private SatPhenotypeEvaluator _evaluator;
+  private IPhenotypeEvaluator<SatPhenotype> _evaluator;
 
-  public SatObjectiveFunction(SatPhenotypeEvaluator evaluator) {
+  public SatObjectiveFunction(IPhenotypeEvaluator<SatPhenotype> evaluator) {
     _evaluator = evaluator;
   }
 

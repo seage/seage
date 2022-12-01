@@ -11,15 +11,17 @@ public class TaskRunner2 {
 
   public static void run(Runnable[] tasks, int processors) throws InterruptedException {
     List<Task2> taskList = new ArrayList<Task2>();
-    for (int i = 0; i < tasks.length; i++)
+    for (int i = 0; i < tasks.length; i++) {
       taskList.add(new SimpleTask2(tasks[i]));
+    }
     run(taskList, processors);
   }
 
   public static void run(Task2[] tasks, int processors) throws InterruptedException {
     List<Task2> taskList = new ArrayList<Task2>();
-    for (int i = 0; i < tasks.length; i++)
+    for (int i = 0; i < tasks.length; i++) {
       taskList.add(tasks[i]);
+    }
     run(taskList, processors);
   }
 
@@ -60,8 +62,9 @@ public class TaskRunner2 {
       }
     }
     synchronized (counter) {
-      while (counter.CoresCurrentlyUsed > 0)
+      while (counter.CoresCurrentlyUsed > 0) {
         counter.wait();
+      }
     }
 
     _logger.trace("finished");
@@ -87,7 +90,7 @@ public class TaskRunner2 {
       synchronized (_counter) {
         _logger.trace("notifying " + _task.getName() + " after " + (t2 - t1) + "ms");
         _counter.releaseCores(_task.getCoresNeeded());
-        _counter.notify();
+        _counter.notifyAll();
       }
     }
   }

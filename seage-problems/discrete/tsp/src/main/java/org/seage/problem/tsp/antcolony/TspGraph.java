@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -23,6 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.problem.tsp.antcolony;
 
 import org.seage.metaheuristic.antcolony.Graph;
@@ -30,18 +31,23 @@ import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.tsp.City;
 
 /**
- *
+ * .
  * @author Zagy
  */
 public class TspGraph extends Graph {
 
   private City[] _cities;
 
+  /**
+   * .
+   * @param cities .
+   * @throws Exception .
+   */
   public TspGraph(City[] cities) throws Exception {
     super();
     _cities = cities;
     for (int id = 1; id <= cities.length; id++) {
-      _nodes.put(new Integer(id), new Node(id));
+      _nodes.put(id, new Node(id));
     }
   }
 
@@ -59,18 +65,4 @@ public class TspGraph extends Graph {
   // }
   // return result;
   // }
-  /**
-   * Edge length calculating
-   * 
-   * @param start  - Starting node
-   * @param end    - Terminate node
-   * @param cities - Readed cities
-   * @return - Euclide edge length
-   */
-  @Override
-  public double getNodesDistance(Node start, Node end) {
-    double dX = (_cities[start.getID() - 1].X - _cities[end.getID() - 1].X);
-    double dY = (_cities[start.getID() - 1].Y - _cities[end.getID() - 1].Y);
-    return Math.round(Math.sqrt(dX * dX + dY * dY));
-  }
 }

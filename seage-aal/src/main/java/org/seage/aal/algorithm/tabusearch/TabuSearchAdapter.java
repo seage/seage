@@ -19,6 +19,7 @@
 /**
  * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.aal.algorithm.tabusearch;
 
 import org.seage.aal.Annotations.AlgorithmParameters;
@@ -41,69 +42,72 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * TabuSearchAdapter interface.
+ * TabuSearchAdapter base implementation.
  */
-@AlgorithmParameters({ @Parameter(name = "iterationCount", min = 1, max = 1000000, init = 1000000),
+@AlgorithmParameters({ 
+    @Parameter(name = "iterationCount", min = 1, max = 100000000000L, init = 100000000000L),
     @Parameter(name = "numSolutions", min = 1, max = 1, init = 1),
     @Parameter(name = "tabuListLength", min = 1, max = 1000, init = 30) })
-public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Solution> extends AlgorithmAdapterImpl<P, S> {
-  protected static Logger logger = LoggerFactory.getLogger(TabuSearchAdapter.class.getName());
-  private TabuSearch _tabuSearch;
-  private TabuSearchObserver _observer;
-  private int _iterationToGo;
-  private int _tabuListLength;
+public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Solution> 
+    extends AlgorithmAdapterImpl<P, S> {
+  
+  private static Logger logger = LoggerFactory.getLogger(TabuSearchAdapter.class.getName());
+  
+  private TabuSearch tabuSearch;
+  private TabuSearchObserver observer;
+  private int iterationToGo;
+  private int tabuListLength;
   protected S[] solutions;
   protected int solutionsToExplore;
-  protected S _bestEverSolution; // best of all solution
-  private AlgorithmParams _params;
+  protected S bestEverSolution; // best of all solution
+  private AlgorithmParams algParams;
 
-  private double _statInitObjVal;
-  private double _statEndObjVal;
-  private int _statNumIter;
-  private int _statNumNewSol;
-  private int _statLastIterNewSol;
-  private AlgorithmReporter<P> _reporter;
-  private IPhenotypeEvaluator<P> _phenotypeEvaluator;
+  private double statInitObjVal;
+  private double statEndObjVal;
+  private int statNumIter;
+  private int statNumNewSol;
+  private int statLastIterNewSol;
 
   protected TabuSearchAdapter(MoveManager moveManager, ObjectiveFunction objectiveFunction,
       IPhenotypeEvaluator<P> phenotypeEvaluator) {
-    _observer = new TabuSearchObserver();
-    _tabuSearch = new TabuSearch(moveManager, objectiveFunction, false);
-    _tabuSearch.addTabuSearchListener(_observer);
-    _tabuSearch.setAspirationCriteria(new BestEverAspirationCriteria());
-    _phenotypeEvaluator = phenotypeEvaluator;
-    _iterationToGo = 0;
-    _tabuListLength = 0;
+    super(phenotypeEvaluator);
+    observer = new TabuSearchObserver();
+    tabuSearch = new TabuSearch(moveManager, objectiveFunction, false);
+    tabuSearch.addTabuSearchListener(observer);
+    tabuSearch.setAspirationCriteria(new BestEverAspirationCriteria());
+    iterationToGo = 0;
+    tabuListLength = 0;
   }
 
   @Override
   public void startSearching(AlgorithmParams params) throws Exception {
-    if (params == null)
-      throw new Exception("Parameters not set");
+    if (params == null) {
+      throw new IllegalArgumentException("Parameters not set");
+    }
     setParameters(params);
 
-    _reporter = new AlgorithmReporter<>(_phenotypeEvaluator);
-    _reporter.putParameters(_params);
+    reporter = new AlgorithmReporter<>(phenotypeEvaluator);
+    reporter.putParameters(params);
 
     if (this.solutions.length > 1) {
-      _logger.warn("More than one solutions to solve, used just the first one.");
+      logger.warn("More than one solutions to solve, used just the first one.");
     }
 
-    _statNumNewSol = 0;
+    statNumNewSol = 0;
 
-    _tabuSearch.setCurrentSolution(this.solutions[0]);
-    _tabuSearch.setTabuList(new SimpleTabuList(_tabuListLength));
-    _tabuSearch.setIterationsToGo(_iterationToGo);
+    tabuSearch.setCurrentSolution(this.solutions[0]);
+    tabuSearch.setTabuList(new SimpleTabuList(tabuListLength));
+    tabuSearch.setIterationsToGo(iterationToGo);
 
-    _tabuSearch.startSolving();
+    tabuSearch.startSolving();
 
-    this.solutions[0] = (S) _tabuSearch.getBestSolution();
-
+    // TODO: A - Remove casting
+    this.solutions[0] = (S) tabuSearch.getBestSolution();
   }
 
   @Override
   public void stopSearching() throws Exception {
-    _tabuSearch.stopSolving();
+    tabuSearch.stopSolving();
 
     while (isRunning()) {
       Thread.sleep(50);
@@ -112,38 +116,43 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
 
   @Override
   public boolean isRunning() {
-    return _tabuSearch.isSolving();
+    return tabuSearch.isSolving();
   }
 
+  /**
+   * Sets the new algorithm parameteres.
+   * @param params .
+   * @throws Exception .
+   */
   public void setParameters(AlgorithmParams params) throws Exception {
-    _params = params;
-    _iterationToGo = _statNumIter = _params.getValueInt("iterationCount");
+    this.algParams = params;
+    iterationToGo = statNumIter = algParams.getValueInt("iterationCount");
 
-    _tabuListLength = _params.getValueInt("tabuListLength");
-    this.solutionsToExplore = _params.getValueInt("numSolutions");
+    tabuListLength = algParams.getValueInt("tabuListLength");
+    this.solutionsToExplore = algParams.getValueInt("numSolutions");
 
   }
 
   @Override
   public AlgorithmReport getReport() throws Exception {
-    _reporter.putStatistics(_statNumIter, _statNumNewSol, _statLastIterNewSol, _statInitObjVal,
-        (_statInitObjVal + _statEndObjVal) / 2, _statEndObjVal);
+    reporter.putStatistics(statNumIter, statNumNewSol, statLastIterNewSol, statInitObjVal,
+        (statInitObjVal + statEndObjVal) / 2, statEndObjVal);
 
-    return _reporter.getReport();
+    return reporter.getReport();
   }
 
   private class TabuSearchObserver implements TabuSearchListener {
 
     @Override
     public void tabuSearchStarted(TabuSearchEvent e) {
-      _algorithmStarted = true;
-      _statLastIterNewSol = 0;
+      algorithmStarted = true;
+      statLastIterNewSol = 0;
     }
 
     @Override
     public void tabuSearchStopped(TabuSearchEvent e) {
-      _algorithmStopped = true;
-      _statEndObjVal = _bestEverSolution.getObjectiveValue()[0];
+      algorithmStopped = true;
+      statEndObjVal = bestEverSolution.getObjectiveValue()[0];
     }
 
     @Override
@@ -151,17 +160,20 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
       try {
         // TODO: A - Remove casting
         S newBest = (S) e.getTabuSearch().getBestSolution();
-        _bestEverSolution = newBest;
+        bestEverSolution = newBest;
 
-        _statLastIterNewSol = e.getTabuSearch().getIterationsCompleted();
+        statLastIterNewSol = e.getTabuSearch().getIterationsCompleted();
 
-        _statEndObjVal = _bestEverSolution.getObjectiveValue()[0];
-        _statNumNewSol++;
+        statEndObjVal = bestEverSolution.getObjectiveValue()[0];
+        statNumNewSol++;
 
-        if (_statNumNewSol == 1)
-          _statInitObjVal = _statEndObjVal;
+        if (statNumNewSol == 1) {
+          statInitObjVal = statEndObjVal;
+        }
 
-        _reporter.putNewSolution(System.currentTimeMillis(), e.getTabuSearch().getIterationsCompleted(),
+        reporter.putNewSolution(
+            System.currentTimeMillis(), 
+            e.getTabuSearch().getIterationsCompleted(),
             solutionToPhenotype(newBest));
       } catch (Exception ex) {
         logger.error("Failed to report new best solution", ex);

@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -88,7 +88,11 @@ public class TspSimulatedAnnealingFactory implements IAlgorithmFactory<TspPhenot
       @Override
       public TspPhenotype solutionToPhenotype(TspSolution solution) throws Exception {
         TspSolution s = (TspSolution) solution;
-          return new TspPhenotype(s.getTour());
+        TspPhenotype result = new TspPhenotype(s.getTour());
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
       }
 
     };

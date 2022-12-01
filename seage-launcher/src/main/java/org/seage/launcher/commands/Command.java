@@ -1,5 +1,10 @@
 package org.seage.launcher.commands;
 
+import com.beust.jcommander.Parameter;
+
 public abstract class Command {
-  public abstract void performCommad() throws Exception;
+  @Parameter(names = "--help", help = true)
+  public boolean help;
+  
+  public abstract void performCommand() throws Exception;
 }

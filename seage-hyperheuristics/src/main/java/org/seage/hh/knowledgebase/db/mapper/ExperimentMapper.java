@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
-import org.seage.hh.experimenter.Experiment;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 
 public interface ExperimentMapper {
   class ExperimentSqlProvider implements ProviderMethodResolver {
@@ -30,6 +30,7 @@ public interface ExperimentMapper {
         .VALUES("start_date", "#{startDate}")
         .VALUES("end_date", "#{endDate}")          
         .VALUES("score", "#{score}")
+        .VALUES("score_card", "#{scoreCard}")
         .VALUES("host_info", "#{hostInfo}")
         .VALUES("format_version", "#{formatVersion}")
         .toString();
@@ -38,7 +39,7 @@ public interface ExperimentMapper {
 
   @InsertProvider(type = ExperimentSqlProvider.class, method = "insertExperimentSql")
   // @Options(useGeneratedKeys = true, keyProperty = "id")
-  int insertExperiment(Experiment experiment);
+  int insertExperiment(ExperimentRecord experiment);
 
 
   @Select("SELECT * FROM seage.experiments WHERE experiment_id = #{experimentId}")
@@ -52,14 +53,15 @@ public interface ExperimentMapper {
       @Result(property = "startDate", column = "start_date"),
       @Result(property = "endDate", column = "end_date"),      
       @Result(property = "score", column = "score"),
+      @Result(property = "scoreCard", column = "score_card"),
       @Result(property = "hostInfo", column = "host_info"),
       @Result(property = "formatVersion", column = "format_version"),
   })
-  Experiment getExperiment(UUID experimentId);
+  ExperimentRecord getExperiment(UUID experimentId);
 
   @Select("SELECT * FROM seage.experiments")
   @ResultMap("experimentResult")
-  List<Experiment> getExperiments();
+  List<ExperimentRecord> getExperiments();
 
   @Select("SELECT count(*) FROM seage.experiments")
   int getExperimentCount();
@@ -69,6 +71,11 @@ public interface ExperimentMapper {
   void updateEndDate(@Param("experimentID") UUID experimentID, @Param("endDate") Date endDate);
 
   @SuppressWarnings("LineLengthCheck")
-  @Update("UPDATE seage.experiments SET score = #{score} WHERE experiment_id = #{experimentID}::uuid")
-  void updateScore(@Param("experimentID") UUID experimentID, @Param("score") double score);
+  @Update(
+    "UPDATE seage.experiments SET score_card = #{scoreCard}, score = #{score} WHERE experiment_id = #{experimentID}::uuid")
+  void updateScore(
+        @Param("experimentID") UUID experimentID, 
+        @Param("score") double score, @Param("scoreCard") String scoreCard);
+
+
 }

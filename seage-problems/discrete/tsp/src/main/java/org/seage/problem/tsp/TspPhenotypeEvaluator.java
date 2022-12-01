@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -28,6 +28,8 @@ package org.seage.problem.tsp;
 
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
+import org.seage.aal.problem.ProblemInfo;
+import org.seage.aal.problem.ProblemScoreCalculator;
 
 /**
  * TSP phenotype is a sequence of city IDs starting at _1_
@@ -37,10 +39,13 @@ import org.seage.aal.algorithm.Phenotype;
 public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<TspPhenotype> {
   protected TspProblemInstance _instance;
   protected City[] _cities;
+  private ProblemScoreCalculator scoreCalculator;
 
-  public TspPhenotypeEvaluator(City[] cities) {
+  public TspPhenotypeEvaluator(ProblemInfo problemInfo, TspProblemInstance instance) {
     super();
-    _cities = cities;
+    _instance = instance;
+    _cities = instance.getCities();
+    this.scoreCalculator = new ProblemScoreCalculator(problemInfo);
   }
 
   @Override
@@ -51,8 +56,9 @@ public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<TspPhenotype> 
 
     for (int i = 0; i < numCities; i++) {
       int k = i + 1;
-      if (i == numCities - 1)
+      if (i == numCities - 1) {
         k = 0;
+      }
 
       int ix1 = phenotype.getSolution()[i] - 1;
       int ix2 = phenotype.getSolution()[k] - 1;
@@ -62,23 +68,31 @@ public class TspPhenotypeEvaluator implements IPhenotypeEvaluator<TspPhenotype> 
       double y2 = _cities[ix2].Y;
       tourLength += Math.round(Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)));
     }
-    return new double[] { tourLength };
+    String instanceID = _instance.getProblemInstanceInfo().getInstanceID();
+    return new double[] { 
+      tourLength,
+      this.scoreCalculator.calculateInstanceScore(instanceID, tourLength)
+    };
   }
 
   @Override
   public int compare(double[] o1, double[] o2) {
-    if (o1 == null)
+    if (o1 == null) {
       return -1;
-    if (o2 == null)
+    }
+    if (o2 == null) {
       return 1;
+    }
 
     int length = o1.length <= o2.length ? o1.length : o2.length;
 
     for (int i = 0; i < length; i++) {
-      if (o1[i] < o2[i])
+      if (o1[i] < o2[i]) {
         return 1;
-      if (o1[i] > o2[i])
+      }
+      if (o1[i] > o2[i]) {
         return -1;
+      }
     }
     return 0;
   }

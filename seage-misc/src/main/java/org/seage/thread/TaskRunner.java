@@ -30,6 +30,7 @@ public class TaskRunner {
         runnerThreads.get(i).join();
       } catch (InterruptedException e) {
         _logger.trace(e.getMessage());
+        Thread.currentThread().interrupt();
       }
     }
   }
@@ -46,8 +47,9 @@ public class TaskRunner {
       int i = 1;
       while (!_taskQueue.isEmpty()) {
         Runnable task = _taskQueue.poll();
-        if (task == null)
+        if (task == null) {
           return;
+        }
         Thread t = new Thread(task, _threadName + "-Job" + i++);
         _logger.trace(t.toString() + " started");
         t.start();
@@ -57,6 +59,7 @@ public class TaskRunner {
           _logger.trace(t.toString() + " finished");
         } catch (InterruptedException e) {
           _logger.warn(e.getMessage());
+          Thread.currentThread().interrupt();
         }
       }
     }

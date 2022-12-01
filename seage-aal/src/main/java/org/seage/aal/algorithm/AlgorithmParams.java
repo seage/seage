@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -29,14 +29,12 @@ package org.seage.aal.algorithm;
 import org.seage.data.DataNode;
 
 /**
- * Algorithm parameters
+ * Algorithm parameters.
  * 
  * @author Richard Malek
  * 
  */
 public class AlgorithmParams extends DataNode {
-
-  private static final long serialVersionUID = 1L;
 
   public AlgorithmParams(DataNode dn) {
     super(dn);

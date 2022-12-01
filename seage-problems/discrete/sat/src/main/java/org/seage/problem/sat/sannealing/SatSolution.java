@@ -13,19 +13,20 @@
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with
- * SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
 /**
  * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.problem.sat.sannealing;
 
 import org.seage.metaheuristic.sannealing.Solution;
 
 /**
- *
+ * .
  * @author Richard Malek
  */
 public class SatSolution extends Solution {
@@ -68,6 +69,11 @@ public class SatSolution extends Solution {
   @Override
   public int hashCode() {
     return _hash;
+  }
+
+  @Override 
+  public boolean equals(Object satSol) {
+    return satSol != null && this.hashCode() == satSol.hashCode();
   }
 
 }

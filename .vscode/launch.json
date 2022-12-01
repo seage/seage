@@ -6,12 +6,54 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Debug Launcher (list)",
+      "name": "Launch FspAntColonyTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.fsp.antcolony.FspAntColonyTest",
+      "projectName": "seage-problem-fsp"
+    },
+    {
+      "type": "java",
+      "name": "Launch JspAntColonyTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.jsp.antcolony.JspAntColonyTest",
+      "projectName": "seage-problem-jsp"
+    },
+    {
+      "type": "java",
+      "name": "Debug Launcher (info)",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
-      "cwd": "${workspaceFolder}/target",
-      "args": "list"
+      "cwd": "${workspaceFolder}",
+      "args": "info"
+    },
+    {
+      "type": "java",
+      "name": "Debug Launcher (details)",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "details",
+        "-p",
+        "SAT"
+      ]
+    },
+    {
+      "type": "java",
+      "name": "Debug Launcher (metadata)",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "metadata",
+        "-p",
+        "QAP",
+        "-n",
+        "1"
+      ]
     },
     {
       "type": "java",
@@ -19,20 +61,44 @@
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
-      "cwd": "${workspaceFolder}/target",
+      "cwd": "${workspaceFolder}",
       "args": [
         "experiment-single-random",
-        "-p",
-        "TSP",
         "-a",
         "GeneticAlgorithm",
         "-i",
-        "berlin52",
+        "TSP:berlin52",
         "-t",
         "1",
         "-n",
-        "1",
+        "1"
+      ]
+    },
+    {
+      "type": "java",
+      "name": "Debug Launcher (approach, h2)",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "experiment-approach",
+        "-a",
+        "AntColony",
+        "-i",
+        // "JSP:ft10",
+        "TSP:berlin52",
+        "-i",
+        "JSP:ft10",
+        "-t",
+        "60",
+        "-n",
+        "1"
       ],
+      "env": {
+        "LOG_LEVEL": "debug",
+        // "DB_URL": "jdbc:postgresql://localhost:25432/seage"
+      }
     },
     {
       "type": "java",
@@ -40,125 +106,43 @@
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
-      "cwd": "${workspaceFolder}/target",
+      "cwd": "${workspaceFolder}",
       "args": [
         "experiment-single-random",
-        "-p",
-        "TSP",
         "-a",
         "GeneticAlgorithm",
         "-i",
-        "berlin52",
+        "TSP:berlin52",
         "-t",
         "1",
         "-n",
-        "1",
+        "1"
       ],
-      "env": {"DB_URL": "jdbc:postgresql://localhost/seage"}
+      "env": {
+        "DB_URL": "jdbc:postgresql://localhost:25432/seage"
+      }
     },
     {
       "type": "java",
-      "name": "Launch HelloSparkApp",
+      "name": "Debug Launcher (HH1 experimenter, postgres)",
       "request": "launch",
-      "mainClass": "org.seage.hh.spark.HelloSparkApp",
-      "projectName": "seage-hyperheuristics"
-    },
-    {
-      "type": "java",
-      "name": "Launch HsqldbTest",
-      "request": "launch",
-      "mainClass": "org.seage.hh.knowledgebase.HsqldbTest",
-      "projectName": "seage-hyperheuristics"
-    },
-    {
-      "type": "java",
-      "name": "Launch App",
-      "request": "launch",
-      "mainClass": "org.seage.hh.spark.App",
-      "projectName": "seage-hyperheuristics"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch) - Current File",
-      "request": "launch",
-      "mainClass": "${file}"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-HsqldbTest<seage-knowledgebase>",
-      "request": "launch",
-      "mainClass": "org.seage.knowledgebase.HsqldbTest",
-      "projectName": "seage-knowledgebase"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-ClasspathTest<seage-launcher>",
-      "request": "launch",
-      "mainClass": "org.seage.sandbox.ClasspathTest",
-      "projectName": "seage-launcher"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-H2Test<seage-launcher>",
-      "request": "launch",
-      "mainClass": "org.seage.sandbox.H2Test",
-      "projectName": "seage-launcher"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-ProcessorInfo<seage-launcher>",
-      "request": "launch",
-      "mainClass": "org.seage.sandbox.ProcessorInfo",
-      "projectName": "seage-launcher"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TourProvider<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.TourProvider",
-      "projectName": "seage-problem-tsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TspAntColonyTest<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.antcolony.TspAntColonyTest",
-      "projectName": "seage-problem-tsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TspGeneticAlgorithmTest<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.genetics.TspGeneticAlgorithmTest",
-      "projectName": "seage-problem-tsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TspHillClimberTest<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.grasp.TspHillClimberTest",
-      "projectName": "seage-problem-tsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TspParticleSwarmTest<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.particles.TspParticleSwarmTest",
-      "projectName": "seage-problem-tsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TspSimulatedAnnealingTest<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.sannealing.TspSimulatedAnnealingTest",
-      "projectName": "seage-problem-tsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug (Launch)-TspTabuSearchTest<seage-problem-tsp>",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.tabusearch.TspTabuSearchTest",
-      "projectName": "seage-problem-tsp"
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "experiment-approach",
+        "-a",
+        "HyperHeuristic1",
+        "-i",
+        "TSP:hyflex",
+        "-t",
+        "10",
+        "-n",
+        "1"
+      ],
+      "env": {
+        "DB_URL": "jdbc:postgresql://localhost:25432/seage"
+      }
     }
   ]
 }

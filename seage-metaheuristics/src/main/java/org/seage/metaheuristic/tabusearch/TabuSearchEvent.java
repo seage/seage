@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -58,7 +58,7 @@ public class TabuSearchEvent extends java.util.EventObject {
   } // end constructor
 
   /**
-   * Casts the <tt>source</tt> as a {@link TabuSearch} prior to returning. It is
+   * Casts the <code>source</code> as a {@link TabuSearch} prior to returning. It is
    * equivalent to <code>(TabuSearch) getSource()</code>.
    *
    * @return source as {@link TabuSearch}

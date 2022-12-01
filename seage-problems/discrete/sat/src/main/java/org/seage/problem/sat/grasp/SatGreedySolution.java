@@ -13,13 +13,14 @@
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with
- * SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
 /**
  * Contributors: Martin Zaloga - Initial implementation
  */
+
 package org.seage.problem.sat.grasp;
 
 import java.util.ArrayList;
@@ -30,18 +31,18 @@ import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 
 /**
- *
+ * .
  * @author Martin Zaloga
  */
 public class SatGreedySolution extends SatSolution {
   private static final long serialVersionUID = -4353469001304258494L;
-
+  private Random rnd = new Random(); // sonar fix
   Boolean[] _copyLitValues;
 
   /**
-   * Constructor the solution with using the greedy algorithm for initial solution
+   * Constructor the solution with using the greedy algorithm for initial solution.
    * 
-   * @param cities - List of cities with their coordinates
+   * @param formula - List of clauses representing the formula
    */
   public SatGreedySolution(Formula formula) throws Exception {
     super();
@@ -51,7 +52,7 @@ public class SatGreedySolution extends SatSolution {
 
   // OK
   private void initGreedySolution(Formula formula) throws Exception {
-    List<Integer> listOfLiteralsIndexes = new ArrayList<Integer>();
+    List<Integer> listOfLiteralsIndexes = new ArrayList<>();
     initLiterals(formula.getLiteralCount());
     int numLiterals = formula.getLiteralCount();
     for (int i = 0; i < numLiterals; i++) {
@@ -61,8 +62,7 @@ public class SatGreedySolution extends SatSolution {
     int literalIx;
     double valueBeforeMove = FormulaEvaluator.evaluate(formula, _litValues);
     double valueAfterMove;
-    Random rnd = new Random();
-    while (listOfLiteralsIndexes.size() != 0) {
+    while (listOfLiteralsIndexes.isEmpty()) {
       listIndex = rnd.nextInt(listOfLiteralsIndexes.size());
       literalIx = listOfLiteralsIndexes.get(listIndex);
       _copyLitValues = _litValues.clone();

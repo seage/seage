@@ -1,5 +1,10 @@
 package org.seage.hh.experimenter;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+// import java.lang.reflect.Type;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Instant;
@@ -8,6 +13,9 @@ import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
 import org.seage.data.DataNode;
 import org.seage.hh.knowledgebase.db.DbManager;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
+import org.seage.hh.knowledgebase.db.dbo.SolutionRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 import org.seage.hh.knowledgebase.db.mapper.SolutionMapper;
@@ -23,17 +31,19 @@ public class ExperimentReporter {
    * Puts experiment info into database.
    */
   public synchronized void createExperimentReport(
-      UUID experimentID, String experimentName, String problemID,
+      UUID experimentID, String experimentName, String[] problemIDs,
       String[] instanceIDs, String[] algorithmIDs, String config, 
       Date startDate) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       
       String instances = String.join(",", instanceIDs);
       String algorithms = String.join(",", algorithmIDs);
-      Experiment experiment = new Experiment(
+      String problems = String.join(",", problemIDs);
+      
+      ExperimentRecord experiment = new ExperimentRecord(
           experimentID, 
           experimentName,
-          problemID,
+          problems,
           instances,
           algorithms,
           config,
@@ -63,6 +73,11 @@ public class ExperimentReporter {
     return info.toString();
   }
 
+  /**
+   * Method updates the end date.
+   * @param experimentID Experiment id.
+   * @param endDate New end date.
+   */
   public synchronized void updateEndDate(UUID experimentID, Date endDate) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       
@@ -72,18 +87,36 @@ public class ExperimentReporter {
     }    
   }
 
-  public synchronized void updateScore(UUID experimentID, double bestObjVal) throws Exception {
-    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
+  /**
+   * Method updates the score and the score card.
+   * @param experimentID Experiment id.
+   * @param scoreCard Score card.
+   */
+  public synchronized void updateExperimentScore(
+      UUID experimentID, ExperimentScoreCard scoreCard) 
+      throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
-      mapper.updateScore(experimentID, bestObjVal);
+
+      String scoreCardJson = gson.toJson(scoreCard);
+      double totalScore = scoreCard.getTotalScore();
+
+      mapper.updateScore(
+          experimentID, totalScore, scoreCardJson);
+      
       session.commit();
-    }  
+    }
   }
 
-  /*
-   * This is a critical function. When non-sychronized, multiple threads open db sessions that timeouted.
+  /**
+   * This is a critical function. When non-sychronized, 
+   * multiple threads open db sessions that timeouted.
+   * @param experimentTask Experiment task.
    */
-  public synchronized void reportExperimentTask(ExperimentTask experimentTask) throws Exception {
+  public synchronized void reportExperimentTask(
+      ExperimentTaskRecord experimentTask) throws Exception {
      
     insertExperimentTask(experimentTask);
 
@@ -98,10 +131,9 @@ public class ExperimentReporter {
 
     // DataNode newSolutions = report.getDataNode("AlgorithmReport").getDataNode("Log");
     // insertSolutions(session, experimentTaskID, newSolutions, "NewSolution", "new");
-      
   }
 
-  private void insertExperimentTask(ExperimentTask experimentTask) throws Exception {
+  private void insertExperimentTask(ExperimentTaskRecord experimentTask) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
       mapper.insertExperimentTask(experimentTask);
@@ -109,7 +141,8 @@ public class ExperimentReporter {
     }
   }
 
-  private void insertSolutions(UUID experimentTaskID, DataNode solutions, String elemName, String type)
+  private void insertSolutions(
+      UUID experimentTaskID, DataNode solutions, String elemName, String type)
       throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       SolutionMapper mapper = session.getMapper(SolutionMapper.class);
@@ -120,12 +153,13 @@ public class ExperimentReporter {
         } else if (type.equals("new")) {
           iterNumber = dn.getValueLong("iterNumber");
         }
-        Solution s = new Solution(
+        SolutionRecord s = new SolutionRecord(
             UUID.randomUUID(),
             experimentTaskID,
             dn.getValueStr("hash"),
             dn.getValueStr("solution"),
             dn.getValueDouble("objVal"),
+            dn.getValueDouble("score"),
             iterNumber,
             Date.from(Instant.now())
         );

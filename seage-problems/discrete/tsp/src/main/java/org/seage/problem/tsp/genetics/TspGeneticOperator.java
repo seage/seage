@@ -1,28 +1,25 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
-
+ * 
  * This file is part of SEAGE.
-
- * SEAGE is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * SEAGE is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  */
 
 /**
- * Contributors:
- *     Richard Malek
- *     - Initial implementation
+ * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.problem.tsp.genetics;
 
 import java.util.ArrayList;
@@ -34,24 +31,30 @@ import org.seage.metaheuristic.genetics.Chromosome;
 import org.seage.metaheuristic.genetics.Subject;
 
 /**
+ * TspGeneticOperator implementation.
+ * 
  * @author Richard Malek
  */
 public class TspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, Integer> {
-  public List<Subject<Integer>> crossOver2(Subject<Integer> parent1, Subject<Integer> parent2) throws Exception {
+  /** . */
+  public List<Subject<Integer>> crossOver2(Subject<Integer> parent1, Subject<Integer> parent2)
+      throws Exception {
     int length = parent1.getChromosome().getLength();
 
     int[] occur1 = new int[length];
     int[] occur2 = new int[length];
     int[] cross1 = new int[length];
     int[] cross2 = new int[length];
-    for (int i = 0; i < length; i++)
+    for (int i = 0; i < length; i++) {
       cross1[i] = cross2[i] = -1;
+    }
 
     int ix = _random.nextInt(length);
     int crossLength = (int) (length * _random.nextDouble() * _crossLengthCoef) + 1;
 
-    if (ix > length - crossLength)
+    if (ix > length - crossLength) {
       ix = length - crossLength;
+    }
 
     Subject<Integer> child1 = parent1.clone();
     Subject<Integer> child2 = parent2.clone();
@@ -71,7 +74,8 @@ public class TspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, I
 
     for (int i = 0; i < length; i++) {
       if (i < ix || i >= ix + crossLength) {
-        int c1 = 0, c2 = 0;
+        int c1 = 0;
+        int c2 = 0;
         while (c1 != -1) {
           c1 = cross1[ch1.getGene(i)];
           if (c1 != -1) {
@@ -90,8 +94,9 @@ public class TspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, I
     }
 
     for (int i = 0; i < length; i++) {
-      if (occur1[i] > 1 || occur2[i] > 1)
-        throw new Exception("Invalid chromosome");
+      if (occur1[i] > 1 || occur2[i] > 1) {
+        throw new RuntimeException("Invalid chromosome");
+      }
     }
 
     ArrayList<Subject<Integer>> result = new ArrayList<Subject<Integer>>();
@@ -102,14 +107,16 @@ public class TspGeneticOperator extends BasicGeneticOperator<Subject<Integer>, I
   }
 
   @Override
-  public List<Subject<Integer>> crossOver(Subject<Integer> parent1, Subject<Integer> parent2) throws Exception {
+  public List<Subject<Integer>> crossOver(Subject<Integer> parent1, Subject<Integer> parent2)
+      throws Exception {
     int length = parent1.getChromosome().getLength();
 
     int ix = _random.nextInt(length);
     int crossLength = (int) (length * _random.nextDouble() * _crossLengthCoef) + 1;
 
-    if (ix > length - crossLength)
+    if (ix > length - crossLength) {
       ix = length - crossLength;
+    }
 
     Subject<Integer> child1 = parent1.clone();
     Subject<Integer> child2 = parent2.clone();

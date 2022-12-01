@@ -66,13 +66,13 @@ public class RandomConfiguratorEx extends Configurator {
 
     int j = 0;
     for (DataNode inst : problemInfo.getDataNode("Instances").getDataNodes()) {
-      ProblemConfig instanceCfg = (ProblemConfig) config.clone();
+      ProblemConfig instanceCfg = new ProblemConfig(config);
       instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("name", inst.getValue("name"));
       instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("type", inst.getValue("type"));
       instanceCfg.getDataNode("Problem").getDataNode("Instance").putValue("path", inst.getValue("path"));
 
       for (int i = 0; i < numConfigs; i++) {
-        ProblemConfig paramInfo = (ProblemConfig) instanceCfg.clone();
+        ProblemConfig paramInfo = new ProblemConfig(instanceCfg);
         for (DataNode paramNode : problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
             .getDataNodes("Parameter")) {
           String parameterName = paramNode.getValueStr("name");

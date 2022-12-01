@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.zip.ZipOutputStream;
-
 import org.seage.aal.algorithm.AlgorithmParams;
-import org.seage.hh.experimenter.ExperimentTask;
+import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.metaheuristic.genetics.SubjectEvaluator;
 import org.seage.thread.TaskRunner3;
 
@@ -33,8 +31,8 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 
   @Override
   public void evaluateSubjects(List<SingleAlgorithmExperimentTaskSubject> subjects) throws Exception {
-    List<ExperimentTask> taskQueue = new ArrayList<ExperimentTask>();
-    HashMap<ExperimentTask, SingleAlgorithmExperimentTaskSubject> taskMap = new HashMap<ExperimentTask, SingleAlgorithmExperimentTaskSubject>();
+    List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
+    HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> taskMap = new HashMap<>();
 
     for (SingleAlgorithmExperimentTaskSubject s : subjects) {
       AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
@@ -46,14 +44,15 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
       if (this.configCache.containsKey(configID)) {
         s.setObjectiveValue(new double[] { this.configCache.get(configID) });
       } else {
-        ExperimentTask task = new ExperimentTask(
+        ExperimentTaskRequest task = new ExperimentTaskRequest(
             UUID.randomUUID(),
             this.experimentID,
             1, 1,
-            this.problemID, 
+            this.problemID,
             this.instanceID,
-            this.algorithmID, 
-            algorithmParams, 
+            this.algorithmID,
+            algorithmParams,
+            null,
             this.timeoutS
         );
 
@@ -64,12 +63,12 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 
     TaskRunner3.run(taskQueue.toArray(new Runnable[] {}), Runtime.getRuntime().availableProcessors());
 
-    for (ExperimentTask task : taskQueue) {
+    for (ExperimentTaskRequest task : taskQueue) {
       SingleAlgorithmExperimentTaskSubject s = taskMap.get(task);
       double value = Double.MAX_VALUE;
       try {
-        value = task.getExperimentTaskReport().getDataNode("AlgorithmReport").getDataNode("Statistics")
-            .getValueDouble("bestObjVal");
+        // value = task.getExperimentTaskReport().getDataNode("AlgorithmReport").getDataNode("Statistics")
+        //     .getValueDouble("bestObjVal");
       } catch (Exception ex) {
         _logger.warn("Unable to set value");
       }
@@ -82,7 +81,7 @@ public class SingleAlgorithmExperimentTaskEvaluator extends SubjectEvaluator<Sin
 
   @Override
   protected double[] evaluate(SingleAlgorithmExperimentTaskSubject solution) throws Exception {
-    throw new Exception("Should be unimplemented");
+    throw new UnsupportedOperationException("Should be unimplemented");
   }
 
 }

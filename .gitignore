@@ -1,26 +1,18 @@
 *~
-.svn*
 *.class
 private/
 dist/
 build/
+.gradle/
+output/
+logs/
 
 *.log*
 **/bin/
 
-.classpath
-.project
-
-**/*.properties
-*.versionsBackup
-
-**/target/
-!./target/
-target/bin/
-target/output/
-target/report/
-target/repository/processes/*.properties
-target/repository/databases/experiments/
+#.classpath
+#.project
 
 seage-*/**/.settings
 seage-*/**/.checkstyle
+seage-*/**/*.properties

@@ -6,5 +6,10 @@
   "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
   "java.format.enabled": true,
   "java.format.settings.profile": "GoogleStyle",
-  "maven.pomfile.autoUpdateEffectivePOM": true
+  "maven.pomfile.autoUpdateEffectivePOM": true,
+  "editor.tabSize": 2,
+  "cSpell.words": [
+    "hyflex",
+    "seage"
+  ]
 }

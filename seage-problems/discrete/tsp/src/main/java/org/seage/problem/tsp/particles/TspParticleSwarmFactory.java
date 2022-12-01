@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -67,10 +67,10 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory<TspPhenotype, 
       @Override
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
         _numParticles = source.length;
-        _initialParticles = new TspParticle[source.length];
+        initialParticles = new TspParticle[source.length];
         for (int i = 0; i < source.length; i++) {
-          Integer[] tour = ((TspParticle) _initialParticles[i]).getTour();
-          _initialParticles[i] = new TspSortedParticle(cities.length);
+          Integer[] tour = ((TspParticle) initialParticles[i]).getTour();
+          initialParticles[i] = new TspSortedParticle(cities.length);
           for (int j = 0; j < source[i].getSolution().length; j++) {
             // _initialParticles[i].setCoords(coords); ???
           }
@@ -80,10 +80,10 @@ public class TspParticleSwarmFactory implements IAlgorithmFactory<TspPhenotype, 
       @Override
       public TspPhenotype[] solutionsToPhenotype() throws Exception {
         // int numOfParticles = _particleSwarm.getParticles().length;
-        TspPhenotype[] source = new TspPhenotype[_initialParticles.length];
+        TspPhenotype[] source = new TspPhenotype[initialParticles.length];
 
         for (int i = 0; i < source.length; i++) {
-          Integer[] tour = ((TspParticle) _initialParticles[i]).getTour();
+          Integer[] tour = ((TspParticle) initialParticles[i]).getTour();
           source[i] = new TspPhenotype(tour);
         }
 

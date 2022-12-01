@@ -46,4 +46,9 @@ public class SatSolution extends SolutionAdapter {
   public int hashCode() {
     return _hash;
   }
+
+  @Override
+  public boolean equals(Object satSolution) {
+    return satSolution != null && this.hashCode() == satSolution.hashCode();
+  }
 }

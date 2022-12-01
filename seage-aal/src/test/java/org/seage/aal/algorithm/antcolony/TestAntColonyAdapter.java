@@ -6,7 +6,6 @@ import java.util.Arrays;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.TestPhenotype;
 import org.seage.metaheuristic.antcolony.Ant;
-import org.seage.metaheuristic.antcolony.AntBrain;
 import org.seage.metaheuristic.antcolony.Graph;
 
 public class TestAntColonyAdapter extends AntColonyAdapter<TestPhenotype, Ant> {
@@ -17,21 +16,21 @@ public class TestAntColonyAdapter extends AntColonyAdapter<TestPhenotype, Ant> {
 
   @Override
   public void solutionsFromPhenotype(TestPhenotype[] source) throws Exception {
-    _ants = new Ant[source.length];
+    ants = new Ant[source.length];
 
-    for (int i = 0; i < _ants.length; i++) {
+    for (int i = 0; i < ants.length; i++) {
       ArrayList<Integer> nodes = new ArrayList<Integer>();
       nodes.addAll(Arrays.asList(source[i].getSolution()));
 
-      _ants[i] = new Ant(new AntBrain(_graph), _graph, nodes);
+      ants[i] = new Ant(graph, nodes);
     }
   }
 
   @Override
   public TestPhenotype[] solutionsToPhenotype() throws Exception {
-    TestPhenotype[] result = new TestPhenotype[this._ants.length];
-    for (int i = 0; i < this._ants.length; i++) {
-      result[i] = solutionToPhenotype(this._ants[i]);
+    TestPhenotype[] result = new TestPhenotype[this.ants.length];
+    for (int i = 0; i < this.ants.length; i++) {
+      result[i] = solutionToPhenotype(this.ants[i]);
     }
     return result;
   }

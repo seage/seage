@@ -13,7 +13,7 @@
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with
- * SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -23,6 +23,8 @@
 
 package org.seage.problem.sat.sannealing;
 
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.problem.ProblemInfo;
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
 import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.sat.Formula;
@@ -34,10 +36,10 @@ import org.seage.problem.sat.SatPhenotypeEvaluator;
  * @author Richard Malek
  */
 public class SatObjectiveFunction implements IObjectiveFunction {
-  private SatPhenotypeEvaluator evaluator;
+  private IPhenotypeEvaluator<SatPhenotype> evaluator;
 
-  public SatObjectiveFunction(Formula formula) {
-    evaluator = new SatPhenotypeEvaluator(formula);
+  public SatObjectiveFunction(IPhenotypeEvaluator<SatPhenotype> evaluator) {
+    this.evaluator = evaluator;
   }
 
   @Override

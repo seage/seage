@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -51,7 +51,7 @@ public class TernaryDummyGrammarRule extends GrammarRule {
   }
 
   /**
-   * @brief semantical actions for given rule
+   * semantical actions for given rule
    * @param symbolTable table of symbols
    * @param treePos     position in parse tree (reference to left non terminal)
    */
@@ -67,7 +67,7 @@ public class TernaryDummyGrammarRule extends GrammarRule {
   }
 
   /**
-   * @brief optimize derivate tree (eg. create result of arithmetical operations
+   * optimize derivate tree (eg. create result of arithmetical operations
    *        on contants)
    */
   @Override

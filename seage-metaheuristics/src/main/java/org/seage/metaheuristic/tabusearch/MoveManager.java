@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -28,7 +28,7 @@
 package org.seage.metaheuristic.tabusearch;
 
 /**
- * The <tt>MoveManager</tt> determines which moves are available at any given
+ * The <code>MoveManager</code> determines which moves are available at any given
  * time (or given solution). As a performance boost, you may want to consider
  * reusing {@link Move}s after each iteration to avoid expensive instantiation.
  *

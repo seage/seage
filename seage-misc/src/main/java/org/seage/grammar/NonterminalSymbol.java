@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -29,17 +29,18 @@ package org.seage.grammar;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
-
 import org.seage.data.DataNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * .
  * @author jenik
  */
 public class NonterminalSymbol implements Symbol {
-
+  private static final Logger log = LoggerFactory.getLogger(NonterminalSymbol.class.getName());
   /**
-   * 
+   * . 
    */
   private static final long serialVersionUID = -1930442234125327450L;
 
@@ -57,9 +58,8 @@ public class NonterminalSymbol implements Symbol {
   public Object eval(DataNode symbolTable) {
     try {
       return rule.eval(symbolTable, this);
-    } catch (Exception e) {
-      System.err.println("GOT ERROR: " + e);
-      e.printStackTrace();
+    } catch (Exception ex) {
+      log.error("GOT ERROR: {}", ex.getMessage(), ex);
       return null;
     }
   }
@@ -68,15 +68,14 @@ public class NonterminalSymbol implements Symbol {
   public Symbol optimize() {
     try {
       return rule.optimize(this);
-    } catch (Exception e) {
-      System.err.println("GOT ERROR: " + e);
+    } catch (Exception ex) {
+      log.error("GOT ERROR: {}", ex.getMessage(), ex);
       return null;
     }
   }
 
   /**
-   * @brief expand nontermial by given rule, on given stack
-   * @param generator functor that will generate constant values
+   * Expand nonterminal by given rule, on given stack.
    */
   public void expand(Stack<NonterminalSymbol> stack, GrammarRule rule) {
     /// save reference to rule
@@ -108,13 +107,13 @@ public class NonterminalSymbol implements Symbol {
     return name;
   }
 
-  /** @brief get string representation of this subtree */
+  /** Get string representation of this subtree. */
   public String getStringTree() {
-    String ret = new String();
+    String ret = "";
     for (Symbol s : children) {
-      if (s.getType() == Symbol.Type.TERMINAL)
+      if (s.getType() == Symbol.Type.TERMINAL) {
         ret += s.toString();
-      else {
+      } else {
         ret += ((NonterminalSymbol) (s)).getStringTree();
       }
     }
@@ -124,19 +123,19 @@ public class NonterminalSymbol implements Symbol {
   public String getSymbolTree() {
     Iterator<Symbol> it = children.iterator();
     Iterator<?> rit = rule.getRight().iterator();
-    String ret = new String();
+    String ret = "";
     while (rit.hasNext()) {
       Symbol s = (Symbol) rit.next();
-      if (s.getType() == Symbol.Type.TERMINAL)
+      if (s.getType() == Symbol.Type.TERMINAL) {
         ret += s.toString();
-      else {
+      } else {
         ret += ((NonterminalSymbol) (it.next())).getStringTree();
       }
     }
     return ret;
   }
 
-  /** @brief copy ourself, and return new instance */
+  /** Copy ourself, and return new instance. */
   @Override
   public Symbol copy() {
     return new NonterminalSymbol(this);

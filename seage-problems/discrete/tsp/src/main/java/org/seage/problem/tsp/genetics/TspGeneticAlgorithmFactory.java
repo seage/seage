@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -59,7 +59,7 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory<TspPhenotyp
       IPhenotypeEvaluator<TspPhenotype> phenotypeEvaluator) throws Exception {
     City[] cities = ((TspProblemInstance) instance).getCities();
     IAlgorithmAdapter<TspPhenotype, Subject<Integer>> algorithm = new GeneticAlgorithmAdapter<TspPhenotype, Subject<Integer>>(
-        new TspGeneticOperator(), new TspEvaluator(cities), phenotypeEvaluator, false) {
+        new TspGeneticOperator(), new TspEvaluator(phenotypeEvaluator), phenotypeEvaluator, false) {
       @Override
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
         this.solutions = new ArrayList<Subject<Integer>>(source.length);
@@ -78,7 +78,11 @@ public class TspGeneticAlgorithmFactory implements IAlgorithmFactory<TspPhenotyp
       }
 
       public TspPhenotype solutionToPhenotype(Subject<Integer> solution) throws Exception {
-        return new TspPhenotype(solution.getChromosome().getGenes());
+        TspPhenotype result = new TspPhenotype(solution.getChromosome().getGenes());
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
       }
     };
 

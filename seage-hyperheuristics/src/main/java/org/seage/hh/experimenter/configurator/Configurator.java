@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -72,7 +72,7 @@ public abstract class Configurator {
     config.getDataNode("Problem").getDataNode("Instance").putValue("path", instanceInfo.getValue("path"));
 
     if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null) {
-      throw new Exception("Unknown algorithm id: " + algorithmID);
+      throw new NullPointerException("Unknown algorithm id: " + algorithmID);
     }
 
     return config;

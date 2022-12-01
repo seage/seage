@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -47,7 +47,7 @@ public class NoMovesGeneratedException extends java.lang.Exception {
   private static final long serialVersionUID = 4796075708422074369L;
 
   /**
-   * Constructs generic <tt>NoMovesGeneratedException</tt>. This constructor only
+   * Constructs generic <code>NoMovesGeneratedException</code>. This constructor only
    * calls <code>super()</code> and quits.
    *
    * @since 1.0
@@ -57,7 +57,7 @@ public class NoMovesGeneratedException extends java.lang.Exception {
   } // end constructor
 
   /**
-   * Constructs a <tt>NoMovesGeneratedException</tt> with the specified
+   * Constructs a <code>NoMovesGeneratedException</code> with the specified
    * {@link java.lang.String}. This constructor calls <code>super( s )</code> and
    * quits.
    *

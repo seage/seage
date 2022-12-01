@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with SEAGE. If not, see <http://www.gnu.org/licenses/>.
+ * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
 
@@ -23,6 +23,7 @@
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.aal.problem;
 
 import java.util.Map;
@@ -32,7 +33,7 @@ import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;
 
 /**
- * Problem provider interface
+ * Problem provider interface.
  * 
  * @author Richard Malek
  * 
@@ -43,13 +44,18 @@ public interface IProblemProvider<P extends Phenotype<?>> {
   ProblemInfo getProblemInfo() throws Exception;
 
   // Returns the algorithm factory by id
+  @SuppressWarnings("java:S1452")
   IAlgorithmFactory<P, ?> getAlgorithmFactory(String algorithmID) throws Exception;
 
   // Returns all algorithm factories
+  @SuppressWarnings("java:S1452")
   Map<String, IAlgorithmFactory<P, ?>> getAlgorithmFactories();
 
   // Initializes (reads) a problem instance.
   ProblemInstance initProblemInstance(ProblemInstanceInfo problemInstanceInfo) throws Exception;
+
+  // Initializes a problem metadata generator
+  ProblemMetadataGenerator<P> initProblemMetadataGenerator();
 
   // Initializes an evaluator of solutions in phenotype representation
   // (i.e. in general representation of a problem solution).
