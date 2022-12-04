@@ -46,8 +46,9 @@ public class NewFeedbackConfigurator extends Configurator {
   /**
    * Default constructor, does nothing.
    */
-  public NewFeedbackConfigurator() {
-    // Default empty constructor.
+  public NewFeedbackConfigurator() throws Exception {
+    // Initialize the database
+    DbManager.init();
   }
 
   /**
