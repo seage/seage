@@ -72,5 +72,5 @@ public interface ExperimentTaskMapper {
   "ORDER BY seage.experiment_tasks.score DESC " +
   "LIMIT #{limit}")
   @ResultMap("experimentResult")
-  List<ExperimentTaskRecord> getBestExperimentTaks(@Param("problemId") String problemId, @Param("algorithmId") String algorithmId, @Param("limit") int limit);
+  List<ExperimentTaskRecord> getBestExperimentTasks(@Param("problemId") String problemId, @Param("algorithmId") String algorithmId, @Param("limit") int limit);
 }
