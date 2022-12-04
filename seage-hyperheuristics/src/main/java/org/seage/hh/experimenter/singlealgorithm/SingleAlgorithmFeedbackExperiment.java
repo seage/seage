@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.configurator.ExtendedDefaultConfigurator;
+import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 
 public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment {
 
@@ -36,7 +37,7 @@ public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment
     );
 
     experimentName = "SingleAlgorithmFeedback";
-    configurator = new ExtendedDefaultConfigurator();
+    configurator = new FeedbackConfigurator();
   }
   // public SingleAlgorithmFeedbackExperiment(String problemID, String[]
   // instanceIDs, String[] algorithmIDs,
