@@ -1,119 +1,118 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Richard Malek and SEAGE contributors
+ * 
+ * This file is part of SEAGE.
+ * 
+ * SEAGE is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with SEAGE. If not, see
+ * <http://www.gnu.org/licenses/>.
+ *
+ */
+
+/**
+ * Contributors: Richard Malek - Initial implementation
+ *               David Omrai - Implementation
+ */
+
 package org.seage.hh.experimenter.configurator;
+
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.apache.ibatis.session.SqlSession;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
-import org.seage.data.xml.XmlHelper;
-// import org.seage.knowledgebase.rapidminer.RapidMinerManager;
+import org.seage.hh.knowledgebase.db.DbManager;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
+import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 
-// import com.rapidminer.Process;
-// import com.rapidminer.RepositoryProcessLocation;
-// import com.rapidminer.example.Attribute;
-// import com.rapidminer.example.Example;
-// import com.rapidminer.example.ExampleSet;
-// import com.rapidminer.example.set.SimpleExampleSet;
-// import com.rapidminer.operator.IOContainer;
-// import com.rapidminer.operator.IOObjectCollection;
-// import com.rapidminer.repository.Entry;
-// import com.rapidminer.repository.ProcessEntry;
-// import com.rapidminer.repository.RepositoryLocation;
-
+/**
+ * New Feedback configurator
+ * @author David Omrai
+ */
 public class FeedbackConfigurator extends Configurator {
-  // protected IOObjectCollection<SimpleExampleSet> _feedbackParams;
+  private double spread;
 
-  @SuppressWarnings("unchecked")
-  public FeedbackConfigurator() throws Exception {
-    // RapidMinerManager.init();
-    // RapidMinerManager.initDatabaseConnection();
-    // RapidMinerManager.initRepository();
 
-    // RepositoryLocation location = new RepositoryLocation(
-    // "//seage/processes/base/BestAlgParamsPerAlgorithm-AttsRemoved");
+  /**
+   * Default constructor, does nothing.
+   */
+  public FeedbackConfigurator() {
+  }
 
-    // //RepositoryLocation location = new
-    // RepositoryLocation("//seage/processes/testDB");
-    // Entry entry = location.locateEntry();
-
-    // if (entry instanceof ProcessEntry)
-    // {
-    // Process process = new RepositoryProcessLocation(location).load(null);
-
-    // IOContainer ioResult = process.run();
-    // _feedbackParams = (IOObjectCollection<SimpleExampleSet>)
-    // ioResult.getElementAt(0);
-    // }
-    // else
-    // throw new Exception("Can't find " + location.getPath() + " in RM's
-    // repository.");
-
+  /**
+   * 
+   * @param problemId
+   * @param algorithmId
+   * @param limit
+   * @return
+   */
+  public List<ExperimentTaskRecord> getBestExperimentTasks(
+    String problemId, String algorithmId, int limit) throws Exception {
+    DbManager.init();
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
+      return mapper.getBestExperimentTasks(problemId, algorithmId, limit);
+    }
   }
 
   @Override
-  public ProblemConfig[] prepareConfigs(ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs)
+  public ProblemConfig[] prepareConfigs(
+      ProblemInfo problemInfo, String instanceID, String algID, int numConfigs)
       throws Exception {
-    return null;
-    // ExampleSet exampleSetParams = null;
-    // for (ExampleSet c : _feedbackParams.getObjects())
-    // {
-    // if (c.getAttributes().getId().getName().equals(algorithmID))
-    // {
-    // exampleSetParams = c;
-    // break;
-    // }
-    // }
-    // List<ProblemConfig> results = new ArrayList<ProblemConfig>();
-    // if (exampleSetParams == null)
-    // {
-    // _logger.warn("There are no usable experiments in the repository, random param
-    // values generated.");
-    // return new RandomConfigurator().prepareConfigs(problemInfo, instanceID,
-    // algorithmID, numConfigs);
-    // }
 
-    // //System.out.println(instanceInfo.getValue("path"));
-    // int feedbackConfigs = exampleSetParams.size();//.getExampleTable().size();
-    // int realNumConfigs = Math.min(numConfigs, feedbackConfigs);
+    List<ProblemConfig> results = new ArrayList<>();
 
-    // for (int i = 0; i < realNumConfigs; i++)
-    // {
-    // Example example = exampleSetParams.getExample(i);
-    // ProblemConfig config = createProblemConfig(problemInfo, instanceID,
-    // algorithmID);
+    results.add(createConfig(problemInfo, instanceID, algID, 0));
+    for (int i = 1; i < numConfigs; i++) {
+      double s = Math.random() * this.spread;
+      results.add(createConfig(problemInfo, instanceID, algID, s));
+    }
 
-    // for (DataNode paramNode :
-    // problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
-    // .getDataNodes("Parameter"))
-    // {
-    // String name = paramNode.getValueStr("name");
-    // Attribute att = exampleSetParams.getAttributes().get(name);
-
-    // double val = example.getValue(att);
-    // if (name.equals("iterationCount") && Double.compare(val, Double.NaN) == 0)
-    // val = Double.MAX_VALUE;
-
-    // config.getDataNode("Algorithm").getDataNode("Parameters").putValue(name,
-    // val);
-    // }
-
-    // config.putValue("configID",
-    // FileHelper.md5fromString(XmlHelper.getStringFromDocument(config.toXml())));
-    // results.add(config);
-    // }
-
-    // if (realNumConfigs < numConfigs)
-    // {
-    // int rndConfigs = numConfigs - realNumConfigs;
-    // ProblemConfig[] pc = new RandomConfigurator().prepareConfigs(problemInfo,
-    // instanceID, algorithmID,
-    // rndConfigs);
-
-    // for (int j = 0; j < pc.length; j++)
-    // results.add(pc[j]);
-    // }
-    // //
-    // return results.toArray(new ProblemConfig[0]);
+    return results.toArray(new ProblemConfig[0]);
   }
+  
+  private ProblemConfig createConfig(
+      ProblemInfo problemInfo, String instanceID, String algID, double spread)
+      throws Exception {
+    logger.info("Here I am");
+    DataNode problem = new DataNode("Problem");
+    problem.putValue("id", problemInfo.getValue("id"));
+    problem.putDataNode(problemInfo.getDataNode("Instances").getDataNodeById(instanceID));
+    
+    DataNode algorithm = new DataNode("Algorithm");
+    algorithm.putValue("id", algID);
+    
+    DataNode params = new DataNode("Parameters");
+    ProblemConfig config = new ProblemConfig("Config");
+    for (DataNode dn : problemInfo
+        .getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
+    {
+      params.putValue(dn.getValueStr("name"), null);
+      // instead of null add a value that makes sense
+      // try to find how the value is set by other configurators
+      logger.info(dn.getValueStr("name"));
+      List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
+        dn.getValueStr("name"), algID, 1);
+
+      // params.putValue(dn.getValueStr("name"), 
+      //     bestDefaultParams.get(problemInfo.getValue("id"))
+      //       .get(algID).get(dn.getValueStr("name")));
+    }      
+
+    algorithm.putDataNode(params);
+
+    config.putDataNode(problem);
+    config.putDataNode(algorithm);
+    return config;
+  }
+
 }
