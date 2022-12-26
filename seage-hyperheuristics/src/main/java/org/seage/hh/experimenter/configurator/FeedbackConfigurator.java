@@ -57,7 +57,6 @@ public class FeedbackConfigurator extends Configurator {
    */
   public List<ExperimentTaskRecord> getBestExperimentTasks(
     String problemId, String algorithmId, int limit) throws Exception {
-    DbManager.init();
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
       return mapper.getBestExperimentTasks(problemId, algorithmId, limit);
