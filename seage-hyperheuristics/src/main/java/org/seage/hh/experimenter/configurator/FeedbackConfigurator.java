@@ -34,6 +34,7 @@ import org.seage.hh.knowledgebase.db.DbManager;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 
+import java.sql.Connection;
 /**
  * New Feedback configurator
  * @author David Omrai
@@ -45,10 +46,12 @@ public class FeedbackConfigurator extends Configurator {
   /**
    * Default constructor, does nothing.
    */
-  public FeedbackConfigurator() {
+  public FeedbackConfigurator() throws Exception {
+    DbManager.init();
   }
 
-  /**
+
+  /** 
    * 
    * @param problemId
    * @param algorithmId
@@ -59,6 +62,16 @@ public class FeedbackConfigurator extends Configurator {
     String problemId, String algorithmId, int limit) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
+      
+
+      try (Connection c =
+          session.getConfiguration().getEnvironment().getDataSource().getConnection()) {
+          System.out.println("hellllooooo there it issss");
+          System.out.println(c.getMetaData().getURL());
+          System.out.println(c.getMetaData().getMaxRowSize());
+      }
+      
+      
       return mapper.getBestExperimentTasks(problemId, algorithmId, limit);
     }
   }
