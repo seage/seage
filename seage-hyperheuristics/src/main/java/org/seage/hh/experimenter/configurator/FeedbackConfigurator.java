@@ -73,6 +73,7 @@ public class FeedbackConfigurator extends Configurator {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);     
       
+      //HashMap<String, Double> hm = readXMLConfig(ll.get(0).getConfig());
       return mapper.getBestExperimentTasks(problemId, algorithmId, limit);
     }
   }
