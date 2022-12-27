@@ -24,7 +24,9 @@
 package org.seage.hh.experimenter.configurator;
 
 
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.seage.aal.problem.ProblemConfig;
@@ -34,7 +36,16 @@ import org.seage.hh.knowledgebase.db.DbManager;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 
-import java.sql.Connection;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Attr;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLFilter;
+
 /**
  * New Feedback configurator
  * @author David Omrai
@@ -46,10 +57,9 @@ public class FeedbackConfigurator extends Configurator {
   /**
    * Default constructor, does nothing.
    */
-  public FeedbackConfigurator() throws Exception {
-    DbManager.init();
+  public FeedbackConfigurator() {
+    // Empty constructor
   }
-
 
   /** 
    * 
@@ -61,19 +71,42 @@ public class FeedbackConfigurator extends Configurator {
   public List<ExperimentTaskRecord> getBestExperimentTasks(
     String problemId, String algorithmId, int limit) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
-      ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
-      
-
-      try (Connection c =
-          session.getConfiguration().getEnvironment().getDataSource().getConnection()) {
-          System.out.println("hellllooooo there it issss");
-          System.out.println(c.getMetaData().getURL());
-          System.out.println(c.getMetaData().getMaxRowSize());
-      }
-      
+      ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);     
       
       return mapper.getBestExperimentTasks(problemId, algorithmId, limit);
     }
+  }
+
+  private Document convertStringToDocument(String xmlStr) {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder;
+    try {
+        builder = factory.newDocumentBuilder();
+        return builder.parse(new InputSource(new StringReader(
+                xmlStr)));
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null;
+  }
+
+  private HashMap<String, Double> readXMLConfig(String xmlConf) throws Exception{
+
+    HashMap<String, Double> configs = new HashMap<>();
+    
+    Document xml = convertStringToDocument(xmlConf);
+    Node params = xml.getFirstChild();
+    
+    int attrNum = params.getAttributes().getLength();
+    for (int i = 0; i < attrNum; i++) {
+      Attr attr = (Attr) params.getAttributes().item(i);
+      String confId = attr.getNodeName();
+      Double confVal = Double.parseDouble(attr.getNodeValue());
+
+      configs.put(confId, confVal);
+    }
+
+    return configs;
   }
 
   @Override
@@ -95,7 +128,6 @@ public class FeedbackConfigurator extends Configurator {
   private ProblemConfig createConfig(
       ProblemInfo problemInfo, String instanceID, String algID, double spread)
       throws Exception {
-    logger.info("Here I am");
     DataNode problem = new DataNode("Problem");
     problem.putValue("id", problemInfo.getValue("id"));
     problem.putDataNode(problemInfo.getDataNode("Instances").getDataNodeById(instanceID));
@@ -105,6 +137,14 @@ public class FeedbackConfigurator extends Configurator {
     
     DataNode params = new DataNode("Parameters");
     ProblemConfig config = new ProblemConfig("Config");
+
+    // Get best config from db
+    List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
+      problemInfo.getValue("id").toString(), algID, 1);
+
+    // Extract the config from bestRes
+    HashMap<String, Double> bestConf = readXMLConfig(bestRes.get(0).getConfig());
+
     for (DataNode dn : problemInfo
         .getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
     {
@@ -112,12 +152,8 @@ public class FeedbackConfigurator extends Configurator {
       // instead of null add a value that makes sense
       // try to find how the value is set by other configurators
       logger.info(dn.getValueStr("name"));
-      List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
-        dn.getValueStr("name"), algID, 1);
 
-      // params.putValue(dn.getValueStr("name"), 
-      //     bestDefaultParams.get(problemInfo.getValue("id"))
-      //       .get(algID).get(dn.getValueStr("name")));
+      params.putValue(dn.getValueStr("name"), bestConf.get(dn.getValueStr("name")));
     }      
 
     algorithm.putDataNode(params);
