@@ -85,8 +85,6 @@ public class ExperimentTaskTest {
 
   @Test
   void myNewTest() throws Exception {
-    DbManager.initTest();
-
     try(SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
       assertNotNull(mapper);
