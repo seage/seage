@@ -25,6 +25,7 @@ package org.seage.hh.experimenter.configurator;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import org.apache.ibatis.session.SqlSession;
@@ -80,21 +81,44 @@ public class FeedbackConfigurator extends Configurator {
   public ProblemConfig[] prepareConfigs(
       ProblemInfo problemInfo, String instanceID, String algID, int numConfigs)
       throws Exception {
-
-    List<ProblemConfig> results = new ArrayList<>();
-
-    results.add(createConfig(problemInfo, instanceID, algID, 0));
-    for (int i = 1; i < numConfigs; i++) {
-      double s = Math.random() * this.spread;
-      results.add(createConfig(problemInfo, instanceID, algID, s));
-    }
+      
+    List<ProblemConfig> results = createConfigs(problemInfo, instanceID, algID, numConfigs);
 
     return results.toArray(new ProblemConfig[0]);
   }
   
-  private ProblemConfig createConfig(
-      ProblemInfo problemInfo, String instanceID, String algID, double spread)
+  private List<ProblemConfig> createConfigs(
+      ProblemInfo problemInfo, String instanceID, String algID, int limit)
       throws Exception {
+    
+    List<ProblemConfig> configs = new ArrayList<>();
+
+    // Get best config from db
+    List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
+      problemInfo.getValue("id").toString(), algID, limit);
+
+    // Fill the rest with default confs
+    if (bestRes.size() != limit) {
+      DefaultConfigurator defConf = new DefaultConfigurator(this.spread);
+
+      ProblemConfig[] defProbConfs = defConf.prepareConfigs(problemInfo, instanceID, algID, limit - bestRes.size());
+
+      configs.addAll(Arrays.asList(defProbConfs));
+    }
+
+    for (ExperimentTaskRecord expTaskRec : bestRes) {
+      configs.add(createConfig(problemInfo, instanceID, algID, expTaskRec));
+    }
+
+    return configs;
+  }
+
+  private ProblemConfig createConfig(
+        ProblemInfo problemInfo, String instanceID, String algID, ExperimentTaskRecord expTaskRec) throws Exception{
+    // Extract the config from bestRes
+    DataNode bestConfNode = XmlHelper.readXml(expTaskRec.getXmlConfig());
+
+
     DataNode problem = new DataNode("Problem");
     problem.putValue("id", problemInfo.getValue("id"));
     problem.putDataNode(problemInfo.getDataNode("Instances").getDataNodeById(instanceID));
@@ -104,13 +128,6 @@ public class FeedbackConfigurator extends Configurator {
     
     DataNode params = new DataNode("Parameters");
     ProblemConfig config = new ProblemConfig("Config");
-
-    // Get best config from db
-    List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
-      problemInfo.getValue("id").toString(), algID, 1);
-
-    // Extract the config from bestRes
-    DataNode bestConfNode = XmlHelper.readXml(bestRes.get(0).getXmlConfig());
 
     for (DataNode dn : problemInfo
         .getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
@@ -127,6 +144,7 @@ public class FeedbackConfigurator extends Configurator {
 
     config.putDataNode(problem);
     config.putDataNode(algorithm);
+    
     return config;
   }
 
