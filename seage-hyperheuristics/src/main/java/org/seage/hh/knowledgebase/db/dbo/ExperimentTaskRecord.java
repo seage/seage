@@ -79,7 +79,7 @@ public class ExperimentTaskRecord {
    * Constructor for DB mapper.
    */
   ExperimentTaskRecord() {
-    _logger.info("hey this is the constructor");
+    // Empty constructor
   }
 
   /**
@@ -100,7 +100,6 @@ public class ExperimentTaskRecord {
         taskInfo.getSolutions(),
         taskInfo.getTimeoutS()
     );
-    _logger.info("hey this is the another constructor");
   }
 
   /**
@@ -118,7 +117,6 @@ public class ExperimentTaskRecord {
       Phenotype<?>[] solutions,
       long timeoutS)
       throws Exception {
-    _logger.info("hey this is the thirtd constructor");
     this.experimentTaskID = experimentTaskID;
     this.experimentID = experimentID;
     this.jobID = jobID;
