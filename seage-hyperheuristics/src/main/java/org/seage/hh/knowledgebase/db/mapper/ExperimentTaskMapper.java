@@ -43,7 +43,7 @@ public interface ExperimentTaskMapper {
   int insertExperimentTask(ExperimentTaskRecord experimentTask);
 
   @Select("SELECT * FROM seage.experiment_tasks WHERE experiment_task_id = #{experimentTaskID}")
-  @Results(id = "experimentResult", value = {
+  @Results(id = "experimentTaskResult", value = {
       @Result(property = "experimentTaskID", column = "experiment_task_id"),
       @Result(property = "experimentType", column = "experiment_type"),
       @Result(property = "experimentID", column = "experiment_id"),
@@ -63,14 +63,16 @@ public interface ExperimentTaskMapper {
   ExperimentTaskRecord getExperimentTask(UUID experimentTaskID);
 
   @Select("SELECT * FROM seage.experiment_tasks")
-  @ResultMap("experimentResult")
+  @ResultMap("experimentTaskResult")
   List<ExperimentTaskRecord> getExperimentTasks();
 
-  @Select("SELECT * FROM seage.experiment_tasks " +
-  "WHERE seage.experiment_tasks.problem_id=#{problemId} " +
-  "AND seage.experiment_tasks.algorithm_id=#{algorithmId} " +
-  "ORDER BY seage.experiment_tasks.score DESC " +
-  "LIMIT #{limit}")
-  @ResultMap("experimentResult")
+  @Select("""
+    SELECT * FROM seage.experiment_tasks
+    WHERE seage.experiment_tasks.problem_id=#{problemId} AND
+          seage.experiment_tasks.algorithm_id=#{algorithmId}
+    ORDER BY seage.experiment_tasks.score DESC
+    LIMIT #{limit}
+  """)
+  @ResultMap("experimentTaskResult")
   List<ExperimentTaskRecord> getBestExperimentTasks(@Param("problemId") String problemId, @Param("algorithmId") String algorithmId, @Param("limit") int limit);
 }
