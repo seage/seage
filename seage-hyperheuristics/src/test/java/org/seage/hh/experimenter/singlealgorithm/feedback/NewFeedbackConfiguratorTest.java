@@ -113,8 +113,8 @@ public class NewFeedbackConfiguratorTest {
 
     FeedbackConfigurator fc = new FeedbackConfigurator();
 
-    ProblemConfig[] pc = fc.prepareConfigs(pi, "Instance01", "Algorithm01", 1);
+    ProblemConfig[] pc = fc.prepareConfigs(pi, "Instance01", "Algorithm01", 10);
 
-    assertTrue(pc.length == 1);
+    assertTrue(pc.length == 10);
   }
 }

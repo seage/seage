@@ -98,7 +98,7 @@ public class FeedbackConfigurator extends Configurator {
       problemInfo.getValue("id").toString(), algID, limit);
 
     // Fill the rest with default confs
-    if (bestRes.size() != limit) {
+    if (bestRes.size() < limit) {
       DefaultConfigurator defConf = new DefaultConfigurator(this.spread);
 
       ProblemConfig[] defProbConfs = defConf.prepareConfigs(problemInfo, instanceID, algID, limit - bestRes.size());
@@ -147,5 +147,4 @@ public class FeedbackConfigurator extends Configurator {
     
     return config;
   }
-
 }
