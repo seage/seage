@@ -34,6 +34,7 @@ import org.seage.data.DataNode;
 import org.seage.hh.knowledgebase.db.DbManager;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
+import org.seage.data.xml.XmlHelper;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -70,41 +71,9 @@ public class FeedbackConfigurator extends Configurator {
   public List<ExperimentTaskRecord> getBestExperimentTasks(
     String problemId, String algorithmId, int limit) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
-      ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);     
+      ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);    
       return mapper.getBestExperimentTasks(problemId, algorithmId, limit);
     }
-  }
-
-  private Document convertStringToDocument(String xmlStr) {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder builder;
-    try {
-        builder = factory.newDocumentBuilder();
-        return builder.parse(new InputSource(new StringReader(
-                xmlStr)));
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return null;
-  }
-
-  private HashMap<String, Double> readXMLConfig(String xmlConf) throws Exception{
-
-    HashMap<String, Double> configs = new HashMap<>();
-    
-    Document xml = convertStringToDocument(xmlConf);
-    Node params = xml.getFirstChild();
-    
-    int attrNum = params.getAttributes().getLength();
-    for (int i = 0; i < attrNum; i++) {
-      Attr attr = (Attr) params.getAttributes().item(i);
-      String confId = attr.getNodeName();
-      Double confVal = Double.parseDouble(attr.getNodeValue());
-
-      configs.put(confId, confVal);
-    }
-
-    return configs;
   }
 
   @Override
@@ -141,7 +110,7 @@ public class FeedbackConfigurator extends Configurator {
       problemInfo.getValue("id").toString(), algID, 1);
 
     // Extract the config from bestRes
-    HashMap<String, Double> bestConf = readXMLConfig(bestRes.get(0).getXmlConfig());
+    DataNode bestConfNode = XmlHelper.readXml(bestRes.get(0).getXmlConfig());
 
     for (DataNode dn : problemInfo
         .getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
@@ -151,7 +120,7 @@ public class FeedbackConfigurator extends Configurator {
       // try to find how the value is set by other configurators
       logger.info(dn.getValueStr("name"));
 
-      params.putValue(dn.getValueStr("name"), bestConf.get(dn.getValueStr("name")));
+      params.putValue(dn.getValueStr("name"), bestConfNode.getValue(dn.getValueStr("name")));
     }      
 
     algorithm.putDataNode(params);
