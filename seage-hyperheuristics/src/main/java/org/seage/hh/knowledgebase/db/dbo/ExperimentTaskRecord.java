@@ -62,6 +62,7 @@ public class ExperimentTaskRecord {
   private String instanceID;
   private String algorithmID;
   private String configID;
+  private String config;
   private Date startDate;
   private Date endDate;
   private Double score;
@@ -77,7 +78,9 @@ public class ExperimentTaskRecord {
   /**
    * Constructor for DB mapper.
    */
-  ExperimentTaskRecord() {}
+  ExperimentTaskRecord() {
+    _logger.info("hey this is the constructor");
+  }
 
   /**
    * ExperimentTask for running algorithm.
@@ -97,6 +100,7 @@ public class ExperimentTaskRecord {
         taskInfo.getSolutions(),
         taskInfo.getTimeoutS()
     );
+    _logger.info("hey this is the another constructor");
   }
 
   /**
@@ -114,6 +118,7 @@ public class ExperimentTaskRecord {
       Phenotype<?>[] solutions,
       long timeoutS)
       throws Exception {
+    _logger.info("hey this is the thirtd constructor");
     this.experimentTaskID = experimentTaskID;
     this.experimentID = experimentID;
     this.jobID = jobID;
@@ -122,7 +127,7 @@ public class ExperimentTaskRecord {
     this.problemID = problemID;
     this.instanceID = instanceID;
     this.solutions = solutions;
-    
+
     this.configID = algorithmParams.hash();
     this.startDate = new Date();
     this.endDate = this.startDate;
@@ -315,9 +320,9 @@ public class ExperimentTaskRecord {
     return this.algorithmParams.toString();
   }
 
-  public void setConfig(String config) {
-    // Must be here because of the db reading - Not defined for now
-  }
+  // public void setConfig(String config) {
+  //   // Must be here because of the db reading - Not defined for now
+  // }
 
   /**
    * Method returns experiment task report statistics.
@@ -393,6 +398,14 @@ public class ExperimentTaskRecord {
 
   public void setInstanceID(String instanceID) {
     this.instanceID = instanceID;
+  }
+
+  public void setConfig(String config) {
+    this.config = config;
+  }
+
+  public String getXmlConfig() {
+    return this.config;
   }
 
   public String getAlgorithmID() {

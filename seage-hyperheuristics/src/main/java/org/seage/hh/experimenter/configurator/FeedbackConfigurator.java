@@ -23,7 +23,6 @@
 
 package org.seage.hh.experimenter.configurator;
 
-
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,8 +71,6 @@ public class FeedbackConfigurator extends Configurator {
     String problemId, String algorithmId, int limit) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);     
-      
-      //HashMap<String, Double> hm = readXMLConfig(ll.get(0).getConfig());
       return mapper.getBestExperimentTasks(problemId, algorithmId, limit);
     }
   }
@@ -144,7 +141,7 @@ public class FeedbackConfigurator extends Configurator {
       problemInfo.getValue("id").toString(), algID, 1);
 
     // Extract the config from bestRes
-    HashMap<String, Double> bestConf = readXMLConfig(bestRes.get(0).getConfig());
+    HashMap<String, Double> bestConf = readXMLConfig(bestRes.get(0).getXmlConfig());
 
     for (DataNode dn : problemInfo
         .getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
