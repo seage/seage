@@ -23,10 +23,8 @@
 
 package org.seage.hh.experimenter.configurator;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.seage.aal.problem.ProblemConfig;
@@ -36,16 +34,6 @@ import org.seage.hh.knowledgebase.db.DbManager;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 import org.seage.data.xml.XmlHelper;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Attr;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLFilter;
 
 /**
  * New Feedback configurator
@@ -84,6 +72,15 @@ public class FeedbackConfigurator extends Configurator {
       
     List<ProblemConfig> results = createConfigs(problemInfo, instanceID, algID, numConfigs);
 
+    // Fill the rest with default confs
+    if (results.size() < numConfigs) {
+      DefaultConfigurator defConf = new DefaultConfigurator(this.spread);
+
+      ProblemConfig[] defProbConfs = defConf.prepareConfigs(problemInfo, instanceID, algID, numConfigs - results.size());
+
+      results.addAll(Arrays.asList(defProbConfs));
+    }
+
     return results.toArray(new ProblemConfig[0]);
   }
   
@@ -96,15 +93,6 @@ public class FeedbackConfigurator extends Configurator {
     // Get best config from db
     List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
       problemInfo.getValue("id").toString(), algID, limit);
-
-    // Fill the rest with default confs
-    if (bestRes.size() < limit) {
-      DefaultConfigurator defConf = new DefaultConfigurator(this.spread);
-
-      ProblemConfig[] defProbConfs = defConf.prepareConfigs(problemInfo, instanceID, algID, limit - bestRes.size());
-
-      configs.addAll(Arrays.asList(defProbConfs));
-    }
 
     for (ExperimentTaskRecord expTaskRec : bestRes) {
       configs.add(createConfig(problemInfo, instanceID, algID, expTaskRec));
