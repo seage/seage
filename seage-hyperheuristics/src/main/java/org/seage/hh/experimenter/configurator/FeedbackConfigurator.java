@@ -135,8 +135,6 @@ public class FeedbackConfigurator extends Configurator {
       params.putValue(dn.getValueStr("name"), null);
       // instead of null add a value that makes sense
       // try to find how the value is set by other configurators
-      logger.info(dn.getValueStr("name"));
-
       params.putValue(dn.getValueStr("name"), bestConfNode.getValue(dn.getValueStr("name")));
     }      
 
