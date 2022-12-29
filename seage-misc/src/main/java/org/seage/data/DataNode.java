@@ -175,7 +175,7 @@ public class DataNode {
     if (o instanceof Number) {
       return ((Number) o).intValue();
     } else if (o instanceof String) {
-      return Integer.parseInt(o.toString());
+      return (int)Math.round(Double.parseDouble(o.toString()));
     } else {
       throw new ClassCastException("Not an integer number");
     }
