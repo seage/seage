@@ -63,7 +63,7 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "args": [
-        "experiment-single-random",
+        "experiment-single-feedback",
         "-a",
         "GeneticAlgorithm",
         "-i",

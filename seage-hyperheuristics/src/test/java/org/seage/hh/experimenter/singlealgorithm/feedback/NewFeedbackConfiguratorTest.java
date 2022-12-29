@@ -65,7 +65,7 @@ public class NewFeedbackConfiguratorTest {
       UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"), 
       2, 2,
-      "TEST", 
+      "TestProblem", 
       "Instance01", 
       "Algorithm01", 
       new AlgorithmParams(),
