@@ -84,15 +84,15 @@ public class FeedbackConfigurator extends Configurator {
     return results.toArray(new ProblemConfig[0]);
   }
   
-  private List<ProblemConfig> createConfigs(
-      ProblemInfo problemInfo, String instanceID, String algID, int limit)
+  public List<ProblemConfig> createConfigs(
+      ProblemInfo problemInfo, String instanceID, String algID, int numConfigs)
       throws Exception {
     
     List<ProblemConfig> configs = new ArrayList<>();
 
     // Get best config from db
     List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
-      problemInfo.getValue("id").toString(), algID, limit);
+      problemInfo.getValue("id").toString(), algID, numConfigs);
 
     for (ExperimentTaskRecord expTaskRec : bestRes) {
       configs.add(createConfig(problemInfo, instanceID, algID, expTaskRec));

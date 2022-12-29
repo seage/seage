@@ -93,6 +93,15 @@ public class NewFeedbackConfiguratorTest {
 
   @Test
   void testPrepareConfigs() throws Exception {
+
+    // Before putting the data to the database
+    FeedbackConfigurator fc = new FeedbackConfigurator();
+
+    List<ProblemConfig> pc_list = fc.createConfigs(pi, "Instance01", "Algorithm01", 10);
+
+    assertEquals(0, pc_list.size());
+
+    // Inserting data to the database
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentMapper mapper0 = session.getMapper(ExperimentMapper.class);
       mapper0.insertExperiment(this.experiment1);
@@ -111,8 +120,17 @@ public class NewFeedbackConfiguratorTest {
           this.experimentTask1.getExperimentTaskID(), experimentTask.getExperimentTaskID());
     }
 
-    FeedbackConfigurator fc = new FeedbackConfigurator();
+    // Test if it returns only one config from db when asked for 1
+    pc_list = fc.createConfigs(pi, "Instance01", "Algorithm01", 1);
 
+    assertEquals(1, pc_list.size());
+
+    // Test if it returns only one config from db when asked for 10
+    pc_list = fc.createConfigs(pi, "Instance01", "Algorithm01", 10);
+
+    assertEquals(1, pc_list.size());
+
+    // Test if it returns all 10 asked configs even if there is only one in db
     ProblemConfig[] pc = fc.prepareConfigs(pi, "Instance01", "Algorithm01", 10);
 
     assertEquals(10, pc.length);
