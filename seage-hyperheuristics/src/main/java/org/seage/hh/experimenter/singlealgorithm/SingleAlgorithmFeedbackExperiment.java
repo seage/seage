@@ -39,11 +39,4 @@ public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment
     experimentName = "SingleAlgorithmFeedback";
     configurator = new FeedbackConfigurator();
   }
-  // public SingleAlgorithmFeedbackExperiment(String problemID, String[]
-  // instanceIDs, String[] algorithmIDs,
-  // int numConfigs, int timeoutS) throws Exception {
-  // super(problemID, instanceIDs, algorithmIDs, numConfigs, timeoutS);
-  // this.experimentName = "SingleAlgorithmFeedback";
-  // _configurator = new FeedbackConfigurator();
-  // }
 }
