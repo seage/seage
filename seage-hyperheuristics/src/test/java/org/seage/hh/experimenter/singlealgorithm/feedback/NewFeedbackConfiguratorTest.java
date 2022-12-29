@@ -115,6 +115,6 @@ public class NewFeedbackConfiguratorTest {
 
     ProblemConfig[] pc = fc.prepareConfigs(pi, "Instance01", "Algorithm01", 10);
 
-    assertTrue(pc.length == 10);
+    assertEquals(10, pc.length);
   }
 }
