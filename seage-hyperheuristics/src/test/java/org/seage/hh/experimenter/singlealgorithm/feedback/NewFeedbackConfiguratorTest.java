@@ -28,7 +28,6 @@ import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
 public class NewFeedbackConfiguratorTest {
   private ExperimentRecord experiment1;
   private ExperimentTaskRecord experimentTask1;
-  private ExperimentTaskRecord experimentTask2;
   private ProblemInfo pi;
 
   @BeforeEach
@@ -59,18 +58,6 @@ public class NewFeedbackConfiguratorTest {
       new AlgorithmParams(),
       null,
       1L
-    ));
-    
-    this.experimentTask2 = new ExperimentTaskRecord(new ExperimentTaskRequest(
-      UUID.randomUUID(),
-      UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"), 
-      2, 2,
-      "TestProblem", 
-      "Instance01", 
-      "Algorithm01", 
-      new AlgorithmParams(),
-      null,
-      2L
     ));
 
     this.pi = new ProblemInfo("TestProblem");
