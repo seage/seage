@@ -82,7 +82,7 @@ public class SingleAlgorithmEvolutionExperiment
     this.bestScore = 0.0;
     
     // Initialize
-    this.feedbackConfigurator = new FeedbackConfigurator();
+    this.feedbackConfigurator = new FeedbackConfigurator(0.0);
     this.problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
   }
 

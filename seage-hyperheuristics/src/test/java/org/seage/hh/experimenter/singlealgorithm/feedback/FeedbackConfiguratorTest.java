@@ -15,7 +15,7 @@ public class FeedbackConfiguratorTest {
 
   // @Test
   public void testPrepareConfigs() throws Exception {
-    FeedbackConfigurator fc = new FeedbackConfigurator();
+    FeedbackConfigurator fc = new FeedbackConfigurator(0.0);
 
     ProblemInfo pi = new ProblemInfo("TestProblem");
     pi.putValue("id", "TestProblem");

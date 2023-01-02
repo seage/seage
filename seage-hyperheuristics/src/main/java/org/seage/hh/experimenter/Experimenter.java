@@ -205,7 +205,7 @@ public class Experimenter {
     if (experimentName.equals("SingleAlgorithmFeedback")) {
       return new SingleAlgorithmFeedbackExperiment(
         experimentID, problemID, instanceID, 
-        algorithmID, numRuns, timeoutS, 
+        algorithmID, numRuns, timeoutS, spread,
         experimentReporter);
     }
     if (experimentName.equals("SingleAlgorithmEvolution")) {

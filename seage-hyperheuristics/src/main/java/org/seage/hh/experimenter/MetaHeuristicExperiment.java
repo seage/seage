@@ -57,7 +57,7 @@ public class MetaHeuristicExperiment implements Experiment {
     // Initialize all
     this.problemInfo = ProblemProvider.getProblemProviders().get(this.problemID).getProblemInfo();
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    this.feedbackConfigurator = new FeedbackConfigurator();
+    this.feedbackConfigurator = new FeedbackConfigurator(0.0);
     this.defaultConfigurator = new DefaultConfigurator(0.26);
     this.randomConfigurator = new RandomConfigurator();
     this.gridConfigurator = new GridConfigurator(9);

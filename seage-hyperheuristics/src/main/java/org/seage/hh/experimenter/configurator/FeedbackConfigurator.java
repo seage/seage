@@ -46,8 +46,8 @@ public class FeedbackConfigurator extends Configurator {
   /**
    * Default constructor, does nothing.
    */
-  public FeedbackConfigurator() {
-    // Empty constructor
+  public FeedbackConfigurator(double spread) {
+    this.spread = spread;
   }
 
   /** 

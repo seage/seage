@@ -83,7 +83,7 @@ public class NewFeedbackConfiguratorTest {
   void testCreateConfigs() throws Exception {
 
     // Before putting the data to the database
-    FeedbackConfigurator fc = new FeedbackConfigurator();
+    FeedbackConfigurator fc = new FeedbackConfigurator(0.0);
 
     List<ProblemConfig> pcList = fc.createConfigs(pi, "Instance01", "Algorithm01", 10);
 
@@ -121,7 +121,7 @@ public class NewFeedbackConfiguratorTest {
 
   @Test
   void testPrepareConfigs() throws Exception {
-    FeedbackConfigurator fc = new FeedbackConfigurator();
+    FeedbackConfigurator fc = new FeedbackConfigurator(0.0);
 
     // Test if it returns all 10 asked configs no matter if there is something in db
     ProblemConfig[] pc = fc.prepareConfigs(pi, "Instance01", "Algorithm01", 10);

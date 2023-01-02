@@ -14,6 +14,7 @@ public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment
    * @param algorithmID .
    * @param numRuns .
    * @param timeoutS .
+   * @param spread .
    * @throws Exception .
    */
   public SingleAlgorithmFeedbackExperiment(
@@ -23,6 +24,7 @@ public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment
       String algorithmID, 
       int numRuns,
       int timeoutS,
+      double spread,
       ExperimentReporter experimentReporter
   ) throws Exception {
     super(
@@ -36,6 +38,6 @@ public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment
     );
 
     experimentName = "SingleAlgorithmFeedback";
-    configurator = new FeedbackConfigurator();
+    configurator = new FeedbackConfigurator(spread);
   }
 }
