@@ -398,7 +398,7 @@ public class ExperimentTaskRecord {
     this.instanceID = instanceID;
   }
 
-  public void setConfig(String config) {
+  public void setXmlConfig(String config) {
     this.config = config;
   }
 
