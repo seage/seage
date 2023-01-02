@@ -138,7 +138,8 @@ public class FeedbackConfigurator extends Configurator {
       double sign = Math.random() > 0.5 ? 1 : -1;
       double delta = (max - min) * this.spread * sign;
       
-      double value =  (double) bestConfNode.getValue(dn.getValueStr("name"));
+      double value =  Double.parseDouble(bestConfNode.getValue(dn.getValueStr("name")).toString());
+      System.out.println(value);
       value = Math.max(min, Math.min(max, value + delta));
       params.putValue(dn.getValueStr("name"), value);
     }      
