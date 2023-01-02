@@ -82,14 +82,4 @@ public class ExperimentTaskTest {
           this.experimentTask1.getExperimentTaskID(), experimentTask.getExperimentTaskID());
     }
   }
-
-  @Test
-  void myNewTest() throws Exception {
-    try(SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
-      ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
-      assertNotNull(mapper);
-      List<ExperimentTaskRecord> oo = mapper.getExperimentTasks();
-      System.out.println(oo.toString());
-    }
-  }
 }
