@@ -3,7 +3,6 @@ package org.seage.hh.knowledgebase.db;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.List;
 import java.util.Date;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;

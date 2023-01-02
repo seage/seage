@@ -3,7 +3,6 @@ package org.seage.hh.experimenter.singlealgorithm;
 import java.util.UUID;
 
 import org.seage.hh.experimenter.ExperimentReporter;
-import org.seage.hh.experimenter.configurator.ExtendedDefaultConfigurator;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 
 public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment {
