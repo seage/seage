@@ -1,20 +1,21 @@
 package org.seage.hh.experimenter.singlealgorithm.feedback;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.util.List;
+
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+
 import org.apache.ibatis.session.SqlSession;
-import org.seage.data.DataNode;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
+import org.seage.data.DataNode;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 import org.seage.hh.knowledgebase.db.DbManager;
