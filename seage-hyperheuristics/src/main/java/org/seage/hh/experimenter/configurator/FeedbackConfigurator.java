@@ -30,13 +30,13 @@ import org.apache.ibatis.session.SqlSession;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.data.DataNode;
+import org.seage.data.xml.XmlHelper;
 import org.seage.hh.knowledgebase.db.DbManager;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentTaskMapper;
-import org.seage.data.xml.XmlHelper;
 
 /**
- * New Feedback configurator
+ * New Feedback configurator.
  * @author David Omrai
  */
 public class FeedbackConfigurator extends Configurator {
@@ -51,14 +51,14 @@ public class FeedbackConfigurator extends Configurator {
   }
 
   /** 
-   * 
-   * @param problemId
-   * @param algorithmId
-   * @param limit
+   * .
+   * @param problemId .
+   * @param algorithmId .
+   * @param limit .
    * @return
    */
   public List<ExperimentTaskRecord> getBestExperimentTasks(
-    String problemId, String algorithmId, int limit) throws Exception {
+      String problemId, String algorithmId, int limit) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);    
       return mapper.getBestExperimentTasks(problemId, algorithmId, limit);
@@ -76,7 +76,8 @@ public class FeedbackConfigurator extends Configurator {
     if (results.size() < numConfigs) {
       DefaultConfigurator defConf = new DefaultConfigurator(this.spread);
 
-      ProblemConfig[] defProbConfs = defConf.prepareConfigs(problemInfo, instanceID, algID, numConfigs - results.size());
+      ProblemConfig[] defProbConfs = defConf.prepareConfigs(
+        problemInfo, instanceID, algID, numConfigs - results.size());
 
       results.addAll(Arrays.asList(defProbConfs));
     }
@@ -84,6 +85,15 @@ public class FeedbackConfigurator extends Configurator {
     return results.toArray(new ProblemConfig[0]);
   }
   
+  /**
+   * .
+   * @param problemInfo .
+   * @param instanceID .
+   * @param algID .
+   * @param numConfigs .
+   * @return .
+   * @throws Exception .
+   */
   public List<ProblemConfig> createConfigs(
       ProblemInfo problemInfo, String instanceID, String algID, int numConfigs)
       throws Exception {
@@ -92,7 +102,7 @@ public class FeedbackConfigurator extends Configurator {
 
     // Get best config from db
     List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
-      problemInfo.getValue("id").toString(), algID, numConfigs);
+        problemInfo.getValue("id").toString(), algID, numConfigs);
 
     for (ExperimentTaskRecord expTaskRec : bestRes) {
       configs.add(createConfig(problemInfo, instanceID, algID, expTaskRec));
@@ -102,7 +112,8 @@ public class FeedbackConfigurator extends Configurator {
   }
 
   private ProblemConfig createConfig(
-        ProblemInfo problemInfo, String instanceID, String algID, ExperimentTaskRecord expTaskRec) throws Exception{
+        ProblemInfo problemInfo, String instanceID, String algID, ExperimentTaskRecord expTaskRec
+  ) throws Exception {
     // Extract the config from bestRes
     DataNode bestConfNode = XmlHelper.readXml(expTaskRec.getXmlConfig());
 
@@ -118,12 +129,18 @@ public class FeedbackConfigurator extends Configurator {
     ProblemConfig config = new ProblemConfig("Config");
 
     for (DataNode dn : problemInfo
-        .getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter"))
-    {
+        .getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter")) {
       params.putValue(dn.getValueStr("name"), null);
       // instead of null add a value that makes sense
       // try to find how the value is set by other configurators
-      params.putValue(dn.getValueStr("name"), bestConfNode.getValue(dn.getValueStr("name")));
+      double min = dn.getValueDouble("min");
+      double max = dn.getValueDouble("max");
+      double sign = Math.random() > 0.5 ? 1 : -1;
+      double delta = (max - min) * this.spread * sign;
+      
+      double value =  (double) bestConfNode.getValue(dn.getValueStr("name"));
+      value = Math.max(min, Math.min(max, value + delta));
+      params.putValue(dn.getValueStr("name"), value);
     }      
 
     algorithm.putDataNode(params);
