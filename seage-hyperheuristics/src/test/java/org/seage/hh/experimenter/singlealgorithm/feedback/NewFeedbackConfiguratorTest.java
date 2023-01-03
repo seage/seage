@@ -85,9 +85,9 @@ public class NewFeedbackConfiguratorTest {
     // Before putting the data to the database
     FeedbackConfigurator fc = new FeedbackConfigurator(0.0);
 
-    List<ProblemConfig> pcList = fc.createConfigs(pi, "Instance01", "Algorithm01", 10);
+    ProblemConfig[] pcList = fc.prepareConfigs(pi, "Instance01", "Algorithm01", 10);
 
-    assertEquals(0, pcList.size());
+    assertEquals(10, pcList.length);
 
     // Inserting data to the database
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
@@ -109,14 +109,14 @@ public class NewFeedbackConfiguratorTest {
     }
 
     // Test if it returns only one config from db when asked for 1
-    pcList = fc.createConfigs(pi, "Instance01", "Algorithm01", 1);
+    pcList = fc.prepareConfigs(pi, "Instance01", "Algorithm01", 1);
 
-    assertEquals(1, pcList.size());
+    assertEquals(1, pcList.length);
 
     // Test if it returns only one config from db when asked for 10
-    pcList = fc.createConfigs(pi, "Instance01", "Algorithm01", 10);
+    pcList = fc.prepareConfigs(pi, "Instance01", "Algorithm01", 10);
 
-    assertEquals(1, pcList.size());
+    assertEquals(10, pcList.length);
   }
 
   @Test

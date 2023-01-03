@@ -79,13 +79,15 @@ public class FeedbackConfigurator extends Configurator {
         problemInfo.getValue("id").toString(), algID, numConfigs);
 
     // Use best records to fill results to given numConfigs size
-    for (int i = 0; i <= numConfigs / bestRes.size(); i++) {
-      for (ExperimentTaskRecord expTaskRec : bestRes) {
-        if (results.size() == numConfigs) {
-          break;
+    if (!bestRes.isEmpty()) {
+      for (int i = 0; i <= numConfigs / bestRes.size(); i++) {
+        for (ExperimentTaskRecord expTaskRec : bestRes) {
+          if (results.size() == numConfigs) {
+            break;
+          }
+  
+          results.add(createConfig(problemInfo, instanceID, algID, expTaskRec));
         }
-
-        results.add(createConfig(problemInfo, instanceID, algID, expTaskRec));
       }
     }
 
