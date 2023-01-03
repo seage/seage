@@ -37,7 +37,7 @@ public class SingleAlgorithmExperiment implements Experiment {
   protected String algorithmID;
   protected int numRuns;
   protected int timeoutS;
-  private double bestScore;
+  protected double bestScore;
 
   /**
    * SingleAlgorithmExperiment constructor - nothing special.
@@ -88,8 +88,9 @@ public class SingleAlgorithmExperiment implements Experiment {
     return bestScore;
   }
 
-  private Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
+  protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
+      logger.debug("Report for config id: {}", experimentTask.getConfigID());
       experimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
       if (taskScore > bestScore) {

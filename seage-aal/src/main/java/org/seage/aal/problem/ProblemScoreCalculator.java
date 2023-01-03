@@ -25,7 +25,6 @@ public class ProblemScoreCalculator {
    * @return Calculated score.
    */
   public double calculateInstanceScore(String instanceID, double objValue) throws Exception {
-    logger.debug("Calculate instance {} score for {}", instanceID, objValue);
     try {
       double optimum = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("optimum");
       double greedy = problemInfo.getProblemInstanceInfo(instanceID).getValueDouble("greedy");
