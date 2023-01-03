@@ -69,8 +69,25 @@ public class FeedbackConfigurator extends Configurator {
   public ProblemConfig[] prepareConfigs(
       ProblemInfo problemInfo, String instanceID, String algID, int numConfigs)
       throws Exception {
+
+    // Get best config from db
       
-    List<ProblemConfig> results = createConfigs(problemInfo, instanceID, algID, numConfigs);
+    List<ProblemConfig> results = new ArrayList<>();
+
+    // Get best config from db
+    List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
+        problemInfo.getValue("id").toString(), algID, numConfigs);
+
+    // Use best records to fill results to given numConfigs size
+    for (int i = 0; i <= numConfigs / bestRes.size(); i++) {
+      for (ExperimentTaskRecord expTaskRec : bestRes) {
+        if (results.size() == numConfigs) {
+          break;
+        }
+
+        results.add(createConfig(problemInfo, instanceID, algID, expTaskRec));
+      }
+    }
 
     // Fill the rest with default confs
     if (results.size() < numConfigs) {
@@ -83,39 +100,6 @@ public class FeedbackConfigurator extends Configurator {
     }
 
     return results.toArray(new ProblemConfig[0]);
-  }
-  
-  /**
-   * .
-   * @param problemInfo .
-   * @param instanceID .
-   * @param algID .
-   * @param numConfigs .
-   * @return .
-   * @throws Exception .
-   */
-  public List<ProblemConfig> createConfigs(
-      ProblemInfo problemInfo, String instanceID, String algID, int numConfigs)
-      throws Exception {
-    
-    List<ProblemConfig> configs = new ArrayList<>();
-
-    // Get best config from db
-    List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
-        problemInfo.getValue("id").toString(), algID, numConfigs);
-
-    // Use best records to fill results to given numConfigs size
-    for (int i = 0; i <= numConfigs / bestRes.size(); i++) {
-      for (ExperimentTaskRecord expTaskRec : bestRes) {
-        if (configs.size() == numConfigs) {
-          break;
-        }
-
-        configs.add(createConfig(problemInfo, instanceID, algID, expTaskRec));
-      }
-    }
-
-    return configs;
   }
 
   private ProblemConfig createConfig(
