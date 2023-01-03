@@ -148,7 +148,7 @@ public class Experimenter {
         logger.info("    Instance '{}'", instanceID);
 
         // RUN EXPERIMENT
-        Experiment experiment = createExperimenter(experimentName, problemID, instanceID);
+        Experiment experiment = createExperiment(experimentName, problemID, instanceID);
         double score = experiment.run();
         // --- ----------
 
@@ -181,7 +181,7 @@ public class Experimenter {
     experimentReporter.updateEndDate(experimentID, new Date(endDate));
   }
 
-  private Experiment createExperimenter(String experimentName, String problemID, String instanceID) 
+  private Experiment createExperiment(String experimentName, String problemID, String instanceID) 
       throws Exception {
 
     if (experimentName.equals("SingleAlgorithmDefault")) {
@@ -205,7 +205,7 @@ public class Experimenter {
     if (experimentName.equals("SingleAlgorithmFeedback")) {
       return new SingleAlgorithmFeedbackExperiment(
         experimentID, problemID, instanceID, 
-        algorithmID, numRuns, timeoutS, 
+        algorithmID, numRuns, timeoutS, spread,
         experimentReporter);
     }
     if (experimentName.equals("SingleAlgorithmEvolution")) {

@@ -62,16 +62,19 @@
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
+      "env": {"LOG_LEVEL": "debug"},
       "args": [
-        "experiment-single-random",
+        "experiment-single-feedback",
         "-a",
         "GeneticAlgorithm",
         "-i",
         "TSP:berlin52",
         "-t",
-        "1",
+        "10",
         "-n",
-        "1"
+        "10",
+        "-s",
+        "0"
       ]
     },
     {

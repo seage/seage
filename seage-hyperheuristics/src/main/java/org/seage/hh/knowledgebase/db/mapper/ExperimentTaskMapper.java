@@ -1,9 +1,12 @@
 package org.seage.hh.knowledgebase.db.mapper;
 
+import java.util.List;
 import java.util.UUID;
 import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
@@ -39,7 +42,7 @@ public interface ExperimentTaskMapper {
   int insertExperimentTask(ExperimentTaskRecord experimentTask);
 
   @Select("SELECT * FROM seage.experiment_tasks WHERE experiment_task_id = #{experimentTaskID}")
-  @Results(id = "experimentResult", value = {
+  @Results(id = "experimentTaskResult", value = {
       @Result(property = "experimentTaskID", column = "experiment_task_id"),
       @Result(property = "experimentType", column = "experiment_type"),
       @Result(property = "experimentID", column = "experiment_id"),
@@ -58,4 +61,17 @@ public interface ExperimentTaskMapper {
   })
   ExperimentTaskRecord getExperimentTask(UUID experimentTaskID);
 
+  @Select("SELECT * FROM seage.experiment_tasks")
+  @ResultMap("experimentTaskResult")
+  List<ExperimentTaskRecord> getExperimentTasks();
+
+  @Select("""
+    SELECT * FROM seage.experiment_tasks
+    WHERE seage.experiment_tasks.problem_id=#{problemId} AND
+          seage.experiment_tasks.algorithm_id=#{algorithmId}
+    ORDER BY seage.experiment_tasks.score DESC
+    LIMIT #{limit}
+  """)
+  @ResultMap("experimentTaskResult")
+  List<ExperimentTaskRecord> getBestExperimentTasks(@Param("problemId") String problemId, @Param("algorithmId") String algorithmId, @Param("limit") int limit);
 }

@@ -6,7 +6,6 @@ import com.beust.jcommander.Parameters;
 import java.util.List;
 import java.util.Map;
 import org.seage.hh.experimenter.Experimenter;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperiment;
 
 @Parameters(commandDescription = "Perform single feedback experiment")
 public class ExperimentSingleFeedbackCommand extends Command {
@@ -22,6 +21,8 @@ public class ExperimentSingleFeedbackCommand extends Command {
   int numOfConfigs;
   @Parameter(names = "-t", required = true, description = "Time to run algorithm")
   int algorithmTimeoutS;
+  @Parameter(names = "-s", required = true, description = "Spread around the parameter value")
+  double spread;
 
   @Override
   public void performCommand() throws Exception {
@@ -30,7 +31,7 @@ public class ExperimentSingleFeedbackCommand extends Command {
     for (String algorithmID : algorithms) {
       new Experimenter(
         algorithmID, problemInstanceParams, numOfConfigs, 
-        algorithmTimeoutS).runExperiment("SingleAlgorithmFeedback");
+        algorithmTimeoutS).setSpread(spread).runExperiment("SingleAlgorithmFeedback");
     }
   }
 }

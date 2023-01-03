@@ -59,9 +59,9 @@ public class DefaultConfigurator extends Configurator {
     return results.toArray(new ProblemConfig[0]);
   }
 
-  private ProblemConfig createConfig(ProblemInfo problemInfo, String instanceID, String algID, double spread)
+  private ProblemConfig createConfig(
+      ProblemInfo problemInfo, String instanceID, String algID, double spread)
       throws Exception {
-    ProblemConfig config = new ProblemConfig("Config");
     DataNode problem = new DataNode("Problem");
     problem.putValue("id", problemInfo.getValue("id"));
     problem.putDataNode(problemInfo.getDataNode("Instances").getDataNodeById(instanceID));
@@ -70,10 +70,11 @@ public class DefaultConfigurator extends Configurator {
     algorithm.putValue("id", algID);
 
     DataNode params = new DataNode("Parameters");
-    for (DataNode dn : problemInfo.getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter")) {
-      
+    for (DataNode dn : problemInfo
+        .getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter")
+    ) {
       double value = dn.getValueDouble("init");
-      if(spread != 0) {
+      if (spread != 0) {
         double min = dn.getValueDouble("min");
         double max = dn.getValueDouble("max");
         double sign = Math.random() > 0.5 ? 1 : -1;
@@ -85,6 +86,7 @@ public class DefaultConfigurator extends Configurator {
 
     algorithm.putDataNode(params);
 
+    ProblemConfig config = new ProblemConfig("Config");
     config.putDataNode(problem);
     config.putDataNode(algorithm);
     return config;
