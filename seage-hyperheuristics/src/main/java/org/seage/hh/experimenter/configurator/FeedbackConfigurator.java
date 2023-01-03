@@ -104,8 +104,15 @@ public class FeedbackConfigurator extends Configurator {
     List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
         problemInfo.getValue("id").toString(), algID, numConfigs);
 
-    for (ExperimentTaskRecord expTaskRec : bestRes) {
-      configs.add(createConfig(problemInfo, instanceID, algID, expTaskRec));
+    // Use best records to fill results to given numConfigs size
+    for (int i = 0; i <= numConfigs / bestRes.size(); i++) {
+      for (ExperimentTaskRecord expTaskRec : bestRes) {
+        if (configs.size() == numConfigs) {
+          break;
+        }
+
+        configs.add(createConfig(problemInfo, instanceID, algID, expTaskRec));
+      }
     }
 
     return configs;
