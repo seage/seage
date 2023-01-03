@@ -113,7 +113,7 @@ public class NewFeedbackConfiguratorTest {
 
     assertEquals(1, pcList.length);
 
-    // Test if it returns only one config from db when asked for 10
+    // Test if it returns 10 config from db when asked for 10
     pcList = fc.prepareConfigs(pi, "Instance01", "Algorithm01", 10);
 
     assertEquals(10, pcList.length);
