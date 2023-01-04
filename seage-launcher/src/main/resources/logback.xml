@@ -2,9 +2,6 @@
   <variable name="LOG_LEVEL" value="${LOG_LEVEL:-INFO}" />
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-      <level>INFO</level>
-    </filter>
     <encoder>
       <pattern>%d{yyyy-MM-dd} | %d{HH:mm:ss.SSS} | %-5p | %-40logger{40} | %m%n</pattern>
     </encoder>
@@ -18,18 +15,12 @@
       <maxFileSize>1GB</maxFileSize>
     </triggeringPolicy>
     <encoder>
-      <pattern>${HOSTNAME} %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} %msg%n</pattern>
+      <pattern>${HOSTNAME} | %d{HH:mm:ss.SSS} | %thread | %-5p | %-40logger{40} | %m%n</pattern>
     </encoder>
   </appender>
 
-  <!-- additivity="false" -->
-  <logger name="org.seage" level="${LOG_LEVEL}" additivity="false">
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-      <encoder>
-        <pattern>%d{yyyy-MM-dd} | %d{HH:mm:ss.SSS} | %-5p | %-40logger{40} | %m%n</pattern>
-      </encoder>
-    </appender>
-  </logger>
+  <!-- additivity="false": false prevents the logger from inheriting from parents. --> 
+  <logger name="org.seage" level="${LOG_LEVEL}"/>
 
   <root level="INFO">
     <appender-ref ref="FILE" />

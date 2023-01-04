@@ -56,7 +56,7 @@ jdbc:h2:<path-to-seage>/output/seage.local.h2
 DB_USER=<username> \
 DB_PASSWORD=<password> \
 DB_URL="jdbc:postgresql://<server>/seage" \
-./scripts/run.sh experiment-single-random -p SAT -a TabuSearch -i uf20-01 -t 10 -n 10
+./scripts/run.sh experiment-single-random -a TabuSearch -i SAT:uf20-01 -t 10 -n 10
 ```
 
 ## Running in Docker
@@ -72,7 +72,7 @@ docker-compose up
 
 Once all the containers are running you can run a new experiment as follows:
 ```
-docker exec seage_seage_1 ./scripts/run.sh experiment-single-random -p SAT -a TabuSearch -i uf20-01 -t 10 -n 10
+docker exec seage_seage_1 ./scripts/run.sh experiment-single-random -a TabuSearch -i SAT:uf20-01 -t 10 -n 10
 ```
 
 The results can be inspected using `pgAdmin` at the address http://localhost:28080
@@ -90,7 +90,7 @@ docker-compose up
 
 ### Run experiments
 ```
-DB_URL="jdbc:postgresql://localhost:25432/seage" ./scripts/run.sh experiment-single-random -p SAT -a TabuSearch -i uf20-01 -t 10 -n 10
+DB_URL="jdbc:postgresql://localhost:25432/seage" ./scripts/run.sh experiment-single-random -a TabuSearch -i SAT:uf20-01 -t 10 -n 10
 ```
 
 ### Run experiments in background

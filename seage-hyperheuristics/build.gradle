@@ -12,13 +12,12 @@ plugins {
 }
 
 dependencies {
-    implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
-    implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.5.1'
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
-    implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.1'
+    implementation group: 'com.h2database', name: 'h2', version: '2.1.214'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.1'
+    implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.11'
+    implementation group: 'org.flywaydb', name: 'flyway-core', version: '9.10.2'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.1'
     // implementation group: 'org.apache.spark', name: 'spark-core_2.12', version: '3.1.1'
-    implementation group: 'org.flywaydb', name: 'flyway-core', version: '7.7.1'
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
 
     implementation project(':seage-aal')
     testImplementation(testFixtures(project(':seage-aal')))
