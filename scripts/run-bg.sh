@@ -3,7 +3,9 @@ cd `dirname $0`/..
 set -e
 
 if [ "x$DB_URL" = "x" ]; then
-  export DB_URL="jdbc:postgresql://localhost:25432/seage"
+  echo "Env variables not defined: DB_URL, DB_USER, DB_PASSWORD"
+  # export DB_URL="jdbc:postgresql://localhost:25432/seage"
+  exit 1
 fi
 
 # Run SEAGE
