@@ -42,8 +42,6 @@ public class Experimenter {
   protected int granularity;
   protected int numOfIterations;
 
-
-
   /**
    * ApproachExperimenter.
    * 

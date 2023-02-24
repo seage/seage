@@ -21,8 +21,8 @@ public class ExperimentSingleFeedbackCommand extends Command {
   int numOfConfigs;
   @Parameter(names = "-t", required = true, description = "Time to run algorithm")
   int algorithmTimeoutS;
-  @Parameter(names = "-s", required = true, description = "Spread around the parameter value")
-  double spread;
+  @Parameter(names = "-s", required = false, description = "Spread around the parameter value")
+  double spread = 0.1;
 
   @Override
   public void performCommand() throws Exception {

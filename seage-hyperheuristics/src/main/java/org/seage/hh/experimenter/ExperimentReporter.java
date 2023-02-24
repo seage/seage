@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
 import org.seage.data.DataNode;
@@ -133,6 +134,15 @@ public class ExperimentReporter {
     // insertSolutions(session, experimentTaskID, newSolutions, "NewSolution", "new");
   }
 
+  public List<ExperimentRecord> getExperiments() throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);    
+      List<ExperimentRecord> experiments = mapper.getExperiments();
+
+      return experiments;
+    }
+  }
+  
   private void insertExperimentTask(ExperimentTaskRecord experimentTask) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
