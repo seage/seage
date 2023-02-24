@@ -19,6 +19,7 @@ import org.seage.launcher.commands.ExperimentSingleGridCommand;
 import org.seage.launcher.commands.ExperimentSingleRandomCommand;
 import org.seage.launcher.commands.InfoCommand;
 import org.seage.launcher.commands.MetadataGeneratorCommand;
+import org.seage.launcher.commands.ReportCommand;
 import org.seage.problem.fsp.FspProblemProvider;
 import org.seage.problem.jsp.JspProblemProvider;
 import org.seage.problem.qap.QapProblemProvider;
@@ -50,6 +51,7 @@ public class Launcher {
     commands.put("experiment-multi-random", new ExperimentMultiRandomCommand());
     commands.put("experiment-approach", new ExperimentApproachCommand());
     commands.put("metadata", new MetadataGeneratorCommand());
+    commands.put("report", new ReportCommand());
   }
 
   /**

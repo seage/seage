@@ -11,5 +11,6 @@
   "cSpell.words": [
     "hyflex",
     "seage"
-  ]
+  ],
+  "java.compile.nullAnalysis.mode": "automatic"
 }

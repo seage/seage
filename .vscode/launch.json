@@ -6,21 +6,7 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Launch FspAntColonyTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.fsp.antcolony.FspAntColonyTest",
-      "projectName": "seage-problem-fsp"
-    },
-    {
-      "type": "java",
-      "name": "Launch JspAntColonyTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.jsp.antcolony.JspAntColonyTest",
-      "projectName": "seage-problem-jsp"
-    },
-    {
-      "type": "java",
-      "name": "Debug Launcher (info)",
+      "name": "Run info",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
@@ -29,7 +15,7 @@
     },
     {
       "type": "java",
-      "name": "Debug Launcher (details)",
+      "name": "Run details",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
@@ -42,7 +28,16 @@
     },
     {
       "type": "java",
-      "name": "Debug Launcher (metadata)",
+      "name": "Run report",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": "report"
+    },
+    {
+      "type": "java",
+      "name": "Run metadata",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
@@ -57,7 +52,7 @@
     },
     {
       "type": "java",
-      "name": "Debug Launcher (experimenter, h2)",
+      "name": "Run experimenter, h2",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
@@ -74,14 +69,12 @@
         "-t",
         "10",
         "-n",
-        "10",
-        "-s",
-        "0"
+        "10"
       ]
     },
     {
       "type": "java",
-      "name": "Debug Launcher (approach, h2)",
+      "name": "Run experiment-approach, h2",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
@@ -107,7 +100,7 @@
     },
     {
       "type": "java",
-      "name": "Debug Launcher (experimenter, postgres)",
+      "name": "Run experiment-single-random, postgres",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
@@ -129,7 +122,7 @@
     },
     {
       "type": "java",
-      "name": "Debug Launcher (HH1 experimenter, postgres)",
+      "name": "Run HH1 experiment-approach, postgres",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
