@@ -3,8 +3,6 @@ package org.seage.hh.experimenter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-// import java.lang.reflect.Type;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Instant;
@@ -136,10 +134,8 @@ public class ExperimentReporter {
 
   public List<ExperimentRecord> getExperiments() throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
-      ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);    
-      List<ExperimentRecord> experiments = mapper.getExperiments();
-
-      return experiments;
+      ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
+      return mapper.getExperiments();
     }
   }
   
