@@ -2,10 +2,15 @@ package org.seage.launcher.commands;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
-
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
+import org.seage.score.heatmap.HeatmapGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +29,19 @@ public class ReportCommand extends Command {
   @Parameter(names = {"-H", "--heatmap"}, required = false, description = "Generate the experiment heatmap")
   boolean heatmap;
 
+  /**
+   * Method generates the experiment heatmap
+   * @param experiment .
+   */
+  void generateHeatmap(ExperimentRecord experiment) throws IOException {
+    logger.info(experiment.getScoreCard());
+    try (InputStream jsonInputStream = new ByteArrayInputStream(experiment.getScoreCard().getBytes(StandardCharsets.UTF_8))) {
+      String svgString = HeatmapGenerator.createHeatmap(jsonInputStream, experiment.getExperimentID().toString(), new HashMap<>());
+
+      logger.info(svgString);
+    }
+  }
+
   @Override
   public void performCommand() throws Exception {
     ExperimentReporter reporter = new ExperimentReporter();
@@ -40,6 +58,12 @@ public class ReportCommand extends Command {
               experiment.getScore(),
               experiment.getTag());
       logger.info(logLine);
+
+      if (heatmap && tag != null) {
+        for (String algorithm : algorithms) {
+          // todo - find each best result with tag and combine them
+        }
+      }
     }
   }
 }
