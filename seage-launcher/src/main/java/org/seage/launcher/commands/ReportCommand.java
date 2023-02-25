@@ -27,7 +27,9 @@ public class ReportCommand extends Command {
   @Override
   public void performCommand() throws Exception {
     ExperimentReporter reporter = new ExperimentReporter();
-    List<ExperimentRecord> experiments = reporter.getExperiments();
+    
+    List<ExperimentRecord> experiments = (tag != null) ? reporter.getExperimentsByTag(tag) : reporter.getExperiments();
+
     for (ExperimentRecord experiment : experiments) {
       String logLine =
           String.format("%10d | %25s | %20s | %12s | %7.5f | %15s |", 
@@ -39,6 +41,5 @@ public class ReportCommand extends Command {
               experiment.getTag());
       logger.info(logLine);
     }
-
   }
 }
