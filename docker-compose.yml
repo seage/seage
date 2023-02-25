@@ -31,6 +31,8 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=seage@seage.org
       - PGADMIN_DEFAULT_PASSWORD=seage
+      - PGADMIN_CONFIG_CONSOLE_LOG_LEVEL=50
+      - GUNICORN_ACCESS_LOGFILE=/dev/null
     ports:
       - 28080:80
     depends_on:
