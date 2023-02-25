@@ -26,10 +26,11 @@ public class ReportCommand extends Command {
     List<ExperimentRecord> experiments = reporter.getExperiments();
     for (ExperimentRecord experiment : experiments) {
       String logLine =
-          String.format("%10d | %25s | %20s | %6.5f | %10s |", 
+          String.format("%10d | %25s | %20s | %10s | %7.5f | %10s |", 
               experiment.getStartDate().toInstant().toEpochMilli(),
               experiment.getExperimentType(), 
               experiment.getAlgorithmID(),
+              experiment.getProblemID(),
               experiment.getScore(),
               experiment.getTag());
       logger.info(logLine);
