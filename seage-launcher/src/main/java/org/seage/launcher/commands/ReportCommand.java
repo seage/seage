@@ -17,7 +17,7 @@ public class ReportCommand extends Command {
   @Parameter(names = "-a", required = false, description = "Algorithms", variableArity = true)
   List<String> algorithms;
 
-  @Parameter(names = "-g", required = false, description = "Tag")
+  @Parameter(names = {"-T", "--tag"}, required = false, description = "Tag the experiment is marked with")
   String tag;
 
   @Override
