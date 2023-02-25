@@ -27,9 +27,8 @@ import org.slf4j.LoggerFactory;
  *     Experimenter: MetaHeuristicExperimenter | HyperHeuristic1Experimenter
  */
 public class Experimenter {
-  protected static Logger logger =
-      LoggerFactory.getLogger(Experimenter.class.getName());
-  
+  protected static Logger logger = LoggerFactory.getLogger(Experimenter.class.getName());
+
   protected ExperimentReporter experimentReporter;
 
   protected UUID experimentID;
@@ -42,26 +41,41 @@ public class Experimenter {
   protected int granularity;
   protected int numOfIterations;
 
+  protected String tag;
+
+  /**
+   * ApproachExperimenter.
+   * 
+   * @param algorithmID Algorithm ID.
+   * @param instanceIDsPerProblems Map of problem instances.
+   * @throws Exception
+   */
+  public Experimenter(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
+      int numRuns, int timeoutS) throws Exception {
+    this(algorithmID, instanceIDsPerProblems, numRuns, timeoutS, null);
+  }
+
   /**
    * ApproachExperimenter.
    * 
    * @param algorithmID Algorithm ID.
    * @param instanceIDsPerProblems Map of problem instances.
    */
-  public Experimenter(String algorithmID,
-      Map<String, List<String>> instanceIDsPerProblems, int numRuns, int timeoutS)
-      throws Exception {
+  public Experimenter(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
+      int numRuns, int timeoutS, String tag) throws Exception {
     this.experimentID = UUID.randomUUID();
     this.algorithmID = algorithmID;
     this.instanceIDsPerProblems = instanceIDsPerProblems;
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
+    this.tag = tag;
 
     this.experimentReporter = new ExperimentReporter();
   }
 
   /**
    * Method sets the spread variable.
+   * 
    * @param newSpread New spread value.
    * @return
    */
@@ -73,6 +87,7 @@ public class Experimenter {
 
   /**
    * Method sets the granularity variable.
+   * 
    * @param newGranularity New granularity value.
    * @return
    */
@@ -106,14 +121,15 @@ public class Experimenter {
         getProblemInstancesArray(),
         new String[] {algorithmID},
         getExperimentConfig(),
-        Date.from(Instant.now())
+        Date.from(Instant.now()),
+        tag
     ); 
     
     logger.info("-------------------------------------");
     logger.info("Experimenter: {}", algorithmID);
     logger.info("ExperimentID: {}", experimentID);
     logger.info("-------------------------------------");
-    
+
     // Run experiments
     logger.info("Algorithm '{}'", algorithmID);
 
@@ -123,8 +139,8 @@ public class Experimenter {
     // Initialize array for problems scores
     List<Double> problemsScores = new ArrayList<>();
 
-    ExperimentScoreCard scoreCard = new ExperimentScoreCard(
-        algorithmID, instanceIDsPerProblems.keySet().toArray(new String[]{}));
+    ExperimentScoreCard scoreCard = new ExperimentScoreCard(algorithmID,
+        instanceIDsPerProblems.keySet().toArray(new String[] {}));
 
     for (Entry<String, List<String>> entry : instanceIDsPerProblems.entrySet()) {
       String problemID = entry.getKey();
@@ -138,7 +154,7 @@ public class Experimenter {
           .getProblemInfo();
       
       ProblemScoreCalculator problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
-      
+
       List<String> instanceIDs = new ArrayList<>();
       List<Double> instanceScores = new ArrayList<>();
 
@@ -151,7 +167,7 @@ public class Experimenter {
         // --- ----------
 
         scoreCard.putInstanceScore(problemID, instanceID, score);
-  
+
         instanceIDs.add(instanceID);
         instanceScores.add(score);
       }
@@ -168,70 +184,53 @@ public class Experimenter {
     scoreCard.setTotalScore(experimentScore);
 
     experimentReporter.updateExperimentScore(experimentID, scoreCard);
-   
+
     long endDate = System.currentTimeMillis();
     logger.info("-------------------------------------");
-    logger.info("Experiment {} finished ...", experimentID);    
-    logger.info("Experiment duration: {} (DD:HH:mm:ss)", 
+    logger.info("Experiment {} finished ...", experimentID);
+    logger.info("Experiment duration: {} (DD:HH:mm:ss)",
         TimeFormat.getTimeDurationBreakdown(endDate - startDate));
     logger.info("Experiment score: ### {} ###", scoreCard.getTotalScore());
-        
+
     experimentReporter.updateEndDate(experimentID, new Date(endDate));
   }
 
-  private Experiment createExperiment(String experimentName, String problemID, String instanceID) 
+  private Experiment createExperiment(String experimentName, String problemID, String instanceID)
       throws Exception {
 
     if (experimentName.equals("SingleAlgorithmDefault")) {
-      return new SingleAlgorithmDefaultExperiment(
-        experimentID, problemID, instanceID, 
-        algorithmID, numRuns, timeoutS, 
-        experimentReporter, spread);
+      return new SingleAlgorithmDefaultExperiment(experimentID, problemID, instanceID, algorithmID,
+          numRuns, timeoutS, experimentReporter, spread);
     }
     if (experimentName.equals("SingleAlgorithmRandom")) {
-      return new SingleAlgorithmRandomExperiment(
-        experimentID, problemID, instanceID,
-        algorithmID, numRuns, timeoutS, 
-        experimentReporter);
+      return new SingleAlgorithmRandomExperiment(experimentID, problemID, instanceID, algorithmID,
+          numRuns, timeoutS, experimentReporter);
     }
     if (experimentName.equals("SingleAlgorithmGrid")) {
-      return new SingleAlgorithmGridExperiment(
-        experimentID, problemID, instanceID, 
-        algorithmID, numRuns, timeoutS, 
-        experimentReporter, granularity);
+      return new SingleAlgorithmGridExperiment(experimentID, problemID, instanceID, algorithmID,
+          numRuns, timeoutS, experimentReporter, granularity);
     }
     if (experimentName.equals("SingleAlgorithmFeedback")) {
-      return new SingleAlgorithmFeedbackExperiment(
-        experimentID, problemID, instanceID, 
-        algorithmID, numRuns, timeoutS, spread,
-        experimentReporter);
+      return new SingleAlgorithmFeedbackExperiment(experimentID, problemID, instanceID, algorithmID,
+          numRuns, timeoutS, spread, experimentReporter);
     }
     if (experimentName.equals("SingleAlgorithmEvolution")) {
-      return new SingleAlgorithmEvolutionExperiment(
-        experimentID, problemID, algorithmID, 
-        instanceID, numRuns, numOfIterations, 
-        timeoutS, experimentReporter);
+      return new SingleAlgorithmEvolutionExperiment(experimentID, problemID, algorithmID,
+          instanceID, numRuns, numOfIterations, timeoutS, experimentReporter);
     }
 
 
-    boolean ordinaryAlg = ProblemProvider
-        .getProblemProviders()
-        .get(problemID)
-        .getProblemInfo()
-        .getDataNode("Algorithms")
-        .getDataNodeById(algorithmID) != null;
-    
+    boolean ordinaryAlg = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo()
+        .getDataNode("Algorithms").getDataNodeById(algorithmID) != null;
+
     if (ordinaryAlg) {
-      return new MetaHeuristicExperiment(
-        experimentID, problemID, instanceID, 
-        algorithmID, numRuns, timeoutS, experimentReporter);
+      return new MetaHeuristicExperiment(experimentID, problemID, instanceID, algorithmID, numRuns,
+          timeoutS, experimentReporter);
     }
 
     if (algorithmID.equals("HyperHeuristic1")) {
-      return new HyperHeuristic1Experiment(
-        experimentID, problemID, instanceID, 
-        algorithmID, numRuns, timeoutS, experimentReporter
-      );
+      return new HyperHeuristic1Experiment(experimentID, problemID, instanceID, algorithmID,
+          numRuns, timeoutS, experimentReporter);
     }
 
     throw new Exception(String.format("Unknown algorithm id '%s'", algorithmID));
@@ -241,7 +240,7 @@ public class Experimenter {
     DataNode config = new DataNode("Config");
     config.putValue("timeoutS", timeoutS);
     config.putValue("numRuns", numRuns);
-    
+
     return config.toString();
   }
 
@@ -249,7 +248,7 @@ public class Experimenter {
     List<String> results = new ArrayList<>();
     for (Entry<String, List<String>> entry : instanceIDsPerProblems.entrySet()) {
       String problemID = entry.getKey();
-      
+
       for (String instanceID : entry.getValue()) {
         results.add(String.format("%s:%s", problemID, instanceID));
       }

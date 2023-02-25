@@ -33,6 +33,7 @@ public interface ExperimentMapper {
         .VALUES("score_card", "#{scoreCard}")
         .VALUES("host_info", "#{hostInfo}")
         .VALUES("format_version", "#{formatVersion}")
+        .VALUES("tag", "#{tag}")
         .toString();
     }
   }
@@ -56,6 +57,7 @@ public interface ExperimentMapper {
       @Result(property = "scoreCard", column = "score_card"),
       @Result(property = "hostInfo", column = "host_info"),
       @Result(property = "formatVersion", column = "format_version"),
+      @Result(property = "tag", column = "tag"),
   })
   ExperimentRecord getExperiment(UUID experimentId);
 

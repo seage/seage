@@ -131,7 +131,7 @@ public abstract class OldExperimenter {
         this.instanceIDs,
         this.algorithmIDs,
         getExperimentConfig(),
-        Date.from(Instant.now())
+        Date.from(Instant.now()), "old-experimenter"
     );
 
     experimentMain();

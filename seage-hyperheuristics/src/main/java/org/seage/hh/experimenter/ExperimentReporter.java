@@ -32,7 +32,7 @@ public class ExperimentReporter {
   public synchronized void createExperimentReport(
       UUID experimentID, String experimentName, String[] problemIDs,
       String[] instanceIDs, String[] algorithmIDs, String config, 
-      Date startDate) throws Exception {
+      Date startDate, String tag) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       
       String instances = String.join(",", instanceIDs);
@@ -50,7 +50,8 @@ public class ExperimentReporter {
           null,
           null,
           getHostInfo(),
-          FORMAT_VERSION
+          FORMAT_VERSION,
+          tag
       );
 
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);

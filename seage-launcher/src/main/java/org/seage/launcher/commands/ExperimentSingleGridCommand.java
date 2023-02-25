@@ -16,19 +16,26 @@ public class ExperimentSingleGridCommand extends Command {
       variableArity = true
   )
   List<String> instances;
+  
   @Parameter(names = "-a", required = true, description = "Algorithms", variableArity = true)
   List<String> algorithms;
+  
   @Parameter(
       names = "-n", required = true, description = "Number of random configs per each experiment")
   int numOfConfigs;
+  
   @Parameter(names = "-t", required = true, description = "Time to run algorithm")
   int algorithmTimeoutS;
+  
   @Parameter(
       names = "-g",
       required = true, 
       description = "Granularity of the parameter values grid: G x G x ... x G"
   )
   int granularity;
+
+  @Parameter(names = {"-T", "--tag"}, required = false, description = "Tag to mark the experiment")
+  String tag;
 
   @Override
   public void performCommand() throws Exception {
@@ -37,7 +44,7 @@ public class ExperimentSingleGridCommand extends Command {
     for (String algorithmID : algorithms) {
       new Experimenter(
         algorithmID, problemInstanceParams, numOfConfigs, 
-        algorithmTimeoutS).setGranularity(granularity).runExperiment("SingleAlgorithmGrid");
+        algorithmTimeoutS, tag).setGranularity(granularity).runExperiment("SingleAlgorithmGrid");
     }
   }
 }

@@ -35,7 +35,7 @@ public class ExperimentTaskTest {
       new Date(), 
       1.0,
       "hostname1",
-      "1"
+      "1", "tag1"
     );
 
     this.experimentTask1 = new ExperimentTaskRecord(new ExperimentTaskRequest(
