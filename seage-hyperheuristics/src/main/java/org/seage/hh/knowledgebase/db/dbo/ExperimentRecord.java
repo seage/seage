@@ -16,6 +16,7 @@ public class ExperimentRecord {
   private String scoreCard;
   private String hostInfo;
   private String formatVersion;
+  private String tag;
 
   /**
    * Experiment class mainly for storing to database.
@@ -31,8 +32,8 @@ public class ExperimentRecord {
       String problemID, String instanceID,
       String algorithmID, String config, 
       Date startDate, Date endDate, 
-      Double score,
-      String hostInfo, String formatVersion) {
+      Double score, String hostInfo, 
+      String formatVersion, String tag) {
     this.experimentID = experimentID;
     this.experimentType = experimentType;
     this.problemID = problemID;
@@ -44,6 +45,7 @@ public class ExperimentRecord {
     this.score = score;
     this.hostInfo = hostInfo;
     this.formatVersion = formatVersion;
+    this.tag = tag;
   }
 
   public UUID getExperimentID() {
@@ -142,5 +144,11 @@ public class ExperimentRecord {
     this.formatVersion = formatVersion;
   }
 
+  public String getTag() {
+    return tag;
+  }
 
+  public void setTag(String tag) {
+    this.tag = tag;
+  }
 }

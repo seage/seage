@@ -33,7 +33,7 @@ public class ExperimentTest {
       new Date(),
       1.0,
       "hostname1",
-      "1"
+      "1", "tag1"
     );
     
     this.experiment2 = new ExperimentRecord(
@@ -47,7 +47,7 @@ public class ExperimentTest {
       new Date(),
       2.0,
       "hostname2",
-      "1"
+      "1", "tag1"
     );
   }
 

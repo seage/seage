@@ -15,7 +15,7 @@ public class ExperimentSingleFeedbackCommand extends Command {
       variableArity = true
   )
   List<String> instances;
-  @Parameter(names = "-a", required = true, description = "Algorithms", variableArity = true)
+  @Parameter(names = "-a", required = true, description = "Algorithms to run", variableArity = true)
   List<String> algorithms;
   @Parameter(names = "-n", required = true, description = "Number of configs per each experiment")
   int numOfConfigs;
@@ -23,6 +23,8 @@ public class ExperimentSingleFeedbackCommand extends Command {
   int algorithmTimeoutS;
   @Parameter(names = "-s", required = false, description = "Spread around the parameter value")
   double spread = 0.1;
+  @Parameter(names = "-g", required = false, description = "Tag to mark the experiment")
+  String tag;
 
   @Override
   public void performCommand() throws Exception {
@@ -31,7 +33,7 @@ public class ExperimentSingleFeedbackCommand extends Command {
     for (String algorithmID : algorithms) {
       new Experimenter(
         algorithmID, problemInstanceParams, numOfConfigs, 
-        algorithmTimeoutS).setSpread(spread).runExperiment("SingleAlgorithmFeedback");
+        algorithmTimeoutS, tag).setSpread(spread).runExperiment("SingleAlgorithmFeedback");
     }
   }
 }
