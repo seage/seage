@@ -20,6 +20,10 @@ public class ReportCommand extends Command {
   @Parameter(names = {"-T", "--tag"}, required = false, description = "Tag the experiment is marked with")
   String tag;
 
+
+  @Parameter(names = {"-H", "--heatmap"}, required = false, description = "Generate the experiment heatmap")
+  boolean heatmap;
+
   @Override
   public void performCommand() throws Exception {
     ExperimentReporter reporter = new ExperimentReporter();
