@@ -15,15 +15,20 @@ public class ExperimentSingleFeedbackCommand extends Command {
       variableArity = true
   )
   List<String> instances;
+  
   @Parameter(names = "-a", required = true, description = "Algorithms to run", variableArity = true)
   List<String> algorithms;
+  
   @Parameter(names = "-n", required = true, description = "Number of configs per each experiment")
   int numOfConfigs;
+  
   @Parameter(names = "-t", required = true, description = "Time to run algorithm")
   int algorithmTimeoutS;
+  
   @Parameter(names = "-s", required = false, description = "Spread around the parameter value")
   double spread = 0.1;
-  @Parameter(names = "-g", required = false, description = "Tag to mark the experiment")
+  
+  @Parameter(names = {"-T", "--tag"}, required = false, description = "Tag to mark the experiment")
   String tag;
 
   @Override

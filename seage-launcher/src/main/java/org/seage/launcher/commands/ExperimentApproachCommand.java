@@ -40,12 +40,15 @@ public class ExperimentApproachCommand extends Command {
   )
   int algorithmTimeoutS;
 
+  @Parameter(names = {"-T", "--tag"}, required = false, description = "Tag to mark the experiment")
+  String tag;
+
   @Override
   public void performCommand() throws Exception {
     Map<String, List<String>> problemInstanceParams = 
         ProblemInstanceParamsParser.parseProblemInstanceParams(instanceIDs);
 
     new Experimenter(
-        algorithmID, problemInstanceParams, runsPerInstance, algorithmTimeoutS).runExperiment();
+        algorithmID, problemInstanceParams, runsPerInstance, algorithmTimeoutS, tag).runExperiment();
   }
 }
