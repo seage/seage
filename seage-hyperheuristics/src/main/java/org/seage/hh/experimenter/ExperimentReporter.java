@@ -139,6 +139,13 @@ public class ExperimentReporter {
       return mapper.getExperiments();
     }
   }
+
+  public List<ExperimentRecord> getExperimentsByTag(String tag) throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
+      return mapper.getExperimentsByTag(tag);
+    }
+  }
   
   private void insertExperimentTask(ExperimentTaskRecord experimentTask) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      

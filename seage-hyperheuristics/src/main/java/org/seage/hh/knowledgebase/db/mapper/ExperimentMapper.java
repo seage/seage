@@ -65,6 +65,10 @@ public interface ExperimentMapper {
   @ResultMap("experimentResult")
   List<ExperimentRecord> getExperiments();
 
+  @Select("SELECT * FROM seage.experiments WHERE tag = #{tag}")
+  @ResultMap("experimentResult")
+  List<ExperimentRecord> getExperimentsByTag(String tag);
+
   @Select("SELECT count(*) FROM seage.experiments")
   int getExperimentCount();
 
