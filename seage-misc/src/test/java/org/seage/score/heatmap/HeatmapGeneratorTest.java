@@ -61,12 +61,12 @@ public class HeatmapGeneratorTest {
     }
 
     // Sort the results
-    // hmg.sortResults(results);
+    hmg.sortResults(results);
 
     // Test the sorted order
-    // assertEquals("Algorithm2", results.get(0).name);
-    // assertEquals("Algorithm3", results.get(1).name);
-    // assertEquals("Algorithm1", results.get(2).name);
+    assertEquals("Algorithm2", results.get(0).name);
+    assertEquals("Algorithm3", results.get(1).name);
+    assertEquals("Algorithm1", results.get(2).name);
   }
 
   @Test

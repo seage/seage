@@ -228,56 +228,48 @@ public class HeatmapGenerator {
     // Initialize the results
     List<AlgorithmResult> results = new ArrayList<>();
 
-    // Read the xml file
-    // JSONTokener tokener = new JSONTokener(jsonInputStream);
-    // JSONObject object = new JSONObject(tokener);
-
-    System.out.println(jsonString);
-
+    // Read the json string
     Gson gson = new Gson();
     Type listType = new TypeToken<HeatmapExperimentResults>() {}.getType();
-    HeatmapExperimentResults resultsJson1 = gson.fromJson(jsonString, listType);
+    HeatmapExperimentResults experimentResults = gson.fromJson(jsonString, listType);
 
     // Iterate through results
-    // JSONArray resultsJson = object.getJSONArray("results");
-    // for (int i = 0; i < resultsJson.length(); i++) {
-    //   // Get json result data
-    //   JSONObject resultJson = resultsJson.getJSONObject(i);
-    //   AlgorithmResult result = new AlgorithmResult();
+    for (ExperimentScoreCard scoreCard : experimentResults.results) {
+      // Get json result data
+      AlgorithmResult result = new AlgorithmResult();
 
-    //   // Store the result informations
-    //   result.name = resultJson.getString("algorithmName");
-    //   result.score = Double.parseDouble(String.format("%.5f",
-    //       resultJson.getDouble("totalScore")));
-    //   result.author =
-    //       algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
-    //   result.color = getColor(result.score);
-    //   result.redColor = result.color.getRed();
-    //   result.greenColor = result.color.getGreen();
-    //   result.blueColor = result.color.getBlue();
+      // Store the result informations
+      result.name = scoreCard.getName();
+      result.score = Double.parseDouble(String.format("%.5f",
+          scoreCard.getTotalScore()));
+      result.author =
+          algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
+      result.color = getColor(result.score);
+      result.redColor = result.color.getRed();
+      result.greenColor = result.color.getGreen();
+      result.blueColor = result.color.getBlue();
 
-    //   // Get the problem results
-    //   JSONObject problemsJson = resultJson.getJSONObject("scorePerProblem");
-    //   result.problemsResults = new HashMap<>();
+      // Get the problem results
+      result.problemsResults = new HashMap<>();
 
-    //   for (String key : problemsJson.keySet()) {
-    //     // Create new structure
-    //     AlgorithmProblemResult newRes = new AlgorithmProblemResult();
+      for (String problemID : scoreCard.getProblems()) {
+        // Create new structure
+        AlgorithmProblemResult newRes = new AlgorithmProblemResult();
 
-    //     // Set the problem result parameters
-    //     newRes.name = key;
-    //     newRes.score = Double.parseDouble(String.format("%.5f",
-    //         problemsJson.getDouble(key)));
-    //     newRes.color = getColor(newRes.score);
-    //     newRes.redColor = newRes.color.getRed();
-    //     newRes.greenColor = newRes.color.getGreen();
-    //     newRes.blueColor = newRes.color.getBlue();
+        // Set the problem result parameters
+        newRes.name = problemID;
+        newRes.score = Double.parseDouble(String.format("%.5f",
+            scoreCard.getProblemScore(problemID)));
+        newRes.color = getColor(newRes.score);
+        newRes.redColor = newRes.color.getRed();
+        newRes.greenColor = newRes.color.getGreen();
+        newRes.blueColor = newRes.color.getBlue();
         
-    //     // Add new problem results to algorithm
-    //     result.problemsResults.put(newRes.name, newRes);
-    //   }
-    //   results.add(result);
-    // }
+        // Add new problem results to algorithm
+        result.problemsResults.put(newRes.name, newRes);
+      }
+      results.add(result);
+    }
     
     return results;
   }
