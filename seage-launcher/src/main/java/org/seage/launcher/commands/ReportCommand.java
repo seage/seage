@@ -35,11 +35,6 @@ public class ReportCommand extends Command {
    */
   void generateHeatmap(ExperimentRecord experiment) throws IOException {
     logger.info(experiment.getScoreCard());
-    try (InputStream jsonInputStream = new ByteArrayInputStream(experiment.getScoreCard().getBytes(StandardCharsets.UTF_8))) {
-      String svgString = HeatmapGenerator.createHeatmap(jsonInputStream, experiment.getExperimentID().toString(), new HashMap<>());
-
-      logger.info(svgString);
-    }
   }
 
   @Override
