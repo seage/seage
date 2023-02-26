@@ -49,13 +49,31 @@ public class ReportCommand extends Command {
     
     List<ExperimentRecord> experiments = (tag != null) ? reporter.getExperimentsByTag(tag) : reporter.getExperiments();
 
-    List<ExperimentScoreCard> experimentsScoreCards = new ArrayList<>();
+    HashMap<String, ExperimentScoreCard> algExperiment = new HashMap<>();
 
     Gson gson = new Gson();
     Type objType = new TypeToken<ExperimentScoreCard>() {}.getType();
 
     for (ExperimentRecord experiment : experiments) {
-      experimentsScoreCards.add(gson.fromJson(experiment.getScoreCard(), objType));
+      ExperimentScoreCard expScoreCard = gson.fromJson(experiment.getScoreCard(), objType);
+
+      if (algExperiment.containsKey(experiment.getAlgorithmID())) {
+        double bestOverScore = 0.0;
+        ExperimentScoreCard curExpScoreCard = algExperiment.get(experiment.getAlgorithmID());
+        
+        for (String algorithID : expScoreCard.getProblems()) {
+          if (expScoreCard.getProblemScore(algorithID) > curExpScoreCard.getProblemScore(algorithID)) {
+            curExpScoreCard.putProblemScore(algorithID, expScoreCard.getProblemScore(algorithID));
+            
+            bestOverScore += expScoreCard.getProblemScore(algorithID);
+          } else {
+            bestOverScore += curExpScoreCard.getProblemScore(algorithID);
+          }
+        }
+        curExpScoreCard.setTotalScore(bestOverScore/(curExpScoreCard.getProblems().size()));
+      } else {
+        algExperiment.put(experiment.getAlgorithmID(), expScoreCard);
+      }
 
       // Print the experiment details
       String logLine =
