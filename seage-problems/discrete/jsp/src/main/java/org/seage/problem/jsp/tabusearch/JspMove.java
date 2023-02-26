@@ -25,33 +25,33 @@ import org.seage.metaheuristic.tabusearch.Solution;
  * Summary description for JspMove.
  */
 public class JspMove implements Move {
-  private int _ix1;
-  private int _ix2;
+  private int ix1;
+  private int ix2;
 
   public JspMove(int ix1, int ix2) {
-    _ix1 = ix1;
-    _ix2 = ix2;
+    this.ix1 = ix1;
+    this.ix2 = ix2;
   }
 
   @Override
   public void operateOn(Solution soln) {
     JspTabuSearchSolution solution = (JspTabuSearchSolution) soln;
-    int tmp = solution.getJobArray()[_ix1];
-    solution.getJobArray()[_ix1] = solution.getJobArray()[_ix2];
-    solution.getJobArray()[_ix2] = tmp;
+    int tmp = solution.getJobArray()[ix1];
+    solution.getJobArray()[ix1] = solution.getJobArray()[ix2];
+    solution.getJobArray()[ix2] = tmp;
   }
 
   public int getIndex1() {
-    return _ix1;
+    return ix1;
   }
 
   public int getIndex2() {
-    return _ix2;
+    return ix2;
   }
 
   @Override
   public int hashCode() {
-    return (_ix1 << 10) + _ix2 << 5;
+    return (ix1 << 10) + ix2 << 5;
   }
 
   @Override

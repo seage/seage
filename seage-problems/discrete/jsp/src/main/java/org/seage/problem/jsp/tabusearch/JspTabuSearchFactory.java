@@ -30,7 +30,6 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
-import org.seage.problem.jsp.JspProblemProvider;
 
 /**
  *
@@ -38,8 +37,8 @@ import org.seage.problem.jsp.JspProblemProvider;
  */
 @Annotations.AlgorithmId("TabuSearch")
 @Annotations.AlgorithmName("Tabu Search")
-@Annotations.NotReady
-public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, JspTabuSearchSolution> {
+public class JspTabuSearchFactory
+    implements IAlgorithmFactory<JspPhenotype, JspTabuSearchSolution> {
 
   @Override
   public Class<?> getAlgorithmClass() {
@@ -48,37 +47,10 @@ public class JspTabuSearchFactory implements IAlgorithmFactory<JspPhenotype, Jsp
 
   @Override
   public IAlgorithmAdapter<JspPhenotype, JspTabuSearchSolution> createAlgorithm(
-      ProblemInstance instance,
-      IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception {
-    // createAlgorithm implementation
-    return new TabuSearchAdapter<JspPhenotype, JspTabuSearchSolution>(new JspMoveManager((JspJobsDefinition) instance),
-        new JspObjectiveFunction((JspPhenotypeEvaluator)phenotypeEvaluator), phenotypeEvaluator) {
-
-      @Override
-      public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception {
-        this.solutions = new JspTabuSearchSolution[source.length];
-        for (int i = 0; i < source.length; i++)
-          this.solutions[i] = new JspTabuSearchSolution(source[i].getSolution());
-      }
-
-      @Override
-      public JspPhenotype[] solutionsToPhenotype() throws Exception {
-        JspPhenotype[] result = new JspPhenotype[this.solutions.length];
-        for (int i = 0; i < this.solutions.length; i++) {
-          JspTabuSearchSolution s = (JspTabuSearchSolution) this.solutions[i];
-          result[i] = solutionToPhenotype(s);
-        }
-        return result;
-      }
-
-      @Override
-      public JspPhenotype solutionToPhenotype(JspTabuSearchSolution solution) throws Exception {
-        JspPhenotype result = new JspPhenotype(solution.getJobArray());
-        double[] objVals = this.phenotypeEvaluator.evaluate(result);
-        result.setObjValue(objVals[0]);
-        result.setScore(objVals[1]);
-        return result;
-      }
-    };
+      ProblemInstance instance, IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator)
+      throws Exception {
+    return new JspTabuSearchAdapter(
+        new JspMoveManager((JspJobsDefinition) instance),
+        new JspObjectiveFunction((JspPhenotypeEvaluator) phenotypeEvaluator), phenotypeEvaluator);
   }
 }
