@@ -6,6 +6,8 @@
 
 package org.seage.score.heatmap;
 
+import org.seage.hh.experimenter.ExperimentScoreCard;
+
 import com.hubspot.jinjava.Jinjava;
 
 import java.awt.Color;
@@ -13,6 +15,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -28,9 +31,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 // ---------------------------------------------------
 
 import net.mahdilamb.colormap.SequentialColormap;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -215,54 +224,60 @@ public class HeatmapGenerator {
   }
 
   protected List<AlgorithmResult> loadJson(
-      InputStream jsonInputStream, Map<String, String> algAuthors) {
+      String jsonString, Map<String, String> algAuthors) {
     // Initialize the results
     List<AlgorithmResult> results = new ArrayList<>();
 
     // Read the xml file
-    JSONTokener tokener = new JSONTokener(jsonInputStream);
-    JSONObject object = new JSONObject(tokener);
+    // JSONTokener tokener = new JSONTokener(jsonInputStream);
+    // JSONObject object = new JSONObject(tokener);
+
+    System.out.println(jsonString);
+
+    Gson gson = new Gson();
+    Type listType = new TypeToken<HeatmapExperimentResults>() {}.getType();
+    HeatmapExperimentResults resultsJson1 = gson.fromJson(jsonString, listType);
 
     // Iterate through results
-    JSONArray resultsJson = object.getJSONArray("results");
-    for (int i = 0; i < resultsJson.length(); i++) {
-      // Get json result data
-      JSONObject resultJson = resultsJson.getJSONObject(i);
-      AlgorithmResult result = new AlgorithmResult();
+    // JSONArray resultsJson = object.getJSONArray("results");
+    // for (int i = 0; i < resultsJson.length(); i++) {
+    //   // Get json result data
+    //   JSONObject resultJson = resultsJson.getJSONObject(i);
+    //   AlgorithmResult result = new AlgorithmResult();
 
-      // Store the result informations
-      result.name = resultJson.getString("algorithmName");
-      result.score = Double.parseDouble(String.format("%.5f",
-          resultJson.getDouble("totalScore")));
-      result.author =
-          algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
-      result.color = getColor(result.score);
-      result.redColor = result.color.getRed();
-      result.greenColor = result.color.getGreen();
-      result.blueColor = result.color.getBlue();
+    //   // Store the result informations
+    //   result.name = resultJson.getString("algorithmName");
+    //   result.score = Double.parseDouble(String.format("%.5f",
+    //       resultJson.getDouble("totalScore")));
+    //   result.author =
+    //       algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
+    //   result.color = getColor(result.score);
+    //   result.redColor = result.color.getRed();
+    //   result.greenColor = result.color.getGreen();
+    //   result.blueColor = result.color.getBlue();
 
-      // Get the problem results
-      JSONObject problemsJson = resultJson.getJSONObject("scorePerProblem");
-      result.problemsResults = new HashMap<>();
+    //   // Get the problem results
+    //   JSONObject problemsJson = resultJson.getJSONObject("scorePerProblem");
+    //   result.problemsResults = new HashMap<>();
 
-      for (String key : problemsJson.keySet()) {
-        // Create new structure
-        AlgorithmProblemResult newRes = new AlgorithmProblemResult();
+    //   for (String key : problemsJson.keySet()) {
+    //     // Create new structure
+    //     AlgorithmProblemResult newRes = new AlgorithmProblemResult();
 
-        // Set the problem result parameters
-        newRes.name = key;
-        newRes.score = Double.parseDouble(String.format("%.5f",
-            problemsJson.getDouble(key)));
-        newRes.color = getColor(newRes.score);
-        newRes.redColor = newRes.color.getRed();
-        newRes.greenColor = newRes.color.getGreen();
-        newRes.blueColor = newRes.color.getBlue();
+    //     // Set the problem result parameters
+    //     newRes.name = key;
+    //     newRes.score = Double.parseDouble(String.format("%.5f",
+    //         problemsJson.getDouble(key)));
+    //     newRes.color = getColor(newRes.score);
+    //     newRes.redColor = newRes.color.getRed();
+    //     newRes.greenColor = newRes.color.getGreen();
+    //     newRes.blueColor = newRes.color.getBlue();
         
-        // Add new problem results to algorithm
-        result.problemsResults.put(newRes.name, newRes);
-      }
-      results.add(result);
-    }
+    //     // Add new problem results to algorithm
+    //     result.problemsResults.put(newRes.name, newRes);
+    //   }
+    //   results.add(result);
+    // }
     
     return results;
   }
@@ -368,12 +383,12 @@ public class HeatmapGenerator {
    * @param algAuthors map of algorithm authors
    */
   public static String createHeatmap(
-      InputStream jsonInputStream, String experimentId, Map<String, String> algAuthors
+      String jsonString, String experimentId, Map<String, String> algAuthors
   ) throws IOException {
     // Create class instance
     HeatmapGenerator hmg = new HeatmapGenerator();
     // Load the results
-    List<AlgorithmResult> results = hmg.loadJson(jsonInputStream, algAuthors);
+    List<AlgorithmResult> results = hmg.loadJson(jsonString, algAuthors);
     // Get the problems
     List<String> problems = hmg.getProblemsNames(results);
     // Sort the results

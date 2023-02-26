@@ -75,7 +75,7 @@ public class ExperimentScoreCard {
     return this;
   }
 
-
+ 
   /**
    * Method sets algorithm score.
    * 
