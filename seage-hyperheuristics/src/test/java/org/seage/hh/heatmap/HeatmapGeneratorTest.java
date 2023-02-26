@@ -58,9 +58,9 @@ public class HeatmapGeneratorTest {
     hmg.sortResults(results);
 
     // Test the sorted order
-    assertEquals("Algorithm2", results.get(0).name);
-    assertEquals("Algorithm3", results.get(1).name);
-    assertEquals("Algorithm1", results.get(2).name);
+    assertEquals("Algorithm1", results.get(0).name);
+    assertEquals("Algorithm2", results.get(1).name);
+    assertEquals("Algorithm3", results.get(2).name);
   }
 
   @Test
@@ -86,11 +86,11 @@ public class HeatmapGeneratorTest {
     // Test the length
     assertEquals(3, algsOverRes.size());
     // Test the overall data
-    assertEquals("Algorithm2", algsOverRes.get(0).get(0));
+    assertEquals("Algorithm1", algsOverRes.get(0).get(0));
     assertEquals("0.9", algsOverRes.get(0).get(2));
-    assertEquals("Algorithm3", algsOverRes.get(1).get(0));
+    assertEquals("Algorithm2", algsOverRes.get(1).get(0));
     assertEquals("0.6", algsOverRes.get(1).get(2));
-    assertEquals("Algorithm1", algsOverRes.get(2).get(0));
+    assertEquals("Algorithm3", algsOverRes.get(2).get(0));
     assertEquals("0.3", algsOverRes.get(2).get(2));
 
     // Test the problems data
@@ -105,7 +105,7 @@ public class HeatmapGeneratorTest {
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
       // Get svg heatmap
       String heatmapSvg = HeatmapGenerator.createHeatmap(
-        new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8), "test", authorsNames);
+          new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8), "test", authorsNames);
 
       // Test the result
       assertNotNull(heatmapSvg);
