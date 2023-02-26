@@ -32,12 +32,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import net.mahdilamb.colormap.SequentialColormap;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.w3c.dom.Document;
