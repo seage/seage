@@ -59,11 +59,11 @@
         <Instance greedy="1139" id="orb08" optimum="899" random="1742" size="100"/>
         <Instance greedy="1330" id="orb09" optimum="934" random="1697" size="100"/>
         <Instance greedy="1234" id="orb10" optimum="944" random="1858" size="100"/>
-        <Instance greedy="1722" id="swv01 " optimum="TBA" random="2987" size="200"/>
+        <Instance greedy="1722" id="swv01" optimum="TBA" random="2987" size="200"/>
         <Instance greedy="1835" id="swv02" optimum="1475" random="3082" size="200"/>
-        <Instance greedy="1848" id="swv03 " optimum="TBA" random="3023" size="200"/>
-        <Instance greedy="2067" id="swv04 " optimum="TBA" random="3091" size="200"/>
-        <Instance greedy="2132" id="swv05 " optimum="TBA" random="3007" size="200"/>
+        <Instance greedy="1848" id="swv03" optimum="TBA" random="3023" size="200"/>
+        <Instance greedy="2067" id="swv04" optimum="TBA" random="3091" size="200"/>
+        <Instance greedy="2132" id="swv05" optimum="TBA" random="3007" size="200"/>
         <Instance greedy="2498" id="swv06" optimum="1678" random="3681" size="300"/>
         <Instance greedy="2131" id="swv07" optimum="1600" random="3486" size="300"/>
         <Instance greedy="2436" id="swv08" optimum="1763" random="3887" size="300"/>

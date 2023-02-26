@@ -79,7 +79,7 @@
         "-a",
         "TabuSearch",
         "-i",
-        "FSP:hyflex",
+        "JSP:swv02",
         "-t",
         "2",
         "-n",

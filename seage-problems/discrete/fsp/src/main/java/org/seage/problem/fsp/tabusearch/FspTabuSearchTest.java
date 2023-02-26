@@ -84,11 +84,11 @@ public class FspTabuSearchTest implements TabuSearchListener {
     TabuSearch ts = new TabuSearch(
         new JspTabuSearchSolution(jobs.getJobsCount(),
             jobs.getJobInfos()[0].getOperationInfos().length),
-        new JspMoveManager(jobs), new FspObjectiveFunction(evaluator), new SimpleTabuList(30),
+        new JspMoveManager(jobs), new FspObjectiveFunction(evaluator), new SimpleTabuList(130),
         new BestEverAspirationCriteria(), false);
 
     ts.addTabuSearchListener(this);
-    ts.setIterationsToGo(100000);
+    ts.setIterationsToGo(10000000);
     ts.startSolving();
   }
 
