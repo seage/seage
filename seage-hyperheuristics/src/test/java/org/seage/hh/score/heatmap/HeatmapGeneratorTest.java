@@ -1,4 +1,4 @@
-package org.seage.score.heatmap;
+package org.seage.hh.score.heatmap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import org.junit.jupiter.api.Test;
+import org.seage.hh.score.heatmap.HeatmapGenerator;
 
 public class HeatmapGeneratorTest {
   // Path to the xml with results

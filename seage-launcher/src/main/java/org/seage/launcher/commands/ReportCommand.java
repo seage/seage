@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
-import org.seage.score.heatmap.HeatmapGenerator;
+import org.seage.hh.score.heatmap.HeatmapGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -5,11 +5,10 @@
  * @author David Omrai
  */
 
-package org.seage.score;
+package org.seage.hh.score;
 
 import java.util.List;
-
-import org.seage.score.metric.UnitMetric;
+import org.seage.hh.score.metric.UnitMetric;
 
 public class ScoreCalculator {
 

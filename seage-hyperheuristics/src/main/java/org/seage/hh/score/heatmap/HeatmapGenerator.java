@@ -4,7 +4,7 @@
  * @author David Omrai
  */
 
-package org.seage.score.heatmap;
+package org.seage.hh.score.heatmap;
 
 import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.experimenter.ExperimentScoreCards;
