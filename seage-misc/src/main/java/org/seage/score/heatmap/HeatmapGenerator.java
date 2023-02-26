@@ -7,7 +7,7 @@
 package org.seage.score.heatmap;
 
 import org.seage.hh.experimenter.ExperimentScoreCard;
-
+import org.seage.hh.experimenter.ExperimentScoreCards;
 import com.hubspot.jinjava.Jinjava;
 
 import java.awt.Color;
@@ -225,8 +225,8 @@ public class HeatmapGenerator {
 
     // Read the json string
     Gson gson = new Gson();
-    Type listType = new TypeToken<HeatmapExperimentResults>() {}.getType();
-    HeatmapExperimentResults experimentResults = gson.fromJson(jsonString, listType);
+    Type listType = new TypeToken<ExperimentScoreCards>() {}.getType();
+    ExperimentScoreCards experimentResults = gson.fromJson(jsonString, listType);
 
     // Iterate through results
     for (ExperimentScoreCard scoreCard : experimentResults.results) {
