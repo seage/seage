@@ -4,13 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import org.junit.jupiter.api.Test;
-import org.seage.hh.heatmap.HeatmapGenerator;
 
 public class HeatmapGeneratorTest {
   // Path to the xml with results
@@ -23,8 +24,8 @@ public class HeatmapGeneratorTest {
     HeatmapGenerator hmg = new HeatmapGenerator();
     List<HeatmapGenerator.AlgorithmResult> results;
     // Turn the json file into a input stream
-    try (Scanner scanner = new Scanner( new File("bin/test/" + jsonPath), "UTF-8" )) {
-      results = hmg.loadJson(scanner.useDelimiter("\\A").next(), authorsNames);
+    try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
+      results = hmg.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8), authorsNames);
     }
     // Get problems
     List<String> problems = hmg.getProblemsNames(results);
@@ -49,8 +50,8 @@ public class HeatmapGeneratorTest {
     HeatmapGenerator hmg = new HeatmapGenerator();
     List<HeatmapGenerator.AlgorithmResult> results;
     
-    try (Scanner scanner = new Scanner( new File("bin/test/" + jsonPath), "UTF-8" )) {
-      results = hmg.loadJson(scanner.useDelimiter("\\A").next(), authorsNames);
+    try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
+      results = hmg.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8), authorsNames);
     }
 
     // Sort the results
@@ -68,8 +69,8 @@ public class HeatmapGeneratorTest {
     List<HeatmapGenerator.AlgorithmResult> results;
 
     // Turn the json file into a input stream
-    try (Scanner scanner = new Scanner( new File("bin/test/" + jsonPath), "UTF-8" )) {
-      results = hmg.loadJson(scanner.useDelimiter("\\A").next(), authorsNames);
+    try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
+      results = hmg.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8), authorsNames);
     }
 
     List<String> problems = hmg.getProblemsNames(results);
@@ -101,9 +102,10 @@ public class HeatmapGeneratorTest {
 
   @Test
   void testCreateHeatmap() throws Exception {
-    try (Scanner scanner = new Scanner( new File("bin/test/" + jsonPath), "UTF-8" )) {
+    try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
       // Get svg heatmap
-      String heatmapSvg = HeatmapGenerator.createHeatmap(scanner.useDelimiter("\\A").next(), "test", authorsNames);
+      String heatmapSvg = HeatmapGenerator.createHeatmap(
+        new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8), "test", authorsNames);
 
       // Test the result
       assertNotNull(heatmapSvg);
