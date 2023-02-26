@@ -7,7 +7,6 @@
 package org.seage.hh.heatmap;
 
 import org.seage.hh.experimenter.ExperimentScoreCard;
-import org.seage.hh.experimenter.ExperimentScoreCards;
 import com.hubspot.jinjava.Jinjava;
 
 import java.awt.Color;
@@ -41,6 +40,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class HeatmapGenerator {
+  public class ExperimentScoreCards {
+    public List<ExperimentScoreCard> results;
+  }
   // Path where the metadata are stored
   String svgTemplatePath = "/heatmap.svg.template";
 
