@@ -30,6 +30,8 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.problem.fsp.FspPhenotypeEvaluator;
 import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp.tabusearch.JspObjectiveFunction;
 import org.seage.problem.jsp.tabusearch.JspTabuSearchAdapter;
 import org.seage.problem.jsp.tabusearch.JspTabuSearchSolution;
 
@@ -54,6 +56,6 @@ public class FspTabuSearchFactory
       throws Exception {
     return new JspTabuSearchAdapter(
         new FspMoveManager((JspJobsDefinition) instance),
-        new FspObjectiveFunction((FspPhenotypeEvaluator) phenotypeEvaluator), phenotypeEvaluator);
+        new JspObjectiveFunction((FspPhenotypeEvaluator) phenotypeEvaluator), phenotypeEvaluator);
   }
 }

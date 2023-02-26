@@ -39,6 +39,7 @@ import org.seage.problem.fsp.FspJobsDefinition;
 import org.seage.problem.fsp.FspPhenotypeEvaluator;
 import org.seage.problem.fsp.FspProblemProvider;
 import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.tabusearch.JspObjectiveFunction;
 import org.seage.problem.jsp.tabusearch.JspMoveManager;
 import org.seage.problem.jsp.tabusearch.JspTabuSearchSolution;
 import org.slf4j.Logger;
@@ -67,8 +68,8 @@ public class FspTabuSearchTest implements TabuSearchListener {
         jobs = new FspJobsDefinition(jobInfo, stream);
       }
 
-      new FspTabuSearchTest().runAlgorithm(jobs);
-      // new JspTabuSearchTest().runAlgorithmAdapter(jobs);
+      // new FspTabuSearchTest().runAlgorithm(jobs);
+      new FspTabuSearchTest().runAlgorithmAdapter(jobs);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
     }
@@ -82,13 +83,12 @@ public class FspTabuSearchTest implements TabuSearchListener {
     FspPhenotypeEvaluator evaluator = new FspPhenotypeEvaluator(pi, jobs);
 
     TabuSearch ts = new TabuSearch(
-        new JspTabuSearchSolution(jobs.getJobsCount(),
-            jobs.getJobInfos()[0].getOperationInfos().length),
-        new JspMoveManager(jobs), new FspObjectiveFunction(evaluator), new SimpleTabuList(130),
+        new JspTabuSearchSolution(jobs.getJobsCount(), 1),
+        new FspMoveManager(jobs), new JspObjectiveFunction(evaluator), new SimpleTabuList(130),
         new BestEverAspirationCriteria(), false);
 
     ts.addTabuSearchListener(this);
-    ts.setIterationsToGo(10000000);
+    ts.setIterationsToGo(1000000);
     ts.startSolving();
   }
 
@@ -103,8 +103,7 @@ public class FspTabuSearchTest implements TabuSearchListener {
     FspTabuSearchFactory factory = new FspTabuSearchFactory();
     FspPhenotypeEvaluator eval = new FspPhenotypeEvaluator(pi, jobs);
     try {
-      IAlgorithmAdapter<JspPhenotype, JspTabuSearchSolution> adapter =
-          factory.createAlgorithm(jobs, eval);
+      IAlgorithmAdapter<JspPhenotype, JspTabuSearchSolution> adapter = factory.createAlgorithm(jobs, eval);
       adapter.solutionsFromPhenotype(schedules);
       adapter.startSearching(params);
       var solutions = adapter.solutionsToPhenotype();
