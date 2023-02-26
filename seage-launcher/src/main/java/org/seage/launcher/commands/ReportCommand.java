@@ -5,14 +5,20 @@ import com.beust.jcommander.Parameters;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.seage.hh.experimenter.ExperimentReporter;
+import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.heatmap.HeatmapGenerator;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 @Parameters(commandDescription = "Perform a basic reporting")
@@ -43,7 +49,15 @@ public class ReportCommand extends Command {
     
     List<ExperimentRecord> experiments = (tag != null) ? reporter.getExperimentsByTag(tag) : reporter.getExperiments();
 
+    List<ExperimentScoreCard> experimentsScoreCards = new ArrayList<>();
+
+    Gson gson = new Gson();
+    Type objType = new TypeToken<ExperimentScoreCard>() {}.getType();
+
     for (ExperimentRecord experiment : experiments) {
+      experimentsScoreCards.add(gson.fromJson(experiment.getScoreCard(), objType));
+
+      // Print the experiment details
       String logLine =
           String.format("%10d | %25s | %20s | %12s | %7.5f | %15s |", 
               experiment.getStartDate().toInstant().toEpochMilli(),
@@ -53,12 +67,6 @@ public class ReportCommand extends Command {
               experiment.getScore(),
               experiment.getTag());
       logger.info(logLine);
-
-      if (heatmap && tag != null) {
-        for (String algorithm : algorithms) {
-          // todo - find each best result with tag and combine them
-        }
-      }
     }
   }
 }
