@@ -44,26 +44,9 @@ public class FspMoveManager implements MoveManager {
     this.rnd = new Random();
   }
 
-  // @Override
-  public Move[] getAllMoves0(Solution solution) throws Exception {
-    JspTabuSearchSolution sol = (JspTabuSearchSolution) solution;
-    Schedule schedule = new Schedule(_jobsDefinition, sol.getJobArray());
-
-    List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
-
-    JspMove[] moves = new JspMove[Math.min(criticalPath.size(), _maxMoves)];
-    for (int i = 0; i < moves.length; i++) {
-      moves[i] = new JspMove(criticalPath.get(i).getFirst().getIndex(),
-          criticalPath.get(i).getSecond().getIndex());
-    }
-
-    return moves;
-  }
-
   @Override
   public Move[] getAllMoves(Solution solution) {
     JspTabuSearchSolution sol = (JspTabuSearchSolution) solution;
-    //Schedule schedule = new Schedule(_jobsDefinition, sol.getJobArray());
     List<Move> moves = new ArrayList<>();
 
     int ix1 = rnd.nextInt(sol.getJobArray().length);
