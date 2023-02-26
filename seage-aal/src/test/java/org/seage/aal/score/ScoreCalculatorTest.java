@@ -4,7 +4,7 @@
  * @author David Omrai
  */
 
-package org.seage.hh.score;
+package org.seage.aal.score;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.seage.hh.score.ScoreCalculator;
 
 
 public class ScoreCalculatorTest {

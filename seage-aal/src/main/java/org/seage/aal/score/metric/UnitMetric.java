@@ -4,7 +4,7 @@
  * @author David Omrai
  */
 
-package org.seage.hh.score.metric;
+package org.seage.aal.score.metric;
 
 
 public class UnitMetric {
