@@ -96,15 +96,18 @@ public class ProblemInstanceParamsParserTest {
         ProblemInstanceParamsParser.parseProblemInstanceParams(instanceParams);
 
     assertNotNull(result);
-    assertEquals(4, result.keySet().size());
+    assertEquals(5, result.keySet().size());
     assertTrue(result.containsKey("SAT"));
     assertTrue(result.containsKey("TSP"));
+    assertTrue(result.containsKey("JSP"));
     assertTrue(result.containsKey("FSP"));
     assertTrue(result.containsKey("QAP"));
     assertEquals(5, result.get("SAT").size());
     assertEquals("pg-525-2276-hyflex-3", result.get("SAT").get(0));
     assertEquals(5, result.get("TSP").size());
     assertEquals("pr299-hyflex-0", result.get("TSP").get(0));
+    assertEquals(5, result.get("JSP").size());
+    assertEquals("ft10", result.get("JSP").get(0));
     assertEquals(5, result.get("FSP").size());
     assertEquals("tai100_20_02", result.get("FSP").get(0));
     assertEquals(5, result.get("QAP").size());

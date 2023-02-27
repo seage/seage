@@ -42,12 +42,8 @@ When running with no database uri specified, the results are stored in the local
 ```
 java -jar seage-launcher/build/install/seage-launcher/lib/h2-*.jar
 ```
-
 Provide the following information:
-- `JDBC URL`:
-```
-jdbc:h2:<path-to-seage>/output/seage.local.h2
-```
+- `JDBC URL`:`jdbc:h2:<path-to-seage>/output/seage.local.h2`
 - `username`: `sa`
 - `password`: empty
 
@@ -63,7 +59,7 @@ DB_URL="jdbc:postgresql://<server>/seage" \
 You can run SEAGE also from source against the database running in docker.
 There are three containers:
 - seage (you don't need to run it)
-- postgresql (localhost:25432)
+- database (postgresql, `localhost:25432`)
 - pgadmin (http://localhost:28080)
 
 ### Start containers:
