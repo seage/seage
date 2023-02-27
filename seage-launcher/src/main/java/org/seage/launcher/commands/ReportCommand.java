@@ -10,10 +10,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import org.seage.aal.Annotations.AlgorithmId;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.heatmap.HeatmapGenerator;
+import org.seage.hh.heatmap.HeatmapGenerator.ExperimentScoreCards;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,8 +92,14 @@ public class ReportCommand extends Command {
       logger.info(logLine);
     }
 
-    for (String algorithmID : algExperiment.keySet()) {
-      System.out.println(gson.toJson(algExperiment.get(algorithmID)));
+    if (heatmap) {
+      ExperimentScoreCards scoreCards = new ExperimentScoreCards();
+
+      for (Entry<String, ExperimentScoreCard> entry : algExperiment.entrySet()) {
+        scoreCards.results.add(entry.getValue());
+      }
+
+      System.out.println(gson.toJson(scoreCards));
     }
   }
 }
