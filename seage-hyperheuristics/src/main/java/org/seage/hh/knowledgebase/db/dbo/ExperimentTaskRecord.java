@@ -73,7 +73,7 @@ public class ExperimentTaskRecord {
 
   private DataNode experimentTaskReport;
   private boolean taskFinished;
- 
+
 
   /**
    * Constructor for DB mapper.
@@ -84,6 +84,7 @@ public class ExperimentTaskRecord {
 
   /**
    * ExperimentTask for running algorithm.
+   * 
    * @param taskInfo .
    * @throws Exception .
    */
@@ -180,6 +181,7 @@ public class ExperimentTaskRecord {
 
   /**
    * Method runs an experiment task.
+   * 
    * @throws Exception .
    */
   public void run() throws Exception {
@@ -234,18 +236,18 @@ public class ExperimentTaskRecord {
 
     writeSolutions(evaluator,
         this.experimentTaskReport.getDataNode("Solutions").getDataNode("Output"), solutions);
-    
+
     calculateExperimentScore();
-    
+
     this.endDate = new Date();
     long durationS = (this.endDate.getTime() - this.startDate.getTime()) / 1000;
 
     this.experimentTaskReport.putDataNode(algorithm.getReport());
     this.experimentTaskReport.putValue("durationS", durationS);
-    
+
     this.taskFinished = true;
 
-    _logger.debug("Algorithm run duration: {}", durationS);    
+    _logger.debug("Algorithm run duration: {}", durationS);
     _logger.debug("ExperimentTask finished ({})", this.configID);
   }
 
@@ -264,17 +266,26 @@ public class ExperimentTaskRecord {
 
   private void writeSolutions(IPhenotypeEvaluator<Phenotype<?>> evaluator, DataNode dataNode,
       Phenotype<?>[] solutions) {
-    for (Phenotype<?> p : solutions) {
-      try {
-        DataNode solutionNode = new DataNode("Solution");
-        solutionNode.putValue("objVal", p.getObjValue());
-        solutionNode.putValue("score", p.getScore());
-        solutionNode.putValue("solution", p.toText());
-        solutionNode.putValue("hash", p.computeHash());
-        dataNode.putDataNode(solutionNode);
-      } catch (Exception ex) {
-        _logger.error("Cannot write solution", ex);
+    double bestScore = 0;
+    Phenotype<?> bestSol = null;
+    try {
+      for (Phenotype<?> p : solutions) {
+        double curScore = p.getScore();
+        if (curScore > bestScore) {
+          bestScore = curScore;
+          bestSol = p;
+        }
       }
+      if (bestSol != null && bestScore > 0) {
+        DataNode solutionNode = new DataNode("Solution");
+        solutionNode.putValue("objVal", bestSol.getObjValue());
+        solutionNode.putValue("score", bestSol.getScore());
+        solutionNode.putValue("solution", bestSol.toText());
+        solutionNode.putValue("hash", bestSol.computeHash());
+        dataNode.putDataNode(solutionNode);
+      }
+    } catch (Exception ex) {
+      _logger.error("Cannot write solution", ex);
     }
   }
 
@@ -319,11 +330,12 @@ public class ExperimentTaskRecord {
   }
 
   // public void setConfig(String config) {
-  //   // Must be here because of the db reading - Not defined for now
+  // // Must be here because of the db reading - Not defined for now
   // }
 
   /**
    * Method returns experiment task report statistics.
+   * 
    * @return String with statistics info.
    */
   public String getStatistics() {
