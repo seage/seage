@@ -67,7 +67,8 @@ public class ReportCommand extends Command {
           ExperimentScoreCard curExpScoreCard = algExperiment.get(experiment.getAlgorithmID());
 
           for (String algorithID : expScoreCard.getProblems()) {
-            if (expScoreCard.getProblemScore(algorithID) > curExpScoreCard.getProblemScore(algorithID)) {
+            if ( !curExpScoreCard.getProblems().contains(algorithID) || 
+                expScoreCard.getProblemScore(algorithID) > curExpScoreCard.getProblemScore(algorithID)) {
               curExpScoreCard.putProblemScore(algorithID, expScoreCard.getProblemScore(algorithID));
               
               bestOverScore += expScoreCard.getProblemScore(algorithID);
