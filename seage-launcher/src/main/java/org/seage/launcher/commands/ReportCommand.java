@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.seage.aal.Annotations.AlgorithmId;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.heatmap.HeatmapGenerator;
@@ -55,24 +56,26 @@ public class ReportCommand extends Command {
     Type objType = new TypeToken<ExperimentScoreCard>() {}.getType();
 
     for (ExperimentRecord experiment : experiments) {
-      ExperimentScoreCard expScoreCard = gson.fromJson(experiment.getScoreCard(), objType);
+      if (heatmap) {
+        ExperimentScoreCard expScoreCard = gson.fromJson(experiment.getScoreCard(), objType);
 
-      if (algExperiment.containsKey(experiment.getAlgorithmID())) {
-        double bestOverScore = 0.0;
-        ExperimentScoreCard curExpScoreCard = algExperiment.get(experiment.getAlgorithmID());
-        
-        for (String algorithID : expScoreCard.getProblems()) {
-          if (expScoreCard.getProblemScore(algorithID) > curExpScoreCard.getProblemScore(algorithID)) {
-            curExpScoreCard.putProblemScore(algorithID, expScoreCard.getProblemScore(algorithID));
-            
-            bestOverScore += expScoreCard.getProblemScore(algorithID);
-          } else {
-            bestOverScore += curExpScoreCard.getProblemScore(algorithID);
+        if (algExperiment.containsKey(experiment.getAlgorithmID())) {
+          double bestOverScore = 0.0;
+          ExperimentScoreCard curExpScoreCard = algExperiment.get(experiment.getAlgorithmID());
+
+          for (String algorithID : expScoreCard.getProblems()) {
+            if (expScoreCard.getProblemScore(algorithID) > curExpScoreCard.getProblemScore(algorithID)) {
+              curExpScoreCard.putProblemScore(algorithID, expScoreCard.getProblemScore(algorithID));
+              
+              bestOverScore += expScoreCard.getProblemScore(algorithID);
+            } else {
+              bestOverScore += curExpScoreCard.getProblemScore(algorithID);
+            }
           }
+          curExpScoreCard.setTotalScore(bestOverScore/(curExpScoreCard.getProblems().size()));
+        } else {
+          algExperiment.put(experiment.getAlgorithmID(), expScoreCard);
         }
-        curExpScoreCard.setTotalScore(bestOverScore/(curExpScoreCard.getProblems().size()));
-      } else {
-        algExperiment.put(experiment.getAlgorithmID(), expScoreCard);
       }
 
       // Print the experiment details
@@ -85,6 +88,10 @@ public class ReportCommand extends Command {
               experiment.getScore(),
               experiment.getTag());
       logger.info(logLine);
+    }
+
+    for (String algorithmID : algExperiment.keySet()) {
+      System.out.println(gson.toJson(algExperiment.get(algorithmID)));
     }
   }
 }
