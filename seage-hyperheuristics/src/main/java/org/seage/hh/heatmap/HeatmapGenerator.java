@@ -7,7 +7,6 @@
 package org.seage.hh.heatmap;
 
 import org.seage.hh.experimenter.ExperimentScoreCard;
-import org.seage.hh.experimenter.ExperimentScoreTable;
 import com.hubspot.jinjava.Jinjava;
 
 import java.awt.Color;
@@ -24,7 +23,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -50,25 +48,25 @@ public class HeatmapGenerator {
     }
   }
   // Path where the metadata are stored
-  String svgTemplatePath = "/heatmap.svg.template";
+  static String svgTemplatePath = "/heatmap.svg.template";
 
   // Gradient colors
-  private Color[][] gradColors = {{new Color(140, 0, 0), new Color(255, 0, 0)}, // dark red - red
+  private static Color[][] gradColors = {{new Color(140, 0, 0), new Color(255, 0, 0)}, // dark red - red
       {new Color(255, 0, 0), new Color(255, 250, 0)}, // red - yellow
       {new Color(255, 250, 0), new Color(1, 150, 32)}, // yellow - green
       {new Color(1, 150, 32), new Color(1, 120, 32)}, // green - dark green
   };
   // Gradient maps - for each two colors on the spectrum
-  private SequentialColormap[] gradMaps =
+  private static SequentialColormap[] gradMaps =
       {new SequentialColormap(gradColors[0]), new SequentialColormap(gradColors[1]),
           new SequentialColormap(gradColors[2]), new SequentialColormap(gradColors[3])};
   // Gradient color borders
-  double[] gradBorders = {0.5, 0.75, 0.98, 1.0};
+  static double[] gradBorders = {0.5, 0.75, 0.98, 1.0};
 
   /**
    * Class represents a structure where are data about problem results stored.
   */
-  protected class AlgorithmProblemResult {
+  protected static class AlgorithmProblemResult {
     String name;
     double score;
     Color color;
@@ -83,7 +81,7 @@ public class HeatmapGenerator {
   /**
    * Class represents a structure where are data about overall algorithm stored.
    */
-  protected class AlgorithmResult {
+  protected static class AlgorithmResult {
     String name;
     double score;
     String author;
@@ -108,7 +106,7 @@ public class HeatmapGenerator {
    * @param pos double value in range [0,1]
    * @return A appropriate color on the gradient
    */
-  protected Color getColor(Double pos) {
+  protected static Color getColor(Double pos) {
     // Find appropriate gradient
     int colPos;
     for (colPos = 0; colPos < gradBorders.length; colPos++) {
@@ -130,7 +128,7 @@ public class HeatmapGenerator {
   /**
    * Method reads the problems that appears in the results and stores them into a problem array.
    */
-  protected List<String> getProblemsNames(List<AlgorithmResult> results) {
+  protected static List<String> getProblemsNames(List<AlgorithmResult> results) {
     // Extract the problems names
     List<String> problems = results.isEmpty() ? new ArrayList<>()
         : new ArrayList<>(results.get(0).problemsResults.keySet());
@@ -142,7 +140,7 @@ public class HeatmapGenerator {
   /**
    * Method sorts the results list using the hhs overall scores.
    */
-  protected void sortResults(List<AlgorithmResult> results) {
+  protected  static void sortResults(List<AlgorithmResult> results) {
     // Sort the results by their overall score
     Collections.sort(results, (var lar, var rar) -> Double.compare(rar.score, lar.score));
   }
@@ -152,7 +150,7 @@ public class HeatmapGenerator {
    * 
    * @param xmlPath path to the xml file
    */
-  protected void loadXmlFile(
+  public static void loadXmlFile(
       String xmlPath, List<AlgorithmResult> results, Map<String, String> algAuthors
   ) throws Exception {
     
@@ -226,7 +224,7 @@ public class HeatmapGenerator {
     }
   }
 
-  protected AlgorithmResult getAlgorithmResult (ExperimentScoreCard scoreCard, Map<String, String> algAuthors) {
+  private static AlgorithmResult getAlgorithmResult (ExperimentScoreCard scoreCard, Map<String, String> algAuthors) {
       AlgorithmResult result = new AlgorithmResult();
 
       // Store the result informations
@@ -262,7 +260,7 @@ public class HeatmapGenerator {
         return result;
   }
 
-  protected List<AlgorithmResult> loadJson(
+  public static List<AlgorithmResult> loadJson(
       String jsonString, Map<String, String> algAuthors) {
     // Initialize the results
     List<AlgorithmResult> results = new ArrayList<>();
@@ -280,12 +278,12 @@ public class HeatmapGenerator {
     return results;
   }
 
-  protected List<AlgorithmResult> loadExperimentScoreTable(
-      ExperimentScoreTable expScoreTable, Map<String, String> algAuthors) {
+  public static List<AlgorithmResult> loadExperimentScoreCards(
+      List<ExperimentScoreCard> expScoreCards, Map<String, String> algAuthors) {
     List<AlgorithmResult> results = new ArrayList<>();
-    for (Entry<String, ExperimentScoreCard> expScore : expScoreTable.entrySet()) {
+    for ( ExperimentScoreCard expScoreCard : expScoreCards) {
       // Get json result data
-      results.add(getAlgorithmResult(expScore.getValue(), algAuthors));
+      results.add(getAlgorithmResult(expScoreCard, algAuthors));
     }
     return results;
   }
@@ -293,7 +291,7 @@ public class HeatmapGenerator {
    * Method turns the structures in given lists into a arrays, that can be read by jinja.
    * 
    */
-  protected void resultsToList(
+  protected static void resultsToList(
       List<AlgorithmResult> results, List<String> problems,
       List<List<String>> algsOverRes, List<List<List<String>>> algsProbsRes
   ) {
@@ -337,7 +335,7 @@ public class HeatmapGenerator {
    * @param experimentId id of the experiment
    * @throws IOException exception if the page couldn't be created
    */
-  protected String createSvgString(
+  protected static String createSvgString(
       String experimentId, List<AlgorithmResult> results, List<String> problems
   ) throws IOException {
     // Get the transformed data
@@ -375,10 +373,11 @@ public class HeatmapGenerator {
    * @param experimentId id of the experiment
    * @throws IOException exception if the page couldn't be created
    */
-  protected void createSvgFile(
-      String experimentId, List<AlgorithmResult> results, List<String> problems,
-      String svgFileDest
+  public static void createSvgFile(
+      String experimentId, List<AlgorithmResult> results, String svgFileDest
   ) throws IOException {
+    // Get the problems
+    List<String> problems = HeatmapGenerator.getProblemsNames(results);
     try (FileWriter fileWriter = new FileWriter(svgFileDest);) {
       fileWriter.write(createSvgString(experimentId, results, problems));
     }
@@ -390,18 +389,14 @@ public class HeatmapGenerator {
    * @param algAuthors map of algorithm authors
    */
   public static String createHeatmap(
-      String jsonString, String experimentId, Map<String, String> algAuthors
+      List<AlgorithmResult> results, String experimentId
   ) throws IOException {
-    // Create class instance
-    HeatmapGenerator hmg = new HeatmapGenerator();
-    // Load the results
-    List<AlgorithmResult> results = hmg.loadJson(jsonString, algAuthors);
     // Get the problems
-    List<String> problems = hmg.getProblemsNames(results);
+    List<String> problems = HeatmapGenerator.getProblemsNames(results);
     // Sort the results
-    hmg.sortResults(results);
+    HeatmapGenerator.sortResults(results);
     // Return the SVG string
-    return hmg.createSvgString(experimentId, results, problems);
+    return HeatmapGenerator.createSvgString(experimentId, results, problems);
   }
 }
 

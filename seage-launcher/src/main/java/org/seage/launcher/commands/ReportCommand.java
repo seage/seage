@@ -5,6 +5,7 @@ import com.beust.jcommander.Parameters;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -96,9 +97,9 @@ public class ReportCommand extends Command {
         scoreCards.results.add(entry.getValue());
       }
 
-      try (FileWriter fileWriter = new FileWriter("./output" + "/" + tag + "-heatmap.svg");) {
-        fileWriter.write(HeatmapGenerator.createHeatmap(gson.toJson(scoreCards), tag, new HashMap<>()));
-      }
+      HeatmapGenerator.createSvgFile(tag, 
+        HeatmapGenerator.loadExperimentScoreCards(new ArrayList<>(algExperiment.values()), 
+        new HashMap<>()), "./output" + "/" + tag + "-heatmap.svg");
     }
   }
 }

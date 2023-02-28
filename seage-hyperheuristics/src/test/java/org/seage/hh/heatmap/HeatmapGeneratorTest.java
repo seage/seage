@@ -105,7 +105,7 @@ public class HeatmapGeneratorTest {
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
       // Get svg heatmap
       String heatmapSvg = HeatmapGenerator.createHeatmap(
-          new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8), "test", authorsNames);
+          HeatmapGenerator.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8), authorsNames), "test");
 
       // Test the result
       assertNotNull(heatmapSvg);
