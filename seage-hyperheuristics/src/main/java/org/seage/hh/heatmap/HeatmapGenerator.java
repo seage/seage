@@ -371,6 +371,8 @@ public class HeatmapGenerator {
    * Method generates a svg file with given data.
    * 
    * @param experimentId id of the experiment
+   * @param results list of algorithm results (with colors)
+   * @param svgFileDest svg file destination
    * @throws IOException exception if the page couldn't be created
    */
   public static void createSvgFile(
@@ -385,8 +387,8 @@ public class HeatmapGenerator {
 
   /**
    * Method receives neccesary data and create the result svg file.
+   * @param results list of algorithm results (with colors)
    * @param experimentId id of the competition experiment
-   * @param algAuthors map of algorithm authors
    */
   public static String createHeatmap(
       List<AlgorithmResult> results, String experimentId
