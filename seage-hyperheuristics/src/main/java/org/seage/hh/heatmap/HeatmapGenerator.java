@@ -7,6 +7,7 @@
 package org.seage.hh.heatmap;
 
 import org.seage.hh.experimenter.ExperimentScoreCard;
+import org.seage.hh.experimenter.ExperimentScoreTable;
 import com.hubspot.jinjava.Jinjava;
 
 import java.awt.Color;
@@ -23,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -224,19 +226,7 @@ public class HeatmapGenerator {
     }
   }
 
-  protected List<AlgorithmResult> loadJson(
-      String jsonString, Map<String, String> algAuthors) {
-    // Initialize the results
-    List<AlgorithmResult> results = new ArrayList<>();
-
-    // Read the json string
-    Gson gson = new Gson();
-    Type listType = new TypeToken<ExperimentScoreCards>() {}.getType();
-    ExperimentScoreCards experimentResults = gson.fromJson(jsonString, listType);
-
-    // Iterate through results
-    for (ExperimentScoreCard scoreCard : experimentResults.results) {
-      // Get json result data
+  protected AlgorithmResult getAlgorithmResult (ExperimentScoreCard scoreCard, Map<String, String> algAuthors) {
       AlgorithmResult result = new AlgorithmResult();
 
       // Store the result informations
@@ -269,12 +259,36 @@ public class HeatmapGenerator {
         // Add new problem results to algorithm
         result.problemsResults.put(newRes.name, newRes);
       }
-      results.add(result);
+        return result;
+  }
+
+  protected List<AlgorithmResult> loadJson(
+      String jsonString, Map<String, String> algAuthors) {
+    // Initialize the results
+    List<AlgorithmResult> results = new ArrayList<>();
+
+    // Read the json string
+    Gson gson = new Gson();
+    Type listType = new TypeToken<ExperimentScoreCards>() {}.getType();
+    ExperimentScoreCards experimentResults = gson.fromJson(jsonString, listType);
+
+    // Iterate through results
+    for (ExperimentScoreCard scoreCard : experimentResults.results) {
+      results.add(getAlgorithmResult(scoreCard, algAuthors));
     }
     
     return results;
   }
 
+  protected List<AlgorithmResult> loadExperimentScoreTable(
+      ExperimentScoreTable expScoreTable, Map<String, String> algAuthors) {
+    List<AlgorithmResult> results = new ArrayList<>();
+    for (Entry<String, ExperimentScoreCard> expScore : expScoreTable.entrySet()) {
+      // Get json result data
+      results.add(getAlgorithmResult(expScore.getValue(), algAuthors));
+    }
+    return results;
+  }
   /**
    * Method turns the structures in given lists into a arrays, that can be read by jinja.
    * 
