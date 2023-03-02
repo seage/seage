@@ -135,7 +135,7 @@ public class ExperimentScoreCard {
    * @return Set of problem names.
    */
   public Set<String> getProblems() {
-    return scorePerInstance.keySet();
+    return scorePerProblem.keySet();
   }
 
 

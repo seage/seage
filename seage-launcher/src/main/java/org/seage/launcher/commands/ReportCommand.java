@@ -13,6 +13,7 @@ import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.heatmap.HeatmapGenerator;
 import org.seage.hh.heatmap.HeatmapGenerator.ExperimentScoreCards;
+import org.seage.hh.heatmap.HeatmapGenerator.HeatmapForTagCreator;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,35 +50,7 @@ public class ReportCommand extends Command {
     
     List<ExperimentRecord> experiments = (tag != null) ? reporter.getExperimentsByTag(tag) : reporter.getExperiments();
 
-    HashMap<String, ExperimentScoreCard> algExperiment = new HashMap<>();
-
-    Gson gson = new Gson();
-    Type objType = new TypeToken<ExperimentScoreCard>() {}.getType();
-
     for (ExperimentRecord experiment : experiments) {
-      if (heatmap) {
-        ExperimentScoreCard expScoreCard = gson.fromJson(experiment.getScoreCard(), objType);
-
-        if (algExperiment.containsKey(experiment.getAlgorithmID())) {
-          double bestOverScore = 0.0;
-          ExperimentScoreCard curExpScoreCard = algExperiment.get(experiment.getAlgorithmID());
-
-          for (String problemID : expScoreCard.getProblems()) {
-            if ( !curExpScoreCard.getProblems().contains(problemID) || 
-                expScoreCard.getProblemScore(problemID) > curExpScoreCard.getProblemScore(problemID)) {
-              curExpScoreCard.putProblemScore(problemID, expScoreCard.getProblemScore(problemID));
-
-              bestOverScore += expScoreCard.getProblemScore(problemID);
-            } else {
-              bestOverScore += curExpScoreCard.getProblemScore(problemID);
-            }
-          }
-          curExpScoreCard.setTotalScore(bestOverScore/(curExpScoreCard.getProblems().size()));
-        } else {
-          algExperiment.put(experiment.getAlgorithmID(), expScoreCard);
-        }
-      }
-
       // Print the experiment details
       String logLine =
           String.format("%10d | %25s | %20s | %12s | %7.5f | %15s |", 
@@ -89,17 +62,8 @@ public class ReportCommand extends Command {
               experiment.getTag());
       logger.info(logLine);
     }
-
-    if (heatmap) {
-      ExperimentScoreCards scoreCards = new ExperimentScoreCards();
-
-      for (Entry<String, ExperimentScoreCard> entry : algExperiment.entrySet()) {
-        scoreCards.results.add(entry.getValue());
-      }
-
-      HeatmapGenerator.createSvgFile(tag, 
-        HeatmapGenerator.loadExperimentScoreCards(new ArrayList<>(algExperiment.values()), 
-        new HashMap<>()), "./output" + "/" + tag + "-heatmap.svg");
-    }
+    
+    // Create the heatmap
+    HeatmapForTagCreator.createHeatmapForTag(tag);
   }
 }

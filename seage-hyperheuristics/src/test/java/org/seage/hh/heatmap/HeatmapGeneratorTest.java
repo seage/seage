@@ -2,7 +2,6 @@ package org.seage.hh.heatmap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -10,8 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import org.junit.jupiter.api.Test;
+import org.seage.hh.experimenter.ExperimentScoreCard;
+import org.seage.hh.heatmap.HeatmapGenerator.AlgorithmResult;
 
 public class HeatmapGeneratorTest {
   // Path to the xml with results
@@ -21,14 +21,16 @@ public class HeatmapGeneratorTest {
 
   @Test
   void testLoadJsonFile() throws Exception {
-    HeatmapGenerator hmg = new HeatmapGenerator();
-    List<HeatmapGenerator.AlgorithmResult> results;
-    // Turn the json file into a input stream
+    List<ExperimentScoreCard> scoreCards;
+    
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
-      results = hmg.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8), authorsNames);
+      scoreCards = HeatmapGenerator.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8));
     }
+
+    List<AlgorithmResult> results = HeatmapGenerator.loadExperimentScoreCards(scoreCards, authorsNames);
+
     // Get problems
-    List<String> problems = hmg.getProblemsNames(results);
+    List<String> problems = HeatmapGenerator.getProblemsNames(results);
 
     // Test if the results aren't null
     assertNotNull(results);
@@ -47,15 +49,16 @@ public class HeatmapGeneratorTest {
 
   @Test 
   void testJsonSortResults() throws Exception {
-    HeatmapGenerator hmg = new HeatmapGenerator();
-    List<HeatmapGenerator.AlgorithmResult> results;
+    List<ExperimentScoreCard> scoreCards;
     
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
-      results = hmg.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8), authorsNames);
+      scoreCards = HeatmapGenerator.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8));
     }
 
+    List<AlgorithmResult> results = HeatmapGenerator.loadExperimentScoreCards(scoreCards, authorsNames);
+
     // Sort the results
-    hmg.sortResults(results);
+    HeatmapGenerator.sortResults(results);
 
     // Test the sorted order
     assertEquals("Algorithm1", results.get(0).name);
@@ -65,21 +68,22 @@ public class HeatmapGeneratorTest {
 
   @Test
   void testJsonResultsToList() throws Exception {
-    HeatmapGenerator hmg = new HeatmapGenerator();
-    List<HeatmapGenerator.AlgorithmResult> results;
-
-    // Turn the json file into a input stream
+    List<ExperimentScoreCard> scoreCards;
+    
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
-      results = hmg.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8), authorsNames);
+      scoreCards = HeatmapGenerator.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8));
     }
 
-    List<String> problems = hmg.getProblemsNames(results);
+    List<AlgorithmResult> results = HeatmapGenerator.loadExperimentScoreCards(scoreCards, authorsNames);
+
+
+    List<String> problems = HeatmapGenerator.getProblemsNames(results);
     // Sort the results
-    hmg.sortResults(results);
+    HeatmapGenerator.sortResults(results);
     // Create list from results
     List<List<String>> algsOverRes = new ArrayList<>();
     List<List<List<String>>> algsProbsRes = new ArrayList<>();
-    hmg.resultsToList(results, problems, algsOverRes, algsProbsRes);
+    HeatmapGenerator.resultsToList(results, problems, algsOverRes, algsProbsRes);
 
     // Test if the list isn't null
     assertNotNull(algsOverRes);
@@ -105,7 +109,7 @@ public class HeatmapGeneratorTest {
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
       // Get svg heatmap
       String heatmapSvg = HeatmapGenerator.createHeatmap(
-          HeatmapGenerator.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8), authorsNames), "test");
+          HeatmapGenerator.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8)), "test", authorsNames);
 
       // Test the result
       assertNotNull(heatmapSvg);
