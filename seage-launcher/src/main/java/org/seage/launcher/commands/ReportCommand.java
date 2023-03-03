@@ -2,25 +2,13 @@ package org.seage.launcher.commands;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import org.seage.hh.experimenter.ExperimentReporter;
-import org.seage.hh.experimenter.ExperimentScoreCard;
-import org.seage.hh.heatmap.HeatmapGenerator;
-import org.seage.hh.heatmap.HeatmapGenerator.ExperimentScoreCards;
-import org.seage.hh.heatmap.HeatmapGenerator.HeatmapForTagCreator;
+import org.seage.hh.heatmap.HeatmapForTagCreator;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 
 @Parameters(commandDescription = "Perform a basic reporting")
 public class ReportCommand extends Command {
