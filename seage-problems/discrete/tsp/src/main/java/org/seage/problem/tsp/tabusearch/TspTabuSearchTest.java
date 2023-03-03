@@ -44,21 +44,23 @@ import org.slf4j.LoggerFactory;
 public class TspTabuSearchTest implements TabuSearchListener {
   private static final Logger log = LoggerFactory.getLogger(TspTabuSearchTest.class.getName());
 
-  public static void main(String[] args) {
-    try {
-      // String instanceID = "eil51"; // 426
-      // String instanceID = "berlin52"; // 7542
-      // String instanceID = "ch130"; // 6110
-      // String instanceID = "lin318"; // 42029
-      // String instanceID = "pcb442"; // 50778
-      // String instanceID = "u574"; // 36905
-      // String instanceID = "u724-hyflex-3"; // 41910
-      // String instanceID = "rat575-hyflex-2"; // 6773 
-      // String instanceID = "d1291-hyflex-6"; // 50801 
-      // String instanceID = "pr299-hyflex-0"; // 48191 
-      // String instanceID = "u2152-hyflex-7"; // 64253
-      String instanceID = "usa13509-hyflex-8"; // 19982859
+  private static final int TABU_LIST_SIZE = 200;
+  private static final int ITERATIONS = 500000;
 
+  public static void main(String[] args) {
+    // String instanceID = "eil51"; // 426
+    // String instanceID = "berlin52"; // 7542
+    // String instanceID = "ch130"; // 6110
+    // String instanceID = "lin318"; // 42029
+    // String instanceID = "pcb442"; // 50778
+    // String instanceID = "u574"; // 36905
+    // String instanceID = "u724-hyflex-3"; // 41910
+    // String instanceID = "rat575-hyflex-2"; // 6773 
+    // String instanceID = "d1291-hyflex-6"; // 50801 
+    // String instanceID = "pr299-hyflex-0"; // 48191 
+    // String instanceID = "u2152-hyflex-7"; // 64253
+    String instanceID = "usa13509-hyflex-8"; // 19982859    
+    try {
       new TspTabuSearchTest().run(instanceID);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
@@ -79,11 +81,11 @@ public class TspTabuSearchTest implements TabuSearchListener {
         new TspGreedySolution(cities), 
         new TspMoveManager(), 
         new TspObjectiveFunction(cities), 
-        new SimpleTabuList(4000),
+        new SimpleTabuList(TABU_LIST_SIZE),
         new BestEverAspirationCriteria(), false);
 
     ts.addTabuSearchListener(this);
-    ts.setIterationsToGo(100000);
+    ts.setIterationsToGo(ITERATIONS);
     ts.startSolving();
   }
 
