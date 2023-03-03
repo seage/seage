@@ -71,8 +71,8 @@ public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S>
 
       int i = 0;
       while (!algorithmStarted) {
-        Thread.sleep(300);
-        if (i++ < 10) {
+        Thread.sleep(100);
+        if (i++ < 30) {
           ;// System.out.print("+");
         } else {
           t.interrupt();

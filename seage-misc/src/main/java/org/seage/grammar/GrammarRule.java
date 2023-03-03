@@ -97,7 +97,7 @@ abstract public class GrammarRule implements Serializable {
 
   @Override
   public int hashCode() {
-    return new Integer(id).hashCode();
+    return id;
   }
 
   @Override

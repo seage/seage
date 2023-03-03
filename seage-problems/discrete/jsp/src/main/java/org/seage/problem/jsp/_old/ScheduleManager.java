@@ -149,7 +149,7 @@ public class ScheduleManager
         }
         //System.out.println();
 
-        Object[] res = { new Integer(maxMakeSpan), schedule/*, _numJobs, _numMachines */ };
+        Object[] res = { maxMakeSpan, schedule/*, _numJobs, _numMachines */ };
         return res;
     }
 }

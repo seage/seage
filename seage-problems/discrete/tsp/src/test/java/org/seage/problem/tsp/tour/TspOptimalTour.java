@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 public class TspOptimalTour {
   private static Logger _logger = LoggerFactory.getLogger(TspOptimalTour.class.getName());
 
-  public static String Name;
-  public static Integer[] OptimalTour;
-  public static int OptimalLength;
+  public static final String Name = "";
+  public static final Integer[] OptimalTour = {};
+  public static final int OptimalLength = 0;
 
   protected TspOptimalTour() {}
 

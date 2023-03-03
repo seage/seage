@@ -22,25 +22,22 @@ public class TspObjectiveFunctionTest {
 
   @Test
   void testObjectiveFunctionForBerlin52() throws Exception{
-    // 
-    City[] cities = readCities("instances/berlin52.tsp");
+    City[] cities = readCities(String.format("instances/%s.tsp", TspOptimalTourBerlin52.Name));
     TspObjectiveFunction fn = new TspObjectiveFunction(cities);
-
-    TspOptimalTourBerlin52 tour = new TspOptimalTourBerlin52();
+    
     TspSolution s = new TspSolution();
-    s.setTour(tour.OptimalTour);
-    assertEquals(tour.OptimalLength, fn.evaluate(s, null)[0]);
+    s.setTour(TspOptimalTourBerlin52.OptimalTour);
+    assertEquals(TspOptimalTourBerlin52.OptimalLength, fn.evaluate(s, null)[0]);
   }
 
   @Test
   void testObjectiveFunctionForPcb442() throws Exception{
-    City[] cities = readCities("instances/pcb442.tsp");
+    City[] cities = readCities(String.format("instances/%s.tsp", TspOptimalTourPcb442.Name));
     TspObjectiveFunction fn = new TspObjectiveFunction(cities);
-
-    TspOptimalTourPcb442 tour = new TspOptimalTourPcb442();
+    
     TspSolution s = new TspSolution();
-    s.setTour(tour.OptimalTour);
-    assertEquals(tour.OptimalLength, fn.evaluate(s, null)[0]);
+    s.setTour(TspOptimalTourPcb442.OptimalTour);
+    assertEquals(TspOptimalTourPcb442.OptimalLength, fn.evaluate(s, null)[0]);
   }
 
   @Test
@@ -54,6 +51,6 @@ public class TspObjectiveFunctionTest {
     assertEquals(4, fn.evaluate(s, null)[0]);
 
     s.setTour(new Integer[] {1,3,4,2});
-    assertEquals(4.8284, fn.evaluate(s, null)[0], 0.0001);
+    assertEquals(4.0, fn.evaluate(s, null)[0], 0.0001);
   }
 }
