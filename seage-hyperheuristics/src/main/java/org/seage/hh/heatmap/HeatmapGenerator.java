@@ -385,7 +385,7 @@ public class HeatmapGenerator {
       String experimentId, List<AlgorithmResult> results, String svgFileDest
   ) throws IOException {
     // Get the problems
-    List<String> problems = HeatmapGenerator.getProblemsNames(results);
+    List<String> problems = getProblemsNames(results);
     try (FileWriter fileWriter = new FileWriter(svgFileDest);) {
       fileWriter.write(createSvgString(experimentId, results, problems));
     }
@@ -402,7 +402,7 @@ public class HeatmapGenerator {
   ) throws IOException {
     List<AlgorithmResult> results = HeatmapGenerator.loadExperimentScoreCards(table, algAuthors);
     // Get the problems
-    List<String> problems = HeatmapGenerator.getProblemsNames(results);
+    List<String> problems = getProblemsNames(results);
     // Sort the results
     HeatmapGenerator.sortResults(results);
     // Return the SVG string
