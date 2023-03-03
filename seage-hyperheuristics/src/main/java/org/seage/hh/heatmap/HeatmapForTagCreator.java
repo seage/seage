@@ -3,10 +3,9 @@ package org.seage.hh.heatmap;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
-
+import java.io.FileWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class HeatmapForTagCreator {
     // Empty constructor
   }
 
-  protected static Collection<ExperimentScoreCard> getMergedScoreCards (List<ExperimentRecord> experiments) throws Exception {
+  protected static List<ExperimentScoreCard> getMergedScoreCards (List<ExperimentRecord> experiments) throws Exception {
     HashMap<String, ExperimentScoreCard> algExperiment = new HashMap<>();
 
     Gson gson = new Gson();
@@ -56,7 +55,7 @@ public class HeatmapForTagCreator {
       expScoreCard.setAlgorithmScore(algorithmScore / (expScoreCard.getProblems().size()));
     }
 
-    return algExperiment.values();
+    return new ArrayList<>(algExperiment.values());
   }
 
   public static void createHeatmapForTag(String tag) throws Exception {
@@ -65,8 +64,8 @@ public class HeatmapForTagCreator {
     List<ExperimentRecord> experiments = reporter.getExperimentsByTag(tag);
 
     // Generate the svg heatmap file
-    HeatmapGenerator.createSvgFile(tag, 
-      HeatmapGenerator.loadExperimentScoreCards(new ArrayList<>(getMergedScoreCards(experiments)), 
-      new HashMap<>()), "./output" + "/" + tag + "-heatmap.svg");
+    try (FileWriter fileWriter = new FileWriter("./output" + "/" + tag + "-heatmap.svg")) {
+      fileWriter.write(HeatmapGenerator.createHeatmap(getMergedScoreCards(experiments), tag, new HashMap<>()));
     }
+  }
 }
