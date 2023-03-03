@@ -147,9 +147,10 @@ public class HeatmapGenerator {
   /**
    * Method sorts the results list using the hhs overall scores.
    */
-  protected  static void sortResults(List<AlgorithmResult> results) {
+  protected  static List<AlgorithmResult> sortResults(List<AlgorithmResult> results) {
     // Sort the results by their overall score
     Collections.sort(results, (var lar, var rar) -> Double.compare(rar.score, lar.score));
+    return results;
   }
 
   /**
