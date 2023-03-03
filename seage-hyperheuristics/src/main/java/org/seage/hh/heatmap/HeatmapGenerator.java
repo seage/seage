@@ -289,6 +289,10 @@ public class HeatmapGenerator {
   /**
    * Method turns the structures in given lists into a arrays, that can be read by jinja.
    * 
+   * @param results list of algorithm results (with colors)
+   * @param problems list of problems
+   * @param algsOverRes list of lists of algorithm's intances results 
+   * @param algsProbsRes list of algorithms problems results 
    */
   protected static void resultsToList(
       List<AlgorithmResult> results, List<String> problems,
@@ -332,6 +336,8 @@ public class HeatmapGenerator {
    * Method generates a svg string with given data.
    * 
    * @param experimentId id of the experiment
+   * @param results list of algorithm results (with colors)
+   * @param problems list of problems
    * @throws IOException exception if the page couldn't be created
    */
   protected static String createSvgString(
@@ -386,8 +392,9 @@ public class HeatmapGenerator {
 
   /**
    * Method receives neccesary data and create the result svg file.
-   * @param results list of algorithm results (with colors)
+   * @param table list of experiments score cards
    * @param experimentId id of the competition experiment
+   * @param algAuthors map of algorithm's authors
    */
   public static String createHeatmap(
       List<ExperimentScoreCard> table, String experimentId, Map<String, String> algAuthors
