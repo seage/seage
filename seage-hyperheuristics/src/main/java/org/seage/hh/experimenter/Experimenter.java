@@ -181,7 +181,7 @@ public class Experimenter {
     }
 
     double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
-    scoreCard.setTotalScore(experimentScore);
+    scoreCard.setAlgorithmScore(experimentScore);
 
     experimentReporter.updateExperimentScore(experimentID, scoreCard);
 
@@ -190,7 +190,7 @@ public class Experimenter {
     logger.info("Experiment {} finished ...", experimentID);
     logger.info("Experiment duration: {} (DD:HH:mm:ss)",
         TimeFormat.getTimeDurationBreakdown(endDate - startDate));
-    logger.info("Experiment score: ### {} ###", scoreCard.getTotalScore());
+    logger.info("Experiment score: ### {} ###", scoreCard.getAlgorithmScore());
 
     experimentReporter.updateEndDate(experimentID, new Date(endDate));
   }

@@ -17,7 +17,7 @@ public class ExperimentScoreCard {
   /**
    * Total algorithm score.
    */
-  double totalScore;
+  double algorithmScore;
 
   /**
    * String: problemId - String: instanceId - Double: instanceId value.
@@ -81,8 +81,8 @@ public class ExperimentScoreCard {
    * 
    * @param score Algorithm score.
    */
-  public void setTotalScore(Double score) {
-    totalScore = score;
+  public void setAlgorithmScore(Double score) {
+    algorithmScore = score;
   }
 
 
@@ -91,8 +91,8 @@ public class ExperimentScoreCard {
    * 
    * @return Problem problem score.
    */
-  public double getTotalScore() {
-    return totalScore;
+  public double getAlgorithmScore() {
+    return algorithmScore;
   }
 
 

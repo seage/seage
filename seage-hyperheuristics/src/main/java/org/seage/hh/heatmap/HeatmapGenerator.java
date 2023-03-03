@@ -238,7 +238,7 @@ public class HeatmapGenerator {
       // Store the result informations
       result.name = scoreCard.getName();
       result.score = Double.parseDouble(String.format("%.5f",
-          scoreCard.getTotalScore()));
+          scoreCard.getAlgorithmScore()));
       result.author =
           algAuthors.containsKey(result.name) ? algAuthors.get(result.name) : "";
       result.color = getColor(result.score);

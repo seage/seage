@@ -38,7 +38,7 @@ public class HeatmapForTagCreator {
 
       if (algExperiment.containsKey(experiment.getAlgorithmID())) {
         ExperimentScoreCard bestExpScoreCard = algExperiment.get(experiment.getAlgorithmID());
-        double bestOverScore = bestExpScoreCard.getTotalScore();
+        double bestAlgScore = bestExpScoreCard.getAlgorithmScore();
 
         for (String problemID : expScoreCard.getProblems()) {
           System.out.println(problemID);
@@ -48,10 +48,10 @@ public class HeatmapForTagCreator {
             // there is the problem, it's not storing the problem id
             bestExpScoreCard.putProblemScore(problemID, expScoreCard.getProblemScore(problemID));              
           }
-          bestOverScore += bestExpScoreCard.getProblemScore(problemID);
-          System.out.println(bestOverScore);
+          bestAlgScore += bestExpScoreCard.getProblemScore(problemID);
+          System.out.println(bestAlgScore);
         }
-        bestExpScoreCard.setTotalScore(bestOverScore/(bestExpScoreCard.getProblems().size()));
+        bestExpScoreCard.setAlgorithmScore(bestAlgScore/(bestExpScoreCard.getProblems().size()));
         System.out.println(bestExpScoreCard.getProblems().size());
       } else {
         algExperiment.put(experiment.getAlgorithmID(), expScoreCard);
