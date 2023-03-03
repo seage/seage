@@ -38,21 +38,25 @@ public class HeatmapForTagCreator {
 
       if (algExperiment.containsKey(experiment.getAlgorithmID())) {
         ExperimentScoreCard bestExpScoreCard = algExperiment.get(experiment.getAlgorithmID());
-        double bestAlgScore = 0.0;
 
         for (String problemID : expScoreCard.getProblems()) {
           if ( (!bestExpScoreCard.getProblems().contains(problemID)) || 
-              expScoreCard.getProblemScore(problemID) > bestExpScoreCard.getProblemScore(problemID)) {
-            System.out.println("Hey, I'm here");
-            // there is the problem, it's not storing the problem id
-            bestExpScoreCard.putProblemScore(problemID, expScoreCard.getProblemScore(problemID));              
+              expScoreCard.getProblemScore(problemID) > bestExpScoreCard.getProblemScore(problemID)) {    
+                bestExpScoreCard.putProblemScore(problemID, expScoreCard.getProblemScore(problemID));
           }
-          bestAlgScore += bestExpScoreCard.getProblemScore(problemID);
         }
-        bestExpScoreCard.setAlgorithmScore(bestAlgScore/(bestExpScoreCard.getProblems().size()));
       } else {
         algExperiment.put(experiment.getAlgorithmID(), expScoreCard);
       }
+    }
+
+    // Update the algorithm score
+    for (ExperimentScoreCard expScoreCard : algExperiment.values()) {
+      double algorithmScore = 0.0;
+      for (String problemID : expScoreCard.getProblems()) {
+        algorithmScore += expScoreCard.getProblemScore(problemID);
+      }
+      expScoreCard.setAlgorithmScore(algorithmScore / (expScoreCard.getProblems().size()));
     }
 
     // Generate the svg heatmap file
