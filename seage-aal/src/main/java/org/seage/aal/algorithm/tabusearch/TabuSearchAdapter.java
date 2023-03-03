@@ -110,7 +110,7 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
     tabuSearch.stopSolving();
 
     while (isRunning()) {
-      Thread.sleep(50);
+      Thread.sleep(250);
     }
   }
 
@@ -147,12 +147,14 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
     public void tabuSearchStarted(TabuSearchEvent e) {
       algorithmStarted = true;
       statLastIterNewSol = 0;
+      logger.debug("TabuSearch started");
     }
 
     @Override
     public void tabuSearchStopped(TabuSearchEvent e) {
       algorithmStopped = true;
       statEndObjVal = bestEverSolution.getObjectiveValue()[0];
+      logger.debug("TabuSearch stopped");
     }
 
     @Override

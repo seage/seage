@@ -59,24 +59,23 @@ public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S>
     algorithmStarted = false;
 
     if (async == true) {
-      new Thread(new Runnable() {
-        @Override
-        public void run() {
+      Thread t = new Thread(() -> {
           try {
             startSearching(params);
           } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
           }
         }
-      }, this.getClass().getName()).start();
+      );
+      t.start();
 
       int i = 0;
       while (!algorithmStarted) {
-        Thread.sleep(200);
+        Thread.sleep(300);
         if (i++ < 10) {
           ;// System.out.print("+");
         } else {
-          stopSearching();
+          t.interrupt();
           throw new RuntimeException("Unable to start the algorithm asynchronously.");
         }
       }

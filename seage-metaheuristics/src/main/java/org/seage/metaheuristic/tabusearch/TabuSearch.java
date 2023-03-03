@@ -28,6 +28,9 @@
 
 package org.seage.metaheuristic.tabusearch;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This version of the {@link TabuSearch} does not create any new threads,
  * making it ideal for embedding in Enterprise JavaBeans. The
@@ -40,6 +43,7 @@ package org.seage.metaheuristic.tabusearch;
  */
 public class TabuSearch extends TabuSearchBase {
 
+  private static Logger logger = LoggerFactory.getLogger(TabuSearch.class.getName());
   /**
    * .
    */
@@ -102,9 +106,6 @@ public class TabuSearch extends TabuSearchBase {
 
   /** Choose first improving neighbor instead of best neighbor overall. */
   protected boolean chooseFirstImprovingMove = false;
-
-  /** Print errors to this stream. */
-  protected static java.io.PrintStream err = System.err;
 
   /* ******** C O N S T R U C T O R S ******** */
 
@@ -357,46 +358,43 @@ public class TabuSearch extends TabuSearchBase {
     // Go through each move
     final int movesLen = moves.length;
     for (int i = 1; i < movesLen; i++) {
-      // Now go through the rest and see if there's a better one.
-      for (i = 1; i < moves.length; i++) {
-        Move move = moves[i];
+      Move move = moves[i];
 
-        // Since the tabu status has not yet been determined, do the
-        // objective value comparisons first. Reasoning: comparing a handful
-        // of doubles is likely to be faster than whatever kind of tabu
-        // list the user has set up.
-        double[] newObjVal = objectiveFunction.evaluate(soln, move);
-        if (isFirstBetterThanSecond(newObjVal, bestMoveVal, maximizing)) {
-          // New one has a better objective value.
-          // Check the tabu status of both.
-          // Do not switch over only if the new one is tabu, but the old one isn't.
-          boolean newIsTabu = isTabu(soln, move, newObjVal, tabuList, aspirationCriteria, self);
+      // Since the tabu status has not yet been determined, do the
+      // objective value comparisons first. Reasoning: comparing a handful
+      // of doubles is likely to be faster than whatever kind of tabu
+      // list the user has set up.
+      double[] newObjVal = objectiveFunction.evaluate(soln, move);
+      if (isFirstBetterThanSecond(newObjVal, bestMoveVal, maximizing)) {
+        // New one has a better objective value.
+        // Check the tabu status of both.
+        // Do not switch over only if the new one is tabu, but the old one isn't.
+        boolean newIsTabu = isTabu(soln, move, newObjVal, tabuList, aspirationCriteria, self);
 
-          if (!(!bestMoveTabu && newIsTabu)) {
-            bestMove = move;
-            bestMoveVal = newObjVal;
-            bestMoveTabu = newIsTabu;
+        if (!(!bestMoveTabu && newIsTabu)) {
+          bestMove = move;
+          bestMoveVal = newObjVal;
+          bestMoveTabu = newIsTabu;
 
-            // If choosing first improving move, consider this one
-            if (chooseFirstImprovingMove) {
-              if (!bestMoveTabu && isFirstBetterThanSecond(bestMoveVal, currSolnVal, maximizing)) {
-                return new Object[] {bestMove, bestMoveVal, bestMoveTabu};
-              }
+          // If choosing first improving move, consider this one
+          if (chooseFirstImprovingMove) {
+            if (!bestMoveTabu && isFirstBetterThanSecond(bestMoveVal, currSolnVal, maximizing)) {
+              return new Object[] {bestMove, bestMoveVal, bestMoveTabu};
             }
+          }
 
-          } // end if: switch over
-        } else { 
-          // New one does not have better objective value, but see if it
-          // has a better tabu status.
-          if (bestMoveTabu && !isTabu(soln, move, newObjVal, tabuList, aspirationCriteria, self)) {
-            bestMove = move;
-            bestMoveVal = newObjVal;
-            bestMoveTabu = false;
-          } // end if: old was tabu, new one isn't.
-        } // end else: new one does not have better objective value
-      } // end for: through remaining moves
+        } // end if: switch over
+      } else { 
+        // New one does not have better objective value, but see if it
+        // has a better tabu status.
+        if (bestMoveTabu && !isTabu(soln, move, newObjVal, tabuList, aspirationCriteria, self)) {
+          bestMove = move;
+          bestMoveVal = newObjVal;
+          bestMoveTabu = false;
+        } // end if: old was tabu, new one isn't.
+      } // end else: new one does not have better objective value
+    } // end for: through remaining moves
 
-    } // end for: through each move
 
     return new Object[] {bestMove, bestMoveVal, bestMoveTabu};
   } // end getBestMove
@@ -534,6 +532,7 @@ public class TabuSearch extends TabuSearchBase {
    * @since 1.0
    */
   protected synchronized void setSolving(boolean solving) {
+    logger.debug("Solving set to: {}", solving);
     this.solving = solving;
   } // end setSolving
 
@@ -545,6 +544,7 @@ public class TabuSearch extends TabuSearchBase {
    * @since 1.0
    */
   protected void setKeepSolving(boolean keepSolving) {
+    logger.debug("Set keep solving to: {}", keepSolving);
     this.keepSolving = keepSolving;
   } // end setKeepSolving
 
@@ -702,24 +702,15 @@ public class TabuSearch extends TabuSearchBase {
 
     long startTime = System.currentTimeMillis();
     // While not canceled and iterations left to go
-    while (keepSolving && (iterationsToGo > 0)) {
-      Thread.yield();
-      synchronized (this) {
-        iterationsToGo--;
+    while (keepSolving && (iterationsToGo > 0)) {      
+      iterationsToGo--;
 
-        try {
-          performOneIteration();
-        } catch (NoMovesGeneratedException e) {
-          if (err != null) {
-            err.println(e);
-          }
-        } catch (NoCurrentSolutionException e) {
-          if (err != null) {
-            err.println(e);
-          }
-        }
-        incrementIterationsCompleted();
-      } // end sync: this
+      try {
+        performOneIteration();
+      } catch (NoMovesGeneratedException | NoCurrentSolutionException ex) {
+        logger.error(ex.getMessage());        
+      }
+      incrementIterationsCompleted();      
 
       if ((System.currentTimeMillis() - startTime) / 1000 > timeout) {
         keepSolving = false;

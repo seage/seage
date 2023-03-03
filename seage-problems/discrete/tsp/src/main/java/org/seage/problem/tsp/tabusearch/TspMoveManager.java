@@ -79,6 +79,7 @@ public class TspMoveManager implements MoveManager {
 
     return moves.toArray(new Move[] {});
   }
+
   Set<Integer> used = new HashSet<>();
   @Override
   public Move[] getAllMoves(Solution solution) {

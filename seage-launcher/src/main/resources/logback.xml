@@ -15,7 +15,7 @@
       <maxFileSize>1GB</maxFileSize>
     </triggeringPolicy>
     <encoder>
-      <pattern>${HOSTNAME} | %d{HH:mm:ss.SSS} | %thread | %-5p | %-40logger{40} | %m%n</pattern>
+      <pattern>${HOSTNAME} | %d{HH:mm:ss.SSS} | %thread | %-5p | %-60logger{60} | %3line | %m%n</pattern>
     </encoder>
   </appender>
 
