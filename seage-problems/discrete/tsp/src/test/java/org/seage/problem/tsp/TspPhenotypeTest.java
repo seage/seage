@@ -50,31 +50,31 @@ public class TspPhenotypeTest {
 
   @Test
   public void testEvaluate() throws Exception {
-    testEvaluateTour(new TspOptimalTourBerlin52());
-    testEvaluateTour(new TspOptimalTourPcb442());
+    this.<TspOptimalTourBerlin52>testEvaluateTour();
+    this.<TspOptimalTourPcb442>testEvaluateTour();
   }
 
-  private void testEvaluateTour(TspOptimalTour tour) throws Exception {
+  private <T extends TspOptimalTour> void testEvaluateTour() throws Exception {
     ProblemInstance instance = _provider
-        .initProblemInstance(_provider.getProblemInfo().getProblemInstanceInfo(tour.Name));
+        .initProblemInstance(_provider.getProblemInfo().getProblemInstanceInfo(T.Name));
     TspPhenotypeEvaluator evaluator = 
         new TspPhenotypeEvaluator(_provider.getProblemInfo(), (TspProblemInstance) instance);
 
-    TspPhenotype s = new TspPhenotype(tour.OptimalTour);
+    TspPhenotype s = new TspPhenotype(T.OptimalTour);
     // TspOptimalTour.printTour(s);
-    assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
+    assertEquals(T.OptimalLength, (int) evaluator.evaluate(s)[0]);
 
     s = TspOptimalTour.mirrorTour(s);
     // TspOptimalTour.printTour(s);
-    assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
+    assertEquals(T.OptimalLength, (int) evaluator.evaluate(s)[0]);
 
     s = TspOptimalTour.shiftTour(s, 10);
     // TspOptimalTour.printTour(s);
-    assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
+    assertEquals(T.OptimalLength, (int) evaluator.evaluate(s)[0]);
 
     s = TspOptimalTour.mirrorTour(TspOptimalTour.shiftTour(s, 10));
     // TspOptimalTour.printTour(s);
-    assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
+    assertEquals(T.OptimalLength, (int) evaluator.evaluate(s)[0]);
 
     s = TspOptimalTour.applySwapMove(s, new int[] { 0, 1 });
     s = TspOptimalTour.applySwapMove(s, new int[] { 10, 12 });
@@ -86,6 +86,6 @@ public class TspPhenotypeTest {
     s = TspOptimalTour.applySwapMove(s, new int[] { 6, 5 });
     s = TspOptimalTour.applySwapMove(s, new int[] { 4, 8 });
     s = TspOptimalTour.applySwapMove(s, new int[] { 3, 7 });
-    assertEquals(tour.OptimalLength, (int) evaluator.evaluate(s)[0]);
+    assertEquals(T.OptimalLength, (int) evaluator.evaluate(s)[0]);
   }
 }

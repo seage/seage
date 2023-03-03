@@ -7,9 +7,11 @@ import org.slf4j.LoggerFactory;
 public class TspOptimalTour {
   private static Logger _logger = LoggerFactory.getLogger(TspOptimalTour.class.getName());
 
-  public String Name;
-  public Integer[] OptimalTour;
-  public int OptimalLength;
+  public static String Name;
+  public static Integer[] OptimalTour;
+  public static int OptimalLength;
+
+  protected TspOptimalTour() {}
 
   public static TspPhenotype mirrorTour(TspPhenotype tour) throws Exception {
     Integer[] array = tour.getSolution();

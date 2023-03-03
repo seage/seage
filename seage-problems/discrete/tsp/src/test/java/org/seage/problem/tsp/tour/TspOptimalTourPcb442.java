@@ -1,7 +1,7 @@
 package org.seage.problem.tsp.tour;
 
 public class TspOptimalTourPcb442 extends TspOptimalTour {
-  public TspOptimalTourPcb442() {
+  static {
     Name = "pcb442";
 
     OptimalLength = 50778;

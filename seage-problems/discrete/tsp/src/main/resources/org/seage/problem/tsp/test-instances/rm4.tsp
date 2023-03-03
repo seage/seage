@@ -1,0 +1,12 @@
+NAME: berlin52
+TYPE: TSP
+COMMENT: Simple testing instance
+DIMENSION: 4
+EDGE_WEIGHT_TYPE: EUC_2D
+NODE_COORD_SECTION
+1 0.0 0.0
+2 1.0 0.0
+3 1.0 1.0
+4 0.0 1.0
+EOF
+
