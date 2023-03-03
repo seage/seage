@@ -38,10 +38,9 @@ public class HeatmapForTagCreator {
 
       if (algExperiment.containsKey(experiment.getAlgorithmID())) {
         ExperimentScoreCard bestExpScoreCard = algExperiment.get(experiment.getAlgorithmID());
-        double bestAlgScore = bestExpScoreCard.getAlgorithmScore();
+        double bestAlgScore = 0.0;
 
         for (String problemID : expScoreCard.getProblems()) {
-          System.out.println(problemID);
           if ( (!bestExpScoreCard.getProblems().contains(problemID)) || 
               expScoreCard.getProblemScore(problemID) > bestExpScoreCard.getProblemScore(problemID)) {
             System.out.println("Hey, I'm here");
@@ -49,10 +48,8 @@ public class HeatmapForTagCreator {
             bestExpScoreCard.putProblemScore(problemID, expScoreCard.getProblemScore(problemID));              
           }
           bestAlgScore += bestExpScoreCard.getProblemScore(problemID);
-          System.out.println(bestAlgScore);
         }
         bestExpScoreCard.setAlgorithmScore(bestAlgScore/(bestExpScoreCard.getProblems().size()));
-        System.out.println(bestExpScoreCard.getProblems().size());
       } else {
         algExperiment.put(experiment.getAlgorithmID(), expScoreCard);
       }
