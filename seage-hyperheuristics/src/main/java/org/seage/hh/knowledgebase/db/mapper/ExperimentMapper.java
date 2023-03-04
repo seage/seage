@@ -61,9 +61,13 @@ public interface ExperimentMapper {
   })
   ExperimentRecord getExperiment(UUID experimentId);
 
-  @Select("SELECT * FROM seage.experiments")
+  @Select("SELECT * FROM seage.experiments ORDER BY start_date LIMIT 100")
   @ResultMap("experimentResult")
   List<ExperimentRecord> getExperiments();
+
+  @Select("SELECT * FROM seage.experiments WHERE tag = #{tag}")
+  @ResultMap("experimentResult")
+  List<ExperimentRecord> getExperimentsByTag(String tag);
 
   @Select("SELECT count(*) FROM seage.experiments")
   int getExperimentCount();

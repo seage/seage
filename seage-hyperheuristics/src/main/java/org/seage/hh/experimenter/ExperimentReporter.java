@@ -101,7 +101,7 @@ public class ExperimentReporter {
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
 
       String scoreCardJson = gson.toJson(scoreCard);
-      double totalScore = scoreCard.getTotalScore();
+      double totalScore = scoreCard.getAlgorithmScore();
 
       mapper.updateScore(
           experimentID, totalScore, scoreCardJson);
@@ -137,6 +137,13 @@ public class ExperimentReporter {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
       return mapper.getExperiments();
+    }
+  }
+
+  public List<ExperimentRecord> getExperimentsByTag(String tag) throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
+      return mapper.getExperimentsByTag(tag);
     }
   }
   

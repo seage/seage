@@ -33,7 +33,7 @@
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
-      "args": "report"
+      "args": ["report", "-H"]
     },
     {
       "type": "java",

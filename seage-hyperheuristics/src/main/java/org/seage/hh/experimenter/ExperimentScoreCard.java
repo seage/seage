@@ -5,6 +5,7 @@
 package org.seage.hh.experimenter;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -75,13 +76,13 @@ public class ExperimentScoreCard {
     return this;
   }
 
-
+ 
   /**
    * Method sets algorithm score.
    * 
    * @param score Algorithm score.
    */
-  public void setTotalScore(Double score) {
+  public void setAlgorithmScore(Double score) {
     totalScore = score;
   }
 
@@ -91,7 +92,7 @@ public class ExperimentScoreCard {
    * 
    * @return Problem problem score.
    */
-  public double getTotalScore() {
+  public Double getAlgorithmScore() {
     return totalScore;
   }
 
@@ -101,7 +102,7 @@ public class ExperimentScoreCard {
    * 
    * @return Name of the algorithm.
    */
-  public String getName() {
+  public String getAlgorithmName() {
     return algorithmName;
   }
 
@@ -113,7 +114,7 @@ public class ExperimentScoreCard {
    * @param instanceId Name of the intance.
    * @return Returns the value of given instacne.
    */
-  public double getInstanceScore(String problemId, String instanceId) {
+  public Double getInstanceScore(String problemId, String instanceId) {
     return scorePerInstance.get(problemId).get(instanceId);
   }
 
@@ -124,18 +125,27 @@ public class ExperimentScoreCard {
    * @param problemId Name of a problem.
    * @return Returns the value of a problem.
    */
-  public double getProblemScore(String problemId) {
+  public Double getProblemScore(String problemId) {
     return scorePerProblem.get(problemId);
+  }
+
+  /**
+   * Method returns the set of problems scores
+   * 
+   * @return Returns the set of problems scores
+   */
+  public Set<Double> getProblemsScores() {
+    return new HashSet<>(scorePerProblem.values());
   }
 
 
   /**
-   * Method returns the set of problem names.
+   * Method returns the set of problems names.
    * 
    * @return Set of problem names.
    */
   public Set<String> getProblems() {
-    return scorePerInstance.keySet();
+    return scorePerProblem.keySet();
   }
 
 

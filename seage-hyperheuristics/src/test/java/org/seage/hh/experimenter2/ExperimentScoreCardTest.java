@@ -14,7 +14,7 @@ public class ExperimentScoreCardTest {
     ExperimentScoreCard scoreCard = new ExperimentScoreCard(
         "HyperHeuristic1", new String[] {"TSP", "SAT"});
     
-    scoreCard.setTotalScore(0.5);
+    scoreCard.setAlgorithmScore(0.5);
     scoreCard.putProblemScore("SAT", 0.6);
     scoreCard.putProblemScore("TSP", 0.4);
     scoreCard.putInstanceScore("SAT", "sat1", 0.1);
