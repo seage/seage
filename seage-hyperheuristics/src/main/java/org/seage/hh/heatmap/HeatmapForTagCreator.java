@@ -1,31 +1,36 @@
 package org.seage.hh.heatmap;
 
-import org.seage.aal.score.ScoreCalculator;
-import org.seage.hh.experimenter.ExperimentReporter;
-import org.seage.hh.experimenter.ExperimentScoreCard;
-import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-// ---------------------------------------------------
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import java.util.Map;
+import org.seage.aal.score.ScoreCalculator;
+import org.seage.hh.experimenter.ExperimentReporter;
+import org.seage.hh.experimenter.ExperimentScoreCard;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 
 public class HeatmapForTagCreator {
   private HeatmapForTagCreator() {
     // Empty constructor
   }
 
-  protected static List<ExperimentScoreCard> mergeScoreCards(
-      List<ExperimentScoreCard> scoreCards) {
+  private static final String SEAGE = "SEAGE";
+  private static final Map<String, String> algAuthors = Map.of(
+      "GeneticAlgorithm", SEAGE,
+      "TabuSearch", SEAGE, 
+      "SimulatedAnnealing", SEAGE, 
+      "AntColony", SEAGE
+  );
+
+  protected static List<ExperimentScoreCard> mergeScoreCards(List<ExperimentScoreCard> scoreCards) {
     // Map of algorithm names and their score cards
     HashMap<String, ExperimentScoreCard> scoreCardsTable = new HashMap<>();
 
     for (ExperimentScoreCard scoreCard : scoreCards) {
-      if(!scoreCardsTable.containsKey(scoreCard.getAlgorithmName())){
+      if (!scoreCardsTable.containsKey(scoreCard.getAlgorithmName())) {
         scoreCardsTable.put(scoreCard.getAlgorithmName(), scoreCard);
         continue;
       }
@@ -37,21 +42,24 @@ public class HeatmapForTagCreator {
         Double bestScore = resultScoreCard.getProblemScore(problemID);
         if (bestScore == null || score > bestScore) {
           resultScoreCard.putProblemScore(problemID, score);
-          resultScoreCard.setAlgorithmScore(ScoreCalculator.calculateExperimentScore(
-              new ArrayList<>(resultScoreCard.getProblemsScores())));
+          resultScoreCard.setAlgorithmScore(ScoreCalculator
+              .calculateExperimentScore(new ArrayList<>(resultScoreCard.getProblemsScores())));
         }
-      }            
+      }
     }
     return new ArrayList<>(scoreCardsTable.values());
   }
-
+  /**
+   * It fetches experiment reports by tag and creates a heatmap from them.
+   * @param tag Experiment tag
+   */
   public static String createHeatmapForTag(String tag) throws Exception {
     ExperimentReporter reporter = new ExperimentReporter();
 
     List<ExperimentRecord> experiments = reporter.getExperimentsByTag(tag);
     List<ExperimentScoreCard> scoreCardsForTag = new ArrayList<>();
 
-    
+
     for (ExperimentRecord experiment : experiments) {
       ExperimentScoreCard scoreCard = parseScoreCardsJson(experiment.getScoreCard());
 
@@ -60,7 +68,7 @@ public class HeatmapForTagCreator {
       }
     }
     List<ExperimentScoreCard> table = mergeScoreCards(scoreCardsForTag);
-    return HeatmapGenerator.createHeatmap(table, tag, new HashMap<>());
+    return HeatmapGenerator.createHeatmap(table, tag, algAuthors);
   }
 
   protected static ExperimentScoreCard parseScoreCardsJson(String scoreCardJson) {
