@@ -338,13 +338,13 @@ public class HeatmapGenerator {
   /**
    * Method generates a svg string with given data.
    * 
-   * @param experimentId id of the experiment
+   * @param experimentTag id of the experiment
    * @param results list of algorithm results (with colors)
    * @param problems list of problems
    * @throws IOException exception if the page couldn't be created
    */
   protected static String createSvgString(
-      String experimentId, List<AlgorithmResult> results, List<String> problems
+      String experimentTag, List<AlgorithmResult> results, List<String> problems
   ) throws IOException {
     // Get the transformed data
     List<List<String>> algsOverRes = new ArrayList<>();
@@ -359,7 +359,7 @@ public class HeatmapGenerator {
     context.put("overallResults", algsOverRes);
     context.put("problemsResults", algsProbsRes);
     context.put("problems", problems);
-    context.put("tag", experimentId);
+    context.put("tag", experimentTag);
     context.put("datetime", formatter.format(date));
 
     // Load the jinja svg template
@@ -378,29 +378,29 @@ public class HeatmapGenerator {
   /**
    * Method generates a svg file with given data.
    * 
-   * @param experimentId id of the experiment
+   * @param experimentTag id of the experiment
    * @param results list of algorithm results (with colors)
    * @param svgFileDest svg file destination
    * @throws IOException exception if the page couldn't be created
    */
   protected static void createSvgFile(
-      String experimentId, List<AlgorithmResult> results, String svgFileDest
+      String experimentTag, List<AlgorithmResult> results, String svgFileDest
   ) throws IOException {
     // Get the problems
     List<String> problems = getProblemsNames(results);
     try (FileWriter fileWriter = new FileWriter(svgFileDest);) {
-      fileWriter.write(createSvgString(experimentId, results, problems));
+      fileWriter.write(createSvgString(experimentTag, results, problems));
     }
   }
 
   /**
    * Method receives neccesary data and create the result svg file.
    * @param table list of experiments score cards
-   * @param experimentId id of the competition experiment
+   * @param experimentTag id of the competition experiment
    * @param algAuthors map of algorithm's authors
    */
   public static String createHeatmap(
-      List<ExperimentScoreCard> table, String experimentId, Map<String, String> algAuthors
+      List<ExperimentScoreCard> table, String experimentTag, Map<String, String> algAuthors
   ) throws IOException {
     List<AlgorithmResult> results = HeatmapGenerator.loadExperimentScoreCards(table, algAuthors);
     // Get the problems
@@ -408,7 +408,7 @@ public class HeatmapGenerator {
     // Sort the results
     HeatmapGenerator.sortResults(results);
     // Return the SVG string
-    return HeatmapGenerator.createSvgString(experimentId, results, problems);
+    return HeatmapGenerator.createSvgString(experimentTag, results, problems);
   }
 }
 

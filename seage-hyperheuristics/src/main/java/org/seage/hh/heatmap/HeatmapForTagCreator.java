@@ -55,11 +55,11 @@ public class HeatmapForTagCreator {
     return new ArrayList<>(scoreCardsTable.values());
   }
   /**
-   * It fetches experiment reports by tag and creates a heatmap from them.
-   * @param tag Experiment tag
+   * It fetches experiment reports by experimentTag and creates a heatmap from them.
+   * @param experimentTag Experiment experimentTag
    */
   public static void createHeatmapForTag(
-      List<ExperimentRecord> experiments, String tag) throws Exception {
+      List<ExperimentRecord> experiments, String experimentTag) throws Exception {
 
     List<ExperimentScoreCard> scoreCardsForTag = new ArrayList<>();
 
@@ -71,9 +71,11 @@ public class HeatmapForTagCreator {
       }
     }
     List<ExperimentScoreCard> table = mergeScoreCards(scoreCardsForTag);
-    String heatmap = HeatmapGenerator.createHeatmap(table, tag, algAuthors);
+    String heatmap = HeatmapGenerator.createHeatmap(table, experimentTag, algAuthors);
     
-    String filePrexix = tag == null ? String.valueOf(System.currentTimeMillis()) : tag;
+    String filePrexix = experimentTag == null 
+        ? String.valueOf(System.currentTimeMillis()) 
+        : experimentTag;
     String filePath = "./output" + "/" + filePrexix + "-heatmap.svg";
     try (FileWriter fileWriter = new FileWriter(filePath)) {
       logger.info("Storing heatmap svg into file: {}", filePath);
