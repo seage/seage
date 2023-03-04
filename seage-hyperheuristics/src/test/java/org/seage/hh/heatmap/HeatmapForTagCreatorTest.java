@@ -6,32 +6,96 @@ import org.junit.jupiter.api.Test;
 import org.seage.hh.experimenter.ExperimentScoreCard;
 
 public class HeatmapForTagCreatorTest {
-  // todo
   String sc1 = """
       {
         "algorithmName": "TabuSearch",
-        "totalScore": 0.7323786081897516,
+        "totalScore": 0.7,
         "scorePerInstance": {
           "FSP": {
-            "tai500_20_01": 0.7323786081897516
+            "tai500_20_01": 0.7
           }
         },
         "scorePerProblem": {
-          "FSP": 0.7323786081897516
+          "FSP": 0.7
         }
       }
       """;
   String sc2 = """
       {
         "algorithmName": "TabuSearch",
-        "totalScore": 0.7323786081897516,
+        "totalScore": 0.4,
         "scorePerInstance": {
           "FSP": {
-            "tai500_20_01": 0.7323786081897516
+            "tai500_20_01": 0.4
           }
         },
         "scorePerProblem": {
-          "FSP": 0.7323786081897516
+          "FSP": 0.4
+        }
+      }
+      """;
+  String sc3 = """
+      {
+        "algorithmName": "TabuSearch",
+        "totalScore": 0.3,
+        "scorePerInstance": {
+          "TSP": {
+            "berlin52": 0.3
+
+          }
+        },
+        "scorePerProblem": {
+          "TSP": 0.3
+        }
+      }
+      """;
+    String sc4 = """
+      {
+        "algorithmName": "GeneticAlgorithm",
+        "totalScore": 0.5,
+        "scorePerInstance": {
+          "TSP": {
+            "berlin52": 0.3,
+            "brd14051": 0.5
+          },
+          "SAT": {
+            "uf100-01": 0.6,
+            "uf100-011": 0.2
+          },
+        },
+        "scorePerProblem": {
+          "TSP": 0.6,
+          "SAT": 0.4
+        }
+      }
+      """;
+      String sc5 = """
+      {
+        "algorithmName": "GeneticAlgorithm",
+        "totalScore": 0.4,
+        "scorePerInstance": {
+          "TSP": {
+            "berlin52": 0.6,
+            "brd14051": 0.2
+          },
+        },
+        "scorePerProblem": {
+          "TSP": 0.4,
+        }
+      }
+      """;
+      String sc6 = """
+      {
+        "algorithmName": "GeneticAlgorithm",
+        "totalScore": 0.6,
+        "scorePerInstance": {
+          "SAT": {
+            "uf100-01": 0.7,
+            "uf100-011": 0.5
+          },
+        },
+        "scorePerProblem": {
+          "SAT": 0.6
         }
       }
       """;
@@ -43,7 +107,6 @@ public class HeatmapForTagCreatorTest {
     List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2);
     List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
 
-    // TODO
-    assertEquals(-1, table.size());
+    assertEquals(1, table.size());
   }
 }
