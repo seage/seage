@@ -49,7 +49,22 @@ public class HeatmapForTagCreatorTest {
         }
       }
       """;
+
     String sc4 = """
+      {
+        "algorithmName": "TabuSearch",
+        "totalScore": 0.4,
+        "scorePerInstance": {
+          "SAT": {
+            "uf100-01": 0.4
+          }
+        },
+        "scorePerProblem": {
+          "SAT": 0.5
+        }
+      }
+      """;
+    String sc5 = """
       {
         "algorithmName": "GeneticAlgorithm",
         "totalScore": 0.5,
@@ -69,7 +84,7 @@ public class HeatmapForTagCreatorTest {
         }
       }
       """;
-      String sc5 = """
+      String sc6 = """
       {
         "algorithmName": "GeneticAlgorithm",
         "totalScore": 0.4,
@@ -84,7 +99,7 @@ public class HeatmapForTagCreatorTest {
         }
       }
       """;
-      String sc6 = """
+      String sc7 = """
       {
         "algorithmName": "GeneticAlgorithm",
         "totalScore": 0.6,
@@ -108,5 +123,39 @@ public class HeatmapForTagCreatorTest {
     List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
 
     assertEquals(1, table.size());
+    assertEquals("TabuSearch", table.get(0).getAlgorithmName());
+    assertEquals(0.7, table.get(0).getAlgorithmScore());
+    assertEquals(1, table.get(0).getProblems().size());
+  }
+
+  @Test
+  void testSC2() {
+    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(sc1);
+    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(sc2);
+    ExperimentScoreCard scoreCard3 = HeatmapForTagCreator.parseScoreCardsJson(sc3);
+
+    List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2, scoreCard3);
+    List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
+
+    assertEquals(1, table.size());
+    assertEquals("TabuSearch", table.get(0).getAlgorithmName());
+    assertEquals(0.5, table.get(0).getAlgorithmScore());
+    assertEquals(2, table.get(0).getProblems().size());
+  }
+
+  @Test
+  void testSC3() {
+    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(sc1);
+    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(sc2);
+    ExperimentScoreCard scoreCard3 = HeatmapForTagCreator.parseScoreCardsJson(sc3);
+    ExperimentScoreCard scoreCard4 = HeatmapForTagCreator.parseScoreCardsJson(sc4);
+
+    List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2, scoreCard3, scoreCard4);
+    List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
+
+    assertEquals(1, table.size());
+    assertEquals("TabuSearch", table.get(0).getAlgorithmName());
+    assertEquals(0.5, table.get(0).getAlgorithmScore());
+    assertEquals(3, table.get(0).getProblems().size());
   }
 }
