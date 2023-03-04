@@ -2,6 +2,7 @@ package org.seage.hh.heatmap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -17,6 +18,27 @@ public class HeatmapGeneratorTest {
   // Path to the xml with results
   //String xmlPath = "src/test/resources/test-unit-metric-scores.xml";
   String jsonPath = "/test-unit-metric-scores.json";
+
+  String scB23_1 = """
+      {
+        "algorithmName": "TabuSearch",
+        "scorePerProblem": {
+          "FSP": 0.7,
+          "TSP": 0.3
+        },
+        "totalScore": 0.5
+      }
+      """;
+  String scA1_1 = """
+      {
+        "algorithmName": "GeneticAlgorithm",
+        "scorePerProblem": {
+          "SAT": 0.4
+        },
+        "totalScore": 0.4
+      }
+      """;
+
   Map<String, String> authorsNames = new HashMap<String, String>();
 
   @Test
@@ -121,5 +143,26 @@ public class HeatmapGeneratorTest {
         fileWriter.write(heatmapSvg);
       }
     }
+  }
+
+  @Test
+  void testResultsToList() throws Exception {
+    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB23_1);
+    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scA1_1);
+    List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2);
+    
+    List<AlgorithmResult> results = HeatmapGenerator.loadExperimentScoreCards(scoreCards, new HashMap<>());
+
+    List<String> problems = HeatmapGenerator.getProblemsNames(results);
+
+    assertTrue(problems.contains("TSP"));
+    assertTrue(problems.contains("FSP"));
+    assertTrue(problems.contains("SAT"));
+
+    List<List<String>> algsOverRes = new ArrayList<>();
+    List<List<List<String>>> algsProbsRes = new ArrayList<>();
+    HeatmapGenerator.resultsToList(results, problems, algsOverRes, algsProbsRes);
+
+    System.out.println("");
   }
 }

@@ -19,8 +19,10 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import javax.xml.XMLConstants;
@@ -133,11 +135,14 @@ public class HeatmapGenerator {
    */
   protected static List<String> getProblemsNames(List<AlgorithmResult> results) {
     // Extract the problems names
-    List<String> problems = results.isEmpty() ? new ArrayList<>()
-        : new ArrayList<>(results.get(0).problemsResults.keySet());
+    HashSet<String> problems = new HashSet<>();
+    for (AlgorithmResult result : results) {
+      problems.addAll(result.problemsResults.keySet());
+    }
+    List<String> problemsList = new ArrayList<>(problems);
     // Sort the problem names
-    Collections.sort(problems);
-    return problems;
+    Collections.sort(problemsList);
+    return problemsList;
   }
 
   /**
@@ -311,15 +316,16 @@ public class HeatmapGenerator {
       // Loop over problems results
       List<List<String>> algProbsRes = new ArrayList<>();
       for (int j = 0; j < problems.size(); j++) {
-        List<String> algProbRes = new ArrayList<>();
+        List<String> algProbRes =  Arrays.asList(new String[5]);
 
         AlgorithmProblemResult probRes = algRes.problemsResults.get(problems.get(j));
-        algProbRes.add(probRes.name);
-        algProbRes.add(String.valueOf(probRes.score));
-        algProbRes.add(String.valueOf(probRes.redColor));
-        algProbRes.add(String.valueOf(probRes.greenColor));
-        algProbRes.add(String.valueOf(probRes.blueColor));
-
+        algProbRes.set( 0, problems.get(j));
+        if (probRes != null) {
+          algProbRes.set( 1, String.valueOf(probRes.score));
+          algProbRes.set( 2, String.valueOf(probRes.redColor));
+          algProbRes.set( 3, String.valueOf(probRes.greenColor));
+          algProbRes.set( 4, String.valueOf(probRes.blueColor));
+        }
         // Add to problems results array
         algProbsRes.add(algProbRes);
       }
