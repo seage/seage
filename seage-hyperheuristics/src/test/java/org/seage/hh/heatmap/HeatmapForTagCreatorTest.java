@@ -6,119 +6,86 @@ import org.junit.jupiter.api.Test;
 import org.seage.hh.experimenter.ExperimentScoreCard;
 
 public class HeatmapForTagCreatorTest {
-  String sc1 = """
+  // Suppose we denote algorithms by uppercase letters {A, B, C} and problems by numbers {1, 2, 3}.
+  // A - GeneticAlgorithm
+  // B - TabuSearch
+  // C - SimulatedAnnealing
+  // D - AntColony
+  // 1 - SAT
+  // 2 - TSP
+  // 3 - FSP
+  // 4 - JSP 
+  String scB3_1 = """
       {
         "algorithmName": "TabuSearch",
-        "totalScore": 0.7,
-        "scorePerInstance": {
-          "FSP": {
-            "tai500_20_01": 0.7
-          }
-        },
         "scorePerProblem": {
           "FSP": 0.7
-        }
+        },
+        "totalScore": 0.7
       }
       """;
-  String sc2 = """
+  String scB3_2 = """
       {
         "algorithmName": "TabuSearch",
-        "totalScore": 0.4,
-        "scorePerInstance": {
-          "FSP": {
-            "tai500_20_01": 0.4
-          }
-        },
         "scorePerProblem": {
           "FSP": 0.4
-        }
+        },
+        "totalScore": 0.4
       }
       """;
-  String sc3 = """
+  String scB3_3 = """
       {
         "algorithmName": "TabuSearch",
-        "totalScore": 0.3,
-        "scorePerInstance": {
-          "TSP": {
-            "berlin52": 0.3
-
-          }
-        },
         "scorePerProblem": {
           "TSP": 0.3
-        }
+        },
+        "totalScore": 0.3
       }
       """;
 
-    String sc4 = """
+  String scB1_1 = """
       {
         "algorithmName": "TabuSearch",
-        "totalScore": 0.4,
-        "scorePerInstance": {
-          "SAT": {
-            "uf100-01": 0.4
-          }
-        },
         "scorePerProblem": {
           "SAT": 0.5
-        }
+        },
+        "totalScore": 0.4
       }
       """;
-    String sc5 = """
+  String scA12 = """
       {
         "algorithmName": "GeneticAlgorithm",
-        "totalScore": 0.5,
-        "scorePerInstance": {
-          "TSP": {
-            "berlin52": 0.3,
-            "brd14051": 0.5
-          },
-          "SAT": {
-            "uf100-01": 0.6,
-            "uf100-011": 0.2
-          },
-        },
         "scorePerProblem": {
-          "TSP": 0.6,
-          "SAT": 0.4
-        }
+          "SAT": 0.4,
+          "TSP": 0.6          
+        },
+        "totalScore": 0.5
       }
       """;
-      String sc6 = """
+  String scA2 = """
       {
         "algorithmName": "GeneticAlgorithm",
-        "totalScore": 0.4,
-        "scorePerInstance": {
-          "TSP": {
-            "berlin52": 0.6,
-            "brd14051": 0.2
-          },
-        },
         "scorePerProblem": {
           "TSP": 0.4,
-        }
+        },
+        "totalScore": 0.4
       }
       """;
-      String sc7 = """
+  String scA1 = """
       {
         "algorithmName": "GeneticAlgorithm",
-        "totalScore": 0.6,
-        "scorePerInstance": {
-          "SAT": {
-            "uf100-01": 0.7,
-            "uf100-011": 0.5
-          },
-        },
         "scorePerProblem": {
           "SAT": 0.6
-        }
+        },
+        "totalScore": 0.6
       }
       """;
 
   @Test
+  // TODO: Change name to describe what is tested
   void testSC1() {
-    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(sc1);
-    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(sc2);
+    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB3_1);
+    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scB3_2);
     List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2);
     List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
 
@@ -130,9 +97,9 @@ public class HeatmapForTagCreatorTest {
 
   @Test
   void testSC2() {
-    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(sc1);
-    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(sc2);
-    ExperimentScoreCard scoreCard3 = HeatmapForTagCreator.parseScoreCardsJson(sc3);
+    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB3_1);
+    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scB3_2);
+    ExperimentScoreCard scoreCard3 = HeatmapForTagCreator.parseScoreCardsJson(scB3_3);
 
     List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2, scoreCard3);
     List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
@@ -145,10 +112,10 @@ public class HeatmapForTagCreatorTest {
 
   @Test
   void testSC3() {
-    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(sc1);
-    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(sc2);
-    ExperimentScoreCard scoreCard3 = HeatmapForTagCreator.parseScoreCardsJson(sc3);
-    ExperimentScoreCard scoreCard4 = HeatmapForTagCreator.parseScoreCardsJson(sc4);
+    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB3_1);
+    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scB3_2);
+    ExperimentScoreCard scoreCard3 = HeatmapForTagCreator.parseScoreCardsJson(scB3_3);
+    ExperimentScoreCard scoreCard4 = HeatmapForTagCreator.parseScoreCardsJson(scB1_1);
 
     List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2, scoreCard3, scoreCard4);
     List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
