@@ -54,6 +54,6 @@ public class ReportCommand extends Command {
       logger.info(logLine);
     }
     // Create the heatmap
-    HeatmapForTagCreator.createHeatmapForTag(tag);    
+    HeatmapForTagCreator.createHeatmapForTag(experiments, tag);    
   }
 }

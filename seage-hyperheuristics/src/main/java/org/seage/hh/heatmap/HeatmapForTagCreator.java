@@ -12,8 +12,12 @@ import org.seage.aal.score.ScoreCalculator;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HeatmapForTagCreator {
+  private static final Logger logger = LoggerFactory.getLogger(HeatmapForTagCreator.class);
+
   private HeatmapForTagCreator() {
     // Empty constructor
   }
@@ -54,10 +58,9 @@ public class HeatmapForTagCreator {
    * It fetches experiment reports by tag and creates a heatmap from them.
    * @param tag Experiment tag
    */
-  public static void createHeatmapForTag(String tag) throws Exception {
-    ExperimentReporter reporter = new ExperimentReporter();
+  public static void createHeatmapForTag(
+      List<ExperimentRecord> experiments, String tag) throws Exception {
 
-    List<ExperimentRecord> experiments = reporter.getExperimentsByTag(tag);
     List<ExperimentScoreCard> scoreCardsForTag = new ArrayList<>();
 
 
@@ -71,8 +74,10 @@ public class HeatmapForTagCreator {
     List<ExperimentScoreCard> table = mergeScoreCards(scoreCardsForTag);
     String heatmap = HeatmapGenerator.createHeatmap(table, tag, algAuthors);
     
-    String filePrexix = tag == null ? String.valueOf(System.currentTimeMillis()) : tag;    
-    try (FileWriter fileWriter = new FileWriter("./output" + "/" + filePrexix + "-heatmap.svg")) {
+    String filePrexix = tag == null ? String.valueOf(System.currentTimeMillis()) : tag;
+    String filePath = "./output" + "/" + filePrexix + "-heatmap.svg";
+    try (FileWriter fileWriter = new FileWriter(filePath)) {
+      logger.info("Storing heatmap svg into file: {}", filePath);
       fileWriter.write(heatmap);
     }
   }
