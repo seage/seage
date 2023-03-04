@@ -32,14 +32,10 @@ public class HeatmapForTagCreator {
                 bestExpScoreCard.putProblemScore(problemID, expScoreCard.getProblemScore(problemID));
           }
         }
+        bestExpScoreCard.setAlgorithmScore(ScoreCalculator.calculateExperimentScore(new ArrayList<>(bestExpScoreCard.getProblemsScores())));
       } else {
         algExperiment.put(expScoreCard.getName(), expScoreCard);
       }
-    }
-
-    // Update the algorithm score
-    for (ExperimentScoreCard expScoreCard : algExperiment.values()) {
-      expScoreCard.setAlgorithmScore(ScoreCalculator.calculateExperimentScore(new ArrayList<>(expScoreCard.getProblemsScores())));
     }
 
     return new ArrayList<>(algExperiment.values());
