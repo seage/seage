@@ -63,7 +63,6 @@ public class HeatmapForTagCreator {
 
     List<ExperimentScoreCard> scoreCardsForTag = new ArrayList<>();
 
-
     for (ExperimentRecord experiment : experiments) {
       ExperimentScoreCard scoreCard = parseScoreCardsJson(experiment.getScoreCard());
 

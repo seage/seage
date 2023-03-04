@@ -41,6 +41,11 @@ public class ReportCommand extends Command {
         ? reporter.getExperimentsByTag(tag)
         : reporter.getExperiments();
 
+    if (experiments.size() == 0) {
+      logger.info("No experiments for tag: {}", tag);
+      return;
+    }
+
     for (ExperimentRecord experiment : experiments) {
       // Print the experiment details
       String logLine =
