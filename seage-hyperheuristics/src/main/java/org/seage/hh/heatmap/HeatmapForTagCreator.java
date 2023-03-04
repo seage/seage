@@ -1,5 +1,6 @@
 package org.seage.hh.heatmap;
 
+import org.seage.aal.score.ScoreCalculator;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
@@ -38,11 +39,7 @@ public class HeatmapForTagCreator {
 
     // Update the algorithm score
     for (ExperimentScoreCard expScoreCard : algExperiment.values()) {
-      double algorithmScore = 0.0;
-      for (String problemID : expScoreCard.getProblems()) {
-        algorithmScore += expScoreCard.getProblemScore(problemID);
-      }
-      expScoreCard.setAlgorithmScore(algorithmScore / (expScoreCard.getProblems().size()));
+      expScoreCard.setAlgorithmScore(ScoreCalculator.calculateExperimentScore(new ArrayList<>(expScoreCard.getProblemsScores())));
     }
 
     return new ArrayList<>(algExperiment.values());

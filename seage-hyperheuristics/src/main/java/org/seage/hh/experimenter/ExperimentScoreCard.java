@@ -5,6 +5,7 @@
 package org.seage.hh.experimenter;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -128,9 +129,18 @@ public class ExperimentScoreCard {
     return scorePerProblem.get(problemId);
   }
 
+  /**
+   * Method returns the set of problems scores
+   * 
+   * @return Returns the set of problems scores
+   */
+  public Set<Double> getProblemsScores() {
+    return new HashSet<>(scorePerProblem.values());
+  }
+
 
   /**
-   * Method returns the set of problem names.
+   * Method returns the set of problems names.
    * 
    * @return Set of problem names.
    */
