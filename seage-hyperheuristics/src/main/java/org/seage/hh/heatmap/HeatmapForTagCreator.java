@@ -20,11 +20,11 @@ public class HeatmapForTagCreator {
   }
 
   protected static List<ExperimentScoreCard> mergeScoreCards(
-      List<ExperimentScoreCard> experiments) {
+      List<ExperimentScoreCard> scoreCards) {
     // Map of algorithm names and their score cards
     HashMap<String, ExperimentScoreCard> scoreCardsTable = new HashMap<>();
 
-    for (ExperimentScoreCard scoreCard : experiments) {
+    for (ExperimentScoreCard scoreCard : scoreCards) {
       if(!scoreCardsTable.containsKey(scoreCard.getAlgorithmName())){
         scoreCardsTable.put(scoreCard.getAlgorithmName(), scoreCard);
         continue;
@@ -51,11 +51,9 @@ public class HeatmapForTagCreator {
     List<ExperimentRecord> experiments = reporter.getExperimentsByTag(tag);
     List<ExperimentScoreCard> scoreCardsForTag = new ArrayList<>();
 
-    Gson gson = new Gson();
-    Type objType = new TypeToken<ExperimentScoreCard>() {}.getType();
-
+    
     for (ExperimentRecord experiment : experiments) {
-      ExperimentScoreCard scoreCard = gson.fromJson(experiment.getScoreCard(), objType);
+      ExperimentScoreCard scoreCard = parseScoreCardsJson(experiment.getScoreCard());
 
       if (scoreCard != null) {
         scoreCardsForTag.add(scoreCard);
@@ -63,5 +61,11 @@ public class HeatmapForTagCreator {
     }
     List<ExperimentScoreCard> table = mergeScoreCards(scoreCardsForTag);
     return HeatmapGenerator.createHeatmap(table, tag, new HashMap<>());
+  }
+
+  protected static ExperimentScoreCard parseScoreCardsJson(String scoreCardJson) {
+    Gson gson = new Gson();
+    Type objType = new TypeToken<ExperimentScoreCard>() {}.getType();
+    return gson.fromJson(scoreCardJson, objType);
   }
 }

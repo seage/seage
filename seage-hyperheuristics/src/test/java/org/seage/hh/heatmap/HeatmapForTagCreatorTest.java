@@ -1,5 +1,6 @@
 package org.seage.hh.heatmap;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.seage.hh.experimenter.ExperimentScoreCard;
@@ -37,9 +38,12 @@ public class HeatmapForTagCreatorTest {
 
   @Test
   void testSC1() {
-    List<ExperimentScoreCard> scoreCards1 = HeatmapForTagCreator.parseScoreCardsJson(sc1);
-    List<ExperimentScoreCard> scoreCards2 = HeatmapForTagCreator.parseScoreCardsJson(sc2);
-    scoreCards1.addAll(scoreCards2);
-    List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards1);
+    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(sc1);
+    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(sc2);
+    List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2);
+    List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
+
+    // TODO
+    assertEquals(-1, table.size());
   }
 }
