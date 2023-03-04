@@ -12,6 +12,7 @@ logs/
 
 #.classpath
 #.project
+.settings/org.eclipse.buildship.core.prefs
 
 seage-*/**/.settings
 seage-*/**/.checkstyle
