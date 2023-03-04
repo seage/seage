@@ -3,7 +3,6 @@ package org.seage.hh.heatmap;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
-import java.io.FileWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,21 +18,12 @@ public class HeatmapForTagCreator {
     // Empty constructor
   }
 
-  protected static List<ExperimentScoreCard> getMergedScoreCards (List<ExperimentRecord> experiments) throws Exception {
+  protected static List<ExperimentScoreCard> getMergedScoreCards (List<ExperimentScoreCard> experiments) {
     HashMap<String, ExperimentScoreCard> algExperiment = new HashMap<>();
 
-    Gson gson = new Gson();
-    Type objType = new TypeToken<ExperimentScoreCard>() {}.getType();
-
-    for (ExperimentRecord experiment : experiments) {
-      ExperimentScoreCard expScoreCard = gson.fromJson(experiment.getScoreCard(), objType);
-
-      if (expScoreCard == null) {
-        continue;
-      }
-
-      if (algExperiment.containsKey(experiment.getAlgorithmID())) {
-        ExperimentScoreCard bestExpScoreCard = algExperiment.get(experiment.getAlgorithmID());
+    for (ExperimentScoreCard expScoreCard : experiments) {
+      if (algExperiment.containsKey(expScoreCard.getName())) {
+        ExperimentScoreCard bestExpScoreCard = algExperiment.get(expScoreCard.getName());
 
         for (String problemID : expScoreCard.getProblems()) {
           if ( (!bestExpScoreCard.getProblems().contains(problemID)) || 
@@ -42,7 +32,7 @@ public class HeatmapForTagCreator {
           }
         }
       } else {
-        algExperiment.put(experiment.getAlgorithmID(), expScoreCard);
+        algExperiment.put(expScoreCard.getName(), expScoreCard);
       }
     }
 
@@ -62,7 +52,19 @@ public class HeatmapForTagCreator {
     ExperimentReporter reporter = new ExperimentReporter();
   
     List<ExperimentRecord> experiments = reporter.getExperimentsByTag(tag);
+    List<ExperimentScoreCard> expScoreCards = new ArrayList<>();
 
-    return HeatmapGenerator.createHeatmap(getMergedScoreCards(experiments), tag, new HashMap<>());
+    Gson gson = new Gson();
+    Type objType = new TypeToken<ExperimentScoreCard>() {}.getType();
+
+    for (ExperimentRecord experiment : experiments) {
+      ExperimentScoreCard expScoreCard = gson.fromJson(experiment.getScoreCard(), objType);
+
+      if (expScoreCard != null) {
+        expScoreCards.add(expScoreCard);
+      }
+    }
+
+    return HeatmapGenerator.createHeatmap(getMergedScoreCards(expScoreCards), tag, new HashMap<>());
   }
 }
