@@ -42,12 +42,8 @@ public class HeatmapGenerator {
   /**
    * Class represents the structure of json data
    */
-  public class ExperimentScoreCards {
-    protected List<ExperimentScoreCard> results;
-
-    public List<ExperimentScoreCard> results () {
-      return this.results;
-    }
+  public static class ExperimentScoreCards {
+    public List<ExperimentScoreCard> results;
 
     public ExperimentScoreCards() {
       this.results = new ArrayList<>();
