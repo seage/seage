@@ -143,6 +143,9 @@ public class ExperimentReporter {
   public List<ExperimentRecord> getExperimentsByTag(String tag) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
+      if (tag == null) {
+        return mapper.getExperiments();
+      } 
       return mapper.getExperimentsByTag(tag);
     }
   }

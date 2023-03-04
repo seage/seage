@@ -1,7 +1,5 @@
 package org.seage.launcher.commands;
 
-import com.beust.jcommander.Parameter;
-import com.beust.jcommander.Parameters;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -10,6 +8,8 @@ import org.seage.hh.heatmap.HeatmapForTagCreator;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 
 @Parameters(commandDescription = "Perform a basic reporting")
 public class ReportCommand extends Command {
@@ -26,7 +26,7 @@ public class ReportCommand extends Command {
   boolean heatmap;
 
   /**
-   * Method generates the experiment heatmap
+   * Method generates the experiment heatmap.
    * @param experiment .
    */
   void generateHeatmap(ExperimentRecord experiment) throws IOException {
@@ -37,7 +37,9 @@ public class ReportCommand extends Command {
   public void performCommand() throws Exception {
     ExperimentReporter reporter = new ExperimentReporter();
     
-    List<ExperimentRecord> experiments = (tag != null) ? reporter.getExperimentsByTag(tag) : reporter.getExperiments();
+    List<ExperimentRecord> experiments = (tag != null) 
+        ? reporter.getExperimentsByTag(tag)
+        : reporter.getExperiments();
 
     for (ExperimentRecord experiment : experiments) {
       // Print the experiment details
@@ -51,10 +53,7 @@ public class ReportCommand extends Command {
               experiment.getTag());
       logger.info(logLine);
     }
-    
     // Create the heatmap
-    try (FileWriter fileWriter = new FileWriter("./output" + "/" + tag + "-heatmap.svg")) {
-      fileWriter.write(HeatmapForTagCreator.createHeatmapForTag(tag));
-    }
+    HeatmapForTagCreator.createHeatmapForTag(tag);    
   }
 }

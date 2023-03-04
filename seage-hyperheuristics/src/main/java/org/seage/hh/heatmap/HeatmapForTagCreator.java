@@ -2,6 +2,7 @@ package org.seage.hh.heatmap;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.io.FileWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class HeatmapForTagCreator {
    * It fetches experiment reports by tag and creates a heatmap from them.
    * @param tag Experiment tag
    */
-  public static String createHeatmapForTag(String tag) throws Exception {
+  public static void createHeatmapForTag(String tag) throws Exception {
     ExperimentReporter reporter = new ExperimentReporter();
 
     List<ExperimentRecord> experiments = reporter.getExperimentsByTag(tag);
@@ -68,7 +69,12 @@ public class HeatmapForTagCreator {
       }
     }
     List<ExperimentScoreCard> table = mergeScoreCards(scoreCardsForTag);
-    return HeatmapGenerator.createHeatmap(table, tag, algAuthors);
+    String heatmap = HeatmapGenerator.createHeatmap(table, tag, algAuthors);
+    
+    String filePrexix = tag == null ? String.valueOf(System.currentTimeMillis()) : tag;    
+    try (FileWriter fileWriter = new FileWriter("./output" + "/" + filePrexix + "-heatmap.svg")) {
+      fileWriter.write(heatmap);
+    }
   }
 
   protected static ExperimentScoreCard parseScoreCardsJson(String scoreCardJson) {
