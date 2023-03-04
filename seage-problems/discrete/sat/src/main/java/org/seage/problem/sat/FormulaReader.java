@@ -77,7 +77,7 @@ public class FormulaReader {
 
       while (stok.ttype != StreamTokenizer.TT_EOL && stok.ttype != StreamTokenizer.TT_EOF) {
         if (stok.ttype == StreamTokenizer.TT_NUMBER) {
-          res.add(new Integer((int) stok.nval));
+          res.add((int)stok.nval);
           sum++;// = stok.nval;
         }
         if (stok.ttype == StreamTokenizer.TT_WORD) {

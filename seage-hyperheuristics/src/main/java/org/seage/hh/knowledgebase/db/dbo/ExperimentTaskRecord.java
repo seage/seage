@@ -226,9 +226,11 @@ public class ExperimentTaskRecord {
         this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
 
     algorithm.solutionsFromPhenotype(solutions);
+    _logger.debug("Starting the algorithm");
     algorithm.startSearching(this.algorithmParams, true);
     _logger.debug("Algorithm started");
     waitForTimeout(algorithm);
+    _logger.debug("Stopping the algorithm");
     algorithm.stopSearching();
     _logger.debug("Algorithm stopped");
 
@@ -252,20 +254,25 @@ public class ExperimentTaskRecord {
   }
 
   private void waitForTimeout(IAlgorithmAdapter<?, ?> alg) throws Exception {
+    _logger.debug("Waiting for timeout");
     long time = System.currentTimeMillis();
     while (alg.isRunning() && ((System.currentTimeMillis() - time) < this.timeoutS * 1000)) {
-      Thread.sleep(100);
+      Thread.sleep(250);
     }
+    double timeS = (System.currentTimeMillis() - time) / 1000.0;
+    _logger.debug("Timeout occurred after {}s", timeS);
   }
 
   private static Phenotype<?>[] generateInitialSolutions(
       IProblemProvider<Phenotype<?>> provider, ProblemInstance instance,
       int numSolutions, long randomSeed) throws Exception {
+    _logger.debug("Generating initial solutions: {}", numSolutions);
     return provider.generateInitialSolutions(instance, numSolutions, randomSeed);
   }
 
   private void writeSolutions(IPhenotypeEvaluator<Phenotype<?>> evaluator, DataNode dataNode,
       Phenotype<?>[] solutions) {
+    _logger.debug("Writing solutions into data node: {}", solutions.length);
     double bestScore = 0;
     Phenotype<?> bestSol = null;
     try {
@@ -289,7 +296,8 @@ public class ExperimentTaskRecord {
     }
   }
 
-  private void calculateExperimentScore() throws Exception { 
+  private void calculateExperimentScore() throws Exception {
+    _logger.debug("Calculating experiment score");
     ProblemInfo problemInfo = ProblemProvider
         .getProblemProviders()
         .get(problemID)

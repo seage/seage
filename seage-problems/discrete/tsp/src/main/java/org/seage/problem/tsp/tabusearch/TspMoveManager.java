@@ -26,8 +26,10 @@
 package org.seage.problem.tsp.tabusearch;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
-
+import java.util.Set;
 import org.seage.metaheuristic.tabusearch.Move;
 import org.seage.metaheuristic.tabusearch.MoveManager;
 import org.seage.metaheuristic.tabusearch.Solution;
@@ -58,24 +60,47 @@ public class TspMoveManager implements MoveManager {
   Random rnd = new Random();
 
   // @Override
+  public Move[] getAllMoves1(Solution solution) {
+    TspSolution tspSoln = (TspSolution) solution;
+    Integer[] tour = tspSoln._tour;
+    List<Move> moves = new ArrayList<>();
+
+    //int ix1 = rnd.nextInt(tour.length);
+
+    // Generate moves that move each customer
+    // forward and back up to five spaces.
+    for (int i = 0; i < tour.length*2; i++) {
+      int ix1 = rnd.nextInt(tour.length);
+      int ix2 = rnd.nextInt(tour.length);
+      if (ix1 == ix2)
+          continue;
+      moves.add(new TspMove(ix1, ix2));
+    }
+
+    return moves.toArray(new Move[] {});
+  }
+
+  Set<Integer> used = new HashSet<>();
   @Override
   public Move[] getAllMoves(Solution solution) {
     TspSolution tspSoln = (TspSolution) solution;
     Integer[] tour = tspSoln._tour;
-    ArrayList<Move> buffer = new ArrayList<Move>();
-
-    int ix1 = rnd.nextInt(tour.length);
-
-    // Generate moves that move each customer
-    // forward and back up to five spaces.
+    List<Move> moves = new ArrayList<>();
+    
     for (int i = 0; i < tour.length; i++) {
-      int ix2 = (ix1 + i) % tour.length;
-      if (ix1 == ix2)
-        continue;
-      buffer.add(new TspMove(ix1, ix2));
+      int ix1 = i;
+      used.clear();
+      for (int j = 0; j < 4; j++) {
+        int ix2 = i + rnd.nextInt(tour.length - i);
+        if (ix1 == ix2 || used.contains(ix2)) {
+          continue;
+        }
+        moves.add(new TspMove(ix1, ix2));
+        used.add(ix2);
+      }
     }
 
-    return buffer.toArray(new Move[] {});
+    return moves.toArray(new Move[] {});
   }
 
 } // end class MyMoveManager

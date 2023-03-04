@@ -26,6 +26,7 @@
 package org.seage.problem.tsp.tabusearch;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import org.seage.metaheuristic.tabusearch.BestEverAspirationCriteria;
 import org.seage.metaheuristic.tabusearch.SimpleTabuList;
 import org.seage.metaheuristic.tabusearch.TabuSearch;
@@ -43,24 +44,35 @@ import org.slf4j.LoggerFactory;
 public class TspTabuSearchTest implements TabuSearchListener {
   private static final Logger log = LoggerFactory.getLogger(TspTabuSearchTest.class.getName());
 
-  public static void main(String[] args) {
-    try {
-      // String path = "data/tsp/eil51.tsp";//args[0]; // 426
-      // String path = "data/tsp/eil101.tsp";//args[0]; // ?
-      // String path = "data/tsp/berlin52.tsp";//args[0]; // 7542
-      // String path = "data/tsp/ch130.tsp";//args[0]; // 6110
-      // String path = "data/tsp/lin318.tsp";//args[0]; // 42029
-      // String path = "data/tsp/pcb442.tsp";//args[0]; // 50778
-      String path = "data/tsp/u574.tsp";// args[0]; // 36905
+  private static final int TABU_LIST_SIZE = 200;
+  private static final int ITERATIONS = 500000;
 
-      new TspTabuSearchTest().run(path);
+  public static void main(String[] args) {
+    // String instanceID = "eil51"; // 426
+    // String instanceID = "berlin52"; // 7542
+    // String instanceID = "ch130"; // 6110
+    // String instanceID = "lin318"; // 42029
+    // String instanceID = "pcb442"; // 50778
+    // String instanceID = "u574"; // 36905
+    // String instanceID = "u724-hyflex-3"; // 41910
+    // String instanceID = "rat575-hyflex-2"; // 6773 
+    // String instanceID = "d1291-hyflex-6"; // 50801 
+    // String instanceID = "pr299-hyflex-0"; // 48191 
+    // String instanceID = "u2152-hyflex-7"; // 64253
+    String instanceID = "usa13509-hyflex-8"; // 19982859    
+    try {
+      new TspTabuSearchTest().run(instanceID);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
     }
   }
 
-  public void run(String path) throws Exception {
-    City[] cities = CityProvider.readCities(new FileInputStream(path));
+  public void run(String instanceID) throws Exception {
+    String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instanceID);
+    City[] cities = null;
+    try (InputStream stream = getClass().getResourceAsStream(path)) {
+      cities = CityProvider.readCities(stream);
+    }
     log.info("Loading cities from path: {}", path);
     log.info("Number of cities: {}", cities.length);
 
@@ -69,11 +81,11 @@ public class TspTabuSearchTest implements TabuSearchListener {
         new TspGreedySolution(cities), 
         new TspMoveManager(), 
         new TspObjectiveFunction(cities), 
-        new SimpleTabuList(50),
+        new SimpleTabuList(TABU_LIST_SIZE),
         new BestEverAspirationCriteria(), false);
 
     ts.addTabuSearchListener(this);
-    ts.setIterationsToGo(1500000);
+    ts.setIterationsToGo(ITERATIONS);
     ts.startSolving();
   }
 

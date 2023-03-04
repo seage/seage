@@ -6,20 +6,6 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Launch FspTabuSearchTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.fsp.tabusearch.FspTabuSearchTest",
-      "projectName": "seage-problem-fsp"
-    },
-    {
-      "type": "java",
-      "name": "Launch JspTabuSearchTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.jsp.tabusearch.JspTabuSearchTest",
-      "projectName": "seage-problem-jsp"
-    },
-    {
-      "type": "java",
       "name": "Run info",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
@@ -72,20 +58,21 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "env": {
-        "LOG_LEVEL": "info"
+        "LOG_LEVEL": "debug"
       },
       "args": [
         "experiment-single-feedback",
         "-a",
         "TabuSearch",
         "-i",
-        "FSP:hyflex",
+        "TSP:usa13509-hyflex-8",
+        // "FSP:tai500_20_01",
         "-t",
-        "2",
+        "1",
         "-n",
         "1",
         "-T",
-        "tag1"
+        "ts-tsp-fix"
       ]
     },
     {
@@ -109,8 +96,7 @@
         "1"
       ],
       "env": {
-        "LOG_LEVEL": "debug",
-        // "DB_URL": "jdbc:postgresql://localhost:25432/seage"
+        "LOG_LEVEL": "debug"
       }
     },
     {

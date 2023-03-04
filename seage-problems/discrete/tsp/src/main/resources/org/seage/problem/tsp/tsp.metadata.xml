@@ -81,5 +81,6 @@
         <Instance greedy="25086666" id="usa13509-hyflex-8" optimum="19982859" random="2143600251" size="13509"/>
         <Instance greedy="303116" id="vm1084" optimum="239297" random="8512403" size="1084"/>
         <Instance greedy="429581" id="vm1748" optimum="336556" random="14844628" size="1748"/>
+        <Instance greedy="4" id="rm4" optimum="4" random="6" size="4"/>
     </Instances>
 </Problem>

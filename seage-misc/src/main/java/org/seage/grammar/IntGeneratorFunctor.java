@@ -50,7 +50,7 @@ public class IntGeneratorFunctor implements Functor {
     if (pos == sourceVector.size())
       pos = 0;
     int len = sourceVector.get(pos) + 1;
-    Integer ret = new Integer(0);
+    Integer ret = 0;
     for (int i = 0; i < len; i++) {
       if (pos == sourceVector.size())
         pos = 0;
