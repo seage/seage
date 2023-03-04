@@ -2,6 +2,7 @@ package org.seage.launcher.commands;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import org.seage.hh.experimenter.ExperimentReporter;
@@ -52,6 +53,8 @@ public class ReportCommand extends Command {
     }
     
     // Create the heatmap
-    HeatmapForTagCreator.createHeatmapForTag(tag);
+    try (FileWriter fileWriter = new FileWriter("./output" + "/" + tag + "-heatmap.svg")) {
+      fileWriter.write(HeatmapForTagCreator.createHeatmapForTag(tag));
+    }
   }
 }

@@ -58,14 +58,11 @@ public class HeatmapForTagCreator {
     return new ArrayList<>(algExperiment.values());
   }
 
-  public static void createHeatmapForTag(String tag) throws Exception {
+  public static String createHeatmapForTag(String tag) throws Exception {
     ExperimentReporter reporter = new ExperimentReporter();
   
     List<ExperimentRecord> experiments = reporter.getExperimentsByTag(tag);
 
-    // Generate the svg heatmap file
-    try (FileWriter fileWriter = new FileWriter("./output" + "/" + tag + "-heatmap.svg")) {
-      fileWriter.write(HeatmapGenerator.createHeatmap(getMergedScoreCards(experiments), tag, new HashMap<>()));
-    }
+    return HeatmapGenerator.createHeatmap(getMergedScoreCards(experiments), tag, new HashMap<>());
   }
 }
