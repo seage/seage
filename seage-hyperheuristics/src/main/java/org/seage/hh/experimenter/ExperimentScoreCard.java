@@ -92,7 +92,7 @@ public class ExperimentScoreCard {
    * 
    * @return Problem problem score.
    */
-  public double getAlgorithmScore() {
+  public Double getAlgorithmScore() {
     return totalScore;
   }
 
@@ -102,7 +102,7 @@ public class ExperimentScoreCard {
    * 
    * @return Name of the algorithm.
    */
-  public String getName() {
+  public String getAlgorithmName() {
     return algorithmName;
   }
 
@@ -114,7 +114,7 @@ public class ExperimentScoreCard {
    * @param instanceId Name of the intance.
    * @return Returns the value of given instacne.
    */
-  public double getInstanceScore(String problemId, String instanceId) {
+  public Double getInstanceScore(String problemId, String instanceId) {
     return scorePerInstance.get(problemId).get(instanceId);
   }
 
@@ -125,7 +125,7 @@ public class ExperimentScoreCard {
    * @param problemId Name of a problem.
    * @return Returns the value of a problem.
    */
-  public double getProblemScore(String problemId) {
+  public Double getProblemScore(String problemId) {
     return scorePerProblem.get(problemId);
   }
 

@@ -19,45 +19,49 @@ public class HeatmapForTagCreator {
     // Empty constructor
   }
 
-  protected static List<ExperimentScoreCard> getMergedScoreCards (List<ExperimentScoreCard> experiments) {
-    HashMap<String, ExperimentScoreCard> algExperiment = new HashMap<>();
+  protected static List<ExperimentScoreCard> mergeScoreCards(
+      List<ExperimentScoreCard> experiments) {
+    // Map of algorithm names and their score cards
+    HashMap<String, ExperimentScoreCard> scoreCardsTable = new HashMap<>();
 
-    for (ExperimentScoreCard expScoreCard : experiments) {
-      if (algExperiment.containsKey(expScoreCard.getName())) {
-        ExperimentScoreCard bestExpScoreCard = algExperiment.get(expScoreCard.getName());
-
-        for (String problemID : expScoreCard.getProblems()) {
-          if ( (!bestExpScoreCard.getProblems().contains(problemID)) || 
-              expScoreCard.getProblemScore(problemID) > bestExpScoreCard.getProblemScore(problemID)) {    
-                bestExpScoreCard.putProblemScore(problemID, expScoreCard.getProblemScore(problemID));
-          }
-        }
-        bestExpScoreCard.setAlgorithmScore(ScoreCalculator.calculateExperimentScore(new ArrayList<>(bestExpScoreCard.getProblemsScores())));
-      } else {
-        algExperiment.put(expScoreCard.getName(), expScoreCard);
+    for (ExperimentScoreCard scoreCard : experiments) {
+      if(!scoreCardsTable.containsKey(scoreCard.getAlgorithmName())){
+        scoreCardsTable.put(scoreCard.getAlgorithmName(), scoreCard);
+        continue;
       }
-    }
+      // Merge logic here
+      ExperimentScoreCard resultScoreCard = scoreCardsTable.get(scoreCard.getAlgorithmName());
 
-    return new ArrayList<>(algExperiment.values());
+      for (String problemID : scoreCard.getProblems()) {
+        Double score = scoreCard.getProblemScore(problemID);
+        Double bestScore = resultScoreCard.getProblemScore(problemID);
+        if (bestScore == null || score > bestScore) {
+          resultScoreCard.putProblemScore(problemID, score);
+          resultScoreCard.setAlgorithmScore(ScoreCalculator.calculateExperimentScore(
+              new ArrayList<>(resultScoreCard.getProblemsScores())));
+        }
+      }            
+    }
+    return new ArrayList<>(scoreCardsTable.values());
   }
 
   public static String createHeatmapForTag(String tag) throws Exception {
     ExperimentReporter reporter = new ExperimentReporter();
-  
+
     List<ExperimentRecord> experiments = reporter.getExperimentsByTag(tag);
-    List<ExperimentScoreCard> expScoreCards = new ArrayList<>();
+    List<ExperimentScoreCard> scoreCardsForTag = new ArrayList<>();
 
     Gson gson = new Gson();
     Type objType = new TypeToken<ExperimentScoreCard>() {}.getType();
 
     for (ExperimentRecord experiment : experiments) {
-      ExperimentScoreCard expScoreCard = gson.fromJson(experiment.getScoreCard(), objType);
+      ExperimentScoreCard scoreCard = gson.fromJson(experiment.getScoreCard(), objType);
 
-      if (expScoreCard != null) {
-        expScoreCards.add(expScoreCard);
+      if (scoreCard != null) {
+        scoreCardsForTag.add(scoreCard);
       }
     }
-
-    return HeatmapGenerator.createHeatmap(getMergedScoreCards(expScoreCards), tag, new HashMap<>());
+    List<ExperimentScoreCard> table = mergeScoreCards(scoreCardsForTag);
+    return HeatmapGenerator.createHeatmap(table, tag, new HashMap<>());
   }
 }

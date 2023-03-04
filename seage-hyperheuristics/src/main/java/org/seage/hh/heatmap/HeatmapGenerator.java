@@ -232,7 +232,7 @@ public class HeatmapGenerator {
       AlgorithmResult result = new AlgorithmResult();
 
       // Store the result informations
-      result.name = scoreCard.getName();
+      result.name = scoreCard.getAlgorithmName();
       result.score = Double.parseDouble(String.format("%.5f",
           scoreCard.getAlgorithmScore()));
       result.author =
