@@ -51,7 +51,7 @@ public class HeatmapGenerator {
   }
 
   // Path where the metadata are stored
-  static String svgTemplatePath = "/heatmap.svg.template";
+  private static final String SVG_TEMPLATE_PATH = "heatmap.svg.template";
 
   // Gradient colors
   private static Color[][] gradColors = {{new Color(140, 0, 0), new Color(255, 0, 0)}, // dark red - red
@@ -99,7 +99,7 @@ public class HeatmapGenerator {
   /**
    * Empty constructor.
    */
-  public HeatmapGenerator() {
+  private HeatmapGenerator() {
     // Empty
   }
 
@@ -353,13 +353,13 @@ public class HeatmapGenerator {
     context.put("overallResults", algsOverRes);
     context.put("problemsResults", algsProbsRes);
     context.put("problems", problems);
-    context.put("experimentId", experimentId);
+    context.put("tag", experimentId);
     context.put("datetime", formatter.format(date));
 
     // Load the jinja svg template
     try (
         InputStream svgTemplateStream = HeatmapGenerator
-            .class.getResourceAsStream(svgTemplatePath)
+            .class.getResourceAsStream(SVG_TEMPLATE_PATH)
     ) {
       String svgTemplate = new String(svgTemplateStream.readAllBytes(), StandardCharsets.UTF_8);
       // Render the template

@@ -1,6 +1,11 @@
 <svg viewBox="0 0 850 850" xmlns="http://www.w3.org/2000/svg">
     <style>
-        table {
+        .image {
+            //display: flex;
+            //align-items: center;
+            //justify-content: center;
+        }
+        .table {
             border: 1px solid;
         }
 
@@ -60,7 +65,7 @@
     </style>
     <!--Common use case: embed HTML text into SVG-->
     <foreignObject x="0" y="0" width="100%" height="100%">
-        <div xmlns="http://www.w3.org/1999/xhtml">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="image">
             <div class="table">
                 <table aria-describedby="results" class="styled-table">
                     <thead>
@@ -95,7 +100,7 @@
                 </table>
             </div>
             <div class="table-info">
-                <div class="experiment-id">Experiment ID: {{ experimentId }}</div>
+                <div class="experiment-id">Tag: {{ tag }}</div>
                 <div class="created-date">Created: {{ datetime }}</div>
             </div>
         </div>
