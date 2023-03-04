@@ -163,6 +163,10 @@ public class HeatmapGeneratorTest {
     List<List<List<String>>> algsProbsRes = new ArrayList<>();
     HeatmapGenerator.resultsToList(results, problems, algsOverRes, algsProbsRes);
 
-    System.out.println("");
+    assertEquals(2, algsOverRes.size());
+    // algName, author, score, colorR, colorG, colorB
+    assertEquals(6, algsOverRes.get(0).size());
+    assertEquals(2, algsProbsRes.size());
+    assertEquals(problems.size(), algsProbsRes.get(0).size());
   }
 }

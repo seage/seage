@@ -319,12 +319,12 @@ public class HeatmapGenerator {
         List<String> algProbRes =  Arrays.asList(new String[5]);
 
         AlgorithmProblemResult probRes = algRes.problemsResults.get(problems.get(j));
-        algProbRes.set( 0, problems.get(j));
+        algProbRes.set(0, problems.get(j));
         if (probRes != null) {
-          algProbRes.set( 1, String.valueOf(probRes.score));
-          algProbRes.set( 2, String.valueOf(probRes.redColor));
-          algProbRes.set( 3, String.valueOf(probRes.greenColor));
-          algProbRes.set( 4, String.valueOf(probRes.blueColor));
+          algProbRes.set(1, String.valueOf(probRes.score));
+          algProbRes.set(2, String.valueOf(probRes.redColor));
+          algProbRes.set(3, String.valueOf(probRes.greenColor));
+          algProbRes.set(4, String.valueOf(probRes.blueColor));
         }
         // Add to problems results array
         algProbsRes.add(algProbRes);
