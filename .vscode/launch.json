@@ -58,14 +58,15 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "env": {
-        "LOG_LEVEL": "debug"
+        // "LOG_LEVEL": "debug"
       },
       "args": [
         "experiment-single-feedback",
         "-a",
-        "TsbuSearch",
+        "TabuSearch",
+        "GeneticAlgorithm",
         "-i",
-        "TSP:hyflex",
+        "TSP:eil51",
         // "FSP:tai500_20_01",
         "-t",
         "1",

@@ -3,6 +3,7 @@ package org.seage.launcher.commands;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.heatmap.HeatmapForTagCreator;
@@ -46,7 +47,17 @@ public class ReportCommand extends Command {
       logger.info("No experiments for tag: {}", tag);
       return;
     }
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
+
+    // Create the heatmap
+    if (heatmap) {
+      HeatmapForTagCreator.createHeatmapForTag(experiments, tag);    
+    }
+
+    // Print last 50 experiments
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    experiments = experiments.size() > 50 ? experiments.subList(0, 50) : experiments;
+    Collections.sort(experiments, (e1, e2) -> (int)(e1.getStartDate().getTime() - e2.getStartDate().getTime()));
+    
     for (ExperimentRecord experiment : experiments) {
       // Print the experiment details
       String logLine =
@@ -58,10 +69,6 @@ public class ReportCommand extends Command {
               experiment.getScore(),
               experiment.getTag());
       logger.info(logLine);
-    }
-    // Create the heatmap
-    if (heatmap) {
-      HeatmapForTagCreator.createHeatmapForTag(experiments, tag);    
-    }
+    }    
   }
 }

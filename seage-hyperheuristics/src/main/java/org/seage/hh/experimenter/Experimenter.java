@@ -125,13 +125,14 @@ public class Experimenter {
         tag
     ); 
     
-    logger.info("-------------------------------------");
-    logger.info("Experimenter: {}", algorithmID);
-    logger.info("ExperimentID: {}", experimentID);
-    logger.info("-------------------------------------");
+    logger.info("---------------------------------------------------");
+    logger.info("AlgorithmID:   ### {} ###", algorithmID);
+    logger.info("---------------------------------------------------");
+    logger.info("ExperimentTag: {}", this.tag);
+    logger.info("ExperimentID:  {}", experimentID);
+    logger.info("---------------------------------------------------");
 
     // Run experiments
-    logger.info("Algorithm '{}'", algorithmID);
 
     long startDate;
     startDate = System.currentTimeMillis();
@@ -144,7 +145,7 @@ public class Experimenter {
 
     for (Entry<String, List<String>> entry : instanceIDsPerProblems.entrySet()) {
       String problemID = entry.getKey();
-      logger.info("  Problem '{}'", problemID);
+      logger.info("Problem '{}'", problemID);
 
       logger.debug("{}", ProblemProvider.getProblemProviders().values());
 
@@ -159,7 +160,7 @@ public class Experimenter {
       List<Double> instanceScores = new ArrayList<>();
 
       for (String instanceID : entry.getValue()) {
-        logger.info("    Instance '{}'", instanceID);
+        logger.info("  Instance '{}'", instanceID);
 
         // RUN EXPERIMENT
         Experiment experiment = createExperiment(experimentName, problemID, instanceID);
@@ -186,8 +187,8 @@ public class Experimenter {
     experimentReporter.updateExperimentScore(experimentID, scoreCard);
 
     long endDate = System.currentTimeMillis();
-    logger.info("-------------------------------------");
-    logger.info("Experiment {} finished ...", experimentID);
+    logger.info("---------------------------------------------------");
+    logger.info("Experiment {} done", experimentID);
     logger.info("Experiment duration: {} (DD:HH:mm:ss)",
         TimeFormat.getTimeDurationBreakdown(endDate - startDate));
     logger.info("Experiment score: ### {} ###", scoreCard.getAlgorithmScore());

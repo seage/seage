@@ -22,10 +22,6 @@ import org.seage.hh.knowledgebase.db.mapper.SolutionMapper;
 public class ExperimentReporter {
   private static final String FORMAT_VERSION = "1.0.0";
 
-  public ExperimentReporter() throws Exception {
-    DbManager.init();
-  }
-
   /**
    * Puts experiment info into database.
    */

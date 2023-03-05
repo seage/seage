@@ -14,6 +14,39 @@ public class ProblemInstanceParamsParser {
   private static final String FSP = "FSP";  
   private static final String QAP = "QAP";
 
+  private static final Map<String,  List<String>> smallInstances = Map.of(
+      SAT, Arrays.asList(
+          "tbd",
+          "tbd",
+          "tbd",
+          "tbd",
+          "tbd"),
+      TSP, Arrays.asList(
+          "eil51", 
+          "berlin52",
+          "eil76",
+          "rat99",
+          "kroA100"),
+      JSP, Arrays.asList(
+          "ft10",
+          "yn1",
+          "la16",
+          "swv01",
+          "swv15"),
+      FSP, Arrays.asList(
+          "tbd",
+          "tbd",
+          "tbd",
+          "tbd",
+          "tbd"),
+      QAP, Arrays.asList(
+          "tbd",
+          "tbd",
+          "tbd",
+          "tbd",
+          "tbd") 
+  );
+
   private static final Map<String,  List<String>> hyflexInstances = Map.of(
       SAT, Arrays.asList(
           "pg-525-2276-hyflex-3",
@@ -73,6 +106,41 @@ public class ProblemInstanceParamsParser {
     String problemID = p[0];
     String instanceID = p[1];
 
+    if (instanceID.equals("small")) {
+      switch (problemID) {
+        case SAT:
+          parsed.put(SAT, smallInstances.get(SAT));
+          break;
+
+        case TSP:
+          parsed.put(TSP, smallInstances.get(TSP));
+          break;
+          
+        case FSP:
+          parsed.put(FSP, smallInstances.get(FSP));
+          break;
+        
+        case JSP:
+          parsed.put(JSP, smallInstances.get(JSP));
+          break;
+        
+        case QAP:
+          parsed.put(QAP, smallInstances.get(QAP));
+          break;
+
+        case "ALL":
+          parsed.put(SAT, hyflexInstances.get(SAT));
+          parsed.put(TSP, hyflexInstances.get(TSP));
+          parsed.put(JSP, hyflexInstances.get(JSP));
+          parsed.put(FSP, hyflexInstances.get(FSP));
+          parsed.put(QAP, hyflexInstances.get(QAP));
+          break;
+        
+        default:
+          throw new IllegalArgumentException("Bad problemID");
+      }
+      return;
+    }   
     if (instanceID.equals("hyflex")) {
       switch (problemID) {
         case SAT:

@@ -12,5 +12,7 @@
     "hyflex",
     "seage"
   ],
-  "java.compile.nullAnalysis.mode": "automatic"
+  "java.compile.nullAnalysis.mode": "automatic",
+  "gradle.allowParallelRun": true,
+  "gradle.nestedProjects": true
 }

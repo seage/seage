@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.hh.knowledgebase.db.DbManager;
 import org.seage.launcher.commands.Command;
 import org.seage.launcher.commands.DetailsCommand;
 import org.seage.launcher.commands.ExperimentApproachCommand;
@@ -78,10 +79,12 @@ public class Launcher {
   }
 
   private void run(Command cmd) throws Exception {
-    logger.info("");
     logger.info("SEAGE {} - https://www.seage.org", SeageVersion.VERSION);
     logger.info("");
     logger.info("SEAGE running ...");
+    logger.info("");
+    DbManager.init();
+    logger.info("");
     cmd.performCommand();
     logger.info("SEAGE finished");
   }
