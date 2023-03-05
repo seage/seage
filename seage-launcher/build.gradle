@@ -35,3 +35,25 @@ application {
     //     destinationDir = file("$rootDir/build/install")
     // }
 }
+
+task generateSources {
+  def outputDir = file("$projectDir/src/main/java")
+  outputs.dir outputDir
+  doFirst {
+    def srcFile = new File(outputDir, "org/seage/launcher/SeageVersion.java")
+    srcFile.parentFile.mkdirs()
+    srcFile.write("""
+// This file is generated
+package org.seage.launcher;
+
+class SeageVersion {
+  static final String VERSION = "$project.version";
+  private SeageVersion() {}
+}
+"""
+    )
+  }
+}
+compileJava.dependsOn generateSources
+// compileJava.source generateSources.outputs.files, sourceSets.main.java
+// sourceSets.main.java.srcDirs = ["$buildDir/generated/sources/main/java",'src/main/java']

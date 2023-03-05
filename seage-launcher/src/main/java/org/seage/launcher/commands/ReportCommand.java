@@ -1,6 +1,5 @@
 package org.seage.launcher.commands;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -43,7 +42,7 @@ public class ReportCommand extends Command {
         ? reporter.getExperimentsByTag(tag)
         : reporter.getExperiments();
 
-    if (experiments.size() == 0) {
+    if (experiments.isEmpty()) {
       logger.info("No experiments for tag: {}", tag);
       return;
     }

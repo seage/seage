@@ -77,3 +77,9 @@ The results can be inspected using `pgAdmin` at the address http://localhost:280
 - username: `seage@seage.org`
 - password: `seage`
 - database password: `seage`
+
+
+## Quick run
+```
+DB_URL=jdbc:postgresql://snoopy.lan:15432/seage ./seage report
+```

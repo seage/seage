@@ -78,9 +78,12 @@ public class Launcher {
   }
 
   private void run(Command cmd) throws Exception {
+    logger.info("");
+    logger.info("SEAGE {} - https://www.seage.org", SeageVersion.VERSION);
+    logger.info("");
     logger.info("SEAGE running ...");
     cmd.performCommand();
-    logger.info("SEAGE finished ...");
+    logger.info("SEAGE finished");
   }
 
   private static Command processArgs(String[] args, JCommander jc, Launcher launcher) {
@@ -115,7 +118,15 @@ public class Launcher {
   }
 
   private static void printDefaultHelp(JCommander jc) {
-    jc.getConsole().println("Usage: <main class> [command]");
+    jc.getConsole().println("");
+    jc.getConsole().println("SEAGE - https://www.seage.org");
+    jc.getConsole().println("");
+    jc.getConsole().println("Usage: ./scripts/run.sh [command]");
+    jc.getConsole().println("");
+    jc.getConsole().println("  Environment variables:");
+    jc.getConsole().println(String.format("    %-30s", "DB_USER=seage"));
+    jc.getConsole().println(String.format("    %-30s", "DB_PASSWORD=seage"));
+    jc.getConsole().println(String.format("    %-30s", "DB_URL=jdbc:postgresql://localhost:5432/seage"));
     jc.getConsole().println("");
     jc.getConsole().println("  Commands:");
     for (Entry<String, Command> e : commands.entrySet()) {
