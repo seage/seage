@@ -33,7 +33,7 @@
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
-      "args": ["report", "-H"]
+      "args": ["report"]
     },
     {
       "type": "java",
@@ -63,9 +63,9 @@
       "args": [
         "experiment-single-feedback",
         "-a",
-        "TabuSearch",
+        "TsbuSearch",
         "-i",
-        "TSP:usa13509-hyflex-8",
+        "TSP:hyflex",
         // "FSP:tai500_20_01",
         "-t",
         "1",
