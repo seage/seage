@@ -101,11 +101,11 @@ public class TspMoveManager2 implements IMoveManager {
   public Solution getModifiedSolution(
       Solution solution, double currentTemperature) throws Exception {
     TspSolution tspSolution = ((TspSolution) solution).clone();
-    // Integer[] next = neighbour(tspSolution.getTour(), currentTemperature);
+    Integer[] next = neighbour(tspSolution.getTour(), currentTemperature);
     // for (int i = 0; i < tspSolution.getTour().length; i++) {
     //   tspSolution._tour[i] = next[i];   
     // }
-    tspSolution._tour = Arrays.copyOf(tspSolution.getTour(), tspSolution.getTour().length);  
+    tspSolution._tour = Arrays.copyOf(next, tspSolution.getTour().length);  
     
     return tspSolution;
   }
