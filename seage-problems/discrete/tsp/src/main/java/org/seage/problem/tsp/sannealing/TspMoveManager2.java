@@ -19,29 +19,41 @@
  */
 
 /**
+ * .
  * Contributors:
  *     Jan Zmatlik
- *     - Initial implementation
+ *     - Initial implementati
  */
+
 package org.seage.problem.tsp.sannealing;
 
+import java.util.Arrays;
 import java.util.Random;
-
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
 
 /**
+ * Another version of the tsp move manager.
  *
  * @author Jan Zmatlik
  */
 public class TspMoveManager2 implements IMoveManager {
   Random rnd = new Random(1);
-  private TspObjectiveFunction _objFunc;
+  private TspObjectiveFunction objFunc;
 
-  public TspMoveManager2(TspObjectiveFunction objFunc) {
-    _objFunc = objFunc;
+  public TspMoveManager2(TspObjectiveFunction newObjFunc) {
+    objFunc = newObjFunc;
   }
 
+  /**
+   * .
+   *
+   * @param solution .
+   *
+   * @return
+   *
+   * @throws Exception .
+   */
   public Solution getModifiedSolution0(Solution solution) throws Exception {
     TspSolution tspSolution = ((TspSolution) solution).clone();
 
@@ -51,13 +63,14 @@ public class TspMoveManager2 implements IMoveManager {
     int[] bestMove = null;
     move[0] = a;
     move[1] = 0;
-    double bestVal = _objFunc.evaluate(tspSolution, move)[0];
+    double bestVal = objFunc.evaluate(tspSolution, move)[0];
 
     for (int i = 1; i < tspSolutionLength; i++) {
-      if (i == a)
+      if (i == a) { 
         continue;
+      }
       move[1] = i;
-      double val = _objFunc.evaluate(tspSolution, move)[0];
+      double val = objFunc.evaluate(tspSolution, move)[0];
       if (val < bestVal) {
         bestVal = val;
         bestMove = move;
@@ -74,14 +87,26 @@ public class TspMoveManager2 implements IMoveManager {
     return tspSolution;
   }
 
+  /**
+   * .
+   *
+   * @param solution .
+   * @param currentTemperature .
+   * 
+   * @return .
+   * 
+   * @throws Exception .
+   */
   @Override
-  public Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception {
+  public Solution getModifiedSolution(
+      Solution solution, double currentTemperature) throws Exception {
     TspSolution tspSolution = ((TspSolution) solution).clone();
-    Integer[] next = neighbour(tspSolution.getTour(), currentTemperature);
-    for (int i = 0; i < tspSolution.getTour().length; i++) {
-      tspSolution._tour[i] = next[i];
-    }
-
+    // Integer[] next = neighbour(tspSolution.getTour(), currentTemperature);
+    // for (int i = 0; i < tspSolution.getTour().length; i++) {
+    //   tspSolution._tour[i] = next[i];   
+    // }
+    tspSolution._tour = Arrays.copyOf(tspSolution.getTour(), tspSolution.getTour().length);  
+    
     return tspSolution;
   }
 
