@@ -40,7 +40,9 @@ public class TspMoveManager implements IMoveManager {
   @Override
   public Solution getModifiedSolution(Solution solution, double ct) {
    
-    return getInsertedSolution(solution);
+    return getSwappedSolution(solution);
+    // return getInversedSolution(solution);
+    // return getInsertedSolution(solution);
   }
 
   private TspSolution getSwappedSolution(Solution solution) {

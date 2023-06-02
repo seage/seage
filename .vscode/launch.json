@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "TspSimulatedAnnealingTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.tsp.sannealing.TspSimulatedAnnealingTest",
+      "projectName": "seage-problem-tsp"
+    },
+    {
+      "type": "java",
       "name": "Run info",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
@@ -33,7 +40,9 @@
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
-      "args": ["report"]
+      "args": [
+        "report"
+      ]
     },
     {
       "type": "java",
@@ -57,19 +66,15 @@
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
-      "env": {
-        // "LOG_LEVEL": "debug"
-      },
+      "env": {},
       "args": [
         "experiment-single-feedback",
         "-a",
-        // "TabuSearch",
         "SimulatedAnnealing",
         "-i",
         "TSP:hyflex",
-        // "FSP:tai500_20_01",
         "-t",
-        "10",
+        "60",
         "-n",
         "1"
       ]

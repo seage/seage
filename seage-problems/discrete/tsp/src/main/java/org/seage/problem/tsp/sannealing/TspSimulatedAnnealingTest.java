@@ -26,7 +26,7 @@
 
 package org.seage.problem.tsp.sannealing;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.sannealing.ISimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
@@ -44,41 +44,51 @@ import org.slf4j.LoggerFactory;
 public class TspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAnnealingEvent> {
   private static final Logger log = 
       LoggerFactory.getLogger(TspSimulatedAnnealingTest.class.getName());
-  private City[] cities;
-  // private static String _dataPath = "D:\\eil51.tsp";
 
+  /**. */
   public static void main(String[] args) {
     try {
 
-      String path = "data/tsp/eil51.tsp";// args[0]; // 426
-      // String path = "data/tsp/berlin52.tsp";//args[0]; // 7542
-      // String path = "data/tsp/ch130.tsp";//args[0]; // 6110
-      // String path = "data/tsp/lin318.tsp";//args[0]; // 42029
-      // String path = "data/tsp/pcb442.tsp";//args[0]; // 50778
-      // String path = "data/tsp/u574.tsp";//args[0]; // 36905
-
-      new TspSimulatedAnnealingTest().run(path);
+      // String instanceID = "eil51"; // 426
+      // String instanceID = "berlin52"; // 7542
+      // String instanceID = "ch130"; // 6110
+      // String instanceID = "lin318"; // 42029
+      // String instanceID = "pcb442"; // 50778
+      // String instanceID = "u574"; // 36905
+      String instanceID = "u724-hyflex-3"; // 41910
+      // String instanceID = "rat575-hyflex-2"; // 6773 
+      // String instanceID = "d1291-hyflex-6"; // 50801 
+      // String instanceID = "pr299-hyflex-0"; // 48191 
+      // String instanceID = "u2152-hyflex-7"; // 64253
+      // String instanceID = "usa13509-hyflex-8"; // 19982859
+      new TspSimulatedAnnealingTest().run(instanceID);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
     }
   }
 
-  public void run(String path) throws Exception {
-    cities = CityProvider.readCities(new FileInputStream(path));
+  /**. */
+  public void run(String instanceID) throws Exception {
+    String path = String.format("/org/seage/problem/tsp/instances/%s.tsp", instanceID);
+    City[] cities = null;
+    try (InputStream stream = getClass().getResourceAsStream(path)) {
+      cities = CityProvider.readCities(stream);
+    }
     log.info("Loading cities from path: {}", path);
     log.info("Number of cities: {}", cities.length);
 
     TspObjectiveFunction objFunction = new TspObjectiveFunction(cities);
-    SimulatedAnnealing sa = new SimulatedAnnealing(objFunction, new TspMoveManager2(objFunction));
+    SimulatedAnnealing<TspSolution> sa = 
+        new SimulatedAnnealing<>(objFunction, new TspMoveManager());
 
-    sa.setMaximalTemperature(1000000.0d);
-    sa.setMinimalTemperature(0.01d);
-    // sa.setAnnealingCoefficient( 0.9999999);
-    sa.setMaximalIterationCount(100000000);
+    sa.setMaximalTemperature(10000000d);
+    sa.setMinimalTemperature(0.0d);
+    sa.setAnnealingCoefficient(0.999995);
+    sa.setMaximalIterationCount(10_000_000);
 
     sa.addSimulatedAnnealingListener(this);
-    TspGreedySolution s = new TspGreedySolution(cities);
-    // TspRandomSolution s = new TspRandomSolution(_cities.length);
+    // TspGreedySolution s = new TspGreedySolution(cities);
+    TspRandomSolution s = new TspRandomSolution(cities.length);
 
     log.info("{}", objFunction.getObjectiveValue(s));
     sa.startSearching(s);
