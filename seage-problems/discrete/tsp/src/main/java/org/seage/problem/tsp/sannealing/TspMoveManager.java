@@ -40,7 +40,7 @@ public class TspMoveManager implements IMoveManager {
   @Override
   public Solution getModifiedSolution(Solution solution, double ct) {
    
-    return getInversedSolution(solution);
+    return getInsertedSolution(solution);
   }
 
   private TspSolution getSwappedSolution(Solution solution) {
@@ -61,11 +61,11 @@ public class TspMoveManager implements IMoveManager {
   }
 
   private TspSolution getInversedSolution(Solution solution) {
-
     TspSolution tspSolution = ((TspSolution) solution).clone();
+    
     int tspSolutionLength = tspSolution.getTour().length;
     int fromPos = rnd.nextInt(tspSolutionLength);
-    int toPos = Math.min((fromPos + rnd.nextInt(4)), tspSolutionLength-1);
+    int toPos = Math.min((fromPos + rnd.nextInt(5)), tspSolutionLength-1);
 
 
     for (int i = fromPos; i < toPos; i++) {
@@ -77,4 +77,25 @@ public class TspMoveManager implements IMoveManager {
     return tspSolution;
   }
 
+  private TspSolution getInsertedSolution(Solution solution) {
+    TspSolution tspSolution = ((TspSolution) solution).clone();
+
+    int tspSolutionLength = tspSolution.getTour().length;
+
+    int fromPos = rnd.nextInt(tspSolutionLength);
+    int toPos = rnd.nextInt(tspSolutionLength);
+    int tmp = Math.max(fromPos, toPos);
+    fromPos = Math.min(toPos, fromPos);
+    toPos = tmp;
+
+    int fromCity = tspSolution.getTour()[fromPos];
+
+    for (int i = fromPos; i < toPos; i++) {
+      tspSolution.getTour()[i] = tspSolution.getTour()[i+1];
+    }
+
+    tspSolution.getTour()[toPos] = fromCity;
+
+    return tspSolution;
+  }
 }
