@@ -63,17 +63,15 @@
       "args": [
         "experiment-single-feedback",
         "-a",
-        "TabuSearch",
-        "GeneticAlgorithm",
+        // "TabuSearch",
+        "SimulatedAnnealing",
         "-i",
-        "TSP:eil51",
+        "TSP:hyflex",
         // "FSP:tai500_20_01",
         "-t",
-        "1",
+        "10",
         "-n",
-        "1",
-        "-T",
-        "ts-tsp-fix"
+        "1"
       ]
     },
     {

@@ -139,8 +139,8 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
     minimalTemperature = Math.min(minimalTemperature, maximalTemperature);
     maximalTemperature = currentTemperature;
 
-    annealCoefficient = Math.exp(
-        Math.log(minimalTemperature / maximalTemperature) / maximalIterationCount);
+    // annealCoefficient = Math.exp(
+    //     Math.log(minimalTemperature / maximalTemperature) / maximalIterationCount);
     // The best solution is same as current solution
     solution.setObjectiveValue(objectiveFunction.getObjectiveValue(solution));
     bestSolution = currentSolution = solution;
@@ -183,6 +183,7 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
       //}
       // Anneal temperature
       currentTemperature = annealCoefficient * currentTemperature;
+      //System.out.println(currentTemperature);
      eventProducer.fireIterationPerformed();
     }
     isRunning = false;
@@ -228,10 +229,10 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
     return currentTemperature;
   }
 
-  // public void setAnnealingCoefficient(double alpha)
-  // {
-  // this.annealCoefficient = alpha;
-  // }
+  public void setAnnealingCoefficient(double annealCoefficient)
+  {
+    this.annealCoefficient = annealCoefficient;
+  }
 
   @Override
   public double getAnnealingCoefficient() {

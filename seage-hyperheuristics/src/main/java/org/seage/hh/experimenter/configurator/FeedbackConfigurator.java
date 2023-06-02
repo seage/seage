@@ -128,9 +128,14 @@ public class FeedbackConfigurator extends Configurator {
       // try to find how the value is set by other configurators
       double min = dn.getValueDouble("min");
       double max = dn.getValueDouble("max");
+      double value = dn.getValueDouble("init");
       double sign = Math.random() > 0.5 ? 1 : -1;
       double delta = (max - min) * this.spread * sign;
-      double value =  Double.parseDouble(bestConfNode.getValue(dn.getValueStr("name")).toString());
+      
+      if (bestConfNode.containsValue(dn.getValueStr("name"))){
+        value = Double.parseDouble(bestConfNode.getValue(dn.getValueStr("name")).toString());
+      }
+      
       value = Math.max(min, Math.min(max, value + delta));
       
       params.putValue(dn.getValueStr("name"), value);
