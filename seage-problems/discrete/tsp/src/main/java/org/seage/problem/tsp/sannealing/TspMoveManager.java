@@ -84,14 +84,18 @@ public class TspMoveManager implements IMoveManager {
 
     int fromPos = rnd.nextInt(tspSolutionLength);
     int toPos = rnd.nextInt(tspSolutionLength);
-    int tmp = Math.max(fromPos, toPos);
-    fromPos = Math.min(toPos, fromPos);
-    toPos = tmp;
 
     int fromCity = tspSolution.getTour()[fromPos];
 
-    for (int i = fromPos; i < toPos; i++) {
-      tspSolution.getTour()[i] = tspSolution.getTour()[i+1];
+    if (fromPos < toPos) {
+      for (int i = fromPos; i < toPos; i++) {
+        tspSolution.getTour()[i] = tspSolution.getTour()[i+1];
+      }
+    }
+    else {
+      for (int i = fromPos; i > toPos; i--) {
+        tspSolution.getTour()[i] = tspSolution.getTour()[i-1];
+      }
     }
 
     tspSolution.getTour()[toPos] = fromCity;
