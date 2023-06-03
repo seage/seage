@@ -129,11 +129,10 @@ public class ProblemInstanceParamsParser {
           break;
 
         case "ALL":
-          parsed.put(SAT, hyflexInstances.get(SAT));
-          parsed.put(TSP, hyflexInstances.get(TSP));
-          parsed.put(JSP, hyflexInstances.get(JSP));
-          parsed.put(FSP, hyflexInstances.get(FSP));
-          parsed.put(QAP, hyflexInstances.get(QAP));
+          parsed.put(SAT, smallInstances.get(SAT));
+          parsed.put(TSP, smallInstances.get(TSP));
+          parsed.put(JSP, smallInstances.get(JSP));
+          parsed.put(FSP, smallInstances.get(FSP));
           break;
         
         default:
