@@ -106,10 +106,10 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
   private boolean isRunning = false;
 
   /**
-   * Constructor
-   * 
-   * @param objectiveFunction is objective function.
-   * @param moveManager       is performing modification solution.
+   * Constructor.
+   *
+   * @param newObjectiveFunction is objective function.
+   * @param newMoveManager       is performing modification solution.
    */
   public SimulatedAnnealing(IObjectiveFunction newObjectiveFunction, IMoveManager newMoveManager) {
     objectiveFunction = newObjectiveFunction;
@@ -152,10 +152,7 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
     // temperature
     // and successful iteration count is less than zero
     while ((maximalIterationCount >= currentIteration) 
-      /* && (successIterationCount > 0) */ && !stopSearching) {
-      // while ((innerIterationCount < maximalIterationCount) &&
-      // (successIterationCount < maximalSuccessIterationCount) && !stopSearching)
-      //{
+            && !stopSearching) {
       currentIteration++;
 
       // Move to new locations
@@ -166,11 +163,13 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
       // solution
       modifiedSolution.setObjectiveValue(objectiveFunction.getObjectiveValue(modifiedSolution));
 
-      if (modifiedSolution.compareTo(currentSolution) > 0)
+      if (modifiedSolution.compareTo(currentSolution) > 0) {
         probability = 1;
+      }
       else {
         probability = Math.exp(
-            -(modifiedSolution.getObjectiveValue() - currentSolution.getObjectiveValue()) / currentTemperature);
+            -(modifiedSolution.getObjectiveValue() 
+            - currentSolution.getObjectiveValue()) / currentTemperature);
       }
 
       if (Math.random() <= probability) {
@@ -180,15 +179,13 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
           eventProducer.fireNewBestSolutionFound();
         }
       }
-      //}
       // Anneal temperature
       currentTemperature = annealCoefficient * currentTemperature;
-      //System.out.println(currentTemperature);
-     eventProducer.fireIterationPerformed();
+      eventProducer.fireIterationPerformed();
     }
     isRunning = false;
     // Fire event to listeners about that algorithm was stopped
-   eventProducer.fireAlgorithmStopped();
+    eventProducer.fireAlgorithmStopped();
   }
 
   @Override
@@ -200,8 +197,9 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
     this.currentSolution = currentSolution;
   }
 
-  public final void addSimulatedAnnealingListener(IAlgorithmListener<SimulatedAnnealingEvent> listener) {
-   eventProducer.addAlgorithmListener(listener);
+  public final void addSimulatedAnnealingListener(
+      IAlgorithmListener<SimulatedAnnealingEvent> listener) {
+    eventProducer.addAlgorithmListener(listener);
   }
 
   @Override
