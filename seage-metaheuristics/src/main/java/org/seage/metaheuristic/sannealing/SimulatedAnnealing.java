@@ -67,7 +67,6 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
    * Provide firing Events, registering listeners.
    */
   // private SimulatedAnnealingListenerProvider _listenerProvider = new
-  // SimulatedAnnealingListenerProvider( this );
   private AlgorithmEventProducer<IAlgorithmListener<SimulatedAnnealingEvent>, 
       SimulatedAnnealingEvent> eventProducer;
   /**
@@ -156,8 +155,8 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
       currentIteration++;
 
       // Move to new locations
-      S modifiedSolution = (S) moveManager.getModifiedSolution(
-          (S) currentSolution, currentTemperature);
+      @SuppressWarnings("unchecked")
+      S modifiedSolution = (S) moveManager.getModifiedSolution(currentSolution, currentTemperature);
 
       // Calculate objective function and set value to modified
       // solution
@@ -227,8 +226,7 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
     return currentTemperature;
   }
 
-  public void setAnnealingCoefficient(double annealCoefficient)
-  {
+  public void setAnnealingCoefficient(double annealCoefficient) {
     this.annealCoefficient = annealCoefficient;
   }
 

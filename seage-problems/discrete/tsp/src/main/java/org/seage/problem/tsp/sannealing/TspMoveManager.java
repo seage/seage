@@ -19,18 +19,21 @@
  */
 
 /**
+ * .
  * Contributors:
  *     Jan Zmatlik
  *     - Initial implementation
  */
+
 package org.seage.problem.tsp.sannealing;
 
 import java.util.Random;
-
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
 
+
 /**
+ * .
  *
  * @author Jan Zmatlik
  */
@@ -67,7 +70,7 @@ public class TspMoveManager implements IMoveManager {
     
     int tspSolutionLength = tspSolution.getTour().length;
     int fromPos = rnd.nextInt(tspSolutionLength);
-    int toPos = Math.min((fromPos + rnd.nextInt(5)), tspSolutionLength-1);
+    int toPos = Math.min((fromPos + rnd.nextInt(5)), tspSolutionLength - 1);
 
 
     for (int i = fromPos; i < toPos; i++) {
@@ -91,12 +94,11 @@ public class TspMoveManager implements IMoveManager {
 
     if (fromPos < toPos) {
       for (int i = fromPos; i < toPos; i++) {
-        tspSolution.getTour()[i] = tspSolution.getTour()[i+1];
+        tspSolution.getTour()[i] = tspSolution.getTour()[i + 1];
       }
-    }
-    else {
+    } else {
       for (int i = fromPos; i > toPos; i--) {
-        tspSolution.getTour()[i] = tspSolution.getTour()[i-1];
+        tspSolution.getTour()[i] = tspSolution.getTour()[i - 1];
       }
     }
 
