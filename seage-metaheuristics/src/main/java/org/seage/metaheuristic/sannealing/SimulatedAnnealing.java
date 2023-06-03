@@ -164,8 +164,7 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
 
       if (modifiedSolution.compareTo(currentSolution) > 0) {
         probability = 1;
-      }
-      else {
+      } else {
         probability = Math.exp(
             -(modifiedSolution.getObjectiveValue() 
             - currentSolution.getObjectiveValue()) / currentTemperature);
@@ -179,7 +178,9 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
         }
       }
       // Anneal temperature
-      currentTemperature = annealCoefficient * currentTemperature;
+      if (currentTemperature > 0.0001) {
+        currentTemperature = annealCoefficient * currentTemperature;
+      }
       eventProducer.fireIterationPerformed();
     }
     isRunning = false;
@@ -259,17 +260,6 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
   public void setMaximalIterationCount(long newMaximalIterationCount) {
     maximalIterationCount = newMaximalIterationCount;
   }
-
-  // public long getMaximalSuccessIterationCount()
-  // {
-  // return maximalSuccessIterationCount;
-  // }
-
-  // public void setMaximalAcceptedSolutionsPerOneStepCount(long
-  // maximalSuccessIterationCount)
-  // {
-  // this.maximalSuccessIterationCount = maximalSuccessIterationCount;
-  // }
 
   public boolean isRunning() {
     return isRunning;
