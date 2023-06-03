@@ -240,7 +240,8 @@ public class TabuSearch extends TabuSearchBase {
     // Get list of moves to try
     final Move[] moves = moveManager.getAllMoves(currentSolution);
     if (moves == null || moves.length == 0) {
-      throw new NoMovesGeneratedException();
+      logger.debug("No move generated");
+      return;
     }
 
     // Get best move.
