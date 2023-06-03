@@ -52,6 +52,13 @@ public class JspMoveManager implements MoveManager {
           criticalPath.get(i).getSecond().getIndex());
     }
 
+    // It might happen that critical path is empty (e.g. for optimal schedules).
+    // We still have to provide a dummy move.
+    if (moves.length == 0) {
+      moves = new JspMove[1];
+      moves[0] = new JspMove(0, 1);
+    }
+
     return moves;
   }
 }
