@@ -167,7 +167,6 @@ public class ProblemInstanceParamsParser {
           parsed.put(TSP, hyflexInstances.get(TSP));
           parsed.put(JSP, hyflexInstances.get(JSP));
           parsed.put(FSP, hyflexInstances.get(FSP));
-          parsed.put(QAP, hyflexInstances.get(QAP));
           break;
         
         default:
