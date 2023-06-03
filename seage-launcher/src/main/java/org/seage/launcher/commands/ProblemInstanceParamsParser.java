@@ -25,7 +25,7 @@ public class ProblemInstanceParamsParser {
           "berlin52",
           "eil51", 
           "eil76",
-          "kroA100",
+          "pr76",
           "st70"),
       JSP, Arrays.asList(
           "la01",

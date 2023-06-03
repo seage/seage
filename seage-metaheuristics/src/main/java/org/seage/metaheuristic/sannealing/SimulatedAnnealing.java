@@ -123,6 +123,7 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
    */
   @Override
   public void startSearching(S solution) throws Exception {
+    // Fire event to listeners about that algorithm has started
     eventProducer.fireAlgorithmStarted();
     // Searching is starting
     stopSearching = false;
@@ -138,14 +139,10 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
     minimalTemperature = Math.min(minimalTemperature, maximalTemperature);
     maximalTemperature = currentTemperature;
 
-    // annealCoefficient = Math.exp(
-    //     Math.log(minimalTemperature / maximalTemperature) / maximalIterationCount);
     // The best solution is same as current solution
     solution.setObjectiveValue(objectiveFunction.getObjectiveValue(solution));
     bestSolution = currentSolution = solution;
     eventProducer.fireNewBestSolutionFound();
-
-    // Fire event to listeners about that algorithm has started
 
     // Iterates until current temperature is equal or greather than minimal
     // temperature
@@ -165,9 +162,10 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
       if (modifiedSolution.compareTo(currentSolution) > 0) {
         probability = 1;
       } else {
-        probability = Math.exp(
-            -(modifiedSolution.getObjectiveValue() 
-            - currentSolution.getObjectiveValue()) / currentTemperature);
+        double currentObjValue = currentSolution.getObjectiveValue();
+        double newObjValue = modifiedSolution.getObjectiveValue();
+
+        probability = Math.exp((currentObjValue - newObjValue) / currentTemperature);
       }
 
       if (Math.random() <= probability) {
