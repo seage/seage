@@ -20,7 +20,7 @@ public class ProblemInstanceParamsParser {
           "uf75-01",
           "uf75-02",
           "uf100-01",
-          "uf100-02"),
+          "uf100-011"),
       TSP, Arrays.asList(
           "berlin52",
           "eil51", 
