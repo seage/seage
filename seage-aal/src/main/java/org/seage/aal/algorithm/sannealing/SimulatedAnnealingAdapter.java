@@ -45,8 +45,9 @@ import org.slf4j.LoggerFactory;
  */
 @AlgorithmParameters({ 
     @Parameter(name = "iterationCount", min = 1, max = 999999999, init = 999999999),
-    @Parameter(name = "maxTemperature", min = 1000, max = 999999999, init = 100000),
-    @Parameter(name = "minTemperature", min = 0, max = 99999, init = 1),
+    @Parameter(name = "maxTemperature", min = 1000, max = 10000000000d, init = 10000000),
+    @Parameter(name = "minTemperature", min = 0, max = 10, init = 0),
+    @Parameter(name = "annealingCoefficient", min = 0.9, max = 1, init = 0.99999),
     @Parameter(name = "numSolutions", min = 1, max = 1, init = 1) })
 public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extends Solution>
     extends AlgorithmAdapterImpl<P, S> {
@@ -120,7 +121,7 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
 
     simulatedAnnealing.setMaximalTemperature(algParams.getValueInt("maxTemperature"));
     simulatedAnnealing.setMinimalTemperature(algParams.getValueDouble("minTemperature"));
-    // _simulatedAnnealing.setAnnealingCoefficient(_params.getValueDouble("annealCoeficient"));
+    simulatedAnnealing.setAnnealingCoefficient(algParams.getValueDouble("annealingCoefficient"));
     simulatedAnnealing.setMaximalIterationCount(algParams.getValueInt("iterationCount"));
     // _simulatedAnnealing.setMaximalAcceptedSolutionsPerOneStepCount(
     //     _params.getValueInt("maxOneStepAcceptedSolutions"));
