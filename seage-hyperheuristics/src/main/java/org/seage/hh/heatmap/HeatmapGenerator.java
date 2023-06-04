@@ -361,6 +361,7 @@ public class HeatmapGenerator {
     context.put("problems", problems);
     context.put("tag", experimentTag);
     context.put("datetime", formatter.format(date));
+    context.put("height", algsOverRes.size() * 40 + 50);
 
     // Load the jinja svg template
     try (

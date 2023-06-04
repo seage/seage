@@ -1,4 +1,4 @@
-<svg viewBox="0 0 850 850" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 850 {{height}}" xmlns="http://www.w3.org/2000/svg">
     <style>
         .image {
             display: flex;
@@ -104,7 +104,7 @@
                 </table>
                 <div class="table-info">
                     <div class="experiment-id">Tag: <b>{{ tag }}</b></div>
-                <div class="created-date">Created: {{ datetime }}</div>
+                    <div class="created-date">Created: {{ datetime }}</div>
                 </div>
             </div>
         </div>
