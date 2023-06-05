@@ -27,23 +27,21 @@
  *   - Editation and bug fix
  */
 
-package org.seage.problem.jsp.sannealing;
+package org.seage.problem.fsp.sannealing;
 
-import java.util.List;
 import java.util.Random;
-import org.seage.data.Pair;
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.jsp.JspJobsDefinition;
-import org.seage.problem.jsp.Schedule;
-import org.seage.problem.jsp.ScheduleCell;
+import org.seage.problem.jsp.sannealing.JspObjectiveFunction;
+import org.seage.problem.jsp.sannealing.JspSimulatedAnnealingSolution;
 
 /**
- * .
- * @author Jan Zmatlik
- * @author (editet) David Omrai
+ * Fsp move manager.
+ *
+ * @author David Omrai
  */
-public class JspMoveManager implements IMoveManager {
+public class FspMoveManager implements IMoveManager {
   Random rnd = new Random();
   private int maxMoves;
   private JspJobsDefinition jobsDefinition;
@@ -52,11 +50,10 @@ public class JspMoveManager implements IMoveManager {
   /**
    * .
    *
-   * @param jobsDefinition jobs definition
-   * @param objFunc objective function
+   * @param jobsDefinition definition of the jobs.
+   * @param objFunc jsp objective function.
    */
-  public JspMoveManager(
-      JspJobsDefinition jobsDefinition, JspObjectiveFunction objFunc) {
+  public FspMoveManager(JspJobsDefinition jobsDefinition, JspObjectiveFunction objFunc) {
     this.jobsDefinition = jobsDefinition;
     this.objFunc = objFunc;
     this.maxMoves = 100;
@@ -65,31 +62,8 @@ public class JspMoveManager implements IMoveManager {
   @Override
   public Solution getModifiedSolution(
       Solution solution, double currentTemperature) throws Exception {
-    //return getModifiedBestSolution(solution, currentTemperature);
-    //return getModifiedRandomSolution(solution, currentTemperature);
-    return getModifiedCriticalPathSolution(solution, currentTemperature);
-  }
-
-  private Solution getModifiedCriticalPathSolution(
-      Solution solution, double currentTemperature) throws Exception {
-    JspSimulatedAnnealingSolution jspSolution = (JspSimulatedAnnealingSolution) solution.clone();
-    Schedule schedule = new Schedule(this.jobsDefinition, jspSolution.getJobArray());
-    // Find critical path
-    List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
-
-    if (criticalPath.size() == 0) {
-      return jspSolution;
-    }
-
-    int n = rnd.nextInt(criticalPath.size());
-    int i1 = criticalPath.get(n).getFirst().getIndex();
-    int i2 = criticalPath.get(n).getSecond().getIndex();
-
-    int tmp = jspSolution.getJobArray()[i1];
-    jspSolution.getJobArray()[i1] = jspSolution.getJobArray()[i2];
-    jspSolution.getJobArray()[i2] = tmp;
-
-    return jspSolution;
+    // return getModifiedBestSolution(solution, currentTemperature);
+    return getModifiedRandomSolution(solution, currentTemperature);
   }
 
   private Solution getModifiedBestSolution(

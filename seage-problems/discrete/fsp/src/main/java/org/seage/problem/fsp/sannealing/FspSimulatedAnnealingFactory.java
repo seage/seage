@@ -19,20 +19,73 @@
  */
 
 /**
+ * .
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.problem.fsp.sannealing;
 
 import org.seage.aal.Annotations;
+import org.seage.aal.algorithm.IAlgorithmAdapter;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.algorithm.sannealing.SimulatedAnnealingAdapter;
+import org.seage.aal.problem.ProblemInstance;
+import org.seage.problem.jsp.JspJobsDefinition;
+import org.seage.problem.jsp.JspPhenotype;
+import org.seage.problem.jsp.JspPhenotypeEvaluator;
+import org.seage.problem.jsp.sannealing.JspObjectiveFunction;
 import org.seage.problem.jsp.sannealing.JspSimulatedAnnealingFactory;
+import org.seage.problem.jsp.sannealing.JspSimulatedAnnealingSolution;
 
 /**
+ * .
  *
  * @author Richard Malek
  */
 @Annotations.AlgorithmId("SimulatedAnnealing")
 @Annotations.AlgorithmName("Simulated Annealing")
 public class FspSimulatedAnnealingFactory extends JspSimulatedAnnealingFactory {
+
+  /**
+   * .
+   */
+  @Override
+  public IAlgorithmAdapter<JspPhenotype, JspSimulatedAnnealingSolution> createAlgorithm(
+      ProblemInstance instance, 
+      IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception {
+    // createAlgorithm implementation
+    JspObjectiveFunction objFun = new JspObjectiveFunction(
+        (JspPhenotypeEvaluator) phenotypeEvaluator);
+    return new SimulatedAnnealingAdapter<JspPhenotype, JspSimulatedAnnealingSolution>(objFun,
+        new FspMoveManager((JspJobsDefinition) instance, objFun), phenotypeEvaluator, false) {
+      @Override
+      public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception {
+        this.solutions = new JspSimulatedAnnealingSolution[source.length];
+        for (int i = 0; i < this.solutions.length; i++) {
+          this.solutions[i] = new JspSimulatedAnnealingSolution(source[i].getSolution());
+        }
+      }
+
+      @Override
+      public JspPhenotype[] solutionsToPhenotype() throws Exception {
+        JspPhenotype[] result = new JspPhenotype[this.solutions.length];
+        for (int i = 0; i < this.solutions.length; i++) {
+          result[i] = solutionToPhenotype(this.solutions[i]);
+        }
+        return result;
+      }
+
+      @Override
+      public JspPhenotype solutionToPhenotype(JspSimulatedAnnealingSolution solution)
+          throws Exception {
+        JspPhenotype result = new JspPhenotype(solution.getJobArray());
+        double[] objVals = this.phenotypeEvaluator.evaluate(result);
+        result.setObjValue(objVals[0]);
+        result.setScore(objVals[1]);
+        return result;
+      }
+    };
+  }
 }

@@ -19,10 +19,12 @@
  */
 
 /**
+ * .
  * Contributors:
  *   Jan Zmatlik
  *   - Initial implementation
  */
+
 package org.seage.problem.jsp.sannealing;
 
 import org.seage.metaheuristic.sannealing.IObjectiveFunction;
@@ -31,20 +33,27 @@ import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
 
 /**
+ * .
  *
  * @author Jan Zmatlik
  */
-public class JspObjectiveFunction implements IObjectiveFunction
-{
+public class JspObjectiveFunction implements IObjectiveFunction {
   private JspPhenotypeEvaluator evaluator;
   
-  public JspObjectiveFunction(JspPhenotypeEvaluator evaluator)
-  {
+  public JspObjectiveFunction(JspPhenotypeEvaluator evaluator) {
     this.evaluator = evaluator;
   }
 
-  public double[] evaluate(JspSimulatedAnnealingSolution solution, int[] move) throws Exception
-  {
+  /**
+   * .
+   *
+   * @param solution jsp solution
+   * @param move move
+   * @return evaluated solution for given move
+   * @throws Exception .
+   */
+  public double[] evaluate(
+      JspSimulatedAnnealingSolution solution, int[] move) throws Exception {
     // For the moving operation
     int op1 = 0;
     int op2 = 0;
@@ -72,9 +81,7 @@ public class JspObjectiveFunction implements IObjectiveFunction
   }
 
   @Override
-  public double getObjectiveValue(Solution s) throws Exception
-  {
+  public double getObjectiveValue(Solution s) throws Exception {
     return evaluate((JspSimulatedAnnealingSolution) s, null)[0];
   }
-
 }

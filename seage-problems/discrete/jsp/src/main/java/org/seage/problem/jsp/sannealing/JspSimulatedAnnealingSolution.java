@@ -19,72 +19,72 @@
  */
 
 /**
+ * .
  * Contributors:
  *   Jan Zmatlik
  *   - Initial implementation
  *   David Omrai
  *   - Implemented for jsp problem
  */
+
 package org.seage.problem.jsp.sannealing;
 
 
 import org.seage.metaheuristic.sannealing.Solution;
 
 /**
+ * .
  *
  * @author Jan Zmatlik
- * Edited by David Omrai
+ * @author (Edited) David Omrai
  */
-public class JspSimulatedAnnealingSolution extends Solution
-{
+public class JspSimulatedAnnealingSolution extends Solution {
 
   /**
-   * Represent order of operations
+   * Represent order of operations.
    */
   private Integer[] jobArray;
 
   /**
-   * Array of operations
+   * Array of operations.
    */
-  public JspSimulatedAnnealingSolution(int numJobs, int numOpers)
-  {
+  public JspSimulatedAnnealingSolution(int numJobs, int numOpers) {
     this.jobArray = new Integer[numJobs];
 
-    int i=0;
-    for(int j=0;j<numJobs;j++)
-      for(int k=0;k<numOpers;k++)
-        this.jobArray[i++] = j+1;
+    int i = 0;
+    for (int j = 0; j < numJobs; j++) {
+      for (int k = 0; k < numOpers; k++) {
+        this.jobArray[i++] = j + 1;
+      }
+    }
   }
 
   /**
-   * 
+   * .
    */
   public JspSimulatedAnnealingSolution(Integer[] schedule) {
     this.jobArray = schedule.clone();
   }
 
-  public Integer[] getJobArray()
-  {
+  public Integer[] getJobArray() {
     return this.jobArray;
   }
 
-  public void setSchedule(Integer[] schedule)
-  {
+  public void setSchedule(Integer[] schedule) {
     this.jobArray = schedule.clone();
   }
 
   @Override
-  public String toString()
-  {
-    String res = new String();
-    for (Integer t : this.jobArray)
+  public String toString() {
+    String res = "";
+    for (Integer t : this.jobArray) {
       res += t + " ";
+    }
     return res;
   }
 
   @Override
-  public JspSimulatedAnnealingSolution clone()
-  {
+  public JspSimulatedAnnealingSolution clone() {
     JspSimulatedAnnealingSolution jspSolution = null;
 
     jspSolution = (JspSimulatedAnnealingSolution) super.clone();

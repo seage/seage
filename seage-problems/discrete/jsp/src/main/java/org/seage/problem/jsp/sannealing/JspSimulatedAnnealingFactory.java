@@ -17,9 +17,11 @@
  */
 
 /**
+ * .
  * Contributors: Jan Zmatlik - Initial implementation Richard Malek - Added algorithm annotations
  * David Omrai - Editation and debugging
  */
+
 package org.seage.problem.jsp.sannealing;
 
 import org.seage.aal.Annotations;
@@ -31,9 +33,9 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
-import org.seage.problem.jsp.JspProblemProvider;
 
 /**
+ * .
  *
  * @author Jan Zmatlik
  */
