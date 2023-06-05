@@ -19,17 +19,18 @@
  */
 
 /**
+ * .
  * Contributors:
  *   Jan Zmatlik
  *   - Initial implementation
  *   David Omrai
  *   - Editation and bug fix
  */
+
 package org.seage.problem.jsp.sannealing;
 
 import java.util.List;
 import java.util.Random;
-
 import org.seage.data.Pair;
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
@@ -38,32 +39,39 @@ import org.seage.problem.jsp.Schedule;
 import org.seage.problem.jsp.ScheduleCell;
 
 /**
- *
+ * .
  * @author Jan Zmatlik
- * Edited by David Omrai
+ * @author (editet) David Omrai
  */
-public class JspMoveManager implements IMoveManager
-{
+public class JspMoveManager implements IMoveManager {
   Random rnd = new Random();
   private int maxMoves;
   private JspJobsDefinition jobsDefinition;
   private JspObjectiveFunction objFunc;
 
-  public JspMoveManager(JspJobsDefinition jobsDefinition, JspObjectiveFunction objFunc) {
+  /**
+   * .
+   *
+   * @param jobsDefinition jobs definition
+   * @param objFunc objective function
+   */
+  public JspMoveManager(
+      JspJobsDefinition jobsDefinition, JspObjectiveFunction objFunc) {
     this.jobsDefinition = jobsDefinition;
     this.objFunc = objFunc;
     this.maxMoves = 100;
   }
 
   @Override
-  public Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception
-  {
+  public Solution getModifiedSolution(
+      Solution solution, double currentTemperature) throws Exception {
     //return getModifiedBestSolution(solution, currentTemperature);
     //return getModifiedRandomSolution(solution, currentTemperature);
     return getModifiedCriticalPathSolution(solution, currentTemperature);
   }
 
-  private Solution getModifiedCriticalPathSolution(Solution solution, double currentTemperature) throws Exception {
+  private Solution getModifiedCriticalPathSolution(
+      Solution solution, double currentTemperature) throws Exception {
     JspSimulatedAnnealingSolution jspSolution = (JspSimulatedAnnealingSolution) solution.clone();
     Schedule schedule = new Schedule(this.jobsDefinition, jspSolution.getJobArray());
     // Find critical path
@@ -79,6 +87,7 @@ public class JspMoveManager implements IMoveManager
       move[0] = criticalPath.get(i).getFirst().getIndex();
       move[1] = criticalPath.get(i).getSecond().getIndex();
       double tmpVal = this.objFunc.evaluate(jspSolution, move)[0];
+
 
       if (tmpVal < bestVal) {
         bestVal = tmpVal;
@@ -144,5 +153,4 @@ public class JspMoveManager implements IMoveManager
     
     return jspSolution;
   }
-
 }
