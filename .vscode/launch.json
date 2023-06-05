@@ -61,22 +61,46 @@
     },
     {
       "type": "java",
-      "name": "Run experimenter, h2",
+      "name": "Run random experimenter, psql",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
-      "env": {},
+      "env": {
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+      },
+      "args": [
+        "experiment-single-random",
+        "-a",
+        "SimulatedAnnealing",
+        "-i",
+        "JSP:hyflex",
+        "-t",
+        "10",
+        "-n",
+        "10"
+      ]
+    },
+    {
+      "type": "java",
+      "name": "Run feedback experimenter, psql",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+      },
       "args": [
         "experiment-single-feedback",
         "-a",
         "SimulatedAnnealing",
         "-i",
-        "TSP:hyflex",
+        "JSP:small",
         "-t",
-        "60",
+        "10",
         "-n",
-        "1"
+        "10"
       ]
     },
     {

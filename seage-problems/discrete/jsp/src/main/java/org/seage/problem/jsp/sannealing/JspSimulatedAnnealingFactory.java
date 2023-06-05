@@ -52,14 +52,16 @@ public class JspSimulatedAnnealingFactory
       ProblemInstance instance, 
       IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception {
     // createAlgorithm implementation
-    JspObjectiveFunction objFun = new JspObjectiveFunction((JspPhenotypeEvaluator)phenotypeEvaluator);
+    JspObjectiveFunction objFun = new JspObjectiveFunction(
+        (JspPhenotypeEvaluator) phenotypeEvaluator);
     return new SimulatedAnnealingAdapter<JspPhenotype, JspSimulatedAnnealingSolution>(objFun,
         new JspMoveManager((JspJobsDefinition) instance, objFun), phenotypeEvaluator, false) {
       @Override
       public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception {
         this.solutions = new JspSimulatedAnnealingSolution[source.length];
-        for (int i = 0; i < this.solutions.length; i++)
+        for (int i = 0; i < this.solutions.length; i++) {
           this.solutions[i] = new JspSimulatedAnnealingSolution(source[i].getSolution());
+        }
       }
 
       @Override
