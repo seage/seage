@@ -74,7 +74,7 @@
         "-a",
         "SimulatedAnnealing",
         "-i",
-        "JSP:hyflex",
+        "FSP:small",
         "-t",
         "10",
         "-n",
@@ -96,11 +96,11 @@
         "-a",
         "SimulatedAnnealing",
         "-i",
-        "JSP:small",
+        "FSP:small",
         "-t",
         "10",
         "-n",
-        "10"
+        "5"
       ]
     },
     {

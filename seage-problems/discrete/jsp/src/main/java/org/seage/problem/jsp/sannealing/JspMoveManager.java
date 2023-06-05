@@ -65,9 +65,9 @@ public class JspMoveManager implements IMoveManager {
   @Override
   public Solution getModifiedSolution(
       Solution solution, double currentTemperature) throws Exception {
-    return getModifiedBestSolution(solution, currentTemperature);
+    //return getModifiedBestSolution(solution, currentTemperature);
     //return getModifiedRandomSolution(solution, currentTemperature);
-    //return getModifiedCriticalPathSolution(solution, currentTemperature);
+    return getModifiedCriticalPathSolution(solution, currentTemperature);
   }
 
   private Solution getModifiedCriticalPathSolution(
