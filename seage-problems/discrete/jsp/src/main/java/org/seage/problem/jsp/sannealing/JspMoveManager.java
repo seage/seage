@@ -77,6 +77,10 @@ public class JspMoveManager implements IMoveManager {
     // Find critical path
     List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
 
+    if (criticalPath.size() == 0) {
+      return jspSolution;
+    }
+
     int n = rnd.nextInt(criticalPath.size());
     int i1 = criticalPath.get(n).getFirst().getIndex();
     int i2 = criticalPath.get(n).getSecond().getIndex();

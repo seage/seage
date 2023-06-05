@@ -96,7 +96,7 @@
         "-a",
         "SimulatedAnnealing",
         "-i",
-        "JSP:hyflex",
+        "JSP:small",
         "-t",
         "10",
         "-n",
