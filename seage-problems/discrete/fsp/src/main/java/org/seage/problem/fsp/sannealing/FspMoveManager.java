@@ -62,7 +62,8 @@ public class FspMoveManager implements IMoveManager {
   @Override
   public Solution getModifiedSolution(
       Solution solution, double currentTemperature) throws Exception {
-    return getModifiedBestSolution(solution, currentTemperature);
+    // return getModifiedBestSolution(solution, currentTemperature);
+    return getModifiedRandomSolution(solution, currentTemperature);
   }
 
   private Solution getModifiedBestSolution(
@@ -98,6 +99,32 @@ public class FspMoveManager implements IMoveManager {
       jspSolution.getJobArray()[bestMove[1]] = tmp;
     }   
 
+    return jspSolution;
+  }
+
+  /**
+   * .
+   *
+   * @param solution solution
+   * @param currentTemperature current temperature
+   * @return returns solution
+   * @throws Exception .
+   */
+  public Solution getModifiedRandomSolution(
+      Solution solution, double currentTemperature) throws Exception {
+    JspSimulatedAnnealingSolution jspSolution = ((JspSimulatedAnnealingSolution) solution).clone();
+
+    int jspSolutionLength = jspSolution.getJobArray().length;
+    int a = rnd.nextInt(jspSolutionLength);
+    int b = rnd.nextInt(jspSolutionLength);
+
+    if (a == b) {
+      b = (b + 1) % jspSolutionLength;
+    }  
+    int tmp = jspSolution.getJobArray()[a];
+    jspSolution.getJobArray()[a] = jspSolution.getJobArray()[b];
+    jspSolution.getJobArray()[b] = tmp;
+    
     return jspSolution;
   }
 }
