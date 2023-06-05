@@ -17,7 +17,9 @@
  */
 
 /**
- * Contributors: Jan Zmatlik - Initial implementation David Omrai - Implementing the tests
+ * .
+ * Contributors: Jan Zmatlik - Initial implementation 
+ * David Omrai - Implementing the tests
  */
 
 package org.seage.problem.jsp.sannealing;
@@ -52,12 +54,17 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
       LoggerFactory.getLogger(JspSimulatedAnnealingTest.class.getName());
   private Random generator = new Random();
 
+  /**
+   * .
+   *
+   * @param args arguments
+   */
   public static void main(String[] args) {
     try {
-      String instanceID = "ft10";
-      String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceID);
+      String instanceId = "ft10";
+      String path = String.format("/org/seage/problem/jsp/instances/%s.xml", instanceId);
       ProblemInstanceInfo jobInfo =
-          new ProblemInstanceInfo(instanceID, ProblemInstanceOrigin.RESOURCE, path);
+          new ProblemInstanceInfo(instanceId, ProblemInstanceOrigin.RESOURCE, path);
       JspJobsDefinition jobs = null;
 
       try (InputStream stream = JspSimulatedAnnealingTest.class.getResourceAsStream(path)) {
@@ -71,6 +78,12 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     }
   }
 
+  /**
+   * .
+   *
+   * @param jobs jobs
+   * @throws Exception Exception
+   */
   public void runAlgorithm(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     ProblemInfo pi = problemProvider.getProblemInfo();
@@ -112,6 +125,12 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     return result;
   }
 
+  /**
+   * .
+   *
+   * @param jobs jobs
+   * @throws Exception Exception
+   */
   public void runAlgorithmAdapter(JspJobsDefinition jobs) throws Exception {
     JspProblemProvider problemProvider = new JspProblemProvider();
     JspPhenotype[] schedules =
@@ -163,5 +182,4 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         sa.getBestSolution().getObjectiveValue(), sa.getCurrentIteration(),
         sa.getCurrentTemperature());
   }
-
 }

@@ -19,16 +19,19 @@
  */
 
 /**
+ * .
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.problem.fsp.sannealing;
 
 import org.seage.aal.Annotations;
 import org.seage.problem.jsp.sannealing.JspSimulatedAnnealingFactory;
 
 /**
+ * .
  *
  * @author Richard Malek
  */

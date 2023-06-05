@@ -17,9 +17,11 @@
  */
 
 /**
+ * .
  * Contributors: Jan Zmatlik - Initial implementation Richard Malek - Added algorithm annotations
  * David Omrai - Editation and debugging
  */
+
 package org.seage.problem.jsp.sannealing;
 
 import org.seage.aal.Annotations;
@@ -31,9 +33,9 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
-import org.seage.problem.jsp.JspProblemProvider;
 
 /**
+ * .
  *
  * @author Jan Zmatlik
  */
@@ -52,14 +54,16 @@ public class JspSimulatedAnnealingFactory
       ProblemInstance instance, 
       IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator) throws Exception {
     // createAlgorithm implementation
-    JspObjectiveFunction objFun = new JspObjectiveFunction((JspPhenotypeEvaluator)phenotypeEvaluator);
+    JspObjectiveFunction objFun = new JspObjectiveFunction(
+        (JspPhenotypeEvaluator) phenotypeEvaluator);
     return new SimulatedAnnealingAdapter<JspPhenotype, JspSimulatedAnnealingSolution>(objFun,
         new JspMoveManager((JspJobsDefinition) instance, objFun), phenotypeEvaluator, false) {
       @Override
       public void solutionsFromPhenotype(JspPhenotype[] source) throws Exception {
         this.solutions = new JspSimulatedAnnealingSolution[source.length];
-        for (int i = 0; i < this.solutions.length; i++)
+        for (int i = 0; i < this.solutions.length; i++) {
           this.solutions[i] = new JspSimulatedAnnealingSolution(source[i].getSolution());
+        }
       }
 
       @Override
