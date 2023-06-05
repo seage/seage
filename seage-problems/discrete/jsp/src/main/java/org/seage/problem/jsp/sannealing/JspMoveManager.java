@@ -19,17 +19,18 @@
  */
 
 /**
+ * .
  * Contributors:
  *   Jan Zmatlik
  *   - Initial implementation
  *   David Omrai
  *   - Editation and bug fix
  */
+
 package org.seage.problem.jsp.sannealing;
 
 import java.util.List;
 import java.util.Random;
-
 import org.seage.data.Pair;
 import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
@@ -65,8 +66,8 @@ public class JspMoveManager implements IMoveManager {
   public Solution getModifiedSolution(
       Solution solution, double currentTemperature) throws Exception {
     //return getModifiedBestSolution(solution, currentTemperature);
-    //return getModifiedRandomSolution(solution, currentTemperature);
-    return getModifiedCriticalPathSolution(solution, currentTemperature);
+    return getModifiedRandomSolution(solution, currentTemperature);
+    //return getModifiedCriticalPathSolution(solution, currentTemperature);
   }
 
   private Solution getModifiedCriticalPathSolution(
@@ -117,8 +118,9 @@ public class JspMoveManager implements IMoveManager {
     int[] bestMove = null;
 
     for (int i = 0; i < jspSolutionLength; i++) {
-      if (i == a)
+      if (i == a) {
         continue;
+      }
       move[1] = i;
       double val = this.objFunc.evaluate(jspSolution, move)[0];
       if (val < bestVal) {
