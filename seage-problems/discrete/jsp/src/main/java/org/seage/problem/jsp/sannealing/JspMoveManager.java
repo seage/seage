@@ -58,7 +58,7 @@ public class JspMoveManager implements IMoveManager
   @Override
   public Solution getModifiedSolution(Solution solution, double currentTemperature) throws Exception
   {
-    //return getModifiedBestSolution(solution, currentTemperature);
+    // return getModifiedBestSolution(solution, currentTemperature);
     //return getModifiedRandomSolution(solution, currentTemperature);
     return getModifiedCriticalPathSolution(solution, currentTemperature);
   }
@@ -69,27 +69,13 @@ public class JspMoveManager implements IMoveManager
     // Find critical path
     List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
 
-    int[] bestMove = new int[2];
-    double bestVal = Double.MAX_VALUE;
+    int n = rnd.nextInt(criticalPath.size());
+    int i1 = criticalPath.get(n).getFirst().getIndex();
+    int i2 = criticalPath.get(n).getSecond().getIndex();
 
-    int[] move = new int[2];
-
-    // Find the best move
-    for (int i = 0; i < criticalPath.size(); i++) {
-      move[0] = criticalPath.get(i).getFirst().getIndex();
-      move[1] = criticalPath.get(i).getSecond().getIndex();
-      double tmpVal = this.objFunc.evaluate(jspSolution, move)[0];
-
-      if (tmpVal < bestVal) {
-        bestVal = tmpVal;
-        bestMove = move.clone();
-      }
-    }
-
-    // Apply the best move
-    int tmp = jspSolution.getJobArray()[bestMove[0]];
-    jspSolution.getJobArray()[bestMove[0]] = jspSolution.getJobArray()[bestMove[1]];
-    jspSolution.getJobArray()[bestMove[1]] = tmp;
+    int tmp = jspSolution.getJobArray()[i1];
+    jspSolution.getJobArray()[i1] = jspSolution.getJobArray()[i2];
+    jspSolution.getJobArray()[i2] = tmp;
 
     return jspSolution;
   }
