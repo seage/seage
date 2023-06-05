@@ -71,7 +71,7 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         jobs = new JspJobsDefinition(jobInfo, stream);
       }
 
-      new JspSimulatedAnnealingTest().runAlgorithm(jobs);
+      // new JspSimulatedAnnealingTest().runAlgorithm(jobs);
       new JspSimulatedAnnealingTest().runAlgorithmAdapter(jobs);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
@@ -97,9 +97,10 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
         new SimulatedAnnealing<>(objFunction, new JspMoveManager(jobs, objFunction));
 
     // Set the sa algorithm
-    sa.setMaximalTemperature(100000);
-    sa.setMinimalTemperature(0.001);
-    sa.setMaximalIterationCount(100000);
+    sa.setMaximalTemperature(1000000000);
+    sa.setMinimalTemperature(0.01);
+    sa.setMaximalIterationCount(1000000);
+    sa.setAnnealingCoefficient(0.9999);
 
     // Create solution
     JspSimulatedAnnealingSolution s = new JspSimulatedAnnealingRandomSolution(eval, jobs);
@@ -122,6 +123,7 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     result.putValue("minimalTemperature", 0.001);
     result.putValue("iterationCount", 100000);
     result.putValue("numSolutions", 1);
+    result.putValue("annealingCoefficient", 0.9995);
     return result;
   }
 

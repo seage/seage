@@ -1,6 +1,7 @@
 package org.seage.launcher.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -96,12 +97,12 @@ public class ProblemInstanceParamsParserTest {
         ProblemInstanceParamsParser.parseProblemInstanceParams(instanceParams);
 
     assertNotNull(result);
-    assertEquals(5, result.keySet().size());
+    assertEquals(4, result.keySet().size());
     assertTrue(result.containsKey("SAT"));
     assertTrue(result.containsKey("TSP"));
     assertTrue(result.containsKey("JSP"));
     assertTrue(result.containsKey("FSP"));
-    assertTrue(result.containsKey("QAP"));
+    assertFalse(result.containsKey("QAP"));
     assertEquals(5, result.get("SAT").size());
     assertEquals("pg-525-2276-hyflex-3", result.get("SAT").get(0));
     assertEquals(5, result.get("TSP").size());
@@ -110,7 +111,30 @@ public class ProblemInstanceParamsParserTest {
     assertEquals("ft10", result.get("JSP").get(0));
     assertEquals(5, result.get("FSP").size());
     assertEquals("tai100_20_02", result.get("FSP").get(0));
-    assertEquals(5, result.get("QAP").size());
-    assertEquals("sko100a", result.get("QAP").get(0));
+    // assertEquals(5, result.get("QAP").size());
+    // assertEquals("sko100a", result.get("QAP").get(0));
+  }
+
+  @Test
+  void testParseAllSmallInstances() throws Exception {
+    List<String> instanceParams = new ArrayList<>();
+    instanceParams.add("ALL:small");    
+
+    Map<String, List<String>> result = 
+        ProblemInstanceParamsParser.parseProblemInstanceParams(instanceParams);
+
+    assertNotNull(result);
+    assertEquals(4, result.keySet().size());
+    assertTrue(result.containsKey("SAT"));
+    assertTrue(result.containsKey("TSP"));
+    assertTrue(result.containsKey("JSP"));
+    assertTrue(result.containsKey("FSP"));
+    assertFalse(result.containsKey("QAP"));
+    assertEquals(5, result.get("SAT").size());
+    assertEquals(5, result.get("TSP").size());
+    assertEquals(5, result.get("JSP").size());
+    assertEquals(5, result.get("FSP").size());
+    // assertEquals(5, result.get("QAP").size());
+    // assertEquals("sko100a", result.get("QAP").get(0));
   }
 }

@@ -53,6 +53,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
     algParams.putValue("iterationCount", 10);
     algParams.putValue("maxTemperature", 100);
     algParams.putValue("minTemperature", 1);
+    algParams.putValue("annealingCoefficient", 0.995);
   }
 
   @Override
@@ -68,6 +69,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
     params.putValue("iterationCount", 0);
     params.putValue("maxTemperature", 0);
     params.putValue("minTemperature", 0);
+    params.putValue("annealingCoefficient", 0);
     super.setAlgParameters(params);
     super.testAlgorithmWithParamsAtZero();
   }
@@ -79,6 +81,7 @@ public class SimulatedAnnealingAdapterTest extends AlgorithmAdapterTestBase<Test
     params.putValue("iterationCount", 1000000);
     params.putValue("maxTemperature", 100000);
     params.putValue("minTemperature", 1);
+    params.putValue("annealingCoefficient", 0.995);
     super.setAlgParameters(params);
     super.testAsyncRunning();
   }

@@ -1,4 +1,4 @@
-/*******************************************************************************
+/*
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
 
  * This file is part of SEAGE.
@@ -19,10 +19,12 @@
  */
 
 /**
+ * .
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
  */
+
 package org.seage.problem.tsp.tabusearch;
 
 import java.util.ArrayList;
@@ -35,13 +37,19 @@ import org.seage.metaheuristic.tabusearch.MoveManager;
 import org.seage.metaheuristic.tabusearch.Solution;
 
 /**
- *
+ * .
+
  * @author Richard Malek
  */
-
 public class TspMoveManager implements MoveManager {
 
   // @Override
+  /**
+   * .
+
+   * @param solution Solution parameter.
+   * @return Array with all moves.
+   */
   public Move[] getAllMoves0(Solution solution) {
     Integer[] tour = ((TspSolution) solution)._tour;
     ArrayList<Move> buffer = new ArrayList<Move>();
@@ -49,10 +57,13 @@ public class TspMoveManager implements MoveManager {
 
     // Generate moves that move each customer
     // forward and back up to five spaces.
-    for (int i = 0; i < tour.length; i++)
-      for (int j = -span; j <= span; j++)
-        if ((i + j > 0) && (i + j < tour.length) && (i != i + j))
+    for (int i = 0; i < tour.length; i++) {
+      for (int j = -span; j <= span; j++) {
+        if ((i + j > 0) && (i + j < tour.length) && (i != i + j)) {
           buffer.add(new TspMove(i, i + j));
+        }
+      }
+    }
 
     return buffer.toArray(new Move[] {});
   } // end getAllMoves
@@ -60,6 +71,12 @@ public class TspMoveManager implements MoveManager {
   Random rnd = new Random();
 
   // @Override
+  /**
+   * .
+
+   * @param solution Solution.
+   * @return Array with all moves.
+   */
   public Move[] getAllMoves1(Solution solution) {
     TspSolution tspSoln = (TspSolution) solution;
     Integer[] tour = tspSoln._tour;
@@ -69,11 +86,12 @@ public class TspMoveManager implements MoveManager {
 
     // Generate moves that move each customer
     // forward and back up to five spaces.
-    for (int i = 0; i < tour.length*2; i++) {
+    for (int i = 0; i < tour.length * 2; i++) {
       int ix1 = rnd.nextInt(tour.length);
       int ix2 = rnd.nextInt(tour.length);
-      if (ix1 == ix2)
-          continue;
+      if (ix1 == ix2){
+        continue;
+      }
       moves.add(new TspMove(ix1, ix2));
     }
 
@@ -81,6 +99,7 @@ public class TspMoveManager implements MoveManager {
   }
 
   Set<Integer> used = new HashSet<>();
+
   @Override
   public Move[] getAllMoves(Solution solution) {
     TspSolution tspSoln = (TspSolution) solution;
@@ -102,5 +121,4 @@ public class TspMoveManager implements MoveManager {
 
     return moves.toArray(new Move[] {});
   }
-
 } // end class MyMoveManager

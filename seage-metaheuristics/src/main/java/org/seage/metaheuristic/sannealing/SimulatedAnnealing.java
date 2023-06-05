@@ -19,6 +19,7 @@
  */
 
 /**
+ * .
  * Contributors:
  *     Jan Zmatlik
  *     - Initial implementation
@@ -30,6 +31,8 @@ import org.seage.metaheuristic.AlgorithmEventProducer;
 import org.seage.metaheuristic.IAlgorithmListener;
 
 /**
+ * .
+ *
  * @author Jan Zmatlik
  */
 
@@ -38,237 +41,225 @@ public class SimulatedAnnealing<S extends Solution> implements ISimulatedAnneali
   /**
    * The current temperature.
    */
-  private double _currentTemperature;
+  private double currentTemperature;
 
   /**
    * The maximal temperature.
    */
-  private double _maximalTemperature;
+  private double maximalTemperature;
 
   /**
    * The minimal temperature.
    */
-  private double _minimalTemperature;
+  private double minimalTemperature;
 
   /**
-   * The annealing coeficient
+   * The annealing coeficient.
    */
-  private double _annealCoefficient;
+  private double annealCoefficient;
 
   /**
-   * The number of current iteration
+   * The number of current iteration.
    */
-  private long _currentIteration;
+  private long currentIteration;
 
   /**
-   * Provide firing Events, registering listeners
+   * Provide firing Events, registering listeners.
    */
   // private SimulatedAnnealingListenerProvider _listenerProvider = new
-  // SimulatedAnnealingListenerProvider( this );
-  private AlgorithmEventProducer<IAlgorithmListener<SimulatedAnnealingEvent>, SimulatedAnnealingEvent> _eventProducer;
+  private AlgorithmEventProducer<IAlgorithmListener<SimulatedAnnealingEvent>, 
+      SimulatedAnnealingEvent> eventProducer;
   /**
-   * The Solution which is actual
+   * The Solution which is actual.
    */
-  private S _currentSolution;
+  private S currentSolution;
 
   /**
-   * The Solution which is best
+   * The Solution which is best.
    */
-  private S _bestSolution;
+  private S bestSolution;
 
   /**
-   * Modifying current solution
+   * Modifying current solution.
    */
-  private IMoveManager _moveManager;
+  private IMoveManager moveManager;
 
   /**
-   * Calculate and set objective value of solution
+   * Calculate and set objective value of solution.
    */
-  private IObjectiveFunction _objectiveFunction;
+  private IObjectiveFunction objectiveFunction;
 
   /**
-   * Maximal number of iterations
+   * Maximal number of iterations.
    */
-  private long _maximalIterationCount;
+  private long maximalIterationCount;
 
   /**
-   * Maximal count of success iterations
+   * Maximal count of success iterations.
    */
   @SuppressWarnings("unused")
-  private long _maximalSuccessIterationCount;
+  private long maximalSuccessIterationCount;
 
-  private boolean _stopSearching = false;
+  private boolean stopSearching = false;
 
-  private boolean _isRunning = false;
+  private boolean isRunning = false;
 
   /**
-   * Constructor
-   * 
-   * @param objectiveFunction is objective function.
-   * @param moveManager       is performing modification solution.
+   * Constructor.
+   *
+   * @param newObjectiveFunction is objective function.
+   * @param newMoveManager       is performing modification solution.
    */
-  public SimulatedAnnealing(IObjectiveFunction objectiveFunction, IMoveManager moveManager) {
-    _objectiveFunction = objectiveFunction;
-    _moveManager = moveManager;
-    _eventProducer = new AlgorithmEventProducer<IAlgorithmListener<SimulatedAnnealingEvent>, SimulatedAnnealingEvent>(
-        new SimulatedAnnealingEvent(this));
+  public SimulatedAnnealing(IObjectiveFunction newObjectiveFunction, IMoveManager newMoveManager) {
+    objectiveFunction = newObjectiveFunction;
+    moveManager = newMoveManager;
+    eventProducer = new AlgorithmEventProducer<>(new SimulatedAnnealingEvent(this));
   }
 
   /**
    * This method is called to perform the simulated annealing.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception .
    */
   @Override
   public void startSearching(S solution) throws Exception {
-    _eventProducer.fireAlgorithmStarted();
+    // Fire event to listeners about that algorithm has started
+    eventProducer.fireAlgorithmStarted();
     // Searching is starting
-    _stopSearching = false;
-    _isRunning = true;
+    stopSearching = false;
+    isRunning = true;
 
     // Initial probability
     double probability = 0;
 
-    _currentIteration = 0;
+    currentIteration = 0;
 
     // At first current temperature is same such as maximal temperature
-    _currentTemperature = Math.max(_minimalTemperature, _maximalTemperature);
-    _minimalTemperature = Math.min(_minimalTemperature, _maximalTemperature);
-    _maximalTemperature = _currentTemperature;
+    currentTemperature = Math.max(minimalTemperature, maximalTemperature);
+    minimalTemperature = Math.min(minimalTemperature, maximalTemperature);
+    maximalTemperature = currentTemperature;
 
-    _annealCoefficient = Math.exp(Math.log(_minimalTemperature / _maximalTemperature) / _maximalIterationCount);
     // The best solution is same as current solution
-    solution.setObjectiveValue(_objectiveFunction.getObjectiveValue(solution));
-    _bestSolution = _currentSolution = solution;
-    _eventProducer.fireNewBestSolutionFound();
-
-    // Fire event to listeners about that algorithm has started
+    solution.setObjectiveValue(objectiveFunction.getObjectiveValue(solution));
+    bestSolution = currentSolution = solution;
+    eventProducer.fireNewBestSolutionFound();
 
     // Iterates until current temperature is equal or greather than minimal
     // temperature
     // and successful iteration count is less than zero
-    while ((_maximalIterationCount >= _currentIteration) /* && (successIterationCount > 0) */ && !_stopSearching) {
-      // while ((innerIterationCount < _maximalIterationCount) &&
-      // (successIterationCount < _maximalSuccessIterationCount) && !_stopSearching)
-      {
-        _currentIteration++;
+    while ((maximalIterationCount >= currentIteration) 
+            && !stopSearching) {
+      currentIteration++;
 
-        // Move to new locations
-        S modifiedSolution = (S) _moveManager.getModifiedSolution((S) _currentSolution, _currentTemperature);
+      // Move to new locations
+      @SuppressWarnings("unchecked")
+      S modifiedSolution = (S) moveManager.getModifiedSolution(currentSolution, currentTemperature);
 
-        // Calculate objective function and set value to modified
-        // solution
-        modifiedSolution.setObjectiveValue(_objectiveFunction.getObjectiveValue(modifiedSolution));
+      // Calculate objective function and set value to modified
+      // solution
+      modifiedSolution.setObjectiveValue(objectiveFunction.getObjectiveValue(modifiedSolution));
 
-        if (modifiedSolution.compareTo(_currentSolution) > 0)
-          probability = 1;
-        else
-          probability = Math.exp(
-              -(modifiedSolution.getObjectiveValue() - _currentSolution.getObjectiveValue()) / _currentTemperature);
+      if (modifiedSolution.compareTo(currentSolution) > 0) {
+        probability = 1;
+      } else {
+        double currentObjValue = currentSolution.getObjectiveValue();
+        double newObjValue = modifiedSolution.getObjectiveValue();
 
-        if (Math.random() <= probability) {
-          _currentSolution = modifiedSolution;
-          if (modifiedSolution.compareTo(_bestSolution) > 0) {
-            _bestSolution = (S) modifiedSolution.clone();
-            _eventProducer.fireNewBestSolutionFound();
-          }
+        probability = Math.exp((currentObjValue - newObjValue) / currentTemperature);
+      }
+
+      if (Math.random() <= probability) {
+        currentSolution = modifiedSolution;
+        if (modifiedSolution.compareTo(bestSolution) > 0) {
+          bestSolution = (S) modifiedSolution.clone();
+          eventProducer.fireNewBestSolutionFound();
         }
       }
       // Anneal temperature
-      _currentTemperature = _annealCoefficient * _currentTemperature;
-      _eventProducer.fireIterationPerformed();
+      if (currentTemperature > 0.0001) {
+        currentTemperature = annealCoefficient * currentTemperature;
+      }
+      eventProducer.fireIterationPerformed();
     }
-    _isRunning = false;
+    isRunning = false;
     // Fire event to listeners about that algorithm was stopped
-    _eventProducer.fireAlgorithmStopped();
+    eventProducer.fireAlgorithmStopped();
   }
 
   @Override
   public S getCurrentSolution() {
-    return _currentSolution;
+    return currentSolution;
   }
 
-  public void setCurrentSolution(S _currentSolution) {
-    this._currentSolution = _currentSolution;
+  public void setCurrentSolution(S currentSolution) {
+    this.currentSolution = currentSolution;
   }
 
-  public final void addSimulatedAnnealingListener(IAlgorithmListener<SimulatedAnnealingEvent> listener) {
-    _eventProducer.addAlgorithmListener(listener);
+  public final void addSimulatedAnnealingListener(
+      IAlgorithmListener<SimulatedAnnealingEvent> listener) {
+    eventProducer.addAlgorithmListener(listener);
   }
 
   @Override
   public double getMaximalTemperature() {
-    return _maximalTemperature;
+    return maximalTemperature;
   }
 
   @Override
   public void setMaximalTemperature(double maximalTemperature) {
-    this._maximalTemperature = maximalTemperature;
+    this.maximalTemperature = maximalTemperature;
   }
 
   @Override
   public void setMinimalTemperature(double minimalTemperature) {
-    this._minimalTemperature = minimalTemperature;
+    this.minimalTemperature = minimalTemperature;
   }
 
   @Override
   public double getMinimalTemperature() {
-    return _minimalTemperature;
+    return minimalTemperature;
   }
 
   @Override
   public double getCurrentTemperature() {
-    return _currentTemperature;
+    return currentTemperature;
   }
 
-  // public void setAnnealingCoefficient(double alpha)
-  // {
-  // this._annealCoefficient = alpha;
-  // }
+  public void setAnnealingCoefficient(double annealCoefficient) {
+    this.annealCoefficient = annealCoefficient;
+  }
 
   @Override
   public double getAnnealingCoefficient() {
-    return this._annealCoefficient;
+    return this.annealCoefficient;
   }
 
   @Override
   public S getBestSolution() {
-    return _bestSolution;
+    return bestSolution;
   }
 
   @Override
   public void stopSearching() throws SecurityException {
-    _stopSearching = true;
+    stopSearching = true;
   }
 
   @Override
   public long getCurrentIteration() {
-    return _currentIteration;
+    return currentIteration;
   }
 
   @Override
   public long getMaximalIterationCount() {
-    return _maximalIterationCount;
+    return maximalIterationCount;
   }
 
   @Override
-  public void setMaximalIterationCount(long maximalIterationCount) {
-    _maximalIterationCount = maximalIterationCount;
+  public void setMaximalIterationCount(long newMaximalIterationCount) {
+    maximalIterationCount = newMaximalIterationCount;
   }
-
-  // public long getMaximalSuccessIterationCount()
-  // {
-  // return _maximalSuccessIterationCount;
-  // }
-
-  // public void setMaximalAcceptedSolutionsPerOneStepCount(long
-  // _maximalSuccessIterationCount)
-  // {
-  // this._maximalSuccessIterationCount = _maximalSuccessIterationCount;
-  // }
 
   public boolean isRunning() {
-    return _isRunning;
+    return isRunning;
   }
-
 }

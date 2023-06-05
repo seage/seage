@@ -40,9 +40,8 @@ import org.seage.problem.jsp.ScheduleCell;
 
 /**
  * .
- *
  * @author Jan Zmatlik
- * @author (Edited) David Omrai
+ * @author (editet) David Omrai
  */
 public class JspMoveManager implements IMoveManager {
   Random rnd = new Random();
@@ -53,10 +52,11 @@ public class JspMoveManager implements IMoveManager {
   /**
    * .
    *
-   * @param jobsDefinition definition of the jobs.
-   * @param objFunc jsp objective function.
+   * @param jobsDefinition jobs definition
+   * @param objFunc objective function
    */
-  public JspMoveManager(JspJobsDefinition jobsDefinition, JspObjectiveFunction objFunc) {
+  public JspMoveManager(
+      JspJobsDefinition jobsDefinition, JspObjectiveFunction objFunc) {
     this.jobsDefinition = jobsDefinition;
     this.objFunc = objFunc;
     this.maxMoves = 100;
@@ -77,27 +77,17 @@ public class JspMoveManager implements IMoveManager {
     // Find critical path
     List<Pair<ScheduleCell>> criticalPath = schedule.findCriticalPath();
 
-    int[] bestMove = new int[2];
-    double bestVal = Double.MAX_VALUE;
-
-    int[] move = new int[2];
-
-    // Find the best move
-    for (int i = 0; i < criticalPath.size(); i++) {
-      move[0] = criticalPath.get(i).getFirst().getIndex();
-      move[1] = criticalPath.get(i).getSecond().getIndex();
-      double tmpVal = this.objFunc.evaluate(jspSolution, move)[0];
-
-      if (tmpVal < bestVal) {
-        bestVal = tmpVal;
-        bestMove = move.clone();
-      }
+    if (criticalPath.size() == 0) {
+      return jspSolution;
     }
 
-    // Apply the best move
-    int tmp = jspSolution.getJobArray()[bestMove[0]];
-    jspSolution.getJobArray()[bestMove[0]] = jspSolution.getJobArray()[bestMove[1]];
-    jspSolution.getJobArray()[bestMove[1]] = tmp;
+    int n = rnd.nextInt(criticalPath.size());
+    int i1 = criticalPath.get(n).getFirst().getIndex();
+    int i2 = criticalPath.get(n).getSecond().getIndex();
+
+    int tmp = jspSolution.getJobArray()[i1];
+    jspSolution.getJobArray()[i1] = jspSolution.getJobArray()[i2];
+    jspSolution.getJobArray()[i2] = tmp;
 
     return jspSolution;
   }
@@ -163,5 +153,4 @@ public class JspMoveManager implements IMoveManager {
     
     return jspSolution;
   }
-
 }
