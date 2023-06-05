@@ -106,9 +106,9 @@ public class JspSimulatedAnnealingTest implements IAlgorithmListener<SimulatedAn
     for (DataNode param : algParamsNode.getDataNodes("Parameter")) {
       result.putValue(param.getValueStr("name"), param.getValue("init"));
     }
-    result.putValue("maximalTemperature", 10000000);
-    result.putValue("minimalTemperature", 0.0001);
-    result.putValue("iterationCount", 1000000);
+    result.putValue("maximalTemperature", 100000);
+    result.putValue("minimalTemperature", 0.001);
+    result.putValue("iterationCount", 100000);
     result.putValue("numSolutions", 1);
     result.putValue("annealingCoefficient", 0.9995);
     return result;
