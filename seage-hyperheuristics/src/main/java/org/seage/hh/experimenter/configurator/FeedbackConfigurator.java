@@ -123,22 +123,25 @@ public class FeedbackConfigurator extends Configurator {
 
     for (DataNode dn : problemInfo
         .getDataNode("Algorithms").getDataNodeById(algID).getDataNodes("Parameter")) {
-      params.putValue(dn.getValueStr("name"), null);
+      String paramName = dn.getValueStr("name");
+      params.putValue(paramName, null);
       // instead of null add a value that makes sense
       // try to find how the value is set by other configurators
       double min = dn.getValueDouble("min");
       double max = dn.getValueDouble("max");
-      double value = dn.getValueDouble("init");
+      double init = dn.getValueDouble("init");
       double sign = Math.random() > 0.5 ? 1 : -1;
       double delta = (max - min) * this.spread * sign;
       
-      if (bestConfNode.containsValue(dn.getValueStr("name"))){
-        value = Double.parseDouble(bestConfNode.getValue(dn.getValueStr("name")).toString());
+      double value = init;
+      // Do not modify the default value for the 'iterationCount'
+      if (!paramName.equals("iterationCount")) {
+        if (bestConfNode.containsValue(paramName)) {
+          value = Double.parseDouble(bestConfNode.getValue(paramName).toString());
+        }        
+        value = Math.max(min, Math.min(max, value + delta));
       }
-      
-      value = Math.max(min, Math.min(max, value + delta));
-      
-      params.putValue(dn.getValueStr("name"), value);
+      params.putValue(paramName, value);
     }      
 
     algorithm.putDataNode(params);
