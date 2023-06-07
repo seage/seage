@@ -1,0 +1,16 @@
+NAME: do8
+TYPE: TSP
+COMMENT: Advanced testing instance
+DIMENSION: 8
+EDGE_WEIGHT_TYPE: EUC_2D
+NODE_COORD_SECTION
+1 2.0 2.0
+2 3.0 2.0
+3 3.0 3.0
+4 2.0 3.0
+5 2.5 0.0
+6 2.5 5.0
+3 0.0 2.5
+8 5.0 2.5
+EOF
+
