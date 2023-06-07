@@ -54,7 +54,8 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
       // String instanceID = "u574"; // 36905
       // String instanceID = "rat575-hyflex-2"; // 6773 (8255)
 
-      String instanceID = "../test-instances/rm4.tsp";
+      // String instanceID = "../test-instances/rm4.tsp";
+      String instanceID = "../test-instances/do8.tsp";
 
       instanceID = instanceID.endsWith(".tsp") ? instanceID : instanceID + ".tsp";
       String path = String.format(
