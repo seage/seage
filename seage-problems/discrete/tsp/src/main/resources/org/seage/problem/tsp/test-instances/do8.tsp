@@ -4,10 +4,10 @@ COMMENT: Advanced testing instance
 DIMENSION: 8
 EDGE_WEIGHT_TYPE: EUC_2D
 NODE_COORD_SECTION
-1 0.5 0.5
-2 0.5 -0.5
-3 -0.5 -0.5
-4 -0.5 0.5
+1 -0.5 0.5
+2 0.5 0.5
+3 0.5 -0.5
+4 -0.5 -0.5
 5 0 2.5
 6 2.5 0.0
 3 0.0 -2.5
