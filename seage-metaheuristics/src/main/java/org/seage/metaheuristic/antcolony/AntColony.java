@@ -82,13 +82,18 @@ public class AntColony {
   }
 
   /**
-   * .
-   * @param numIterations .
-   * @param alpha .
-   * @param beta .
-   * @param quantumPheromone .
-   * @param defaultPheromone .
-   * @param evaporCoeff .
+   * Method sets aco parameters.
+   *
+   * @param numIterations Number of iterations.
+   * @param alpha The alfa parameter determines the relative influence of the pheromone trails 
+   *      left by the ants vs the heuristic information.
+   * @param beta The beta parameter influences the importance of the heuristic information,
+   *       which is problem-specific knowledge, such as distance, cost, or desirability,
+   *       that guides the ants' decision.
+   * @param quantumPheromone  More advanced encoding, representation scheme, that takes
+   *        advantage of quantum principles (superposition or entanglement).
+   * @param defaultPheromone Default pherophone.
+   * @param evaporCoeff Evaporation coefficient.
    * @throws Exception Throws exception if the values cannot be set.
    */
   public void setParameters(
