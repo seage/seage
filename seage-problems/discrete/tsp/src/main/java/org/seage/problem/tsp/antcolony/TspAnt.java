@@ -69,6 +69,6 @@ public class TspAnt extends Ant {
     Node start = nodePath.get(nodePath.size() - 1);
     double dx = (this.cities[start.getID() - 1].X - this.cities[end.getID() - 1].X);
     double dy = (this.cities[start.getID() - 1].Y - this.cities[end.getID() - 1].Y);
-    return Math.round(Math.sqrt(dx * dx + dy * dy));
+    return Math.sqrt(dx * dx + dy * dy);
   }
 }

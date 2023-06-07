@@ -44,7 +44,9 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   public static void main(String[] args) {
     try {
-      String instanceID = "berlin52"; // 7542
+      // String instanceID = "burma14"; // ?
+      // String instanceID = "ulysses16"; // ?
+      // String instanceID = "berlin52"; // 7542
       // String instanceID = "eil51"; // 426
       // String instanceID = "ch130"; // 6110
       // String instanceID = "lin318"; // 42029
@@ -52,8 +54,11 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
       // String instanceID = "u574"; // 36905
       // String instanceID = "rat575-hyflex-2"; // 6773 (8255)
 
+      String instanceID = "../test-instances/rm4.tsp";
+
+      instanceID = instanceID.endsWith(".tsp") ? instanceID : instanceID + ".tsp";
       String path = String.format(
-          "seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/%s.tsp",
+          "seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/%s",
           instanceID);// args[0];
       new TspAntColonyTest().run(path);
     } catch (Exception ex) {
@@ -85,13 +90,13 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // double alpha = 1.0162687039555678, beta = 6.35356118801852;
 
     // Richard
-    int numAnts = 200;
-    double defaultPheromone = 10.9;
-    double localEvaporation = 0.9;
+    int numAnts = 100;
+    double alpha = 1.0;
+    double beta = 3.0;
+    double defaultPheromone = 0.8;
+    double localEvaporation = 0.95;
     double quantumPheromone = 100;
-    double alpha = 1.1;
-
-    double beta = 2.1;
+    
     // ----
     TspGraph graph = new TspGraph(cities);
     log.info("Loaded ...");
@@ -153,10 +158,9 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   @Override
   public void iterationPerformed(AntColonyEvent e) {
-    // log.info("iterationPerformed: " +
-    // e.getAntColony().getCurrentIteration());
-    // log.info(" - edges: " +
-    // e.getAntColony().getGraph().getEdges().size() +" / "+_edges);
+    // log.info("iterationPerformed: {} - edges: {}", 
+    //     e.getAntColony().getCurrentIteration(),
+    //     e.getAntColony().getGraph().getEdges().size());
 
   }
 }
