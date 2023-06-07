@@ -81,7 +81,7 @@ public class Ant {
 
   /**
    * Do a first exploration if nodeIDs collection is set.
-   * 
+   *
    * @return A path traveled
    * @throws Exception .
    */
