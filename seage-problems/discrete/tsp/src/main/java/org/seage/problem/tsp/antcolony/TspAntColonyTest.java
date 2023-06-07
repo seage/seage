@@ -71,7 +71,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     City[] cities = CityProvider.readCities(new FileInputStream(path));
     edges = cities.length * (cities.length - 1) / 2;
 
-    int iterations = 1000;
+    int iterations = 10000;
 
     // int numAnts = 500;
     // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone =
@@ -94,8 +94,8 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     int numAnts = 100;
     double alpha = 1.0;
     double beta = 3.0;
-    double defaultPheromone = 0.8;
-    double localEvaporation = 0.95;
+    double defaultPheromone = 10.8;
+    double localEvaporation = 0.99;
     double quantumPheromone = 100;
     
     // ----
