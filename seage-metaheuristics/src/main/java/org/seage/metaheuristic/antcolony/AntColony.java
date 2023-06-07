@@ -126,7 +126,7 @@ public class AntColony {
 
       for (int j = 0; j < this.ants.length && keepRunning; j++) {
         /// EXPLORE
-        var antReport = this.ants[j].explore(startingNode);
+        var antReport = this.ants[j].explore(graph, startingNode);
         antReports.add(antReport);
       }
       resolveRound(antReports);
@@ -153,7 +153,7 @@ public class AntColony {
         if (a.getNodeIDsAlongPath().isEmpty()) {
           continue;
         }      
-        List<Edge> path = a.doFirstExploration();
+        List<Edge> path = a.doFirstExploration(graph);
         if (a.getDistanceTravelled() < globalBest) {
           globalBest = a.getDistanceTravelled();      
           bestPath = new ArrayList<>(path);
@@ -179,7 +179,7 @@ public class AntColony {
         bestPath = new ArrayList<>(path);
       }
 
-      pathLength = ants[counter]._distanceTravelled;
+      pathLength = ants[counter].distanceTravelled;
 
       if (pathLength < roundBest) {
         roundBest = pathLength;

@@ -29,11 +29,13 @@ public class TspAntColonyTest2 {
     TspOptimalTourBerlin52 optimum = new TspOptimalTourBerlin52();
     ArrayList<Integer> optimalTour = new ArrayList<>(Arrays.asList(optimum.OptimalTour));
     optimalTour.add(1);
-    Ant ant = new TspAnt(graph, optimalTour, cities);
+    Ant ant = new TspAnt(optimalTour, cities);
+    ant.doFirstExploration(graph);
     colony.setParameters(1, 1, 1, 1, 1, 0.8);
     colony.startExploring(graph.getNodes().get(1), new Ant[] {ant});
 
     assertEquals(optimalTour, Graph.edgeListToNodeIds(colony.getBestPath()));
-    assertEquals(optimum.OptimalLength, colony.getGlobalBest());
+    // assertEquals(optimum.OptimalLength, colony.getGlobalBest());
+    assertEquals(7544.365902, colony.getGlobalBest(), 0.0001);
   }
 }

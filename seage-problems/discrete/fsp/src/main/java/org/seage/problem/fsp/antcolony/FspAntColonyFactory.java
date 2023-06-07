@@ -30,15 +30,12 @@ package org.seage.problem.fsp.antcolony;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.seage.aal.Annotations;
 import org.seage.aal.algorithm.IAlgorithmAdapter;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.antcolony.AntColonyAdapter;
 import org.seage.aal.problem.ProblemInstance;
-
 import org.seage.metaheuristic.antcolony.Ant;
-
 import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotype;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
@@ -59,7 +56,7 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
       ProblemInstance instance, IPhenotypeEvaluator<JspPhenotype> phenotypeEvaluator
   ) throws Exception {
     JspJobsDefinition jobs = (JspJobsDefinition) instance;
-    FspGraph fspGraph = new FspGraph(jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
+    FspGraph fspGraph = new FspGraph(jobs, (JspPhenotypeEvaluator) phenotypeEvaluator);
     return new AntColonyAdapter<JspPhenotype, Ant>(fspGraph, phenotypeEvaluator) {
       
       @Override
@@ -72,8 +69,10 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
             // Add next node
             nodes.add(source[i].getSolution()[j]);
           }
-
-          ants[i] = new FspAnt(fspGraph, nodes, jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
+          // Add the starting node
+          nodes.add(0, 0);
+          ants[i] = new FspAnt(nodes, jobs, (JspPhenotypeEvaluator) phenotypeEvaluator);
+          ants[i].doFirstExploration(fspGraph);
         }
       }
 
@@ -87,7 +86,7 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
       }
 
       @Override
-      public JspPhenotype  solutionToPhenotype(Ant ant) throws Exception {
+      public JspPhenotype solutionToPhenotype(Ant ant) throws Exception {
         List<Integer> nodePath = ant.getNodeIDsAlongPath();
         // Remove the starting node
         nodePath.remove(0);

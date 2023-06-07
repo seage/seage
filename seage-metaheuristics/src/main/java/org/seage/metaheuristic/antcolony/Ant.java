@@ -38,10 +38,10 @@ import java.util.Random;
  */
 public class Ant {
 
-  protected Graph _graph;
-  protected double _distanceTravelled;
-  protected List<Edge> _edgePath;
-  protected List<Node> _nodePath;
+  protected double distanceTravelled;
+  protected List<Edge> edgePath;
+  protected List<Node> nodePath;
+  protected List<Integer> initialPath;
 
   protected double alpha;
   protected double beta;
@@ -50,27 +50,24 @@ public class Ant {
   protected HashSet<Node> availableNodes;
   private Random rand;
 
-  public Ant(Graph graph, List<Integer> nodeIDs) {
-    this(graph, nodeIDs, System.currentTimeMillis());
+  public Ant() {
+    this(null, System.currentTimeMillis());
+  }
+
+  public Ant(List<Integer> initialPath) {
+    this(initialPath, System.currentTimeMillis());
   }
 
   /**
    * .
-   * @param graph .
-   * @param nodeIDs . 
+   * @param initialPath . 
    * @param randSeed .
    */
-  public Ant(Graph graph, List<Integer> nodeIDs, long randSeed) {
-    _graph = graph;   
-    _nodePath = new ArrayList<>();
-    _edgePath = new ArrayList<>();
-    rand = new Random(randSeed);
-
-    if (nodeIDs != null) {
-      for (int i = 0; i < nodeIDs.size(); i++) {
-        _nodePath.add(_graph.getNodes().get(nodeIDs.get(i)));
-      }
-    }   
+  public Ant(List<Integer> initialPath, long randSeed) {
+    this.initialPath = initialPath;
+    this.nodePath = new ArrayList<>();
+    this.edgePath = new ArrayList<>();
+    this.rand = new Random(randSeed);
   }
 
   void setParameters(double alpha, double beta, double quantumPheromone) {
@@ -85,24 +82,31 @@ public class Ant {
    * @return A path traveled
    * @throws Exception .
    */
-  public List<Edge> doFirstExploration() throws Exception {
-    _edgePath = new ArrayList<>();
-    _distanceTravelled = 0;
-
-    for (int i = 0; i < _nodePath.size() - 1; i++) {
-      Node n1 = _nodePath.get(i);
-      Node n2 = _nodePath.get(i + 1);
+  public List<Edge> doFirstExploration(Graph graph) throws Exception {
+    this.nodePath = new ArrayList<>();
+    this.edgePath = new ArrayList<>();
+    this.distanceTravelled = 0;
+    if (initialPath != null) {
+     
+      for (int i = 0; i < initialPath.size(); i++) {
+        this.nodePath.add(graph.getNodes().get(initialPath.get(i)));
+      }
+    }   
+    
+    for (int i = 0; i < nodePath.size() - 1; i++) {
+      Node n1 = nodePath.get(i);
+      Node n2 = nodePath.get(i + 1);
       Edge e = n1.getEdgeMap().get(n2);
       if (e == null) {
-        double edgePrice = getNodeDistance(_nodePath.subList(0, i + 1), n2);
+        double edgePrice = getNodeDistance(graph, nodePath.subList(0, i + 1), n2);
         e = new Edge(n1, n2, edgePrice);
       }
-      _edgePath.add(e);
+      edgePath.add(e);
     }
-    _distanceTravelled = getPathCost(_edgePath);
-    leavePheromone();
+    distanceTravelled = getPathCost(graph, edgePath);
+    leavePheromone(graph);
 
-    return _edgePath;
+    return edgePath;
   }
 
   /**
@@ -111,40 +115,40 @@ public class Ant {
    * @return Ant's path
    * @throws Exception .
    */
-  protected List<Edge> explore(Node startingNode) throws Exception {
-    _nodePath.clear();
-    _edgePath.clear();
-    _distanceTravelled = 0;
+  protected List<Edge> explore(Graph graph, Node startingNode) throws Exception {
+    nodePath.clear();
+    edgePath.clear();
+    distanceTravelled = 0;
     availableNodes = null;
 
-    _nodePath.add(startingNode);
+    nodePath.add(startingNode);
 
     Node currentNode = startingNode;
-    Edge nextEdge = selectNextStep(_nodePath);
+    Edge nextEdge = selectNextStep(graph, nodePath);
 
     while (nextEdge != null) {      
       Node nextNode = nextEdge.getNode2(currentNode);
    
-      _edgePath.add(nextEdge);
-      _nodePath.add(nextNode);
+      edgePath.add(nextEdge);
+      nodePath.add(nextNode);
       currentNode = nextNode;
 
-      nextEdge = selectNextStep(_nodePath);
+      nextEdge = selectNextStep(graph, nodePath);
     }
-    _distanceTravelled = getPathCost(_edgePath);
-    leavePheromone();
-    return _edgePath;
+    distanceTravelled = getPathCost(graph, edgePath);
+    leavePheromone(graph);
+    return edgePath;
   }
 
   /**
    * Pheromone leaving.
    * @throws Exception .
    */
-  protected void leavePheromone() throws Exception {
-    for (Edge edge : _edgePath) {
-      edge.addLocalPheromone(quantumPheromone * (edge.getEdgePrice() / _distanceTravelled));
-      if (!_graph._edges.contains(edge)) {
-        _graph.addEdge(edge);
+  protected void leavePheromone(Graph graph) throws Exception {
+    for (Edge edge : edgePath) {
+      edge.addLocalPheromone(quantumPheromone * (edge.getEdgePrice() / distanceTravelled));
+      if (!graph._edges.contains(edge)) {
+        graph.addEdge(edge);
       }
     }
   }
@@ -155,19 +159,19 @@ public class Ant {
    */
   public List<Integer> getNodeIDsAlongPath() {
     List<Integer> idsPath = new ArrayList<>();
-    for (Node n : _nodePath) {
+    for (Node n : nodePath) {
       idsPath.add(n.getID());
     }
     return idsPath;
   }
 
   public double getDistanceTravelled() {
-    return _distanceTravelled;
+    return distanceTravelled;
   }
 
-  protected Edge selectNextStep(List<Node> nodePath) throws Exception {
+  protected Edge selectNextStep(Graph graph, List<Node> nodePath) throws Exception {
     Node currentNode = nodePath.get(nodePath.size() - 1);
-    HashSet<Node> nextAvailableNodes = getAvailableNodes(nodePath);
+    HashSet<Node> nextAvailableNodes = getAvailableNodes(graph, nodePath);
 
     if (nextAvailableNodes.isEmpty()) {
       return null;
@@ -187,12 +191,11 @@ public class Ant {
         edgePheromone = e.getLocalPheromone();
         edgePrice = e.getEdgePrice();
       } else {
-        edgePheromone = _graph.getDefaultPheromone();
+        edgePheromone = graph.getDefaultPheromone();
+        edgePrice = getNodeDistance(graph, nodePath, n);
 
-        edgePrice = getNodeDistance(nodePath, n);
         e = new Edge(currentNode, n, edgePrice);
-        e.setEdgePrice(edgePrice);
-        e.addLocalPheromone(_graph.getDefaultPheromone());
+        e.addLocalPheromone(edgePheromone);
       }
 
       double p = Math.pow(edgePheromone, alpha) * Math.pow(1 / edgePrice, beta);
@@ -204,9 +207,9 @@ public class Ant {
     return candidateEdges[next(probabilities, rand.nextDouble())];
   }
 
-  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
+  protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
     if (availableNodes == null) {
-      availableNodes = new HashSet<Node>(_graph.getNodes().values());
+      availableNodes = new HashSet<Node>(graph.getNodes().values());
     }
     Node lastNode = nodePath.get(nodePath.size() - 1);
     availableNodes.remove(lastNode);   
@@ -250,7 +253,7 @@ public class Ant {
    * @return .
    * @throws Exception Exception when getting the edge price.
    */
-  public double getPathCost(List<Edge> path) throws Exception {
+  public double getPathCost(Graph graph, List<Edge> path) throws Exception {
     double result = 0;
     for (Edge e : path) {
       result += e.getEdgePrice();
@@ -259,7 +262,7 @@ public class Ant {
     return result;
   }
 
-  public double getNodeDistance(List<Node> nodePath, Node node) {
+  public double getNodeDistance(Graph graph, List<Node> nodePath, Node node) {
     return 1.0;
   }
 

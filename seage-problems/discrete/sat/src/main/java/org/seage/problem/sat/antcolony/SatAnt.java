@@ -43,20 +43,19 @@ public class SatAnt extends Ant {
 
   /**
    * .
-   * @param graph .
-   * @param nodeIDs .
+   * @param initialPath .
    * @param formula .
    * @param formulaEvaluator .
    */
   public SatAnt(
-      Graph graph, List<Integer> nodeIDs, Formula formula, FormulaEvaluator formulaEvaluator) {
-    super(graph, nodeIDs);
+      List<Integer> initialPath, Formula formula, FormulaEvaluator formulaEvaluator) {
+    super(initialPath);
     this.formula = formula;
     this.formulaEvaluator = formulaEvaluator;
   }
 
   @Override
-  public double getPathCost(List<Edge> path) throws Exception {
+  public double getPathCost(Graph graph, List<Edge> path) throws Exception {
     Boolean[] solution = new Boolean[formula.getLiteralCount()];
     List<Node> nodeList = Graph.edgeListToNodeList(path);
 
@@ -74,18 +73,18 @@ public class SatAnt extends Ant {
   }
 
   @Override
-  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
-    var result = super.getAvailableNodes(nodePath);
+  protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
+    var result = super.getAvailableNodes(graph, nodePath);
     for (Node n : nodePath) {
       int id = -n.getID();
-      Node n2 = _graph.getNodes().get(id);
+      Node n2 = graph.getNodes().get(id);
       result.remove(n2);
     }
     return result;
   }
 
   @Override
-  public double getNodeDistance(List<Node> nodePath, Node n2) {
+  public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
     return this.formulaEvaluator.evaluate(this.formula, n2.getID());
   }
 }

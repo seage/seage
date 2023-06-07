@@ -31,11 +31,11 @@ public class AntColonyTest {
   class TestAnt extends Ant {
 
     public TestAnt(Graph graph, long randSeed) {
-      super(graph, null, randSeed);
+      super(null, randSeed);
     }
 
     @Override
-    public double getNodeDistance(List<Node> nodePath, Node node) {
+    public double getNodeDistance(Graph graph, List<Node> nodePath, Node node) {
       TestNode n1 = (TestNode)nodePath.get(nodePath.size()-1);
       TestNode n2 = (TestNode)node;
 
@@ -43,10 +43,10 @@ public class AntColonyTest {
     }
     
     @Override
-    protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
-      var result = super.getAvailableNodes(nodePath);
+    protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
+      var result = super.getAvailableNodes(graph, nodePath);
       if (result.size() == 0 && nodePath.get(0) != nodePath.get(nodePath.size()-1)) {
-        result.add(_graph.getNodes().get(1));
+        result.add(graph.getNodes().get(1));
       }
       
       return result;
@@ -89,9 +89,9 @@ public class AntColonyTest {
 
     var nodes = graph.getNodes();
     double d = 0.0;
-    d = ant.getNodeDistance(Arrays.asList(nodes.get(1)), nodes.get(2));
+    d = ant.getNodeDistance(graph, Arrays.asList(nodes.get(1)), nodes.get(2));
     assertEquals(2, d);
-    d = ant.getNodeDistance(Arrays.asList(nodes.get(1)), nodes.get(3));
+    d = ant.getNodeDistance(graph, Arrays.asList(nodes.get(1)), nodes.get(3));
     assertEquals(2.83, d, 0.005);
   }
 

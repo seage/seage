@@ -41,14 +41,14 @@ import org.seage.problem.tsp.City;
 public class TspAnt extends Ant {
   City[] cities;
   
-  public TspAnt(Graph graph, List<Integer> nodeIDs, City[] cities) {
-    super(graph, nodeIDs);
+  public TspAnt(List<Integer> initialPath, City[] cities) {
+    super(initialPath);
     this.cities = cities;
   }
 
   @Override
-  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
-    HashSet<Node> result = super.getAvailableNodes(nodePath);
+  protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
+    HashSet<Node> result = super.getAvailableNodes(graph, nodePath);
     Node startingNode = nodePath.get(0);
     Node currentNode = nodePath.get(nodePath.size() - 1);
     if (currentNode != startingNode && result.isEmpty()) {
@@ -65,7 +65,7 @@ public class TspAnt extends Ant {
    * @return Euclidean edge length
    */
   @Override
-  public double getNodeDistance(List<Node> nodePath, Node end) {
+  public double getNodeDistance(Graph graph, List<Node> nodePath, Node end) {
     Node start = nodePath.get(nodePath.size() - 1);
     double dx = (this.cities[start.getID() - 1].X - this.cities[end.getID() - 1].X);
     double dy = (this.cities[start.getID() - 1].Y - this.cities[end.getID() - 1].Y);

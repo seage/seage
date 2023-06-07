@@ -170,7 +170,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
     Ant[] ants = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {
-      ants[i] = new FspAnt(graph, null, jobs, eval);
+      ants[i] = new FspAnt(null, jobs, eval);
     }
     // brain.setParameters(graph.getNodeList().size(), alpha, beta);
 

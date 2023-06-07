@@ -79,7 +79,6 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
           }
 
           ArrayList<Integer> nodes = new ArrayList<Integer>();
-          nodes.add(0);
           for (int j = 0; j < source[i].getSolution().length; j++) {
             // Id of job and machine, from value 0
             int jobID = source[i].getSolution()[j];
@@ -90,7 +89,9 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
             jobsOper[jobID]++;
           }
 
-          ants[i] = new JspAnt(jspGraph, nodes, jobs, (JspPhenotypeEvaluator)phenotypeEvaluator);
+          nodes.add(0, 0);
+          ants[i] = new JspAnt(nodes, jobs, (JspPhenotypeEvaluator) phenotypeEvaluator);
+          ants[i].doFirstExploration(jspGraph);
         }
       }
 

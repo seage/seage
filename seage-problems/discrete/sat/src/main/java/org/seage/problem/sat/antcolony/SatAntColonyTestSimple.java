@@ -75,7 +75,7 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
 
     Ant[] ants = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {
-      ants[i] = new SatAnt(graph, null, formula, evaluator);
+      ants[i] = new SatAnt(null, formula, evaluator);
     }
 
     colony.startExploring(graph.getNodes().get(0), ants);

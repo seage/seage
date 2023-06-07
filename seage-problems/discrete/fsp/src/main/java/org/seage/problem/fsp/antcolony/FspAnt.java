@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.seage.metaheuristic.antcolony.Ant;
+import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.jsp.JspJobsDefinition;
 import org.seage.problem.jsp.JspPhenotypeEvaluator;
@@ -49,30 +50,23 @@ public class FspAnt extends Ant {
 
   /**
    * .
-   * @param graph .
-   * @param nodeIDs .
+   * @param initialPath .
    * @param jobs .
    * @param evaluator .
    */
   public FspAnt(
-      FspGraph graph, 
-      List<Integer> nodeIDs,
+      List<Integer> initialPath,
       JspJobsDefinition jobs, 
       JspPhenotypeEvaluator evaluator
   ) {
-    super(graph, nodeIDs);
+    super(initialPath);
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;
-    
-    if (nodeIDs != null && nodeIDs.size() > 0) {
-      _nodePath.add(0, _graph.getNodes().get(0));
-    }
-
   }
 
   @Override
-  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
-    HashSet<Node> availableNodes = new HashSet<>(_graph.getNodes().values());
+  protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
+    HashSet<Node> availableNodes = new HashSet<>(graph.getNodes().values());
 
     for (Node n : nodePath) {
       availableNodes.remove(n);
@@ -85,7 +79,7 @@ public class FspAnt extends Ant {
    * Edge length calculating.
    */
   @Override
-  public double getNodeDistance(List<Node> nodePath, Node node) {
+  public double getNodeDistance(Graph graph, List<Node> nodePath, Node node) {
     Node end = nodePath.get(nodePath.size() - 1);
     // If the first node is starting node
     if (end.getID() == 0) {

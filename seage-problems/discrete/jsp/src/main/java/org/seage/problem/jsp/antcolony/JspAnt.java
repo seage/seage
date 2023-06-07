@@ -54,18 +54,16 @@ public class JspAnt extends Ant {
 
   /**
    * .
-   * @param graph .
-   * @param nodeIDs .
+   * @param initialPath .
    * @param jobs .
    * @param evaluator .
    */
   public JspAnt(
-      JspGraph graph, 
-      List<Integer> nodeIDs,
+      List<Integer> initialPath,
       JspJobsDefinition jobs, 
       JspPhenotypeEvaluator evaluator
   ) {
-    super(graph, nodeIDs);
+    super(initialPath);
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;
 
@@ -75,27 +73,26 @@ public class JspAnt extends Ant {
     }
   }
 
-  protected void setNextStep(Edge step, Node lastNode) throws Exception {
+  protected void setNextStep(JspGraph graph, Edge step, Node lastNode) throws Exception {
     // Increase the operation
-    JspGraph jspGraph = (JspGraph) _graph;
     Node nextNode = step.getNode2(lastNode);
     if (lastNode == nextNode) {
       nextNode = lastNode;
     }
-    lastJobOperations[jspGraph.nodeToJobID(nextNode) - 1]++;
+    lastJobOperations[graph.nodeToJobID(nextNode) - 1]++;
   }
 
   @Override
-  protected Edge selectNextStep(List<Node> nodePath) throws Exception {
-    Edge nextEdge = super.selectNextStep(nodePath);
+  protected Edge selectNextStep(Graph graph, List<Node> nodePath) throws Exception {
+    Edge nextEdge = super.selectNextStep(graph, nodePath);
     if (nextEdge != null) {
-      setNextStep(nextEdge, nodePath.get(nodePath.size() - 1));
+      setNextStep((JspGraph) graph, nextEdge, nodePath.get(nodePath.size() - 1));
     }
     return nextEdge;
   }
 
   @Override
-  protected HashSet<Node> getAvailableNodes(List<Node> nodePath) {
+  protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
     // Clean the previous available nodes
     if (availableNodes == null) {
       availableNodes = new HashSet<Node>();
@@ -103,7 +100,7 @@ public class JspAnt extends Ant {
       availableNodes.clear();
     }
 
-    JspGraph jspGraph = (JspGraph) _graph;
+    JspGraph jspGraph = (JspGraph) graph;
     // Crate new updated available nodes
     for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
       int jobID = jobIndex + 1;
@@ -114,28 +111,28 @@ public class JspAnt extends Ant {
       }
 
       int nodeID = jobID * jspGraph.getFactor() + operID;
-      availableNodes.add(this._graph.getNodes().get(nodeID));
+      availableNodes.add(graph.getNodes().get(nodeID));
     }
 
     return availableNodes;
   }
 
   @Override
-  protected List<Edge> explore(Node startingNode) throws Exception {
+  protected List<Edge> explore(Graph graph, Node startingNode) throws Exception {
     // Clean the array for new exploration
     for (int jobIndex = 0; jobIndex < lastJobOperations.length; jobIndex++) {
       lastJobOperations[jobIndex] = 0;
     }
 
-    return super.explore(startingNode);
+    return super.explore(graph, startingNode);
   }
 
   /**
    * Edge length calculating.
    */
   @Override
-  public double getNodeDistance(List<Node> nodePath, Node node) {
-    JspGraph jspGraph = (JspGraph) _graph;
+  public double getNodeDistance(Graph graph, List<Node> nodePath, Node node) {
+    JspGraph jspGraph = (JspGraph) graph;
     Node end = nodePath.get(nodePath.size() - 1);
     // If the first node is starting node
     if (end.getID() == 0) {
@@ -166,8 +163,8 @@ public class JspAnt extends Ant {
 
 
   @Override
-  public double getPathCost(List<Edge> path) throws Exception {
-    JspGraph jspGraph = (JspGraph) _graph;
+  public double getPathCost(Graph graph, List<Edge> path) throws Exception {
+    JspGraph jspGraph = (JspGraph) graph;
     var nodes = Graph.edgeListToNodeList(path);
     Integer[] jobArray = new Integer[nodes.size() - 1];
     for (int i = 1; i < nodes.size(); i++) {

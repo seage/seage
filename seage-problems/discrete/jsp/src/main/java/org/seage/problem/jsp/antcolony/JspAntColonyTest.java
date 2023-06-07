@@ -190,7 +190,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     int numAnts = 100;
     Ant[] ants = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {
-      ants[i] = new JspAnt(graph, null, jobs, eval);
+      ants[i] = new JspAnt(null, jobs, eval);
       // brain.setParameters(graph.getNodeList().size(), alpha, beta);
     }
 
