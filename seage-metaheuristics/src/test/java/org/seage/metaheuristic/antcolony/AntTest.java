@@ -3,6 +3,8 @@ package org.seage.metaheuristic.antcolony;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,8 +45,9 @@ public class AntTest {
     assertEquals(2, edges.size());
     assertEquals(2, graph.getEdges().size());
     assertTrue(graph.getEdges().containsAll(edges));
-    assertEquals(10, graph.getEdges().get(0).getLocalPheromone());
-    assertEquals(10, graph.getEdges().get(1).getLocalPheromone());
+    ArrayList<Edge> edgesList = new ArrayList<>(graph.getEdges());
+    assertEquals(10, edgesList.get(0).getLocalPheromone());
+    assertEquals(10, edgesList.get(1).getLocalPheromone());
   }
 
   @Test
@@ -57,8 +60,9 @@ public class AntTest {
     assertEquals(2, edges.size());
     assertEquals(2, graph.getEdges().size());
     assertTrue(graph.getEdges().containsAll(edges));
-    assertEquals(10, graph.getEdges().get(0).getLocalPheromone());
-    assertEquals(10, graph.getEdges().get(1).getLocalPheromone());
+    ArrayList<Edge> edgesList = new ArrayList<>(graph.getEdges());
+    assertEquals(10, edgesList.get(0).getLocalPheromone());
+    assertEquals(10, edgesList.get(1).getLocalPheromone());
   }
 
   @Test
