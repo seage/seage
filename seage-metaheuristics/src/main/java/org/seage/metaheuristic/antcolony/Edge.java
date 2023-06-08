@@ -117,4 +117,11 @@ public class Edge {
   public String toString() {
     return String.format("%d->%d(%f, %f)", _node1.getID(), _node2.getID(), getEdgePrice(), getLocalPheromone());
   }
+
+  @Override
+  public int hashCode() {
+    int a = this._node1.getID();
+    int b = this._node2.getID();
+    return a >= b ? a * a + a + b : a + b * b;
+  } 
 }
