@@ -93,12 +93,8 @@ public class JspAnt extends Ant {
 
   @Override
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
-    // Clean the previous available nodes
-    if (availableNodes == null) {
-      availableNodes = new HashSet<Node>();
-    } else {
-      availableNodes.clear();
-    }
+    HashSet<Node> availableNodes = new HashSet<Node>();
+   
 
     JspGraph jspGraph = (JspGraph) graph;
     // Crate new updated available nodes
