@@ -263,7 +263,7 @@ public class Ant {
       double edgePheromone = 0;
       double edgePrice = 0;
 
-      Edge e = currentNode.getEdgeMap().get(n);
+      Edge e = currentNode.getEdge(n);
       if (e != null) {
         edgePheromone = e.getLocalPheromone();
         edgePrice = e.getEdgePrice();
