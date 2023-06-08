@@ -90,7 +90,6 @@ public class AntColony {
    * @param beta Dependence of the probability of choosing the next city.
    * @param quantumPheromone  More advanced encoding, representation scheme, that takes
    *        advantage of quantum principles (superposition or entanglement).
-   * @param defaultPheromone Default pherophone.
    * @param evaporCoeff Evaporation coefficient.
    * @throws Exception Throws exception if the values cannot be set.
    */
