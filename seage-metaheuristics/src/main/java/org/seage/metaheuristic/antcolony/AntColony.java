@@ -154,8 +154,9 @@ public class AntColony {
           continue;
         }      
         List<Edge> path = a.doFirstExploration(graph);
-        if (a.getDistanceTravelled(graph, path) < globalBest) {
-          globalBest = a.getDistanceTravelled(graph, path);      
+        double distanceTravelled = a.getDistanceTravelled(graph, path);
+        if (distanceTravelled < globalBest) {
+          globalBest = distanceTravelled;      
           bestPath = new ArrayList<>(path);
           bestAnt = a;
           eventProducer.fireNewBestSolutionFound();
