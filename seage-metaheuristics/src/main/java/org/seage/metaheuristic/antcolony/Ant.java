@@ -115,7 +115,7 @@ public class Ant {
     nodePath.add(startingNode);
 
     Node currentNode = startingNode;
-    Edge nextEdge = selectOldNextStep(graph, nodePath);
+    Edge nextEdge = selectNextStep(graph, nodePath);
 
     while (nextEdge != null) {      
       Node nextNode = nextEdge.getNode2(currentNode);
@@ -124,7 +124,7 @@ public class Ant {
       nodePath.add(nextNode);
       currentNode = nextNode;
 
-      nextEdge = selectOldNextStep(graph, nodePath);
+      nextEdge = selectNextStep(graph, nodePath);
     }
     leavePheromone(graph, edgePath);
     return edgePath;
