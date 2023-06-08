@@ -159,7 +159,7 @@ public class JspAnt extends Ant {
 
 
   @Override
-  public double getPathCost(Graph graph, List<Edge> path) throws Exception {
+  public double getDistanceTravelled(Graph graph, List<Edge> path) throws Exception {
     JspGraph jspGraph = (JspGraph) graph;
     var nodes = Graph.edgeListToNodeList(path);
     Integer[] jobArray = new Integer[nodes.size() - 1];

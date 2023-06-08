@@ -163,9 +163,22 @@ public class Ant {
     return idsPath;
   }
 
+  /**
+   * Method calculates cost of travelled path.
+   *
+   * @param graph Graph.
+   * @param edgePath Edges along the path.
+   * @return Returns travelled distance.
+   * @throws Exception .
+   */
   public double getDistanceTravelled(Graph graph, List<Edge> edgePath) throws Exception {
 
-    return getPathCost(graph, edgePath);
+    double result = 0;
+    for (Edge e : edgePath) {
+      result += e.getEdgePrice();
+    }
+
+    return result;
   }
 
   protected Edge selectNextStep(Graph graph, List<Node> nodePath) throws Exception {
@@ -242,22 +255,6 @@ public class Ant {
 
   public double getQuantumPheromone() {
     return quantumPheromone;
-  }
-
-  /**
-   * Method for getting the path cost.
-   *
-   * @param path .
-   * @return .
-   * @throws Exception Exception when getting the edge price.
-   */
-  public double getPathCost(Graph graph, List<Edge> path) throws Exception {
-    double result = 0;
-    for (Edge e : path) {
-      result += e.getEdgePrice();
-    }
-
-    return result;
   }
 
   public double getNodeDistance(Graph graph, List<Node> nodePath, Node node) {
