@@ -46,16 +46,17 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     try {
       // String instanceID = "burma14"; // ?
       // String instanceID = "ulysses16"; // ?
-      // String instanceID = "berlin52"; // 7542
-      // String instanceID = "eil51"; // 426
+      String instanceID = "berlin52"; // 7542
+      //String instanceID = "eil51"; // 426
       // String instanceID = "ch130"; // 6110
       // String instanceID = "lin318"; // 42029
       // String instanceID = "pcb442"; // 50778
       // String instanceID = "u574"; // 36905
       // String instanceID = "rat575-hyflex-2"; // 6773 (8255)
+      // String instanceID = "usa13509-hyflex-8"; // 19982859
 
       // String instanceID = "../test-instances/rm4.tsp";
-      String instanceID = "../test-instances/do8.tsp";
+      // String instanceID = "../test-instances/do8.tsp";
 
       instanceID = instanceID.endsWith(".tsp") ? instanceID : instanceID + ".tsp";
       String path = String.format(
@@ -90,12 +91,12 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
     int iterations = 10000;
     // Richard
-    int numAnts = 100;
+    int numAnts = 50;
     double alpha = 1.0;
-    double beta = 1.3;
+    double beta = 5.3;
     double defaultPheromone = 0;
     double localEvaporation = 0.95;
-    double quantumPheromone = 100;
+    double quantumPheromone = 10 * numAnts;
     
     // ----
     TspGraph graph = new TspGraph(cities);

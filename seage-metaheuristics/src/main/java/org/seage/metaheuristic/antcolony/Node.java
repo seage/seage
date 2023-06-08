@@ -23,8 +23,8 @@
 package org.seage.metaheuristic.antcolony;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Node class.
@@ -41,20 +41,6 @@ public class Node {
     this.id = id;
     edges = new HashMap<>();
     nodes = new HashMap<>();
-  }
-
-  /**
-   * My implementation function equals.
-   * 
-   * @param node - Compared node
-   * @return - if compared nodes are some
-   */
-  public boolean equals(Object node) {
-    if (node instanceof Node) {
-      Node n = (Node) node;
-      return n.id == this.id;
-    }
-    return false;    
   }
 
   /**
@@ -115,16 +101,30 @@ public class Node {
    * @return - List edges
    */
   public Collection<Edge> getEdges() {
-    return edges.values();
+    return Collections.unmodifiableCollection(edges.values());
   }
 
-  public Map<Node, Edge> getEdgeMap() {
-    return edges;
+  public Edge getEdge(Node n) {
+    return edges.get(n);
   }
 
   @Override
   public int hashCode() {
     return this.id;
+  }
+
+  /**
+   * My implementation function equals.
+   * 
+   * @param node - Compared node
+   * @return - if compared nodes are some
+   */
+  public boolean equals(Object node) {
+    if (node instanceof Node) {
+      Node n = (Node) node;
+      return n.id == this.id;
+    }
+    return false;    
   }
 
   @Override

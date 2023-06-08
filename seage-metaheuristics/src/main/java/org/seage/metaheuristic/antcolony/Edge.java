@@ -33,16 +33,16 @@ package org.seage.metaheuristic.antcolony;
  * @author Martin Zaloga
  */
 public class Edge {
-  private Node _node1;
-  private Node _node2;
-  private double _edgePrice;
-  private double _pheromone;
+  private Node node1;
+  private Node node2;
+  private double edgePrice;
+  private double pheromone;
 
   public Edge(Node node1, Node node2, double edgePrice) {
-    _node1 = node1;
-    _node2 = node2;
-    _edgePrice = edgePrice;
-    _pheromone = 0;
+    this.node1 = node1;
+    this.node2 = node2;
+    this.edgePrice = edgePrice;
+    this.pheromone = 0;
   }
 
   /**
@@ -51,7 +51,7 @@ public class Edge {
    * @return - Value of pheromone
    */
   public double getLocalPheromone() {
-    return _pheromone;
+    return pheromone;
   }
 
   /**
@@ -60,16 +60,16 @@ public class Edge {
    * @param pheromone
    */
   public void addLocalPheromone(double pheromone) {
-    _pheromone += pheromone;
+    this.pheromone += pheromone;
   }
 
   /**
    * Pheromone evaporation.
    */
   public void evaporateFromEdge(double evapoCoef) {
-    _pheromone = _pheromone * evapoCoef;
-    if (_pheromone < 0.00001) {
-      _pheromone = 0.00001;
+    pheromone = pheromone * evapoCoef;
+    if (pheromone < 0.00001) {
+      pheromone = 0.00001;
     }
   }
 
@@ -79,7 +79,7 @@ public class Edge {
    * @return - Edge length
    */
   public double getEdgePrice() {
-    return _edgePrice;
+    return edgePrice;
   }
 
   /**
@@ -88,7 +88,7 @@ public class Edge {
    * @param edgePrice - Edge length
    */
   public void setEdgePrice(double edgePrice) {
-    _edgePrice = edgePrice;
+    this.edgePrice = edgePrice;
   }
 
   /**
@@ -97,11 +97,13 @@ public class Edge {
    * @throws Exception
    */
   public Node getNode2(Node node1) throws Exception {
-    if(node1 != _node1 && node1 != _node2)
+    if (node1 != this.node1 && node1 != this.node2) {
       throw new Exception("Node is not related to the edge, id: " + node1.getID());
-    Node result = _node2;
-    if(result == node1)
-      result = _node1;
+    }
+    Node result = this.node2;
+    if (result == node1) {
+      result = this.node1;
+    }
     return result;
   }
 
@@ -111,13 +113,13 @@ public class Edge {
    * @return - Both nodes
    */
   public Node[] getNodes() {
-    return new Node[] {_node1, _node2};
+    return new Node[] {node1, node2};
   }
 
   @Override
   public int hashCode() {
-    int x = _node1.getID();
-    int y = _node2.getID();
+    int x = node1.getID();
+    int y = node2.getID();
     return x < y ? y * y + x + y : x * x + x + y;
   }
 
@@ -128,6 +130,6 @@ public class Edge {
 
   public String toString() {
     return String.format("%d->%d(%f, %f)", 
-        _node1.getID(), _node2.getID(), getEdgePrice(), getLocalPheromone());
+        node1.getID(), node2.getID(), getEdgePrice(), getLocalPheromone());
   }
 }
