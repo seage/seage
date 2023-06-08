@@ -47,7 +47,6 @@ public class Ant {
   protected double beta;
   protected double quantumPheromone;
 
-  protected HashSet<Node> availableNodes;
   private Random rand;
 
   public Ant() {
@@ -120,7 +119,6 @@ public class Ant {
     
     List<Edge> edgePath = new ArrayList<>();
     distanceTravelled = 0;
-    availableNodes = null;
 
     nodePath.add(startingNode);
 
@@ -209,9 +207,7 @@ public class Ant {
   }
 
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
-    if (availableNodes == null) {
-      availableNodes = new HashSet<Node>(graph.getNodes().values());
-    }
+    HashSet<Node> availableNodes = new HashSet<Node>(graph.getNodes().values());
     Node lastNode = nodePath.get(nodePath.size() - 1);
     availableNodes.remove(lastNode);   
     
