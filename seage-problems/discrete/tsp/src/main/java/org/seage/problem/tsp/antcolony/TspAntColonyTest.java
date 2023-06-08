@@ -88,14 +88,14 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // double quantumPheromone = 288.9555351673542;
     // double alpha = 1.0162687039555678, beta = 6.35356118801852;
 
-    int iterations = 1000;
+    int iterations = 10000;
     // Richard
-    int numAnts = 10;
+    int numAnts = 100;
     double alpha = 1.0;
-    double beta = 3.0;
-    double defaultPheromone = 1;
-    double localEvaporation = 0.1;
-    double quantumPheromone = 1;
+    double beta = 1.3;
+    double defaultPheromone = 0;
+    double localEvaporation = 0.95;
+    double quantumPheromone = 100;
     
     // ----
     TspGraph graph = new TspGraph(cities);
