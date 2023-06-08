@@ -86,7 +86,7 @@ public class AntTest {
     Edge edg = a.selectNextStep(graph, Arrays.asList(edges.get(0).getNodes()));
 
     assertEquals(2, edg.getNodes()[0].getID());
-    assertEquals(3, edg.getNodes()[0].getID());
+    assertEquals(3, edg.getNodes()[1].getID());
   }
 }
 
