@@ -33,13 +33,13 @@ import java.util.Random;
 
 /**
  * .
+ *
  * @author Martin Zaloga
  * @author Richard Malek (reworked 2021)
  */
 public class Ant {
 
   protected double distanceTravelled;
-  protected List<Edge> edgePath;
   protected List<Node> nodePath;
   protected List<Integer> initialPath;
 
@@ -66,7 +66,6 @@ public class Ant {
   public Ant(List<Integer> initialPath, long randSeed) {
     this.initialPath = initialPath;
     this.nodePath = new ArrayList<>();
-    this.edgePath = new ArrayList<>();
     this.rand = new Random(randSeed);
   }
 
@@ -84,8 +83,9 @@ public class Ant {
    */
   public List<Edge> doFirstExploration(Graph graph) throws Exception {
     this.nodePath = new ArrayList<>();
-    this.edgePath = new ArrayList<>();
     this.distanceTravelled = 0;
+
+    List<Edge> edgePath = new ArrayList<>();
     if (initialPath != null) {
      
       for (int i = 0; i < initialPath.size(); i++) {
@@ -104,7 +104,7 @@ public class Ant {
       edgePath.add(e);
     }
     distanceTravelled = getPathCost(graph, edgePath);
-    leavePheromone(graph);
+    leavePheromone(graph, edgePath);
 
     return edgePath;
   }
@@ -117,7 +117,8 @@ public class Ant {
    */
   protected List<Edge> explore(Graph graph, Node startingNode) throws Exception {
     nodePath.clear();
-    edgePath.clear();
+    
+    List<Edge> edgePath = new ArrayList<>();
     distanceTravelled = 0;
     availableNodes = null;
 
@@ -136,7 +137,7 @@ public class Ant {
       nextEdge = selectNextStep(graph, nodePath);
     }
     distanceTravelled = getPathCost(graph, edgePath);
-    leavePheromone(graph);
+    leavePheromone(graph, edgePath);
     return edgePath;
   }
 
@@ -144,7 +145,7 @@ public class Ant {
    * Pheromone leaving.
    * @throws Exception .
    */
-  protected void leavePheromone(Graph graph) throws Exception {
+  protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
     for (Edge edge : edgePath) {
       edge.addLocalPheromone(quantumPheromone * (edge.getEdgePrice() / distanceTravelled));
       if (!graph._edges.contains(edge)) {
@@ -219,6 +220,7 @@ public class Ant {
 
   /**
    * Next edges index calculation.
+   *
    * @return - Next edges index
    * @throws Exception .
    */
