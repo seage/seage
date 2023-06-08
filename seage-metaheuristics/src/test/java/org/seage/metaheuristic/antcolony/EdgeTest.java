@@ -28,7 +28,7 @@ class EdgeTest {
 
     set.add(e1);
     set.add(e2);
-    // Error expevted here
-    int a = 0;
+    
+    assertEquals(1, set.size());
   }
 }
