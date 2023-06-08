@@ -189,7 +189,7 @@ public class Ant {
       return null;
     }
 
-    // double[] probabilities = new double[nextAvailableNodes.size()];
+    List<Double> edgeCosts = new ArrayList<>();
     List<Edge> candidateEdges = new ArrayList<>();
     double sumCostEdges = 0.0;
     
@@ -207,27 +207,24 @@ public class Ant {
         e.addLocalPheromone(edgePheromone);
       }
       candidateEdges.add(e);
-      sumCostEdges += Math.pow(e.getLocalPheromone(), alpha) * Math.pow(1 / e.getEdgePrice(), beta);
+      double edgeCost = Math.pow(
+          e.getLocalPheromone(), alpha) * Math.pow(1 / e.getEdgePrice(), beta);
+      edgeCosts.add(edgeCost);
+      sumCostEdges += edgeCost;
     }
 
     // Throw exception if sum of all edges' prices is zero
     if (sumCostEdges == 0.0) {
       throw new ArithmeticException();
     }
-    
-    // Calculate the probability
-    List<Double> probabilities = new ArrayList<>();
-    for (Edge e : candidateEdges) {
-      probabilities.add(
-          Math.pow(e.getLocalPheromone(), alpha) 
-          * Math.pow(1 / e.getEdgePrice(), beta) / sumCostEdges);
-    }
 
     // Get next edge
     double randNum = rand.nextDouble();
+    double tmpProb;
     double tmpSum = 0.0;
-    for (int i = 0; i < probabilities.size(); i++) {
-      tmpSum += probabilities.get(i);
+    for (int i = 0; i < edgeCosts.size(); i++) {
+      tmpProb = (edgeCosts.get(i) / sumCostEdges);
+      tmpSum += tmpProb;
       if (tmpSum >= randNum) {
         return candidateEdges.get(i);
       }
