@@ -209,6 +209,9 @@ public class Ant {
       candidateEdges.add(e);
       double edgeCost = Math.pow(
           e.getLocalPheromone(), alpha) * Math.pow(1 / e.getEdgePrice(), beta);
+      if (edgeCost == 0) {
+        edgeCost = Math.pow(1 / e.getEdgePrice(), beta);
+      }
       edgeCosts.add(edgeCost);
       sumCostEdges += edgeCost;
     }
