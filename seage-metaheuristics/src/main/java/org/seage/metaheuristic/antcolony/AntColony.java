@@ -154,8 +154,8 @@ public class AntColony {
           continue;
         }      
         List<Edge> path = a.doFirstExploration(graph);
-        if (a.getDistanceTravelled() < globalBest) {
-          globalBest = a.getDistanceTravelled();      
+        if (a.getDistanceTravelled(graph, path) < globalBest) {
+          globalBest = a.getDistanceTravelled(graph, path);      
           bestPath = new ArrayList<>(path);
           bestAnt = a;
           eventProducer.fireNewBestSolutionFound();
@@ -169,7 +169,7 @@ public class AntColony {
   /**
    * Evaluation for each iteration.
    */
-  private void resolveRound(ArrayList<List<Edge>> antReports) {
+  private void resolveRound(ArrayList<List<Edge>> antReports) throws Exception {
     roundBest = Double.MAX_VALUE;
     boolean newBest = false;
     double pathLength = 0;
@@ -179,7 +179,7 @@ public class AntColony {
         bestPath = new ArrayList<>(path);
       }
 
-      pathLength = ants[counter].distanceTravelled;
+      pathLength = ants[counter].getDistanceTravelled(graph, path);
 
       if (pathLength < roundBest) {
         roundBest = pathLength;

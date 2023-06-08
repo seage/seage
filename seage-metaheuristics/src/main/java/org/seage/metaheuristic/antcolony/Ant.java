@@ -39,7 +39,6 @@ import java.util.Random;
  */
 public class Ant {
 
-  protected double distanceTravelled;
   protected List<Node> nodePath;
   protected List<Integer> initialPath;
 
@@ -82,7 +81,6 @@ public class Ant {
    */
   public List<Edge> doFirstExploration(Graph graph) throws Exception {
     this.nodePath = new ArrayList<>();
-    this.distanceTravelled = 0;
 
     List<Edge> edgePath = new ArrayList<>();
     if (initialPath != null) {
@@ -102,7 +100,6 @@ public class Ant {
       }
       edgePath.add(e);
     }
-    distanceTravelled = getPathCost(graph, edgePath);
     leavePheromone(graph, edgePath);
 
     return edgePath;
@@ -118,7 +115,6 @@ public class Ant {
     nodePath.clear();
     
     List<Edge> edgePath = new ArrayList<>();
-    distanceTravelled = 0;
 
     nodePath.add(startingNode);
 
@@ -134,7 +130,6 @@ public class Ant {
 
       nextEdge = selectNextStep(graph, nodePath);
     }
-    distanceTravelled = getPathCost(graph, edgePath);
     leavePheromone(graph, edgePath);
     return edgePath;
   }
@@ -145,7 +140,8 @@ public class Ant {
    */
   protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
     for (Edge edge : edgePath) {
-      edge.addLocalPheromone(quantumPheromone * (edge.getEdgePrice() / distanceTravelled));
+      edge.addLocalPheromone(quantumPheromone * (
+          edge.getEdgePrice() / getDistanceTravelled(graph, edgePath)));
       if (!graph._edges.contains(edge)) {
         graph.addEdge(edge);
       }
@@ -164,8 +160,9 @@ public class Ant {
     return idsPath;
   }
 
-  public double getDistanceTravelled() {
-    return distanceTravelled;
+  public double getDistanceTravelled(Graph graph, List<Edge> edgePath) throws Exception {
+
+    return getPathCost(graph, edgePath);
   }
 
   protected Edge selectNextStep(Graph graph, List<Node> nodePath) throws Exception {
@@ -208,8 +205,7 @@ public class Ant {
 
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
     HashSet<Node> availableNodes = new HashSet<Node>(graph.getNodes().values());
-    Node lastNode = nodePath.get(nodePath.size() - 1);
-    availableNodes.remove(lastNode);   
+    availableNodes.removeAll(nodePath);   
     
     return availableNodes;
   }
