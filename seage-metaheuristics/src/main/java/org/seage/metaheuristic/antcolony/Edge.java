@@ -118,7 +118,7 @@ public class Edge {
   public int hashCode() {
     int x = _node1.getID();
     int y = _node2.getID();
-    return x < y ? y * y + x : x * x + x + y;
+    return x < y ? y * y + x + y : x * x + x + y;
   }
 
   @Override
