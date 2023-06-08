@@ -189,34 +189,50 @@ public class Ant {
       return null;
     }
 
-    int i = 0;
-    double[] probabilities = new double[nextAvailableNodes.size()];
-    Edge[] candidateEdges = new Edge[nextAvailableNodes.size()];
+    // double[] probabilities = new double[nextAvailableNodes.size()];
+    List<Edge> candidateEdges = new ArrayList<>();
+    double sumCostEdges = 0.0;
     
-    // for each available node calculate probability
+    // Find all candidate edges
     for (Node n : nextAvailableNodes) {
       double edgePheromone = 0;
       double edgePrice = 0;
 
       Edge e = currentNode.getEdgeMap().get(n);
-      if (e != null) {
-        edgePheromone = e.getLocalPheromone();
-        edgePrice = e.getEdgePrice();
-      } else {
+      if (e == null) {
         edgePheromone = graph.getDefaultPheromone();
         edgePrice = getNodeDistance(graph, nodePath, n);
 
         e = new Edge(currentNode, n, edgePrice);
         e.addLocalPheromone(edgePheromone);
       }
+      candidateEdges.add(e);
+      sumCostEdges += Math.pow(e.getLocalPheromone(), alpha) * Math.pow(1 / e.getEdgePrice(), beta);
+    }
 
-      double p = Math.pow(edgePheromone, alpha) * Math.pow(1 / edgePrice, beta);
-      probabilities[i] = p;
-      candidateEdges[i] = e;
-      i++;
+    // Throw exception if sum of all edges' prices is zero
+    if (sumCostEdges == 0.0) {
+      throw new ArithmeticException();
     }
     
-    return candidateEdges[next(probabilities, rand.nextDouble())];
+    // Calculate the probability
+    List<Double> probabilities = new ArrayList<>();
+    for (Edge e : candidateEdges) {
+      probabilities.add(
+          Math.pow(e.getLocalPheromone(), alpha) 
+          * Math.pow(1 / e.getEdgePrice(), beta) / sumCostEdges);
+    }
+
+    // Get next edge
+    double randNum = rand.nextDouble();
+    double tmpSum = 0.0;
+    for (int i = 0; i < probabilities.size(); i++) {
+      tmpSum += probabilities.get(i);
+      if (tmpSum >= randNum) {
+        return candidateEdges.get(i);
+      }
+    }
+    return null;
   }
 
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
