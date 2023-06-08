@@ -132,6 +132,7 @@ public class Ant {
 
   /**
    * Pheromone leaving.
+   *
    * @throws Exception .
    */
   protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
@@ -235,33 +236,6 @@ public class Ant {
     availableNodes.removeAll(nodePath);   
     
     return availableNodes;
-  }
-
-  /**
-   * Next edges index calculation.
-   *
-   * @return - Next edges index
-   * @throws Exception .
-   */
-  protected static int next(double[] probabilities, double randomNumber) throws Exception {
-    double[] probs = new double[probabilities.length];
-    double sum = 0;
-    for (int i = 0; i < probs.length; i++) {
-      sum += probabilities[i]; 
-      probs[i] = sum;
-    }
-    if (sum == 0) {
-      throw new Exception("Unexpected value of sum: 0");
-    }
-    for (int i = 0; i < probs.length; i++) {
-      probs[i] /= sum;
-    }
-    for (int i = 0; i < probs.length; i++) {
-      if (randomNumber <= probs[i]) {
-        return i;
-      }
-    }
-    return 0;
   }
 
   public double getQuantumPheromone() {
