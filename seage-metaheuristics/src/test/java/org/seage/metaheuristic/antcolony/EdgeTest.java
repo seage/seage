@@ -1,6 +1,7 @@
 package org.seage.metaheuristic.antcolony;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.HashSet;
 import org.junit.jupiter.api.Test;
 
@@ -30,5 +31,7 @@ class EdgeTest {
     set.add(e2);
     
     assertEquals(1, set.size());
+    assertTrue(set.contains(e1));
+    assertTrue(set.contains(e2));
   }
 }
