@@ -90,8 +90,9 @@ public class JspAntColonyFactory implements IAlgorithmFactory<JspPhenotype, Ant>
           }
 
           nodes.add(0, 0);
-          ants[i] = new JspAnt(nodes, jobs, (JspPhenotypeEvaluator) phenotypeEvaluator);
-          ants[i].doFirstExploration(jspGraph);
+          ants[i] = new JspAnt(
+              graph.nodesToNodePath(nodes), 
+              jobs, (JspPhenotypeEvaluator) phenotypeEvaluator);
         }
       }
 

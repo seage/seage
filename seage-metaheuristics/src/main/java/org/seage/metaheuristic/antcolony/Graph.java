@@ -189,4 +189,9 @@ public class Graph {
         .map((Node n) -> n.getID())
         .collect(Collectors.toList());
   }
+
+
+  public List<Node> nodesToNodePath(List<Integer> nodes) {
+    return nodes.stream().map(n -> _nodes.get(n)).toList();
+  }
 }

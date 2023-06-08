@@ -43,13 +43,13 @@ public class SatAnt extends Ant {
 
   /**
    * .
-   * @param initialPath .
+   * @param initNodePath .
    * @param formula .
    * @param formulaEvaluator .
    */
   public SatAnt(
-      List<Integer> initialPath, Formula formula, FormulaEvaluator formulaEvaluator) {
-    super(initialPath);
+      List<Node> initNodePath, Formula formula, FormulaEvaluator formulaEvaluator) {
+    super(initNodePath);
     this.formula = formula;
     this.formulaEvaluator = formulaEvaluator;
   }

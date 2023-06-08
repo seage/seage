@@ -207,7 +207,7 @@ public class JspAntTest {
     graph.setDefaultPheromone(1);
 
     graph.getEdges().clear();
-    Ant a = new JspAnt(Arrays.asList(0, 101, 201), jobs, eval);
+    Ant a = new JspAnt(graph.nodesToNodePath(List.of(0, 101, 201)), jobs, eval);
     List<Edge> edges = a.doFirstExploration(graph);
     assertNotNull(edges);
     assertEquals(2, edges.size());

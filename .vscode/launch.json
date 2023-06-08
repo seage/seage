@@ -67,18 +67,19 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "env": {
-        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage",
+        "LOG_LEVEL": "debug"
       },
       "args": [
         "experiment-single-default",
         "-a",
         "AntColony",
         "-i",
-        "TSP:small",
+        "TSP:usa13509-hyflex-8",
         "-t",
         "10",
         "-n",
-        "10",
+        "1",
         "-s",
         "0"
       ]
@@ -91,20 +92,21 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "env": {
-        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage",
+        "LOG_LEVEL": "debug"
       },
       "args": [
         "experiment-single-feedback",
         "-a",
         "AntColony",
         "-i",
-        "TSP:small",
+        "TSP:usa13509-hyflex-8",
         "-t",
-        "10",
+        "30",
         "-n",
-        "5",
+        "1",
         "-s",
-        "0.0"
+        "0"
       ]
     },
     {

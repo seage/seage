@@ -71,8 +71,9 @@ public class FspAntColonyFactory extends JspAntColonyFactory {
           }
           // Add the starting node
           nodes.add(0, 0);
-          ants[i] = new FspAnt(nodes, jobs, (JspPhenotypeEvaluator) phenotypeEvaluator);
-          ants[i].doFirstExploration(fspGraph);
+          ants[i] = new FspAnt(
+              graph.nodesToNodePath(nodes), 
+              jobs, (JspPhenotypeEvaluator) phenotypeEvaluator);
         }
       }
 

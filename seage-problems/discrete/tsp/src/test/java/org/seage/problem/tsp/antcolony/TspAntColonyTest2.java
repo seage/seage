@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.metaheuristic.antcolony.Ant;
@@ -27,10 +28,9 @@ public class TspAntColonyTest2 {
     TspGraph graph = new TspGraph(cities);
     AntColony colony = new AntColony(graph);
     TspOptimalTourBerlin52 optimum = new TspOptimalTourBerlin52();
-    ArrayList<Integer> optimalTour = new ArrayList<>(Arrays.asList(optimum.OptimalTour));
+    List<Integer> optimalTour = new ArrayList<>(List.of(optimum.OptimalTour));
     optimalTour.add(1);
-    Ant ant = new TspAnt(optimalTour, cities);
-    ant.doFirstExploration(graph);
+    Ant ant = new TspAnt(graph.nodesToNodePath(optimalTour), cities);
     colony.setParameters(1, 1, 1, 1, 1, 0.8);
     colony.startExploring(graph.getNodes().get(1), new Ant[] {ant});
 

@@ -41,7 +41,6 @@ import java.util.Random;
 public class Ant {
 
   protected List<Node> nodePath;
-  protected List<Integer> initialPath;
 
   protected double alpha;
   protected double beta;
@@ -53,8 +52,8 @@ public class Ant {
     this(null, System.currentTimeMillis());
   }
 
-  public Ant(List<Integer> initialPath) {
-    this(initialPath, System.currentTimeMillis());
+  public Ant(List<Node> initNodePath) {
+    this(initNodePath, System.currentTimeMillis());
   }
 
   /**
@@ -63,10 +62,13 @@ public class Ant {
    * @param initialPath . 
    * @param randSeed .
    */
-  public Ant(List<Integer> initialPath, long randSeed) {
-    this.initialPath = initialPath;
+  public Ant(List<Node> initNodePath, long randSeed) {    
     this.nodePath = new ArrayList<>();
     this.rand = new Random(randSeed);
+    
+    if (initNodePath != null) {
+      nodePath.addAll(initNodePath);
+    }
   }
 
   void setParameters(double alpha, double beta, double quantumPheromone) {
@@ -82,15 +84,7 @@ public class Ant {
    * @throws Exception .
    */
   public List<Edge> doFirstExploration(Graph graph) throws Exception {
-    this.nodePath = new ArrayList<>();
-
     List<Edge> edgePath = new ArrayList<>();
-    if (initialPath != null) {
-     
-      for (int i = 0; i < initialPath.size(); i++) {
-        this.nodePath.add(graph.getNodes().get(initialPath.get(i)));
-      }
-    }   
     
     for (int i = 0; i < nodePath.size() - 1; i++) {
       Node n1 = nodePath.get(i);

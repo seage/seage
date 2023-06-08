@@ -11,10 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class AntTest {
-  Graph graph = new Graph(Arrays.asList(1, 2, 3));
+  Graph graph;
 
   @BeforeEach
-  public void init() throws Exception {    
+  public void init() throws Exception {
+    graph = new Graph(List.of(1, 2, 3));
     graph.setDefaultPheromone(1);    
   }
 
@@ -38,7 +39,7 @@ public class AntTest {
     graph.addEdge(new Edge(nodes.get(1), nodes.get(2), 1));
     graph.addEdge(new Edge(nodes.get(2), nodes.get(3), 1));
 
-    Ant a = new Ant(Arrays.asList(1, 2, 3));
+    Ant a = new Ant(graph.nodesToNodePath(List.of(1, 2, 3)));
     a.setParameters(1, 1, 20);
     List<Edge> edges = a.doFirstExploration(graph);
     assertNotNull(edges);
@@ -53,7 +54,7 @@ public class AntTest {
   @Test
   public void testAntFirstExplorationWithInitPathNoEdges() throws Exception {
     graph.getEdges().clear();
-    Ant a = new Ant(Arrays.asList(1, 2, 3));
+    Ant a = new Ant(graph.nodesToNodePath(List.of(1, 2, 3)));
     a.setParameters(1, 1, 20);
     List<Edge> edges = a.doFirstExploration(graph);
     assertNotNull(edges);
@@ -82,7 +83,7 @@ public class AntTest {
   public void testSelectNextStep() throws Exception{
     graph.getEdges().clear();
 
-    Ant a = new Ant(Arrays.asList(1, 2));
+    Ant a = new Ant(graph.nodesToNodePath(List.of(1, 2, 3)));
     a.setParameters(1, 1, 20);
     List<Edge> edges = a.doFirstExploration(graph);
     assertNotNull(edges);

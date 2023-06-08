@@ -54,16 +54,16 @@ public class JspAnt extends Ant {
 
   /**
    * .
-   * @param initialPath .
+   * @param initNodePath .
    * @param jobs .
    * @param evaluator .
    */
   public JspAnt(
-      List<Integer> initialPath,
+      List<Node> initNodePath,
       JspJobsDefinition jobs, 
       JspPhenotypeEvaluator evaluator
   ) {
-    super(initialPath);
+    super(initNodePath);
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;
 

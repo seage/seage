@@ -47,8 +47,7 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
 
             nodes.add((boolean) source[i].getSolution()[j - 1] == true ? j : -j);
           }
-          ants[i] = new SatAnt(nodes, formula, evaluator);
-          ants[i].doFirstExploration(satGraph);
+          ants[i] = new SatAnt(graph.nodesToNodePath(nodes), formula, evaluator);
         }
       }
 
