@@ -93,16 +93,16 @@
       "cwd": "${workspaceFolder}",
       "env": {
         "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage",
-        "LOG_LEVEL": "debug"
+        // "LOG_LEVEL": "debug"
       },
       "args": [
         "experiment-single-feedback",
         "-a",
         "AntColony",
         "-i",
-        "TSP:usa13509-hyflex-8",
+        "TSP:small",
         "-t",
-        "30",
+        "20",
         "-n",
         "1",
         "-s",

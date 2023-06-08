@@ -59,7 +59,7 @@ public class Ant {
   /**
    * .
    *
-   * @param initialPath . 
+   * @param initNodePath . 
    * @param randSeed .
    */
   public Ant(List<Node> initNodePath, long randSeed) {    
