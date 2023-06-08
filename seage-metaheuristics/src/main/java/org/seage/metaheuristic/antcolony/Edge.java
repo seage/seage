@@ -123,5 +123,10 @@ public class Edge {
     int a = this._node1.getID();
     int b = this._node2.getID();
     return a >= b ? a * a + a + b : a + b * b;
-  } 
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return obj != null ? this.hashCode() == obj.hashCode() : false;
+  }
 }
