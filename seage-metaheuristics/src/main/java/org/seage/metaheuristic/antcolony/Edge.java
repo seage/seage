@@ -114,7 +114,24 @@ public class Edge {
     return new Node[] {_node1, _node2};
   }
 
+  @Override
+  public int hashCode() {
+    int x = _node1.getID();
+    int y = _node2.getID();
+    return x < y ? y * y + x : x * x + x + y;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (!(o instanceof Node)) {
+      return false;
+    }
+    Node n = (Node) o;
+    return this.hashCode() == n.hashCode();
+  }
+
   public String toString() {
-    return String.format("%d->%d(%f, %f)", _node1.getID(), _node2.getID(), getEdgePrice(), getLocalPheromone());
+    return String.format("%d->%d(%f, %f)", 
+        _node1.getID(), _node2.getID(), getEdgePrice(), getLocalPheromone());
   }
 }
