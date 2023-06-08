@@ -60,5 +60,18 @@ public class AntTest {
     assertEquals(10, graph.getEdges().get(0).getLocalPheromone());
     assertEquals(10, graph.getEdges().get(1).getLocalPheromone());
   }
+
+  @Test
+  public void testNextEdge() throws Exception {
+    double[] probs = new double[]{0.3, 0.1, 0.4, 0.2};
+    assertEquals(0, Ant.next(probs, 0.2));
+    assertEquals(0, Ant.next(probs, 0.3));
+    assertEquals(1, Ant.next(probs, 0.301));
+    assertEquals(1, Ant.next(probs, 0.4));
+    assertEquals(2, Ant.next(probs, 0.5));
+    assertEquals(2, Ant.next(probs, 0.8));
+    assertEquals(3, Ant.next(probs, 0.801));
+    assertEquals(3, Ant.next(probs, 1.0));
+  }
 }
 

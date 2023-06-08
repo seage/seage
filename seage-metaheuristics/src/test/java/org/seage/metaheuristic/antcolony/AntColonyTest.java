@@ -17,15 +17,19 @@
  * along with SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
+
 package org.seage.metaheuristic.antcolony;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
+/**
+ * .
+ */
 public class AntColonyTest {
 
   class TestAnt extends Ant {
@@ -36,16 +40,16 @@ public class AntColonyTest {
 
     @Override
     public double getNodeDistance(Graph graph, List<Node> nodePath, Node node) {
-      TestNode n1 = (TestNode)nodePath.get(nodePath.size()-1);
-      TestNode n2 = (TestNode)node;
+      TestNode n1 = (TestNode) nodePath.get(nodePath.size() - 1);
+      TestNode n2 = (TestNode) node;
 
-      return Math.sqrt(Math.pow(n1.x-n2.x, 2) + Math.pow(n1.y-n2.y, 2));
+      return Math.sqrt(Math.pow(n1.x - n2.x, 2) + Math.pow(n1.y - n2.y, 2));
     }
     
     @Override
     protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
       var result = super.getAvailableNodes(graph, nodePath);
-      if (result.size() == 0 && nodePath.get(0) != nodePath.get(nodePath.size()-1)) {
+      if (result.size() == 0 && nodePath.get(0) != nodePath.get(nodePath.size() - 1)) {
         result.add(graph.getNodes().get(1));
       }
       
@@ -54,7 +58,7 @@ public class AntColonyTest {
 
   }
 
-  class TestNode extends Node{
+  class TestNode extends Node {
     public double x;
     public double y;
 
@@ -64,15 +68,20 @@ public class AntColonyTest {
       this.y = y;
     }  
   }
-  //              ^
-  //              |
-  //  [-1, 1] X4  -   X1 [1, 1]
-  //              |
-  //       <--|---|---|--->
-  //              |   
-  //  [-1,-1] X3  -   X2 [1,-1]
-  //              |
-  //              v
+
+  /**              ^
+   *              |
+   *  [-1, 1] X4  -   X1 [1, 1]
+   *              |
+   *       <--|---|---|--->
+   *              |   
+   *  [-1,-1] X3  -   X2 [1,-1]
+   *              |
+   *              v
+   * .
+   *
+   * @return.
+   */
   private Graph createGraph() {
     Graph graph = new Graph();
     graph.getNodes().put(1, new TestNode(1,  1.0,  1.0));
@@ -122,18 +131,5 @@ public class AntColonyTest {
     assertEquals(8, colony.getGlobalBest());
     assertEquals(4, colony.getBestPath().size());
     assertEquals(6, graph.getEdges().size());
-  }
-
-  @Test
-  public void testNextEdge() throws Exception {
-    double[] probs = new double[]{0.3, 0.1, 0.4, 0.2};
-    assertEquals(0, Ant.next(probs, 0.2));
-    assertEquals(0, Ant.next(probs, 0.3));
-    assertEquals(1, Ant.next(probs, 0.301));
-    assertEquals(1, Ant.next(probs, 0.4));
-    assertEquals(2, Ant.next(probs, 0.5));
-    assertEquals(2, Ant.next(probs, 0.8));
-    assertEquals(3, Ant.next(probs, 0.801));
-    assertEquals(3, Ant.next(probs, 1.0));
   }
 }
