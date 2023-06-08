@@ -96,13 +96,12 @@ public class AntColony {
    */
   public void setParameters(
       int numIterations, double alpha, double beta, double quantumPheromone,
-      double defaultPheromone, double evaporCoeff) throws Exception {
+      double evaporCoeff) throws Exception {
     this.numIterations = numIterations;
     this.alpha = alpha;
     this.beta = beta;
     this.quantumPheromone = quantumPheromone;
     graph.setEvaporCoeff(evaporCoeff);
-    graph.setDefaultPheromone(defaultPheromone);
   }
 
   /**

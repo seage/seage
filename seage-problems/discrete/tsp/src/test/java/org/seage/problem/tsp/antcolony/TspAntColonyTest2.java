@@ -31,7 +31,7 @@ public class TspAntColonyTest2 {
     List<Integer> optimalTour = new ArrayList<>(List.of(optimum.OptimalTour));
     optimalTour.add(1);
     Ant ant = new TspAnt(graph.nodesToNodePath(optimalTour), cities);
-    colony.setParameters(1, 1, 1, 1, 1, 0.8);
+    colony.setParameters(1, 1, 1, 1, 0.8);
     colony.startExploring(graph.getNodes().get(1), new Ant[] {ant});
 
     assertEquals(optimalTour, Graph.edgeListToNodeIds(colony.getBestPath()));

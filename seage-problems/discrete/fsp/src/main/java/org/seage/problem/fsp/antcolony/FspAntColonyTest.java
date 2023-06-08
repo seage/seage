@@ -165,7 +165,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     log.info("Loaded ...");
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
-    colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone,
+    colony.setParameters(iterations, alpha, beta, quantumPheromone,
         localEvaporation);
 
     Ant[] ants = new Ant[numAnts];

@@ -98,11 +98,11 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
     int iterationCount = algParams.getValueInt("iterationCount");
     double alpha = algParams.getValueDouble("alpha");
     double beta = algParams.getValueDouble("beta");
-    double defaultPheromone = algParams.getValueDouble("defaultPheromone");
+    // double defaultPheromone = algParams.getValueDouble("defaultPheromone");
     double quantumOfPheromone = algParams.getValueDouble("quantumOfPheromone");
     double localEvaporation = algParams.getValueDouble("localEvaporation");
     antColony.setParameters(
-        iterationCount, alpha, beta, quantumOfPheromone, defaultPheromone, localEvaporation);
+        iterationCount, alpha, beta, quantumOfPheromone, localEvaporation);
   }
 
   @Override

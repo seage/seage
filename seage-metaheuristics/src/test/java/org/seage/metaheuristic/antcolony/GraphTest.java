@@ -13,8 +13,7 @@ public class GraphTest {
   Graph graph = new Graph(Arrays.asList(1, 2, 3));
 
   @BeforeEach
-  public void init() throws Exception {    
-    graph.setDefaultPheromone(1);
+  public void init() throws Exception { 
   }
 
   @Test

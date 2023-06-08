@@ -204,7 +204,6 @@ public class JspAntTest {
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     JspGraph graph = new JspGraph(jobs, eval);
-    graph.setDefaultPheromone(1);
 
     graph.getEdges().clear();
     Ant a = new JspAnt(graph.nodesToNodePath(List.of(0, 101, 201)), jobs, eval);
@@ -221,7 +220,6 @@ public class JspAntTest {
     ProblemInfo pi = problemProvider.getProblemInfo();
     JspPhenotypeEvaluator eval = new JspPhenotypeEvaluator(pi, jobs);
     JspGraph graph = new JspGraph(jobs, eval);
-    graph.setDefaultPheromone(1);
 
     graph.getEdges().clear();
     JspAnt a = new JspAnt(null, jobs, eval);

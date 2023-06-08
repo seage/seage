@@ -16,7 +16,6 @@ public class AntTest {
   @BeforeEach
   public void init() throws Exception {
     graph = new Graph(List.of(1, 2, 3));
-    graph.setDefaultPheromone(1);    
   }
 
   @Test

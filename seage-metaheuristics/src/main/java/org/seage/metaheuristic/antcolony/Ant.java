@@ -115,7 +115,7 @@ public class Ant {
     nodePath.add(startingNode);
 
     Node currentNode = startingNode;
-    Edge nextEdge = selectOldNextStep(graph, nodePath);
+    Edge nextEdge = selectNextStep(graph, nodePath);
 
     while (nextEdge != null) {      
       Node nextNode = nextEdge.getNode2(currentNode);
@@ -124,7 +124,7 @@ public class Ant {
       nodePath.add(nextNode);
       currentNode = nextNode;
 
-      nextEdge = selectOldNextStep(graph, nodePath);
+      nextEdge = selectNextStep(graph, nodePath);
     }
     leavePheromone(graph, edgePath);
     return edgePath;
@@ -191,16 +191,13 @@ public class Ant {
     
     // Find all candidate edges
     for (Node n : nextAvailableNodes) {
-      double edgePheromone = 0;
       double edgePrice = 0;
 
       Edge e = currentNode.getEdgeMap().get(n);
       if (e == null) {
-        edgePheromone = graph.getDefaultPheromone();
         edgePrice = getNodeDistance(graph, nodePath, n);
 
         e = new Edge(currentNode, n, edgePrice);
-        e.addLocalPheromone(edgePheromone);
       }
       candidateEdges.add(e);
       double edgeCost = Math.pow(
@@ -245,70 +242,4 @@ public class Ant {
   public double getNodeDistance(Graph graph, List<Node> nodePath, Node node) {
     return 1.0;
   }
-
-  protected Edge selectOldNextStep(Graph graph, List<Node> nodePath) throws Exception {
-    Node currentNode = nodePath.get(nodePath.size() - 1);
-    HashSet<Node> nextAvailableNodes = getAvailableNodes(graph, nodePath);
-
-    if (nextAvailableNodes.isEmpty()) {
-      return null;
-    }
-
-    int i = 0;
-    double[] probabilities = new double[nextAvailableNodes.size()];
-    Edge[] candidateEdges = new Edge[nextAvailableNodes.size()];
-    
-    // for each available node calculate probability
-    for (Node n : nextAvailableNodes) {
-      double edgePheromone = 0;
-      double edgePrice = 0;
-
-      Edge e = currentNode.getEdgeMap().get(n);
-      if (e != null) {
-        edgePheromone = e.getLocalPheromone();
-        edgePrice = e.getEdgePrice();
-      } else {
-        edgePheromone = graph.getDefaultPheromone();
-
-        edgePrice = getNodeDistance(graph, nodePath, n);
-        e = new Edge(currentNode, n, edgePrice);
-        e.setEdgePrice(edgePrice);
-        e.addLocalPheromone(graph.getDefaultPheromone());
-      }
-
-      double p = Math.pow(edgePheromone, alpha) * Math.pow(1 / edgePrice, beta);
-      probabilities[i] = p;
-      candidateEdges[i] = e;
-      i++;
-    }
-    
-    return candidateEdges[next(probabilities, rand.nextDouble())];
-  }
-
-  /**
-   * Next edges index calculation.
-   * @return - Next edges index
-   * @throws Exception .
-   */
-  protected static int next(double[] probabilities, double randomNumber) throws Exception {
-    double[] probs = new double[probabilities.length];
-    double sum = 0;
-    for (int i = 0; i < probs.length; i++) {
-      sum += probabilities[i]; 
-      probs[i] = sum;
-    }
-    if (sum == 0) {
-      throw new Exception("Unexpected value of sum: 0");
-    }
-    for (int i = 0; i < probs.length; i++) {
-      probs[i] /= sum;
-    }
-    for (int i = 0; i < probs.length; i++) {
-      if (randomNumber <= probs[i]) {
-        return i;
-      }
-    }
-    return 0;
-  }
-
 }

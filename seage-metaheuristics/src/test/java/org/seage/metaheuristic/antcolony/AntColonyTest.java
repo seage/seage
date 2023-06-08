@@ -109,7 +109,7 @@ public class AntColonyTest {
     Graph graph = createGraph();
     AntColony colony = new AntColony(graph);
     TestAnt ant = new TestAnt(graph, 11);
-    colony.setParameters(1, 1, 1, 1, 1, 0.8);
+    colony.setParameters(1, 1, 1, 1, 0.8);
     colony.startExploring(graph.getNodes().get(1), new Ant[] {ant});
 
     assertEquals(ant, colony.getBestAnt());
@@ -124,7 +124,7 @@ public class AntColonyTest {
     AntColony colony = new AntColony(graph);
     Ant ant = new TestAnt(graph, 8);
     Ant ant2 = new TestAnt(graph, 3);
-    colony.setParameters(1, 1, 1, 1, 1, 0.8);
+    colony.setParameters(1, 1, 1, 1, 0.8);
     colony.startExploring(graph.getNodes().get(1), new Ant[] {ant, ant2});
 
     assertEquals(ant, colony.getBestAnt());

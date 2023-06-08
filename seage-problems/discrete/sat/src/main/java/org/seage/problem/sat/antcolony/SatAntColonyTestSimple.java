@@ -71,7 +71,7 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
     FormulaEvaluator evaluator = new FormulaEvaluator(formula);
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
-    colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
+    colony.setParameters(iterations, alpha, beta, quantumPheromone, evaporation);
 
     Ant[] ants = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {

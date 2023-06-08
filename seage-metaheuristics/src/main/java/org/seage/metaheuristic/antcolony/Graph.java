@@ -43,7 +43,6 @@ public class Graph {
   protected HashMap<Integer, Node> _nodes;
   protected HashSet<Edge> _edges;
   protected double _evaporCoeff = 0.95;
-  private double _defaultPheromone;
 
   protected Graph() {
     _nodes = new HashMap<Integer, Node>();
@@ -84,14 +83,6 @@ public class Graph {
     for (Edge e : getEdges()) {
       e.evaporateFromEdge(_evaporCoeff);
     }
-  }
-
-  public double getDefaultPheromone() {
-    return _defaultPheromone;
-  }
-
-  public void setDefaultPheromone(double defaultPheromone) {
-    _defaultPheromone = defaultPheromone;
   }
 
   public void setEvaporCoeff(double evaporCoeff) {
