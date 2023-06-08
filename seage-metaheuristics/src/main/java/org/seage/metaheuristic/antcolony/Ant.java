@@ -17,6 +17,7 @@
  */
 
 /**
+ * .
  * Contributors:
  *     Richard Malek
  *     - Initial implementation
@@ -58,6 +59,7 @@ public class Ant {
 
   /**
    * .
+   *
    * @param initialPath . 
    * @param randSeed .
    */
@@ -107,7 +109,7 @@ public class Ant {
 
   /**
    * Ant exploring the graph.
-   * 
+   *
    * @return Ant's path
    * @throws Exception .
    */
@@ -150,7 +152,8 @@ public class Ant {
 
   /**
    * .
-   * @return
+   *
+   * @return Node ids along the path.
    */
   public List<Integer> getNodeIDsAlongPath() {
     List<Integer> idsPath = new ArrayList<>();
@@ -204,7 +207,7 @@ public class Ant {
   }
 
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
-    HashSet<Node> availableNodes = new HashSet<Node>(graph.getNodes().values());
+    HashSet<Node> availableNodes = new HashSet<>(graph.getNodes().values());
     availableNodes.removeAll(nodePath);   
     
     return availableNodes;
@@ -243,6 +246,7 @@ public class Ant {
 
   /**
    * Method for getting the path cost.
+   *
    * @param path .
    * @return .
    * @throws Exception Exception when getting the edge price.
