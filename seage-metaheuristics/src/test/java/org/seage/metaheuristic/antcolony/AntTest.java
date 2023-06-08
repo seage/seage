@@ -73,5 +73,20 @@ public class AntTest {
     assertEquals(3, Ant.next(probs, 0.801));
     assertEquals(3, Ant.next(probs, 1.0));
   }
+
+  @Test
+  public void testSelectNextStep() throws Exception{
+    graph.getEdges().clear();
+
+    Ant a = new Ant(Arrays.asList(1, 2));
+    a.setParameters(1, 1, 20);
+    List<Edge> edges = a.doFirstExploration(graph);
+    assertNotNull(edges);
+
+    Edge edg = a.selectNextStep(graph, Arrays.asList(edges.get(0).getNodes()));
+
+    assertEquals(2, edg.getNodes()[0].getID());
+    assertEquals(3, edg.getNodes()[1].getID());
+  }
 }
 
