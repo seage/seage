@@ -62,10 +62,10 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   public static void main(String[] args) {
     try {
-      instanceID = instanceID.endsWith(".tsp") ? instanceID : instanceID + ".tsp";
+      String instanceFilename = instanceID.endsWith(".tsp") ? instanceID : instanceID + ".tsp";
       String path = String.format(
           "seage-problems/discrete/tsp/src/main/resources/org/seage/problem/tsp/instances/%s",
-          instanceID);// args[0];
+          instanceFilename);// args[0];
       new TspAntColonyTest().run(path);
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
@@ -93,16 +93,12 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // double quantumPheromone = 288.9555351673542;
     // double alpha = 1.0162687039555678, beta = 6.35356118801852;
 
-    TspProblemProvider provider = new TspProblemProvider();
-    ProblemInstance problemInstance = provider.initProblemInstance(
-        provider.getProblemInfo().getProblemInstanceInfo(instanceID));
-
     int iterations = 10000;
     // Richard
     int numAnts = 50;
     double alpha = 1.0;
     double beta = 5.3;
-    double defaultPheromone = 0;
+    // double defaultPheromone = 0;
     double localEvaporation = 0.95;
     double quantumPheromone = 10 * numAnts;
     
@@ -132,6 +128,9 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     Integer[] p = (Integer[]) tour.stream().toArray(Integer[]::new);
     TspPhenotype result = new TspPhenotype(p);
 
+    TspProblemProvider provider = new TspProblemProvider();
+    ProblemInstance problemInstance = provider.initProblemInstance(
+        provider.getProblemInfo().getProblemInstanceInfo(instanceID));
     IPhenotypeEvaluator<TspPhenotype> evaluator = provider.initPhenotypeEvaluator(
         problemInstance);
     
