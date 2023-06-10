@@ -24,6 +24,8 @@ package org.seage.problem.tsp.antcolony;
 
 import java.io.FileInputStream;
 import java.util.List;
+import org.seage.aal.algorithm.IPhenotypeEvaluator;
+import org.seage.aal.problem.ProblemInstance;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
@@ -31,6 +33,8 @@ import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.tsp.City;
 import org.seage.problem.tsp.CityProvider;
+import org.seage.problem.tsp.TspPhenotype;
+import org.seage.problem.tsp.TspProblemProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,6 +93,11 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // double quantumPheromone = 288.9555351673542;
     // double alpha = 1.0162687039555678, beta = 6.35356118801852;
 
+    TspProblemProvider provider = new TspProblemProvider();
+    ProblemInstance problemInstance = provider.initProblemInstance(provider.getProblemInfo().getProblemInstanceInfo("berlin52"));
+
+    IPhenotypeEvaluator<TspPhenotype> evaluator = provider.initPhenotypeEvaluator(problemInstance);
+
     int iterations = 10000;
     // Richard
     int numAnts = 50;
@@ -96,7 +105,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     double beta = 5.3;
     double defaultPheromone = 0;
     double localEvaporation = 0.95;
-    double quantumPheromone = 10 * numAnts;
+    double quantumPheromone = numAnts;
     
     // ----
     TspGraph graph = new TspGraph(cities);
@@ -114,6 +123,20 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     long t1 = System.currentTimeMillis();
     colony.startExploring(graph.getNodes().get(1), ants);
     long t2 = System.currentTimeMillis();
+
+    List<Integer> tour = Graph.edgeListToNodeIds(colony.getBestPath());
+    String line = "";
+    for (Integer t : tour) {
+      line += t + " ";
+    }
+
+    Integer[] p = (Integer[]) tour.stream().toArray(Integer[]::new);
+    TspPhenotype result = new TspPhenotype(p);
+
+    double[] objVals = evaluator.evaluate(result);
+
+    log.info("Global score: {}", objVals[1]);
+
     // graph.printPheromone();
     log.info("Global best: {}", colony.getGlobalBest());
     log.info("Global best hash: {}", colony.getBestPath().hashCode());
@@ -121,11 +144,6 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     log.info("Nodes: {}", graph.getNodes().size());
     log.info("Time: {} ms ", (t2 - t1));
 
-    List<Integer> tour = Graph.edgeListToNodeIds(colony.getBestPath());
-    String line = "";
-    for (Integer t : tour) {
-      line += t + " ";
-    }
     log.info("{}", line);
     // TODO: Fix TspPhenotypeEvaluator
     // log.info(new TspPhenotypeEvaluator(pro).evaluate(new TspPhenotype(tour))[0]);
