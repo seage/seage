@@ -137,11 +137,10 @@ public class Ant {
    */
   protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
     double distanceTravelled = getDistanceTravelled(graph, edgePath);
-    for (Edge edge : edgePath) {  
-      double res = quantumPheromone * (
-          edge.getEdgeCost() / distanceTravelled);
-      edge.addLocalPheromone(res);
-      if (!graph._edges.contains(edge)) { // TODO: Refactor, ineffective
+    for (Edge edge : edgePath) {
+      double newPheromone = quantumPheromone * (edge.getEdgeCost() / distanceTravelled);
+      edge.addLocalPheromone(newPheromone);
+      if (!graph._edges.contains(edge)) {
         graph.addEdge(edge);
       }
     }
@@ -201,8 +200,8 @@ public class Ant {
         e = new Edge(currentNode, n, nodeDistance);
       }
       candidateEdges.add(e);
-      double edgeCost = Math.pow(
-          e.getLocalPheromone(), alpha) * Math.pow(1 / e.getEdgeCost(), beta);
+      double edgeCost = Math.pow(e.getLocalPheromone(), alpha)
+                      * Math.pow(1 / e.getEdgeCost(), beta);
       if (edgeCost == 0) {
         edgeCost = Math.pow(1 / e.getEdgeCost(), beta);
       }
