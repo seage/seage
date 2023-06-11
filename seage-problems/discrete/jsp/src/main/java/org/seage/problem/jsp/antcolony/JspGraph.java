@@ -104,8 +104,8 @@ public class JspGraph extends Graph {
     }
     ArrayList<Edge> edgesList = new ArrayList<>(_edges);
     edgesList.sort((e1, e2) -> {
-      double a = e1.getLocalPheromone() / e1.getEdgePrice();
-      double b = e2.getLocalPheromone() / e2.getEdgePrice();
+      double a = e1.getLocalPheromone() / e1.getEdgeCost();
+      double b = e2.getLocalPheromone() / e2.getEdgeCost();
       if (a > b) {
         return 1;
       }

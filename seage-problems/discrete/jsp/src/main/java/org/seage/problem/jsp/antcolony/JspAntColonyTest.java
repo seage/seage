@@ -98,7 +98,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     double sum = 0;
     double edges = 0;
     for (Edge edge : graph.getEdges()) {
-      sum += edge.getEdgePrice();
+      sum += edge.getEdgeCost();
       edges++;
     }
     log.info("{}", sum);
@@ -265,7 +265,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // var edges = e.getAntColony().getGraph().getEdges();
     // for(int i=0;i<edges.size();i++) {
     // Edge ed = edges.get(i);
-    // log.info(String.format(" - %s (%f, %f)", ed, ed.getEdgePrice(),
+    // log.info(String.format(" - %s (%f, %f)", ed, ed.getEdgeCost(),
     // ed.getLocalPheromone()));
     // }
   }

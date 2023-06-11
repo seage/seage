@@ -45,19 +45,18 @@ import org.slf4j.LoggerFactory;
 public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   private static final Logger log = LoggerFactory.getLogger(TspAntColonyTest.class.getName());
   private int edges;
-  //  private static String instanceID = "burma14"; // ?
-  //  private static String instanceID = "ulysses16"; // ?
-  //  private static String instanceID = "berlin52"; // 7542
-  private static String instanceID = "eil51"; // 426
-  //  private static String instanceID = "ch130"; // 6110
-  //  private static String instanceID = "lin318"; // 42029
-  //  private static String instanceID = "pcb442"; // 50778
-  //  private static String instanceID = "u574"; // 36905
-  //  private static String instanceID = "rat575-hyflex-2"; // 6773 (8255)
-  //  private static String instanceID = "usa13509-hyflex-8"; // 19982859
-
-  //  private static String instanceID = "../test-instances/rm4.tsp";
-  //  private static String instanceID = "../test-instances/do8.tsp";
+  // private static String instanceID = "burma14"; // ?
+  // private static String instanceID = "ulysses16"; // ?
+  private static String instanceID = "berlin52"; // 7542
+  // private static String instanceID = "eil51"; // 426
+  // private static String instanceID = "ch130"; // 6110
+  // private static String instanceID = "lin318"; // 42029
+  // private static String instanceID = "pcb442"; // 50778
+  // private static String instanceID = "u574"; // 36905
+  // private static String instanceID = "rat575-hyflex-2"; // 6773 (8255)
+  // private static String instanceID = "usa13509-hyflex-8"; // 19982859
+  // private static String instanceID = "../test-instances/rm4.tsp";
+  // private static String instanceID = "../test-instances/do8.tsp";
   
 
   public static void main(String[] args) {
@@ -100,7 +99,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     double beta = 5.3;
     // double defaultPheromone = 0;
     double localEvaporation = 0.95;
-    double quantumPheromone = 10 * numAnts;
+    double quantumPheromone = numAnts;
     
     // ----
     TspGraph graph = new TspGraph(cities);

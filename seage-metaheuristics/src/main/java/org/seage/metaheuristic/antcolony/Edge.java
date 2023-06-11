@@ -35,13 +35,13 @@ package org.seage.metaheuristic.antcolony;
 public class Edge {
   private Node node1;
   private Node node2;
-  private double edgePrice;
+  private double edgeCost;
   private double pheromone;
 
-  public Edge(Node node1, Node node2, double edgePrice) {
+  public Edge(Node node1, Node node2, double edgeCost) {
     this.node1 = node1;
     this.node2 = node2;
-    this.edgePrice = edgePrice;
+    this.edgeCost = edgeCost;
     this.pheromone = 0;
   }
 
@@ -78,17 +78,17 @@ public class Edge {
    * 
    * @return - Edge length
    */
-  public double getEdgePrice() {
-    return edgePrice;
+  public double getEdgeCost() {
+    return edgeCost;
   }
 
   /**
    * Edge length setting.
    * 
-   * @param edgePrice - Edge length
+   * @param edgeCost - Edge length
    */
-  public void setEdgePrice(double edgePrice) {
-    this.edgePrice = edgePrice;
+  public void setEdgeCost(double edgeCost) {
+    this.edgeCost = edgeCost;
   }
 
   /**
@@ -130,6 +130,6 @@ public class Edge {
 
   public String toString() {
     return String.format("%d->%d(%f, %f)", 
-        node1.getID(), node2.getID(), getEdgePrice(), getLocalPheromone());
+        node1.getID(), node2.getID(), getEdgeCost(), getLocalPheromone());
   }
 }

@@ -91,8 +91,8 @@ public class Ant {
       Node n2 = nodePath.get(i + 1);
       Edge e = n1.getEdge(n2);
       if (e == null) {
-        double edgePrice = getNodeDistance(graph, nodePath.subList(0, i + 1), n2);
-        e = new Edge(n1, n2, edgePrice);
+        double edgeCost = getNodeDistance(graph, nodePath.subList(0, i + 1), n2);
+        e = new Edge(n1, n2, edgeCost);
       }
       edgePath.add(e);
     }
@@ -139,7 +139,7 @@ public class Ant {
     double distanceTravelled = getDistanceTravelled(graph, edgePath);
     for (Edge edge : edgePath) {      
       edge.addLocalPheromone(quantumPheromone * (
-          edge.getEdgePrice() / distanceTravelled));
+          edge.getEdgeCost() / distanceTravelled));
       if (!graph._edges.contains(edge)) { // TODO: Refactor, ineffective
         graph.addEdge(edge);
       }
@@ -171,7 +171,7 @@ public class Ant {
 
     double result = 0;
     for (Edge e : edgePath) {
-      result += e.getEdgePrice();
+      result += e.getEdgeCost();
     }
 
     return result;
@@ -191,19 +191,19 @@ public class Ant {
     
     // Find all candidate edges
     for (Node n : nextAvailableNodes) {
-      double edgePrice = 0;
+      double nodeDistance = 0;
 
       Edge e = currentNode.getEdge(n);
       if (e == null) {
-        edgePrice = getNodeDistance(graph, nodePath, n);
+        nodeDistance = getNodeDistance(graph, nodePath, n);
 
-        e = new Edge(currentNode, n, edgePrice);
+        e = new Edge(currentNode, n, nodeDistance);
       }
       candidateEdges.add(e);
       double edgeCost = Math.pow(
-          e.getLocalPheromone(), alpha) * Math.pow(1 / e.getEdgePrice(), beta);
+          e.getLocalPheromone(), alpha) * Math.pow(1 / e.getEdgeCost(), beta);
       if (edgeCost == 0) {
-        edgeCost = Math.pow(1 / e.getEdgePrice(), beta);
+        edgeCost = Math.pow(1 / e.getEdgeCost(), beta);
       }
       edgeCosts.add(edgeCost);
       sumCostEdges += edgeCost;
