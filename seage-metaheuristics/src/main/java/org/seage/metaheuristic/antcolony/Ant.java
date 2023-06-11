@@ -137,9 +137,10 @@ public class Ant {
    */
   protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
     double distanceTravelled = getDistanceTravelled(graph, edgePath);
-    for (Edge edge : edgePath) {      
-      edge.addLocalPheromone(quantumPheromone * (
-          edge.getEdgeCost() / distanceTravelled));
+    for (Edge edge : edgePath) {  
+      double res = quantumPheromone * (
+          edge.getEdgeCost() / distanceTravelled);
+      edge.addLocalPheromone(res);
       if (!graph._edges.contains(edge)) { // TODO: Refactor, ineffective
         graph.addEdge(edge);
       }
