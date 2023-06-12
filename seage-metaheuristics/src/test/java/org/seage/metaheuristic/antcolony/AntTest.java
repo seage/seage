@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -69,15 +70,38 @@ public class AntTest {
   public void testSelectNextStep() throws Exception {
     graph.getEdges().clear();
 
-    Ant a = new Ant(graph.nodesToNodePath(List.of(1, 2, 3)));
+    var nodes = graph.getNodes();
+    graph.addEdge(new Edge(nodes.get(1), nodes.get(2), 2));
+    graph.addEdge(new Edge(nodes.get(1), nodes.get(3), 4));
+    graph.addEdge(new Edge(nodes.get(2), nodes.get(3), 6));
+
+    Random rand = new Random(42);
+
+    Ant a = new Ant(graph.nodesToNodePath(List.of(1, 2, 3)), 42);
     a.setParameters(1, 1, 20);
     List<Edge> edges = a.doFirstExploration(graph);
     assertNotNull(edges);
 
+    Ant.NextEdgeResult nextEdgeResult = a.calculateEdgesHeuristic(
+        graph, Arrays.asList(edges.get(0).getNodes()));
+
     Edge edg = a.selectNextStep(graph, Arrays.asList(edges.get(0).getNodes()));
 
-    assertEquals(2, edg.getNodes()[0].getID());
-    assertEquals(3, edg.getNodes()[1].getID());
+    double randNum = rand.nextDouble();
+    double tmpProb;
+    double tmpSum = 0.0;
+
+    double edgesHeuristicsSum = nextEdgeResult.getEdgesHeuristicsSum();
+    List<Edge> candidateEdges = nextEdgeResult.getEdgesHeuristics();
+
+    for (int i = 0; i < candidateEdges.size(); i++) {
+      tmpProb = (candidateEdges.get(i).getEdgeHeuristic() / edgesHeuristicsSum);
+      tmpSum += tmpProb;
+      if (tmpSum >= randNum) {
+        assertEquals(candidateEdges.get(i).getNodes()[0].getID(), edg.getNodes()[0].getID());
+        assertEquals(candidateEdges.get(i).getNodes()[1].getID(), edg.getNodes()[1].getID());
+      }
+    }
   }
 
   @Test

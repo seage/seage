@@ -71,7 +71,12 @@ public class Ant {
     }
   }
 
-  class NextEdgeResult {
+  /**
+   * Class represents the result of searching for candidate
+   * edges. Contains the sum of counted edges heuristics and 
+   * the list of candidate edges (each with counted edge heuristic).
+   */
+  protected class NextEdgeResult {
     private double edgeHeuristicsSum;
     private List<Edge> edgeHeuristics;
 
