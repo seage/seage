@@ -85,12 +85,12 @@ public class TspProblemProvider extends ProblemProvider<TspPhenotype> {
     IPhenotypeEvaluator<TspPhenotype> evaluator = this.initPhenotypeEvaluator(instance);
 
     for (int i = 0; i < numTours; i++) {
-      // if (i == 0) {
+      if (i % 2 == 0) {
         result[i] = new TspPhenotype(TourProvider.createGreedyTour(
             cities, System.currentTimeMillis()));
-      // } else {
-      //   result[i] = new TspPhenotype(TourProvider.createRandomTour(cities.length));
-      // }
+      } else {
+        result[i] = new TspPhenotype(TourProvider.createRandomTour(cities.length));
+      }
       double[] objVals = evaluator.evaluate(result[i]);
       result[i].setObjValue(objVals[0]);
       result[i].setScore(objVals[1]);

@@ -29,6 +29,7 @@
 package org.seage.metaheuristic.antcolony;
 
 /**
+ * Class represents one edge of the graph between two nodes.
  *
  * @author Martin Zaloga
  */
@@ -37,17 +38,26 @@ public class Edge {
   private Node node2;
   private double edgeCost;
   private double pheromone;
+  private double edgeHeuristic;
 
+  /**
+   * Constructor.
+   *
+   * @param node1 First node.
+   * @param node2 Second node.
+   * @param edgeCost Edge cost.
+   */
   public Edge(Node node1, Node node2, double edgeCost) {
     this.node1 = node1;
     this.node2 = node2;
     this.edgeCost = edgeCost;
     this.pheromone = 0;
+    this.edgeHeuristic = 0;
   }
 
   /**
    * Pheromone on edge finding.
-   * 
+   *
    * @return - Value of pheromone
    */
   public double getLocalPheromone() {
@@ -56,8 +66,8 @@ public class Edge {
 
   /**
    * Local pheromone addition.
-   * 
-   * @param pheromone
+   *
+   * @param pheromone New pheromone to be added.
    */
   public void addLocalPheromone(double pheromone) {
     this.pheromone += pheromone;
@@ -74,8 +84,26 @@ public class Edge {
   }
 
   /**
+   * Setting the edge heuristic value.
+   *
+   * @param edgeHeuristic New edge heuristic value.
+   */
+  public void setEdgeHeuristic(double edgeHeuristic) {
+    this.edgeHeuristic = edgeHeuristic;
+  }
+
+  /**
+   * Get the edge heuristic.
+   *
+   * @return Value of the edge heuristic.
+   */
+  public double getEdgeHeuristic() {
+    return this.edgeHeuristic;
+  }
+
+  /**
    * Edge length finding.
-   * 
+   *
    * @return - Edge length
    */
   public double getEdgeCost() {
@@ -84,7 +112,7 @@ public class Edge {
 
   /**
    * Edge length setting.
-   * 
+   *
    * @param edgeCost - Edge length
    */
   public void setEdgeCost(double edgeCost) {
@@ -93,8 +121,8 @@ public class Edge {
 
   /**
    * Get the second of nodes.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception Exception.
    */
   public Node getNode2(Node node1) throws Exception {
     if (node1 != this.node1 && node1 != this.node2) {
@@ -109,7 +137,7 @@ public class Edge {
 
   /**
    * Get edge nodes.
-   * 
+   *
    * @return - Both nodes
    */
   public Node[] getNodes() {
