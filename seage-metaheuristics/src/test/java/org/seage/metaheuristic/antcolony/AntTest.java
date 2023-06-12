@@ -112,7 +112,7 @@ public class AntTest {
     double randNum = rand.nextDouble();
     double tmpProb;
     double tmpSum = 0.0;
-    
+
     for (int i = 0; i < edgeHeuristic.size(); i++) {
       tmpProb = (edgeHeuristic.get(i).getEdgeHeuristic() / edgesHeuristicsSum);
       tmpSum += tmpProb;
@@ -132,8 +132,10 @@ public class AntTest {
    */
   @Test
   public void testCalculateEdgesHeuristic() throws Exception {
+    // Create new graph with four nodes
     Graph gr = new Graph(List.of(1, 2, 3, 4));
 
+    // Create graph's nodes and set their cost
     var nodes = gr.getNodes();
     gr.addEdge(new Edge(nodes.get(1), nodes.get(2), 2));
     gr.addEdge(new Edge(nodes.get(1), nodes.get(3), 4));
@@ -142,20 +144,23 @@ public class AntTest {
     gr.addEdge(new Edge(nodes.get(2), nodes.get(4), 2));
     gr.addEdge(new Edge(nodes.get(3), nodes.get(4), 4));
 
+    // Create one ant and set variables
     Ant a = new Ant(gr.nodesToNodePath(List.of(1, 2, 3)), 42);
     a.setParameters(1, 1, 20);
     List<Edge> edges = a.doFirstExploration(gr);
     assertNotNull(edges);
 
+    // Calculate the heuristic for next edges
     Ant.NextEdgeResult nextEdgeResult = a.calculateEdgesHeuristic(
         gr, Arrays.asList(edges.get(0).getNodes()));
 
+    // Sum all the edges heuristic values
     double edgesHeuristicsSum = 0;
-
     for (Edge e : nextEdgeResult.getEdgesHeuristics()) {
       edgesHeuristicsSum += e.getEdgeHeuristic();
     }
 
+    // Test if the summed value is same as the returned one
     assertEquals(nextEdgeResult.getEdgesHeuristicsSum(), edgesHeuristicsSum, 0.01);
   }
 
