@@ -164,7 +164,7 @@ public class Ant {
       double res = quantumPheromone * (
           edge.getEdgeCost() / distanceTravelled);
       edge.addLocalPheromone(res);
-      if (!graph._edges.contains(edge)) { // TODO: Refactor, ineffective
+      if (!graph._edges.contains(edge)) {
         graph.addEdge(edge);
       }
     }
