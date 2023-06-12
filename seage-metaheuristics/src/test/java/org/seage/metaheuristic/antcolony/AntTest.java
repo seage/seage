@@ -105,6 +105,30 @@ public class AntTest {
   }
 
   @Test
+  public void testCalculateEdgesHeuristic() throws Exception{
+    graph.getEdges().clear();
+
+    var nodes = graph.getNodes();
+    graph.addEdge(new Edge(nodes.get(1), nodes.get(2), 2));
+    graph.addEdge(new Edge(nodes.get(1), nodes.get(3), 4));
+    graph.addEdge(new Edge(nodes.get(2), nodes.get(3), 6));
+
+    Ant a = new Ant(graph.nodesToNodePath(List.of(1, 2, 3)), 42);
+    a.setParameters(1, 1, 20);
+    List<Edge> edges = a.doFirstExploration(graph);
+    assertNotNull(edges);
+
+    Ant.NextEdgeResult nextEdgeResult = a.calculateEdgesHeuristic(
+        graph, Arrays.asList(edges.get(0).getNodes()));
+
+    assertEquals(1, nextEdgeResult.getEdgesHeuristics().size());
+
+    assertEquals(
+        nextEdgeResult.getEdgesHeuristicsSum(), 
+        nextEdgeResult.getEdgesHeuristics().get(0).getEdgeHeuristic(), 0.01);
+  }
+
+  @Test
   public void testLeavePheromone() throws Exception {
     graph.getEdges().clear();
 
