@@ -80,6 +80,7 @@ public class AntTest {
 
   @Test
   public void testSelectNextStep() throws Exception {
+    // Create new graph with four nodes
     Graph gr = new Graph(List.of(1, 2, 3, 4));
 
     var nodes = gr.getNodes();
@@ -97,22 +98,26 @@ public class AntTest {
     List<Edge> edges = a.doFirstExploration(gr);
     assertNotNull(edges);
 
+     // Get the result of the calculate the Edges Heuristic (list of next moves)
     Ant.NextEdgeResult nextEdgeResult = a.calculateEdgesHeuristic(
         gr, Arrays.asList(edges.get(0).getNodes()));
-   
-    double randNum = rand.nextDouble();
-    double tmpProb;
-    double tmpSum = 0.0;
 
     double edgesHeuristicsSum = nextEdgeResult.getEdgesHeuristicsSum();
     List<Edge> edgeHeuristic = nextEdgeResult.getEdgesHeuristics();
 
+    // Get the next edge by the selectNextStep method
     Edge edg = a.selectNextStep(gr, Arrays.asList(edges.get(0).getNodes()));
 
+    // Simulate the the selection of next edge based on the random number (same seed as ant's)
+    double randNum = rand.nextDouble();
+    double tmpProb;
+    double tmpSum = 0.0;
+    
     for (int i = 0; i < edgeHeuristic.size(); i++) {
       tmpProb = (edgeHeuristic.get(i).getEdgeHeuristic() / edgesHeuristicsSum);
       tmpSum += tmpProb;
       if (tmpSum >= randNum) {
+        // Test if given edge by selectNextStep is the same as by this simulated behavior
         assertEquals(edgeHeuristic.get(i).getNodes()[0].getID(), edg.getNodes()[0].getID());
         assertEquals(edgeHeuristic.get(i).getNodes()[1].getID(), edg.getNodes()[1].getID());
         break;
