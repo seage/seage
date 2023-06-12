@@ -75,38 +75,42 @@ public class AntTest {
    */
   @Test
   public void testSelectNextStep() throws Exception {
-    graph.getEdges().clear();
+    Graph gr = new Graph(List.of(1, 2, 3, 4));
 
-    var nodes = graph.getNodes();
-    graph.addEdge(new Edge(nodes.get(1), nodes.get(2), 2));
-    graph.addEdge(new Edge(nodes.get(1), nodes.get(3), 4));
-    graph.addEdge(new Edge(nodes.get(2), nodes.get(3), 6));
+    var nodes = gr.getNodes();
+    gr.addEdge(new Edge(nodes.get(1), nodes.get(2), 2));
+    gr.addEdge(new Edge(nodes.get(1), nodes.get(3), 4));
+    gr.addEdge(new Edge(nodes.get(1), nodes.get(4), 2));
+    gr.addEdge(new Edge(nodes.get(2), nodes.get(3), 4));
+    gr.addEdge(new Edge(nodes.get(2), nodes.get(4), 2));
+    gr.addEdge(new Edge(nodes.get(3), nodes.get(4), 4));
 
     Random rand = new Random(42);
 
-    Ant a = new Ant(graph.nodesToNodePath(List.of(1, 2, 3)), 42);
+    Ant a = new Ant(gr.nodesToNodePath(List.of(1, 2, 3)), 42);
     a.setParameters(1, 1, 20);
-    List<Edge> edges = a.doFirstExploration(graph);
+    List<Edge> edges = a.doFirstExploration(gr);
     assertNotNull(edges);
 
     Ant.NextEdgeResult nextEdgeResult = a.calculateEdgesHeuristic(
-        graph, Arrays.asList(edges.get(0).getNodes()));
-
-    Edge edg = a.selectNextStep(graph, Arrays.asList(edges.get(0).getNodes()));
-
+        gr, Arrays.asList(edges.get(0).getNodes()));
+   
     double randNum = rand.nextDouble();
     double tmpProb;
     double tmpSum = 0.0;
 
     double edgesHeuristicsSum = nextEdgeResult.getEdgesHeuristicsSum();
-    List<Edge> candidateEdges = nextEdgeResult.getEdgesHeuristics();
+    List<Edge> edgeHeuristic = nextEdgeResult.getEdgesHeuristics();
 
-    for (int i = 0; i < candidateEdges.size(); i++) {
-      tmpProb = (candidateEdges.get(i).getEdgeHeuristic() / edgesHeuristicsSum);
+    Edge edg = a.selectNextStep(gr, Arrays.asList(edges.get(0).getNodes()));
+
+    for (int i = 0; i < edgeHeuristic.size(); i++) {
+      tmpProb = (edgeHeuristic.get(i).getEdgeHeuristic() / edgesHeuristicsSum);
       tmpSum += tmpProb;
       if (tmpSum >= randNum) {
-        assertEquals(candidateEdges.get(i).getNodes()[0].getID(), edg.getNodes()[0].getID());
-        assertEquals(candidateEdges.get(i).getNodes()[1].getID(), edg.getNodes()[1].getID());
+        assertEquals(edgeHeuristic.get(i).getNodes()[0].getID(), edg.getNodes()[0].getID());
+        assertEquals(edgeHeuristic.get(i).getNodes()[1].getID(), edg.getNodes()[1].getID());
+        break;
       }
     }
   }
