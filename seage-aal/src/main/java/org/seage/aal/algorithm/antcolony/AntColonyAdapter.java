@@ -52,8 +52,8 @@ import org.slf4j.LoggerFactory;
     @Parameter(name = "iterationCount", min = 10, max = 1000000, init = 1000000),
     @Parameter(name = "alpha", min = 1, max = 10, init = 1), 
     @Parameter(name = "beta", min = 1, max = 10, init = 3),
-    @Parameter(name = "quantumOfPheromone", min = 1, max = 1000, init = 10),
-    @Parameter(name = "evaporationCoef", min = 0.001, max = 0.999, init = 0.02) })
+    @Parameter(name = "quantumOfPheromone", min = 1, max = 1000, init = 100),
+    @Parameter(name = "localEvaporation", min = 0.001, max = 0.999, init = 0.05) })
 public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> 
     extends AlgorithmAdapterImpl<P, S> {
 
@@ -97,10 +97,11 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
     int iterationCount = algParams.getValueInt("iterationCount");
     double alpha = algParams.getValueDouble("alpha");
     double beta = algParams.getValueDouble("beta");
+    // double defaultPheromone = algParams.getValueDouble("defaultPheromone");
     double quantumOfPheromone = algParams.getValueDouble("quantumOfPheromone");
-    double evaporationCoef = algParams.getValueDouble("evaporationCoef");
+    double localEvaporation = algParams.getValueDouble("localEvaporation");
     antColony.setParameters(
-        iterationCount, alpha, beta, quantumOfPheromone, evaporationCoef);
+        iterationCount, alpha, beta, quantumOfPheromone, localEvaporation);
   }
 
   @Override
