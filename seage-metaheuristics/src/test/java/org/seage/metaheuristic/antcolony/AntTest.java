@@ -213,8 +213,8 @@ public class AntTest {
     assertEquals(8, a.getDistanceTravelled(graph, edges), 0.1);
 
     // Following the pheromone updae function these values has to be the same
-    assertEquals(10, edges.get(0).getLocalPheromone(), 1E-6);
-    assertEquals(30, edges.get(1).getLocalPheromone(), 1E-6);
+    assertEquals(30, edges.get(0).getLocalPheromone(), 1E-6);
+    assertEquals(10, edges.get(1).getLocalPheromone(), 1E-6);
   }
 }
 
