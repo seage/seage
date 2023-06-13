@@ -70,7 +70,8 @@ public class AntTest {
   }
 
   /**
-   * Testing the return of the right nodes (not yet visited).
+   * This test tests if the correct set of nodes is 
+   * returnes (the ones that haven't been visited).
    *
    * @throws Exception .
    */
