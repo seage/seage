@@ -90,19 +90,17 @@ public class AntColony {
    * @param beta Dependence of the probability of choosing the next city.
    * @param quantumPheromone  More advanced encoding, representation scheme, that takes
    *        advantage of quantum principles (superposition or entanglement).
-   * @param defaultPheromone Default pherophone.
    * @param evaporCoeff Evaporation coefficient.
    * @throws Exception Throws exception if the values cannot be set.
    */
   public void setParameters(
       int numIterations, double alpha, double beta, double quantumPheromone,
-      double defaultPheromone, double evaporCoeff) throws Exception {
+      double evaporCoeff) throws Exception {
     this.numIterations = numIterations;
     this.alpha = alpha;
     this.beta = beta;
     this.quantumPheromone = quantumPheromone;
     graph.setEvaporCoeff(evaporCoeff);
-    graph.setDefaultPheromone(defaultPheromone);
   }
 
   /**
@@ -129,8 +127,12 @@ public class AntColony {
         var antReport = this.ants[j].explore(graph, startingNode);
         antReports.add(antReport);
       }
-      resolveRound(antReports);
       graph.evaporate();
+      // Place pheromone of each ant
+      for (int j = 0; j < antReports.size(); j++) {
+        this.ants[j].leavePheromone(graph, antReports.get(j));
+      }
+      resolveRound(antReports);
       graph.prune(currentIteration);
       eventProducer.fireIterationPerformed();
     }
@@ -154,8 +156,9 @@ public class AntColony {
           continue;
         }      
         List<Edge> path = a.doFirstExploration(graph);
-        if (a.getDistanceTravelled() < globalBest) {
-          globalBest = a.getDistanceTravelled();      
+        double distanceTravelled = a.getDistanceTravelled(graph, path);
+        if (distanceTravelled < globalBest) {
+          globalBest = distanceTravelled;      
           bestPath = new ArrayList<>(path);
           bestAnt = a;
           eventProducer.fireNewBestSolutionFound();
@@ -169,7 +172,7 @@ public class AntColony {
   /**
    * Evaluation for each iteration.
    */
-  private void resolveRound(ArrayList<List<Edge>> antReports) {
+  private void resolveRound(ArrayList<List<Edge>> antReports) throws Exception {
     roundBest = Double.MAX_VALUE;
     boolean newBest = false;
     double pathLength = 0;
@@ -179,7 +182,7 @@ public class AntColony {
         bestPath = new ArrayList<>(path);
       }
 
-      pathLength = ants[counter].distanceTravelled;
+      pathLength = ants[counter].getDistanceTravelled(graph, path);
 
       if (pathLength < roundBest) {
         roundBest = pathLength;

@@ -6,13 +6,6 @@
   "configurations": [
     {
       "type": "java",
-      "name": "TspSimulatedAnnealingTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.tsp.sannealing.TspSimulatedAnnealingTest",
-      "projectName": "seage-problem-tsp"
-    },
-    {
-      "type": "java",
       "name": "Run info",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
@@ -67,7 +60,8 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "env": {
-        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage",
+        // "LOG_LEVEL": "debug"
       },
       "args": [
         "experiment-single-default",
@@ -76,11 +70,11 @@
         "-i",
         "TSP:small",
         "-t",
-        "10",
+        "20",
         "-n",
-        "10",
+        "8",
         "-s",
-        "0"
+        "0.1"
       ]
     },
     {
@@ -91,20 +85,21 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "env": {
-        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+        // "LOG_LEVEL": "debug",
+        // "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
       },
       "args": [
         "experiment-single-feedback",
         "-a",
         "AntColony",
         "-i",
-        "TSP:small",
+        "TSP:hyflex",
         "-t",
-        "10",
+        "20",
         "-n",
-        "5",
+        "8",
         "-s",
-        "0.0"
+        "0.1"
       ]
     },
     {

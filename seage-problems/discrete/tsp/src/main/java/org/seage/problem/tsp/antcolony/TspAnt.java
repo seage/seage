@@ -41,8 +41,8 @@ import org.seage.problem.tsp.City;
 public class TspAnt extends Ant {
   City[] cities;
   
-  public TspAnt(List<Integer> initialPath, City[] cities) {
-    super(initialPath);
+  public TspAnt(List<Node> initNodePath, City[] cities) {
+    super(initNodePath);
     this.cities = cities;
   }
 

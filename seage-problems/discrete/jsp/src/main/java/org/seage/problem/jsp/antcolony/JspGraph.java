@@ -102,9 +102,10 @@ public class JspGraph extends Graph {
     if (iteration % 100 != 0) {
       return;
     }
-    _edges.sort((e1, e2) -> {
-      double a = e1.getLocalPheromone() / e1.getEdgePrice();
-      double b = e2.getLocalPheromone() / e2.getEdgePrice();
+    ArrayList<Edge> edgesList = new ArrayList<>(_edges);
+    edgesList.sort((e1, e2) -> {
+      double a = e1.getLocalPheromone() / e1.getEdgeCost();
+      double b = e2.getLocalPheromone() / e2.getEdgeCost();
       if (a > b) {
         return 1;
       }
@@ -115,7 +116,7 @@ public class JspGraph extends Graph {
     });
 
     try {
-      ArrayList<Edge> edgesToRemove = new ArrayList<>(_edges.subList(0, _edges.size() * 1 / 10));
+      ArrayList<Edge> edgesToRemove = new ArrayList<>(edgesList.subList(0, _edges.size() * 1 / 10));
 
       for (Edge e2 : edgesToRemove) {
         removeEdge(e2);

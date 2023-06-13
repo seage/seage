@@ -56,9 +56,8 @@ public class ExtendedDefaultConfigurator extends Configurator {
           "AntColony", Map.of(
               "alpha", 2.0288340124934,
               "beta", 2.8417384547786972,
-              "defaultPheromone", 0.323493209815758,
               "iterationCount", 524911.1662639739,
-              "localEvaporation", 0.8273663355790442,
+              "evaporationCoef", 0.8273663355790442,
               "numSolutions", 75.0142078836997,
               "quantumOfPheromone", 78.06959520616533
           ),
@@ -87,9 +86,8 @@ public class ExtendedDefaultConfigurator extends Configurator {
           "AntColony", Map.of(
             "alpha", 2.0288340124934,
             "beta", 2.8417384547786972,
-            "defaultPheromone", 0.323493209815758,
             "iterationCount", 524911.1662639739,
-            "localEvaporation", 0.8273663355790442,
+            "evaporationCoef", 0.8273663355790442,
             "numSolutions", 75.0142078836997,
             "quantumOfPheromone", 78.06959520616533
           ),
@@ -121,9 +119,8 @@ public class ExtendedDefaultConfigurator extends Configurator {
       "AntColony", Map.of(
           "alpha", 1.0,
           "beta", 2.859904382201463,
-          "defaultPheromone", 0.01557602409359541,
           "iterationCount", 1000000.0,
-          "localEvaporation", 0.9425282337174113,
+          "evaporationCoef", 0.9425282337174113,
           "numSolutions", 115.41051795783903,
           "quantumOfPheromone", 1.0
       ),
@@ -152,9 +149,8 @@ public class ExtendedDefaultConfigurator extends Configurator {
         "AntColony", Map.of(
             "alpha", 1.0,
             "beta", 2.3861673412171998,
-            "defaultPheromone", 0.06821294671735695,
             "iterationCount", 931797.0532826431,
-            "localEvaporation", 0.9172622581982506,
+            "evaporationCoef", 0.9172622581982506,
             "numSolutions", 167.52159246610802,
             "quantumOfPheromone", 78.13542512489084
         ),

@@ -66,7 +66,6 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
     double quantumPheromone = 462;
     double evaporation = 0.76;
-    double defaultPheromone = 0.33;
     double alpha = 1.15;
     double beta = 1.18;
     int numAnts = 865;
@@ -77,7 +76,7 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     FormulaEvaluator evaluator = new FormulaEvaluator(formula);
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
-    colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone, evaporation);
+    colony.setParameters(iterations, alpha, beta, quantumPheromone, evaporation);
 
     Ant[] ants = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {

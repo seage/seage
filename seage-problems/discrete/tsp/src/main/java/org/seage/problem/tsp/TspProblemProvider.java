@@ -85,7 +85,7 @@ public class TspProblemProvider extends ProblemProvider<TspPhenotype> {
     IPhenotypeEvaluator<TspPhenotype> evaluator = this.initPhenotypeEvaluator(instance);
 
     for (int i = 0; i < numTours; i++) {
-      if (i == 0) {
+      if (i % 2 == 0) {
         result[i] = new TspPhenotype(TourProvider.createGreedyTour(
             cities, System.currentTimeMillis()));
       } else {

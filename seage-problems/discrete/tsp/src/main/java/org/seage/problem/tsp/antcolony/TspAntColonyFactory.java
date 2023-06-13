@@ -62,10 +62,9 @@ public class TspAntColonyFactory implements IAlgorithmFactory<TspPhenotype, Ant>
       public void solutionsFromPhenotype(TspPhenotype[] source) throws Exception {
         ants = new Ant[source.length];
         for (int i = 0; i < ants.length; i++) {
-          List<Integer> nodeIDs = new ArrayList<>(Arrays.asList(source[i].getSolution()));
-          nodeIDs.add(source[i].getSolution()[0]); // The tour must be closed
-          ants[i] = new TspAnt(nodeIDs, cities);
-          ants[i].doFirstExploration(graph);
+          List<Integer> nodes = new ArrayList<>(Arrays.asList(source[i].getSolution()));
+          nodes.add(source[i].getSolution()[0]); // The tour must be closed
+          ants[i] = new TspAnt(graph.nodesToNodePath(nodes), cities);
         }
       }
 

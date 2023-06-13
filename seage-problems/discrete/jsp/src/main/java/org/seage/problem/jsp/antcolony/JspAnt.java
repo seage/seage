@@ -54,16 +54,16 @@ public class JspAnt extends Ant {
 
   /**
    * .
-   * @param initialPath .
+   * @param initNodePath .
    * @param jobs .
    * @param evaluator .
    */
   public JspAnt(
-      List<Integer> initialPath,
+      List<Node> initNodePath,
       JspJobsDefinition jobs, 
       JspPhenotypeEvaluator evaluator
   ) {
-    super(initialPath);
+    super(initNodePath);
     this.jobsDefinition = jobs;
     this.evaluator = evaluator;
 
@@ -93,12 +93,8 @@ public class JspAnt extends Ant {
 
   @Override
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
-    // Clean the previous available nodes
-    if (availableNodes == null) {
-      availableNodes = new HashSet<Node>();
-    } else {
-      availableNodes.clear();
-    }
+    HashSet<Node> availableNodes = new HashSet<Node>();
+   
 
     JspGraph jspGraph = (JspGraph) graph;
     // Crate new updated available nodes
@@ -163,7 +159,7 @@ public class JspAnt extends Ant {
 
 
   @Override
-  public double getPathCost(Graph graph, List<Edge> path) throws Exception {
+  public double getDistanceTravelled(Graph graph, List<Edge> path) throws Exception {
     JspGraph jspGraph = (JspGraph) graph;
     var nodes = Graph.edgeListToNodeList(path);
     Integer[] jobArray = new Integer[nodes.size() - 1];

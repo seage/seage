@@ -98,7 +98,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     double sum = 0;
     double edges = 0;
     for (Edge edge : graph.getEdges()) {
-      sum += edge.getEdgePrice();
+      sum += edge.getEdgeCost();
       edges++;
     }
     log.info("{}", sum);
@@ -114,8 +114,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     result.putValue("numAnts", 100);
     result.putValue("iterationCount", 1000);
     result.putValue("quantumOfPheromone", 1.0);
-    result.putValue("localEvaporation", 0.95);
-    result.putValue("defaultPheromone", 0.2);
+    result.putValue("evaporationCoef", 0.95);
     result.putValue("alpha", 1.1);
     result.putValue("beta", 1.9);
 
@@ -166,12 +165,9 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     int iterations = 1000;
 
     // int numAnts = 1;
-    // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
     // double alpha = 1, beta = 3;
 
-    
-    double defaultPheromone = 1;
-    double localEvaporation = 0.995;
+    double evaporationCoef = 0.995;
     double quantumPheromone = 100.0;
     double alpha = 1.0;
 
@@ -184,8 +180,8 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     log.info("Loaded ...");
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
-    colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone,
-        localEvaporation);
+    colony.setParameters(iterations, alpha, beta, quantumPheromone,
+        evaporationCoef);
 
     int numAnts = 100;
     Ant[] ants = new Ant[numAnts];
@@ -265,7 +261,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // var edges = e.getAntColony().getGraph().getEdges();
     // for(int i=0;i<edges.size();i++) {
     // Edge ed = edges.get(i);
-    // log.info(String.format(" - %s (%f, %f)", ed, ed.getEdgePrice(),
+    // log.info(String.format(" - %s (%f, %f)", ed, ed.getEdgeCost(),
     // ed.getLocalPheromone()));
     // }
   }

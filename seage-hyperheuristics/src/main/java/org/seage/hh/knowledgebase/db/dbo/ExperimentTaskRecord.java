@@ -225,6 +225,7 @@ public class ExperimentTaskRecord {
     writeSolutions(evaluator,
         this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
 
+    _logger.debug("Solutions from phenotype");
     algorithm.solutionsFromPhenotype(solutions);
     _logger.debug("Starting the algorithm");
     algorithm.startSearching(this.algorithmParams, true);
@@ -234,6 +235,7 @@ public class ExperimentTaskRecord {
     algorithm.stopSearching();
     _logger.debug("Algorithm stopped");
 
+    _logger.debug("Solutions to phenotype");
     solutions = algorithm.solutionsToPhenotype();
 
     writeSolutions(evaluator,

@@ -93,8 +93,7 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     result.putValue("numAnts", 100);
     result.putValue("iterationCount", 10);
     result.putValue("quantumOfPheromone", 1.0);
-    result.putValue("localEvaporation", 0.95);
-    result.putValue("defaultPheromone", 0.2);
+    result.putValue("evaporationCoef", 0.95);
     result.putValue("alpha", 1.1);
     result.putValue("beta", 1.9);
 
@@ -146,12 +145,10 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     int iterations = 10;
 
     // int numAnts = 1;
-    // double defaultPheromone = 0.9, localEvaporation = 0.8, quantumPheromone = 100;
     // double alpha = 1, beta = 3;
 
     int numAnts = 500;
-    double defaultPheromone = 10;
-    double localEvaporation = 0.95;
+    double evaporationCoef = 0.95;
     double quantumPheromone = numAnts;
     double alpha = 1.1;
     double beta = 4.6;
@@ -165,8 +162,8 @@ public class FspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     log.info("Loaded ...");
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
-    colony.setParameters(iterations, alpha, beta, quantumPheromone, defaultPheromone,
-        localEvaporation);
+    colony.setParameters(iterations, alpha, beta, quantumPheromone,
+        evaporationCoef);
 
     Ant[] ants = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {

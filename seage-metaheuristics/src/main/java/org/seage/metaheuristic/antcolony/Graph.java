@@ -30,6 +30,7 @@ package org.seage.metaheuristic.antcolony;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,18 +41,17 @@ import java.util.stream.Collectors;
 public class Graph {
 
   protected HashMap<Integer, Node> _nodes;
-  protected ArrayList<Edge> _edges;
-  protected double _evaporCoeff = 0.95;
-  private double _defaultPheromone;
+  protected HashSet<Edge> _edges;
+  protected double _evaporCoeff = 0.05;
 
   protected Graph() {
     _nodes = new HashMap<Integer, Node>();
-    _edges = new ArrayList<Edge>();
+    _edges = new HashSet<Edge>();
   }
 
   protected Graph(List<Integer> nodeIDs) {
     _nodes = new HashMap<Integer, Node>();
-    _edges = new ArrayList<Edge>();
+    _edges = new HashSet<Edge>();
 
     for(Integer id : nodeIDs) {
       _nodes.put(id, new Node(id));
@@ -72,7 +72,7 @@ public class Graph {
    * 
    * @return - List of edges
    */
-  public ArrayList<Edge> getEdges() {
+  public HashSet<Edge> getEdges() {
     return _edges;
   }
 
@@ -83,14 +83,6 @@ public class Graph {
     for (Edge e : getEdges()) {
       e.evaporateFromEdge(_evaporCoeff);
     }
-  }
-
-  public double getDefaultPheromone() {
-    return _defaultPheromone;
-  }
-
-  public void setDefaultPheromone(double defaultPheromone) {
-    _defaultPheromone = defaultPheromone;
   }
 
   public void setEvaporCoeff(double evaporCoeff) {
@@ -144,9 +136,11 @@ public class Graph {
    * .
    */ 
   public static List<Node> edgeListToNodeList(List<Edge> edges) throws Exception {
-    ArrayList<Node> nodeList = new ArrayList<Node>();
+    if (edges.size() == 1) {
+      return List.of(edges.get(0).getNodes());
+    }
 
-    // Edge previous = null;
+    ArrayList<Node> nodeList = new ArrayList<Node>();
     Node previous = null;
     for (int i = 0; i < edges.size(); i++) {
       Edge edge = edges.get(i);      
@@ -187,5 +181,10 @@ public class Graph {
         .stream()
         .map((Node n) -> n.getID())
         .collect(Collectors.toList());
+  }
+
+
+  public List<Node> nodesToNodePath(List<Integer> nodes) {
+    return nodes.stream().map(n -> _nodes.get(n)).toList();
   }
 }

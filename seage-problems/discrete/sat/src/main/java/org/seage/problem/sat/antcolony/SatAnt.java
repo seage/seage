@@ -43,19 +43,19 @@ public class SatAnt extends Ant {
 
   /**
    * .
-   * @param initialPath .
+   * @param initNodePath .
    * @param formula .
    * @param formulaEvaluator .
    */
   public SatAnt(
-      List<Integer> initialPath, Formula formula, FormulaEvaluator formulaEvaluator) {
-    super(initialPath);
+      List<Node> initNodePath, Formula formula, FormulaEvaluator formulaEvaluator) {
+    super(initNodePath);
     this.formula = formula;
     this.formulaEvaluator = formulaEvaluator;
   }
 
   @Override
-  public double getPathCost(Graph graph, List<Edge> path) throws Exception {
+  public double getDistanceTravelled(Graph graph, List<Edge> path) throws Exception {
     Boolean[] solution = new Boolean[formula.getLiteralCount()];
     List<Node> nodeList = Graph.edgeListToNodeList(path);
 

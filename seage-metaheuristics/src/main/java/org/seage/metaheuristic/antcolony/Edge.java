@@ -29,92 +29,135 @@
 package org.seage.metaheuristic.antcolony;
 
 /**
+ * Class represents one edge of the graph between two nodes.
  *
  * @author Martin Zaloga
  */
 public class Edge {
-  private Node _node1;
-  private Node _node2;
-  private double _edgePrice;
-  private double _pheromone;
+  private Node node1;
+  private Node node2;
+  private double edgeCost;
+  private double pheromone;
+  private double edgeHeuristic;
 
-  public Edge(Node node1, Node node2, double edgePrice) {
-    _node1 = node1;
-    _node2 = node2;
-    _edgePrice = edgePrice;
-    _pheromone = 0;
+  /**
+   * Constructor.
+   *
+   * @param node1 First node.
+   * @param node2 Second node.
+   * @param edgeCost Edge cost.
+   */
+  public Edge(Node node1, Node node2, double edgeCost) {
+    this.node1 = node1;
+    this.node2 = node2;
+    this.edgeCost = edgeCost;
+    this.pheromone = 0;
+    this.edgeHeuristic = 0;
   }
 
   /**
    * Pheromone on edge finding.
-   * 
+   *
    * @return - Value of pheromone
    */
   public double getLocalPheromone() {
-    return _pheromone;
+    return pheromone;
   }
 
   /**
    * Local pheromone addition.
-   * 
-   * @param pheromone
+   *
+   * @param pheromone New pheromone to be added.
    */
   public void addLocalPheromone(double pheromone) {
-    _pheromone += pheromone;
+    this.pheromone += pheromone;
   }
 
   /**
    * Pheromone evaporation.
    */
   public void evaporateFromEdge(double evapoCoef) {
-    _pheromone = _pheromone * evapoCoef;
-    if (_pheromone < 0.00001) {
-      _pheromone = 0.00001;
+    pheromone *= 1 - evapoCoef;
+    if (pheromone < 0.00001) {
+      pheromone = 0.00001;
     }
   }
 
   /**
+   * Setting the edge heuristic value.
+   *
+   * @param edgeHeuristic New edge heuristic value.
+   */
+  public void setEdgeHeuristic(double edgeHeuristic) {
+    this.edgeHeuristic = edgeHeuristic;
+  }
+
+  /**
+   * Get the edge heuristic.
+   *
+   * @return Value of the edge heuristic.
+   */
+  public double getEdgeHeuristic() {
+    return this.edgeHeuristic;
+  }
+
+  /**
    * Edge length finding.
-   * 
+   *
    * @return - Edge length
    */
-  public double getEdgePrice() {
-    return _edgePrice;
+  public double getEdgeCost() {
+    return edgeCost;
   }
 
   /**
    * Edge length setting.
-   * 
-   * @param edgePrice - Edge length
+   *
+   * @param edgeCost - Edge length
    */
-  public void setEdgePrice(double edgePrice) {
-    _edgePrice = edgePrice;
+  public void setEdgeCost(double edgeCost) {
+    this.edgeCost = edgeCost;
   }
 
   /**
    * Get the second of nodes.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception Exception.
    */
   public Node getNode2(Node node1) throws Exception {
-    if(node1 != _node1 && node1 != _node2)
+    if (node1 != this.node1 && node1 != this.node2) {
       throw new Exception("Node is not related to the edge, id: " + node1.getID());
-    Node result = _node2;
-    if(result == node1)
-      result = _node1;
+    }
+    Node result = this.node2;
+    if (result == node1) {
+      result = this.node1;
+    }
     return result;
   }
 
   /**
    * Get edge nodes.
-   * 
+   *
    * @return - Both nodes
    */
   public Node[] getNodes() {
-    return new Node[] {_node1, _node2};
+    return new Node[] {node1, node2};
+  }
+
+  @Override
+  public int hashCode() {
+    int x = node1.getID();
+    int y = node2.getID();
+    return x < y ? y * y + x + y : x * x + x + y;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return obj != null ? this.hashCode() == obj.hashCode() : false;
   }
 
   public String toString() {
-    return String.format("%d->%d(%f, %f)", _node1.getID(), _node2.getID(), getEdgePrice(), getLocalPheromone());
+    return String.format("%d->%d(%f, %f)", 
+        node1.getID(), node2.getID(), getEdgeCost(), getLocalPheromone());
   }
 }
