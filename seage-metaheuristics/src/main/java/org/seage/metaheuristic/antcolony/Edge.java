@@ -77,7 +77,7 @@ public class Edge {
    * Pheromone evaporation.
    */
   public void evaporateFromEdge(double evapoCoef) {
-    pheromone = pheromone * evapoCoef;
+    pheromone *= 1 - evapoCoef;
     if (pheromone < 0.00001) {
       pheromone = 0.00001;
     }
