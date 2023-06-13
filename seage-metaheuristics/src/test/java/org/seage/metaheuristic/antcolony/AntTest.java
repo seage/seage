@@ -195,27 +195,55 @@ public class AntTest {
 
   @Test
   public void testLeavePheromone() throws Exception {
-    // This sets the edges witch exact values
-    graph.getEdges().clear();
-    var nodes = graph.getNodes();
-    graph.addEdge(new Edge(nodes.get(1), nodes.get(2), 2));
-    graph.addEdge(new Edge(nodes.get(2), nodes.get(3), 6));
-    graph.addEdge(new Edge(nodes.get(1), nodes.get(3), 8));
+    // Create new graph with four nodes
+    Graph gr = new Graph(List.of(1, 2, 3, 4));
+    var nodes = gr.getNodes();
+    gr.addEdge(new Edge(nodes.get(1), nodes.get(2), 2));
+    gr.addEdge(new Edge(nodes.get(1), nodes.get(3), 4));
+    gr.addEdge(new Edge(nodes.get(1), nodes.get(4), 2));
+    gr.addEdge(new Edge(nodes.get(2), nodes.get(3), 4));
+    gr.addEdge(new Edge(nodes.get(2), nodes.get(4), 2));
+    gr.addEdge(new Edge(nodes.get(3), nodes.get(4), 2));
 
-    Ant a = new Ant(graph.nodesToNodePath(List.of(1, 2, 3, 1)));
-    a.setParameters(1, 1, 20);
-    List<Edge> edges = a.doFirstExploration(graph);
-    assertNotNull(edges);
+    Ant ant1 = new Ant(gr.nodesToNodePath(List.of(1, 2, 4, 3, 1)));
+    ant1.setParameters(1, 1, 20);
+    List<Edge> edges1 = ant1.doFirstExploration(gr);
+    assertNotNull(edges1);
 
-    a.leavePheromone(graph, edges);
+    ant1.leavePheromone(gr, edges1);
 
     // Ant should use the shortest path
-    assertEquals(16, a.getDistanceTravelled(graph, edges), 0.1);
+    assertEquals(10, ant1.getDistanceTravelled(gr, edges1), 0.1);
 
     // Following the pheromone update function these values has to be the same
-    assertEquals(5, edges.get(0).getLocalPheromone());
-    assertEquals(15, edges.get(1).getLocalPheromone());
-    assertEquals(20, edges.get(2).getLocalPheromone());
+    assertEquals(4.0, edges1.get(0).getLocalPheromone());
+    assertEquals(4.0, edges1.get(1).getLocalPheromone());
+    assertEquals(4.0, edges1.get(2).getLocalPheromone());
+
+    // The same gr with the same (unchanged) edges with different path
+    // should result in worse (lower) edges pheromones
+    gr = new Graph(List.of(1, 2, 3, 4));
+    nodes = gr.getNodes();
+    gr.addEdge(new Edge(nodes.get(1), nodes.get(2), 2));
+    gr.addEdge(new Edge(nodes.get(1), nodes.get(3), 4));
+    gr.addEdge(new Edge(nodes.get(1), nodes.get(4), 2));
+    gr.addEdge(new Edge(nodes.get(2), nodes.get(3), 4));
+    gr.addEdge(new Edge(nodes.get(2), nodes.get(4), 2));
+    gr.addEdge(new Edge(nodes.get(3), nodes.get(4), 2));
+
+    // Second ant will use different path (different total cost)
+    Ant ant2 = new Ant(gr.nodesToNodePath(List.of(1, 3, 2, 4, 1)));
+    ant2.setParameters(1, 1, 20);
+    List<Edge> edges2 = ant2.doFirstExploration(gr);
+    assertNotNull(edges2);
+    
+    ant2.leavePheromone(gr, edges2);
+
+    // Different path results in worse distance traveled and worse pheromone placed
+    assertEquals(12, ant2.getDistanceTravelled(gr, edges2), 0.1);
+    assertEquals(3.33, edges2.get(0).getLocalPheromone(), 0.01);
+    assertEquals(3.33, edges2.get(1).getLocalPheromone(), 0.01);
+    assertEquals(3.33, edges2.get(2).getLocalPheromone(), 0.01);
   }
 }
 
