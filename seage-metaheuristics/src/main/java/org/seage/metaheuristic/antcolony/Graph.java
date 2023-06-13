@@ -42,7 +42,7 @@ public class Graph {
 
   protected HashMap<Integer, Node> _nodes;
   protected HashSet<Edge> _edges;
-  protected double _evaporCoeff = 0.95;
+  protected double _evaporCoeff = 0.05;
 
   protected Graph() {
     _nodes = new HashMap<Integer, Node>();

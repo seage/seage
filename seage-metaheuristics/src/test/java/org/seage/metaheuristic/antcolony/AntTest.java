@@ -162,26 +162,26 @@ public class AntTest {
   @Test
   public void testCalculateEdgesHeuristic() throws Exception {
     // Create new graph with four nodes
-    Graph gr = new Graph(List.of(1, 2, 3, 4));
+    Graph graph = new Graph(List.of(1, 2, 3, 4));
 
     // Create graph's nodes and set their cost
-    var nodes = gr.getNodes();
-    gr.addEdge(new Edge(nodes.get(1), nodes.get(2), 2));
-    gr.addEdge(new Edge(nodes.get(1), nodes.get(3), 4));
-    gr.addEdge(new Edge(nodes.get(1), nodes.get(4), 2));
-    gr.addEdge(new Edge(nodes.get(2), nodes.get(3), 4));
-    gr.addEdge(new Edge(nodes.get(2), nodes.get(4), 2));
-    gr.addEdge(new Edge(nodes.get(3), nodes.get(4), 4));
+    var nodes = graph.getNodes();
+    graph.addEdge(new Edge(nodes.get(1), nodes.get(2), 2));
+    graph.addEdge(new Edge(nodes.get(1), nodes.get(3), 4));
+    graph.addEdge(new Edge(nodes.get(1), nodes.get(4), 2));
+    graph.addEdge(new Edge(nodes.get(2), nodes.get(3), 4));
+    graph.addEdge(new Edge(nodes.get(2), nodes.get(4), 2));
+    graph.addEdge(new Edge(nodes.get(3), nodes.get(4), 4));
 
     // Create one ant and set variables
-    Ant a = new Ant(gr.nodesToNodePath(List.of(1, 2, 3)), 42);
+    Ant a = new Ant(graph.nodesToNodePath(List.of(1, 2, 3)), 42);
     a.setParameters(1, 1, 20);
-    List<Edge> edges = a.doFirstExploration(gr);
+    List<Edge> edges = a.doFirstExploration(graph);
     assertNotNull(edges);
 
     // Calculate the heuristic for next edges
     Ant.NextEdgeResult nextEdgeResult =
-        a.calculateEdgesHeuristic(gr, Arrays.asList(edges.get(0).getNodes()));
+        a.calculateEdgesHeuristic(graph, Arrays.asList(edges.get(0).getNodes()));
 
     // Sum all the edges heuristic values
     double edgesHeuristicsSum = 0;

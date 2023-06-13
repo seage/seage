@@ -54,7 +54,7 @@ import org.slf4j.LoggerFactory;
     @Parameter(name = "beta", min = 1, max = 10, init = 3),
     @Parameter(name = "defaultPheromone", min = 0.00001, max = 1.0, init = 0.00001),
     @Parameter(name = "quantumOfPheromone", min = 1, max = 1000, init = 10),
-    @Parameter(name = "localEvaporation", min = 0.5, max = 0.999, init = 0.98) })
+    @Parameter(name = "localEvaporation", min = 0.001, max = 0.999, init = 0.02) })
 public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> 
     extends AlgorithmAdapterImpl<P, S> {
 

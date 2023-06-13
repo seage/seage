@@ -34,4 +34,20 @@ class EdgeTest {
     assertTrue(set.contains(e1));
     assertTrue(set.contains(e2));
   }
+
+  @Test
+  void testEvaporateFromEdge() {
+    Edge e1 = new Edge(new Node(1), new Node(2), 0);
+    e1.addLocalPheromone(1);
+
+    e1.evaporateFromEdge(0.5);
+
+    assertEquals(0.5, e1.getLocalPheromone());
+
+    // In the corner case the evaporate from edge
+    // shouldn't let the pheromone go under 0.00001
+    e1.evaporateFromEdge(0.99999);
+
+    assertEquals(0.00001, e1.getLocalPheromone());
+  }
 }
