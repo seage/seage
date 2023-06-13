@@ -149,7 +149,6 @@ public class Ant {
 
       nextEdge = selectNextStep(graph, nodePath);
     }
-    leavePheromone(graph, edgePath);
     return edgePath;
   }
 
