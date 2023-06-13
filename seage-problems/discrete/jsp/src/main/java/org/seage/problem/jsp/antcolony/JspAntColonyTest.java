@@ -114,7 +114,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     result.putValue("numAnts", 100);
     result.putValue("iterationCount", 1000);
     result.putValue("quantumOfPheromone", 1.0);
-    result.putValue("localEvaporation", 0.95);
+    result.putValue("evaporationCoef", 0.95);
     result.putValue("alpha", 1.1);
     result.putValue("beta", 1.9);
 
@@ -167,7 +167,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     // int numAnts = 1;
     // double alpha = 1, beta = 3;
 
-    double localEvaporation = 0.995;
+    double evaporationCoef = 0.995;
     double quantumPheromone = 100.0;
     double alpha = 1.0;
 
@@ -181,7 +181,7 @@ public class JspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone,
-        localEvaporation);
+        evaporationCoef);
 
     int numAnts = 100;
     Ant[] ants = new Ant[numAnts];

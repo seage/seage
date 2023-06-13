@@ -84,7 +84,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
     // David
     // int numAnts = 733;
-    // double localEvaporation = 0.748594131091018;
+    // double evaporationCoef = 0.748594131091018;
     // double quantumPheromone = 288.9555351673542;
     // double alpha = 1.0162687039555678, beta = 6.35356118801852;
 
@@ -93,7 +93,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     int numAnts = 50;
     double alpha = 1.0;
     double beta = 5.3;
-    double localEvaporation = 0.95;
+    double evaporationCoef = 0.95;
     double quantumPheromone = numAnts;
     
     // ----
@@ -101,7 +101,7 @@ public class TspAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     log.info("Loaded ...");
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
-    colony.setParameters(iterations, alpha, beta, quantumPheromone, localEvaporation);
+    colony.setParameters(iterations, alpha, beta, quantumPheromone, evaporationCoef);
 
     Ant[] ants = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {
