@@ -66,7 +66,6 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
     double quantumPheromone = 462;
     double evaporation = 0.76;
-    double defaultPheromone = 0.33;
     double alpha = 1.15;
     double beta = 1.18;
     int numAnts = 865;
