@@ -78,7 +78,7 @@ public class AntTest {
   void testGetAvailableNodes() throws Exception {
     // Create new graph with four nodes
     Graph graph = new Graph(List.of(1, 2, 3, 4));
-    // Create new ant ant set its values
+    // The ant initially travels through two nodes, thus next two available nodes expected.
     Ant ant = new Ant(graph.nodesToNodePath(List.of(1, 2)), 42);
     ant.setParameters(1, 1, 20);
     // Get the list of edges on the path
