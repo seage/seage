@@ -59,13 +59,13 @@ public class Ant {
   /**
    * .
    *
-   * @param initNodePath . 
+   * @param initNodePath .
    * @param randSeed .
    */
-  public Ant(List<Node> initNodePath, long randSeed) {    
+  public Ant(List<Node> initNodePath, long randSeed) {
     this.nodePath = new ArrayList<>();
     this.rand = new Random(randSeed);
-    
+
     if (initNodePath != null) {
       nodePath.addAll(initNodePath);
     }
@@ -108,7 +108,7 @@ public class Ant {
    */
   public List<Edge> doFirstExploration(Graph graph) throws Exception {
     List<Edge> edgePath = new ArrayList<>();
-    
+
     for (int i = 0; i < nodePath.size() - 1; i++) {
       Node n1 = nodePath.get(i);
       Node n2 = nodePath.get(i + 1);
@@ -132,7 +132,7 @@ public class Ant {
    */
   protected List<Edge> explore(Graph graph, Node startingNode) throws Exception {
     nodePath.clear();
-    
+
     List<Edge> edgePath = new ArrayList<>();
 
     nodePath.add(startingNode);
@@ -140,9 +140,9 @@ public class Ant {
     Node currentNode = startingNode;
     Edge nextEdge = selectNextStep(graph, nodePath);
 
-    while (nextEdge != null) {      
+    while (nextEdge != null) {
       Node nextNode = nextEdge.getNode2(currentNode);
-   
+
       edgePath.add(nextEdge);
       nodePath.add(nextNode);
       currentNode = nextNode;
@@ -160,9 +160,8 @@ public class Ant {
    */
   protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
     double distanceTravelled = getDistanceTravelled(graph, edgePath);
-    for (Edge edge : edgePath) {  
-      double res = quantumPheromone * (
-          edge.getEdgeCost() / distanceTravelled);
+    for (Edge edge : edgePath) {
+      double res = quantumPheromone * (edge.getEdgeCost() / distanceTravelled);
       edge.addLocalPheromone(res);
       if (!graph._edges.contains(edge)) {
         graph.addEdge(edge);
@@ -232,9 +231,8 @@ public class Ant {
     return null;
   }
 
-  protected NextEdgeResult calculateEdgesHeuristic(
-      Graph graph, List<Node> nodePath) {
-    
+  protected NextEdgeResult calculateEdgesHeuristic(Graph graph, List<Node> nodePath) {
+
     Node currentNode = nodePath.get(nodePath.size() - 1);
     HashSet<Node> nextAvailableNodes = getAvailableNodes(graph, nodePath);
 
@@ -244,23 +242,17 @@ public class Ant {
 
     List<Edge> candidateEdges = new ArrayList<>();
     double sumCostEdges = 0.0;
-    
+
     // Find all candidate edges
     for (Node n : nextAvailableNodes) {
-      double nodeDistance = 0;
-
       Edge e = currentNode.getEdge(n);
       if (e == null) {
-        nodeDistance = getNodeDistance(graph, nodePath, n);
-
+        double nodeDistance = getNodeDistance(graph, nodePath, n);
         e = new Edge(currentNode, n, nodeDistance);
       }
-      
-      double edgeHeuristic = Math.pow(
-          e.getLocalPheromone() + 0.001, alpha) * Math.pow(1 / e.getEdgeCost(), beta);
-      if (edgeHeuristic == 0) {
-        edgeHeuristic = Math.pow(1 / e.getEdgeCost(), beta);
-      }
+
+      double edgeHeuristic =
+          Math.pow(e.getLocalPheromone() + 0.001, alpha) * Math.pow(1 / e.getEdgeCost(), beta);
 
       e.setEdgeHeuristic(edgeHeuristic);
       sumCostEdges += edgeHeuristic;
@@ -273,8 +265,8 @@ public class Ant {
 
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
     HashSet<Node> availableNodes = new HashSet<>(graph.getNodes().values());
-    availableNodes.removeAll(nodePath);   
-    
+    availableNodes.removeAll(nodePath);
+
     return availableNodes;
   }
 

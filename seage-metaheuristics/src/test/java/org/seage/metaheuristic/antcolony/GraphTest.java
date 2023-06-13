@@ -58,7 +58,7 @@ public class GraphTest {
     );
     var nodes2 = Graph.edgeListToNodeList(edges)
         .stream()
-        .map((Node n)->n.getID())
+        .map((Node n) -> n.getID())
         .collect(Collectors.toList());
     assertNotNull(nodes2);
     assertEquals(Arrays.asList(1, 2, 3, 4, 5), nodes2);

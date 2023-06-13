@@ -136,9 +136,11 @@ public class Graph {
    * .
    */ 
   public static List<Node> edgeListToNodeList(List<Edge> edges) throws Exception {
-    ArrayList<Node> nodeList = new ArrayList<Node>();
+    if (edges.size() == 1) {
+      return List.of(edges.get(0).getNodes());
+    }
 
-    // Edge previous = null;
+    ArrayList<Node> nodeList = new ArrayList<Node>();
     Node previous = null;
     for (int i = 0; i < edges.size(); i++) {
       Edge edge = edges.get(i);      
