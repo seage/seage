@@ -77,20 +77,17 @@ public class AntTest {
    */
   @Test
   void testGetAvailableNodes() throws Exception {
-    // Create new graph with four nodes
     Graph graph = new Graph(List.of(1, 2, 3, 4));
     // The ant initially travels through two nodes, thus next two available nodes expected.
     Ant ant = new Ant(graph.nodesToNodePath(List.of(1, 2)), 42);
     ant.setParameters(1, 1, 20);
-    // Get the list of edges on the path
+
     List<Edge> edgePath = ant.doFirstExploration(graph);
-    // Get list of nodes
     List<Node> nodePath = Graph.edgeListToNodeList(edgePath);
 
-    // Get available nodes (all - those already visited)
+    // It should return not yet visited nodes (the rest two)
     HashSet<Node> availNodes = ant.getAvailableNodes(graph, nodePath);
 
-    // Test if the avaiable nodes are those not yet visited
     assertFalse(availNodes.contains(graph.getNodes().get(1)));
     assertFalse(availNodes.contains(graph.getNodes().get(2)));
     assertTrue(availNodes.contains(graph.getNodes().get(3)));
