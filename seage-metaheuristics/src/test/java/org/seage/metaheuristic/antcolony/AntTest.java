@@ -195,8 +195,8 @@ public class AntTest {
 
   @Test
   public void testLeavePheromone() throws Exception {
+    // This sets the edges witch exact values
     graph.getEdges().clear();
-
     var nodes = graph.getNodes();
     graph.addEdge(new Edge(nodes.get(1), nodes.get(2), 2));
     graph.addEdge(new Edge(nodes.get(2), nodes.get(3), 6));
@@ -207,22 +207,14 @@ public class AntTest {
     List<Edge> edges = a.doFirstExploration(graph);
     assertNotNull(edges);
 
-    double firstEdgePheromone = edges.get(0).getLocalPheromone();
-    double secondEdgePheromone = edges.get(1).getLocalPheromone();
-
     a.leavePheromone(graph, edges);
 
+    // Ant should use the shortest path
     assertEquals(8, a.getDistanceTravelled(graph, edges), 0.1);
 
-    // TODO: ???
-    assertEquals(
-        firstEdgePheromone + (a.getQuantumPheromone()
-            * (edges.get(0).getEdgeCost() / a.getDistanceTravelled(graph, edges))),
-        edges.get(0).getLocalPheromone(), 0.1);
-    assertEquals(
-        secondEdgePheromone + (a.getQuantumPheromone()
-            * (edges.get(1).getEdgeCost() / a.getDistanceTravelled(graph, edges))),
-        edges.get(1).getLocalPheromone(), 0.1);
+    // Following the pheromone updae function these values has to be the same
+    assertEquals(10, edges.get(0).getLocalPheromone(), 1E-6);
+    assertEquals(30, edges.get(1).getLocalPheromone(), 1E-6);
   }
 }
 
