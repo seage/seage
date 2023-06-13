@@ -202,7 +202,7 @@ public class AntTest {
     graph.addEdge(new Edge(nodes.get(2), nodes.get(3), 6));
     graph.addEdge(new Edge(nodes.get(1), nodes.get(3), 8));
 
-    Ant a = new Ant(graph.nodesToNodePath(List.of(1, 2, 3)));
+    Ant a = new Ant(graph.nodesToNodePath(List.of(1, 2, 3, 1)));
     a.setParameters(1, 1, 20);
     List<Edge> edges = a.doFirstExploration(graph);
     assertNotNull(edges);
@@ -210,11 +210,12 @@ public class AntTest {
     a.leavePheromone(graph, edges);
 
     // Ant should use the shortest path
-    assertEquals(8, a.getDistanceTravelled(graph, edges), 0.1);
+    assertEquals(16, a.getDistanceTravelled(graph, edges), 0.1);
 
-    // Following the pheromone updae function these values has to be the same
-    assertEquals(30, edges.get(0).getLocalPheromone(), 1E-6);
-    assertEquals(10, edges.get(1).getLocalPheromone(), 1E-6);
+    // Following the pheromone update function these values has to be the same
+    assertEquals(5, edges.get(0).getLocalPheromone());
+    assertEquals(15, edges.get(1).getLocalPheromone());
+    assertEquals(20, edges.get(2).getLocalPheromone());
   }
 }
 

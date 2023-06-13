@@ -69,7 +69,7 @@ public class AntColonyTest {
     }  
   }
 
-  /**              ^
+  /**             ^
    *              |
    *  [-1, 1] X4  -   X1 [1, 1]
    *              |
