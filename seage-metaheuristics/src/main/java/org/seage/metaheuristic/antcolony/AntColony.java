@@ -128,11 +128,11 @@ public class AntColony {
         antReports.add(antReport);
       }
       resolveRound(antReports);
+      graph.evaporate();
       // Place pheromone of each ant
       for (int j = 0; j < antReports.size(); j++) {
         this.ants[j].leavePheromone(graph, antReports.get(j));
       }
-      graph.evaporate();
       graph.prune(currentIteration);
       eventProducer.fireIterationPerformed();
     }
