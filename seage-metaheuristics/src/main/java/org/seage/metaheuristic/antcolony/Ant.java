@@ -160,7 +160,7 @@ public class Ant {
   protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
     double distanceTravelled = getDistanceTravelled(graph, edgePath);
     for (Edge edge : edgePath) {
-      double res = quantumPheromone * (edge.getEdgeCost() / distanceTravelled);
+      double res = quantumPheromone * (1 - ((edge.getEdgeCost()) / distanceTravelled));
       edge.addLocalPheromone(res);
       if (!graph._edges.contains(edge)) {
         graph.addEdge(edge);
