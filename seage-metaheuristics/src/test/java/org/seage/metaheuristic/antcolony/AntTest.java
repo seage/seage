@@ -102,7 +102,7 @@ public class AntTest {
     assertEquals(2, nextEdge.getNodes()[0].getID());
     assertEquals(4, nextEdge.getNodes()[1].getID());
     assertEquals(5, nextEdge.getEdgeCost());
-    assertEquals(0.00025, nextEdge.getEdgeHeuristic(), 0.0001);
+    assertEquals(0.0002, nextEdge.getEdgeHeuristic(), 1E-5);
   }
 
   @Test
