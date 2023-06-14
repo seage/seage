@@ -40,27 +40,19 @@ public class FormulaEvaluator {
   }
 
   public static int evaluate(Formula f, Boolean[] s) {
-    int numFalseClauses = 0;
-    boolean clauseIsNegative = true;
+    int numTrueClauses = 0;
 
     for (Clause c : f.getClauses()) {
-      clauseIsNegative = true;
       for (Literal l : c.getLiterals()) {
         boolean x = s[l.getIndex()];
-        if (l.isNeg()) {
-          x = !x;
-        }
-
-        if (x) {
-          clauseIsNegative = false;
+        boolean neg = l.isNeg();
+        if ((x && !neg) || (!x && neg)) {
+          numTrueClauses++;
           break;
         }
       }
-      if (clauseIsNegative) {
-        numFalseClauses++;
-      }
     }
-    return numFalseClauses;
+    return f.getClauses().size() - numTrueClauses;
   }
 
   public double evaluate(Formula f, Integer id) {

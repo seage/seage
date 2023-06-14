@@ -64,13 +64,13 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
         FormulaReader.readClauses(new FileInputStream(path)));
 
-    double quantumPheromone = 462;
-    double evaporation = 0.76;
+    double quantumPheromone = 100;
+    double evaporation = 0.16;
     double alpha = 1.15;
-    double beta = 1.18;
-    int numAnts = 865;
+    double beta = 4.18;
+    int numAnts = 100;
 
-    int iterations = 3337;
+    int iterations = 1000;
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
 
     FormulaEvaluator evaluator = new FormulaEvaluator(formula);

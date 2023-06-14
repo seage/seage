@@ -49,7 +49,6 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
     // /~ 1 ~ 2 ~ 3 ~ ... n
     // 0
     // \~ -1 ~ -2 ~ -3 ~ ... -n
-    _nodes.put(0, new Node(0));
 
     for (int i = 1; i <= formula.getLiteralCount(); i++) {
       _nodes.put(i, new Node(i));
