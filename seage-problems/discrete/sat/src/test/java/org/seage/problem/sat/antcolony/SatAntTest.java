@@ -64,18 +64,49 @@ public class SatAntTest {
     List<Edge> edgePath = ant.doFirstExploration(graph);
     List<Node> nodePath = Graph.edgeListToNodeList(edgePath);
 
+    for (Node n : nodePath) {
+      int id = n.getID();
+
+      System.out.println(id);
+    }
+
     // // It should return not yet visited nodes (the rest two)
     HashSet<Node> availNodes = ant.getAvailableNodes(graph, nodePath);
 
+    // Testing if the already visited nodes and their negations
+    // are not among visited nodes
     assertFalse(availNodes.contains(graph.getNodes().get(1)));
+    assertFalse(availNodes.contains(graph.getNodes().get(-1)));
     assertFalse(availNodes.contains(graph.getNodes().get(2)));
+    assertFalse(availNodes.contains(graph.getNodes().get(-2)));
     assertTrue(availNodes.contains(graph.getNodes().get(3)));
+    assertTrue(availNodes.contains(graph.getNodes().get(-3)));
     assertTrue(availNodes.contains(graph.getNodes().get(4)));
+    assertTrue(availNodes.contains(graph.getNodes().get(-4)));
+
+    // Checking the id of available nodes
+    assertEquals(3, graph.getNodes().get(3).getID());
+    assertEquals(-3, graph.getNodes().get(-3).getID());
+    assertEquals(4, graph.getNodes().get(4).getID());
+    assertEquals(-4, graph.getNodes().get(-4).getID());
+
   }
 
   @Test
-  public void testGetNodeDistance() {
-    assertTrue(false);
-    // TODO
+  public void testGetNodeDistance() throws Exception {
+    ProblemInstanceInfo pii = new ProblemInstanceInfo("uf04", ProblemInstanceOrigin.RESOURCE,
+        path);
+    SatProblemProvider spp = new SatProblemProvider();
+    Formula formula = spp.initProblemInstance(pii);
+    FormulaEvaluator formEval = new FormulaEvaluator(formula);
+
+    Graph graph = new SatGraph(formula, formEval);
+    // The ant initially travels through two nodes, thus next two available nodes expected.
+    SatAnt ant = new SatAnt(graph.nodesToNodePath(List.of(1, 2, 3)), formula, formEval);
+    
+    List<Edge> edgePath = ant.doFirstExploration(graph);
+
+    // Distance traveled is not the number of false clauses TODO: is this correct?
+    assertEquals(1.1, ant.getDistanceTravelled(graph, edgePath), 0.1);
   }
 }
