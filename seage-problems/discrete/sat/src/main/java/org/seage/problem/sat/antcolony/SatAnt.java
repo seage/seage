@@ -69,9 +69,6 @@ public class SatAnt extends Ant {
   @Override
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
     var result = super.getAvailableNodes(graph, nodePath);
-    if (nodePath.isEmpty()) {
-      return result;
-    }
 
     for (Node n : nodePath) {
       int id = -n.getID();
