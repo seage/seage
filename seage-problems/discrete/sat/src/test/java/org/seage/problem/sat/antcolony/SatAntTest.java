@@ -25,6 +25,7 @@
 
 package org.seage.problem.sat.antcolony;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.FileInputStream;
@@ -54,22 +55,22 @@ public class SatAntTest {
         path);
     SatProblemProvider spp = new SatProblemProvider();
     Formula formula = spp.initProblemInstance(pii);
+    FormulaEvaluator formEval = new FormulaEvaluator(formula);
 
-    Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
+    Graph graph = new SatGraph(formula, formEval);
     // The ant initially travels through two nodes, thus next two available nodes expected.
-    // Ant ant = new Ant(graph.nodesToNodePath(List.of(1, 2)), 42);
-    // ant.setParameters(1, 1, 20);
-
-    // List<Edge> edgePath = ant.doFirstExploration(graph);
-    // List<Node> nodePath = Graph.edgeListToNodeList(edgePath);
+    SatAnt ant = new SatAnt(graph.nodesToNodePath(List.of(1, 2)), formula, formEval);
+    
+    List<Edge> edgePath = ant.doFirstExploration(graph);
+    List<Node> nodePath = Graph.edgeListToNodeList(edgePath);
 
     // // It should return not yet visited nodes (the rest two)
-    // HashSet<Node> availNodes = ant.getAvailableNodes(graph, nodePath);
+    HashSet<Node> availNodes = ant.getAvailableNodes(graph, nodePath);
 
-    // assertFalse(availNodes.contains(graph.getNodes().get(1)));
-    // assertFalse(availNodes.contains(graph.getNodes().get(2)));
-    // assertTrue(availNodes.contains(graph.getNodes().get(3)));
-    // assertTrue(availNodes.contains(graph.getNodes().get(4)));
+    assertFalse(availNodes.contains(graph.getNodes().get(1)));
+    assertFalse(availNodes.contains(graph.getNodes().get(2)));
+    assertTrue(availNodes.contains(graph.getNodes().get(3)));
+    assertTrue(availNodes.contains(graph.getNodes().get(4)));
   }
 
   @Test
