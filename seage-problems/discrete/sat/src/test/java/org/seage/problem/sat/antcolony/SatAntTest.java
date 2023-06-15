@@ -64,13 +64,32 @@ public class SatAntTest {
     List<Edge> edgePath = ant.doFirstExploration(graph);
     List<Node> nodePath = Graph.edgeListToNodeList(edgePath);
 
+    for (Node n : nodePath) {
+      int id = n.getID();
+
+      System.out.println(id);
+    }
+
     // // It should return not yet visited nodes (the rest two)
     HashSet<Node> availNodes = ant.getAvailableNodes(graph, nodePath);
 
+    // Testing if the already visited nodes and their negations
+    // are not among visited nodes
     assertFalse(availNodes.contains(graph.getNodes().get(1)));
+    assertFalse(availNodes.contains(graph.getNodes().get(-1)));
     assertFalse(availNodes.contains(graph.getNodes().get(2)));
+    assertFalse(availNodes.contains(graph.getNodes().get(-2)));
     assertTrue(availNodes.contains(graph.getNodes().get(3)));
+    assertTrue(availNodes.contains(graph.getNodes().get(-3)));
     assertTrue(availNodes.contains(graph.getNodes().get(4)));
+    assertTrue(availNodes.contains(graph.getNodes().get(-4)));
+
+    // Checking the id of available nodes
+    assertEquals(3, graph.getNodes().get(3).getID());
+    assertEquals(-3, graph.getNodes().get(-3).getID());
+    assertEquals(4, graph.getNodes().get(4).getID());
+    assertEquals(-4, graph.getNodes().get(-4).getID());
+
   }
 
   @Test
