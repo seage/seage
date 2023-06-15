@@ -55,6 +55,7 @@ public class FormulaEvaluator {
     return f.getClauses().size() - numTrueClauses;
   }
 
+  // todo is this correct?
   public double evaluate(Formula f, Integer id) {
     // Integer id = value?ix+1:-ix-1;
     return 1.0;// _literalPrices.get(id);

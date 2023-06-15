@@ -80,6 +80,13 @@ public class SatAnt extends Ant {
       Node n2 = graph.getNodes().get(id);
       result.remove(n2);
     }
+
+    Node startingNode = nodePath.get(0);
+    Node currentNode = nodePath.get(nodePath.size() - 1);
+    if (currentNode != startingNode && result.isEmpty()) {
+      result.add(startingNode);
+    }
+    
     return result;
   }
 
