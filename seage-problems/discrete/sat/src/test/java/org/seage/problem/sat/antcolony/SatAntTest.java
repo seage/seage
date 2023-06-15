@@ -73,6 +73,9 @@ public class SatAntTest {
     // // It should return not yet visited nodes (the rest two)
     HashSet<Node> availNodes = ant.getAvailableNodes(graph, nodePath);
 
+    // Number of available nodes
+    assertEquals(4, availNodes.size());
+
     // Testing if the already visited nodes and their negations
     // are not among visited nodes
     assertFalse(availNodes.contains(graph.getNodes().get(1)));
@@ -83,13 +86,6 @@ public class SatAntTest {
     assertTrue(availNodes.contains(graph.getNodes().get(-3)));
     assertTrue(availNodes.contains(graph.getNodes().get(4)));
     assertTrue(availNodes.contains(graph.getNodes().get(-4)));
-
-    // Checking the id of available nodes
-    assertEquals(3, graph.getNodes().get(3).getID());
-    assertEquals(-3, graph.getNodes().get(-3).getID());
-    assertEquals(4, graph.getNodes().get(4).getID());
-    assertEquals(-4, graph.getNodes().get(-4).getID());
-
   }
 
   @Test
@@ -102,7 +98,7 @@ public class SatAntTest {
 
     Graph graph = new SatGraph(formula, formEval);
     // The ant initially travels through two nodes, thus next two available nodes expected.
-    SatAnt ant = new SatAnt(graph.nodesToNodePath(List.of(1, 2, 3)), formula, formEval);
+    Ant ant = new SatAnt(graph.nodesToNodePath(List.of(1, 2, 3)), formula, formEval);
     
     List<Edge> edgePath = ant.doFirstExploration(graph);
 
