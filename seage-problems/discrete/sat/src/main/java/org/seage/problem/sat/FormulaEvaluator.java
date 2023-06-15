@@ -44,9 +44,9 @@ public class FormulaEvaluator {
 
     for (Clause c : f.getClauses()) {
       for (Literal l : c.getLiterals()) {
-        boolean x = s[l.getIndex()];
+        Boolean x = s[l.getIndex()];
         boolean neg = l.isNeg();
-        if ((x && !neg) || (!x && neg)) {
+        if ((x != null) && ((x && !neg) || (!x && neg))) {
           numTrueClauses++;
           break;
         }

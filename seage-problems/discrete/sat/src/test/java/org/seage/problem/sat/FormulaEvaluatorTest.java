@@ -29,6 +29,9 @@ class FormulaEvaluatorTest {
     assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {false, true, true}));
     assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {true, false, true}));
 
+
+    assertEquals(2, FormulaEvaluator.evaluate(f, new Boolean[] {true, null, null}));
+
     //
     FormulaEvaluator formulaEvaluator = new FormulaEvaluator(f);
     // assertEquals(2.0, formulaEvaluator.evaluate(f, -1));

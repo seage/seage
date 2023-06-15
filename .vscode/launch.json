@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "SatAntColonyTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.sat.antcolony.SatAntColonyTest",
+      "projectName": "seage-problem-sat"
+    },
+    {
+      "type": "java",
+      "name": "SatAntColonyTestSimple",
+      "request": "launch",
+      "mainClass": "org.seage.problem.sat.antcolony.SatAntColonyTestSimple",
+      "projectName": "seage-problem-sat"
+    },
+    {
+      "type": "java",
       "name": "Run info",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
@@ -60,8 +74,7 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "env": {
-        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage",
-        // "LOG_LEVEL": "debug"
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
       },
       "args": [
         "experiment-single-default",
@@ -84,10 +97,7 @@
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
-      "env": {
-        // "LOG_LEVEL": "debug",
-        // "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
-      },
+      "env": {},
       "args": [
         "experiment-single-feedback",
         "-a",
