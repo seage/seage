@@ -23,6 +23,7 @@
 
 package org.seage.problem.sat.antcolony;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.seage.metaheuristic.antcolony.Ant;
@@ -60,21 +61,19 @@ public class SatAnt extends Ant {
     List<Node> nodeList = Graph.edgeListToNodeList(path);
 
     for (Node n : nodeList) {
-      if (n.getID() == 0) {
-        continue; 
-      }
-      if (n.getID() < 0) {
-        solution[-n.getID() - 1] = false;
-      } else {
-        solution[n.getID() - 1] = true;
-      }
+      solution[Math.abs(n.getID()) - 1] = n.getID() > 0;
     }
-    return (FormulaEvaluator.evaluate(formula, solution) + 0.1);
+
+    return FormulaEvaluator.evaluate(formula, solution);
   }
 
   @Override
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
     var result = super.getAvailableNodes(graph, nodePath);
+    if (nodePath.isEmpty()) {
+      return result;
+    }
+
     for (Node n : nodePath) {
       int id = -n.getID();
       Node n2 = graph.getNodes().get(id);
@@ -92,6 +91,25 @@ public class SatAnt extends Ant {
 
   @Override
   public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
-    return this.formulaEvaluator.evaluate(this.formula, n2.getID());
+    HashSet<Node> avalNodes = getAvailableNodes(graph, nodePath);
+
+    if (!nodePath.isEmpty() && !avalNodes.contains(n2)) {
+      return 0.0;
+    }
+
+    Boolean[] eval = new Boolean[this.formula.getLiteralCount()];
+
+    for (Node n : nodePath) {
+      eval[Math.abs(n.getID()) - 1] = n.getID() > 0;
+    }
+
+    double prevCost = FormulaEvaluator.evaluate(formula, eval);
+
+    eval[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
+
+    double newCost = FormulaEvaluator.evaluate(formula, eval);
+
+
+    return prevCost - newCost;
   }
 }
