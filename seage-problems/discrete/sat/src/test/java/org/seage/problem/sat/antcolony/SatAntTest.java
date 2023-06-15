@@ -40,17 +40,20 @@ import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 import org.seage.problem.sat.FormulaReader;
+import org.seage.problem.sat.SatProblemProvider;
 
 /**
  * Class tests the method of SatAnt.
  */
 public class SatAntTest {
-  String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/test/uf04.cnf";
+  String path = "/org/seage/problem/sat/test/uf04.cnf";
 
   @Test
   public void testGetAvailableNodes() throws Exception {
-    Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
-        FormulaReader.readClauses(new FileInputStream(path)));
+    ProblemInstanceInfo pii = new ProblemInstanceInfo("uf04", ProblemInstanceOrigin.RESOURCE,
+        path);
+    SatProblemProvider spp = new SatProblemProvider();
+    Formula formula = spp.initProblemInstance(pii);
 
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
     // The ant initially travels through two nodes, thus next two available nodes expected.

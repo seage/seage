@@ -6,9 +6,9 @@ c    mixed sat? no
 c    clause length = 3 
 c
 p cnf 4  3 
-1 2 4 0
--1 4 3 0
--3 1 2 0
+1 -2 4 0
+2 3 -4 0
+1 -2 -3 0
 %
 0
 
