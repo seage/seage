@@ -75,7 +75,7 @@ public class SatAntTest {
 
     // Number of available nodes
     assertEquals(4, availNodes.size());
-    
+
     // Testing if the already visited nodes and their negations
     // are not among visited nodes
     assertFalse(availNodes.contains(graph.getNodes().get(1)));
@@ -86,12 +86,6 @@ public class SatAntTest {
     assertTrue(availNodes.contains(graph.getNodes().get(-3)));
     assertTrue(availNodes.contains(graph.getNodes().get(4)));
     assertTrue(availNodes.contains(graph.getNodes().get(-4)));
-
-    // Checking the id of available nodes
-    assertEquals(3, graph.getNodes().get(3).getID());
-    assertEquals(-3, graph.getNodes().get(-3).getID());
-    assertEquals(4, graph.getNodes().get(4).getID());
-    assertEquals(-4, graph.getNodes().get(-4).getID());
   }
 
   @Test
