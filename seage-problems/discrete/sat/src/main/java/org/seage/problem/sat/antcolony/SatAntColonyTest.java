@@ -47,8 +47,7 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   public static void main(String[] args) throws Exception {
     try {
       // String path = "data/sat/uf20-01.cnf";
-      String path =
-          "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf100-01.cnf";
+      String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf100-01.cnf";
 
       long start = System.currentTimeMillis();
       new SatAntColonyTest().run(path);
@@ -83,7 +82,7 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
       ants[i] = new SatAnt(null, formula, evaluator);
     }
 
-    colony.startExploring(graph.getNodes().get(0), ants);
+    colony.startExploring(graph.getNodes().get(1), ants);
 
     log.info("Global best: {}", colony.getGlobalBest());
   }
