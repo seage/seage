@@ -97,17 +97,17 @@ public class SatAnt extends Ant {
       return 0.0;
     }
 
-    Boolean[] eval = new Boolean[this.formula.getLiteralCount()];
+    Boolean[] solution = new Boolean[this.formula.getLiteralCount()];
 
     for (Node n : nodePath) {
-      eval[Math.abs(n.getID()) - 1] = n.getID() > 0;
+      solution[Math.abs(n.getID()) - 1] = n.getID() > 0;
     }
 
-    double prevCost = FormulaEvaluator.evaluate(formula, eval);
+    double prevCost = FormulaEvaluator.evaluate(formula, solution);
 
-    eval[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
+    solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
 
-    double newCost = FormulaEvaluator.evaluate(formula, eval);
+    double newCost = FormulaEvaluator.evaluate(formula, solution);
 
 
     return prevCost - newCost;
