@@ -93,8 +93,20 @@ public class SatAntTest {
   }
 
   @Test
-  public void testGetNodeDistance() {
-    assertTrue(false);
-    // TODO
+  public void testGetNodeDistance() throws Exception {
+    ProblemInstanceInfo pii = new ProblemInstanceInfo("uf04", ProblemInstanceOrigin.RESOURCE,
+        path);
+    SatProblemProvider spp = new SatProblemProvider();
+    Formula formula = spp.initProblemInstance(pii);
+    FormulaEvaluator formEval = new FormulaEvaluator(formula);
+
+    Graph graph = new SatGraph(formula, formEval);
+    // The ant initially travels through two nodes, thus next two available nodes expected.
+    SatAnt ant = new SatAnt(graph.nodesToNodePath(List.of(1, 2, 3)), formula, formEval);
+    
+    List<Edge> edgePath = ant.doFirstExploration(graph);
+
+    // Distance traveled is not the number of false clauses TODO: is this correct?
+    assertEquals(1.1, ant.getDistanceTravelled(graph, edgePath), 0.1);
   }
 }
