@@ -102,4 +102,11 @@ public class SatAnt extends Ant {
 
     return prevCost - newCost + 0.001;
   }
+
+  public List<Integer> getNodeIDsAlongPath() {
+    List<Integer> result = super.getNodeIDsAlongPath();
+    result.remove(0);
+
+    return result;
+  }
 }
