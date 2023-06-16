@@ -62,8 +62,8 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
 
       @Override
       public SatPhenotype solutionToPhenotype(Ant solution) throws Exception {        
-        SatPhenotype result = new SatPhenotype(new Boolean[solution.getNodeIDsAlongPath().size()]);
-        for (int i = 0; i < result.getSolution().length; i++) {
+        SatPhenotype result = new SatPhenotype(new Boolean[formula.getLiteralCount()]);
+        for (int i = 0; i < solution.getNodeIDsAlongPath().size(); i++) {
           Integer value = (Integer) solution.getNodeIDsAlongPath().get(i);
           result.getSolution()[i] = value > 0;
         }
