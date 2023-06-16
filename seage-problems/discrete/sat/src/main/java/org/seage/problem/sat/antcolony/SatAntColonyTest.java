@@ -48,7 +48,9 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   public static void main(String[] args) throws Exception {
     try {
       // String path = "data/sat/uf20-01.cnf";
-      String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf100-01.cnf";
+      //String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf100-01.cnf";
+      String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf20-01.cnf";
+      
 
       long start = System.currentTimeMillis();
       new SatAntColonyTest().run(path);
@@ -67,10 +69,10 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     double quantumPheromone = 100;
     double evaporation = 0.16;
     double alpha = 1.15;
-    double beta = 4.18;
+    double beta = 1.18;
     int numAnts = 100;
 
-    int iterations = 1000;
+    int iterations = 500;
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
 
     FormulaEvaluator evaluator = new FormulaEvaluator(formula);

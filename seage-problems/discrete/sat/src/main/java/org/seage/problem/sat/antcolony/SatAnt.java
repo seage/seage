@@ -78,25 +78,12 @@ public class SatAnt extends Ant {
       Node n2 = graph.getNodes().get(id);
       result.remove(n2);
     }
-
-    Node startingNode = nodePath.get(0);
-    Node currentNode = nodePath.get(nodePath.size() - 1);
-    if (currentNode != startingNode && result.isEmpty()) {
-      result.add(startingNode);
-    }
     
     return result;
   }
 
   @Override
   public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
-    HashSet<Node> avalNodes = getAvailableNodes(graph, nodePath);
-
-    // todo: bug, n2 should not be ever 0
-    if (n2.getID() == 0 || (!nodePath.isEmpty() && !avalNodes.contains(n2))) {
-      return 0.0;
-    }
-
     Boolean[] solution = new Boolean[this.formula.getLiteralCount()];
 
     for (Node n : nodePath) {
@@ -113,6 +100,6 @@ public class SatAnt extends Ant {
     double newCost = FormulaEvaluator.evaluate(formula, solution);
 
 
-    return prevCost - newCost;
+    return prevCost - newCost + 0.001;
   }
 }

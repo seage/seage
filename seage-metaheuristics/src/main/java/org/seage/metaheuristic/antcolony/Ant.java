@@ -119,7 +119,9 @@ public class Ant {
       }
       edgePath.add(e);
     }
-    leavePheromone(graph, edgePath);
+    if (!edgePath.isEmpty()) {
+      leavePheromone(graph, edgePath);
+    }
 
     return edgePath;
   }

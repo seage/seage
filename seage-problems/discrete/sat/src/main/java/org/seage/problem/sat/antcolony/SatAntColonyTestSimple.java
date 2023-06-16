@@ -54,21 +54,21 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
 
   public void run() throws Exception {
     ArrayList<Clause> clauses = new ArrayList<Clause>();
-    clauses.add(new Clause(new Literal[] { new Literal(0, false),
-      new Literal(1, true), new Literal(2, true) }));
-    clauses.add(new Clause(new Literal[] { new Literal(0, true), 
-      new Literal(1, false), new Literal(2, true) }));
-    clauses.add(new Clause(new Literal[] { new Literal(0, true), 
-      new Literal(1, true), new Literal(2, false) }));
+    clauses.add(new Clause(
+        new Literal[] {new Literal(0, false), new Literal(1, true), new Literal(2, true)}));
+    clauses.add(new Clause(
+        new Literal[] {new Literal(0, true), new Literal(1, false), new Literal(2, true)}));
+    clauses.add(new Clause(
+        new Literal[] {new Literal(0, true), new Literal(1, true), new Literal(2, false)}));
 
-    Formula formula = new Formula(null, clauses);
+    Formula formula = new Formula(null, clauses); // (a | !b | !c) & (!a | b | !c) & (!a | !b | c)
 
     double quantumPheromone = 1;
     double evaporation = 0.1;
     double alpha = 1;
     double beta = 2;
     int numAnts = 1;
-    int iterations = 1;
+    int iterations = 10;
 
     FormulaEvaluator evaluator = new FormulaEvaluator(formula);
     Graph graph = new SatGraph(formula, evaluator);    
@@ -81,7 +81,7 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
       ants[i] = new SatAnt(null, formula, evaluator);
     }
 
-    colony.startExploring(graph.getNodes().get(1), ants);
+    colony.startExploring(graph.getNodes().get(0), ants);
 
     log.info("Global best: {}", colony.getGlobalBest());
 
@@ -92,7 +92,7 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
       line += s[i] ? '1' : '0';
     }
     log.info("{}", line);
-    log.info("Global best: {}", FormulaEvaluator.evaluate(formula, s));
+    // log.info("Global best: {}", FormulaEvaluator.evaluate(formula, s));
     // graph.printPheromone();
   }
 
