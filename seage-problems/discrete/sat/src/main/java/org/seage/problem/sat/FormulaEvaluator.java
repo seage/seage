@@ -31,29 +31,45 @@ import org.seage.metaheuristic.antcolony.Node;
  * @author Richard Malek
  */
 public class FormulaEvaluator {
-  private HashMap<Integer, Double> _literalPrices;
+  private HashMap<Integer, Integer> literalsImpact;
 
   public FormulaEvaluator(Formula formula) {
-    _literalPrices = new HashMap<Integer, Double>();
-    for (int i = 0; i < formula.getLiteralCount(); i++) {
-      _literalPrices.put(i + 1, evaluateLiteral(formula, i, true));
-      _literalPrices.put(-i - 1, evaluateLiteral(formula, i, false));
-    }
+    
+    // int a = 0;
+    // for (int i = 0; i < formula.getLiteralCount(); i++) {
+    //   _literalPrices.put(i + 1, evaluateLiteral(formula, i, true));
+    //   _literalPrices.put(-i - 1, evaluateLiteral(formula, i, false));
+    // }
   }
 
-  public static double evaluate(Formula f, Boolean[] s) {
-    int n = f.getClauses().size();
-    return (evaluate0(f, s) + 1.0) / n;
-  }
+  // public static double evaluate(Formula f, Boolean[] s) {
+  //   int n = f.getClauses().size();
+  //   return (evaluate0(f, s) + 1.0) / n;
+  // }
 
-  private static int evaluate0(Formula f, Boolean[] s) {
+  public static int evaluate(Formula f, Boolean[] s) {
     int numTrueClauses = 0;
 
     for (Clause c : f.getClauses()) {
       for (Literal l : c.getLiterals()) {
-        Boolean x = s[l.getIndex()];
+        Boolean x = s[l.getId() - 1];
         boolean neg = l.isNeg();
         if ((x != null) && ((x && !neg) || (!x && neg))) {
+          numTrueClauses++;
+          break;
+        }
+      }
+    }
+    return f.getClauses().size() - numTrueClauses;
+  }
+
+  public static int evaluate(Formula f, int id, boolean value) {
+    int numTrueClauses = 0;
+
+    for (Clause c : f.getClauses()) {
+      for (Literal l : c.getLiterals()) {
+        boolean neg = l.isNeg();
+        if ((l.getId() == id) && ((value && !neg) || (!value && neg))) {
           numTrueClauses++;
           break;
         }
@@ -71,7 +87,7 @@ public class FormulaEvaluator {
       }
       s[Math.abs(n.getID()) - 1] = n.getID() > 0;
     }
-    return evaluate0(f, s);
+    return evaluate(f, s);
   }
 
   private double evaluateLiteral(Formula f, int ix, boolean value) {

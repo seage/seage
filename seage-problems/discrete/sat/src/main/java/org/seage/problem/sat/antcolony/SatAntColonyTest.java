@@ -48,10 +48,10 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   public static void main(String[] args) throws Exception {
     try {
-      // String path = "data/sat/uf20-01.cnf";
-      // String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf100-01.cnf";
-      String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf20-01.cnf";
-      
+      // String filename = "uf20-01.cnf";
+      String filename = "uf75-01.cnf";
+      // String filename = "uf100-01.cnf";
+      String path = String.format("seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/%s", filename);
 
       long start = System.currentTimeMillis();
       new SatAntColonyTest().run(path);
@@ -67,13 +67,13 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
         FormulaReader.readClauses(new FileInputStream(path)));
 
-    double quantumPheromone = 1000;
-    double evaporation = 0.15;
-    double alpha = 1.0;
-    double beta = 5.0;
-    int numAnts = 100;
+    double quantumPheromone = 200;
+    double evaporation = 0.08;
+    double alpha = 1.1;
+    double beta = 10.2;
+    int numAnts = 50;
 
-    int iterations = 500;
+    int iterations = 50;
     Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
 
     FormulaEvaluator evaluator = new FormulaEvaluator(formula);
@@ -104,12 +104,17 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   @Override
   public void newBestSolutionFound(AntColonyEvent e) {
-    log.info("{} - {} - {}/{}", 
+    SatAnt satAnt = (SatAnt)e.getAntColony().getBestAnt();
+    List<Node> bestSolution = satAnt.getNodePath();
+    int objVal = FormulaEvaluator.evaluate(satAnt.getFormula(), bestSolution);
+
+    log.info("{} - {} - {}/{} - {}", 
         e.getAntColony().getCurrentIteration(),
         e.getAntColony().getGlobalBest(), 
         e.getAntColony().getGraph().getEdges().size(),
         e.getAntColony().getGraph().getNodes().size()
-            * e.getAntColony().getGraph().getNodes().size() / 2);
+            * e.getAntColony().getGraph().getNodes().size() / 2,
+        objVal);
 
   }
 

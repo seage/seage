@@ -16,33 +16,34 @@
  * SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  */
+
 package org.seage.problem.sat;
 
 /**
  * Summary description for Literal.
  */
-public class Literal implements java.lang.Cloneable {
+public class Literal {
 
-  private int _index;
-  private boolean _neg;
+  private int id;
+  private boolean neg;
 
-  public Literal(int index, boolean neg) {
-    _index = index;
-    _neg = neg;
+  public Literal(int id, boolean neg) {
+    this.id = id;
+    this.neg = neg;
   }
 
   public boolean isNeg() {
-    return _neg;
+    return neg;
   }
 
-  public int getIndex() {
-    return _index;
+  public int getId() {
+    return id;
   }
 
   @Override
   public String toString() {
     String result = "";
-    result += _neg == true ? "-" + _index : "" + _index;
+    result += neg ? "-" + id : "" + id;
     return result;
   }
 }

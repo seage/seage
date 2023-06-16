@@ -50,9 +50,9 @@ public class FormulaReader {
         if (literalValue == 0)
           break;
         boolean neg = literalValue < 0 ? true : false;
-        int ix = Math.abs(literalValue) - 1;
+        int id = Math.abs(literalValue);
 
-        literals.add(new Literal(ix, neg)); /////////////////////
+        literals.add(new Literal(id, neg)); /////////////////////
       }
       Clause newClause = new Clause(literals.toArray(new Literal[0]));
 

@@ -28,7 +28,6 @@ package org.seage.problem.sat.antcolony;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.io.FileInputStream;
 import java.util.HashSet;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -36,11 +35,10 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.Edge;
-import org.seage.metaheuristic.antcolony.Node;
 import org.seage.metaheuristic.antcolony.Graph;
+import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
-import org.seage.problem.sat.FormulaReader;
 import org.seage.problem.sat.SatProblemProvider;
 
 /**
@@ -59,7 +57,7 @@ public class SatAntTest {
 
     Graph graph = new SatGraph(formula, formEval);
     // The ant initially travels through two nodes, thus next two available nodes expected.
-    SatAnt ant = new SatAnt(graph.nodesToNodePath(List.of(1, 2)), formula, formEval);
+    SatAnt ant = new SatAnt(graph.nodesToNodePath(List.of(0, 1, 2)), formula, formEval);
     
     List<Edge> edgePath = ant.doFirstExploration(graph);
     List<Node> nodePath = Graph.edgeListToNodeList(edgePath);
