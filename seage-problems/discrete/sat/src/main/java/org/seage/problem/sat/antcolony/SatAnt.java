@@ -60,6 +60,9 @@ public class SatAnt extends Ant {
     List<Node> nodeList = Graph.edgeListToNodeList(path);
 
     for (Node n : nodeList) {
+      if (n.getID() == 0) {
+        continue;
+      }
       solution[Math.abs(n.getID()) - 1] = n.getID() > 0;
     }
 
@@ -89,13 +92,17 @@ public class SatAnt extends Ant {
   public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
     HashSet<Node> avalNodes = getAvailableNodes(graph, nodePath);
 
-    if (!nodePath.isEmpty() && !avalNodes.contains(n2)) {
+    // todo: bug, n2 should not be ever 0
+    if (n2.getID() == 0 || (!nodePath.isEmpty() && !avalNodes.contains(n2))) {
       return 0.0;
     }
 
     Boolean[] solution = new Boolean[this.formula.getLiteralCount()];
 
     for (Node n : nodePath) {
+      if (n.getID() == 0) {
+        continue;
+      }
       solution[Math.abs(n.getID()) - 1] = n.getID() > 0;
     }
 

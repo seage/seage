@@ -23,6 +23,7 @@
 package org.seage.problem.sat.antcolony;
 
 import java.io.FileInputStream;
+import java.util.List;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemInstanceInfo.ProblemInstanceOrigin;
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -79,10 +80,10 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
     Ant[] ants = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {
-      ants[i] = new SatAnt(null, formula, evaluator);
+      ants[i] = new SatAnt(graph.nodesToNodePath(List.of(0)), formula, evaluator);
     }
 
-    colony.startExploring(graph.getNodes().get(1), ants);
+    colony.startExploring(graph.getNodes().get(0), ants);
 
     log.info("Global best: {}", colony.getGlobalBest());
   }
