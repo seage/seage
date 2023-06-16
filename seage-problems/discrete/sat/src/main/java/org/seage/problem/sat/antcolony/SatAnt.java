@@ -54,20 +54,20 @@ public class SatAnt extends Ant {
     this.formulaEvaluator = formulaEvaluator;
   }
 
-  @Override
-  public double getDistanceTravelled(Graph graph, List<Edge> path) throws Exception {
-    Boolean[] solution = new Boolean[formula.getLiteralCount()];
-    List<Node> nodeList = Graph.edgeListToNodeList(path);
+  // @Override
+  // public double getDistanceTravelled(Graph graph, List<Edge> path) throws Exception {
+  //   Boolean[] solution = new Boolean[formula.getLiteralCount()];
+  //   List<Node> nodeList = Graph.edgeListToNodeList(path);
 
-    for (Node n : nodeList) {
-      if (n.getID() == 0) {
-        continue;
-      }
-      solution[Math.abs(n.getID()) - 1] = n.getID() > 0;
-    }
+  //   for (Node n : nodeList) {
+  //     if (n.getID() == 0) {
+  //       continue;
+  //     }
+  //     solution[Math.abs(n.getID()) - 1] = n.getID() > 0;
+  //   }
 
-    return FormulaEvaluator.evaluate(formula, solution);
-  }
+  //   return FormulaEvaluator.evaluate(formula, solution);
+  // }
 
   @Override
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
@@ -82,8 +82,8 @@ public class SatAnt extends Ant {
     return result;
   }
 
-  @Override
-  public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
+  // @Override
+  public double getNodeDistance0(Graph graph, List<Node> nodePath, Node n2) {
     Boolean[] solution = new Boolean[this.formula.getLiteralCount()];
 
     for (Node n : nodePath) {
@@ -103,9 +103,30 @@ public class SatAnt extends Ant {
     return prevCost - newCost + 0.001;
   }
 
+  @Override
+  public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
+    Boolean[] solution = new Boolean[this.formula.getLiteralCount()];
+
+    Node n1 = nodePath.get(nodePath.size() - 1);
+    if (n1.getID() == 0) {
+      return 1;
+    }
+
+    solution[Math.abs(n1.getID()) - 1] = n1.getID() > 0;
+    solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
+
+    double newCost = FormulaEvaluator.evaluate(formula, solution);
+
+    return newCost;
+  }
+
+  @Override
   public List<Integer> getNodeIDsAlongPath() {
     List<Integer> result = super.getNodeIDsAlongPath();
-    result.remove(0);
+    
+    if (result.size() > 0) {
+      result.remove(0);
+    }
 
     return result;
   }

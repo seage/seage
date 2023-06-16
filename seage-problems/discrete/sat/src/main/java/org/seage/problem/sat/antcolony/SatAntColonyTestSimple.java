@@ -24,11 +24,13 @@
 package org.seage.problem.sat.antcolony;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Graph;
+import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.sat.Clause;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
@@ -92,8 +94,8 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
       line += s[i] ? '1' : '0';
     }
     log.info("{}", line);
-    // log.info("Global best: {}", FormulaEvaluator.evaluate(formula, s));
-    // graph.printPheromone();
+    List<Node> bestSolution = colony.getBestAnt().getNodePath();
+    log.info("Global best: {}", FormulaEvaluator.evaluate(formula, bestSolution));
   }
 
   @Override

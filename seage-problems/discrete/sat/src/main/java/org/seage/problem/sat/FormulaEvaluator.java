@@ -23,6 +23,8 @@
 package org.seage.problem.sat;
 
 import java.util.HashMap;
+import java.util.List;
+import org.seage.metaheuristic.antcolony.Node;
 
 /**
  *
@@ -39,7 +41,12 @@ public class FormulaEvaluator {
     }
   }
 
-  public static int evaluate(Formula f, Boolean[] s) {
+  public static double evaluate(Formula f, Boolean[] s) {
+    int n = f.getClauses().size();
+    return (evaluate0(f, s) + 1.0) / n;
+  }
+
+  private static int evaluate0(Formula f, Boolean[] s) {
     int numTrueClauses = 0;
 
     for (Clause c : f.getClauses()) {
@@ -55,10 +62,16 @@ public class FormulaEvaluator {
     return f.getClauses().size() - numTrueClauses;
   }
 
-  // todo is this correct?
-  public double evaluate(Formula f, Integer id) {
-    // Integer id = value?ix+1:-ix-1;
-    return 1.0;// _literalPrices.get(id);
+  public static int evaluate(Formula f, List<Node> nodes) {
+    Boolean[] s = new Boolean[f.getLiteralCount()];
+
+    for (Node n : nodes) {
+      if (n.getID() == 0) {
+        continue;
+      }
+      s[Math.abs(n.getID()) - 1] = n.getID() > 0;
+    }
+    return evaluate0(f, s);
   }
 
   private double evaluateLiteral(Formula f, int ix, boolean value) {

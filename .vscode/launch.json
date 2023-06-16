@@ -81,13 +81,13 @@
         "-a",
         "AntColony",
         "-i",
-        "TSP:small",
+        "SAT:uf20-01",
         "-t",
-        "20",
+        "5",
         "-n",
-        "8",
+        "1",
         "-s",
-        "0.1"
+        "0"
       ]
     },
     {
@@ -97,15 +97,20 @@
       "mainClass": "org.seage.launcher.Launcher",
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
-      "env": {},
+      "env": {
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+      },
       "args": [
         "experiment-single-feedback",
         "-a",
+        // "GeneticAlgorithm",
+        // "TabuSearch",
         "AntColony",
+        // "SimulatedAnnealing",
         "-i",
-        "TSP:hyflex",
+        "SAT:uf100-01",
         "-t",
-        "20",
+        "10",
         "-n",
         "8",
         "-s",

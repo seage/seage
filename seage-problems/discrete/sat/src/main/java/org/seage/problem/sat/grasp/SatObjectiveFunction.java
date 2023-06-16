@@ -60,7 +60,7 @@ public class SatObjectiveFunction implements IObjectiveFunction {
     }
   }
 
-  private int evaluate(SatSolution sol) {
+  private double evaluate(SatSolution sol) {
     return FormulaEvaluator.evaluate(_formula, sol.getLiteralValues());
   }
 

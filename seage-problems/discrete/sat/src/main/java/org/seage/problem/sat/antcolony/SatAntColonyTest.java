@@ -31,6 +31,7 @@ import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Graph;
+import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
 import org.seage.problem.sat.FormulaReader;
@@ -48,7 +49,7 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
   public static void main(String[] args) throws Exception {
     try {
       // String path = "data/sat/uf20-01.cnf";
-      //String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf100-01.cnf";
+      // String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf100-01.cnf";
       String path = "seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/uf20-01.cnf";
       
 
@@ -66,10 +67,10 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
         FormulaReader.readClauses(new FileInputStream(path)));
 
-    double quantumPheromone = 100;
-    double evaporation = 0.16;
-    double alpha = 1.15;
-    double beta = 1.18;
+    double quantumPheromone = 1000;
+    double evaporation = 0.15;
+    double alpha = 1.0;
+    double beta = 5.0;
     int numAnts = 100;
 
     int iterations = 500;
@@ -87,7 +88,8 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
     colony.startExploring(graph.getNodes().get(0), ants);
 
-    log.info("Global best: {}", colony.getGlobalBest());
+    List<Node> bestSolution = colony.getBestAnt().getNodePath();
+    log.info("Global best: {}", FormulaEvaluator.evaluate(formula, bestSolution));
   }
 
   @Override

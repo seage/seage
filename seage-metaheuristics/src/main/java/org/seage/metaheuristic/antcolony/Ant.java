@@ -183,6 +183,10 @@ public class Ant {
     return idsPath;
   }
 
+  public List<Node> getNodePath() {
+    return nodePath;
+  }
+
   /**
    * Method calculates cost of travelled path.
    *
