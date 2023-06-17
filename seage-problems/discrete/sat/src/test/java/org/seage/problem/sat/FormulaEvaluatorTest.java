@@ -18,43 +18,43 @@ class FormulaEvaluatorTest {
         new Literal[] {new Literal(1, true), new Literal(2, true), new Literal(3, false)}));
 
     Formula f = new Formula(null, clauses); // (a | !b | !c) & (!a | b | !c) & (!a | !b | c)
-    assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] {false, false, false}));
-    assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] {true, true, true}));
+    FormulaEvaluator formulaEvaluator = new FormulaEvaluator(f);
+    assertEquals(0, formulaEvaluator.evaluate(f, new Boolean[] {false, false, false}));
+    assertEquals(0, formulaEvaluator.evaluate(f, new Boolean[] {true, true, true}));
 
-    assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] {true, false, false}));
-    assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] {false, true, false}));
-    assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] {false, false, true}));
+    assertEquals(0, formulaEvaluator.evaluate(f, new Boolean[] {true, false, false}));
+    assertEquals(0, formulaEvaluator.evaluate(f, new Boolean[] {false, true, false}));
+    assertEquals(0, formulaEvaluator.evaluate(f, new Boolean[] {false, false, true}));
 
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {true, true, false}));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {false, true, true}));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {true, false, true}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {true, true, false}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {false, true, true}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {true, false, true}));
 
 
-    assertEquals(3, FormulaEvaluator.evaluate(f, new Boolean[] {null, null, null}));
-    assertEquals(2, FormulaEvaluator.evaluate(f, new Boolean[] {true, null, null}));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {false, null, null}));    
-    assertEquals(2, FormulaEvaluator.evaluate(f, new Boolean[] {null, true, null}));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {null, false, null}));
-    assertEquals(2, FormulaEvaluator.evaluate(f, new Boolean[] {null, null, true}));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {null, null, false}));
+    assertEquals(3, formulaEvaluator.evaluate(f, new Boolean[] {null, null, null}));
+    assertEquals(2, formulaEvaluator.evaluate(f, new Boolean[] {true, null, null}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {false, null, null}));    
+    assertEquals(2, formulaEvaluator.evaluate(f, new Boolean[] {null, true, null}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {null, false, null}));
+    assertEquals(2, formulaEvaluator.evaluate(f, new Boolean[] {null, null, true}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {null, null, false}));
 
-    assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] {false, false, null}));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {false, true, null}));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {true, false, null}));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {true, true, null}));
+    assertEquals(0, formulaEvaluator.evaluate(f, new Boolean[] {false, false, null}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {false, true, null}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {true, false, null}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {true, true, null}));
 
-    assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] {false, null, false}));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {false, null, true }));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {true,  null, false}));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {true,  null, true }));
+    assertEquals(0, formulaEvaluator.evaluate(f, new Boolean[] {false, null, false}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {false, null, true }));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {true,  null, false}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {true,  null, true }));
 
-    assertEquals(0, FormulaEvaluator.evaluate(f, new Boolean[] {null, false, false}));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {null, false, true }));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {null, true,  false}));
-    assertEquals(1, FormulaEvaluator.evaluate(f, new Boolean[] {null, true, true }));
+    assertEquals(0, formulaEvaluator.evaluate(f, new Boolean[] {null, false, false}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {null, false, true }));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {null, true,  false}));
+    assertEquals(1, formulaEvaluator.evaluate(f, new Boolean[] {null, true, true }));
 
     //
-    FormulaEvaluator formulaEvaluator = new FormulaEvaluator(f);
     // assertEquals(2.0, formulaEvaluator.evaluate(f, -1));
     // assertEquals(0.5, formulaEvaluator.evaluate(f, 1));
     //

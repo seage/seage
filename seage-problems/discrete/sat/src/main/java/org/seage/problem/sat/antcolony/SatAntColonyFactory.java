@@ -33,8 +33,8 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
   public IAlgorithmAdapter<SatPhenotype, Ant> createAlgorithm(ProblemInstance instance,
       IPhenotypeEvaluator<SatPhenotype> phenotypeEvaluator) throws Exception {
     Formula formula = (Formula) instance;
-    SatGraph satGraph = new SatGraph(formula, new FormulaEvaluator(formula));
     FormulaEvaluator evaluator = new FormulaEvaluator(formula);
+    SatGraph satGraph = new SatGraph(formula.getLiteralCount());
     return new AntColonyAdapter<SatPhenotype, Ant>(satGraph, phenotypeEvaluator) {
 
       @Override

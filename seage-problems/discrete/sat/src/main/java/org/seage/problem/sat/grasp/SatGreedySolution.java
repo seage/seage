@@ -44,14 +44,14 @@ public class SatGreedySolution extends SatSolution {
    * 
    * @param formula - List of clauses representing the formula
    */
-  public SatGreedySolution(Formula formula) throws Exception {
-    super();
-    initGreedySolution(formula);
+  public SatGreedySolution(Formula formula, FormulaEvaluator formulaEvaluator) throws Exception {
+    super(formula, formulaEvaluator);
+    initGreedySolution();
 
   }
 
   // OK
-  private void initGreedySolution(Formula formula) throws Exception {
+  private void initGreedySolution() throws Exception {
     List<Integer> listOfLiteralsIndexes = new ArrayList<>();
     initLiterals(formula.getLiteralCount());
     int numLiterals = formula.getLiteralCount();
@@ -60,20 +60,20 @@ public class SatGreedySolution extends SatSolution {
     }
     int listIndex;
     int literalIx;
-    double valueBeforeMove = FormulaEvaluator.evaluate(formula, _litValues);
+    double valueBeforeMove = formulaEvaluator.evaluate(formula, _litValues);
     double valueAfterMove;
     while (listOfLiteralsIndexes.isEmpty()) {
       listIndex = rnd.nextInt(listOfLiteralsIndexes.size());
       literalIx = listOfLiteralsIndexes.get(listIndex);
       _copyLitValues = _litValues.clone();
       _copyLitValues[literalIx] = false;
-      valueAfterMove = FormulaEvaluator.evaluate(formula, _copyLitValues);
+      valueAfterMove = formulaEvaluator.evaluate(formula, _copyLitValues);
       if (valueAfterMove < valueBeforeMove) {
         _litValues[literalIx] = false;
         valueBeforeMove = valueAfterMove;
       }
       listOfLiteralsIndexes.remove(listIndex);
     }
-    setObjectiveValue(FormulaEvaluator.evaluate(formula, _litValues));
+    setObjectiveValue(formulaEvaluator.evaluate(formula, _litValues));
   }
 }

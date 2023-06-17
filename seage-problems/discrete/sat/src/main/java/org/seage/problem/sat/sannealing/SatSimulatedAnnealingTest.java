@@ -29,6 +29,7 @@ import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealingEvent;
 import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.FormulaEvaluator;
 import org.seage.problem.sat.FormulaReader;
 import org.seage.problem.sat.SatPhenotypeEvaluator;
 import org.slf4j.Logger;

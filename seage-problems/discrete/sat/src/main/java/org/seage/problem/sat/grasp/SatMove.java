@@ -51,7 +51,7 @@ public class SatMove implements IMove {
     } else {
       litValues[_literalIx] = true;
     }
-    newSol = new SatSolution();
+    newSol = new SatSolution(null, null);
     newSol.setLiteralValues(litValues);
     return newSol;
   }

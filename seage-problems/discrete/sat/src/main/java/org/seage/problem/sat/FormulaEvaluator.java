@@ -24,6 +24,7 @@ package org.seage.problem.sat;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.seage.metaheuristic.antcolony.Node;
 
 /**
@@ -32,8 +33,41 @@ import org.seage.metaheuristic.antcolony.Node;
  */
 public class FormulaEvaluator {
   private HashMap<Integer, Integer> literalsImpact;
+  private Formula formula;
 
-  public FormulaEvaluator(Formula formula) {}
+  public FormulaEvaluator(Formula formula) {
+    this.formula = formula;
+
+    this.literalsImpact = new HashMap<>();
+
+    for (Clause c : formula.getClauses()) {
+      for (Literal l : c.getLiterals()) {
+        int count = 0;
+        int id = l.isNeg() ? -l.getId() : l.getId();
+        if (this.literalsImpact.containsKey(id)) {
+          count = this.literalsImpact.get(id);
+        }
+        count++;
+        this.literalsImpact.put(id, count);
+      }
+    }
+  }
+
+  public Map<Integer, Integer> getLiteralsImpact() {
+    return literalsImpact;
+  }
+
+  public static int evaluate(Formula f, List<Node> nodes) {
+    Boolean[] s = new Boolean[f.getLiteralCount()];
+
+    for (Node n : nodes) {
+      if (n.getID() == 0) {
+        continue;
+      }
+      s[Math.abs(n.getID()) - 1] = n.getID() > 0;
+    }
+    return evaluate(f, s);
+  }
 
   public static int evaluate(Formula f, Boolean[] s) {
     int numTrueClauses = 0;
@@ -51,10 +85,10 @@ public class FormulaEvaluator {
     return f.getClauses().size() - numTrueClauses;
   }
 
-  public static int evaluate(Formula f, int id, boolean value) {
+  public int evaluate(int id, boolean value) {
     int numTrueClauses = 0;
 
-    for (Clause c : f.getClauses()) {
+    for (Clause c : formula.getClauses()) {
       for (Literal l : c.getLiterals()) {
         boolean neg = l.isNeg();
         if ((l.getId() == id) && ((value && !neg) || (!value && neg))) {
@@ -63,19 +97,7 @@ public class FormulaEvaluator {
         }
       }
     }
-    return f.getClauses().size() - numTrueClauses;
-  }
-
-  public static int evaluate(Formula f, List<Node> nodes) {
-    Boolean[] s = new Boolean[f.getLiteralCount()];
-
-    for (Node n : nodes) {
-      if (n.getID() == 0) {
-        continue;
-      }
-      s[Math.abs(n.getID()) - 1] = n.getID() > 0;
-    }
-    return evaluate(f, s);
+    return formula.getClauses().size() - numTrueClauses;
   }
 
 }

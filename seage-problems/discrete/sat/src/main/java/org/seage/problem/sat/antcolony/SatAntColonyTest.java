@@ -74,22 +74,22 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     int numAnts = 50;
 
     int iterations = 50;
-    Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
+    Graph graph = new SatGraph(formula.getLiteralCount());
 
-    FormulaEvaluator evaluator = new FormulaEvaluator(formula);
+    FormulaEvaluator formulaEvaluator = new FormulaEvaluator(formula);
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, evaporation);
 
     Ant[] ants = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {
-      ants[i] = new SatAnt(graph.nodesToNodePath(List.of(0)), formula, evaluator);
+      ants[i] = new SatAnt(graph.nodesToNodePath(List.of(0)), formula, formulaEvaluator);
     }
 
     colony.startExploring(graph.getNodes().get(0), ants);
 
     List<Node> bestSolution = colony.getBestAnt().getNodePath();
-    log.info("Global best: {}", FormulaEvaluator.evaluate(formula, bestSolution));
+    log.info("Global best: {}", formulaEvaluator.evaluate(formula, bestSolution));
   }
 
   @Override
@@ -104,7 +104,7 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   @Override
   public void newBestSolutionFound(AntColonyEvent e) {
-    SatAnt satAnt = (SatAnt)e.getAntColony().getBestAnt();
+    SatAnt satAnt = (SatAnt) e.getAntColony().getBestAnt();
     List<Node> bestSolution = satAnt.getNodePath();
     int objVal = FormulaEvaluator.evaluate(satAnt.getFormula(), bestSolution);
 

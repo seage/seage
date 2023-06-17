@@ -23,6 +23,8 @@
 package org.seage.problem.sat.grasp;
 
 import org.seage.metaheuristic.grasp.Solution;
+import org.seage.problem.sat.Formula;
+import org.seage.problem.sat.FormulaEvaluator;
 
 /**
  *
@@ -33,9 +35,13 @@ public class SatSolution extends Solution {
   protected static final long serialVersionUID = -7791570406526861971L;
   protected Boolean[] _litValues;
   // protected Random _rnd;
+  protected Formula formula;
+  protected FormulaEvaluator formulaEvaluator;
 
-  public SatSolution() {
+  public SatSolution(Formula formula, FormulaEvaluator formulaEvaluator) {
     // _rnd = new Random();
+    this.formula = formula;
+    this.formulaEvaluator = formulaEvaluator;
   }
 
   public void initLiterals(int size) {

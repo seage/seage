@@ -116,10 +116,10 @@ public class SatAnt extends Ant {
     // solution[Math.abs(n1.getID()) - 1] = n1.getID() > 0;
     // solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
     double b = 0.1;
-    if (formula.getLiteralsImpact().containsKey(n2.getID())) {
-      b = formula.getLiteralsImpact().get(n2.getID());
+    if (formulaEvaluator.getLiteralsImpact().containsKey(n2.getID())) {
+      b = formulaEvaluator.getLiteralsImpact().get(n2.getID());
     }
-    double newCost = FormulaEvaluator.evaluate(formula, Math.abs(n2.getID()), n2.getID() > 0);
+    double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
     newCost = (newCost + 1.0) / (n * b);
 
     return newCost;
@@ -129,7 +129,7 @@ public class SatAnt extends Ant {
   public List<Integer> getNodeIDsAlongPath() {
     List<Integer> result = super.getNodeIDsAlongPath();
     
-    if (result.size() > 0) {
+    if (!result.isEmpty()) {
       result.remove(0);
     }
 

@@ -32,8 +32,6 @@ public class Formula extends ProblemInstance {
   private ArrayList<Clause> clauses;
   private int literalCount;
 
-  private HashMap<Integer, Integer> literalsImpact;
-
   /**
    * .
    */
@@ -47,20 +45,6 @@ public class Formula extends ProblemInstance {
         if (l.getId() > literalCount) {
           literalCount = l.getId();
         }
-      }
-    }
-
-    this.literalsImpact = new HashMap<>();
-
-    for (Clause c : clauses) {
-      for (Literal l : c.getLiterals()) {
-        int count = 0;
-        int id = l.isNeg() ? -l.getId() : l.getId();
-        if (this.literalsImpact.containsKey(id)) {
-          count = this.literalsImpact.get(id);
-        }
-        count++;
-        this.literalsImpact.put(id, count);
       }
     }
   }
@@ -78,10 +62,6 @@ public class Formula extends ProblemInstance {
   // OK
   public int getLiteralCount() {
     return literalCount;
-  }
-
-  public Map<Integer, Integer> getLiteralsImpact() {
-    return literalsImpact;
   }
 
   @Override

@@ -55,7 +55,7 @@ public class SatAntTest {
     Formula formula = spp.initProblemInstance(pii);
     FormulaEvaluator formEval = new FormulaEvaluator(formula);
 
-    Graph graph = new SatGraph(formula, formEval);
+    Graph graph = new SatGraph(formula.getLiteralCount());
     // The ant initially travels through two nodes, thus next two available nodes expected.
     SatAnt ant = new SatAnt(graph.nodesToNodePath(List.of(0, 1, 2)), formula, formEval);
     
@@ -94,7 +94,7 @@ public class SatAntTest {
     Formula formula = spp.initProblemInstance(pii);
     FormulaEvaluator formEval = new FormulaEvaluator(formula);
 
-    Graph graph = new SatGraph(formula, formEval);
+    Graph graph = new SatGraph(formula.getLiteralCount());
     // The ant initially travels through two nodes, thus next two available nodes expected.
     Ant ant = new SatAnt(graph.nodesToNodePath(List.of(1, 2)), formula, formEval);
     

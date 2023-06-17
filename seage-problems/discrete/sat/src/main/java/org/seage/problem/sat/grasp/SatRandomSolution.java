@@ -42,7 +42,7 @@ public class SatRandomSolution extends SatSolution {
    * @param formula .
    */
   public SatRandomSolution(Formula formula) {
-    super();
+    super(null, null);
     _countLiterals = formula.getLiteralCount();
     initRandSol(formula);
   }
