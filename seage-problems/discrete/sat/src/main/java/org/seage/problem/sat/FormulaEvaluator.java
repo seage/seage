@@ -22,78 +22,58 @@
  */
 package org.seage.problem.sat;
 
-import java.util.HashMap;
+import java.util.List;
+import org.seage.metaheuristic.antcolony.Node;
 
 /**
  *
  * @author Richard Malek
  */
 public class FormulaEvaluator {
-  private HashMap<Integer, Double> _literalPrices;
 
-  public FormulaEvaluator(Formula formula) {
-    _literalPrices = new HashMap<Integer, Double>();
-    for (int i = 0; i < formula.getLiteralCount(); i++) {
-      _literalPrices.put(i + 1, evaluateLiteral(formula, i, true));
-      _literalPrices.put(-i - 1, evaluateLiteral(formula, i, false));
-    }
-  }
+  public FormulaEvaluator(Formula formula) {}
 
   public static int evaluate(Formula f, Boolean[] s) {
-    int numFalseClauses = 0;
-    boolean clauseIsNegative = true;
+    int numTrueClauses = 0;
 
     for (Clause c : f.getClauses()) {
-      clauseIsNegative = true;
       for (Literal l : c.getLiterals()) {
-        boolean x = s[l.getIndex()];
-        if (l.isNeg()) {
-          x = !x;
-        }
-
-        if (x) {
-          clauseIsNegative = false;
+        Boolean x = s[l.getId() - 1];
+        boolean neg = l.isNeg();
+        if ((x != null) && ((x && !neg) || (!x && neg))) {
+          numTrueClauses++;
           break;
         }
       }
-      if (clauseIsNegative) {
-        numFalseClauses++;
+    }
+    return f.getClauses().size() - numTrueClauses;
+  }
+
+  public static int evaluate(Formula f, int id, boolean value) {
+    int numTrueClauses = 0;
+
+    for (Clause c : f.getClauses()) {
+      for (Literal l : c.getLiterals()) {
+        boolean neg = l.isNeg();
+        if ((l.getId() == id) && ((value && !neg) || (!value && neg))) {
+          numTrueClauses++;
+          break;
+        }
       }
     }
-    return numFalseClauses;
+    return f.getClauses().size() - numTrueClauses;
   }
 
-  public double evaluate(Formula f, Integer id) {
-    // Integer id = value?ix+1:-ix-1;
-    return 1.0;// _literalPrices.get(id);
+  public static int evaluate(Formula f, List<Node> nodes) {
+    Boolean[] s = new Boolean[f.getLiteralCount()];
+
+    for (Node n : nodes) {
+      if (n.getID() == 0) {
+        continue;
+      }
+      s[Math.abs(n.getID()) - 1] = n.getID() > 0;
+    }
+    return evaluate(f, s);
   }
 
-  private double evaluateLiteral(Formula f, int ix, boolean value) {
-    // if(ix == -1) // the last, artificialnode
-    // return 0;
-    // int positive = 0;
-    // int negative = 0;
-    //
-    // for (Clause c : f.getClauses())
-    // {
-    // for (Literal l : c.getLiterals())
-    // {
-    // if(l.getIndex() == ix)
-    // {
-    // if(l.isNeg() == value)
-    // negative++;
-    // else
-    // positive++;
-    // break;
-    // }
-    // }
-    // }
-
-    // if(positive == 0 )
-    // return Double.MAX_VALUE;
-    // else
-    return 1.0;// *negative;//f.getClauses().size();
-    // return (1.0*(negative+positive)/f.getClauses().size() )/*1.0*/ *
-    // (negative / positive);
-  }
 }

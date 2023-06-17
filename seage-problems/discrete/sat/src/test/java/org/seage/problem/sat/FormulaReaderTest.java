@@ -59,31 +59,31 @@ public class FormulaReaderTest {
     SatProblemProvider spp = new SatProblemProvider();
     Formula formula = spp.initProblemInstance(pii);
     assertNotNull(formula);
-    assertEquals(20, formula.getLiterals().size());
+    assertEquals(20, formula.getLiteralCount());
     assertEquals(91, formula.getClauses().size());
 
     // 1st clause
-    assertEquals(3, formula.getClauses().get(0).getLiterals()[0].getIndex());
+    assertEquals(4, formula.getClauses().get(0).getLiterals()[0].getId());
     assertEquals(false, formula.getClauses().get(0).getLiterals()[0].isNeg());
-    assertEquals(17, formula.getClauses().get(0).getLiterals()[1].getIndex());
+    assertEquals(18, formula.getClauses().get(0).getLiterals()[1].getId());
     assertEquals(true, formula.getClauses().get(0).getLiterals()[1].isNeg());
-    assertEquals(18, formula.getClauses().get(0).getLiterals()[2].getIndex());
+    assertEquals(19, formula.getClauses().get(0).getLiterals()[2].getId());
     assertEquals(false, formula.getClauses().get(0).getLiterals()[2].isNeg());
 
     // 45th clause
-    assertEquals(13, formula.getClauses().get(45).getLiterals()[0].getIndex());
+    assertEquals(14, formula.getClauses().get(45).getLiterals()[0].getId());
     assertEquals(false, formula.getClauses().get(45).getLiterals()[0].isNeg());
-    assertEquals(6, formula.getClauses().get(45).getLiterals()[1].getIndex());
+    assertEquals(7, formula.getClauses().get(45).getLiterals()[1].getId());
     assertEquals(false, formula.getClauses().get(45).getLiterals()[1].isNeg());
-    assertEquals(9, formula.getClauses().get(45).getLiterals()[2].getIndex());
+    assertEquals(10, formula.getClauses().get(45).getLiterals()[2].getId());
     assertEquals(false, formula.getClauses().get(45).getLiterals()[2].isNeg());
 
     // the last clause
-    assertEquals(3, formula.getClauses().get(90).getLiterals()[0].getIndex());
+    assertEquals(4, formula.getClauses().get(90).getLiterals()[0].getId());
     assertEquals(false, formula.getClauses().get(90).getLiterals()[0].isNeg());
-    assertEquals(15, formula.getClauses().get(90).getLiterals()[1].getIndex());
+    assertEquals(16, formula.getClauses().get(90).getLiterals()[1].getId());
     assertEquals(true, formula.getClauses().get(90).getLiterals()[1].isNeg());
-    assertEquals(4, formula.getClauses().get(90).getLiterals()[2].getIndex());
+    assertEquals(5, formula.getClauses().get(90).getLiterals()[2].getId());
     assertEquals(true, formula.getClauses().get(90).getLiterals()[2].isNeg());
   }
 

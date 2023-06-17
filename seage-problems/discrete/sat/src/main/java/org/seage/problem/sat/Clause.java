@@ -23,27 +23,27 @@ package org.seage.problem.sat;
  */
 public class Clause {
 
-  private Literal[] _literals;
+  private Literal[] literals;
 
   public Clause(Literal[] literals) {
-    _literals = literals;
+    this.literals = literals;
   }
 
   public Literal[] getLiterals() {
-    return _literals;
+    return literals;
   }
 
   public void setLiterals(Literal[] literals) {
-    _literals = literals;
+    this.literals = literals;
   }
 
   @Override
   public String toString() {
-    String result = "";
+    String result = "(";
 
-    for (int i = 0; i < _literals.length; i++) {
-      result += _literals[i].toString() + "\t";
+    for (int i = 0; i < literals.length; i++) {
+      result += literals[i].toString() + "|";
     }
-    return result;
+    return result + ")";
   }
 }

@@ -18,6 +18,7 @@
  */
 
 /**
+ * .
  * Contributors: Richard Malek - Initial implementation
  */
 
@@ -30,6 +31,7 @@ import org.seage.problem.sat.FormulaEvaluator;
 
 /**
  * .
+ *
  * @author Zagy
  */
 public class SatGraph extends Graph implements java.lang.Cloneable {
@@ -38,6 +40,7 @@ public class SatGraph extends Graph implements java.lang.Cloneable {
 
   /**
    * .
+   *
    * @param formula .
    * @param formulaEvaluator .
    * @throws Exception .
