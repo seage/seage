@@ -116,8 +116,8 @@ public class SatAnt extends Ant {
     // solution[Math.abs(n1.getID()) - 1] = n1.getID() > 0;
     // solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
     double b = 0.1;
-    if (formulaEvaluator.getLiteralsImpact().containsKey(n2.getID())) {
-      b = formulaEvaluator.getLiteralsImpact().get(n2.getID());
+    if (formulaEvaluator.getliteralsFrequency().containsKey(n2.getID())) {
+      b = formulaEvaluator.getliteralsFrequency().get(n2.getID());
     }
     double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
     newCost = (newCost + 1.0) / (n * b);

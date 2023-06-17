@@ -32,29 +32,41 @@ import org.seage.metaheuristic.antcolony.Node;
  * @author Richard Malek
  */
 public class FormulaEvaluator {
-  private HashMap<Integer, Integer> literalsImpact;
+  private HashMap<Integer, Integer> literalsFrequency;
+  private HashMap<String, Integer> pairImpact;
   private Formula formula;
 
   public FormulaEvaluator(Formula formula) {
     this.formula = formula;
 
-    this.literalsImpact = new HashMap<>();
+    this.literalsFrequency = new HashMap<>();
+    this.pairImpact = new HashMap<>();
 
     for (Clause c : formula.getClauses()) {
-      for (Literal l : c.getLiterals()) {
+      for (int i = 0; i < c.getLiterals().length; i++) {
+        Literal lit1 = c.getLiterals()[i];
+        for (int j = i + 1; j < c.getLiterals().length; j++) {
+          Literal lit2 = c.getLiterals()[j];
+          String id = String.format("%d%d", lit1.getId(), lit2.getId());
+
+          // Todo
+
+          this.pairImpact.put(id, 0);
+        }
+
         int count = 0;
-        int id = l.isNeg() ? -l.getId() : l.getId();
-        if (this.literalsImpact.containsKey(id)) {
-          count = this.literalsImpact.get(id);
+        int id = lit1.isNeg() ? -lit1.getId() : lit1.getId();
+        if (this.literalsFrequency.containsKey(id)) {
+          count = this.literalsFrequency.get(id);
         }
         count++;
-        this.literalsImpact.put(id, count);
+        this.literalsFrequency.put(id, count);
       }
     }
   }
 
-  public Map<Integer, Integer> getLiteralsImpact() {
-    return literalsImpact;
+  public Map<Integer, Integer> getliteralsFrequency() {
+    return literalsFrequency;
   }
 
   public static int evaluate(Formula f, List<Node> nodes) {
