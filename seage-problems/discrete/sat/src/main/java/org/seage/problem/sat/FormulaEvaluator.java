@@ -32,14 +32,14 @@ import org.seage.metaheuristic.antcolony.Node;
  * @author Richard Malek
  */
 public class FormulaEvaluator {
-  private HashMap<Integer, Integer> literalsFrequency;
+  private HashMap<Integer, Integer> singleImpact;
   private HashMap<String, Integer> pairImpact;
   private Formula formula;
 
   public FormulaEvaluator(Formula formula) {
     this.formula = formula;
 
-    this.literalsFrequency = new HashMap<>();
+    this.singleImpact = new HashMap<>();
     this.pairImpact = new HashMap<>();
 
     for (Clause c : formula.getClauses()) {
@@ -56,17 +56,30 @@ public class FormulaEvaluator {
 
         int count = 0;
         int id = lit1.isNeg() ? -lit1.getId() : lit1.getId();
-        if (this.literalsFrequency.containsKey(id)) {
-          count = this.literalsFrequency.get(id);
+        if (this.singleImpact.containsKey(id)) {
+          count = this.singleImpact.get(id);
         }
         count++;
-        this.literalsFrequency.put(id, count);
+        this.singleImpact.put(id, count);
       }
     }
   }
 
-  public Map<Integer, Integer> getliteralsFrequency() {
-    return literalsFrequency;
+  public int getSingleImpact(int literalId) {
+    if(!singleImpact.containsKey(literalId)) {
+      return 0;
+    }
+    return singleImpact.get(literalId);
+  }
+
+  public int getPairImpact(int literal1Id, int literal2Id) {
+    int l1 = Math.min(literal1Id, literal2Id);
+    int l2 = Math.max(literal1Id, literal2Id);
+    String key = String.format("%d%d", l1, l2);
+    if(!pairImpact.containsKey(key)) {
+      return 0;
+    }
+    return pairImpact.get(key);
   }
 
   public static int evaluate(Formula f, List<Node> nodes) {
