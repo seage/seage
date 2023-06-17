@@ -48,12 +48,13 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   public static void main(String[] args) throws Exception {
     try {
-      // String filename = "uf20-01.cnf";
-      String filename = "uf75-01.cnf";
+      String filename = "uf20-01.cnf";
+      // String filename = "uf75-01.cnf";
       // String filename = "uf100-01.cnf";
       // String filename = "hg1-250-1000-hyflex-6.cnf";
       String path = String.format("seage-problems/discrete/sat/src/main/resources/org/seage/problem/sat/instances/%s", filename);
 
+      log.info("{}", filename);
       long start = System.currentTimeMillis();
       new SatAntColonyTest().run(path);
       long end = System.currentTimeMillis();
@@ -68,13 +69,13 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
         FormulaReader.readClauses(new FileInputStream(path)));
 
-    double quantumPheromone = 1000;
-    double evaporation = 0.1;
-    double alpha = 1.5;
-    double beta = 2.2;
-    int numAnts = 1000;
+    double quantumPheromone = 200;
+    double evaporation = 0.09;
+    double alpha = 1.3;
+    double beta = 1.4;
+    int numAnts = 500;
 
-    int iterations = 100;
+    int iterations = 2500;
     Graph graph = new SatGraph(formula.getLiteralCount());
 
     FormulaEvaluator formulaEvaluator = new FormulaEvaluator(formula);
@@ -89,8 +90,10 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
     colony.startExploring(graph.getNodes().get(0), ants);
 
-    List<Node> bestSolution = colony.getBestAnt().getNodePath();
-    log.info("Global best: {}", formulaEvaluator.evaluate(formula, bestSolution));
+    log.info("Global best: {}", colony.getGlobalBest());
+
+    List<Node> bestSolution = Graph.edgeListToNodeList(colony.getBestPath());
+    log.info("Global best: {}", FormulaEvaluator.evaluate(formula, bestSolution));
   }
 
   @Override

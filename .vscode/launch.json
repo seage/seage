@@ -108,7 +108,7 @@
         "AntColony",
         // "SimulatedAnnealing",
         "-i",
-        "SAT:uf100-01",
+        "SAT:uf20-01",
         "-t",
         "20",
         "-n",

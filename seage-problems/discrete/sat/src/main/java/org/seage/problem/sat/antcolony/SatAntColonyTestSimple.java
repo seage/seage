@@ -65,11 +65,11 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
 
     Formula formula = new Formula(null, clauses); // (a | !b | !c) & (!a | b | !c) & (!a | !b | c)
 
-    double quantumPheromone = 1;
-    double evaporation = 0.1;
-    double alpha = 1;
-    double beta = 2;
-    int numAnts = 1;
+    double quantumPheromone = 10;
+    double evaporation = 0.5;
+    double alpha = 1.1;
+    double beta = 1.5;
+    int numAnts = 10;
     int iterations = 10;
 
     FormulaEvaluator formulaEvaluator = new FormulaEvaluator(formula);
@@ -85,8 +85,6 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
 
     colony.startExploring(graph.getNodes().get(0), ants);
 
-    log.info("Global best: {}", colony.getGlobalBest());
-
     Boolean[] s = new Boolean[colony.getBestPath().size()];
     String line = "";
     for (int i = 0; i < s.length; i++) {
@@ -94,8 +92,11 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
       line += s[i] ? '1' : '0';
     }
     log.info("{}", line);
-    List<Node> bestSolution = colony.getBestAnt().getNodePath();
-    log.info("Global best: {}", formulaEvaluator.evaluate(formula, bestSolution));
+
+    log.info("Global best: {}", colony.getGlobalBest());
+
+    List<Node> bestSolution = Graph.edgeListToNodeList(colony.getBestPath());
+    log.info("Global best: {}", FormulaEvaluator.evaluate(formula, bestSolution));
   }
 
   @Override

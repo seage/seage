@@ -88,11 +88,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     SatPhenotype[] result = new SatPhenotype[numSolutions];
 
     for (int i = 0; i < numSolutions; i++) {
-      Boolean[] array = new Boolean[f.getLiteralCount()];
-      for (int j = 0; j < f.getLiteralCount(); j++) {
-        array[j] = rnd.nextBoolean();
-      }
-      result[i] = new SatPhenotype(array);
+      result[i] = SatInitialSolutionProvider.generateGreedySolution(f, evaluator, randomSeed);
       double[] objVals = evaluator.evaluate(result[i]);
       result[i].setObjValue(objVals[0]);
       result[i].setScore(objVals[1]);
