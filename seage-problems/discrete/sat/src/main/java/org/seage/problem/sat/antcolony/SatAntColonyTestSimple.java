@@ -57,11 +57,11 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
   public void run() throws Exception {
     ArrayList<Clause> clauses = new ArrayList<Clause>();
     clauses.add(new Clause(
-        new Literal[] {new Literal(0, false), new Literal(1, true), new Literal(2, true)}));
+        new Literal[] {new Literal(1, false), new Literal(2, true), new Literal(3, true)}));
     clauses.add(new Clause(
-        new Literal[] {new Literal(0, true), new Literal(1, false), new Literal(2, true)}));
+        new Literal[] {new Literal(1, true), new Literal(2, false), new Literal(3, true)}));
     clauses.add(new Clause(
-        new Literal[] {new Literal(0, true), new Literal(1, true), new Literal(2, false)}));
+        new Literal[] {new Literal(1, true), new Literal(2, true), new Literal(3, false)}));
 
     Formula formula = new Formula(null, clauses); // (a | !b | !c) & (!a | b | !c) & (!a | !b | c)
 

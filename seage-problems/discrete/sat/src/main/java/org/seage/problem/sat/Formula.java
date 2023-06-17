@@ -39,7 +39,8 @@ public class Formula extends ProblemInstance {
     super(instanceInfo);
 
     this.clauses = new ArrayList<>(clauses);
-
+    this.literalCount = 0;
+    
     for (Clause c : clauses) {
       for (Literal l : c.getLiterals()) {
         if (l.getId() > literalCount) {

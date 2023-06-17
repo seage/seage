@@ -45,15 +45,6 @@ public class FormulaEvaluator {
     for (Clause c : formula.getClauses()) {
       for (int i = 0; i < c.getLiterals().length; i++) {
         Literal lit1 = c.getLiterals()[i];
-        for (int j = i + 1; j < c.getLiterals().length; j++) {
-          Literal lit2 = c.getLiterals()[j];
-          String id = String.format("%d%d", lit1.getId(), lit2.getId());
-
-          // Todo
-
-          this.pairImpact.put(id, 0);
-        }
-
         int count = 0;
         int id = lit1.isNeg() ? -lit1.getId() : lit1.getId();
         if (this.singleImpact.containsKey(id)) {
@@ -63,10 +54,28 @@ public class FormulaEvaluator {
         this.singleImpact.put(id, count);
       }
     }
+    String id = "";
+    String format = "%d:%d";
+    for (int i = 1; i <= formula.getLiteralCount(); i++) {
+      int l11 = -i;
+      int l12 = i;
+      for (int j = i + 1; j <= formula.getLiteralCount(); j++) {
+        int l21 = -j;
+        int l22 = j;
+        id = String.format(format, l21, l11);
+        this.pairImpact.put(id, evaluatePair(formula, l11, l21));
+        id = String.format(format, l11, l22);
+        this.pairImpact.put(id, evaluatePair(formula, l11, l22));
+        id = String.format(format, l21, l12);
+        this.pairImpact.put(id, evaluatePair(formula, l12, l21));
+        id = String.format(format, l12, l22);
+        this.pairImpact.put(id, evaluatePair(formula, l12, l22));
+      }
+    }
   }
 
   public int getSingleImpact(int literalId) {
-    if(!singleImpact.containsKey(literalId)) {
+    if (!singleImpact.containsKey(literalId)) {
       return 0;
     }
     return singleImpact.get(literalId);
@@ -75,7 +84,7 @@ public class FormulaEvaluator {
   public int getPairImpact(int literal1Id, int literal2Id) {
     int l1 = Math.min(literal1Id, literal2Id);
     int l2 = Math.max(literal1Id, literal2Id);
-    String key = String.format("%d%d", l1, l2);
+    String key = String.format("%d:%d", l1, l2);
     if(!pairImpact.containsKey(key)) {
       return 0;
     }
@@ -123,6 +132,29 @@ public class FormulaEvaluator {
       }
     }
     return formula.getClauses().size() - numTrueClauses;
+  }
+
+  private static int evaluatePair(Formula f, int id1, int id2) {
+    int numTruePairs = 0;
+
+    for (Clause c : f.getClauses()) {
+      boolean id1ok = false;
+      boolean id2ok = false;
+      for (Literal l : c.getLiterals()) {
+        int lv = l.isNeg() ? -l.getId() : l.getId();
+        if (lv == id1) {
+          id1ok = true;
+        }
+        if (lv == id2) {
+          id2ok = true;
+        }
+        if (id1ok && id2ok) {
+          numTruePairs++;
+          break;
+        }
+      }
+    }
+    return numTruePairs;
   }
 
 }
