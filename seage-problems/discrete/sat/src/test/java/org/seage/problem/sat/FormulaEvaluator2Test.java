@@ -42,7 +42,6 @@ class FormulaEvaluator2Test {
 
   @Test
   void getPairImpact() {
-    // TODO: Fix this
     assertEquals(2, formulaEvaluator.getPairImpact(-1, 2));
     assertEquals(2, formulaEvaluator.getPairImpact(-1, -2));
     assertEquals(2, formulaEvaluator.getPairImpact(-1, 3));

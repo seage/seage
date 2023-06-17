@@ -33,7 +33,7 @@ import org.seage.metaheuristic.antcolony.Node;
  */
 public class FormulaEvaluator {
   private HashMap<Integer, Integer> singleImpact;
-  private HashMap<String, Integer> pairImpact;
+  private HashMap<Integer, Integer> pairImpact;
   private Formula formula;
 
   public FormulaEvaluator(Formula formula) {
@@ -54,24 +54,23 @@ public class FormulaEvaluator {
         this.singleImpact.put(id, count);
       }
     }
-    String id = "";
-    String format = "%d:%d";
+
     for (int i = 1; i <= formula.getLiteralCount(); i++) {
       int l11 = -i;
       int l12 = i;
       for (int j = i + 1; j <= formula.getLiteralCount(); j++) {
         int l21 = -j;
         int l22 = j;
-        id = String.format(format, l21, l11);
-        this.pairImpact.put(id, evaluatePair(formula, l11, l21));
-        id = String.format(format, l11, l22);
-        this.pairImpact.put(id, evaluatePair(formula, l11, l22));
-        id = String.format(format, l21, l12);
-        this.pairImpact.put(id, evaluatePair(formula, l12, l21));
-        id = String.format(format, l12, l22);
-        this.pairImpact.put(id, evaluatePair(formula, l12, l22));
+        this.pairImpact.put(hash(l11, l21), evaluatePair(formula, l11, l21));
+        this.pairImpact.put(hash(l11, l22), evaluatePair(formula, l11, l22));
+        this.pairImpact.put(hash(l12, l21), evaluatePair(formula, l12, l21));
+        this.pairImpact.put(hash(l12, l22), evaluatePair(formula, l12, l22));
       }
     }
+  }
+
+  private int hash(int x, int y) {
+    return x < y ? y * y + x + y : x * x + x + y;
   }
 
   public int getSingleImpact(int literalId) {
@@ -82,10 +81,8 @@ public class FormulaEvaluator {
   }
 
   public int getPairImpact(int literal1Id, int literal2Id) {
-    int l1 = Math.min(literal1Id, literal2Id);
-    int l2 = Math.max(literal1Id, literal2Id);
-    String key = String.format("%d:%d", l1, l2);
-    if(!pairImpact.containsKey(key)) {
+    int key = hash(literal1Id, literal2Id);
+    if (!pairImpact.containsKey(key)) {
       return 0;
     }
     return pairImpact.get(key);
@@ -134,7 +131,7 @@ public class FormulaEvaluator {
     return formula.getClauses().size() - numTrueClauses;
   }
 
-  private static int evaluatePair(Formula f, int id1, int id2) {
+  public static int evaluatePair(Formula f, int id1, int id2) {
     int numTruePairs = 0;
 
     for (Clause c : f.getClauses()) {

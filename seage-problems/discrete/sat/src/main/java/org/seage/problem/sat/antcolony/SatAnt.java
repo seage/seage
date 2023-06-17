@@ -103,8 +103,8 @@ public class SatAnt extends Ant {
     return prevCost - newCost + 0.001;
   }
 
-  @Override
-  public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
+  // @Override
+  public double getNodeDistance1(Graph graph, List<Node> nodePath, Node n2) {
     int n = formula.getClauses().size();
     // Boolean[] solution = new Boolean[formula.getLiteralCount()];
 
@@ -118,6 +118,27 @@ public class SatAnt extends Ant {
     double b = Math.max(formulaEvaluator.getSingleImpact(n2.getID()), 0.1);
     
     double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
+    newCost = (newCost + 1.0) / (n * b);
+
+    return newCost;
+  }
+
+  @Override
+  public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
+    int n = formula.getClauses().size();
+    // Boolean[] solution = new Boolean[formula.getLiteralCount()];
+
+    Node n1 = nodePath.get(nodePath.size() - 1);
+    if (n1.getID() == 0) {
+      return 1;
+    }
+
+    // solution[Math.abs(n1.getID()) - 1] = n1.getID() > 0;
+    // solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
+    
+    double b = Math.max(formulaEvaluator.getSingleImpact(n2.getID()), 0.1);
+    double newCost = 1 - (formulaEvaluator.getPairImpact(n1.getID(), n2.getID()) / formula.getClauses().size());
+    // double newCost = formula.getClauses().size() - FormulaEvaluator.evaluatePair(formula, n1.getID(), n2.getID());
     newCost = (newCost + 1.0) / (n * b);
 
     return newCost;
