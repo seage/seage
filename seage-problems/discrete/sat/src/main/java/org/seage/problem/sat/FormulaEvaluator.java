@@ -33,19 +33,7 @@ import org.seage.metaheuristic.antcolony.Node;
 public class FormulaEvaluator {
   private HashMap<Integer, Integer> literalsImpact;
 
-  public FormulaEvaluator(Formula formula) {
-    
-    // int a = 0;
-    // for (int i = 0; i < formula.getLiteralCount(); i++) {
-    //   _literalPrices.put(i + 1, evaluateLiteral(formula, i, true));
-    //   _literalPrices.put(-i - 1, evaluateLiteral(formula, i, false));
-    // }
-  }
-
-  // public static double evaluate(Formula f, Boolean[] s) {
-  //   int n = f.getClauses().size();
-  //   return (evaluate0(f, s) + 1.0) / n;
-  // }
+  public FormulaEvaluator(Formula formula) {}
 
   public static int evaluate(Formula f, Boolean[] s) {
     int numTrueClauses = 0;
@@ -90,32 +78,4 @@ public class FormulaEvaluator {
     return evaluate(f, s);
   }
 
-  private double evaluateLiteral(Formula f, int ix, boolean value) {
-    // if(ix == -1) // the last, artificialnode
-    // return 0;
-    // int positive = 0;
-    // int negative = 0;
-    //
-    // for (Clause c : f.getClauses())
-    // {
-    // for (Literal l : c.getLiterals())
-    // {
-    // if(l.getIndex() == ix)
-    // {
-    // if(l.isNeg() == value)
-    // negative++;
-    // else
-    // positive++;
-    // break;
-    // }
-    // }
-    // }
-
-    // if(positive == 0 )
-    // return Double.MAX_VALUE;
-    // else
-    return 1.0;// *negative;//f.getClauses().size();
-    // return (1.0*(negative+positive)/f.getClauses().size() )/*1.0*/ *
-    // (negative / positive);
-  }
 }
