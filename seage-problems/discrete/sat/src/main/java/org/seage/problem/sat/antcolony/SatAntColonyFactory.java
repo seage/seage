@@ -43,6 +43,8 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
         ants = new Ant[source.length];
         for (int i = 0; i < ants.length; i++) {
           ArrayList<Integer> nodes = new ArrayList<>();
+          // Add the first node
+          nodes.add(0);
           for (int j = 1; j <= source[i].getSolution().length; j++) {
 
             nodes.add((boolean) source[i].getSolution()[j - 1] == true ? j : -j);
@@ -63,11 +65,9 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
       @Override
       public SatPhenotype solutionToPhenotype(Ant solution) throws Exception {        
         SatPhenotype result = new SatPhenotype(new Boolean[formula.getLiteralCount()]);
-        for (int i = 0; i < solution.getNodePath().size(); i++) {
+        for (int i = 1; i < solution.getNodePath().size(); i++) {
           Integer value = solution.getNodePath().get(i).getID();
-          if (value == 0) {
-            continue;
-          }
+        
           result.getSolution()[Math.abs(value) - 1] = value > 0;
         }
         double[] objVals = this.phenotypeEvaluator.evaluate(result);
