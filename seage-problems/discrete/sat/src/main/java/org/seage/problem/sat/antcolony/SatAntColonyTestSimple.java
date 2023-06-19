@@ -48,6 +48,7 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
   
   public static void main(String[] args) throws Exception {
     try {
+      log.debug("start");
       new SatAntColonyTestSimple().run();
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
@@ -69,8 +70,8 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
     double evaporation = 0.5;
     double alpha = 1.1;
     double beta = 1.5;
-    int numAnts = 10;
-    int iterations = 10;
+    int numAnts = 1;
+    int iterations = 1;
 
     FormulaEvaluator formulaEvaluator = new FormulaEvaluator(formula);
     Graph graph = new SatGraph(formula.getLiteralCount());    

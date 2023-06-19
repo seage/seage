@@ -136,10 +136,12 @@ public class SatAnt extends Ant {
     // solution[Math.abs(n1.getID()) - 1] = n1.getID() > 0;
     // solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
     
-    double b = Math.max(formulaEvaluator.getSingleImpact(n2.getID()), 0.1);
-    double newCost = 1 - (formulaEvaluator.getPairImpact(n1.getID(), n2.getID()) / formula.getClauses().size());
-    // double newCost = formula.getClauses().size() - FormulaEvaluator.evaluatePair(formula, n1.getID(), n2.getID());
-    newCost = (newCost + 1.0) / (n * b);
+    int n1i = formulaEvaluator.getSingleImpact(n1.getID());
+    int n2i = formulaEvaluator.getSingleImpact(n2.getID());
+    int n12i = formulaEvaluator.getPairImpact(n1.getID(), n2.getID());
+    // double newCost = 1.0;//1 - () / formula.getClauses().size());
+    double newCost = formula.getClauses().size() - FormulaEvaluator.evaluatePair(formula, n1.getID(), n2.getID());
+    newCost = (newCost + 1.0) / (n * n2i);
 
     return newCost;
   }

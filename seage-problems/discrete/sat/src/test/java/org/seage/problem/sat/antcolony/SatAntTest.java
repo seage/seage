@@ -96,7 +96,7 @@ public class SatAntTest {
 
     Graph graph = new SatGraph(formula.getLiteralCount());
     // The ant initially travels through two nodes, thus next two available nodes expected.
-    Ant ant = new SatAnt(graph.nodesToNodePath(List.of(1, 2)), formula, formEval);
+    Ant ant = new SatAnt(graph.nodesToNodePath(List.of(0, 1, 2)), formula, formEval);
     
     List<Edge> edgePath = ant.doFirstExploration(graph);
     List<Node> nodePath = Graph.edgeListToNodeList(edgePath);

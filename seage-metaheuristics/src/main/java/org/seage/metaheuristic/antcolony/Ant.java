@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * .
@@ -39,6 +41,7 @@ import java.util.Random;
  * @author Richard Malek (reworked 2021)
  */
 public class Ant {
+  private static final Logger log = LoggerFactory.getLogger(Ant.class.getName());
 
   protected List<Node> nodePath;
 
@@ -256,8 +259,12 @@ public class Ant {
         e = new Edge(currentNode, n, nodeDistance);
       }
 
-      double edgeHeuristic =
-          Math.pow(e.getLocalPheromone() + 0.001, alpha) * Math.pow(1 / e.getEdgeCost(), beta);
+      double edgeHeuristic1 = Math.pow(e.getLocalPheromone() + 0.001, alpha);
+      double edgeHeuristic2 = Math.pow(1 / e.getEdgeCost(), beta);
+
+      log.debug("{} - {}", edgeHeuristic1, edgeHeuristic2);
+      
+      double edgeHeuristic = edgeHeuristic1 * edgeHeuristic2;
 
       e.setEdgeHeuristic(edgeHeuristic);
       sumCostEdges += edgeHeuristic;
