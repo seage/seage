@@ -1,34 +1,32 @@
 /*******************************************************************************
  * Copyright (c) 2009 Richard Malek and SEAGE contributors
- * 
+
  * This file is part of SEAGE.
- * 
+
  * SEAGE is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+
  * SEAGE is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+
  * You should have received a copy of the GNU General Public License along with
  * SEAGE. If not, @see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
- *
- */
 
-/**
  * Contributors: Richard Malek - Initial implementation
  */
+
 package org.seage.problem.sat;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.seage.metaheuristic.antcolony.Node;
 
 /**
- *
+ * .
+
  * @author Richard Malek
  */
 public class FormulaEvaluator {
@@ -36,6 +34,11 @@ public class FormulaEvaluator {
   private HashMap<Integer, Integer> pairImpact;
   private Formula formula;
 
+  /**
+   * Constructor.
+   *
+   * @param formula .
+   */
   public FormulaEvaluator(Formula formula) {
     this.formula = formula;
 
@@ -69,10 +72,23 @@ public class FormulaEvaluator {
     }
   }
 
+  /**
+   * Hash used for pairs.
+   *
+   * @param x Id of first literal.
+   * @param y Id of second literal.
+   * @return Hash.
+   */
   private int hash(int x, int y) {
     return x < y ? y * y + x + y : x * x + x + y;
   }
 
+  /**
+   * Method returns the element from singleImpact map.
+   *
+   * @param literalId Literal id.
+   * @return SingleImpact element if id is present, 0 otherwise.
+   */
   public int getSingleImpact(int literalId) {
     if (!singleImpact.containsKey(literalId)) {
       return 0;
@@ -80,6 +96,13 @@ public class FormulaEvaluator {
     return singleImpact.get(literalId);
   }
 
+  /**
+   * Method returns the element from pairImpact map.
+   *
+   * @param literal1Id First literal id.
+   * @param literal2Id Second literal id.
+   * @return PairImpact element if ids present, 0 otherwise.
+   */
   public int getPairImpact(int literal1Id, int literal2Id) {
     int key = hash(literal1Id, literal2Id);
     if (!pairImpact.containsKey(key)) {
@@ -88,6 +111,13 @@ public class FormulaEvaluator {
     return pairImpact.get(key);
   }
 
+  /**
+   * Method evaluates formula using given nodes.
+   *
+   * @param f Formula.
+   * @param nodes Nodes.
+   * @return Number of false clauses.
+   */
   public static int evaluate(Formula f, List<Node> nodes) {
     Boolean[] s = new Boolean[f.getLiteralCount()];
 
@@ -100,6 +130,13 @@ public class FormulaEvaluator {
     return evaluate(f, s);
   }
 
+  /**
+   * Method evaluates formula using given literal truth values.
+   *
+   * @param f Formula.
+   * @param s Truth values of literals.
+   * @return Number of false clauses.
+   */
   public static int evaluate(Formula f, Boolean[] s) {
     int numTrueClauses = 0;
 
@@ -116,6 +153,13 @@ public class FormulaEvaluator {
     return f.getClauses().size() - numTrueClauses;
   }
 
+  /**
+   * Method evaluates formula with given literal truth value.
+   *
+   * @param id Literal id.
+   * @param value Truth value of given literal.
+   * @return Number of false clauses.
+   */
   public int evaluate(int id, boolean value) {
     int numTrueClauses = 0;
 
@@ -131,6 +175,14 @@ public class FormulaEvaluator {
     return formula.getClauses().size() - numTrueClauses;
   }
 
+  /**
+   * Method evaluates formula using given pair.
+   *
+   * @param f Formula.
+   * @param id1 First literal (negative or positive id of literal).
+   * @param id2 Second literal (negative or positive id of literal).
+   * @return Number of true pairs (clauses where both literal has true value).
+   */
   public static int evaluatePair(Formula f, int id1, int id2) {
     int numTruePairs = 0;
 
