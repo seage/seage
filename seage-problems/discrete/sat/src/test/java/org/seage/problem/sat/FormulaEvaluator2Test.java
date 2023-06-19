@@ -32,27 +32,45 @@ class FormulaEvaluator2Test {
 
   @Test
   void testSingleImpact() {  
+    // a
     assertEquals(2, formulaEvaluator.getSingleImpact(1));
+    // !a
     assertEquals(4, formulaEvaluator.getSingleImpact(-1));
+    // b
     assertEquals(3, formulaEvaluator.getSingleImpact(2));
+    // !b
     assertEquals(3, formulaEvaluator.getSingleImpact(-2));
+    // c
     assertEquals(2, formulaEvaluator.getSingleImpact(3));
+    // !c
     assertEquals(4, formulaEvaluator.getSingleImpact(-3));
   }
 
   @Test
   void getPairImpact() {
+    // (!a, b)
     assertEquals(2, formulaEvaluator.getPairImpact(-1, 2));
+    // (!a, !b)
     assertEquals(2, formulaEvaluator.getPairImpact(-1, -2));
+    // (!a, c)
     assertEquals(2, formulaEvaluator.getPairImpact(-1, 3));
+    // (!a, !c)
     assertEquals(2, formulaEvaluator.getPairImpact(-1, -3));
+    // (a, b)
     assertEquals(1, formulaEvaluator.getPairImpact(1, 2));
+    // (a, !b)
     assertEquals(1, formulaEvaluator.getPairImpact(1, -2));
+    // (a, c)
     assertEquals(0, formulaEvaluator.getPairImpact(1, 3));
+    // (a, !c)
     assertEquals(2, formulaEvaluator.getPairImpact(1, -3));
+    // (!b, c)
     assertEquals(1, formulaEvaluator.getPairImpact(-2, 3));
+    // (!b, !c)
     assertEquals(2, formulaEvaluator.getPairImpact(-2, -3));
+    // (b, c)
     assertEquals(1, formulaEvaluator.getPairImpact(2, 3));
+    // (b, !c)
     assertEquals(2, formulaEvaluator.getPairImpact(2, -3));
   }
 }
