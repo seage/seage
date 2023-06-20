@@ -260,7 +260,8 @@ public class Ant {
       }
 
       double edgeHeuristic1 = Math.pow(e.getLocalPheromone(), alpha);
-      double edgeHeuristic2 = Math.pow(1 / e.getEdgeCost(), beta);
+      double edgeHeuristic1 = Math.max(Math.pow(e.getLocalPheromone(), alpha), 0.001);
+      double edgeHeuristic2 = Math.max(Math.pow(1 / e.getEdgeCost(), beta), 0.001);
 
       log.debug("{} - {}", edgeHeuristic1, edgeHeuristic2);
       
