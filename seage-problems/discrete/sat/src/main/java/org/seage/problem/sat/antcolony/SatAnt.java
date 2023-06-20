@@ -82,7 +82,7 @@ public class SatAnt extends Ant {
     return result;
   }
 
-  // @Override
+  //@Override
   public double getNodeDistance0(Graph graph, List<Node> nodePath, Node n2) {
     Boolean[] solution = new Boolean[this.formula.getLiteralCount()];
 
@@ -103,8 +103,8 @@ public class SatAnt extends Ant {
     return prevCost - newCost + 0.001;
   }
 
-  // @Override
-  public double getNodeDistance1(Graph graph, List<Node> nodePath, Node n2) {
+  @Override
+  public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
     int n = formula.getClauses().size();
     // Boolean[] solution = new Boolean[formula.getLiteralCount()];
 
@@ -123,8 +123,8 @@ public class SatAnt extends Ant {
     return newCost;
   }
 
-  @Override
-  public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
+  //@Override
+  public double getNodeDistance2(Graph graph, List<Node> nodePath, Node n2) {
     int n = formula.getClauses().size();
     // Boolean[] solution = new Boolean[formula.getLiteralCount()];
 
