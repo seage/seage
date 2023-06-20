@@ -220,9 +220,9 @@ public class Ant {
     double edgesHeuristicsSum = nextEdgeResult.getEdgesHeuristicsSum();
     List<Edge> edgeHeuristic = nextEdgeResult.getEdgesHeuristics();
 
-    // Throw exception if sum of all edges' prices is zero
+    // Get random edge (all have same prob of selection)
     if (edgesHeuristicsSum == 0.0) {
-      throw new ArithmeticException();
+      return edgeHeuristic.get(rand.nextInt(edgeHeuristic.size()));
     }
 
     // Get next edge
@@ -259,7 +259,7 @@ public class Ant {
         e = new Edge(currentNode, n, nodeDistance);
       }
 
-      double edgeHeuristic1 = Math.pow(e.getLocalPheromone() + 0.001, alpha);
+      double edgeHeuristic1 = Math.pow(e.getLocalPheromone(), alpha);
       double edgeHeuristic2 = Math.pow(1 / e.getEdgeCost(), beta);
 
       log.debug("{} - {}", edgeHeuristic1, edgeHeuristic2);
