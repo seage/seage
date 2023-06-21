@@ -131,7 +131,7 @@ public class SatAnt extends Ant {
     double minAffected = 0.0;
 
     for (Node node : nodePath) {
-      minAffected = Math.min(
+      minAffected = Math.max(
         formulaEvaluator.getPairImpact(node.getID(), n2.getID()),
         minAffected);
     }
