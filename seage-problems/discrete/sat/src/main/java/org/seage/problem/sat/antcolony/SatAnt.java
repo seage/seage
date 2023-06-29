@@ -141,7 +141,8 @@ public class SatAnt extends Ant {
         ? formulaEvaluator.getPairImpact(prevNode.getID(), n2.getID()) : 0.1, 0.1);
 
     double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
-    newCost = (newCost + 1.0) / (n * (formula.getClauses().size() - minAffected));
+    // newCost = (newCost + 1.0) / (n * (formula.getClauses().size() - minAffected));
+    newCost = (formula.getClauses().size() - minAffected) / n;
 
     return newCost;
   }
