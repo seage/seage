@@ -152,11 +152,13 @@ public class SatAnt extends Ant {
         formulaEvaluator.getLiteralPairImpact(node.getID(), n2.getID()),
         minAffected);
     }
-
+    // TODO: 
+    // double a = Math.max(formulaEvaluator.getLiteralImpact(prevNode.getID()), 0.1);
     double b = Math.max(formulaEvaluator.getLiteralImpact(n2.getID()), 0.1);
     double c = Math.max(prevNode != null 
         ? formulaEvaluator.getLiteralPairImpact(prevNode.getID(), n2.getID()) : 0.1, 0.1);
 
+    // TODO: combine a, b, c values into the newCost value
     double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
     // newCost = (newCost + 1.0) / (n * (formula.getClauses().size() - minAffected));
     newCost = (formula.getClauses().size() - minAffected) / n;

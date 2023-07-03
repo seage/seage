@@ -6,27 +6,10 @@
   "configurations": [
     {
       "type": "java",
-      "name": "SatAntColonyTestAppSimple",
-      "request": "launch",
-      "mainClass": "org.seage.problem.sat.antcolony.SatAntColonyTestAppSimple",
-      "projectName": "seage-problem-sat"
-    },
-    {
-      "type": "java",
-      "name": "SatAntColonyTestApp",
-      "request": "launch",
-      "mainClass": "org.seage.problem.sat.antcolony.SatAntColonyTestApp",
-      "projectName": "seage-problem-sat"
-    },
-    {
-      "type": "java",
       "name": "SatAntColonyTest",
       "request": "launch",
       "mainClass": "org.seage.problem.sat.antcolony.SatAntColonyTest",
-      "projectName": "seage-problem-sat",
-      "env": {
-        "LOG_LEVEL": "info"
-      }
+      "projectName": "seage-problem-sat"
     },
     {
       "type": "java",
@@ -123,8 +106,12 @@
       "args": [
         "experiment-single-feedback",
         "-a",
+        // "GeneticAlgorithm",
+        // "TabuSearch",
         "AntColony",
+        // "SimulatedAnnealing",
         "-i",
+        // "SAT:uf100-01",
         "SAT:small",
         "-t",
         "20",
