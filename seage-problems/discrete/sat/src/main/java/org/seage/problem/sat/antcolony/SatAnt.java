@@ -61,7 +61,6 @@ public class SatAnt extends Ant {
 
     double subRes = 0.0;
     for (Edge e : path) {
-
       subRes += e.getEdgeCost();
     }
     
@@ -75,8 +74,8 @@ public class SatAnt extends Ant {
     double result = FormulaEvaluator.evaluate(formula, solution);
 
     // One is to prevent the dividing by zero
-    // return Math.max((formula.getClauses().size() - result), 0.0001);
-    return Math.max(subRes, 0.001);
+    return Math.max((formula.getClauses().size() - result), 0.0001);
+    // return Math.max(subRes, 0.001);
   }
 
   @Override
@@ -92,29 +91,29 @@ public class SatAnt extends Ant {
     return result;
   }
 
-  //@Override
-  public double getNodeDistance0(Graph graph, List<Node> nodePath, Node n2) {
-    Boolean[] solution = new Boolean[this.formula.getLiteralCount()];
+  // @Override // poor performance 
+  // public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
+  //   Boolean[] solution = new Boolean[this.formula.getLiteralCount()];
 
-    for (Node n : nodePath) {
-      if (n.getID() == 0) {
-        continue;
-      }
-      solution[Math.abs(n.getID()) - 1] = n.getID() > 0;
-    }
+  //   for (Node n : nodePath) {
+  //     if (n.getID() == 0) {
+  //       continue;
+  //     }
+  //     solution[Math.abs(n.getID()) - 1] = n.getID() > 0;
+  //   }
 
-    double prevCost = FormulaEvaluator.evaluate(formula, solution);
+  //   double prevCost = FormulaEvaluator.evaluate(formula, solution);
 
-    solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
+  //   solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
 
-    double newCost = FormulaEvaluator.evaluate(formula, solution);
+  //   double newCost = FormulaEvaluator.evaluate(formula, solution);
 
 
-    return prevCost - newCost + 0.001;
-  }
+  //   return prevCost - newCost + 0.001;
+  // }
 
-  //@Override
-  public double getNodeDistance1(Graph graph, List<Node> nodePath, Node n2) {
+  @Override // good performance
+  public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
     int n = formula.getClauses().size();
     // Boolean[] solution = new Boolean[formula.getLiteralCount()];
 
@@ -133,52 +132,52 @@ public class SatAnt extends Ant {
     return newCost;
   }
 
-  @Override
-  public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
-    int n = formula.getClauses().size();
-    Node  prevNode = !nodePath.isEmpty() ? nodePath.get(nodePath.size()-1) : null;
+  // @Override // not that good performance
+  // public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
+  //   int n = formula.getClauses().size();
+  //   Node  prevNode = !nodePath.isEmpty() ? nodePath.get(nodePath.size()-1) : null;
 
-    double minAffected = 0.0;
+  //   double minAffected = 0.0;
 
-    for (Node node : nodePath) {
-      minAffected = Math.max(
-        formulaEvaluator.getPairImpact(node.getID(), n2.getID()),
-        minAffected);
-    }
+  //   for (Node node : nodePath) {
+  //     minAffected = Math.max(
+  //       formulaEvaluator.getPairImpact(node.getID(), n2.getID()),
+  //       minAffected);
+  //   }
 
-    double b = Math.max(formulaEvaluator.getSingleImpact(n2.getID()), 0.1);
-    double c = Math.max(prevNode != null 
-        ? formulaEvaluator.getPairImpact(prevNode.getID(), n2.getID()) : 0.1, 0.1);
+  //   double b = Math.max(formulaEvaluator.getSingleImpact(n2.getID()), 0.1);
+  //   double c = Math.max(prevNode != null 
+  //       ? formulaEvaluator.getPairImpact(prevNode.getID(), n2.getID()) : 0.1, 0.1);
 
-    double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
-    // newCost = (newCost + 1.0) / (n * (formula.getClauses().size() - minAffected));
-    newCost = (formula.getClauses().size() - minAffected) / n;
+  //   double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
+  //   // newCost = (newCost + 1.0) / (n * (formula.getClauses().size() - minAffected));
+  //   newCost = (formula.getClauses().size() - minAffected) / n;
 
-    return newCost;
-  }
+  //   return newCost;
+  // }
 
-  //@Override
-  public double getNodeDistance2(Graph graph, List<Node> nodePath, Node n2) {
-    int n = formula.getClauses().size();
-    // Boolean[] solution = new Boolean[formula.getLiteralCount()];
+  // @Override // decent prefromance
+  // public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
+  //   int n = formula.getClauses().size();
+  //   // Boolean[] solution = new Boolean[formula.getLiteralCount()];
 
-    Node n1 = nodePath.get(nodePath.size() - 1);
-    if (n1.getID() == 0) {
-      return 1;
-    }
+  //   Node n1 = nodePath.get(nodePath.size() - 1);
+  //   if (n1.getID() == 0) {
+  //     return 1;
+  //   }
 
-    // solution[Math.abs(n1.getID()) - 1] = n1.getID() > 0;
-    // solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
+  //   // solution[Math.abs(n1.getID()) - 1] = n1.getID() > 0;
+  //   // solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
     
-    int n1i = formulaEvaluator.getSingleImpact(n1.getID());
-    int n2i = formulaEvaluator.getSingleImpact(n2.getID());
-    int n12i = formulaEvaluator.getPairImpact(n1.getID(), n2.getID());
-    // double newCost = 1.0;//1 - () / formula.getClauses().size());
-    double newCost = formula.getClauses().size() - FormulaEvaluator.evaluatePair(formula, n1.getID(), n2.getID());
-    newCost = (newCost + 1.0) / (n * n2i);
+  //   int n1i = formulaEvaluator.getSingleImpact(n1.getID());
+  //   int n2i = formulaEvaluator.getSingleImpact(n2.getID());
+  //   int n12i = formulaEvaluator.getPairImpact(n1.getID(), n2.getID());
+  //   // double newCost = 1.0;//1 - () / formula.getClauses().size());
+  //   double newCost = formula.getClauses().size() - FormulaEvaluator.evaluatePair(formula, n1.getID(), n2.getID());
+  //   newCost = (newCost + 1.0) / (n * n2i);
 
-    return newCost;
-  }
+  //   return newCost;
+  // }
 
   @Override
   public List<Integer> getNodeIDsAlongPath() {
