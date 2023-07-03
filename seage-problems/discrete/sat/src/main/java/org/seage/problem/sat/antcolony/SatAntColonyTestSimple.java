@@ -68,13 +68,14 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
 
     double quantumPheromone = 10;
     double evaporation = 0.5;
-    double alpha = 1.1;
-    double beta = 1.5;
+    double alpha = 1.95;
+    double beta = 0.9;
     int numAnts = 1;
-    int iterations = 1;
+    int iterations = 10;
 
     FormulaEvaluator formulaEvaluator = new FormulaEvaluator(formula);
-    Graph graph = new SatGraph(formula.getLiteralCount());    
+    Graph graph = new SatGraph(formula.getLiteralCount());  
+    System.out.println("lit count: " + formula.getLiteralCount());  
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, evaporation);

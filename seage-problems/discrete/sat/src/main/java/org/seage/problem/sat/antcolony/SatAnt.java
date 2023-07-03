@@ -61,7 +61,9 @@ public class SatAnt extends Ant {
 
     double subRes = 0.0;
     for (Edge e : path) {
+
       subRes += e.getEdgeCost();
+      System.out.println(e.getEdgeCost());
     }
     
     for (Node n : nodeList) {
@@ -117,7 +119,7 @@ public class SatAnt extends Ant {
     int n = formula.getClauses().size();
     // Boolean[] solution = new Boolean[formula.getLiteralCount()];
 
-    // Node n1 = nodePath.get(nodePath.size() - 1);
+    Node n1 = nodePath.get(nodePath.size() - 1);
     // if (n1.getID() == 0) {
     //   return 1;
     // }
@@ -128,6 +130,8 @@ public class SatAnt extends Ant {
     
     double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
     newCost = (newCost + 1.0) / (n * b);
+
+    System.out.println("from: " + n1.getID() + " to: " + n2.getID() + " cost: " + newCost);
 
     return newCost;
   }

@@ -166,6 +166,9 @@ public class Ant {
     double distanceTravelled = getDistanceTravelled(graph, edgePath);
     for (Edge edge : edgePath) {
       double newPheromone = quantumPheromone / distanceTravelled;
+      // if (newPheromone > 1000) {
+      //   System.out.println("inf trap");
+      // }
       edge.addLocalPheromone(newPheromone);
       if (!graph._edges.contains(edge)) {
         graph.addEdge(edge);
@@ -248,14 +251,22 @@ public class Ant {
 
     // Find all candidate edges
     for (Node n : nextAvailableNodes) {
+      System.out.println("next available node: " + n.getID());
       Edge e = currentNode.getEdge(n);
       if (e == null) {
+        System.out.println("next available node checked");
         double nodeDistance = getNodeDistance(graph, nodePath, n);
         e = new Edge(currentNode, n, nodeDistance);
+      } else {
+        System.out.println("edge info: " + "from: " + e.getNodes()[0].getID() + " to: " + e.getNodes()[1].getID() + " price: "  + e.getEdgeCost());
       }
 
       double edgeHeuristic1 = Math.max(Math.pow(e.getLocalPheromone(), alpha), 0.001);
       double edgeHeuristic2 = Math.max(Math.pow(1 / e.getEdgeCost(), beta), 0.001);
+
+      // if (edgeHeuristic1 > 1000000) {
+      //   System.out.println("calculate edges Heuristic " + edgeHeuristic1);
+      // }
 
       log.debug("{} - {}", edgeHeuristic1, edgeHeuristic2);
       
@@ -267,7 +278,9 @@ public class Ant {
       candidateEdges.add(e);
     }
 
-    return new NextEdgeResult(sumCostEdges, candidateEdges);
+    NextEdgeResult nextEdgeResult = new NextEdgeResult(sumCostEdges, candidateEdges);
+
+    return nextEdgeResult;
   }
 
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
