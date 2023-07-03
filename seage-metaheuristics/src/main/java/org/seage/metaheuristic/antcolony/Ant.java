@@ -228,7 +228,10 @@ public class Ant {
     double tmpProb;
     double tmpSum = 0.0;
     for (int i = 0; i < edgeHeuristic.size(); i++) {
+      System.out.println("next step: " + "from: " + edgeHeuristic.get(i).getNodes()[0].getID() + " to: " + edgeHeuristic.get(i).getNodes()[1].getID() + " price: "  + edgeHeuristic.get(i).getEdgeCost());
       tmpProb = (edgeHeuristic.get(i).getEdgeHeuristic() / edgesHeuristicsSum);
+      System.out.println("tmp: " + tmpProb + " rand: " + randNum);
+
       tmpSum += tmpProb;
       if (tmpSum >= randNum) {
         return edgeHeuristic.get(i);
@@ -278,9 +281,7 @@ public class Ant {
       candidateEdges.add(e);
     }
 
-    NextEdgeResult nextEdgeResult = new NextEdgeResult(sumCostEdges, candidateEdges);
-
-    return nextEdgeResult;
+    return new NextEdgeResult(sumCostEdges, candidateEdges);
   }
 
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {

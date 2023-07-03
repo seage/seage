@@ -114,51 +114,51 @@ public class SatAnt extends Ant {
   //   return prevCost - newCost + 0.001;
   // }
 
-  @Override // good performance
-  public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
-    int n = formula.getClauses().size();
-    // Boolean[] solution = new Boolean[formula.getLiteralCount()];
-
-    Node n1 = nodePath.get(nodePath.size() - 1);
-    // if (n1.getID() == 0) {
-    //   return 1;
-    // }
-
-    // solution[Math.abs(n1.getID()) - 1] = n1.getID() > 0;
-    // solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
-    double b = Math.max(formulaEvaluator.getSingleImpact(n2.getID()), 0.1);
-    
-    double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
-    newCost = (newCost + 1.0) / (n * b);
-
-    System.out.println("from: " + n1.getID() + " to: " + n2.getID() + " cost: " + newCost);
-
-    return newCost;
-  }
-
-  // @Override // not that good performance
+  // @Override // good performance
   // public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
   //   int n = formula.getClauses().size();
-  //   Node  prevNode = !nodePath.isEmpty() ? nodePath.get(nodePath.size()-1) : null;
+  //   // Boolean[] solution = new Boolean[formula.getLiteralCount()];
 
-  //   double minAffected = 0.0;
+  //   Node n1 = nodePath.get(nodePath.size() - 1);
+  //   // if (n1.getID() == 0) {
+  //   //   return 1;
+  //   // }
 
-  //   for (Node node : nodePath) {
-  //     minAffected = Math.max(
-  //       formulaEvaluator.getPairImpact(node.getID(), n2.getID()),
-  //       minAffected);
-  //   }
-
+  //   // solution[Math.abs(n1.getID()) - 1] = n1.getID() > 0;
+  //   // solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
   //   double b = Math.max(formulaEvaluator.getSingleImpact(n2.getID()), 0.1);
-  //   double c = Math.max(prevNode != null 
-  //       ? formulaEvaluator.getPairImpact(prevNode.getID(), n2.getID()) : 0.1, 0.1);
-
+    
   //   double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
-  //   // newCost = (newCost + 1.0) / (n * (formula.getClauses().size() - minAffected));
-  //   newCost = (formula.getClauses().size() - minAffected) / n;
+  //   newCost = (newCost + 1.0) / (n * b);
+
+  //   System.out.println("from: " + n1.getID() + " to: " + n2.getID() + " cost: " + newCost);
 
   //   return newCost;
   // }
+
+  @Override // not that good performance
+  public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
+    int n = formula.getClauses().size();
+    Node  prevNode = !nodePath.isEmpty() ? nodePath.get(nodePath.size()-1) : null;
+
+    double minAffected = 0.0;
+
+    for (Node node : nodePath) {
+      minAffected = Math.max(
+        formulaEvaluator.getPairImpact(node.getID(), n2.getID()),
+        minAffected);
+    }
+
+    double b = Math.max(formulaEvaluator.getSingleImpact(n2.getID()), 0.1);
+    double c = Math.max(prevNode != null 
+        ? formulaEvaluator.getPairImpact(prevNode.getID(), n2.getID()) : 0.1, 0.1);
+
+    double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
+    // newCost = (newCost + 1.0) / (n * (formula.getClauses().size() - minAffected));
+    newCost = (formula.getClauses().size() - minAffected) / n;
+
+    return newCost;
+  }
 
   // @Override // decent prefromance
   // public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
