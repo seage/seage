@@ -250,22 +250,22 @@ public class Ant {
     }
 
     List<Edge> candidateEdges = new ArrayList<>();
-    double sumCostEdges = 0.0;
+    double edgeHeuristicSum = 0.0;
 
     // Find all candidate edges
     for (Node n : nextAvailableNodes) {
       System.out.println("next available node: " + n.getID());
-      Edge e = currentNode.getEdge(n);
-      if (e == null) {
+      Edge currentEdge = currentNode.getEdge(n);
+      if (currentEdge == null) {
         System.out.println("next available node checked");
         double nodeDistance = getNodeDistance(graph, nodePath, n);
-        e = new Edge(currentNode, n, nodeDistance);
+        currentEdge = new Edge(currentNode, n, nodeDistance);
       } else {
-        System.out.println("edge info: " + "from: " + e.getNodes()[0].getID() + " to: " + e.getNodes()[1].getID() + " price: "  + e.getEdgeCost());
+        System.out.println("edge info: " + "from: " + currentEdge.getNodes()[0].getID() + " to: " + currentEdge.getNodes()[1].getID() + " price: "  + currentEdge.getEdgeCost());
       }
 
-      double edgeHeuristic1 = Math.max(Math.pow(e.getLocalPheromone(), alpha), 0.001);
-      double edgeHeuristic2 = Math.max(Math.pow(1 / e.getEdgeCost(), beta), 0.001);
+      double edgeHeuristic1 = Math.max(Math.pow(currentEdge.getLocalPheromone(), alpha), 0.001);
+      double edgeHeuristic2 = Math.max(Math.pow(1 / currentEdge.getEdgeCost(), beta), 0.001);
 
       // if (edgeHeuristic1 > 1000000) {
       //   System.out.println("calculate edges Heuristic " + edgeHeuristic1);
@@ -275,13 +275,13 @@ public class Ant {
       
       double edgeHeuristic = edgeHeuristic1 * edgeHeuristic2;
 
-      e.setEdgeHeuristic(edgeHeuristic);
-      sumCostEdges += edgeHeuristic;
+      currentEdge.setEdgeHeuristic(edgeHeuristic);
+      edgeHeuristicSum += edgeHeuristic;
 
-      candidateEdges.add(e);
+      candidateEdges.add(currentEdge);
     }
 
-    return new NextEdgeResult(sumCostEdges, candidateEdges);
+    return new NextEdgeResult(edgeHeuristicSum, candidateEdges);
   }
 
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {
