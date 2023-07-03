@@ -29,6 +29,8 @@ import org.seage.metaheuristic.antcolony.Graph;
 import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SatAntBrain class.
@@ -36,6 +38,8 @@ import org.seage.problem.sat.FormulaEvaluator;
  * @author Zagy
  */
 public class SatAnt extends Ant {
+  private static final Logger log = LoggerFactory.getLogger(SatAnt.class.getName());
+
   FormulaEvaluator formulaEvaluator;
 
   private Formula formula;
@@ -63,7 +67,7 @@ public class SatAnt extends Ant {
     for (Edge e : path) {
 
       subRes += e.getEdgeCost();
-      System.out.println(e.getEdgeCost());
+      log.debug("{}", e.getEdgeCost());
     }
     
     for (Node n : nodeList) {
@@ -131,7 +135,7 @@ public class SatAnt extends Ant {
   //   double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
   //   newCost = (newCost + 1.0) / (n * b);
 
-  //   System.out.println("from: " + n1.getID() + " to: " + n2.getID() + " cost: " + newCost);
+  //   log.debug("from: " + n1.getID() + " to: " + n2.getID() + " cost: " + newCost);
 
   //   return newCost;
   // }

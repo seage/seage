@@ -167,7 +167,7 @@ public class Ant {
     for (Edge edge : edgePath) {
       double newPheromone = quantumPheromone / distanceTravelled;
       // if (newPheromone > 1000) {
-      //   System.out.println("inf trap");
+      //   log.debug("inf trap");
       // }
       edge.addLocalPheromone(newPheromone);
       if (!graph._edges.contains(edge)) {
@@ -228,9 +228,9 @@ public class Ant {
     double tmpProb;
     double tmpSum = 0.0;
     for (int i = 0; i < edgeHeuristic.size(); i++) {
-      System.out.println("next step: " + "from: " + edgeHeuristic.get(i).getNodes()[0].getID() + " to: " + edgeHeuristic.get(i).getNodes()[1].getID() + " price: "  + edgeHeuristic.get(i).getEdgeCost());
+      log.debug("next step: " + "from: " + edgeHeuristic.get(i).getNodes()[0].getID() + " to: " + edgeHeuristic.get(i).getNodes()[1].getID() + " price: "  + edgeHeuristic.get(i).getEdgeCost());
       tmpProb = (edgeHeuristic.get(i).getEdgeHeuristic() / edgesHeuristicsSum);
-      System.out.println("tmp: " + tmpProb + " rand: " + randNum);
+      log.debug("tmp: " + tmpProb + " rand: " + randNum);
 
       tmpSum += tmpProb;
       if (tmpSum >= randNum) {
@@ -254,21 +254,21 @@ public class Ant {
 
     // Find all candidate edges
     for (Node n : nextAvailableNodes) {
-      System.out.println("next available node: " + n.getID());
+      log.debug("next available node: " + n.getID());
       Edge currentEdge = currentNode.getEdge(n);
       if (currentEdge == null) {
-        System.out.println("next available node checked");
+        log.debug("next available node checked");
         double nodeDistance = getNodeDistance(graph, nodePath, n);
         currentEdge = new Edge(currentNode, n, nodeDistance);
       } else {
-        System.out.println("edge info: " + "from: " + currentEdge.getNodes()[0].getID() + " to: " + currentEdge.getNodes()[1].getID() + " price: "  + currentEdge.getEdgeCost());
+        log.debug("edge info: " + "from: " + currentEdge.getNodes()[0].getID() + " to: " + currentEdge.getNodes()[1].getID() + " price: "  + currentEdge.getEdgeCost());
       }
 
       double edgeHeuristic1 = Math.max(Math.pow(currentEdge.getLocalPheromone(), alpha), 0.001);
       double edgeHeuristic2 = Math.max(Math.pow(1 / currentEdge.getEdgeCost(), beta), 0.001);
 
       // if (edgeHeuristic1 > 1000000) {
-      //   System.out.println("calculate edges Heuristic " + edgeHeuristic1);
+      //   log.debug("calculate edges Heuristic " + edgeHeuristic1);
       // }
 
       log.debug("{} - {}", edgeHeuristic1, edgeHeuristic2);

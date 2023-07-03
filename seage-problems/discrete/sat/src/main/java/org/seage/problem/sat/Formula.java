@@ -18,16 +18,17 @@
 package org.seage.problem.sat;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Summary description for Formula.
  */
 public class Formula extends ProblemInstance {
+  private static final Logger log = LoggerFactory.getLogger(Formula.class.getName());
 
   private ArrayList<Clause> clauses;
   private int literalCount;
@@ -82,7 +83,7 @@ public class Formula extends ProblemInstance {
 
   // OK
   public void printFormula() {
-    System.out.println(toString());
+    log.debug(toString());
   }
 
 }
