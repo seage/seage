@@ -145,13 +145,13 @@ public class SatAnt extends Ant {
 
     for (Node node : nodePath) {
       minAffected = Math.max(
-        formulaEvaluator.getPairImpact(node.getID(), n2.getID()),
+        formulaEvaluator.getLiteralPairImpact(node.getID(), n2.getID()),
         minAffected);
     }
 
-    double b = Math.max(formulaEvaluator.getSingleImpact(n2.getID()), 0.1);
+    double b = Math.max(formulaEvaluator.getLiteralImpact(n2.getID()), 0.1);
     double c = Math.max(prevNode != null 
-        ? formulaEvaluator.getPairImpact(prevNode.getID(), n2.getID()) : 0.1, 0.1);
+        ? formulaEvaluator.getLiteralPairImpact(prevNode.getID(), n2.getID()) : 0.1, 0.1);
 
     double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
     // newCost = (newCost + 1.0) / (n * (formula.getClauses().size() - minAffected));

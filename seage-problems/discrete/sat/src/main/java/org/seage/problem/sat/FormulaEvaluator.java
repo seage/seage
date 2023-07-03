@@ -30,8 +30,8 @@ import org.seage.metaheuristic.antcolony.Node;
  * @author Richard Malek
  */
 public class FormulaEvaluator {
-  private HashMap<Integer, Integer> singleImpact;
-  private HashMap<Integer, Integer> pairImpact;
+  private HashMap<Integer, Integer> literalImpact;
+  private HashMap<Integer, Integer> literalPairImpact;
   private Formula formula;
 
   /**
@@ -42,19 +42,19 @@ public class FormulaEvaluator {
   public FormulaEvaluator(Formula formula) {
     this.formula = formula;
 
-    this.singleImpact = new HashMap<>();
-    this.pairImpact = new HashMap<>();
+    this.literalImpact = new HashMap<>();
+    this.literalPairImpact = new HashMap<>();
 
     for (Clause c : formula.getClauses()) {
       for (int i = 0; i < c.getLiterals().length; i++) {
         Literal lit1 = c.getLiterals()[i];
         int count = 0;
         int id = lit1.isNeg() ? -lit1.getId() : lit1.getId();
-        if (this.singleImpact.containsKey(id)) {
-          count = this.singleImpact.get(id);
+        if (this.literalImpact.containsKey(id)) {
+          count = this.literalImpact.get(id);
         }
         count++;
-        this.singleImpact.put(id, count);
+        this.literalImpact.put(id, count);
       }
     }
 
@@ -64,10 +64,10 @@ public class FormulaEvaluator {
       for (int j = i + 1; j <= formula.getLiteralCount(); j++) {
         int l21 = -j;
         int l22 = j;
-        this.pairImpact.put(hash(l11, l21), evaluatePair(formula, l11, l21));
-        this.pairImpact.put(hash(l11, l22), evaluatePair(formula, l11, l22));
-        this.pairImpact.put(hash(l12, l21), evaluatePair(formula, l12, l21));
-        this.pairImpact.put(hash(l12, l22), evaluatePair(formula, l12, l22));
+        this.literalPairImpact.put(hash(l11, l21), evaluateLiteralPair(formula, l11, l21));
+        this.literalPairImpact.put(hash(l11, l22), evaluateLiteralPair(formula, l11, l22));
+        this.literalPairImpact.put(hash(l12, l21), evaluateLiteralPair(formula, l12, l21));
+        this.literalPairImpact.put(hash(l12, l22), evaluateLiteralPair(formula, l12, l22));
       }
     }
   }
@@ -89,26 +89,26 @@ public class FormulaEvaluator {
    * @param literalId Literal id.
    * @return SingleImpact element if id is present, 0 otherwise.
    */
-  public int getSingleImpact(int literalId) {
-    if (!singleImpact.containsKey(literalId)) {
+  public int getLiteralImpact(int literalId) {
+    if (!literalImpact.containsKey(literalId)) {
       return 0;
     }
-    return singleImpact.get(literalId);
+    return literalImpact.get(literalId);
   }
 
   /**
    * Method returns the element from pairImpact map.
    *
-   * @param literal1Id First literal id.
-   * @param literal2Id Second literal id.
-   * @return PairImpact element if ids present, 0 otherwise.
+   * @param literal1Value First literal value.
+   * @param literal2Value Second literal value.
+   * @return PairImpact value if literals present, 0 otherwise.
    */
-  public int getPairImpact(int literal1Id, int literal2Id) {
-    int key = hash(literal1Id, literal2Id);
-    if (!pairImpact.containsKey(key)) {
+  public int getLiteralPairImpact(int literal1Value, int literal2Value) {
+    int key = hash(literal1Value, literal2Value);
+    if (!literalPairImpact.containsKey(key)) {
       return 0;
     }
-    return pairImpact.get(key);
+    return literalPairImpact.get(key);
   }
 
   /**
@@ -179,25 +179,25 @@ public class FormulaEvaluator {
    * Method evaluates formula using given pair.
    *
    * @param f Formula.
-   * @param id1 First literal (negative or positive id of literal).
-   * @param id2 Second literal (negative or positive id of literal).
+   * @param literal1Value First literal (negative or positive id of literal).
+   * @param literal2Value Second literal (negative or positive id of literal).
    * @return Number of true pairs (clauses where both literal has true value).
    */
-  public static int evaluatePair(Formula f, int id1, int id2) {
+  public static int evaluateLiteralPair(Formula f, int literal1Value, int literal2Value) {
     int numTruePairs = 0;
 
     for (Clause c : f.getClauses()) {
-      boolean id1ok = false;
-      boolean id2ok = false;
+      boolean lit1ok = false;
+      boolean lit2ok = false;
       for (Literal l : c.getLiterals()) {
-        int lv = l.isNeg() ? -l.getId() : l.getId();
-        if (lv == id1) {
-          id1ok = true;
+        int lv = l.getValue();
+        if (lv == literal1Value) {
+          lit1ok = true;
         }
-        if (lv == id2) {
-          id2ok = true;
+        if (lv == literal2Value) {
+          lit2ok = true;
         }
-        if (id1ok && id2ok) {
+        if (lit1ok && lit2ok) {
           numTruePairs++;
           break;
         }

@@ -9,68 +9,54 @@ import org.junit.jupiter.api.Test;
 class FormulaEvaluator2Test {
   FormulaEvaluator formulaEvaluator;
 
+  private final int a = 1;
+  private final int b = 2;
+  private final int c = 3;
+  
   @BeforeEach
   void setup() {
+    // ( !a | b | c ) & ( a | !b | !c ) & ( a | b | !c ) & ( !a | b | !c ) & ( !a | !b | !c ) & (!a | !b | c )
     ArrayList<Clause> clauses = new ArrayList<Clause>();
     clauses.add(new Clause(
-        new Literal[] {new Literal(1, true), new Literal(2, false), new Literal(3, false)}));
+        new Literal[] {new Literal(a, true), new Literal(b, false), new Literal(c, false)}));
     clauses.add(new Clause(
-        new Literal[] {new Literal(1, false), new Literal(2, true), new Literal(3, true)}));
+        new Literal[] {new Literal(a, false), new Literal(b, true), new Literal(c, true)}));
     clauses.add(new Clause(
-        new Literal[] {new Literal(1, false), new Literal(2, false), new Literal(3, true)}));
+        new Literal[] {new Literal(a, false), new Literal(b, false), new Literal(c, true)}));
     clauses.add(new Clause(
-        new Literal[] {new Literal(1, true), new Literal(2, false), new Literal(3, true)}));
+        new Literal[] {new Literal(a, true), new Literal(b, false), new Literal(c, true)}));
     clauses.add(new Clause(
-        new Literal[] {new Literal(1, true), new Literal(2, true), new Literal(3, true)}));
+        new Literal[] {new Literal(a, true), new Literal(b, true), new Literal(c, true)}));
     clauses.add(new Clause(
-        new Literal[] {new Literal(1, true), new Literal(2, true), new Literal(3, false)}));
+        new Literal[] {new Literal(a, true), new Literal(b, true), new Literal(c, false)}));
 
-    // ( !a | b | c ) & ( a | !b | !c ) & ( a | b | !c ) & ( !a | b | !c ) & ( !a | !b | !c ) & (!a | !b | c )
     Formula f = new Formula(null, clauses);
     formulaEvaluator = new FormulaEvaluator(f);
   }
 
   @Test
-  void testSingleImpact() {  
-    // a
-    assertEquals(2, formulaEvaluator.getSingleImpact(1));
-    // !a
-    assertEquals(4, formulaEvaluator.getSingleImpact(-1));
-    // b
-    assertEquals(3, formulaEvaluator.getSingleImpact(2));
-    // !b
-    assertEquals(3, formulaEvaluator.getSingleImpact(-2));
-    // c
-    assertEquals(2, formulaEvaluator.getSingleImpact(3));
-    // !c
-    assertEquals(4, formulaEvaluator.getSingleImpact(-3));
+  void testLiteralImpact() {  
+    assertEquals(2, formulaEvaluator.getLiteralImpact(a));
+    assertEquals(4, formulaEvaluator.getLiteralImpact(-a));
+    assertEquals(3, formulaEvaluator.getLiteralImpact(b));
+    assertEquals(3, formulaEvaluator.getLiteralImpact(-b));
+    assertEquals(2, formulaEvaluator.getLiteralImpact(c));
+    assertEquals(4, formulaEvaluator.getLiteralImpact(-c));
   }
 
   @Test
-  void getPairImpact() {
-    // (!a, b)
-    assertEquals(2, formulaEvaluator.getPairImpact(-1, 2));
-    // (!a, !b)
-    assertEquals(2, formulaEvaluator.getPairImpact(-1, -2));
-    // (!a, c)
-    assertEquals(2, formulaEvaluator.getPairImpact(-1, 3));
-    // (!a, !c)
-    assertEquals(2, formulaEvaluator.getPairImpact(-1, -3));
-    // (a, b)
-    assertEquals(1, formulaEvaluator.getPairImpact(1, 2));
-    // (a, !b)
-    assertEquals(1, formulaEvaluator.getPairImpact(1, -2));
-    // (a, c)
-    assertEquals(0, formulaEvaluator.getPairImpact(1, 3));
-    // (a, !c)
-    assertEquals(2, formulaEvaluator.getPairImpact(1, -3));
-    // (!b, c)
-    assertEquals(1, formulaEvaluator.getPairImpact(-2, 3));
-    // (!b, !c)
-    assertEquals(2, formulaEvaluator.getPairImpact(-2, -3));
-    // (b, c)
-    assertEquals(1, formulaEvaluator.getPairImpact(2, 3));
-    // (b, !c)
-    assertEquals(2, formulaEvaluator.getPairImpact(2, -3));
+  void testLiteralPairImpact() {
+    assertEquals(2, formulaEvaluator.getLiteralPairImpact(-a, b));
+    assertEquals(2, formulaEvaluator.getLiteralPairImpact(-a, -b));
+    assertEquals(2, formulaEvaluator.getLiteralPairImpact(-a, c));
+    assertEquals(2, formulaEvaluator.getLiteralPairImpact(-a, -c));
+    assertEquals(1, formulaEvaluator.getLiteralPairImpact(a, b));
+    assertEquals(1, formulaEvaluator.getLiteralPairImpact(a, -b));
+    assertEquals(0, formulaEvaluator.getLiteralPairImpact(a, c));
+    assertEquals(2, formulaEvaluator.getLiteralPairImpact(a, -c));
+    assertEquals(1, formulaEvaluator.getLiteralPairImpact(-b, c));
+    assertEquals(2, formulaEvaluator.getLiteralPairImpact(-b, -c));
+    assertEquals(1, formulaEvaluator.getLiteralPairImpact(b, c));
+    assertEquals(2, formulaEvaluator.getLiteralPairImpact(b, -c));
   }
 }
