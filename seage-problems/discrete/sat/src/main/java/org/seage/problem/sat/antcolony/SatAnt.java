@@ -145,22 +145,19 @@ public class SatAnt extends Ant {
     int n = formula.getClauses().size();
     Node  prevNode = !nodePath.isEmpty() ? nodePath.get(nodePath.size()-1) : null;
 
-    double maxAffected = 0.0;
-
     // TODO: 
-    // Clauses affected by previous node
-    double a = Math.max(formulaEvaluator.getLiteralImpact(prevNode.getID()), 0.1);
     // Clauses affected by next node
-    double b = Math.max(formulaEvaluator.getLiteralImpact(n2.getID()), 0.1);
+    double b = formulaEvaluator.getLiteralImpact(n2.getID());
+    if (prevNode == null) {
+      return b / n;
+    }
+    // Clauses affected by previous node
+    double a = formulaEvaluator.getLiteralImpact(prevNode.getID());
     // Clauses affected by combination of these literals
-    double c = Math.max(prevNode != null 
-        ? formulaEvaluator.getLiteralPairImpact(prevNode.getID(), n2.getID()) : 0.1, 0.1);
+    double c = formulaEvaluator.getLiteralPairImpact(prevNode.getID(), n2.getID());
 
     // TODO: combine a, b, c values into the newCost value
-    double newCost = ((a + b) - 2*c) - (a - c); 
-    // double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
-    // newCost = (newCost + 1.0) / (n * (formula.getClauses().size() - maxAffected));
-    // newCost = (formula.getClauses().size() - maxAffected) / n;
+    double newCost = ((a + b) - 2 * c) - (a - c) / n; 
 
     return Math.max(newCost, 0.001);
   }
