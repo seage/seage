@@ -162,7 +162,7 @@ public class SatAnt extends Ant {
     // newCost = (newCost + 1.0) / (n * (formula.getClauses().size() - maxAffected));
     // newCost = (formula.getClauses().size() - maxAffected) / n;
 
-    return newCost;
+    return Math.max(newCost, 0.001);
   }
 
   // @Override // decent prefromance
