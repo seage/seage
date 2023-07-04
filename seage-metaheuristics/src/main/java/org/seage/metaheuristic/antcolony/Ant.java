@@ -228,9 +228,9 @@ public class Ant {
     double tmpProb;
     double tmpSum = 0.0;
     for (int i = 0; i < edgeHeuristic.size(); i++) {
-      log.debug("next step: " + "from: " + edgeHeuristic.get(i).getNodes()[0].getID() + " to: " + edgeHeuristic.get(i).getNodes()[1].getID() + " price: "  + edgeHeuristic.get(i).getEdgeCost());
+      log.debug("next step: " + "f: " + edgeHeuristic.get(i).getNodes()[0].getID() + ", t: " + edgeHeuristic.get(i).getNodes()[1].getID() + ", cost: "  + edgeHeuristic.get(i).getEdgeCost());
       tmpProb = (edgeHeuristic.get(i).getEdgeHeuristic() / edgesHeuristicsSum);
-      log.debug("tmp: " + tmpProb + " rand: " + randNum);
+      log.debug("tmpProb: " + tmpProb + ", rand: " + randNum);
 
       tmpSum += tmpProb;
       if (tmpSum >= randNum) {
@@ -254,14 +254,14 @@ public class Ant {
 
     // Find all candidate edges
     for (Node n : nextAvailableNodes) {
-      log.debug("next available node: " + n.getID());
+      log.debug("next avail node: " + n.getID());
       Edge currentEdge = currentNode.getEdge(n);
       if (currentEdge == null) {
         log.debug("next available node checked");
         double nodeDistance = getNodeDistance(graph, nodePath, n);
         currentEdge = new Edge(currentNode, n, nodeDistance);
       } else {
-        log.debug("edge info: " + "from: " + currentEdge.getNodes()[0].getID() + " to: " + currentEdge.getNodes()[1].getID() + " price: "  + currentEdge.getEdgeCost());
+        log.debug("edge info: " + "f: " + currentEdge.getNodes()[0].getID() + ", t: " + currentEdge.getNodes()[1].getID() + ", cost: "  + currentEdge.getEdgeCost());
       }
 
       double edgeHeuristic1 = Math.max(Math.pow(currentEdge.getLocalPheromone(), alpha), 0.001);

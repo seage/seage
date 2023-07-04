@@ -64,10 +64,11 @@ public class SatAnt extends Ant {
     List<Node> nodeList = Graph.edgeListToNodeList(path);
 
     double subRes = 0.0;
+    log.debug("Edges cost");
     for (Edge e : path) {
 
       subRes += e.getEdgeCost();
-      log.debug("{}", e.getEdgeCost());
+      log.debug("f: {}, t: {}, cost: {}", e.getNodes()[0].getID(), e.getNodes()[1].getID(), e.getEdgeCost());
     }
     
     for (Node n : nodeList) {

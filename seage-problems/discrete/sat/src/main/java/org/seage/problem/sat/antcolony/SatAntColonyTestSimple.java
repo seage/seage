@@ -67,9 +67,9 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
     Formula formula = new Formula(null, clauses); // (a | !b | !c) & (!a | b | !c) & (!a | !b | c)
 
     double quantumPheromone = 10;
-    double evaporation = 0.5;
-    double alpha = 1.95;
-    double beta = 0.9;
+    double evaporation = 0.9;
+    double alpha = 0.15;
+    double beta = 0.5;
     int numAnts = 1;
     int iterations = 10;
 
