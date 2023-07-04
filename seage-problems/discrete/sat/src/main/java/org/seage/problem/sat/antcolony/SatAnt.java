@@ -157,6 +157,7 @@ public class SatAnt extends Ant {
     double c = formulaEvaluator.getLiteralPairImpact(prevNode.getID(), n2.getID());
 
     // TODO: combine a, b, c values into the newCost value
+    // Get the number of clauses affected by next node (excluding those affected by prevNode)
     double newCost = ((a + b) - 2 * c) - (a - c) / n; 
 
     return Math.max(newCost, 0.001);
