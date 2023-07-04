@@ -143,13 +143,13 @@ public class SatAnt extends Ant {
   @Override // not that good performance
   public double getNodeDistance(Graph graph, List<Node> nodePath, Node n2) {
     int n = formula.getClauses().size();
-    Node  prevNode = !nodePath.isEmpty() ? nodePath.get(nodePath.size()-1) : null;
+    Node  prevNode = !nodePath.isEmpty() ? nodePath.get(nodePath.size() - 1) : null;
 
     // TODO: 
     // Clauses affected by next node
     double b = formulaEvaluator.getLiteralImpact(n2.getID());
     if (prevNode == null) {
-      return b / n;
+      return Math.max(b / n, 0.001);
     }
     // Clauses affected by previous node
     double a = formulaEvaluator.getLiteralImpact(prevNode.getID());
