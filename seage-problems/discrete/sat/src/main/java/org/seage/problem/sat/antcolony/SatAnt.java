@@ -81,8 +81,8 @@ public class SatAnt extends Ant {
     double result = FormulaEvaluator.evaluate(formula, solution);
 
     // One is to prevent the dividing by zero
-    return Math.max((formula.getClauses().size() - result), 0.0001);
-    // return Math.max(subRes, 0.001);
+    // return Math.max((formula.getClauses().size() - result), 0.001);
+    return Math.max(subRes, 0.001);
   }
 
   @Override
@@ -150,7 +150,7 @@ public class SatAnt extends Ant {
     // Clauses affected by next node
     double b = formulaEvaluator.getLiteralImpact(n2.getID());
     if (prevNode == null) {
-      return Math.max(b / n, 0.001);
+      return Math.max(b, 0.001);
     }
     // Clauses affected by previous node
     double a = formulaEvaluator.getLiteralImpact(prevNode.getID());
@@ -159,7 +159,7 @@ public class SatAnt extends Ant {
 
     // TODO: combine a, b, c values into the newCost value
     // Get the number of clauses affected by next node (excluding those affected by prevNode)
-    double newCost = ((a + b) - 2 * c) - (a - c) / n; 
+    double newCost = (((a + b) - 2 * c) - (a - c)); 
 
     return Math.max(newCost, 0.001);
   }
