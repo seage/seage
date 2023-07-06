@@ -82,7 +82,7 @@ public class SatAnt extends Ant {
 
     // One is to prevent the dividing by zero
     // return Math.max((formula.getClauses().size() - result), 0.001);
-    return Math.max(subRes, 0.001);
+    return Math.max(subRes, 0.1);
   }
 
   @Override
@@ -131,7 +131,7 @@ public class SatAnt extends Ant {
 
   //   // solution[Math.abs(n1.getID()) - 1] = n1.getID() > 0;
   //   // solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
-  //   double b = Math.max(formulaEvaluator.getSingleImpact(n2.getID()), 0.1);
+  //   double b = Math.max(formulaEvaluator.getLiteralImpact(n2.getID()), 0.1);
     
   //   double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
   //   newCost = (newCost + 1.0) / (n * b);
@@ -149,8 +149,10 @@ public class SatAnt extends Ant {
     // TODO: 
     // Clauses affected by next node
     double b = formulaEvaluator.getLiteralImpact(n2.getID());
+    double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
+
     if (prevNode == null) {
-      return Math.max(b, 0.001);
+      return (newCost + 1.0) / (n * b);
     }
     // Clauses affected by previous node
     double a = formulaEvaluator.getLiteralImpact(prevNode.getID());
@@ -159,9 +161,8 @@ public class SatAnt extends Ant {
 
     // TODO: combine a, b, c values into the newCost value
     // Get the number of clauses affected by next node (excluding those affected by prevNode)
-    double newCost = (((a + b) - 2 * c) - (a - c)); 
 
-    return Math.max(newCost, 0.001);
+    return (n - (((a + b) - 2 * c) - (a - c)) + 1.0) / (n * b);
   }
 
   // @Override // decent prefromance
@@ -177,8 +178,8 @@ public class SatAnt extends Ant {
   //   // solution[Math.abs(n1.getID()) - 1] = n1.getID() > 0;
   //   // solution[Math.abs(n2.getID()) - 1] = n2.getID() > 0;
     
-  //   int n1i = formulaEvaluator.getSingleImpact(n1.getID());
-  //   int n2i = formulaEvaluator.getSingleImpact(n2.getID());
+  //   int n1i = formulaEvaluator.getLiteralImpact(n1.getID());
+  //   int n2i = formulaEvaluator.getLiteralImpact(n2.getID());
   //   int n12i = formulaEvaluator.getPairImpact(n1.getID(), n2.getID());
   //   // double newCost = 1.0;//1 - () / formula.getClauses().size());
   //   double newCost = formula.getClauses().size() - FormulaEvaluator.evaluatePair(formula, n1.getID(), n2.getID());
