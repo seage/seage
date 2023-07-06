@@ -56,6 +56,7 @@ public class SatAnt extends Ant {
     super(initNodePath);
     this.formula = formula;
     this.formulaEvaluator = formulaEvaluator;
+    this.quantumPheromone = formula.getClauses().size() / 2;
   }
 
   @Override
@@ -186,6 +187,22 @@ public class SatAnt extends Ant {
   //   newCost = (newCost + 1.0) / (n * n2i);
 
   //   return newCost;
+  // }
+
+  // @Override
+  // protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
+  //   this.quantumPheromone = formula.getClauses().size();
+  //   double distanceTravelled = getDistanceTravelled(graph, edgePath);
+  //   for (Edge edge : edgePath) {
+  //     double newPheromone = quantumPheromone / distanceTravelled;
+  //     // if (newPheromone > 1000) {
+  //     //   log.debug("inf trap");
+  //     // }
+  //     edge.addLocalPheromone(newPheromone);
+  //     if (!graph._edges.contains(edge)) {
+  //       graph.addEdge(edge);
+  //     }
+  //   }
   // }
 
   @Override
