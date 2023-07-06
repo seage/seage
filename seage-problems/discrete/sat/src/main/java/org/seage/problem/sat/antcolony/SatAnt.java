@@ -56,7 +56,7 @@ public class SatAnt extends Ant {
     super(initNodePath);
     this.formula = formula;
     this.formulaEvaluator = formulaEvaluator;
-    this.quantumPheromone = formula.getClauses().size() / 2;
+    // this.quantumPheromone = formula.getClauses().size() / 2;
   }
 
   @Override
@@ -189,21 +189,23 @@ public class SatAnt extends Ant {
   //   return newCost;
   // }
 
-  // @Override
-  // protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
-  //   this.quantumPheromone = formula.getClauses().size();
-  //   double distanceTravelled = getDistanceTravelled(graph, edgePath);
-  //   for (Edge edge : edgePath) {
-  //     double newPheromone = quantumPheromone / distanceTravelled;
-  //     // if (newPheromone > 1000) {
-  //     //   log.debug("inf trap");
-  //     // }
-  //     edge.addLocalPheromone(newPheromone);
-  //     if (!graph._edges.contains(edge)) {
-  //       graph.addEdge(edge);
-  //     }
-  //   }
-  // }
+  @Override
+  protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
+    // this.quantumPheromone = formula.getClauses().size();
+    double distanceTravelled = getDistanceTravelled(graph, edgePath);
+    double localQuantumPheromone = formula.getClauses().size() / 2.0;
+    log.debug("quantum: " + localQuantumPheromone);
+    for (Edge edge : edgePath) {
+      double newPheromone = localQuantumPheromone / distanceTravelled;
+      // if (newPheromone > 1000) {
+      //   log.debug("inf trap");
+      // }
+      edge.addLocalPheromone(newPheromone);
+      if (!graph.containsEdge(edge)) {
+        graph.addEdge(edge);
+      }
+    }
+  }
 
   @Override
   public List<Integer> getNodeIDsAlongPath() {

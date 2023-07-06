@@ -89,6 +89,10 @@ public class Graph {
     _evaporCoeff = evaporCoeff;
   }
 
+  public boolean containsEdge(Edge edge) {
+    return this._edges.contains(edge);
+  }
+
   /**
    * .
    * @param newEdge .

@@ -164,6 +164,7 @@ public class Ant {
    */
   protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
     double distanceTravelled = getDistanceTravelled(graph, edgePath);
+    log.debug("quantum: " + quantumPheromone);
     for (Edge edge : edgePath) {
       double newPheromone = quantumPheromone / distanceTravelled;
       // if (newPheromone > 1000) {
