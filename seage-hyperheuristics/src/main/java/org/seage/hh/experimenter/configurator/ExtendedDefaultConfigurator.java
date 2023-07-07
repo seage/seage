@@ -84,12 +84,12 @@ public class ExtendedDefaultConfigurator extends Configurator {
             "numSolutions", 1.0
           ),
           "AntColony", Map.of(
-            "alpha", 2.0288340124934,
+            "alpha", 1.0288340124934,
             "beta", 2.8417384547786972,
             "iterationCount", 524911.1662639739,
             "evaporationCoef", 0.8273663355790442,
             "numSolutions", 75.0142078836997,
-            "quantumOfPheromone", 78.06959520616533
+            "quantumOfPheromone", 300.06959520616533
           ),
           "TabuSearch", Map.of(
             "iterationCount", 9.968307133974689E10,

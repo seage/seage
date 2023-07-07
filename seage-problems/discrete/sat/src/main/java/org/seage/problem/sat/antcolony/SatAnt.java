@@ -193,7 +193,7 @@ public class SatAnt extends Ant {
   protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
     // this.quantumPheromone = formula.getClauses().size();
     double distanceTravelled = getDistanceTravelled(graph, edgePath);
-    double localQuantumPheromone = formula.getClauses().size() / 2.0;
+    double localQuantumPheromone = formula.getClauses().size() / 1.0;
     log.debug("quantum: " + localQuantumPheromone);
     for (Edge edge : edgePath) {
       double newPheromone = localQuantumPheromone / distanceTravelled;
