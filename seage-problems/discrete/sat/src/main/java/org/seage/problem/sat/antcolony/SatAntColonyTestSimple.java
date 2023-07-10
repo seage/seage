@@ -66,12 +66,12 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
 
     Formula formula = new Formula(null, clauses); // (a | !b | !c) & (!a | b | !c) & (!a | !b | c)
 
-    double quantumPheromone = 10;
-    double evaporation = 0.9;
-    double alpha = 0.15;
-    double beta = 0.5;
+    double quantumPheromone = 300;
+    double evaporation = 0.8;
+    double alpha = 1;
+    double beta = 1;
     int numAnts = 1;
-    int iterations = 10;
+    int iterations = 2;
 
     FormulaEvaluator formulaEvaluator = new FormulaEvaluator(formula);
     Graph graph = new SatGraph(formula.getLiteralCount());  

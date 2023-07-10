@@ -84,7 +84,7 @@ public class ExtendedDefaultConfigurator extends Configurator {
             "numSolutions", 1.0
           ),
           "AntColony", Map.of(
-            "alpha", 1.0288340124934,
+            "alpha", 2.0288340124934,
             "beta", 2.8417384547786972,
             "iterationCount", 524911.1662639739,
             "evaporationCoef", 0.8273663355790442,

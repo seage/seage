@@ -113,7 +113,6 @@ public class AntColony {
     currentIteration = 0;
     globalBest = Double.MAX_VALUE;
     this.ants = ants;
-
     eventProducer.fireAlgorithmStarted();
 
     prepareGraph();

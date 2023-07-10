@@ -48,7 +48,7 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
 
   public static void main(String[] args) throws Exception {
     try {
-      String filename = "uf100-01.cnf";
+      String filename = "uf20-01.cnf";
       // String filename = "uf75-01.cnf";
       // String filename = "uf100-01.cnf";
       // String filename = "hg1-250-1000-hyflex-6.cnf";
@@ -69,13 +69,13 @@ public class SatAntColonyTest implements IAlgorithmListener<AntColonyEvent> {
     Formula formula = new Formula(new ProblemInstanceInfo("", ProblemInstanceOrigin.FILE, path),
         FormulaReader.readClauses(new FileInputStream(path)));
 
-    double quantumPheromone = 320.0;
-    double evaporation = 0.8273663355790442;
-    double alpha = 1.8273663355790442;
-    double beta = 2.8417384547786972;
-    int numAnts = 1;
+    double quantumPheromone = 100.0;
+    double evaporation = 0.15;
+    double alpha = 1;
+    double beta = 1;
+    int numAnts = 100;
 
-    int iterations = 20;
+    int iterations = 400;
     Graph graph = new SatGraph(formula.getLiteralCount());
 
     FormulaEvaluator formulaEvaluator = new FormulaEvaluator(formula);

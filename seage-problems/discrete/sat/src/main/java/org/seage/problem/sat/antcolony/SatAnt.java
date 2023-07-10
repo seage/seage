@@ -65,11 +65,11 @@ public class SatAnt extends Ant {
     List<Node> nodeList = Graph.edgeListToNodeList(path);
 
     double subRes = 0.0;
-    log.debug("Edges cost");
+    // log.debug("Edges cost");
     for (Edge e : path) {
 
       subRes += e.getEdgeCost();
-      log.debug("f: {}, t: {}, cost: {}", e.getNodes()[0].getID(), e.getNodes()[1].getID(), e.getEdgeCost());
+      // log.debug("f: {}, t: {}, cost: {}", e.getNodes()[0].getID(), e.getNodes()[1].getID(), e.getEdgeCost());
     }
     
     for (Node n : nodeList) {
@@ -79,11 +79,11 @@ public class SatAnt extends Ant {
       solution[Math.abs(n.getID()) - 1] = n.getID() > 0;
     }
 
-    double result = FormulaEvaluator.evaluate(formula, solution);
+    // double result = FormulaEvaluator.evaluate(formula, solution);
 
     // One is to prevent the dividing by zero
-    // return Math.max((formula.getClauses().size() - result), 0.001);
-    return Math.max(subRes, 0.1);
+    // return Math.max((formula.getClauses().size() - result), 0.1);
+    return Math.max(subRes, 0.0001);
   }
 
   @Override
@@ -150,20 +150,21 @@ public class SatAnt extends Ant {
     // TODO: 
     // Clauses affected by next node
     double b = formulaEvaluator.getLiteralImpact(n2.getID());
-    double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
+    // double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
 
-    if (prevNode == null) {
-      return (newCost + 1.0) / (n * b);
-    }
+    // if (prevNode == null) {
+    //   return n / Math.max(b, 0.0001);
+    // }
     // Clauses affected by previous node
-    double a = formulaEvaluator.getLiteralImpact(prevNode.getID());
+    // double a = formulaEvaluator.getLiteralImpact(prevNode.getID());
     // Clauses affected by combination of these literals
     double c = formulaEvaluator.getLiteralPairImpact(prevNode.getID(), n2.getID());
 
     // TODO: combine a, b, c values into the newCost value
     // Get the number of clauses affected by next node (excluding those affected by prevNode)
 
-    return (n - (((a + b) - 2 * c) - (a - c)) + 1.0) / (n * b);
+    // return (n - (((a + b) - 2 * c) - (a - c)) + 1.0) / (n * b);
+    return n / Math.max(b - c, 0.0001);
   }
 
   // @Override // decent prefromance
@@ -194,7 +195,7 @@ public class SatAnt extends Ant {
     // this.quantumPheromone = formula.getClauses().size();
     double distanceTravelled = getDistanceTravelled(graph, edgePath);
     double localQuantumPheromone = formula.getClauses().size() / 1.0;
-    log.debug("quantum: " + localQuantumPheromone);
+    // log.debug("quantum: " + localQuantumPheromone);
     for (Edge edge : edgePath) {
       double newPheromone = localQuantumPheromone / distanceTravelled;
       // if (newPheromone > 1000) {

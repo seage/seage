@@ -79,6 +79,7 @@ public class FormulaEvaluator {
    * @param y Id of second literal.
    * @return Hash.
    */
+  // test needed
   private int hash(int x, int y) {
     return x < y ? y * y + x + y : x * x + x + y;
   }
@@ -104,6 +105,11 @@ public class FormulaEvaluator {
    * @return PairImpact value if literals present, 0 otherwise.
    */
   public int getLiteralPairImpact(int literal1Value, int literal2Value) {
+    // Check if zero value
+    if (literal1Value == 0 || literal2Value == 0) {
+      return 0;
+    }
+
     int key = hash(literal1Value, literal2Value);
     if (!literalPairImpact.containsKey(key)) {
       return 0;
