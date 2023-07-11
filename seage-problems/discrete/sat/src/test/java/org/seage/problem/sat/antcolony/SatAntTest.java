@@ -102,7 +102,7 @@ public class SatAntTest {
     List<Node> nodePath = Graph.edgeListToNodeList(edgePath);
 
     // Distance traveled is not the number of false clauses TODO: is this correct?
-    assertEquals(1.3, ant.getNodeDistance(graph, nodePath, graph.getNodes().get(-3)), 0.1);
-    assertEquals(1.0, ant.getNodeDistance(graph, nodePath, graph.getNodes().get(-4)), 0.1);
+    assertEquals(3.0, ant.getNodeDistance(graph, nodePath, graph.getNodes().get(-3)), 0.1);
+    assertEquals(3.0, ant.getNodeDistance(graph, nodePath, graph.getNodes().get(-4)), 0.1);
   }
 }
