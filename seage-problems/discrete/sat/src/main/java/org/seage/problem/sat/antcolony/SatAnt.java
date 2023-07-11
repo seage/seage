@@ -79,11 +79,11 @@ public class SatAnt extends Ant {
       solution[Math.abs(n.getID()) - 1] = n.getID() > 0;
     }
 
-    // double result = FormulaEvaluator.evaluate(formula, solution);
+    double result = FormulaEvaluator.evaluate(formula, solution);
 
     // One is to prevent the dividing by zero
-    // return Math.max((formula.getClauses().size() - result), 0.1);
-    return Math.max(subRes, 0.0001);
+    return result / Math.max(subRes, 1.0);
+    // return Math.max(subRes, 0.0001);
   }
 
   @Override
