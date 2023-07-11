@@ -67,7 +67,7 @@ public class SatSolutionGenerator implements ISolutionGenerator {
 
     /* Initialization for the greedy initial solution */
     if (_switcher.equals("Greedy") || _switcher.equals("greedy")) {
-      satSolution = new SatGreedySolution(_formula);
+      satSolution = new SatGreedySolution(_formula, null);
     }
     return satSolution;
   }

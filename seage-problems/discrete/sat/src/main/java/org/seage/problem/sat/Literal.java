@@ -40,6 +40,10 @@ public class Literal {
     return id;
   }
 
+  public int getValue() {
+    return neg ? -id : id;
+  }
+
   @Override
   public String toString() {
     String result = "";

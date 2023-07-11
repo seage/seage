@@ -42,7 +42,7 @@ public class SatGraphTest {
     ProblemInstanceInfo pii = provider.getProblemInfo().getProblemInstanceInfo("uf20-01");
     Formula formula = (Formula) provider.initProblemInstance(pii);
 
-    SatGraph graph = new SatGraph(formula, new FormulaEvaluator(formula));
+    SatGraph graph = new SatGraph(formula.getLiteralCount());
     assertNotNull(graph);
   }
 }

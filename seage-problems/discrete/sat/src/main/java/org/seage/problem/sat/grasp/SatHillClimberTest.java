@@ -90,7 +90,7 @@ public class SatHillClimberTest {
     // hc = new HillClimber(objFce, new SatMoveManager(), solGen, iter);
     // hc.startRestartedSearching(classic, 10);
     // SatSolution actualBestSol = (SatSolution) hc.getBestSolution();
-    // System.out.println(" false clauses: " +
+    // log.debug(" false clauses: " +
     // actualBestSol.getObjectiveValue());
 
     for (int i = 1; i <= 2; i++) {

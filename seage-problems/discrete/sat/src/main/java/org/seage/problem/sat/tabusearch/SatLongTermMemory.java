@@ -49,12 +49,12 @@ public class SatLongTermMemory implements LongTermMemory {
     }
     if (newBestSoln) {
       _bestSolution = (SatSolution) satSol.clone();
-      // System.out.println(_iterNumber + "\t" + satSol);
+      // log.debug(_iterNumber + "\t" + satSol);
     }
-    // System.out.println(_iterNumber + "\t" + satSol);
-    // System.out.println(_iterNumber + "\t" + satSol + "\t"+_bestSolution);
+    // log.debug(_iterNumber + "\t" + satSol);
+    // log.debug(_iterNumber + "\t" + satSol + "\t"+_bestSolution);
     // long[] val = bitsToNumbers(satSol.getLiteralValues());
-    // System.out.println(val[0] +"\t"+val[1]);
+    // log.debug(val[0] +"\t"+val[1]);
     // _column.add(val);
   }
 
@@ -127,7 +127,7 @@ public class SatLongTermMemory implements LongTermMemory {
 
       }
       ix++;
-      System.out.println(line);
+      // log.debug(line);
     }
   }
 }

@@ -26,7 +26,7 @@ public class SatPhenotypeEvaluator implements IPhenotypeEvaluator<SatPhenotype> 
   @Override
   public double[] evaluate(SatPhenotype phenotypeSubject) throws Exception {
     String instanceID = formula.getProblemInstanceInfo().getInstanceID();
-    double objValue = FormulaEvaluator.evaluate(formula, phenotypeSubject.getSolution());
+    int objValue = FormulaEvaluator.evaluate(formula, phenotypeSubject.getSolution());
     //logger.debug("instanceid: {} objval: {}", instanceID, objValue);
     return new double[] { 
         objValue,

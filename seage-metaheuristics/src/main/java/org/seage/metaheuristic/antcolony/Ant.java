@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * .
@@ -39,6 +41,7 @@ import java.util.Random;
  * @author Richard Malek (reworked 2021)
  */
 public class Ant {
+  private static final Logger log = LoggerFactory.getLogger(Ant.class.getName());
 
   protected List<Node> nodePath;
 
@@ -119,7 +122,9 @@ public class Ant {
       }
       edgePath.add(e);
     }
-    leavePheromone(graph, edgePath);
+    if (!edgePath.isEmpty()) {
+      leavePheromone(graph, edgePath);
+    }
 
     return edgePath;
   }
@@ -131,6 +136,7 @@ public class Ant {
    * @throws Exception .
    */
   protected List<Edge> explore(Graph graph, Node startingNode) throws Exception {
+    // log.debug("new explore ----------------------------------------");
     nodePath.clear();
 
     List<Edge> edgePath = new ArrayList<>();
@@ -161,6 +167,7 @@ public class Ant {
     double distanceTravelled = getDistanceTravelled(graph, edgePath);
     for (Edge edge : edgePath) {
       double newPheromone = quantumPheromone / distanceTravelled;
+
       edge.addLocalPheromone(newPheromone);
       if (!graph._edges.contains(edge)) {
         graph.addEdge(edge);
@@ -179,6 +186,10 @@ public class Ant {
       idsPath.add(n.getID());
     }
     return idsPath;
+  }
+
+  public List<Node> getNodePath() {
+    return nodePath;
   }
 
   /**
@@ -200,6 +211,8 @@ public class Ant {
   }
 
   protected Edge selectNextStep(Graph graph, List<Node> nodePath) throws Exception {
+    // log.debug("selectNextStep------------------------------------------");
+    
     // Calculate the edges heuristics and its sum
     NextEdgeResult nextEdgeResult = calculateEdgesHeuristic(graph, nodePath);
 
@@ -211,19 +224,28 @@ public class Ant {
     double edgesHeuristicsSum = nextEdgeResult.getEdgesHeuristicsSum();
     List<Edge> edgeHeuristic = nextEdgeResult.getEdgesHeuristics();
 
-    // Throw exception if sum of all edges' prices is zero
-    if (edgesHeuristicsSum == 0.0) {
-      throw new ArithmeticException();
-    }
-
     // Get next edge
     double randNum = rand.nextDouble();
-    double tmpProb;
-    double tmpSum = 0.0;
+    double edgeProb = 0.0;
+    double prbSum = 0.0;
+
     for (int i = 0; i < edgeHeuristic.size(); i++) {
-      tmpProb = (edgeHeuristic.get(i).getEdgeHeuristic() / edgesHeuristicsSum);
-      tmpSum += tmpProb;
-      if (tmpSum >= randNum) {
+      Edge curEdge = edgeHeuristic.get(i);
+      edgeProb = (curEdge.getEdgeHeuristic() / edgesHeuristicsSum);
+      prbSum += edgeProb;
+      // log.debug("f: {} t: {}", curEdge.getNodes()[0].getID(), curEdge.getNodes()[1].getID());
+      
+      // log.debug("cost {} - pher {} - heur {} - ePrb {} - s: {}", 
+        // curEdge.getEdgeCost(), curEdge.getLocalPheromone(), curEdge.getEdgeHeuristic(), edgeProb, prbSum);
+    }
+    prbSum = 0.0;
+    for (int i = 0; i < edgeHeuristic.size(); i++) {
+      edgeProb = (edgeHeuristic.get(i).getEdgeHeuristic() / edgesHeuristicsSum);
+      
+      prbSum += edgeProb;
+      if (prbSum >= randNum) {
+        Edge curEdge = edgeHeuristic.get(i);
+        // log.debug("next edge is f: {} t: {} | rand: {}", curEdge.getNodes()[0].getID(), curEdge.getNodes()[1].getID(), randNum);
         return edgeHeuristic.get(i);
       }
     }
@@ -240,26 +262,30 @@ public class Ant {
     }
 
     List<Edge> candidateEdges = new ArrayList<>();
-    double sumCostEdges = 0.0;
+    double edgeHeuristicSum = 0.0;
 
     // Find all candidate edges
     for (Node n : nextAvailableNodes) {
-      Edge e = currentNode.getEdge(n);
-      if (e == null) {
+      Edge currentEdge = currentNode.getEdge(n);
+      if (currentEdge == null) {
         double nodeDistance = getNodeDistance(graph, nodePath, n);
-        e = new Edge(currentNode, n, nodeDistance);
+        currentEdge = new Edge(currentNode, n, nodeDistance);
       }
 
-      double edgeHeuristic =
-          Math.pow(e.getLocalPheromone() + 0.001, alpha) * Math.pow(1 / e.getEdgeCost(), beta);
+      double edgeHeuristic1 = Math.max(Math.pow(currentEdge.getLocalPheromone(), alpha), 0.0001);
+      double edgeHeuristic2 = Math.max(Math.pow(1 / currentEdge.getEdgeCost(), beta), 0.0001);
 
-      e.setEdgeHeuristic(edgeHeuristic);
-      sumCostEdges += edgeHeuristic;
+      // log.debug("{} - {}", edgeHeuristic1, edgeHeuristic2);
+      
+      double edgeHeuristic = edgeHeuristic1 * edgeHeuristic2;
 
-      candidateEdges.add(e);
+      currentEdge.setEdgeHeuristic(edgeHeuristic);
+      edgeHeuristicSum += edgeHeuristic;
+
+      candidateEdges.add(currentEdge);
     }
 
-    return new NextEdgeResult(sumCostEdges, candidateEdges);
+    return new NextEdgeResult(edgeHeuristicSum, candidateEdges);
   }
 
   protected HashSet<Node> getAvailableNodes(Graph graph, List<Node> nodePath) {

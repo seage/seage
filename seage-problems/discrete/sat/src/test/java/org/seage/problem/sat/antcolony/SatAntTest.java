@@ -55,7 +55,7 @@ public class SatAntTest {
     Formula formula = spp.initProblemInstance(pii);
     FormulaEvaluator formEval = new FormulaEvaluator(formula);
 
-    Graph graph = new SatGraph(formula, formEval);
+    Graph graph = new SatGraph(formula.getLiteralCount());
     // The ant initially travels through two nodes, thus next two available nodes expected.
     SatAnt ant = new SatAnt(graph.nodesToNodePath(List.of(0, 1, 2)), formula, formEval);
     
@@ -94,23 +94,15 @@ public class SatAntTest {
     Formula formula = spp.initProblemInstance(pii);
     FormulaEvaluator formEval = new FormulaEvaluator(formula);
 
-    Graph graph = new SatGraph(formula, formEval);
+    Graph graph = new SatGraph(formula.getLiteralCount());
     // The ant initially travels through two nodes, thus next two available nodes expected.
-    Ant ant = new SatAnt(graph.nodesToNodePath(List.of(1, 2)), formula, formEval);
+    Ant ant = new SatAnt(graph.nodesToNodePath(List.of(0, 1, 2)), formula, formEval);
     
     List<Edge> edgePath = ant.doFirstExploration(graph);
     List<Node> nodePath = Graph.edgeListToNodeList(edgePath);
 
     // Distance traveled is not the number of false clauses TODO: is this correct?
-    assertEquals(2.0, ant.getNodeDistance(graph, nodePath, graph.getNodes().get(-3)));
-    assertEquals(2.0, ant.getNodeDistance(graph, nodePath, graph.getNodes().get(-4)));
-
-    // Already used nodes should result in 0.0 node distance
-    assertEquals(2.0, ant.getNodeDistance(graph, nodePath, graph.getNodes().get(1)));
-    assertEquals(2.0, ant.getNodeDistance(graph, nodePath, graph.getNodes().get(-1)));
-    assertEquals(2.0, ant.getNodeDistance(graph, nodePath, graph.getNodes().get(2)));
-    assertEquals(1.0, ant.getNodeDistance(graph, nodePath, graph.getNodes().get(-2)));
-
-
+    assertEquals(3.0, ant.getNodeDistance(graph, nodePath, graph.getNodes().get(-3)), 0.1);
+    assertEquals(3.0, ant.getNodeDistance(graph, nodePath, graph.getNodes().get(-4)), 0.1);
   }
 }

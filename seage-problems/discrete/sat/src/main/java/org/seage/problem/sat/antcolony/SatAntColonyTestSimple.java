@@ -18,17 +18,19 @@
  */
 
 /**
- * Contributors: Richard Malek - Initial implementation
+ * Contributors: Richard Malek - Initial implementation.
  */
 
 package org.seage.problem.sat.antcolony;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.antcolony.Ant;
 import org.seage.metaheuristic.antcolony.AntColony;
 import org.seage.metaheuristic.antcolony.AntColonyEvent;
 import org.seage.metaheuristic.antcolony.Graph;
+import org.seage.metaheuristic.antcolony.Node;
 import org.seage.problem.sat.Clause;
 import org.seage.problem.sat.Formula;
 import org.seage.problem.sat.FormulaEvaluator;
@@ -38,6 +40,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * .
+ *
  * @author Zagy
  */
 public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent> {
@@ -45,6 +48,7 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
   
   public static void main(String[] args) throws Exception {
     try {
+      log.debug("start");
       new SatAntColonyTestSimple().run();
     } catch (Exception ex) {
       log.error("{}", ex.getMessage(), ex);
@@ -53,33 +57,35 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
 
   public void run() throws Exception {
     ArrayList<Clause> clauses = new ArrayList<Clause>();
-    clauses.add(new Clause(new Literal[] { new Literal(0, false), new Literal(1, true), new Literal(2, true) }));
-    clauses.add(new Clause(new Literal[] { new Literal(0, true), new Literal(1, false), new Literal(2, true) }));
-    clauses.add(new Clause(new Literal[] { new Literal(0, true), new Literal(1, true), new Literal(2, false) }));
+    clauses.add(new Clause(
+        new Literal[] {new Literal(1, false), new Literal(2, true), new Literal(3, true)}));
+    clauses.add(new Clause(
+        new Literal[] {new Literal(1, true), new Literal(2, false), new Literal(3, true)}));
+    clauses.add(new Clause(
+        new Literal[] {new Literal(1, true), new Literal(2, true), new Literal(3, false)}));
 
-    Formula formula = new Formula(null, clauses);
+    Formula formula = new Formula(null, clauses); // (a | !b | !c) & (!a | b | !c) & (!a | !b | c)
 
-    double quantumPheromone = 1000;
-    double evaporation = 0.92;
-    double alpha = 2;
+    double quantumPheromone = 300;
+    double evaporation = 0.8;
+    double alpha = 1;
     double beta = 1;
-    int numAnts = 10;
+    int numAnts = 1;
+    int iterations = 2;
 
-    int iterations = 10;
-    Graph graph = new SatGraph(formula, new FormulaEvaluator(formula));
-    FormulaEvaluator evaluator = new FormulaEvaluator(formula);
+    FormulaEvaluator formulaEvaluator = new FormulaEvaluator(formula);
+    Graph graph = new SatGraph(formula.getLiteralCount());  
+    System.out.println("lit count: " + formula.getLiteralCount());  
     AntColony colony = new AntColony(graph);
     colony.addAntColonyListener(this);
     colony.setParameters(iterations, alpha, beta, quantumPheromone, evaporation);
 
     Ant[] ants = new Ant[numAnts];
     for (int i = 0; i < numAnts; i++) {
-      ants[i] = new SatAnt(null, formula, evaluator);
+      ants[i] = new SatAnt(null, formula, formulaEvaluator);
     }
 
     colony.startExploring(graph.getNodes().get(0), ants);
-
-    log.info("Global best: {}", colony.getGlobalBest());
 
     Boolean[] s = new Boolean[colony.getBestPath().size()];
     String line = "";
@@ -88,8 +94,11 @@ public class SatAntColonyTestSimple implements IAlgorithmListener<AntColonyEvent
       line += s[i] ? '1' : '0';
     }
     log.info("{}", line);
-    log.info("Global best: {}", FormulaEvaluator.evaluate(formula, s));
-    // graph.printPheromone();
+
+    log.info("Global best: {}", colony.getGlobalBest());
+
+    List<Node> bestSolution = Graph.edgeListToNodeList(colony.getBestPath());
+    log.info("Global best: {}", FormulaEvaluator.evaluate(formula, bestSolution));
   }
 
   @Override

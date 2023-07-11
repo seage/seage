@@ -79,6 +79,7 @@ public abstract class ProblemAlgorithmAdapterTestBase<P extends Phenotype<?>> {
 
       byte[] b1 = ObjectCloner.getBytes(solutions[i].getSolution());
       byte[] b2 = ObjectCloner.getBytes(solutions2[i].getSolution());
+      
       assertTrue(Arrays.equals(b1, b2),
           "Arrays not equal: " + b1.toString() + " vs. " + b2.toString());
     }

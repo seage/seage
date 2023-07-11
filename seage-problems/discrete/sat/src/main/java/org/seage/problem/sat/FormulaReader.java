@@ -41,7 +41,7 @@ public class FormulaReader {
     ArrayList<Clause> clauses = new ArrayList<Clause>();
 
     while ((dataLine = readLine(stok)) != null) {
-      // System.out.println(dataLine[0]);
+      // log.debug(dataLine[0]);
       if (dataLine.length == 0 || dataLine[0] == 0)
         continue;
       List<Literal> literals = new ArrayList<Literal>();

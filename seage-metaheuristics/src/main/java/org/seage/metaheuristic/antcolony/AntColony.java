@@ -113,7 +113,6 @@ public class AntColony {
     currentIteration = 0;
     globalBest = Double.MAX_VALUE;
     this.ants = ants;
-
     eventProducer.fireAlgorithmStarted();
 
     prepareGraph();
@@ -156,6 +155,9 @@ public class AntColony {
           continue;
         }      
         List<Edge> path = a.doFirstExploration(graph);
+        if (path.isEmpty()) {
+          return;
+        }
         double distanceTravelled = a.getDistanceTravelled(graph, path);
         if (distanceTravelled < globalBest) {
           globalBest = distanceTravelled;      

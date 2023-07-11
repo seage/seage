@@ -16,7 +16,10 @@
       "name": "SatAntColonyTestSimple",
       "request": "launch",
       "mainClass": "org.seage.problem.sat.antcolony.SatAntColonyTestSimple",
-      "projectName": "seage-problem-sat"
+      "projectName": "seage-problem-sat",
+      "env": {
+        "LOG_LEVEL": "debug"
+      }
     },
     {
       "type": "java",
@@ -81,7 +84,7 @@
         "-a",
         "AntColony",
         "-i",
-        "SAT:uf20-01",
+        "SAT:uf100-01",
         "-t",
         "20",
         "-n",
@@ -108,7 +111,8 @@
         "AntColony",
         // "SimulatedAnnealing",
         "-i",
-        "SAT:uf100-01",
+        // "SAT:uf100-01",
+        "SAT:small",
         "-t",
         "20",
         "-n",

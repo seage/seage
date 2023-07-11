@@ -113,7 +113,7 @@ public class AntColonyTest {
     colony.startExploring(graph.getNodes().get(1), new Ant[] {ant});
 
     assertEquals(ant, colony.getBestAnt());
-    assertEquals(8, colony.getGlobalBest());
+    assertEquals(8, colony.getGlobalBest(), 0.1);
     assertEquals(4, colony.getBestPath().size());
     assertEquals(4, graph.getEdges().size());
   }

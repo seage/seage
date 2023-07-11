@@ -18,21 +18,20 @@
 package org.seage.problem.sat;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemInstanceInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Summary description for Formula.
  */
 public class Formula extends ProblemInstance {
+  private static final Logger log = LoggerFactory.getLogger(Formula.class.getName());
 
   private ArrayList<Clause> clauses;
   private int literalCount;
-
-  private HashMap<Integer, Integer> literalsImpact;
 
   /**
    * .
@@ -41,26 +40,13 @@ public class Formula extends ProblemInstance {
     super(instanceInfo);
 
     this.clauses = new ArrayList<>(clauses);
-
+    this.literalCount = 0;
+    
     for (Clause c : clauses) {
       for (Literal l : c.getLiterals()) {
         if (l.getId() > literalCount) {
           literalCount = l.getId();
         }
-      }
-    }
-
-    this.literalsImpact = new HashMap<>();
-
-    for (Clause c : clauses) {
-      for (Literal l : c.getLiterals()) {
-        int count = 0;
-        int id = l.isNeg() ? -l.getId() : l.getId();
-        if (this.literalsImpact.containsKey(id)) {
-          count = this.literalsImpact.get(id);
-        }
-        count++;
-        this.literalsImpact.put(id, count);
       }
     }
   }
@@ -80,10 +66,6 @@ public class Formula extends ProblemInstance {
     return literalCount;
   }
 
-  public Map<Integer, Integer> getLiteralsImpact() {
-    return literalsImpact;
-  }
-
   @Override
   public int getSize() {
     return getLiteralCount();
@@ -101,7 +83,7 @@ public class Formula extends ProblemInstance {
 
   // OK
   public void printFormula() {
-    System.out.println(toString());
+    log.debug(toString());
   }
 
 }
