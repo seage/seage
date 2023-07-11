@@ -64,13 +64,13 @@ public class SatAnt extends Ant {
     Boolean[] solution = new Boolean[formula.getLiteralCount()];
     List<Node> nodeList = Graph.edgeListToNodeList(path);
 
-    double subRes = 0.0;
-    // log.debug("Edges cost");
-    for (Edge e : path) {
+    // double subRes = 0.0;
+    // // log.debug("Edges cost");
+    // for (Edge e : path) {
 
-      subRes += e.getEdgeCost();
-      // log.debug("f: {}, t: {}, cost: {}", e.getNodes()[0].getID(), e.getNodes()[1].getID(), e.getEdgeCost());
-    }
+    //   subRes += e.getEdgeCost();
+    //   // log.debug("f: {}, t: {}, cost: {}", e.getNodes()[0].getID(), e.getNodes()[1].getID(), e.getEdgeCost());
+    // }
     
     for (Node n : nodeList) {
       if (n.getID() == 0) {
@@ -82,7 +82,7 @@ public class SatAnt extends Ant {
     double result = FormulaEvaluator.evaluate(formula, solution);
 
     // One is to prevent the dividing by zero
-    return result / Math.max(subRes, 1.0);
+    return result; /// Math.max(subRes, 1.0);
     // return Math.max(subRes, 0.0001);
   }
 
