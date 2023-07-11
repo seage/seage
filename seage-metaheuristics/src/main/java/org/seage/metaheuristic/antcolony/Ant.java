@@ -165,7 +165,6 @@ public class Ant {
    */
   protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
     double distanceTravelled = getDistanceTravelled(graph, edgePath);
-    // log.debug("quantum: " + quantumPheromone);
     for (Edge edge : edgePath) {
       double newPheromone = quantumPheromone / distanceTravelled;
 
@@ -267,22 +266,14 @@ public class Ant {
 
     // Find all candidate edges
     for (Node n : nextAvailableNodes) {
-      //// log.debug("next avail node: " + n.getID());
       Edge currentEdge = currentNode.getEdge(n);
       if (currentEdge == null) {
-        //// log.debug("next available node checked");
         double nodeDistance = getNodeDistance(graph, nodePath, n);
         currentEdge = new Edge(currentNode, n, nodeDistance);
-      } else {
-        //// log.debug("edge info: " + "f: " + currentEdge.getNodes()[0].getID() + ", t: " + currentEdge.getNodes()[1].getID() + ", cost: "  + currentEdge.getEdgeCost());
       }
 
       double edgeHeuristic1 = Math.max(Math.pow(currentEdge.getLocalPheromone(), alpha), 0.0001);
       double edgeHeuristic2 = Math.max(Math.pow(1 / currentEdge.getEdgeCost(), beta), 0.0001);
-
-      // if (edgeHeuristic1 > 1000000) {
-      //   // log.debug("calculate edges Heuristic " + edgeHeuristic1);
-      // }
 
       // log.debug("{} - {}", edgeHeuristic1, edgeHeuristic2);
       

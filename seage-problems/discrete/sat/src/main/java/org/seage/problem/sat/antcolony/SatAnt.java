@@ -67,7 +67,6 @@ public class SatAnt extends Ant {
     double subRes = 0.0;
     // log.debug("Edges cost");
     for (Edge e : path) {
-
       subRes += e.getEdgeCost();
       // log.debug("f: {}, t: {}, cost: {}", e.getNodes()[0].getID(), e.getNodes()[1].getID(), e.getEdgeCost());
     }
@@ -82,8 +81,7 @@ public class SatAnt extends Ant {
     double result = FormulaEvaluator.evaluate(formula, solution);
 
     // One is to prevent the dividing by zero
-    return result / Math.max(subRes, 1.0);
-    // return Math.max(subRes, 0.0001);
+    return result;
   }
 
   @Override
@@ -147,7 +145,6 @@ public class SatAnt extends Ant {
     int n = formula.getClauses().size();
     Node  prevNode = !nodePath.isEmpty() ? nodePath.get(nodePath.size() - 1) : null;
 
-    // TODO: 
     // Clauses affected by next node
     double b = formulaEvaluator.getLiteralImpact(n2.getID());
     // double newCost = formulaEvaluator.evaluate(Math.abs(n2.getID()), n2.getID() > 0);
@@ -160,10 +157,7 @@ public class SatAnt extends Ant {
     // Clauses affected by combination of these literals
     double c = formulaEvaluator.getLiteralPairImpact(prevNode.getID(), n2.getID());
 
-    // TODO: combine a, b, c values into the newCost value
     // Get the number of clauses affected by next node (excluding those affected by prevNode)
-
-    // return (n - (((a + b) - 2 * c) - (a - c)) + 1.0) / (n * b);
     return n / Math.max(b - c, 0.0001);
   }
 
@@ -192,15 +186,11 @@ public class SatAnt extends Ant {
 
   @Override
   protected void leavePheromone(Graph graph, List<Edge> edgePath) throws Exception {
-    // this.quantumPheromone = formula.getClauses().size();
     double distanceTravelled = getDistanceTravelled(graph, edgePath);
     double localQuantumPheromone = formula.getClauses().size() / 1.0;
-    // log.debug("quantum: " + localQuantumPheromone);
     for (Edge edge : edgePath) {
       double newPheromone = localQuantumPheromone / distanceTravelled;
-      // if (newPheromone > 1000) {
-      //   log.debug("inf trap");
-      // }
+
       edge.addLocalPheromone(newPheromone);
       if (!graph.containsEdge(edge)) {
         graph.addEdge(edge);
