@@ -117,7 +117,7 @@ public class AntTest {
     assertEquals(2, nextEdge.getNodes()[0].getID());
     assertEquals(4, nextEdge.getNodes()[1].getID());
     assertEquals(5, nextEdge.getEdgeCost());
-    assertEquals(0.0, nextEdge.getEdgeHeuristic());
+    assertEquals(0.00002, nextEdge.getEdgeHeuristic());
   }
 
   @Test
@@ -142,9 +142,9 @@ public class AntTest {
     Ant.NextEdgeResult nextEdgeResult = ant.calculateEdgesHeuristic(graph, nodePath);
     List<Edge> nextEdges = nextEdgeResult.getEdgesHeuristics();
     assertEquals(3, nextEdges.size());
-    assertEquals(0.0, nextEdges.get(0).getEdgeHeuristic());
-    assertEquals(0.0, nextEdges.get(1).getEdgeHeuristic());
-    assertEquals(0.0, nextEdges.get(2).getEdgeHeuristic());
+    assertEquals(0.0001, nextEdges.get(0).getEdgeHeuristic());
+    assertEquals(0.00005, nextEdges.get(1).getEdgeHeuristic());
+    assertEquals(0.0000333, nextEdges.get(2).getEdgeHeuristic(), 0.000001);
 
     // Test the sum is correct
     double edgesHeuristicsSum1 = nextEdgeResult.getEdgesHeuristicsSum();
