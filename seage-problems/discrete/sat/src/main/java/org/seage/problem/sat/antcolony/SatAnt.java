@@ -56,7 +56,6 @@ public class SatAnt extends Ant {
     super(initNodePath);
     this.formula = formula;
     this.formulaEvaluator = formulaEvaluator;
-    // this.quantumPheromone = formula.getClauses().size() / 2;
   }
 
   @Override
@@ -64,13 +63,6 @@ public class SatAnt extends Ant {
     Boolean[] solution = new Boolean[formula.getLiteralCount()];
     List<Node> nodeList = Graph.edgeListToNodeList(path);
 
-    double subRes = 0.0;
-    // log.debug("Edges cost");
-    for (Edge e : path) {
-      subRes += e.getEdgeCost();
-      // log.debug("f: {}, t: {}, cost: {}", e.getNodes()[0].getID(), e.getNodes()[1].getID(), e.getEdgeCost());
-    }
-    
     for (Node n : nodeList) {
       if (n.getID() == 0) {
         continue;
@@ -80,7 +72,6 @@ public class SatAnt extends Ant {
 
     double result = FormulaEvaluator.evaluate(formula, solution);
 
-    // One is to prevent the dividing by zero
     return result;
   }
 
