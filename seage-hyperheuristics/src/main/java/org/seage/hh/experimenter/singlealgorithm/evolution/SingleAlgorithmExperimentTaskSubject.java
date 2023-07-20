@@ -2,17 +2,21 @@ package org.seage.hh.experimenter.singlealgorithm.evolution;
 
 import org.seage.metaheuristic.genetics.Subject;
 
+/**
+ * .
+ */
 public class SingleAlgorithmExperimentTaskSubject extends Subject<Double> {
-  protected String[] _paramNames;
+  protected String[] paramNames;
 
-  public SingleAlgorithmExperimentTaskSubject(String[] paramNames, Double[] geneValues) {
+  public SingleAlgorithmExperimentTaskSubject(String[] newParamNames, Double[] geneValues) {
     super(geneValues);
-    _paramNames = paramNames;
+    paramNames = newParamNames; 
   }
 
-  public SingleAlgorithmExperimentTaskSubject(SingleAlgorithmExperimentTaskSubject experimentSubject) {
+  public SingleAlgorithmExperimentTaskSubject(
+      SingleAlgorithmExperimentTaskSubject experimentSubject) {
     super(experimentSubject);
-    _paramNames = experimentSubject._paramNames.clone();
+    paramNames = experimentSubject.paramNames.clone();
   }
 
   @Override
@@ -22,7 +26,7 @@ public class SingleAlgorithmExperimentTaskSubject extends Subject<Double> {
   }
 
   public String[] getParamNames() {
-    return _paramNames;
+    return paramNames;
   }
 
 }

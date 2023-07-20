@@ -12,6 +12,7 @@ import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
+import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.runner.IExperimentTasksRunner;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator;
@@ -21,6 +22,9 @@ import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Single algorithm evolution experiment class.
+ */
 public class SingleAlgorithmEvolutionExperiment
     implements IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject>>, 
     Experiment {
@@ -44,21 +48,35 @@ public class SingleAlgorithmEvolutionExperiment
   protected String algorithmID;
   protected int numRuns;
   protected int timeoutS;
-  private double bestScore;
+  private double bestScore; 
 
-//    public SingleAlgorithmEvolutionExperiment(int numSubjects, int numIterations, int algorithmTimeoutS)
-//            throws Exception
-//    {
-//        super("SingleAlgorithmEvolution");
-//
-//        _numSubjects = numSubjects;
-//        _numIterations = numIterations;
-//        _algorithmTimeoutS = algorithmTimeoutS;
-//
-//        _feedbackConfigurator = new FeedbackConfigurator();
-//        ;
-//    }
+  //    public SingleAlgorithmEvolutionExperiment(
+  //      int numSubjects, int numIterations, int algorithmTimeoutS)
+  //            throws Exception
+  //    {
+  //        super("SingleAlgorithmEvolution");
+  //
+  //        _numSubjects = numSubjects;
+  //        _numIterations = numIterations;
+  //        _algorithmTimeoutS = algorithmTimeoutS;
+  //
+  //        _feedbackConfigurator = new FeedbackConfigurator();
+  //        ;
+  //    }
 
+  /**
+   * Constructor.
+   *
+   * @param experimentID Experiment ID.
+   * @param problemID Problem ID.
+   * @param algorithmID Algorithm ID.
+   * @param instanceID Instance ID. 
+   * @param numSubjects Number of subjects.
+   * @param numIterations Number of iterations.
+   * @param algorithmTimeoutS Algorithm's timetout.
+   * @param experimentReporter Experiment reporter.
+   * @throws Exception .
+   */
   public SingleAlgorithmEvolutionExperiment(
       UUID experimentID,
       String problemID,
@@ -90,9 +108,10 @@ public class SingleAlgorithmEvolutionExperiment
   public Double run() throws Exception {
     try {
       logger.info("-------------------------------------");
-      logger.info(String.format("%-15s", "Problem:", problemID));
-      logger.info(String.format("%-15s", "Instance:",instanceID));
+      logger.info("Problem: {}", problemID);
+      logger.info("Instance: {}",instanceID);
       ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
+      
       runExperimentTasksForProblemInstance();
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
@@ -103,12 +122,12 @@ public class SingleAlgorithmEvolutionExperiment
   protected void runExperimentTasksForProblemInstance() throws Exception {
 
     try {
-      ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
+      // ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
       if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null) {
         throw new IllegalArgumentException("Unknown algorithm: " + algorithmID);
       }
 
-      logger.info(String.format("%-15s Algorithm: ", algorithmID));
+      logger.info("Algorithm: {}", algorithmID);
 
       ContinuousGeneticOperator.Limit[] limits = prepareAlgorithmParametersLimits(
         algorithmID, problemInfo);
@@ -119,7 +138,7 @@ public class SingleAlgorithmEvolutionExperiment
       SingleAlgorithmExperimentTaskEvaluator evaluator = 
           new SingleAlgorithmExperimentTaskEvaluator(
           this.experimentID,
-          problemID, instanceID, algorithmID, algorithmTimeoutS);
+          problemID, instanceID, algorithmID, algorithmTimeoutS, this::reportExperimentTask);
       GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = 
           new GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject>(
           realOperator, evaluator);
@@ -137,10 +156,27 @@ public class SingleAlgorithmEvolutionExperiment
           numSubjects);
 
       ga.startSearching(subjects);
+
+      
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
     }
     
+  }
+
+  protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
+    try {
+      logger.debug("Report for config id: {}", experimentTask.getConfigID());
+      experimentReporter.reportExperimentTask(experimentTask);
+      double taskScore = experimentTask.getScore();
+      if (taskScore > this.bestScore) {
+        this.bestScore = taskScore;
+      }
+    } catch (Exception e) {
+      logger.error(String.format("Failed to report the experiment task: %s", 
+          experimentTask.getExperimentTaskID().toString()), e);
+    }
+    return null;
   }
 
   private List<SingleAlgorithmExperimentTaskSubject> initializeSubjects(
@@ -189,26 +225,25 @@ public class SingleAlgorithmEvolutionExperiment
 
   @Override
   public void algorithmStarted(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e) {
-    // logger.info(" Started");
-
+    logger.debug(" Started");
   }
 
   @Override
   public void algorithmStopped(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e) {
-    // logger.info(" Stopped");
-
+    logger.debug(" Stopped");
   }
 
   @Override
   public void newBestSolutionFound(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e) {
     // update the best - or not
-    System.out.println("Objective value" + e.getGeneticSearch().getBestSubject().getObjectiveValue());
+    logger.debug("Objective value {}", e.getGeneticSearch().getBestSubject().getObjectiveValue());
   }
 
   @Override
   public void iterationPerformed(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e) {
     // logger.info(" Iteration " + e.getGeneticSearch().getCurrentIteration());
-    logger.info(String.format("%-44s (%d/%d)", "   Iteration: ", e.getGeneticSearch().getCurrentIteration(),
+    logger.info(String.format(
+        "%-44s (%d/%d)", "   Iteration: ", e.getGeneticSearch().getCurrentIteration(),
         e.getGeneticSearch().getIterationToGo()));
   }
 
@@ -218,13 +253,12 @@ public class SingleAlgorithmEvolutionExperiment
 
   }
 
-
   protected long getEstimatedTime(int instancesCount, int algorithmsCount) {
     return getNumberOfConfigs(instancesCount, algorithmsCount) * algorithmTimeoutS * 1000;
   }
 
 
   protected long getNumberOfConfigs(int instancesCount, int algorithmsCount) {
-    return (long)numIterations * numSubjects * instancesCount * algorithmsCount;
+    return (long) numIterations * numSubjects * instancesCount * algorithmsCount;
   }
 }
