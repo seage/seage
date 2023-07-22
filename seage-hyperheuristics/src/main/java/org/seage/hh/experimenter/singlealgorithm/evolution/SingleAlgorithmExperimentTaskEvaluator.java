@@ -62,6 +62,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
     HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> taskMap = new HashMap<>();
 
+    int runID = 1;
     for (SingleAlgorithmExperimentTaskSubject s : subjects) {
       AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
       for (int i = 0; i < s.getChromosome().getLength(); i++) {
@@ -75,7 +76,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
         ExperimentTaskRequest task = new ExperimentTaskRequest(
             UUID.randomUUID(),
             this.experimentId,
-            1, 1,
+            runID, 1,
             this.problemID,
             this.instanceID,
             this.algorithmID,
@@ -86,6 +87,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
         taskMap.put(task, s);
         taskQueue.add(task);
+        runID += 1;
       }
     }
 
