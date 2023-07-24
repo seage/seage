@@ -140,8 +140,7 @@ public class SingleAlgorithmEvolutionExperiment
           this.experimentID,
           problemID, instanceID, algorithmID, algorithmTimeoutS, this::reportExperimentTask);
       GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = 
-          new GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject>(
-          realOperator, evaluator);
+          new GeneticAlgorithm<>(realOperator, evaluator);
       ga.addGeneticSearchListener(this);
       ga.setCrossLengthPct(30);
       ga.setEliteSubjectsPct(0);

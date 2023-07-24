@@ -62,7 +62,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
     HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> taskMap = new HashMap<>();
 
-    int runID = 1;
+    int stageID = 1;
     for (SingleAlgorithmExperimentTaskSubject s : subjects) {
       AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
       for (int i = 0; i < s.getChromosome().getLength(); i++) {
@@ -76,7 +76,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
         ExperimentTaskRequest task = new ExperimentTaskRequest(
             UUID.randomUUID(),
             this.experimentId,
-            runID, 1,
+            1, stageID,
             this.problemID,
             this.instanceID,
             this.algorithmID,
@@ -87,7 +87,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
         taskMap.put(task, s);
         taskQueue.add(task);
-        runID += 1;
+        stageID += 1;
       }
     }
 
@@ -99,7 +99,6 @@ public class SingleAlgorithmExperimentTaskEvaluator
     LocalExperimentTasksRunner experimentTasksRunner = new LocalExperimentTasksRunner();
     experimentTasksRunner.performExperimentTasks(taskQueue, this.reportFn);
 
-    
 
     // Outdated - still using datanode
     // TaskRunner3.run(
@@ -109,6 +108,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
       SingleAlgorithmExperimentTaskSubject s = taskMap.get(task);
       double value = Double.MAX_VALUE;
       try {
+
         // value = task.getExperimentTaskReport()
         //             .getDataNode("AlgorithmReport").getDataNode("Statistics")
         //             .getValueDouble("bestObjVal");
