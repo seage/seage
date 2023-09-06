@@ -108,14 +108,14 @@ public class SingleAlgorithmExperimentTaskEvaluator
       SingleAlgorithmExperimentTaskSubject s = taskMap.get(task);
       double value = Double.MAX_VALUE;
       try {
-
+        logger.info("working and reached here");
         // Non-existent method to get bestObjValue!
-        
+
         // value = task.getExperimentTaskReport()
         //             .getDataNode("AlgorithmReport").getDataNode("Statistics")
         //             .getValueDouble("bestObjVal");
       } catch (Exception ex) {
-        _logger.warn("Unable to set value");
+        logger.warn("Unable to set value");
       }
       s.setObjectiveValue(new double[] { value });
 
