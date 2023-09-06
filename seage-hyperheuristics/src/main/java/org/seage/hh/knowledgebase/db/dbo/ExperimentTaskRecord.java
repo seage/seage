@@ -67,6 +67,8 @@ public class ExperimentTaskRecord {
   private Date endDate;
   private Double score;
   private Double scoreDelta;
+  // TODO - adding the bestObjValue variable
+  private Double value;
 
   private AlgorithmParams algorithmParams;
   private long timeoutS;
@@ -132,6 +134,8 @@ public class ExperimentTaskRecord {
     this.endDate = this.startDate;
     this.score = Double.MAX_VALUE;
     this.scoreDelta = 0.0;
+    // TODO - adding bestObjValue parameter
+    this.value = 0.0;
 
     this.algorithmParams = algorithmParams;
     this.timeoutS = timeoutS;
@@ -310,6 +314,9 @@ public class ExperimentTaskRecord {
     DataNode outputs = experimentTaskReport.getDataNode("Solutions").getDataNode("Output");
 
     double bestObjValue = getBestObjectiveValue(outputs);
+
+    this.value = bestObjValue;
+
     double taskLatestScore = 
         scoreCalculator.calculateInstanceScore(instanceID, bestObjValue);
 
@@ -470,6 +477,14 @@ public class ExperimentTaskRecord {
 
   public void setScoreDelta(Double scoreDelta) {
     this.scoreDelta = scoreDelta;
+  }
+
+  public Double getValue() {
+    return this.value;
+  }
+
+  public void setValue(Double value) {
+    this.value = value;
   }
 
   public long getTimeoutS() {

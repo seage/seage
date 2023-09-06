@@ -97,7 +97,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     // experimentTasksRunner.performExperimentTasks(taskQueue, null);
 
     LocalExperimentTasksRunner experimentTasksRunner = new LocalExperimentTasksRunner();
-    experimentTasksRunner.performExperimentTasks(taskQueue, this.reportFn);
+    experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 
 
     // Outdated - still using datanode
@@ -108,26 +108,32 @@ public class SingleAlgorithmExperimentTaskEvaluator
       SingleAlgorithmExperimentTaskSubject s = taskMap.get(task);
       double value = Double.MAX_VALUE;
       try {
-        logger.info("working and reached here");
-        // Non-existent method to get bestObjValue!
+        // Getting the best objective task value
+        value = this.configCache.get(task.getConfigID());
 
+        // Non-existent method to get bestObjValue!
         // value = task.getExperimentTaskReport()
         //             .getDataNode("AlgorithmReport").getDataNode("Statistics")
         //             .getValueDouble("bestObjVal");
       } catch (Exception ex) {
         logger.warn("Unable to set value");
       }
-      s.setObjectiveValue(new double[] { value });
 
-      this.configCache.put(task.getConfigID(), value);
+      s.setObjectiveValue(new double[] {value});
     }
-
   }
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
+      double taskValue = experimentTask.getValue();
       logger.debug("Report for config id: {}", experimentTask.getConfigID());
-      logger.info("task score: {}", experimentTask.getScore());
+      logger.info("Curr task value: {}", taskValue);
+      // Put the value of experiment into the configcache
+      // TODO - is it ok to use score insted of value?
+      this.configCache.put(experimentTask.getConfigID(), taskValue);
+
+      // Run the SingleAlgorithmEvolutionExperiment reporter
+      this.reportFn.apply(experimentTask);
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);

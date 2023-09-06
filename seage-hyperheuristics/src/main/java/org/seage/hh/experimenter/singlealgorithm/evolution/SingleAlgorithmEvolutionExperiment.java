@@ -133,7 +133,7 @@ public class SingleAlgorithmEvolutionExperiment
         algorithmID, problemInfo);
       ContinuousGeneticOperator
           <SingleAlgorithmExperimentTaskSubject> realOperator = 
-          new ContinuousGeneticOperator<SingleAlgorithmExperimentTaskSubject>(limits);
+          new ContinuousGeneticOperator<>(limits);
 
       SingleAlgorithmExperimentTaskEvaluator evaluator = 
           new SingleAlgorithmExperimentTaskEvaluator(
@@ -165,7 +165,6 @@ public class SingleAlgorithmEvolutionExperiment
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
-      logger.debug("Report for config id: {}", experimentTask.getConfigID());
       experimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
       logger.info("Curr task score: {}", taskScore);
