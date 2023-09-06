@@ -109,6 +109,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
       double value = Double.MAX_VALUE;
       try {
 
+        // Non-existent method to get bestObjValue!
+        
         // value = task.getExperimentTaskReport()
         //             .getDataNode("AlgorithmReport").getDataNode("Statistics")
         //             .getValueDouble("bestObjVal");

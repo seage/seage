@@ -168,7 +168,9 @@ public class SingleAlgorithmEvolutionExperiment
       logger.debug("Report for config id: {}", experimentTask.getConfigID());
       experimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
+      logger.info("Curr task score: {}", taskScore);
       if (taskScore > this.bestScore) {
+        logger.info("New best score");
         this.bestScore = taskScore;
       }
     } catch (Exception e) {
@@ -182,7 +184,7 @@ public class SingleAlgorithmEvolutionExperiment
       ProblemInfo problemInfo, String instanceID,
       String algorithmID, int count) throws Exception {
     List<SingleAlgorithmExperimentTaskSubject> result = 
-        new ArrayList<SingleAlgorithmExperimentTaskSubject>();
+        new ArrayList<>();
 
     ProblemConfig[] pc = feedbackConfigurator
       .prepareConfigs(problemInfo, instanceID, algorithmID, count);
