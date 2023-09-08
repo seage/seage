@@ -132,7 +132,7 @@ public class ExperimentTaskRecord {
     this.configID = algorithmParams.hash();
     this.startDate = new Date();
     this.endDate = this.startDate;
-    this.score = Double.MAX_VALUE;
+    this.score = Double.MAX_VALUE; // TODO - shouldn't this be zero?
     this.scoreDelta = 0.0;
     // TODO - adding bestObjValue parameter
     this.value = 0.0;

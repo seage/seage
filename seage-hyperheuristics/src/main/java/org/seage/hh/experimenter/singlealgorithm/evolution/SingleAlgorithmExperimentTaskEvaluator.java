@@ -52,7 +52,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     this.instanceID = instanceID;
     this.algorithmID = algorithmID;
     this.timeoutS = timeoutS;
-    this.configCache = new HashMap<String, Double>();
+    this.configCache = new HashMap<>();
     this.reportFn = reportFn;
   }
 
@@ -63,15 +63,15 @@ public class SingleAlgorithmExperimentTaskEvaluator
     HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> taskMap = new HashMap<>();
 
     int stageID = 1;
-    for (SingleAlgorithmExperimentTaskSubject s : subjects) {
+    for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
       AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
-      for (int i = 0; i < s.getChromosome().getLength(); i++) {
-        algorithmParams.putValue(s.getParamNames()[i], s.getChromosome().getGene(i));
+      for (int i = 0; i < subject.getChromosome().getLength(); i++) {
+        algorithmParams.putValue(subject.getParamNames()[i], subject.getChromosome().getGene(i));
       }
 
       String configId = algorithmParams.hash();
       if (this.configCache.containsKey(configId)) {
-        s.setObjectiveValue(new double[] { this.configCache.get(configId) });
+        subject.setObjectiveValue(new double[] { this.configCache.get(configId) });
       } else {
         ExperimentTaskRequest task = new ExperimentTaskRequest(
             UUID.randomUUID(),
@@ -85,7 +85,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
             this.timeoutS
         );
 
-        taskMap.put(task, s);
+        taskMap.put(task, subject);
         taskQueue.add(task);
         stageID += 1;
       }
@@ -105,8 +105,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
     //     taskQueue.toArray(new Task[] {}), Runtime.getRuntime().availableProcessors());
 
     for (ExperimentTaskRequest task : taskQueue) {
-      SingleAlgorithmExperimentTaskSubject s = taskMap.get(task);
-      double value = Double.MAX_VALUE;
+      SingleAlgorithmExperimentTaskSubject subject = taskMap.get(task);
+      double value = 0.0;
       try {
         // Getting the best objective task value
         value = this.configCache.get(task.getConfigID());
@@ -119,18 +119,19 @@ public class SingleAlgorithmExperimentTaskEvaluator
         logger.warn("Unable to set value");
       }
 
-      s.setObjectiveValue(new double[] {value});
+      // Setting of fitness
+      subject.setObjectiveValue(new double[] {value});
     }
   }
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
-      double taskValue = experimentTask.getValue();
+      double taskScore = experimentTask.getScore();
       logger.debug("Report for config id: {}", experimentTask.getConfigID());
-      logger.info("Curr task value: {}", taskValue);
+      logger.info("Curr task value: {}", taskScore);
       // Put the value of experiment into the configcache
       // TODO - is it ok to use score insted of value?
-      this.configCache.put(experimentTask.getConfigID(), taskValue);
+      this.configCache.put(experimentTask.getConfigID(), taskScore);
 
       // Run the SingleAlgorithmEvolutionExperiment reporter
       this.reportFn.apply(experimentTask);
