@@ -32,6 +32,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
   private long timeoutS;
   private Function<ExperimentTaskRecord, Void> reportFn;
 
+  private int stageId;
+
   private HashMap<String, Double> configCache;
 
   /**
@@ -54,6 +56,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     this.timeoutS = timeoutS;
     this.configCache = new HashMap<>();
     this.reportFn = reportFn;
+    this.stageId = 0;
   }
 
   @Override
@@ -61,8 +64,10 @@ public class SingleAlgorithmExperimentTaskEvaluator
       List<SingleAlgorithmExperimentTaskSubject> subjects) throws Exception {
     List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
     HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> taskMap = new HashMap<>();
+    
+    this.stageId += 1;
 
-    int stageID = 1;
+    int jobId = 1;
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
       AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
       for (int i = 0; i < subject.getChromosome().getLength(); i++) {
@@ -76,7 +81,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
         ExperimentTaskRequest task = new ExperimentTaskRequest(
             UUID.randomUUID(),
             this.experimentId,
-            1, stageID,
+            jobId, this.stageId,
             this.problemID,
             this.instanceID,
             this.algorithmID,
@@ -87,7 +92,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
         taskMap.put(task, subject);
         taskQueue.add(task);
-        stageID += 1;
+        jobId += 1;
       }
     }
 

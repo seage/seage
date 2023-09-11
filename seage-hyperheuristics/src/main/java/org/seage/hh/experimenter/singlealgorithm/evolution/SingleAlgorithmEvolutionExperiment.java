@@ -151,8 +151,7 @@ public class SingleAlgorithmEvolutionExperiment
       ga.setRandomSubjectsPct(20);
 
       List<SingleAlgorithmExperimentTaskSubject> subjects = 
-          initializeSubjects(problemInfo, instanceID, algorithmID,
-          numSubjects);
+          initializeSubjects(problemInfo, instanceID, algorithmID, numSubjects);
 
       ga.startSearching(subjects);
 
@@ -250,7 +249,7 @@ public class SingleAlgorithmEvolutionExperiment
   @Override
   public void noChangeInValueIterationMade(
       GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e) {
-
+        // empty
   }
 
   protected long getEstimatedTime(int instancesCount, int algorithmsCount) {
