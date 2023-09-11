@@ -44,7 +44,7 @@ public class SingleAlgorithmEvolutionExperiment
   protected String experimentName;
   protected UUID experimentID;
   protected String problemID;
-  protected String instanceID;
+  protected List<String> instanceIDs;
   protected String algorithmID;
   protected int numRuns;
   protected int timeoutS;
@@ -70,7 +70,7 @@ public class SingleAlgorithmEvolutionExperiment
    * @param experimentID Experiment ID.
    * @param problemID Problem ID.
    * @param algorithmID Algorithm ID.
-   * @param instanceID Instance ID. 
+   * @param instanceIDs Instance IDs. 
    * @param numSubjects Number of subjects.
    * @param numIterations Number of iterations.
    * @param algorithmTimeoutS Algorithm's timetout.
@@ -81,7 +81,7 @@ public class SingleAlgorithmEvolutionExperiment
       UUID experimentID,
       String problemID,
       String algorithmID,
-      String instanceID,
+      List<String> instanceIDs,
       int numSubjects, 
       int numIterations, 
       int algorithmTimeoutS,
@@ -90,7 +90,7 @@ public class SingleAlgorithmEvolutionExperiment
     this.experimentID = experimentID;
     this.problemID = problemID;
     this.algorithmID = algorithmID;
-    this.instanceID = instanceID;
+    this.instanceIDs = instanceIDs;
     this.numSubjects = numSubjects;
     this.numIterations = numIterations;
     this.algorithmTimeoutS = algorithmTimeoutS;
@@ -109,7 +109,12 @@ public class SingleAlgorithmEvolutionExperiment
     try {
       logger.info("-------------------------------------");
       logger.info("Problem: {}", problemID);
-      logger.info("Instance: {}",instanceID);
+      logger.info("Instances: ");
+      StringBuilder builder = new StringBuilder();
+      for (String instanceID : instanceIDs) {
+        builder.append(instanceID);
+      }
+      logger.info("Instance: {}", builder);
       ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
       
       runExperimentTasksForProblemInstance();
