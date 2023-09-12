@@ -163,7 +163,7 @@ public class Experimenter {
         logger.info("  Instance '{}'", instanceID);
 
         // RUN EXPERIMENT
-        Experiment experiment = createExperiment(experimentName, problemID, instanceID);
+        Experiment experiment = createExperiment(experimentName, problemID, instanceID, instanceIDs);
         double score = experiment.run();
         // --- ----------
 
@@ -196,7 +196,8 @@ public class Experimenter {
     experimentReporter.updateEndDate(experimentID, new Date(endDate));
   }
 
-  private Experiment createExperiment(String experimentName, String problemID, String instanceID)
+  private Experiment createExperiment(
+      String experimentName, String problemID, String instanceID, List<String> instanceIDs)
       throws Exception {
 
     if (experimentName.equals("SingleAlgorithmDefault")) {
@@ -217,7 +218,7 @@ public class Experimenter {
     }
     if (experimentName.equals("SingleAlgorithmEvolution")) {
       return new SingleAlgorithmEvolutionExperiment(experimentID, problemID, algorithmID,
-          instanceID, numRuns, numOfIterations, timeoutS, experimentReporter);
+          instanceIDs, numRuns, numOfIterations, timeoutS, experimentReporter);
     }
 
 
