@@ -159,19 +159,34 @@ public class Experimenter {
       List<String> instanceIDs = new ArrayList<>();
       List<Double> instanceScores = new ArrayList<>();
 
-      for (String instanceID : entry.getValue()) {
-        logger.info("  Instance '{}'", instanceID);
+       if (!experimentName.equals("SingleAlgorithmEvolution")) {
+        for (String instanceID : entry.getValue()) {
+          logger.info("  Instance '{}'", instanceID);
 
-        // RUN EXPERIMENT
-        Experiment experiment = createExperiment(experimentName, problemID, instanceID, instanceIDs);
-        double score = experiment.run();
-        // --- ----------
+          // RUN EXPERIMENT
+          Experiment experiment = createExperiment(experimentName, problemID, instanceID, instanceIDs);
+          double score = experiment.run();
+          // --- ----------
 
-        scoreCard.putInstanceScore(problemID, instanceID, score);
+          scoreCard.putInstanceScore(problemID, instanceID, score);
 
-        instanceIDs.add(instanceID);
-        instanceScores.add(score);
+          instanceIDs.add(instanceID);
+          instanceScores.add(score);
+        }
+      } else {
+          logger.info("  Instance '{}'", "ALL");
+          Experiment experiment = createExperiment
+              (experimentName, problemID, "", entry.getValue());
+          double score = experiment.run();
+          // --- ----------
+
+          scoreCard.putInstanceScore(problemID, "ALL", score);
+
+          instanceIDs.add("ALL");
+          instanceScores.add(score);
       }
+
+      
       
       double problemScore = problemScoreCalculator.calculateProblemScore(
           instanceIDs.toArray(new String[]{}), 
@@ -197,7 +212,7 @@ public class Experimenter {
   }
 
   private Experiment createExperiment(
-      String experimentName, String problemID, String instanceID, List<String> instanceIDs)
+      String experimentName, String problemID, String instanceID, List<String>instanceIDs)
       throws Exception {
 
     if (experimentName.equals("SingleAlgorithmDefault")) {
