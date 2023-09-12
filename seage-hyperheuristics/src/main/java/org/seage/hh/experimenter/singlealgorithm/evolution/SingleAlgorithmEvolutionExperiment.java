@@ -1,6 +1,7 @@
 package org.seage.hh.experimenter.singlealgorithm.evolution;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
@@ -40,6 +41,7 @@ public class SingleAlgorithmEvolutionExperiment
   protected IExperimentTasksRunner experimentTasksRunner;
   protected ExperimentReporter experimentReporter;
   protected ProblemInfo problemInfo;
+  protected HashMap<String, ProblemInstanceInfo> instancesInfo;
 
   protected String experimentName;
   protected UUID experimentID;
@@ -102,6 +104,11 @@ public class SingleAlgorithmEvolutionExperiment
     // Initialize
     this.feedbackConfigurator = new FeedbackConfigurator(0.0);
     this.problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
+    this.instancesInfo = new HashMap<>();
+    
+    for ( String instanceID : instanceIDs ) {
+      instancesInfo.put(algorithmID, problemInfo.getProblemInstanceInfo(instanceID));
+    }
   }
 
   @Override
@@ -115,7 +122,6 @@ public class SingleAlgorithmEvolutionExperiment
         builder.append(instanceID);
       }
       logger.info("Instance: {}", builder);
-      ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
       
       runExperimentTasksForProblemInstance();
     } catch (Exception ex) {
@@ -143,7 +149,12 @@ public class SingleAlgorithmEvolutionExperiment
       SingleAlgorithmExperimentTaskEvaluator evaluator = 
           new SingleAlgorithmExperimentTaskEvaluator(
           this.experimentID,
-          problemID, instanceID, algorithmID, algorithmTimeoutS, this::reportExperimentTask);
+          problemID, 
+          instanceIDs, 
+          algorithmID, 
+          algorithmTimeoutS,  
+          this.instancesInfo, 
+          this::reportExperimentTask);
       GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = 
           new GeneticAlgorithm<>(realOperator, evaluator);
       ga.addGeneticSearchListener(this);
@@ -156,7 +167,7 @@ public class SingleAlgorithmEvolutionExperiment
       ga.setRandomSubjectsPct(20);
 
       List<SingleAlgorithmExperimentTaskSubject> subjects = 
-          initializeSubjects(problemInfo, instanceID, algorithmID, numSubjects);
+          initializeSubjects(problemInfo, instanceIDs, algorithmID, numSubjects);
 
       ga.startSearching(subjects);
 
@@ -184,26 +195,29 @@ public class SingleAlgorithmEvolutionExperiment
   }
 
   private List<SingleAlgorithmExperimentTaskSubject> initializeSubjects(
-      ProblemInfo problemInfo, String instanceID,
+      ProblemInfo problemInfo, List<String> instanceIDs,
       String algorithmID, int count) throws Exception {
     List<SingleAlgorithmExperimentTaskSubject> result = 
         new ArrayList<>();
 
-    ProblemConfig[] pc = feedbackConfigurator
-      .prepareConfigs(problemInfo, instanceID, algorithmID, count);
+    // TODO - is using this configurator right?
+    for ( String instanceID : instanceIDs ) {
+      ProblemConfig[] pc = feedbackConfigurator
+        .prepareConfigs(problemInfo, instanceID, algorithmID, count);
 
-    List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
-        .getDataNodes("Parameter");
+      List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
+          .getDataNodes("Parameter");
 
-    for (int i = 0; i < count; i++) {
-      String[] names = new String[params.size()];
-      Double[] values = new Double[params.size()];
-      for (int j = 0; j < params.size(); j++) {
-        names[j] = params.get(j).getValueStr("name");
-        values[j] = pc[i].getDataNode(
-          "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
+      for (int i = 0; i < count; i++) {
+        String[] names = new String[params.size()];
+        Double[] values = new Double[params.size()];
+        for (int j = 0; j < params.size(); j++) {
+          names[j] = params.get(j).getValueStr("name");
+          values[j] = pc[i].getDataNode(
+            "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
+        }
+        result.add(new SingleAlgorithmExperimentTaskSubject(names, values));
       }
-      result.add(new SingleAlgorithmExperimentTaskSubject(names, values));
     }
 
     return result;

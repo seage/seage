@@ -1,12 +1,15 @@
 package org.seage.hh.experimenter.singlealgorithm.evolution;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 import org.seage.aal.algorithm.AlgorithmParams;
+import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.runner.LocalExperimentTasksRunner;
@@ -27,9 +30,9 @@ public class SingleAlgorithmExperimentTaskEvaluator
   private String algorithmID;
   private long timeoutS;
   private Function<ExperimentTaskRecord, Void> reportFn;
+  private Map<String, ProblemInstanceInfo> instancesInfo;
 
   private int stageId;
-  private int jobId;
 
   private HashMap<String, HashMap<String, Double>> configCache;
 
@@ -38,13 +41,15 @@ public class SingleAlgorithmExperimentTaskEvaluator
    *
    * @param experimentId Experiment ID.
    * @param problemID Problem ID.
-   * @param instanceID Instance ID.
+   * @param instanceIDs Instance IDs.
    * @param algorithmID Algorithm ID.
    * @param timeoutS Timeout [s]. 
    */
   public SingleAlgorithmExperimentTaskEvaluator(
       UUID experimentId, String problemID, List<String> instanceIDs,
-      String algorithmID, long timeoutS, Function<ExperimentTaskRecord, Void> reportFn) {
+      String algorithmID, long timeoutS, 
+      Map<String, ProblemInstanceInfo> instancesInfo, 
+      Function<ExperimentTaskRecord, Void> reportFn) {
     super();
     this.experimentId = experimentId;
     this.problemID = problemID;
@@ -55,9 +60,23 @@ public class SingleAlgorithmExperimentTaskEvaluator
     for (String instanceID : instanceIDs) {
       this.configCache.put(instanceID, new HashMap<>());
     }
+    this.instancesInfo = instancesInfo;
     this.reportFn = reportFn;
     this.stageId = 0;
+
+    // Sort the instancesIds based on their size 
+    Comparator<String> comparator = (i1, i2) -> {
+      try {
+        return Double.compare(
+            this.instancesInfo.get(i1).getValueDouble("size"), 
+            this.instancesInfo.get(i2).getValueDouble("size"));
+      } catch (Exception e) {
+        return 0;
+      }
+    };
+    Collections.sort(this.instanceIDs, comparator);
   }
+
 
   /**
    * The method creates the task map from configurations that haven't been used on a given instance.
@@ -66,18 +85,19 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param instanceID Instance id.
    * @return task map.
    */
-  private HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> createTaskMap (
-      List<SingleAlgorithmExperimentTaskSubject> subjects, String instanceID
+  private HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> createTaskMap(
+      SingleAlgorithmExperimentTaskSubject subject, List<String> instanceIDs
   ) throws Exception {
     HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> taskMap = new HashMap<>();
-    
-    HashMap<String, Double> curConfigCache = this.configCache.get(instanceID);
 
-    for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
-      AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
-      for (int i = 0; i < subject.getChromosome().getLength(); i++) {
-        algorithmParams.putValue(subject.getParamNames()[i], subject.getChromosome().getGene(i));
-      }
+    AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
+    for (int i = 0; i < subject.getChromosome().getLength(); i++) {
+      algorithmParams.putValue(subject.getParamNames()[i], subject.getChromosome().getGene(i));
+    }
+
+    for (String instanceID : instanceIDs) {
+      HashMap<String, Double> curConfigCache = this.configCache.get(instanceID);
+
       // Calculate the subject hash
       String configId = algorithmParams.hash();
 
@@ -87,7 +107,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
         ExperimentTaskRequest task = new ExperimentTaskRequest(
             UUID.randomUUID(),
             this.experimentId,
-            this.jobId, this.stageId,
+            1, this.stageId,
             this.problemID,
             instanceID,
             this.algorithmID,
@@ -97,43 +117,61 @@ public class SingleAlgorithmExperimentTaskEvaluator
         );
 
         taskMap.put(task, subject);
-        jobId += 1;
       }
     }
     return taskMap;
   }
 
+  /**
+   * Method evaluates given subject.
+   *
+   * @param taskQueue Task queue.
+   * @param taskMap Task map.
+   * @return Weighted order.
+   */
+  private double evaluateSubject(
+      List<ExperimentTaskRequest> taskQueue) throws Exception {
+
+    // Sort the task queue based on the bestObjValue
+    Comparator<ExperimentTaskRequest> comparator = (t1, t2) -> this.configCache.get(
+        t1.getInstanceID()).get(t1.getConfigID()).compareTo(this.configCache.get(
+        t1.getInstanceID()).get(t2.getConfigID()));
+    Collections.sort(taskQueue, comparator.reversed());
+    
+    double result = 0;
+    double sumOfWeights = 0;
+    int taskPos = 1;
+    for (ExperimentTaskRequest task : taskQueue) {
+      double weight = Math.pow(10, this.instanceIDs.indexOf(task.getInstanceID()));
+      sumOfWeights += weight;
+      result += taskPos * weight;
+      taskPos += 1;
+    }
+
+    if (sumOfWeights == 0) {
+      throw new Exception("Sum of weights result in zero.");
+    }
+
+    return result / sumOfWeights;
+  }
+
   @Override
   public void evaluateSubjects(
-      List<SingleAlgorithmExperimentTaskSubject> subjects) throws Exception {
-    // TODO
+      List<SingleAlgorithmExperimentTaskSubject> subjects
+  ) throws Exception {
     this.stageId += 1;
-    this.jobId = 1;
 
-    HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> taskMap = 
-      createTaskMap(subjects, algorithmID);
-    List<ExperimentTaskRequest> taskQueue = new ArrayList<>(taskMap.keySet());
+    for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
+      HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> taskMap = 
+          createTaskMap(subject, instanceIDs);
+      List<ExperimentTaskRequest> taskQueue = new ArrayList<>(taskMap.keySet());
 
-    // Run tasks
-    LocalExperimentTasksRunner experimentTasksRunner = new LocalExperimentTasksRunner();
-    experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
+      // Run tasks
+      LocalExperimentTasksRunner experimentTasksRunner = new LocalExperimentTasksRunner();
+      experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
 
-
-    // TODO calculate the weighted order
-    
-    for (ExperimentTaskRequest task : taskQueue) {
-      SingleAlgorithmExperimentTaskSubject subject = taskMap.get(task);
-      double value = 0.0;
-      try {
-        // Getting the best objective task value
-        value = this.configCache.get(task.getInstanceID()).get(task.getConfigID());
-
-      } catch (Exception ex) {
-        logger.warn("Unable to set value");
-      }
-
-      // Setting of fitness
-      subject.setObjectiveValue(new double[] {value});
+      // Set the configuration objective value
+      subject.setObjectiveValue(new double[] {evaluateSubject(taskQueue)});
     }
   }
 
