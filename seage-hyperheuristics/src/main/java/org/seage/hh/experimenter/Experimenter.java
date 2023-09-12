@@ -164,7 +164,8 @@ public class Experimenter {
           logger.info("  Instance '{}'", instanceID);
 
           // RUN EXPERIMENT
-          Experiment experiment = createExperiment(experimentName, problemID, instanceID, instanceIDs);
+          Experiment experiment = createExperiment(
+              experimentName, problemID, instanceID, instanceIDs);
           double score = experiment.run();
           // --- ----------
 
@@ -174,16 +175,15 @@ public class Experimenter {
           instanceScores.add(score);
         }
       } else {
-          logger.info("  Instance '{}'", "ALL");
-          Experiment experiment = createExperiment
-              (experimentName, problemID, "", entry.getValue());
-          double score = experiment.run();
-          // --- ----------
+        logger.info("  Instance '{}'", "ALL");
+        Experiment experiment = createExperiment(experimentName, problemID, "", entry.getValue());
+        double score = experiment.run();
+        // --- ----------
 
-          scoreCard.putInstanceScore(problemID, "ALL", score);
+        scoreCard.putInstanceScore(problemID, "ALL", score);
 
-          instanceIDs.add("ALL");
-          instanceScores.add(score);
+        instanceIDs.add("ALL");
+        instanceScores.add(score);
       }
 
       

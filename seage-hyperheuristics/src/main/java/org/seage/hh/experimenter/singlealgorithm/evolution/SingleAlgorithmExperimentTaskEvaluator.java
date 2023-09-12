@@ -177,7 +177,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
-      double taskObjValue = experimentTask.getValue();
+      double taskObjValue = experimentTask.getScore();
       
       logger.debug("Report for config id: {}", experimentTask.getConfigID());
       logger.debug("Curr task value: {}", taskObjValue);

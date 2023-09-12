@@ -196,14 +196,14 @@ public class SingleAlgorithmEvolutionExperiment
 
   private List<SingleAlgorithmExperimentTaskSubject> initializeSubjects(
       ProblemInfo problemInfo, List<String> instanceIDs,
-      String algorithmID, int count) throws Exception {
-    List<SingleAlgorithmExperimentTaskSubject> result = 
-        new ArrayList<>();
+      String algorithmID, int count
+  ) throws Exception {
+    List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<>();
 
     // TODO - is using this configurator right?
-    for ( String instanceID : instanceIDs ) {
-      ProblemConfig[] pc = feedbackConfigurator
-        .prepareConfigs(problemInfo, instanceID, algorithmID, count);
+    for (String instanceID : instanceIDs) {
+      ProblemConfig[] pc = feedbackConfigurator.prepareConfigs(
+        problemInfo, instanceID, algorithmID, count);
 
       List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
           .getDataNodes("Parameter");
