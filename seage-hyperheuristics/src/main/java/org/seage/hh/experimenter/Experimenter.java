@@ -174,26 +174,21 @@ public class Experimenter {
           instanceIDs.add(instanceID);
           instanceScores.add(score);
         }
+
+        double problemScore = problemScoreCalculator.calculateProblemScore(
+            instanceIDs.toArray(new String[]{}), 
+            instanceScores.stream().mapToDouble(a -> a).toArray());
+
+        scoreCard.putProblemScore(problemID, problemScore);
+        problemsScores.add(problemScore);
       } else {
         logger.info("  Instance '{}'", "ALL");
         Experiment experiment = createExperiment(experimentName, problemID, "", entry.getValue());
         double score = experiment.run();
         // --- ----------
-
-        scoreCard.putInstanceScore(problemID, "ALL", score);
-
-        instanceIDs.add("ALL");
-        instanceScores.add(score);
+        
+        scoreCard.putProblemScore(problemID, score);
       }
-
-      
-      
-      double problemScore = problemScoreCalculator.calculateProblemScore(
-          instanceIDs.toArray(new String[]{}), 
-          instanceScores.stream().mapToDouble(a -> a).toArray());
-
-      scoreCard.putProblemScore(problemID, problemScore);
-      problemsScores.add(problemScore);
     }
 
     double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
