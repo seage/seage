@@ -1,6 +1,7 @@
 package org.seage.hh.experimenter.singlealgorithm.evolution;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -87,23 +88,22 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param instanceID Instance id.
    * @return task map.
    */
-  private HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> createTaskMap(
-      SingleAlgorithmExperimentTaskSubject subject, List<String> instanceIDs
+  private List<ExperimentTaskRequest> createTaskList(
+      List<SingleAlgorithmExperimentTaskSubject> subjects, String instanceID
   ) throws Exception {
-    HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> taskMap = new HashMap<>();
+    List<ExperimentTaskRequest> taskList = new ArrayList<>();
 
-    
-    AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
-    for (int i = 0; i < subject.getChromosome().getLength(); i++) {
-      algorithmParams.putValue(subject.getParamNames()[i], subject.getChromosome().getGene(i));
-    }
-    // Calculate the subject hash
-    String configId = algorithmParams.hash();
-    HashMap<String, Double> curConfigCache = this.configCache.get(configId);
-
-    this.subjectToConfigIDMap.put(subject, configId);
-
-    for (String instanceID : instanceIDs) {
+    for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
+      AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
+      for (int i = 0; i < subject.getChromosome().getLength(); i++) {
+        algorithmParams.putValue(subject.getParamNames()[i], subject.getChromosome().getGene(i));
+      }
+      // Calculate the subject hash
+      String configId = algorithmParams.hash();
+      HashMap<String, Double> curConfigCache = this.configCache.get(configId);
+  
+      this.subjectToConfigIDMap.put(subject, configId);
+  
       // TODO - solve the cache, instanceID and configID needed
       if (curConfigCache.containsKey(instanceID)) {
         subject.setObjectiveValue(new double[] { curConfigCache.get(configId) });
@@ -120,11 +120,10 @@ public class SingleAlgorithmExperimentTaskEvaluator
             null,
             this.timeoutS
         );
-
-        taskMap.put(task, subject);
+        taskList.add(task);
       }
     }
-    return taskMap;
+    return taskList;
   }
 
   /**
@@ -137,36 +136,36 @@ public class SingleAlgorithmExperimentTaskEvaluator
   private void setSubjectsObjectiveValue(
       List<SingleAlgorithmExperimentTaskSubject> subjects) throws Exception {
 
+    // Each subject evaluate separatly
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
       String configID = this.subjectToConfigIDMap.get(subject);
-      for (String instanceID : this.instanceIDs) {
-        //... get objective value
-      }
-      //... count 
-      subject.setObjectiveValue(new double[] {0.0});
-    }
-    // // Sort the task queue based on the bestObjValue
-    // Comparator<ExperimentTaskRequest> comparator = (t1, t2) -> this.configCache.get(
-    //     t1.getInstanceID()).get(t1.getConfigID()).compareTo(this.configCache.get(
-    //     t1.getInstanceID()).get(t2.getConfigID()));
-    // Collections.sort(taskIDs, comparator.reversed());
+
+      // Get the table row (results of config over instances)
+      Map<String, Double> instancesObjVal = this.configCache.get(configID);
+
+      List<String> sortedInstancesByObjVal = new ArrayList<>(instancesObjVal.keySet());
+
+      // Sort by the objective value of the task on specific instance
+      Comparator<String> comparator = (i1, i2) -> instancesObjVal
+          .get(i1).compareTo(instancesObjVal.get(i2));
+      Collections.sort(sortedInstancesByObjVal, comparator.reversed());
     
-    // double result = 0;
-    // double sumOfWeights = 0;
-    // int taskPos = 1;
-    // for (ExperimentTaskRequest task : taskIDs) {
-    //   double weight = Math.pow(10, this.instanceIDs.indexOf(task.getInstanceID()));
-    //   sumOfWeights += weight;
-    //   result += taskPos * weight;
-    //   taskPos += 1;
-    // }
+      double sumOfWeights = 0.0;
+      double result = 0.0;
+      for (String instanceID : this.instanceIDs) {
+        double instanceSize = this.instancesInfo.get(instanceID).getValueDouble("size");
+        double instanceRank = sortedInstancesByObjVal.indexOf(instanceID) + 1.0;
 
-    // if (sumOfWeights == 0) {
-    //   throw new Exception("Sum of weights result in zero.");
-    // }
-
-    // return result / sumOfWeights;
+        result += instanceSize * instanceRank;
+        sumOfWeights += instanceSize;
+      }
+      if (sumOfWeights == 0.0) {
+        throw new Exception("Error: dividing by zero.");
+      }
+      subject.setObjectiveValue(new double[] {result / sumOfWeights});
+    }
   }
+
 
   @Override
   public void evaluateSubjects(
@@ -174,22 +173,16 @@ public class SingleAlgorithmExperimentTaskEvaluator
   ) throws Exception {
     this.stageId += 1;
 
-    for ( String instanceID : this.instanceIDs ) {
-      List<ExperimentTaskRequest> taskIDs = new ArrayList<>();
-      // TODO - Run through columns, not the whole table - linear vs quadratic complexity
-      for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
-        HashMap<ExperimentTaskRequest, SingleAlgorithmExperimentTaskSubject> taskMap = 
-            createTaskMap(subject, instanceIDs);
-
-        taskIDs.addAll(taskMap.keySet());
-      }
+    // Create and run tasks for each columns separatly
+    for (String instanceID : this.instanceIDs) {
+      List<ExperimentTaskRequest> taskIDs = createTaskList(subjects, instanceID);
+      
       // Run tasks
       LocalExperimentTasksRunner experimentTasksRunner = new LocalExperimentTasksRunner();
       experimentTasksRunner.performExperimentTasks(taskIDs, this::reportExperimentTask);
     }
     // Set the configuration objective value
     this.setSubjectsObjectiveValue(subjects);
-    // subject.setObjectiveValue(new double[] {calculateSubjectObjectiveValue(taskIDs)});
   }
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
