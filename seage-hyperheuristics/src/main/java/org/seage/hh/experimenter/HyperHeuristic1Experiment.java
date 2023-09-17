@@ -122,7 +122,7 @@ public class HyperHeuristic1Experiment implements Experiment {
         // Enqueue experiment tasks
         taskQueue.add(new ExperimentTaskRequest(
             UUID.randomUUID(), experimentID, 1, stageID, problemID, instanceID,
-            algorithmID, config.getAlgorithmParams(), 
+            algorithmID, config.hash(), config.getAlgorithmParams(), 
             solutions, timeoutS / numSteps));
       }
 

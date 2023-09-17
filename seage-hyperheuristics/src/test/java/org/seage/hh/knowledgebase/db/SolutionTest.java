@@ -43,6 +43,8 @@ public class SolutionTest {
       "hostname1", 
       "1", "tag1"
     );
+
+    AlgorithmParams config1 = new AlgorithmParams();
     this.experimentTask1 = new ExperimentTaskRecord(new ExperimentTaskRequest(
       UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"),
@@ -50,7 +52,8 @@ public class SolutionTest {
       "TEST", 
       "instanceID1", 
       "algorithmID1", 
-      new AlgorithmParams(),
+      config1.hash(),
+      config1,
       null,
       1L
     ));

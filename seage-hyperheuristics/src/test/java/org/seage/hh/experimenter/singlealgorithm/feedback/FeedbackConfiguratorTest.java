@@ -48,6 +48,8 @@ public class FeedbackConfiguratorTest {
       "1", "tag1"
     );
 
+    AlgorithmParams config = new AlgorithmParams();
+
     this.experimentTask1 = new ExperimentTaskRecord(new ExperimentTaskRequest(
       UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"),
@@ -55,7 +57,8 @@ public class FeedbackConfiguratorTest {
       "TestProblem", 
       "Instance01", 
       "Algorithm01", 
-      new AlgorithmParams(),
+      config.hash(),
+      config,
       null,
       1L
     ));
