@@ -9,11 +9,15 @@ import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.rosenbrock.RosenbrockFunction;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * Rosenbrock genetic algorithm test.
  */
 public class RosenbrockGeneticAlgorithmTest {
-	public static void main(String[] args) {
+	@Test
+	void testRosenbrockGeneticAlgorithm() throws Exception {
 		try {
 			int dim = 11;
 

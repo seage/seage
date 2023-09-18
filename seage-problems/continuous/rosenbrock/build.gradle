@@ -61,8 +61,10 @@
  * User Manual available at https://docs.gradle.org/6.8.3/userguide/building_java_projects.html
  */
 plugins {
+  id 'java-library'
   id 'checkstyle'
   id 'maven-publish'
+  id "java-test-fixtures"
 }
 
 allprojects {
