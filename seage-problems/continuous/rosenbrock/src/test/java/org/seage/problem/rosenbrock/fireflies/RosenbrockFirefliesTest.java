@@ -23,6 +23,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
+
 package org.seage.problem.rosenbrock.fireflies;
 
 import org.seage.metaheuristic.fireflies.FireflyOperator;
