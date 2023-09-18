@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "RosenbrockGeneticAlgorithmTest",
+      "request": "launch",
+      "mainClass": "RosenbrockGeneticAlgorithmTest",
+      "projectName": "seage"
+    },
+    {
+      "type": "java",
+      "name": "SingleAlgorithmEvolutionExperimentTest",
+      "request": "launch",
+      "mainClass": "org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimentTest",
+      "projectName": "seage-hyperheuristics"
+    },
+    {
+      "type": "java",
       "name": "SatAntColonyTest",
       "request": "launch",
       "mainClass": "org.seage.problem.sat.antcolony.SatAntColonyTest",
@@ -106,12 +120,8 @@
       "args": [
         "experiment-single-feedback",
         "-a",
-        // "GeneticAlgorithm",
-        // "TabuSearch",
         "AntColony",
-        // "SimulatedAnnealing",
         "-i",
-        // "SAT:uf100-01",
         "SAT:small",
         "-t",
         "20",
