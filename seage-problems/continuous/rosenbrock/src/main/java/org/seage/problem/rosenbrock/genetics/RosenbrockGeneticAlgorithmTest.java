@@ -3,18 +3,18 @@ package org.seage.problem.rosenbrock.genetics;
 import java.util.ArrayList;
 
 import org.seage.metaheuristic.IAlgorithmListener;
+import org.seage.metaheuristic.genetics.ContinuousGeneticOperator;
 import org.seage.metaheuristic.genetics.GeneticAlgorithm;
 import org.seage.metaheuristic.genetics.GeneticAlgorithmEvent;
-import org.seage.metaheuristic.genetics.ContinuousGeneticOperator;
 import org.seage.metaheuristic.genetics.Subject;
 import org.seage.problem.rosenbrock.RosenbrockFunction;
 
-public class RosenbrockGeneticAlgorithmTest
-{
-	public static void main(String[] args)
-	{
-		try
-		{
+/**
+ * Rosenbrock genetic algorithm test.
+ */
+public class RosenbrockGeneticAlgorithmTest {
+	public static void main(String[] args) {
+		try {
 			int dim = 11;
 
 			double test[] = new double[dim];
@@ -29,40 +29,34 @@ public class RosenbrockGeneticAlgorithmTest
 				limits[i] = new  ContinuousGeneticOperator.Limit(-10, 10);
 
 			GeneticAlgorithm<Subject<Double> > gs = new GeneticAlgorithm<Subject<Double> >(operator, new RosenbrockEvaluator());
-			gs.addGeneticSearchListener(new IAlgorithmListener<GeneticAlgorithmEvent<Subject<Double> >>()
-			{
+			gs.addGeneticSearchListener(new IAlgorithmListener<GeneticAlgorithmEvent<Subject<Double> >>() {
 				
 				@Override
-				public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Double> > e)
-				{
+				public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Double> > e) {
 					// TODO Auto-generated method stub
 					
 				}
 				
 				@Override
-				public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Double> > e)
-				{
+				public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Double> > e) {
 					System.out.println(e.getGeneticSearch().getBestSubject().getObjectiveValue()[0]);
 					
 				}
 				
 				@Override
-				public void iterationPerformed(GeneticAlgorithmEvent<Subject<Double> > e)
-				{
+				public void iterationPerformed(GeneticAlgorithmEvent<Subject<Double> > e) {
 					// TODO Auto-generated method stub
 					
 				}
 				
 				@Override
-				public void algorithmStopped(GeneticAlgorithmEvent<Subject<Double> > e)
-				{
+				public void algorithmStopped(GeneticAlgorithmEvent<Subject<Double> > e) {
 					// TODO Auto-generated method stub
 					
 				}
 				
 				@Override
-				public void algorithmStarted(GeneticAlgorithmEvent<Subject<Double> > e)
-				{
+				public void algorithmStarted(GeneticAlgorithmEvent<Subject<Double> > e) {
 					// TODO Auto-generated method stub
 					
 				}
@@ -80,8 +74,7 @@ public class RosenbrockGeneticAlgorithmTest
 				dimArray[i] = new Double(0);
 			
 			ArrayList<Subject<Double>> subjects = new ArrayList<Subject<Double>>();
-			for (int i = 0; i < gs.getPopulationCount(); i++)
-			{
+			for (int i = 0; i < gs.getPopulationCount(); i++) {
 				subjects.add( new Subject<Double>(dimArray));
 				operator.randomize(subjects.get(i));
 			}
@@ -93,8 +86,7 @@ public class RosenbrockGeneticAlgorithmTest
 				System.out.print(gs.getBestSubject().getChromosome().getGene(i) + " ");
 			System.out.println();
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			// TODO Auto-generated catch block
 			log.error("{}", ex.getMessage(), ex);
 		}
