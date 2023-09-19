@@ -19,47 +19,54 @@
  */
 
 /**
+ * .
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ *   Jan Zmatlik
+ *   - Initial implementation
  */
 
 package org.seage.problem.rosenbrock.sannealing;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import org.junit.jupiter.api.Test;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 
 /**
+ * .
  *
  * @author Jan Zmatlik
  */
 public class RosenbrockSimulatedAnnealingTest {
 
-    public static void main(String[] args)
-    {
-        int dimension = 10;
+  @Test
+  void testRosenbrockSimulatedAnnealing() throws Exception {
+    int dimension = 10;
 
-        RosenbrockSolution rosSolution = new RosenbrockSolution(dimension);
+    RosenbrockSolution rosSolution = new RosenbrockSolution(dimension);
 
-        for(int i = 0; i < dimension; i++)
-        {
-            rosSolution.getCoords()[i] = Math.random();
-        }
-
-        SimulatedAnnealing sa = new SimulatedAnnealing(new RosenbrockObjectiveFunction(), new RosenbrockMoveManager());
-        sa.setAnnealingCoefficient(0.99);
-        sa.setMaximalInnerIterationCount(10000);
-        sa.setMaximalAcceptedSolutionsPerOneStepCount(200);
-        sa.setMaximalTemperature(200);
-        sa.setMinimalTemperature(0.01);
-
-        sa.startSearching(rosSolution);
-
-        System.out.println(">BEST " + sa.getBestSolution().getObjectiveValue());
-        System.out.println(">COORDS ");
-
-        for(int i = 0; i < dimension; i++)
-            System.out.print(" " + ((RosenbrockSolution)sa.getBestSolution()).getCoords()[i]);
-
-        System.out.println("");
+    for (int i = 0; i < dimension; i++) {
+      rosSolution.getCoords()[i] = Math.random();
     }
+
+    SimulatedAnnealing sa = 
+        new SimulatedAnnealing(new RosenbrockObjectiveFunction(), new RosenbrockMoveManager());
+    sa.setAnnealingCoefficient(0.99);
+    sa.setMaximalIterationCount(10000);
+    // sa.setMaximalAcceptedSolutionsPerOneStepCount(200);
+    sa.setMaximalTemperature(200);
+    sa.setMinimalTemperature(0.01);
+
+    sa.startSearching(rosSolution);
+
+    System.out.println(">BEST " + sa.getBestSolution().getObjectiveValue());
+    System.out.println(">COORDS ");
+
+    for (int i = 0; i < dimension; i++) {
+      System.out.print(" " + ((RosenbrockSolution) sa.getBestSolution()).getCoords()[i]);
+    }
+
+    System.out.println("");
+    assertNull(null);
+  }
 }

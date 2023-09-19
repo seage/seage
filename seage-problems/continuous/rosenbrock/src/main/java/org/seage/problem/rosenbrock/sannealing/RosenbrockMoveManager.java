@@ -19,9 +19,10 @@
  */
 
 /**
+ * .
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ *   Jan Zmatlik
+ *   - Initial implementation
  */
 
 package org.seage.problem.rosenbrock.sannealing;
@@ -31,57 +32,71 @@ import org.seage.metaheuristic.sannealing.IMoveManager;
 import org.seage.metaheuristic.sannealing.Solution;
 
 /**
+ * .
  *
  * @author Jan Zmatlik
  */
-public class RosenbrockMoveManager implements IMoveManager
-{
-    Random rnd = new Random();
+public class RosenbrockMoveManager implements IMoveManager {
+  Random rnd = new Random();
 
-    @Deprecated
-    public Solution getModifiedSolutionOld(Solution solution)
-    {
-        RosenbrockSolution rosSolution = ((RosenbrockSolution)solution).clone();
+  /**
+   * .
+   *
+   * @param solution .
+   * @return .
+   */
+  @Deprecated
+  public Solution getModifiedSolutionOld(Solution solution) {
+    RosenbrockSolution rosSolution = ((RosenbrockSolution) solution).clone();
 
-        // X(i + 1) = Xi + C*u
-        // X is a solution
-        // u is a vector of random numbers
-        // C is a identity matrix
-        int length = rosSolution.getCoords().length;
-        for(int i = 0; i < length; i++)
-        {
-            rosSolution.getCoords()[i] = rosSolution.getCoords()[i] + randomNumberOneToMinusOne();
-        }
-
-        return (Solution)rosSolution;
+    // X(i + 1) = Xi + C*u
+    // X is a solution
+    // u is a vector of random numbers
+    // C is a identity matrix
+    int length = rosSolution.getCoords().length;
+    for (int i = 0; i < length; i++) {
+      rosSolution.getCoords()[i] = rosSolution.getCoords()[i] + randomNumberOneToMinusOne();
     }
 
-    private double randomNumberOneToMinusOne()
-    {
-        double random = Math.random();
-        int rand = rnd.nextInt(2);
+    return rosSolution;
+  }
 
-        return rand == 0 ? random : -random;
-    }
+  private double randomNumberOneToMinusOne() {
+    double random = Math.random();
+    int rand = rnd.nextInt(2);
 
-    public Solution getModifiedSolution(Solution solution)
-    {
-        RosenbrockSolution rosSolution = ((RosenbrockSolution)solution).clone();
+    return rand == 0 ? random : -random;
+  }
 
-        int index = rnd.nextInt( rosSolution.getCoords().length );
-        rosSolution.getCoords()[index] += randomNumberOneToMinusOne();
+  /**
+   * .
+   *
+   * @param solution .
+   * @return .
+   */
+  @Override
+  public Solution getModifiedSolution(Solution solution, double currentTemperature) {
+    RosenbrockSolution rosSolution = ((RosenbrockSolution) solution).clone();
 
-        return (Solution)rosSolution;
-    }
+    int index = rnd.nextInt(rosSolution.getCoords().length);
+    rosSolution.getCoords()[index] += randomNumberOneToMinusOne();
 
-    @Deprecated
-    public Solution getModifiedSolutionOldOld(Solution solution)
-    {
-        RosenbrockSolution rosSolution = ((RosenbrockSolution)solution).clone();
+    return rosSolution;
+  }
 
-        int index = rnd.nextInt( rosSolution.getCoords().length );
-        rosSolution.getCoords()[index] = Math.random();
+  /**
+   * .
+   *
+   * @param solution .
+   * @return .
+   */
+  @Deprecated
+  public Solution getModifiedSolutionOldOld(Solution solution) {
+    RosenbrockSolution rosSolution = ((RosenbrockSolution) solution).clone();
 
-        return (Solution)rosSolution;
-    }
+    int index = rnd.nextInt(rosSolution.getCoords().length);
+    rosSolution.getCoords()[index] = Math.random();
+
+    return rosSolution;
+  }
 }

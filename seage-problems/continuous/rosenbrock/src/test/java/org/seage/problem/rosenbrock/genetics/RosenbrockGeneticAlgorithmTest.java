@@ -39,7 +39,8 @@ import org.slf4j.LoggerFactory;
  */
 public class RosenbrockGeneticAlgorithmTest {
   private static final Logger logger = 
-      LoggerFactory.getLogger(AlgorithmAdapterImpl.class.getName());
+      LoggerFactory.getLogger(RosenbrockGeneticAlgorithmTest.class.getName());
+  
   @Test
   void testRosenbrockGeneticAlgorithm() throws Exception {
     try {
@@ -118,8 +119,7 @@ public class RosenbrockGeneticAlgorithmTest {
       }
       System.out.println();
       assertNull(null);
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
       // TODO Auto-generated catch block
       logger.error("{}", ex.getMessage(), ex);
     }

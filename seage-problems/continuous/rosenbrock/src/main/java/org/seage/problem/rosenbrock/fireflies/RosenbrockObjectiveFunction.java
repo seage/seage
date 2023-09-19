@@ -20,8 +20,8 @@
 
 /**
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ *   Jan Zmatlik
+ *   - Initial implementation
  */
 
 package org.seage.problem.rosenbrock.fireflies;
@@ -31,31 +31,30 @@ import org.seage.metaheuristic.fireflies.Solution;
 import org.seage.problem.rosenbrock.RosenbrockFunction;
 
 /**
+ * .
  *
  * @author Jan Zmatlik
  */
-public class RosenbrockObjectiveFunction implements ObjectiveFunction
-{
-    
-    public int counter=0;
-    
-    // f(X) = SUM(to N-1, i = 0) [(1 - Xi)^2 + 100 * (Xi+1 - Xi^2)^2]
-    public void setObjectiveValue(Solution sol)
-    {
-        Double[] coords = ((ContinuousSolution) sol)._assign;
-        sol.setObjectiveValue( new double[]{ RosenbrockFunction.f(coords) });
-    }
+public class RosenbrockObjectiveFunction implements ObjectiveFunction {
+      
+  public int counter = 0;
+      
+  // f(X) = SUM(to N-1, i = 0) [(1 - Xi)^2 + 100 * (Xi+1 - Xi^2)^2]
+  public void setObjectiveValue(Solution sol) {
+    Double[] coords = ((ContinuousSolution) sol).assign;
+    sol.setObjectiveValue(new double[]{ RosenbrockFunction.f(coords)});
+  }
 
-    public double[] evaluate(Solution soln) throws Exception {
-        Double[] coords = ((ContinuousSolution) soln)._assign;      
-        return new double[]{ RosenbrockFunction.f(coords) };
-    }
+  public double[] evaluate(Solution soln) throws Exception {
+    Double[] coords = ((ContinuousSolution) soln).assign;    
+    return new double[]{ RosenbrockFunction.f(coords) };
+  }
 
-    public int getCounter() {
-        return counter;
-    }
+  public int getCounter() {
+    return counter;
+  }
 
-    public void incrementCounter() {
-        counter++;
-    }
+  public void incrementCounter() {
+    counter++;
+  }
 }

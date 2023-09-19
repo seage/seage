@@ -19,9 +19,10 @@
  */
 
 /**
+ * .
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ *   Jan Zmatlik
+ *   - Initial implementation
  */
 
 package org.seage.problem.rosenbrock.particles;
@@ -31,16 +32,18 @@ import org.seage.metaheuristic.particles.Particle;
 import org.seage.problem.rosenbrock.RosenbrockFunction;
 
 /**
+ * .
  *
  * @author Jan Zmatlik
  */
-public class RosenbrockObjectiveFunction implements IObjectiveFunction
-{
-    // f(X) = SUM(to N-1, i = 0) [(1 - Xi)^2 + 100 * (Xi+1 - Xi^2)^2]
-    public void setObjectiveValue(Particle particle)
-    {
-        double[] coords = particle.getCoords();
-        
-        particle.setEvaluation( RosenbrockFunction.f(coords) );
-    }
+public class RosenbrockObjectiveFunction implements IObjectiveFunction {
+  // f(X) = SUM(to N-1, i = 0) [(1 - Xi)^2 + 100 * (Xi+1 - Xi^2)^2]
+  /**
+   * .
+   */
+  public void setObjectiveValue(Particle particle) {
+    double[] coords = particle.getCoords();
+    
+    particle.setEvaluation(RosenbrockFunction.f(coords));
+  }
 }
