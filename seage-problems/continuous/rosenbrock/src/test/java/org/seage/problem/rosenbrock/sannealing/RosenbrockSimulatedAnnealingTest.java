@@ -23,6 +23,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
+
 package org.seage.problem.rosenbrock.sannealing;
 
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;

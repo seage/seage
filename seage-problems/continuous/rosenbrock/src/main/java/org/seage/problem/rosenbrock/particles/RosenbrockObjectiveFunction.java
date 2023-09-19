@@ -23,6 +23,7 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
+
 package org.seage.problem.rosenbrock.particles;
 
 import org.seage.metaheuristic.particles.IObjectiveFunction;

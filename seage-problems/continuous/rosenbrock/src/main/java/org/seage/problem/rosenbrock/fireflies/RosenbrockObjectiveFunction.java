@@ -23,7 +23,9 @@
  *     Jan Zmatlik
  *     - Initial implementation
  */
+
 package org.seage.problem.rosenbrock.fireflies;
+
 import org.seage.metaheuristic.fireflies.ObjectiveFunction;
 import org.seage.metaheuristic.fireflies.Solution;
 import org.seage.problem.rosenbrock.RosenbrockFunction;
