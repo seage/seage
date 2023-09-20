@@ -27,9 +27,6 @@
 
 package org.seage.problem.rosenbrock.sannealing;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import org.junit.jupiter.api.Test;
 import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
 
 /**
@@ -39,8 +36,7 @@ import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
  */
 public class RosenbrockSimulatedAnnealingTest {
 
-  @Test
-  void testRosenbrockSimulatedAnnealing() throws Exception {
+  public static void main(String[] args) throws Exception {
     int dimension = 10;
 
     RosenbrockSolution rosSolution = new RosenbrockSolution(dimension);
@@ -67,6 +63,5 @@ public class RosenbrockSimulatedAnnealingTest {
     }
 
     System.out.println("");
-    assertNull(null);
   }
 }

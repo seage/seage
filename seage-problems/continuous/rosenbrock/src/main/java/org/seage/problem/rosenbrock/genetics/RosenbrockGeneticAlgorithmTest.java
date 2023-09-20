@@ -20,11 +20,7 @@
 
 package org.seage.problem.rosenbrock.genetics;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import java.util.ArrayList;
-import org.junit.jupiter.api.Test;
-import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator;
 import org.seage.metaheuristic.genetics.GeneticAlgorithm;
@@ -41,8 +37,7 @@ public class RosenbrockGeneticAlgorithmTest {
   private static final Logger logger = 
       LoggerFactory.getLogger(RosenbrockGeneticAlgorithmTest.class.getName());
   
-  @Test
-  void testRosenbrockGeneticAlgorithm() throws Exception {
+  public static void main(String[] args) throws Exception {
     try {
       int dim = 11;
 
@@ -118,7 +113,6 @@ public class RosenbrockGeneticAlgorithmTest {
         System.out.print(gs.getBestSubject().getChromosome().getGene(i) + " ");
       }
       System.out.println();
-      assertNull(null);
     } catch (Exception ex) {
       // TODO Auto-generated catch block
       logger.error("{}", ex.getMessage(), ex);

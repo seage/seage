@@ -27,9 +27,6 @@
 
 package org.seage.problem.rosenbrock.particles;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import org.junit.jupiter.api.Test;
 import org.seage.metaheuristic.particles.IParticleSwarmListener;
 import org.seage.metaheuristic.particles.Particle;
 import org.seage.metaheuristic.particles.ParticleSwarm;
@@ -41,10 +38,8 @@ import org.seage.metaheuristic.particles.ParticleSwarmEvent;
  * @author Jan Zmatlik
  */
 public class RosenbrockParticleSwarmTest implements IParticleSwarmListener {
-  @Test
-  void testRosenbrockParticleSwarm() throws Exception {
+  public static void main(String[] args) throws Exception {
     new RosenbrockParticleSwarmTest().start();
-    assertNull(null);
   }
       
   /**

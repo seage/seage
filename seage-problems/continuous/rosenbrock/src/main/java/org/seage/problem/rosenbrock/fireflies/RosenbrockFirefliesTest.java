@@ -26,10 +26,8 @@
 
 package org.seage.problem.rosenbrock.fireflies;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.Test;
 import org.seage.metaheuristic.fireflies.FireflyOperator;
 import org.seage.metaheuristic.fireflies.FireflySearch;
 import org.seage.metaheuristic.fireflies.Solution;
@@ -40,8 +38,7 @@ import org.seage.metaheuristic.fireflies.Solution;
  * @author Jan Zmatlik
  */
 public class RosenbrockFirefliesTest {
-  @Test
-  void testRosenbrockFireflies() throws Exception {
+  public static void main(String[] args) throws Exception {
     int dimension = 4;
     boolean withDecreasingRandomness = false;
     boolean withHillClimbingBestSolution = false;
@@ -82,7 +79,6 @@ public class RosenbrockFirefliesTest {
     for (int i = 0; i < dimension; i++) {
       System.out.print(" " + ((ContinuousSolution) fs.getBestSolution()).getAssign()[i]);
     }
-    assertNull(null);
   }
 
   private static Solution[] generateInitialSolutions(
