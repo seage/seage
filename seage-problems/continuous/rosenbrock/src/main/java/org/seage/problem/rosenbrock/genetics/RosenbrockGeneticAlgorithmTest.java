@@ -37,6 +37,9 @@ public class RosenbrockGeneticAlgorithmTest {
   private static final Logger logger = 
       LoggerFactory.getLogger(RosenbrockGeneticAlgorithmTest.class.getName());
   
+  /**
+   * .
+   */
   public static void main(String[] args) throws Exception {
     try {
       int dim = 11;
@@ -49,14 +52,14 @@ public class RosenbrockGeneticAlgorithmTest {
 
       ContinuousGeneticOperator.Limit[] limits = new ContinuousGeneticOperator.Limit[dim];
       ContinuousGeneticOperator<Subject<Double>> operator =
-          new ContinuousGeneticOperator<Subject<Double>>(limits);
+          new ContinuousGeneticOperator<>(limits);
 
       for (int i = 0; i < dim; i++) {
         limits[i] = new ContinuousGeneticOperator.Limit(-10, 10);
       }
 
       GeneticAlgorithm<Subject<Double>> gs =
-          new GeneticAlgorithm<Subject<Double>>(operator, new RosenbrockEvaluator());
+          new GeneticAlgorithm<>(operator, new RosenbrockEvaluator());
       gs.addGeneticSearchListener(new IAlgorithmListener<GeneticAlgorithmEvent<Subject<Double>>>() {
 
         @Override
@@ -100,9 +103,9 @@ public class RosenbrockGeneticAlgorithmTest {
         dimArray[i] = 0.0;
       }
 
-      ArrayList<Subject<Double>> subjects = new ArrayList<Subject<Double>>();
+      ArrayList<Subject<Double>> subjects = new ArrayList<>();
       for (int i = 0; i < gs.getPopulationCount(); i++) {
-        subjects.add(new Subject<Double>(dimArray));
+        subjects.add(new Subject<>(dimArray));
         operator.randomize(subjects.get(i));
       }
 

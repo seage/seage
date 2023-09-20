@@ -19,6 +19,7 @@
  */
 
 /**
+ * .
  * Contributors:
  *   Jan Zmatlik
  *   - Initial implementation
@@ -38,6 +39,12 @@ import org.seage.metaheuristic.fireflies.Solution;
  * @author Jan Zmatlik
  */
 public class RosenbrockFirefliesTest {
+  /**
+   * .
+   *
+   * @param args .
+   * @throws Exception .
+   */
   public static void main(String[] args) throws Exception {
     int dimension = 4;
     boolean withDecreasingRandomness = false;
@@ -46,8 +53,8 @@ public class RosenbrockFirefliesTest {
     double initialIntensity = 1;
     double initialRandomness = 5;
     double finalRandomness = 2;
-    double absorption = 0.003;//0.025;
-    double timeStep = 0.7;//0.15;
+    double absorption = 0.003; //0.025;
+    double timeStep = 0.7; //0.15;
     int populationSize = 100;
     boolean maximizing = false;
     int iterationsToGo = 1000;
