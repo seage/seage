@@ -36,6 +36,12 @@ import org.seage.metaheuristic.sannealing.SimulatedAnnealing;
  */
 public class RosenbrockSimulatedAnnealingTest {
 
+  /**
+   * .
+   *
+   * @param args .
+   * @throws Exception .
+   */
   public static void main(String[] args) throws Exception {
     int dimension = 10;
 
