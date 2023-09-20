@@ -19,6 +19,7 @@
  */
 
 /**
+ * .
  * Contributors:
  *   Jan Zmatlik
  *   - Initial implementation
