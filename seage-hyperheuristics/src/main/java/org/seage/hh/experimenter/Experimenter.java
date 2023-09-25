@@ -188,6 +188,7 @@ public class Experimenter {
         // --- ----------
         
         scoreCard.putProblemScore(problemID, score);
+        problemsScores.add(score);
       }
     }
 

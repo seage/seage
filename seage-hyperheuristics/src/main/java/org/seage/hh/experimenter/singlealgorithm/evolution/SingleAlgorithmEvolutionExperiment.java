@@ -106,8 +106,8 @@ public class SingleAlgorithmEvolutionExperiment
     this.problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
     this.instancesInfo = new HashMap<>();
     
-    for ( String instanceID : instanceIDs ) {
-      instancesInfo.put(algorithmID, problemInfo.getProblemInstanceInfo(instanceID));
+    for (String instanceID : instanceIDs) {
+      instancesInfo.put(instanceID, problemInfo.getProblemInstanceInfo(instanceID));
     }
   }
 
