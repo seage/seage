@@ -21,3 +21,5 @@ include('seage-problem-fsp')
 project(':seage-problem-fsp').projectDir = file('seage-problems/discrete/fsp')
 include('seage-problem-qap')
 project(':seage-problem-qap').projectDir = file('seage-problems/discrete/qap')
+include('seage-problem-rosenbrock')
+project(':seage-problem-rosenbrock').projectDir = file('seage-problems/continuous/rosenbrock');
