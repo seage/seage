@@ -19,9 +19,10 @@
  */
 
 /**
+ * .
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ *   Jan Zmatlik
+ *   - Initial implementation
  */
 
 package org.seage.problem.rosenbrock.sannealing;
@@ -31,17 +32,16 @@ import org.seage.metaheuristic.sannealing.Solution;
 import org.seage.problem.rosenbrock.RosenbrockFunction;
 
 /**
+ * .
  *
  * @author Jan Zmatlik
  */
-public class RosenbrockObjectiveFunction implements IObjectiveFunction
-{
-    // f(X) = SUM(to N-1, i = 0) [(1 - Xi)^2 + 100 * (Xi+1 - Xi^2)^2]
-	@Override
-	public double getObjectiveValue(Solution solution)
-	{
-		double[] coords = ((RosenbrockSolution)solution).getCoords();
-        
-		return RosenbrockFunction.f(coords);
-	}
+public class RosenbrockObjectiveFunction implements IObjectiveFunction {
+  // f(X) = SUM(to N-1, i = 0) [(1 - Xi)^2 + 100 * (Xi+1 - Xi^2)^2]
+  @Override
+  public double getObjectiveValue(Solution solution) {
+    double[] coords = ((RosenbrockSolution) solution).getCoords();
+    
+    return RosenbrockFunction.f(coords);
+  }
 }

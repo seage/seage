@@ -20,50 +20,52 @@
 
 /**
  * Contributors:
- *     Jan Zmatlik
- *     - Initial implementation
+ *   Jan Zmatlik
+ *   - Initial implementation
  */
 
 package org.seage.problem.rosenbrock.sannealing;
 
+import org.seage.aal.algorithm.AlgorithmAdapterImpl;
 import org.seage.metaheuristic.sannealing.Solution;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
+ * .
  *
  * @author Jan Zmatlik
  */
 public class RosenbrockSolution extends Solution {
+  private static final Logger logger = 
+      LoggerFactory.getLogger(RosenbrockSolution.class.getName());
 
-    private double[] _coords;
+  private double[] coords;
 
-    public RosenbrockSolution(int dimension)
-    {
-        this._coords = new double[dimension];
+  public RosenbrockSolution(int dimension) {
+    this.coords = new double[dimension];
+  }
+
+  public void setCoords(double[] coords) {
+    this.coords = coords;
+  }
+
+  public double[] getCoords() {
+    return this.coords;
+  }
+
+  @Override
+  public RosenbrockSolution clone() {
+    RosenbrockSolution rosSolution = null;
+    try {
+      rosSolution = (RosenbrockSolution) super.clone();
+      rosSolution.setCoords(this.coords.clone());
+      rosSolution.setObjectiveValue(getObjectiveValue());
+    } catch (Exception ex) {
+      //LoggerFactory.getLogger(TspSolution.class.getName()).fatal( null, ex);
+      logger.error("{}", ex.getMessage());
+
     }
-
-    public void setCoords(double[] coords)
-    {
-        _coords = coords;
-    }
-
-    public double[] getCoords()
-    {
-        return _coords;
-    }
-
-    @Override
-    public RosenbrockSolution clone()
-    {
-        RosenbrockSolution rosSolution = null;
-        try
-        {
-            rosSolution = (RosenbrockSolution)super.clone();
-            rosSolution.setCoords( _coords.clone() );
-            rosSolution.setObjectiveValue(getObjectiveValue());
-        } catch (Exception ex)
-        {
-            //LoggerFactory.getLogger(TspSolution.class.getName()).fatal( null, ex);
-        }
-        return rosSolution;
-    }
+    return rosSolution;
+  }
 }
