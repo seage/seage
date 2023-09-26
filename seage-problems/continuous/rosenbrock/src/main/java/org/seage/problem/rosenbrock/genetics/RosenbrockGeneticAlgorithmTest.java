@@ -43,7 +43,7 @@ public class RosenbrockGeneticAlgorithmTest {
   public static void main(String[] args) throws Exception {
     try {
       // Dimension of the Rosenbrock function
-      int dim = 2;
+      int dim = 8;
 
       double[] test = new double[dim];
       for (int i = 0; i < dim; i++) {
