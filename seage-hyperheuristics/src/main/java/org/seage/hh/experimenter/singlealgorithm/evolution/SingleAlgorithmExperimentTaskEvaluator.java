@@ -144,7 +144,6 @@ public class SingleAlgorithmExperimentTaskEvaluator
     // Each subject evaluate separatly
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
       String configID = this.subjectHashToConfigIDMap.get(subject.hashCode());
-      logger.debug("Current configId is {}", configID);
 
       // Get the table row (results of config over instances)
       Map<String, Double> instancesObjVal = this.configCache.get(configID);
@@ -181,6 +180,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
     // Create and run tasks for each columns separatly
     for (String instanceID : this.instanceIDs) {
+      logger.info("Running tasks for instance {}", instanceID);
       List<ExperimentTaskRequest> taskIDs = createTaskList(subjects, instanceID);
       
       // Run tasks
@@ -188,7 +188,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
       experimentTasksRunner.performExperimentTasks(taskIDs, this::reportExperimentTask);
     }
     // Set the configuration objective value
-    logger.debug("setSubjectsObjectiveValue starts");
+    // logger.debug("setSubjectsObjectiveValue starts");
     this.setSubjectsObjectiveValue(subjects);
   }
 
@@ -196,8 +196,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     try {
       double taskObjValue = experimentTask.getValue();
       
-      logger.info("Report for config id: {}", experimentTask.getConfigID());
-      logger.info("Curr task value: {}", taskObjValue);
+      logger.info("Exp. task result score: {}, value: {}", experimentTask.getScore(), taskObjValue);
 
       // Put the objective value of experiment into the configcache
       // TODO - config cache is representing the table - instanceID + configID
