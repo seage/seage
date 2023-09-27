@@ -116,12 +116,12 @@ public class SingleAlgorithmEvolutionExperiment
     try {
       logger.info("-------------------------------------");
       logger.info("Problem: {}", problemID);
-      logger.info("Instances: ");
-      StringBuilder builder = new StringBuilder();
-      for (String instanceID : instanceIDs) {
-        builder.append(instanceID);
-      }
-      logger.info("Instance: {}", builder);
+      // logger.info("Instances: ");
+      // StringBuilder builder = new StringBuilder();
+      // for (String instanceID : instanceIDs) {
+      //   builder.append(instanceID);
+      // }
+      // logger.info("Instances: {}", builder);
       
       runExperimentTasksForProblemInstance();
     } catch (Exception ex) {

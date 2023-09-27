@@ -182,7 +182,7 @@ public class Experimenter {
         scoreCard.putProblemScore(problemID, problemScore);
         problemsScores.add(problemScore);
       } else {
-        logger.info("  Instance '{}'", "ALL");
+        logger.info("  Instance '{}'", entry.getValue().toString());
         Experiment experiment = createExperiment(experimentName, problemID, "", entry.getValue());
         double score = experiment.run();
         // --- ----------

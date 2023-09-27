@@ -179,8 +179,9 @@ public class SingleAlgorithmExperimentTaskEvaluator
     this.stageId += 1;
 
     // Create and run tasks for each columns separatly
-    for (String instanceID : this.instanceIDs) {
-      logger.info("Running tasks for instance {}", instanceID);
+    for (int i = 0; i < this.instanceIDs.size(); i++) {
+      String instanceID = this.instanceIDs.get(i);
+      logger.info("Iteration \t ({}/{})", i + 1, this.instanceIDs.size());
       List<ExperimentTaskRequest> taskIDs = createTaskList(subjects, instanceID);
       
       // Run tasks
@@ -196,7 +197,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     try {
       double taskObjValue = experimentTask.getValue();
       
-      logger.info("Exp. task result score: {}, value: {}", experimentTask.getScore(), taskObjValue);
+      logger.info("Task score: {}, value: {}", experimentTask.getScore(), taskObjValue);
 
       // Put the objective value of experiment into the configcache
       // TODO - config cache is representing the table - instanceID + configID
