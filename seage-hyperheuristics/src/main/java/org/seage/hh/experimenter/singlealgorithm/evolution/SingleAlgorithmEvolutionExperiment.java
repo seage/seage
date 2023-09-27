@@ -183,7 +183,6 @@ public class SingleAlgorithmEvolutionExperiment
       experimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
       if (taskScore > this.bestScore) {
-        logger.info("New best score");
         logger.info("New best score: old: {}, new {}", this.bestScore, taskScore);
         this.bestScore = taskScore;
       }
