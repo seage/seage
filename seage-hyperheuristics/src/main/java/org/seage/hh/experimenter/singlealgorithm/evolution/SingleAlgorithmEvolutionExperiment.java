@@ -172,16 +172,12 @@ public class SingleAlgorithmEvolutionExperiment
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
-      // TODO - custom experimentTask has nothing to report to experiment reporter
       // experimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
-      // String noteMess = "";
+      
       if (taskScore > this.bestScore) {
-        // noteMess = "(new best)";
         this.bestScore = taskScore;
       } 
-      // logger.info("Config '{}' score: {} {}", 
-      //     experimentTask.getConfigID(), taskScore, noteMess);
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
