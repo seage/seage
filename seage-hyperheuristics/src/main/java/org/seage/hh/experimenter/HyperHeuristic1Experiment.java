@@ -26,13 +26,12 @@ import org.slf4j.LoggerFactory;
  * .
  * @author David Omrai
  */
-public class HyperHeuristic1Experiment implements Experiment {
+public class HyperHeuristic1Experiment extends Experiment {
   private static Logger logger =
       LoggerFactory.getLogger(MetaHeuristicExperiment.class.getName());
   private ExtendedDefaultConfigurator configurator;
   private ProblemInfo problemInfo;
   private IExperimentTasksRunner experimentTasksRunner;
-  private ExperimentReporter experimentReporter;
   
   private UUID experimentID;
   private String problemID;
@@ -50,16 +49,12 @@ public class HyperHeuristic1Experiment implements Experiment {
    * HyperHeuristic1Experimenter constructor.
    */
   protected HyperHeuristic1Experiment(
-      UUID experimentID, String problemID, String instanceID, 
-      String algorithmID, int numSteps, int timeoutS,
-      ExperimentReporter experimentReporter) 
+      String algorithmID, String problemID, List<String> instanceIDs,
+      int numSteps, int timeoutS, String tag) 
       throws Exception {
-    this.experimentID = experimentID;
-    this.problemID = problemID;
-    this.instanceID = instanceID;
+    super(algorithmID, problemID, instanceIDs, timeoutS, tag);
     this.numSteps = numSteps;
     this.timeoutS = timeoutS;
-    this.experimentReporter = experimentReporter;
     this.bestScore = Double.MIN_VALUE;
     this.solutionPool = new ArrayList<>();
 
@@ -72,7 +67,7 @@ public class HyperHeuristic1Experiment implements Experiment {
   /**
    * Method runs experiment.
    */
-  public Double run() throws Exception {
+  public ExperimentScoreCard run() throws Exception {
     ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
 
     // provider and factory
@@ -130,12 +125,12 @@ public class HyperHeuristic1Experiment implements Experiment {
       experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
     }  
 
-    return bestScore;
+    return null;//bestScore;
   }
   
   private Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
-      experimentReporter.reportExperimentTask(experimentTask);
+      ExperimentReporter.reportExperimentTask(experimentTask);
 
       DataNode solutionNodes = experimentTask
           .getExperimentTaskReport().getDataNode("Solutions").getDataNode("Output");

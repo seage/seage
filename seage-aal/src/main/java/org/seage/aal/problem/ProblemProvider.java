@@ -209,6 +209,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
   /**
    * Lists all registered problem providers.
+   *
    * @return Map of problem ids and problem providers.
    * @throws Exception .
    */
@@ -223,10 +224,15 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
     providers = new HashMap<>();
 
     for (Class<?> c : providerClasses) {
-      IProblemProvider<Phenotype<?>> pp = 
-          (IProblemProvider<Phenotype<?>>) c.getConstructor().newInstance();
-      pp.getProblemInfo();
-      providers.put(c.getAnnotation(Annotations.ProblemId.class).value(), pp);       
+      IProblemProvider<Phenotype<?>> pp;
+      try {
+        pp = (IProblemProvider<Phenotype<?>>) c.getConstructor().newInstance();
+        pp.getProblemInfo();
+        providers.put(c.getAnnotation(Annotations.ProblemId.class).value(), pp);
+      } catch (Exception e) {
+        logger.warn("Provider class annotation error {}", c.getCanonicalName());
+      }
+             
     }
 
     return providers;

@@ -1,8 +1,8 @@
 package org.seage.hh.experimenter.singlealgorithm;
 
+import java.util.List;
 import java.util.UUID;
 
-import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.configurator.GridConfigurator;
 
 public class SingleAlgorithmGridExperiment extends SingleAlgorithmExperiment {
@@ -18,23 +18,20 @@ public class SingleAlgorithmGridExperiment extends SingleAlgorithmExperiment {
    * @throws Exception .
    */
   public SingleAlgorithmGridExperiment(
-      UUID experimentID,
+      String algorithmID,
       String problemID, 
-      String instanceID,
-      String algorithmID, 
+      List<String> instanceIDs,
       int numRuns,
       int timeoutS,
-      ExperimentReporter experimentReporter,
-      int granularity)
+      int granularity, String tag)
       throws Exception {
     super(
-        experimentID,
-        problemID,
         algorithmID,
-        instanceID,
+        problemID,
+        instanceIDs,
         numRuns,
         timeoutS,
-        experimentReporter
+        tag
     );
     
     experimentName = "SingleAlgorithmGrid";

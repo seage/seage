@@ -27,7 +27,6 @@
 package org.seage.aal.problem;
 
 import java.util.Map;
-
 import org.seage.aal.algorithm.IAlgorithmFactory;
 import org.seage.aal.algorithm.IPhenotypeEvaluator;
 import org.seage.aal.algorithm.Phenotype;

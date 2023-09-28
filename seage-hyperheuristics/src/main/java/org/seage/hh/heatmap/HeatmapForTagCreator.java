@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.seage.aal.score.ScoreCalculator;
-import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 import org.slf4j.Logger;

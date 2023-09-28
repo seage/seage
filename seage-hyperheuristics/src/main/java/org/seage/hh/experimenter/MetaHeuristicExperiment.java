@@ -18,40 +18,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class MetaHeuristicExperiment implements Experiment {
-  private static Logger logger =
-      LoggerFactory.getLogger(MetaHeuristicExperiment.class.getName());
+public class MetaHeuristicExperiment extends Experiment {
+  private static Logger logger = LoggerFactory.getLogger(MetaHeuristicExperiment.class.getName());
   private DefaultConfigurator defaultConfigurator;
   private FeedbackConfigurator feedbackConfigurator;
   private GridConfigurator gridConfigurator;
   private RandomConfigurator randomConfigurator;
   private ProblemInfo problemInfo;
   private IExperimentTasksRunner experimentTasksRunner;
-  private ExperimentReporter experimentReporter;
-  
-  private UUID experimentID;
-  private String problemID;
-  private String instanceID;
-  private String algorithmID;
+
   private int numRuns;
-  private int timeoutS;
   private double bestScore;
 
   /**
    * MetaHeuristicExperimenter constructor.
    */
-  protected MetaHeuristicExperiment(
-      UUID experimentID, String problemID, String instanceID, 
-      String algorithmID, int numRuns, int timeoutS,
-      ExperimentReporter experimentReporter) 
-      throws Exception {
-    this.experimentID = experimentID;
-    this.problemID = problemID;
-    this.instanceID = instanceID;
-    this.algorithmID = algorithmID;
+  protected MetaHeuristicExperiment(String algorithmID, String problemID, List<String> instanceIDs,
+      int numRuns, int timeoutS, String tag) throws Exception {
+    super(algorithmID, problemID, instanceIDs, timeoutS, tag);
     this.numRuns = numRuns;
-    this.timeoutS = timeoutS;
-    this.experimentReporter = experimentReporter;
     this.bestScore = 0.0;
 
     // Initialize all
@@ -64,10 +49,20 @@ public class MetaHeuristicExperiment implements Experiment {
 
   }
 
+  @Override
+  public ExperimentScoreCard run() throws Exception {
+    logStart();
+    for (String instanceID : instanceIDs) {
+      runForInstance(instanceID);
+    }
+    logEnd(0, bestScore);
+    return null; //bestScore;
+  }
+
   /**
-   * Method runs experiment.
+   * Method runs experiment for an instance.
    */
-  public Double run() throws Exception {
+  public Double runForInstance(String instanceID) throws Exception {
     ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
 
     // The taskQueue size must be limited since the results are stored in the task's reports
@@ -77,13 +72,12 @@ public class MetaHeuristicExperiment implements Experiment {
     // Prepare experiment task configs
     ProblemConfig config = defaultConfigurator.prepareConfigs(problemInfo,
         instanceInfo.getInstanceID(), algorithmID, 2)[1]; // the second with a bit of randomness
-      
+
 
     // Enqueue experiment tasks
     for (int runID = 1; runID <= numRuns; runID++) {
-      taskQueue.add(new ExperimentTaskRequest(
-          UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
-          algorithmID, config.hash(), config.getAlgorithmParams(), null, timeoutS));
+      taskQueue.add(new ExperimentTaskRequest(UUID.randomUUID(), experimentID, runID, 1, problemID,
+          instanceID, algorithmID, config.hash(), config.getAlgorithmParams(), null, timeoutS));
     }
 
     // RUN EXPERIMENT TASKS
@@ -91,16 +85,16 @@ public class MetaHeuristicExperiment implements Experiment {
 
     return bestScore;
   }
-  
+
   private Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
-      experimentReporter.reportExperimentTask(experimentTask);
+      ExperimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
       if (taskScore > bestScore) {
         this.bestScore = taskScore;
       }
     } catch (Exception e) {
-      logger.error(String.format("Failed to report the experiment task: %s", 
+      logger.error(String.format("Failed to report the experiment task: %s",
           experimentTask.getExperimentTaskID().toString()), e);
     }
     return null;

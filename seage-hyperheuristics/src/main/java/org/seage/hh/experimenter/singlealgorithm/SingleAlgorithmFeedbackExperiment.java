@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.hh.experimenter.ExperimentReporter;
+import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 
@@ -22,23 +22,21 @@ public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment
    * @throws Exception .
    */
   public SingleAlgorithmFeedbackExperiment(
-      UUID experimentID,
-      String problemID, 
-      String instanceID,
       String algorithmID, 
+      String problemID, 
+      List<String> instanceIDs,      
       int numRuns,
       int timeoutS,
       double spread,
-      ExperimentReporter experimentReporter
+      String tag
   ) throws Exception {
     super(
-        experimentID,
-        problemID,
         algorithmID,
-        instanceID,
+        problemID,
+        instanceIDs,
         numRuns,
         timeoutS,
-        experimentReporter
+        tag
     );
 
     experimentName = "SingleAlgorithmFeedback";
@@ -46,7 +44,7 @@ public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment
   }
 
   @Override
-  public Double run() throws Exception {
+  protected Double runForInstance(String instanceID) throws Exception {
     ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
 
     // The taskQueue size must be limited since the results are stored in the task's reports

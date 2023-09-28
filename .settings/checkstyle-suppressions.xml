@@ -9,4 +9,5 @@
   <suppress checks="JavadocStyleCheck" files="/"/>
   <suppress checks="MissingJavadocMethod" files="/"/>
   <suppress checks="SummaryJavadocCheck" files="/"/>
+  <suppress checks="AbbreviationAsWordInNameCheck" files=".*" />
 </suppressions>

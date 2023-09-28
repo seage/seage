@@ -11,6 +11,7 @@ import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentReporter;
+import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
@@ -26,9 +27,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Single algorithm evolution experiment class.
  */
-public class SingleAlgorithmEvolutionExperiment
-    implements IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject>>, 
-    Experiment {
+public class SingleAlgorithmEvolutionExperiment extends Experiment
+    implements IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject>> {
   private static Logger logger =
       LoggerFactory.getLogger(SingleAlgorithmEvolutionExperiment.class.getName());
   private FeedbackConfigurator feedbackConfigurator;
@@ -39,7 +39,6 @@ public class SingleAlgorithmEvolutionExperiment
   protected Configurator configurator;
 
   protected IExperimentTasksRunner experimentTasksRunner;
-  protected ExperimentReporter experimentReporter;
   protected ProblemInfo problemInfo;
   protected HashMap<String, ProblemInstanceInfo> instancesInfo;
 
@@ -80,25 +79,20 @@ public class SingleAlgorithmEvolutionExperiment
    * @throws Exception .
    */
   public SingleAlgorithmEvolutionExperiment(
-      UUID experimentID,
-      String problemID,
       String algorithmID,
+      String problemID,
       List<String> instanceIDs,
       int numSubjects, 
       int numIterations, 
       int algorithmTimeoutS,
-      ExperimentReporter experimentReporter
+      String tag
   ) throws Exception {
-    this.experimentID = experimentID;
-    this.problemID = problemID;
-    this.algorithmID = algorithmID;
-    this.instanceIDs = instanceIDs;
+    super(algorithmID, problemID, instanceIDs, algorithmTimeoutS, tag);
     this.numSubjects = numSubjects;
     this.numIterations = numIterations;
     this.algorithmTimeoutS = algorithmTimeoutS;
 
     this.experimentName = "SingleAlgorithmEvolution";
-    this.experimentReporter = experimentReporter;
     this.bestScore = 0.0;
     
     // Initialize
@@ -112,7 +106,7 @@ public class SingleAlgorithmEvolutionExperiment
   }
 
   @Override
-  public Double run() throws Exception {
+  public ExperimentScoreCard run() throws Exception {
     try {
       logger.info("-------------------------------------");
       logger.info("Problem: {}", problemID);
@@ -127,7 +121,7 @@ public class SingleAlgorithmEvolutionExperiment
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
     }
-    return bestScore;
+    return null;//bestScore;
   }
 
   protected void runExperimentTasksForProblemInstance() throws Exception {
@@ -180,7 +174,7 @@ public class SingleAlgorithmEvolutionExperiment
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
-      experimentReporter.reportExperimentTask(experimentTask);
+      ExperimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
       if (taskScore > this.bestScore) {
         logger.info("New best score: old: {}, new {}", this.bestScore, taskScore);

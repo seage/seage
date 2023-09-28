@@ -9,6 +9,7 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentReporter;
+import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
@@ -21,40 +22,27 @@ import org.slf4j.LoggerFactory;
 /**
  * Experimenter running producing random configs according to the metadata.
  */
-public class SingleAlgorithmExperiment implements Experiment {
+public abstract class SingleAlgorithmExperiment extends Experiment {
   private static Logger logger =
       LoggerFactory.getLogger(SingleAlgorithmExperiment.class.getName());
   protected Configurator configurator;
 
   protected IExperimentTasksRunner experimentTasksRunner;
-  protected ExperimentReporter experimentReporter;
   protected ProblemInfo problemInfo;
   
-  protected String experimentName;
-  protected UUID experimentID;
-  protected String problemID;
-  protected String instanceID;
-  protected String algorithmID;
   protected int numRuns;
-  protected int timeoutS;
   protected double bestScore;
 
   /**
    * SingleAlgorithmExperiment constructor - nothing special.
    */
   protected SingleAlgorithmExperiment(
-      UUID experimentID, String problemID, String algorithmID,
-      String instanceID, int numRuns, int timeoutS,
-      ExperimentReporter experimentReporter
+      String algorithmID, String problemID, 
+      List<String> instanceIDs, int numRuns, int timeoutS, String tag
   ) throws Exception {
-    this.experimentID = experimentID;
-    this.problemID = problemID;
-    this.algorithmID = algorithmID;
-    this.instanceID = instanceID;
+    super(algorithmID, problemID, instanceIDs, timeoutS, tag);
     this.numRuns = numRuns;
-    this.timeoutS = timeoutS;
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    this.experimentReporter = experimentReporter;
     experimentName = "SingleAlgorithm";
     bestScore = 0.0;
 
@@ -64,7 +52,16 @@ public class SingleAlgorithmExperiment implements Experiment {
   }
   
   @Override
-  public Double run() throws Exception {
+  public ExperimentScoreCard run() throws Exception {
+    logStart();
+    for (String instanceID : instanceIDs) {
+      runForInstance(instanceID);
+    }
+    logEnd(0, bestScore);
+    return null; //bestScore;
+  }
+
+  protected Double runForInstance(String instanceID) throws Exception {
     ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
 
     // The taskQueue size must be limited since the results are stored in the task's reports
@@ -84,14 +81,13 @@ public class SingleAlgorithmExperiment implements Experiment {
     
     // RUN EXPERIMENT TASKS
     experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
-
     return bestScore;
   }
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
       logger.debug("Report for config id: {}", experimentTask.getConfigID());
-      experimentReporter.reportExperimentTask(experimentTask);
+      ExperimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
       if (taskScore > bestScore) {
         bestScore = taskScore;

@@ -1,7 +1,7 @@
 package org.seage.hh.experimenter.singlealgorithm;
 
+import java.util.List;
 import java.util.UUID;
-import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
 
 public class SingleAlgorithmDefaultExperiment extends SingleAlgorithmExperiment {
@@ -17,24 +17,22 @@ public class SingleAlgorithmDefaultExperiment extends SingleAlgorithmExperiment 
    * @throws Exception .
    */
   public SingleAlgorithmDefaultExperiment(
-      UUID experimentID,
       String problemID, 
-      String instanceID,
-      String algorithmID, 
+      String algorithmID,
+      List<String> instanceIDs, 
       int numRuns,
       int timeoutS,
-      ExperimentReporter experimentReporter,
-      double spread
+      double spread,
+      String tag
   )
       throws Exception {
-    super(
-        experimentID,
-        problemID,
+    super(        
         algorithmID,
-        instanceID,
+        problemID,
+        instanceIDs,
         numRuns,
         timeoutS,
-        experimentReporter
+        tag
     );
 
     experimentName = "SingleAlgorithmDefault";

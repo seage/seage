@@ -48,7 +48,6 @@ public abstract class OldExperimenter {
   protected String[] algorithmIDs;
   protected ProblemInfo problemInfo;
   protected IExperimentTasksRunner experimentTasksRunner;
-  protected ExperimentReporter experimentReporter;
 
   /**
    * Experimenter performs experiment tasks.
@@ -72,7 +71,6 @@ public abstract class OldExperimenter {
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
     // this.experimentTasksRunner = new SparkExperimentTasksRunner();
 
-    this.experimentReporter = new ExperimentReporter();
   }
 
   public void runFromConfigFile(String configPath) throws Exception {
@@ -124,7 +122,7 @@ public abstract class OldExperimenter {
         TimeFormat.getTimeDurationBreakdown(totalEstimatedTime)));
     logger.info("-------------------------------------");
 
-    this.experimentReporter.createExperimentReport(
+    ExperimentReporter.createExperimentReport(
         this.experimentID,
         this.experimentName,
         new String[] {this.problemID},
@@ -142,7 +140,7 @@ public abstract class OldExperimenter {
     logger.info("Experiment duration: {} (DD:HH:mm:ss)", 
         TimeFormat.getTimeDurationBreakdown(endDate - startDate));
     
-    this.experimentReporter.updateEndDate(this.experimentID, new Date(endDate));
+    ExperimentReporter.updateEndDate(this.experimentID, new Date(endDate));
   }
 
   protected abstract void experimentMain() throws Exception;

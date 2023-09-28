@@ -1,8 +1,8 @@
 package org.seage.hh.experimenter.singlealgorithm;
 
+import java.util.List;
 import java.util.UUID;
 
-import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.configurator.RandomConfigurator;
 
 public class SingleAlgorithmRandomExperiment extends SingleAlgorithmExperiment {
@@ -17,23 +17,21 @@ public class SingleAlgorithmRandomExperiment extends SingleAlgorithmExperiment {
    * @throws Exception .
    */
   public SingleAlgorithmRandomExperiment(
-      UUID experimentID,
+      String algorithmID,
       String problemID, 
-      String instanceID,
-      String algorithmID, 
+      List<String> instanceIDs,
       int numRuns,
       int timeoutS,
-      ExperimentReporter experimentReporter
+      String tag
   )
       throws Exception {
     super(
-        experimentID,
-        problemID,
         algorithmID,
-        instanceID,
+        problemID,
+        instanceIDs,
         numRuns,
         timeoutS,
-        experimentReporter
+        tag
     );
     
     experimentName = "SingleAlgorithmRandom";

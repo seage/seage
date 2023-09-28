@@ -37,11 +37,10 @@ public class ReportCommand extends Command {
 
   @Override
   public void performCommand() throws Exception {
-    ExperimentReporter reporter = new ExperimentReporter();
     
     List<ExperimentRecord> experiments = (tag != null) 
-        ? reporter.getExperimentsByTag(tag)
-        : reporter.getExperiments();
+        ? ExperimentReporter.getExperimentsByTag(tag)
+        : ExperimentReporter.getExperiments();
 
     if (experiments.isEmpty()) {
       logger.info("No experiments for tag: {}", tag);

@@ -25,7 +25,7 @@ public class ExperimentReporter {
   /**
    * Puts experiment info into database.
    */
-  public synchronized void createExperimentReport(
+  public static synchronized void createExperimentReport(
       UUID experimentID, String experimentName, String[] problemIDs,
       String[] instanceIDs, String[] algorithmIDs, String config, 
       Date startDate, String tag) throws Exception {
@@ -56,7 +56,7 @@ public class ExperimentReporter {
     }    
   }
 
-  private String getHostInfo() {
+  private static String getHostInfo() {
     DataNode info = new DataNode("HostInfo");
     try {
       info.putValue("machineName", InetAddress.getLocalHost().getHostName());
@@ -74,7 +74,7 @@ public class ExperimentReporter {
    * @param experimentID Experiment id.
    * @param endDate New end date.
    */
-  public synchronized void updateEndDate(UUID experimentID, Date endDate) throws Exception {
+  public static synchronized void updateEndDate(UUID experimentID, Date endDate) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
@@ -88,7 +88,7 @@ public class ExperimentReporter {
    * @param experimentID Experiment id.
    * @param scoreCard Score card.
    */
-  public synchronized void updateExperimentScore(
+  public static synchronized void updateExperimentScore(
       UUID experimentID, ExperimentScoreCard scoreCard) 
       throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
@@ -111,7 +111,7 @@ public class ExperimentReporter {
    * multiple threads open db sessions that timeouted.
    * @param experimentTask Experiment task.
    */
-  public synchronized void reportExperimentTask(
+  public static synchronized void reportExperimentTask(
       ExperimentTaskRecord experimentTask) throws Exception {
      
     insertExperimentTask(experimentTask);
@@ -129,21 +129,21 @@ public class ExperimentReporter {
     // insertSolutions(session, experimentTaskID, newSolutions, "NewSolution", "new");
   }
 
-  public List<ExperimentRecord> getExperiments() throws Exception {
+  public static List<ExperimentRecord> getExperiments() throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
       return mapper.getExperiments();
     }
   }
 
-  public List<ExperimentRecord> getExperimentsByTag(String tag) throws Exception {
+  public static List<ExperimentRecord> getExperimentsByTag(String tag) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentMapper mapper = session.getMapper(ExperimentMapper.class);
       return mapper.getExperimentsByTag(tag);
     }
   }
   
-  private void insertExperimentTask(ExperimentTaskRecord experimentTask) throws Exception {
+  private static void insertExperimentTask(ExperimentTaskRecord experimentTask) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);
       mapper.insertExperimentTask(experimentTask);
@@ -151,7 +151,7 @@ public class ExperimentReporter {
     }
   }
 
-  private void insertSolutions(
+  private static void insertSolutions(
       UUID experimentTaskID, DataNode solutions, String elemName, String type)
       throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {      

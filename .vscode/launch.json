@@ -6,37 +6,6 @@
   "configurations": [
     {
       "type": "java",
-      "name": "RosenbrockGeneticAlgorithmTest",
-      "request": "launch",
-      "mainClass": "RosenbrockGeneticAlgorithmTest",
-      "projectName": "seage"
-    },
-    {
-      "type": "java",
-      "name": "SingleAlgorithmEvolutionExperimentTest",
-      "request": "launch",
-      "mainClass": "org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimentTest",
-      "projectName": "seage-hyperheuristics"
-    },
-    {
-      "type": "java",
-      "name": "SatAntColonyTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.sat.antcolony.SatAntColonyTest",
-      "projectName": "seage-problem-sat"
-    },
-    {
-      "type": "java",
-      "name": "SatAntColonyTestSimple",
-      "request": "launch",
-      "mainClass": "org.seage.problem.sat.antcolony.SatAntColonyTestSimple",
-      "projectName": "seage-problem-sat",
-      "env": {
-        "LOG_LEVEL": "debug"
-      }
-    },
-    {
-      "type": "java",
       "name": "Run info",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",
@@ -198,6 +167,30 @@
       "env": {
         "DB_URL": "jdbc:postgresql://localhost:25432/seage"
       }
-    }
+    },
+    {
+      "type": "java",
+      "name": "Run experiment-single-evolution, postgres",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "experiment-single-evolution",
+        "-a",
+        "GeneticAlgorithm",
+        "-i",
+        "TSP:berlin52",
+        "-t",
+        "1",
+        "-n",
+        "4",
+        "-g",
+        "2"
+      ],
+      "env": {
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+      }
+    },
   ]
 }

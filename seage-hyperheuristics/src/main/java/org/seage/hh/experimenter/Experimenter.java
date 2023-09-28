@@ -29,10 +29,9 @@ import org.slf4j.LoggerFactory;
 public class Experimenter {
   protected static Logger logger = LoggerFactory.getLogger(Experimenter.class.getName());
 
-  protected ExperimentReporter experimentReporter;
-
   protected UUID experimentID;
   protected String algorithmID;
+  protected String[] problemIDs;
   protected Map<String, List<String>> instanceIDsPerProblems;
   protected int numRuns;
   protected int timeoutS;
@@ -65,12 +64,11 @@ public class Experimenter {
       int numRuns, int timeoutS, String tag) throws Exception {
     this.experimentID = UUID.randomUUID();
     this.algorithmID = algorithmID;
+    this.problemIDs = instanceIDsPerProblems.keySet().toArray(new String[0]);
     this.instanceIDsPerProblems = instanceIDsPerProblems;
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
     this.tag = tag;
-
-    this.experimentReporter = new ExperimentReporter();
   }
 
   /**
@@ -114,16 +112,16 @@ public class Experimenter {
    */
   public void runExperiment(String experimentName) throws Exception {
     // Create experiment reporter
-    experimentReporter.createExperimentReport(
+    ExperimentReporter.createExperimentReport(
         experimentID,
         experimentName,
-        instanceIDsPerProblems.keySet().toArray(new String[0]),
+        problemIDs,
         getProblemInstancesArray(),
         new String[] {algorithmID},
         getExperimentConfig(),
         Date.from(Instant.now()),
         tag
-    ); 
+    );
     
     logger.info("---------------------------------------------------");
     logger.info("AlgorithmID:   ### {} ###", algorithmID);
@@ -139,12 +137,10 @@ public class Experimenter {
 
     // Initialize array for problems scores
     List<Double> problemsScores = new ArrayList<>();
+    
+    ExperimentScoreCard scoreCard = new ExperimentScoreCard(algorithmID, problemIDs);
 
-    ExperimentScoreCard scoreCard = new ExperimentScoreCard(algorithmID,
-        instanceIDsPerProblems.keySet().toArray(new String[] {}));
-
-    for (Entry<String, List<String>> entry : instanceIDsPerProblems.entrySet()) {
-      String problemID = entry.getKey();
+    for (String problemID : problemIDs) {      
       logger.info("Problem '{}'", problemID);
 
       logger.debug("{}", ProblemProvider.getProblemProviders().values());
@@ -159,43 +155,42 @@ public class Experimenter {
       List<String> instanceIDs = new ArrayList<>();
       List<Double> instanceScores = new ArrayList<>();
 
-       if (!experimentName.equals("SingleAlgorithmEvolution")) {
-        for (String instanceID : entry.getValue()) {
-          logger.info("  Instance '{}'", instanceID);
+      //  if (!experimentName.equals("SingleAlgorithmEvolution")) {
+        // for (String instanceID : entry.getValue()) {
+          // logger.info("  Instance '{}'", instanceID);
 
           // RUN EXPERIMENT
-          Experiment experiment = createExperiment(
-              experimentName, problemID, instanceID, instanceIDs);
-          double score = experiment.run();
+          // Experiment experiment = createExperiment(experimentName, problemID, instanceIDs);
+          // ProblemScoreCard scoreCard = experiment.run();
           // --- ----------
 
-          scoreCard.putInstanceScore(problemID, instanceID, score);
+          // scoreCard.putInstanceScore(problemID, instanceID, score);
 
-          instanceIDs.add(instanceID);
-          instanceScores.add(score);
-        }
+          // instanceIDs.add(instanceID);
+          // instanceScores.add(score);
+        // }
 
         double problemScore = problemScoreCalculator.calculateProblemScore(
             instanceIDs.toArray(new String[]{}), 
             instanceScores.stream().mapToDouble(a -> a).toArray());
 
-        scoreCard.putProblemScore(problemID, problemScore);
+        // scoreCard.putProblemScore(problemID, problemScore);
         problemsScores.add(problemScore);
-      } else {
-        logger.info("  Instance '{}'", entry.getValue().toString());
-        Experiment experiment = createExperiment(experimentName, problemID, "", entry.getValue());
-        double score = experiment.run();
-        // --- ----------
+      // } else {
+      //   logger.info("  Instance '{}'", entry.getValue().toString());
+      //   Experiment experiment = createExperiment(experimentName, problemID, entry.getValue());
+      //   double score = experiment.run();
+      //   // --- ----------
         
-        scoreCard.putProblemScore(problemID, score);
-        problemsScores.add(score);
-      }
+      //   scoreCard.putProblemScore(problemID, score);
+      //   problemsScores.add(score);
+      // }
     }
 
     double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
     scoreCard.setAlgorithmScore(experimentScore);
 
-    experimentReporter.updateExperimentScore(experimentID, scoreCard);
+    ExperimentReporter.updateExperimentScore(experimentID, scoreCard);
 
     long endDate = System.currentTimeMillis();
     logger.info("---------------------------------------------------");
@@ -204,50 +199,50 @@ public class Experimenter {
         TimeFormat.getTimeDurationBreakdown(endDate - startDate));
     logger.info("Experiment score: ### {} ###", scoreCard.getAlgorithmScore());
 
-    experimentReporter.updateEndDate(experimentID, new Date(endDate));
+    ExperimentReporter.updateEndDate(experimentID, new Date(endDate));
   }
 
-  private Experiment createExperiment(
-      String experimentName, String problemID, String instanceID, List<String>instanceIDs)
-      throws Exception {
+  // private Experiment createExperiment(
+  //     String experimentName, String problemID, List<String>instanceIDs)
+  //     throws Exception {
 
-    if (experimentName.equals("SingleAlgorithmDefault")) {
-      return new SingleAlgorithmDefaultExperiment(experimentID, problemID, instanceID, algorithmID,
-          numRuns, timeoutS, experimentReporter, spread);
-    }
-    if (experimentName.equals("SingleAlgorithmRandom")) {
-      return new SingleAlgorithmRandomExperiment(experimentID, problemID, instanceID, algorithmID,
-          numRuns, timeoutS, experimentReporter);
-    }
-    if (experimentName.equals("SingleAlgorithmGrid")) {
-      return new SingleAlgorithmGridExperiment(experimentID, problemID, instanceID, algorithmID,
-          numRuns, timeoutS, experimentReporter, granularity);
-    }
-    if (experimentName.equals("SingleAlgorithmFeedback")) {
-      return new SingleAlgorithmFeedbackExperiment(experimentID, problemID, instanceID, algorithmID,
-          numRuns, timeoutS, spread, experimentReporter);
-    }
-    if (experimentName.equals("SingleAlgorithmEvolution")) {
-      return new SingleAlgorithmEvolutionExperiment(experimentID, problemID, algorithmID,
-          instanceIDs, numRuns, numOfIterations, timeoutS, experimentReporter);
-    }
+  //   if (experimentName.equals("SingleAlgorithmDefault")) {
+  //     return new SingleAlgorithmDefaultExperiment(experimentID, problemID, instanceIDs, algorithmID,
+  //         numRuns, timeoutS, experimentReporter, spread);
+  //   }
+  //   if (experimentName.equals("SingleAlgorithmRandom")) {
+  //     return new SingleAlgorithmRandomExperiment(experimentID, problemID, instanceIDs, algorithmID,
+  //         numRuns, timeoutS, experimentReporter);
+  //   }
+  //   if (experimentName.equals("SingleAlgorithmGrid")) {
+  //     return new SingleAlgorithmGridExperiment(experimentID, problemID, instanceIDs, algorithmID,
+  //         numRuns, timeoutS, experimentReporter, granularity);
+  //   }
+  //   if (experimentName.equals("SingleAlgorithmFeedback")) {
+  //     return new SingleAlgorithmFeedbackExperiment(experimentID, problemID, instanceIDs, algorithmID,
+  //         numRuns, timeoutS, spread, experimentReporter);
+  //   }
+  //   if (experimentName.equals("SingleAlgorithmEvolution")) {
+  //     return new SingleAlgorithmEvolutionExperiment(experimentID, problemID, algorithmID,
+  //         instanceIDs, numRuns, numOfIterations, timeoutS, experimentReporter);
+  //   }
 
 
-    boolean ordinaryAlg = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo()
-        .getDataNode("Algorithms").getDataNodeById(algorithmID) != null;
+  //   boolean ordinaryAlg = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo()
+  //       .getDataNode("Algorithms").getDataNodeById(algorithmID) != null;
 
-    if (ordinaryAlg) {
-      return new MetaHeuristicExperiment(experimentID, problemID, instanceID, algorithmID, numRuns,
-          timeoutS, experimentReporter);
-    }
+  //   if (ordinaryAlg) {
+  //     return new MetaHeuristicExperiment(experimentID, problemID, instanceIDs, algorithmID, numRuns,
+  //         timeoutS, experimentReporter);
+  //   }
 
-    if (algorithmID.equals("HyperHeuristic1")) {
-      return new HyperHeuristic1Experiment(experimentID, problemID, instanceID, algorithmID,
-          numRuns, timeoutS, experimentReporter);
-    }
+  //   if (algorithmID.equals("HyperHeuristic1")) {
+  //     return new HyperHeuristic1Experiment(experimentID, problemID, instanceIDs, algorithmID,
+  //         numRuns, timeoutS, experimentReporter);
+  //   }
 
-    throw new Exception(String.format("Unknown algorithm id '%s'", algorithmID));
-  }
+  //   throw new Exception(String.format("Unknown algorithm id '%s'", algorithmID));
+  // }
 
   protected String getExperimentConfig() {
     DataNode config = new DataNode("Config");
