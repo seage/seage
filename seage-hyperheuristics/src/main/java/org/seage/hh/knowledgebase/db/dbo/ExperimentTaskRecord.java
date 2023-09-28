@@ -68,7 +68,7 @@ public class ExperimentTaskRecord {
   private Double score;
   private Double scoreDelta;
   // TODO - adding the bestObjValue variable
-  private Double value;
+  private Double objValue;
 
   private AlgorithmParams algorithmParams;
   private long timeoutS;
@@ -135,7 +135,7 @@ public class ExperimentTaskRecord {
     this.score = Double.MAX_VALUE; // TODO - shouldn't this be zero?
     this.scoreDelta = 0.0;
     // TODO - adding bestObjValue parameter
-    this.value = 0.0;
+    this.objValue = 0.0;
 
     this.algorithmParams = algorithmParams;
     this.timeoutS = timeoutS;
@@ -315,7 +315,7 @@ public class ExperimentTaskRecord {
 
     double bestObjValue = getBestObjectiveValue(outputs);
 
-    this.value = bestObjValue;
+    this.objValue = bestObjValue;
 
     double taskLatestScore = 
         scoreCalculator.calculateInstanceScore(instanceID, bestObjValue);
@@ -479,12 +479,12 @@ public class ExperimentTaskRecord {
     this.scoreDelta = scoreDelta;
   }
 
-  public Double getValue() {
-    return this.value;
+  public Double getObjValue() {
+    return this.objValue;
   }
 
-  public void setValue(Double value) {
-    this.value = value;
+  public void setOjbValue(Double objValue) {
+    this.objValue = objValue;
   }
 
   public long getTimeoutS() {

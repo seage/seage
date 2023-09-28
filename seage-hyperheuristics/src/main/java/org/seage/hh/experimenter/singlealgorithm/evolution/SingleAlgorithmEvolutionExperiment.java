@@ -114,15 +114,7 @@ public class SingleAlgorithmEvolutionExperiment
   @Override
   public Double run() throws Exception {
     try {
-      logger.info("-------------------------------------");
-      logger.info("Problem: {}", problemID);
-      // logger.info("Instances: ");
-      // StringBuilder builder = new StringBuilder();
-      // for (String instanceID : instanceIDs) {
-      //   builder.append(instanceID);
-      // }
-      // logger.info("Instances: {}", builder);
-      
+      logger.info("-------------------------------------");      
       runExperimentTasksForProblemInstance();
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
@@ -180,12 +172,16 @@ public class SingleAlgorithmEvolutionExperiment
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
-      experimentReporter.reportExperimentTask(experimentTask);
+      // TODO - custom experimentTask has nothing to report to experiment reporter
+      // experimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
+      String noteMess = "";
       if (taskScore > this.bestScore) {
-        logger.info("New best score: old: {}, new {}", this.bestScore, taskScore);
+        noteMess = "(new best)";
         this.bestScore = taskScore;
-      }
+      } 
+      logger.info("Task '{}' score: {} {}", 
+          experimentTask.getConfigID(), taskScore, noteMess);
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
