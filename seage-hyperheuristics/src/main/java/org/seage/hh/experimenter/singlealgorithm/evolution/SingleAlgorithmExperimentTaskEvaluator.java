@@ -156,8 +156,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
       }
     }
         
-    logger.info("Best overall configuration {} score {}", 
-        bestConfigID, getProblemScore(bestConfigID));
+    logger.info(String.format("Best overall configuration %-10.10s score %.4g", 
+        bestConfigID, getProblemScore(bestConfigID)));
   }
 
   /**
