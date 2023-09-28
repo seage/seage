@@ -238,9 +238,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
     HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
 
     // Create and run tasks for each columns separatly
-    for (int i = 0; i < this.instanceIDs.size(); i++) {
-      String instanceID = this.instanceIDs.get(i);
-      logger.info("Iteration \t ({}/{}) [{}]", i + 1, this.instanceIDs.size(), instanceID);
+    for (String instanceID : this.instanceIDs) {
+      logger.info("Running {} on {}", this.problemID, instanceID);
       List<ExperimentTaskRequest> taskIDs = createTaskList(subjects, instanceID);
       
       // Run tasks

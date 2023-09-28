@@ -180,7 +180,7 @@ public class SingleAlgorithmEvolutionExperiment
         noteMess = "(new best)";
         this.bestScore = taskScore;
       } 
-      logger.info("Task '{}' score: {} {}", 
+      logger.info("Config '{}' score: {} {}", 
           experimentTask.getConfigID(), taskScore, noteMess);
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
@@ -196,6 +196,7 @@ public class SingleAlgorithmEvolutionExperiment
     List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<>();
 
     // TODO - is using this configurator right?
+    logger.info("Initializing subjects");
     for (String instanceID : instanceIDs) {
       ProblemConfig[] pc = feedbackConfigurator.prepareConfigs(
         problemInfo, instanceID, algorithmID, count);
