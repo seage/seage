@@ -175,13 +175,13 @@ public class SingleAlgorithmEvolutionExperiment
       // TODO - custom experimentTask has nothing to report to experiment reporter
       // experimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
-      String noteMess = "";
+      // String noteMess = "";
       if (taskScore > this.bestScore) {
-        noteMess = "(new best)";
+        // noteMess = "(new best)";
         this.bestScore = taskScore;
       } 
-      logger.info("Config '{}' score: {} {}", 
-          experimentTask.getConfigID(), taskScore, noteMess);
+      // logger.info("Config '{}' score: {} {}", 
+      //     experimentTask.getConfigID(), taskScore, noteMess);
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
@@ -196,7 +196,7 @@ public class SingleAlgorithmEvolutionExperiment
     List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<>();
 
     // TODO - is using this configurator right?
-    logger.info("Initializing subjects");
+    logger.info("GA init");
     for (String instanceID : instanceIDs) {
       ProblemConfig[] pc = feedbackConfigurator.prepareConfigs(
         problemInfo, instanceID, algorithmID, count);

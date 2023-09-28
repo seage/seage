@@ -128,6 +128,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
       List<SingleAlgorithmExperimentTaskSubject> subjects,
       HashMap<String, HashMap<String, Integer>> rankedSubjects) throws Exception {
     
+    double bestConfigScore = 0.0;
+    String bestConfigID = "";
     // Each subject evaluate separatly
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
       String configID = this.subjectHashToConfigIDMap.get(subject.hashCode());
@@ -147,7 +149,15 @@ public class SingleAlgorithmExperimentTaskEvaluator
       // Config score
       Double configScore = result / sumOfWeights;
       subject.setObjectiveValue(new double[] {configScore});
+
+      if (bestConfigScore <= configScore) {
+        bestConfigID = configID;
+        bestConfigScore = configScore;
+      }
     }
+        
+    logger.info("Best overall configuration {} score {}", 
+        bestConfigID, getProblemScore(bestConfigID));
   }
 
   /**
@@ -158,15 +168,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @throws Exception Exception.
    */
   private void reportSubjectsProblemScore(
-      List<SingleAlgorithmExperimentTaskSubject> subjects) throws Exception{
-    
-    ProblemInfo problemInfo = ProblemProvider
-          .getProblemProviders()
-          .get(this.problemID)
-          .getProblemInfo();
-      
-    ProblemScoreCalculator problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
-
+      List<SingleAlgorithmExperimentTaskSubject> subjects) throws Exception {
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
       AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
       for (int i = 0; i < subject.getChromosome().getLength(); i++) {
@@ -174,14 +176,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
       }
       String configID = algorithmParams.hash();
 
-      List<Double> instanceScores = new ArrayList<>();
-      for (String instanceID : this.instanceIDs) {
-        instanceScores.add(this.configCache.get(configID).get(instanceID).getScore());
-      }
-
-      double problemScore = problemScoreCalculator.calculateProblemScore(
-            this.instanceIDs.toArray(new String[]{}), 
-            instanceScores.stream().mapToDouble(a -> a).toArray());
+      double problemScore = getProblemScore(configID);
 
       ExperimentTaskRequest customRequest = new ExperimentTaskRequest(
           this.experimentId, 
@@ -201,6 +196,29 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
       this.reportFn.apply(customRecord);
     }
+  }
+
+  /**
+   * Method return calculated problem score for configs score over all instances.
+   *
+   * @param configID ConfigID.
+   * @return ProblemScore
+   * @throws Exception Exception.
+   */
+  private double getProblemScore(String configID) throws Exception {
+    ProblemInfo problemInfo = ProblemProvider
+          .getProblemProviders()
+          .get(this.problemID)
+          .getProblemInfo();
+    ProblemScoreCalculator problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
+    List<Double> instanceScores = new ArrayList<>();
+    for (String instanceID : this.instanceIDs) {
+      instanceScores.add(this.configCache.get(configID).get(instanceID).getScore());
+    }
+
+    return problemScoreCalculator.calculateProblemScore(
+        this.instanceIDs.toArray(new String[]{}), 
+        instanceScores.stream().mapToDouble(a -> a).toArray());
   }
 
 
@@ -228,6 +246,12 @@ public class SingleAlgorithmExperimentTaskEvaluator
       }
       rankedSubjects.get(configID).put(instanceID, i + 1);
     }
+
+    // Logg the best config info
+    String bestConfigID = sortedConfigIDsByObjVal.get(sortedConfigIDsByObjVal.size() - 1);
+    logger.info("\t- best configuration: {} score {}", 
+        this.configCache.get(bestConfigID).get(instanceID).getConfigID(),
+        this.configCache.get(bestConfigID).get(instanceID).getScore());
   }
 
   @Override
@@ -239,7 +263,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
     // Create and run tasks for each columns separatly
     for (String instanceID : this.instanceIDs) {
-      logger.info("Running {} on {}", this.problemID, instanceID);
+      logger.info("Evaluating configs for instance {}", instanceID);
       List<ExperimentTaskRequest> taskIDs = createTaskList(subjects, instanceID);
       
       // Run tasks
