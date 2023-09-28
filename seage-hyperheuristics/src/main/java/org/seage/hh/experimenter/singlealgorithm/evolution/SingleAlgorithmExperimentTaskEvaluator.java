@@ -62,24 +62,9 @@ public class SingleAlgorithmExperimentTaskEvaluator
     this.timeoutS = timeoutS;
     this.configCache = new HashMap<>();
     this.subjectHashToConfigIDMap = new HashMap<>();
-    // for (String instanceID : instanceIDs) {
-    //   this.configCache.put(instanceID, new HashMap<>());
-    // }
     this.instancesInfo = instancesInfo;
     this.reportFn = reportFn;
     this.stageId = 0;
-
-    // Sort the instancesIds based on their size 
-    Comparator<String> comparator = (i1, i2) -> {
-      try {
-        return Double.compare(
-            this.instancesInfo.get(i1).getValueDouble("size"), 
-            this.instancesInfo.get(i2).getValueDouble("size"));
-      } catch (Exception e) {
-        return 0;
-      }
-    };
-    Collections.sort(this.instanceIDs, comparator);
   }
 
 
@@ -255,7 +240,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     // Create and run tasks for each columns separatly
     for (int i = 0; i < this.instanceIDs.size(); i++) {
       String instanceID = this.instanceIDs.get(i);
-      logger.info("Iteration \t ({}/{})", i + 1, this.instanceIDs.size());
+      logger.info("Iteration \t ({}/{}) [{}]", i + 1, this.instanceIDs.size(), instanceID);
       List<ExperimentTaskRequest> taskIDs = createTaskList(subjects, instanceID);
       
       // Run tasks

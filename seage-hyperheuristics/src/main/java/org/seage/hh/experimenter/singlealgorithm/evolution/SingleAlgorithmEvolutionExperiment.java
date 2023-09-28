@@ -255,9 +255,8 @@ public class SingleAlgorithmEvolutionExperiment
   @Override
   public void iterationPerformed(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e) {
     // logger.info(" Iteration " + e.getGeneticSearch().getCurrentIteration());
-    logger.info(String.format(
-        "%-44s (%d/%d)", "   Iteration: ", e.getGeneticSearch().getCurrentIteration(),
-        e.getGeneticSearch().getIterationToGo()));
+    logger.info("GA iteration: \t ({}/{})", e.getGeneticSearch().getCurrentIteration(),
+        e.getGeneticSearch().getIterationToGo());
   }
 
   @Override
