@@ -138,7 +138,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param taskIDs Task queue.
    * @param taskMap Task map.
    * @return Weighted order.
-   */ // TODO - not evaluate, but objective value for row is being calculated here
+   */
   private void setSubjectsConfigScore(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
       HashMap<String, HashMap<String, Integer>> rankedSubjects) throws Exception {
