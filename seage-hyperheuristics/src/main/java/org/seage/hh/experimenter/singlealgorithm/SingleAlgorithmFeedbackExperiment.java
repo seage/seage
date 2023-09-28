@@ -7,15 +7,14 @@ import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
-import org.seage.hh.heatmap.ScoreCard;
 
 public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment {
 
   /**
    * .
+   * @param algorithmID .
    * @param problemID .
    * @param instanceID .
-   * @param algorithmID .
    * @param numRuns .
    * @param timeoutS .
    * @param spread .

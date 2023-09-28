@@ -132,7 +132,7 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "args": [
-        "experiment-single-random",
+        "experiment-single-feedback",
         "-a",
         "GeneticAlgorithm",
         "-i",
@@ -143,7 +143,7 @@
         "1"
       ],
       "env": {
-        "DB_URL": "jdbc:postgresql://localhost:25432/seage"
+        // "DB_URL": "jdbc:postgresql://localhost:25432/seage"
       }
     },
     {

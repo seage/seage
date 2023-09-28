@@ -12,7 +12,6 @@ import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
-import org.seage.hh.heatmap.ScoreCard;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.runner.IExperimentTasksRunner;
 import org.seage.hh.runner.LocalExperimentTasksRunner;
@@ -59,7 +58,6 @@ public abstract class SingleAlgorithmExperiment extends Experiment {
       runForInstance(instanceID);
     }
     logEnd(bestScore);
-    //return null; //bestScore;
   }
 
   protected Double runForInstance(String instanceID) throws Exception {

@@ -1,11 +1,8 @@
 package org.seage.hh.experimenter.singlealgorithm.evolution;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
@@ -15,7 +12,6 @@ import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentReporter;
 import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
-import org.seage.hh.heatmap.ScoreCard;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.runner.IExperimentTasksRunner;
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -47,26 +43,11 @@ public class SingleAlgorithmEvolutionExperiment extends Experiment
   protected int numRuns;
   private double bestScore; 
 
-  //    public SingleAlgorithmEvolutionExperiment(
-  //      int numSubjects, int numIterations, int algorithmTimeoutS)
-  //            throws Exception
-  //    {
-  //        super("SingleAlgorithmEvolution");
-  //
-  //        _numSubjects = numSubjects;
-  //        _numIterations = numIterations;
-  //        _algorithmTimeoutS = algorithmTimeoutS;
-  //
-  //        _feedbackConfigurator = new FeedbackConfigurator();
-  //        ;
-  //    }
-
   /**
    * Constructor.
    *
-   * @param experimentID Experiment ID.
-   * @param problemID Problem ID.
    * @param algorithmID Algorithm ID.
+   * @param problemID Problem ID.
    * @param instanceIDs Instance IDs. 
    * @param numSubjects Number of subjects.
    * @param numIterations Number of iterations.
@@ -107,11 +88,7 @@ public class SingleAlgorithmEvolutionExperiment extends Experiment
     createExperimentReport();   
     runExperimentTasksForProblemInstance();
     logEnd(bestScore);
-
-    //return null;//bestScore;
   }
-
-
 
   protected void runExperimentTasksForProblemInstance() throws Exception {
 

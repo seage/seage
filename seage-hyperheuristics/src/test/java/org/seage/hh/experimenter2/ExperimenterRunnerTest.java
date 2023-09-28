@@ -1,7 +1,5 @@
 package org.seage.hh.experimenter2;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;

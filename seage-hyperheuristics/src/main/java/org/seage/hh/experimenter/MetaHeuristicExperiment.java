@@ -57,7 +57,6 @@ public class MetaHeuristicExperiment extends Experiment {
       runForInstance(instanceID);
     }
     logEnd(bestScore);
-    //return null; //bestScore;
   }
 
   /**

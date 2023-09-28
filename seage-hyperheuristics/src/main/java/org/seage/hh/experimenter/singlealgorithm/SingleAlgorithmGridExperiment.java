@@ -1,17 +1,15 @@
 package org.seage.hh.experimenter.singlealgorithm;
 
 import java.util.List;
-import java.util.UUID;
-
 import org.seage.hh.experimenter.configurator.GridConfigurator;
 
 public class SingleAlgorithmGridExperiment extends SingleAlgorithmExperiment {
 
   /**
    * .
+   * @param algorithmID .
    * @param problemID .
    * @param instanceID .
-   * @param algorithmID .
    * @param numRuns .
    * @param timeoutS .
    * @param granularity .
