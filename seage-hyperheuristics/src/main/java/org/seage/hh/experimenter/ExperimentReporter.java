@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
 import org.seage.data.DataNode;
+import org.seage.hh.heatmap.ScoreCard;
 import org.seage.hh.knowledgebase.db.DbManager;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
@@ -89,7 +90,7 @@ public class ExperimentReporter {
    * @param scoreCard Score card.
    */
   public static synchronized void updateExperimentScore(
-      UUID experimentID, ExperimentScoreCard scoreCard) 
+      UUID experimentID, ScoreCard scoreCard) 
       throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       Gson gson = new GsonBuilder().setPrettyPrinting().create();

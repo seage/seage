@@ -48,7 +48,8 @@ public class ExperimentApproachCommand extends Command {
     Map<String, List<String>> problemInstanceParams = 
         ProblemInstanceParamsParser.parseProblemInstanceParams(instanceIDs);
 
-    new Experimenter(
-        algorithmID, problemInstanceParams, runsPerInstance, algorithmTimeoutS, tag).runExperiment();
+    // new Experimenter(
+    //     algorithmID, problemInstanceParams, runsPerInstance, algorithmTimeoutS, tag).runExperiment();
+    throw new UnsupportedOperationException("This has to be fixed or removed");
   }
 }

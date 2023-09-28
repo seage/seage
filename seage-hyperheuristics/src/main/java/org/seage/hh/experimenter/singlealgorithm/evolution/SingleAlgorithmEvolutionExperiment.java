@@ -1,6 +1,8 @@
 package org.seage.hh.experimenter.singlealgorithm.evolution;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -11,9 +13,9 @@ import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentReporter;
-import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
+import org.seage.hh.heatmap.ScoreCard;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.runner.IExperimentTasksRunner;
 import org.seage.metaheuristic.IAlgorithmListener;
@@ -42,13 +44,7 @@ public class SingleAlgorithmEvolutionExperiment extends Experiment
   protected ProblemInfo problemInfo;
   protected HashMap<String, ProblemInstanceInfo> instancesInfo;
 
-  protected String experimentName;
-  protected UUID experimentID;
-  protected String problemID;
-  protected List<String> instanceIDs;
-  protected String algorithmID;
   protected int numRuns;
-  protected int timeoutS;
   private double bestScore; 
 
   //    public SingleAlgorithmEvolutionExperiment(
@@ -106,23 +102,16 @@ public class SingleAlgorithmEvolutionExperiment extends Experiment
   }
 
   @Override
-  public ExperimentScoreCard run() throws Exception {
-    try {
-      logger.info("-------------------------------------");
-      logger.info("Problem: {}", problemID);
-      // logger.info("Instances: ");
-      // StringBuilder builder = new StringBuilder();
-      // for (String instanceID : instanceIDs) {
-      //   builder.append(instanceID);
-      // }
-      // logger.info("Instances: {}", builder);
-      
-      runExperimentTasksForProblemInstance();
-    } catch (Exception ex) {
-      logger.warn(ex.getMessage(), ex);
-    }
-    return null;//bestScore;
+  public void run() throws Exception {
+    logStart();
+    createExperimentReport();   
+    runExperimentTasksForProblemInstance();
+    logEnd(bestScore);
+
+    //return null;//bestScore;
   }
+
+
 
   protected void runExperimentTasksForProblemInstance() throws Exception {
 

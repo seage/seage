@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
+import org.seage.hh.heatmap.ScoreCard;
 
 public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment {
 

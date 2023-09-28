@@ -16,6 +16,7 @@ import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperime
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmGridExperiment;
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperiment;
 import org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperiment;
+import org.seage.hh.heatmap.ScoreCard;
 import org.seage.logging.TimeFormat;
 
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ public class Experimenter {
    * @param instanceIDsPerProblems Map of problem instances.
    * @throws Exception
    */
-  public Experimenter(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
+  private Experimenter(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
       int numRuns, int timeoutS) throws Exception {
     this(algorithmID, instanceIDsPerProblems, numRuns, timeoutS, null);
   }
@@ -60,7 +61,7 @@ public class Experimenter {
    * @param algorithmID Algorithm ID.
    * @param instanceIDsPerProblems Map of problem instances.
    */
-  public Experimenter(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
+  private Experimenter(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
       int numRuns, int timeoutS, String tag) throws Exception {
     this.experimentID = UUID.randomUUID();
     this.algorithmID = algorithmID;
@@ -138,7 +139,7 @@ public class Experimenter {
     // Initialize array for problems scores
     List<Double> problemsScores = new ArrayList<>();
     
-    ExperimentScoreCard scoreCard = new ExperimentScoreCard(algorithmID, problemIDs);
+    ScoreCard scoreCard = new ScoreCard(algorithmID, problemIDs);
 
     for (String problemID : problemIDs) {      
       logger.info("Problem '{}'", problemID);

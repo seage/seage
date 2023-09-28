@@ -6,12 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
-import org.seage.hh.experimenter.ExperimentScoreCard;
+import org.seage.hh.heatmap.ScoreCard;
 
 public class ExperimentScoreCardTest {
   @Test
   void testScoreCardToJson() {
-    ExperimentScoreCard scoreCard = new ExperimentScoreCard(
+    ScoreCard scoreCard = new ScoreCard(
         "HyperHeuristic1", new String[] {"TSP", "SAT"});
     
     scoreCard.setAlgorithmScore(0.5);
@@ -29,7 +29,7 @@ public class ExperimentScoreCardTest {
     String json = gson.toJson(scoreCard);
     assertNotNull(json);
 
-    ExperimentScoreCard scoreCard2 = gson.fromJson(json, ExperimentScoreCard.class);
+    ScoreCard scoreCard2 = gson.fromJson(json, ScoreCard.class);
     assertNotNull(scoreCard2);
     String json2 = gson.toJson(scoreCard2);
 

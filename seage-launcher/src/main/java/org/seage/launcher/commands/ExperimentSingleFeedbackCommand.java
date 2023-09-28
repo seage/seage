@@ -5,7 +5,9 @@ import com.beust.jcommander.Parameters;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.seage.hh.experimenter.Experimenter;
+import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmDefaultExperiment;
 
 @Parameters(commandDescription = "Perform single feedback experiment")
 public class ExperimentSingleFeedbackCommand extends Command {
@@ -33,12 +35,17 @@ public class ExperimentSingleFeedbackCommand extends Command {
 
   @Override
   public void performCommand() throws Exception {
-    Map<String, List<String>> problemInstanceParams = 
+    Map<String, List<String>> problemInstanceParams =
         ProblemInstanceParamsParser.parseProblemInstanceParams(instances);
-    for (String algorithmID : algorithms) {
-      new Experimenter(
-        algorithmID, problemInstanceParams, numOfConfigs, 
-        algorithmTimeoutS, tag).setSpread(spread).runExperiment("SingleAlgorithmFeedback");
+
+    Set<String> problemIDs = problemInstanceParams.keySet();
+
+    for (String problemID : problemIDs) {
+      List<String> instanceIDs = problemInstanceParams.get(problemID);
+      for (String algorithmID : algorithms) {
+        new SingleAlgorithmDefaultExperiment(algorithmID, problemID, instanceIDs, numOfConfigs,
+            algorithmTimeoutS, spread, tag).run();
+      }
     }
   }
 }

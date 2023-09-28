@@ -184,9 +184,9 @@
         "-t",
         "1",
         "-n",
-        "4",
+        "1",
         "-g",
-        "2"
+        "1"
       ],
       "env": {
         "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"

@@ -4,7 +4,9 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.seage.hh.experimenter.Experimenter;
+import org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperiment;
 
 @Parameters(commandDescription = "Perform single evolution experiment")
 public class ExperimentSingleEvolutionCommand extends Command {
@@ -30,16 +32,17 @@ public class ExperimentSingleEvolutionCommand extends Command {
 
   @Override
   public void performCommand() throws Exception {
-    // new SingleAlgorithmEvolutionExperiment(
-    // problemID, instances.toArray(new String[]{}),
-    // algorithms.toArray(new String[]{}), numOfSubjects, numOfIterations, algorithmTimeoutS )
-    // .runExperiment();
     Map<String, List<String>> problemInstanceParams =
         ProblemInstanceParamsParser.parseProblemInstanceParams(instances);
 
-    for (String algorithmID : algorithms) {
-      new Experimenter(algorithmID, problemInstanceParams, numOfSubjects, algorithmTimeoutS, tag)
-          .setNumOfIterations(numOfIterations).runExperiment("SingleAlgorithmEvolution");
+    Set<String> problemIDs = problemInstanceParams.keySet();
+
+    for (String problemID : problemIDs) {
+      List<String> instanceIDs = problemInstanceParams.get(problemID);
+      for (String algorithmID : algorithms) {
+        new SingleAlgorithmEvolutionExperiment(algorithmID, problemID, instanceIDs, numOfSubjects,
+            numOfIterations, algorithmTimeoutS, tag).run();
+      }
     }
   }
 }

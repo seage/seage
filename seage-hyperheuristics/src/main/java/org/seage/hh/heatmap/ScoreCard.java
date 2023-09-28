@@ -2,7 +2,7 @@
  * @author David Omrai
  */
 
-package org.seage.hh.experimenter;
+package org.seage.hh.heatmap;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * .
  */
-public class ExperimentScoreCard {
+public class ScoreCard {
   /**
    * Name of the algorithm.
    */
@@ -24,48 +24,45 @@ public class ExperimentScoreCard {
   double totalScore;
 
   /**
-   * String: problemId, ProblemScoreCard .
+   * String: problemId - String: instanceId - Double: instanceId value.
    */
-  // Map<String, ProblemScoreCard> problemScoreCards;
+  Map<String, Map<String, Double>> scorePerInstance;
 
   /**
-   * . String: problemId - Double: problem score
+   * . String: problemId - Double: problemId score
    */
-  // Map<String, Double> scorePerProblem;
-
-  // String: instanceId, Double: instance objValue.
-  private Map<String, Double> scorePerInstance;
+  Map<String, Double> scorePerProblem;
 
 
   /**
    * Constructor, sets all necessary parameters.
-   *
+   * 
    * @param algorithmName Name of the algorithm.
    * @param problems       Array of problem names.
    */
-  public ExperimentScoreCard(String algorithmName, String[] problems) {
+  public ScoreCard(String algorithmName, String[] problems) {
     this.algorithmName = algorithmName;
 
-    // scorePerProblem = new HashMap<>();
+    scorePerProblem = new HashMap<>();
     scorePerInstance = new HashMap<>();  
 
-    // for (String problem : problems) {
-    //   scorePerInstance.put(problem, new HashMap<>());
-    //   scorePerProblem.put(problem, null);
-    // }
+    for (String problem : problems) {
+      scorePerInstance.put(problem, new HashMap<>());
+      scorePerProblem.put(problem, null);
+    }
   }
 
 
   /**
    * Method stores given instanceId value.
-   *
+   * 
    * @param problemId  Name of the problem.
    * @param instanceId Name of the problem instance.
    * @param value      Value of the instance.
    * @return Returns this.
    */
-  public ExperimentScoreCard putInstanceScore(String instanceId, Double value) {
-    scorePerInstance.put(instanceId, value);
+  public ScoreCard putInstanceScore(String problemId, String instanceId, Double value) {
+    scorePerInstance.get(problemId).put(instanceId, value);
     return this;
   }
 
@@ -77,10 +74,10 @@ public class ExperimentScoreCard {
    * @param value     Value of the problem.
    * @return Returns this.
    */
-  // public ExperimentScoreCard putProblemScore(String problemId, Double value) {
-  //   scorePerProblem.put(problemId, value);
-  //   return this;
-  // }
+  public ScoreCard putProblemScore(String problemId, Double value) {
+    scorePerProblem.put(problemId, value);
+    return this;
+  }
 
  
   /**
@@ -120,8 +117,8 @@ public class ExperimentScoreCard {
    * @param instanceId Name of the intance.
    * @return Returns the value of given instacne.
    */
-  public Double getInstanceScore(String instanceId) {
-    return scorePerInstance.get(instanceId);
+  public Double getInstanceScore(String problemId, String instanceId) {
+    return scorePerInstance.get(problemId).get(instanceId);
   }
 
 
@@ -131,18 +128,18 @@ public class ExperimentScoreCard {
    * @param problemId Name of a problem.
    * @return Returns the value of a problem.
    */
-  // public Double getProblemScore(String problemId) {
-  //   return scorePerProblem.get(problemId);
-  // }
+  public Double getProblemScore(String problemId) {
+    return scorePerProblem.get(problemId);
+  }
 
   /**
    * Method returns the set of problems scores.
    *
    * @return Returns the set of problems scores
    */
-  // public Set<Double> getProblemsScores() {
-  //   return new HashSet<>(scorePerProblem.values());
-  // }
+  public Set<Double> getProblemsScores() {
+    return new HashSet<>(scorePerProblem.values());
+  }
 
 
   /**
@@ -150,9 +147,9 @@ public class ExperimentScoreCard {
    * 
    * @return Set of problem names.
    */
-  // public Set<String> getProblems() {
-  //   return scorePerProblem.keySet();
-  // }
+  public Set<String> getProblems() {
+    return scorePerProblem.keySet();
+  }
 
 
   /**
@@ -161,7 +158,7 @@ public class ExperimentScoreCard {
    * @param problemId Set of problem names.
    * @return
    */
-  // public Set<String> getInstances(String problemId) {
-  //   return scorePerInstance.get(problemId).keySet();
-  // }
+  public Set<String> getInstances(String problemId) {
+    return scorePerInstance.get(problemId).keySet();
+  }
 }

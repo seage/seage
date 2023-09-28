@@ -50,13 +50,14 @@ public class MetaHeuristicExperiment extends Experiment {
   }
 
   @Override
-  public ExperimentScoreCard run() throws Exception {
+  public void run() throws Exception {
     logStart();
+    createExperimentReport();
     for (String instanceID : instanceIDs) {
       runForInstance(instanceID);
     }
-    logEnd(0, bestScore);
-    return null; //bestScore;
+    logEnd(bestScore);
+    //return null; //bestScore;
   }
 
   /**

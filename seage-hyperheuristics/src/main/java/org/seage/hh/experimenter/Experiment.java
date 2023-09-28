@@ -1,5 +1,7 @@
 package org.seage.hh.experimenter;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.seage.hh.runner.LocalExperimentTasksRunner;
@@ -13,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public abstract class Experiment {
   protected static Logger logger = LoggerFactory.getLogger(Experiment.class.getName());
 
-  public abstract ExperimentScoreCard run() throws Exception;
+  public abstract void run() throws Exception;
 
   protected String experimentName;
   protected UUID experimentID;
@@ -21,8 +23,10 @@ public abstract class Experiment {
   protected List<String> instanceIDs;
   protected String algorithmID;
   protected int timeoutS;
-  //protected double experimentScore;
+  // protected double experimentScore;
   protected String tag;
+  private long startDate;
+  private long endDate;
 
   /**
    * Experimenter constructor.
@@ -34,9 +38,8 @@ public abstract class Experiment {
    *
    * @throws Exception Exception
    */
-  protected Experiment(
-      String algorithmID, String problemID, List<String> instanceIDs, int timeoutS, String tag) 
-      throws Exception {
+  protected Experiment(String algorithmID, String problemID, List<String> instanceIDs, int timeoutS,
+      String tag) throws Exception {
     this.experimentID = UUID.randomUUID();
     this.algorithmID = algorithmID;
     this.problemID = problemID;
@@ -46,6 +49,7 @@ public abstract class Experiment {
   }
 
   protected void logStart() {
+    startDate = System.currentTimeMillis();
     logger.info("---------------------------------------------------");
     logger.info("AlgorithmID:   ### {} ###", algorithmID);
     logger.info("---------------------------------------------------");
@@ -54,11 +58,19 @@ public abstract class Experiment {
     logger.info("---------------------------------------------------");
   }
 
-  protected void logEnd(long duration, double experimentScore) {
+  protected void logEnd(double experimentScore) {
+    endDate = System.currentTimeMillis();
+    long duration = endDate - startDate;
     String time = TimeFormat.getTimeDurationBreakdown(duration);
     logger.info("---------------------------------------------------");
-    logger.info("Experiment {} done", experimentID);
+    logger.info("Experiment done: {}", experimentID);
     logger.info("Experiment duration: {} (DD:HH:mm:ss)", time);
     logger.info("Experiment score: ### {} ###", experimentScore);
+  }
+
+  protected void createExperimentReport() throws Exception {
+    ExperimentReporter.createExperimentReport(experimentID, experimentName,
+        new String[] {problemID}, instanceIDs.toArray(new String[0]), new String[] {algorithmID},
+        "TODO: Move to table 'runs'", Date.from(Instant.now()), tag);
   }
 }

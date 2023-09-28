@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
-import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.heatmap.HeatmapGenerator.AlgorithmResult;
 
 public class HeatmapGeneratorTest {
@@ -43,7 +42,7 @@ public class HeatmapGeneratorTest {
 
   @Test
   void testLoadJsonFile() throws Exception {
-    List<ExperimentScoreCard> scoreCards;
+    List<ScoreCard> scoreCards;
     
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
       scoreCards = HeatmapGenerator.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8));
@@ -71,7 +70,7 @@ public class HeatmapGeneratorTest {
 
   @Test 
   void testJsonSortResults() throws Exception {
-    List<ExperimentScoreCard> scoreCards;
+    List<ScoreCard> scoreCards;
     
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
       scoreCards = HeatmapGenerator.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8));
@@ -90,7 +89,7 @@ public class HeatmapGeneratorTest {
 
   @Test
   void testJsonResultsToList() throws Exception {
-    List<ExperimentScoreCard> scoreCards;
+    List<ScoreCard> scoreCards;
     
     try (InputStream jsonInputStream = HeatmapGeneratorTest.class.getResourceAsStream(jsonPath)) {
       scoreCards = HeatmapGenerator.loadJson(new String(jsonInputStream.readAllBytes(), StandardCharsets.UTF_8));
@@ -147,9 +146,9 @@ public class HeatmapGeneratorTest {
 
   @Test
   void testResultsToList() throws Exception {
-    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB23_1);
-    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scA1_1);
-    List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2);
+    ScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB23_1);
+    ScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scA1_1);
+    List<ScoreCard> scoreCards = List.of(scoreCard1, scoreCard2);
     
     List<AlgorithmResult> results = HeatmapGenerator.loadExperimentScoreCards(scoreCards, new HashMap<>());
 

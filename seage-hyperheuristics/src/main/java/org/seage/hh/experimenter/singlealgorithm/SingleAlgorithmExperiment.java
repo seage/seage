@@ -9,10 +9,10 @@ import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentReporter;
-import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.DefaultConfigurator;
+import org.seage.hh.heatmap.ScoreCard;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.runner.IExperimentTasksRunner;
 import org.seage.hh.runner.LocalExperimentTasksRunner;
@@ -52,13 +52,14 @@ public abstract class SingleAlgorithmExperiment extends Experiment {
   }
   
   @Override
-  public ExperimentScoreCard run() throws Exception {
+  public void run() throws Exception {
     logStart();
+    createExperimentReport();
     for (String instanceID : instanceIDs) {
       runForInstance(instanceID);
     }
-    logEnd(0, bestScore);
-    return null; //bestScore;
+    logEnd(bestScore);
+    //return null; //bestScore;
   }
 
   protected Double runForInstance(String instanceID) throws Exception {

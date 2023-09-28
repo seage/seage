@@ -3,8 +3,8 @@ package org.seage.hh.experimenter.multialgorithm;
 import java.util.List;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.hh.experimenter.Experiment;
-import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.experimenter.configurator.Configurator;
+import org.seage.hh.heatmap.ScoreCard;
 import org.seage.hh.runner.IExperimentTasksRunner;
 
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ public class MultiAlgorithmRandomExperimenter extends Experiment {
    * Default method.
    */
   @Override
-  public ExperimentScoreCard run() throws Exception {
-    return null;//bestScore;
+  public void run() throws Exception {
+    // return null;//bestScore;
   }
 }

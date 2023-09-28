@@ -67,7 +67,7 @@ public class HyperHeuristic1Experiment extends Experiment {
   /**
    * Method runs experiment.
    */
-  public ExperimentScoreCard run() throws Exception {
+  public void run() throws Exception {
     ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
 
     // provider and factory
@@ -125,7 +125,7 @@ public class HyperHeuristic1Experiment extends Experiment {
       experimentTasksRunner.performExperimentTasks(taskQueue, this::reportExperimentTask);
     }  
 
-    return null;//bestScore;
+    //return null;//bestScore;
   }
   
   private Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
