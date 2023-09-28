@@ -249,9 +249,10 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
     // Logg the best config info
     String bestConfigID = sortedConfigIDsByObjVal.get(sortedConfigIDsByObjVal.size() - 1);
-    logger.info("\t- best configuration: {} score {}", 
+    logger.info(String.format(
+        "\t- best configuration: %-10.10s, score %.4g", 
         this.configCache.get(bestConfigID).get(instanceID).getConfigID(),
-        this.configCache.get(bestConfigID).get(instanceID).getScore());
+        this.configCache.get(bestConfigID).get(instanceID).getScore()));
   }
 
   @Override
@@ -263,10 +264,10 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
     // Create and run tasks for each columns separatly
     for (String instanceID : this.instanceIDs) {
-      logger.info("Evaluating configs for instance {}", instanceID);
       List<ExperimentTaskRequest> taskIDs = createTaskList(subjects, instanceID);
       
       // Run tasks
+      logger.info("Evaluating {} configs for instance {}", taskIDs.size(), instanceID);
       LocalExperimentTasksRunner experimentTasksRunner = new LocalExperimentTasksRunner();
       experimentTasksRunner.performExperimentTasks(taskIDs, this::reportExperimentTask);
 
