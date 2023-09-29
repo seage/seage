@@ -140,11 +140,9 @@ public class SingleAlgorithmExperimentTaskEvaluator
         double instanceSize = this.instancesInfo.get(instanceID).getValueDouble("size");
         double instanceRank = rankedSubjects.get(configID).get(instanceID);
 
-        // logger.info("instan. rank {}", instanceRank);
         result += instanceSize * instanceRank;
         sumOfWeights += instanceSize;
       }
-      // logger.info("sumOfWeights {} and result {}", sumOfWeights, result);
       if (sumOfWeights == 0.0) {
         throw new Exception("Error: dividing by zero.");
       }
