@@ -1,17 +1,28 @@
 package org.seage.hh.experimenter.singlealgorithm.evolution;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemScoreCalculator;
+import org.seage.aal.problem.TestProblemProvider;
 import org.seage.data.DataNode;
+import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 
+/**
+ * .
+ */
 public class SingleAlgorithmExperimentTaskEvaluatorTest {
   SingleAlgorithmExperimentTaskEvaluator evaluator;
   ProblemInfo problemInfo;
@@ -27,84 +38,72 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
     return null;
   }
 
-  List<SingleAlgorithmExperimentTaskSubject> initSubjects(
-      ProblemInfo problemInfo, List<String>instanceslList, 
-      String algorithmID, int numOfSubjects) throws Exception {
-    List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<>();
-    int numPerInstance = Math.max(
-        instanceIDs.size(), 
-        (int) Math.ceil(numOfSubjects / (double) instanceIDs.size()));
-    int curNumOfSubjects = 0;
+  @BeforeEach
+  void setEvaluator() throws Exception {
+    ProblemProvider.registerProblemProviders(new Class<?>[] {TestProblemProvider.class});
 
-    for (String instanceID : instanceIDs) {
-      if (curNumOfSubjects >= numOfSubjects) {
-        break;
-      }
+    DataNode ins = new DataNode("Instances");
 
-      ProblemConfig[] pc = feedbackConfigurator.prepareConfigs(
-        problemInfo, instanceID, algorithmID, numPerInstance);
+    DataNode dn1 = new DataNode("test-instance-1");
+    dn1.putValue("id", "test-instance-1");
+    dn1.putValue("type", "resource");
+    dn1.putValue("path", "");
+    dn1.putValue("optimum", 2.0);
+    dn1.putValue("random", 84.0);
+    dn1.putValue("greedy", 42.0);
+    dn1.putValue("size", 10);
+    ins.putDataNode(dn1);
 
-      List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
-          .getDataNodes("Parameter");
+    DataNode dn2 = new DataNode("test-instance-2");
+    dn2.putValue("id", "test-instance-2");
+    dn2.putValue("type", "resource");
+    dn2.putValue("path", "");
+    dn2.putValue("optimum", 2.0);
+    dn2.putValue("random", 40.0);
+    dn2.putValue("greedy", 20.0);
+    dn2.putValue("size", 100);
+    ins.putDataNode(dn2);
 
-      for (int i = 0; i < numPerInstance; i++) {
-        if (curNumOfSubjects >= numOfSubjects) {
-          break;
-        }
-        
-        String[] names = new String[params.size()];
-        Double[] values = new Double[params.size()];
-        for (int j = 0; j < params.size(); j++) {
-          names[j] = params.get(j).getValueStr("name");
-          values[j] = pc[i].getDataNode(
-            "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
-        }
-        result.add(new SingleAlgorithmExperimentTaskSubject(names, values));
+    DataNode dn3 = new DataNode("test-instance-3");
+    dn3.putValue("id", "test-instance-3");
+    dn3.putValue("type", "resource");
+    dn3.putValue("path", "");
+    dn3.putValue("optimum", 1.0);
+    dn3.putValue("random", 24.0);
+    dn3.putValue("greedy", 12.0);
+    dn3.putValue("size", 1000);
+    ins.putDataNode(dn3);
 
-        curNumOfSubjects += 1;
-      }
-    }
+    this.problemInfo = new ProblemInfo("TEST");
+    this.problemInfo.putDataNode(ins);
 
-    // Return the right size of results
-    return result.subList(0, numOfSubjects);
+    this.instancesInfo = new HashMap<>();
+    this.instancesInfo.put("test-instance-1", 
+        this.problemInfo.getProblemInstanceInfo("test-instance-1"));
+    this.instancesInfo.put("test-instance-2", 
+        this.problemInfo.getProblemInstanceInfo("test-instance-2"));
+    this.instancesInfo.put("test-instance-3", 
+        this.problemInfo.getProblemInstanceInfo("test-instance-3"));
   }
 
-  @BeforeAll
-  void setEvaluator() throws Exception {
-    this.problemID = "TSP";
-    this.instanceIDs = new ArrayList<>() {
-      {
-        add("berlin52");
-        add("eil51");
-        add("eil76");
-        add("pr76");
-        add("st70");
-      }
-    };
-    ProblemInfo problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-    HashMap<String, ProblemInstanceInfo> instancesInfo = new HashMap<>();
-    
-    for (String instanceID : instanceIDs) {
-      instancesInfo.put(instanceID, problemInfo.getProblemInstanceInfo(instanceID));
-    }
+  @Test
+  void testRankSubjectsObjValue() throws Exception {
+    // TODO    
+  }
 
-    this.evaluator = new SingleAlgorithmExperimentTaskEvaluator(
-      null, 
-      problemID, 
-      instanceIDs, 
-      "GeneticAlgorithm", 
-      0, 
-      instancesInfo, 
-      this::reportFn);
-    this.problemInfo = 
-      ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
-    this.instancesInfo = new HashMap<>();
-    for (String instanceID : instanceIDs) {
-      this.instancesInfo.put(instanceID, problemInfo.getProblemInstanceInfo(instanceID));
-    }
+  @Test 
+  void testGetProblemScore() throws Exception {
+    // TODO
+    assertNull(null);
+  }
 
-    this.feedbackConfigurator = new FeedbackConfigurator(0.0);
-    // Initialize subjects
-    this.subjects = initSubjects(problemInfo, instanceIDs, problemID, 10);
+  @Test
+  void testSetSubjectsConfigScore() throws Exception {
+    // TODO
+  }
+
+  @Test
+  void testCreateTaskList() throws Exception {
+    // TODO
   }
 }

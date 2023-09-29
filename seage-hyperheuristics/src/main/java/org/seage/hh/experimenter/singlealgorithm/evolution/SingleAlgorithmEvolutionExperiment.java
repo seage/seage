@@ -145,6 +145,7 @@ public class SingleAlgorithmEvolutionExperiment
           instanceIDs, 
           algorithmID, 
           algorithmTimeoutS,  
+          this.problemInfo,
           this.instancesInfo, 
           this::reportExperimentTask);
       GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = 

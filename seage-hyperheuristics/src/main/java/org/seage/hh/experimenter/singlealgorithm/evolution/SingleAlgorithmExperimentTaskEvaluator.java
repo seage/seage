@@ -34,6 +34,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
   private long timeoutS;
   private Function<ExperimentTaskRecord, Void> reportFn;
   private Map<String, ProblemInstanceInfo> instancesInfo;
+  private ProblemInfo problemInfo;
+  private ProblemScoreCalculator problemScoreCalculator;
 
   private int stageId;
 
@@ -52,6 +54,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
   public SingleAlgorithmExperimentTaskEvaluator(
       UUID experimentId, String problemID, List<String> instanceIDs,
       String algorithmID, long timeoutS, 
+      ProblemInfo problemInfo,
       Map<String, ProblemInstanceInfo> instancesInfo, 
       Function<ExperimentTaskRecord, Void> reportFn) {
     super();
@@ -63,8 +66,10 @@ public class SingleAlgorithmExperimentTaskEvaluator
     this.configCache = new HashMap<>();
     this.subjectHashToConfigIDMap = new HashMap<>();
     this.instancesInfo = instancesInfo;
+    this.problemInfo = problemInfo;
     this.reportFn = reportFn;
     this.stageId = 0;
+    this.problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
   }
 
 
@@ -206,17 +211,12 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @throws Exception Exception.
    */
   private double getProblemScore(String configID) throws Exception {
-    ProblemInfo problemInfo = ProblemProvider
-          .getProblemProviders()
-          .get(this.problemID)
-          .getProblemInfo();
-    ProblemScoreCalculator problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
     List<Double> instanceScores = new ArrayList<>();
     for (String instanceID : this.instanceIDs) {
       instanceScores.add(this.configCache.get(configID).get(instanceID).getScore());
     }
 
-    return problemScoreCalculator.calculateProblemScore(
+    return this.problemScoreCalculator.calculateProblemScore(
         this.instanceIDs.toArray(new String[]{}), 
         instanceScores.stream().mapToDouble(a -> a).toArray());
   }
