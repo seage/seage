@@ -140,9 +140,11 @@ public class SingleAlgorithmExperimentTaskEvaluator
         double instanceSize = this.instancesInfo.get(instanceID).getValueDouble("size");
         double instanceRank = rankedSubjects.get(configID).get(instanceID);
 
+        // logger.info("instan. rank {}", instanceRank);
         result += instanceSize * instanceRank;
         sumOfWeights += instanceSize;
       }
+      // logger.info("sumOfWeights {} and result {}", sumOfWeights, result);
       if (sumOfWeights == 0.0) {
         throw new Exception("Error: dividing by zero.");
       }
@@ -156,8 +158,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
       }
     }
         
-    logger.info(String.format("Best overall configuration %-10.10s score %.4g", 
-        bestConfigID, getProblemScore(bestConfigID)));
+    logger.info(String.format("Best overall configuration %-10.10s confScore %.4g score %.4g", 
+        bestConfigID, bestConfigScore, getProblemScore(bestConfigID)));
   }
 
   /**
@@ -229,10 +231,16 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param rankedSubjects Map to store the ranks.
    */
   private void rankSubjectsObjValue(
-    String instanceID, HashMap<String, HashMap<String, Integer>> rankedSubjects) {
-    // Sort subjects
-    List<String> sortedConfigIDsByObjVal = new ArrayList<>(this.configCache.keySet());
-
+      List<SingleAlgorithmExperimentTaskSubject> subjects,
+      List<ExperimentTaskRequest> taskRequests, 
+      String instanceID,
+      HashMap<String, HashMap<String, Integer>> rankedSubjects) {
+    // Get config ids
+    List<String> sortedConfigIDsByObjVal = new ArrayList<>();
+    for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
+      sortedConfigIDsByObjVal.add(this.subjectHashToConfigIDMap.get(subject.hashCode()));
+    }
+    // Sort config ids
     Comparator<String> comparator = (c1, c2) -> this.configCache.get(c1)
         .get(instanceID).getObjValue().compareTo(
           this.configCache.get(c2).get(instanceID).getObjValue());
@@ -264,15 +272,15 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
     // Create and run tasks for each columns separatly
     for (String instanceID : this.instanceIDs) {
-      List<ExperimentTaskRequest> taskIDs = createTaskList(subjects, instanceID);
+      List<ExperimentTaskRequest> taskRequests = createTaskList(subjects, instanceID);
       
       // Run tasks
-      logger.info("Evaluating {} configs for instance {}", taskIDs.size(), instanceID);
+      logger.info("Evaluating {} configs for instance {}", taskRequests.size(), instanceID);
       LocalExperimentTasksRunner experimentTasksRunner = new LocalExperimentTasksRunner();
-      experimentTasksRunner.performExperimentTasks(taskIDs, this::reportExperimentTask);
+      experimentTasksRunner.performExperimentTasks(taskRequests, this::reportExperimentTask);
 
       // Rank subjects
-      this.rankSubjectsObjValue(instanceID, rankedSubjects);
+      this.rankSubjectsObjValue(subjects, taskRequests, instanceID, rankedSubjects);
     }
     // Set the configuration objective value
     this.setSubjectsConfigScore(subjects, rankedSubjects);
