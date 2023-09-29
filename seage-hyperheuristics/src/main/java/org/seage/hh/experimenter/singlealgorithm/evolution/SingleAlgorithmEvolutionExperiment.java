@@ -158,6 +158,7 @@ public class SingleAlgorithmEvolutionExperiment
       ga.setPopulationCount(numSubjects);
       ga.setRandomSubjectsPct(20);
 
+      
       List<SingleAlgorithmExperimentTaskSubject> subjects = 
           initializeSubjects(problemInfo, instanceIDs, algorithmID, numSubjects);
 
@@ -187,20 +188,32 @@ public class SingleAlgorithmEvolutionExperiment
 
   private List<SingleAlgorithmExperimentTaskSubject> initializeSubjects(
       ProblemInfo problemInfo, List<String> instanceIDs,
-      String algorithmID, int count
+      String algorithmID, int numOfSubjects
   ) throws Exception {
     List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<>();
+    int numPerInstance = Math.max(
+        instanceIDs.size(), 
+        (int) Math.ceil(numOfSubjects / (double) instanceIDs.size()));
+    int curNumOfSubjects = 0;
 
     // TODO - is using this configurator right?
     logger.info("GA init");
     for (String instanceID : instanceIDs) {
+      if (curNumOfSubjects >= numOfSubjects) {
+        break;
+      }
+
       ProblemConfig[] pc = feedbackConfigurator.prepareConfigs(
-        problemInfo, instanceID, algorithmID, count);
+        problemInfo, instanceID, algorithmID, numPerInstance);
 
       List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
           .getDataNodes("Parameter");
 
-      for (int i = 0; i < count; i++) {
+      for (int i = 0; i < numPerInstance; i++) {
+        if (curNumOfSubjects >= numOfSubjects) {
+          break;
+        }
+        
         String[] names = new String[params.size()];
         Double[] values = new Double[params.size()];
         for (int j = 0; j < params.size(); j++) {
@@ -209,10 +222,13 @@ public class SingleAlgorithmEvolutionExperiment
             "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
         }
         result.add(new SingleAlgorithmExperimentTaskSubject(names, values));
+
+        curNumOfSubjects += 1;
       }
     }
 
-    return result;
+    // Return the right size of results
+    return result.subList(0, numOfSubjects);
   }
 
   protected Limit[] prepareAlgorithmParametersLimits(
