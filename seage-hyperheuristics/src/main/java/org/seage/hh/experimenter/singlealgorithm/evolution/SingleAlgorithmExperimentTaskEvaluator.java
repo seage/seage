@@ -37,10 +37,9 @@ public class SingleAlgorithmExperimentTaskEvaluator
   private ProblemInfo problemInfo;
   private ProblemScoreCalculator problemScoreCalculator;
 
-  private int stageId;
-
-  private HashMap<String, HashMap<String, ExperimentTaskRecord>> configCache;
-  private HashMap<Integer, String> subjectHashToConfigIDMap;
+  protected int stageId;
+  protected HashMap<String, HashMap<String, ExperimentTaskRecord>> configCache;
+  protected HashMap<Integer, String> subjectHashToConfigIDMap;
 
   /**
    * Constructor.
@@ -80,7 +79,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param instanceID Instance id.
    * @return task map.
    */
-  private List<ExperimentTaskRequest> createTaskList(
+  protected List<ExperimentTaskRequest> createTaskList(
       List<SingleAlgorithmExperimentTaskSubject> subjects, String instanceID
   ) throws Exception {
     List<ExperimentTaskRequest> taskList = new ArrayList<>();
@@ -129,7 +128,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param taskMap Task map.
    * @return Weighted order.
    */
-  private void setSubjectsConfigScore(
+  protected void setSubjectsConfigScore(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
       HashMap<String, HashMap<String, Integer>> rankedSubjects) throws Exception {
     
@@ -172,7 +171,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param configScore Config score.
    * @throws Exception Exception.
    */
-  private void reportSubjectsProblemScore(
+  protected void reportSubjectsProblemScore(
       List<SingleAlgorithmExperimentTaskSubject> subjects) throws Exception {
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
       AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
@@ -210,7 +209,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @return ProblemScore
    * @throws Exception Exception.
    */
-  private double getProblemScore(String configID) throws Exception {
+  protected double getProblemScore(String configID) throws Exception {
     List<Double> instanceScores = new ArrayList<>();
     for (String instanceID : this.instanceIDs) {
       instanceScores.add(this.configCache.get(configID).get(instanceID).getScore());
@@ -228,7 +227,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param instanceID Instance ID.
    * @param rankedSubjects Map to store the ranks.
    */
-  private void rankSubjectsObjValue(
+  protected void rankSubjectsObjValue(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
       List<ExperimentTaskRequest> taskRequests, 
       String instanceID,
