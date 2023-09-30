@@ -142,7 +142,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
       double result = 0.0;
       for (String instanceID : this.instanceIDs) {
         double instanceSize = this.instancesInfo.get(instanceID).getValueDouble("size");
-        double instanceRank = rankedSubjects.get(configID).get(instanceID);
+        double instanceRank = rankedSubjects.get(instanceID).get(configID);
 
         result += instanceSize * instanceRank;
         sumOfWeights += instanceSize;
@@ -227,11 +227,11 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param instanceID Instance ID.
    * @param rankedSubjects Map to store the ranks.
    */
-  protected void rankSubjectsObjValue(
+  protected HashMap<String, Integer> getRankedSubjectsObjValue(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
       List<ExperimentTaskRequest> taskRequests, 
-      String instanceID,
-      HashMap<String, HashMap<String, Integer>> rankedSubjects) {
+      String instanceID) {
+    HashMap<String, Integer> rankedSubjects = new HashMap<>();
     // Get config ids
     List<String> sortedConfigIDsByObjVal = new ArrayList<>();
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
@@ -246,10 +246,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     // set the subjects ranking 
     for (Integer i = 0; i < sortedConfigIDsByObjVal.size(); i++) {
       String configID = sortedConfigIDsByObjVal.get(i);
-      if (!rankedSubjects.containsKey(configID)) {
-        rankedSubjects.put(configID, new HashMap<>());
-      }
-      rankedSubjects.get(configID).put(instanceID, i + 1);
+      rankedSubjects.put(configID, i + 1);
     }
 
     // Logg the best config info
@@ -258,6 +255,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
         "\t- best configuration: %-10.10s, score %.4g", 
         this.configCache.get(bestConfigID).get(instanceID).getConfigID(),
         this.configCache.get(bestConfigID).get(instanceID).getScore()));
+    return rankedSubjects;
   }
 
   @Override
@@ -277,7 +275,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
       experimentTasksRunner.performExperimentTasks(taskRequests, this::reportExperimentTask);
 
       // Rank subjects
-      this.rankSubjectsObjValue(subjects, taskRequests, instanceID, rankedSubjects);
+      rankedSubjects.put(instanceID, 
+          this.getRankedSubjectsObjValue(subjects, taskRequests, instanceID));
     }
     // Set the configuration objective value
     this.setSubjectsConfigScore(subjects, rankedSubjects);
