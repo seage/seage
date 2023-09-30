@@ -229,7 +229,6 @@ public class SingleAlgorithmExperimentTaskEvaluator
    */
   protected HashMap<String, Integer> getRankedSubjectsObjValue(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
-      List<ExperimentTaskRequest> taskRequests, 
       String instanceID) {
     HashMap<String, Integer> rankedSubjects = new HashMap<>();
     // Get config ids
@@ -241,7 +240,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     Comparator<String> comparator = (c1, c2) -> this.configCache.get(c1)
         .get(instanceID).getObjValue().compareTo(
           this.configCache.get(c2).get(instanceID).getObjValue());
-    Collections.sort(sortedConfigIDsByObjVal, comparator.reversed());
+    Collections.sort(sortedConfigIDsByObjVal, comparator);
 
     // set the subjects ranking 
     for (Integer i = 0; i < sortedConfigIDsByObjVal.size(); i++) {
@@ -276,7 +275,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
       // Rank subjects
       rankedSubjects.put(instanceID, 
-          this.getRankedSubjectsObjValue(subjects, taskRequests, instanceID));
+          this.getRankedSubjectsObjValue(subjects, instanceID));
     }
     // Set the configuration objective value
     this.setSubjectsConfigScore(subjects, rankedSubjects);
