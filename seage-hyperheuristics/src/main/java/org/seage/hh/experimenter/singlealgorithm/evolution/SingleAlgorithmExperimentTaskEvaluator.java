@@ -130,7 +130,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
    */
   protected void setSubjectsConfigScore(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
-      HashMap<String, HashMap<String, Integer>> rankedSubjects) throws Exception {
+      HashMap<String, HashMap<String, Integer>> rankedSubjects,
+      Boolean logBestConf) throws Exception {
     
     double bestConfigScore = 0.0;
     String bestConfigID = "";
@@ -160,8 +161,10 @@ public class SingleAlgorithmExperimentTaskEvaluator
       }
     }
         
-    logger.info(String.format("Best overall configuration %-10.10s confScore %.4g score %.4g", 
-        bestConfigID, bestConfigScore, getProblemScore(bestConfigID)));
+    if (Boolean.TRUE.equals(logBestConf)) {
+      logger.info(String.format("Best overall configuration %-10.10s confScore %.4g score %.4g", 
+          bestConfigID, bestConfigScore, getProblemScore(bestConfigID)));
+    }
   }
 
   /**
@@ -278,7 +281,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
           this.getRankedSubjectsObjValue(subjects, instanceID));
     }
     // Set the configuration objective value
-    this.setSubjectsConfigScore(subjects, rankedSubjects);
+    this.setSubjectsConfigScore(subjects, rankedSubjects, true);
     this.reportSubjectsProblemScore(subjects);
   }
 
