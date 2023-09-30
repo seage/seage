@@ -2,7 +2,6 @@ package org.seage.hh.experimenter.singlealgorithm.evolution;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +70,43 @@ public class SingleAlgorithmExperimentTaskEvaluator
     this.problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
   }
 
+  @Override
+  public void evaluateSubjects(
+      List<SingleAlgorithmExperimentTaskSubject> subjects
+  ) throws Exception {
+    this.stageId += 1;
+    HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
+
+    // Create and run tasks for each columns separatly
+    for (String instanceID : this.instanceIDs) {
+      List<ExperimentTaskRequest> taskRequests = createTaskList(subjects, instanceID);
+      
+      // Run tasks
+      logger.info("Evaluating {} configs for instance {}", taskRequests.size(), instanceID);
+      LocalExperimentTasksRunner experimentTasksRunner = new LocalExperimentTasksRunner();
+      experimentTasksRunner.performExperimentTasks(taskRequests, this::reportExperimentTask);
+
+      // Rank subjects
+      rankedSubjects.put(instanceID, 
+          this.getRankedSubjectsObjValue(subjects, instanceID));
+    }
+    // Set the configuration objective value
+    this.setConfigScoreToSubjects(subjects, rankedSubjects, true);
+    this.reportSubjectsProblemScore(subjects);
+  }
+
+  protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
+    try {
+      // Put the objective value of experiment into the configcache
+      this.configCache.get(experimentTask.getConfigID())
+          .put(experimentTask.getInstanceID(), experimentTask);
+
+    } catch (Exception e) {
+      logger.error(String.format("Failed to report the experiment task: %s", 
+          experimentTask.getExperimentTaskID().toString()), e);
+    }
+    return null;
+  }
 
   /**
    * The method creates the task map from configurations that haven't been used on a given instance.
@@ -128,7 +164,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param taskMap Task map.
    * @return Weighted order.
    */
-  protected void setSubjectsConfigScore(
+  protected void setConfigScoreToSubjects(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
       HashMap<String, HashMap<String, Integer>> rankedSubjects,
       Boolean logBestConf) throws Exception {
@@ -240,10 +276,9 @@ public class SingleAlgorithmExperimentTaskEvaluator
       sortedConfigIDsByObjVal.add(this.subjectHashToConfigIDMap.get(subject.hashCode()));
     }
     // Sort config ids
-    Comparator<String> comparator = (c1, c2) -> this.configCache.get(c1)
-        .get(instanceID).getObjValue().compareTo(
-          this.configCache.get(c2).get(instanceID).getObjValue());
-    Collections.sort(sortedConfigIDsByObjVal, comparator);
+    Collections.sort(sortedConfigIDsByObjVal, (c1, c2) -> (
+        this.configCache.get(c1).get(instanceID).getObjValue().compareTo(
+        this.configCache.get(c2).get(instanceID).getObjValue())));
 
     // set the subjects ranking 
     for (Integer i = 0; i < sortedConfigIDsByObjVal.size(); i++) {
@@ -258,44 +293,6 @@ public class SingleAlgorithmExperimentTaskEvaluator
         this.configCache.get(bestConfigID).get(instanceID).getConfigID(),
         this.configCache.get(bestConfigID).get(instanceID).getScore()));
     return rankedSubjects;
-  }
-
-  @Override
-  public void evaluateSubjects(
-      List<SingleAlgorithmExperimentTaskSubject> subjects
-  ) throws Exception {
-    this.stageId += 1;
-    HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
-
-    // Create and run tasks for each columns separatly
-    for (String instanceID : this.instanceIDs) {
-      List<ExperimentTaskRequest> taskRequests = createTaskList(subjects, instanceID);
-      
-      // Run tasks
-      logger.info("Evaluating {} configs for instance {}", taskRequests.size(), instanceID);
-      LocalExperimentTasksRunner experimentTasksRunner = new LocalExperimentTasksRunner();
-      experimentTasksRunner.performExperimentTasks(taskRequests, this::reportExperimentTask);
-
-      // Rank subjects
-      rankedSubjects.put(instanceID, 
-          this.getRankedSubjectsObjValue(subjects, instanceID));
-    }
-    // Set the configuration objective value
-    this.setSubjectsConfigScore(subjects, rankedSubjects, true);
-    this.reportSubjectsProblemScore(subjects);
-  }
-
-  protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
-    try {
-      // Put the objective value of experiment into the configcache
-      this.configCache.get(experimentTask.getConfigID())
-          .put(experimentTask.getInstanceID(), experimentTask);
-
-    } catch (Exception e) {
-      logger.error(String.format("Failed to report the experiment task: %s", 
-          experimentTask.getExperimentTaskID().toString()), e);
-    }
-    return null;
   }
 
   @Override

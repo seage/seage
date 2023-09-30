@@ -1,23 +1,19 @@
 package org.seage.hh.experimenter.singlealgorithm.evolution;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
-import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.aal.problem.TestProblemProvider;
 import org.seage.data.DataNode;
-import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
@@ -38,7 +34,7 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
 
 
   private Void reportFn(ExperimentTaskRecord experiment) {
-    // todo
+    // Empty
     return null;
   }
 
@@ -91,13 +87,7 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
     this.instancesInfo.put("test-instance-3", 
         this.problemInfo.getProblemInstanceInfo("test-instance-3"));
 
-    this.instanceIDs = new ArrayList<String>() {
-      {
-        add("test-instance-1");
-        add("test-instance-2");
-        add("test-instance-3");
-      }
-    };
+    this.instanceIDs = List.of("test-instance-1", "test-instance-2", "test-instance-3");
 
     this.evaluator = new SingleAlgorithmExperimentTaskEvaluator(
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"), 
@@ -214,7 +204,7 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
     rankedSubjects.get(this.instanceIDs.get(1)).put(configID1, 2);
     rankedSubjects.get(this.instanceIDs.get(2)).put(configID1, 3);
 
-    this.evaluator.setSubjectsConfigScore(oneSubject, rankedSubjects, false);
+    this.evaluator.setConfigScoreToSubjects(oneSubject, rankedSubjects, false);
 
     assertEquals(2.891892, oneSubject.get(0).getObjectiveValue()[0], 0.000001);
   }
