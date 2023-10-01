@@ -180,14 +180,15 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
   }
 
   @Test
-  void testSetSubjectsConfigScore() throws Exception {
+  void testSetConfigRankToSubjects() throws Exception {
     List<ExperimentTaskRequest> taskList = this.evaluator.createTaskList(
         subjects, this.instanceIDs.get(0));
 
-    List<SingleAlgorithmExperimentTaskSubject> oneSubject = new ArrayList<>();
-    oneSubject.add(this.subjects.get(0));
+    List<SingleAlgorithmExperimentTaskSubject> oneSubject = List.of(
+        this.subjects.get(0), this.subjects.get(1));
 
     String configID1 = this.subjects.get(0).getHash();
+    String configID2 = this.subjects.get(1).getHash();
 
     HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
 
@@ -199,11 +200,16 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
     rankedSubjects.get(this.instanceIDs.get(1)).put(configID1, 2);
     rankedSubjects.get(this.instanceIDs.get(2)).put(configID1, 3);
 
-    SingleAlgorithmExperimentTaskSubject subject = 
-        this.evaluator.setConfigScoreToSubjects(oneSubject, rankedSubjects);
+    rankedSubjects.get(this.instanceIDs.get(0)).put(configID2, 3);
+    rankedSubjects.get(this.instanceIDs.get(1)).put(configID2, 1);
+    rankedSubjects.get(this.instanceIDs.get(2)).put(configID2, 2);
 
-    assertEquals(2.891892, subject.getObjectiveValue()[0], 0.000001);
+    SingleAlgorithmExperimentTaskSubject subject = 
+        this.evaluator.setConfigRankToSubjects(oneSubject, rankedSubjects);
+
+    assertEquals(configID2, subject.getHash());
     assertEquals(2.891892, oneSubject.get(0).getObjectiveValue()[0], 0.000001);
+    assertEquals(1.918919, oneSubject.get(1).getObjectiveValue()[0], 0.000001);
   }
 
   @Test

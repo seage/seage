@@ -90,7 +90,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     }
     // Set the configuration objective value
     SingleAlgorithmExperimentTaskSubject bestConfig = 
-        this.setConfigScoreToSubjects(subjects, rankedSubjects);
+        this.setConfigRankToSubjects(subjects, rankedSubjects);
   
     this.reportSubjectsProblemScore(bestConfig);
   }
@@ -159,12 +159,12 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param taskMap Task map.
    * @return Weighted order.
    */
-  protected SingleAlgorithmExperimentTaskSubject setConfigScoreToSubjects(
+  protected SingleAlgorithmExperimentTaskSubject setConfigRankToSubjects(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
       HashMap<String, HashMap<String, Integer>> rankedSubjects
       ) throws Exception {
     
-    double bestConfigScore = Double.MAX_VALUE;
+    double bestConfigRank = Double.MAX_VALUE;
     SingleAlgorithmExperimentTaskSubject bestConfig = null;
     // Each subject evaluate separatly
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
@@ -182,12 +182,12 @@ public class SingleAlgorithmExperimentTaskEvaluator
         throw new Exception("Error: dividing by zero.");
       }
       // Config score
-      Double configScore = result / sumOfWeights;
-      subject.setObjectiveValue(new double[] {configScore});
+      Double configRank = result / sumOfWeights;
+      subject.setObjectiveValue(new double[] {configRank});
 
-      if (configScore < bestConfigScore) {
+      if (configRank < bestConfigRank) {
         bestConfig = subject;
-        bestConfigScore = configScore;
+        bestConfigRank = configRank;
       }
     }
     
@@ -199,7 +199,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * Method reports the experiment config score.
    *
    * @param subject Config subject.
-   * @param configScore Config score.
+   * @param configRank Config score.
    * @throws Exception Exception.
    */
   protected void reportSubjectsProblemScore(
