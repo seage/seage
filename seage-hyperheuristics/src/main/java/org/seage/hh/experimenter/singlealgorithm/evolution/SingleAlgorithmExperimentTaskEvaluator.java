@@ -164,7 +164,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
       HashMap<String, HashMap<String, Integer>> rankedSubjects
       ) throws Exception {
     
-    double bestConfigScore = 0.0;
+    double bestConfigScore = Double.MAX_VALUE;
     SingleAlgorithmExperimentTaskSubject bestConfig = null;
     // Each subject evaluate separatly
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
@@ -185,7 +185,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
       Double configScore = result / sumOfWeights;
       subject.setObjectiveValue(new double[] {configScore});
 
-      if (bestConfigScore <= configScore) {
+      if (bestConfigScore > configScore) {
         bestConfig = subject;
         bestConfigScore = configScore;
       }
