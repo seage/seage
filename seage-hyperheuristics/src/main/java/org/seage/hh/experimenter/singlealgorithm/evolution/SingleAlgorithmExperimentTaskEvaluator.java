@@ -185,7 +185,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
       Double configScore = result / sumOfWeights;
       subject.setObjectiveValue(new double[] {configScore});
 
-      if (bestConfigScore > configScore) {
+      if (configScore < bestConfigScore) {
         bestConfig = subject;
         bestConfigScore = configScore;
       }
