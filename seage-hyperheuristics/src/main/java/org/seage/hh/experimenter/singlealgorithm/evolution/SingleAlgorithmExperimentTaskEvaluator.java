@@ -248,7 +248,6 @@ public class SingleAlgorithmExperimentTaskEvaluator
    *
    * @param subjects Subjects.
    * @param instanceID Instance ID.
-   * @param rankedSubjects Map to store the ranks.
    * @return Ranked subjects by objvalue.
    */
   protected HashMap<String, Integer> getRankedSubjectsObjValue(
