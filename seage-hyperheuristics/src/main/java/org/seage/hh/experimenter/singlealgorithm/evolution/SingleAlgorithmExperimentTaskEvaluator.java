@@ -89,10 +89,10 @@ public class SingleAlgorithmExperimentTaskEvaluator
           this.getRankedSubjectsObjValue(subjects, instanceID));
     }
     // Set the configuration objective value
-    SingleAlgorithmExperimentTaskSubject bestConfig = 
+    SingleAlgorithmExperimentTaskSubject bestSubject = 
         this.setConfigRankToSubjects(subjects, rankedSubjects);
   
-    this.reportSubjectsProblemScore(bestConfig);
+    this.reportBestSubjectProblemcore(bestSubject);
   }
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
@@ -164,8 +164,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
       HashMap<String, HashMap<String, Integer>> rankedSubjects
       ) throws Exception {
     
-    double bestConfigRank = Double.MAX_VALUE;
-    SingleAlgorithmExperimentTaskSubject bestConfig = null;
+    double bestSubjectRank = Double.MAX_VALUE;
+    SingleAlgorithmExperimentTaskSubject bestSubject = null;
     // Each subject evaluate separatly
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
       String configID = subject.getHash();
@@ -185,14 +185,14 @@ public class SingleAlgorithmExperimentTaskEvaluator
       Double configRank = result / sumOfWeights;
       subject.setObjectiveValue(new double[] {configRank});
 
-      if (configRank < bestConfigRank) {
-        bestConfig = subject;
-        bestConfigRank = configRank;
+      if (configRank < bestSubjectRank) {
+        bestSubject = subject;
+        bestSubjectRank = configRank;
       }
     }
     
     // Returns the best config id
-    return bestConfig;
+    return bestSubject;
   }
 
   /**
@@ -202,13 +202,13 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param configRank Config score.
    * @throws Exception Exception.
    */
-  protected void reportSubjectsProblemScore(
-      SingleAlgorithmExperimentTaskSubject bestConfig) throws Exception {
-    String bestConfigID = bestConfig.getHash();
+  protected void reportBestSubjectProblemcore(
+      SingleAlgorithmExperimentTaskSubject bestSubject) throws Exception {
+    String bestConfigID = bestSubject.getHash();
     double problemScore = getProblemScore(bestConfigID);
 
     logger.info(String.format("Best overall configuration %-10.10s confScore %.4g score %.4g", 
-          bestConfigID, bestConfig.getObjectiveValue()[0], problemScore));
+          bestConfigID, bestSubject.getObjectiveValue()[0], problemScore));
 
     ExperimentTaskRecord customRecord = 
         this.configCache.get(bestConfigID).get(this.instanceIDs.get(0));
