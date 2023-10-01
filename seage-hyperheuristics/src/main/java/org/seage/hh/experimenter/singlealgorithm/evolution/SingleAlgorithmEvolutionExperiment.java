@@ -174,7 +174,7 @@ public class SingleAlgorithmEvolutionExperiment
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
-      // experimentReporter.reportExperimentTask(experimentTask);
+      experimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
       
       if (taskScore > this.bestScore) {

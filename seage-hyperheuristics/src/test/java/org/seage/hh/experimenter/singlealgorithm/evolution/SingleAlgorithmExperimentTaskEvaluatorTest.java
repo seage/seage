@@ -204,7 +204,7 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
     rankedSubjects.get(this.instanceIDs.get(1)).put(configID1, 2);
     rankedSubjects.get(this.instanceIDs.get(2)).put(configID1, 3);
 
-    this.evaluator.setConfigScoreToSubjects(oneSubject, rankedSubjects, false);
+    this.evaluator.setConfigScoreToSubjects(oneSubject, rankedSubjects);
 
     assertEquals(2.891892, oneSubject.get(0).getObjectiveValue()[0], 0.000001);
   }

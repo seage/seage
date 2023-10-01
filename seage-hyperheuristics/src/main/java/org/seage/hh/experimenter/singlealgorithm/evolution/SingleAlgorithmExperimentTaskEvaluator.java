@@ -10,7 +10,6 @@ import java.util.function.Function;
 import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
-import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
@@ -91,8 +90,10 @@ public class SingleAlgorithmExperimentTaskEvaluator
           this.getRankedSubjectsObjValue(subjects, instanceID));
     }
     // Set the configuration objective value
-    this.setConfigScoreToSubjects(subjects, rankedSubjects, true);
-    this.reportSubjectsProblemScore(subjects);
+    SingleAlgorithmExperimentTaskSubject bestConfig = 
+        this.setConfigScoreToSubjects(subjects, rankedSubjects);
+  
+    this.reportSubjectsProblemScore(bestConfig);
   }
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
@@ -164,13 +165,12 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param taskMap Task map.
    * @return Weighted order.
    */
-  protected void setConfigScoreToSubjects(
+  protected SingleAlgorithmExperimentTaskSubject setConfigScoreToSubjects(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
-      HashMap<String, HashMap<String, Integer>> rankedSubjects,
-      Boolean logBestConf) throws Exception {
+      HashMap<String, HashMap<String, Integer>> rankedSubjects) throws Exception {
     
     double bestConfigScore = 0.0;
-    String bestConfigID = "";
+    SingleAlgorithmExperimentTaskSubject bestConfig = null;
     // Each subject evaluate separatly
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
       String configID = this.subjectHashToConfigIDMap.get(subject.hashCode());
@@ -192,15 +192,13 @@ public class SingleAlgorithmExperimentTaskEvaluator
       subject.setObjectiveValue(new double[] {configScore});
 
       if (bestConfigScore <= configScore) {
-        bestConfigID = configID;
+        bestConfig = subject;
         bestConfigScore = configScore;
       }
     }
-        
-    if (Boolean.TRUE.equals(logBestConf)) {
-      logger.info(String.format("Best overall configuration %-10.10s confScore %.4g score %.4g", 
-          bestConfigID, bestConfigScore, getProblemScore(bestConfigID)));
-    }
+    
+    // Returns the best config id
+    return bestConfig;
   }
 
   /**
@@ -211,34 +209,20 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @throws Exception Exception.
    */
   protected void reportSubjectsProblemScore(
-      List<SingleAlgorithmExperimentTaskSubject> subjects) throws Exception {
-    for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
-      AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
-      for (int i = 0; i < subject.getChromosome().getLength(); i++) {
-        algorithmParams.putValue(subject.getParamNames()[i], subject.getChromosome().getGene(i));
-      }
-      String configID = algorithmParams.hash();
+      SingleAlgorithmExperimentTaskSubject bestConfig) throws Exception {
+    String bestConfigID = this.subjectHashToConfigIDMap.get(bestConfig.hashCode());
+    double problemScore = getProblemScore(bestConfigID);
 
-      double problemScore = getProblemScore(configID);
+    logger.info(String.format("Best overall configuration %-10.10s confScore %.4g score %.4g", 
+          bestConfigID, bestConfig.getObjectiveValue(), problemScore));
 
-      ExperimentTaskRequest customRequest = new ExperimentTaskRequest(
-          this.experimentId, 
-          this.experimentId, 
-          1, 
-          stageId, 
-          this.problemID, 
-          "ALL", 
-          this.algorithmID, 
-          configID, 
-          algorithmParams, 
-          null, 
-          this.timeoutS
-      );
-      ExperimentTaskRecord customRecord = new ExperimentTaskRecord(customRequest);
-      customRecord.setScore(problemScore);
+    ExperimentTaskRecord customRecord = 
+        this.configCache.get(bestConfigID).get(this.instanceIDs.get(0));
 
-      this.reportFn.apply(customRecord);
-    }
+    customRecord.setScore(problemScore);
+    customRecord.setInstanceID(this.instanceIDs.toString());
+
+    this.reportFn.apply(customRecord);
   }
 
   /**
