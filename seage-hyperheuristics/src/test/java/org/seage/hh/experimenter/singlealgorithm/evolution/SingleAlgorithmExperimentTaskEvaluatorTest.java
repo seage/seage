@@ -187,12 +187,7 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
     List<SingleAlgorithmExperimentTaskSubject> oneSubject = new ArrayList<>();
     oneSubject.add(this.subjects.get(0));
 
-    String configID1 = this.evaluator.subjectHashToConfigIDMap.get(
-        this.subjects.get(0).hashCode());
-
-    this.evaluator.subjectHashToConfigIDMap.put(
-        this.subjects.get(0).hashCode(), configID1);
-
+    String configID1 = this.subjects.get(0).getHash();
 
     HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
 
@@ -214,12 +209,9 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
     List<ExperimentTaskRequest> taskList = this.evaluator.createTaskList(
         subjects, this.instanceIDs.get(0));
     
-    String configID1 = this.evaluator.subjectHashToConfigIDMap.get(
-        this.subjects.get(0).hashCode());
-    String configID2 = this.evaluator.subjectHashToConfigIDMap.get(
-        this.subjects.get(1).hashCode());
-    String configID3 = this.evaluator.subjectHashToConfigIDMap.get(
-        this.subjects.get(2).hashCode());
+    String configID1 = this.subjects.get(0).getHash();
+    String configID2 = this.subjects.get(1).getHash();
+    String configID3 = this.subjects.get(2).getHash();
 
     assertTrue(this.evaluator.configCache.containsKey(configID1));
     assertTrue(this.evaluator.configCache.containsKey(configID2));

@@ -37,7 +37,6 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
   protected int stageId;
   protected HashMap<String, HashMap<String, ExperimentTaskRecord>> configCache;
-  protected HashMap<Integer, String> subjectHashToConfigIDMap;
 
   /**
    * Constructor.
@@ -61,7 +60,6 @@ public class SingleAlgorithmExperimentTaskEvaluator
     this.algorithmID = algorithmID;
     this.timeoutS = timeoutS;
     this.configCache = new HashMap<>();
-    this.subjectHashToConfigIDMap = new HashMap<>();
     this.instancesInfo = instancesInfo;
     this.problemInfo = problemInfo;
     this.reportFn = reportFn;
@@ -78,7 +76,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
     // Create and run tasks for each columns separatly
     for (String instanceID : this.instanceIDs) {
-      List<ExperimentTaskRequest> taskRequests = createTaskList(subjects, instanceID);
+      List<ExperimentTaskRequest> taskRequests = createTaskList(
+          subjects, instanceID);
       
       // Run tasks
       logger.info("Evaluating {} configs for instance {}", taskRequests.size(), instanceID);
@@ -122,20 +121,15 @@ public class SingleAlgorithmExperimentTaskEvaluator
     List<ExperimentTaskRequest> taskList = new ArrayList<>();
 
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
-      AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
-      for (int i = 0; i < subject.getChromosome().getLength(); i++) {
-        algorithmParams.putValue(subject.getParamNames()[i], subject.getChromosome().getGene(i));
-      }
       // Calculate the subject hash
-      String configId = algorithmParams.hash();
+      AlgorithmParams algorithmParams = subject.getAlgorithmParams();
+      String configId = subject.getHash();
 
       // If config hasn't been used before, log it into configCache
       if (!this.configCache.containsKey(configId)) {
         this.configCache.put(configId, new HashMap<>());
       }
       HashMap<String, ExperimentTaskRecord> curConfigCache = this.configCache.get(configId);
-  
-      this.subjectHashToConfigIDMap.put(subject.hashCode(), configId);
   
       if (curConfigCache.containsKey(instanceID)) {
         subject.setObjectiveValue(new double[] { curConfigCache.get(instanceID).getObjValue() });
@@ -167,14 +161,14 @@ public class SingleAlgorithmExperimentTaskEvaluator
    */
   protected SingleAlgorithmExperimentTaskSubject setConfigScoreToSubjects(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
-      HashMap<String, HashMap<String, Integer>> rankedSubjects) throws Exception {
+      HashMap<String, HashMap<String, Integer>> rankedSubjects
+      ) throws Exception {
     
     double bestConfigScore = 0.0;
     SingleAlgorithmExperimentTaskSubject bestConfig = null;
     // Each subject evaluate separatly
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
-      String configID = this.subjectHashToConfigIDMap.get(subject.hashCode());
-    
+      String configID = subject.getHash();
       double sumOfWeights = 0.0;
       double result = 0.0;
       for (String instanceID : this.instanceIDs) {
@@ -210,17 +204,18 @@ public class SingleAlgorithmExperimentTaskEvaluator
    */
   protected void reportSubjectsProblemScore(
       SingleAlgorithmExperimentTaskSubject bestConfig) throws Exception {
-    String bestConfigID = this.subjectHashToConfigIDMap.get(bestConfig.hashCode());
+    String bestConfigID = bestConfig.getHash();
     double problemScore = getProblemScore(bestConfigID);
 
     logger.info(String.format("Best overall configuration %-10.10s confScore %.4g score %.4g", 
-          bestConfigID, bestConfig.getObjectiveValue(), problemScore));
+          bestConfigID, bestConfig.getObjectiveValue()[0], problemScore));
 
     ExperimentTaskRecord customRecord = 
         this.configCache.get(bestConfigID).get(this.instanceIDs.get(0));
 
     customRecord.setScore(problemScore);
     customRecord.setInstanceID(this.instanceIDs.toString());
+    customRecord.setExperimentTaskID(UUID.randomUUID());
 
     this.reportFn.apply(customRecord);
   }
@@ -257,7 +252,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     // Get config ids
     List<String> sortedConfigIDsByObjVal = new ArrayList<>();
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
-      sortedConfigIDsByObjVal.add(this.subjectHashToConfigIDMap.get(subject.hashCode()));
+      sortedConfigIDsByObjVal.add(subject.getHash());
     }
     // Sort config ids
     Collections.sort(sortedConfigIDsByObjVal, (c1, c2) -> (
