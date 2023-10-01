@@ -46,6 +46,9 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param instanceIDs Instance IDs.
    * @param algorithmID Algorithm ID.
    * @param timeoutS Timeout [s]. 
+   * @param problemInfo Problem info.
+   * @param instancesInfo Instances info.
+   * @param reportFn Report function.
    */
   public SingleAlgorithmExperimentTaskEvaluator(
       UUID experimentId, String problemID, List<String> instanceIDs,
@@ -114,6 +117,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param subjects Algoritm configurations.
    * @param instanceID Instance id.
    * @return task map.
+   * @throws Exception Exception.
    */
   protected List<ExperimentTaskRequest> createTaskList(
       List<SingleAlgorithmExperimentTaskSubject> subjects, String instanceID
@@ -155,9 +159,10 @@ public class SingleAlgorithmExperimentTaskEvaluator
   /**
    * Method evaluates given subject.
    *
-   * @param taskIDs Task queue.
-   * @param taskMap Task map.
+   * @param subjects Subjects.
+   * @param rankedSubjects Ranked subjects map.
    * @return Weighted order.
+   * @throws Exception Exception.
    */
   protected SingleAlgorithmExperimentTaskSubject setConfigRankToSubjects(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
@@ -198,8 +203,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
   /**
    * Method reports the experiment config score.
    *
-   * @param subject Config subject.
-   * @param configRank Config score.
+   * @param bestSubject Config subject.
    * @throws Exception Exception.
    */
   protected void reportBestSubjectProblemcore(
@@ -242,8 +246,10 @@ public class SingleAlgorithmExperimentTaskEvaluator
   /**
    * Method ranks subjects'.
    *
+   * @param subjects Subjects.
    * @param instanceID Instance ID.
    * @param rankedSubjects Map to store the ranks.
+   * @return Ranked subjects by objvalue.
    */
   protected HashMap<String, Integer> getRankedSubjectsObjValue(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
