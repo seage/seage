@@ -229,17 +229,17 @@ public class ExperimentTaskRecord {
     writeSolutions(evaluator,
         this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
 
-    _logger.debug("Solutions from phenotype");
+    _logger.trace("Solutions from phenotype");
     algorithm.solutionsFromPhenotype(solutions);
-    _logger.debug("Starting the algorithm");
+    _logger.trace("Starting the algorithm");
     algorithm.startSearching(this.algorithmParams, true);
-    _logger.debug("Algorithm started");
+    _logger.trace("Algorithm started");
     waitForTimeout(algorithm);
-    _logger.debug("Stopping the algorithm");
+    _logger.trace("Stopping the algorithm");
     algorithm.stopSearching();
-    _logger.debug("Algorithm stopped");
+    _logger.trace("Algorithm stopped");
 
-    _logger.debug("Solutions to phenotype");
+    _logger.trace("Solutions to phenotype");
     solutions = algorithm.solutionsToPhenotype();
 
     writeSolutions(evaluator,
@@ -260,7 +260,7 @@ public class ExperimentTaskRecord {
   }
 
   private void waitForTimeout(IAlgorithmAdapter<?, ?> alg) throws Exception {
-    _logger.debug("Waiting for timeout");
+    _logger.trace("Waiting for timeout");
     long time = System.currentTimeMillis();
     while (alg.isRunning() && ((System.currentTimeMillis() - time) < this.timeoutS * 1000)) {
       Thread.sleep(250);

@@ -2,7 +2,9 @@ package org.seage.hh.experimenter.singlealgorithm.evolution;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
@@ -192,6 +194,7 @@ public class SingleAlgorithmEvolutionExperiment
       String algorithmID, int numOfSubjects
   ) throws Exception {
     List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<>();
+    Set<String> newConfigIds = new HashSet<>();
     int numPerInstance = Math.max(
         instanceIDs.size(), 
         (int) Math.ceil(numOfSubjects / (double) instanceIDs.size()));
@@ -222,9 +225,14 @@ public class SingleAlgorithmEvolutionExperiment
           values[j] = pc[i].getDataNode(
             "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
         }
-        result.add(new SingleAlgorithmExperimentTaskSubject(names, values));
-
-        curNumOfSubjects += 1;
+        var subject = new SingleAlgorithmExperimentTaskSubject(names, values);
+        String newConfigId = subject.getHash();
+        // Add only the new ones
+        if(!newConfigIds.contains(newConfigId)) {
+          newConfigIds.add(newConfigId);
+          result.add(subject);
+          curNumOfSubjects += 1;
+        }
       }
     }
 

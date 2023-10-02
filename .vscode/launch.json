@@ -215,12 +215,13 @@
         "-t",
         "2",
         "-n",
-        "10",
+        "4",
         "-g",
         "10"
       ],
       "env": {
-        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage",
+        // "LOG_LEVEL": "debug"
       }
     },
   ]
