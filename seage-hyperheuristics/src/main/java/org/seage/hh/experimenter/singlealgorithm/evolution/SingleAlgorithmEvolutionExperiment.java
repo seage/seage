@@ -151,13 +151,13 @@ public class SingleAlgorithmEvolutionExperiment
       GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = 
           new GeneticAlgorithm<>(realOperator, evaluator);
       ga.addGeneticSearchListener(this);
-      ga.setCrossLengthPct(30);
-      ga.setEliteSubjectsPct(0);
+      ga.setCrossLengthPct(20);
+      ga.setEliteSubjectsPct(10);
       ga.setIterationToGo(numIterations);
-      ga.setMutateChromosomeLengthPct(10);
-      ga.setMutatePopulationPct(50);
+      ga.setMutateChromosomeLengthPct(5);
+      ga.setMutatePopulationPct(20);
       ga.setPopulationCount(numSubjects);
-      ga.setRandomSubjectsPct(20);
+      ga.setRandomSubjectsPct(1);
 
       
       List<SingleAlgorithmExperimentTaskSubject> subjects = 
@@ -269,7 +269,7 @@ public class SingleAlgorithmEvolutionExperiment
   @Override
   public void iterationPerformed(GeneticAlgorithmEvent<SingleAlgorithmExperimentTaskSubject> e) {
     // logger.info(" Iteration " + e.getGeneticSearch().getCurrentIteration());
-    logger.info("GA iteration: \t ({}/{})", e.getGeneticSearch().getCurrentIteration(),
+    logger.info("GA generation done: \t ({}/{})", e.getGeneticSearch().getCurrentIteration(),
         e.getGeneticSearch().getIterationToGo());
   }
 

@@ -35,6 +35,9 @@ public interface IAlgorithmListener<E> extends java.util.EventListener {
 
   public void newBestSolutionFound(E e);
 
+  // TODO
+  // public void iterationStarted(E e);
+
   public void iterationPerformed(E e);
 
   public void noChangeInValueIterationMade(E e);

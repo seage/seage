@@ -198,6 +198,30 @@
       "env": {
         "DB_URL": "jdbc:postgresql://localhost:25432/seage"
       }
-    }
+    },
+    {
+      "type": "java",
+      "name": "Run experiment-single-evolution, postgres",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "experiment-single-evolution",
+        "-a",
+        "AntColony",
+        "-i",
+        "TSP:small",
+        "-t",
+        "2",
+        "-n",
+        "10",
+        "-g",
+        "10"
+      ],
+      "env": {
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+      }
+    },
   ]
 }

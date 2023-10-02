@@ -279,17 +279,17 @@ public class ExperimentTaskRecord {
   private void writeSolutions(IPhenotypeEvaluator<Phenotype<?>> evaluator, DataNode dataNode,
       Phenotype<?>[] solutions) {
     _logger.debug("Writing solutions into data node: {}", solutions.length);
-    double bestScore = 0;
+    double bestObjValue = Double.MAX_VALUE;
     Phenotype<?> bestSol = null;
     try {
       for (Phenotype<?> p : solutions) {
-        double curScore = p.getScore();
-        if (curScore > bestScore) {
-          bestScore = curScore;
+        double objValue = p.getObjValue();
+        if (objValue < bestObjValue) {
+          bestObjValue = objValue;
           bestSol = p;
         }
       }
-      if (bestSol != null && bestScore > 0) {
+      if (bestSol != null) {
         DataNode solutionNode = new DataNode("Solution");
         solutionNode.putValue("objVal", bestSol.getObjValue());
         solutionNode.putValue("score", bestSol.getScore());
