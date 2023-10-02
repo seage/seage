@@ -95,7 +95,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     SingleAlgorithmExperimentTaskSubject bestSubject = 
         this.setConfigRankToSubjects(subjects, rankedSubjects);
   
-    this.reportBestSubjectProblemcore(bestSubject);
+    this.reportBestSubjectProblemscore(bestSubject);
   }
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
@@ -206,7 +206,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param bestSubject Config subject.
    * @throws Exception Exception.
    */
-  protected void reportBestSubjectProblemcore(
+  protected void reportBestSubjectProblemscore(
       SingleAlgorithmExperimentTaskSubject bestSubject) throws Exception {
     String bestConfigID = bestSubject.getHash();
     double problemScore = getProblemScore(bestConfigID);
