@@ -76,7 +76,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
   ) throws Exception {
     this.stageId += 1;
     HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
-
+    logger.info("num of subjects {}", subjects.size());
     // Create and run tasks for each columns separatly
     for (String instanceID : this.instanceIDs) {
       List<ExperimentTaskRequest> taskRequests = createTaskList(
@@ -127,7 +127,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
       // Calculate the subject hash
       AlgorithmParams algorithmParams = subject.getAlgorithmParams();
-      String configId = subject.getHash();
+      String configId = algorithmParams.hash();
 
       // If config hasn't been used before, log it into configCache
       if (!this.configCache.containsKey(configId)) {
@@ -173,7 +173,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     SingleAlgorithmExperimentTaskSubject bestSubject = null;
     // Each subject evaluate separatly
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
-      String configID = subject.getHash();
+      String configID = subject.getAlgorithmParams().hash();
       double sumOfWeights = 0.0;
       double result = 0.0;
       for (String instanceID : this.instanceIDs) {
@@ -208,7 +208,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    */
   protected void reportBestSubjectProblemscore(
       SingleAlgorithmExperimentTaskSubject bestSubject) throws Exception {
-    String bestConfigID = bestSubject.getHash();
+    String bestConfigID = bestSubject.getAlgorithmParams().hash();
     double problemScore = getProblemScore(bestConfigID);
 
     logger.info(String.format("Best overall configuration %-10.10s confScore %.4g score %.4g", 
@@ -252,12 +252,12 @@ public class SingleAlgorithmExperimentTaskEvaluator
    */
   protected HashMap<String, Integer> getRankedSubjectsObjValue(
       List<SingleAlgorithmExperimentTaskSubject> subjects,
-      String instanceID) {
+      String instanceID) throws Exception {
     HashMap<String, Integer> rankedSubjects = new HashMap<>();
     // Get config ids
     List<String> sortedConfigIDsByObjVal = new ArrayList<>();
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
-      sortedConfigIDsByObjVal.add(subject.getHash());
+      sortedConfigIDsByObjVal.add(subject.getAlgorithmParams().hash());
     }
     // Sort config ids
     Collections.sort(sortedConfigIDsByObjVal, (c1, c2) -> (

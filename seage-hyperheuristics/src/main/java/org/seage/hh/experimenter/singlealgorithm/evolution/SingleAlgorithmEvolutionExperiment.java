@@ -159,7 +159,7 @@ public class SingleAlgorithmEvolutionExperiment
       GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = 
           new GeneticAlgorithm<>(realOperator, evaluator);
       ga.addGeneticSearchListener(this);
-      ga.setCrossLengthPct(20);
+      ga.setCrossLengthPct(50);
       ga.setEliteSubjectsPct(10);
       ga.setIterationToGo(numIterations);
       ga.setMutateChromosomeLengthPct(5);
@@ -231,7 +231,7 @@ public class SingleAlgorithmEvolutionExperiment
             "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
         }
         var subject = new SingleAlgorithmExperimentTaskSubject(names, values);
-        String newConfigId = subject.getHash();
+        String newConfigId = subject.getAlgorithmParams().hash();
         // Add only the new ones
         if (!newConfigIds.contains(newConfigId)) {
           newConfigIds.add(newConfigId);

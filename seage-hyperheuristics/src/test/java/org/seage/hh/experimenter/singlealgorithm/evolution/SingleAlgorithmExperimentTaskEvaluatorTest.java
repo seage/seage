@@ -187,8 +187,8 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
     List<SingleAlgorithmExperimentTaskSubject> oneSubject = List.of(
         this.subjects.get(0), this.subjects.get(1));
 
-    String configID1 = this.subjects.get(0).getHash();
-    String configID2 = this.subjects.get(1).getHash();
+    String configID1 = this.subjects.get(0).getAlgorithmParams().hash();
+    String configID2 = this.subjects.get(1).getAlgorithmParams().hash();
 
     HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
 
@@ -207,7 +207,7 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
     SingleAlgorithmExperimentTaskSubject subject = 
         this.evaluator.setConfigRankToSubjects(oneSubject, rankedSubjects);
 
-    assertEquals(configID2, subject.getHash());
+    assertEquals(configID2, subject.getAlgorithmParams().hash());
     assertEquals(2.891892, oneSubject.get(0).getObjectiveValue()[0], 0.000001);
     assertEquals(1.918919, oneSubject.get(1).getObjectiveValue()[0], 0.000001);
   }
@@ -217,9 +217,9 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
     List<ExperimentTaskRequest> taskList = this.evaluator.createTaskList(
         subjects, this.instanceIDs.get(0));
     
-    String configID1 = this.subjects.get(0).getHash();
-    String configID2 = this.subjects.get(1).getHash();
-    String configID3 = this.subjects.get(2).getHash();
+    String configID1 = this.subjects.get(0).getAlgorithmParams().hash();
+    String configID2 = this.subjects.get(1).getAlgorithmParams().hash();
+    String configID3 = this.subjects.get(2).getAlgorithmParams().hash();
 
     assertTrue(this.evaluator.configCache.containsKey(configID1));
     assertTrue(this.evaluator.configCache.containsKey(configID2));

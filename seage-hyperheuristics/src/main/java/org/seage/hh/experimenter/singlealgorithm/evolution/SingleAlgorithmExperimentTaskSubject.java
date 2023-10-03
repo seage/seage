@@ -12,8 +12,6 @@ public class SingleAlgorithmExperimentTaskSubject extends Subject<Double> {
   private static Logger logger =
       LoggerFactory.getLogger(SingleAlgorithmExperimentTaskSubject.class.getName());
   protected String[] paramNames;
-  protected AlgorithmParams algorithmParams;
-  protected String hash;
 
   /**
    * .
@@ -23,35 +21,13 @@ public class SingleAlgorithmExperimentTaskSubject extends Subject<Double> {
    */
   public SingleAlgorithmExperimentTaskSubject(String[] newParamNames, Double[] geneValues) {
     super(geneValues);
-    paramNames = newParamNames; 
-    this.algorithmParams = new AlgorithmParams(); // subject
-    for (int i = 0; i < this.getChromosome().getLength(); i++) {
-      this.algorithmParams.putValue(this.getParamNames()[i], this.getChromosome().getGene(i));
-    }
+    paramNames = newParamNames;
   }
 
   public SingleAlgorithmExperimentTaskSubject(
       SingleAlgorithmExperimentTaskSubject experimentSubject) {
     super(experimentSubject);
     paramNames = experimentSubject.paramNames.clone();
-    this.algorithmParams = new AlgorithmParams(); // subject
-    for (int i = 0; i < this.getChromosome().getLength(); i++) {
-      this.algorithmParams.putValue(this.getParamNames()[i], this.getChromosome().getGene(i));
-    }
-  }
-
-  /**
-   * .
-   *
-   * @return Returns hash of algorithm params;
-   */
-  public String getHash() {
-    try {
-      return this.algorithmParams.hash();
-    } catch (Exception e) {
-      logger.error("Error: Unable to set hashCode");
-      return null;
-    }
   }
 
   /**
@@ -60,7 +36,11 @@ public class SingleAlgorithmExperimentTaskSubject extends Subject<Double> {
    * @return algorithm params.
    */
   public AlgorithmParams getAlgorithmParams() {
-    return this.algorithmParams;
+    AlgorithmParams algorithmParams = new AlgorithmParams(); // subject
+    for (int i = 0; i < this.getChromosome().getLength(); i++) {
+      algorithmParams.putValue(this.getParamNames()[i], this.getChromosome().getGene(i));
+    }
+    return algorithmParams;
   }
 
   @Override
