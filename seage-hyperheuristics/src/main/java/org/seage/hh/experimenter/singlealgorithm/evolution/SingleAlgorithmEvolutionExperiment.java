@@ -159,11 +159,11 @@ public class SingleAlgorithmEvolutionExperiment
       GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = 
           new GeneticAlgorithm<>(realOperator, evaluator);
       ga.addGeneticSearchListener(this);
-      ga.setCrossLengthPct(50);
-      ga.setEliteSubjectsPct(10);
+      ga.setCrossLengthPct(40);
+      ga.setEliteSubjectsPct(1);
       ga.setIterationToGo(numIterations);
-      ga.setMutateChromosomeLengthPct(5);
-      ga.setMutatePopulationPct(20);
+      ga.setMutateChromosomeLengthPct(40);
+      ga.setMutatePopulationPct(40);
       ga.setPopulationCount(numSubjects);
       ga.setRandomSubjectsPct(1);
 

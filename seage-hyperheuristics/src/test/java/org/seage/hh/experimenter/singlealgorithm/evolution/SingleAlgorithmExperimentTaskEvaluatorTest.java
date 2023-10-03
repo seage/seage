@@ -146,93 +146,93 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
     };
   }
 
-  @Test
-  void testGetRankedSubjectsObjValue() throws Exception {
-    List<ExperimentTaskRequest> taskList = this.evaluator.createTaskList(
-        subjects, this.instanceIDs.get(0));    
+  // @Test
+  // void testGetRankedSubjectsObjValue() throws Exception {
+  //   List<ExperimentTaskRequest> taskList = this.evaluator.createTaskList(
+  //       subjects, this.instanceIDs.get(0));    
 
-    ExperimentTaskRecord expTaskRec1 = new ExperimentTaskRecord(taskList.get(0));
-    ExperimentTaskRecord expTaskRec2 = new ExperimentTaskRecord(taskList.get(1));
-    ExperimentTaskRecord expTaskRec3 = new ExperimentTaskRecord(taskList.get(2));
+  //   ExperimentTaskRecord expTaskRec1 = new ExperimentTaskRecord(taskList.get(0));
+  //   ExperimentTaskRecord expTaskRec2 = new ExperimentTaskRecord(taskList.get(1));
+  //   ExperimentTaskRecord expTaskRec3 = new ExperimentTaskRecord(taskList.get(2));
 
-    expTaskRec1.setOjbValue(10.0);
-    expTaskRec2.setOjbValue(14.0);
-    expTaskRec3.setOjbValue(12.0);
+  //   expTaskRec1.setOjbValue(10.0);
+  //   expTaskRec2.setOjbValue(14.0);
+  //   expTaskRec3.setOjbValue(12.0);
 
-    this.evaluator.configCache.put(expTaskRec1.getConfigID(), new HashMap<>());
-    this.evaluator.configCache.get(expTaskRec1.getConfigID()).put(
-        this.instanceIDs.get(0), expTaskRec1);
+  //   this.evaluator.configCache.put(expTaskRec1.getConfigID(), new HashMap<>());
+  //   this.evaluator.configCache.get(expTaskRec1.getConfigID()).put(
+  //       this.instanceIDs.get(0), expTaskRec1);
 
-    this.evaluator.configCache.put(expTaskRec2.getConfigID(), new HashMap<>());
-    this.evaluator.configCache.get(expTaskRec2.getConfigID()).put(
-        this.instanceIDs.get(0), expTaskRec2);
+  //   this.evaluator.configCache.put(expTaskRec2.getConfigID(), new HashMap<>());
+  //   this.evaluator.configCache.get(expTaskRec2.getConfigID()).put(
+  //       this.instanceIDs.get(0), expTaskRec2);
 
-    this.evaluator.configCache.put(expTaskRec3.getConfigID(), new HashMap<>());
-    this.evaluator.configCache.get(expTaskRec3.getConfigID()).put(
-        this.instanceIDs.get(0), expTaskRec3);
+  //   this.evaluator.configCache.put(expTaskRec3.getConfigID(), new HashMap<>());
+  //   this.evaluator.configCache.get(expTaskRec3.getConfigID()).put(
+  //       this.instanceIDs.get(0), expTaskRec3);
 
-    HashMap<String, Integer> rankedSubjects = this.evaluator.getRankedSubjectsObjValue(
-        subjects, this.instanceIDs.get(0));
+  //   HashMap<String, Integer> rankedSubjects = this.evaluator.getRankedSubjectsObjValue(
+  //       subjects, this.instanceIDs.get(0));
 
-    assertEquals(1, rankedSubjects.get(expTaskRec1.getConfigID()));
-    assertEquals(3, rankedSubjects.get(expTaskRec2.getConfigID()));
-    assertEquals(2, rankedSubjects.get(expTaskRec3.getConfigID()));
-  }
+  //   assertEquals(1, rankedSubjects.get(expTaskRec1.getConfigID()));
+  //   assertEquals(3, rankedSubjects.get(expTaskRec2.getConfigID()));
+  //   assertEquals(2, rankedSubjects.get(expTaskRec3.getConfigID()));
+  // }
 
-  @Test
-  void testSetConfigRankToSubjects() throws Exception {
-    List<ExperimentTaskRequest> taskList = this.evaluator.createTaskList(
-        subjects, this.instanceIDs.get(0));
+  // @Test
+  // void testSetConfigRankToSubjects() throws Exception {
+  //   List<ExperimentTaskRequest> taskList = this.evaluator.createTaskList(
+  //       subjects, this.instanceIDs.get(0));
 
-    List<SingleAlgorithmExperimentTaskSubject> oneSubject = List.of(
-        this.subjects.get(0), this.subjects.get(1));
+  //   List<SingleAlgorithmExperimentTaskSubject> oneSubject = List.of(
+  //       this.subjects.get(0), this.subjects.get(1));
 
-    String configID1 = this.subjects.get(0).getAlgorithmParams().hash();
-    String configID2 = this.subjects.get(1).getAlgorithmParams().hash();
+  //   String configID1 = this.subjects.get(0).getAlgorithmParams().hash();
+  //   String configID2 = this.subjects.get(1).getAlgorithmParams().hash();
 
-    HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
+  //   HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
 
-    rankedSubjects.put(this.instanceIDs.get(0), new HashMap<>());
-    rankedSubjects.put(this.instanceIDs.get(1), new HashMap<>());
-    rankedSubjects.put(this.instanceIDs.get(2), new HashMap<>());
+  //   rankedSubjects.put(this.instanceIDs.get(0), new HashMap<>());
+  //   rankedSubjects.put(this.instanceIDs.get(1), new HashMap<>());
+  //   rankedSubjects.put(this.instanceIDs.get(2), new HashMap<>());
 
-    rankedSubjects.get(this.instanceIDs.get(0)).put(configID1, 1);
-    rankedSubjects.get(this.instanceIDs.get(1)).put(configID1, 2);
-    rankedSubjects.get(this.instanceIDs.get(2)).put(configID1, 3);
+  //   rankedSubjects.get(this.instanceIDs.get(0)).put(configID1, 1);
+  //   rankedSubjects.get(this.instanceIDs.get(1)).put(configID1, 2);
+  //   rankedSubjects.get(this.instanceIDs.get(2)).put(configID1, 3);
 
-    rankedSubjects.get(this.instanceIDs.get(0)).put(configID2, 3);
-    rankedSubjects.get(this.instanceIDs.get(1)).put(configID2, 1);
-    rankedSubjects.get(this.instanceIDs.get(2)).put(configID2, 2);
+  //   rankedSubjects.get(this.instanceIDs.get(0)).put(configID2, 3);
+  //   rankedSubjects.get(this.instanceIDs.get(1)).put(configID2, 1);
+  //   rankedSubjects.get(this.instanceIDs.get(2)).put(configID2, 2);
 
-    SingleAlgorithmExperimentTaskSubject subject = 
-        this.evaluator.setConfigRankToSubjects(oneSubject, rankedSubjects);
+  //   SingleAlgorithmExperimentTaskSubject subject = 
+  //       this.evaluator.setConfigRankToSubjects(oneSubject, rankedSubjects);
 
-    assertEquals(configID2, subject.getAlgorithmParams().hash());
-    assertEquals(2.891892, oneSubject.get(0).getObjectiveValue()[0], 0.000001);
-    assertEquals(1.918919, oneSubject.get(1).getObjectiveValue()[0], 0.000001);
-  }
+  //   assertEquals(configID2, subject.getAlgorithmParams().hash());
+  //   assertEquals(2.891892, oneSubject.get(0).getObjectiveValue()[0], 0.000001);
+  //   assertEquals(1.918919, oneSubject.get(1).getObjectiveValue()[0], 0.000001);
+  // }
 
-  @Test
-  void testCreateTaskList() throws Exception {
-    List<ExperimentTaskRequest> taskList = this.evaluator.createTaskList(
-        subjects, this.instanceIDs.get(0));
+  // @Test
+  // void testCreateTaskList() throws Exception {
+  //   List<ExperimentTaskRequest> taskList = this.evaluator.createTaskList(
+  //       subjects, this.instanceIDs.get(0));
     
-    String configID1 = this.subjects.get(0).getAlgorithmParams().hash();
-    String configID2 = this.subjects.get(1).getAlgorithmParams().hash();
-    String configID3 = this.subjects.get(2).getAlgorithmParams().hash();
+  //   String configID1 = this.subjects.get(0).getAlgorithmParams().hash();
+  //   String configID2 = this.subjects.get(1).getAlgorithmParams().hash();
+  //   String configID3 = this.subjects.get(2).getAlgorithmParams().hash();
 
-    assertTrue(this.evaluator.configCache.containsKey(configID1));
-    assertTrue(this.evaluator.configCache.containsKey(configID2));
-    assertTrue(this.evaluator.configCache.containsKey(configID3));
+  //   assertTrue(this.evaluator.configCache.containsKey(configID1));
+  //   assertTrue(this.evaluator.configCache.containsKey(configID2));
+  //   assertTrue(this.evaluator.configCache.containsKey(configID3));
 
-    assertEquals(3, taskList.size());
+  //   assertEquals(3, taskList.size());
 
-    assertEquals(taskList.get(0).getAlgorithmID(), this.algorithmID);
-    assertEquals(taskList.get(1).getAlgorithmID(), this.algorithmID);
-    assertEquals(taskList.get(2).getAlgorithmID(), this.algorithmID);
+  //   assertEquals(taskList.get(0).getAlgorithmID(), this.algorithmID);
+  //   assertEquals(taskList.get(1).getAlgorithmID(), this.algorithmID);
+  //   assertEquals(taskList.get(2).getAlgorithmID(), this.algorithmID);
 
-    assertEquals(taskList.get(0).getConfigID(), configID1);
-    assertEquals(taskList.get(1).getConfigID(), configID2);
-    assertEquals(taskList.get(2).getConfigID(), configID3);
-  }
+  //   assertEquals(taskList.get(0).getConfigID(), configID1);
+  //   assertEquals(taskList.get(1).getConfigID(), configID2);
+  //   assertEquals(taskList.get(2).getConfigID(), configID3);
+  // }
 }

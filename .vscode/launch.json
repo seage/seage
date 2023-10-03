@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "RosenbrockParticleSwarmTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.rosenbrock.particles.RosenbrockParticleSwarmTest",
+      "projectName": "seage-problem-rosenbrock"
+    },
+    {
+      "type": "java",
+      "name": "RosenbrockGeneticAlgorithmTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.rosenbrock.genetics.RosenbrockGeneticAlgorithmTest",
+      "projectName": "seage-problem-rosenbrock"
+    },
+    {
+      "type": "java",
       "name": "RosenbrockGeneticAlgorithmTest",
       "request": "launch",
       "mainClass": "RosenbrockGeneticAlgorithmTest",
@@ -215,14 +229,13 @@
         "-t",
         "2",
         "-n",
-        "4",
+        "10",
         "-g",
-        "10"
+        "4"
       ],
       "env": {
-        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage",
-        // "LOG_LEVEL": "debug"
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
       }
-    },
+    }
   ]
 }

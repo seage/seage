@@ -33,17 +33,21 @@ import org.slf4j.LoggerFactory;
 /**
  * Rosenbrock genetic algorithm test.
  */
-public class RosenbrockGeneticAlgorithmTest {
+public class RosenbrockGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Double>>> {
   private static final Logger logger = 
       LoggerFactory.getLogger(RosenbrockGeneticAlgorithmTest.class.getName());
   
+  public static void main(String[] args) throws Exception {
+    new RosenbrockGeneticAlgorithmTest().start();
+  }
+
   /**
    * .
    */
-  public static void main(String[] args) throws Exception {
+  public void start() throws Exception {
     try {
       // Dimension of the Rosenbrock function
-      int dim = 8;
+      int dim = 16;
 
       double[] test = new double[dim];
       for (int i = 0; i < dim; i++) {
@@ -61,42 +65,14 @@ public class RosenbrockGeneticAlgorithmTest {
 
       GeneticAlgorithm<Subject<Double>> gs =
           new GeneticAlgorithm<>(operator, new RosenbrockEvaluator());
-      gs.addGeneticSearchListener(new IAlgorithmListener<GeneticAlgorithmEvent<Subject<Double>>>() {
+      gs.addGeneticSearchListener(this);
 
-        @Override
-        public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Double>> e) {
-          // TODO Auto-generated method stub
-        }
-
-        @Override
-        public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Double>> e) {
-          System.out.println(e.getGeneticSearch().getBestSubject().getObjectiveValue()[0]);
-
-        }
-
-        @Override
-        public void iterationPerformed(GeneticAlgorithmEvent<Subject<Double>> e) {
-          // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void algorithmStopped(GeneticAlgorithmEvent<Subject<Double>> e) {
-          // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void algorithmStarted(GeneticAlgorithmEvent<Subject<Double>> e) {
-          // TODO Auto-generated method stub
-        }
-      });
       gs.setCrossLengthPct(40);
-      gs.setEliteSubjectsPct(10);
-      gs.setIterationToGo(10000);
-      gs.setMutateChromosomeLengthPct(20);
-      gs.setMutatePopulationPct(10);
-      gs.setPopulationCount(1000);
+      gs.setEliteSubjectsPct(5);
+      gs.setIterationToGo(1000000);
+      gs.setMutateChromosomeLengthPct(40);
+      gs.setMutatePopulationPct(40);
+      gs.setPopulationCount(500);
       gs.setRandomSubjectsPct(1);
 
       Double[] dimArray = new Double[dim];
@@ -121,5 +97,35 @@ public class RosenbrockGeneticAlgorithmTest {
       // TODO Auto-generated catch block
       logger.error("{}", ex.getMessage(), ex);
     }
+  }
+
+  @Override
+  public void algorithmStarted(GeneticAlgorithmEvent<Subject<Double>> e) {
+    // TODO Auto-generated method stub
+    // throw new UnsupportedOperationException("Unimplemented method 'algorithmStarted'");
+  }
+
+  @Override
+  public void algorithmStopped(GeneticAlgorithmEvent<Subject<Double>> e) {
+    // TODO Auto-generated method stub
+    // throw new UnsupportedOperationException("Unimplemented method 'algorithmStopped'");
+  }
+
+  @Override
+  public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Double>> e) {
+    // TODO Auto-generated method stub
+    System.out.println(e.getGeneticSearch().getBestSubject().getObjectiveValue()[0]);
+  }
+
+  @Override
+  public void iterationPerformed(GeneticAlgorithmEvent<Subject<Double>> e) {
+    // TODO Auto-generated method stub
+    // throw new UnsupportedOperationException("Unimplemented method 'iterationPerformed'");
+  }
+
+  @Override
+  public void noChangeInValueIterationMade(GeneticAlgorithmEvent<Subject<Double>> e) {
+    // TODO Auto-generated method stub
+    // throw new UnsupportedOperationException("Unimplemented method 'noChangeInValueIterationMade'");
   }
 }
