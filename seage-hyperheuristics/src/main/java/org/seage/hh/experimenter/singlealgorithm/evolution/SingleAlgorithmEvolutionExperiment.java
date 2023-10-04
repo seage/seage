@@ -203,8 +203,10 @@ public class SingleAlgorithmEvolutionExperiment
   ) throws Exception {
     List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<>();
     Set<String> newConfigIds = new HashSet<>();
-    int numPerInstance = (int) Math.floor(numOfSubjects / (double) instanceIDs.size());
-    int numOfRestOfSubject = numOfSubjects - this.instanceIDs.size() * numPerInstance;
+    int numPerInstance = Math.max(
+          1,  (int) Math.floor(numOfSubjects / (double) instanceIDs.size()));
+    int numOfRestOfSubject = Math.max(
+          0, numOfSubjects - this.instanceIDs.size() * numPerInstance);
 
     for (String instanceID : instanceIDs) { // NOSONAR
       int subjectsForInstance = numPerInstance;
@@ -248,7 +250,7 @@ public class SingleAlgorithmEvolutionExperiment
     }
 
     // Return the right size of results
-    return result;
+    return result.subList(0, numOfSubjects);
   }
 
   protected Limit[] prepareAlgorithmParametersLimits(
