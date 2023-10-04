@@ -1,6 +1,8 @@
 package org.seage.hh.experimenter.singlealgorithm.evolution;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -201,33 +203,31 @@ public class SingleAlgorithmEvolutionExperiment
   ) throws Exception {
     List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<>();
     Set<String> newConfigIds = new HashSet<>();
-    int numPerInstance = Math.max(
-        instanceIDs.size(), 
-        (int) Math.ceil(numOfSubjects / (double) instanceIDs.size()));
-    int curNumOfSubjects = 0;
+    int numPerInstance = (int) Math.floor(numOfSubjects / (double) instanceIDs.size());
+    int numOfRestOfSubject = numOfSubjects - this.instanceIDs.size() * numPerInstance;
 
-    // TODO - is using this configurator right?
-    for (String instanceID : instanceIDs) {
-      if (curNumOfSubjects >= numOfSubjects) {
-        break;
+    for (String instanceID : instanceIDs) { // NOSONAR
+      int subjectsForInstance = numPerInstance;
+      if (numOfRestOfSubject != 0) {
+        subjectsForInstance += 1;
+        numOfRestOfSubject -= 1;
       }
 
-      ProblemConfig[] pc = feedbackConfigurator.prepareConfigs(
-        problemInfo, instanceID, algorithmID, numPerInstance);
+      List<ProblemConfig> configs = new ArrayList<>(Arrays.asList(
+          feedbackConfigurator.prepareConfigs(problemInfo, instanceID, 
+          algorithmID, subjectsForInstance)));
 
       List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
           .getDataNodes("Parameter");
 
-      for (int i = 0; i < numPerInstance; i++) {
-        if (curNumOfSubjects >= numOfSubjects) {
-          break;
-        }
-        
+      int numAddedInstanceSubjects = 0;
+      int i = 0;
+      while (numAddedInstanceSubjects != subjectsForInstance) {
         String[] names = new String[params.size()];
         Double[] values = new Double[params.size()];
         for (int j = 0; j < params.size(); j++) {
           names[j] = params.get(j).getValueStr("name");
-          values[j] = pc[i].getDataNode(
+          values[j] = configs.get(i).getDataNode(
             "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
         }
         var subject = new SingleAlgorithmExperimentTaskSubject(names, values);
@@ -236,44 +236,23 @@ public class SingleAlgorithmEvolutionExperiment
         if (!newConfigIds.contains(newConfigId)) {
           newConfigIds.add(newConfigId);
           result.add(subject);
-          curNumOfSubjects += 1;
+          numAddedInstanceSubjects += 1;
+        } else {
+          ProblemConfig randomConfig = randomConfigurator.prepareConfigs(
+              problemInfo, instanceID, algorithmID, 1)[0];
+          configs.add(randomConfig);
         }
-      }
-    }
-
-    // Fill the rest of subjects with random configurations
-    if (result.size() < numOfSubjects) {
-      
-      int numOfSubjectLeft = numOfSubjects - result.size();
-      for (int i = 0; i < numOfSubjectLeft; i++) {
-        String rndInstance = instanceIDs.get(random.nextInt(instanceIDs.size()));
-
-        ProblemConfig[] pc = feedbackConfigurator.prepareConfigs(
-            problemInfo, rndInstance, algorithmID, 1);
-
-        List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
-            .getDataNodes("Parameter");
-
-        String[] names = new String[params.size()];
-        Double[] values = new Double[params.size()];
-        for (int j = 0; j < params.size(); j++) {
-          names[j] = params.get(j).getValueStr("name");
-          values[j] = pc[0].getDataNode(
-            "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
-        }
-        var subject = new SingleAlgorithmExperimentTaskSubject(names, values);
-        result.add(subject);
-        curNumOfSubjects += 1;
+        // Next config
+        i++;
       }
     }
 
     // Return the right size of results
-    return result.subList(0, numOfSubjects);
+    return result;
   }
 
   protected Limit[] prepareAlgorithmParametersLimits(
-      String algorithmID, ProblemInfo pi
-  ) throws Exception {
+      String algorithmID, ProblemInfo pi) throws Exception {
     List<DataNode> params = pi.getDataNode(
         "Algorithms").getDataNodeById(algorithmID).getDataNodes("Parameter");
     Limit[] result = new Limit[params.size()];
