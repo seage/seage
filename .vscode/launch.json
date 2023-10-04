@@ -223,15 +223,15 @@
       "args": [
         "experiment-single-evolution",
         "-a",
-        "SimulatedAnnealing",
+        "AntColony",
         "-i",
         "TSP:small",
         "-t",
-        "6",
+        "1",
         "-n",
         "8",
         "-g",
-        "10"
+        "4"
       ],
       "env": {
         "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"

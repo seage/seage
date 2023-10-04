@@ -133,7 +133,6 @@ public class SingleAlgorithmEvolutionExperiment
   protected void runExperimentTasksForProblemInstance() throws Exception {
 
     try {
-      // ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
       if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null) {
         throw new IllegalArgumentException("Unknown algorithm: " + algorithmID);
       }
@@ -176,6 +175,9 @@ public class SingleAlgorithmEvolutionExperiment
       }
 
       ga.startSearching(subjects);
+      bestScore = -ga.getBestSubject().getObjectiveValue()[0];
+
+      // TODO: Store the best configs
       
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
