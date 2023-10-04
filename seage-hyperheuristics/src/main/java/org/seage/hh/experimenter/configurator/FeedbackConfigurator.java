@@ -58,10 +58,18 @@ public class FeedbackConfigurator extends Configurator {
    * @return
    */
   public List<ExperimentTaskRecord> getBestExperimentTasks(
-      String problemId, String algorithmId, int limit) throws Exception {
+      String algorithmId, String problemId, int limit) throws Exception {
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
       ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);    
-      return mapper.getBestExperimentTasks(problemId, algorithmId, limit);
+      return mapper.getBestExperimentTasks(algorithmId, problemId, limit);
+    }
+  }
+
+  public List<ExperimentTaskRecord> getBestExperimentTasks(
+      String algorithmId, String problemId, String instanceId, int limit) throws Exception {
+    try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
+      ExperimentTaskMapper mapper = session.getMapper(ExperimentTaskMapper.class);    
+      return mapper.getBestExperimentTasks2(algorithmId, problemId, instanceId, limit);
     }
   }
 
@@ -76,7 +84,7 @@ public class FeedbackConfigurator extends Configurator {
 
     // Get best config from db
     List<ExperimentTaskRecord> bestRes = getBestExperimentTasks(
-        problemInfo.getValue("id").toString(), algID, numConfigs);
+        algID, problemInfo.getValue("id").toString(), instanceID, numConfigs);
 
     // Use best records to fill results to given numConfigs size
     if (!bestRes.isEmpty()) {
@@ -89,16 +97,6 @@ public class FeedbackConfigurator extends Configurator {
           results.add(createConfig(problemInfo, instanceID, algID, expTaskRec));
         }
       }
-    }
-
-    // Fill the rest with default confs
-    if (results.size() < numConfigs) {
-      DefaultConfigurator defConf = new DefaultConfigurator(this.spread);
-
-      ProblemConfig[] defProbConfs = defConf.prepareConfigs(
-        problemInfo, instanceID, algID, numConfigs - results.size());
-
-      results.addAll(Arrays.asList(defProbConfs));
     }
 
     return results.toArray(new ProblemConfig[0]);

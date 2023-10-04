@@ -171,6 +171,9 @@ public class SingleAlgorithmEvolutionExperiment
       List<SingleAlgorithmExperimentTaskSubject> subjects = 
           initializeSubjects(problemInfo, instanceIDs, algorithmID, numSubjects);
       logger.info("Prepared {} initial configs", subjects.size());
+      for (var s : subjects) {
+        logger.info(" - {}", s.getAlgorithmParams().hash());
+      }
 
       ga.startSearching(subjects);
       
@@ -199,11 +202,11 @@ public class SingleAlgorithmEvolutionExperiment
       ProblemInfo problemInfo, List<String> instanceIDs,
       String algorithmID, int numOfSubjects
   ) throws Exception {
+
     List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<>();
     Set<String> newConfigIds = new HashSet<>();
-    int numPerInstance = Math.max(
-        instanceIDs.size(), 
-        (int) Math.ceil(numOfSubjects / (double) instanceIDs.size()));
+    int numPerInstance = Math.max(1, numOfSubjects / instanceIDs.size());
+    
     int curNumOfSubjects = 0;
 
     // TODO - is using this configurator right?

@@ -75,10 +75,6 @@ public class SingleAlgorithmExperimentTaskEvaluator
       throws Exception {
     stageId += 1;
 
-    for (var s : subjects) {
-      logger.info(s.getAlgorithmParams().hash());
-    }
-
     subjectsObjValues = new HashMap<>();
 
     HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
@@ -105,7 +101,14 @@ public class SingleAlgorithmExperimentTaskEvaluator
     Map<String, Map<String, Integer>> rankTable = calculateRankTable(subjectsObjValues);
     Map<String, Double> weightedRanks = calculateWeightedRanks(rankTable);
     setObjValToSubjects(subjects, weightedRanks);
-    int a = 0;
+
+    logger.info("Configs:");
+    for (var s : subjects) {
+      String configId = s.getAlgorithmParams().hash();
+      double objVal = s.getObjectiveValue()[0];
+      double score = getProblemScore(configId, subjectsObjValues.get(configId));      
+      logger.info(" - {}  {}  {}", s.getAlgorithmParams().hash(), String.format("%7.4f", objVal), String.format("%.4f",score));
+    }
   }
 
   private void setObjValToSubjects(List<SingleAlgorithmExperimentTaskSubject> subjects,
@@ -115,7 +118,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     }
   }
 
-  protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
+  protected synchronized Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
       subjectsObjValues.computeIfAbsent(experimentTask.getConfigID(), k -> new HashMap<>());
       subjectsObjValues.get(experimentTask.getConfigID()).put(experimentTask.getInstanceID(),
@@ -212,40 +215,40 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @return Weighted order.
    * @throws Exception Exception.
    */
-  protected SingleAlgorithmExperimentTaskSubject setConfigRankToSubjects(
-      List<SingleAlgorithmExperimentTaskSubject> subjects,
-      HashMap<String, HashMap<String, Integer>> rankedSubjects) throws Exception {
+  // protected SingleAlgorithmExperimentTaskSubject setConfigRankToSubjects(
+  //     List<SingleAlgorithmExperimentTaskSubject> subjects,
+  //     HashMap<String, HashMap<String, Integer>> rankedSubjects) throws Exception {
 
-    double bestSubjectRank = Double.MAX_VALUE;
-    SingleAlgorithmExperimentTaskSubject bestSubject = null;
-    // Each subject evaluate separatly
-    for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
-      String configID = subject.getAlgorithmParams().hash();
-      double sumOfWeights = 0.0;
-      double result = 0.0;
-      for (String instanceID : this.instanceIDs) {
-        double instanceSize = this.instancesInfo.get(instanceID).getValueDouble("size");
-        double instanceRank = rankedSubjects.get(instanceID).get(configID);
+  //   double bestSubjectRank = Double.MAX_VALUE;
+  //   SingleAlgorithmExperimentTaskSubject bestSubject = null;
+  //   // Each subject evaluate separatly
+  //   for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
+  //     String configID = subject.getAlgorithmParams().hash();
+  //     double sumOfWeights = 0.0;
+  //     double result = 0.0;
+  //     for (String instanceID : this.instanceIDs) {
+  //       double instanceSize = this.instancesInfo.get(instanceID).getValueDouble("size");
+  //       double instanceRank = rankedSubjects.get(instanceID).get(configID);
 
-        result += instanceSize * instanceRank;
-        sumOfWeights += instanceSize;
-      }
-      if (sumOfWeights == 0.0) {
-        throw new Exception("Error: dividing by zero.");
-      }
-      // Config score
-      Double configRank = result / sumOfWeights;
-      subject.setObjectiveValue(new double[] {configRank});
+  //       result += instanceSize * instanceRank;
+  //       sumOfWeights += instanceSize;
+  //     }
+  //     if (sumOfWeights == 0.0) {
+  //       throw new Exception("Error: dividing by zero.");
+  //     }
+  //     // Config score
+  //     Double configRank = result / sumOfWeights;
+  //     subject.setObjectiveValue(new double[] {configRank});
 
-      if (configRank < bestSubjectRank) {
-        bestSubject = subject;
-        bestSubjectRank = configRank;
-      }
-    }
+  //     if (configRank < bestSubjectRank) {
+  //       bestSubject = subject;
+  //       bestSubjectRank = configRank;
+  //     }
+  //   }
 
-    // Returns the best config id
-    return bestSubject;
-  }
+  //   // Returns the best config id
+  //   return bestSubject;
+  // }
 
   /**
    * Method reports the experiment config score.
@@ -278,16 +281,16 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @return ProblemScore
    * @throws Exception Exception.
    */
-  // protected double getProblemScore(String configID) throws Exception {
-  // List<Double> instanceScores = new ArrayList<>();
-  // for (String instanceID : this.instanceIDs) {
-  // instanceScores.add(this.configCache.get(configID).get(instanceID).getScore());
-  // }
+  protected double getProblemScore(String configID, Map<String, Double> objValues) throws Exception {
+    List<Double> instanceScores = new ArrayList<>();
+    for (String instanceID : instanceIDs) {
+      instanceScores.add(problemScoreCalculator.calculateInstanceScore(instanceID, objValues.get(instanceID)));
+    }
 
-  // return this.problemScoreCalculator.calculateProblemScore(
-  // this.instanceIDs.toArray(new String[]{}),
-  // instanceScores.stream().mapToDouble(a -> a).toArray());
-  // }
+    return problemScoreCalculator.calculateProblemScore(
+        instanceIDs.toArray(new String[]{}),
+        instanceScores.stream().mapToDouble(a -> a).toArray());
+  }
 
 
   /**
