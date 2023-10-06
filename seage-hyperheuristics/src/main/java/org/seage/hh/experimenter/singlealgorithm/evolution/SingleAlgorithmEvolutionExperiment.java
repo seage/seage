@@ -1,6 +1,7 @@
 package org.seage.hh.experimenter.singlealgorithm.evolution;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentReporter;
+import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 import org.seage.hh.experimenter.configurator.RandomConfigurator;
@@ -153,8 +155,7 @@ public class SingleAlgorithmEvolutionExperiment
           algorithmID, 
           algorithmTimeoutS,  
           this.problemInfo,
-          this.instancesInfo, 
-          this::reportExperimentTask);
+          this.instancesInfo);
       GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = 
           new GeneticAlgorithm<>(realOperator, evaluator);
       ga.addGeneticSearchListener(this);
@@ -169,15 +170,22 @@ public class SingleAlgorithmEvolutionExperiment
       
       List<SingleAlgorithmExperimentTaskSubject> subjects = 
           initializeSubjects(problemInfo, instanceIDs, algorithmID, numSubjects);
+      // Fill the rest of subjects by random subjects
+      if (subjects.size() < numSubjects) {
+        subjects.addAll(initializeRandomSubjects(
+            problemInfo, instanceIDs, algorithmID, numSubjects - subjects.size()));
+      }
       logger.info("Prepared {} initial configs", subjects.size());
       for (var s : subjects) {
         logger.info(" - {}", s.getAlgorithmParams().hash());
       }
 
+      long startDate = System.currentTimeMillis();
       ga.startSearching(subjects);
-      bestScore = -ga.getBestSubject().getObjectiveValue()[0];
+      long endDate = System.currentTimeMillis();
 
       // TODO: Store the best configs
+      this.reportBestExperimentSubject(ga.getBestSubject(), startDate, endDate);
       
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
@@ -185,19 +193,30 @@ public class SingleAlgorithmEvolutionExperiment
     
   }
 
-  protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
-    try {
-      experimentReporter.reportExperimentTask(experimentTask);
-      double taskScore = experimentTask.getScore();
-      
-      if (taskScore > this.bestScore) {
-        this.bestScore = taskScore;
-      } 
-    } catch (Exception e) {
-      logger.error(String.format("Failed to report the experiment task: %s", 
-          experimentTask.getExperimentTaskID().toString()), e);
-    }
-    return null;
+  protected void reportBestExperimentSubject(
+      SingleAlgorithmExperimentTaskSubject bestSubject, 
+      long startDate, long endDate) throws Exception {
+    this.bestScore = -bestSubject.getObjectiveValue()[0];
+    
+    ExperimentTaskRequest taskRequest = new ExperimentTaskRequest(
+        UUID.randomUUID(), 
+        experimentID, 
+        1, 
+        1, 
+        problemID, 
+        instanceIDs.toString(), 
+        algorithmID,
+        bestSubject.getAlgorithmParams().hash(),
+        bestSubject.getAlgorithmParams(),
+        null,
+        timeoutS);
+    ExperimentTaskRecord taskRecord = new ExperimentTaskRecord(taskRequest);
+    taskRecord.setStartDate(new Date(startDate));
+    taskRecord.setEndDate(new Date(endDate));
+    taskRecord.setScore(bestScore);
+
+    // Report the task results
+    experimentReporter.reportExperimentTask(taskRecord);
   }
 
   private List<SingleAlgorithmExperimentTaskSubject> initializeSubjects(
@@ -211,7 +230,6 @@ public class SingleAlgorithmEvolutionExperiment
     
     int curNumOfSubjects = 0;
 
-    // TODO - is using this configurator right?
     for (String instanceID : instanceIDs) {
       if (curNumOfSubjects >= numOfSubjects) {
         break;
@@ -223,7 +241,7 @@ public class SingleAlgorithmEvolutionExperiment
       List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
           .getDataNodes("Parameter");
 
-      for (int i = 0; i < numPerInstance; i++) {
+      for (int i = 0; i < pc.length; i++) {
         if (curNumOfSubjects >= numOfSubjects) {
           break;
         }
@@ -246,15 +264,18 @@ public class SingleAlgorithmEvolutionExperiment
       }
     }
 
-    // Fill the rest of subjects with random configurations
-    if (result.size() < numOfSubjects) {
-      
-      int numOfSubjectLeft = numOfSubjects - result.size();
-      for (int i = 0; i < numOfSubjectLeft; i++) {
-        String rndInstance = instanceIDs.get(random.nextInt(instanceIDs.size()));
+    return result;
+  }
 
-        ProblemConfig[] pc = feedbackConfigurator.prepareConfigs(
-            problemInfo, rndInstance, algorithmID, 1);
+  private List<SingleAlgorithmExperimentTaskSubject> initializeRandomSubjects(
+      ProblemInfo problemInfo, List<String> instanceIDs,
+      String algorithmID, int numOfSubjects) throws Exception {
+    List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<>();
+    int numRuns = (int) Math.ceil(numOfSubjects / (double)instanceIDs.size());
+    for (int i = 0; i < numRuns; i++) {
+      for (String instanceID : instanceIDs) {
+        ProblemConfig[] pc = randomConfigurator.prepareConfigs(
+            problemInfo, instanceID, algorithmID, 1);
 
         List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
             .getDataNodes("Parameter");
@@ -268,11 +289,8 @@ public class SingleAlgorithmEvolutionExperiment
         }
         var subject = new SingleAlgorithmExperimentTaskSubject(names, values);
         result.add(subject);
-        curNumOfSubjects += 1;
       }
     }
-
-    // Return the right size of results
     return result.subList(0, numOfSubjects);
   }
 

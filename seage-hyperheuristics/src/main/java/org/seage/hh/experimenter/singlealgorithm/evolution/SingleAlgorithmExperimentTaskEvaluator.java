@@ -50,12 +50,10 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param timeoutS Timeout [s].
    * @param problemInfo Problem info.
    * @param instancesInfo Instances info.
-   * @param reportFn Report function.
    */
   public SingleAlgorithmExperimentTaskEvaluator(UUID experimentId, String problemID,
       List<String> instanceIDs, String algorithmID, long timeoutS, ProblemInfo problemInfo,
-      Map<String, ProblemInstanceInfo> instancesInfo,
-      Function<ExperimentTaskRecord, Void> reportFn) {
+      Map<String, ProblemInstanceInfo> instancesInfo) {
     super();
     this.experimentId = experimentId;
     this.problemID = problemID;
@@ -203,7 +201,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
     return taskList;
   }
 
-  private Map<String, Double> calculateProblemScores(Map<String, Map<String, Double>> subjectsObjValues) throws Exception {
+  private Map<String, Double> calculateProblemScores(
+      Map<String, Map<String, Double>> subjectsObjValues) throws Exception {
     Map<String, Double> result = new HashMap<>();
     for (String configID : subjectsObjValues.keySet()) { // NOSONAR
       Map<String, Double> objValues = subjectsObjValues.get(configID);
