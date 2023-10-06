@@ -171,8 +171,23 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
   }
 
   @Test
-  void testCalculateProblemScores() {
+  void testCalculateProblemScores() throws Exception {
+    Map<String, Map<String, Double>> subjectsObjValues = new HashMap<>();
+    String configID1 = this.subjects.get(0).getAlgorithmParams().hash();
+    
+    subjectsObjValues.put(configID1, new HashMap<>());
+    subjectsObjValues.get(configID1).put(
+        this.instanceIDs.get(0), 5.0);
+    subjectsObjValues.get(configID1).put(
+        this.instanceIDs.get(1), 6.0);
+    subjectsObjValues.get(configID1).put(
+        this.instanceIDs.get(2), 3.0);
 
+    Map<String, Double> scores = this.evaluator.calculateProblemScores(subjectsObjValues);
+
+    assertEquals(1, scores.size());
+
+    assertEquals(0.81, scores.get(configID1), 0.01);
   }
 
   @Test

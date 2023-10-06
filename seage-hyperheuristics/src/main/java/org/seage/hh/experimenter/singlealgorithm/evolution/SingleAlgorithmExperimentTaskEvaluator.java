@@ -202,7 +202,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     return taskList;
   }
 
-  private Map<String, Double> calculateProblemScores(
+  protected Map<String, Double> calculateProblemScores(
       Map<String, Map<String, Double>> subjectsObjValues) throws Exception {
     Map<String, Double> result = new HashMap<>();
     for (String configID : subjectsObjValues.keySet()) { // NOSONAR
