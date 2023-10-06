@@ -131,7 +131,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     return null;
   }
 
-  private Map<String, Map<String, Integer>> calculateRankTable(
+  protected Map<String, Map<String, Integer>> calculateRankTable(
       Map<String, Map<String, Double>> subjectsObjValues) {
     List<String> configIDs = new ArrayList<>(subjectsObjValues.keySet());
 

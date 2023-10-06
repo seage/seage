@@ -191,8 +191,30 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
   }
 
   @Test
-  void testCalculateRankTable() {
+  void testCalculateRankTable() throws Exception {
+    Map<String, Map<String, Double>> subjectsObjValues = new HashMap<>();
+    String configID1 = this.subjects.get(0).getAlgorithmParams().hash();
+    String configID2 = this.subjects.get(1).getAlgorithmParams().hash();
+    String configID3 = this.subjects.get(2).getAlgorithmParams().hash();
 
+    subjectsObjValues.put(configID1, new HashMap<>());
+    subjectsObjValues.put(configID2, new HashMap<>());
+    subjectsObjValues.put(configID3, new HashMap<>());
+
+    subjectsObjValues.get(configID1).put(
+        this.instanceIDs.get(0), 5.0);
+    subjectsObjValues.get(configID2).put(
+        this.instanceIDs.get(0), 6.0);
+    subjectsObjValues.get(configID3).put(
+        this.instanceIDs.get(0), 3.0);
+
+    Map<String, Map<String, Integer>> rankTable = 
+        this.evaluator.calculateRankTable(subjectsObjValues);
+
+    assertEquals(3, rankTable.keySet().size());
+    assertEquals(2, rankTable.get(configID1).get(instanceIDs.get(0)));
+    assertEquals(3, rankTable.get(configID2).get(instanceIDs.get(0)));
+    assertEquals(1, rankTable.get(configID3).get(instanceIDs.get(0)));
   }
 
   @Test
