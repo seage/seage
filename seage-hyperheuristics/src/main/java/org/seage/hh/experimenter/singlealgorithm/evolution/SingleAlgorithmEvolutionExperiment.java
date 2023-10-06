@@ -1,8 +1,7 @@
 package org.seage.hh.experimenter.singlealgorithm.evolution;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +15,7 @@ import org.seage.aal.problem.ProblemProvider;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentReporter;
+import org.seage.hh.experimenter.ExperimentTaskRequest;
 import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 import org.seage.hh.experimenter.configurator.RandomConfigurator;
@@ -135,7 +135,6 @@ public class SingleAlgorithmEvolutionExperiment
   protected void runExperimentTasksForProblemInstance() throws Exception {
 
     try {
-      // ProblemInstanceInfo instanceInfo = problemInfo.getProblemInstanceInfo(instanceID);
       if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null) {
         throw new IllegalArgumentException("Unknown algorithm: " + algorithmID);
       }
@@ -156,25 +155,37 @@ public class SingleAlgorithmEvolutionExperiment
           algorithmID, 
           algorithmTimeoutS,  
           this.problemInfo,
-          this.instancesInfo, 
-          this::reportExperimentTask);
+          this.instancesInfo);
       GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = 
           new GeneticAlgorithm<>(realOperator, evaluator);
       ga.addGeneticSearchListener(this);
-      ga.setCrossLengthPct(50);
-      ga.setEliteSubjectsPct(10);
+      ga.setCrossLengthPct(40);
+      ga.setEliteSubjectsPct(1);
       ga.setIterationToGo(numIterations);
-      ga.setMutateChromosomeLengthPct(5);
-      ga.setMutatePopulationPct(20);
+      ga.setMutateChromosomeLengthPct(40);
+      ga.setMutatePopulationPct(40);
       ga.setPopulationCount(numSubjects);
       ga.setRandomSubjectsPct(1);
 
       
       List<SingleAlgorithmExperimentTaskSubject> subjects = 
           initializeSubjects(problemInfo, instanceIDs, algorithmID, numSubjects);
+      // Fill the rest of subjects by random subjects
+      if (subjects.size() < numSubjects) {
+        subjects.addAll(initializeRandomSubjects(
+            problemInfo, instanceIDs, algorithmID, numSubjects - subjects.size()));
+      }
       logger.info("Prepared {} initial configs", subjects.size());
+      for (var s : subjects) {
+        logger.info(" - {}", s.getAlgorithmParams().hash());
+      }
 
+      long startDate = System.currentTimeMillis();
       ga.startSearching(subjects);
+      long endDate = System.currentTimeMillis();
+
+      // TODO: Store the best configs
+      this.reportBestExperimentSubject(ga.getBestSubject(), startDate, endDate);
       
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
@@ -182,54 +193,64 @@ public class SingleAlgorithmEvolutionExperiment
     
   }
 
-  protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
-    try {
-      experimentReporter.reportExperimentTask(experimentTask);
-      double taskScore = experimentTask.getScore();
-      
-      if (taskScore > this.bestScore) {
-        this.bestScore = taskScore;
-      } 
-    } catch (Exception e) {
-      logger.error(String.format("Failed to report the experiment task: %s", 
-          experimentTask.getExperimentTaskID().toString()), e);
-    }
-    return null;
+  protected void reportBestExperimentSubject(
+      SingleAlgorithmExperimentTaskSubject bestSubject, 
+      long startDate, long endDate) throws Exception {
+    this.bestScore = -bestSubject.getObjectiveValue()[0];
+    
+    ExperimentTaskRequest taskRequest = new ExperimentTaskRequest(
+        UUID.randomUUID(), 
+        experimentID, 
+        1, 
+        1, 
+        problemID, 
+        instanceIDs.toString(), 
+        algorithmID,
+        bestSubject.getAlgorithmParams().hash(),
+        bestSubject.getAlgorithmParams(),
+        null,
+        timeoutS);
+    ExperimentTaskRecord taskRecord = new ExperimentTaskRecord(taskRequest);
+    taskRecord.setStartDate(new Date(startDate));
+    taskRecord.setEndDate(new Date(endDate));
+    taskRecord.setScore(bestScore);
+
+    // Report the task results
+    experimentReporter.reportExperimentTask(taskRecord);
   }
 
   private List<SingleAlgorithmExperimentTaskSubject> initializeSubjects(
       ProblemInfo problemInfo, List<String> instanceIDs,
       String algorithmID, int numOfSubjects
   ) throws Exception {
+
     List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<>();
     Set<String> newConfigIds = new HashSet<>();
-    int numPerInstance = Math.max(
-          1,  (int) Math.floor(numOfSubjects / (double) instanceIDs.size()));
-    int numOfRestOfSubject = Math.max(
-          0, numOfSubjects - this.instanceIDs.size() * numPerInstance);
+    int numPerInstance = Math.max(1, numOfSubjects / instanceIDs.size());
+    
+    int curNumOfSubjects = 0;
 
-    for (String instanceID : instanceIDs) { // NOSONAR
-      int subjectsForInstance = numPerInstance;
-      if (numOfRestOfSubject != 0) {
-        subjectsForInstance += 1;
-        numOfRestOfSubject -= 1;
+    for (String instanceID : instanceIDs) {
+      if (curNumOfSubjects >= numOfSubjects) {
+        break;
       }
 
-      List<ProblemConfig> configs = new ArrayList<>(Arrays.asList(
-          feedbackConfigurator.prepareConfigs(problemInfo, instanceID, 
-          algorithmID, subjectsForInstance)));
+      ProblemConfig[] pc = feedbackConfigurator.prepareConfigs(
+        problemInfo, instanceID, algorithmID, numPerInstance);
 
       List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
           .getDataNodes("Parameter");
 
-      int numAddedInstanceSubjects = 0;
-      int i = 0;
-      while (numAddedInstanceSubjects != subjectsForInstance) {
+      for (int i = 0; i < pc.length; i++) {
+        if (curNumOfSubjects >= numOfSubjects) {
+          break;
+        }
+        
         String[] names = new String[params.size()];
         Double[] values = new Double[params.size()];
         for (int j = 0; j < params.size(); j++) {
           names[j] = params.get(j).getValueStr("name");
-          values[j] = configs.get(i).getDataNode(
+          values[j] = pc[i].getDataNode(
             "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
         }
         var subject = new SingleAlgorithmExperimentTaskSubject(names, values);
@@ -238,23 +259,44 @@ public class SingleAlgorithmEvolutionExperiment
         if (!newConfigIds.contains(newConfigId)) {
           newConfigIds.add(newConfigId);
           result.add(subject);
-          numAddedInstanceSubjects += 1;
-        } else {
-          ProblemConfig randomConfig = randomConfigurator.prepareConfigs(
-              problemInfo, instanceID, algorithmID, 1)[0];
-          configs.add(randomConfig);
+          curNumOfSubjects += 1;
         }
-        // Next config
-        i++;
       }
     }
 
-    // Return the right size of results
+    return result;
+  }
+
+  private List<SingleAlgorithmExperimentTaskSubject> initializeRandomSubjects(
+      ProblemInfo problemInfo, List<String> instanceIDs,
+      String algorithmID, int numOfSubjects) throws Exception {
+    List<SingleAlgorithmExperimentTaskSubject> result = new ArrayList<>();
+    int numRuns = (int) Math.ceil(numOfSubjects / (double)instanceIDs.size());
+    for (int i = 0; i < numRuns; i++) {
+      for (String instanceID : instanceIDs) {
+        ProblemConfig[] pc = randomConfigurator.prepareConfigs(
+            problemInfo, instanceID, algorithmID, 1);
+
+        List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
+            .getDataNodes("Parameter");
+
+        String[] names = new String[params.size()];
+        Double[] values = new Double[params.size()];
+        for (int j = 0; j < params.size(); j++) {
+          names[j] = params.get(j).getValueStr("name");
+          values[j] = pc[0].getDataNode(
+            "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
+        }
+        var subject = new SingleAlgorithmExperimentTaskSubject(names, values);
+        result.add(subject);
+      }
+    }
     return result.subList(0, numOfSubjects);
   }
 
   protected Limit[] prepareAlgorithmParametersLimits(
-      String algorithmID, ProblemInfo pi) throws Exception {
+      String algorithmID, ProblemInfo pi
+  ) throws Exception {
     List<DataNode> params = pi.getDataNode(
         "Algorithms").getDataNodeById(algorithmID).getDataNodes("Parameter");
     Limit[] result = new Limit[params.size()];

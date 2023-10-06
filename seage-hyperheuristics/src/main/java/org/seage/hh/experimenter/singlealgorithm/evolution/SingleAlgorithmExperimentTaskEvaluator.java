@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 /**
  * .
  */
-public class SingleAlgorithmExperimentTaskEvaluator 
+public class SingleAlgorithmExperimentTaskEvaluator
     extends SubjectEvaluator<SingleAlgorithmExperimentTaskSubject> {
   private static Logger logger =
       LoggerFactory.getLogger(SingleAlgorithmExperimentTaskEvaluator.class.getName());
@@ -30,13 +30,15 @@ public class SingleAlgorithmExperimentTaskEvaluator
   private List<String> instanceIDs;
   private String algorithmID;
   private long timeoutS;
-  private Function<ExperimentTaskRecord, Void> reportFn;
   private Map<String, ProblemInstanceInfo> instancesInfo;
-  private ProblemInfo problemInfo;
   private ProblemScoreCalculator problemScoreCalculator;
 
   protected int stageId;
-  protected HashMap<String, HashMap<String, ExperimentTaskRecord>> configCache;
+
+  // configID -> (instanceID -> objValue)
+  protected Map<String, Map<String, Double>> configCache;
+  // configID -> (instanceID -> objValue)
+  protected Map<String, Map<String, Double>> subjectsObjValues; // TODO: Rename
 
   /**
    * Constructor.
@@ -45,17 +47,13 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param problemID Problem ID.
    * @param instanceIDs Instance IDs.
    * @param algorithmID Algorithm ID.
-   * @param timeoutS Timeout [s]. 
+   * @param timeoutS Timeout [s].
    * @param problemInfo Problem info.
    * @param instancesInfo Instances info.
-   * @param reportFn Report function.
    */
-  public SingleAlgorithmExperimentTaskEvaluator(
-      UUID experimentId, String problemID, List<String> instanceIDs,
-      String algorithmID, long timeoutS, 
-      ProblemInfo problemInfo,
-      Map<String, ProblemInstanceInfo> instancesInfo, 
-      Function<ExperimentTaskRecord, Void> reportFn) {
+  public SingleAlgorithmExperimentTaskEvaluator(UUID experimentId, String problemID,
+      List<String> instanceIDs, String algorithmID, long timeoutS, ProblemInfo problemInfo,
+      Map<String, ProblemInstanceInfo> instancesInfo) {
     super();
     this.experimentId = experimentId;
     this.problemID = problemID;
@@ -64,51 +62,113 @@ public class SingleAlgorithmExperimentTaskEvaluator
     this.timeoutS = timeoutS;
     this.configCache = new HashMap<>();
     this.instancesInfo = instancesInfo;
-    this.problemInfo = problemInfo;
-    this.reportFn = reportFn;
     this.stageId = 0;
     this.problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
   }
 
   @Override
-  public void evaluateSubjects(
-      List<SingleAlgorithmExperimentTaskSubject> subjects
-  ) throws Exception {
-    this.stageId += 1;
-    HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
-    logger.info("num of subjects {}", subjects.size());
-    // Create and run tasks for each columns separatly
-    for (String instanceID : this.instanceIDs) {
-      List<ExperimentTaskRequest> taskRequests = createTaskList(
-          subjects, instanceID);
-      
-      // Run tasks
-      logger.info("Evaluating {} configs for instance {}", taskRequests.size(), instanceID);
-      LocalExperimentTasksRunner experimentTasksRunner = new LocalExperimentTasksRunner();
-      experimentTasksRunner.performExperimentTasks(taskRequests, this::reportExperimentTask);
+  public void evaluateSubjects(List<SingleAlgorithmExperimentTaskSubject> subjects)
+      throws Exception {
+    stageId += 1;
 
-      // Rank subjects
-      rankedSubjects.put(instanceID, 
-          this.getRankedSubjectsObjValue(subjects, instanceID));
+    subjectsObjValues = new HashMap<>();
+
+    HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
+
+    // Create and run tasks for each columns separatly
+    for (String instanceID : instanceIDs) {
+      List<ExperimentTaskRequest> taskRequests =
+          createTaskList(instanceID, subjects, subjectsObjValues);
+
+      logger.info("Evaluating {} configs for instance {}", taskRequests.size(), instanceID);
+      // Run tasks
+      new LocalExperimentTasksRunner().performExperimentTasks(taskRequests,
+          this::reportExperimentTask);
     }
-    // Set the configuration objective value
-    SingleAlgorithmExperimentTaskSubject bestSubject = 
-        this.setConfigRankToSubjects(subjects, rankedSubjects);
-  
-    this.reportBestSubjectProblemscore(bestSubject);
+
+    Map<String, Double> scores = calculateProblemScores(subjectsObjValues);
+    Map<String, Map<String, Integer>> rankTable = calculateRankTable(subjectsObjValues);
+    Map<String, Double> weightedRanks = calculateWeightedRanks(rankTable);
+
+    setObjValToSubjects(subjects, scores, weightedRanks);
+
+    logger.info("Configs:");
+    for (var s : subjects) {
+      String configId = s.getAlgorithmParams().hash();
+      double score = -s.getObjectiveValue()[0];
+      double objVal = s.getObjectiveValue()[1];
+
+      logger.info(" - {}  {}  {}", 
+          configId, String.format("%.4f", score), String.format("%7.4f", objVal));
+    }
   }
 
-  protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
+  private void setObjValToSubjects(List<SingleAlgorithmExperimentTaskSubject> subjects,
+      Map<String, Double> scores, Map<String, Double> weightedRanks) throws Exception {
+    for(var s : subjects) {
+      String configID = s.getAlgorithmParams().hash();
+      Double score = scores.get(configID);
+      Double weightedRank = weightedRanks.get(configID);
+      s.setObjectiveValue(new double[] {-score, weightedRank});
+    }
+  }
+
+  protected synchronized Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
-      // Put the objective value of experiment into the configcache
-      this.configCache.get(experimentTask.getConfigID())
-          .put(experimentTask.getInstanceID(), experimentTask);
+      subjectsObjValues.computeIfAbsent(experimentTask.getConfigID(), k -> new HashMap<>());
+      subjectsObjValues.get(experimentTask.getConfigID()).put(experimentTask.getInstanceID(),
+          experimentTask.getObjValue());
+
+      // Put the objective value of experiment into the configCache
+      configCache.computeIfAbsent(experimentTask.getConfigID(), k -> new HashMap<>());
+      configCache.get(experimentTask.getConfigID()).put(experimentTask.getInstanceID(),
+          experimentTask.getObjValue());
 
     } catch (Exception e) {
-      logger.error(String.format("Failed to report the experiment task: %s", 
+      logger.error(String.format("Failed to report the experiment task: %s",
           experimentTask.getExperimentTaskID().toString()), e);
     }
     return null;
+  }
+
+  private Map<String, Map<String, Integer>> calculateRankTable(
+      Map<String, Map<String, Double>> subjectsObjValues) {
+    List<String> configIDs = new ArrayList<>(subjectsObjValues.keySet());
+
+    Map<String, Map<String, Integer>> rankTable = new HashMap<>();
+
+    for (String instanceID : subjectsObjValues.get(configIDs.get(0)).keySet()) {
+      // Sort config ids
+      Collections.sort(configIDs, (c1, c2) -> (subjectsObjValues.get(c1).get(instanceID)
+          .compareTo(subjectsObjValues.get(c2).get(instanceID))));
+      int rank = 1;
+      for (String configID : configIDs) {
+        rankTable.computeIfAbsent(configID, k -> new HashMap<>());
+        rankTable.get(configID).put(instanceID, rank++);
+      }
+    }
+    return rankTable;
+  }
+
+  private Map<String, Double> calculateWeightedRanks(Map<String, Map<String, Integer>> rankTable)
+      throws Exception {
+    Map<String, Double> result = new HashMap<>();
+    // Each subject evaluate separatly
+    for (String configID : rankTable.keySet()) { // NOSONAR
+      double sumOfWeights = 0.0;
+      double rank = 0.0;
+      for (String instanceID : rankTable.get(configID).keySet()) {
+        double instanceSize = this.instancesInfo.get(instanceID).getValueDouble("size");
+        double instanceRank = rankTable.get(configID).get(instanceID);
+
+        rank += instanceSize * instanceRank;
+        sumOfWeights += instanceSize;
+      }
+
+      Double configRank = rank / sumOfWeights; // NOSONAR
+      result.put(configID, configRank);
+    }
+    return result;
   }
 
   /**
@@ -119,9 +179,9 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @return task map.
    * @throws Exception Exception.
    */
-  protected List<ExperimentTaskRequest> createTaskList(
-      List<SingleAlgorithmExperimentTaskSubject> subjects, String instanceID
-  ) throws Exception {
+  protected List<ExperimentTaskRequest> createTaskList(String instanceID,
+      List<SingleAlgorithmExperimentTaskSubject> subjects,
+      Map<String, Map<String, Double>> subjectsObjValues) throws Exception {
     List<ExperimentTaskRequest> taskList = new ArrayList<>();
 
     for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
@@ -129,99 +189,28 @@ public class SingleAlgorithmExperimentTaskEvaluator
       AlgorithmParams algorithmParams = subject.getAlgorithmParams();
       String configId = algorithmParams.hash();
 
-      // If config hasn't been used before, log it into configCache
-      if (!this.configCache.containsKey(configId)) {
-        this.configCache.put(configId, new HashMap<>());
-      }
-      HashMap<String, ExperimentTaskRecord> curConfigCache = this.configCache.get(configId);
-  
-      if (curConfigCache.containsKey(instanceID)) {
-        subject.setObjectiveValue(new double[] { curConfigCache.get(instanceID).getObjValue() });
+      if (configCache.containsKey(configId) && configCache.get(configId).containsKey(instanceID)) {
+        subjectsObjValues.computeIfAbsent(configId, k -> new HashMap<>());
+        subjectsObjValues.get(configId).put(instanceID, configCache.get(configId).get(instanceID));
       } else {
-        ExperimentTaskRequest task = new ExperimentTaskRequest(
-            UUID.randomUUID(),
-            this.experimentId,
-            1, this.stageId,
-            this.problemID,
-            instanceID,
-            this.algorithmID,
-            configId,
-            algorithmParams,
-            null,
-            this.timeoutS
-        );
+        ExperimentTaskRequest task = new ExperimentTaskRequest(UUID.randomUUID(), this.experimentId,
+            1, this.stageId, this.problemID, instanceID, this.algorithmID, configId,
+            algorithmParams, null, this.timeoutS);
         taskList.add(task);
       }
     }
     return taskList;
   }
 
-  /**
-   * Method evaluates given subject.
-   *
-   * @param subjects Subjects.
-   * @param rankedSubjects Ranked subjects map.
-   * @return Weighted order.
-   * @throws Exception Exception.
-   */
-  protected SingleAlgorithmExperimentTaskSubject setConfigRankToSubjects(
-      List<SingleAlgorithmExperimentTaskSubject> subjects,
-      HashMap<String, HashMap<String, Integer>> rankedSubjects
-      ) throws Exception {
-    
-    double bestSubjectRank = Double.MAX_VALUE;
-    SingleAlgorithmExperimentTaskSubject bestSubject = null;
-    // Each subject evaluate separatly
-    for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
-      String configID = subject.getAlgorithmParams().hash();
-      double sumOfWeights = 0.0;
-      double result = 0.0;
-      for (String instanceID : this.instanceIDs) {
-        double instanceSize = this.instancesInfo.get(instanceID).getValueDouble("size");
-        double instanceRank = rankedSubjects.get(instanceID).get(configID);
-
-        result += instanceSize * instanceRank;
-        sumOfWeights += instanceSize;
-      }
-      if (sumOfWeights == 0.0) {
-        throw new Exception("Error: dividing by zero.");
-      }
-      // Config score
-      Double configRank = result / sumOfWeights;
-      subject.setObjectiveValue(new double[] {configRank});
-
-      if (configRank < bestSubjectRank) {
-        bestSubject = subject;
-        bestSubjectRank = configRank;
-      }
+  protected Map<String, Double> calculateProblemScores(
+      Map<String, Map<String, Double>> subjectsObjValues) throws Exception {
+    Map<String, Double> result = new HashMap<>();
+    for (String configID : subjectsObjValues.keySet()) { // NOSONAR
+      Map<String, Double> objValues = subjectsObjValues.get(configID);
+      double score = calculateProblemScore(configID, objValues);
+      result.put(configID, score);
     }
-    
-    // Returns the best config id
-    return bestSubject;
-  }
-
-  /**
-   * Method reports the experiment config score.
-   *
-   * @param bestSubject Config subject.
-   * @throws Exception Exception.
-   */
-  protected void reportBestSubjectProblemscore(
-      SingleAlgorithmExperimentTaskSubject bestSubject) throws Exception {
-    String bestConfigID = bestSubject.getAlgorithmParams().hash();
-    double problemScore = getProblemScore(bestConfigID);
-
-    logger.info(String.format("Best overall configuration %-10.10s confScore %.4g score %.4g", 
-          bestConfigID, bestSubject.getObjectiveValue()[0], problemScore));
-
-    ExperimentTaskRecord customRecord = 
-        this.configCache.get(bestConfigID).get(this.instanceIDs.get(0));
-
-    customRecord.setScore(problemScore);
-    customRecord.setInstanceID(this.instanceIDs.toString());
-    customRecord.setExperimentTaskID(UUID.randomUUID());
-
-    this.reportFn.apply(customRecord);
+    return result;
   }
 
   /**
@@ -231,52 +220,15 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @return ProblemScore
    * @throws Exception Exception.
    */
-  protected double getProblemScore(String configID) throws Exception {
+  protected double calculateProblemScore(String configID, Map<String, Double> objValues) throws Exception {
     List<Double> instanceScores = new ArrayList<>();
-    for (String instanceID : this.instanceIDs) {
-      instanceScores.add(this.configCache.get(configID).get(instanceID).getScore());
+    for (String instanceID : instanceIDs) {
+      instanceScores.add(problemScoreCalculator.calculateInstanceScore(instanceID, objValues.get(instanceID)));
     }
 
-    return this.problemScoreCalculator.calculateProblemScore(
-        this.instanceIDs.toArray(new String[]{}), 
+    return problemScoreCalculator.calculateProblemScore(
+        instanceIDs.toArray(new String[]{}),
         instanceScores.stream().mapToDouble(a -> a).toArray());
-  }
-
-
-  /**
-   * Method ranks subjects'.
-   *
-   * @param subjects Subjects.
-   * @param instanceID Instance ID.
-   * @return Ranked subjects by objvalue.
-   */
-  protected HashMap<String, Integer> getRankedSubjectsObjValue(
-      List<SingleAlgorithmExperimentTaskSubject> subjects,
-      String instanceID) throws Exception {
-    HashMap<String, Integer> rankedSubjects = new HashMap<>();
-    // Get config ids
-    List<String> sortedConfigIDsByObjVal = new ArrayList<>();
-    for (SingleAlgorithmExperimentTaskSubject subject : subjects) {
-      sortedConfigIDsByObjVal.add(subject.getAlgorithmParams().hash());
-    }
-    // Sort config ids
-    Collections.sort(sortedConfigIDsByObjVal, (c1, c2) -> (
-        this.configCache.get(c1).get(instanceID).getObjValue().compareTo(
-        this.configCache.get(c2).get(instanceID).getObjValue())));
-
-    // set the subjects ranking 
-    for (Integer i = 0; i < sortedConfigIDsByObjVal.size(); i++) {
-      String configID = sortedConfigIDsByObjVal.get(i);
-      rankedSubjects.put(configID, i + 1);
-    }
-
-    // Logg the best config info
-    String bestConfigID = sortedConfigIDsByObjVal.get(sortedConfigIDsByObjVal.size() - 1);
-    logger.info(String.format(
-        "\t- best configuration: %-10.10s, score %.4g", 
-        this.configCache.get(bestConfigID).get(instanceID).getConfigID(),
-        this.configCache.get(bestConfigID).get(instanceID).getScore()));
-    return rankedSubjects;
   }
 
   @Override
