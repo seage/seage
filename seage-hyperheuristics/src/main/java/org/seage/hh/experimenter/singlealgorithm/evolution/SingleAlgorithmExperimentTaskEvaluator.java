@@ -98,7 +98,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
       double score = -s.getObjectiveValue()[0];
       double objVal = s.getObjectiveValue()[1];
 
-      logger.info(" - {}  {}  {}", configId, String.format("%.4f",score), String.format("%7.4f", objVal));
+      logger.info(" - {}  {}  {}", 
+          configId, String.format("%.4f", score), String.format("%7.4f", objVal));
     }
   }
 
@@ -178,7 +179,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @return task map.
    * @throws Exception Exception.
    */
-  private List<ExperimentTaskRequest> createTaskList(String instanceID,
+  protected List<ExperimentTaskRequest> createTaskList(String instanceID,
       List<SingleAlgorithmExperimentTaskSubject> subjects,
       Map<String, Map<String, Double>> subjectsObjValues) throws Exception {
     List<ExperimentTaskRequest> taskList = new ArrayList<>();

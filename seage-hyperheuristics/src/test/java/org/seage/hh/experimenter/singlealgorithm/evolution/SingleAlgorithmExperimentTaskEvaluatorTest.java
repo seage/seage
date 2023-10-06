@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,8 +97,7 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
       this.algorithmID, 
       0, 
       problemInfo, 
-      instancesInfo, 
-      this::reportFn);
+      instancesInfo);
 
     String[] paramNames1 = {
       "test-par-1-1",
@@ -145,6 +145,47 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
       }
     };
   }
+
+  @Test
+  void testCreateTaskList() throws Exception {
+    Map<String, Map<String, Double>>subjectsObjValues = new HashMap<>();
+    List<ExperimentTaskRequest> taskList = this.evaluator.createTaskList(
+      this.instanceIDs.get(0), this.subjects, subjectsObjValues
+    );
+    
+    String configID1 = this.subjects.get(0).getAlgorithmParams().hash();
+    String configID2 = this.subjects.get(1).getAlgorithmParams().hash();
+    String configID3 = this.subjects.get(2).getAlgorithmParams().hash();
+
+    assertEquals(0, subjectsObjValues.keySet().size());
+
+    assertEquals(3, taskList.size());
+
+    assertEquals(taskList.get(0).getAlgorithmID(), this.algorithmID);
+    assertEquals(taskList.get(1).getAlgorithmID(), this.algorithmID);
+    assertEquals(taskList.get(2).getAlgorithmID(), this.algorithmID);
+
+    assertEquals(taskList.get(0).getConfigID(), configID1);
+    assertEquals(taskList.get(1).getConfigID(), configID2);
+    assertEquals(taskList.get(2).getConfigID(), configID3);
+  }
+
+  @Test
+  void testCalculateProblemScores() {
+
+  }
+
+  @Test
+  void testCalculateRankTable() {
+
+  }
+
+  @Test
+  void testCalculateWeightedRanks() {
+
+  }
+
+
 
   // @Test
   // void testGetRankedSubjectsObjValue() throws Exception {
