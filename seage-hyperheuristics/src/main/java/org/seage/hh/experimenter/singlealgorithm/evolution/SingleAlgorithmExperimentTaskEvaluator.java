@@ -150,7 +150,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     return rankTable;
   }
 
-  private Map<String, Double> calculateWeightedRanks(Map<String, Map<String, Integer>> rankTable)
+  protected Map<String, Double> calculateWeightedRanks(Map<String, Map<String, Integer>> rankTable)
       throws Exception {
     Map<String, Double> result = new HashMap<>();
     // Each subject evaluate separatly
