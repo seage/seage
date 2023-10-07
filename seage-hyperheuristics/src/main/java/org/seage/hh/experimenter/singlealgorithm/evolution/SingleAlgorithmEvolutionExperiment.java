@@ -12,6 +12,7 @@ import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
 import org.seage.aal.problem.ProblemProvider;
+import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
 import org.seage.hh.experimenter.Experiment;
 import org.seage.hh.experimenter.ExperimentReporter;
@@ -21,6 +22,7 @@ import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 import org.seage.hh.experimenter.configurator.RandomConfigurator;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.runner.IExperimentTasksRunner;
+import org.seage.hh.runner.LocalExperimentTasksRunner;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator.Limit;
@@ -45,10 +47,12 @@ public class SingleAlgorithmEvolutionExperiment
 
   protected Configurator configurator;
 
-  protected IExperimentTasksRunner experimentTasksRunner;
+  protected IExperimentTasksRunner experimentValidationTasksRunner;
   protected ExperimentReporter experimentReporter;
   protected ProblemInfo problemInfo;
   protected HashMap<String, ProblemInstanceInfo> instancesInfo;
+  protected HashMap<String, Double> validationInstancesScore;
+  private ProblemScoreCalculator problemScoreCalculator;
 
   protected String experimentName;
   protected UUID experimentID;
@@ -104,6 +108,8 @@ public class SingleAlgorithmEvolutionExperiment
     this.numSubjects = numSubjects;
     this.numIterations = numIterations;
     this.algorithmTimeoutS = algorithmTimeoutS;
+    this.experimentValidationTasksRunner = new LocalExperimentTasksRunner();
+    this.validationInstancesScore = new HashMap<>();
 
     this.experimentName = "SingleAlgorithmEvolution";
     this.experimentReporter = experimentReporter;
@@ -115,6 +121,8 @@ public class SingleAlgorithmEvolutionExperiment
     this.problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
     this.instancesInfo = new HashMap<>();
     this.random = new Random();
+    this.problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
+
     
     for (String instanceID : instanceIDs) {
       instancesInfo.put(instanceID, problemInfo.getProblemInstanceInfo(instanceID));
@@ -123,16 +131,74 @@ public class SingleAlgorithmEvolutionExperiment
 
   @Override
   public Double run() throws Exception {
+    validationInstancesScore = new HashMap<>();
     try {
-      logger.info("-------------------------------------");      
-      runExperimentTasksForProblemInstance();
+      logger.info("-------------------------------------");
+      // long startDate = System.currentTimeMillis();      
+      SingleAlgorithmExperimentTaskSubject bestSubject =
+          runExperimentTasksForProblemInstance();
+      // long endDate = System.currentTimeMillis();
+
+      if (bestSubject == null) {
+        throw new Exception("Null exception.");
+      }
+
+      // RUN EXPERIMENT VALIDATION
+      logger.info("Start of config validation on all instances.");
+
+      // TODO do this with all available instances
+      for (String instanceID : instanceIDs) {
+        List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
+        taskQueue.add(new ExperimentTaskRequest(
+            UUID.randomUUID(), 
+            experimentID, 
+            1, 
+            1, 
+            problemID, 
+            instanceID, 
+            algorithmID, 
+            bestSubject.getAlgorithmParams().hash(), 
+            bestSubject.getAlgorithmParams(), 
+            null, 
+            20));
+
+        experimentValidationTasksRunner.performExperimentTasks(
+            taskQueue, this::reportValidationExperimentTask);
+
+        // reportBestExperimentSubject(bestSubject, startDate, endDate);
+      }
+
+      logger.info("End of config validation.");
+
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
     }
     return bestScore;
   }
 
-  protected void runExperimentTasksForProblemInstance() throws Exception {
+  protected Void reportValidationExperimentTask(ExperimentTaskRecord experimentTask) {
+    try {
+      String instanceID = experimentTask.getInstanceID();
+      Double score = experimentTask.getScore();
+
+      logger.debug("Instance {} score: {}", instanceID, score);
+      experimentReporter.reportExperimentTask(experimentTask);
+
+      // Log the instance score
+      validationInstancesScore.computeIfAbsent(instanceID, t -> score);
+      validationInstancesScore.put(instanceID, Math.max(
+          validationInstancesScore.get(instanceID),
+          score
+      ));
+    } catch (Exception e) {
+      logger.error(String.format("Failed to report the experiment task: %s", 
+          experimentTask.getExperimentTaskID().toString()), e);
+    }
+    return null;
+  }
+
+  protected SingleAlgorithmExperimentTaskSubject 
+      runExperimentTasksForProblemInstance() throws Exception {
 
     try {
       if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null) {
@@ -180,44 +246,53 @@ public class SingleAlgorithmEvolutionExperiment
         logger.info(" - {}", s.getAlgorithmParams().hash());
       }
 
-      long startDate = System.currentTimeMillis();
+      
       ga.startSearching(subjects);
-      long endDate = System.currentTimeMillis();
 
-      // TODO: Store the best configs
-      this.reportBestExperimentSubject(ga.getBestSubject(), startDate, endDate);
+      return ga.getBestSubject();
       
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
+      return null;
     }
-    
   }
 
-  protected void reportBestExperimentSubject(
-      SingleAlgorithmExperimentTaskSubject bestSubject, 
-      long startDate, long endDate) throws Exception {
-    this.bestScore = -bestSubject.getObjectiveValue()[0];
+  // protected void reportBestExperimentSubject(
+  //     SingleAlgorithmExperimentTaskSubject bestSubject, 
+  //     long startDate, long endDate) throws Exception {
+  //   // this.bestScore = -bestSubject.getObjectiveValue()[0];
     
-    ExperimentTaskRequest taskRequest = new ExperimentTaskRequest(
-        UUID.randomUUID(), 
-        experimentID, 
-        1, 
-        1, 
-        problemID, 
-        instanceIDs.toString(), 
-        algorithmID,
-        bestSubject.getAlgorithmParams().hash(),
-        bestSubject.getAlgorithmParams(),
-        null,
-        timeoutS);
-    ExperimentTaskRecord taskRecord = new ExperimentTaskRecord(taskRequest);
-    taskRecord.setStartDate(new Date(startDate));
-    taskRecord.setEndDate(new Date(endDate));
-    taskRecord.setScore(bestScore);
+  //   List<String> insIDs = new ArrayList<>();
+  //   List<Double> insScores = new ArrayList<>();
+  //   for (String instanceID : validationInstancesScore.keySet()) {
+  //     insIDs.add(instanceID);
+  //     insScores.add(validationInstancesScore.get(instanceID));
+  //   }
 
-    // Report the task results
-    experimentReporter.reportExperimentTask(taskRecord);
-  }
+  //   Double algScore = problemScoreCalculator.calculateProblemScore(
+  //       insIDs.toArray(new String[]{}), 
+  //       insScores.stream().mapToDouble(a -> a).toArray());
+    
+  //   ExperimentTaskRequest taskRequest = new ExperimentTaskRequest(
+  //       UUID.randomUUID(), 
+  //       experimentID, 
+  //       1, 
+  //       1, 
+  //       problemID, 
+  //       instanceIDs.toString(), 
+  //       algorithmID,
+  //       bestSubject.getAlgorithmParams().hash(),
+  //       bestSubject.getAlgorithmParams(),
+  //       null,
+  //       timeoutS);
+  //   ExperimentTaskRecord taskRecord = new ExperimentTaskRecord(taskRequest);
+  //   taskRecord.setStartDate(new Date(startDate));
+  //   taskRecord.setEndDate(new Date(endDate));
+  //   taskRecord.setScore(algScore);
+
+  //   // Report the task results
+  //   experimentReporter.reportExperimentTask(taskRecord);
+  // }
 
   private List<SingleAlgorithmExperimentTaskSubject> initializeSubjects(
       ProblemInfo problemInfo, List<String> instanceIDs,

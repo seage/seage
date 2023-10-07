@@ -16,8 +16,9 @@ public class ExperimentSingleEvolutionCommand extends Command {
   List<String> algorithms;
 
   @Parameter(names = "-n", required = true,
-      description = "Number of random configs per each experiment")
+      description = "Number of configs per experiment")
   int numOfSubjects;
+
 
   @Parameter(names = "-g", required = true, description = "Number of iterations")
   int numOfIterations;
