@@ -147,7 +147,9 @@ public class SingleAlgorithmEvolutionExperiment
       logger.info("Starting validating {}", bestSubject.getAlgorithmParams().hash());
 
       // TODO do this with all available instances
-      for (String instanceID : instanceIDs) {
+      List<ProblemInstanceInfo> instancesInfos = problemInfo.getProblemInstanceInfos().subList(0, 10);
+      
+      for (ProblemInstanceInfo instanceInfo : instancesInfos) {
         List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
         taskQueue.add(new ExperimentTaskRequest(
             UUID.randomUUID(), 
@@ -155,12 +157,12 @@ public class SingleAlgorithmEvolutionExperiment
             1, 
             1, 
             problemID, 
-            instanceID, 
+            instanceInfo.getInstanceID(),
             algorithmID, 
             bestSubject.getAlgorithmParams().hash(), 
             bestSubject.getAlgorithmParams(), 
             null, 
-            20));
+            10));
 
         experimentValidationTasksRunner.performExperimentTasks(
             taskQueue, this::reportValidationExperimentTask);
@@ -180,7 +182,6 @@ public class SingleAlgorithmEvolutionExperiment
     try {
       String instanceID = experimentTask.getInstanceID();
       Double score = experimentTask.getScore();
-      logger.info("hereami reporst");
 
       logger.info("Instance {} score: {}", instanceID, score);
       experimentReporter.reportExperimentTask(experimentTask);
