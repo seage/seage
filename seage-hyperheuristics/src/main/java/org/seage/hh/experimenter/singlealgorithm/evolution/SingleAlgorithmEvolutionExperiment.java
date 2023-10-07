@@ -144,7 +144,7 @@ public class SingleAlgorithmEvolutionExperiment
       }
 
       // RUN EXPERIMENT VALIDATION
-      logger.info("Start of config validation on all instances.");
+      logger.info("Starting validating {}", bestSubject.getAlgorithmParams().hash());
 
       // TODO do this with all available instances
       for (String instanceID : instanceIDs) {
@@ -173,15 +173,16 @@ public class SingleAlgorithmEvolutionExperiment
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
     }
-    return bestScore;
+    return getBestExperimentSubjectScore();
   }
 
   protected Void reportValidationExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
       String instanceID = experimentTask.getInstanceID();
       Double score = experimentTask.getScore();
+      logger.info("hereami reporst");
 
-      logger.debug("Instance {} score: {}", instanceID, score);
+      logger.info("Instance {} score: {}", instanceID, score);
       experimentReporter.reportExperimentTask(experimentTask);
 
       // Log the instance score
@@ -257,42 +258,40 @@ public class SingleAlgorithmEvolutionExperiment
     }
   }
 
-  // protected void reportBestExperimentSubject(
-  //     SingleAlgorithmExperimentTaskSubject bestSubject, 
-  //     long startDate, long endDate) throws Exception {
-  //   // this.bestScore = -bestSubject.getObjectiveValue()[0];
+  protected double getBestExperimentSubjectScore() throws Exception {
+    // this.bestScore = -bestSubject.getObjectiveValue()[0];
     
-  //   List<String> insIDs = new ArrayList<>();
-  //   List<Double> insScores = new ArrayList<>();
-  //   for (String instanceID : validationInstancesScore.keySet()) {
-  //     insIDs.add(instanceID);
-  //     insScores.add(validationInstancesScore.get(instanceID));
-  //   }
+    List<String> insIDs = new ArrayList<>();
+    List<Double> insScores = new ArrayList<>();
+    for (String instanceID : validationInstancesScore.keySet()) {
+      insIDs.add(instanceID);
+      insScores.add(validationInstancesScore.get(instanceID));
+    }
 
-  //   Double algScore = problemScoreCalculator.calculateProblemScore(
-  //       insIDs.toArray(new String[]{}), 
-  //       insScores.stream().mapToDouble(a -> a).toArray());
+    return problemScoreCalculator.calculateProblemScore(
+        insIDs.toArray(new String[]{}), 
+        insScores.stream().mapToDouble(a -> a).toArray());
     
-  //   ExperimentTaskRequest taskRequest = new ExperimentTaskRequest(
-  //       UUID.randomUUID(), 
-  //       experimentID, 
-  //       1, 
-  //       1, 
-  //       problemID, 
-  //       instanceIDs.toString(), 
-  //       algorithmID,
-  //       bestSubject.getAlgorithmParams().hash(),
-  //       bestSubject.getAlgorithmParams(),
-  //       null,
-  //       timeoutS);
-  //   ExperimentTaskRecord taskRecord = new ExperimentTaskRecord(taskRequest);
-  //   taskRecord.setStartDate(new Date(startDate));
-  //   taskRecord.setEndDate(new Date(endDate));
-  //   taskRecord.setScore(algScore);
+    // ExperimentTaskRequest taskRequest = new ExperimentTaskRequest(
+    //     UUID.randomUUID(), 
+    //     experimentID, 
+    //     1, 
+    //     1, 
+    //     problemID, 
+    //     instanceIDs.toString(), 
+    //     algorithmID,
+    //     bestSubject.getAlgorithmParams().hash(),
+    //     bestSubject.getAlgorithmParams(),
+    //     null,
+    //     timeoutS);
+    // ExperimentTaskRecord taskRecord = new ExperimentTaskRecord(taskRequest);
+    // taskRecord.setStartDate(new Date(startDate));
+    // taskRecord.setEndDate(new Date(endDate));
+    // taskRecord.setScore(algScore);
 
-  //   // Report the task results
-  //   experimentReporter.reportExperimentTask(taskRecord);
-  // }
+    // Report the task results
+    // experimentReporter.reportExperimentTask(taskRecord);
+  }
 
   private List<SingleAlgorithmExperimentTaskSubject> initializeSubjects(
       ProblemInfo problemInfo, List<String> instanceIDs,
