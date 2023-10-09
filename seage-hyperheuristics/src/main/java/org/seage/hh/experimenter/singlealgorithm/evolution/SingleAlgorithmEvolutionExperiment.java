@@ -61,6 +61,7 @@ public class SingleAlgorithmEvolutionExperiment
   protected String algorithmID;
   protected int numRuns;
   protected int timeoutS;
+  private int valInsNum;
   private double bestScore; 
   private Random random;
 
@@ -123,7 +124,10 @@ public class SingleAlgorithmEvolutionExperiment
     this.random = new Random();
     this.problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
 
-    
+    // Set the number of validation instances to use
+    this.valInsNum = problemInfo.getProblemInstanceInfos().size() < 6
+      ? problemInfo.getProblemInstanceInfos().size() : 6;
+
     for (String instanceID : instanceIDs) {
       instancesInfo.put(instanceID, problemInfo.getProblemInstanceInfo(instanceID));
     }
@@ -134,20 +138,43 @@ public class SingleAlgorithmEvolutionExperiment
     validationInstancesScore = new HashMap<>();
     try {
       logger.info("-------------------------------------");
-      // long startDate = System.currentTimeMillis();      
+        
       SingleAlgorithmExperimentTaskSubject bestSubject =
           runExperimentTasksForProblemInstance();
-      // long endDate = System.currentTimeMillis();
 
       if (bestSubject == null) {
         throw new Exception("Null exception.");
       }
 
       // RUN EXPERIMENT VALIDATION
-      logger.info("Starting validating {}", bestSubject.getAlgorithmParams().hash());
+      logger.info("Started best config validation {}", bestSubject.getAlgorithmParams().hash());
 
-      // TODO do this with all available instances
-      List<ProblemInstanceInfo> instancesInfos = problemInfo.getProblemInstanceInfos().subList(0, 10);
+      List<ProblemInstanceInfo> instancesInfos = problemInfo
+          .getProblemInstanceInfos();
+
+      if (instancesInfos.size() >= this.valInsNum) {
+        // Sort by the instances size
+        instancesInfos.sort((i1, i2) -> {
+          try {
+            return Double.compare(problemInfo.getProblemInstanceInfo(
+                i1.getInstanceID()).getValueDouble("size"),
+                  problemInfo.getProblemInstanceInfo(i2.getInstanceID()).getValueDouble("size"));
+          } catch (Exception e) {
+            // TODO Auto-generated catch block
+            return 0;
+          }
+        });
+
+        List<ProblemInstanceInfo> newInstancesInfos = new ArrayList<>();
+        // Add the largest instances
+        newInstancesInfos.addAll(instancesInfos.subList(0, this.valInsNum / 2));
+        // Add the smallest instances
+        newInstancesInfos.addAll(
+            instancesInfos.subList(
+              instancesInfos.size() - this.valInsNum / 2, instancesInfos.size()));
+        instancesInfos = newInstancesInfos;
+      }
+      // TODO - how many intances to use (can't use all of them)
       
       for (ProblemInstanceInfo instanceInfo : instancesInfos) {
         List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
@@ -162,16 +189,13 @@ public class SingleAlgorithmEvolutionExperiment
             bestSubject.getAlgorithmParams().hash(), 
             bestSubject.getAlgorithmParams(), 
             null, 
-            10));
+            10)); // TODO - unified time for each validation task
 
         experimentValidationTasksRunner.performExperimentTasks(
             taskQueue, this::reportValidationExperimentTask);
 
         // reportBestExperimentSubject(bestSubject, startDate, endDate);
       }
-
-      logger.info("End of config validation.");
-
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
     }
