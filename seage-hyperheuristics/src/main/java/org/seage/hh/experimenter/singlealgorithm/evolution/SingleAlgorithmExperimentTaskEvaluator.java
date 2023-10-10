@@ -32,6 +32,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
   private long timeoutS;
   private Map<String, ProblemInstanceInfo> instancesInfo;
   private ProblemScoreCalculator problemScoreCalculator;
+  private Function<ExperimentTaskRecord, Void> reportFn;
 
   protected int stageId;
 
@@ -53,7 +54,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
    */
   public SingleAlgorithmExperimentTaskEvaluator(UUID experimentId, String problemID,
       List<String> instanceIDs, String algorithmID, long timeoutS, ProblemInfo problemInfo,
-      Map<String, ProblemInstanceInfo> instancesInfo) {
+      Map<String, ProblemInstanceInfo> instancesInfo, 
+      Function<ExperimentTaskRecord, Void> reportFn) {
     super();
     this.experimentId = experimentId;
     this.problemID = problemID;
@@ -64,6 +66,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     this.instancesInfo = instancesInfo;
     this.stageId = 0;
     this.problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
+    this.reportFn = reportFn;
   }
 
   @Override
@@ -72,8 +75,6 @@ public class SingleAlgorithmExperimentTaskEvaluator
     stageId += 1;
 
     subjectsObjValues = new HashMap<>();
-
-    HashMap<String, HashMap<String, Integer>> rankedSubjects = new HashMap<>();
 
     // Create and run tasks for each columns separatly
     for (String instanceID : instanceIDs) {
@@ -115,6 +116,8 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
   protected synchronized Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
+      // Report the experiment task to experiment
+      reportFn.apply(experimentTask);
       subjectsObjValues.computeIfAbsent(experimentTask.getConfigID(), k -> new HashMap<>());
       subjectsObjValues.get(experimentTask.getConfigID()).put(experimentTask.getInstanceID(),
           experimentTask.getObjValue());

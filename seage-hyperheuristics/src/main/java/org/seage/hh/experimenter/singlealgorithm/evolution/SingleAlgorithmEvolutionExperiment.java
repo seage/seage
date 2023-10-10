@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
@@ -51,7 +52,7 @@ public class SingleAlgorithmEvolutionExperiment
   protected ExperimentReporter experimentReporter;
   protected ProblemInfo problemInfo;
   protected HashMap<String, ProblemInstanceInfo> instancesInfo;
-  protected HashMap<String, Double> validationInstancesScore;
+  protected HashMap<String, HashMap<String, Double>> confValInstancesScore;
   private ProblemScoreCalculator problemScoreCalculator;
 
   protected String experimentName;
@@ -61,9 +62,8 @@ public class SingleAlgorithmEvolutionExperiment
   protected String algorithmID;
   protected int numRuns;
   protected int timeoutS;
-  private int valInsNum;
+  private List<AlgorithmParams> bestConfigs;
   private double bestScore; 
-  private Random random;
 
   //    public SingleAlgorithmEvolutionExperiment(
   //      int numSubjects, int numIterations, int algorithmTimeoutS)
@@ -110,10 +110,12 @@ public class SingleAlgorithmEvolutionExperiment
     this.numIterations = numIterations;
     this.algorithmTimeoutS = algorithmTimeoutS;
     this.experimentValidationTasksRunner = new LocalExperimentTasksRunner();
-    this.validationInstancesScore = new HashMap<>();
+    this.confValInstancesScore = new HashMap<>();
 
     this.experimentName = "SingleAlgorithmEvolution";
     this.experimentReporter = experimentReporter;
+
+    this.bestConfigs = new ArrayList<>();
     this.bestScore = 0.0;
     
     // Initialize
@@ -121,13 +123,9 @@ public class SingleAlgorithmEvolutionExperiment
     this.randomConfigurator = new RandomConfigurator();
     this.problemInfo = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo();
     this.instancesInfo = new HashMap<>();
-    this.random = new Random();
     this.problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
 
     // Set the number of validation instances to use
-    this.valInsNum = problemInfo.getProblemInstanceInfos().size() < 6
-      ? problemInfo.getProblemInstanceInfos().size() : 6;
-
     for (String instanceID : instanceIDs) {
       instancesInfo.put(instanceID, problemInfo.getProblemInstanceInfo(instanceID));
     }
@@ -135,85 +133,65 @@ public class SingleAlgorithmEvolutionExperiment
 
   @Override
   public Double run() throws Exception {
-    validationInstancesScore = new HashMap<>();
+    confValInstancesScore = new HashMap<>();
     try {
       logger.info("-------------------------------------");
         
-      SingleAlgorithmExperimentTaskSubject bestSubject =
-          runExperimentTasksForProblemInstance();
+      runExperimentTasksForProblemInstance();
 
-      if (bestSubject == null) {
-        throw new Exception("Null exception.");
-      }
-
-      // RUN EXPERIMENT VALIDATION
-      logger.info("Started best config validation {}", bestSubject.getAlgorithmParams().hash());
-
-      List<ProblemInstanceInfo> instancesInfos = problemInfo
-          .getProblemInstanceInfos();
-
-      if (instancesInfos.size() >= this.valInsNum) {
-        // Sort by the instances size
-        instancesInfos.sort((i1, i2) -> {
-          try {
-            return Double.compare(problemInfo.getProblemInstanceInfo(
-                i1.getInstanceID()).getValueDouble("size"),
-                  problemInfo.getProblemInstanceInfo(i2.getInstanceID()).getValueDouble("size"));
-          } catch (Exception e) {
-            // TODO Auto-generated catch block
-            return 0;
-          }
-        });
-
-        List<ProblemInstanceInfo> newInstancesInfos = new ArrayList<>();
-        // Add the largest instances
-        newInstancesInfos.addAll(instancesInfos.subList(0, this.valInsNum / 2));
-        // Add the smallest instances
-        newInstancesInfos.addAll(
-            instancesInfos.subList(
-              instancesInfos.size() - this.valInsNum / 2, instancesInfos.size()));
-        instancesInfos = newInstancesInfos;
-      }
-      // TODO - how many intances to use (can't use all of them)
-      
-      for (ProblemInstanceInfo instanceInfo : instancesInfos) {
-        List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
-        taskQueue.add(new ExperimentTaskRequest(
-            UUID.randomUUID(), 
-            experimentID, 
-            1, 
-            1, 
-            problemID, 
-            instanceInfo.getInstanceID(),
-            algorithmID, 
-            bestSubject.getAlgorithmParams().hash(), 
-            bestSubject.getAlgorithmParams(), 
-            null, 
-            10)); // TODO - unified time for each validation task
-
-        experimentValidationTasksRunner.performExperimentTasks(
-            taskQueue, this::reportValidationExperimentTask);
+      runExperimentBestConfigsValidation();
 
         // reportBestExperimentSubject(bestSubject, startDate, endDate);
-      }
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
     }
     return getBestExperimentSubjectScore();
   }
 
+  private void runExperimentBestConfigsValidation() throws Exception {
+    // RUN EXPERIMENT VALIDATION
+    logger.info("Started config validation");
+    // TODO - how many intances to use (all of them for now)
+    for (String instanceID : instanceIDs) { 
+      List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
+      for (AlgorithmParams config : bestConfigs) {
+        String configID = config.hash();
+
+        taskQueue.add(new ExperimentTaskRequest(
+            UUID.randomUUID(), 
+            experimentID, 
+            1, 
+            1, 
+            problemID, 
+            instanceID,
+            algorithmID, 
+            configID, 
+            config, 
+            null, 
+            10)); // TODO - unified time for each validation task
+      }
+      logger.info("Evaluating {} configs for instance {}", taskQueue.size(), instanceID);
+
+      experimentValidationTasksRunner.performExperimentTasks(
+          taskQueue, this::reportValidationExperimentTask);
+    }
+  }
+
   protected Void reportValidationExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
+      String configID = experimentTask.getConfigID();
       String instanceID = experimentTask.getInstanceID();
       Double score = experimentTask.getScore();
 
-      logger.info("Instance {} score: {}", instanceID, score);
+      // logger.info("Instance {} score: {}", instanceID, score);
       experimentReporter.reportExperimentTask(experimentTask);
 
       // Log the instance score
-      validationInstancesScore.computeIfAbsent(instanceID, t -> score);
-      validationInstancesScore.put(instanceID, Math.max(
-          validationInstancesScore.get(instanceID),
+      confValInstancesScore.computeIfAbsent(
+          configID, t -> new HashMap<>());
+      confValInstancesScore.get(configID).computeIfAbsent(instanceID, t -> score);
+      confValInstancesScore.get(configID).put(instanceID, Math.max(
+          confValInstancesScore.get(configID).get(instanceID),
           score
       ));
     } catch (Exception e) {
@@ -223,7 +201,7 @@ public class SingleAlgorithmEvolutionExperiment
     return null;
   }
 
-  protected SingleAlgorithmExperimentTaskSubject 
+  protected void 
       runExperimentTasksForProblemInstance() throws Exception {
 
     try {
@@ -247,7 +225,8 @@ public class SingleAlgorithmEvolutionExperiment
           algorithmID, 
           algorithmTimeoutS,  
           this.problemInfo,
-          this.instancesInfo);
+          this.instancesInfo,
+          this::reportExperimentTask);
       GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = 
           new GeneticAlgorithm<>(realOperator, evaluator);
       ga.addGeneticSearchListener(this);
@@ -271,31 +250,43 @@ public class SingleAlgorithmEvolutionExperiment
       for (var s : subjects) {
         logger.info(" - {}", s.getAlgorithmParams().hash());
       }
-
-      
       ga.startSearching(subjects);
 
-      return ga.getBestSubject();
-      
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
-      return null;
     }
+  }
+
+  protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
+    double taskScore = experimentTask.getScore();
+    if (taskScore > bestScore) {
+      bestScore = taskScore;
+      bestConfigs.add(experimentTask.getAlgorithmParams());
+    }
+    return null;
   }
 
   protected double getBestExperimentSubjectScore() throws Exception {
     // this.bestScore = -bestSubject.getObjectiveValue()[0];
-    
+    Double bestScore = 0.0;
     List<String> insIDs = new ArrayList<>();
     List<Double> insScores = new ArrayList<>();
-    for (String instanceID : validationInstancesScore.keySet()) {
-      insIDs.add(instanceID);
-      insScores.add(validationInstancesScore.get(instanceID));
-    }
+    for (String configID : confValInstancesScore.keySet()) {
+      for (String instanceID : confValInstancesScore.get(configID).keySet()) {
+        insIDs.add(instanceID);
+        insScores.add(confValInstancesScore.get(configID).get(instanceID));
+      }
 
-    return problemScoreCalculator.calculateProblemScore(
-        insIDs.toArray(new String[]{}), 
-        insScores.stream().mapToDouble(a -> a).toArray());
+      Double curScore = problemScoreCalculator.calculateProblemScore(
+          insIDs.toArray(new String[]{}), 
+          insScores.stream().mapToDouble(a -> a).toArray()); 
+
+      if (bestScore <= curScore) {
+        bestScore = curScore;
+      }
+    }
+      
+    return bestScore;
     
     // ExperimentTaskRequest taskRequest = new ExperimentTaskRequest(
     //     UUID.randomUUID(), 

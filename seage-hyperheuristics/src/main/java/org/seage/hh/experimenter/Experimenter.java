@@ -158,37 +158,28 @@ public class Experimenter {
       List<String> instanceIDs = new ArrayList<>();
       List<Double> instanceScores = new ArrayList<>();
 
-       if (!experimentName.equals("SingleAlgorithmEvolution")) {
-        for (String instanceID : entry.getValue()) {
-          logger.info("  Instance '{}'", instanceID);
+       
+      for (String instanceID : entry.getValue()) {
+        logger.info("  Instance '{}'", instanceID);
 
-          // RUN EXPERIMENT
-          Experiment experiment = createExperiment(
-              experimentName, problemID, instanceID, instanceIDs);
-          double score = experiment.run();
-          // --- ----------
-
-          scoreCard.putInstanceScore(problemID, instanceID, score);
-
-          instanceIDs.add(instanceID);
-          instanceScores.add(score);
-        }
-
-        double problemScore = problemScoreCalculator.calculateProblemScore(
-            instanceIDs.toArray(new String[]{}), 
-            instanceScores.stream().mapToDouble(a -> a).toArray());
-
-        scoreCard.putProblemScore(problemID, problemScore);
-        problemsScores.add(problemScore);
-      } else {
-        logger.info("  Instance '{}'", entry.getValue().toString());
-        Experiment experiment = createExperiment(experimentName, problemID, "", entry.getValue());
+        // RUN EXPERIMENT
+        Experiment experiment = createExperiment(
+            experimentName, problemID, instanceID);
         double score = experiment.run();
         // --- ----------
-        
-        scoreCard.putProblemScore(problemID, score);
-        problemsScores.add(score);
+
+        scoreCard.putInstanceScore(problemID, instanceID, score);
+
+        instanceIDs.add(instanceID);
+        instanceScores.add(score);
       }
+
+      double problemScore = problemScoreCalculator.calculateProblemScore(
+          instanceIDs.toArray(new String[]{}), 
+          instanceScores.stream().mapToDouble(a -> a).toArray());
+
+      scoreCard.putProblemScore(problemID, problemScore);
+      problemsScores.add(problemScore);
     }
 
     double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
@@ -207,7 +198,7 @@ public class Experimenter {
   }
 
   private Experiment createExperiment(
-      String experimentName, String problemID, String instanceID, List<String>instanceIDs)
+      String experimentName, String problemID, String instanceID)
       throws Exception {
 
     if (experimentName.equals("SingleAlgorithmDefault")) {
@@ -226,11 +217,6 @@ public class Experimenter {
       return new SingleAlgorithmFeedbackExperiment(experimentID, problemID, instanceID, algorithmID,
           numRuns, timeoutS, spread, experimentReporter);
     }
-    if (experimentName.equals("SingleAlgorithmEvolution")) {
-      return new SingleAlgorithmEvolutionExperiment(experimentID, problemID, algorithmID,
-          instanceIDs, numRuns, numOfIterations, timeoutS, experimentReporter);
-    }
-
 
     boolean ordinaryAlg = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo()
         .getDataNode("Algorithms").getDataNodeById(algorithmID) != null;

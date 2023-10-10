@@ -443,6 +443,10 @@ public class ExperimentTaskRecord {
     this.algorithmID = algorithmID;
   }
 
+  public AlgorithmParams getAlgorithmParams() {
+    return algorithmParams;
+  }
+
   public void setConfigID(String configID) {
     this.configID = configID;
   }
