@@ -62,9 +62,6 @@ public class SingleAlgorithmEvolutionExperiment
   protected String algorithmID;
   protected int numRuns;
   protected int timeoutS;
-  private List<AlgorithmParams> bestConfigs;
-  private double bestScore; 
-
   //    public SingleAlgorithmEvolutionExperiment(
   //      int numSubjects, int numIterations, int algorithmTimeoutS)
   //            throws Exception
@@ -114,9 +111,6 @@ public class SingleAlgorithmEvolutionExperiment
 
     this.experimentName = "SingleAlgorithmEvolution";
     this.experimentReporter = experimentReporter;
-
-    this.bestConfigs = new ArrayList<>();
-    this.bestScore = 0.0;
     
     // Initialize
     this.feedbackConfigurator = new FeedbackConfigurator(0.0);
@@ -136,10 +130,8 @@ public class SingleAlgorithmEvolutionExperiment
     confValInstancesScore = new HashMap<>();
     try {
       logger.info("-------------------------------------");
-        
-      runExperimentTasksForProblemInstance();
 
-      runExperimentBestConfigsValidation();
+      runExperimentBestConfigsValidation(runExperimentTasksForProblemInstance());
 
         // reportBestExperimentSubject(bestSubject, startDate, endDate);
     } catch (Exception ex) {
@@ -148,14 +140,14 @@ public class SingleAlgorithmEvolutionExperiment
     return getBestExperimentSubjectScore();
   }
 
-  private void runExperimentBestConfigsValidation() throws Exception {
+  private void runExperimentBestConfigsValidation(List<SingleAlgorithmExperimentTaskSubject> taskSubjects) throws Exception {
     // RUN EXPERIMENT VALIDATION
     logger.info("Started config validation");
     // TODO - how many intances to use (all of them for now)
     for (String instanceID : instanceIDs) { 
       List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
-      for (AlgorithmParams config : bestConfigs) {
-        String configID = config.hash();
+      for (SingleAlgorithmExperimentTaskSubject subject : taskSubjects) {
+        String configID = subject.getAlgorithmParams().hash();
 
         taskQueue.add(new ExperimentTaskRequest(
             UUID.randomUUID(), 
@@ -166,7 +158,7 @@ public class SingleAlgorithmEvolutionExperiment
             instanceID,
             algorithmID, 
             configID, 
-            config, 
+            subject.getAlgorithmParams(), 
             null, 
             10)); // TODO - unified time for each validation task
       }
@@ -201,7 +193,7 @@ public class SingleAlgorithmEvolutionExperiment
     return null;
   }
 
-  protected void 
+  protected List<SingleAlgorithmExperimentTaskSubject> 
       runExperimentTasksForProblemInstance() throws Exception {
 
     try {
@@ -225,8 +217,7 @@ public class SingleAlgorithmEvolutionExperiment
           algorithmID, 
           algorithmTimeoutS,  
           this.problemInfo,
-          this.instancesInfo,
-          this::reportExperimentTask);
+          this.instancesInfo);
       GeneticAlgorithm<SingleAlgorithmExperimentTaskSubject> ga = 
           new GeneticAlgorithm<>(realOperator, evaluator);
       ga.addGeneticSearchListener(this);
@@ -252,16 +243,11 @@ public class SingleAlgorithmEvolutionExperiment
       }
       ga.startSearching(subjects);
 
+      // Store the last iteration population
+      return ga.getSubjects();
+
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
-    }
-  }
-
-  protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
-    double taskScore = experimentTask.getScore();
-    if (taskScore > bestScore) {
-      bestScore = taskScore;
-      bestConfigs.add(experimentTask.getAlgorithmParams());
     }
     return null;
   }

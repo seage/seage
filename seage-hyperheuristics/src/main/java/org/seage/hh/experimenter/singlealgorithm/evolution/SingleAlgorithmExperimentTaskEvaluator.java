@@ -32,8 +32,6 @@ public class SingleAlgorithmExperimentTaskEvaluator
   private long timeoutS;
   private Map<String, ProblemInstanceInfo> instancesInfo;
   private ProblemScoreCalculator problemScoreCalculator;
-  private Function<ExperimentTaskRecord, Void> reportFn;
-
   protected int stageId;
 
   // configID -> (instanceID -> objValue)
@@ -54,8 +52,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    */
   public SingleAlgorithmExperimentTaskEvaluator(UUID experimentId, String problemID,
       List<String> instanceIDs, String algorithmID, long timeoutS, ProblemInfo problemInfo,
-      Map<String, ProblemInstanceInfo> instancesInfo, 
-      Function<ExperimentTaskRecord, Void> reportFn) {
+      Map<String, ProblemInstanceInfo> instancesInfo) {
     super();
     this.experimentId = experimentId;
     this.problemID = problemID;
@@ -66,7 +63,6 @@ public class SingleAlgorithmExperimentTaskEvaluator
     this.instancesInfo = instancesInfo;
     this.stageId = 0;
     this.problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
-    this.reportFn = reportFn;
   }
 
   @Override
@@ -106,7 +102,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
 
   private void setObjValToSubjects(List<SingleAlgorithmExperimentTaskSubject> subjects,
       Map<String, Double> scores, Map<String, Double> weightedRanks) throws Exception {
-    for(var s : subjects) {
+    for (var s : subjects) {
       String configID = s.getAlgorithmParams().hash();
       Double score = scores.get(configID);
       Double weightedRank = weightedRanks.get(configID);
@@ -117,7 +113,6 @@ public class SingleAlgorithmExperimentTaskEvaluator
   protected synchronized Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
       // Report the experiment task to experiment
-      reportFn.apply(experimentTask);
       subjectsObjValues.computeIfAbsent(experimentTask.getConfigID(), k -> new HashMap<>());
       subjectsObjValues.get(experimentTask.getConfigID()).put(experimentTask.getInstanceID(),
           experimentTask.getObjValue());
@@ -223,10 +218,12 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @return ProblemScore
    * @throws Exception Exception.
    */
-  protected double calculateProblemScore(String configID, Map<String, Double> objValues) throws Exception {
+  protected double calculateProblemScore(
+      String configID, Map<String, Double> objValues) throws Exception {
     List<Double> instanceScores = new ArrayList<>();
     for (String instanceID : instanceIDs) {
-      instanceScores.add(problemScoreCalculator.calculateInstanceScore(instanceID, objValues.get(instanceID)));
+      instanceScores.add(
+          problemScoreCalculator.calculateInstanceScore(instanceID, objValues.get(instanceID)));
     }
 
     return problemScoreCalculator.calculateProblemScore(
