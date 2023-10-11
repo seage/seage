@@ -1,14 +1,11 @@
 package org.seage.hh.experimenter.singlealgorithm.evolution;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-import org.seage.aal.algorithm.AlgorithmParams;
 import org.seage.aal.problem.ProblemConfig;
 import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemInstanceInfo;
@@ -35,11 +32,11 @@ import org.slf4j.LoggerFactory;
 /**
  * Single algorithm evolution experiment class.
  */
-public class SingleAlgorithmEvolutionExperiment
-    implements IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmConfigExperimentSubject>>, 
+public class SingleAlgorithmConfigsEvolutionExperiment
+    implements IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionExperimentSubject>>, 
     Experiment {
   private static Logger logger =
-      LoggerFactory.getLogger(SingleAlgorithmEvolutionExperiment.class.getName());
+      LoggerFactory.getLogger(SingleAlgorithmConfigsEvolutionExperiment.class.getName());
   private FeedbackConfigurator feedbackConfigurator;
   private RandomConfigurator randomConfigurator;
   private int numConfigs;
@@ -62,19 +59,6 @@ public class SingleAlgorithmEvolutionExperiment
   protected String algorithmID;
   protected int numRuns;
   protected int timeoutS;
-  //    public SingleAlgorithmEvolutionExperiment(
-  //      int numSubjects, int numIterations, int algorithmTimeoutS)
-  //            throws Exception
-  //    {
-  //        super("SingleAlgorithmEvolution");
-  //
-  //        _numSubjects = numSubjects;
-  //        _numIterations = numIterations;
-  //        _algorithmTimeoutS = algorithmTimeoutS;
-  //
-  //        _feedbackConfigurator = new FeedbackConfigurator();
-  //        ;
-  //    }
 
   /**
    * Constructor.
@@ -83,13 +67,13 @@ public class SingleAlgorithmEvolutionExperiment
    * @param problemID Problem ID.
    * @param algorithmID Algorithm ID.
    * @param instanceIDs Instance IDs. 
-   * @param numConfigs Number of subjects.
+   * @param numConfigs Number of configs.
    * @param numIterations Number of iterations.
    * @param algorithmTimeoutS Algorithm's timetout.
    * @param experimentReporter Experiment reporter.
    * @throws Exception .
    */
-  public SingleAlgorithmEvolutionExperiment(
+  public SingleAlgorithmConfigsEvolutionExperiment(
       UUID experimentID,
       String problemID,
       String algorithmID,
@@ -130,24 +114,25 @@ public class SingleAlgorithmEvolutionExperiment
     confValInstancesScore = new HashMap<>();
     try {
       logger.info("-------------------------------------");
-
-      runSubjectsValidation(getBestSubjectsForAlgorithm());
+      
+      List<SingleAlgorithmConfigsEvolutionExperimentSubject> bestConfigs = findBestAlgorithmConfigs();
+      runAlgorithmConfigsValidation(bestConfigs);
 
         // reportBestExperimentSubject(bestSubject, startDate, endDate);
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
     }
-    return getBestExperimentConfigScore();
+    return getBestAlgorithmConfigScore();
   }
 
-  private void runSubjectsValidation(List<SingleAlgorithmConfigExperimentSubject> taskSubjects) throws Exception {
+  private void runAlgorithmConfigsValidation(List<SingleAlgorithmConfigsEvolutionExperimentSubject> configs) throws Exception {
     // RUN EXPERIMENT VALIDATION
     logger.info("Started config validation");
     // TODO - how many intances to use (all of them for now)
     for (String instanceID : instanceIDs) { 
       List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
-      for (SingleAlgorithmConfigExperimentSubject subject : taskSubjects) {
-        String configID = subject.getAlgorithmParams().hash();
+      for (SingleAlgorithmConfigsEvolutionExperimentSubject config : configs) {
+        String configID = config.getAlgorithmParams().hash();
 
         taskQueue.add(new ExperimentTaskRequest(
             UUID.randomUUID(), 
@@ -158,7 +143,7 @@ public class SingleAlgorithmEvolutionExperiment
             instanceID,
             algorithmID, 
             configID, 
-            subject.getAlgorithmParams(), 
+            config.getAlgorithmParams(), 
             null, 
             10)); // TODO - unified time for each validation task
       }
@@ -193,8 +178,8 @@ public class SingleAlgorithmEvolutionExperiment
     return null;
   }
 
-  protected List<SingleAlgorithmConfigExperimentSubject> 
-      getBestSubjectsForAlgorithm() throws Exception {
+  protected List<SingleAlgorithmConfigsEvolutionExperimentSubject> 
+      findBestAlgorithmConfigs() throws Exception {
 
     try {
       if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null) {
@@ -206,11 +191,11 @@ public class SingleAlgorithmEvolutionExperiment
       ContinuousGeneticOperator.Limit[] limits = prepareAlgorithmParametersLimits(
         algorithmID, problemInfo);
       ContinuousGeneticOperator
-          <SingleAlgorithmConfigExperimentSubject> realOperator = 
+          <SingleAlgorithmConfigsEvolutionExperimentSubject> realOperator = 
           new ContinuousGeneticOperator<>(limits);
 
-      SingleAlgorithmExperimentTaskEvaluator evaluator = 
-          new SingleAlgorithmExperimentTaskEvaluator(
+      SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator evaluator = 
+          new SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator(
           this.experimentID,
           problemID, 
           instanceIDs, 
@@ -218,7 +203,7 @@ public class SingleAlgorithmEvolutionExperiment
           algorithmTimeoutS,  
           this.problemInfo,
           this.instancesInfo);
-      GeneticAlgorithm<SingleAlgorithmConfigExperimentSubject> ga = 
+      GeneticAlgorithm<SingleAlgorithmConfigsEvolutionExperimentSubject> ga = 
           new GeneticAlgorithm<>(realOperator, evaluator);
       ga.addGeneticSearchListener(this);
       ga.setCrossLengthPct(40);
@@ -230,9 +215,9 @@ public class SingleAlgorithmEvolutionExperiment
       ga.setRandomSubjectsPct(1);
 
       
-      List<SingleAlgorithmConfigExperimentSubject> configs = 
+      List<SingleAlgorithmConfigsEvolutionExperimentSubject> configs = 
           initializeConfigs(problemInfo, instanceIDs, algorithmID, numConfigs);
-      // Fill the rest of configs by random subjects
+      // Fill the rest of configs by random configs
       if (configs.size() < numConfigs) {
         configs.addAll(initializeRandomConfigs(
             problemInfo, instanceIDs, algorithmID, numConfigs - configs.size()));
@@ -252,7 +237,7 @@ public class SingleAlgorithmEvolutionExperiment
     return null;
   }
 
-  protected double getBestExperimentConfigScore() throws Exception {
+  protected double getBestAlgorithmConfigScore() throws Exception {
     // this.bestScore = -bestSubject.getObjectiveValue()[0];
     Double bestScore = 0.0;
     List<String> insIDs = new ArrayList<>();
@@ -277,11 +262,11 @@ public class SingleAlgorithmEvolutionExperiment
     return bestScore;
   }
 
-  private List<SingleAlgorithmConfigExperimentSubject> initializeConfigs(
+  private List<SingleAlgorithmConfigsEvolutionExperimentSubject> initializeConfigs(
       ProblemInfo problemInfo, List<String> instanceIDs, String algorithmID, int numOfConfigs
   ) throws Exception {
 
-    List<SingleAlgorithmConfigExperimentSubject> result = new ArrayList<>();
+    List<SingleAlgorithmConfigsEvolutionExperimentSubject> result = new ArrayList<>();
     Set<String> newConfigIds = new HashSet<>();
     int numPerInstance = Math.max(1, numOfConfigs / instanceIDs.size());
     
@@ -310,7 +295,7 @@ public class SingleAlgorithmEvolutionExperiment
           values[j] = pc[i].getDataNode(
             "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
         }
-        var config = new SingleAlgorithmConfigExperimentSubject(names, values);
+        var config = new SingleAlgorithmConfigsEvolutionExperimentSubject(names, values);
         String newConfigId = config.getAlgorithmParams().hash();
         // Add only the new ones
         if (!newConfigIds.contains(newConfigId)) {
@@ -323,10 +308,10 @@ public class SingleAlgorithmEvolutionExperiment
     return result;
   }
 
-  private List<SingleAlgorithmConfigExperimentSubject> initializeRandomConfigs(
+  private List<SingleAlgorithmConfigsEvolutionExperimentSubject> initializeRandomConfigs(
       ProblemInfo problemInfo, List<String> instanceIDs,
       String algorithmID, int numOfConfigs) throws Exception {
-    List<SingleAlgorithmConfigExperimentSubject> result = new ArrayList<>();
+    List<SingleAlgorithmConfigsEvolutionExperimentSubject> result = new ArrayList<>();
     int numRuns = (int) Math.ceil(numOfConfigs / (double)instanceIDs.size());
     for (int i = 0; i < numRuns; i++) {
       for (String instanceID : instanceIDs) {
@@ -343,7 +328,7 @@ public class SingleAlgorithmEvolutionExperiment
           values[j] = pc[0].getDataNode(
             "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
         }
-        var config = new SingleAlgorithmConfigExperimentSubject(names, values);
+        var config = new SingleAlgorithmConfigsEvolutionExperimentSubject(names, values);
         result.add(config);
       }
     }
@@ -369,23 +354,23 @@ public class SingleAlgorithmEvolutionExperiment
   }
 
   @Override
-  public void algorithmStarted(GeneticAlgorithmEvent<SingleAlgorithmConfigExperimentSubject> e) {
+  public void algorithmStarted(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionExperimentSubject> e) {
     logger.info("Started configs evolution");
   }
 
   @Override
-  public void algorithmStopped(GeneticAlgorithmEvent<SingleAlgorithmConfigExperimentSubject> e) {
+  public void algorithmStopped(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionExperimentSubject> e) {
     logger.info("Finished config evolution");
   }
 
   @Override
-  public void newBestSolutionFound(GeneticAlgorithmEvent<SingleAlgorithmConfigExperimentSubject> e) {
+  public void newBestSolutionFound(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionExperimentSubject> e) {
     // update the best - or not
     logger.debug("Objective value {}", e.getGeneticSearch().getBestSubject().getObjectiveValue());
   }
 
   @Override
-  public void iterationPerformed(GeneticAlgorithmEvent<SingleAlgorithmConfigExperimentSubject> e) {
+  public void iterationPerformed(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionExperimentSubject> e) {
     // logger.info(" Iteration " + e.getGeneticSearch().getCurrentIteration());
     logger.info("Config generation done: \t ({}/{})", e.getGeneticSearch().getCurrentIteration(),
         e.getGeneticSearch().getIterationToGo());
@@ -393,7 +378,7 @@ public class SingleAlgorithmEvolutionExperiment
 
   @Override
   public void noChangeInValueIterationMade(
-      GeneticAlgorithmEvent<SingleAlgorithmConfigExperimentSubject> e) {
+      GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionExperimentSubject> e) {
         // empty
   }
 

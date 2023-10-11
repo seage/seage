@@ -15,7 +15,7 @@ import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmDefaultExperimen
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperiment;
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmGridExperiment;
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperiment;
-import org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperiment;
+import org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmConfigsEvolutionExperiment;
 import org.seage.logging.TimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

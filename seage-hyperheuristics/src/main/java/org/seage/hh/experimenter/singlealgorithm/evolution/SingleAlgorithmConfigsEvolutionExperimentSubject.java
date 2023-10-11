@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 /**
  * .
  */
-public class SingleAlgorithmConfigExperimentSubject extends Subject<Double> {
+public class SingleAlgorithmConfigsEvolutionExperimentSubject extends Subject<Double> {
   private static Logger logger =
-      LoggerFactory.getLogger(SingleAlgorithmConfigExperimentSubject.class.getName());
+      LoggerFactory.getLogger(SingleAlgorithmConfigsEvolutionExperimentSubject.class.getName());
   protected String[] paramNames;
 
   /**
@@ -19,13 +19,13 @@ public class SingleAlgorithmConfigExperimentSubject extends Subject<Double> {
    * @param newParamNames .
    * @param geneValues .
    */
-  public SingleAlgorithmConfigExperimentSubject(String[] newParamNames, Double[] geneValues) {
+  public SingleAlgorithmConfigsEvolutionExperimentSubject(String[] newParamNames, Double[] geneValues) {
     super(geneValues);
     paramNames = newParamNames;
   }
 
-  public SingleAlgorithmConfigExperimentSubject(
-      SingleAlgorithmConfigExperimentSubject experimentSubject) {
+  public SingleAlgorithmConfigsEvolutionExperimentSubject(
+      SingleAlgorithmConfigsEvolutionExperimentSubject experimentSubject) {
     super(experimentSubject);
     paramNames = experimentSubject.paramNames.clone();
   }
@@ -45,7 +45,7 @@ public class SingleAlgorithmConfigExperimentSubject extends Subject<Double> {
 
   @Override
   public Subject<Double> clone() {
-    SingleAlgorithmConfigExperimentSubject result = new SingleAlgorithmConfigExperimentSubject(this);
+    SingleAlgorithmConfigsEvolutionExperimentSubject result = new SingleAlgorithmConfigsEvolutionExperimentSubject(this);
     return result;
   }
 
