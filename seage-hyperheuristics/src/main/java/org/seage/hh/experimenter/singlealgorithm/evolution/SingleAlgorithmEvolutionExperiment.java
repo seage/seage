@@ -131,7 +131,7 @@ public class SingleAlgorithmEvolutionExperiment
     try {
       logger.info("-------------------------------------");
 
-      runExperimentBestConfigsValidation(runExperimentTasksForProblemInstance());
+      runSubjectsValidation(getBestSubjectsForAlgorithm());
 
         // reportBestExperimentSubject(bestSubject, startDate, endDate);
     } catch (Exception ex) {
@@ -140,7 +140,7 @@ public class SingleAlgorithmEvolutionExperiment
     return getBestExperimentSubjectScore();
   }
 
-  private void runExperimentBestConfigsValidation(List<SingleAlgorithmExperimentTaskSubject> taskSubjects) throws Exception {
+  private void runSubjectsValidation(List<SingleAlgorithmExperimentTaskSubject> taskSubjects) throws Exception {
     // RUN EXPERIMENT VALIDATION
     logger.info("Started config validation");
     // TODO - how many intances to use (all of them for now)
@@ -194,7 +194,7 @@ public class SingleAlgorithmEvolutionExperiment
   }
 
   protected List<SingleAlgorithmExperimentTaskSubject> 
-      runExperimentTasksForProblemInstance() throws Exception {
+      getBestSubjectsForAlgorithm() throws Exception {
 
     try {
       if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null) {
