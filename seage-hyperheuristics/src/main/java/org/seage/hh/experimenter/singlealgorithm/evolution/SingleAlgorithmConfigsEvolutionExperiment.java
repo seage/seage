@@ -123,59 +123,6 @@ public class SingleAlgorithmConfigsEvolutionExperiment
     return getBestAlgorithmConfigScore();
   }
 
-  private void runAlgorithmConfigsValidation(
-      List<SingleAlgorithmConfigsEvolutionExperimentSubject> configs) throws Exception {
-    // RUN EXPERIMENT VALIDATION
-    logger.info("Started config validation");
-    // TODO - how many intances to use (all of them for now)
-    for (String instanceID : instanceIDs) { 
-      List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
-      for (SingleAlgorithmConfigsEvolutionExperimentSubject config : configs) {
-        String configID = config.getAlgorithmParams().hash();
-
-        taskQueue.add(new ExperimentTaskRequest(
-            UUID.randomUUID(), 
-            experimentID, 
-            1, 
-            1, 
-            problemID, 
-            instanceID,
-            algorithmID, 
-            configID, 
-            config.getAlgorithmParams(), 
-            null, 
-            numIterations * algorithmTimeoutS));
-      }
-      logger.info("Evaluating {} configs for instance {}", taskQueue.size(), instanceID);
-
-      new LocalExperimentTasksRunner().performExperimentTasks(
-          taskQueue, this::reportValidationExperimentTask);
-    }
-  }
-
-  protected Void reportValidationExperimentTask(ExperimentTaskRecord experimentTask) {
-    try {
-      String configID = experimentTask.getConfigID();
-      String instanceID = experimentTask.getInstanceID();
-      Double score = experimentTask.getScore();
-
-      logger.info("-- {} - {} - {}", configID, instanceID, score);
-      experimentReporter.reportExperimentTask(experimentTask);
-
-      // Log the instance score
-      confValInstancesScore.computeIfAbsent(configID, t -> new HashMap<>());
-      confValInstancesScore.get(configID).computeIfAbsent(instanceID, t -> score);
-      confValInstancesScore.get(configID).put(instanceID, Math.max(
-          confValInstancesScore.get(configID).get(instanceID),
-          score
-      ));
-    } catch (Exception e) {
-      logger.error(String.format("Failed to report the experiment task: %s", 
-          experimentTask.getExperimentTaskID().toString()), e);
-    }
-    return null;
-  }
-
   protected List<SingleAlgorithmConfigsEvolutionExperimentSubject> 
       findBestAlgorithmConfigs() throws Exception {
 
@@ -235,29 +182,57 @@ public class SingleAlgorithmConfigsEvolutionExperiment
     return null;
   }
 
-  protected double getBestAlgorithmConfigScore() throws Exception {
-    // this.bestScore = -bestSubject.getObjectiveValue()[0];
-    Double bestScore = 0.0;
-    for (String configID : confValInstancesScore.keySet()) {
-      List<String> insIDs = new ArrayList<>();
-      List<Double> insScores = new ArrayList<>();
-      for (String instanceID : confValInstancesScore.get(configID).keySet()) {
-        insIDs.add(instanceID);
-        insScores.add(confValInstancesScore.get(configID).get(instanceID));
-      }
+  private void runAlgorithmConfigsValidation(
+      List<SingleAlgorithmConfigsEvolutionExperimentSubject> configs) throws Exception {
+    // RUN EXPERIMENT VALIDATION
+    logger.info("Started config validation");
+    // TODO - how many intances to use (all of them for now)
+    for (String instanceID : instanceIDs) { 
+      List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
+      for (SingleAlgorithmConfigsEvolutionExperimentSubject config : configs) {
+        String configID = config.getAlgorithmParams().hash();
 
-      Double curScore = problemScoreCalculator.calculateProblemScore(
-          insIDs.toArray(new String[]{}), 
-          insScores.stream().mapToDouble(a -> a).toArray()); 
-      
-      logger.info(" - {} {}", configID, String.format("%.4f", curScore));
-
-      if (bestScore <= curScore) {
-        bestScore = curScore;
+        taskQueue.add(new ExperimentTaskRequest(
+            UUID.randomUUID(), 
+            experimentID, 
+            1, 
+            1, 
+            problemID, 
+            instanceID,
+            algorithmID, 
+            configID, 
+            config.getAlgorithmParams(), 
+            null, 
+            numIterations * algorithmTimeoutS));
       }
+      logger.info("Evaluating {} configs for instance {}", taskQueue.size(), instanceID);
+
+      new LocalExperimentTasksRunner().performExperimentTasks(
+          taskQueue, this::reportValidationExperimentTask);
     }
-      
-    return bestScore;
+  }
+
+  protected Void reportValidationExperimentTask(ExperimentTaskRecord experimentTask) {
+    try {
+      String configID = experimentTask.getConfigID();
+      String instanceID = experimentTask.getInstanceID();
+      Double score = experimentTask.getScore();
+
+      logger.info("-- {} - {} - {}", configID, instanceID, score);
+      experimentReporter.reportExperimentTask(experimentTask);
+
+      // Log the instance score
+      confValInstancesScore.computeIfAbsent(configID, t -> new HashMap<>());
+      confValInstancesScore.get(configID).computeIfAbsent(instanceID, t -> score);
+      confValInstancesScore.get(configID).put(instanceID, Math.max(
+          confValInstancesScore.get(configID).get(instanceID),
+          score
+      ));
+    } catch (Exception e) {
+      logger.error(String.format("Failed to report the experiment task: %s", 
+          experimentTask.getExperimentTaskID().toString()), e);
+    }
+    return null;
   }
 
   private List<SingleAlgorithmConfigsEvolutionExperimentSubject> initializeConfigs(
@@ -331,6 +306,31 @@ public class SingleAlgorithmConfigsEvolutionExperiment
       }
     }
     return result.subList(0, numOfConfigs);
+  }
+
+  protected double getBestAlgorithmConfigScore() throws Exception {
+    // this.bestScore = -bestSubject.getObjectiveValue()[0];
+    Double bestScore = 0.0;
+    for (String configID : confValInstancesScore.keySet()) {
+      List<String> insIDs = new ArrayList<>();
+      List<Double> insScores = new ArrayList<>();
+      for (String instanceID : confValInstancesScore.get(configID).keySet()) {
+        insIDs.add(instanceID);
+        insScores.add(confValInstancesScore.get(configID).get(instanceID));
+      }
+
+      Double curScore = problemScoreCalculator.calculateProblemScore(
+          insIDs.toArray(new String[]{}), 
+          insScores.stream().mapToDouble(a -> a).toArray()); 
+      
+      logger.info(" - {} {}", configID, String.format("%.4f", curScore));
+
+      if (bestScore <= curScore) {
+        bestScore = curScore;
+      }
+    }
+      
+    return bestScore;
   }
 
   protected Limit[] prepareAlgorithmParametersLimits(
