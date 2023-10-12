@@ -145,7 +145,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment
             configID, 
             config.getAlgorithmParams(), 
             null, 
-            10)); // TODO - unified time for each validation task
+            timeoutS * numIterations)); // TODO - unified time for each validation task
       }
       logger.info("Evaluating {} configs for instance {}", taskQueue.size(), instanceID);
 
