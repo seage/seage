@@ -168,6 +168,9 @@ public class SingleAlgorithmConfigsEvolutionExperiment
             problemInfo, instanceIDs, algorithmID, numConfigs - configs.size()));
       }
       logger.info("Prepared {} initial configs", configs.size());
+      configs.sort((c1, c2) -> Double.compare(
+          -c1.getObjectiveValue()[0], -c2.getObjectiveValue()[0]));
+      
       for (var s : configs) {
         logger.info(" - {}", s.getAlgorithmParams().hash());
       }
