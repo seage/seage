@@ -20,10 +20,10 @@ import org.slf4j.LoggerFactory;
 /**
  * .
  */
-public class SingleAlgorithmExperimentTaskEvaluator
-    extends SubjectEvaluator<SingleAlgorithmConfigExperimentSubject> {
+public class SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator
+    extends SubjectEvaluator<SingleAlgorithmConfigsEvolutionExperimentSubject> {
   private static Logger logger =
-      LoggerFactory.getLogger(SingleAlgorithmExperimentTaskEvaluator.class.getName());
+      LoggerFactory.getLogger(SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator.class.getName());
   private UUID experimentId;
   private String problemID;
   private List<String> instanceIDs;
@@ -49,7 +49,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @param problemInfo Problem info.
    * @param instancesInfo Instances info.
    */
-  public SingleAlgorithmExperimentTaskEvaluator(UUID experimentId, String problemID,
+  public SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator(UUID experimentId, String problemID,
       List<String> instanceIDs, String algorithmID, long timeoutS, ProblemInfo problemInfo,
       Map<String, ProblemInstanceInfo> instancesInfo) {
     super();
@@ -65,7 +65,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
   }
 
   @Override
-  public void evaluateSubjects(List<SingleAlgorithmConfigExperimentSubject> subjects)
+  public void evaluateSubjects(List<SingleAlgorithmConfigsEvolutionExperimentSubject> subjects)
       throws Exception {
     stageId += 1;
 
@@ -99,7 +99,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
     }
   }
 
-  private void setObjValToSubjects(List<SingleAlgorithmConfigExperimentSubject> subjects,
+  private void setObjValToSubjects(List<SingleAlgorithmConfigsEvolutionExperimentSubject> subjects,
       Map<String, Double> scores, Map<String, Double> weightedRanks) throws Exception {
     for (var s : subjects) {
       String configID = s.getAlgorithmParams().hash();
@@ -177,11 +177,11 @@ public class SingleAlgorithmExperimentTaskEvaluator
    * @throws Exception Exception.
    */
   protected List<ExperimentTaskRequest> createTaskList(String instanceID,
-      List<SingleAlgorithmConfigExperimentSubject> subjects,
+      List<SingleAlgorithmConfigsEvolutionExperimentSubject> subjects,
       Map<String, Map<String, Double>> subjectsObjValues) throws Exception {
     List<ExperimentTaskRequest> taskList = new ArrayList<>();
 
-    for (SingleAlgorithmConfigExperimentSubject subject : subjects) {
+    for (SingleAlgorithmConfigsEvolutionExperimentSubject subject : subjects) {
       // Calculate the subject hash
       AlgorithmParams algorithmParams = subject.getAlgorithmParams();
       String configId = algorithmParams.hash();
@@ -231,7 +231,7 @@ public class SingleAlgorithmExperimentTaskEvaluator
   }
 
   @Override
-  protected double[] evaluate(SingleAlgorithmConfigExperimentSubject solution) throws Exception {
+  protected double[] evaluate(SingleAlgorithmConfigsEvolutionExperimentSubject solution) throws Exception {
     throw new UnsupportedOperationException("Should be unimplemented");
   }
 }

@@ -10,7 +10,7 @@ import java.util.UUID;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
-import org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperiment;
+import org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmConfigsEvolutionExperiment;
 import org.seage.logging.TimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -170,7 +170,7 @@ public class Experimenter2 {
   private Experiment createExperiment(
       String experimentName, String problemID, List<String> instanceIDs) throws Exception {
     if (experimentName.equals("SingleAlgorithmEvolution")) {
-      return new SingleAlgorithmEvolutionExperiment(experimentID, problemID, algorithmID,
+      return new SingleAlgorithmConfigsEvolutionExperiment(experimentID, problemID, algorithmID,
           instanceIDs, numRuns, numOfIterations, timeoutS, experimentReporter);
     }
 

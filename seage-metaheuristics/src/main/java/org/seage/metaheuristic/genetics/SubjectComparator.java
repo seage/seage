@@ -31,6 +31,9 @@ package org.seage.metaheuristic.genetics;
 public class SubjectComparator<S extends Subject<?>> implements java.util.Comparator<S> {
   @Override
   public int compare(S s1, S s2) {
+    if (s1 == null || s2 == null) {
+      return 0;
+    }
     for (int i = 0; i < s1.getObjectiveValue().length; i++) {
       int result = compare(s1.getObjectiveValue()[i], s2.getObjectiveValue()[i]);
       if (result == 0)
