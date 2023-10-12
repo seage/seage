@@ -87,7 +87,7 @@ class Population<S extends Subject<?>> {
   }
 
   public S getBestSubject() {
-    return _population.get(0);
+    return _population.size() > 0 ? _population.get(0) : null;
   }
 
   public void mergePopulation(Population<S> population) {
