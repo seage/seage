@@ -57,8 +57,6 @@ public class SingleAlgorithmConfigsEvolutionExperiment
   protected String problemID;
   protected List<String> instanceIDs;
   protected String algorithmID;
-  protected int numRuns;
-  protected int timeoutS;
 
   /**
    * Constructor.
@@ -146,7 +144,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment
             configID, 
             config.getAlgorithmParams(), 
             null, 
-            timeoutS * numIterations)); // TODO - unified time for each validation task
+            numIterations * algorithmTimeoutS));
       }
       logger.info("Evaluating {} configs for instance {}", taskQueue.size(), instanceID);
 
@@ -161,12 +159,11 @@ public class SingleAlgorithmConfigsEvolutionExperiment
       String instanceID = experimentTask.getInstanceID();
       Double score = experimentTask.getScore();
 
-      // logger.info("Instance {} score: {}", instanceID, score);
+      logger.info("-- {} - {} - {}", configID, instanceID, score);
       experimentReporter.reportExperimentTask(experimentTask);
 
       // Log the instance score
-      confValInstancesScore.computeIfAbsent(
-          configID, t -> new HashMap<>());
+      confValInstancesScore.computeIfAbsent(configID, t -> new HashMap<>());
       confValInstancesScore.get(configID).computeIfAbsent(instanceID, t -> score);
       confValInstancesScore.get(configID).put(instanceID, Math.max(
           confValInstancesScore.get(configID).get(instanceID),
@@ -253,7 +250,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment
           insIDs.toArray(new String[]{}), 
           insScores.stream().mapToDouble(a -> a).toArray()); 
       
-      logger.info(" - {} {}", configID, curScore);
+      logger.info(" - {} {}", configID, String.format("%.4f", curScore));
 
       if (bestScore <= curScore) {
         bestScore = curScore;
