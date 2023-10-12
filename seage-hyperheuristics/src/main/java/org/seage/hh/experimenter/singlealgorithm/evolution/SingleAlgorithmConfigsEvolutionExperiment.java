@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import org.seage.aal.problem.ProblemConfig;
@@ -34,7 +35,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SingleAlgorithmConfigsEvolutionExperiment
     implements IAlgorithmListener<GeneticAlgorithmEvent<
-      SingleAlgorithmConfigsEvolutionExperimentSubject>>, 
+      SingleAlgorithmConfigsEvolutionSubject>>, 
     Experiment {
   private static Logger logger =
       LoggerFactory.getLogger(SingleAlgorithmConfigsEvolutionExperiment.class.getName());
@@ -49,7 +50,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment
   protected ExperimentReporter experimentReporter;
   protected ProblemInfo problemInfo;
   protected HashMap<String, ProblemInstanceInfo> instancesInfo;
-  protected HashMap<String, HashMap<String, Double>> confValInstancesScore;
+  protected HashMap<String, HashMap<String, Double>> configScores;
   private ProblemScoreCalculator problemScoreCalculator;
 
   protected String experimentName;
@@ -88,7 +89,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment
     this.numConfigs = numConfigs;
     this.numIterations = numIterations;
     this.algorithmTimeoutS = algorithmTimeoutS;
-    this.confValInstancesScore = new HashMap<>();
+    this.configScores = new HashMap<>();
 
     this.experimentName = "SingleAlgorithmEvolution";
     this.experimentReporter = experimentReporter;
@@ -108,11 +109,11 @@ public class SingleAlgorithmConfigsEvolutionExperiment
 
   @Override
   public Double run() throws Exception {
-    confValInstancesScore = new HashMap<>();
+    configScores = new HashMap<>();
     try {
       logger.info("-------------------------------------");
       
-      List<SingleAlgorithmConfigsEvolutionExperimentSubject> bestConfigs = 
+      List<SingleAlgorithmConfigsEvolutionSubject> bestConfigs = 
           findBestAlgorithmConfigs();
       runAlgorithmConfigsValidation(bestConfigs);
 
@@ -120,10 +121,21 @@ public class SingleAlgorithmConfigsEvolutionExperiment
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
     }
-    return getBestAlgorithmConfigScore();
+    Map<String, Double> valConfigScores = calculateValConfigScores();
+
+    List<String> valConfigIDs = new ArrayList<>();
+    valConfigIDs.addAll(valConfigScores.keySet());
+    valConfigIDs.sort((c1, c2) -> Double.compare(
+        valConfigScores.get(c1), valConfigScores.get(c2)));
+    for (String configID : valConfigIDs) {
+      logger.info(" - {}  {}", 
+          configID, String.format("%.4f", valConfigScores.get(configID)));
+    }
+    // Return the best score
+    return valConfigScores.get(valConfigIDs.get(valConfigIDs.size() - 1));
   }
 
-  protected List<SingleAlgorithmConfigsEvolutionExperimentSubject> 
+  protected List<SingleAlgorithmConfigsEvolutionSubject> 
       findBestAlgorithmConfigs() throws Exception {
 
     try {
@@ -136,11 +148,11 @@ public class SingleAlgorithmConfigsEvolutionExperiment
       ContinuousGeneticOperator.Limit[] limits = prepareAlgorithmParametersLimits(
         algorithmID, problemInfo);
       ContinuousGeneticOperator
-          <SingleAlgorithmConfigsEvolutionExperimentSubject> realOperator = 
+          <SingleAlgorithmConfigsEvolutionSubject> realOperator = 
           new ContinuousGeneticOperator<>(limits);
 
-      SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator evaluator = 
-          new SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator(
+      SingleAlgorithmConfigsEvolutionSubjectEvaluator evaluator = 
+          new SingleAlgorithmConfigsEvolutionSubjectEvaluator(
           this.experimentID,
           problemID, 
           instanceIDs, 
@@ -148,7 +160,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment
           algorithmTimeoutS,  
           this.problemInfo,
           this.instancesInfo);
-      GeneticAlgorithm<SingleAlgorithmConfigsEvolutionExperimentSubject> ga = 
+      GeneticAlgorithm<SingleAlgorithmConfigsEvolutionSubject> ga = 
           new GeneticAlgorithm<>(realOperator, evaluator);
       ga.addGeneticSearchListener(this);
       ga.setCrossLengthPct(40);
@@ -160,7 +172,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment
       ga.setRandomSubjectsPct(1);
 
       
-      List<SingleAlgorithmConfigsEvolutionExperimentSubject> configs = 
+      List<SingleAlgorithmConfigsEvolutionSubject> configs = 
           initializeConfigs(problemInfo, instanceIDs, algorithmID, numConfigs);
       // Fill the rest of configs by random configs
       if (configs.size() < numConfigs) {
@@ -168,8 +180,6 @@ public class SingleAlgorithmConfigsEvolutionExperiment
             problemInfo, instanceIDs, algorithmID, numConfigs - configs.size()));
       }
       logger.info("Prepared {} initial configs", configs.size());
-      configs.sort((c1, c2) -> Double.compare(
-          -c1.getObjectiveValue()[0], -c2.getObjectiveValue()[0]));
       
       for (var s : configs) {
         logger.info(" - {}", s.getAlgorithmParams().hash());
@@ -186,13 +196,13 @@ public class SingleAlgorithmConfigsEvolutionExperiment
   }
 
   private void runAlgorithmConfigsValidation(
-      List<SingleAlgorithmConfigsEvolutionExperimentSubject> configs) throws Exception {
+      List<SingleAlgorithmConfigsEvolutionSubject> configs) throws Exception {
     // RUN EXPERIMENT VALIDATION
     logger.info("Started config validation");
     // TODO - how many intances to use (all of them for now)
     for (String instanceID : instanceIDs) { 
       List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
-      for (SingleAlgorithmConfigsEvolutionExperimentSubject config : configs) {
+      for (SingleAlgorithmConfigsEvolutionSubject config : configs) {
         String configID = config.getAlgorithmParams().hash();
 
         taskQueue.add(new ExperimentTaskRequest(
@@ -225,10 +235,10 @@ public class SingleAlgorithmConfigsEvolutionExperiment
       experimentReporter.reportExperimentTask(experimentTask);
 
       // Log the instance score
-      confValInstancesScore.computeIfAbsent(configID, t -> new HashMap<>());
-      confValInstancesScore.get(configID).computeIfAbsent(instanceID, t -> score);
-      confValInstancesScore.get(configID).put(instanceID, Math.max(
-          confValInstancesScore.get(configID).get(instanceID),
+      configScores.computeIfAbsent(configID, t -> new HashMap<>());
+      configScores.get(configID).computeIfAbsent(instanceID, t -> score);
+      configScores.get(configID).put(instanceID, Math.max(
+          configScores.get(configID).get(instanceID),
           score
       ));
     } catch (Exception e) {
@@ -238,11 +248,11 @@ public class SingleAlgorithmConfigsEvolutionExperiment
     return null;
   }
 
-  private List<SingleAlgorithmConfigsEvolutionExperimentSubject> initializeConfigs(
+  private List<SingleAlgorithmConfigsEvolutionSubject> initializeConfigs(
       ProblemInfo problemInfo, List<String> instanceIDs, String algorithmID, int numOfConfigs
   ) throws Exception {
 
-    List<SingleAlgorithmConfigsEvolutionExperimentSubject> result = new ArrayList<>();
+    List<SingleAlgorithmConfigsEvolutionSubject> result = new ArrayList<>();
     Set<String> newConfigIds = new HashSet<>();
     int numPerInstance = Math.max(1, numOfConfigs / instanceIDs.size());
     
@@ -271,7 +281,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment
           values[j] = pc[i].getDataNode(
             "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
         }
-        var config = new SingleAlgorithmConfigsEvolutionExperimentSubject(names, values);
+        var config = new SingleAlgorithmConfigsEvolutionSubject(names, values);
         String newConfigId = config.getAlgorithmParams().hash();
         // Add only the new ones
         if (!newConfigIds.contains(newConfigId)) {
@@ -284,10 +294,10 @@ public class SingleAlgorithmConfigsEvolutionExperiment
     return result;
   }
 
-  private List<SingleAlgorithmConfigsEvolutionExperimentSubject> initializeRandomConfigs(
+  private List<SingleAlgorithmConfigsEvolutionSubject> initializeRandomConfigs(
       ProblemInfo problemInfo, List<String> instanceIDs,
       String algorithmID, int numOfConfigs) throws Exception {
-    List<SingleAlgorithmConfigsEvolutionExperimentSubject> result = new ArrayList<>();
+    List<SingleAlgorithmConfigsEvolutionSubject> result = new ArrayList<>();
     int numRuns = (int) Math.ceil(numOfConfigs / (double)instanceIDs.size());
     for (int i = 0; i < numRuns; i++) {
       for (String instanceID : instanceIDs) {
@@ -304,36 +314,31 @@ public class SingleAlgorithmConfigsEvolutionExperiment
           values[j] = pc[0].getDataNode(
             "Algorithm").getDataNode("Parameters").getValueDouble(names[j]);
         }
-        var config = new SingleAlgorithmConfigsEvolutionExperimentSubject(names, values);
+        var config = new SingleAlgorithmConfigsEvolutionSubject(names, values);
         result.add(config);
       }
     }
     return result.subList(0, numOfConfigs);
   }
 
-  protected double getBestAlgorithmConfigScore() throws Exception {
+  protected Map<String, Double> calculateValConfigScores() throws Exception {
+    Map<String, Double> result = new HashMap<>();
     // this.bestScore = -bestSubject.getObjectiveValue()[0];
-    Double bestScore = 0.0;
-    for (String configID : confValInstancesScore.keySet()) {
+    // Double bestScore = 0.0;
+    for (String configID : configScores.keySet()) {
       List<String> insIDs = new ArrayList<>();
       List<Double> insScores = new ArrayList<>();
-      for (String instanceID : confValInstancesScore.get(configID).keySet()) {
+      for (String instanceID : configScores.get(configID).keySet()) {
         insIDs.add(instanceID);
-        insScores.add(confValInstancesScore.get(configID).get(instanceID));
+        insScores.add(configScores.get(configID).get(instanceID));
       }
 
-      Double curScore = problemScoreCalculator.calculateProblemScore(
+      result.put(configID, problemScoreCalculator.calculateProblemScore(
           insIDs.toArray(new String[]{}), 
-          insScores.stream().mapToDouble(a -> a).toArray()); 
-      
-      logger.info(" - {} {}", configID, String.format("%.4f", curScore));
-
-      if (bestScore <= curScore) {
-        bestScore = curScore;
-      }
+          insScores.stream().mapToDouble(a -> a).toArray())); 
     }
       
-    return bestScore;
+    return result;
   }
 
   protected Limit[] prepareAlgorithmParametersLimits(
@@ -355,23 +360,23 @@ public class SingleAlgorithmConfigsEvolutionExperiment
   }
 
   @Override
-  public void algorithmStarted(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionExperimentSubject> e) {
+  public void algorithmStarted(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject> e) {
     logger.info("Started configs evolution");
   }
 
   @Override
-  public void algorithmStopped(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionExperimentSubject> e) {
+  public void algorithmStopped(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject> e) {
     logger.info("Finished config evolution");
   }
 
   @Override
-  public void newBestSolutionFound(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionExperimentSubject> e) {
+  public void newBestSolutionFound(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject> e) {
     // update the best - or not
     logger.debug("Objective value {}", e.getGeneticSearch().getBestSubject().getObjectiveValue());
   }
 
   @Override
-  public void iterationPerformed(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionExperimentSubject> e) {
+  public void iterationPerformed(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject> e) {
     // logger.info(" Iteration " + e.getGeneticSearch().getCurrentIteration());
     logger.info("Config generation done: \t ({}/{})", e.getGeneticSearch().getCurrentIteration(),
         e.getGeneticSearch().getIterationToGo());
@@ -379,7 +384,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment
 
   @Override
   public void noChangeInValueIterationMade(
-      GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionExperimentSubject> e) {
+      GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject> e) {
         // empty
   }
 

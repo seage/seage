@@ -22,14 +22,14 @@ import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
  * .
  */
 public class SingleAlgorithmExperimentTaskEvaluatorTest {
-  SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator evaluator;
+  SingleAlgorithmConfigsEvolutionSubjectEvaluator evaluator;
   ProblemInfo problemInfo;
   HashMap<String, ProblemInstanceInfo> instancesInfo;
   List<String> instanceIDs;
   String problemID;
   String algorithmID;
   FeedbackConfigurator feedbackConfigurator;
-  List<SingleAlgorithmConfigsEvolutionExperimentSubject> subjects;
+  List<SingleAlgorithmConfigsEvolutionSubject> subjects;
   List<String> configIDs;
 
 
@@ -89,7 +89,7 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
 
     this.instanceIDs = List.of("test-instance-1", "test-instance-2", "test-instance-3");
 
-    this.evaluator = new SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator(
+    this.evaluator = new SingleAlgorithmConfigsEvolutionSubjectEvaluator(
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"), 
       this.problemID, 
       this.instanceIDs, 
@@ -137,9 +137,9 @@ public class SingleAlgorithmExperimentTaskEvaluatorTest {
 
     this.subjects = new ArrayList<>() {
       {
-        add(new SingleAlgorithmConfigsEvolutionExperimentSubject(paramNames1, geneValues1));
-        add(new SingleAlgorithmConfigsEvolutionExperimentSubject(paramNames2, geneValues2));
-        add(new SingleAlgorithmConfigsEvolutionExperimentSubject(paramNames3, geneValues3));
+        add(new SingleAlgorithmConfigsEvolutionSubject(paramNames1, geneValues1));
+        add(new SingleAlgorithmConfigsEvolutionSubject(paramNames2, geneValues2));
+        add(new SingleAlgorithmConfigsEvolutionSubject(paramNames3, geneValues3));
 
       }
     };

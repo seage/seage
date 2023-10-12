@@ -20,10 +20,10 @@ import org.slf4j.LoggerFactory;
 /**
  * .
  */
-public class SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator
-    extends SubjectEvaluator<SingleAlgorithmConfigsEvolutionExperimentSubject> {
+public class SingleAlgorithmConfigsEvolutionSubjectEvaluator
+    extends SubjectEvaluator<SingleAlgorithmConfigsEvolutionSubject> {
   private static Logger logger =
-      LoggerFactory.getLogger(SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator.class.getName());
+      LoggerFactory.getLogger(SingleAlgorithmConfigsEvolutionSubjectEvaluator.class.getName());
   private UUID experimentId;
   private String problemID;
   private List<String> instanceIDs;
@@ -49,7 +49,7 @@ public class SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator
    * @param problemInfo Problem info.
    * @param instancesInfo Instances info.
    */
-  public SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator(UUID experimentId, String problemID,
+  public SingleAlgorithmConfigsEvolutionSubjectEvaluator(UUID experimentId, String problemID,
       List<String> instanceIDs, String algorithmID, long timeoutS, ProblemInfo problemInfo,
       Map<String, ProblemInstanceInfo> instancesInfo) {
     super();
@@ -65,7 +65,7 @@ public class SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator
   }
 
   @Override
-  public void evaluateSubjects(List<SingleAlgorithmConfigsEvolutionExperimentSubject> subjects)
+  public void evaluateSubjects(List<SingleAlgorithmConfigsEvolutionSubject> subjects)
       throws Exception {
     stageId += 1;
 
@@ -102,7 +102,7 @@ public class SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator
     }
   }
 
-  private void setObjValToSubjects(List<SingleAlgorithmConfigsEvolutionExperimentSubject> subjects,
+  private void setObjValToSubjects(List<SingleAlgorithmConfigsEvolutionSubject> subjects,
       Map<String, Double> scores, Map<String, Double> weightedRanks) throws Exception {
     for (var s : subjects) {
       String configID = s.getAlgorithmParams().hash();
@@ -180,11 +180,11 @@ public class SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator
    * @throws Exception Exception.
    */
   protected List<ExperimentTaskRequest> createTaskList(String instanceID,
-      List<SingleAlgorithmConfigsEvolutionExperimentSubject> subjects,
+      List<SingleAlgorithmConfigsEvolutionSubject> subjects,
       Map<String, Map<String, Double>> subjectsObjValues) throws Exception {
     List<ExperimentTaskRequest> taskList = new ArrayList<>();
 
-    for (SingleAlgorithmConfigsEvolutionExperimentSubject subject : subjects) {
+    for (SingleAlgorithmConfigsEvolutionSubject subject : subjects) {
       // Calculate the subject hash
       AlgorithmParams algorithmParams = subject.getAlgorithmParams();
       String configId = algorithmParams.hash();
@@ -234,7 +234,7 @@ public class SingleAlgorithmConfigsEvolutionExperimentSubjectEvaluator
   }
 
   @Override
-  protected double[] evaluate(SingleAlgorithmConfigsEvolutionExperimentSubject solution) throws Exception {
+  protected double[] evaluate(SingleAlgorithmConfigsEvolutionSubject solution) throws Exception {
     throw new UnsupportedOperationException("Should be unimplemented");
   }
 }
