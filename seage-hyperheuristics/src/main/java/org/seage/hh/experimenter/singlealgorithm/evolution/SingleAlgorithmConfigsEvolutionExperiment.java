@@ -33,7 +33,8 @@ import org.slf4j.LoggerFactory;
  * Single algorithm evolution experiment class.
  */
 public class SingleAlgorithmConfigsEvolutionExperiment
-    implements IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionExperimentSubject>>, 
+    implements IAlgorithmListener<GeneticAlgorithmEvent<
+      SingleAlgorithmConfigsEvolutionExperimentSubject>>, 
     Experiment {
   private static Logger logger =
       LoggerFactory.getLogger(SingleAlgorithmConfigsEvolutionExperiment.class.getName());
@@ -45,7 +46,6 @@ public class SingleAlgorithmConfigsEvolutionExperiment
 
   protected Configurator configurator;
 
-  protected IExperimentTasksRunner experimentValidationTasksRunner;
   protected ExperimentReporter experimentReporter;
   protected ProblemInfo problemInfo;
   protected HashMap<String, ProblemInstanceInfo> instancesInfo;
@@ -90,7 +90,6 @@ public class SingleAlgorithmConfigsEvolutionExperiment
     this.numConfigs = numConfigs;
     this.numIterations = numIterations;
     this.algorithmTimeoutS = algorithmTimeoutS;
-    this.experimentValidationTasksRunner = new LocalExperimentTasksRunner();
     this.confValInstancesScore = new HashMap<>();
 
     this.experimentName = "SingleAlgorithmEvolution";
@@ -115,7 +114,8 @@ public class SingleAlgorithmConfigsEvolutionExperiment
     try {
       logger.info("-------------------------------------");
       
-      List<SingleAlgorithmConfigsEvolutionExperimentSubject> bestConfigs = findBestAlgorithmConfigs();
+      List<SingleAlgorithmConfigsEvolutionExperimentSubject> bestConfigs = 
+          findBestAlgorithmConfigs();
       runAlgorithmConfigsValidation(bestConfigs);
 
         // reportBestExperimentSubject(bestSubject, startDate, endDate);
@@ -125,7 +125,8 @@ public class SingleAlgorithmConfigsEvolutionExperiment
     return getBestAlgorithmConfigScore();
   }
 
-  private void runAlgorithmConfigsValidation(List<SingleAlgorithmConfigsEvolutionExperimentSubject> configs) throws Exception {
+  private void runAlgorithmConfigsValidation(
+      List<SingleAlgorithmConfigsEvolutionExperimentSubject> configs) throws Exception {
     // RUN EXPERIMENT VALIDATION
     logger.info("Started config validation");
     // TODO - how many intances to use (all of them for now)
@@ -149,7 +150,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment
       }
       logger.info("Evaluating {} configs for instance {}", taskQueue.size(), instanceID);
 
-      experimentValidationTasksRunner.performExperimentTasks(
+      new LocalExperimentTasksRunner().performExperimentTasks(
           taskQueue, this::reportValidationExperimentTask);
     }
   }
@@ -240,9 +241,9 @@ public class SingleAlgorithmConfigsEvolutionExperiment
   protected double getBestAlgorithmConfigScore() throws Exception {
     // this.bestScore = -bestSubject.getObjectiveValue()[0];
     Double bestScore = 0.0;
-    List<String> insIDs = new ArrayList<>();
-    List<Double> insScores = new ArrayList<>();
     for (String configID : confValInstancesScore.keySet()) {
+      List<String> insIDs = new ArrayList<>();
+      List<Double> insScores = new ArrayList<>();
       for (String instanceID : confValInstancesScore.get(configID).keySet()) {
         insIDs.add(instanceID);
         insScores.add(confValInstancesScore.get(configID).get(instanceID));
