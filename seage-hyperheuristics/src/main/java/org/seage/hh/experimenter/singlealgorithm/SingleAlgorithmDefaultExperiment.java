@@ -7,12 +7,13 @@ public class SingleAlgorithmDefaultExperiment extends SingleAlgorithmExperiment 
 
   /**
    * .
-   * @param problemID .
-   * @param instanceID .
-   * @param algorithmID .
+   * @param algorithmID Algorithm ID.
+   * @param problemID Problem ID.
+   * @param instanceIDs Instance IDs. 
    * @param numRuns .
    * @param timeoutS .
    * @param spread .
+   * @param tag .
    * @throws Exception .
    */
   public SingleAlgorithmDefaultExperiment(
