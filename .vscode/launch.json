@@ -34,8 +34,14 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "args": [
-        "report"
-      ]
+        "report",
+        "--tag",
+        "evolution-hyflex-5-10-5",
+        "-H"
+      ],
+      "env": {
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+      },
     },
     {
       "type": "java",
@@ -132,7 +138,7 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "args": [
-        "experiment-single-feedback",
+        "experiment-single-random",
         "-a",
         "GeneticAlgorithm",
         "-i",
@@ -143,7 +149,7 @@
         "1"
       ],
       "env": {
-        // "DB_URL": "jdbc:postgresql://localhost:25432/seage"
+        "DB_URL": "jdbc:postgresql://localhost:25432/seage"
       }
     },
     {
@@ -178,19 +184,19 @@
       "args": [
         "experiment-single-evolution",
         "-a",
-        "GeneticAlgorithm",
+        "SimulatedAnnealing",
         "-i",
-        "TSP:berlin52",
+        "TSP:small",
         "-t",
-        "1",
+        "2",
         "-n",
-        "1",
+        "4",
         "-g",
-        "1"
+        "3"
       ],
       "env": {
         "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
       }
-    },
+    }
   ]
 }

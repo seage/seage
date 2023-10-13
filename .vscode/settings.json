@@ -14,5 +14,6 @@
   ],
   "java.compile.nullAnalysis.mode": "automatic",
   "gradle.allowParallelRun": true,
-  "gradle.nestedProjects": true
+  "gradle.nestedProjects": true,
+  "java.configuration.updateBuildConfiguration": "automatic"
 }

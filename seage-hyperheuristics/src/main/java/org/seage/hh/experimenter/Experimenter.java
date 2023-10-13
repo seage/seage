@@ -30,9 +30,10 @@ import org.slf4j.LoggerFactory;
 public class Experimenter {
   protected static Logger logger = LoggerFactory.getLogger(Experimenter.class.getName());
 
+  protected ExperimentReporter experimentReporter;
+
   protected UUID experimentID;
   protected String algorithmID;
-  protected String[] problemIDs;
   protected Map<String, List<String>> instanceIDsPerProblems;
   protected int numRuns;
   protected int timeoutS;
@@ -70,6 +71,8 @@ public class Experimenter {
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
     this.tag = tag;
+
+    this.experimentReporter = new ExperimentReporter();
   }
 
   /**

@@ -89,7 +89,8 @@ public class FeedbackConfiguratorTest {
 
     ProblemConfig[] pcList = fc.prepareConfigs(pi, "Instance01", "Algorithm01", 10);
 
-    assertEquals(10, pcList.length);
+    // Nothing has been added to db yet
+    assertEquals(0, pcList.length);
 
     // Inserting data to the database
     try (SqlSession session = DbManager.getSqlSessionFactory().openSession()) {
@@ -125,9 +126,9 @@ public class FeedbackConfiguratorTest {
   void testPrepareConfigs() throws Exception {
     FeedbackConfigurator fc = new FeedbackConfigurator(0.0);
 
-    // Test if it returns all 10 asked configs no matter if there is something in db
+    // Test if it returns all 10 asked configs no matter if there is something in db, it shouldn't
     ProblemConfig[] pc = fc.prepareConfigs(pi, "Instance01", "Algorithm01", 10);
 
-    assertEquals(10, pc.length);
+    assertEquals(0, pc.length);
   }
 }

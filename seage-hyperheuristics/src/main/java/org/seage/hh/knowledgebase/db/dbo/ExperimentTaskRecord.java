@@ -68,7 +68,7 @@ public class ExperimentTaskRecord {
   private Double score;
   private Double scoreDelta;
   // TODO - adding the bestObjValue variable
-  private Double value;
+  private Double objValue;
 
   private AlgorithmParams algorithmParams;
   private long timeoutS;
@@ -135,7 +135,7 @@ public class ExperimentTaskRecord {
     this.score = Double.MAX_VALUE; // TODO - shouldn't this be zero?
     this.scoreDelta = 0.0;
     // TODO - adding bestObjValue parameter
-    this.value = 0.0;
+    this.objValue = 0.0;
 
     this.algorithmParams = algorithmParams;
     this.timeoutS = timeoutS;
@@ -229,17 +229,17 @@ public class ExperimentTaskRecord {
     writeSolutions(evaluator,
         this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
 
-    _logger.debug("Solutions from phenotype");
+    _logger.trace("Solutions from phenotype");
     algorithm.solutionsFromPhenotype(solutions);
-    _logger.debug("Starting the algorithm");
+    _logger.trace("Starting the algorithm");
     algorithm.startSearching(this.algorithmParams, true);
-    _logger.debug("Algorithm started");
+    _logger.trace("Algorithm started");
     waitForTimeout(algorithm);
-    _logger.debug("Stopping the algorithm");
+    _logger.trace("Stopping the algorithm");
     algorithm.stopSearching();
-    _logger.debug("Algorithm stopped");
+    _logger.trace("Algorithm stopped");
 
-    _logger.debug("Solutions to phenotype");
+    _logger.trace("Solutions to phenotype");
     solutions = algorithm.solutionsToPhenotype();
 
     writeSolutions(evaluator,
@@ -260,7 +260,7 @@ public class ExperimentTaskRecord {
   }
 
   private void waitForTimeout(IAlgorithmAdapter<?, ?> alg) throws Exception {
-    _logger.debug("Waiting for timeout");
+    _logger.trace("Waiting for timeout");
     long time = System.currentTimeMillis();
     while (alg.isRunning() && ((System.currentTimeMillis() - time) < this.timeoutS * 1000)) {
       Thread.sleep(250);
@@ -279,17 +279,17 @@ public class ExperimentTaskRecord {
   private void writeSolutions(IPhenotypeEvaluator<Phenotype<?>> evaluator, DataNode dataNode,
       Phenotype<?>[] solutions) {
     _logger.debug("Writing solutions into data node: {}", solutions.length);
-    double bestScore = 0;
+    double bestObjValue = Double.MAX_VALUE;
     Phenotype<?> bestSol = null;
     try {
       for (Phenotype<?> p : solutions) {
-        double curScore = p.getScore();
-        if (curScore > bestScore) {
-          bestScore = curScore;
+        double objValue = p.getObjValue();
+        if (objValue < bestObjValue) {
+          bestObjValue = objValue;
           bestSol = p;
         }
       }
-      if (bestSol != null && bestScore > 0) {
+      if (bestSol != null) {
         DataNode solutionNode = new DataNode("Solution");
         solutionNode.putValue("objVal", bestSol.getObjValue());
         solutionNode.putValue("score", bestSol.getScore());
@@ -315,7 +315,7 @@ public class ExperimentTaskRecord {
 
     double bestObjValue = getBestObjectiveValue(outputs);
 
-    this.value = bestObjValue;
+    this.objValue = bestObjValue;
 
     double taskLatestScore = 
         scoreCalculator.calculateInstanceScore(instanceID, bestObjValue);
@@ -443,6 +443,10 @@ public class ExperimentTaskRecord {
     this.algorithmID = algorithmID;
   }
 
+  public AlgorithmParams getAlgorithmParams() {
+    return algorithmParams;
+  }
+
   public void setConfigID(String configID) {
     this.configID = configID;
   }
@@ -479,12 +483,12 @@ public class ExperimentTaskRecord {
     this.scoreDelta = scoreDelta;
   }
 
-  public Double getValue() {
-    return this.value;
+  public Double getObjValue() {
+    return this.objValue;
   }
 
-  public void setValue(Double value) {
-    this.value = value;
+  public void setOjbValue(Double objValue) {
+    this.objValue = objValue;
   }
 
   public long getTimeoutS() {
