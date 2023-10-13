@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "RosenbrockParticleSwarmTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.rosenbrock.particles.RosenbrockParticleSwarmTest",
+      "projectName": "seage-problem-rosenbrock"
+    },
+    {
+      "type": "java",
+      "name": "RosenbrockGeneticAlgorithmTest",
+      "request": "launch",
+      "mainClass": "org.seage.problem.rosenbrock.genetics.RosenbrockGeneticAlgorithmTest",
+      "projectName": "seage-problem-rosenbrock"
+    },
+    {
+      "type": "java",
       "name": "RosenbrockGeneticAlgorithmTest",
       "request": "launch",
       "mainClass": "RosenbrockGeneticAlgorithmTest",
@@ -65,8 +79,14 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "args": [
-        "report"
-      ]
+        "report",
+        "--tag",
+        "evolution-hyflex-5-10-5",
+        "-H"
+      ],
+      "env": {
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+      },
     },
     {
       "type": "java",
@@ -197,6 +217,30 @@
       ],
       "env": {
         "DB_URL": "jdbc:postgresql://localhost:25432/seage"
+      }
+    },
+    {
+      "type": "java",
+      "name": "Run experiment-single-evolution, postgres",
+      "request": "launch",
+      "mainClass": "org.seage.launcher.Launcher",
+      "projectName": "seage-launcher",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "experiment-single-evolution",
+        "-a",
+        "SimulatedAnnealing",
+        "-i",
+        "TSP:small",
+        "-t",
+        "2",
+        "-n",
+        "4",
+        "-g",
+        "3"
+      ],
+      "env": {
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
       }
     }
   ]

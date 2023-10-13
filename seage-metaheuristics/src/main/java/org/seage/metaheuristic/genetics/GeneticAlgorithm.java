@@ -190,6 +190,10 @@ public class GeneticAlgorithm<S extends Subject<?>> {
       }
       evaluator.evaluateSubjects(population.getSubjects());
       population.sort(subjectComparator);
+      if (subjectComparator.compare(population.getBestSubject(), bestSubject) == -1) {
+        bestSubject = (S) population.getBestSubject().clone();
+        eventProducer.fireNewBestSolutionFound();
+      }
     } finally {
       isRunning = false;
       eventProducer.fireAlgorithmStopped();

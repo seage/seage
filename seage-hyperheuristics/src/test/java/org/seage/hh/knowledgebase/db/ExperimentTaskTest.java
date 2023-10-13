@@ -38,6 +38,7 @@ public class ExperimentTaskTest {
       "1", "tag1"
     );
 
+    AlgorithmParams config1 = new AlgorithmParams();
     this.experimentTask1 = new ExperimentTaskRecord(new ExperimentTaskRequest(
       UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"),
@@ -45,19 +46,22 @@ public class ExperimentTaskTest {
       "TEST", 
       "instanceID1", 
       "algorithmID1", 
-      new AlgorithmParams(),
+      config1.hash(),
+      config1,
       null,
       1L
     ));
     
+    AlgorithmParams config2 = new AlgorithmParams();
     this.experimentTask2 = new ExperimentTaskRecord(new ExperimentTaskRequest(
       UUID.randomUUID(),
       UUID.fromString("16578d4d-9ae4-4b3f-bcf3-7e7ce4737204"), 
       2, 2,
       "TEST", 
       "instanceID2", 
-      "algorithmID2", 
-      new AlgorithmParams(),
+      "algorithmID2",
+      config2.hash(),
+      config2,
       null,
       2L
     ));

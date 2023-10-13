@@ -30,7 +30,7 @@ public class ExperimentTaskRequest {
    * @param timeoutS Timeout.
    */
   public ExperimentTaskRequest(UUID experimentTaskID, UUID experimentID, int jobID, int stageID,
-      String problemID, String instanceID, String algorithmID, AlgorithmParams algorithmParams,
+      String problemID, String instanceID, String algorithmID, String configID, AlgorithmParams algorithmParams,
       Phenotype<?>[] solutions, long timeoutS) throws Exception {
     this.experimentTaskID = experimentTaskID;
     this.experimentID = experimentID;
@@ -39,7 +39,7 @@ public class ExperimentTaskRequest {
     this.problemID = problemID;
     this.instanceID = instanceID;
     this.algorithmID = algorithmID;
-    this.configID = algorithmParams.hash();
+    this.configID = configID;
     this.algorithmParams = algorithmParams;
     this.solutions = solutions;
     this.timeoutS = timeoutS;

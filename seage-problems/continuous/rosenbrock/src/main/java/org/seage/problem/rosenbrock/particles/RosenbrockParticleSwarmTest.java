@@ -46,7 +46,7 @@ public class RosenbrockParticleSwarmTest implements IParticleSwarmListener {
    * Rosenbrock Particle Swarm test.
    */
   public void start() {
-    int dimension = 8;
+    int dimension = 16;
     int numberOfParticles = 1000;
     //int maximalVelocity = 1.0d;
 

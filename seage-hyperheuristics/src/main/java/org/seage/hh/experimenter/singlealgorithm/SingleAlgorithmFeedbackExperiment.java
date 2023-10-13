@@ -61,7 +61,7 @@ public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment
     for (int runID = 1; runID <= numRuns; runID++) {
       taskQueue.add(new ExperimentTaskRequest(
           UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
-          algorithmID, configs[runID - 1].getAlgorithmParams(), null, timeoutS));
+          algorithmID, configs[runID - 1].hash(), configs[runID - 1].getAlgorithmParams(), null, timeoutS));
     }
     
     // RUN EXPERIMENT TASKS

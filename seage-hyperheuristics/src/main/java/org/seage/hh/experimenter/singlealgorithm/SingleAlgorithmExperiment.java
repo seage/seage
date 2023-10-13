@@ -79,7 +79,7 @@ public class SingleAlgorithmExperiment implements Experiment {
     for (int runID = 1; runID <= numRuns; runID++) {
       taskQueue.add(new ExperimentTaskRequest(
           UUID.randomUUID(), experimentID, runID, 1, problemID, instanceID,
-          algorithmID, config.getAlgorithmParams(), null, timeoutS));
+          algorithmID, config.hash(), config.getAlgorithmParams(), null, timeoutS));
     }
     
     // RUN EXPERIMENT TASKS

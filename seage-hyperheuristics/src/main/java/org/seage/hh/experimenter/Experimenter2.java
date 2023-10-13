@@ -7,26 +7,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
-import org.seage.aal.problem.ProblemInfo;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmDefaultExperiment;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperiment;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmGridExperiment;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperiment;
 import org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmConfigsEvolutionExperiment;
 import org.seage.logging.TimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
- * ExperimentApproachCommand --(calls)--> ExperimenterRunner
- *   ExperimenterRunner --(runs)--> Experimenter 
- *     Experimenter: MetaHeuristicExperimenter | HyperHeuristic1Experimenter
+/**
+ * Experimenter for experiment using multiple instances at once.
+ * 
+ * @author David Omrai
  */
-public class Experimenter {
-  protected static Logger logger = LoggerFactory.getLogger(Experimenter.class.getName());
+public class Experimenter2 {
+  protected static Logger logger = LoggerFactory.getLogger(Experimenter2.class.getName());
 
   protected ExperimentReporter experimentReporter;
 
@@ -49,7 +44,7 @@ public class Experimenter {
    * @param instanceIDsPerProblems Map of problem instances.
    * @throws Exception
    */
-  public Experimenter(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
+  public Experimenter2(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
       int numRuns, int timeoutS) throws Exception {
     this(algorithmID, instanceIDsPerProblems, numRuns, timeoutS, null);
   }
@@ -60,7 +55,7 @@ public class Experimenter {
    * @param algorithmID Algorithm ID.
    * @param instanceIDsPerProblems Map of problem instances.
    */
-  public Experimenter(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
+  public Experimenter2(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
       int numRuns, int timeoutS, String tag) throws Exception {
     this.experimentID = UUID.randomUUID();
     this.algorithmID = algorithmID;
@@ -78,7 +73,7 @@ public class Experimenter {
    * @param newSpread New spread value.
    * @return
    */
-  public Experimenter setSpread(double newSpread) {
+  public Experimenter2 setSpread(double newSpread) {
     spread = newSpread;
     return this;
   }
@@ -90,12 +85,12 @@ public class Experimenter {
    * @param newGranularity New granularity value.
    * @return
    */
-  public Experimenter setGranularity(int newGranularity) {
+  public Experimenter2 setGranularity(int newGranularity) {
     granularity = newGranularity;
     return this;
   }
 
-  public Experimenter setNumOfIterations(int newNumOfIterations) {
+  public Experimenter2 setNumOfIterations(int newNumOfIterations) {
     numOfIterations = newNumOfIterations;
     return this;
   }
@@ -104,7 +99,7 @@ public class Experimenter {
    * Default method without defined experiment.
    */
   public void runExperiment() throws Exception {
-    runExperiment("Experimenter");
+    runExperiment("Experimenter2");
   }
 
 
@@ -146,41 +141,16 @@ public class Experimenter {
       String problemID = entry.getKey();
       logger.info("Problem '{}'", problemID);
 
-      logger.debug("{}", ProblemProvider.getProblemProviders().values());
-
-      ProblemInfo problemInfo = ProblemProvider
-          .getProblemProviders()
-          .get(problemID)
-          .getProblemInfo();
+      logger.debug("{}", ProblemProvider.getProblemProviders().values());  
       
-      ProblemScoreCalculator problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
-
-      List<String> instanceIDs = new ArrayList<>();
-      List<Double> instanceScores = new ArrayList<>();
-
-       
-      for (String instanceID : entry.getValue()) {
-        logger.info("  Instance '{}'", instanceID);
-
-        // RUN EXPERIMENT
-        Experiment experiment = createExperiment(
-            experimentName, problemID, instanceID);
-        double score = experiment.run();
-        // --- ----------
-
-        scoreCard.putInstanceScore(problemID, instanceID, score);
-
-        instanceIDs.add(instanceID);
-        instanceScores.add(score);
-      }
-
-      double problemScore = problemScoreCalculator.calculateProblemScore(
-          instanceIDs.toArray(new String[]{}), 
-          instanceScores.stream().mapToDouble(a -> a).toArray());
-
-      scoreCard.putProblemScore(problemID, problemScore);
-      problemsScores.add(problemScore);
+      logger.info("  Instance '{}'", entry.getValue().toString());
+      Experiment experiment = createExperiment(experimentName, problemID, entry.getValue());
+      double score = experiment.run();
+      // --- ----------
+      scoreCard.putProblemScore(problemID, score);
+      problemsScores.add(score);
     }
+    
 
     double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
     scoreCard.setAlgorithmScore(experimentScore);
@@ -198,37 +168,10 @@ public class Experimenter {
   }
 
   private Experiment createExperiment(
-      String experimentName, String problemID, String instanceID)
-      throws Exception {
-
-    if (experimentName.equals("SingleAlgorithmDefault")) {
-      return new SingleAlgorithmDefaultExperiment(experimentID, problemID, instanceID, algorithmID,
-          numRuns, timeoutS, experimentReporter, spread);
-    }
-    if (experimentName.equals("SingleAlgorithmRandom")) {
-      return new SingleAlgorithmRandomExperiment(experimentID, problemID, instanceID, algorithmID,
-          numRuns, timeoutS, experimentReporter);
-    }
-    if (experimentName.equals("SingleAlgorithmGrid")) {
-      return new SingleAlgorithmGridExperiment(experimentID, problemID, instanceID, algorithmID,
-          numRuns, timeoutS, experimentReporter, granularity);
-    }
-    if (experimentName.equals("SingleAlgorithmFeedback")) {
-      return new SingleAlgorithmFeedbackExperiment(experimentID, problemID, instanceID, algorithmID,
-          numRuns, timeoutS, spread, experimentReporter);
-    }
-
-    boolean ordinaryAlg = ProblemProvider.getProblemProviders().get(problemID).getProblemInfo()
-        .getDataNode("Algorithms").getDataNodeById(algorithmID) != null;
-
-    if (ordinaryAlg) {
-      return new MetaHeuristicExperiment(experimentID, problemID, instanceID, algorithmID, numRuns,
-          timeoutS, experimentReporter);
-    }
-
-    if (algorithmID.equals("HyperHeuristic1")) {
-      return new HyperHeuristic1Experiment(experimentID, problemID, instanceID, algorithmID,
-          numRuns, timeoutS, experimentReporter);
+      String experimentName, String problemID, List<String> instanceIDs) throws Exception {
+    if (experimentName.equals("SingleAlgorithmEvolution")) {
+      return new SingleAlgorithmConfigsEvolutionExperiment(experimentID, problemID, algorithmID,
+          instanceIDs, numRuns, numOfIterations, timeoutS, experimentReporter);
     }
 
     throw new Exception(String.format("Unknown algorithm id '%s'", algorithmID));
@@ -253,6 +196,4 @@ public class Experimenter {
     }
     return results.toArray(new String[0]);
   }
-
-
 }
