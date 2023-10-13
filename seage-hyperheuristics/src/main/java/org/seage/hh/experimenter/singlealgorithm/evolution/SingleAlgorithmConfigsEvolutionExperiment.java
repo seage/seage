@@ -20,7 +20,6 @@ import org.seage.hh.experimenter.configurator.Configurator;
 import org.seage.hh.experimenter.configurator.FeedbackConfigurator;
 import org.seage.hh.experimenter.configurator.RandomConfigurator;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
-import org.seage.hh.runner.IExperimentTasksRunner;
 import org.seage.hh.runner.LocalExperimentTasksRunner;
 import org.seage.metaheuristic.IAlgorithmListener;
 import org.seage.metaheuristic.genetics.ContinuousGeneticOperator;
@@ -41,7 +40,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
 
   private FeedbackConfigurator feedbackConfigurator;
   private RandomConfigurator randomConfigurator;
-  private int numConfigs;
+  private int numGenerations;
   private int numIterations;
   private int algorithmTimeoutS;
 
@@ -50,7 +49,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
   protected ExperimentReporter experimentReporter;
   protected ProblemInfo problemInfo;
   protected HashMap<String, ProblemInstanceInfo> instancesInfo;
-  protected HashMap<String, HashMap<String, Double>> configScores;
+  protected HashMap<String, HashMap<String, Double>> instanceScores;
   private ProblemScoreCalculator problemScoreCalculator;
 
   protected String experimentName;
@@ -67,7 +66,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
    * @param algorithmID Algorithm ID.
    * @param instanceIDs Instance IDs. 
    * @param numConfigs Number of configs.
-   * @param numIterations Number of iterations.
+   * @param numGenerations Number of iterations.
    * @param algorithmTimeoutS Algorithm's timetout.
    * @param experimentReporter Experiment reporter.
    * @throws Exception .
@@ -78,7 +77,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
       String algorithmID,
       List<String> instanceIDs,
       int numConfigs, 
-      int numIterations, 
+      int numGenerations, 
       int algorithmTimeoutS,
       ExperimentReporter experimentReporter
   ) throws Exception {
@@ -86,10 +85,10 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
     this.problemID = problemID;
     this.algorithmID = algorithmID;
     this.instanceIDs = instanceIDs;
-    this.numConfigs = numConfigs;
-    this.numIterations = numIterations;
+    this.numGenerations = numConfigs;
+    this.numIterations = numGenerations;
     this.algorithmTimeoutS = algorithmTimeoutS;
-    this.configScores = new HashMap<>();
+    this.instanceScores = new HashMap<>();
 
     this.experimentName = "SingleAlgorithmEvolution";
     this.experimentReporter = experimentReporter;
@@ -109,35 +108,31 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
 
   @Override
   public Double run() throws Exception {
-    configScores = new HashMap<>();
-    try {
-      logger.info("-------------------------------------");
-      
-      List<SingleAlgorithmConfigsEvolutionSubject> bestConfigs = 
-          findBestAlgorithmConfigs();
-      runAlgorithmConfigsValidation(bestConfigs);
+    logger.info("-------------------------------------");
+    instanceScores = new HashMap<>();
 
-        // reportBestExperimentSubject(bestSubject, startDate, endDate);
-    } catch (Exception ex) {
-      logger.warn(ex.getMessage(), ex);
-    }
-    Map<String, Double> valConfigScores = calculateValConfigScores();
+    // Main run
+    List<SingleAlgorithmConfigsEvolutionSubject> bestConfigs = findBestAlgorithmConfigs();
+    // Evaluation
+    runAlgorithmConfigsValidation(bestConfigs);
+    // Done
+
+    Map<String, Double> configScores = calculateConfigScores();
 
     List<String> valConfigIDs = new ArrayList<>();
-    valConfigIDs.addAll(valConfigScores.keySet());
+    valConfigIDs.addAll(configScores.keySet());
     valConfigIDs.sort((c1, c2) -> Double.compare(
-        valConfigScores.get(c2), valConfigScores.get(c1)));
+        configScores.get(c2), configScores.get(c1)));
     for (String configID : valConfigIDs) {
       logger.info(" - {}  {}", 
-          configID, String.format("%.4f", valConfigScores.get(configID)));
+          configID, String.format("%.4f", configScores.get(configID)));
     }
     // Return the best score
-    return valConfigScores.get(valConfigIDs.get(0));
+    return configScores.get(valConfigIDs.get(0));
   }
 
-  protected List<SingleAlgorithmConfigsEvolutionSubject> 
-      findBestAlgorithmConfigs() throws Exception {
-
+  protected List<SingleAlgorithmConfigsEvolutionSubject> findBestAlgorithmConfigs() 
+      throws Exception {
     try {
       if (problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID) == null) {
         throw new IllegalArgumentException("Unknown algorithm: " + algorithmID);
@@ -145,21 +140,20 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
 
       logger.info("Algorithm: {}", algorithmID);
 
-      ContinuousGeneticOperator.Limit[] limits = prepareAlgorithmParametersLimits(
-        algorithmID, problemInfo);
-      ContinuousGeneticOperator
-          <SingleAlgorithmConfigsEvolutionSubject> realOperator = 
+      ContinuousGeneticOperator.Limit[] limits = 
+          prepareAlgorithmParametersLimits(algorithmID, problemInfo);
+      ContinuousGeneticOperator<SingleAlgorithmConfigsEvolutionSubject> realOperator = 
           new ContinuousGeneticOperator<>(limits);
 
       SingleAlgorithmConfigsEvolutionSubjectEvaluator evaluator = 
           new SingleAlgorithmConfigsEvolutionSubjectEvaluator(
-          this.experimentID,
-          problemID, 
-          instanceIDs, 
-          algorithmID, 
-          algorithmTimeoutS,  
-          this.problemInfo,
-          this.instancesInfo);
+              this.experimentID,
+              problemID, 
+              instanceIDs, 
+              algorithmID, 
+              algorithmTimeoutS,  
+              this.problemInfo,
+              this.instancesInfo);
       GeneticAlgorithm<SingleAlgorithmConfigsEvolutionSubject> ga = 
           new GeneticAlgorithm<>(realOperator, evaluator);
       ga.addGeneticSearchListener(this);
@@ -168,16 +162,16 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
       ga.setIterationToGo(numIterations);
       ga.setMutateChromosomeLengthPct(40);
       ga.setMutatePopulationPct(40);
-      ga.setPopulationCount(numConfigs);
+      ga.setPopulationCount(numGenerations);
       ga.setRandomSubjectsPct(1);
 
       
       List<SingleAlgorithmConfigsEvolutionSubject> configs = 
-          initializeConfigs(problemInfo, instanceIDs, algorithmID, numConfigs);
+          initializeConfigs(problemInfo, instanceIDs, algorithmID, numGenerations);
       // Fill the rest of configs by random configs
-      if (configs.size() < numConfigs) {
+      if (configs.size() < numGenerations) {
         configs.addAll(initializeRandomConfigs(
-            problemInfo, instanceIDs, algorithmID, numConfigs - configs.size()));
+            problemInfo, instanceIDs, algorithmID, numGenerations - configs.size()));
       }
       logger.info("Prepared {} initial configs", configs.size());
       
@@ -192,14 +186,14 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
     } catch (Exception ex) {
       logger.warn(ex.getMessage(), ex);
     }
-    return null;
+    return List.of();
   }
 
-  private void runAlgorithmConfigsValidation(
-      List<SingleAlgorithmConfigsEvolutionSubject> configs) throws Exception {
+  private void runAlgorithmConfigsValidation(List<SingleAlgorithmConfigsEvolutionSubject> configs)
+      throws Exception {
     // RUN EXPERIMENT VALIDATION
     logger.info("Started config validation");
-    // TODO - how many intances to use (all of them for now)
+
     for (String instanceID : instanceIDs) { 
       List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
       for (SingleAlgorithmConfigsEvolutionSubject config : configs) {
@@ -235,12 +229,10 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
       experimentReporter.reportExperimentTask(experimentTask);
 
       // Log the instance score
-      configScores.computeIfAbsent(configID, t -> new HashMap<>());
-      configScores.get(configID).computeIfAbsent(instanceID, t -> score);
-      configScores.get(configID).put(instanceID, Math.max(
-          configScores.get(configID).get(instanceID),
-          score
-      ));
+      instanceScores.computeIfAbsent(configID, t -> new HashMap<>());
+      instanceScores.get(configID).computeIfAbsent(instanceID, t -> score);
+      instanceScores.get(configID).put(instanceID, 
+          Math.max(score, instanceScores.get(configID).get(instanceID)));
     } catch (Exception e) {
       logger.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
@@ -248,9 +240,8 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
     return null;
   }
 
-  private List<SingleAlgorithmConfigsEvolutionSubject> initializeConfigs(
-      ProblemInfo problemInfo, List<String> instanceIDs, String algorithmID, int numOfConfigs
-  ) throws Exception {
+  private List<SingleAlgorithmConfigsEvolutionSubject> initializeConfigs(ProblemInfo problemInfo,
+      List<String> instanceIDs, String algorithmID, int numOfConfigs) throws Exception {
 
     List<SingleAlgorithmConfigsEvolutionSubject> result = new ArrayList<>();
     Set<String> newConfigIds = new HashSet<>();
@@ -263,8 +254,8 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
         break;
       }
 
-      ProblemConfig[] pc = feedbackConfigurator.prepareConfigs(
-        problemInfo, instanceID, algorithmID, numPerInstance);
+      ProblemConfig[] pc =
+          feedbackConfigurator.prepareConfigs(problemInfo, instanceID, algorithmID, numPerInstance);
 
       List<DataNode> params = problemInfo.getDataNode("Algorithms").getDataNodeById(algorithmID)
           .getDataNodes("Parameter");
@@ -295,8 +286,8 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
   }
 
   private List<SingleAlgorithmConfigsEvolutionSubject> initializeRandomConfigs(
-      ProblemInfo problemInfo, List<String> instanceIDs,
-      String algorithmID, int numOfConfigs) throws Exception {
+      ProblemInfo problemInfo, List<String> instanceIDs, String algorithmID, int numOfConfigs)
+      throws Exception {
     List<SingleAlgorithmConfigsEvolutionSubject> result = new ArrayList<>();
     int numRuns = (int) Math.ceil(numOfConfigs / (double)instanceIDs.size());
     for (int i = 0; i < numRuns; i++) {
@@ -321,16 +312,15 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
     return result.subList(0, numOfConfigs);
   }
 
-  protected Map<String, Double> calculateValConfigScores() throws Exception {
+  protected Map<String, Double> calculateConfigScores() throws Exception {
     Map<String, Double> result = new HashMap<>();
-    // this.bestScore = -bestSubject.getObjectiveValue()[0];
-    // Double bestScore = 0.0;
-    for (String configID : configScores.keySet()) {
+
+    for (String configID : instanceScores.keySet()) {
       List<String> insIDs = new ArrayList<>();
       List<Double> insScores = new ArrayList<>();
-      for (String instanceID : configScores.get(configID).keySet()) {
+      for (String instanceID : instanceScores.get(configID).keySet()) {
         insIDs.add(instanceID);
-        insScores.add(configScores.get(configID).get(instanceID));
+        insScores.add(instanceScores.get(configID).get(instanceID));
       }
 
       result.put(configID, problemScoreCalculator.calculateProblemScore(
@@ -377,7 +367,6 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
 
   @Override
   public void iterationPerformed(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject> e) {
-    // logger.info(" Iteration " + e.getGeneticSearch().getCurrentIteration());
     logger.info("Config generation done: \t ({}/{})", e.getGeneticSearch().getCurrentIteration(),
         e.getGeneticSearch().getIterationToGo());
   }
@@ -385,7 +374,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
   @Override
   public void noChangeInValueIterationMade(
       GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject> e) {
-        // empty
+    // empty
   }
 
   protected long getEstimatedTime(int instancesCount, int algorithmsCount) {
@@ -394,6 +383,6 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
 
 
   protected long getNumberOfConfigs(int instancesCount, int algorithmsCount) {
-    return (long) numIterations * numConfigs * instancesCount * algorithmsCount;
+    return (long) numIterations * numGenerations * instancesCount * algorithmsCount;
   }
 }

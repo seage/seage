@@ -36,7 +36,7 @@ public class SingleAlgorithmConfigsEvolutionSubjectEvaluator
   // configID -> (instanceID -> objValue)
   protected Map<String, Map<String, Double>> configCache;
   // configID -> (instanceID -> objValue)
-  protected Map<String, Map<String, Double>> subjectsObjValues; // TODO: Rename
+  protected Map<String, Map<String, Double>> subjectsObjValues;
 
   /**
    * Constructor.
@@ -60,15 +60,12 @@ public class SingleAlgorithmConfigsEvolutionSubjectEvaluator
     this.timeoutS = timeoutS;
     this.configCache = new HashMap<>();
     this.instancesInfo = instancesInfo;
-    this.stageId = 0;
     this.problemScoreCalculator = new ProblemScoreCalculator(problemInfo);
   }
 
   @Override
   public void evaluateSubjects(List<SingleAlgorithmConfigsEvolutionSubject> subjects)
       throws Exception {
-    stageId += 1;
-
     subjectsObjValues = new HashMap<>();
 
     // Create and run tasks for each columns separatly
@@ -194,7 +191,7 @@ public class SingleAlgorithmConfigsEvolutionSubjectEvaluator
         subjectsObjValues.get(configId).put(instanceID, configCache.get(configId).get(instanceID));
       } else {
         ExperimentTaskRequest task = new ExperimentTaskRequest(UUID.randomUUID(), this.experimentId,
-            1, this.stageId, this.problemID, instanceID, this.algorithmID, configId,
+            1, 1, this.problemID, instanceID, this.algorithmID, configId,
             algorithmParams, null, this.timeoutS);
         taskList.add(task);
       }

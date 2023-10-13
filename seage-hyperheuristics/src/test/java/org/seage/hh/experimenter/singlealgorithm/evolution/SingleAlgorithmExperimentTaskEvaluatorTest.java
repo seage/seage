@@ -21,7 +21,7 @@ import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 /**
  * .
  */
-public class SingleAlgorithmExperimentTaskEvaluatorTest {
+class SingleAlgorithmExperimentTaskEvaluatorTest {
   SingleAlgorithmConfigsEvolutionSubjectEvaluator evaluator;
   ProblemInfo problemInfo;
   HashMap<String, ProblemInstanceInfo> instancesInfo;
