@@ -33,12 +33,12 @@ import org.slf4j.LoggerFactory;
 /**
  * Single algorithm evolution experiment class.
  */
-public class SingleAlgorithmConfigsEvolutionExperiment
-    implements IAlgorithmListener<GeneticAlgorithmEvent<
-      SingleAlgorithmConfigsEvolutionSubject>>, 
-    Experiment {
+public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
+      IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject>> {
+
   private static Logger logger =
       LoggerFactory.getLogger(SingleAlgorithmConfigsEvolutionExperiment.class.getName());
+
   private FeedbackConfigurator feedbackConfigurator;
   private RandomConfigurator randomConfigurator;
   private int numConfigs;

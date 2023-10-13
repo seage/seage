@@ -79,8 +79,14 @@
       "projectName": "seage-launcher",
       "cwd": "${workspaceFolder}",
       "args": [
-        "report"
-      ]
+        "report",
+        "--tag",
+        "evolution-hyflex-5-10-5",
+        "-H"
+      ],
+      "env": {
+        "DB_URL": "jdbc:postgresql://snoopy.lan:15432/seage"
+      },
     },
     {
       "type": "java",
