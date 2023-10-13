@@ -5,7 +5,6 @@ import com.beust.jcommander.Parameters;
 
 import java.util.List;
 import java.util.Map;
-import org.seage.hh.experimenter.Experimenter;
 
 @Parameters(commandDescription = "Perform Experiment Approach")
 public class ExperimentApproachCommand extends Command {

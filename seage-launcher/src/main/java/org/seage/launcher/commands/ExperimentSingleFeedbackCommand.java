@@ -6,7 +6,6 @@ import com.beust.jcommander.Parameters;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.seage.hh.experimenter.Experimenter;
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmDefaultExperiment;
 
 @Parameters(commandDescription = "Perform single feedback experiment")
