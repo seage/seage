@@ -132,7 +132,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
           configID, String.format("%.4f", valConfigScores.get(configID)));
     }
     // Return the best score
-    return valConfigScores.get(valConfigIDs.get(valConfigIDs.size() - 1));
+    return valConfigScores.get(valConfigIDs.get(0));
   }
 
   protected List<SingleAlgorithmConfigsEvolutionSubject> 
