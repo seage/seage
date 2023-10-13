@@ -12,9 +12,9 @@ public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment
 
   /**
    * .
-   * @param algorithmID .
-   * @param problemID .
-   * @param instanceID .
+   * @param algorithmID Algorithm ID.
+   * @param problemID Problem ID.
+   * @param instanceIDs Instance IDs. 
    * @param numRuns .
    * @param timeoutS .
    * @param spread .
