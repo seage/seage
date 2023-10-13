@@ -15,7 +15,6 @@ import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmDefaultExperimen
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperiment;
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmGridExperiment;
 import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperiment;
-import org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperiment;
 import org.seage.hh.heatmap.ScoreCard;
 import org.seage.logging.TimeFormat;
 
@@ -27,8 +26,8 @@ import org.slf4j.LoggerFactory;
  *   ExperimenterRunner --(runs)--> Experimenter 
  *     Experimenter: MetaHeuristicExperimenter | HyperHeuristic1Experimenter
  */
-public class Experimenter {
-  protected static Logger logger = LoggerFactory.getLogger(Experimenter.class.getName());
+public class Experimenter0 {
+  protected static Logger logger = LoggerFactory.getLogger(Experimenter0.class.getName());
 
   protected ExperimentReporter experimentReporter;
 
@@ -44,6 +43,8 @@ public class Experimenter {
 
   protected String tag;
 
+  private String[] problemIDs;
+
   /**
    * ApproachExperimenter.
    * 
@@ -51,7 +52,7 @@ public class Experimenter {
    * @param instanceIDsPerProblems Map of problem instances.
    * @throws Exception
    */
-  private Experimenter(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
+  private Experimenter0(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
       int numRuns, int timeoutS) throws Exception {
     this(algorithmID, instanceIDsPerProblems, numRuns, timeoutS, null);
   }
@@ -62,7 +63,7 @@ public class Experimenter {
    * @param algorithmID Algorithm ID.
    * @param instanceIDsPerProblems Map of problem instances.
    */
-  private Experimenter(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
+  private Experimenter0(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
       int numRuns, int timeoutS, String tag) throws Exception {
     this.experimentID = UUID.randomUUID();
     this.algorithmID = algorithmID;
@@ -72,7 +73,6 @@ public class Experimenter {
     this.timeoutS = timeoutS;
     this.tag = tag;
 
-    this.experimentReporter = new ExperimentReporter();
   }
 
   /**
@@ -81,7 +81,7 @@ public class Experimenter {
    * @param newSpread New spread value.
    * @return
    */
-  public Experimenter setSpread(double newSpread) {
+  public Experimenter0 setSpread(double newSpread) {
     spread = newSpread;
     return this;
   }
@@ -93,12 +93,12 @@ public class Experimenter {
    * @param newGranularity New granularity value.
    * @return
    */
-  public Experimenter setGranularity(int newGranularity) {
+  public Experimenter0 setGranularity(int newGranularity) {
     granularity = newGranularity;
     return this;
   }
 
-  public Experimenter setNumOfIterations(int newNumOfIterations) {
+  public Experimenter0 setNumOfIterations(int newNumOfIterations) {
     numOfIterations = newNumOfIterations;
     return this;
   }

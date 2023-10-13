@@ -23,6 +23,8 @@ import org.seage.hh.knowledgebase.db.mapper.SolutionMapper;
 public class ExperimentReporter {
   private static final String FORMAT_VERSION = "1.0.0";
 
+  private ExperimentReporter(){}
+  
   /**
    * Puts experiment info into database.
    */

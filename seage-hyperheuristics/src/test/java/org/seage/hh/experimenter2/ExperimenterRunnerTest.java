@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.seage.hh.experimenter.Experimenter;
 import org.seage.hh.knowledgebase.db.DbManager;
 
 public class ExperimenterRunnerTest {

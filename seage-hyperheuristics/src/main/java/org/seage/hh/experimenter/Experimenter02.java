@@ -20,8 +20,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author David Omrai
  */
-public class Experimenter2 {
-  protected static Logger logger = LoggerFactory.getLogger(Experimenter2.class.getName());
+public class Experimenter02 {
+  protected static Logger logger = LoggerFactory.getLogger(Experimenter02.class.getName());
 
   protected ExperimentReporter experimentReporter;
 
@@ -44,7 +44,7 @@ public class Experimenter2 {
    * @param instanceIDsPerProblems Map of problem instances.
    * @throws Exception
    */
-  public Experimenter2(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
+  public Experimenter02(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
       int numRuns, int timeoutS) throws Exception {
     this(algorithmID, instanceIDsPerProblems, numRuns, timeoutS, null);
   }
@@ -55,7 +55,7 @@ public class Experimenter2 {
    * @param algorithmID Algorithm ID.
    * @param instanceIDsPerProblems Map of problem instances.
    */
-  public Experimenter2(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
+  public Experimenter02(String algorithmID, Map<String, List<String>> instanceIDsPerProblems,
       int numRuns, int timeoutS, String tag) throws Exception {
     this.experimentID = UUID.randomUUID();
     this.algorithmID = algorithmID;
@@ -63,8 +63,6 @@ public class Experimenter2 {
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
     this.tag = tag;
-
-    this.experimentReporter = new ExperimentReporter();
   }
 
   /**
@@ -73,7 +71,7 @@ public class Experimenter2 {
    * @param newSpread New spread value.
    * @return
    */
-  public Experimenter2 setSpread(double newSpread) {
+  public Experimenter02 setSpread(double newSpread) {
     spread = newSpread;
     return this;
   }
@@ -85,12 +83,12 @@ public class Experimenter2 {
    * @param newGranularity New granularity value.
    * @return
    */
-  public Experimenter2 setGranularity(int newGranularity) {
+  public Experimenter02 setGranularity(int newGranularity) {
     granularity = newGranularity;
     return this;
   }
 
-  public Experimenter2 setNumOfIterations(int newNumOfIterations) {
+  public Experimenter02 setNumOfIterations(int newNumOfIterations) {
     numOfIterations = newNumOfIterations;
     return this;
   }
@@ -134,45 +132,45 @@ public class Experimenter2 {
     // Initialize array for problems scores
     List<Double> problemsScores = new ArrayList<>();
 
-    ExperimentScoreCard scoreCard = new ExperimentScoreCard(algorithmID,
-        instanceIDsPerProblems.keySet().toArray(new String[] {}));
+    // ExperimentScoreCard scoreCard = new ExperimentScoreCard(algorithmID,
+    //     instanceIDsPerProblems.keySet().toArray(new String[] {}));
 
-    for (Entry<String, List<String>> entry : instanceIDsPerProblems.entrySet()) {
-      String problemID = entry.getKey();
-      logger.info("Problem '{}'", problemID);
+    // for (Entry<String, List<String>> entry : instanceIDsPerProblems.entrySet()) {
+    //   String problemID = entry.getKey();
+    //   logger.info("Problem '{}'", problemID);
 
-      logger.debug("{}", ProblemProvider.getProblemProviders().values());  
+    //   logger.debug("{}", ProblemProvider.getProblemProviders().values());  
       
-      logger.info("  Instance '{}'", entry.getValue().toString());
-      Experiment experiment = createExperiment(experimentName, problemID, entry.getValue());
-      double score = experiment.run();
-      // --- ----------
-      scoreCard.putProblemScore(problemID, score);
-      problemsScores.add(score);
-    }
+    //   logger.info("  Instance '{}'", entry.getValue().toString());
+    //   Experiment experiment = createExperiment(experimentName, problemID, entry.getValue());
+    //   double score = experiment.run();
+    //   // --- ----------
+    //   scoreCard.putProblemScore(problemID, score);
+    //   problemsScores.add(score);
+    // }
     
 
-    double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
-    scoreCard.setAlgorithmScore(experimentScore);
+    // double experimentScore = ProblemScoreCalculator.calculateExperimentScore(problemsScores);
+    // scoreCard.setAlgorithmScore(experimentScore);
 
-    experimentReporter.updateExperimentScore(experimentID, scoreCard);
+    // experimentReporter.updateExperimentScore(experimentID, scoreCard);
 
     long endDate = System.currentTimeMillis();
     logger.info("---------------------------------------------------");
     logger.info("Experiment {} done", experimentID);
     logger.info("Experiment duration: {} (DD:HH:mm:ss)",
         TimeFormat.getTimeDurationBreakdown(endDate - startDate));
-    logger.info("Experiment score: ### {} ###", scoreCard.getAlgorithmScore());
+    // logger.info("Experiment score: ### {} ###", scoreCard.getAlgorithmScore());
 
     experimentReporter.updateEndDate(experimentID, new Date(endDate));
   }
 
   private Experiment createExperiment(
       String experimentName, String problemID, List<String> instanceIDs) throws Exception {
-    if (experimentName.equals("SingleAlgorithmEvolution")) {
-      return new SingleAlgorithmConfigsEvolutionExperiment(experimentID, problemID, algorithmID,
-          instanceIDs, numRuns, numOfIterations, timeoutS, experimentReporter);
-    }
+    // if (experimentName.equals("SingleAlgorithmEvolution")) {
+    //   return new SingleAlgorithmConfigsEvolutionExperiment(experimentID, problemID, algorithmID,
+    //       instanceIDs, numRuns, numOfIterations, timeoutS, tag);
+    // }
 
     throw new Exception(String.format("Unknown algorithm id '%s'", algorithmID));
   }
