@@ -126,7 +126,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
     List<String> valConfigIDs = new ArrayList<>();
     valConfigIDs.addAll(valConfigScores.keySet());
     valConfigIDs.sort((c1, c2) -> Double.compare(
-        valConfigScores.get(c1), valConfigScores.get(c2)));
+        valConfigScores.get(c2), valConfigScores.get(c1)));
     for (String configID : valConfigIDs) {
       logger.info(" - {}  {}", 
           configID, String.format("%.4f", valConfigScores.get(configID)));
@@ -231,7 +231,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment implements Experiment,
       String instanceID = experimentTask.getInstanceID();
       Double score = experimentTask.getScore();
 
-      logger.info("-- {} - {} - {}", configID, instanceID, score);
+      //logger.info("-- {} - {} - {}", configID, instanceID, score);
       experimentReporter.reportExperimentTask(experimentTask);
 
       // Log the instance score

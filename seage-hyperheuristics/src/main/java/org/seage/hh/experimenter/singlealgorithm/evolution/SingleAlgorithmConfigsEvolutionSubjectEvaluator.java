@@ -91,7 +91,7 @@ public class SingleAlgorithmConfigsEvolutionSubjectEvaluator
     logger.info("Configs:");
     // Sort the configs by the score
     subjects.sort((s1, s2) -> Double.compare(
-        -s1.getObjectiveValue()[0], -s2.getObjectiveValue()[0]));
+        s1.getObjectiveValue()[0], s2.getObjectiveValue()[0]));
     for (var s : subjects) {
       String configId = s.getAlgorithmParams().hash();
       double score = -s.getObjectiveValue()[0];
