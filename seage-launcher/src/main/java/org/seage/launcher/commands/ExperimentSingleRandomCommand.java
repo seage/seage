@@ -3,7 +3,7 @@ package org.seage.launcher.commands;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmRandomExperiment;
+import org.seage.hh.experiment.singlealgorithm.SingleAlgorithmRandomExperiment;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 

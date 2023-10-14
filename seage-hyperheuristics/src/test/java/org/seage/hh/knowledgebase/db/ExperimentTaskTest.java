@@ -9,7 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seage.aal.algorithm.AlgorithmParams;
-import org.seage.hh.experimenter.ExperimentTaskRequest;
+import org.seage.hh.experiment.ExperimentTaskRequest;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentTaskRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 import org.seage.hh.knowledgebase.db.mapper.ExperimentMapper;
 
-public class ExperimentTest {
+class ExperimentTest {
   private ExperimentRecord experiment1;
   private ExperimentRecord experiment2;
 

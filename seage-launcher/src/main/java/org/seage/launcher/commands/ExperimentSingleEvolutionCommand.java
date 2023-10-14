@@ -5,8 +5,8 @@ import com.beust.jcommander.Parameters;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmDefaultExperiment;
-import org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmConfigsEvolutionExperiment;
+import org.seage.hh.experiment.singlealgorithm.SingleAlgorithmDefaultExperiment;
+import org.seage.hh.experiment.singlealgorithm.evolution.SingleAlgorithmConfigsEvolutionExperiment;
 
 @Parameters(commandDescription = "Perform single evolution experiment")
 public class ExperimentSingleEvolutionCommand extends Command {

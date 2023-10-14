@@ -6,7 +6,7 @@ import com.beust.jcommander.Parameters;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.seage.hh.experimenter.singlealgorithm.SingleAlgorithmFeedbackExperiment;
+import org.seage.hh.experiment.singlealgorithm.SingleAlgorithmFeedbackExperiment;
 
 @Parameters(commandDescription = "Perform single feedback experiment")
 public class ExperimentSingleFeedbackCommand extends Command {
