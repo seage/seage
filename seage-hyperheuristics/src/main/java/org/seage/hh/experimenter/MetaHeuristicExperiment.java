@@ -33,9 +33,9 @@ public class MetaHeuristicExperiment extends Experiment {
   /**
    * MetaHeuristicExperimenter constructor.
    */
-  protected MetaHeuristicExperiment(String algorithmID, String problemID, List<String> instanceIDs,
-      int numRuns, int timeoutS, String tag) throws Exception {
-    super(algorithmID, problemID, instanceIDs, timeoutS, tag);
+  protected MetaHeuristicExperiment(String algorithmID, String problemID,
+      List<String> instanceIDs, int numRuns, int timeoutS, String tag) throws Exception {
+    super("MetaHeuristic", algorithmID, problemID, instanceIDs, timeoutS, tag);
     this.numRuns = numRuns;
     this.bestScore = 0.0;
 

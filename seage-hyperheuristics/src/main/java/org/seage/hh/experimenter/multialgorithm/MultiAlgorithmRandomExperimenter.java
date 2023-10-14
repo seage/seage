@@ -23,16 +23,13 @@ public class MultiAlgorithmRandomExperimenter extends Experiment {
   protected int numRuns;
   private double bestScore;
 
-  protected MultiAlgorithmRandomExperimenter(
-      String algorithmID, String problemID,
-      List<String> instanceIDs, List<String> algorithmIDs, int numRuns, int timeoutS,
-      String tag
-  ) throws Exception {
-    super(algorithmID, problemID, instanceIDs, timeoutS, tag);
+  protected MultiAlgorithmRandomExperimenter(String algorithmID,
+      String problemID, List<String> instanceIDs, List<String> algorithmIDs, int numRuns,
+      int timeoutS, String tag) throws Exception {
+    super("MultiAlgorithmRandom", algorithmID, problemID, instanceIDs, timeoutS, tag);
     this.algorithmIDs = algorithmIDs;
     this.numRuns = numRuns;
     this.timeoutS = timeoutS;
-    this.experimentName = "SingleAlgorithm";
     this.bestScore = 0.0;
   }
 

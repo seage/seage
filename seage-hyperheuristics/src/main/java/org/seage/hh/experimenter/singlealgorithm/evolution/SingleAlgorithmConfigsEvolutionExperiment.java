@@ -75,14 +75,12 @@ public class SingleAlgorithmConfigsEvolutionExperiment extends Experiment implem
       int algorithmTimeoutS,
       String tag
   ) throws Exception {
-    super(algorithmID, problemID, instanceIDs, algorithmTimeoutS, tag);
+    super("SingleAlgorithmConfigsEvolution", algorithmID, problemID, instanceIDs, algorithmTimeoutS, tag);
     
     this.numSubjects = numSubjects;
     this.numGenerations = numGenerations;
     this.algorithmTimeoutS = algorithmTimeoutS;
     this.instanceScores = new HashMap<>();
-
-    this.experimentName = "SingleAlgorithmEvolution";
     
     // Initialize
     this.feedbackConfigurator = new FeedbackConfigurator(0.0);

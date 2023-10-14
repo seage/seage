@@ -14,25 +14,10 @@ public class SingleAlgorithmRandomExperiment extends SingleAlgorithmExperiment {
    * @param timeoutS .
    * @throws Exception .
    */
-  public SingleAlgorithmRandomExperiment(
-      String algorithmID,
-      String problemID, 
-      List<String> instanceIDs,
-      int numRuns,
-      int timeoutS,
-      String tag
-  )
-      throws Exception {
-    super(
-        algorithmID,
-        problemID,
-        instanceIDs,
-        numRuns,
-        timeoutS,
-        tag
-    );
+  public SingleAlgorithmRandomExperiment(String algorithmID, String problemID,
+      List<String> instanceIDs, int numRuns, int timeoutS, String tag) throws Exception {
+    super("SingleAlgorithmRandom", algorithmID, problemID, instanceIDs, numRuns, timeoutS, tag);
     
-    experimentName = "SingleAlgorithmRandom";
     configurator = new RandomConfigurator();
   }
   

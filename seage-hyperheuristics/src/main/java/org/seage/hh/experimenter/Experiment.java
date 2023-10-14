@@ -31,6 +31,7 @@ public abstract class Experiment {
   /**
    * Experimenter constructor.
    *
+   * @param experimentName Experiment Name.
    * @param algorithmID Algorithm ID.
    * @param problemID Problem ID
    * @param instanceIDs List of problem instances
@@ -38,9 +39,10 @@ public abstract class Experiment {
    *
    * @throws Exception Exception
    */
-  protected Experiment(String algorithmID, String problemID, List<String> instanceIDs, int timeoutS,
+  protected Experiment(String experimentName, String algorithmID, String problemID, List<String> instanceIDs, int timeoutS,
       String tag) throws Exception {
     this.experimentID = UUID.randomUUID();
+    this.experimentName = experimentName;
     this.algorithmID = algorithmID;
     this.problemID = problemID;
     this.instanceIDs = instanceIDs;

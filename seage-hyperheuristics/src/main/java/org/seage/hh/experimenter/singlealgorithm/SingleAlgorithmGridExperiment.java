@@ -15,24 +15,11 @@ public class SingleAlgorithmGridExperiment extends SingleAlgorithmExperiment {
    * @param granularity .
    * @throws Exception .
    */
-  public SingleAlgorithmGridExperiment(
-      String algorithmID,
-      String problemID, 
-      List<String> instanceIDs,
-      int numRuns,
-      int timeoutS,
-      int granularity, String tag)
+  public SingleAlgorithmGridExperiment(String algorithmID, String problemID,
+      List<String> instanceIDs, int numRuns, int timeoutS, int granularity, String tag)
       throws Exception {
-    super(
-        algorithmID,
-        problemID,
-        instanceIDs,
-        numRuns,
-        timeoutS,
-        tag
-    );
+    super("SingleAlgorithmGrid", algorithmID, problemID, instanceIDs, numRuns, timeoutS, tag);
     
-    experimentName = "SingleAlgorithmGrid";
     configurator = new GridConfigurator(granularity);
   }
   

@@ -20,25 +20,11 @@ public class SingleAlgorithmFeedbackExperiment extends SingleAlgorithmExperiment
    * @param spread .
    * @throws Exception .
    */
-  public SingleAlgorithmFeedbackExperiment(
-      String algorithmID, 
-      String problemID, 
-      List<String> instanceIDs,      
-      int numRuns,
-      int timeoutS,
-      double spread,
-      String tag
-  ) throws Exception {
-    super(
-        algorithmID,
-        problemID,
-        instanceIDs,
-        numRuns,
-        timeoutS,
-        tag
-    );
+  public SingleAlgorithmFeedbackExperiment(String algorithmID, String problemID,
+      List<String> instanceIDs, int numRuns, int timeoutS, double spread, String tag)
+      throws Exception {
+    super("SingleAlgorithmFeedback", algorithmID, problemID, instanceIDs, numRuns, timeoutS, tag);
 
-    experimentName = "SingleAlgorithmFeedback";
     configurator = new FeedbackConfigurator(spread);
   }
 

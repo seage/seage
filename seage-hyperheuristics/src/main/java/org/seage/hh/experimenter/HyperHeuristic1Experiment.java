@@ -48,11 +48,9 @@ public class HyperHeuristic1Experiment extends Experiment {
   /**
    * HyperHeuristic1Experimenter constructor.
    */
-  protected HyperHeuristic1Experiment(
-      String algorithmID, String problemID, List<String> instanceIDs,
-      int numSteps, int timeoutS, String tag) 
-      throws Exception {
-    super(algorithmID, problemID, instanceIDs, timeoutS, tag);
+  protected HyperHeuristic1Experiment(String algorithmID, String problemID,
+      List<String> instanceIDs, int numSteps, int timeoutS, String tag) throws Exception {
+    super("HyperHeuristic1", algorithmID, problemID, instanceIDs, timeoutS, tag);
     this.numSteps = numSteps;
     this.timeoutS = timeoutS;
     this.bestScore = Double.MIN_VALUE;

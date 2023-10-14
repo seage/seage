@@ -16,26 +16,11 @@ public class SingleAlgorithmDefaultExperiment extends SingleAlgorithmExperiment 
    * @param tag .
    * @throws Exception .
    */
-  public SingleAlgorithmDefaultExperiment(
-      String algorithmID,
-      String problemID,
-      List<String> instanceIDs, 
-      int numRuns,
-      int timeoutS,
-      double spread,
-      String tag
-  )
+  public SingleAlgorithmDefaultExperiment(String algorithmID, String problemID,
+      List<String> instanceIDs, int numRuns, int timeoutS, double spread, String tag)
       throws Exception {
-    super(        
-        algorithmID,
-        problemID,
-        instanceIDs,
-        numRuns,
-        timeoutS,
-        tag
-    );
+    super("SingleAlgorithmDefault", algorithmID, problemID, instanceIDs, numRuns, timeoutS, tag);
 
-    experimentName = "SingleAlgorithmDefault";
     configurator = new DefaultConfigurator(spread);
   }
   

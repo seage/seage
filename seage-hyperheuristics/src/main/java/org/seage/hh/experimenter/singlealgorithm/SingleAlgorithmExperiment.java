@@ -35,14 +35,11 @@ public abstract class SingleAlgorithmExperiment extends Experiment {
   /**
    * SingleAlgorithmExperiment constructor - nothing special.
    */
-  protected SingleAlgorithmExperiment(
-      String algorithmID, String problemID, 
-      List<String> instanceIDs, int numRuns, int timeoutS, String tag
-  ) throws Exception {
-    super(algorithmID, problemID, instanceIDs, timeoutS, tag);
+  protected SingleAlgorithmExperiment(String experimentName, String algorithmID, String problemID,
+      List<String> instanceIDs, int numRuns, int timeoutS, String tag) throws Exception {
+    super(experimentName, algorithmID, problemID, instanceIDs, timeoutS, tag);
     this.numRuns = numRuns;
     this.experimentTasksRunner = new LocalExperimentTasksRunner();
-    experimentName = "SingleAlgorithm";
     bestScore = 0.0;
 
     // Initialize
