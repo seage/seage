@@ -32,10 +32,6 @@ public class ExperimentSingleEvolutionCommand extends Command {
 
   @Override
   public void performCommand() throws Exception {
-    // new SingleAlgorithmEvolutionExperiment(
-    // problemID, instances.toArray(new String[]{}),
-    // algorithms.toArray(new String[]{}), numOfSubjects, numOfIterations, algorithmTimeoutS )
-    // .runExperiment();
     Map<String, List<String>> problemInstanceParams =
         ProblemInstanceParamsParser.parseProblemInstanceParams(instances);
 
