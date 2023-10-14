@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FspScheduleProvider {
-  private static Logger logger = LoggerFactory.getLogger(FspScheduleProvider.class.getName());
+  private static Logger log = LoggerFactory.getLogger(FspScheduleProvider.class.getName());
 
   static Random rnd = new Random();
 
@@ -216,9 +216,9 @@ public class FspScheduleProvider {
         JspPhenotype ph2 = FspScheduleProvider.createGreedySchedule(evaluator, jobs);
         double val2 = ph2.getObjValue();
 
-        logger.debug("{} - {} - ", jobInfo.getInstanceID(), val2);
+        log.debug("{} - {} - ", jobInfo.getInstanceID(), val2);
       } catch (Exception ex) {
-        logger.error(String.format("Error instance %s", jobInfo.getInstanceID()), ex);
+        log.error(String.format("Error instance %s", jobInfo.getInstanceID()), ex);
       }
     }
   }

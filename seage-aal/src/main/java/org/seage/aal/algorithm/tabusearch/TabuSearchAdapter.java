@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
 public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Solution> 
     extends AlgorithmAdapterImpl<P, S> {
   
-  private static Logger logger = LoggerFactory.getLogger(TabuSearchAdapter.class.getName());
+  private static Logger log = LoggerFactory.getLogger(TabuSearchAdapter.class.getName());
   
   private TabuSearch tabuSearch;
   private TabuSearchObserver observer;
@@ -90,7 +90,7 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
     reporter.putParameters(params);
 
     if (this.solutions.length > 1) {
-      logger.warn("More than one solutions to solve, used just the first one.");
+      log.warn("More than one solutions to solve, used just the first one.");
     }
 
     statNumNewSol = 0;
@@ -147,14 +147,14 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
     public void tabuSearchStarted(TabuSearchEvent e) {
       algorithmStarted = true;
       statLastIterNewSol = 0;
-      logger.debug("TabuSearch started");
+      log.debug("TabuSearch started");
     }
 
     @Override
     public void tabuSearchStopped(TabuSearchEvent e) {
       algorithmStopped = true;
       statEndObjVal = bestEverSolution.getObjectiveValue()[0];
-      logger.debug("TabuSearch stopped");
+      log.debug("TabuSearch stopped");
     }
 
     @Override
@@ -178,7 +178,7 @@ public abstract class TabuSearchAdapter<P extends Phenotype<?>, S extends Soluti
             e.getTabuSearch().getIterationsCompleted(),
             solutionToPhenotype(newBest));
       } catch (Exception ex) {
-        logger.error("Failed to report new best solution", ex);
+        log.error("Failed to report new best solution", ex);
       }
 
     }

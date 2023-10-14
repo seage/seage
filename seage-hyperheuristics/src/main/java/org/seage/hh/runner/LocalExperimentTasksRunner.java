@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LocalExperimentTasksRunner implements IExperimentTasksRunner {
-  private static Logger logger = LoggerFactory.getLogger(
+  private static Logger log = LoggerFactory.getLogger(
       LocalExperimentTasksRunner.class.getName());
 
   @Override
@@ -21,7 +21,7 @@ public class LocalExperimentTasksRunner implements IExperimentTasksRunner {
         task.run();
         reportFn.apply(task);
       } catch (Exception e) {
-        logger.error("Experiment task execution failed!", e);
+        log.error("Experiment task execution failed!", e);
       }
     });
 

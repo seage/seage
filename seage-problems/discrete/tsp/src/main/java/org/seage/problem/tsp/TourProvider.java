@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * @author Richard Malek
  */
 public class TourProvider {
-  private static Logger logger = LoggerFactory.getLogger(TourProvider.class.getName());
+  private static Logger log = LoggerFactory.getLogger(TourProvider.class.getName());
   private static Random random = new Random(); // sonar fix
 
   /**. */
@@ -57,7 +57,7 @@ public class TourProvider {
     tour[0] = rand.nextInt(cities.length) + 1;
     avail[tour[0] - 1] = false;
     for (int i = 1; i < tour.length; i++) {
-      // if (i%10000 == 0) logger.info(i);
+      // if (i%10000 == 0) log.info(i);
       int minDistId = -1;
       double minDist = Double.MAX_VALUE;
       for (int j = 0; j < avail.length; j++) {
@@ -137,31 +137,31 @@ public class TourProvider {
         throw new Exception("Usage: java org.seage.problem.tsp.TourProvider {data-tsp-path}");
       }
       File path = new File(args[0]);
-      logger.info("Instance path: " + path.getPath());
+      log.info("Instance path: " + path.getPath());
             
       long t0 = System.currentTimeMillis();
       City[] cities = CityProvider.readCities(new FileInputStream(args[0]));
-      logger.info("Cities: " + cities.length);
-      logger.info("Read: " + (System.currentTimeMillis() - t0) + " ms");
+      log.info("Cities: " + cities.length);
+      log.info("Read: " + (System.currentTimeMillis() - t0) + " ms");
 
       t0 = System.currentTimeMillis();
       Integer[] tour = createGreedyTour(cities, System.currentTimeMillis());
       // Integer[] tour = createRandomTour(cities.length);
       // Integer[] tour = createSortedTour(cities.length);
-      logger.info("Creation: " + (System.currentTimeMillis() - t0) / 1000 + " s");
+      log.info("Creation: " + (System.currentTimeMillis() - t0) / 1000 + " s");
 
       t0 = System.currentTimeMillis();
       double tourLenght = getTourLenght(tour, cities);
-      logger.info("Evaluation: " + (System.currentTimeMillis() - t0) + " ms");
-      logger.info("Tour lenght: " + tourLenght);
+      log.info("Evaluation: " + (System.currentTimeMillis() - t0) + " ms");
+      log.info("Tour lenght: " + tourLenght);
 
       t0 = System.currentTimeMillis();
       String imgPath = "output/" + path.getName() + "_" + System.currentTimeMillis() + ".png";
       TspVisualizer.createTourImage(cities, tour, imgPath, 1100, 1100);
-      logger.info("Visualization: " + (System.currentTimeMillis() - t0) + " ms");
+      log.info("Visualization: " + (System.currentTimeMillis() - t0) + " ms");
       
     } catch (Exception ex) {
-      logger.error("TspProvider failed", ex);
+      log.error("TspProvider failed", ex);
     }
   }
 }

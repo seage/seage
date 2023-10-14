@@ -34,7 +34,7 @@ public class Launcher {
   @Parameter(names = "--help", help = true)
   private boolean help;
 
-  private static final Logger logger = LoggerFactory.getLogger(Launcher.class.getName());
+  private static final Logger log = LoggerFactory.getLogger(Launcher.class.getName());
   private static final HashMap<String, Command> commands = new LinkedHashMap<>();
 
   static {
@@ -74,19 +74,19 @@ public class Launcher {
         launcher.run(command);
       }
     } catch (Exception ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
     }
   }
 
   private void run(Command cmd) throws Exception {
-    logger.info("SEAGE {} - https://www.seage.org", SeageVersion.VERSION);
-    logger.info("");
+    log.info("SEAGE {} - https://www.seage.org", SeageVersion.VERSION);
+    log.info("");
     DbManager.init();
-    logger.info("");
-    logger.info("SEAGE running ...");
-    logger.info("");
+    log.info("");
+    log.info("SEAGE running ...");
+    log.info("");
     cmd.performCommand();
-    logger.info("SEAGE finished");
+    log.info("SEAGE finished");
   }
 
   private static Command processArgs(String[] args, JCommander jc, Launcher launcher) {
@@ -113,8 +113,8 @@ public class Launcher {
         return null;
       }
     } catch (ParameterException ex) {
-      logger.error(ex.getMessage());
-      logger.error("Try to use --help");
+      log.error(ex.getMessage());
+      log.error("Try to use --help");
       return null;
     }
     return command;

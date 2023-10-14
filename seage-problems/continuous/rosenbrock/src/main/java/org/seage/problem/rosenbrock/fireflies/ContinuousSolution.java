@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  * @author Administrator
  */
 public class ContinuousSolution extends SolutionAdapter {
-  private static final Logger logger = 
+  private static final Logger log = 
       LoggerFactory.getLogger(ContinuousSolution.class.getName());
 
   protected Double[] assign;
@@ -75,7 +75,7 @@ public class ContinuousSolution extends SolutionAdapter {
       copy.assign = this.assign.clone();
       return copy;
     } catch (Exception ex) {
-      logger.error("{}", ex.getMessage());
+      log.error("{}", ex.getMessage());
       return new ContinuousSolution();
     }
   }   // end clone

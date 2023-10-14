@@ -24,7 +24,7 @@ public class DbManager {
     HSQLDB, POSTGRES
   }
 
-  private static Logger logger = LoggerFactory.getLogger(DbManager.class.getName());
+  private static Logger log = LoggerFactory.getLogger(DbManager.class.getName());
 
   private static SqlSessionFactory sqlSessionFactory;
 
@@ -77,7 +77,7 @@ public class DbManager {
           sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
         DatabaseMetaData dbMetadata = conn.getMetaData();
         dbUrl = dbMetadata.getURL();
-        logger.info("DB_URL: {}", dbUrl);
+        log.info("DB_URL: {}", dbUrl);
       }
 
       if (testMode) {

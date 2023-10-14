@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * @author Richard Malek
  */
 public class TspVisualizer {
-  protected static Logger logger = LoggerFactory.getLogger(TspVisualizer.class.getName());
+  protected static Logger log = LoggerFactory.getLogger(TspVisualizer.class.getName());
 
   private static final int pointWidth = 2;
   private static final int pointHeight = 2;
@@ -118,7 +118,7 @@ public class TspVisualizer {
       ImageIO.write(image, "png", out);
       out.close();
     } catch (Exception ex) {
-      logger.error("TspVisualizer failed", ex);
+      log.error("TspVisualizer failed", ex);
     }
   }
 

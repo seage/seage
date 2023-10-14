@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * @author Martin Zaloga
  */
 public class AntColony {
-  private static final Logger logger = LoggerFactory.getLogger(AntColony.class.getName());
+  private static final Logger log = LoggerFactory.getLogger(AntColony.class.getName());
   private AlgorithmEventProducer<IAlgorithmListener<AntColonyEvent>, AntColonyEvent> eventProducer;
   private double roundBest;
   private double globalBest;
@@ -166,7 +166,7 @@ public class AntColony {
           eventProducer.fireNewBestSolutionFound();
         }
       } catch (Exception e) {
-        logger.warn("Unable to do a first exploration", e);
+        log.warn("Unable to do a first exploration", e);
       }
     }
   }

@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 public class SingleAlgorithmConfigsEvolutionExperiment extends Experiment implements
       IAlgorithmListener<GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject>> {
 
-  private static Logger logger =
+  private static Logger log =
       LoggerFactory.getLogger(SingleAlgorithmConfigsEvolutionExperiment.class.getName());
 
   private FeedbackConfigurator feedbackConfigurator;
@@ -114,7 +114,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment extends Experiment implem
     configIDs.sort((c1, c2) -> Double.compare(
         configScores.get(c2), configScores.get(c1)));
     for (String configID : configIDs) {
-      logger.info(" - {}  {}", 
+      log.info(" - {}  {}", 
           configID, String.format("%.4f", configScores.get(configID)));
     }
     // Print the best score
@@ -128,7 +128,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment extends Experiment implem
         throw new IllegalArgumentException("Unknown algorithm: " + algorithmID);
       }
 
-      logger.info("Algorithm: {}", algorithmID);
+      log.info("Algorithm: {}", algorithmID);
 
       ContinuousGeneticOperator.Limit[] limits = 
           prepareAlgorithmParametersLimits(algorithmID, problemInfo);
@@ -163,10 +163,10 @@ public class SingleAlgorithmConfigsEvolutionExperiment extends Experiment implem
         configs.addAll(initializeRandomConfigs(
             problemInfo, instanceIDs, algorithmID, numSubjects - configs.size()));
       }
-      logger.info("Prepared {} initial configs", configs.size());
+      log.info("Prepared {} initial configs", configs.size());
       
       for (var s : configs) {
-        logger.info(" - {}", s.getAlgorithmParams().hash());
+        log.info(" - {}", s.getAlgorithmParams().hash());
       }
       ga.startSearching(configs);
 
@@ -174,7 +174,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment extends Experiment implem
       return ga.getSubjects();
 
     } catch (Exception ex) {
-      logger.warn(ex.getMessage(), ex);
+      log.warn(ex.getMessage(), ex);
     }
     return List.of();
   }
@@ -182,7 +182,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment extends Experiment implem
   private void runAlgorithmConfigsValidation(List<SingleAlgorithmConfigsEvolutionSubject> configs)
       throws Exception {
     // RUN EXPERIMENT VALIDATION
-    logger.info("Started config validation");
+    log.info("Started config validation");
 
     for (String instanceID : instanceIDs) { 
       List<ExperimentTaskRequest> taskQueue = new ArrayList<>();
@@ -202,7 +202,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment extends Experiment implem
             null, 
             numGenerations * algorithmTimeoutS));
       }
-      logger.info("Evaluating {} configs for instance {}", taskQueue.size(), instanceID);
+      log.info("Evaluating {} configs for instance {}", taskQueue.size(), instanceID);
 
       new LocalExperimentTasksRunner().performExperimentTasks(
           taskQueue, this::reportValidationExperimentTask);
@@ -215,7 +215,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment extends Experiment implem
       String instanceID = experimentTask.getInstanceID();
       Double score = experimentTask.getScore();
 
-      //logger.info("-- {} - {} - {}", configID, instanceID, score);
+      //log.info("-- {} - {} - {}", configID, instanceID, score);
       experimentReporter.reportExperimentTask(experimentTask);
 
       // Log the instance score
@@ -224,7 +224,7 @@ public class SingleAlgorithmConfigsEvolutionExperiment extends Experiment implem
       instanceScores.get(configID).put(instanceID, 
           Math.max(score, instanceScores.get(configID).get(instanceID)));
     } catch (Exception e) {
-      logger.error(String.format("Failed to report the experiment task: %s", 
+      log.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
     }
     return null;
@@ -341,23 +341,23 @@ public class SingleAlgorithmConfigsEvolutionExperiment extends Experiment implem
 
   @Override
   public void algorithmStarted(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject> e) {
-    logger.info("Started configs evolution");
+    log.info("Started configs evolution");
   }
 
   @Override
   public void algorithmStopped(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject> e) {
-    logger.info("Finished config evolution");
+    log.info("Finished config evolution");
   }
 
   @Override
   public void newBestSolutionFound(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject> e) {
     // update the best - or not
-    logger.debug("Objective value {}", e.getGeneticSearch().getBestSubject().getObjectiveValue());
+    log.debug("Objective value {}", e.getGeneticSearch().getBestSubject().getObjectiveValue());
   }
 
   @Override
   public void iterationPerformed(GeneticAlgorithmEvent<SingleAlgorithmConfigsEvolutionSubject> e) {
-    logger.info("Config generation done: \t ({}/{})", e.getGeneticSearch().getCurrentIteration(),
+    log.info("Config generation done: \t ({}/{})", e.getGeneticSearch().getCurrentIteration(),
         e.getGeneticSearch().getIterationToGo());
   }
 

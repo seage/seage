@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
 @Annotations.ProblemId("JSP")
 @Annotations.ProblemName("Job Shop Scheduling Problem")
 public class JspProblemProvider extends ProblemProvider<JspPhenotype> {
-  private static Logger logger = LoggerFactory.getLogger(JspProblemProvider.class.getName());
+  private static Logger log = LoggerFactory.getLogger(JspProblemProvider.class.getName());
 
   @Override
   public JspJobsDefinition initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception {
@@ -64,7 +64,7 @@ public class JspProblemProvider extends ProblemProvider<JspPhenotype> {
     try (InputStream stream = stream0) {
       jobsDefinition = new JspJobsDefinition(instanceInfo, stream);   
     } catch (Exception ex) {
-      logger.error("SatProblemProvider.initProblemInstance - readCities failed, path: {}", path);
+      log.error("SatProblemProvider.initProblemInstance - readCities failed, path: {}", path);
       throw ex;
     }
 

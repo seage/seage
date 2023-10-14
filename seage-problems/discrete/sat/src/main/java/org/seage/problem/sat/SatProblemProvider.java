@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
 @Annotations.ProblemId("SAT")
 @Annotations.ProblemName("Boolean Satisfiability Problem")
 public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
-  private static Logger logger = LoggerFactory.getLogger(SatProblemProvider.class.getName());
+  private static Logger log = LoggerFactory.getLogger(SatProblemProvider.class.getName());
 
   @Override
   public Formula initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception {
@@ -63,7 +63,7 @@ public class SatProblemProvider extends ProblemProvider<SatPhenotype> {
     try (InputStream stream = stream0) {
       formula = new Formula(instanceInfo, FormulaReader.readClauses(stream0));
     } catch (Exception ex) {
-      logger.error("SatProblemProvider.initProblemInstance - readCities failed, path: " + path);
+      log.error("SatProblemProvider.initProblemInstance - readCities failed, path: " + path);
       throw ex;
     }
 

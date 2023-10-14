@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 @Annotations.AlgorithmId("AntColony")
 @Annotations.AlgorithmName("AntColony")
 public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant> {
-  private static Logger logger = LoggerFactory.getLogger(SatAntColonyFactory.class.getName());
+  private static Logger log = LoggerFactory.getLogger(SatAntColonyFactory.class.getName());
 
   @Override
   public Class<?> getAlgorithmClass() {
@@ -39,7 +39,7 @@ public class SatAntColonyFactory implements IAlgorithmFactory<SatPhenotype, Ant>
 
       @Override
       public void solutionsFromPhenotype(SatPhenotype[] source) throws Exception {
-        logger.debug("Solution from phenotype");
+        log.debug("Solution from phenotype");
         ants = new Ant[source.length];
         for (int i = 0; i < ants.length; i++) {
           ArrayList<Integer> nodes = new ArrayList<>();

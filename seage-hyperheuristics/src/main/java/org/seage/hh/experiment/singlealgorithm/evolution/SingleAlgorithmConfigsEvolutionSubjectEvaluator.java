@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SingleAlgorithmConfigsEvolutionSubjectEvaluator
     extends SubjectEvaluator<SingleAlgorithmConfigsEvolutionSubject> {
-  private static Logger logger =
+  private static Logger log =
       LoggerFactory.getLogger(SingleAlgorithmConfigsEvolutionSubjectEvaluator.class.getName());
   private UUID experimentId;
   private String problemID;
@@ -73,7 +73,7 @@ public class SingleAlgorithmConfigsEvolutionSubjectEvaluator
       List<ExperimentTaskRequest> taskRequests =
           createTaskList(instanceID, subjects, subjectsObjValues);
 
-      logger.info("Evaluating {} configs for instance {}", taskRequests.size(), instanceID);
+      log.info("Evaluating {} configs for instance {}", taskRequests.size(), instanceID);
       // Run tasks
       new LocalExperimentTasksRunner().performExperimentTasks(taskRequests,
           this::reportExperimentTask);
@@ -85,7 +85,7 @@ public class SingleAlgorithmConfigsEvolutionSubjectEvaluator
 
     setObjValToSubjects(subjects, scores, weightedRanks);
 
-    logger.info("Configs:");
+    log.info("Configs:");
     // Sort the configs by the score
     subjects.sort((s1, s2) -> Double.compare(
         s1.getObjectiveValue()[0], s2.getObjectiveValue()[0]));
@@ -94,7 +94,7 @@ public class SingleAlgorithmConfigsEvolutionSubjectEvaluator
       double score = -s.getObjectiveValue()[0];
       double objVal = s.getObjectiveValue()[1];
 
-      logger.info(" - {}  {}  {}", 
+      log.info(" - {}  {}  {}", 
           configId, String.format("%.4f", score), String.format("%7.4f", objVal));
     }
   }
@@ -122,7 +122,7 @@ public class SingleAlgorithmConfigsEvolutionSubjectEvaluator
           experimentTask.getObjValue());
 
     } catch (Exception e) {
-      logger.error(String.format("Failed to report the experiment task: %s",
+      log.error(String.format("Failed to report the experiment task: %s",
           experimentTask.getExperimentTaskID().toString()), e);
     }
     return null;

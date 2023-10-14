@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class MetaHeuristicExperiment extends Experiment {
-  private static Logger logger = LoggerFactory.getLogger(MetaHeuristicExperiment.class.getName());
+  private static Logger log = LoggerFactory.getLogger(MetaHeuristicExperiment.class.getName());
   private DefaultConfigurator defaultConfigurator;
   private FeedbackConfigurator feedbackConfigurator;
   private GridConfigurator gridConfigurator;
@@ -94,7 +94,7 @@ public class MetaHeuristicExperiment extends Experiment {
         this.bestScore = taskScore;
       }
     } catch (Exception e) {
-      logger.error(String.format("Failed to report the experiment task: %s",
+      log.error(String.format("Failed to report the experiment task: %s",
           experimentTask.getExperimentTaskID().toString()), e);
     }
     return null;

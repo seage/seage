@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TabuSearch extends TabuSearchBase {
 
-  private static Logger logger = LoggerFactory.getLogger(TabuSearch.class.getName());
+  private static Logger log = LoggerFactory.getLogger(TabuSearch.class.getName());
   /**
    * .
    */
@@ -532,7 +532,7 @@ public class TabuSearch extends TabuSearchBase {
    * @since 1.0
    */
   protected synchronized void setSolving(boolean solving) {
-    logger.debug("Solving set to: {}", solving);
+    log.debug("Solving set to: {}", solving);
     this.solving = solving;
   } // end setSolving
 
@@ -544,7 +544,7 @@ public class TabuSearch extends TabuSearchBase {
    * @since 1.0
    */
   protected void setKeepSolving(boolean keepSolving) {
-    logger.debug("Set keep solving to: {}", keepSolving);
+    log.debug("Set keep solving to: {}", keepSolving);
     this.keepSolving = keepSolving;
   } // end setKeepSolving
 
@@ -708,7 +708,7 @@ public class TabuSearch extends TabuSearchBase {
       try {
         performOneIteration();
       } catch (NoMovesGeneratedException | NoCurrentSolutionException ex) {
-        logger.error(ex.getMessage());        
+        log.error(ex.getMessage());        
       }
       incrementIterationsCompleted();      
 

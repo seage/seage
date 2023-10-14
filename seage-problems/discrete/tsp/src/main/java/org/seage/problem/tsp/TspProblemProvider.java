@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
 @Annotations.ProblemId("TSP")
 @Annotations.ProblemName("Travelling Salesman Problem")
 public class TspProblemProvider extends ProblemProvider<TspPhenotype> {
-  private static Logger logger = LoggerFactory.getLogger(TspProblemProvider.class.getName());
+  private static Logger log = LoggerFactory.getLogger(TspProblemProvider.class.getName());
 
   @Override
   public TspProblemInstance initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception {
@@ -67,7 +67,7 @@ public class TspProblemProvider extends ProblemProvider<TspPhenotype> {
     try (InputStream stream = stream0) {
       cities = CityProvider.readCities(stream);
     } catch (Exception ex) {
-      logger.error("TSP ReadCities failed, path: {}", path);
+      log.error("TSP ReadCities failed, path: {}", path);
       throw ex;
     }
 

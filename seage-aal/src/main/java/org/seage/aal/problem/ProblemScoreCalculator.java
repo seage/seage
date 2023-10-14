@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class ProblemScoreCalculator {
-  private static Logger logger = LoggerFactory.getLogger(ProblemScoreCalculator.class.getName());
+  private static Logger log = LoggerFactory.getLogger(ProblemScoreCalculator.class.getName());
 
   private ProblemInfo problemInfo;
 

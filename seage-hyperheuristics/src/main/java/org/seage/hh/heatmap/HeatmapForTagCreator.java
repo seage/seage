@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HeatmapForTagCreator {
-  private static final Logger logger = LoggerFactory.getLogger(HeatmapForTagCreator.class);
+  private static final Logger log = LoggerFactory.getLogger(HeatmapForTagCreator.class);
 
   private HeatmapForTagCreator() {
     // Empty constructor
@@ -76,7 +76,7 @@ public class HeatmapForTagCreator {
         : experimentTag;
     String filePath = "./output" + "/" + filePrexix + "-heatmap.svg";
     try (FileWriter fileWriter = new FileWriter(filePath)) {
-      logger.info("Storing heatmap svg into file: {}", filePath);
+      log.info("Storing heatmap svg into file: {}", filePath);
       fileWriter.write(heatmap);
     }
   }

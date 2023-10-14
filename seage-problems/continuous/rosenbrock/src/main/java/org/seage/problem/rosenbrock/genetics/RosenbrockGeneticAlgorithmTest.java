@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
  * Rosenbrock genetic algorithm test.
  */
 public class RosenbrockGeneticAlgorithmTest implements IAlgorithmListener<GeneticAlgorithmEvent<Subject<Double>>> {
-  private static final Logger logger = 
+  private static final Logger log = 
       LoggerFactory.getLogger(RosenbrockGeneticAlgorithmTest.class.getName());
   
   public static void main(String[] args) throws Exception {
@@ -95,7 +95,7 @@ public class RosenbrockGeneticAlgorithmTest implements IAlgorithmListener<Geneti
       System.out.println();
     } catch (Exception ex) {
       // TODO Auto-generated catch block
-      logger.error("{}", ex.getMessage(), ex);
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 

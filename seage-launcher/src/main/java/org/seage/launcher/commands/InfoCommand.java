@@ -18,11 +18,11 @@ import org.slf4j.LoggerFactory;
 
 @Parameters(commandDescription = "Show table of implemented problems and algorithms")
 public class InfoCommand extends Command {
-  private static final Logger logger = LoggerFactory.getLogger(InfoCommand.class.getName());
+  private static final Logger log = LoggerFactory.getLogger(InfoCommand.class.getName());
 
   @Override
   public void performCommand() throws Exception {
-    logger.info("Implemented problems and algorithms");
+    log.info("Implemented problems and algorithms");
 
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
     List<String> problemList = new ArrayList<>(providers.keySet());
@@ -48,7 +48,7 @@ public class InfoCommand extends Command {
           algList.add(problemId);
         }
       } catch (Exception ex) {
-        logger.warn("Reading the problem provider info failed: {}", providerEntry.getKey(), ex);
+        log.warn("Reading the problem provider info failed: {}", providerEntry.getKey(), ex);
       }
     }    
     
@@ -61,9 +61,9 @@ public class InfoCommand extends Command {
     }
     problemLineDashes = problemLine.replaceAll("[A-Z]| ", "-");
 
-    logger.info("-------------------   {}", problemLineDashes);
-    logger.info("Algorithm / Problem   {}", problemLine);
-    logger.info("-------------------   {}", problemLineDashes);
+    log.info("-------------------   {}", problemLineDashes);
+    log.info("Algorithm / Problem   {}", problemLine);
+    log.info("-------------------   {}", problemLineDashes);
     
     List<String> algList = new ArrayList<>(algMap.keySet());
     Collections.sort(algList);
@@ -78,8 +78,8 @@ public class InfoCommand extends Command {
           line += " -  ";
         }
       }
-      logger.info(line);      
+      log.info(line);      
     }
-    logger.info("-------------------   {}", problemLineDashes);
+    log.info("-------------------   {}", problemLineDashes);
   }
 }

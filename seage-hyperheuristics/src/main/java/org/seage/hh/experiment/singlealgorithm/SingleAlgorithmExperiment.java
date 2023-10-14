@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * Experimenter running producing random configs according to the metadata.
  */
 public abstract class SingleAlgorithmExperiment extends Experiment {
-  private static Logger logger =
+  private static Logger log =
       LoggerFactory.getLogger(SingleAlgorithmExperiment.class.getName());
   protected Configurator configurator;
 
@@ -82,14 +82,14 @@ public abstract class SingleAlgorithmExperiment extends Experiment {
 
   protected Void reportExperimentTask(ExperimentTaskRecord experimentTask) {
     try {
-      logger.debug("Report for config id: {}", experimentTask.getConfigID());
+      log.debug("Report for config id: {}", experimentTask.getConfigID());
       ExperimentReporter.reportExperimentTask(experimentTask);
       double taskScore = experimentTask.getScore();
       if (taskScore > bestScore) {
         bestScore = taskScore;
       }
     } catch (Exception e) {
-      logger.error(String.format("Failed to report the experiment task: %s", 
+      log.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
     }
     return null;

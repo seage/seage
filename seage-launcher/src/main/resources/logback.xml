@@ -19,9 +19,9 @@
     </encoder>
   </appender>
 
-  <!-- additivity="false": false prevents the logger from inheriting from parents. --> 
-  <logger name="org.seage" level="${LOG_LEVEL}"/>
-  <logger name="org.flywaydb" level="WARN"/>
+  <!-- additivity="false": false prevents the log from inheriting from parents. --> 
+  <log name="org.seage" level="${LOG_LEVEL}"/>
+  <log name="org.flywaydb" level="WARN"/>
 
   <root level="INFO">
     <appender-ref ref="FILE" />
