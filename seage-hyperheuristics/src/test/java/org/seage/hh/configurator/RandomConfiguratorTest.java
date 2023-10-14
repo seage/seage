@@ -1,4 +1,4 @@
-package org.seage.hh.experiment.configurator;
+package org.seage.hh.configurator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
