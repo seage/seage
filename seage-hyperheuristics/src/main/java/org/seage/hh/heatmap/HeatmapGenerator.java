@@ -6,7 +6,6 @@
 
 package org.seage.hh.heatmap;
 
-import org.seage.hh.experimenter.ExperimentScoreCard;
 import com.hubspot.jinjava.Jinjava;
 
 import java.awt.Color;
@@ -45,7 +44,7 @@ public class HeatmapGenerator {
    * Class represents the structure of json data
    */
   public static class ExperimentScoreCards {
-    public List<ExperimentScoreCard> results;
+    public List<ScoreCard> results;
 
     public ExperimentScoreCards() {
       this.results = new ArrayList<>();
@@ -233,7 +232,7 @@ public class HeatmapGenerator {
     }
   }
 
-  protected static AlgorithmResult getAlgorithmResult (ExperimentScoreCard scoreCard, Map<String, String> algAuthors) {
+  protected static AlgorithmResult getAlgorithmResult (ScoreCard scoreCard, Map<String, String> algAuthors) {
       AlgorithmResult result = new AlgorithmResult();
 
       // Store the result informations
@@ -269,7 +268,7 @@ public class HeatmapGenerator {
         return result;
   }
 
-  protected static List<ExperimentScoreCard> loadJson(
+  protected static List<ScoreCard> loadJson(
       String jsonString) {
     // Read the json string
     Gson gson = new Gson();
@@ -280,9 +279,9 @@ public class HeatmapGenerator {
   }
 
   protected static List<AlgorithmResult> loadExperimentScoreCards(
-      List<ExperimentScoreCard> expScoreCards, Map<String, String> algAuthors) {
+      List<ScoreCard> expScoreCards, Map<String, String> algAuthors) {
     List<AlgorithmResult> results = new ArrayList<>();
-    for ( ExperimentScoreCard expScoreCard : expScoreCards) {
+    for ( ScoreCard expScoreCard : expScoreCards) {
       // Get json result data
       results.add(getAlgorithmResult(expScoreCard, algAuthors));
     }
@@ -401,7 +400,7 @@ public class HeatmapGenerator {
    * @param algAuthors map of algorithm's authors
    */
   public static String createHeatmap(
-      List<ExperimentScoreCard> table, String experimentTag, Map<String, String> algAuthors
+      List<ScoreCard> table, String experimentTag, Map<String, String> algAuthors
   ) throws IOException {
     List<AlgorithmResult> results = HeatmapGenerator.loadExperimentScoreCards(table, algAuthors);
     // Get the problems

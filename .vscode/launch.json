@@ -6,51 +6,6 @@
   "configurations": [
     {
       "type": "java",
-      "name": "RosenbrockParticleSwarmTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.rosenbrock.particles.RosenbrockParticleSwarmTest",
-      "projectName": "seage-problem-rosenbrock"
-    },
-    {
-      "type": "java",
-      "name": "RosenbrockGeneticAlgorithmTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.rosenbrock.genetics.RosenbrockGeneticAlgorithmTest",
-      "projectName": "seage-problem-rosenbrock"
-    },
-    {
-      "type": "java",
-      "name": "RosenbrockGeneticAlgorithmTest",
-      "request": "launch",
-      "mainClass": "RosenbrockGeneticAlgorithmTest",
-      "projectName": "seage"
-    },
-    {
-      "type": "java",
-      "name": "SingleAlgorithmEvolutionExperimentTest",
-      "request": "launch",
-      "mainClass": "org.seage.hh.experimenter.singlealgorithm.evolution.SingleAlgorithmEvolutionExperimentTest",
-      "projectName": "seage-hyperheuristics"
-    },
-    {
-      "type": "java",
-      "name": "SatAntColonyTest",
-      "request": "launch",
-      "mainClass": "org.seage.problem.sat.antcolony.SatAntColonyTest",
-      "projectName": "seage-problem-sat"
-    },
-    {
-      "type": "java",
-      "name": "SatAntColonyTestSimple",
-      "request": "launch",
-      "mainClass": "org.seage.problem.sat.antcolony.SatAntColonyTestSimple",
-      "projectName": "seage-problem-sat",
-      "env": {
-        "LOG_LEVEL": "debug"
-      }
-    },
-    {
-      "type": "java",
       "name": "Run info",
       "request": "launch",
       "mainClass": "org.seage.launcher.Launcher",

@@ -14,7 +14,7 @@ import org.seage.aal.problem.ProblemInstance;
 import org.seage.aal.problem.ProblemProvider;
 import org.seage.aal.problem.ProblemScoreCalculator;
 import org.seage.data.DataNode;
-import org.seage.hh.experimenter.ExperimentTaskRequest;
+import org.seage.hh.experiment.ExperimentTaskRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

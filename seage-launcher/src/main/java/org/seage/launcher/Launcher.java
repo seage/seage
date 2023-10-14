@@ -81,9 +81,9 @@ public class Launcher {
   private void run(Command cmd) throws Exception {
     logger.info("SEAGE {} - https://www.seage.org", SeageVersion.VERSION);
     logger.info("");
-    logger.info("SEAGE running ...");
-    logger.info("");
     DbManager.init();
+    logger.info("");
+    logger.info("SEAGE running ...");
     logger.info("");
     cmd.performCommand();
     logger.info("SEAGE finished");

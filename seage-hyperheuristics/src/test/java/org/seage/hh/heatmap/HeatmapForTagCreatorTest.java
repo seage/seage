@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.seage.hh.experimenter.ExperimentScoreCard;
 
 public class HeatmapForTagCreatorTest {
   // Suppose we denote algorithms by uppercase letters {A, B, C} and problems by numbers {1, 2, 3}.
@@ -88,10 +87,10 @@ public class HeatmapForTagCreatorTest {
    * Merging two experiments results of one algorithm and on the same problem domain
    */
   void testSC1() {
-    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB3_1);
-    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scB3_2);
-    List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2);
-    List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
+    ScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB3_1);
+    ScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scB3_2);
+    List<ScoreCard> scoreCards = List.of(scoreCard1, scoreCard2);
+    List<ScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
 
     assertEquals(1, table.size());
     assertEquals("TabuSearch", table.get(0).getAlgorithmName());
@@ -104,12 +103,12 @@ public class HeatmapForTagCreatorTest {
    * Merging three experiments results of one algorithm on two problem domains
    */
   void testSC2() {
-    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB3_1);
-    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scB3_2);
-    ExperimentScoreCard scoreCard3 = HeatmapForTagCreator.parseScoreCardsJson(scB2_1);
+    ScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB3_1);
+    ScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scB3_2);
+    ScoreCard scoreCard3 = HeatmapForTagCreator.parseScoreCardsJson(scB2_1);
 
-    List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2, scoreCard3);
-    List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
+    List<ScoreCard> scoreCards = List.of(scoreCard1, scoreCard2, scoreCard3);
+    List<ScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
 
     assertEquals(1, table.size());
     assertEquals("TabuSearch", table.get(0).getAlgorithmName());
@@ -122,13 +121,13 @@ public class HeatmapForTagCreatorTest {
    * Merging four experiments results of one algorithm on three problem domains
    */
   void testSC3() {
-    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB3_1);
-    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scB3_2);
-    ExperimentScoreCard scoreCard3 = HeatmapForTagCreator.parseScoreCardsJson(scB2_1);
-    ExperimentScoreCard scoreCard4 = HeatmapForTagCreator.parseScoreCardsJson(scB1_1);
+    ScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB3_1);
+    ScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scB3_2);
+    ScoreCard scoreCard3 = HeatmapForTagCreator.parseScoreCardsJson(scB2_1);
+    ScoreCard scoreCard4 = HeatmapForTagCreator.parseScoreCardsJson(scB1_1);
 
-    List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2, scoreCard3, scoreCard4);
-    List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
+    List<ScoreCard> scoreCards = List.of(scoreCard1, scoreCard2, scoreCard3, scoreCard4);
+    List<ScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
 
     assertEquals(1, table.size());
     assertEquals("TabuSearch", table.get(0).getAlgorithmName());
@@ -142,13 +141,13 @@ public class HeatmapForTagCreatorTest {
    * and the other one has two problem domains
    */
   void testSC4() {
-    ExperimentScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB3_1);
-    ExperimentScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scB3_2);
-    ExperimentScoreCard scoreCard3 = HeatmapForTagCreator.parseScoreCardsJson(scA1);
-    ExperimentScoreCard scoreCard4 = HeatmapForTagCreator.parseScoreCardsJson(scA2);
+    ScoreCard scoreCard1 = HeatmapForTagCreator.parseScoreCardsJson(scB3_1);
+    ScoreCard scoreCard2 = HeatmapForTagCreator.parseScoreCardsJson(scB3_2);
+    ScoreCard scoreCard3 = HeatmapForTagCreator.parseScoreCardsJson(scA1);
+    ScoreCard scoreCard4 = HeatmapForTagCreator.parseScoreCardsJson(scA2);
 
-    List<ExperimentScoreCard> scoreCards = List.of(scoreCard1, scoreCard2, scoreCard3, scoreCard4);
-    List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
+    List<ScoreCard> scoreCards = List.of(scoreCard1, scoreCard2, scoreCard3, scoreCard4);
+    List<ScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
 
     assertEquals(2, table.size());
 
@@ -181,10 +180,10 @@ public class HeatmapForTagCreatorTest {
    * Testing passing an empty scoreCard
    */
   void testSC5() {
-    ExperimentScoreCard scoreCard1 = new ExperimentScoreCard("empty", new String[0]);
+    ScoreCard scoreCard1 = new ScoreCard("empty", new String[0]);
 
-    List<ExperimentScoreCard> scoreCards = List.of(scoreCard1);
-    List<ExperimentScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
+    List<ScoreCard> scoreCards = List.of(scoreCard1);
+    List<ScoreCard> table = HeatmapForTagCreator.mergeScoreCards(scoreCards);
 
     assertEquals(1, table.size());
   }

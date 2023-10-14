@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.seage.aal.score.ScoreCalculator;
-import org.seage.hh.experimenter.ExperimentReporter;
-import org.seage.hh.experimenter.ExperimentScoreCard;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,17 +28,17 @@ public class HeatmapForTagCreator {
       "AntColony", SEAGE
   );
 
-  protected static List<ExperimentScoreCard> mergeScoreCards(List<ExperimentScoreCard> scoreCards) {
+  protected static List<ScoreCard> mergeScoreCards(List<ScoreCard> scoreCards) {
     // Map of algorithm names and their score cards
-    HashMap<String, ExperimentScoreCard> scoreCardsTable = new HashMap<>();
+    HashMap<String, ScoreCard> scoreCardsTable = new HashMap<>();
 
-    for (ExperimentScoreCard scoreCard : scoreCards) {
+    for (ScoreCard scoreCard : scoreCards) {
       if (!scoreCardsTable.containsKey(scoreCard.getAlgorithmName())) {
         scoreCardsTable.put(scoreCard.getAlgorithmName(), scoreCard);
         continue;
       }
       // Merge logic here
-      ExperimentScoreCard resultScoreCard = scoreCardsTable.get(scoreCard.getAlgorithmName());
+      ScoreCard resultScoreCard = scoreCardsTable.get(scoreCard.getAlgorithmName());
 
       for (String problemID : scoreCard.getProblems()) {
         Double score = scoreCard.getProblemScore(problemID);
@@ -61,16 +59,16 @@ public class HeatmapForTagCreator {
   public static void createHeatmapForTag(
       List<ExperimentRecord> experiments, String experimentTag) throws Exception {
 
-    List<ExperimentScoreCard> scoreCardsForTag = new ArrayList<>();
+    List<ScoreCard> scoreCardsForTag = new ArrayList<>();
 
     for (ExperimentRecord experiment : experiments) {
-      ExperimentScoreCard scoreCard = parseScoreCardsJson(experiment.getScoreCard());
+      ScoreCard scoreCard = parseScoreCardsJson(experiment.getScoreCard());
 
       if (scoreCard != null) {
         scoreCardsForTag.add(scoreCard);
       }
     }
-    List<ExperimentScoreCard> table = mergeScoreCards(scoreCardsForTag);
+    List<ScoreCard> table = mergeScoreCards(scoreCardsForTag);
     String heatmap = HeatmapGenerator.createHeatmap(table, experimentTag, algAuthors);
     
     String filePrexix = experimentTag == null 
@@ -83,9 +81,9 @@ public class HeatmapForTagCreator {
     }
   }
 
-  protected static ExperimentScoreCard parseScoreCardsJson(String scoreCardJson) {
+  protected static ScoreCard parseScoreCardsJson(String scoreCardJson) {
     Gson gson = new Gson();
-    Type objType = new TypeToken<ExperimentScoreCard>() {}.getType();
+    Type objType = new TypeToken<ScoreCard>() {}.getType();
     return gson.fromJson(scoreCardJson, objType);
   }
 }

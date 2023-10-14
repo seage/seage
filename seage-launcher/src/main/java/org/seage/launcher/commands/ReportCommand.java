@@ -5,7 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
-import org.seage.hh.experimenter.ExperimentReporter;
+import org.seage.hh.experiment.ExperimentReporter;
 import org.seage.hh.heatmap.HeatmapForTagCreator;
 import org.seage.hh.knowledgebase.db.dbo.ExperimentRecord;
 import org.slf4j.Logger;
@@ -37,11 +37,10 @@ public class ReportCommand extends Command {
 
   @Override
   public void performCommand() throws Exception {
-    ExperimentReporter reporter = new ExperimentReporter();
     
     List<ExperimentRecord> experiments = (tag != null) 
-        ? reporter.getExperimentsByTag(tag)
-        : reporter.getExperiments();
+        ? ExperimentReporter.getExperimentsByTag(tag)
+        : ExperimentReporter.getExperiments();
 
     if (experiments.isEmpty()) {
       logger.info("No experiments for tag: {}", tag);

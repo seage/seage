@@ -4,7 +4,9 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import java.util.List;
 import java.util.Map;
-import org.seage.hh.experimenter.Experimenter2;
+import java.util.Set;
+import org.seage.hh.experiment.singlealgorithm.SingleAlgorithmDefaultExperiment;
+import org.seage.hh.experiment.singlealgorithm.evolution.SingleAlgorithmConfigsEvolutionExperiment;
 
 @Parameters(commandDescription = "Perform single evolution experiment")
 public class ExperimentSingleEvolutionCommand extends Command {
@@ -16,12 +18,11 @@ public class ExperimentSingleEvolutionCommand extends Command {
   List<String> algorithms;
 
   @Parameter(names = "-n", required = true,
-      description = "Number of configs per experiment")
-  int numOfSubjects;
+      description = "Number of config subject in a generation ")
+  int numSubjects;
 
-
-  @Parameter(names = "-g", required = true, description = "Number of iterations")
-  int numOfIterations;
+  @Parameter(names = "-g", required = true, description = "Number of GA generations")
+  int numGenerations;
 
   @Parameter(names = "-t", required = true, description = "Time to run algorithm")
   int algorithmTimeoutS;
@@ -31,16 +32,17 @@ public class ExperimentSingleEvolutionCommand extends Command {
 
   @Override
   public void performCommand() throws Exception {
-    // new SingleAlgorithmEvolutionExperiment(
-    // problemID, instances.toArray(new String[]{}),
-    // algorithms.toArray(new String[]{}), numOfSubjects, numOfIterations, algorithmTimeoutS )
-    // .runExperiment();
     Map<String, List<String>> problemInstanceParams =
         ProblemInstanceParamsParser.parseProblemInstanceParams(instances);
 
-    for (String algorithmID : algorithms) {
-      new Experimenter2(algorithmID, problemInstanceParams, numOfSubjects, algorithmTimeoutS, tag)
-          .setNumOfIterations(numOfIterations).runExperiment("SingleAlgorithmEvolution");
+    Set<String> problemIDs = problemInstanceParams.keySet();
+    for (String problemID : problemIDs) {
+      List<String> instanceIDs = problemInstanceParams.get(problemID);
+      for (String algorithmID : algorithms) {
+        new SingleAlgorithmConfigsEvolutionExperiment(
+            algorithmID, problemID, instanceIDs, 
+            numSubjects, numGenerations, algorithmTimeoutS, tag).run();
+      }
     }
   }
 }
