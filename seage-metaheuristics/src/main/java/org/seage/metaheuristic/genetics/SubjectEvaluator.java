@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
  * @author Richard Malek (original)
  */
 public abstract class SubjectEvaluator<S extends Subject<?>> {
-  protected static Logger _logger = LoggerFactory.getLogger(SubjectEvaluator.class.getName());
+  protected static Logger log = LoggerFactory.getLogger(SubjectEvaluator.class.getName());
 
   protected abstract double[] evaluate(S solution) throws Exception;
 

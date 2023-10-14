@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * @author Richard Malek (original)
  */
 public class GeneticAlgorithm<S extends Subject<?>> {
-  protected static Logger _logger = LoggerFactory.getLogger(GeneticAlgorithm.class.getName());
+  protected static Logger log = LoggerFactory.getLogger(GeneticAlgorithm.class.getName());
 
   private AlgorithmEventProducer<IAlgorithmListener<GeneticAlgorithmEvent<S>>, GeneticAlgorithmEvent<S>> eventProducer;
   private int iterationCount;

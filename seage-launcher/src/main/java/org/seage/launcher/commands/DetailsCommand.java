@@ -19,12 +19,12 @@ public class DetailsCommand extends Command {
   @Parameter(names = "-p", required = true, description = "ProblemID")
   String problemID;
 
-  private static final Logger _logger = LoggerFactory.getLogger(DetailsCommand.class.getName());
+  private static final Logger log = LoggerFactory.getLogger(DetailsCommand.class.getName());
 
   @Override
   public void performCommand() throws Exception {
-    _logger.info("Problems details");
-    _logger.info("----------------");
+    log.info("Problems details");
+    log.info("----------------");
 
     DataNode problems = new DataNode("Problems");
     Map<String, IProblemProvider<Phenotype<?>>> providers = ProblemProvider.getProblemProviders();
@@ -38,9 +38,9 @@ public class DetailsCommand extends Command {
       problems.putDataNode(pi);
 
       String name = pi.getValueStr("name");
-      _logger.info(problemID + " - " + name);
+      log.info(problemID + " - " + name);
 
-      _logger.info("\tinstances:");
+      log.info("\tinstances:");
 
       List<String> instanceIDs = new ArrayList<>();
       for (DataNode inst : pi.getDataNode("Instances").getDataNodes()) {
@@ -52,24 +52,24 @@ public class DetailsCommand extends Command {
       for (int i = 0; i < instanceIDs.size(); i++) {
         line += String.format("%-25s", instanceIDs.get(i));
         if ((i + 1) % 4 == 0) {
-          _logger.info("\t\t" + line);
+          log.info("\t\t" + line);
           line = "";
         }
       }
-      _logger.info("");
+      log.info("");
 
-      _logger.info("\talgorithms:");
+      log.info("\talgorithms:");
       for (DataNode alg : pi.getDataNode("Algorithms").getDataNodes()) {
-        _logger.info("\t\t" + alg.getValueStr("id"));
+        log.info("\t\t" + alg.getValueStr("id"));
 
         for (DataNode param : alg.getDataNodes("Parameter")) {
           String msg = String.format("\t\t\t%s (%s, %s, %s)", param.getValueStr("name"),
               param.getValueStr("min"), param.getValueStr("max"), param.getValueStr("init"));
-          _logger.info(msg);
+          log.info(msg);
         }
       }
     } catch (Exception ex) {
-      _logger.error(problemID + ": " + ex.getMessage(), ex);
+      log.error(problemID + ": " + ex.getMessage(), ex);
     }
   }
 }

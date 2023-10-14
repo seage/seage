@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TaskRunner {
-  private static Logger _logger = LoggerFactory.getLogger(TaskRunner.class.getName());
+  private static Logger log = LoggerFactory.getLogger(TaskRunner.class.getName());
 
   ConcurrentLinkedQueue<Runnable> _taskQueue;
 
@@ -29,7 +29,7 @@ public class TaskRunner {
       try {
         runnerThreads.get(i).join();
       } catch (InterruptedException e) {
-        _logger.trace(e.getMessage());
+        log.trace(e.getMessage());
         Thread.currentThread().interrupt();
       }
     }
@@ -51,14 +51,14 @@ public class TaskRunner {
           return;
         }
         Thread t = new Thread(task, _threadName + "-Job" + i++);
-        _logger.trace(t.toString() + " started");
+        log.trace(t.toString() + " started");
         t.start();
 
         try {
           t.join();
-          _logger.trace(t.toString() + " finished");
+          log.trace(t.toString() + " finished");
         } catch (InterruptedException e) {
-          _logger.warn(e.getMessage());
+          log.warn(e.getMessage());
           Thread.currentThread().interrupt();
         }
       }

@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ExperimentTaskRecord {
 
-  private static Logger _logger = LoggerFactory.getLogger(ExperimentTaskRecord.class.getName());
+  private static Logger log = LoggerFactory.getLogger(ExperimentTaskRecord.class.getName());
 
   private Phenotype<?>[] solutions;
   private UUID experimentTaskID;
@@ -193,14 +193,14 @@ public class ExperimentTaskRecord {
       throw new IllegalStateException("Experiment task has been already finished");
     }
 
-    _logger.debug("ExperimentTask started ({})", this.configID);
+    log.debug("ExperimentTask started ({})", this.configID);
     this.startDate = new Date();
 
     try {
       this.experimentTaskReport.putValue("machineName",
           java.net.InetAddress.getLocalHost().getHostName());
     } catch (UnknownHostException e) {
-      _logger.warn(e.getMessage());
+      log.warn(e.getMessage());
     }
     this.experimentTaskReport.putValue("nrOfCores", Runtime.getRuntime().availableProcessors());
     this.experimentTaskReport.putValue("totalRAM", Runtime.getRuntime().totalMemory());
@@ -229,17 +229,17 @@ public class ExperimentTaskRecord {
     writeSolutions(evaluator,
         this.experimentTaskReport.getDataNode("Solutions").getDataNode("Input"), solutions);
 
-    _logger.trace("Solutions from phenotype");
+    log.trace("Solutions from phenotype");
     algorithm.solutionsFromPhenotype(solutions);
-    _logger.trace("Starting the algorithm");
+    log.trace("Starting the algorithm");
     algorithm.startSearching(this.algorithmParams, true);
-    _logger.trace("Algorithm started");
+    log.trace("Algorithm started");
     waitForTimeout(algorithm);
-    _logger.trace("Stopping the algorithm");
+    log.trace("Stopping the algorithm");
     algorithm.stopSearching();
-    _logger.trace("Algorithm stopped");
+    log.trace("Algorithm stopped");
 
-    _logger.trace("Solutions to phenotype");
+    log.trace("Solutions to phenotype");
     solutions = algorithm.solutionsToPhenotype();
 
     writeSolutions(evaluator,
@@ -255,30 +255,30 @@ public class ExperimentTaskRecord {
 
     this.taskFinished = true;
 
-    _logger.debug("Algorithm run duration: {}", durationS);
-    _logger.debug("ExperimentTask finished ({})", this.configID);
+    log.debug("Algorithm run duration: {}", durationS);
+    log.debug("ExperimentTask finished ({})", this.configID);
   }
 
   private void waitForTimeout(IAlgorithmAdapter<?, ?> alg) throws Exception {
-    _logger.trace("Waiting for timeout");
+    log.trace("Waiting for timeout");
     long time = System.currentTimeMillis();
     while (alg.isRunning() && ((System.currentTimeMillis() - time) < this.timeoutS * 1000)) {
       Thread.sleep(250);
     }
     double timeS = (System.currentTimeMillis() - time) / 1000.0;
-    _logger.debug("Timeout occurred after {}s", timeS);
+    log.debug("Timeout occurred after {}s", timeS);
   }
 
   private static Phenotype<?>[] generateInitialSolutions(
       IProblemProvider<Phenotype<?>> provider, ProblemInstance instance,
       int numSolutions, long randomSeed) throws Exception {
-    _logger.debug("Generating initial solutions: {}", numSolutions);
+    log.debug("Generating initial solutions: {}", numSolutions);
     return provider.generateInitialSolutions(instance, numSolutions, randomSeed);
   }
 
   private void writeSolutions(IPhenotypeEvaluator<Phenotype<?>> evaluator, DataNode dataNode,
       Phenotype<?>[] solutions) {
-    _logger.debug("Writing solutions into data node: {}", solutions.length);
+    log.debug("Writing solutions into data node: {}", solutions.length);
     double bestObjValue = Double.MAX_VALUE;
     Phenotype<?> bestSol = null;
     try {
@@ -298,12 +298,12 @@ public class ExperimentTaskRecord {
         dataNode.putDataNode(solutionNode);
       }
     } catch (Exception ex) {
-      _logger.error("Cannot write solution", ex);
+      log.error("Cannot write solution", ex);
     }
   }
 
   private void calculateExperimentScore() throws Exception {
-    _logger.debug("Calculating experiment score");
+    log.debug("Calculating experiment score");
     ProblemInfo problemInfo = ProblemProvider
         .getProblemProviders()
         .get(problemID)
