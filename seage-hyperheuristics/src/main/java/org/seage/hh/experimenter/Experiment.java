@@ -3,6 +3,7 @@ package org.seage.hh.experimenter;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.seage.hh.runner.LocalExperimentTasksRunner;
 import org.seage.logging.TimeFormat;
@@ -47,7 +48,7 @@ public abstract class Experiment {
     this.problemID = problemID;
     this.instanceIDs = instanceIDs;
     this.timeoutS = timeoutS;
-    this.tag = tag;
+    this.tag = Optional.ofNullable(tag).orElse("<none>");;
   }
 
   protected void logStart() {
@@ -55,8 +56,10 @@ public abstract class Experiment {
     logger.info("---------------------------------------------------");
     logger.info("AlgorithmID:   ### {} ###", algorithmID);
     logger.info("---------------------------------------------------");
-    logger.info("ExperimentTag: {}", this.tag);
-    logger.info("ExperimentID:  {}", experimentID);
+    logger.info("Experiment:");
+    logger.info(" - Name: {}", this.experimentName);
+    logger.info(" - ID:   {}", this.experimentID);
+    logger.info(" - Tag:  {}", this.tag);
     logger.info("---------------------------------------------------");
   }
 
