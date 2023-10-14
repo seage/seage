@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GeneticAlgorithmTest {
-  private static final Logger _logger = LoggerFactory.getLogger(GeneticAlgorithmTest.class.getName());
+  private static final Logger log = LoggerFactory.getLogger(GeneticAlgorithmTest.class.getName());
 
   @Test
   public void testAlgorithm() throws Exception {
@@ -79,13 +79,13 @@ public class GeneticAlgorithmTest {
 
     @Override
     public void algorithmStopped(GeneticAlgorithmEvent<Subject<Integer>> e) {
-      _logger.trace(e.getGeneticSearch().getBestSubject().getChromosome().toString());
+      log.trace(e.getGeneticSearch().getBestSubject().getChromosome().toString());
 
     }
 
     @Override
     public void newBestSolutionFound(GeneticAlgorithmEvent<Subject<Integer>> e) {
-      _logger.trace(String.format("+++ %f", e.getGeneticSearch().getBestSubject().getFitness()[0]));
+      log.trace(String.format("+++ %f", e.getGeneticSearch().getBestSubject().getFitness()[0]));
 
     }
 

@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TspOptimalTour {
-  private static Logger _logger = LoggerFactory.getLogger(TspOptimalTour.class.getName());
+  private static Logger log = LoggerFactory.getLogger(TspOptimalTour.class.getName());
 
   public static final String Name = "";
   public static final Integer[] OptimalTour = {};
@@ -48,10 +48,10 @@ public class TspOptimalTour {
 
   public static void printTour(TspPhenotype tour) {
     for (int i = 0; i < tour.getSolution().length; i++) {
-      _logger.debug(tour.getSolution()[i] + " ");
+      log.debug(tour.getSolution()[i] + " ");
     }
 
-    _logger.debug(" ");
+    log.debug(" ");
 
   }
 }

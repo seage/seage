@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
  */
 public class FireflySearch<S extends Solution> extends FireflySearchBase<S> {
 
-  private static final Logger _logger = LoggerFactory.getLogger(FireflySearchBase.class.getName());
+  private static final Logger log = LoggerFactory.getLogger(FireflySearchBase.class.getName());
 
   private static final long serialVersionUID = -4308076927795750198L;
   private int _iterationCount;
@@ -236,7 +236,7 @@ public class FireflySearch<S extends Solution> extends FireflySearchBase<S> {
           if (_solutionComparator.compare(best, _population.getBestSolution()) < 0)
             _population.addSolution(best);
         }
-        _logger.trace(String.format("%f", _bestSolution.getObjectiveValue()[0]));
+        log.trace(String.format("%f", _bestSolution.getObjectiveValue()[0]));
       }
 
       evaluatePopulation(_population);

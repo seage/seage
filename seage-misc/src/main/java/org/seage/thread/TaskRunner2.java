@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TaskRunner2 {
-  private static Logger _logger = LoggerFactory.getLogger(TaskRunner2.class.getName());
+  private static Logger log = LoggerFactory.getLogger(TaskRunner2.class.getName());
 
   public static void run(Runnable[] tasks, int processors) throws InterruptedException {
     List<Task2> taskList = new ArrayList<Task2>();
@@ -26,7 +26,7 @@ public class TaskRunner2 {
   }
 
   protected static void run(List<Task2> tasks, int processors) throws InterruptedException {
-    _logger.trace("started");
+    log.trace("started");
     List<Task2> taskList = new ArrayList<Task2>(tasks);
     CpuCoreCounter counter = new CpuCoreCounter(processors);
 
@@ -35,18 +35,18 @@ public class TaskRunner2 {
         if (counter.canUseCores(taskList.get(0).getCoresNeeded())) {
           Task2 t = taskList.remove(0);
           counter.useCores(t.getCoresNeeded());
-          _logger.trace("starting " + t.getName());
+          log.trace("starting " + t.getName());
           new Thread(new WorkerThread(counter, t)).start();
 
           if (!counter.isCpuBusy()) {
-            _logger.trace("adding other tasks");
+            log.trace("adding other tasks");
             List<Task2> tasksToRemove = new ArrayList<Task2>();
             for (int i = 0; i < taskList.size(); i++) {
               if (counter.canUseCores(taskList.get(i).getCoresNeeded())) {
                 tasksToRemove.add(taskList.get(i));
                 Task2 t2 = taskList.get(i);
                 counter.useCores(t2.getCoresNeeded());
-                _logger.trace("starting " + t2.getName());
+                log.trace("starting " + t2.getName());
                 new Thread(new WorkerThread(counter, t2)).start();
               }
 
@@ -56,8 +56,8 @@ public class TaskRunner2 {
             }
           }
         }
-        _logger.trace("waiting " + counter.CoresCurrentlyUsed);
-        _logger.trace("------- ");
+        log.trace("waiting " + counter.CoresCurrentlyUsed);
+        log.trace("------- ");
         counter.wait();
       }
     }
@@ -67,7 +67,7 @@ public class TaskRunner2 {
       }
     }
 
-    _logger.trace("finished");
+    log.trace("finished");
   }
 
   static class WorkerThread implements Runnable {
@@ -81,14 +81,14 @@ public class TaskRunner2 {
 
     @Override
     public void run() {
-      _logger.trace("running " + _task.getName() + ": " + _task.getCoresNeeded() + " - " + _counter.CoresCurrentlyUsed);
+      log.trace("running " + _task.getName() + ": " + _task.getCoresNeeded() + " - " + _counter.CoresCurrentlyUsed);
 
       long t1 = System.currentTimeMillis();
       _task.run();
       long t2 = System.currentTimeMillis();
 
       synchronized (_counter) {
-        _logger.trace("notifying " + _task.getName() + " after " + (t2 - t1) + "ms");
+        log.trace("notifying " + _task.getName() + " after " + (t2 - t1) + "ms");
         _counter.releaseCores(_task.getCoresNeeded());
         _counter.notifyAll();
       }

@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TaskRunner3 implements ITaskRunner {
-  private static Logger _logger = LoggerFactory.getLogger(TaskRunner3.class.getName());
+  private static Logger log = LoggerFactory.getLogger(TaskRunner3.class.getName());
   private int _cores;
 
   public TaskRunner3(int cores) {
@@ -16,7 +16,7 @@ public class TaskRunner3 implements ITaskRunner {
 
   @Override
   public void runTasks(List<Task> tasks) throws Exception {
-    _logger.trace("started");
+    log.trace("started");
     List<Task> taskList = new ArrayList<Task>(tasks);
     CpuCoreCounter counter = new CpuCoreCounter(this._cores);
 
@@ -25,18 +25,18 @@ public class TaskRunner3 implements ITaskRunner {
         if (counter.canUseCores(1)) {
           Task t = taskList.remove(0);
           counter.useCores(1);
-          _logger.trace("starting " + t.getName());
+          log.trace("starting " + t.getName());
           new Thread(new WorkerThread(counter, t)).start();
 
           if (!counter.isCpuBusy()) {
-            _logger.trace("adding other tasks");
+            log.trace("adding other tasks");
             List<Task> tasksToRemove = new ArrayList<Task>();
             for (int i = 0; i < taskList.size(); i++) {
               if (counter.canUseCores(1)) {
                 tasksToRemove.add(taskList.get(i));
                 Task t2 = taskList.get(i);
                 counter.useCores(1);
-                _logger.trace("starting " + t2.getName());
+                log.trace("starting " + t2.getName());
                 new Thread(new WorkerThread(counter, t2)).start();
               }
 
@@ -46,8 +46,8 @@ public class TaskRunner3 implements ITaskRunner {
             }
           }
         }
-        _logger.trace("waiting " + counter.CoresCurrentlyUsed);
-        _logger.trace("------- ");
+        log.trace("waiting " + counter.CoresCurrentlyUsed);
+        log.trace("------- ");
         counter.wait();
       }
     }
@@ -57,7 +57,7 @@ public class TaskRunner3 implements ITaskRunner {
       }
     }
 
-    _logger.trace("finished");
+    log.trace("finished");
 
   }
 
@@ -92,14 +92,14 @@ public class TaskRunner3 implements ITaskRunner {
 
     @Override
     public void run() {
-      _logger.trace("running " + _task.getName() + ": " + " - " + _counter.CoresCurrentlyUsed);
+      log.trace("running " + _task.getName() + ": " + " - " + _counter.CoresCurrentlyUsed);
 
       long t1 = System.currentTimeMillis();
       _task.run();
       long t2 = System.currentTimeMillis();
 
       synchronized (_counter) {
-        _logger.trace("notifying " + _task.getName() + " after " + (t2 - t1) + "ms");
+        log.trace("notifying " + _task.getName() + " after " + (t2 - t1) + "ms");
         _counter.releaseCores(1);
         _counter.notifyAll();
       }
