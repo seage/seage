@@ -15,7 +15,7 @@ import com.beust.jcommander.Parameters;
 
 @Parameters(commandDescription = "Perform a basic reporting")
 public class ReportCommand extends Command {
-  private static final Logger logger = LoggerFactory.getLogger(ReportCommand.class.getName());
+  private static final Logger log = LoggerFactory.getLogger(ReportCommand.class.getName());
 
   @Parameter(names = "-a", required = false, description = "Algorithms", variableArity = true)
   List<String> algorithms;
@@ -32,7 +32,7 @@ public class ReportCommand extends Command {
    * @param experiment .
    */
   void generateHeatmap(ExperimentRecord experiment) throws IOException {
-    logger.info(experiment.getScoreCard());
+    log.info(experiment.getScoreCard());
   }
 
   @Override
@@ -43,7 +43,7 @@ public class ReportCommand extends Command {
         : ExperimentReporter.getExperiments();
 
     if (experiments.isEmpty()) {
-      logger.info("No experiments for tag: {}", tag);
+      log.info("No experiments for tag: {}", tag);
       return;
     }
 
@@ -67,7 +67,7 @@ public class ReportCommand extends Command {
               experiment.getProblemID(),
               experiment.getScore(),
               experiment.getTag());
-      logger.info(logLine);
+      log.info(logLine);
     }    
   }
 }

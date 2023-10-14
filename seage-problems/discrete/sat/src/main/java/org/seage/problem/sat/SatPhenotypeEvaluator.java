@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SatPhenotypeEvaluator implements IPhenotypeEvaluator<SatPhenotype> {
-  private static Logger logger = LoggerFactory.getLogger(SatPhenotypeEvaluator.class.getName());
+  private static Logger log = LoggerFactory.getLogger(SatPhenotypeEvaluator.class.getName());
   
   private Formula formula;
   private ProblemScoreCalculator scoreCalculator;
@@ -27,7 +27,7 @@ public class SatPhenotypeEvaluator implements IPhenotypeEvaluator<SatPhenotype> 
   public double[] evaluate(SatPhenotype phenotypeSubject) throws Exception {
     String instanceID = formula.getProblemInstanceInfo().getInstanceID();
     int objValue = FormulaEvaluator.evaluate(formula, phenotypeSubject.getSolution());
-    //logger.debug("instanceid: {} objval: {}", instanceID, objValue);
+    //log.debug("instanceid: {} objval: {}", instanceID, objValue);
     return new double[] { 
         objValue,
         this.scoreCalculator.calculateInstanceScore(instanceID, objValue)

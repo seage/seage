@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
-  private static final Logger logger = 
+  private static final Logger log = 
       LoggerFactory.getLogger(ProblemMetadataGenerator.class.getName());
 
   private static final String INSTANCES_STRING = "Instances";
@@ -46,7 +46,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
     ProblemInfo pi = problemProvider.getProblemInfo();
     String problemID = pi.getProblemID();
      
-    logger.info("Working on {} problem...", problemID);     
+    log.info("Working on {} problem...", problemID);     
 
     DataNode problem = new DataNode("Problem");
     problem.putValue("id", problemID);
@@ -72,7 +72,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
     for (ProblemInstanceInfo pii : instances) {
       String instanceID = pii.getInstanceID();
       try {
-        logger.info("Processing: {}", instanceID);
+        log.info("Processing: {}", instanceID);
 
         ProblemInstance instance = this.problemProvider.initProblemInstance(pii);
         IPhenotypeEvaluator<P> evaluator = this.problemProvider.initPhenotypeEvaluator(instance);
@@ -85,16 +85,16 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
         }
 
         // Get greedy solution value
-        logger.info("Greedy solutions for: {}", instanceID);
+        log.info("Greedy solutions for: {}", instanceID);
         greedyResult = generateGreedySolutionValue(instance, evaluator);
 
         // Get random solution values
-        logger.info("Random solutions for: {}", instanceID);
+        log.info("Random solutions for: {}", instanceID);
         indexes.parallelStream().forEach((i) -> {
           try {            
             randomResults[i] = generateRandomSolutionValue(instance, evaluator);
           } catch (Exception ex) {
-            logger.warn("Processing trial error", ex);
+            log.warn("Processing trial error", ex);
           }
         });
 
@@ -113,7 +113,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
         inst.putValue("size", instance.getSize());
         result.putDataNode(inst);
       } catch (Exception ex) {
-        logger.warn("Instance error, {}: {}", instanceID, ex.getMessage());
+        log.warn("Instance error, {}: {}", instanceID, ex.getMessage());
       }
     }
 
@@ -154,7 +154,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
 
       return result;
     } catch (Exception ex) {
-      logger.error("Error reading line: {}", line);
+      log.error("Error reading line: {}", line);
       throw ex;
     }
   }
@@ -189,7 +189,7 @@ public abstract class ProblemMetadataGenerator<P extends Phenotype<?>> {
     }
     File path = new File("./output/" + problemName + ".metadata.xml");
 
-    logger.info("Saving the results to the file {}", path.getAbsolutePath());
+    log.info("Saving the results to the file {}", path.getAbsolutePath());
     
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant

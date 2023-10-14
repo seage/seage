@@ -59,7 +59,7 @@ import org.slf4j.LoggerFactory;
 public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends Subject<?>>
     extends AlgorithmAdapterImpl<P, S> {
 
-  private static final Logger logger = 
+  private static final Logger log = 
       LoggerFactory.getLogger(GeneticAlgorithmAdapter.class.getName());
   
   protected List<S> solutions;
@@ -193,7 +193,7 @@ public abstract class GeneticAlgorithmAdapter<P extends Phenotype<?>, S extends 
         statLastImprovingIteration = gs.getCurrentIteration();
 
       } catch (Exception ex) {
-        logger.warn(ex.getMessage(), ex);
+        log.warn(ex.getMessage(), ex);
       }
     }
 

@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * @author David Omrai
  */
 public class HyperHeuristic1Experiment extends Experiment {
-  private static Logger logger =
+  private static Logger log =
       LoggerFactory.getLogger(MetaHeuristicExperiment.class.getName());
   private ExtendedDefaultConfigurator configurator;
   private ProblemInfo problemInfo;
@@ -144,7 +144,7 @@ public class HyperHeuristic1Experiment extends Experiment {
         this.bestScore = taskScore;
       }
     } catch (Exception e) {
-      logger.error(String.format("Failed to report the experiment task: %s", 
+      log.error(String.format("Failed to report the experiment task: %s", 
           experimentTask.getExperimentTaskID().toString()), e);
     }
     return null;

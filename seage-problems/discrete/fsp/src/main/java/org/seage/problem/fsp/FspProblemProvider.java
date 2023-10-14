@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
 @Annotations.ProblemId("FSP")
 @Annotations.ProblemName("Flow Shop Scheduling Problem")
 public class FspProblemProvider extends JspProblemProvider {
-  private static Logger logger = LoggerFactory.getLogger(FspProblemProvider.class.getName());
+  private static Logger log = LoggerFactory.getLogger(FspProblemProvider.class.getName());
 
   @Override
   public FspJobsDefinition initProblemInstance(ProblemInstanceInfo instanceInfo) throws Exception
@@ -68,7 +68,7 @@ public class FspProblemProvider extends JspProblemProvider {
     try (InputStream stream = stream0) {
       jobsDefinition = new FspJobsDefinition(instanceInfo, stream);
     } catch (Exception ex) {
-      logger.error(
+      log.error(
           "FspProblemProvider.initProblemInstance - creating FspJobsDefinition failed, path: {}",
           path);
       throw ex;
@@ -124,11 +124,11 @@ public class FspProblemProvider extends JspProblemProvider {
       JspPhenotype schedule1 = JspScheduleProvider.createGreedySchedule(jspEval, instance);
       JspPhenotype schedule2 = JspScheduleProvider.createRandomSchedule(jspEval, instance, 1);
 
-      logger.info("greedy: {}", schedule1.getObjValue());
-      logger.info("random: {}", schedule2.getObjValue());
+      log.info("greedy: {}", schedule1.getObjValue());
+      log.info("random: {}", schedule2.getObjValue());
     } catch (Exception ex) {
       // TODO Auto-generated catch block
-      logger.error("{}", ex.getMessage(), ex);
+      log.error("{}", ex.getMessage(), ex);
     }
   }
 }

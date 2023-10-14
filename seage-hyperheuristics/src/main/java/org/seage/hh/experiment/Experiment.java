@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * Abstract class for Experiment.
  */
 public abstract class Experiment {
-  protected static Logger logger = LoggerFactory.getLogger(Experiment.class.getName());
+  protected static Logger log = LoggerFactory.getLogger(Experiment.class.getName());
 
   public abstract void run() throws Exception;
 
@@ -53,24 +53,24 @@ public abstract class Experiment {
 
   protected void logStart() {
     startDate = System.currentTimeMillis();
-    logger.info("---------------------------------------------------");
-    logger.info("AlgorithmID:   ### {} ###", algorithmID);
-    logger.info("---------------------------------------------------");
-    logger.info("Experiment:");
-    logger.info(" - Name: {}", this.experimentName);
-    logger.info(" - ID:   {}", this.experimentID);
-    logger.info(" - Tag:  {}", this.tag);
-    logger.info("---------------------------------------------------");
+    log.info("---------------------------------------------------");
+    log.info("AlgorithmID:   ### {} ###", algorithmID);
+    log.info("---------------------------------------------------");
+    log.info("Experiment:");
+    log.info(" - Name: {}", this.experimentName);
+    log.info(" - ID:   {}", this.experimentID);
+    log.info(" - Tag:  {}", this.tag);
+    log.info("---------------------------------------------------");
   }
 
   protected void logEnd(double experimentScore) {
     endDate = System.currentTimeMillis();
     long duration = endDate - startDate;
     String time = TimeFormat.getTimeDurationBreakdown(duration);
-    logger.info("---------------------------------------------------");
-    logger.info("Experiment done: {}", experimentID);
-    logger.info("Experiment duration: {} (DD:HH:mm:ss)", time);
-    logger.info("Experiment score: ### {} ###", experimentScore);
+    log.info("---------------------------------------------------");
+    log.info("Experiment done: {}", experimentID);
+    log.info("Experiment duration: {} (DD:HH:mm:ss)", time);
+    log.info("Experiment score: ### {} ###", experimentScore);
   }
 
   protected void createExperimentReport() throws Exception {

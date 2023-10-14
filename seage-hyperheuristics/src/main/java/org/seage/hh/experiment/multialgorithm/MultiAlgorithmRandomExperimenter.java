@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class MultiAlgorithmRandomExperimenter extends Experiment {
-  private static Logger logger =
+  private static Logger log =
       LoggerFactory.getLogger(MultiAlgorithmRandomExperimenter.class.getName());
   protected Configurator configurator;
 

@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 public abstract class ProblemProvider<P extends Phenotype<?>> implements IProblemProvider<P> {
   private static Class<?>[] providerClasses = {};
   private static Map<String, IProblemProvider<Phenotype<?>>> providers = null;
-  private static Logger logger = LoggerFactory.getLogger(ProblemProvider.class.getName());
+  private static Logger log = LoggerFactory.getLogger(ProblemProvider.class.getName());
   private ProblemInfo problemInfo;
   private HashMap<String, IAlgorithmFactory<P, ?>> algFactories;
 
@@ -92,7 +92,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
     try (InputStream stream = this.getClass().getResourceAsStream(metadataPath.toString())) {
       metadata = XmlHelper.readXml(stream).getDataNode("Instances");
     } catch (Exception ex) {
-      logger.warn("No metadata for problem {}", problemId);
+      log.warn("No metadata for problem {}", problemId);
     }
     // Instances
     DataNode instances = new DataNode("Instances");
@@ -111,7 +111,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
       if (metadata != null) {
         DataNode dn = metadata.getDataNodeById(instanceID);
         if (dn == null) {
-          logger.warn("No metadata for instance '{}'", instanceID);
+          log.warn("No metadata for instance '{}'", instanceID);
         } else {
           instance.putValue("size",dn.getValue("size"));
           instance.putValue("random",dn.getValue("random"));
@@ -141,7 +141,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
 
         an2 = algFactoryClass.getAnnotation(Annotations.Broken.class);
         if (an2 != null) {
-          logger.debug("!!! Algorithm '{}' is marked Broken", algName);
+          log.debug("!!! Algorithm '{}' is marked Broken", algName);
           continue;
         }
 
@@ -182,7 +182,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
         // ---
         algorithms.putDataNode(algorithm);
       } catch (Exception ex) {
-        logger.error(String.format("Getting information on %s failed", ci.getClassName()), ex);
+        log.error(String.format("Getting information on %s failed", ci.getClassName()), ex);
       }
     }
     problemInfo.putDataNode(algorithms);
@@ -230,7 +230,7 @@ public abstract class ProblemProvider<P extends Phenotype<?>> implements IProble
         pp.getProblemInfo();
         providers.put(c.getAnnotation(Annotations.ProblemId.class).value(), pp);
       } catch (Exception e) {
-        logger.warn("Provider class annotation error {}", c.getCanonicalName());
+        log.warn("Provider class annotation error {}", c.getCanonicalName());
       }
              
     }

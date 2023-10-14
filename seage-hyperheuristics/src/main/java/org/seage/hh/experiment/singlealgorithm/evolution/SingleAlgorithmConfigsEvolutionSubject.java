@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
  * .
  */
 public class SingleAlgorithmConfigsEvolutionSubject extends Subject<Double> {
-  private static Logger logger =
+  private static Logger log =
       LoggerFactory.getLogger(SingleAlgorithmConfigsEvolutionSubject.class.getName());
   protected String[] paramNames;
 

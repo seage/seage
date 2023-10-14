@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S> 
     implements IAlgorithmAdapter<P, S> {
-  private static final Logger logger = 
+  private static final Logger log = 
       LoggerFactory.getLogger(AlgorithmAdapterImpl.class.getName());
 
   protected boolean algorithmStarted = false;
@@ -63,7 +63,7 @@ public abstract class AlgorithmAdapterImpl<P extends Phenotype<?>, S>
           try {
             startSearching(params);
           } catch (Exception ex) {
-            logger.error(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
           }
         }
       );

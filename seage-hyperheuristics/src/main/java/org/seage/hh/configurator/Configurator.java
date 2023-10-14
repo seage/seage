@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * @author Richard Malek
  */
 public abstract class Configurator {
-  protected static Logger logger = LoggerFactory.getLogger(Configurator.class.getName());
+  protected static Logger log = LoggerFactory.getLogger(Configurator.class.getName());
 
   public abstract ProblemConfig[] prepareConfigs(
       ProblemInfo problemInfo, String instanceID, String algorithmID, int numConfigs) 

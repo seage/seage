@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JspScheduleProvider {
-  private static Logger logger = LoggerFactory.getLogger(JspScheduleProvider.class.getName());
+  private static Logger log = LoggerFactory.getLogger(JspScheduleProvider.class.getName());
   
   /**
    * Method creates soluton with the use of greedy algorithm.
@@ -134,7 +134,7 @@ public class JspScheduleProvider {
       JspPhenotype ph2 = JspScheduleProvider.createGreedySchedule(evaluator, jobs);
       double[] val2 = evaluator.evaluate(ph2);
       
-      logger.debug("{} - {} - {}", jobInfo.getInstanceID(), val2[0], val1[0]);
+      log.debug("{} - {} - {}", jobInfo.getInstanceID(), val2[0], val1[0]);
     }
   }
 }

@@ -57,7 +57,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant> 
     extends AlgorithmAdapterImpl<P, S> {
 
-  private static final Logger logger = 
+  private static final Logger log = 
       LoggerFactory.getLogger(AntColonyAdapter.class.getName());
       
   protected AntColony antColony;
@@ -175,7 +175,7 @@ public abstract class AntColonyAdapter<P extends Phenotype<?>, S extends Ant>
         P solution = solutionToPhenotype((S) alg.getBestAnt());
         reporter.putNewSolution(System.currentTimeMillis(), alg.getCurrentIteration(), solution);
       } catch (Exception ex) {
-        logger.warn(ex.getMessage(), ex);
+        log.warn(ex.getMessage(), ex);
       }
     }
 

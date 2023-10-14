@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * @author Jan Zmatlik
  */
 public class RosenbrockSolution extends Solution {
-  private static final Logger logger = 
+  private static final Logger log = 
       LoggerFactory.getLogger(RosenbrockSolution.class.getName());
 
   private double[] coords;
@@ -63,7 +63,7 @@ public class RosenbrockSolution extends Solution {
       rosSolution.setObjectiveValue(getObjectiveValue());
     } catch (Exception ex) {
       //LoggerFactory.getLogger(TspSolution.class.getName()).fatal( null, ex);
-      logger.error("{}", ex.getMessage());
+      log.error("{}", ex.getMessage());
 
     }
     return rosSolution;

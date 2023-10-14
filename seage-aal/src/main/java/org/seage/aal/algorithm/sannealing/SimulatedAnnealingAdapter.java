@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
 public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extends Solution>
     extends AlgorithmAdapterImpl<P, S> {
 
-  private static Logger logger = LoggerFactory.getLogger(SimulatedAnnealingAdapter.class.getName());
+  private static Logger log = LoggerFactory.getLogger(SimulatedAnnealingAdapter.class.getName());
 
   protected SimulatedAnnealing<S> simulatedAnnealing;
   protected S[] solutions;
@@ -154,7 +154,7 @@ public abstract class SimulatedAnnealingAdapter<P extends Phenotype<?>, S extend
         numberOfNewSolutions++;
         lastImprovingIteration = e.getSimulatedAnnealing().getCurrentIteration();
       } catch (Exception ex) {
-        logger.error("Failed to report new best solution", ex);
+        log.error("Failed to report new best solution", ex);
       }
     }
 
